@@ -64,7 +64,9 @@ import { ViewManagerService } from './providers/view-manager.service';
           <clr-datepicker-view-manager
             *clrPopoverContent="open; at: popoverPosition; outsideClickToClose: true; scrollToClose: true"
             cdkTrapFocus
-          ></clr-datepicker-view-manager>
+          >
+            <ng-content select="clr-datepicker-actions" ngProjectAs="clr-datepicker-actions"></ng-content>
+          </clr-datepicker-view-manager>
         </div>
         <cds-icon
           *ngIf="showInvalid"
@@ -217,6 +219,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     this.subscriptions.push(
       this.toggleService.openChange.subscribe(open => {
         if (open) {
+          this.dateNavigationService.syncInterimDateValues();
           this.initializeCalendar();
         } else {
           if (this.dateNavigationService.isRangePicker) {

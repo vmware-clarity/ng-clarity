@@ -21,22 +21,43 @@ import { DayModel } from '../model/day.model';
  */
 @Injectable()
 export class DateNavigationService {
-  selectedDay: DayModel;
-  selectedEndDay: DayModel;
+  interimSelectedDay: DayModel;
+  interimSelectedEndDay: DayModel;
   focusedDay: DayModel;
   hoveredDay: DayModel;
   hoveredMonth: number;
   hoveredYear: number;
   isRangePicker = false;
+  hasActionButtons = false;
 
+  private _selectedDay: DayModel;
+  private _selectedEndDay: DayModel;
   private _displayedCalendar: CalendarModel;
   private _todaysFullDate: Date = new Date();
   private _today: DayModel;
   private _selectedDayChange = new Subject<DayModel>();
   private _selectedEndDayChange = new Subject<DayModel>();
+  private _interimSelectedDayChange = new Subject<DayModel>();
+  private _interimSelectedEndDayChange = new Subject<DayModel>();
   private _displayedCalendarChange = new Subject<void>();
   private _focusOnCalendarChange = new Subject<void>();
   private _focusedDayChange = new Subject<DayModel>();
+
+  get selectedDay(): DayModel {
+    return this.hasActionButtons ? this.interimSelectedDay : this._selectedDay;
+  }
+
+  set selectedDay(selectedDay: DayModel) {
+    this._selectedDay = selectedDay;
+  }
+
+  get selectedEndDay(): DayModel {
+    return this.hasActionButtons ? this.interimSelectedEndDay : this._selectedEndDay;
+  }
+
+  set selectedEndDay(selectedDay: DayModel) {
+    this._selectedEndDay = selectedDay;
+  }
 
   get today(): DayModel {
     return this._today;
@@ -52,6 +73,14 @@ export class DateNavigationService {
 
   get selectedEndDayChange(): Observable<DayModel> {
     return this._selectedEndDayChange.asObservable();
+  }
+
+  get interimSelectedDayChange(): Observable<DayModel> {
+    return this._interimSelectedDayChange.asObservable();
+  }
+
+  get interimSelectedEndDayChange(): Observable<DayModel> {
+    return this._interimSelectedEndDayChange.asObservable();
   }
 
   /**
@@ -79,24 +108,10 @@ export class DateNavigationService {
    * Notifies that the selected day has changed so that the date can be emitted to the user.
    * Note: Only to be called from day.ts
    */
-  notifySelectedDayChanged(dayModel: DayModel) {
-    if (this.isRangePicker) {
-      if (
-        !this.selectedDay ||
-        (!!this.selectedDay && !!this.selectedEndDay) ||
-        (!!this.selectedDay && dayModel?.isBefore(this.selectedDay))
-      ) {
-        if (this.selectedEndDay) {
-          this.hoveredDay = this.hoveredMonth = this.hoveredYear = undefined;
-          this.setSelectedEndDay(undefined);
-        }
-        this.setSelectedDay(dayModel);
-      } else {
-        this.setSelectedEndDay(dayModel);
-      }
-    } else {
-      this.setSelectedDay(dayModel);
-    }
+  notifySelectedDayChanged(dayModel: DayModel, emitEvent: boolean) {
+    const startDay = emitEvent ? this.selectedDay : this.interimSelectedDay;
+    const endDay = emitEvent ? this.selectedEndDay : this.interimSelectedEndDay;
+    this.compareAndSelectDate(dayModel, startDay, endDay, emitEvent);
   }
 
   /**
@@ -159,7 +174,7 @@ export class DateNavigationService {
   }
 
   incrementFocusDay(value: number): void {
-    this.focusedDay = this.focusedDay.incrementBy(value);
+    this.hoveredDay = this.focusedDay = this.focusedDay.incrementBy(value);
     if (this._displayedCalendar.isDayInCalendar(this.focusedDay)) {
       this._focusedDayChange.next(this.focusedDay);
     } else {
@@ -170,13 +185,11 @@ export class DateNavigationService {
 
   setSelectedDay(dayModel: DayModel | undefined): void {
     this.selectedDay = dayModel;
-    this.updateDisplayedCalendarOnDaySelection(dayModel);
     this._selectedDayChange.next(dayModel);
   }
 
   setSelectedEndDay(dayModel: DayModel | undefined): void {
     this.selectedEndDay = dayModel;
-    this.updateDisplayedCalendarOnDaySelection(dayModel);
     this._selectedEndDayChange.next(dayModel);
   }
 
@@ -186,15 +199,82 @@ export class DateNavigationService {
     }
   }
 
+  getSelectedDate() {
+    return this._selectedDay;
+  }
+
+  getSelectedEndDate() {
+    return this._selectedEndDay;
+  }
+
   validateDateRange() {
-    if (!this.selectedDay || !this.selectedEndDay) {
-      if (this.selectedDay) {
-        this.setSelectedDay(undefined);
+    if (!this.getSelectedDate() || !this.getSelectedEndDate()) {
+      if (this.getSelectedDate()) {
+        this.updateSelectedDay({ startDate: undefined, endDate: null }, true);
       }
-      if (this.selectedEndDay) {
-        this.setSelectedEndDay(undefined);
+      if (this.getSelectedEndDate()) {
+        this.updateSelectedDay({ startDate: null, endDate: undefined }, true);
       }
     }
+  }
+
+  syncInterimDateValues() {
+    this.setInterimSelectedDay(this.getSelectedDate());
+    this.setInterimSelectedEndDay(this.getSelectedEndDate());
+    this.updateDisplayedCalendarOnDaySelection(this.getSelectedDate());
+  }
+
+  private setInterimSelectedDay(dayModel: DayModel | undefined): void {
+    this.interimSelectedDay = dayModel;
+    this._interimSelectedDayChange.next(dayModel);
+  }
+
+  private setInterimSelectedEndDay(dayModel: DayModel | undefined): void {
+    this.interimSelectedEndDay = dayModel;
+    this._interimSelectedEndDayChange.next(dayModel);
+  }
+
+  private updateSelectedDay(dayObject: { startDate: DayModel; endDate: DayModel }, emitEvent: boolean): void {
+    const { startDate, endDate } = dayObject;
+    if (emitEvent) {
+      if (startDate && endDate) {
+        this.setSelectedDay(startDate);
+        this.setSelectedEndDay(endDate);
+      } else {
+        if (endDate !== null) {
+          this.setSelectedEndDay(endDate);
+        }
+        if (startDate !== null) {
+          this.setSelectedDay(startDate);
+        }
+      }
+    } else {
+      if (endDate !== null) {
+        this.setInterimSelectedEndDay(endDate);
+      }
+      if (startDate !== null) {
+        this.setInterimSelectedDay(startDate);
+      }
+    }
+  }
+
+  private compareAndSelectDate(selectedDay: DayModel, startDay: DayModel, endDay: DayModel, emitEvent: boolean) {
+    const dayObject: { startDate: DayModel; endDate: DayModel } = { startDate: null, endDate: null };
+    if (this.isRangePicker) {
+      if (!startDay || (!!startDay && !!endDay) || (!!startDay && selectedDay?.isBefore(startDay))) {
+        if (endDay) {
+          this.hoveredDay = this.hoveredMonth = this.hoveredYear = undefined;
+          dayObject.endDate = undefined;
+        }
+        dayObject.startDate = selectedDay;
+      } else {
+        dayObject.endDate = selectedDay;
+      }
+    } else {
+      dayObject.startDate = selectedDay;
+    }
+    this.updateDisplayedCalendarOnDaySelection(selectedDay);
+    this.updateSelectedDay(dayObject, emitEvent);
   }
 
   // not a setter because i want this to remain private

@@ -15,82 +15,24 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class DateRangePickerDemo implements OnInit {
   dateForm = new FormGroup({
+    showActionButtons: new FormControl(true),
+    showRangeOptions: new FormControl(true),
+    date: new FormControl(),
+    minDate: new FormControl('2024-02-01'),
+    maxDate: new FormControl('2024-12-31'),
+
     startDateV1: new FormControl(),
     endDateV1: new FormControl(),
     minDateV1: new FormControl('2024-02-01'),
     maxDateV1: new FormControl('2024-12-31'),
-
-    startDateWithOptionV1: new FormControl(),
-    endDateWithOptionV1: new FormControl(),
-    minDateWithOptionV1: new FormControl('2024-02-01'),
-    maxDateWithOptionV1: new FormControl('2024-12-31'),
   });
 
   dateRangeOptions = [
     { label: 'Today', value: [new Date(), new Date()] },
-    { label: 'Last 7 Days', value: [this.addDays(new Date(), -7), new Date()] },
-    { label: 'Last 14 Days', value: [this.addDays(new Date(), -14), new Date()] },
-    { label: 'Last 30 Days', value: [this.addDays(new Date(), -30), new Date()] },
-    { label: 'Last 90 Days', value: [this.addDays(new Date(), -90), new Date()] },
-  ];
-
-  monthRangeOptions = [
-    {
-      label: 'This Month',
-      value: [
-        new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-        new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
-      ],
-    },
-    {
-      label: 'Last Month',
-      value: [
-        new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
-        new Date(new Date().getFullYear(), new Date().getMonth(), 0),
-      ],
-    },
-    {
-      label: 'Last 2 Months',
-      value: [
-        new Date(new Date().getFullYear(), new Date().getMonth() - 2, 1),
-        new Date(new Date().getFullYear(), new Date().getMonth(), 0),
-      ],
-    },
-    {
-      label: 'Last 6 Months',
-      value: [
-        new Date(new Date().getFullYear(), new Date().getMonth() - 6, 1),
-        new Date(new Date().getFullYear(), new Date().getMonth(), 0),
-      ],
-    },
-    {
-      label: 'Last 12 Months',
-      value: [
-        new Date(new Date().getFullYear(), new Date().getMonth() - 12, 1),
-        new Date(new Date().getFullYear(), new Date().getMonth(), 0),
-      ],
-    },
-    { label: 'Custom Range', value: [], isCustomRange: true },
-  ];
-
-  yearRangeOptions = [
-    {
-      label: 'This year',
-      value: [new Date(new Date().getFullYear(), 1, 1), new Date(new Date().getFullYear() + 1, 0, 0)],
-    },
-    {
-      label: 'Last year',
-      value: [new Date(new Date().getFullYear() - 1, 1, 1), new Date(new Date().getFullYear(), 0, 0)],
-    },
-    {
-      label: 'Last 2 Years',
-      value: [new Date(new Date().getFullYear() - 2, 1, 1), new Date(new Date().getFullYear(), 0, 0)],
-    },
-    {
-      label: 'Last 5 Years',
-      value: [new Date(new Date().getFullYear() - 5, 1, 1), new Date(new Date().getFullYear(), 0, 0)],
-    },
-    { label: 'Custom Range', value: [], isCustomRange: true },
+    { label: 'Last 7 Days', value: [this.addDays(new Date(), -7), this.addDays(new Date(), -1)] },
+    { label: 'Last 14 Days', value: [this.addDays(new Date(), -14), this.addDays(new Date(), -1)] },
+    { label: 'Last 30 Days', value: [this.addDays(new Date(), -30), this.addDays(new Date(), -1)] },
+    { label: 'Last 90 Days', value: [this.addDays(new Date(), -90), this.addDays(new Date(), -1)] },
   ];
 
   ngOnInit(): void {

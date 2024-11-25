@@ -10,9 +10,7 @@ import { Injectable } from '@angular/core';
 import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 import { DayModel } from '../model/day.model';
 import { DateFormControlService } from './date-form-control.service';
-import { DateIOService } from './date-io.service';
 import { DateNavigationService } from './date-navigation.service';
-import { ViewManagerService } from './view-manager.service';
 
 @Injectable()
 export class DatePickerHelperService {
@@ -20,33 +18,45 @@ export class DatePickerHelperService {
 
   constructor(
     private _dateNavigationService: DateNavigationService,
-    private _dateIOService: DateIOService,
     private _toggleService: ClrPopoverToggleService,
-    private _viewManagerService: ViewManagerService,
     private _dateFormControlService: DateFormControlService
   ) {}
 
-  selectDay(day: DayModel): void {
-    this.updateSelectedDate(day);
+  selectDay(day: DayModel, emitEvent = !this._dateNavigationService.hasActionButtons): void {
+    this._dateNavigationService.notifySelectedDayChanged(day, emitEvent);
+    this._dateFormControlService.markAsDirty();
+    this._dateNavigationService.hoveredDay = undefined;
+    if (emitEvent) {
+      this.toggleDatepickerVisibility();
+    }
   }
 
-  updateSelectedDate(day: DayModel): void {
-    this._dateNavigationService.notifySelectedDayChanged(day);
-    this._dateFormControlService.markAsDirty();
-    this.toggleDatepickerVisibility();
-    this._dateNavigationService.hoveredDay = undefined;
+  persistSelectedDates() {
+    const startDate = this._dateNavigationService.interimSelectedDay,
+      endDate = this._dateNavigationService.interimSelectedEndDay,
+      isRangePicker = this._dateNavigationService.isRangePicker;
+    if ((isRangePicker && !!startDate && !!endDate) || (!isRangePicker && !!startDate)) {
+      this._dateNavigationService.setSelectedDay(startDate);
+      this._dateNavigationService.setSelectedEndDay(endDate);
+      this.toggleDatepickerVisibility();
+    }
+  }
+
+  resetSelectedDates() {
+    this._dateNavigationService.syncInterimDateValues();
   }
 
   toggleDatepickerVisibility(): void {
-    if (
-      this._dateNavigationService.isRangePicker &&
-      !!this._dateNavigationService.selectedDay &&
-      !!this._dateNavigationService.selectedEndDay
-    ) {
-      this._toggleService.open = false;
-    } else if (!this._dateNavigationService.isRangePicker && !!this._dateNavigationService.selectedDay) {
-      this._toggleService.open = false;
+    const isRangePicker = this._dateNavigationService.isRangePicker,
+      startDate = this._dateNavigationService.getSelectedDate(),
+      endDate = this._dateNavigationService.getSelectedEndDate();
+    if ((isRangePicker && !!startDate && !!endDate) || (!isRangePicker && !!startDate)) {
+      this.closeDatePicker();
     }
+  }
+
+  closeDatePicker() {
+    this._toggleService.open = false;
   }
 
   convertDateToDayModel(date: Date): DayModel {

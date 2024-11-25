@@ -20,6 +20,7 @@ $clr-calendar-width: calc(
     calc(2 * #{tokens.$cds-alias-object-border-width-100})
 );
 $clr-calendar-options-width: mixins.baselinePx(150);
+$clr-calendar-action-buttons-height: mixins.baselinePx(50);
 
 //(8 = 6 date rows + 1 row for day heading + 1 row for calendar switches and month/year pickers) + 2 * 16px padding + 2px for border
 $clr-calendar-height: calc(

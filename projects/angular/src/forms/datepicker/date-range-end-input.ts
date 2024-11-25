@@ -95,7 +95,7 @@ export class ClrDateRangeEndInput extends ClrDateInputBase implements AfterViewI
     }
 
     if (this.dateNavigationService) {
-      this.dateNavigationService.selectedEndDay = date
+      this.dateNavigationService.interimSelectedEndDay = this.dateNavigationService.selectedEndDay = date
         ? new DayModel(date.getFullYear(), date.getMonth(), date.getDate())
         : null;
     }

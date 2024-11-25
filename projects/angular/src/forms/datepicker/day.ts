@@ -104,7 +104,9 @@ export class ClrDay {
    */
   selectDay(): void {
     const day: DayModel = this.dayView.dayModel;
-    this._datePickerHelperService.selectDay(day);
+    if (!this.dayView.isDisabled) {
+      this._datePickerHelperService.selectDay(day);
+    }
   }
 
   /**

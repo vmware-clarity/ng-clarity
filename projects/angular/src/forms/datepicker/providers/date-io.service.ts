@@ -33,7 +33,6 @@ export class DateIOService {
     minDate: new DayModel(0, 0, 1),
     maxDate: new DayModel(9999, 11, 31),
   };
-  isDateRangePicker = false;
   cldrLocaleDateFormat: string = DEFAULT_LOCALE_FORMAT;
 
   private dateRangeOptions;
@@ -74,10 +73,6 @@ export class DateIOService {
     }
   }
 
-  setIsDateRangePicker(flag: boolean) {
-    this.isDateRangePicker = flag;
-  }
-
   setRangeOptions(rangeOptions: DateRangeOption[]) {
     let validatedRangeOption = this.validateDateRangeOptions(rangeOptions);
     const hasCustomRangeOption = validatedRangeOption.findIndex(rangeOption => !!rangeOption.isCustomRange);
@@ -86,6 +81,8 @@ export class DateIOService {
         validatedRangeOption = [...validatedRangeOption, { label: 'Custom Range', value: [], isCustomRange: true }];
       }
       this.dateRangeOptions = validatedRangeOption;
+    } else {
+      this.dateRangeOptions = [];
     }
   }
 

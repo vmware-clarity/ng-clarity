@@ -97,7 +97,7 @@ export class ClrDateRangeStartInput extends ClrDateInputBase implements AfterVie
     }
 
     if (this.dateNavigationService) {
-      this.dateNavigationService.selectedDay = date
+      this.dateNavigationService.interimSelectedDay = this.dateNavigationService.selectedDay = date
         ? new DayModel(date.getFullYear(), date.getMonth(), date.getDate())
         : null;
     }

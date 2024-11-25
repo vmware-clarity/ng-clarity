@@ -4,37 +4,126 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<h2>Date Range Picker</h2>
-
+<h2>Date Picker / Range Picker</h2>
 <form clrForm [formGroup]="dateForm" novalidate>
   <section class="date-range-section">
+    <div class="features">
+      <div class="card">
+        <span class="title"> Features </span>
+        <div class="features-list">
+          <clr-toggle-wrapper>
+            <label>Confirmation Action Buttons</label>
+            <input clrToggle type="checkbox" formControlName="showActionButtons" name="vertical.right.one" />
+          </clr-toggle-wrapper>
+
+          <clr-toggle-wrapper>
+            <label>Range Options</label>
+            <input clrToggle type="checkbox" formControlName="showRangeOptions" name="vertical.right.one" />
+          </clr-toggle-wrapper>
+        </div>
+      </div>
+    </div>
+
     <div class="flex-section">
       <!-- Variant 1 -->
-      <div class="card" data-heading="Default">
+      <div class="card" data-heading="Date Picker">
         <div class="card-content">
-          <ng-container
-            *ngTemplateOutlet="daterange; context: { startDtFc: 'startDateV1', endDtFc: 'endDateV1', minDateFc: 'minDateV1', maxDateFc: 'maxDateV1' }"
-          ></ng-container>
+          <clr-date-container>
+            <label for="dateControl">Date</label>
+            <input
+              id="dateControl"
+              type="date"
+              clrDate
+              formControlName="date"
+              [min]="dateForm.get('minDate').value"
+              [max]="dateForm.get('maxDate').value"
+            />
+            <clr-control-error *clrIfError="'min'">
+              <ng-container *ngIf="dateForm.get('date').errors?.min?.min">
+                Minimum date should be {{dateForm.get('date').errors?.min?.min}}
+              </ng-container>
+            </clr-control-error>
+            <clr-control-error *clrIfError="'max'">
+              <ng-container *ngIf="dateForm.get('date').errors?.max?.max">
+                Maximum date should be {{dateForm.get('date').errors?.max?.max}}
+              </ng-container>
+            </clr-control-error>
+            <clr-datepicker-actions *ngIf="dateForm.get('showActionButtons')?.value">
+              <button clrDatepickerCancelAction>Cancel</button>
+              <button clrDatepickerApplyAction>Apply</button>
+            </clr-datepicker-actions>
+          </clr-date-container>
+        </div>
+        <div class="card-validations">
+          <div class="form-input-wrapper clr-form-horizontal">
+            <ng-container
+              *ngTemplateOutlet="validators; context: { minDateFc: 'minDate', maxDateFc: 'maxDate' }"
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- Variant 2 -->
+      <div class="card" data-heading="Date Range Picker">
+        <div class="card-content">
+          <clr-date-range-container
+            [min]="dateForm.get('minDateV1').value"
+            [max]="dateForm.get('maxDateV1').value"
+            [rangeOptions]="dateForm.get('showRangeOptions')?.value ? dateRangeOptions: []"
+          >
+            <input
+              id="startDateV1"
+              aria-labelledby="dateRangeCtrl"
+              name="startDate"
+              type="date"
+              [inputWidth]="14"
+              clrRangeStartDate
+              (clrRangeStartDateChange)="stDateChanged($event)"
+              formControlName="startDateV1"
+            />
+            <input
+              id="endDateV1"
+              aria-labelledby="dateRangeCtrl"
+              name="endDate"
+              [inputWidth]="14"
+              type="date"
+              clrRangeEndDate
+              (clrRangeEndDateChange)="endDateChanged($event)"
+              formControlName="endDateV1"
+            />
+            <clr-control-error *clrIfError="'min'">
+              <ng-container
+                *ngIf="dateForm.get('startDateV1').errors?.min?.min || dateForm.get('endDateV1').errors?.min?.min"
+              >
+                Minimum date should be {{dateForm.get('startDateV1').errors?.min?.min ||
+                dateForm.get('endDateV1').errors?.min?.min}}
+              </ng-container>
+            </clr-control-error>
+            <clr-control-error *clrIfError="'max'">
+              <ng-container
+                *ngIf="dateForm.get('startDateV1').errors?.max?.max || dateForm.get('endDateV1').errors?.max?.max"
+              >
+                Maximum date should be {{dateForm.get('startDateV1').errors?.max?.max ||
+                dateForm.get('endDateV1').errors?.max?.max}}
+              </ng-container>
+            </clr-control-error>
+            <clr-control-error *clrIfError="'range'">
+              <ng-container
+                *ngIf="dateForm.get('startDateV1').errors?.range?.range || dateForm.get('endDateV1').errors?.range?.range"
+              >
+                Start date must be less than End date
+              </ng-container>
+            </clr-control-error>
+            <clr-datepicker-actions *ngIf="dateForm.get('showActionButtons')?.value">
+              <button clrDatepickerCancelAction>Cancel</button>
+              <button clrDatepickerApplyAction>Apply</button>
+            </clr-datepicker-actions>
+          </clr-date-range-container>
         </div>
         <div class="card-validations">
           <div class="form-input-wrapper clr-form-horizontal">
             <ng-container
               *ngTemplateOutlet="validators; context: { minDateFc: 'minDateV1', maxDateFc: 'maxDateV1' }"
-            ></ng-container>
-          </div>
-        </div>
-      </div>
-      <!-- Variant 2 -->
-      <div class="card" data-heading="With Range Options">
-        <div class="card-content">
-          <ng-container
-            *ngTemplateOutlet="daterange; context: { rangeOptions: dateRangeOptions, startDtFc: 'startDateWithOptionV1', endDtFc: 'endDateWithOptionV1', minDateFc: 'minDateWithOptionV1', maxDateFc: 'maxDateWithOptionV1' }"
-          ></ng-container>
-        </div>
-        <div class="card-validations">
-          <div class="form-input-wrapper clr-form-horizontal">
-            <ng-container
-              *ngTemplateOutlet="validators; context: { minDateFc: 'minDateWithOptionV1', maxDateFc: 'maxDateWithOptionV1' }"
             ></ng-container>
           </div>
         </div>
@@ -53,61 +142,5 @@
       <label>Max Date</label>
       <input type="text" placeholder="yyyy-mm-dd" clrInput [formControlName]="maxDateFc" />
     </clr-input-container>
-  </ng-container>
-</ng-template>
-
-<ng-template
-  #daterange
-  let-minDateFc="minDateFc"
-  let-maxDateFc="maxDateFc"
-  let-startDtFc="startDtFc"
-  let-rangeOptions="rangeOptions"
-  let-endDtFc="endDtFc"
->
-  <ng-container [formGroup]="dateForm">
-    <clr-date-range-container
-      [min]="dateForm.get(minDateFc).value"
-      [max]="dateForm.get(maxDateFc).value"
-      [rangeOptions]="rangeOptions"
-    >
-      <!-- <label for="dateRangeCtrl">Range Picker</label> -->
-      <input
-        [id]="startDtFc"
-        aria-labelledby="dateRangeCtrl"
-        name="startDate"
-        type="date"
-        [inputWidth]="14"
-        clrRangeStartDate
-        (clrRangeStartDateChange)="stDateChanged($event)"
-        [formControlName]="startDtFc"
-      />
-      <input
-        [id]="endDtFc"
-        aria-labelledby="dateRangeCtrl"
-        name="endDate"
-        [inputWidth]="14"
-        type="date"
-        clrRangeEndDate
-        (clrRangeEndDateChange)="endDateChanged($event)"
-        [formControlName]="endDtFc"
-      />
-      <clr-control-error *clrIfError="'min'">
-        <ng-container *ngIf="dateForm.get(startDtFc).errors?.min?.min || dateForm.get(endDtFc).errors?.min?.min">
-          Minimum date should be {{dateForm.get(startDtFc).errors?.min?.min || dateForm.get(endDtFc).errors?.min?.min}}
-        </ng-container>
-      </clr-control-error>
-      <clr-control-error *clrIfError="'max'">
-        <ng-container *ngIf="dateForm.get(startDtFc).errors?.max?.max || dateForm.get(endDtFc).errors?.max?.max">
-          Maximum date should be {{dateForm.get(startDtFc).errors?.max?.max || dateForm.get(endDtFc).errors?.max?.max}}
-        </ng-container>
-      </clr-control-error>
-      <clr-control-error *clrIfError="'range'">
-        <ng-container
-          *ngIf="dateForm.get(startDtFc).errors?.range?.range || dateForm.get(endDtFc).errors?.range?.range"
-        >
-          Start date must be less than End date
-        </ng-container>
-      </clr-control-error>
-    </clr-date-range-container>
   </ng-container>
 </ng-template>

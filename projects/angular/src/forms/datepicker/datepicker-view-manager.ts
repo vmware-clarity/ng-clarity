@@ -21,6 +21,7 @@ import { ViewManagerService } from './providers/view-manager.service';
   host: {
     '[class.datepicker]': 'true',
     '[class.has-range-option]': 'hasRangeOptions',
+    '[class.has-action-buttons]': 'hasActionButtons',
     '[attr.aria-modal]': 'true',
     '[attr.aria-label]': 'commonStrings.keys.datepickerDialogLabel',
     role: 'dialog',
@@ -28,6 +29,7 @@ import { ViewManagerService } from './providers/view-manager.service';
 })
 export class ClrDatepickerViewManager {
   dateRangeOptions = this.dateIOService.getRangeOptions();
+  hasActionButtons = this.dateNavigationService.hasActionButtons;
 
   constructor(
     public commonStrings: ClrCommonStringsService,
@@ -66,5 +68,6 @@ export class ClrDatepickerViewManager {
     selectedRange?.value?.forEach(date => {
       this.datePickerHelperService?.selectDay(this.datePickerHelperService.convertDateToDayModel(date));
     });
+    this.dateNavigationService.updateDisplayedCalendarOnDaySelection(this.dateNavigationService.selectedDay);
   }
 }

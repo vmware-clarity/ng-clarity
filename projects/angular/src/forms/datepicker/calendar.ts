@@ -6,7 +6,7 @@
  */
 
 import { Component, ElementRef, HostListener, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { race, Subscription } from 'rxjs';
 
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
@@ -133,13 +133,19 @@ export class ClrCalendar implements OnDestroy {
     );
 
     this._subs.push(
-      this._dateNavigationService.selectedDayChange.subscribe((selectedDay: DayModel) => {
+      race(
+        this._dateNavigationService.selectedDayChange,
+        this._dateNavigationService.interimSelectedDayChange
+      ).subscribe((selectedDay: DayModel) => {
         this.calendarViewModel.updateSelectedDay(selectedDay);
       })
     );
 
     this._subs.push(
-      this._dateNavigationService.selectedEndDayChange.subscribe((selectedDay: DayModel) => {
+      race(
+        this._dateNavigationService.selectedEndDayChange,
+        this._dateNavigationService.interimSelectedEndDayChange
+      ).subscribe((selectedDay: DayModel) => {
         this.calendarViewModel.updateSelectedEndDay(selectedDay);
       })
     );
