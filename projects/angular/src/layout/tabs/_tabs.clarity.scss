@@ -46,101 +46,112 @@
   [data-hidden='true'] {
     display: none;
   }
-}
-
-button.nav-link {
-  border-radius: 0;
-  text-transform: capitalize;
-  min-width: 0;
-}
-
-.tabs-overflow {
-  position: relative;
-
-  .nav-item {
-    margin-right: 0;
+  button.nav-link {
+    border-radius: 0;
+    text-transform: capitalize;
+    min-width: 0;
   }
-}
 
-.tab-content {
-  display: inline;
-}
+  .tabs-overflow {
+    position: relative;
 
-@include mixins.fixForIE11AndUp {
-  .tab-content {
-    display: inline-block;
-    width: 100%;
-  }
-}
-
-.tabs-vertical {
-  display: flex;
-
-  // Must be direct child, so horizontal tabs can be nested in vertical tabs
-  & > .nav {
-    height: auto;
-    box-shadow: none;
-    flex-direction: column;
-    align-items: stretch;
-    margin-right: variables.$clr_baselineRem_1;
-    overflow: auto;
-    flex-shrink: 0;
-    padding: variables.$clr_baselineRem_4px;
-    width: variables.$clr_baselineRem_10;
-    min-width: variables.$clr_baselineRem_2;
-
-    @include mixins.css-var(gap, clr-nav-vertical-gap-size, 0, variables.$clr-use-custom-properties);
-
-    // ATM - remove
     .nav-item {
-      @include mixins.css-var(
-        margin-right,
-        clr-nav-item-margin-right,
-        variables.$clr_baselineRem_1,
-        variables.$clr-use-custom-properties
-      );
+      margin-right: 0;
     }
+  }
 
-    .nav-link {
-      text-align: left;
-      @include mixins.css-var(
-        padding,
-        clr-nav-vertical-link-padding,
-        0 variables.$clr_baselineRem_0_5,
-        variables.$clr-use-custom-properties
-      );
-      border: none;
-      flex-shrink: 0;
-      margin-top: 0;
-      margin-left: 0;
+  .tab-content {
+    display: inline;
+  }
+
+  @include mixins.fixForIE11AndUp {
+    .tab-content {
+      display: inline-block;
       width: 100%;
+    }
+  }
+
+  .tabs-vertical {
+    display: flex;
+
+    // Must be direct child, so horizontal tabs can be nested in vertical tabs
+    & > .nav {
+      height: auto;
+      box-shadow: none;
+      flex-direction: column;
+      align-items: stretch;
+      margin-right: variables.$clr_baselineRem_1;
+      overflow: auto;
+      flex-shrink: 0;
+      padding: variables.$clr_baselineRem_4px;
+      width: variables.$clr_baselineRem_10;
+      min-width: variables.$clr_baselineRem_2;
+
+      @include mixins.css-var(gap, clr-nav-vertical-gap-size, 0, variables.$clr-use-custom-properties);
 
       // ATM - remove
-      &.btn {
-        margin-bottom: variables.$clr_baselineRem_1px;
-      }
-
-      &.active,
-      &:hover {
-        @include nav-link-border-appearence('left');
-      }
-      &:not(:active).active {
+      .nav-item {
         @include mixins.css-var(
-          background-color,
-          clr-nav-selected-bg-color,
-          variables.$clr-global-selection-color,
+          margin-right,
+          clr-nav-item-margin-right,
+          variables.$clr_baselineRem_1,
           variables.$clr-use-custom-properties
         );
       }
 
-      &:not(.active):hover {
+      .nav-link {
+        text-align: left;
         @include mixins.css-var(
-          background-color,
-          clr-nav-hover-bg-color,
-          tabs-variables.$clr-nav-hover-bg-color,
+          padding,
+          clr-nav-vertical-link-padding,
+          0 variables.$clr_baselineRem_0_5,
           variables.$clr-use-custom-properties
         );
+        border: none;
+        flex-shrink: 0;
+        margin-top: 0;
+        margin-left: 0;
+        width: 100%;
+
+        // ATM - remove
+        &.btn {
+          margin-bottom: variables.$clr_baselineRem_1px;
+        }
+
+        &.active,
+        &:hover {
+          @include nav-link-border-appearence('left');
+        }
+        &:not(:active).active {
+          @include mixins.css-var(
+            background-color,
+            clr-nav-selected-bg-color,
+            variables.$clr-global-selection-color,
+            variables.$clr-use-custom-properties
+          );
+        }
+
+        &:not(.active):hover {
+          @include mixins.css-var(
+            background-color,
+            clr-nav-hover-bg-color,
+            tabs-variables.$clr-nav-hover-bg-color,
+            variables.$clr-use-custom-properties
+          );
+        }
       }
+    }
+  }
+
+  .tabs-actions {
+    display: inline-flex;
+    width: 100%;
+
+    &[position~='left'] {
+      justify-content: start;
+    }
+    &[position~='right'] {
+      justify-content: end;
     }
   }
 }
