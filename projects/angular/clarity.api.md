@@ -107,9 +107,10 @@ export class ClarityModule {
     // Warning: (ae-forgotten-export) The symbol "i16_2" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i17_2" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i18_2" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i19_2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof i1.ClrEmphasisModule, typeof i2_4.ClrDataModule, typeof i3_2.ClrIconModule, typeof i4_12.ClrModalModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule, typeof i8_6.ClrButtonModule, typeof i9_2.ClrFormsModule, typeof i10_4.ClrLayoutModule, typeof i11_3.ClrPopoverModule, typeof i12_3.ClrWizardModule, typeof i13_4.ClrSidePanelModule, typeof i14_2.ClrStepperModule, typeof i15.ClrSpinnerModule, typeof i16_2.ClrProgressBarModule, typeof i17_2.ClrPopoverModuleNext, typeof i18_2.ClrTimelineModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof i1.ClrEmphasisModule, typeof i2_4.ClrDataModule, typeof i3_2.ClrIconModule, typeof i4_12.ClrModalModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule, typeof i8_6.ClrButtonModule, typeof i9_2.ClrFormsModule, typeof i10_4.ClrLayoutModule, typeof i11_3.ClrPopoverModule, typeof i12_3.ClrWizardModule, typeof i13_4.ClrSidePanelModule, typeof i14_2.ClrStepperModule, typeof i15.ClrSpinnerModule, typeof i16_2.ClrProgressBarModule, typeof i17_2.ClrPopoverModuleNext, typeof i18_2.ClrTimelineModule, typeof i19_2.ClrNumberPickerModule]>;
 }
 
 // @public (undocumented)
@@ -2977,6 +2978,97 @@ export class ClrNavLevel implements OnInit {
 }
 
 // @public (undocumented)
+export class ClrNumberPicker extends WrappedFormControl<ClrNumberPickerContainer> implements ControlValueAccessor {
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, controlStateService: IfControlStateService);
+    // (undocumented)
+    control: NgControl;
+    // (undocumented)
+    get disabled(): boolean;
+    set disabled(value: boolean | string | null);
+    // (undocumented)
+    protected el: ElementRef<HTMLInputElement>;
+    // (undocumented)
+    focused: boolean;
+    // (undocumented)
+    get id(): string;
+    set id(id: string);
+    // (undocumented)
+    protected index: number;
+    // (undocumented)
+    inputId(): string;
+    // (undocumented)
+    invalid: boolean;
+    // (undocumented)
+    get isDisabled(): boolean;
+    // (undocumented)
+    get max(): number;
+    set max(value: unknown);
+    // (undocumented)
+    get min(): number;
+    set min(value: unknown);
+    // (undocumented)
+    ngAfterContentInit(): void;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    onBlur(): void;
+    // (undocumented)
+    onFocus(): void;
+    // (undocumented)
+    placeholder: string;
+    // (undocumented)
+    get readonly(): boolean;
+    set readonly(value: boolean | string | null);
+    // (undocumented)
+    registerOnChange(fn: (value: number | null) => void): void;
+    // (undocumented)
+    registerOnTouched(fn: () => void): void;
+    // (undocumented)
+    protected renderer: Renderer2;
+    // (undocumented)
+    setDisabledState(): void;
+    // (undocumented)
+    step: number;
+    // (undocumented)
+    stepDown(): void;
+    // (undocumented)
+    stepUp(): void;
+    // (undocumented)
+    get value(): number;
+    set value(value: number | null);
+    // (undocumented)
+    valueChange: EventEmitter<number>;
+    // (undocumented)
+    writeValue(value: number | null): void;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrNumberPicker, "clr-number-picker", never, { "step": "step"; "placeholder": "placeholder"; "min": "min"; "max": "max"; "disabled": "disabled"; "readonly": "readonly"; "value": "value"; }, { "valueChange": "valueChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNumberPicker, [null, null, { optional: true; self: true; }, null, null, { optional: true; }]>;
+}
+
+// @public (undocumented)
+export class ClrNumberPickerContainer extends ClrAbstractContainer {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrNumberPickerContainer, "clr-number-picker-container", never, {}, {}, never, ["label", "clr-number-picker", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNumberPickerContainer, never>;
+}
+
+// @public (undocumented)
+export class ClrNumberPickerModule {
+    constructor();
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNumberPickerModule, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrNumberPickerModule>;
+    // Warning: (ae-forgotten-export) The symbol "i1_52" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_38" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNumberPickerModule, [typeof i1_52.ClrNumberPicker, typeof i2_38.ClrNumberPickerContainer], [typeof i6.CommonModule, typeof i42.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_52.ClrNumberPicker, typeof i2_38.ClrNumberPickerContainer]>;
+}
+
+// @public (undocumented)
 export class ClrOption<T> implements OnInit {
     constructor(elRef: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, optionSelectionService: OptionSelectionService<T>);
     // (undocumented)
@@ -5101,6 +5193,9 @@ export class NavDetectionOompaLoompa extends OompaLoompa {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<NavDetectionOompaLoompa, [null, { optional: true; }, null]>;
 }
+
+// @public (undocumented)
+export const numberInput: (value: unknown) => number;
 
 // @public (undocumented)
 export function slide(direction: string): AnimationMetadata[];
