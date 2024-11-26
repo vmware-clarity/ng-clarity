@@ -290,7 +290,7 @@ export default function (): void {
     });
 
     describe('detail pane', function () {
-      let context: TestContext<DatagridMainRenderer, ColumnsWidthTest>;
+      let context: TestContext<DatagridMainRenderer, DatagridDetailPaneTest>;
       let columnsService: ColumnsService;
 
       beforeEach(function () {
@@ -307,6 +307,16 @@ export default function (): void {
         context.detectChanges();
         expect(columnsService.resetToLastCache).not.toHaveBeenCalled();
         expect(columnsService.emitStateChangeAt).toHaveBeenCalledTimes(1);
+      });
+
+      it('toggles the detail pane open and keeps the first visible column visible', function () {
+        context.fixture.componentInstance.firstColumnHidden = true;
+        context.detectChanges();
+
+        context.clarityDirective.toggleDetailPane(true);
+        context.detectChanges();
+        expect(columnsService.resetToLastCache).not.toHaveBeenCalled();
+        expect(columnsService.emitStateChangeAt).not.toHaveBeenCalled();
       });
 
       it('toggles the detail pane closed and resets to cache', function () {
@@ -496,8 +506,12 @@ class DatagridHeightTest {
 @Component({
   template: `
     <clr-datagrid>
-      <clr-dg-column>Number</clr-dg-column>
-      <clr-dg-column>Number</clr-dg-column>
+      <clr-dg-column>
+        <ng-template *clrDgHideableColumn="{ hidden: firstColumnHidden }">Number</ng-template>
+      </clr-dg-column>
+      <clr-dg-column>
+        <ng-template *clrDgHideableColumn="{ hidden: false }">Number</ng-template>
+      </clr-dg-column>
       <clr-dg-row *clrDgItems="let number of numbers">
         <clr-dg-cell>{{ number }}</clr-dg-cell>
         <clr-dg-cell>{{ number }}</clr-dg-cell>
@@ -517,6 +531,7 @@ class DatagridHeightTest {
 class DatagridDetailPaneTest {
   numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
   pageSize = 5;
+  firstColumnHidden = false;
 
   changeList() {
     if (this.pageSize === 5) {

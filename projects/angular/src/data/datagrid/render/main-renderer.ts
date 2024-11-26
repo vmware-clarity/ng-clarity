@@ -142,14 +142,13 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     if (this.headers) {
       if (state && !this.columnsService.hasCache()) {
         this.columnsService.cache();
-        this.headers.forEach((_header, index) => {
-          if (index > 0) {
-            this.columnsService.emitStateChangeAt(index, {
-              changes: [DatagridColumnChanges.HIDDEN],
-              hidden: state,
-            });
-          }
-        });
+        const firstVisibleColumnIndex = this.columnsService.columnStates.findIndex(state => !state.hidden);
+        for (let index = firstVisibleColumnIndex + 1; index < this.headers.length; index++) {
+          this.columnsService.emitStateChangeAt(index, {
+            changes: [DatagridColumnChanges.HIDDEN],
+            hidden: state,
+          });
+        }
       } else if (!state) {
         this.columnsService.resetToLastCache();
       }
