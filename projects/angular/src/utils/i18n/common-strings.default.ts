@@ -41,6 +41,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   maxValue: 'Max value',
   modalContentStart: 'Beginning of Modal Content',
   modalContentEnd: 'End of Modal Content',
+  sidePanelPin: 'Pin Side Panel',
   showColumnsMenuDescription: 'Show or hide columns menu',
   allColumnsSelected: 'All columns selected',
   signpostToggle: 'Signpost Toggle',
