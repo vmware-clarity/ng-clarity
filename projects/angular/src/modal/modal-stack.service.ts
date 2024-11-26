@@ -28,7 +28,7 @@ export class ModalStackService {
     }
 
     if (isPlatformBrowser(this.platformId)) {
-      document.body.addEventListener('keyup', this.keyUpEventListener);
+      document.body.addEventListener('keydown', this.keyUpEventListener);
     }
   }
 
@@ -40,7 +40,7 @@ export class ModalStackService {
     }
 
     if (this.modalStack.length === 0 && isPlatformBrowser(this.platformId)) {
-      document.body.removeEventListener('keyup', this.keyUpEventListener);
+      document.body.removeEventListener('keydown', this.keyUpEventListener);
     }
   }
 
