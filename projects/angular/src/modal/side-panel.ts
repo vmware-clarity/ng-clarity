@@ -32,7 +32,7 @@ export class ClrSidePanel implements OnInit, AfterViewInit {
   @Output('clrSidePanelOpenChange') openChange = new EventEmitter<boolean>(false);
   @Input('clrSidePanelCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
   @Input('clrSidePanelSize') size: string;
-  @Input('clrSidePanelSkipAnimation') skipAnimation = 'false';
+  @Input('clrSidePanelSkipAnimation') skipAnimation = false;
   @Input('clrSidePanelLabelledById') labelledById: string;
   @Input('clrSidePanelStaticBackdrop') staticBackdrop = false;
   @Input('clrSidePanelPreventClose') preventClose = false;
