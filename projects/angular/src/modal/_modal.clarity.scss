@@ -14,21 +14,27 @@
 @include meta.load-css('properties.modal');
 
 @include mixins.exports('modal.clarity') {
-  body {
-    &.clr-side-panel-pinned-sm {
-      margin-right: modal-variables.$clr-modal-sm-width !important;
-    }
+  .clr-side-panel-pinned-sm {
+    padding-right: modal-variables.$clr-modal-sm-width !important;
+  }
 
-    &.clr-side-panel-pinned-md {
-      margin-right: modal-variables.$clr-modal-md-width !important;
-    }
+  .clr-side-panel-pinned-md {
+    padding-right: modal-variables.$clr-modal-md-width !important;
+  }
 
-    &.clr-side-panel-pinned-lg {
-      margin-right: modal-variables.$clr-modal-lg-width !important;
-    }
+  .clr-side-panel-pinned-lg {
+    padding-right: modal-variables.$clr-modal-lg-width !important;
+  }
 
-    &.clr-side-panel-pinned-xl {
-      margin-right: modal-variables.$clr-modal-xl-width !important;
+  .clr-side-panel-pinned-xl {
+    padding-right: modal-variables.$clr-modal-xl-width !important;
+  }
+
+  .modal-host {
+    border: 1px dashed hotpink;
+    overflow: hidden;
+    .modal {
+      position: absolute;
     }
   }
 
