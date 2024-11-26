@@ -56,7 +56,7 @@ const POSITIONS: string[] = [
   host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
 })
 export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
-  @Input('clrsignpostCloseAriaLabel') signpostCloseAriaLabel: string;
+  @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;
 
   signpostContentId = uniqueIdFactory();
 
