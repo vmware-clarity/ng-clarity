@@ -117,7 +117,7 @@ export class ClrModal implements OnChanges, OnDestroy {
   }
 
   private get hostElement(): HTMLElement {
-    return (this.elementRef.nativeElement as HTMLElement).closest('.modal-host') || document.body;
+    return (this.elementRef.nativeElement as HTMLElement).closest('.clr-modal-host') || document.body;
   }
 
   // Detect when _open is set to true and set no-scrolling to true

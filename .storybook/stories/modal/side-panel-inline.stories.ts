@@ -12,7 +12,7 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules, removeFocusOutline } from '../../helpers/common';
 
 export default {
-  title: 'Modal/Nested Side Panel',
+  title: 'Modal/Side Panel (inline)',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrSidePanelModule],
@@ -49,12 +49,12 @@ export default {
   },
 };
 
-const NestedSidePanelTemplate: StoryFn = args => ({
+const InlineSidePanelTemplate: StoryFn = args => ({
   template: `
     <div class="main-container">
       <div class="content-container">
         <div class="content-area" style="height: 300px">
-          <div class="modal-host" style="position: absolute; width: 800px; height: 200px">
+          <div clrModalHost cds-layout="p:md" style="border: 1px dashed hotpink; width: 800px; height: 200px">
             <button type="button" class="btn btn-primary" (click)="clrSidePanelOpen = true">Open Side Panel</button>
             <clr-side-panel
               [clrSidePanelBackdrop]="clrSidePanelBackdrop"
@@ -97,11 +97,11 @@ const NestedSidePanelTemplate: StoryFn = args => ({
 });
 
 export const SidePanel: StoryObj = {
-  render: NestedSidePanelTemplate,
+  render: InlineSidePanelTemplate,
 };
 
 export const SidePanelSmall: StoryObj = {
-  render: NestedSidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
@@ -113,7 +113,7 @@ export const SidePanelSmall: StoryObj = {
 };
 
 export const SidePanelMedium: StoryObj = {
-  render: NestedSidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
@@ -125,7 +125,7 @@ export const SidePanelMedium: StoryObj = {
 };
 
 export const SidePanelLarge: StoryObj = {
-  render: NestedSidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
@@ -137,7 +137,7 @@ export const SidePanelLarge: StoryObj = {
 };
 
 export const SidePanelExtraLarge: StoryObj = {
-  render: NestedSidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
@@ -149,7 +149,7 @@ export const SidePanelExtraLarge: StoryObj = {
 };
 
 export const SidePanelWithoutBackdrop: StoryObj = {
-  render: NestedSidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
@@ -161,7 +161,7 @@ export const SidePanelWithoutBackdrop: StoryObj = {
 };
 
 export const SidePanelAlternateClose: StoryObj = {
-  render: NestedSidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
@@ -178,7 +178,7 @@ export const SidePanelAlternateClose: StoryObj = {
 };
 
 export const SidePanelPinnable: StoryObj = {
-  render: NestedSidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
@@ -191,7 +191,7 @@ export const SidePanelPinnable: StoryObj = {
 };
 
 export const SidePanelFullScreen: StoryObj = {
-  render: NestedSidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
