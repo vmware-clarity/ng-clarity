@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -146,6 +147,14 @@ export interface ClrCommonStrings {
    */
   columnSeparatorDescription: string;
   /**
+   * Numeric filter from label string
+   */
+  fromLabel: string;
+  /**
+   * Numeric filter to label string
+   */
+  toLabel: string;
+  /**
    * Modal start of content
    */
   modalContentStart: string;
@@ -265,6 +274,11 @@ export interface ClrCommonStrings {
   comboboxOpen: string;
 
   /**
+   * Wizard: Screen-reader text for "step" (read before step number).
+   */
+  wizardStep: string;
+
+  /**
    * Wizard: Screen-reader text for completed step.
    */
   wizardStepSuccess: string;
@@ -290,4 +304,18 @@ export interface ClrCommonStrings {
    * Datagrid footer; sr-only text after the number of selected rows.
    */
   selectedRows: string;
+
+  //Stepper: Screen-reader text for completed/failed step
+  stepComplete: string;
+  stepError: string;
+
+  // File input
+  browse: string;
+  fileCount: string;
+  clearFile: string;
+  clearFiles: string;
+
+  // Tree
+  selectedTreeNode: string;
+  unselectedTreeNode: string;
 }

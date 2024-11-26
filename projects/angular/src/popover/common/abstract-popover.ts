@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -32,7 +33,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
    */
   closeOnOutsideClick = false;
 
-  protected el: ElementRef;
+  protected el: ElementRef<HTMLElement>;
   protected toggleService: ClrPopoverToggleService;
   protected renderer: Renderer2;
   protected ngZone: NgZone;
@@ -48,7 +49,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   private subscription: Subscription;
   private documentESCListener: VoidFunction | null = null;
 
-  constructor(injector: Injector, @SkipSelf() protected parentHost: ElementRef) {
+  constructor(injector: Injector, @SkipSelf() protected parentHost: ElementRef<HTMLElement>) {
     this.el = injector.get(ElementRef);
     this.toggleService = injector.get(ClrPopoverToggleService);
     this.renderer = injector.get(Renderer2);

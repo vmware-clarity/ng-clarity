@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
 @use 'sass:list';
 @use 'sass:map';
 @use 'sass:selector';
@@ -427,7 +427,7 @@ $typography-tokens: (
     @include setValue(
       font-family,
       $fallbacks,
-      variables.$clr-metropolis-font-family
+      variables.$clr-font
     ); // tokens.$cds-alias-typography-header-font-family);
   }
 
@@ -440,11 +440,7 @@ $typography-tokens: (
 
 @mixin generate-typography-body-token($name, $fallbacks: (), $addFontFamily: true, $addColor: true) {
   @if ($addFontFamily) {
-    @include setValue(
-      font-family,
-      $fallbacks,
-      variables.$clr-metropolis-font-family
-    ); // tokens.$cds-alias-typography-font-family);
+    @include setValue(font-family, $fallbacks, variables.$clr-font); // tokens.$cds-alias-typography-font-family);
   }
 
   @if ($addColor) {

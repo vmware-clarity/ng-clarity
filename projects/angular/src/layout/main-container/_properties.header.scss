@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
+@use '../../utils/variables/variables';
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('header.properties') {
@@ -20,7 +22,7 @@
     --clr-header-font-color: #{tokens.$cds-global-color-construction-100};
     --clr-header-font-color-hover: #{tokens.$cds-global-color-construction-50};
     --clr-header-title-font-weight: #{tokens.$cds-global-typography-subsection-font-weight};
-    --clr-header-title-font-family: #{tokens.$cds-global-typography-header-font-family};
+    --clr-header-title-font-family: #{variables.$clr-font}; //#{tokens.$cds-global-typography-header-font-family};
     --clr-header-search-icon-size: #{tokens.$cds-global-space-9};
     --clr-header-search-margin-left: #{tokens.$cds-global-space-5};
     --clr-header-search-margin-right: #{tokens.$cds-global-space-7};

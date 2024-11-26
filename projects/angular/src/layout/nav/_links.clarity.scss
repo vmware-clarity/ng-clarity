@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -7,14 +8,45 @@
 @use 'variables.nav' as nav-variables;
 
 @include mixins.exports('links.clarity') {
-  a:link {
+  a {
     /*
-    * Due to the higher specificity of `a:link` over `.btn`, `.nav-link`, `.dropdown-item`, `.alert-action` and `badge`
-    * it overrides the styles of both which is not required.
-    * Also `.btn, .nav-link, .dropdown-item, .alert-action, .badge` doesn't need these styles, so we don't add them in these cases.
-    */
-    &:not(.btn, .nav-link, .dropdown-item, .alert-action, .badge) {
+      * Due to the higher specificity of `a:link` over `.btn`, `.nav-link`, `.dropdown-item`, `.alert-action` and `badge`
+      * it overrides the styles of both which is not required.
+      * Also `.btn, .nav-link, .dropdown-item, .alert-action, .badge` doesn't need these styles, so we don't add them in these cases.
+      */
+    &:not(.btn, .nav-link, .dropdown-item, .alert-action, .badge, .clr-treenode-link) {
       @include mixins.generate-typography-token('LINK-13');
+      &:link {
+        color: nav-variables.$clr-link-color;
+        &:hover {
+          color: nav-variables.$clr-link-hover-color;
+          cds-icon,
+          clr-icon {
+            color: nav-variables.$clr-link-hover-color;
+          }
+        }
+        &:active {
+          color: nav-variables.$clr-link-active-color;
+          cds-icon,
+          clr-icon {
+            color: nav-variables.$clr-link-active-color;
+          }
+        }
+      }
+      &:visited {
+        color: nav-variables.$clr-link-visited-color;
+        cds-icon,
+        clr-icon {
+          color: nav-variables.$clr-link-visited-color;
+        }
+        &:hover {
+          color: nav-variables.$clr-link-visited-color-hover;
+          cds-icon,
+          clr-icon {
+            color: nav-variables.$clr-link-visited-color-hover;
+          }
+        }
+      }
     }
   }
 

@@ -1,14 +1,15 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { CommonModules } from '../../helpers/common';
+import { CommonModules, removeFocusOutline } from '../../helpers/common';
 
 export default {
   title: 'Modal/Modal',
@@ -20,10 +21,7 @@ export default {
   component: ClrModal,
   argTypes: {
     // inputs
-    clrModalCloseButtonAriaLabel: { type: 'string', defaultValue: commonStringsDefault.close },
-    clrModalLabelledById: { defaultValue: '' },
-    clrModalSize: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl'] } },
-    clrModalSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
+    clrModalSize: { control: 'radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
     // outputs
     clrModalAlternateClose: { control: { disable: true } },
     clrModalOpenChange: { control: { disable: true } },
@@ -33,8 +31,15 @@ export default {
     close: { control: { disable: true }, table: { disable: true } },
     // story helpers
     createArray: { control: { disable: true }, table: { disable: true } },
+    showLongPageContent: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrModalCloseButtonAriaLabel: commonStringsDefault.close,
+    clrModalLabelledById: '',
+    clrModalSize: 'md',
+    clrModalSkipAnimation: false,
+    clrModalClosable: true,
     // outputs
     clrModalAlternateClose: action('clrModalAlternateClose'),
     clrModalOpenChange: action('clrModalOpenChange'),
@@ -42,16 +47,26 @@ export default {
     createArray: n => new Array(n),
     title: 'Modal Title',
     body: 'Hello World!',
+    showLongPageContent: true,
+    showLongModalContent: false,
+  },
+  parameters: {
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 400,
+      },
+    },
   },
 };
 
-const ModalTemplate: Story = args => ({
+const ModalTemplate: StoryFn = args => ({
   template: `
     <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Modal</button>
-    <div>
+    <div *ngIf="showLongPageContent">
       This list is provided to demonstrate scrolling capability when modal is open.
       <ul>
-        <li *ngFor="let _ of createArray(100); let i = index">{{i + 1}}</li>
+        <li *ngFor="let _ of createArray(100); let i = index">{{ i + 1 }}</li>
       </ul>
     </div>
     <clr-modal
@@ -59,6 +74,7 @@ const ModalTemplate: Story = args => ({
       [clrModalCloseButtonAriaLabel]="clrModalCloseButtonAriaLabel"
       [clrModalLabelledById]="clrModalLabelledById"
       [clrModalOpen]="clrModalOpen"
+      [clrModalOverrideScrollService]="clrModalOverrideScrollService"
       [clrModalPreventClose]="clrModalPreventClose"
       [clrModalSize]="clrModalSize"
       [clrModalSkipAnimation]="clrModalSkipAnimation"
@@ -66,9 +82,15 @@ const ModalTemplate: Story = args => ({
       (clrModalAlternateClose)="clrModalAlternateClose($event)"
       (clrModalOpenChange)="clrModalOpen = $event; clrModalOpenChange($event)"
     >
-      <h3 class="modal-title">{{title}}</h3>
+      <h3 class="modal-title">{{ title }}</h3>
       <div class="modal-body">
-        {{body}}
+        {{ body }}
+        <div *ngIf="showLongModalContent" cds-layout="m-t:md">
+          This list is provided to demonstrate scrolling capability within the modal.
+          <ul>
+            <li *ngFor="let _ of createArray(100); let i = index">{{ i + 1 }}</li>
+          </ul>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="clrModalOpen = false">Cancel</button>
@@ -81,4 +103,64 @@ const ModalTemplate: Story = args => ({
 
 export const Modal: StoryObj = {
   render: ModalTemplate,
+};
+
+export const OpenSmallModal: StoryObj = {
+  render: ModalTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrModalOpen: true,
+    clrModalSize: 'sm',
+    title: 'Small Modal',
+    body: 'This is a small modal.',
+    showLongPageContent: false,
+  },
+};
+
+export const OpenMediumModal: StoryObj = {
+  render: ModalTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrModalOpen: true,
+    clrModalSize: 'md',
+    title: 'Medium Modal',
+    body: 'This is a medium modal.',
+    showLongPageContent: false,
+  },
+};
+
+export const OpenLargeModal: StoryObj = {
+  render: ModalTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrModalOpen: true,
+    clrModalSize: 'lg',
+    title: 'Large Modal',
+    body: 'This is a large modal.',
+    showLongPageContent: false,
+  },
+};
+
+export const OpenExtraLargeModal: StoryObj = {
+  render: ModalTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrModalOpen: true,
+    clrModalSize: 'xl',
+    title: 'Extra-Large Modal',
+    body: 'This is a extra-large modal.',
+    showLongPageContent: false,
+  },
+};
+
+export const OpenFullScreenModal: StoryObj = {
+  render: ModalTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrModalOpen: true,
+    clrModalSize: 'full-screen',
+    title: 'Full-Screen Modal',
+    body: 'This is a full-screen modal.',
+    showLongPageContent: false,
+  },
 };

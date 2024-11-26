@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -20,20 +21,24 @@ import { ClrWizardPage } from './wizard-page';
       (click)="click()"
       [attr.disabled]="isDisabled ? '' : null"
     >
-      <span class="clr-wizard-stepnav-link-suffix">
+      <div class="clr-wizard-stepnav-link-icon">
         <cds-icon
-          shape="error-standard"
-          status="danger"
-          class="clr-wizard-stepnav-item-error-icon"
           *ngIf="hasError"
+          shape="error-standard"
+          [attr.aria-label]="commonStrings.keys.wizardStepError"
         ></cds-icon>
-        <ng-content *ngIf="!hasError"></ng-content>
-      </span>
+        <cds-icon
+          *ngIf="!hasError && isComplete"
+          shape="success-standard"
+          [attr.aria-label]="commonStrings.keys.wizardStepSuccess"
+        ></cds-icon>
+      </div>
+
+      <span class="clr-sr-only">{{ commonStrings.keys.wizardStep }}</span>
+      <div class="clr-wizard-stepnav-link-page-number"><ng-content></ng-content></div>
       <span class="clr-wizard-stepnav-link-title">
         <ng-template [ngTemplateOutlet]="page.navTitle"></ng-template>
       </span>
-      <span *ngIf="hasError" class="clr-sr-only">{{ commonStrings.keys.wizardStepError }}</span>
-      <span *ngIf="!hasError && isComplete" class="clr-sr-only">{{ commonStrings.keys.wizardStepSuccess }}</span>
     </button>
   `,
   host: {

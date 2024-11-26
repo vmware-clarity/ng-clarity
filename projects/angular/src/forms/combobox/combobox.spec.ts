@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { Component } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -126,21 +127,19 @@ export default function (): void {
 
       // The forms framework has some inner asychronisity, which requires the async/whenStable
       // approach in the following tests
-      it('sets selection model based on selection binding', async(() => {
+      it('sets selection model based on selection binding', async () => {
         fixture.componentInstance.selection = 'test';
         fixture.detectChanges();
-        fixture.whenStable().then(() => {
-          expect(selectionService.selectionModel.containsItem('test')).toBeTrue();
-        });
-      }));
+        await fixture.whenStable();
+        expect(selectionService.selectionModel.containsItem('test')).toBeTrue();
+      });
 
-      it('clears selection model', async(() => {
+      it('clears selection model', async () => {
         fixture.componentInstance.selection = null;
         fixture.detectChanges();
-        fixture.whenStable().then(() => {
-          expect(selectionService.selectionModel.isEmpty()).toBeTrue();
-        });
-      }));
+        await fixture.whenStable();
+        expect(selectionService.selectionModel.isEmpty()).toBeTrue();
+      });
     });
 
     describe('Template API', function () {

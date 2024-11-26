@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -129,7 +130,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
 
   @ContentChild(ClrDatagridPageSize) _pageSizeComponent: ClrDatagridPageSize;
 
-  @ViewChild('currentPageInput') currentPageInputRef: ElementRef;
+  @ViewChild('currentPageInput') currentPageInputRef: ElementRef<HTMLInputElement>;
 
   /**
    * Subscription to the page service changes
@@ -137,7 +138,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   private _pageSubscription: Subscription;
 
   constructor(public page: Page, public commonStrings: ClrCommonStringsService, public detailService: DetailService) {
-    this.page.activated = true;
+    page.activated = true;
   }
 
   /**
@@ -290,6 +291,6 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
      * Set the input's value to the new current page. This is needed because the code
      * above may have changed the value from what the user entered in.
      */
-    this.currentPageInputRef.nativeElement.value = this.page.current;
+    this.currentPageInputRef.nativeElement.value = this.page.current.toString();
   }
 }

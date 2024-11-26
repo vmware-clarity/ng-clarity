@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -581,30 +582,26 @@ export default function () {
         expect(TestBed.inject(NgControlService).setControl).toHaveBeenCalled();
       }));
 
-      it('marks the form as touched when the markAsTouched event is received', done => {
-        fixture.whenStable().then(() => {
-          const form = fixture.componentInstance.templateForm.form;
-          expect(form.get('date').touched).toBe(false);
+      it('marks the form as touched when the markAsTouched event is received', async () => {
+        await fixture.whenStable();
+        const form = fixture.componentInstance.templateForm.form;
+        expect(form.get('date').touched).toBe(false);
 
-          dateFormControlService.markAsTouched();
+        dateFormControlService.markAsTouched();
 
-          fixture.detectChanges();
-          expect(form.get('date').touched).toBe(true);
-          done();
-        });
+        fixture.detectChanges();
+        expect(form.get('date').touched).toBe(true);
       });
 
-      it('marks the form as dirty when the markAsDirty event is received', done => {
-        fixture.whenStable().then(() => {
-          const form = fixture.componentInstance.templateForm.form;
-          expect(form.get('date').dirty).toBe(false);
+      it('marks the form as dirty when the markAsDirty event is received', async () => {
+        await fixture.whenStable();
+        const form = fixture.componentInstance.templateForm.form;
+        expect(form.get('date').dirty).toBe(false);
 
-          dateFormControlService.markAsDirty();
+        dateFormControlService.markAsDirty();
 
-          fixture.detectChanges();
-          expect(form.get('date').dirty).toBe(true);
-          done();
-        });
+        fixture.detectChanges();
+        expect(form.get('date').dirty).toBe(true);
       });
 
       it('outputs the date when the user manually changes the date', () => {

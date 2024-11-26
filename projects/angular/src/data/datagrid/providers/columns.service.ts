@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -13,6 +14,7 @@ import { ColumnState, ColumnStateDiff } from '../interfaces/column-state.interfa
 @Injectable()
 export class ColumnsService {
   columns: BehaviorSubject<ColumnState>[] = [];
+  columnsStateChange: BehaviorSubject<ColumnState> = new BehaviorSubject(null);
 
   private _cache: ColumnState[] = [];
 
@@ -39,7 +41,9 @@ export class ColumnsService {
   resetToLastCache() {
     this._cache.forEach((state, index) => {
       // Just emit the exact value from the cache
-      this.columns[index].next({ ...state, changes: ALL_COLUMN_CHANGES });
+      const cachedState = { ...state, changes: ALL_COLUMN_CHANGES };
+      this.columns[index].next(cachedState);
+      this.columnsStateChange.next(cachedState);
     });
     this._cache = [];
   }
@@ -53,6 +57,8 @@ export class ColumnsService {
   }
 
   emitStateChange(column: BehaviorSubject<ColumnState>, diff: ColumnStateDiff) {
-    column.next({ ...column.value, ...diff });
+    const changedState = { ...column.value, ...diff };
+    column.next(changedState);
+    this.columnsStateChange.next(changedState);
   }
 }

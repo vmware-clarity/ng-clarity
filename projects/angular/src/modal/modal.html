@@ -1,16 +1,17 @@
 <!--
-  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<div class="modal" *ngIf="_open">
+<div *ngIf="_open" class="modal" [class.modal-full-screen]="size == 'full-screen'">
   <!--fixme: revisit when ngClass works with exit animation-->
   <div
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="true"
-    [@fadeDown]="skipAnimation"
-    (@fadeDown.done)="fadeDone($event)"
+    [@fadeMove]="fadeMove"
+    (@fadeMove.done)="fadeDone($event)"
     class="modal-dialog"
     [class.modal-sm]="size == 'sm'"
     [class.modal-lg]="size == 'lg'"
@@ -18,7 +19,7 @@
     role="dialog"
     aria-modal="true"
     [attr.aria-hidden]="!_open"
-    [attr.aria-labelledby]="labelledBy"
+    [attr.aria-labelledby]="labelledBy || modalId"
   >
     <div class="clr-sr-only">{{commonStrings.keys.modalContentStart}}</div>
     <div class="modal-content-wrapper">
@@ -27,7 +28,7 @@
 
       <div class="modal-content">
         <div class="modal-header--accessible">
-          <div class="modal-title-wrapper" id="{{modalId}}" cdkFocusInitial tabindex="-1">
+          <div class="modal-title-wrapper" #title id="{{modalId}}" cdkFocusInitial tabindex="-1">
             <ng-content select=".modal-title"></ng-content>
           </div>
           <button
@@ -49,5 +50,5 @@
     <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   </div>
 
-  <div [@fade] class="modal-backdrop" aria-hidden="true" (click)="staticBackdrop || close()"></div>
+  <div [@fade] *ngIf="backdrop" class="modal-backdrop" aria-hidden="true" (click)="backdropClick()"></div>
 </div>

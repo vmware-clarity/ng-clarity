@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { Component, Injectable, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -87,14 +88,14 @@ describe('ClrStep Reactive Forms', () => {
       (stepperService as MockStepperService).step.next(mockStep);
       fixture.detectChanges();
 
-      const statusMessage = fixture.nativeElement.querySelector('button .clr-sr-only');
-      expect(statusMessage.innerText.trim()).toBe('Error');
+      const statusMessage = fixture.nativeElement.querySelector('.clr-accordion-header .clr-sr-only');
+      expect(statusMessage.innerText.trim()).toBe('Error in step 1');
 
       mockStep.status = AccordionStatus.Complete;
       (stepperService as MockStepperService).step.next(mockStep);
       fixture.detectChanges();
 
-      expect(statusMessage.innerText.trim()).toBe('Success');
+      expect(statusMessage.innerText.trim()).toBe(`Step 1 complete`);
     });
 
     it('should add aria-disabled attribute to the header button based on the appropriate step state', () => {
@@ -120,7 +121,6 @@ describe('ClrStep Reactive Forms', () => {
       expect(input.focus).not.toHaveBeenCalled();
 
       (stepperService as MockStepperService).activeStep.next('groupName');
-      tick();
 
       expect(input.focus).toHaveBeenCalled();
     }));

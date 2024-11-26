@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -44,6 +45,7 @@ export * from './datagrid.module';
 export { ClrDatagridItemsTrackByFunction } from './providers/items';
 
 export { ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
+export { ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 export { DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer } from './datagrid-detail-registerer';
 export { WrappedCell as ÇlrWrappedCell } from './wrapped-cell';
 export { WrappedColumn as ÇlrWrappedColumn } from './wrapped-column';

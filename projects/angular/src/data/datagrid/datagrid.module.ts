@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -59,6 +60,7 @@ import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridRowDetail } from './datagrid-row-detail';
 import { ClrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
+import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DatagridCellRenderer } from './render/cell-renderer';
 import { DatagridHeaderRenderer } from './render/header-renderer';
 import { DatagridMainRenderer } from './render/main-renderer';
@@ -88,6 +90,7 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   ClrDatagridRow,
   ClrDatagridRowDetail,
   ClrDatagridSelectionCellDirective,
+  ClrDatagridVirtualScrollDirective,
   ClrIfDetail,
   DatagridDetailRegisterer,
   WrappedCell,

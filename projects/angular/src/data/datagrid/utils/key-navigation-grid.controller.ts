@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -19,7 +20,7 @@ export function getTabableItems(el: HTMLElement) {
     'iframe',
     'object',
     'embed',
-    '*[tabindex]',
+    '*[tabindex]:not([disabled])',
     '*[contenteditable=true]',
     '[role=button]:not([disabled])',
   ].join(',');
@@ -34,10 +35,13 @@ export interface KeyNavigationGridConfig {
 
 @Injectable()
 export class KeyNavigationGridController implements OnDestroy {
+  skipItemFocus = false;
+
   private host: HTMLElement;
   private config: KeyNavigationGridConfig;
   private listenersAdded = false;
   private destroy$ = new Subject<void>();
+  private _activeCell: HTMLElement = null;
 
   constructor(private zone: NgZone) {
     this.config = {
@@ -87,6 +91,12 @@ export class KeyNavigationGridController implements OnDestroy {
           }
         });
 
+      fromEvent(this.grid, 'wheel')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.removeActiveCell();
+        });
+
       fromEvent(this.grid, 'keydown')
         .pipe(takeUntil(this.destroy$))
         .subscribe((e: KeyboardEvent) => {
@@ -133,7 +143,15 @@ export class KeyNavigationGridController implements OnDestroy {
     firstCell?.setAttribute('tabindex', '0');
   }
 
-  private setActiveCell(activeCell: HTMLElement) {
+  removeActiveCell() {
+    this._activeCell = null;
+  }
+
+  getActiveCell() {
+    return this._activeCell;
+  }
+
+  setActiveCell(activeCell: HTMLElement) {
     const prior = this.cells ? Array.from(this.cells).find(c => c.getAttribute('tabindex') === '0') : null;
 
     if (prior) {
@@ -141,10 +159,14 @@ export class KeyNavigationGridController implements OnDestroy {
     }
 
     activeCell.setAttribute('tabindex', '0');
+    this._activeCell = activeCell;
 
     const items = getTabableItems(activeCell);
     const item = activeCell.getAttribute('role') !== 'columnheader' && items[0] ? items[0] : activeCell;
-    item.focus();
+
+    if (!this.skipItemFocus) {
+      item.focus();
+    }
   }
 
   private getNextItemCoordinate(e: any) {
@@ -154,7 +176,7 @@ export class KeyNavigationGridController implements OnDestroy {
     }
     const currentRow = this.rows && currentCell ? Array.from(this.rows).find(r => r.contains(currentCell)) : null;
     const numOfRows = this.rows ? this.rows.length - 1 : 0;
-    const numOfColumns = this.cells ? this.cells.length / this.rows.length - 1 : 0;
+    const numOfColumns = this.cells ? Math.floor(this.cells.length / this.rows.length - 1) : 0;
 
     let x =
       currentRow && currentCell
@@ -166,7 +188,8 @@ export class KeyNavigationGridController implements OnDestroy {
     const inlineStart = dir === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
     const inlineEnd = dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
 
-    const itemsPerPage = this.rows.length || 0;
+    const itemsPerPage =
+      Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
 
     if (e.code === 'ArrowUp' && y !== 0) {
       y = y - 1;
@@ -189,7 +212,7 @@ export class KeyNavigationGridController implements OnDestroy {
         y = 0;
       }
     } else if (e.code === 'PageUp') {
-      y = y - itemsPerPage > 0 ? y - itemsPerPage : 0;
+      y = y - itemsPerPage > 0 ? y - itemsPerPage + 1 : 1;
     } else if (e.code === 'PageDown') {
       y = y + itemsPerPage < numOfRows ? y + itemsPerPage : numOfRows;
     }

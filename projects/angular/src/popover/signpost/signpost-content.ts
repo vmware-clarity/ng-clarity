@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -64,9 +65,9 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     injector: Injector,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
-    parentHost: ElementRef,
+    parentHost: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
-    private signpostIdService: SignpostIdService,
+    signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
     @Inject(PLATFORM_ID) private platformId: any,
     @Inject(DOCUMENT) document: any
@@ -78,7 +79,7 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     // Defaults
     this.position = 'right-middle';
     this.closeOnOutsideClick = true;
-    this.signpostIdService.setId(this.signpostContentId);
+    signpostIdService.setId(this.signpostContentId);
 
     this.document = document;
   }

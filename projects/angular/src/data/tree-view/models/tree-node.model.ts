@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -22,6 +23,7 @@ export abstract class TreeNodeModel<T> {
    * abstract parent class for now and we can revisit it later, when we're not facing such a close deadline.
    */
   private _loading = false;
+  private _disabled: boolean;
 
   /*
    * Ideally, I would like to use a polymorphic this type here to ensure homogeneity of the tree, something like:
@@ -41,6 +43,14 @@ export abstract class TreeNodeModel<T> {
     this.loading$.next(isLoading);
   }
 
+  get disabled() {
+    // when both parameters are undefined, double negative is needed to cast to false, otherwise will return undefined.
+    return !!(this._disabled || this.parent?.disabled);
+  }
+  set disabled(value: boolean) {
+    this._disabled = value;
+  }
+
   destroy() {
     // Just to be safe
     this.selected.complete();
@@ -53,7 +63,11 @@ export abstract class TreeNodeModel<T> {
     }
     this.selected.next(state);
     if (propagateDown && state !== ClrSelectedState.INDETERMINATE && this.children) {
-      this.children.forEach(child => child.setSelected(state, false, true));
+      this.children.forEach(child => {
+        if (!child.disabled) {
+          child.setSelected(state, false, true);
+        }
+      });
     }
     if (propagateUp && this.parent) {
       this.parent._updateSelectionFromChildren();
@@ -61,6 +75,10 @@ export abstract class TreeNodeModel<T> {
   }
 
   toggleSelection(propagate: boolean) {
+    if (this.disabled) {
+      return;
+    }
+
     // Both unselected and indeterminate toggle to selected
     const newState =
       this.selected.value === ClrSelectedState.SELECTED ? ClrSelectedState.UNSELECTED : ClrSelectedState.SELECTED;
@@ -90,6 +108,9 @@ export abstract class TreeNodeModel<T> {
     for (const child of this.children) {
       switch (child.selected.value) {
         case ClrSelectedState.INDETERMINATE:
+          if (child.disabled) {
+            continue;
+          }
           return ClrSelectedState.INDETERMINATE;
         case ClrSelectedState.SELECTED:
           oneSelected = true;

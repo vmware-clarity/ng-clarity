@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrAccordionModule } from '@clr/angular';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -33,32 +34,37 @@ export default {
 };
 
 const template = `
-    <clr-accordion>
-      <clr-accordion-panel
-        *ngFor="let _ of createArray(panelCount); let i = index"
-        [clrAccordionPanelOpen]="openIndex === i"
-      >
-        <clr-accordion-title>Parent Title {{i + 1}}</clr-accordion-title>
-        <clr-accordion-content>
-          <clr-accordion>
-            <clr-accordion-panel [clrAccordionPanelOpen]="nestedOpenIndex === i">
-              <clr-accordion-title>Nested Title</clr-accordion-title>
-              <clr-accordion-content>Nested content</clr-accordion-content>
-            </clr-accordion-panel>
-          </clr-accordion>
-        </clr-accordion-content>
-      </clr-accordion-panel>
-    </clr-accordion>
-  `;
+  <clr-accordion>
+    <clr-accordion-panel
+      *ngFor="let _ of createArray(panelCount); let i = index"
+      [clrAccordionPanelOpen]="openIndex === i"
+    >
+      <clr-accordion-title>Parent Title {{ i + 1 }}</clr-accordion-title>
+      <clr-accordion-content>
+        <clr-accordion>
+          <clr-accordion-panel [clrAccordionPanelOpen]="nestedOpenIndex === i">
+            <clr-accordion-title>Nested Title</clr-accordion-title>
+            <clr-accordion-content>Nested content</clr-accordion-content>
+          </clr-accordion-panel>
+        </clr-accordion>
+      </clr-accordion-content>
+    </clr-accordion-panel>
+  </clr-accordion>
+`;
 
-export const Closed: Story = args => ({
+const NestedAccordionTemplate: StoryFn = args => ({
   template,
   props: args,
 });
 
-export const Opened: Story = Closed.bind({});
-Opened.args = {
-  ...Closed.args,
-  openIndex: 0,
-  nestedOpenIndex: 0,
+export const Closed: StoryObj = {
+  render: NestedAccordionTemplate,
+};
+
+export const Opened: StoryObj = {
+  render: NestedAccordionTemplate,
+  args: {
+    openIndex: 0,
+    nestedOpenIndex: 0,
+  },
 };

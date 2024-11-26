@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
 @use 'sass:map';
 @use 'sass:meta';
 @use '../utils/mixins';
@@ -25,14 +25,52 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: tokens.$cds-global-space-12;
+    padding: calc(modal-variables.$clr-modal-default-space * 2);
+    max-width: 100%;
 
     .alert + .modal-header {
       margin-top: tokens.$cds-global-space-6;
     }
 
     @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
-      padding: tokens.$cds-global-space-6;
+      padding: calc(modal-variables.$clr-modal-default-space / 2);
+    }
+  }
+
+  .side-panel {
+    .modal {
+      left: initial;
+      padding: 0;
+      height: 100%;
+
+      .modal-content-wrapper {
+        height: 100%;
+
+        .modal-content {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+      }
+
+      .modal-dialog {
+        border: none;
+        border-radius: 0;
+        height: 100%;
+      }
+
+      &.modal-full-screen {
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0;
+      }
+
+      .modal-body-wrapper {
+        flex: 1 1;
+        max-height: 100%;
+      }
     }
   }
 
@@ -77,13 +115,15 @@
       align-items: flex-start;
     }
 
-    .modal-title {
+    .modal-title,
+    .side-panel-title {
       color: modal-variables.$clr-modal-title-color;
       @include mixins.generate-typography-token('SECTION-20-STD');
       margin: 0;
     }
 
-    .modal-title:not([cds-text]) {
+    .modal-title:not([cds-text]),
+    .side-panel-title:not([cds-text]) {
       font-family: modal-variables.$clr-modal-title-font-family;
       font-size: modal-variables.$clr-modal-title-font-size;
       font-weight: modal-variables.$clr-modal-title-font-weight;
@@ -122,8 +162,11 @@
   .modal-title-wrapper {
     flex: 1;
 
-    .modal-title > h3 {
-      margin-top: 0;
+    .modal-title,
+    .side-panel-title {
+      h3 {
+        margin-top: 0;
+      }
     }
   }
 
@@ -134,7 +177,8 @@
     overflow-y: auto;
     overflow-x: hidden;
 
-    .modal-body {
+    .modal-body,
+    .side-panel-body {
       color: tokens.$cds-alias-typography-color-400;
       @include mixins.generate-typography-token('BODY-14-RG-STD');
     }
@@ -147,7 +191,8 @@
     }
   }
 
-  .modal-footer {
+  .modal-footer,
+  .side-panel-footer {
     display: flex;
     justify-content: flex-end;
     padding: modal-variables.$clr-modal-default-space 0 0 0;
@@ -157,6 +202,11 @@
       //switched right margin to left because footer is right aligned
       margin: 0;
     }
+  }
+
+  // it gets nested inside a .modal-footer and the top padding gets duplicated
+  .side-panel-footer {
+    padding-top: 0;
   }
 
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) and (orientation: landscape) {
@@ -184,5 +234,37 @@
   // modal-nav is only used in wizards
   .modal .modal-nav {
     display: none;
+  }
+
+  // full-screen modals
+  .modal.modal-full-screen {
+    padding: modal-variables.$clr-modal-default-space;
+    height: 100%;
+
+    .modal-dialog {
+      display: flex;
+      width: 100%;
+      height: 100%;
+
+      .modal-content-wrapper {
+        display: flex;
+        flex-grow: 1;
+      }
+
+      // This cannot be nested inside `.modal-content-wrapper` because that class is not documented for static css-only modals.
+      .modal-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+
+      .modal-body-wrapper,
+      // This is needed because the `.modal-body-wrapper` class is not documented for static css-only modals.
+      .modal-body {
+        // Fill space to push footer to bottom.
+        flex-grow: 1;
+        max-height: 100%;
+      }
+    }
   }
 }

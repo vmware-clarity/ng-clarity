@@ -1,5 +1,6 @@
 <!--
-  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
@@ -41,6 +42,29 @@
   <clr-accordion-panel>
     <clr-accordion-title>Step 3 - long title should expand when no description is provided</clr-accordion-title>
     <clr-accordion-content>Content 3</clr-accordion-content>
+  </clr-accordion-panel>
+</clr-accordion>
+
+<h2>Angular - nested datagrid</h2>
+
+<clr-accordion>
+  <clr-accordion-panel>
+    <clr-accordion-title>Item 1</clr-accordion-title>
+    <clr-accordion-content *clrIfExpanded>
+      <clr-datagrid>
+        <clr-dg-column>User ID</clr-dg-column>
+        <clr-dg-column>Name</clr-dg-column>
+        <clr-dg-column>test</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let user of users">
+          <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+          <clr-dg-cell> {{ user.name }} </clr-dg-cell>
+          <clr-dg-cell>Test</clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+      </clr-datagrid>
+    </clr-accordion-content>
   </clr-accordion-panel>
 </clr-accordion>
 

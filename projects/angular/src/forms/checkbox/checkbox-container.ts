@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -21,8 +22,10 @@ import { ClrCheckbox } from './checkbox';
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [class.clr-control-inline]="clrInline" [ngClass]="controlClass()">
       <ng-content select="clr-checkbox-wrapper,clr-toggle-wrapper"></ng-content>
-      <div class="clr-subtext-wrapper">
-        <ng-content select="clr-control-helper" *ngIf="showHelper"></ng-content>
+      <div *ngIf="showHelper" class="clr-subtext-wrapper">
+        <ng-content select="clr-control-helper"></ng-content>
+      </div>
+      <div *ngIf="showInvalid || showValid" class="clr-subtext-wrapper">
         <cds-icon
           *ngIf="showInvalid"
           class="clr-validate-icon"

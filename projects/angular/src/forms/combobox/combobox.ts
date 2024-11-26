@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -82,8 +83,8 @@ export class ClrCombobox<T>
    */
   @Output('clrSelectionChange') clrSelectionChange = this.optionSelectionService.selectionChanged;
 
-  @ViewChild('textboxInput') textbox: ElementRef;
-  @ViewChild('trigger') trigger: ElementRef;
+  @ViewChild('textboxInput') textbox: ElementRef<HTMLInputElement>;
+  @ViewChild('trigger') trigger: ElementRef<HTMLButtonElement>;
   @ContentChild(ClrOptionSelected) optionSelected: ClrOptionSelected<T>;
 
   invalid = false;
@@ -112,7 +113,7 @@ export class ClrCombobox<T>
     @Optional()
     public control: NgControl,
     protected override renderer: Renderer2,
-    protected override el: ElementRef,
+    protected override el: ElementRef<HTMLElement>,
     public optionSelectionService: OptionSelectionService<T>,
     public commonStrings: ClrCommonStringsService,
     private toggleService: ClrPopoverToggleService,
@@ -128,7 +129,7 @@ export class ClrCombobox<T>
       control.valueAccessor = this;
     }
     // default to SingleSelectComboboxModel, in case the optional input [ClrMulti] isn't used
-    this.optionSelectionService.selectionModel = new SingleSelectComboboxModel<T>();
+    optionSelectionService.selectionModel = new SingleSelectComboboxModel<T>();
     this.updateControlValue();
   }
 
@@ -257,6 +258,9 @@ export class ClrCombobox<T>
 
   onBlur() {
     this.onTouchedCallback();
+    if (this.control.control.updateOn === 'change' && this.control.control?.errors?.required) {
+      this.updateControlValue();
+    }
     if (this.control.control.updateOn === 'blur') {
       this.control.control.updateValueAndValidity();
     }
@@ -299,7 +303,7 @@ export class ClrCombobox<T>
 
   getActiveDescendant() {
     const model = this.focusHandler.pseudoFocus.model;
-    return model ? model.id : null;
+    return model ? model.id : this.options?.noResultsElementId;
   }
 
   setDisabledState(): void {

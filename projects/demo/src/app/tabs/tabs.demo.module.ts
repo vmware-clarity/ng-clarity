@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -9,6 +10,7 @@ import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 
 import { ClrKeyFocusModule } from '../../../../angular/src/utils/focus/key-focus/key-focus.module';
+import { TabsActionsAngularDemo } from './tabs-actions-angular';
 import { TabsAngularDemo } from './tabs-angular';
 import { TabsStaticDemo } from './tabs-static';
 import { TabsDemo } from './tabs.demo';
@@ -16,7 +18,7 @@ import { ROUTING } from './tabs.demo.routing';
 
 @NgModule({
   imports: [CommonModule, ClarityModule, ROUTING, ClrKeyFocusModule],
-  declarations: [TabsDemo, TabsStaticDemo, TabsAngularDemo],
-  exports: [TabsDemo, TabsStaticDemo, TabsAngularDemo],
+  declarations: [TabsDemo, TabsStaticDemo, TabsAngularDemo, TabsActionsAngularDemo],
+  exports: [TabsDemo, TabsStaticDemo, TabsAngularDemo, TabsActionsAngularDemo],
 })
 export class TabsDemoModule {}

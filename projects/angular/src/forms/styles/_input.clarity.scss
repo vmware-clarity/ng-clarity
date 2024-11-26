@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -44,7 +45,7 @@
 
   .clr-success .clr-input:not([readonly]) {
     border-bottom-color: forms-variables.$clr-forms-valid-color;
-    @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-invalid-color);
+    @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-valid-color);
   }
 
   .clr-form-control.row .clr-input-wrapper {

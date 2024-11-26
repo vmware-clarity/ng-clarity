@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrTree, ClrTreeViewModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { of, timer } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 
@@ -34,7 +35,7 @@ export default {
   },
 };
 
-const TreeViewTemplate: Story = args => ({
+const TreeViewTemplate: StoryFn = args => ({
   template: `
     <clr-tree [clrLazy]="true">
       <clr-tree-node

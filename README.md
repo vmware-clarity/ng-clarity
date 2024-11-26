@@ -30,6 +30,7 @@ detailed information, see [CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 - The Clarity Design System is licensed under the MIT license.
 - The font is licensed under the Open Font License (OFL).
+- This project is tested with [BrowserStack](https://www.browserstack.com).
 
 ## Feedback
 

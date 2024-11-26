@@ -1,27 +1,28 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrAccordionModule, ClrAccordionPanel } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
 const template = `
-    <clr-accordion>
-      <clr-accordion-panel
-        [clrAccordionPanelOpen]="clrAccordionPanelOpen"
-        [clrAccordionPanelDisabled]="clrAccordionPanelDisabled"
-        (clrAccordionPanelOpenChange)="clrAccordionPanelOpenChange($event)"
-      >
-        <clr-accordion-title>{{ title }}</clr-accordion-title>
-        <clr-accordion-content>{{ content }}</clr-accordion-content>
-      </clr-accordion-panel>
-    </clr-accordion>
-  `;
+  <clr-accordion>
+    <clr-accordion-panel
+      [clrAccordionPanelOpen]="clrAccordionPanelOpen"
+      [clrAccordionPanelDisabled]="clrAccordionPanelDisabled"
+      (clrAccordionPanelOpenChange)="clrAccordionPanelOpenChange($event)"
+    >
+      <clr-accordion-title>{{ title }}</clr-accordion-title>
+      <clr-accordion-content>{{ content }}</clr-accordion-content>
+    </clr-accordion-panel>
+  </clr-accordion>
+`;
 
 export default {
   title: 'Accordion/Accordion Panel',
@@ -54,25 +55,37 @@ export default {
   },
 };
 
-export const PanelClosed: Story = args => ({
+const PanelTemplate: StoryFn = args => ({
   template,
   props: args,
 });
 
-export const PanelOpened: Story = PanelClosed.bind({});
-PanelOpened.args = {
-  ...PanelClosed.args,
-  clrAccordionPanelOpen: true,
+export const PanelClosed: StoryObj = {
+  render: PanelTemplate,
+  args: {
+    clrAccordionPanelOpen: false,
+  },
 };
 
-export const PanelClosedDisabled: Story = PanelClosed.bind({});
-PanelClosedDisabled.args = {
-  ...PanelClosed.args,
-  clrAccordionPanelDisabled: true,
+export const PanelOpened: StoryObj = {
+  render: PanelTemplate,
+  args: {
+    clrAccordionPanelOpen: true,
+  },
 };
 
-export const PanelOpenedDisabled: Story = PanelOpened.bind({});
-PanelOpenedDisabled.args = {
-  ...PanelOpened.args,
-  clrAccordionPanelDisabled: true,
+export const PanelClosedDisabled: StoryObj = {
+  render: PanelTemplate,
+  args: {
+    clrAccordionPanelOpen: false,
+    clrAccordionPanelDisabled: true,
+  },
+};
+
+export const PanelOpenedDisabled: StoryObj = {
+  render: PanelTemplate,
+  args: {
+    clrAccordionPanelOpen: true,
+    clrAccordionPanelDisabled: true,
+  },
 };

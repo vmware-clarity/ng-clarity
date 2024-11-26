@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -27,6 +28,7 @@ import DatagridColumnSeparatorSpecs from './datagrid-column-separator.spec';
 import DatagridColumnToggleButtonSpecs from './datagrid-column-toggle-button.spec';
 import DatagridColumnToggleSpecs from './datagrid-column-toggle.spec';
 import DatagridColumnSpecs from './datagrid-column.spec';
+import DatagridDetailSpecs from './datagrid-detail.spec';
 import DatagridFilterSpecs from './datagrid-filter.spec';
 import DatagridFooterSpecs from './datagrid-footer.spec';
 import DatagridHideableColumnDirectiveSpec from './datagrid-hideable-column.spec';
@@ -37,6 +39,7 @@ import DatagridPaginationSpecs from './datagrid-pagination.spec';
 import DatagridPlaceholderSpecs from './datagrid-placeholder.spec';
 import DatagridRowDetailSpecs from './datagrid-row-detail.spec';
 import DatagridRowSpecs from './datagrid-row.spec';
+import DatagridVirtualScrollSpec from './datagrid-virtual-scroll.directive.spec';
 import DatagridSpecs from './datagrid.spec';
 import { addHelpers } from './helpers.spec';
 import ColumnResizerServiceSpecs from './providers/column-resizer.service.spec';
@@ -79,6 +82,7 @@ describe('Datagrid', function () {
     DatagridCellSpecs();
     DatagridFilterSpecs();
     DatagridColumnSpecs();
+    DatagridDetailSpecs();
     DatagridColumnSeparatorSpecs();
     DatagridItemsSpecs();
     DatagridRowSpecs();
@@ -89,6 +93,7 @@ describe('Datagrid', function () {
     DatagridFooterSpecs();
     DatagridPlaceholderSpecs();
     DatagridSpecs();
+    DatagridVirtualScrollSpec();
     DatagridColumnToggleSpecs();
     DatagridColumnToggleButtonSpecs();
     DatagridHideableColumnDirectiveSpec();

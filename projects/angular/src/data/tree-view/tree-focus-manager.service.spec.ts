@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -20,7 +21,19 @@ class TreeNodeModelMock extends TreeNodeModel<void> {
 }
 
 // We will build tree model based on the following nested object literals
-const treeScheme = { id1: { id4: {}, id5: { id7: {}, id8: {} } }, id2: {}, id3: { id6: {} } };
+const treeScheme = {
+  id1: {
+    id4: {},
+    id5: {
+      id7: {},
+      id8: {},
+    },
+  },
+  id2: {},
+  id3: {
+    id6: {},
+  },
+};
 
 // This id model refs would works as key value obj
 // so we don't have to traverse the tree to get the model of specific id
@@ -127,6 +140,20 @@ export default function (): void {
     it('does not emit anything if node is last visible via focusNodeBelow', () => {
       treeFocusManager.focusNodeBelow(treeIdModelRefs.id6);
       expect(focusRequestedOnId).toBeNull();
+    });
+
+    it('emits id of first child node that is not disabled via focusNodeBelow', () => {
+      treeIdModelRefs.id7.disabled = true;
+      treeFocusManager.focusNodeBelow(treeIdModelRefs.id5);
+      expect(focusRequestedOnId).toBe('id7');
+      treeIdModelRefs.id7.disabled = false;
+    });
+
+    it('emits id of parent node when before sibling is disabled via focusNodeAbove', () => {
+      treeIdModelRefs.id4.disabled = true;
+      treeFocusManager.focusNodeAbove(treeIdModelRefs.id5);
+      expect(focusRequestedOnId).toBe('id4');
+      treeIdModelRefs.id4.disabled = false;
     });
 
     describe('.focusNodeStartsWith', () => {

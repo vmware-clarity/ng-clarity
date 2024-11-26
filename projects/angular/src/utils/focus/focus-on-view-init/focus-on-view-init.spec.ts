@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -32,9 +33,9 @@ class TestComponent {
   displayExistingTabindex = false;
   displayDisabled = false;
 
-  @ViewChild('dummyButton', { static: true }) buttonElRef: ElementRef;
+  @ViewChild('dummyButton', { static: true }) buttonElRef: ElementRef<HTMLButtonElement>;
 
-  @ViewChild(ClrFocusOnViewInit, { read: ElementRef }) focusOnItElRef: ElementRef;
+  @ViewChild(ClrFocusOnViewInit, { read: ElementRef }) focusOnItElRef: ElementRef<HTMLElement>;
 }
 
 @Component({
@@ -48,8 +49,8 @@ class TestComponent {
 })
 class TestDisablingViaInjection {
   display = false;
-  @ViewChild('dummyButton', { static: true }) buttonElRef: ElementRef;
-  @ViewChild(ClrFocusOnViewInit, { read: ElementRef }) focusOnItElRef: ElementRef;
+  @ViewChild('dummyButton', { static: true }) buttonElRef: ElementRef<HTMLButtonElement>;
+  @ViewChild(ClrFocusOnViewInit, { read: ElementRef }) focusOnItElRef: ElementRef<HTMLElement>;
 }
 
 describe('ClrFocusOnViewInit', () => {

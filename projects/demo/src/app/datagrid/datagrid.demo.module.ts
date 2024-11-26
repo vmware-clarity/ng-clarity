@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -29,6 +30,7 @@ import { DatagridKitchenSinkDemo } from './kitchen-sink/kitchen-sink';
 import { DatagridConditionalPaginationDemo } from './pagination-conditional/pagination-conditional';
 import { DatagridPaginationScrollingDemo } from './pagination-scrolling/pagination-scrolling';
 import { DatagridPaginationDemo } from './pagination/pagination';
+import { DatagridPerformanceDemo } from './performance/performance';
 import { DatagridPlaceholderDemo } from './placeholder/placeholder';
 import { DatagridPreserveSelectionDemo } from './preserve-selection/preserve-selection';
 import { DatagridResponsiveFooterDemo } from './responsive-footer/responsive-footer';
@@ -42,6 +44,8 @@ import { DatagridSortingDemo } from './sorting/sorting';
 import { DatagridTestCasesAsyncDemo } from './test-cases-async/test-cases-async';
 import { DatagridTestCasesDemo } from './test-cases/test-cases';
 import { ColorFilter } from './utils/color-filter';
+import { DatagridVirtualScrollClientSideDemo } from './virtual-scroll-client-side/virtual-scroll-client-side';
+import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-side/virtual-scroll-server-side';
 
 @NgModule({
   imports: [CommonModule, FormsModule, ClarityModule, ROUTING, UtilsDemoModule],
@@ -70,8 +74,11 @@ import { ColorFilter } from './utils/color-filter';
     DatagridScrollingDemo,
     DatagridColumnSizingDemo,
     DatagridExpandableRowsDemo,
+    DatagridPerformanceDemo,
     DatagridTestCasesDemo,
     DatagridTestCasesAsyncDemo,
+    DatagridVirtualScrollClientSideDemo,
+    DatagridVirtualScrollServerSideDemo,
     DatagridKitchenSinkDemo,
     DatagridConditionalSelectionsDemo,
     ColorFilter,
@@ -93,11 +100,14 @@ import { ColorFilter } from './utils/color-filter';
     DatagridSelectionSingleDemo,
     DatagridSelectionRowModeDemo,
     DatagridPreserveSelectionDemo,
+    DatagridVirtualScrollClientSideDemo,
+    DatagridVirtualScrollServerSideDemo,
     DatagridServerDrivenDemo,
     DatagridSmartIteratorDemo,
     DatagridSortingDemo,
     DatagridBuiltInFiltersDemo,
     DatagridPlaceholderDemo,
+    DatagridPerformanceDemo,
     DatagridScrollingDemo,
     DatagridColumnSizingDemo,
     DatagridExpandableRowsDemo,

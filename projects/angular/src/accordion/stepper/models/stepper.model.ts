@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -35,6 +36,10 @@ export class StepperModel extends AccordionModel {
     if (this._panels[panelId].status === AccordionStatus.Complete) {
       this._panels[panelId].open = !this._panels[panelId].open;
     }
+  }
+
+  navigateToPreviousPanel(currentPanelId: string) {
+    this.openPreviousPanel(this._panels[currentPanelId].id);
   }
 
   navigateToNextPanel(currentPanelId: string, currentPanelValid = true) {
@@ -84,6 +89,10 @@ export class StepperModel extends AccordionModel {
     return this.panels.find(s => s.index === this._panels[currentPanelId].index + 1);
   }
 
+  getPreviousPanel(currentPanelId: string) {
+    return this.panels.find(s => s.index === this._panels[currentPanelId].index - 1);
+  }
+
   private resetAllFuturePanels(panelId: string) {
     this.panels.filter(panel => panel.index >= this._panels[panelId].index).forEach(panel => this.resetPanel(panel.id));
   }
@@ -126,6 +135,18 @@ export class StepperModel extends AccordionModel {
       this.resetAllFuturePanels(nextPanel.id);
       this._panels[nextPanel.id].open = true;
       this._panels[nextPanel.id].disabled = true;
+    }
+  }
+
+  private openPreviousPanel(currentPanelId: string) {
+    const prevPanel = this.getPreviousPanel(currentPanelId);
+
+    if (prevPanel) {
+      this._panels[currentPanelId].open = false;
+      this._panels[currentPanelId].disabled = false;
+
+      this._panels[prevPanel.id].open = true;
+      this._panels[prevPanel.id].disabled = true;
     }
   }
 

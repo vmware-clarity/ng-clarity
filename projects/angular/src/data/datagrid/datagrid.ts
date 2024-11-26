@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -77,6 +78,8 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
   },
 })
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
+  @Input('clrLoadingMoreItems') loadingMoreItems: boolean;
+
   @Input() clrDgSingleSelectionAriaLabel: string = this.commonStrings.keys.singleSelectionAriaLabel;
   @Input() clrDgSingleActionableAriaLabel: string = this.commonStrings.keys.singleActionableAriaLabel;
   @Input() clrDetailExpandableAriaLabel: string = this.commonStrings.keys.detailExpandableAriaLabel;
@@ -114,7 +117,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   @ContentChildren(ClrDatagridRow) rows: QueryList<ClrDatagridRow<T>>;
 
-  @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef;
+  @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef<HTMLElement>;
+  @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef<HTMLElement>;
   @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
   @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
   @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
@@ -122,6 +126,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
 
   selectAllId: string;
+  hasVirtualScroller: boolean;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
@@ -142,17 +147,16 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     private renderer: Renderer2,
     public detailService: DetailService,
     @Inject(DOCUMENT) private document: any,
-    private el: ElementRef,
+    public el: ElementRef<HTMLElement>,
     private page: Page,
     public commonStrings: ClrCommonStringsService,
-    private columnsService: ColumnsService,
-    private keyNavigation: KeyNavigationGridController,
+    public keyNavigation: KeyNavigationGridController,
     private zone: NgZone
   ) {
     const datagridId = uniqueIdFactory();
 
     this.selectAllId = 'clr-dg-select-all-' + datagridId;
-    this.detailService.id = datagridId;
+    detailService.id = datagridId;
   }
 
   /**
@@ -264,16 +268,17 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           this._displayedRows.insert(row._view);
         });
 
-        // Try to update only when there is something cached and its open.
-        if (this.detailService.state && this.detailService.isOpen) {
-          const row = this.rows.find(
-            row => this.items.trackBy(row.item) === this.items.trackBy(this.detailService.state)
-          );
+        this.updateDetailState();
 
-          /**
-           * Reopen updated row or close it
-           */
-          row ? this.detailService.open(row.item, row.detailButton.nativeElement) : this.detailService.close();
+        // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
+        if (this.hasVirtualScroller) {
+          const active = this.keyNavigation.getActiveCell();
+          const isFocusInsideDatagrid = this.datagrid.nativeElement.contains(document.activeElement);
+          if (active && isFocusInsideDatagrid) {
+            this.zone.runOutsideAngular(() => {
+              setTimeout(() => this.keyNavigation.setActiveCell(active));
+            });
+          }
         }
       })
     );
@@ -284,6 +289,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   ngAfterViewInit() {
     this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
+    this.updateDetailState();
 
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
     this.refresh.emit(this.stateProvider.state);
@@ -303,8 +309,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           this.datagridTable.nativeElement.focus();
         }
       }),
-      // Reinitialize arrow key navigation on hide/unhide columns
-      combineLatest(this.columnsService.columns).subscribe(() => this.keyNavigation?.resetKeyGrid()),
       // A subscription that listens for displayMode changes on the datagrid
       this.displayMode.view.subscribe(viewChange => {
         // Remove any projected columns from the projectedDisplayColumns container
@@ -367,8 +371,42 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
+  toggleAllSelected($event: any) {
+    $event.preventDefault();
+
+    if (this.hasVirtualScroller) {
+      return;
+    }
+
+    this.allSelected = !this.allSelected;
+  }
+
   resize(): void {
     this.organizer.resize();
+  }
+
+  /**
+   * Checks the state of detail panel and if it's opened then
+   * find the matching row and trigger the detail panel
+   */
+  updateDetailState() {
+    // Try to update only when there is something cached and its open.
+    if (this.detailService.state && this.detailService.isOpen) {
+      const row = this.rows.find(row => this.items.trackBy(row.item) === this.items.trackBy(this.detailService.state));
+
+      /**
+       * Reopen updated row or close it
+       */
+      if (row) {
+        this.detailService.open(row.item, row.detailButton.nativeElement);
+        // always keep open when virtual scroll is available otherwise close it
+      } else if (!this.hasVirtualScroller) {
+        // Using setTimeout to make sure the inner cycles in rows are done
+        setTimeout(() => {
+          this.detailService.close();
+        });
+      }
+    }
   }
 
   /**

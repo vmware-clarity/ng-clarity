@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
 // NOTE THAT THE MIN-WIDTH OF THE BUTTONS WILL PUSH OUT THE DIALOG IF
 // SET UP IMPROPERLY. THIS IS A KNOWN ISSUE AND USERS SHOULD USE THEIR
 // BEST JUDGMENT WITH BUTTONS IN THE WIZARD. NO MORE THAN THREE...
@@ -169,21 +169,44 @@
       border-left: wizard-variables.$clr-wizard-stepnav-border-size solid
         wizard-variables.$clr-wizard-stepnav-item-border-color;
 
-      margin: 0 0 calc(-1 * #{tokens.$cds-alias-object-border-width-100}) 0;
-      padding: #{tokens.$cds-global-space-4} 0 #{tokens.$cds-global-space-4} #{tokens.$cds-global-space-3};
+      margin-bottom: tokens.$cds-global-space-1;
       color: wizard-variables.$clr-wizard-stepnav-text;
+      background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
 
-      &:not(.disabled):hover .clr-wizard-stepnav-link {
-        color: wizard-variables.$clr-wizard-stepnav-text--active;
-        background-color: wizard-variables.$clr-wizard-stepnav-link-hover-bg-color;
+      // prevent button colors from "leaking" into the stepnav items
+      button.clr-wizard-stepnav-link {
+        color: inherit;
+        background-color: inherit;
       }
 
+      &.disabled {
+        color: wizard-variables.$clr-wizard-stepnav-text-disabled;
+      }
+
+      // active class actually means "selected"
       &.active {
         color: wizard-variables.$clr-wizard-stepnav-text--active;
-        .clr-wizard-stepnav-link {
-          color: wizard-variables.$clr-wizard-stepnav-text--active;
-          background-color: wizard-variables.$clr-wizard-stepnav-active-bgcolor;
-          border-radius: wizard-variables.$clr-wizard-border-radius 0 0 wizard-variables.$clr-wizard-border-radius;
+        background-color: wizard-variables.$clr-wizard-stepnav-selected-bgcolor;
+        border-left-color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
+
+        &:hover {
+          background-color: wizard-variables.$clr-wizard-stepnav-selected-hover-bgcolor;
+        }
+
+        &:active {
+          background-color: wizard-variables.$clr-wizard-stepnav-selected-active-bgcolor;
+        }
+      }
+
+      &:not(.disabled):not(.active) {
+        &:hover {
+          color: wizard-variables.$clr-wizard-stepnav-text-hover;
+          background-color: wizard-variables.$clr-wizard-stepnav-link-hover-bg-color;
+        }
+
+        &:active {
+          color: wizard-variables.$clr-wizard-stepnav-text-active;
+          background-color: wizard-variables.$clr-wizard-stepnav-link-active-bg-color;
         }
       }
 
@@ -195,11 +218,19 @@
       &.complete {
         border-color: wizard-variables.$clr-wizard-stepnav-item-border-color--active;
         transition: border-color 0.2s ease-in;
+
+        .clr-wizard-stepnav-link-icon cds-icon {
+          --color: #{wizard-variables.$clr-wizard-stepnav-link-complete-icon-color};
+        }
       }
 
       &.error {
         border-color: wizard-variables.$clr-wizard-stepnav-item-error-border-color;
         transition: border-color 0.2s ease-in;
+
+        .clr-wizard-stepnav-link-icon cds-icon {
+          --color: #{wizard-variables.$clr-wizard-stepnav-link-error-icon-color};
+        }
       }
 
       &.no-click button {
@@ -211,7 +242,6 @@
       width: 100%;
       display: flex;
       place-content: normal;
-      gap: 0;
       color: inherit;
       align-items: center;
       text-align: left;
@@ -219,21 +249,18 @@
       margin: 0;
       padding: tokens.$cds-global-space-5;
       height: auto;
-      min-height: tokens.$cds-global-space-11;
+      min-height: tokens.$cds-global-space-12;
       max-width: inherit;
 
       @include mixins.generate-typography-token('BODY-14-MD-STD');
 
-      .clr-wizard-stepnav-link-suffix {
-        display: flex;
-        justify-content: center;
-        min-width: tokens.$cds-global-space-9;
-        padding-right: tokens.$cds-global-space-5;
+      .clr-wizard-stepnav-link-icon {
+        display: flex; // this vertically centers the icon
+      }
 
-        .clr-wizard-stepnav-item-error-icon {
-          transform: none;
-          fill: wizard-variables.$clr-wizard-stepnav-link-error-icon-color;
-        }
+      .clr-wizard-stepnav-link-icon,
+      .clr-wizard-stepnav-link-page-number {
+        width: tokens.$cds-global-space-7;
       }
     }
 
@@ -308,7 +335,6 @@
       display: flex;
       flex-grow: 1;
       width: 100%;
-      padding-top: tokens.$cds-global-space-6;
     }
 
     &.wizard-md {
@@ -380,6 +406,89 @@
 
       & > .form-block:first-child {
         margin-top: 0;
+      }
+    }
+  }
+
+  // Inline wizards are used by vSphere plugins to display a wizard inside an iframe that is inside a modal.
+  .clr-wizard--inline {
+    display: block;
+    width: 100%;
+    // you will want to set a fixed width and height for these static wizards
+    // otherwise, you'll get some minor jumping along the right edge when it is
+    // closed...
+
+    & > clr-modal > .modal:focus {
+      // need to remove the outline style or trap-focus directive will make
+      // outline appear in Safari and Microsoft browsers
+      outline-style: none;
+      outline-color: transparent;
+    }
+
+    clr-modal {
+      @include mixins.equilateral(100%);
+      display: block;
+    }
+
+    .modal {
+      padding: 0;
+      position: static;
+      height: 100%;
+      max-height: 100%;
+
+      .content-container {
+        height: 100%;
+
+        .nav-panel {
+          @include mixins.equilateral(99%);
+        }
+      }
+
+      .modal-content {
+        box-shadow: none;
+      }
+
+      .modal-dialog {
+        min-height: 100%;
+        @include mixins.equilateral(100%);
+        z-index: auto;
+      }
+    }
+
+    .modal-body-wrapper {
+      height: 100%;
+    }
+
+    .modal-header .close {
+      display: none;
+    }
+
+    .nav.navList {
+      padding-top: 0;
+    }
+
+    .modal-dialog .modal-content .modal-body .content-area {
+      overflow-y: auto;
+    }
+
+    .modal-backdrop {
+      @include mixins.equilateral(0);
+      display: none;
+    }
+
+    .modal-content-wrapper {
+      align-items: stretch;
+      height: 100%;
+    }
+
+    .clr-wizard-stepnav-wrapper,
+    &.clr-wizard .modal-content {
+      min-height: 100%;
+      height: auto;
+      max-height: 100%;
+
+      .clr-wizard-stepnav {
+        height: 100%;
       }
     }
   }

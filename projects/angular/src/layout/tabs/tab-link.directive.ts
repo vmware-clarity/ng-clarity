@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -41,9 +42,9 @@ export class ClrTabLink {
   constructor(
     public ifActiveService: IfActiveService,
     @Inject(IF_ACTIVE_ID) readonly id: number,
-    public el: ElementRef,
-    private cfr: ComponentFactoryResolver,
-    private viewContainerRef: ViewContainerRef,
+    public el: ElementRef<HTMLElement>,
+    cfr: ComponentFactoryResolver,
+    viewContainerRef: ViewContainerRef,
     private tabsService: TabsService,
     @Inject(TABS_ID) public tabsId: number
   ) {
@@ -54,9 +55,9 @@ export class ClrTabLink {
     // Tab links can be rendered in one of two places: in the main area or inside the overflow dropdown menu.
     // Here, we create a container so that its template can be used to create embeddedView on the fly.
     // See TabsService's renderView() method and how it's used in Tabs class for an example.
-    const factory = this.cfr.resolveComponentFactory(TemplateRefContainer);
-    this.templateRefContainer = this.viewContainerRef.createComponent(factory, undefined, undefined, [
-      [this.el.nativeElement],
+    const factory = cfr.resolveComponentFactory(TemplateRefContainer);
+    this.templateRefContainer = viewContainerRef.createComponent(factory, undefined, undefined, [
+      [el.nativeElement],
     ]).instance;
   }
 

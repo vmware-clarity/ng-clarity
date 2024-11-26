@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -15,6 +16,7 @@
     --clr-accordion-text-color-active: #{tokens.$cds-alias-object-interaction-color-active};
     --clr-accordion-panel-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
 
+    // @TODO (v18) remove in favor of `clr-accordion-header-open-background-color`
     --clr-accordion-active-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
     --clr-accordion-content-background-color: #{tokens.$cds-alias-object-app-background};
     --clr-accordion-content-color: #{tokens.$cds-alias-typography-color-450};
@@ -24,6 +26,10 @@
     --clr-accordion-header-disabled-background-color: #{tokens.$cds-alias-object-container-background};
     --clr-accordion-header-hover-background-color: #{tokens.$cds-alias-object-interaction-background-hover};
     --clr-accordion-header-active-background-color: #{tokens.$cds-alias-object-interaction-background-active};
+    // @TODO (v18) set to `$cds-alias-object-interaction-background-selected` when `clr-accordion-active-background-color` is removed
+    --clr-accordion-header-open-background-color: var(--clr-accordion-active-background-color);
+    --clr-accordion-header-open-active-background-color: var(--cds-alias-object-interaction-background-selected-active);
+    --clr-accordion-header-open-hover-background-color: var(--cds-alias-object-interaction-background-selected-hover);
 
     --clr-accordion-error-color: #{tokens.$cds-alias-status-danger};
     --clr-accordion-complete-color: #{tokens.$cds-alias-status-success};
