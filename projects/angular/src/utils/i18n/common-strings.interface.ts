@@ -237,6 +237,7 @@ export interface ClrCommonStrings {
   datepickerSelectMonthText: string;
   datepickerSelectYearText: string;
   datepickerSelectedLabel: string;
+  datepickerWeekNumber: string;
   /**
    * Stack View: Record has changed
    */

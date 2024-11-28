@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, HostListener, OnDestroy } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDayOfWeek } from './interfaces/day-of-week.interface';
 import { CalendarViewModel } from './model/calendar-view.model';
 import { CalendarModel } from './model/calendar.model';
@@ -25,6 +26,8 @@ import { NO_OF_DAYS_IN_A_WEEK } from './utils/constants';
   templateUrl: './calendar.html',
 })
 export class ClrCalendar implements OnDestroy {
+  @Input('clrShowWeekNumbers') showWeekNumbers = false;
+
   /**
    * Calendar View Model to generate the Calendar.
    */
@@ -37,7 +40,8 @@ export class ClrCalendar implements OnDestroy {
     private _dateNavigationService: DateNavigationService,
     private _datepickerFocusService: DatepickerFocusService,
     private _dateIOService: DateIOService,
-    private _elRef: ElementRef<HTMLElement>
+    private _elRef: ElementRef<HTMLElement>,
+    public commonStringsService: ClrCommonStringsService
   ) {
     this.generateCalendarView();
     this.initializeSubscriptions();

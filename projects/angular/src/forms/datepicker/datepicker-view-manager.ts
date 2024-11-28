@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
@@ -19,10 +19,13 @@ import { ViewManagerService } from './providers/view-manager.service';
     '[class.datepicker]': 'true',
     '[attr.aria-modal]': 'true',
     '[attr.aria-label]': 'commonStrings.keys.datepickerDialogLabel',
+    '[class.show-week-numbers]': 'showWeekNumbers && isDayView',
     role: 'dialog',
   },
 })
 export class ClrDatepickerViewManager {
+  @Input('clrShowWeekNumbers') showWeekNumbers = false;
+
   constructor(public commonStrings: ClrCommonStringsService, private viewManagerService: ViewManagerService) {}
 
   /**

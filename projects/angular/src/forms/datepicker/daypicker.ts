@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DateNavigationService } from './providers/date-navigation.service';
@@ -18,6 +18,8 @@ import { ViewManagerService } from './providers/view-manager.service';
   host: { '[class.daypicker]': 'true', role: 'application' },
 })
 export class ClrDaypicker {
+  @Input('clrShowWeekNumbers') showWeekNumbers = false;
+
   constructor(
     private _viewManagerService: ViewManagerService,
     private _dateNavigationService: DateNavigationService,

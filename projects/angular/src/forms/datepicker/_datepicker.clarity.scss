@@ -76,6 +76,10 @@
     box-shadow: tokens.$cds-alias-object-shadow-100;
     overflow: hidden;
     z-index: map.get(variables.$clr-layers, dropdown-menu);
+
+    &.show-week-numbers {
+      width: datepicker-variables.$clr-calendar-with-week-number-width;
+    }
   }
 
   .calendar-header {
@@ -98,7 +102,7 @@
   }
 
   .calendar-table {
-    // clr-calendar have dispaly: inline, preventing flex from having an effect.
+    // clr-calendar have display: inline, preventing flex from having an effect.
     flex: 1 1 auto;
 
     //Dimensions
@@ -123,13 +127,29 @@
     flex: 0 0 datepicker-variables.$clr-calendar-click-target;
   }
 
-  .weekday {
+  .weekday,
+  .week-number {
     @include mixins.generate-typography-token(
       'SECONDARY-13-SB-CPT',
       (
         font-size: datepicker-variables.$clr-calendar-weekday-font-size,
       )
     );
+  }
+
+  .week-number-cell {
+    @include mixins.generate-typography-token(
+      'SECONDARY-13-RG-EXP',
+      (
+        font-size: datepicker-variables.$clr-calendar-week-number-font-size,
+      )
+    );
+  }
+
+  .week-number,
+  .week-number-cell {
+    border-right: tokens.$cds-alias-object-border-width-100 solid
+      datepicker-variables.$clr-calendar-week-number-separator-color;
   }
 
   .calendar-btn {

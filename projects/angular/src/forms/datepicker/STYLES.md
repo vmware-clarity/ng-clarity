@@ -17,6 +17,8 @@
 | --clr-calendar-active-focus-cell-background-color | Focused cell background color                   |
 | --clr-calendar-container-height                   | Calendar container height                       |
 | --clr-calendar-weekday-font-size                  | Calendar week day font size                     |
+| --clr-calendar-week-number-font-size              | Calendar week number font size                  |
+| --clr-calendar-week-number-separator-color        | Border color for the week number separator      |
 | --clr-calendar-picker-btn-font-size               | Calendar picker button font size                |
 | --clr-calendar-picker-btn-font-weight             | Calendar picker button font weight              |
 
@@ -37,6 +39,8 @@
 | day-btn             | Day button inside calendar                       |
 | weekday             | Weekday table heading                            |
 | weekdays            | Weekdays table row wrapper                       |
+| week-number         | Calendar week number column heading              |
+| week-number-cell    | Calendar week number column cell                 |
 | month               | Month buttons inside month picker                |
 | monthpicker         | Main month picker element                        |
 | monthpicker-trigger | Month picker button trigger                      |

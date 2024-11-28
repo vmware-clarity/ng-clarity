@@ -29,10 +29,13 @@
     --clr-calendar-btn-active-color: #{tokens.$cds-alias-object-interaction-color-active};
     --clr-calendar-btn-active-color-bg: #{tokens.$cds-alias-object-interaction-background-active};
 
+    --clr-calendar-week-number-separator-color: #{tokens.$cds-alias-object-border-color-tint};
+
     // Dimensions
 
     // Typography
     --clr-calendar-weekday-font-size: #{tokens.$cds-global-typography-font-size-3};
+    --clr-calendar-week-number-font-size: #{tokens.$cds-global-typography-font-size-2};
     --clr-calendar-today-date-cell-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
 
     --clr-calendar-picker-btn-font-size: #{tokens.$cds-global-typography-font-size-6};

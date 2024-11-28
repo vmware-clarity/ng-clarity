@@ -49,6 +49,7 @@ import { ViewManagerService } from './providers/view-manager.service';
           </button>
           <clr-datepicker-view-manager
             *clrPopoverContent="open; at: popoverPosition; outsideClickToClose: true; scrollToClose: true"
+            [clrShowWeekNumbers]="showWeekNumbers"
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
@@ -94,6 +95,8 @@ import { ViewManagerService } from './providers/view-manager.service';
   },
 })
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
+  @Input('clrShowWeekNumbers') showWeekNumbers = false;
+
   focus = false;
 
   private toggleButton: ElementRef<HTMLButtonElement>;

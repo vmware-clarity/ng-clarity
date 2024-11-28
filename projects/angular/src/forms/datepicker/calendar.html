@@ -1,10 +1,18 @@
 <table class="calendar-table" role="presentation">
   <tr class="calendar-row weekdays">
+    <th
+      *ngIf="showWeekNumbers"
+      [attr.aria-label]="commonStringsService.keys.datepickerWeekNumber"
+      class="calendar-cell week-number"
+    >
+      #
+    </th>
     <th *ngFor="let day of localeDays" class="calendar-cell weekday">
       <span [attr.aria-label]="day.day">{{day.narrow}}</span>
     </th>
   </tr>
   <tr class="calendar-row" *ngFor="let row of calendarViewModel.calendarView">
+    <td class="calendar-cell week-number-cell" *ngIf="showWeekNumbers">{{row[0].dayModel.toDate() | date: 'w'}}</td>
     <td *ngFor="let dayView of row" class="calendar-cell">
       <clr-day [clrDayView]="dayView" aria-hidden="true"></clr-day>
     </td>
