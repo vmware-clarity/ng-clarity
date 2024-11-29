@@ -314,9 +314,9 @@ export default function (): void {
         context.detectChanges();
 
         context.clarityDirective.toggleDetailPane(true);
-        context.detectChanges();
+        const visibleColumnsLength = columnsService.visibleColumns.length;
         expect(columnsService.resetToLastCache).not.toHaveBeenCalled();
-        expect(columnsService.emitStateChangeAt).not.toHaveBeenCalled();
+        expect(columnsService.emitStateChangeAt).toHaveBeenCalledTimes(visibleColumnsLength - 1);
       });
 
       it('toggles the detail pane closed and resets to cache', function () {
