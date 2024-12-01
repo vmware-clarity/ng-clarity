@@ -18,6 +18,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
 
 @Component({
   selector: 'clr-datalist-container',
+  standalone: false,
   template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>

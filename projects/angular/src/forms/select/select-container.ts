@@ -17,6 +17,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
 
 @Component({
   selector: 'clr-select-container',
+  standalone: false,
   template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>

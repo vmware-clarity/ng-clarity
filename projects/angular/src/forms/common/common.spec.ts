@@ -20,6 +20,7 @@ import { WrappedFormControl } from './wrapped-control';
  */
 @Component({
   selector: 'generic-wrapper',
+  standalone: false,
   template: `
     <label id="container-view-label-before"></label>
     <ng-content></ng-content>
@@ -33,6 +34,7 @@ class GenericWrapper implements DynamicWrapper {
 
 @Directive({
   selector: '[genericControl]',
+  standalone: false,
 })
 class GenericControl extends WrappedFormControl<GenericWrapper> {
   constructor(vcr: ViewContainerRef) {

@@ -13,6 +13,7 @@ import { ControlIdService } from '../common/providers/control-id.service';
 
 @Component({
   selector: 'clr-radio-wrapper',
+  standalone: false,
   template: `
     <ng-content select="[clrRadio]"></ng-content>
     <ng-content select="label"></ng-content>

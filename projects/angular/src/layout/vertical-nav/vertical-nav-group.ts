@@ -20,6 +20,7 @@ const COLLAPSED_STATE = 'collapsed';
 
 @Component({
   selector: 'clr-vertical-nav-group',
+  standalone: false,
   templateUrl: './vertical-nav-group.html',
   providers: [IfExpandService, VerticalNavGroupService],
   animations: [

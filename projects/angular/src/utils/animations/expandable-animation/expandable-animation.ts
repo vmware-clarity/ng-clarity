@@ -12,6 +12,7 @@ import { DomAdapter } from '../../dom-adapter/dom-adapter';
 
 @Component({
   selector: 'clr-expandable-animation',
+  standalone: false,
   template: `<ng-content></ng-content>`,
   styles: [
     `

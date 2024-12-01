@@ -14,6 +14,7 @@ import { CommonModules } from '../../helpers/common';
 
 @Component({
   selector: 'forms-input-states-components',
+  standalone: false,
   template: `
     <form clrForm [formGroup]="form" [clrLayout]="clrLayout">
       <clr-input-container>

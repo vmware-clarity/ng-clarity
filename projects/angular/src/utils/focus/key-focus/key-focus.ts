@@ -25,6 +25,7 @@ import { normalizeKey, preventArrowKeyScroll } from './util';
 
 @Component({
   selector: '[clrKeyFocus]',
+  standalone: false,
   template: '<ng-content></ng-content>',
 })
 export class ClrKeyFocus {

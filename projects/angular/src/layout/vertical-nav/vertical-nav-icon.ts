@@ -11,6 +11,7 @@ import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
 
 @Directive({
   selector: '[clrVerticalNavIcon]',
+  standalone: false,
   host: { class: 'nav-icon' },
 })
 export class ClrVerticalNavIcon implements OnDestroy {

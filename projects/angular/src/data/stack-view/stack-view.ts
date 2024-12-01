@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'clr-stack-view',
+  standalone: false,
   template: `
     <ng-content select="clr-stack-header"></ng-content>
     <div class="stack-view"><ng-content></ng-content></div>

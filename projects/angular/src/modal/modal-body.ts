@@ -15,6 +15,7 @@ import { Directive, ElementRef, NgZone, OnDestroy, Renderer2 } from '@angular/co
  */
 @Directive({
   selector: '.modal-body',
+  standalone: false,
 })
 export class ClrModalBody implements OnDestroy {
   private tabindex = '0';

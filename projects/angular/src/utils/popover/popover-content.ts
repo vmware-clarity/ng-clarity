@@ -30,6 +30,7 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 /** @dynamic */
 @Directive({
   selector: '[clrPopoverContent]',
+  standalone: false,
 })
 export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
   private view: EmbeddedViewRef<void>;

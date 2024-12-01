@@ -13,6 +13,7 @@ import { CONTROL_STATE, IfControlStateService } from './if-control-state.service
 
 @Directive({
   selector: '[clrIfError]',
+  standalone: false,
 })
 export class ClrIfError extends AbstractIfState {
   @Input('clrIfError') error: string;

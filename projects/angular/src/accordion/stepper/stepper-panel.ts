@@ -32,6 +32,7 @@ import { StepperService } from './providers/stepper.service';
 
 @Component({
   selector: 'clr-stepper-panel',
+  standalone: false,
   templateUrl: 'stepper-panel.html',
   host: { '[class.clr-stepper-panel]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,

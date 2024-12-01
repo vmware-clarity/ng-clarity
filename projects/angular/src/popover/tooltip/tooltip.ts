@@ -13,6 +13,7 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
 
 @Component({
   selector: 'clr-tooltip',
+  standalone: false,
   template: `<ng-content></ng-content>`,
   host: {
     '[class.tooltip]': 'true',

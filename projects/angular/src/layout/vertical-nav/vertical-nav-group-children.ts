@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'clr-vertical-nav-group-children',
+  standalone: false,
   template: `<ng-content></ng-content>`,
 })
 export class ClrVerticalNavGroupChildren {}

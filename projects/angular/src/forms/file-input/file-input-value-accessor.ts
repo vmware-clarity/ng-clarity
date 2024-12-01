@@ -12,6 +12,7 @@ import { clearFiles, selectFiles } from './file-input.helpers';
 
 @Directive({
   selector: 'input[type="file"][clrFileInput]',
+  standalone: false,
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: ClrFileInputValueAccessor, multi: true }],
 })
 export class ClrFileInputValueAccessor implements ControlValueAccessor {

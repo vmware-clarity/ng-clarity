@@ -13,6 +13,7 @@ import { ClrTextareaContainer } from './textarea-container';
 
 @Directive({
   selector: '[clrTextarea]',
+  standalone: false,
   host: { '[class.clr-textarea]': 'true' },
 })
 export class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {

@@ -17,6 +17,7 @@ import { MockFocusableItem } from './focusable-item/focusable-item.mock';
 
 @Component({
   selector: 'simple-host',
+  standalone: false,
   template: '',
   providers: [FOCUS_SERVICE_PROVIDER],
 })

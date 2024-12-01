@@ -28,6 +28,7 @@ import { ClrStepperPanel } from './stepper-panel';
 
 @Component({
   selector: 'form[clrStepper]',
+  standalone: false,
   template: `<ng-content></ng-content>`,
   host: {
     '[class.clr-accordion]': 'true',

@@ -9,6 +9,7 @@ import { Directive, TemplateRef } from '@angular/core';
 
 @Directive({
   selector: '[clrPageButtons]',
+  standalone: false,
 })
 export class ClrWizardPageButtons {
   constructor(public pageButtonsTemplateRef: TemplateRef<any>) {}

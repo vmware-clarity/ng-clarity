@@ -14,6 +14,7 @@ import { ClrTimelineStepTitle } from './timeline-step-title';
 
 @Component({
   selector: 'clr-timeline-step',
+  standalone: false,
   template: `
     <ng-content select="clr-timeline-step-header"></ng-content>
     <span class="clr-sr-only">{{ stepTitleText }}</span>

@@ -11,6 +11,7 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Directive({
   selector: 'clr-stack-content',
+  standalone: false,
 })
 export class ClrStackViewCustomTags {
   // No behavior
@@ -19,6 +20,7 @@ export class ClrStackViewCustomTags {
 
 @Component({
   selector: 'clr-stack-label',
+  standalone: false,
   template: '<ng-content></ng-content>',
   host: {
     '[attr.id]': 'id',

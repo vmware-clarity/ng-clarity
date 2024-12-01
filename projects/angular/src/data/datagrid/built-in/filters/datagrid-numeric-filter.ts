@@ -20,6 +20,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
 
 @Component({
   selector: 'clr-dg-numeric-filter',
+  standalone: false,
   providers: [{ provide: CustomFilter, useExisting: DatagridNumericFilter }],
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">

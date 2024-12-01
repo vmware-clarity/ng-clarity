@@ -14,6 +14,7 @@ import { MultiAlertService } from './providers/multi-alert.service';
 
 @Component({
   selector: 'clr-alerts-pager',
+  standalone: false,
   templateUrl: './alerts-pager.html',
   host: { '[class.alerts-pager]': 'true' },
 })

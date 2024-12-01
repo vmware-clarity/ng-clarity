@@ -11,6 +11,7 @@ import { Selection } from './providers/selection';
 
 @Directive({
   selector: '.datagrid-select',
+  standalone: false,
 })
 export class ClrDatagridSelectionCellDirective {
   constructor(private readonly selection: Selection) {}

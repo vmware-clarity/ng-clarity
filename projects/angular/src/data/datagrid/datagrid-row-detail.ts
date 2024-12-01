@@ -22,6 +22,7 @@ import { Selection } from './providers/selection';
  */
 @Component({
   selector: 'clr-dg-row-detail',
+  standalone: false,
   template: `
     <div class="clr-sr-only">
       {{ beginningOfExpandableContentAriaText }}

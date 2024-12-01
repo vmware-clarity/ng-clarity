@@ -32,6 +32,7 @@ import { panelAnimation } from './utils/animation';
 
 @Component({
   selector: 'clr-accordion-panel',
+  standalone: false,
   templateUrl: './accordion-panel.html',
   host: { '[class.clr-accordion-panel]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,

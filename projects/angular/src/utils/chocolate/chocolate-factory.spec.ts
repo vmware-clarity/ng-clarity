@@ -75,6 +75,7 @@ class ChocolateTest extends WillyWonka {
 
 @Component({
   selector: 'parent',
+  standalone: false,
   template: `
     {{ nbChildren }} children
     <ng-content></ng-content>
@@ -93,6 +94,7 @@ class ChocolateParent extends WillyWonka {
 
 @Component({
   selector: 'child',
+  standalone: false,
   template: '{{last}} {{incrementChange()}}',
 })
 class ChocolateChild extends OompaLoompa implements OnInit, OnDestroy {

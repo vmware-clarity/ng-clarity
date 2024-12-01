@@ -15,6 +15,7 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
 
 @Component({
   selector: 'clr-header',
+  standalone: false,
   template: `
     <button
       type="button"

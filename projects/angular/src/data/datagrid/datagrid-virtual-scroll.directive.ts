@@ -60,6 +60,7 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 
 @Directive({
   selector: '[ClrVirtualScroll]',
+  standalone: false,
   providers: [Items],
 })
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {

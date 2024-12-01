@@ -11,6 +11,7 @@ import { ClrPopoverEventsService } from './providers/popover-events.service';
 
 @Directive({
   selector: '[clrPopoverAnchor]',
+  standalone: false,
   host: {
     '[class.clr-anchor]': 'true',
   },

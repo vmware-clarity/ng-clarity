@@ -12,6 +12,7 @@ import { Page } from './providers/page';
 
 @Component({
   selector: 'clr-dg-page-size',
+  standalone: false,
   template: `
     <label [for]="pageSizeOptionsId"><ng-content></ng-content></label>
     <div class="clr-select-wrapper">

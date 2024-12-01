@@ -113,6 +113,7 @@ class OnPushTest {
 
 @Component({
   selector: 'multi-select-test',
+  standalone: false,
   template: `
     <clr-datagrid [(clrDgSelected)]="selected">
       <clr-dg-column>First</clr-dg-column>
@@ -372,6 +373,7 @@ class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
 
 @Component({
   selector: 'hidden-column-test',
+  standalone: false,
   template: `
     <clr-datagrid>
       <clr-dg-column>

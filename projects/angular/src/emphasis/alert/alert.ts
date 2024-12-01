@@ -25,6 +25,7 @@ import { MultiAlertService } from './providers/multi-alert.service';
 
 @Component({
   selector: 'clr-alert',
+  standalone: false,
   providers: [AlertIconAndTypesService],
   templateUrl: './alert.html',
 })

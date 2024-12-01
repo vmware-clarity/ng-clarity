@@ -12,6 +12,7 @@ import { ClrModalConfigurationService } from './modal-configuration.service';
 
 @Component({
   selector: 'clr-side-panel',
+  standalone: false,
   templateUrl: 'side-panel.html',
   host: {
     '[class.side-panel]': 'true',

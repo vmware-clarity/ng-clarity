@@ -17,6 +17,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
 //       - return to website docs
 @Directive({
   selector: '[clrFilterHighlight]',
+  standalone: false,
 })
 export class ClrFilterHighlight<T> implements AfterViewInit, OnDestroy {
   @HostBinding('class') elementClass = 'clr-filter-highlight';

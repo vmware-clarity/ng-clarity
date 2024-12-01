@@ -28,6 +28,7 @@ import { ClrRadio } from './radio';
 
 @Component({
   selector: 'clr-radio-container',
+  standalone: false,
   template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>

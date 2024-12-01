@@ -15,6 +15,7 @@ import { SignpostIdService } from './providers/signpost-id.service';
 
 @Directive({
   selector: '[clrSignpostTrigger]',
+  standalone: false,
   host: {
     class: 'signpost-trigger',
     '[attr.aria-expanded]': 'ariaExpanded',

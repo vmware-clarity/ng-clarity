@@ -33,6 +33,7 @@ let nbOptionsComponents = 0;
 
 @Component({
   selector: 'clr-options',
+  standalone: false,
   template: `
     <div *ngIf="optionSelectionService.loading" class="clr-combobox-options-loading">
       <clr-spinner clrInline>

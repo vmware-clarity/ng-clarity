@@ -19,6 +19,7 @@ import { ClrPopoverToggleService } from './popover-toggle.service';
 
 @Component({
   selector: 'test-host',
+  standalone: false,
   template: `<button #anchor class="btn">Anchor</button>`,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
 })

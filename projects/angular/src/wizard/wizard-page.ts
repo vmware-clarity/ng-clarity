@@ -29,6 +29,7 @@ let wizardPageIndex = 0;
  */
 @Component({
   selector: 'clr-wizard-page',
+  standalone: false,
   template: '<ng-content></ng-content>',
   host: {
     '[id]': 'id',

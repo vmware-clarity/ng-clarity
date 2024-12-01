@@ -11,6 +11,7 @@ let wizardHeaderActionIndex = 0;
 
 @Component({
   selector: 'clr-wizard-header-action',
+  standalone: false,
   template: `
     <button
       type="button"

@@ -41,6 +41,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
  */
 @Component({
   selector: 'clr-dg-filter',
+  standalone: false,
   // We register this component as a CustomFilter, for the parent column to detect it.
   providers: [{ provide: CustomFilter, useExisting: ClrDatagridFilter }],
   template: `

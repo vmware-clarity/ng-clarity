@@ -25,6 +25,7 @@ import { Page } from './providers/page';
 
 @Component({
   selector: 'clr-dg-pagination',
+  standalone: false,
   template: `
     <ng-container *ngIf="!detailService.isOpen">
       <div class="pagination-size" *ngIf="_pageSizeComponent">

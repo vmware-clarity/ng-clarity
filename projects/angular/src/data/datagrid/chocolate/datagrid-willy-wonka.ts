@@ -11,5 +11,6 @@ import { WillyWonka } from '../../../utils/chocolate/willy-wonka';
 
 @Directive({
   selector: 'clr-datagrid',
+  standalone: false,
 })
 export class DatagridWillyWonka extends WillyWonka {}

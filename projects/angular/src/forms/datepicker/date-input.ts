@@ -49,6 +49,7 @@ import { datesAreEqual } from './utils/date-utils';
 
 @Directive({
   selector: '[clrDate]',
+  standalone: false,
   host: {
     '[class.clr-input]': 'true',
   },

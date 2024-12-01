@@ -27,6 +27,7 @@ import { ModalStackService } from './modal-stack.service';
 
 @Component({
   selector: 'clr-modal',
+  standalone: false,
   viewProviders: [ScrollingService],
   templateUrl: './modal.html',
   styles: [

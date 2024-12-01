@@ -15,6 +15,7 @@ import { ClrSignpostTrigger } from './signpost-trigger';
 
 @Component({
   selector: 'clr-signpost',
+  standalone: false,
   template: `
     <ng-container *ngIf="!useCustomTrigger">
       <button

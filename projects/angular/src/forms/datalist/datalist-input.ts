@@ -25,6 +25,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
 
 @Directive({
   selector: '[clrDatalistInput]',
+  standalone: false,
   host: {
     '[class.clr-input]': 'true',
     '[attr.list]': 'listValue',

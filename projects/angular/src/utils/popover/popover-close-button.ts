@@ -14,6 +14,7 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 @Directive({
   selector: '[clrPopoverCloseButton]',
+  standalone: false,
   host: {
     '[class.clr-smart-close-button]': 'true',
   },

@@ -15,6 +15,7 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 @Component({
   selector: 'test-host',
+  standalone: false,
   template: `
     <button #closeButton clrPopoverCloseButton (clrPopoverOnCloseChange)="handleClose()">Smart Close Button</button>
     <button #toggleButton clrPopoverAnchor>Toggle Button</button>

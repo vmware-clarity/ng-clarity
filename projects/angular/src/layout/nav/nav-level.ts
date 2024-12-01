@@ -50,6 +50,7 @@ const createCloseButton = (document: Document, ariaLabel: string) => {
 
 @Directive({
   selector: '[clr-nav-level]',
+  standalone: false,
   hostDirectives: [ClrStandaloneCdkTrapFocus],
 })
 export class ClrNavLevel implements OnInit {

@@ -23,6 +23,7 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
 
 @Component({
   selector: 'clr-stack-block',
+  standalone: false,
   template: `
     <!-- The 'preventDefault' for the space keydown event prevents the page
          from scrolling when a stack block is toggled via the space key. -->

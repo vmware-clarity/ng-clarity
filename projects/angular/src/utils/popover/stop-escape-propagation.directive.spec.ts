@@ -70,6 +70,7 @@ async function pressEscapeKey(fixture: ComponentFixture<TestComponent>, element:
 
 @Component({
   selector: 'app-test-popover-host',
+  standalone: false,
   template: '',
   providers: [ClrPopoverToggleService],
   hostDirectives: [ClrStopEscapePropagationDirective],

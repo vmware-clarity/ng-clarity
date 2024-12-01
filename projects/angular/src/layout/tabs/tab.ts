@@ -14,6 +14,7 @@ import { ClrTabLink } from './tab-link.directive';
 
 @Component({
   selector: 'clr-tab',
+  standalone: false,
   template: `<ng-content></ng-content>`,
   providers: [IF_ACTIVE_ID_PROVIDER],
 })

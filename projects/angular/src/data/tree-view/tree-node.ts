@@ -50,6 +50,7 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
 
 @Component({
   selector: 'clr-tree-node',
+  standalone: false,
   templateUrl: './tree-node.html',
   providers: [TREE_FEATURES_PROVIDER, IfExpandService, { provide: LoadingListener, useExisting: IfExpandService }],
   animations: [

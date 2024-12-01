@@ -12,6 +12,7 @@ import { TimelineIconAttributeService } from './providers/timeline-icon-attribut
 
 @Component({
   selector: 'clr-timeline',
+  standalone: false,
   template: `<ng-content></ng-content>`,
   host: { '[class.clr-timeline]': 'true', '[attr.role]': '"list"' },
   providers: [TimelineIconAttributeService],

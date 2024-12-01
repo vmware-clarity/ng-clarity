@@ -14,6 +14,7 @@ import { RootDropdownService } from './providers/dropdown.service';
 
 @Directive({
   selector: '[clrDropdownItem]',
+  standalone: false,
   host: {
     '[class.disabled]': 'disabled',
     '[class.dropdown-item]': 'true',

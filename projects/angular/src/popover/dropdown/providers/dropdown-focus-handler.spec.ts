@@ -20,6 +20,7 @@ import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './dropdow
 
 @Component({
   selector: 'simple-host',
+  standalone: false,
   template: '',
   providers: [ClrPopoverToggleService, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
 })

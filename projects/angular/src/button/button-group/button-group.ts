@@ -35,6 +35,7 @@ import { ClrButton } from './button';
 
 @Component({
   selector: 'clr-button-group',
+  standalone: false,
   templateUrl: 'button-group.html',
   providers: [ButtonInGroupService, ClrDestroyService, BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FOCUS_SERVICE_PROVIDER],
   hostDirectives: [ClrPopoverHostDirective],

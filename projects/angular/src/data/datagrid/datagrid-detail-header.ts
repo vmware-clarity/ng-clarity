@@ -12,6 +12,7 @@ import { DetailService } from './providers/detail.service';
 
 @Component({
   selector: 'clr-dg-detail-header',
+  standalone: false,
   host: {
     '[class.datagrid-detail-header]': 'true',
   },

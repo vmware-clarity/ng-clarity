@@ -20,6 +20,7 @@ import { Subject } from 'rxjs';
  * ```ts
  * @Component({
  *   selector: 'clr-button-group',
+  standalone: false,
  *   templateUrl: 'button-group.html',
  *   providers: [ClrDestroyService],
  * })

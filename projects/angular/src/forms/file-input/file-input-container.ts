@@ -17,6 +17,7 @@ import { ClrFileInput } from './file-input';
 
 @Component({
   selector: 'clr-file-input-container',
+  standalone: false,
   template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>

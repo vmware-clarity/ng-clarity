@@ -14,6 +14,7 @@ import { Directive, ElementRef, Inject, NgModule, Optional } from '@angular/core
  */
 @Directive({
   selector: '[cdkTrapFocus]',
+  standalone: false,
 })
 export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
   /**

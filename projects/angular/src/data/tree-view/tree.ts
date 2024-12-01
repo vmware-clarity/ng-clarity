@@ -24,6 +24,7 @@ import { ClrTreeNode } from './tree-node';
 
 @Component({
   selector: 'clr-tree',
+  standalone: false,
   template: `
     <ng-content></ng-content>
     <clr-recursive-children

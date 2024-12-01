@@ -51,6 +51,7 @@ export const domAdapterFactory = (platformId: any) => {
 // @dynamic (https://github.com/angular/angular/issues/19698#issuecomment-338340211)
 @Directive({
   selector: 'clr-datagrid',
+  standalone: false,
   providers: [{ provide: DomAdapter, useFactory: domAdapterFactory, deps: [PLATFORM_ID] }],
 })
 export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {

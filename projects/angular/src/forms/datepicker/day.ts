@@ -16,6 +16,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
 
 @Component({
   selector: 'clr-day',
+  standalone: false,
   template: `
     <button
       class="day-btn"
