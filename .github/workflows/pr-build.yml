@@ -33,7 +33,7 @@ jobs:
         if: ${{matrix.angular == 'Angular v18' || matrix.angular == 'Angular v19'}}
         run: |
           npx ng update @angular/core@18 @angular/common@18 @angular/cli@18 @angular/cdk@18 --allow-dirty --force
-      - name: Update to Angular v18
+      - name: Update to Angular v19
         if: ${{matrix.angular == 'Angular v19'}}
         run: |
           npx ng update @angular/core@19 @angular/common@19 @angular/cli@19 @angular/cdk@19 --allow-dirty --force
