@@ -11,7 +11,8 @@
   "angularCompilerOptions": {
     "enableResourceInlining": true,
     "skipTemplateCodegen": true,
-    "strictMetadataEmit": true
+    "strictMetadataEmit": true,
+    "strictStandalone": true
   },
   "exclude": ["src/test.ts", "**/*.spec.ts", "**/*.stories.ts"]
 }
