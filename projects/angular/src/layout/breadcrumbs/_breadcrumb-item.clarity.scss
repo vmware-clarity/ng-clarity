@@ -10,9 +10,6 @@
 @use '@cds/core/tokens/tokens.scss';
 
 .clr-breadcrumb-menu {
-  display: flex;
-  list-style-type: none;
-
   .clr-breadcrumb-item {
     .clr-breadcrumb-delimiter {
       margin: 0 tokens.$cds-global-space-8;
@@ -26,13 +23,6 @@
   .active {
     color: var(--cds-alias-typography-color-400);
   }
-
-  // .clr-breadcrumb-item:last-child {
-  //   color: var(--cds-alias-typography-color-400);
-  //   .clr-breadcrumb-delimiter {
-  //     display: none;
-  //   }
-  // }
 
   .clr-breadcrumb-link:empty + .clr-breadcrumb-delimiter {
     display: none;

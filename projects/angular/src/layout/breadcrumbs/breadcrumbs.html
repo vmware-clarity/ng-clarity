@@ -1,17 +1,17 @@
-<ul class="clr-breadcrumb-menu">
+<div role="list" class="clr-breadcrumb-menu">
   <ng-template [ngIf]="items?.length">
     <clr-breadcrumb-item *ngIf="items.length > max && !isExpanded">
-      <a (click)="expand()" (keydown)="expand()" class="clr-breadcrumb-expand">
+      <span (click)="expand()" (keydown)="expand()" class="clr-breadcrumb-expand">
         <cds-icon shape="ellipsis-horizontal"></cds-icon>
-      </a>
+      </span>
     </clr-breadcrumb-item>
     <ng-container *ngFor="let breadcrumb of items | slice: -limit : items.length; let isLastItem=last">
       <clr-breadcrumb-item>
-        <a *ngIf="!isLastItem" (click)="handleItemClick(breadcrumb)" [routerLink]="breadcrumb?.url"
-          >{{ breadcrumb?.label }}</a
-        >
+        <a *ngIf="!isLastItem" (click)="handleItemClick(breadcrumb)" [routerLink]="breadcrumb?.url">
+          {{ breadcrumb?.label }}
+        </a>
         <span *ngIf="isLastItem" aria-current="page">{{ breadcrumb?.label }}</span>
       </clr-breadcrumb-item>
     </ng-container>
   </ng-template>
-</ul>
+</div>

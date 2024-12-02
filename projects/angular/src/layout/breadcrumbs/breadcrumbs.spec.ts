@@ -52,14 +52,13 @@ describe('ClrBreadcrumbs', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     breadcrumbs = fixture.debugElement.query(By.css('clr-breadcrumbs'));
-    breadcrumbList = breadcrumbs.query(By.css('ul'));
+    breadcrumbList = breadcrumbs.query(By.css('.clr-breadcrumb-menu'));
   });
   it('should create breadcrumbs component', () => {
     expect(component).toBeTruthy();
   });
 
   it('should have each breadcrumb as a clickable item which navigates to its corresponding page', fakeAsync(() => {
-    // const itemClickSpy = spyOn(component, 'handleItemClick');
     const item = breadcrumbList.queryAll(By.css('.clr-breadcrumb-link'))[1].query(By.css('a'));
     item.nativeElement.click();
     fixture.detectChanges();
@@ -78,20 +77,31 @@ describe('ClrBreadcrumbs', () => {
     expect(currentItem.children[0].children[0].nativeElement.textContent).toEqual('Last Page');
   });
 
-  it('should show collapsed state with ellipsis as the first breadcrumb if more then 3 nested pages', () => {
+  it('should show collapsed state with ellipsis as the first breadcrumb if more than 3 nested pages', () => {
     const firstItem = breadcrumbList.children[0];
     expect(
       firstItem.children[0].query(By.css('.clr-breadcrumb-expand')).children[0].nativeElement.getAttribute('shape')
     ).toEqual('ellipsis-horizontal');
   });
 
+  it('should not show collapsed state with ellipsis if less than 3 nested pages', () => {
+    component.menuItems = [
+      { label: 'Home', url: '/home' },
+      { label: 'Parent Page', url: '/parent' },
+      { label: 'Current Page', url: '/child' },
+    ];
+    fixture.detectChanges();
+    const firstItem = breadcrumbList.children[0];
+    expect(firstItem.children[0].children[0].nativeElement.textContent.trim()).toEqual('Home');
+  });
+
   it('should show last 3 breadcrumbs if more than 3 nested pages', () => {
     const firstItem = breadcrumbList.children[1];
     const secondItem = breadcrumbList.children[2];
     const thirdItem = breadcrumbList.children[3];
-    expect(firstItem.children[0].children[0].nativeElement.textContent).toEqual('Current Page');
-    expect(secondItem.children[0].children[0].nativeElement.textContent).toEqual('Grandchild Page');
-    expect(thirdItem.children[0].children[0].nativeElement.textContent).toEqual('Last Page');
+    expect(firstItem.children[0].children[0].nativeElement.textContent.trim()).toEqual('Current Page');
+    expect(secondItem.children[0].children[0].nativeElement.textContent.trim()).toEqual('Grandchild Page');
+    expect(thirdItem.children[0].children[0].nativeElement.textContent.trim()).toEqual('Last Page');
   });
 
   it('should show all breadcrumbs if breadcrumbs are expanded', () => {

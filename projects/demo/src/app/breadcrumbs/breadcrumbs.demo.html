@@ -23,7 +23,7 @@
         <a clrVerticalNavLink routerLink="./tools" routerLinkActive="active">Tools</a>
       </clr-vertical-nav>
       <div class="content-area">
-        <clr-breadcrumbs [items]="menuItems" (onItemClicked)="updateTitle($event)"></clr-breadcrumbs>
+        <clr-breadcrumbs [items]="menuItems" (clrBreadcrumbItemClick)="updateTitle($event)"></clr-breadcrumbs>
         <router-outlet></router-outlet>
       </div>
     </div>

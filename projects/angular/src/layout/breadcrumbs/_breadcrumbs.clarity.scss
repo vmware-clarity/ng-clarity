@@ -13,8 +13,7 @@
 .clr-breadcrumb-menu {
   display: flex;
   align-items: center;
-  list-style-type: none;
-  height: 24px; //tokens.$cds-global-space-24; --> Token is missing
+  height: 24px; //tokens.$cds-global-space-24; --> Token is missing in core
 
   .clr-breadcrumb-item {
     font-family: breadcrumb-variables.$clr-breadcrumb-font-family;
