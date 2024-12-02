@@ -12,7 +12,7 @@
     "enableResourceInlining": true,
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
-    "strictStandalone": true
+    "strictStandalone": false
   },
   "exclude": ["src/test.ts", "**/*.spec.ts", "**/*.stories.ts"]
 }
