@@ -66,7 +66,7 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @Input('clrModalClosable') closable = true;
   @Input('clrModalCloseButtonAriaLabel') closeButtonAriaLabel = this.commonStrings.keys.close;
-  @Input('clrModalSize') size: string;
+
   @Input('clrModalStaticBackdrop') staticBackdrop = true;
   @Input('clrModalSkipAnimation') skipAnimation = false;
 
@@ -82,6 +82,8 @@ export class ClrModal implements OnChanges, OnDestroy {
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
   private _pinned = false;
 
+  private _size: string;
+
   constructor(
     private _scrollingService: ScrollingService,
     public commonStrings: ClrCommonStringsService,
@@ -89,6 +91,21 @@ export class ClrModal implements OnChanges, OnDestroy {
     private configuration: ClrModalConfigurationService,
     private elementRef: ElementRef
   ) {}
+
+  @Input('clrModalSize')
+  get size(): string {
+    return this._size;
+  }
+
+  set size(value: string) {
+    if (this._size !== value) {
+      this._size = value;
+      if (this.pinnable && this.pinned) {
+        this.displayOverlapping();
+        this.displaySideBySide();
+      }
+    }
+  }
 
   get pinned(): boolean {
     return this._pinned;
