@@ -38,7 +38,7 @@
     &:not(.is-today) {
       border-radius: 0;
     }
-    background: datepicker-variables.$clr-calendar-in-range-cell-border-color;
+    background: datepicker-variables.$clr-calendar-in-range-cell-background-color;
   }
   &:focus {
     outline: tokens.$cds-alias-object-interaction-outline;
@@ -103,12 +103,12 @@
     border-radius: tokens.$cds-alias-object-border-radius-100;
     box-shadow: tokens.$cds-alias-object-shadow-100;
     z-index: map.get(variables.$clr-layers, dropdown-menu);
-    padding: var(--cds-global-space-7);
+    padding: datepicker-variables.$clr-calendar-padding;
     justify-content: space-between;
     .datepicker-view-manager {
       max-width: calc(datepicker-variables.$clr-calendar-width - mixins.baselinePx(2));
-      padding: 0 var(--cds-global-space-7);
-      margin: 0 calc(-1 * var(--cds-global-space-7));
+      padding: 0 datepicker-variables.$clr-calendar-padding;
+      margin: 0 calc(-1 * datepicker-variables.$clr-calendar-padding);
     }
     clr-daypicker,
     clr-monthpicker,
@@ -143,7 +143,7 @@
     width: datepicker-variables.$clr-calendar-options-width;
     flex-shrink: 0;
     border-radius: tokens.$cds-alias-object-border-radius-100;
-    padding: var(--cds-global-space-5) 0;
+    padding: tokens.$cds-global-space-5 0;
     .range-option {
       padding: tokens.$cds-global-space-5;
       padding-left: tokens.$cds-global-space-7;
@@ -157,8 +157,7 @@
       + .range-option {
         margin: tokens.$cds-global-space-5 0;
       }
-      &:hover,
-      &:focus {
+      &:hover {
         background-color: datepicker-variables.$clr-calendar-option-hover-background-color;
         outline: none;
       }

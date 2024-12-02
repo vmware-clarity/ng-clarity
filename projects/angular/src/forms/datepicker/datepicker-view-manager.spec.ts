@@ -22,6 +22,7 @@ export default function () {
   describe('Datepicker View Manager Component', () => {
     let context: TestContext<ClrDatepickerViewManager, TestComponent>;
     let viewManagerService: ViewManagerService;
+    let dateNavigationService: DateNavigationService;
     let hostElement;
 
     beforeEach(function () {
@@ -36,14 +37,23 @@ export default function () {
         DateFormControlService,
       ]);
       viewManagerService = context.getClarityProvider(ViewManagerService);
-      hostElement = context.clarityElement;
-      context.clarityElement = context.clarityElement.querySelector('.datepicker-view-manager');
+      dateNavigationService = context.getClarityProvider(DateNavigationService);
     });
 
     it('shows the daypicker when dayView is set to true', () => {
       expect(context.clarityDirective.isDayView).toBe(true);
       expect(context.clarityElement.children.length).toBe(1);
       expect(context.clarityElement.children[0].tagName).toBe('CLR-DAYPICKER');
+    });
+
+    it('shows the daypicker when dayView is set to true with range options', () => {
+      dateNavigationService.isRangePicker = true;
+      context.clarityDirective.dateRangeOptions = [{}];
+      context.fixture.detectChanges();
+      hostElement = context.clarityElement.querySelector('.datepicker-view-manager');
+      expect(context.clarityDirective.isDayView).toBe(true);
+      expect(hostElement.children.length).toBe(1);
+      expect(hostElement.children[0].tagName).toBe('CLR-DAYPICKER');
     });
 
     it('shows the monthpicker when monthView is set to true', () => {
@@ -65,7 +75,7 @@ export default function () {
     });
 
     it('has the .datepicker class added to the host', () => {
-      expect(hostElement.classList.contains('datepicker')).toBe(true);
+      expect(context.clarityElement.classList.contains('datepicker')).toBe(true);
     });
   });
 }

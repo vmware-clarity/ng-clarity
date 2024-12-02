@@ -74,16 +74,8 @@ export class DateIOService {
   }
 
   setRangeOptions(rangeOptions: DateRangeOption[]) {
-    let validatedRangeOption = this.validateDateRangeOptions(rangeOptions);
-    const hasCustomRangeOption = validatedRangeOption.findIndex(rangeOption => !!rangeOption.isCustomRange);
-    if (validatedRangeOption.length) {
-      if (hasCustomRangeOption === -1) {
-        validatedRangeOption = [...validatedRangeOption, { label: 'Custom Range', value: [], isCustomRange: true }];
-      }
-      this.dateRangeOptions = validatedRangeOption;
-    } else {
-      this.dateRangeOptions = [];
-    }
+    const validatedRangeOption = this.validateDateRangeOptions(rangeOptions);
+    this.dateRangeOptions = validatedRangeOption || [];
   }
 
   getRangeOptions() {
@@ -210,11 +202,9 @@ export class DateIOService {
     const validOptions = [];
     rangeOptions?.forEach((rangeOption: DateRangeOption) => {
       if (
-        !rangeOption.isCustomRange &&
-        (!rangeOption.value?.length ||
-          rangeOption.value?.length !== 2 ||
-          Object.prototype.toString.call(rangeOption?.value[0]) !== '[object Date]' ||
-          Object.prototype.toString.call(rangeOption?.value[1]) !== '[object Date]')
+        rangeOption?.value?.length !== 2 ||
+        Object.prototype.toString.call(rangeOption?.value[0]) !== '[object Date]' ||
+        Object.prototype.toString.call(rangeOption?.value[1]) !== '[object Date]'
       ) {
         return;
       }

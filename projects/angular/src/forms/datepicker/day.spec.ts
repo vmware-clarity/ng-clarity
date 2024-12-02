@@ -220,7 +220,8 @@ export default function () {
         context.detectChanges();
 
         expect(dateNavigationService.notifySelectedDayChanged).toHaveBeenCalledWith(
-          context.clarityDirective.dayView.dayModel
+          context.clarityDirective.dayView.dayModel,
+          true
         );
       });
 
