@@ -9,12 +9,12 @@ import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { BreadcrumbsDemo } from './breadcrumbs.demo';
-import { AngularDemo } from './pages/angular';
-import { Angular17Demo } from './pages/angular17';
-import { Angular18Demo } from './pages/angular18';
-import { FrameworkDemo } from './pages/framework';
-import { ReactDemo } from './pages/react';
+import { DanielSmithDemo } from './pages/daniel-smith';
+import { OilsDemo } from './pages/oils';
+import { PaintsDemo } from './pages/paints';
 import { ToolsDemo } from './pages/tools';
+import { WatercolorDemo } from './pages/watercolor';
+import { WinsorNewtonDemo } from './pages/winsor-newton';
 
 const ROUTES: Routes = [
   {
@@ -24,43 +24,42 @@ const ROUTES: Routes = [
       breadcrumb: 'Home',
     },
     children: [
-      { path: '', redirectTo: 'tools', pathMatch: 'full' },
+      { path: '', redirectTo: 'paints', pathMatch: 'full' },
       {
-        path: 'framework',
-        component: FrameworkDemo,
+        path: 'paints',
+        component: PaintsDemo,
         data: {
-          breadcrumb: 'Framework',
+          breadcrumb: 'Paints',
         },
         children: [
           {
-            path: 'angular',
-            component: AngularDemo,
+            path: 'watercolor',
+            component: WatercolorDemo,
             data: {
-              breadcrumb: 'Angular',
+              breadcrumb: 'Watercolor',
             },
             children: [
-              // { path: '', redirectTo: 'angular17', pathMatch: 'full' },
               {
-                path: 'angular17',
-                component: Angular17Demo,
+                path: 'daniel-smith',
+                component: DanielSmithDemo,
                 data: {
-                  breadcrumb: 'Angular 17',
+                  breadcrumb: 'Daniel Smith',
                 },
               },
               {
-                path: 'angular18',
-                component: Angular18Demo,
+                path: 'winsor-newton',
+                component: WinsorNewtonDemo,
                 data: {
-                  breadcrumb: 'Angular 18',
+                  breadcrumb: 'Winsor & Newton',
                 },
               },
             ],
           },
           {
-            path: 'react',
-            component: ReactDemo,
+            path: 'oils',
+            component: OilsDemo,
             data: {
-              breadcrumb: 'React',
+              breadcrumb: 'Oils',
             },
           },
         ],

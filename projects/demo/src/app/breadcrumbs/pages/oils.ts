@@ -8,13 +8,13 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-react-demo',
+  selector: 'clr-oils-demo',
   template: `
-    <h4 clrFocusOnViewInit>React JS</h4>
+    <h4 clrFocusOnViewInit>Oil Paints</h4>
     <p>
-      React is a JavaScript library for building user interfaces. React is used to build single-page applications. React
-      allows us to create reusable UI components.
+      Oil paints are a traditional medium for canvas painting. They dry slowly, allowing for more time to blend and work
+      with the colors.
     </p>
   `,
 })
-export class ReactDemo {}
+export class OilsDemo {}

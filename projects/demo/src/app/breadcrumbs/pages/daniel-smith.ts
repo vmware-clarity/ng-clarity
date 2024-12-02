@@ -8,10 +8,13 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-angular18-demo',
+  selector: 'clr-daniel-smith-demo',
   template: `
-    <h5 clrFocusOnViewInit>Angular 18</h5>
-    <p>Angular 18 description</p>
+    <h5 clrFocusOnViewInit>Daniel Smith Watercolors</h5>
+    <p>
+      Daniel Smith Extra Fine Watercolors are formulated for excellent performance - lightfastness, color value, tinting
+      strength, clarity, density and more.
+    </p>
   `,
 })
-export class Angular18Demo {}
+export class DanielSmithDemo {}

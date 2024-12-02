@@ -11,17 +11,15 @@ import { ClarityModule } from '@clr/angular';
 
 import { BreadcrumbsDemo } from './breadcrumbs.demo';
 import { ROUTING } from './breadcrumbs.demo.routing';
-import { BreadcrumbsDemoService } from './breadcrumbs.demo.service';
-import { AngularDemo } from './pages/angular';
-import { Angular17Demo } from './pages/angular17';
-import { Angular18Demo } from './pages/angular18';
-import { FrameworkDemo } from './pages/framework';
-import { ReactDemo } from './pages/react';
+import { DanielSmithDemo } from './pages/daniel-smith';
+import { OilsDemo } from './pages/oils';
+import { PaintsDemo } from './pages/paints';
+import { WatercolorDemo } from './pages/watercolor';
+import { WinsorNewtonDemo } from './pages/winsor-newton';
 
 @NgModule({
   imports: [CommonModule, ClarityModule, ROUTING],
-  declarations: [BreadcrumbsDemo, AngularDemo, ReactDemo, Angular17Demo, Angular18Demo, FrameworkDemo],
-  providers: [BreadcrumbsDemoService],
-  exports: [BreadcrumbsDemo, AngularDemo, ReactDemo, Angular17Demo, Angular18Demo, FrameworkDemo],
+  declarations: [BreadcrumbsDemo, PaintsDemo, OilsDemo, WatercolorDemo, WinsorNewtonDemo, DanielSmithDemo],
+  exports: [BreadcrumbsDemo, PaintsDemo, OilsDemo, WatercolorDemo, WinsorNewtonDemo, DanielSmithDemo],
 })
 export class BreadcrumbsDemoModule {}

@@ -7,18 +7,13 @@
 
 import { Component } from '@angular/core';
 
-export interface MenuItem {
-  label: string;
-  url: string;
-}
-
 @Component({
-  selector: 'clr-framework-demo',
-  template: `<h3>UI Frameworks</h3>
+  selector: 'clr-paints-demo',
+  template: `<h3>Paints</h3>
     <ul>
-      <li><a [routerLink]="['./angular']">Angular</a></li>
-      <li><a [routerLink]="['./react']">React</a></li>
+      <li><a [routerLink]="['./watercolor']">Watercolor</a></li>
+      <li><a [routerLink]="['./oils']">Oils</a></li>
     </ul>
     <router-outlet></router-outlet>`,
 })
-export class FrameworkDemo {}
+export class PaintsDemo {}
