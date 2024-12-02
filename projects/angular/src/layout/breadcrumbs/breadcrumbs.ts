@@ -21,18 +21,18 @@ import { BreadcrumbItem } from './model/breadcrumbs.model';
 })
 export class ClrBreadcrumbs {
   @Input() items: BreadcrumbItem[] = [];
-  @Output() onItemClicked = new EventEmitter<BreadcrumbItem>(null);
+  @Output() clrBreadcrumbItemClick: EventEmitter<BreadcrumbItem> = new EventEmitter<BreadcrumbItem>();
 
   isExpanded = false;
-  max = MAX_ITEMS;
-  limit = MAX_ITEMS;
+  max: number = MAX_ITEMS;
+  limit: number = MAX_ITEMS;
 
   handleItemClick(breadcrumb: BreadcrumbItem) {
-    this.onItemClicked.emit(breadcrumb);
+    this.clrBreadcrumbItemClick.emit(breadcrumb);
   }
 
   expand() {
     this.isExpanded = true;
-    this.limit = this.items.length;
+    this.limit = this.items?.length;
   }
 }

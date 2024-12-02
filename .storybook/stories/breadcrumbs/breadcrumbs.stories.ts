@@ -6,12 +6,19 @@
  */
 
 import { provideRouter, Routes } from '@angular/router';
+import { action } from '@storybook/addon-actions';
 import { applicationConfig, moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
 import { ClrBreadcrumbs, ClrBreadcrumbsModule } from '../../../projects/angular/src/layout/breadcrumbs';
 
 const menuItems = [
+  { label: 'Home', url: '/home' },
+  { label: 'Parent Page', url: '/parent' },
+  { label: 'Current Page', url: '/child' },
+];
+
+const menuItemsCollapsed = [
   { label: 'Home', url: '/home' },
   { label: 'Parent Page', url: '/parent' },
   { label: 'Current Page', url: '/child' },
@@ -51,43 +58,42 @@ export default {
   ],
   component: ClrBreadcrumbs,
   argTypes: {
+    //outputs
+    clrBreadcrumbItemClick: { control: { disable: true } },
+    //methods
+    expand: { control: { disable: true }, table: { disable: true } },
+    handleItemClick: { control: { disable: true }, table: { disable: true } },
     // story helpers
-    menuItems: { control: { disable: true }, table: { disable: true } },
+    items: { control: { disable: true } },
+    menuItemsCollapsed: { control: { disable: true }, table: { disable: true } },
+    menuItems: { control: 'object' },
   },
   args: {
     // story helpers
     menuItems,
+    menuItemsCollapsed,
+    clrBreadcrumbItemClick: action('clrBreadcrumItemClick'),
   },
 };
 
-// const BreadcrumbCustomTemplate: StoryFn = args => ({
-//   template: `
-//     <clr-breadcrumbs>
-//       <clr-breadcrumb-item>
-//         <a routerLink="./home" routerLinkActive="active">Home</a>
-//       </clr-breadcrumb-item>
-//       <clr-breadcrumb-item>
-//         <a routerLink="./parent" routerLinkActive="active">Parent Page</a>
-//       </clr-breadcrumb-item>
-//       <clr-breadcrumb-item>
-//         <span aria-current="page">Current Page</span>
-//       </clr-breadcrumb-item>
-//     </clr-breadcrumbs>
-//   `,
-//   props: args,
-// });
-
-const BreadcrumbRouterTemplate: StoryFn = args => ({
+const BreadcrumbInitialTemplate: StoryFn = args => ({
   template: `
     <clr-breadcrumbs [items]="menuItems"></clr-breadcrumbs>
   `,
   props: args,
 });
 
-export const BreadcrumbWithRouting: StoryObj = {
-  render: BreadcrumbRouterTemplate,
+const BreadcrumbCollapsedTemplate: StoryFn = args => ({
+  template: `
+    <clr-breadcrumbs [items]="menuItemsCollapsed"></clr-breadcrumbs>
+  `,
+  props: args,
+});
+
+export const Initial: StoryObj = {
+  render: BreadcrumbInitialTemplate,
 };
 
-// export const BreadcrumCustomTemplate: StoryObj = {
-//   render: BreadcrumbCustomTemplate,
-// };
+export const Collapsed: StoryObj = {
+  render: BreadcrumbCollapsedTemplate,
+};
