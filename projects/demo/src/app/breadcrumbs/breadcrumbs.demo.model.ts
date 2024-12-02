@@ -5,13 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'clr-angular17-demo',
-  template: `
-    <h5 clrFocusOnViewInit>Angular 17</h5>
-    <p>Angular 17 description</p>
-  `,
-})
-export class Angular17Demo {}
+export interface MenuItem {
+  label: string;
+  url: string;
+}

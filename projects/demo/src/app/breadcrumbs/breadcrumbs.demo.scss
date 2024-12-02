@@ -5,10 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+@import '../_utils/clarity-variables';
 
-@Component({
-  selector: 'clr-tools-demo',
-  template: `<h3>Tools</h3>`,
-})
-export class ToolsDemo {}
+.clr-breadcrumbs-example {
+  margin: $clr_baselineRem_2 0;
+}

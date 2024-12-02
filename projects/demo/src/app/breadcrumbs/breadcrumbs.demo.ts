@@ -9,30 +9,26 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { distinctUntilChanged, filter } from 'rxjs';
 
-import { BreadcrumbsDemoService, MenuItem } from './breadcrumbs.demo.service';
+import { MenuItem } from './breadcrumbs.demo.model';
 
 @Component({
   selector: 'clr-breadcrumbs-demo',
   templateUrl: './breadcrumbs.demo.html',
+  styleUrls: ['./breadcrumbs.demo.scss'],
 })
 export class BreadcrumbsDemo implements OnInit {
   menuItems = [];
 
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private breadcrumbsService: BreadcrumbsDemoService
-  ) {}
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.menuItems = this.createBreadcrumbs(this.activatedRoute.root);
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
         distinctUntilChanged()
       )
       .subscribe(() => (this.menuItems = this.createBreadcrumbs(this.activatedRoute.root)));
-
-    console.log('menu items', this.menuItems);
   }
 
   createBreadcrumbs(route: ActivatedRoute, url = '', breadcrumbs: MenuItem[] = []): MenuItem[] {
@@ -55,9 +51,5 @@ export class BreadcrumbsDemo implements OnInit {
     }
 
     return breadcrumbs;
-  }
-
-  updateTitle(breadcrumb: any) {
-    alert(breadcrumb?.label);
   }
 }
