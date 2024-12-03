@@ -9,6 +9,10 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'clr-tools-demo',
-  template: `<h3>Tools</h3>`,
+  template: `<h3>Tools</h3>
+    <p>
+      We have a wide selection of fine art materials and supplies. Find supplies for painting, drawing, sketching,
+      sculpting and more.
+    </p>`,
 })
 export class ToolsDemo {}

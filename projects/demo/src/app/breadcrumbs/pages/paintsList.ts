@@ -8,7 +8,12 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-watercolor-demo',
-  template: ` <router-outlet></router-outlet> `,
+  selector: 'clr-paints-list-demo',
+  template: `<h3>Paints</h3>
+    <p>We have the perfect Art paints to help you create stunning masterpieces</p>
+    <ul>
+      <li><a [routerLink]="['./watercolor']">Watercolor</a></li>
+      <li><a [routerLink]="['./oils']">Oils</a></li>
+    </ul> `,
 })
-export class WatercolorDemo {}
+export class PaintsListDemo {}

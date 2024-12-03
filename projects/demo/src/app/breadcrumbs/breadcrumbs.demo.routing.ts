@@ -9,11 +9,15 @@ import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { BreadcrumbsDemo } from './breadcrumbs.demo';
+import { WNCotmanDemo } from './pages/coltman';
 import { DanielSmithDemo } from './pages/daniel-smith';
 import { OilsDemo } from './pages/oils';
 import { PaintsDemo } from './pages/paints';
+import { PaintsListDemo } from './pages/paintsList';
+import { WNProfessionalDemo } from './pages/professional';
 import { ToolsDemo } from './pages/tools';
 import { WatercolorDemo } from './pages/watercolor';
+import { WatercolorListDemo } from './pages/watercolorList';
 import { WinsorNewtonDemo } from './pages/winsor-newton';
 
 const ROUTES: Routes = [
@@ -32,6 +36,7 @@ const ROUTES: Routes = [
           breadcrumb: 'Paints',
         },
         children: [
+          { path: '', component: PaintsListDemo },
           {
             path: 'watercolor',
             component: WatercolorDemo,
@@ -39,6 +44,7 @@ const ROUTES: Routes = [
               breadcrumb: 'Watercolor',
             },
             children: [
+              { path: '', component: WatercolorListDemo },
               {
                 path: 'daniel-smith',
                 component: DanielSmithDemo,
@@ -52,6 +58,22 @@ const ROUTES: Routes = [
                 data: {
                   breadcrumb: 'Winsor & Newton',
                 },
+                children: [
+                  {
+                    path: 'cotman',
+                    component: WNCotmanDemo,
+                    data: {
+                      breadcrumb: 'Cotman',
+                    },
+                  },
+                  {
+                    path: 'professional',
+                    component: WNProfessionalDemo,
+                    data: {
+                      breadcrumb: 'Professional',
+                    },
+                  },
+                ],
               },
             ],
           },

@@ -9,11 +9,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'clr-paints-demo',
-  template: `<h3>Paints</h3>
-    <ul>
-      <li><a [routerLink]="['./watercolor']">Watercolor</a></li>
-      <li><a [routerLink]="['./oils']">Oils</a></li>
-    </ul>
-    <router-outlet></router-outlet>`,
+  template: ` <router-outlet></router-outlet>`,
 })
 export class PaintsDemo {}

@@ -8,18 +8,13 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-winsor-newton-demo',
+  selector: 'clr-wn-professional-demo',
   template: `
-    <h5 clrFocusOnViewInit>Winsor & Newton</h5>
+    <h5 clrFocusOnViewInit>Winsor & Newton Professional Watercolor</h5>
     <p>
       Available in over 100 luminous colours and used by artists such as Turner and Sargent, our Professional
       Watercolour is formulated using only the purest pigments to ensure performance and permanence.
     </p>
-    <ul>
-      <li><a [routerLink]="['./cotman']">Winsor & Newton Cotman</a></li>
-      <li><a [routerLink]="['./professional']">Winsor & Newton Professional</a></li>
-    </ul>
-    <router-outlet></router-outlet>
   `,
 })
-export class WinsorNewtonDemo {}
+export class WNProfessionalDemo {}

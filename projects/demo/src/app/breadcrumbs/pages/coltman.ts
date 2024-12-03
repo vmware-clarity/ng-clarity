@@ -8,7 +8,12 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-watercolor-demo',
-  template: ` <router-outlet></router-outlet> `,
+  selector: 'clr-wn-cotman-demo',
+  template: `
+    <h5 clrFocusOnViewInit>Winsor & Newton Cotman</h5>
+    <p>
+      Cotman Watercolour. Accessible but uncompromising on quality with good tinting strength. Available in 48 colours.
+    </p>
+  `,
 })
-export class WatercolorDemo {}
+export class WNCotmanDemo {}
