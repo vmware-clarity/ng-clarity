@@ -8,6 +8,7 @@
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { TabsActionsAngularDemo } from './tabs-actions-angular';
 import { TabsAngularDemo } from './tabs-angular';
 import { TabsStaticDemo } from './tabs-static';
 import { TabsDemo } from './tabs.demo';
@@ -20,6 +21,7 @@ const ROUTES: Routes = [
       { path: '', redirectTo: 'static', pathMatch: 'full' },
       { path: 'static', component: TabsStaticDemo },
       { path: 'angular', component: TabsAngularDemo },
+      { path: 'actions-angular', component: TabsActionsAngularDemo },
     ],
   },
 ];
