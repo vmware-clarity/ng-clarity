@@ -340,8 +340,9 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
 
 // @public (undocumented)
 export class ClrAccordionTitle {
+    ariaLevel: number;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionTitle, "clr-accordion-title, clr-step-title", never, {}, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionTitle, "clr-accordion-title, clr-step-title", never, { "ariaLevel": "clrAriaLevel"; }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionTitle, never>;
 }

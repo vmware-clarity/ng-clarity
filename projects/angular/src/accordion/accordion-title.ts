@@ -21,5 +21,5 @@ export class ClrAccordionTitle {
   /**
    * Level of the accordion/stepper heading from 1 to 7. Default is 3.
    */
-  @Input('clrAccordionLevel') ariaLevel = 3;
+  @Input('clrAriaLevel') ariaLevel = 3;
 }

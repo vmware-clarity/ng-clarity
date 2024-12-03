@@ -18,7 +18,7 @@ import { ClrAccordionModule } from './accordion.module';
 class TestComponent {}
 
 @Component({
-  template: `<clr-accordion-title [clrAccordionLevel]="5">Hello world</clr-accordion-title>`,
+  template: `<clr-accordion-title [clrAriaLevel]="5">Hello world</clr-accordion-title>`,
 })
 class TestAriaLevelComponent {}
 
@@ -55,7 +55,7 @@ describe('ClrAccordionTitle', () => {
     });
   });
 
-  describe('View', () => {
+  describe('Aria', () => {
     let fixture: ComponentFixture<any>;
 
     beforeEach(() => {
