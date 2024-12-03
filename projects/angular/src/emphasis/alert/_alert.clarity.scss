@@ -19,8 +19,13 @@
   background: alert-variables.getAlertColor($alertType, bg-color);
   color: alert-variables.getAlertColor($alertType, color);
 
-  & a {
+  & .alert-items .alert-item a {
     color: alert-variables.getAlertColor($alertType, color);
+
+    cds-icon,
+    clr-icon {
+      fill: alert-variables.getAlertColor($alertType, color);
+    }
   }
 
   $border-prop: alert-variables.getAlertColor($alertType, border-color);
@@ -361,11 +366,6 @@
 
     .close {
       margin: var(--cds-global-space-4) 0;
-    }
-
-    .alert-action,
-    .dropdown-toggle {
-      text-decoration: none;
     }
   }
 

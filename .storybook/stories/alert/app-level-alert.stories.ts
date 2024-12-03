@@ -79,7 +79,13 @@ const template = `
     (clrAlertClosedChange)="clrAlertClosedChange($event)"
   >
     <clr-alert-item *ngFor="let _ of createArray(itemCount); let i = index">
-      <span class="alert-text">{{ content }} {{ i + 1 }}</span>
+      <span class="alert-text">
+        {{ content }} {{ i + 1 }}
+        <a href="javascript://">
+          <cds-icon shape="user"></cds-icon>
+          Reset to green
+        </a>
+      </span>
       <div *ngIf="showActions" class="alert-actions">
         <button class="btn alert-action">Fix</button>
         <button class="btn alert-action">Ignore</button>
@@ -122,7 +128,7 @@ const PaginatedTemplate: StoryFn = args => ({
   template: `
     <clr-alerts [clrCurrentAlertIndex]="clrCurrentAlertIndex">
       <clr-alert
-        *ngFor="let alert of ALERT_TYPES"
+        *ngFor="let alert of ALERT_TYPES; let i = index"
         [clrAlertAppLevel]="true"
         [clrAlertClosable]="clrAlertClosable"
         [clrAlertIcon]="clrAlertIcon"
@@ -131,7 +137,17 @@ const PaginatedTemplate: StoryFn = args => ({
         (clrAlertClosedChange)="clrAlertClosedChange($event)"
       >
         <clr-alert-item>
-          <span class="alert-text">{{ content }} {{ alert }}</span>
+          <span class="alert-text">
+            {{ content }} {{ i + 1 }}
+            <a href="javascript://">
+              <cds-icon shape="user"></cds-icon>
+              Reset to green
+            </a>
+          </span>
+          <div *ngIf="showActions" class="alert-actions">
+            <button class="btn alert-action">Fix</button>
+            <button class="btn alert-action">Ignore</button>
+          </div>
         </clr-alert-item>
       </clr-alert>
     </clr-alerts>
@@ -157,6 +173,16 @@ export const Paginated: StoryObj = {
   args: {
     ...paginatedArgs,
     clrAlertClosable: false,
+  },
+};
+
+export const PaginatedWithActions: StoryObj = {
+  render: PaginatedTemplate,
+  argTypes: paginatedArgTypes,
+  args: {
+    ...paginatedArgs,
+    clrAlertClosable: false,
+    showActions: true,
   },
 };
 
