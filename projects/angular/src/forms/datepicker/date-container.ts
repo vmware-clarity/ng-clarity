@@ -65,7 +65,6 @@ import { ViewManagerService } from './providers/view-manager.service';
             *clrPopoverContent="open; at: popoverPosition; outsideClickToClose: true; scrollToClose: true"
             cdkTrapFocus
           >
-            <ng-content select="clr-datepicker-actions" ngProjectAs="clr-datepicker-actions"></ng-content>
           </clr-datepicker-view-manager>
         </div>
         <cds-icon
@@ -150,7 +149,15 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
 
     if (this.dateNavigationService) {
       const tagName = elem.nativeElement.tagName.toLowerCase();
+      this.dateNavigationService.hasActionButtons = true;
       this.dateNavigationService.isRangePicker = tagName === 'clr-date-range-container';
+    }
+  }
+
+  @Input('showActionButtons')
+  set showActionButtons(flag: boolean) {
+    if (!this.dateNavigationService.isRangePicker) {
+      this.dateNavigationService.hasActionButtons = flag;
     }
   }
 

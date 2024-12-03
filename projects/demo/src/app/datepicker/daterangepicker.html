@@ -28,7 +28,7 @@
       <!-- Variant 1 -->
       <div class="card" data-heading="Date Picker">
         <div class="card-content">
-          <clr-date-container>
+          <clr-date-container [showActionButtons]="dateForm.get('showActionButtons')?.value">
             <label for="dateControl">Date</label>
             <input
               id="dateControl"
@@ -70,6 +70,7 @@
             [min]="dateForm.get('minDateV1').value"
             [max]="dateForm.get('maxDateV1').value"
             [rangeOptions]="dateForm.get('showRangeOptions')?.value ? dateRangeOptions: []"
+            [showActionButtons]="dateForm.get('showActionButtons')?.value"
           >
             <input
               id="startDateV1"
@@ -114,10 +115,6 @@
                 Start date must be less than End date
               </ng-container>
             </clr-control-error>
-            <clr-datepicker-actions *ngIf="dateForm.get('showActionButtons')?.value">
-              <button clrDatepickerCancelAction>Cancel</button>
-              <button clrDatepickerApplyAction>Apply</button>
-            </clr-datepicker-actions>
           </clr-date-range-container>
         </div>
         <div class="card-validations">

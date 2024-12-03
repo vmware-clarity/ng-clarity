@@ -12,6 +12,8 @@ export const commonStringsDefault: ClrCommonStrings = {
   close: 'Close',
   show: 'Show',
   hide: 'Hide',
+  apply: 'Apply',
+  cancel: 'Cancel',
   expand: 'Expand',
   collapse: 'Collapse',
   more: 'More',

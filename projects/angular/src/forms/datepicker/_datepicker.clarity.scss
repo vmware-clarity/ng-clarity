@@ -136,6 +136,9 @@
       button {
         margin-top: 0;
         margin-bottom: 0;
+        &.btn-primary {
+          margin-right: 0;
+        }
       }
     }
   }

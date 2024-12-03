@@ -29,5 +29,8 @@
   <clr-monthpicker *ngIf="isMonthView"></clr-monthpicker>
   <clr-yearpicker *ngIf="isYearView"></clr-yearpicker>
   <clr-daypicker *ngIf="isDayView"></clr-daypicker>
-  <ng-content select="clr-datepicker-actions"></ng-content>
+  <clr-datepicker-actions *ngIf="hasActionButtons">
+    <button clrDatepickerCancelAction>{{commonStrings.keys.cancel}}</button>
+    <button clrDatepickerApplyAction>{{commonStrings.keys.apply}}</button>
+  </clr-datepicker-actions>
 </ng-template>

@@ -5,28 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnDestroy, OnInit, Optional } from '@angular/core';
-
-import { DateNavigationService } from './providers/date-navigation.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'clr-datepicker-actions',
   templateUrl: './datepicker-actions.html',
 })
-export class ClrDatepickerActions implements OnInit, OnDestroy {
-  constructor(@Optional() private _dateNavigationService: DateNavigationService) {}
-
-  ngOnInit(): void {
-    this.toggleActionButtonFlag(true);
-  }
-
-  ngOnDestroy(): void {
-    this.toggleActionButtonFlag(false);
-  }
-
-  toggleActionButtonFlag(flag: boolean) {
-    if (this._dateNavigationService) {
-      this._dateNavigationService.hasActionButtons = flag;
-    }
-  }
-}
+export class ClrDatepickerActions {}
