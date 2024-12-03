@@ -23,6 +23,7 @@ import {
 } from '@angular/cdk/scrolling';
 import {
   AfterViewInit,
+  VERSION as ANGULAR_VERSION,
   ChangeDetectorRef,
   Directive,
   DoCheck,
@@ -356,8 +357,7 @@ function createCdkVirtualScrollViewport(
   viewportRuler: ViewportRuler,
   scrollable: CdkVirtualScrollable
 ) {
-  try {
-    // Angular 15–18 path
+  if (+ANGULAR_VERSION.major < 19) {
     return new CdkVirtualScrollViewport(
       datagridDivElementRef,
       changeDetectorRef,
@@ -368,8 +368,7 @@ function createCdkVirtualScrollViewport(
       viewportRuler,
       scrollable
     );
-  } catch (e) {
-    // Angular 19+ path
+  } else {
     const virtualScrollViewportInjector = Injector.create({
       parent: inject(EnvironmentInjector),
       providers: [
@@ -397,8 +396,7 @@ function createCdkVirtualForOfDirective<T>(
   virtualScrollViewport: CdkVirtualScrollViewport,
   ngZone: NgZone
 ) {
-  try {
-    // Angular 15–18 path
+  if (+ANGULAR_VERSION.major < 19) {
     return new CdkVirtualForOf<T>(
       viewContainerRef,
       templateRef,
@@ -407,8 +405,7 @@ function createCdkVirtualForOfDirective<T>(
       virtualScrollViewport,
       ngZone
     );
-  } catch (e) {
-    // Angular 19+ path
+  } else {
     const virtualScrollViewportInjector = Injector.create({
       parent: inject(EnvironmentInjector),
       providers: [{ provide: CdkVirtualScrollViewport, useValue: virtualScrollViewport }],
