@@ -43,7 +43,7 @@ export class BreadcrumbsDemo implements OnInit {
       if (routeURL !== '') {
         url += `/${routeURL}`;
       }
-      if (child.snapshot.data['breadcrumb']) {
+      if (child.snapshot.data['breadcrumb'] && child.snapshot.url.length) {
         breadcrumbs.push({ label: child.snapshot.data['breadcrumb'], url: url });
       }
 

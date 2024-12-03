@@ -9,4 +9,7 @@
 
 .clr-breadcrumbs-example {
   margin: $clr_baselineRem_2 0;
+  .breadcrumbs-content-area {
+    min-height: $clr_baselineRem_21_67;
+  }
 }

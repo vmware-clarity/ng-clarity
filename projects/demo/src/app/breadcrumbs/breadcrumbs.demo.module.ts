@@ -11,15 +11,41 @@ import { ClarityModule } from '@clr/angular';
 
 import { BreadcrumbsDemo } from './breadcrumbs.demo';
 import { ROUTING } from './breadcrumbs.demo.routing';
+import { WNCotmanDemo } from './pages/coltman';
 import { DanielSmithDemo } from './pages/daniel-smith';
 import { OilsDemo } from './pages/oils';
 import { PaintsDemo } from './pages/paints';
+import { PaintsListDemo } from './pages/paintsList';
+import { WNProfessionalDemo } from './pages/professional';
 import { WatercolorDemo } from './pages/watercolor';
+import { WatercolorListDemo } from './pages/watercolorList';
 import { WinsorNewtonDemo } from './pages/winsor-newton';
 
 @NgModule({
   imports: [CommonModule, ClarityModule, ROUTING],
-  declarations: [BreadcrumbsDemo, PaintsDemo, OilsDemo, WatercolorDemo, WinsorNewtonDemo, DanielSmithDemo],
-  exports: [BreadcrumbsDemo, PaintsDemo, OilsDemo, WatercolorDemo, WinsorNewtonDemo, DanielSmithDemo],
+  declarations: [
+    BreadcrumbsDemo,
+    PaintsDemo,
+    PaintsListDemo,
+    OilsDemo,
+    WatercolorDemo,
+    WNCotmanDemo,
+    WatercolorListDemo,
+    WinsorNewtonDemo,
+    WNProfessionalDemo,
+    DanielSmithDemo,
+  ],
+  exports: [
+    BreadcrumbsDemo,
+    PaintsDemo,
+    PaintsListDemo,
+    OilsDemo,
+    WatercolorDemo,
+    WNCotmanDemo,
+    WatercolorListDemo,
+    WinsorNewtonDemo,
+    WNProfessionalDemo,
+    DanielSmithDemo,
+  ],
 })
 export class BreadcrumbsDemoModule {}
