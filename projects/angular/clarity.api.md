@@ -235,7 +235,9 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
 // @public (undocumented)
 export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "AccordionService" needs to be exported by the entry point index.d.ts
-    constructor(accordionService: AccordionService);
+    constructor(el: ElementRef, accordionService: AccordionService);
+    // (undocumented)
+    el: ElementRef;
     // (undocumented)
     multiPanel: boolean | string;
     // (undocumented)
@@ -340,11 +342,14 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
 
 // @public (undocumented)
 export class ClrAccordionTitle {
-    ariaLevel: number;
+    constructor(parent: ClrAccordionContent);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionTitle, "clr-accordion-title, clr-step-title", never, { "ariaLevel": "clrAriaLevel"; }, {}, never, ["*"], false, never>;
+    get ariaLevel(): number;
+    _ariaLevel: number;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionTitle, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionTitle, "clr-accordion-title, clr-step-title", never, { "_ariaLevel": "clrAriaLevel"; }, {}, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionTitle, [{ optional: true; skipSelf: true; }]>;
 }
 
 // @public (undocumented)

@@ -5,7 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Optional, SkipSelf } from '@angular/core';
+
+import { ClrAccordionContent } from './accordion-content';
 
 @Component({
   selector: 'clr-accordion-title, clr-step-title',
@@ -19,7 +21,23 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class ClrAccordionTitle {
   /**
-   * Level of the accordion/stepper heading from 1 to 7. Default is 3.
+   * Level of the accordion/stepper heading from 1 to 7.
    */
-  @Input('clrAriaLevel') ariaLevel = 3;
+  @Input('clrAriaLevel') _ariaLevel: number;
+
+  constructor(
+    @SkipSelf()
+    @Optional()
+    private parent: ClrAccordionContent
+  ) {
+    console.log('clrAccordionTitle', parent);
+  }
+
+  get ariaLevel() {
+    if (this._ariaLevel) {
+      return this._ariaLevel;
+    }
+
+    return this.parent ? 4 : 3;
+  }
 }
