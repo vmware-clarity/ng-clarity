@@ -30,7 +30,6 @@ import { WrappedFormControl } from './wrapped-control';
  */
 @Component({
   selector: 'test-wrapper',
-  standalone: false,
   template: `<ng-content></ng-content>`,
   providers: [ControlIdService],
 })
@@ -40,7 +39,6 @@ class TestWrapper implements DynamicWrapper {
 
 @Directive({
   selector: '[testControl]',
-  standalone: false,
 })
 class TestControl extends WrappedFormControl<TestWrapper> {
   constructor(vcr: ViewContainerRef) {
@@ -50,7 +48,6 @@ class TestControl extends WrappedFormControl<TestWrapper> {
 
 @Component({
   selector: 'test-wrapper2',
-  standalone: false,
   template: `
     <div id="first"><ng-content></ng-content></div>
     <div id="second"><ng-content></ng-content></div>
@@ -63,7 +60,6 @@ class TestWrapper2 implements DynamicWrapper {
 
 @Directive({
   selector: '[testControl2]',
-  standalone: false,
 })
 class TestControl2 extends WrappedFormControl<TestWrapper2> {
   constructor(vcr: ViewContainerRef) {
@@ -73,7 +69,6 @@ class TestControl2 extends WrappedFormControl<TestWrapper2> {
 
 @Component({
   selector: 'test-wrapper3',
-  standalone: false,
   template: `<div id="wrapper"><ng-content></ng-content></div>`,
   providers: [ControlIdService, NgControlService, IfControlStateService, ControlClassService],
 })
@@ -83,7 +78,6 @@ class TestWrapper3 extends ClrAbstractContainer implements DynamicWrapper {
 
 @Directive({
   selector: '[testControl3]',
-  standalone: false,
 })
 class TestControl3 extends WrappedFormControl<TestWrapper3> {
   constructor(
@@ -99,7 +93,6 @@ class TestControl3 extends WrappedFormControl<TestWrapper3> {
 
 @Component({
   selector: 'form-wrapper',
-  standalone: false,
   template: `<div id="form-wrapper"><ng-content></ng-content></div>`,
   providers: [MarkControlService, LayoutService],
 })

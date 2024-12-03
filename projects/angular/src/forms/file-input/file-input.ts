@@ -29,7 +29,6 @@ export interface ClrFileInputSelection {
 
 @Directive({
   selector: 'input[type="file"][clrFileInput]',
-  standalone: false,
   host: {
     '[class.clr-file-input]': 'true',
   },

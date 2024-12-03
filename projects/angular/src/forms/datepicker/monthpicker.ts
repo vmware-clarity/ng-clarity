@@ -16,7 +16,6 @@ import { ViewManagerService } from './providers/view-manager.service';
 
 @Component({
   selector: 'clr-monthpicker',
-  standalone: false,
   template: `
     <button
       type="button"

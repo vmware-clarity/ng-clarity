@@ -45,7 +45,6 @@ let nbRow = 0;
 
 @Component({
   selector: 'clr-dg-row',
-  standalone: false,
   templateUrl: './datagrid-row.html',
   host: {
     '[class.datagrid-row]': 'true',

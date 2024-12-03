@@ -14,7 +14,6 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
 @Directive({
   // We support both selectors for legacy reasons
   selector: '[clrDropdownTrigger],[clrDropdownToggle]',
-  standalone: false,
   host: {
     '[class.dropdown-toggle]': 'isRootLevelToggle',
     '[class.dropdown-item]': '!isRootLevelToggle',

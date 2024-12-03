@@ -11,7 +11,6 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Directive({
   selector: '[clrStackInput]',
-  standalone: false,
   host: {
     '[class.clr-input]': 'true',
     '[attr.aria-labelledby]': 'uniqueId',

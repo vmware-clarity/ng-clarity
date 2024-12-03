@@ -19,7 +19,6 @@ import { Component } from '@angular/core';
  */
 @Component({
   selector: 'clr-timeline-step-title',
-  standalone: false,
   template: `<ng-content></ng-content>`,
   host: { '[class.clr-timeline-step-title]': 'true', '[attr.aria-hidden]': 'true' },
 })

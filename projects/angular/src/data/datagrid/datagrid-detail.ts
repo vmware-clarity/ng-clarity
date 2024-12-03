@@ -13,7 +13,6 @@ import { DetailService } from './providers/detail.service';
 
 @Component({
   selector: 'clr-dg-detail',
-  standalone: false,
   host: {
     '[class.datagrid-detail-pane]': 'true',
   },

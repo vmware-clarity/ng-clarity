@@ -17,7 +17,6 @@ import { ClrTabsModule } from './tabs.module';
 
 @Component({
   selector: 'test-wrapper',
-  standalone: false,
   template: `<ng-container #tabContentViewContainer></ng-container>`,
 })
 class TestWrapper {

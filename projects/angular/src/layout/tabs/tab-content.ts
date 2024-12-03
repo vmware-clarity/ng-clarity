@@ -14,7 +14,6 @@ let nbTabContentComponents = 0;
 
 @Component({
   selector: 'clr-tab-content',
-  standalone: false,
   template: `
     <ng-template #tabContentProjectedRef>
       <section

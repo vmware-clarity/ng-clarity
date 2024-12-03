@@ -9,7 +9,6 @@ import { Directive, ElementRef } from '@angular/core';
 
 @Directive({
   selector: '.clr-treenode-link',
-  standalone: false,
 })
 export class ClrTreeNodeLink {
   constructor(private el: ElementRef<HTMLElement>) {}

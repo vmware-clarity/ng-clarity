@@ -14,7 +14,6 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
 
 @Component({
   selector: 'clr-button',
-  standalone: false,
   template: `
     <ng-template #buttonProjectedRef>
       <button

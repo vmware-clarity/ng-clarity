@@ -16,7 +16,6 @@ const MIN_BUTTON_WIDTH = 42;
 
 @Component({
   selector: 'button[clrLoading]',
-  standalone: false,
   template: `
     <span @parent [ngSwitch]="state">
       <ng-container *ngSwitchCase="buttonState.LOADING">

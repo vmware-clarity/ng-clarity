@@ -30,7 +30,6 @@ import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
 
 @Component({
   selector: 'clr-dg-string-filter',
-  standalone: false,
   providers: [{ provide: CustomFilter, useExisting: DatagridStringFilter }],
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">

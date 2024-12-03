@@ -14,7 +14,6 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 @Component({
   selector: 'test-host',
-  standalone: false,
   template:
     '<button #testAnchor clrPopoverOpenCloseButton (clrPopoverOpenCloseChange)="updateOpenState($event)">Smart' +
     ' Open Close' +

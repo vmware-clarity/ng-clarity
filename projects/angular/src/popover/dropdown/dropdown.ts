@@ -16,7 +16,6 @@ import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdow
 
 @Component({
   selector: 'clr-dropdown',
-  standalone: false,
   template: '<ng-content></ng-content>',
   host: {
     '[class.dropdown]': 'true',

@@ -11,7 +11,6 @@ import { PageCollectionService } from './providers/page-collection.service';
 
 @Component({
   selector: 'clr-wizard-stepnav',
-  standalone: false,
   template: `
     <div class="clr-wizard-stepnav-list">
       <div

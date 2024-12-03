@@ -27,7 +27,6 @@ import { ClrPasswordContainer, TOGGLE_SERVICE } from './password-container';
 
 @Directive({
   selector: '[clrPassword]',
-  standalone: false,
   host: { '[class.clr-input]': 'true' },
 })
 export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit, OnDestroy {

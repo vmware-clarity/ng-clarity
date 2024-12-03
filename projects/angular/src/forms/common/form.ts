@@ -13,7 +13,6 @@ import { MarkControlService } from './providers/mark-control.service';
 
 @Directive({
   selector: '[clrForm]',
-  standalone: false,
   providers: [LayoutService, MarkControlService],
   host: {
     '[class.clr-form]': 'true',

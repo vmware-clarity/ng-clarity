@@ -17,7 +17,6 @@ import { ViewManagerService } from './providers/view-manager.service';
 
 @Component({
   selector: 'clr-yearpicker',
-  standalone: false,
   template: `
     <div class="year-switchers">
       <button

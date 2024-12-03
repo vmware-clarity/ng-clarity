@@ -11,6 +11,5 @@ import { WillyWonka } from '../../../utils/chocolate/willy-wonka';
 
 @Directive({
   selector: 'clr-main-container',
-  standalone: false,
 })
 export class MainContainerWillyWonka extends WillyWonka {}

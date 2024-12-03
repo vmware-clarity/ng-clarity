@@ -11,6 +11,5 @@ import { WillyWonka } from '../../../utils/chocolate/willy-wonka';
 
 @Directive({
   selector: 'clr-tabs',
-  standalone: false,
 })
 export class TabsWillyWonka extends WillyWonka {}

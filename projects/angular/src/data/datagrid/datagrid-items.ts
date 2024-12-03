@@ -23,7 +23,6 @@ import { Items } from './providers/items';
 
 @Directive({
   selector: '[clrDgItems][clrDgItemsOf]',
-  standalone: false,
 })
 export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
   private iterableProxy: NgForOf<T>;

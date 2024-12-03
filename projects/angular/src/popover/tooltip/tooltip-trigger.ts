@@ -14,7 +14,6 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
 
 @Directive({
   selector: '[clrTooltipTrigger]',
-  standalone: false,
   host: {
     tabindex: '0',
     '[class.tooltip-trigger]': 'true',

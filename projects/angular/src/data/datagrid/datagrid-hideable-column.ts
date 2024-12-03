@@ -25,7 +25,6 @@ import { ColumnsService } from './providers/columns.service';
 
 @Directive({
   selector: '[clrDgHideableColumn]',
-  standalone: false,
 })
 
 /**

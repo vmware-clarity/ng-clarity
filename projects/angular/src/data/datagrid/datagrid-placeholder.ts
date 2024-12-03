@@ -11,7 +11,6 @@ import { Items } from './providers/items';
 
 @Component({
   selector: 'clr-dg-placeholder',
-  standalone: false,
   template: `
     <div class="datagrid-placeholder" [class.datagrid-empty]="emptyDatagrid">
       <div class="datagrid-placeholder-image" *ngIf="emptyDatagrid"></div>

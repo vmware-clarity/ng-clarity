@@ -54,7 +54,6 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
 
 @Component({
   selector: 'clr-datagrid',
-  standalone: false,
   templateUrl: './datagrid.html',
   providers: [
     Selection,

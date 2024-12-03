@@ -38,7 +38,6 @@ import { ClrWizardTitle } from './wizard-title';
 
 @Component({
   selector: 'clr-wizard',
-  standalone: false,
   providers: [WizardNavigationService, PageCollectionService, ButtonHubService, HeaderActionService],
   templateUrl: './wizard.html',
   host: {

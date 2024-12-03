@@ -9,7 +9,6 @@ import { Directive } from '@angular/core';
 
 @Directive({
   selector: '[clrTabAction]',
-  standalone: false,
   host: {
     tabindex: '0',
   },

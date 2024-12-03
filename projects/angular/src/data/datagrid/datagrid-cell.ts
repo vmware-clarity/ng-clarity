@@ -13,7 +13,6 @@ import { WrappedCell } from './wrapped-cell';
 
 @Component({
   selector: 'clr-dg-cell',
-  standalone: false,
   template: `<ng-content></ng-content>`,
   host: {
     '[class.datagrid-cell]': 'true',

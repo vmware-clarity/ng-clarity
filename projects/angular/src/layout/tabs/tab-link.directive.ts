@@ -26,7 +26,6 @@ let nbTabLinkComponents = 0;
 
 @Directive({
   selector: '[clrTabLink]',
-  standalone: false,
   host: {
     '[class.btn]': 'true',
     role: 'tab',

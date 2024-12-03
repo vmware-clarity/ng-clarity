@@ -13,7 +13,6 @@ import { ControlIdService } from './providers/control-id.service';
 
 @Component({
   selector: 'clr-control-success',
-  standalone: false,
   template: `<ng-content></ng-content>`,
   host: {
     '[class.clr-subtext]': 'true',

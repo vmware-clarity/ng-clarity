@@ -16,7 +16,6 @@ import { POPOVER_HOST_ANCHOR } from './popover-host-anchor.token';
 
 @Component({
   selector: 'test-popover',
-  standalone: false,
   template: `<div class="test-popover">Popover</div>`,
 })
 class TestPopover extends AbstractPopover {
@@ -54,7 +53,6 @@ class InputFocusPopover {
 
 @Component({
   selector: 'test-popover-ignore',
-  standalone: false,
   template: `<div class="test-popover">Popover</div>`,
 })
 class TestPopoverIgnoreElement extends AbstractPopover {

@@ -34,7 +34,6 @@ const POSITIONS: string[] = [
 
 @Component({
   selector: 'clr-signpost-content',
-  standalone: false,
   template: `
     <div class="signpost-wrap">
       <div class="popover-pointer"></div>

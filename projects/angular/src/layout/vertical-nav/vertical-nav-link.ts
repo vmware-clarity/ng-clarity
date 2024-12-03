@@ -13,7 +13,6 @@ import { VerticalNavGroupService } from './providers/vertical-nav-group.service'
 
 @Component({
   selector: '[clrVerticalNavLink]',
-  standalone: false,
   template: `
     <ng-content select="[clrVerticalNavIcon]"></ng-content>
     <span class="nav-text">

@@ -24,7 +24,6 @@ import { IfExpandService } from './if-expanded.service';
 
 @Directive({
   selector: '[clrIfExpanded]',
-  standalone: false,
 })
 export class ClrIfExpanded implements OnInit, OnDestroy {
   @Output('clrIfExpandedChange') expandedChange = new EventEmitter<boolean>(true);

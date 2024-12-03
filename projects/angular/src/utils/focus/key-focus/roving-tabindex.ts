@@ -13,7 +13,6 @@ import { ClrKeyFocus } from './key-focus';
 
 @Component({
   selector: '[clrRovingTabindex]',
-  standalone: false,
   template: '<ng-content></ng-content>',
 })
 export class ClrRovingTabindex extends ClrKeyFocus {

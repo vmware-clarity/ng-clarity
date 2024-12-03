@@ -113,7 +113,6 @@ class SimpleTest {
 
 @Component({
   selector: 'test-counter',
-  standalone: false,
   template: `{{ count }}`,
 })
 class TestCounter {

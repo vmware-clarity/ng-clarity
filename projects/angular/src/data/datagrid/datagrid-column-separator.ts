@@ -20,7 +20,6 @@ const KEYBOARD_RESIZE_LENGTH = 12;
 
 @Component({
   selector: 'clr-dg-column-separator',
-  standalone: false,
   template: `
     <button
       type="button"

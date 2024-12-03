@@ -9,7 +9,6 @@ import { Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output, 
 
 @Directive({
   selector: '[clrOutsideClick]',
-  standalone: false,
 })
 export class OutsideClick implements OnDestroy {
   @Input('clrStrict') strict = false;

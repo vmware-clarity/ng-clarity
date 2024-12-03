@@ -26,7 +26,6 @@ import { AccordionService } from './providers/accordion.service';
 
 @Component({
   selector: 'clr-accordion',
-  standalone: false,
   template: `<ng-content></ng-content>`,
   host: { '[class.clr-accordion]': 'true' },
   providers: [AccordionService],

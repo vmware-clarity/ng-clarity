@@ -43,7 +43,6 @@ import { WrappedColumn } from './wrapped-column';
 
 @Component({
   selector: 'clr-dg-column',
-  standalone: false,
   template: `
     <div class="datagrid-column-flex">
       <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button">

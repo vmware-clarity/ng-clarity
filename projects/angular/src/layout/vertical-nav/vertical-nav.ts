@@ -15,7 +15,6 @@ import { VerticalNavService } from './providers/vertical-nav.service';
 
 @Component({
   selector: 'clr-vertical-nav',
-  standalone: false,
   templateUrl: './vertical-nav.html',
   providers: [VerticalNavService, VerticalNavIconService, VerticalNavGroupRegistrationService],
   host: {

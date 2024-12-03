@@ -19,7 +19,6 @@ import { DatagridRenderOrganizer } from './render-organizer';
 
 @Directive({
   selector: 'clr-dg-column',
-  standalone: false,
   providers: [ColumnResizerService, COLUMN_STATE_PROVIDER],
 })
 export class DatagridHeaderRenderer implements OnDestroy {

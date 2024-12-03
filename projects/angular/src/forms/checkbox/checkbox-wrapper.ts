@@ -20,7 +20,6 @@ export const IS_TOGGLE_PROVIDER = { provide: IS_TOGGLE, useFactory: isToggleFact
 
 @Component({
   selector: 'clr-checkbox-wrapper,clr-toggle-wrapper',
-  standalone: false,
   template: `
     <ng-content select="[clrCheckbox],[clrToggle]"></ng-content>
     <ng-content select="label"></ng-content>

@@ -23,7 +23,6 @@ import { ColumnsService } from './providers/columns.service';
 
 @Component({
   selector: 'clr-dg-column-toggle',
-  standalone: false,
   template: `
     <button
       role="button"

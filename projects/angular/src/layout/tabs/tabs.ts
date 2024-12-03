@@ -36,7 +36,6 @@ import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
 
 @Component({
   selector: 'clr-tabs',
-  standalone: false,
   template: `
     <ul
       class="nav"

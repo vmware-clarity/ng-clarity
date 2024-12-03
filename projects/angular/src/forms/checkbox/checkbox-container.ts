@@ -17,7 +17,6 @@ import { ClrCheckbox } from './checkbox';
 
 @Component({
   selector: 'clr-checkbox-container,clr-toggle-container',
-  standalone: false,
   template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>

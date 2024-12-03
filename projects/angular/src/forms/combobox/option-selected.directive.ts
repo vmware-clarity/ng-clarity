@@ -9,7 +9,6 @@ import { Directive, Input, TemplateRef } from '@angular/core';
 
 @Directive({
   selector: '[clrOptionSelected]',
-  standalone: false,
 })
 export class ClrOptionSelected<T> {
   @Input('clrOptionSelected') selected: T;

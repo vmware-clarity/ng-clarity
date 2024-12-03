@@ -11,7 +11,6 @@ import { Subscription } from 'rxjs';
 
 @Directive({
   selector: '[clrAriaCurrentLink]',
-  standalone: false,
   host: { '[attr.aria-current]': 'ariaCurrent' },
 })
 export class ClrAriaCurrentLink implements OnInit, OnDestroy {

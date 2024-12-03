@@ -12,7 +12,6 @@ import { ClrPopoverToggleService } from '../popover/providers/popover-toggle.ser
 
 @Directive({
   selector: '[clrIfOpen]',
-  standalone: false,
 })
 
 /**********

@@ -13,7 +13,6 @@ import { ClrInputContainer } from './input-container';
 
 @Directive({
   selector: '[clrInput]',
-  standalone: false,
   host: { '[class.clr-input]': 'true' },
 })
 export class ClrInput extends WrappedFormControl<ClrInputContainer> {

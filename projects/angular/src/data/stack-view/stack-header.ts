@@ -11,7 +11,6 @@ import { ClrStackView } from './stack-view';
 
 @Component({
   selector: 'clr-stack-header',
-  standalone: false,
   template: `
     <div class="stack-header">
       <h4 class="stack-title"><ng-content></ng-content></h4>

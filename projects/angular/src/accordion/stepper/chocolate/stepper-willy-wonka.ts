@@ -11,6 +11,5 @@ import { WillyWonka } from '../../../utils/chocolate/willy-wonka';
 
 @Directive({
   selector: 'form[clrStepper]',
-  standalone: false,
 })
 export class StepperWillyWonka extends WillyWonka {}

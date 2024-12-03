@@ -14,7 +14,6 @@ import { ClrWizardPage } from './wizard-page';
 
 @Component({
   selector: '[clr-wizard-stepnav-item]',
-  standalone: false,
   template: `
     <button
       type="button"

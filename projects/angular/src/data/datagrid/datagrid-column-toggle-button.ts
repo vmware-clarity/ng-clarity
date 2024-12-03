@@ -15,7 +15,6 @@ import { ColumnsService } from './providers/columns.service';
 
 @Component({
   selector: 'clr-dg-column-toggle-button',
-  standalone: false,
   template: `
     <button
       class="btn btn-sm btn-link switch-button"

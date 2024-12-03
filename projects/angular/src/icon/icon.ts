@@ -9,7 +9,6 @@ import { Directive } from '@angular/core';
 
 @Directive({
   selector: 'clr-icon',
-  standalone: false,
 })
 export class ClrIconCustomTag {
   // No behavior
@@ -18,7 +17,6 @@ export class ClrIconCustomTag {
 
 @Directive({
   selector: 'cds-icon',
-  standalone: false,
 })
 export class CdsIconCustomTag {
   // No behavior

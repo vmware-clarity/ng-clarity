@@ -18,7 +18,6 @@ const WRAPPER_SERVICE = new InjectionToken<number>('WrapperService');
 
 @Component({
   selector: 'wrapper-component',
-  standalone: false,
   template: `Hello <ng-content></ng-content>!`,
   providers: [{ provide: WRAPPER_SERVICE, useValue: 42 }],
 })
@@ -28,7 +27,6 @@ class WrapperComponent implements DynamicWrapper {
 
 @Directive({
   selector: '[wrappedDirective]',
-  standalone: false,
 })
 class WrappedDirective implements OnInit {
   injected: number;

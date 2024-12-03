@@ -11,7 +11,6 @@ export type ClrTabsActionsPosition = 'left' | 'right';
 
 @Component({
   selector: 'clr-tabs-actions',
-  standalone: false,
   template: `
     <div class="tabs-actions-wrapper">
       <ng-content></ng-content>

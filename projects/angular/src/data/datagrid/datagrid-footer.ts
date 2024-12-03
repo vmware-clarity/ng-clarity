@@ -15,7 +15,6 @@ import { Selection } from './providers/selection';
 
 @Component({
   selector: 'clr-dg-footer',
-  standalone: false,
   template: `
     <ng-container *ngIf="selection.selectionType === SELECTION_TYPE.Multi && selection.current.length > 0">
       <div class="clr-form-control-disabled">

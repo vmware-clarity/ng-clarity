@@ -12,7 +12,6 @@ import { DateIOService } from './providers/date-io.service';
 
 @Directive({
   selector: '[clrDate]',
-  standalone: false,
   providers: [{ provide: NG_VALIDATORS, useExisting: ClrDateInputValidator, multi: true }],
 })
 export class ClrDateInputValidator implements Validator {

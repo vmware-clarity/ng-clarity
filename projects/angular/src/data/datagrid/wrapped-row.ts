@@ -11,7 +11,6 @@ import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 
 @Component({
   selector: 'dg-wrapped-row',
-  standalone: false,
   template: `
     <ng-template #rowPortal>
       <ng-content></ng-content>

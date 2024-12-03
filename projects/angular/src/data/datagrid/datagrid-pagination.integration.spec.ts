@@ -38,7 +38,6 @@ class IntegrationTest {
  */
 @Directive({
   selector: '[instantiationCounter]',
-  standalone: false,
 })
 class InstantiationCounter {
   static total = 0;

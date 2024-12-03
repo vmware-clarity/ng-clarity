@@ -13,7 +13,6 @@ import { ViewManagerService } from './providers/view-manager.service';
 
 @Component({
   selector: 'clr-datepicker-view-manager',
-  standalone: false,
   templateUrl: './datepicker-view-manager.html',
   providers: [DatepickerFocusService],
   host: {

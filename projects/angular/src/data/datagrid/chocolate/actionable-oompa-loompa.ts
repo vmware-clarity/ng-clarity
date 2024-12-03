@@ -13,7 +13,6 @@ import { DatagridWillyWonka } from './datagrid-willy-wonka';
 
 @Directive({
   selector: 'clr-datagrid, clr-dg-row',
-  standalone: false,
 })
 export class ActionableOompaLoompa extends OompaLoompa {
   private rowActions: RowActionService;

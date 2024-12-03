@@ -9,7 +9,6 @@ import { Directive, TemplateRef } from '@angular/core';
 
 @Directive({
   selector: '[clrPageHeaderActions]',
-  standalone: false,
 })
 export class ClrWizardPageHeaderActions {
   constructor(public pageHeaderActionsTemplateRef: TemplateRef<any>) {}

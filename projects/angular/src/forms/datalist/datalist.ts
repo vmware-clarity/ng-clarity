@@ -12,7 +12,6 @@ import { DatalistIdService } from './providers/datalist-id.service';
 
 @Directive({
   selector: 'datalist',
-  standalone: false,
   host: {
     '[id]': 'datalistId',
   },

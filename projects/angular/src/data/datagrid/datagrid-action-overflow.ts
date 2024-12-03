@@ -24,7 +24,6 @@ let clrDgActionId = 0;
 
 @Component({
   selector: 'clr-dg-action-overflow',
-  standalone: false,
   hostDirectives: [ClrPopoverHostDirective],
   template: `
     <button

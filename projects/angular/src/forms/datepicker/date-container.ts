@@ -30,7 +30,6 @@ import { ViewManagerService } from './providers/view-manager.service';
 
 @Component({
   selector: 'clr-date-container',
-  standalone: false,
   template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>

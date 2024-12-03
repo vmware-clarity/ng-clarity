@@ -11,7 +11,6 @@ import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 
 @Component({
   selector: 'dg-wrapped-column',
-  standalone: false,
   template: `
     <ng-template #columnPortal>
       <ng-content></ng-content>

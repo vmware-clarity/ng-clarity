@@ -18,7 +18,6 @@ export enum ClrStepButtonType {
 
 @Directive({
   selector: '[clrStepButton]',
-  standalone: false,
   host: {
     '[class.clr-step-button]': 'true',
     '[class.btn]': 'true',

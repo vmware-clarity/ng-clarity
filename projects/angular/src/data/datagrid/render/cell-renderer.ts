@@ -15,7 +15,6 @@ import { DatagridRenderOrganizer } from './render-organizer';
 
 @Directive({
   selector: 'clr-dg-cell',
-  standalone: false,
 })
 export class DatagridCellRenderer implements OnDestroy {
   private stateSubscription: Subscription;

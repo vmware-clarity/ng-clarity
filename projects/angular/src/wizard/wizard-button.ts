@@ -28,7 +28,6 @@ export const CUSTOM_BUTTON_TYPES: any = {
 
 @Component({
   selector: 'clr-wizard-button',
-  standalone: false,
   template: `
     <button
       type="button"

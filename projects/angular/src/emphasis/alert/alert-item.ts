@@ -11,7 +11,6 @@ import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 
 @Component({
   selector: 'clr-alert-item',
-  standalone: false,
   template: `
     <div class="alert-icon-wrapper">
       <clr-spinner class="alert-spinner" clrInline *ngIf="iconService.alertIconShape === 'loading'"></clr-spinner>

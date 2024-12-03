@@ -54,7 +54,6 @@ import { OptionSelectionService } from './providers/option-selection.service';
 
 @Component({
   selector: 'clr-combobox',
-  standalone: false,
   templateUrl: './combobox.html',
   providers: [
     OptionSelectionService,

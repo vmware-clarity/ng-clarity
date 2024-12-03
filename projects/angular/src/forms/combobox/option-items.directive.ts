@@ -24,7 +24,6 @@ import { OptionSelectionService } from './providers/option-selection.service';
 
 @Directive({
   selector: '[clrOptionItems][clrOptionItemsOf]',
-  standalone: false,
 })
 export class ClrOptionItems<T> implements DoCheck, OnDestroy {
   private iterableProxy: NgForOf<T>;

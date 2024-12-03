@@ -16,7 +16,6 @@ import { TreeFeaturesService } from './tree-features.service';
 
 @Component({
   selector: 'clr-recursive-children',
-  standalone: false,
   template: `
     <ng-container *ngIf="shouldRender()">
       <ng-container *ngFor="let child of parent?.children || children">

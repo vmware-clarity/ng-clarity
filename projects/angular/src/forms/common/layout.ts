@@ -11,7 +11,6 @@ import { ClrFormLayout, LayoutService } from './providers/layout.service';
 
 @Directive({
   selector: '[clrForm][clrLayout]',
-  standalone: false,
 })
 export class ClrLayout implements OnInit {
   @Input('clrLayout') layout: ClrFormLayout | string;

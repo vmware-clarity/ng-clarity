@@ -25,7 +25,6 @@ const defaultSize = 'sm';
 
 @Component({
   selector: 'clr-tooltip-content',
-  standalone: false,
   template: `<ng-content></ng-content>`,
   host: {
     '[class.tooltip-content]': 'true',

@@ -13,6 +13,5 @@ import { Directive } from '@angular/core';
  */
 @Directive({
   selector: '.alert-text',
-  standalone: false,
 })
 export class ClrAlertText {}

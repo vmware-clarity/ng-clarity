@@ -11,7 +11,6 @@ import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribut
 
 @Component({
   selector: 'clr-progress-bar',
-  standalone: false,
   template: `
     <progress [id]="id" [attr.max]="max" [attr.value]="value" [attr.data-displayval]="displayValue"></progress>
     <span *ngIf="displayStringValue()">{{ displayValue }}</span>
