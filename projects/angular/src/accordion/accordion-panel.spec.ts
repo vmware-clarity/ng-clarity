@@ -216,6 +216,7 @@ describe('ClrAccordionPanel', () => {
 
     it('should set the appropriate aria attribute values', () => {
       const panelRegion = panelElement.querySelector('[role="region"]');
+      const panelHeading = panelElement.querySelector('[role="heading"]');
       const headerButton = panelElement.querySelector('button');
 
       expect(panelRegion.getAttribute('aria-labelledby')).toBe(headerButton.getAttribute('id'));
@@ -225,6 +226,8 @@ describe('ClrAccordionPanel', () => {
       expect(headerButton.getAttribute('aria-expanded')).toBe('false');
       expect(headerButton.getAttribute('aria-controls')).toBe(panelRegion.getAttribute('id'));
       expect(headerButton.getAttribute('disabled')).toBe(null);
+
+      expect(panelHeading.getAttribute('aria-level')).toBe('3');
 
       headerButton.click();
       fixture.detectChanges();

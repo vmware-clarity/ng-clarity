@@ -235,9 +235,7 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
 // @public (undocumented)
 export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "AccordionService" needs to be exported by the entry point index.d.ts
-    constructor(el: ElementRef, accordionService: AccordionService);
-    // (undocumented)
-    el: ElementRef;
+    constructor(accordionService: AccordionService);
     // (undocumented)
     multiPanel: boolean | string;
     // (undocumented)
@@ -296,9 +294,12 @@ export class ClrAccordionModule {
 // @public (undocumented)
 export class ClrAccordionPanel implements OnInit, OnChanges {
     // Warning: (ae-forgotten-export) The symbol "IfExpandService" needs to be exported by the entry point index.d.ts
-    constructor(commonStrings: ClrCommonStringsService, accordionService: AccordionService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    constructor(parent: ClrAccordionPanel, commonStrings: ClrCommonStringsService, accordionService: AccordionService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
+    // (undocumented)
+    get ariaLevel(): number;
+    _ariaLevel: number;
     // (undocumented)
     collapsePanelOnAnimationDone(panel: AccordionPanelModel): void;
     // (undocumented)
@@ -329,27 +330,25 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     // (undocumented)
     panelOpenChange: EventEmitter<boolean>;
     // (undocumented)
+    parent: ClrAccordionPanel;
+    // (undocumented)
     protected stepCompleteText(panelNumber: number): string;
     // (undocumented)
     protected stepErrorText(panelNumber: number): string;
     // (undocumented)
     togglePanel(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": "clrAccordionPanelDisabled"; "panelOpen": "clrAccordionPanelOpen"; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": "clrAccordionPanelDisabled"; "panelOpen": "clrAccordionPanelOpen"; "_ariaLevel": "clrAriaLevel"; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
 }
 
 // @public (undocumented)
 export class ClrAccordionTitle {
-    constructor(parent: ClrAccordionContent);
     // (undocumented)
-    get ariaLevel(): number;
-    _ariaLevel: number;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionTitle, "clr-accordion-title, clr-step-title", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionTitle, "clr-accordion-title, clr-step-title", never, { "_ariaLevel": "clrAriaLevel"; }, {}, never, ["*"], false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionTitle, [{ optional: true; skipSelf: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionTitle, never>;
 }
 
 // @public (undocumented)
@@ -3919,7 +3918,7 @@ export class ClrStepperModule {
 
 // @public (undocumented)
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
-    constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    constructor(parent: ClrAccordionPanel, platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     // Warning: (ae-forgotten-export) The symbol "AccordionStatus" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -3938,9 +3937,11 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
+    parent: ClrAccordionPanel;
+    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-step-title", "clr-step-description", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [{ optional: true; skipSelf: true; }, null, null, { optional: true; }, { optional: true; }, null, null, null]>;
 }
 
 // @public (undocumented)

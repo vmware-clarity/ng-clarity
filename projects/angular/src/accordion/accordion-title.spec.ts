@@ -17,11 +17,6 @@ import { ClrAccordionModule } from './accordion.module';
 })
 class TestComponent {}
 
-@Component({
-  template: `<clr-accordion-title [clrAriaLevel]="5">Hello world</clr-accordion-title>`,
-})
-class TestAriaLevelComponent {}
-
 describe('ClrAccordionTitle', () => {
   describe('View', () => {
     let fixture: ComponentFixture<any>;
@@ -43,38 +38,6 @@ describe('ClrAccordionTitle', () => {
     it('adds a .clr-accordion-title class on the host element', () => {
       const accordionTitleElement = fixture.debugElement.query(By.directive(ClrAccordionTitle)).nativeElement;
       expect(accordionTitleElement.classList.contains('clr-accordion-title')).toBe(true);
-    });
-
-    it('clr-accordion-title have heading role and aria level of 3', () => {
-      const accordionTitleElement = fixture.debugElement.query(By.directive(ClrAccordionTitle))
-        .nativeElement as HTMLElement;
-
-      console.log(accordionTitleElement);
-      expect(accordionTitleElement.role).toBe('heading');
-      expect(accordionTitleElement.ariaLevel).toBe('3');
-    });
-  });
-
-  describe('Aria', () => {
-    let fixture: ComponentFixture<any>;
-
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        declarations: [TestAriaLevelComponent],
-        imports: [ClrAccordionModule],
-      });
-
-      fixture = TestBed.createComponent(TestAriaLevelComponent);
-      fixture.detectChanges();
-    });
-
-    it('clr-accordion-title have aria level of 5', () => {
-      const accordionTitleElement = fixture.debugElement.query(By.directive(ClrAccordionTitle))
-        .nativeElement as HTMLElement;
-
-      console.log(accordionTitleElement);
-      expect(accordionTitleElement.role).toBe('heading');
-      expect(accordionTitleElement.ariaLevel).toBe('5');
     });
   });
 });

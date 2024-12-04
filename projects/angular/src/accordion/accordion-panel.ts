@@ -15,9 +15,11 @@ import {
   Input,
   OnChanges,
   OnInit,
+  Optional,
   Output,
   QueryList,
   SimpleChanges,
+  SkipSelf,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -42,6 +44,11 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   @Input('clrAccordionPanelDisabled') @HostBinding('class.clr-accordion-panel-disabled') disabled = false;
   @Input('clrAccordionPanelOpen') panelOpen = false;
 
+  /**
+   * Level of the accordion/stepper heading from 1 to 7.
+   */
+  @Input('clrAriaLevel') _ariaLevel: number;
+
   @Output('clrAccordionPanelOpenChange') panelOpenChange = new EventEmitter<boolean>();
 
   @ContentChildren(ClrAccordionDescription) accordionDescription: QueryList<ClrAccordionDescription>;
@@ -52,11 +59,22 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   private _panelIndex: number;
 
   constructor(
+    @Optional()
+    @SkipSelf()
+    public parent: ClrAccordionPanel,
     public commonStrings: ClrCommonStringsService,
     private accordionService: AccordionService,
     private ifExpandService: IfExpandService,
     private cdr: ChangeDetectorRef
   ) {}
+
+  get ariaLevel() {
+    if (this._ariaLevel) {
+      return this._ariaLevel;
+    }
+
+    return this.parent ? 4 : 3;
+  }
 
   get id(): string {
     return this._id;
