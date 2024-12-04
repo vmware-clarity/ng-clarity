@@ -372,7 +372,7 @@
     top: 0;
     border-radius: signpost-variables.$clr-signpost-border-radius;
 
-    .clr-Signpost-title {
+    .clr-signpost-title {
       @include mixins.generate-typography-token('SECTION-12-SB-CPT');
     }
   }
