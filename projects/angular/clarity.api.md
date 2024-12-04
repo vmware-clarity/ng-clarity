@@ -538,7 +538,7 @@ export class ClrBreadcrumbItem {
     // (undocumented)
     delimiter: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbItem, "clr-breadcrumb-item", never, { "delimiter": "delimiter"; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbItem, "clr-breadcrumb-item", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbItem, never>;
 }
@@ -546,11 +546,23 @@ export class ClrBreadcrumbItem {
 // @public (undocumented)
 export class ClrBreadcrumbs {
     // (undocumented)
-    delimiter: string;
+    clrBreadcrumbItemClick: EventEmitter<BreadcrumbItem>;
     // (undocumented)
-    items: any[];
+    expand(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbs, "clr-breadcrumbs", never, { "items": "items"; "delimiter": "delimiter"; }, {}, never, ["*"], false, never>;
+    handleItemClick(breadcrumb: BreadcrumbItem): void;
+    // (undocumented)
+    isExpanded: boolean;
+    // Warning: (ae-forgotten-export) The symbol "BreadcrumbItem" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    items: BreadcrumbItem[];
+    // (undocumented)
+    limit: number;
+    // (undocumented)
+    max: number;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbs, "clr-breadcrumbs", never, { "items": "items"; }, { "clrBreadcrumbItemClick": "clrBreadcrumbItemClick"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbs, never>;
 }
