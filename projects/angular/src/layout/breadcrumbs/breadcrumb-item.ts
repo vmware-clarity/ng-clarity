@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { DELIMITER } from './breadcrumbs.constants';
 @Component({
@@ -21,7 +21,6 @@ import { DELIMITER } from './breadcrumbs.constants';
     class: 'clr-breadcrumb-item',
     '[attr.role]': '"list-item"',
   },
-  encapsulation: ViewEncapsulation.None,
 })
 export class ClrBreadcrumbItem {
   delimiter = DELIMITER;

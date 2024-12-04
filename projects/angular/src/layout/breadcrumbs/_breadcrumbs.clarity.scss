@@ -19,6 +19,9 @@
     font-family: breadcrumb-variables.$clr-breadcrumb-font-family;
     color: breadcrumb-variables.$clr-breadcrumb-link-color;
     @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+    a {
+      text-decoration: none;
+    }
   }
 
   .active {
