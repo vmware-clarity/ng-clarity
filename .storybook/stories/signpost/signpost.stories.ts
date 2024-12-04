@@ -53,6 +53,7 @@ const template = `
   <div style="padding: 250px; text-align: center">
     <clr-signpost>
       <clr-signpost-content [clrPosition]="clrPosition">
+        <clr-signpost-title>Title</clr-signpost-title>
         {{ content }}
       </clr-signpost-content>
     </clr-signpost>
