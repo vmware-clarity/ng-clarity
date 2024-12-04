@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './modal';
-export * from './modal.module';
-export * from './modal-configuration.service';
-export * from './modal-host.directive';
-export * from './side-panel.module';
-export * from './modal-body';
-export * from './side-panel';
+import { Directive } from '@angular/core';
+
+@Directive({
+  selector: '[clrModalHost]',
+  host: { '[class.clr-modal-host]': 'true' },
+})
+export class ClrModalHostDirective {}
