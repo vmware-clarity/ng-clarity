@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { provideRouter, Routes } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { action } from '@storybook/addon-actions';
 import { applicationConfig, moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
@@ -15,36 +15,18 @@ import { ClrBreadcrumbs, ClrBreadcrumbsModule } from '../../../projects/angular/
 const menuItems = [
   { label: 'Home', url: '/home' },
   { label: 'Parent Page', url: '/parent' },
-  { label: 'Current Page', url: '/child' },
+  { label: 'Child Page', url: '/child' },
 ];
 
 const menuItemsCollapsed = [
   { label: 'Home', url: '/home' },
   { label: 'Parent Page', url: '/parent' },
-  { label: 'Current Page', url: '/child' },
-  { label: 'Grandchild', url: '/grandchild' },
-  { label: 'Last', url: '/last' },
+  { label: 'Child Page', url: '/child' },
+  { label: 'Grandchild Page', url: '/grandchild' },
+  { label: 'Current Page', url: '/current' },
 ];
 
-const routes: Routes = [
-  {
-    path: 'home',
-    redirectTo: '/home',
-  },
-  {
-    path: 'parent',
-    redirectTo: '/parent',
-  },
-  {
-    path: 'child',
-    redirectTo: '/child',
-  },
-  {
-    path: '**',
-    redirectTo: 'home',
-    pathMatch: 'full',
-  },
-];
+class TestComponent {}
 
 export default {
   title: 'Breadcrumbs/Breadcrumbs',
@@ -53,7 +35,20 @@ export default {
       imports: [...CommonModules, ClrBreadcrumbsModule],
     }),
     applicationConfig({
-      providers: [provideRouter(routes)],
+      providers: [
+        provideRouter([
+          { path: 'home', component: TestComponent },
+          { path: 'parent', component: TestComponent },
+          { path: 'child', component: TestComponent },
+          { path: 'grandchild', component: TestComponent },
+          { path: 'current', component: TestComponent },
+          {
+            path: '**',
+            redirectTo: 'home',
+            pathMatch: 'full',
+          },
+        ]),
+      ],
     }),
   ],
   component: ClrBreadcrumbs,
