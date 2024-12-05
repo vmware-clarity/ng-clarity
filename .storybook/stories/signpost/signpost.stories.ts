@@ -101,4 +101,7 @@ export const OpenedLongContent = {
 
 export const SignpostWithTitle: StoryObj = {
   render: SignpostTitleTemplate,
+  play({ canvasElement }) {
+    canvasElement.querySelector('button').click();
+  },
 };
