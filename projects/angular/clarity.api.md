@@ -540,8 +540,11 @@ export class ClrBreadcrumbItem {
 
 // @public (undocumented)
 export class ClrBreadcrumbs {
+    constructor(commonStrings: ClrCommonStringsService);
     // (undocumented)
     clrBreadcrumbItemClick: EventEmitter<BreadcrumbItem>;
+    // (undocumented)
+    commonStrings: ClrCommonStringsService;
     // (undocumented)
     expand(): void;
     // (undocumented)
@@ -962,6 +965,8 @@ export interface ClrCommonStrings {
     alertNextAlertAriaLabel: string;
     alertPreviousAlertAriaLabel: string;
     allColumnsSelected: string;
+    // (undocumented)
+    breadcrumb: string;
     // (undocumented)
     browse: string;
     // (undocumented)

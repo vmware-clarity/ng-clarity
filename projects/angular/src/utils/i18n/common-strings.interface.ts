@@ -318,4 +318,7 @@ export interface ClrCommonStrings {
   // Tree
   selectedTreeNode: string;
   unselectedTreeNode: string;
+
+  // Breadcrumbs
+  breadcrumb: string;
 }

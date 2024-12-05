@@ -5,7 +5,7 @@
         <cds-icon shape="ellipsis-horizontal"></cds-icon>
       </span>
     </clr-breadcrumb-item>
-    <ng-container *ngFor="let breadcrumb of items | slice: items.length - limit; let isLastItem=last">
+    <ng-container *ngFor="let breadcrumb of items | slice: -limit : items.length; let isLastItem=last">
       <clr-breadcrumb-item>
         <a *ngIf="!isLastItem" (click)="handleItemClick(breadcrumb)" [routerLink]="breadcrumb?.url">
           {{ breadcrumb?.label }}
