@@ -77,6 +77,10 @@ export const APP_ROUTES: Routes = [
       import('./overlay-clipping/overlay-clipping.demo.module').then(m => m.OverlayClippingDemoModule),
   },
   {
+    path: 'number-picker',
+    loadChildren: () => import('./number-picker/number-picker.demo.module').then(m => m.NumberPickerDemoModule),
+  },
+  {
     path: 'password',
     loadChildren: () => import('./password/password.demo.module').then(m => m.PasswordDemoModule),
   },
