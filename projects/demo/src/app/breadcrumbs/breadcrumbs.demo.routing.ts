@@ -26,6 +26,11 @@ const ROUTES: Routes = [
     component: BreadcrumbsDemo,
     children: [
       {
+        path: '',
+        redirectTo: 'paints',
+        pathMatch: 'full',
+      },
+      {
         path: 'paints',
         component: PaintsDemo,
         data: {
