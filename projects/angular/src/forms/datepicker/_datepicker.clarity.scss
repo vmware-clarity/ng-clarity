@@ -163,11 +163,7 @@
     }
 
     &.is-excluded {
-      color: tokens.$cds-alias-object-interaction-color-disabled;
-
-      &:hover {
-        background: none;
-      }
+      display: none;
     }
 
     &.is-selected {
