@@ -27,6 +27,7 @@ import { tap } from 'rxjs/operators';
 import { IfExpandService } from '../utils/conditional/if-expanded.service';
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
+import { HeadingLevel } from '../wizard';
 import { ClrAccordionDescription } from './accordion-description';
 import { AccordionPanelModel } from './models/accordion.model';
 import { AccordionService } from './providers/accordion.service';
@@ -44,11 +45,11 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   @Input('clrAccordionPanelDisabled') @HostBinding('class.clr-accordion-panel-disabled') disabled = false;
   @Input('clrAccordionPanelOpen') panelOpen = false;
 
+  @Input('clrAccordionPanelHeading') heading = false;
   /**
    * Level of the accordion/stepper heading from 1 to 7.
    */
-  @Input('clrAccordionPanelAriaLevel') _ariaLevel: number;
-  @Input('clrAccordionPanelHeading') heading = false;
+  @Input('clrAccordionPanelHeadingLevel') _explicitHeadingLevel: HeadingLevel;
 
   @Output('clrAccordionPanelOpenChange') panelOpenChange = new EventEmitter<boolean>();
 
@@ -69,9 +70,9 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     private cdr: ChangeDetectorRef
   ) {}
 
-  get ariaLevel() {
-    if (this._ariaLevel) {
-      return this._ariaLevel;
+  get headingLevel() {
+    if (this._explicitHeadingLevel) {
+      return this._explicitHeadingLevel;
     }
 
     return this.parent ? 4 : 3;

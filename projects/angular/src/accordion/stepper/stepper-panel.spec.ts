@@ -12,6 +12,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BehaviorSubject, Subject } from 'rxjs';
 
+import { HeadingLevel } from '../../wizard';
 import { AccordionStatus } from '../enums/accordion-status.enum';
 import { AccordionPanelModel } from '../models/accordion.model';
 import { StepperService } from './providers/stepper.service';
@@ -23,8 +24,8 @@ import { ClrStepperModule } from './stepper.module';
   template: `
     <form clrStepper [formGroup]="form">
       <clr-stepper-panel
-        [clrAccordionPanelAriaLevel]="ariaLevel"
         [clrAccordionPanelHeading]="showHeading"
+        [clrAccordionPanelHeadingLevel]="headingLevel"
         formGroupName="groupName"
         >test step</clr-stepper-panel
       >
@@ -33,7 +34,7 @@ import { ClrStepperModule } from './stepper.module';
 })
 class ReactiveFormsTestComponent {
   showHeading = false;
-  ariaLevel = 3;
+  headingLevel: HeadingLevel = 3;
   @ViewChild(ClrStepperPanel) step: ClrStepperPanel;
   form = new FormGroup({ groupName: new FormGroup({}) });
 }
@@ -133,7 +134,7 @@ describe('ClrStep Reactive Forms', () => {
     }));
 
     it('should have the aria-level attribute set to 4', () => {
-      fixture.componentInstance.ariaLevel = 4;
+      fixture.componentInstance.headingLevel = 4;
       fixture.componentInstance.showHeading = true;
       fixture.detectChanges();
 

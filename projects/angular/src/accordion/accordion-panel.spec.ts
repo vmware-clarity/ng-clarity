@@ -12,6 +12,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IfExpandService } from '../utils/conditional/if-expanded.service';
+import { HeadingLevel } from '../wizard';
 import { ClrAccordionPanel } from './accordion-panel';
 import { ClrAccordionModule } from './accordion.module';
 import { AccordionPanelModel } from './models/accordion.model';
@@ -22,8 +23,8 @@ import { AccordionService } from './providers/accordion.service';
     <clr-accordion>
       <clr-accordion-panel
         [(clrAccordionPanelOpen)]="open"
-        [clrAccordionPanelAriaLevel]="ariaLevel"
         [clrAccordionPanelHeading]="showHeading"
+        [clrAccordionPanelHeadingLevel]="headingLevel"
         [clrAccordionPanelDisabled]="disabled"
         (clrAccordionPanelOpenChange)="change($event)"
       >
@@ -39,7 +40,7 @@ class TestComponent {
   disabled = false;
   showDescription = false;
   showHeading = false;
-  ariaLevel = 3;
+  headingLevel: HeadingLevel = 3;
   change = state => {
     return state;
   };
@@ -277,7 +278,7 @@ describe('ClrAccordionPanel', () => {
     });
 
     it('should have the aria-level attribute set to 5', () => {
-      fixture.componentInstance.ariaLevel = 5;
+      fixture.componentInstance.headingLevel = 5;
       fixture.componentInstance.showHeading = true;
       fixture.detectChanges();
 

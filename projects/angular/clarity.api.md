@@ -298,14 +298,12 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
     // (undocumented)
-    get ariaLevel(): number;
-    _ariaLevel: number;
-    // (undocumented)
     collapsePanelOnAnimationDone(panel: AccordionPanelModel): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     disabled: boolean;
+    _explicitHeadingLevel: HeadingLevel;
     // (undocumented)
     getAccordionContentId(id: string): string;
     // (undocumented)
@@ -314,6 +312,8 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     getPanelStateClasses(panel: AccordionPanelModel): string;
     // (undocumented)
     heading: boolean;
+    // (undocumented)
+    get headingLevel(): HeadingLevel;
     // (undocumented)
     get id(): string;
     set id(value: string);
@@ -340,7 +340,7 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     // (undocumented)
     togglePanel(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": "clrAccordionPanelDisabled"; "panelOpen": "clrAccordionPanelOpen"; "_ariaLevel": "clrAccordionPanelAriaLevel"; "heading": "clrAccordionPanelHeading"; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": "clrAccordionPanelDisabled"; "panelOpen": "clrAccordionPanelOpen"; "heading": "clrAccordionPanelHeading"; "_explicitHeadingLevel": "clrAccordionPanelHeadingLevel"; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
 }
