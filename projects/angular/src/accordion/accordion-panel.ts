@@ -47,7 +47,8 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   /**
    * Level of the accordion/stepper heading from 1 to 7.
    */
-  @Input('clrAriaLevel') _ariaLevel: number;
+  @Input('clrAccordionPanelAriaLevel') _ariaLevel: number;
+  @Input('clrAccordionPanelHeading') heading = false;
 
   @Output('clrAccordionPanelOpenChange') panelOpenChange = new EventEmitter<boolean>();
 

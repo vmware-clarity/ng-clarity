@@ -22,11 +22,18 @@ import { ClrStepperModule } from './stepper.module';
 @Component({
   template: `
     <form clrStepper [formGroup]="form">
-      <clr-stepper-panel formGroupName="groupName">test step</clr-stepper-panel>
+      <clr-stepper-panel
+        [clrAccordionPanelAriaLevel]="ariaLevel"
+        [clrAccordionPanelHeading]="showHeading"
+        formGroupName="groupName"
+        >test step</clr-stepper-panel
+      >
     </form>
   `,
 })
 class ReactiveFormsTestComponent {
+  showHeading = false;
+  ariaLevel = 3;
   @ViewChild(ClrStepperPanel) step: ClrStepperPanel;
   form = new FormGroup({ groupName: new FormGroup({}) });
 }
@@ -124,6 +131,18 @@ describe('ClrStep Reactive Forms', () => {
 
       expect(input.focus).toHaveBeenCalled();
     }));
+
+    it('should have the aria-level attribute set to 4', () => {
+      fixture.componentInstance.ariaLevel = 4;
+      fixture.componentInstance.showHeading = true;
+      fixture.detectChanges();
+
+      const panelHeading = fixture.debugElement
+        .query(By.directive(ClrStepperPanel))
+        .nativeElement.querySelector('[role="heading"]');
+      expect(panelHeading).not.toBeNull();
+      expect(panelHeading.getAttribute('aria-level')).toBe('4');
+    });
   });
 });
 

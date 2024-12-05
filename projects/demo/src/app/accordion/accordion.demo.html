@@ -75,7 +75,11 @@
     <clr-accordion-title>Parent Title 1</clr-accordion-title>
     <clr-accordion-content>
       <clr-accordion>
-        <clr-accordion-panel [clrAccordionPanelOpen]="true">
+        <clr-accordion-panel
+          [clrAccordionPanelHeading]="true"
+          [clrAccordionPanelAriaLevel]="3"
+          [clrAccordionPanelOpen]="true"
+        >
           <clr-accordion-title>Nested Title</clr-accordion-title>
           <clr-accordion-content>Nested content</clr-accordion-content>
         </clr-accordion-panel>

@@ -22,7 +22,8 @@ import { AccordionService } from './providers/accordion.service';
     <clr-accordion>
       <clr-accordion-panel
         [(clrAccordionPanelOpen)]="open"
-        [clrAriaLevel]="ariaLevel"
+        [clrAccordionPanelAriaLevel]="ariaLevel"
+        [clrAccordionPanelHeading]="showHeading"
         [clrAccordionPanelDisabled]="disabled"
         (clrAccordionPanelOpenChange)="change($event)"
       >
@@ -37,6 +38,7 @@ class TestComponent {
   open = false;
   disabled = false;
   showDescription = false;
+  showHeading = false;
   ariaLevel = 3;
   change = state => {
     return state;
@@ -229,7 +231,7 @@ describe('ClrAccordionPanel', () => {
       expect(headerButton.getAttribute('aria-controls')).toBe(panelRegion.getAttribute('id'));
       expect(headerButton.getAttribute('disabled')).toBe(null);
 
-      expect(panelHeading.getAttribute('aria-level')).toBe('3');
+      expect(panelHeading).toBeNull();
 
       headerButton.click();
       fixture.detectChanges();
@@ -276,9 +278,11 @@ describe('ClrAccordionPanel', () => {
 
     it('should have the aria-level attribute set to 5', () => {
       fixture.componentInstance.ariaLevel = 5;
+      fixture.componentInstance.showHeading = true;
       fixture.detectChanges();
 
       const panelHeading = panelElement.querySelector('[role="heading"]');
+      expect(panelHeading).not.toBeNull();
       expect(panelHeading.getAttribute('aria-level')).toBe('5');
     });
   });

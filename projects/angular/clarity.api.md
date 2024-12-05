@@ -313,6 +313,8 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     // (undocumented)
     getPanelStateClasses(panel: AccordionPanelModel): string;
     // (undocumented)
+    heading: boolean;
+    // (undocumented)
     get id(): string;
     set id(value: string);
     // (undocumented)
@@ -338,7 +340,7 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     // (undocumented)
     togglePanel(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": "clrAccordionPanelDisabled"; "panelOpen": "clrAccordionPanelOpen"; "_ariaLevel": "clrAriaLevel"; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": "clrAccordionPanelDisabled"; "panelOpen": "clrAccordionPanelOpen"; "_ariaLevel": "clrAccordionPanelAriaLevel"; "heading": "clrAccordionPanelHeading"; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
 }
