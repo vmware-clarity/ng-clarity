@@ -3633,9 +3633,11 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     get position(): string;
     set position(position: string);
     // (undocumented)
+    signpostCloseAriaLabel: string;
+    // (undocumented)
     signpostContentId: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "position": "clrPosition"; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "signpostCloseAriaLabel": "clrSignpostCloseAriaLabel"; "position": "clrPosition"; }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [null, { optional: true; }, null, null, null, null, null]>;
 }
