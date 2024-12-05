@@ -24,11 +24,7 @@ const ROUTES: Routes = [
   {
     path: '',
     component: BreadcrumbsDemo,
-    data: {
-      breadcrumb: 'Home',
-    },
     children: [
-      { path: '', redirectTo: 'paints', pathMatch: 'full' },
       {
         path: 'paints',
         component: PaintsDemo,
@@ -36,7 +32,10 @@ const ROUTES: Routes = [
           breadcrumb: 'Paints',
         },
         children: [
-          { path: '', component: PaintsListDemo },
+          {
+            path: '',
+            component: PaintsListDemo,
+          },
           {
             path: 'watercolor',
             component: WatercolorDemo,
@@ -44,7 +43,10 @@ const ROUTES: Routes = [
               breadcrumb: 'Watercolor',
             },
             children: [
-              { path: '', component: WatercolorListDemo },
+              {
+                path: '',
+                component: WatercolorListDemo,
+              },
               {
                 path: 'daniel-smith',
                 component: DanielSmithDemo,

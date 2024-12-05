@@ -7,15 +7,17 @@
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { MAX_ITEMS } from './breadcrumbs.constants';
 import { BreadcrumbItem } from './model/breadcrumbs.model';
+
 @Component({
   selector: 'clr-breadcrumbs',
   templateUrl: './breadcrumbs.html',
   styleUrls: ['./_breadcrumbs.clarity.scss'],
   host: {
     class: 'clr-breadcrumb',
-    '[attr.aria-label]': '"breadcrumb"',
+    '[attr.aria-label]': 'commonStrings.keys.breadcrumb',
     '[attr.role]': '"navigation"',
   },
 })
@@ -26,6 +28,8 @@ export class ClrBreadcrumbs {
   isExpanded = false;
   max: number = MAX_ITEMS;
   limit: number = MAX_ITEMS;
+
+  constructor(public commonStrings: ClrCommonStringsService) {}
 
   handleItemClick(breadcrumb: BreadcrumbItem) {
     this.clrBreadcrumbItemClick.emit(breadcrumb);
