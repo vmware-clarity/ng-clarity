@@ -7,19 +7,23 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
-import { _RecycleViewRepeaterStrategy, ListRange } from '@angular/cdk/collections';
+import { _RecycleViewRepeaterStrategy, _VIEW_REPEATER_STRATEGY, ListRange } from '@angular/cdk/collections';
 import {
   CdkFixedSizeVirtualScroll,
   CdkVirtualForOf,
   CdkVirtualForOfContext,
+  CdkVirtualScrollable,
   CdkVirtualScrollableElement,
   CdkVirtualScrollViewport,
   FixedSizeVirtualScrollStrategy,
   ScrollDispatcher,
   ViewportRuler,
+  VIRTUAL_SCROLL_STRATEGY,
+  VirtualScrollStrategy,
 } from '@angular/cdk/scrolling';
 import {
   AfterViewInit,
+  VERSION as ANGULAR_VERSION,
   ChangeDetectorRef,
   Directive,
   DoCheck,
@@ -27,6 +31,8 @@ import {
   EmbeddedViewRef,
   EnvironmentInjector,
   EventEmitter,
+  inject,
+  Injector,
   Input,
   IterableDiffers,
   NgZone,
@@ -199,7 +205,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         this.virtualScrollStrategy
       );
 
-      this.cdkVirtualFor = new CdkVirtualForOf<T>(
+      this.cdkVirtualFor = createCdkVirtualForOfDirective(
         this.viewContainerRef,
         this.templateRef,
         this.iterableDiffers,
@@ -309,7 +315,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       datagridRowsElement.style.height = `${totalContentSize - topOffset}px`;
     }
 
-    const virtualScrollViewport = new CdkVirtualScrollViewport(
+    const virtualScrollViewport = createCdkVirtualScrollViewport(
       datagridDivElementRef,
       changeDetectorRef,
       ngZone,
@@ -338,5 +344,85 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     };
 
     return virtualScrollViewport;
+  }
+}
+
+function createCdkVirtualScrollViewport(
+  datagridDivElementRef: ElementRef<HTMLElement>,
+  changeDetectorRef: ChangeDetectorRef,
+  ngZone: NgZone,
+  virtualScrollStrategy: VirtualScrollStrategy,
+  directionality: Directionality,
+  scrollDispatcher: ScrollDispatcher,
+  viewportRuler: ViewportRuler,
+  scrollable: CdkVirtualScrollable
+) {
+  if (+ANGULAR_VERSION.major < 19) {
+    return new CdkVirtualScrollViewport(
+      datagridDivElementRef,
+      changeDetectorRef,
+      ngZone,
+      virtualScrollStrategy,
+      directionality,
+      scrollDispatcher,
+      viewportRuler,
+      scrollable
+    );
+  } else {
+    const virtualScrollViewportInjector = Injector.create({
+      parent: inject(EnvironmentInjector),
+      providers: [
+        { provide: ElementRef, useValue: datagridDivElementRef },
+        { provide: ChangeDetectorRef, useValue: changeDetectorRef },
+        { provide: NgZone, useValue: ngZone },
+        { provide: VIRTUAL_SCROLL_STRATEGY, useValue: virtualScrollStrategy },
+        { provide: Directionality, useValue: directionality },
+        { provide: ScrollDispatcher, useValue: scrollDispatcher },
+        { provide: ViewportRuler, useValue: viewportRuler },
+        { provide: CdkVirtualScrollable, useValue: scrollable },
+        { provide: CdkVirtualScrollViewport, useClass: CdkVirtualScrollViewport },
+      ],
+    });
+
+    return virtualScrollViewportInjector.get(CdkVirtualScrollViewport);
+  }
+}
+
+function createCdkVirtualForOfDirective<T>(
+  viewContainerRef: ViewContainerRef,
+  templateRef: TemplateRef<CdkVirtualForOfContext<T>>,
+  iterableDiffers: IterableDiffers,
+  viewRepeater: _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>,
+  virtualScrollViewport: CdkVirtualScrollViewport,
+  ngZone: NgZone
+) {
+  if (+ANGULAR_VERSION.major < 19) {
+    return new CdkVirtualForOf<T>(
+      viewContainerRef,
+      templateRef,
+      iterableDiffers,
+      viewRepeater,
+      virtualScrollViewport,
+      ngZone
+    );
+  } else {
+    const virtualScrollViewportInjector = Injector.create({
+      parent: inject(EnvironmentInjector),
+      providers: [{ provide: CdkVirtualScrollViewport, useValue: virtualScrollViewport }],
+    });
+
+    const cdkVirtualForInjector = Injector.create({
+      parent: virtualScrollViewportInjector,
+      providers: [
+        { provide: ViewContainerRef, useValue: viewContainerRef },
+        { provide: TemplateRef, useValue: templateRef },
+        { provide: IterableDiffers, useValue: iterableDiffers },
+        { provide: _VIEW_REPEATER_STRATEGY, useValue: viewRepeater },
+        { provide: NgZone, useValue: ngZone },
+        { provide: CdkVirtualForOf, useClass: CdkVirtualForOf },
+      ],
+    });
+
+    return cdkVirtualForInjector.get(CdkVirtualForOf);
   }
 }
