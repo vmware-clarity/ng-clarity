@@ -47,21 +47,34 @@ export default {
     clrSignpostCloseAriaLabel: 'Info Close',
     // story helpers
     content: 'Hello World!',
+    title: 'Title',
   },
 };
 
-const template = `
-  <div style="padding: 250px; text-align: center">
-    <clr-signpost>
-      <clr-signpost-content [clrPosition]="clrPosition" [clrSignpostCloseAriaLabel]="clrSignpostCloseAriaLabel">
-        {{ content }}
-      </clr-signpost-content>
-    </clr-signpost>
-  </div>
-`;
-
 const SignpostTemplate: StoryFn = args => ({
-  template,
+  template: `
+    <div style="padding: 250px; text-align: center">
+      <clr-signpost>
+        <clr-signpost-content [clrPosition]="clrPosition" [clrSignpostCloseAriaLabel]="clrSignpostCloseAriaLabel">
+          {{ content }}
+        </clr-signpost-content>
+      </clr-signpost>
+    </div>
+  `,
+  props: args,
+});
+
+const SignpostTitleTemplate: StoryFn = args => ({
+  template: `
+    <div style="padding: 250px; text-align: center">
+      <clr-signpost>
+        <clr-signpost-content [clrPosition]="clrPosition">
+          <clr-signpost-title>{{ title }}</clr-signpost-title>
+          {{ content }}
+        </clr-signpost-content>
+      </clr-signpost>
+    </div>
+  `,
   props: args,
 });
 
@@ -84,5 +97,12 @@ export const OpenedLongContent = {
   },
   args: {
     content: 'Hello World! '.repeat(110),
+  },
+};
+
+export const SignpostWithTitle: StoryObj = {
+  render: SignpostTitleTemplate,
+  play({ canvasElement }) {
+    canvasElement.querySelector('button').click();
   },
 };
