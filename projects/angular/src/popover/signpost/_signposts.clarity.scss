@@ -366,14 +366,15 @@
 
   .signpost-content-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     width: 100%;
     background-color: inherit;
     top: 0;
     border-radius: signpost-variables.$clr-signpost-border-radius;
 
-    .clr-signpost-title {
+    .signpost-title {
       @include mixins.generate-typography-token('SECTION-12-SB-CPT');
+      margin-right: auto;
     }
   }
 

@@ -10,6 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-signpost-title',
   template: `<ng-content></ng-content>`,
-  host: { '[class.clr-signpost-title]': 'true' },
+  host: { '[class.signpost-title]': 'true' },
 })
 export class ClrSignpostTitle {}

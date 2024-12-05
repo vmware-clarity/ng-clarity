@@ -35,10 +35,9 @@ describe('ClrSignpostTitle', () => {
       expect(fixture.nativeElement.textContent.trim()).toMatch('Title');
     });
 
-    it('adds a .clr-signpost-title class on the host element', () => {
+    it('adds a .signpost-title class on the host element', () => {
       const signpostTitleElement = fixture.debugElement.query(By.directive(ClrSignpostTitle)).nativeElement;
-      console.log(signpostTitleElement);
-      expect(signpostTitleElement.classList.contains('clr-signpost-title')).toBe(true);
+      expect(signpostTitleElement.classList.contains('signpost-title')).toBe(true);
     });
   });
 });
