@@ -44,6 +44,7 @@ export default {
   args: {
     // inputs
     clrPosition: 'right-middle',
+    clrSignpostCloseAriaLabel: 'Info Close',
     // story helpers
     content: 'Hello World!',
     title: 'Title',
@@ -54,7 +55,7 @@ const SignpostTemplate: StoryFn = args => ({
   template: `
     <div style="padding: 250px; text-align: center">
       <clr-signpost>
-        <clr-signpost-content [clrPosition]="clrPosition">
+        <clr-signpost-content [clrPosition]="clrPosition" [clrSignpostCloseAriaLabel]="clrSignpostCloseAriaLabel">
           {{ content }}
         </clr-signpost-content>
       </clr-signpost>
