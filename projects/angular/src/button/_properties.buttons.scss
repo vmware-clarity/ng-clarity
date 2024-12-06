@@ -82,7 +82,7 @@
     --clr-btn-primary-hover-bg-color: #{tokens.$cds-alias-object-interaction-info-hover};
     --clr-btn-primary-hover-color: var(--clr-btn-primary-color);
     --clr-btn-primary-active-color: #{tokens.$cds-alias-typography-color-100};
-    --clr-btn-primary-active-bg-color: #{tokens.$cds-alias-object-interaction-info-click};
+    --clr-btn-primary-active-bg-color: var(--cds-alias-object-interaction-info-active);
 
     --clr-btn-primary-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
     --clr-btn-primary-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
@@ -112,7 +112,7 @@
     --clr-btn-success-hover-bg-color: #{tokens.$cds-alias-object-interaction-success-hover};
     --clr-btn-success-hover-color: var(--clr-btn-success-color);
     --clr-btn-success-active-color: #{tokens.$cds-alias-typography-color-100};
-    --clr-btn-success-active-bg-color: #{tokens.$cds-alias-object-interaction-success-click};
+    --clr-btn-success-active-bg-color: var(--cds-alias-object-interaction-success-active);
 
     --clr-btn-success-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
     --clr-btn-success-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
@@ -141,7 +141,7 @@
     --clr-btn-danger-border-color: var(--clr-btn-danger-bg-color);
     --clr-btn-danger-hover-bg-color: #{tokens.$cds-alias-object-interaction-danger-hover};
     --clr-btn-danger-hover-color: var(--clr-btn-danger-color);
-    --clr-btn-danger-active-bg-color: #{tokens.$cds-alias-object-interaction-danger-click};
+    --clr-btn-danger-active-bg-color: var(--cds-alias-object-interaction-danger-active);
     --clr-btn-danger-active-color: #{tokens.$cds-alias-typography-color-100};
 
     --clr-btn-danger-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
@@ -171,7 +171,7 @@
     --clr-btn-warning-border-color: var(--clr-btn-warning-bg-color);
     --clr-btn-warning-hover-bg-color: #{tokens.$cds-alias-object-interaction-warning-hover};
     --clr-btn-warning-hover-color: var(--clr-btn-warning-color);
-    --clr-btn-warning-active-bg-color: #{tokens.$cds-alias-object-interaction-warning-click};
+    --clr-btn-warning-active-bg-color: var(--cds-alias-object-interaction-warning-active);
     --clr-btn-warning-active-color: var(--clr-btn-warning-color);
 
     --clr-btn-warning-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
@@ -201,7 +201,7 @@
     --clr-btn-neutral-border-color: var(--clr-btn-neutral-bg-color);
     --clr-btn-neutral-hover-bg-color: #{tokens.$cds-alias-object-interaction-neutral-hover};
     --clr-btn-neutral-hover-color: var(--clr-btn-neutral-color);
-    --clr-btn-neutral-active-bg-color: #{tokens.$cds-alias-object-interaction-neutral-click};
+    --clr-btn-neutral-active-bg-color: var(--cds-alias-object-interaction-neutral-active);
     --clr-btn-neutral-active-color: var(--clr-btn-neutral-color);
 
     --clr-btn-neutral-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
@@ -319,7 +319,7 @@
     --clr-btn-inverse-bg-color: var(--clr-btn-transparent-bg-color);
     --clr-btn-inverse-hover-bg-color: #{tokens.$cds-alias-object-interaction-inverse-hover};
     --clr-btn-inverse-hover-color: var(--clr-btn-inverse-color); // var(--clr-color-neutral-0);
-    --clr-btn-inverse-active-bg-color: #{tokens.$cds-alias-object-interaction-inverse-click};
+    --clr-btn-inverse-active-bg-color: var(--cds-alias-object-interaction-inverse-active);
     --clr-btn-inverse-active-color: #{tokens.$cds-global-color-white};
 
     --clr-btn-inverse-disabled-color: #{tokens.$cds-alias-typography-disabled};
