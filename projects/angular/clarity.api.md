@@ -536,8 +536,6 @@ export enum ClrAxis {
 // @public (undocumented)
 export class ClrBreadcrumbItem {
     // (undocumented)
-    delimiter: string;
-    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbItem, "clr-breadcrumb-item", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbItem, never>;
