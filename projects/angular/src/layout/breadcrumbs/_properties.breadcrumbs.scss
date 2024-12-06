@@ -10,7 +10,6 @@
 @include mixins.exports('breadcrumbs.properties') {
   :root [cds-theme] {
     --clr-breadcrumb-link-color: #{tokens.$cds-alias-object-interaction-background-highlight};
-    // --clr-breadcrumb-item-height: #{tokens.$cds-global-space-24};
     --clr-breadcrumb-item-space: #{tokens.$cds-global-space-8};
     --clr-breadcrumb-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
     --clr-breadcrumb-font-size: #{tokens.$cds-alias-typography-secondary-font-size};

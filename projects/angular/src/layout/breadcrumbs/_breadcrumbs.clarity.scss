@@ -18,7 +18,7 @@
   .clr-breadcrumb-item {
     display: flex;
     align-items: center;
-    min-height: 24px; //tokens.$cds-global-space-24; --> TO DO: Add token to clarity core
+    min-height: mixins.baselinePx(24);
     font-family: breadcrumb-variables.$clr-breadcrumb-font-family;
     color: breadcrumb-variables.$clr-breadcrumb-link-color;
     @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
