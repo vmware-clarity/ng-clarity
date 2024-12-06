@@ -45,9 +45,9 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   @Input('clrAccordionPanelDisabled') @HostBinding('class.clr-accordion-panel-disabled') disabled = false;
   @Input('clrAccordionPanelOpen') panelOpen = false;
 
-  @Input('clrAccordionPanelHeading') heading = false;
+  @Input('clrAccordionPanelHeadingEnabled') headingEnabled = false;
   /**
-   * Level of the accordion/stepper heading from 1 to 7.
+   * Level of the accordion/stepper heading from 1 to 6.
    */
   @Input('clrAccordionPanelHeadingLevel') explicitHeadingLevel: HeadingLevel;
 
@@ -63,7 +63,7 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   constructor(
     @Optional()
     @SkipSelf()
-    public parent: ClrAccordionPanel,
+    protected parent: ClrAccordionPanel,
     public commonStrings: ClrCommonStringsService,
     private accordionService: AccordionService,
     private ifExpandService: IfExpandService,

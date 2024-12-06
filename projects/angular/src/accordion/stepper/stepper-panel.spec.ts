@@ -12,7 +12,6 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import { HeadingLevel } from '../../wizard';
 import { AccordionStatus } from '../enums/accordion-status.enum';
 import { AccordionPanelModel } from '../models/accordion.model';
 import { StepperService } from './providers/stepper.service';
@@ -23,18 +22,11 @@ import { ClrStepperModule } from './stepper.module';
 @Component({
   template: `
     <form clrStepper [formGroup]="form">
-      <clr-stepper-panel
-        [clrAccordionPanelHeading]="showHeading"
-        [clrAccordionPanelHeadingLevel]="headingLevel"
-        formGroupName="groupName"
-        >test step</clr-stepper-panel
-      >
+      <clr-stepper-panel formGroupName="groupName">test step</clr-stepper-panel>
     </form>
   `,
 })
 class ReactiveFormsTestComponent {
-  showHeading = false;
-  headingLevel: HeadingLevel = 3;
   @ViewChild(ClrStepperPanel) step: ClrStepperPanel;
   form = new FormGroup({ groupName: new FormGroup({}) });
 }
@@ -132,18 +124,6 @@ describe('ClrStep Reactive Forms', () => {
 
       expect(input.focus).toHaveBeenCalled();
     }));
-
-    it('should have the aria-level attribute set to 4', () => {
-      fixture.componentInstance.headingLevel = 4;
-      fixture.componentInstance.showHeading = true;
-      fixture.detectChanges();
-
-      const panelHeading = fixture.debugElement
-        .query(By.directive(ClrStepperPanel))
-        .nativeElement.querySelector('[role="heading"]');
-      expect(panelHeading).not.toBeNull();
-      expect(panelHeading.getAttribute('aria-level')).toBe('4');
-    });
   });
 });
 

@@ -48,7 +48,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   constructor(
     @Optional()
     @SkipSelf()
-    public override parent: ClrAccordionPanel,
+    protected override parent: ClrAccordionPanel,
     @Inject(PLATFORM_ID) private platformId: any,
     public override commonStrings: ClrCommonStringsService,
     @Optional() private formGroupName: FormGroupName,

@@ -23,7 +23,7 @@ import { AccordionService } from './providers/accordion.service';
     <clr-accordion>
       <clr-accordion-panel
         [(clrAccordionPanelOpen)]="open"
-        [clrAccordionPanelHeading]="showHeading"
+        [clrAccordionPanelHeadingEnabled]="showHeading"
         [clrAccordionPanelHeadingLevel]="headingLevel"
         [clrAccordionPanelDisabled]="disabled"
         (clrAccordionPanelOpenChange)="change($event)"
@@ -180,6 +180,13 @@ describe('ClrAccordionPanel', () => {
         // Toggle it again
         accordionPanel.togglePanel();
         expect(component.change).toHaveBeenCalledWith(false);
+      });
+
+      it('when [clrAccordionPanelHeadingEnabled] is not set at all, heading role should not be present', () => {
+        const accordionPanel = fixture.debugElement.query(By.directive(ClrAccordionPanel)).componentInstance;
+        const panelHeading = accordionPanel.querySelector('[role="heading"]');
+
+        expect(panelHeading).toBeNull();
       });
     });
   });

@@ -1,10 +1,6 @@
 <ng-container *ngIf="panel | async; let panel">
   <div [ngClass]="getPanelStateClasses(panel)">
-    <div
-      class="clr-accordion-header clr-stepper-header"
-      [attr.role]="heading ? 'heading' : null"
-      [attr.aria-level]="heading ? headingLevel : null"
-    >
+    <div class="clr-accordion-header clr-stepper-header">
       <button
         type="button"
         class="clr-accordion-header-button"

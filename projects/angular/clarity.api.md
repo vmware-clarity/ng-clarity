@@ -311,7 +311,7 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     // (undocumented)
     getPanelStateClasses(panel: AccordionPanelModel): string;
     // (undocumented)
-    heading: boolean;
+    headingEnabled: boolean;
     // (undocumented)
     get headingLevel(): HeadingLevel;
     // (undocumented)
@@ -332,7 +332,7 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     // (undocumented)
     panelOpenChange: EventEmitter<boolean>;
     // (undocumented)
-    parent: ClrAccordionPanel;
+    protected parent: ClrAccordionPanel;
     // (undocumented)
     protected stepCompleteText(panelNumber: number): string;
     // (undocumented)
@@ -340,7 +340,7 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     // (undocumented)
     togglePanel(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": "clrAccordionPanelDisabled"; "panelOpen": "clrAccordionPanelOpen"; "heading": "clrAccordionPanelHeading"; "explicitHeadingLevel": "clrAccordionPanelHeadingLevel"; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": "clrAccordionPanelDisabled"; "panelOpen": "clrAccordionPanelOpen"; "headingEnabled": "clrAccordionPanelHeadingEnabled"; "explicitHeadingLevel": "clrAccordionPanelHeadingLevel"; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
 }
@@ -3941,7 +3941,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    parent: ClrAccordionPanel;
+    protected parent: ClrAccordionPanel;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-step-title", "clr-step-description", "*"], false, never>;
     // (undocumented)
