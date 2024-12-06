@@ -284,7 +284,7 @@ describe('ClrAccordionPanel', () => {
       expect(panelElement.querySelector('.clr-accordion-header-has-description')).toBeTruthy();
     });
 
-    it('should have the aria-level attribute set to 5', () => {
+    it('should allow the aria-level attribute to be set to an explicit value', () => {
       fixture.componentInstance.headingLevel = 5;
       fixture.componentInstance.showHeading = true;
       fixture.detectChanges();
