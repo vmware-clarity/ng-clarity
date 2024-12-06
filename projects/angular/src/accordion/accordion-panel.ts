@@ -49,7 +49,7 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   /**
    * Level of the accordion/stepper heading from 1 to 7.
    */
-  @Input('clrAccordionPanelHeadingLevel') _explicitHeadingLevel: HeadingLevel;
+  @Input('clrAccordionPanelHeadingLevel') explicitHeadingLevel: HeadingLevel;
 
   @Output('clrAccordionPanelOpenChange') panelOpenChange = new EventEmitter<boolean>();
 
@@ -71,8 +71,8 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   ) {}
 
   get headingLevel() {
-    if (this._explicitHeadingLevel) {
-      return this._explicitHeadingLevel;
+    if (this.explicitHeadingLevel) {
+      return this.explicitHeadingLevel;
     }
 
     return this.parent ? 4 : 3;
