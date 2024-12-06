@@ -63,6 +63,7 @@ export default {
     expandable: false,
     compact: false,
     hidableColumns: false,
+    clrDgSortDisableUnsort: false,
     height: 0,
     ClrDatagridSortOrder: ClrDatagridSortOrder,
   },
@@ -95,6 +96,7 @@ const ColumnFilterTemplate: StoryFn = args => ({
         [clrFilterNumberMinPlaceholder]="clrFilterNumberMinPlaceholder"
         [clrFilterStringPlaceholder]="clrFilterStringPlaceholder"
         [clrFilterValue]="clrFilterValue"
+        [clrDgSortDisableUnsort]="clrDgSortDisableUnsort"
         (clrDgColumnResize)="clrDgColumnResize($event)"
         (clrDgSortOrderChange)="clrDgSortOrderChange($event)"
         (clrFilterValueChange)="clrFilterValueChange($event)"
