@@ -68,8 +68,9 @@ describe('ClrBreadcrumbs', () => {
   }));
 
   it('should have a seperator between breadcrumbs', () => {
-    const delimiter = breadcrumbList.query(By.css('.clr-breadcrumb-delimiter'));
-    expect(delimiter.nativeElement.textContent).toEqual('/');
+    const link = breadcrumbList.nativeElement.querySelector('.clr-breadcrumb-link');
+    const delimiter = window.getComputedStyle(link, ':after').getPropertyValue('content');
+    expect(delimiter).toEqual('"/"');
   });
 
   it('should have the current page as the last item in a breadcrumb', () => {

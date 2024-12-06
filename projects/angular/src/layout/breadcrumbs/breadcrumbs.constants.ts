@@ -5,5 +5,4 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export const DELIMITER = '/';
-export const MAX_ITEMS = 3;
+export const MAX_DISPLAY_ITEMS = 3;

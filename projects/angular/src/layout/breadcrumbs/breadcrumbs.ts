@@ -8,7 +8,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { MAX_ITEMS } from './breadcrumbs.constants';
+import { MAX_DISPLAY_ITEMS } from './breadcrumbs.constants';
 import { BreadcrumbItem } from './model/breadcrumbs.model';
 
 @Component({
@@ -22,12 +22,12 @@ import { BreadcrumbItem } from './model/breadcrumbs.model';
   },
 })
 export class ClrBreadcrumbs {
+  isExpanded = false;
+  max: number = MAX_DISPLAY_ITEMS;
+  limit: number = MAX_DISPLAY_ITEMS;
+
   @Input() items: BreadcrumbItem[] = [];
   @Output() clrBreadcrumbItemClick: EventEmitter<BreadcrumbItem> = new EventEmitter<BreadcrumbItem>();
-
-  isExpanded = false;
-  max: number = MAX_ITEMS;
-  limit: number = MAX_ITEMS;
 
   constructor(public commonStrings: ClrCommonStringsService) {}
 
