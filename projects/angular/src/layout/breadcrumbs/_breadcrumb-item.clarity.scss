@@ -5,19 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use 'sass:meta';
-@use '../../utils/mixins';
 @use '../breadcrumbs/variables.breadcrumbs' as breadcrumb-variables;
-@use '@cds/core/tokens/tokens.scss';
 
-.clr-breadcrumb-delimiter {
-  margin: 0 breadcrumb-variables.$clr-breadcrumb-item-space;
-  color: breadcrumb-variables.$clr-breadcrumb-active-color;
-}
-
-.active {
-  color: breadcrumb-variables.$clr-breadcrumb-active-color;
-}
-
-.clr-breadcrumb-link:empty + .clr-breadcrumb-delimiter {
-  display: none;
+.clr-breadcrumb-link {
+  &::after {
+    content: '/';
+    margin: 0 breadcrumb-variables.$clr-breadcrumb-item-space;
+    color: breadcrumb-variables.$clr-breadcrumb-active-color;
+  }
 }
