@@ -12,6 +12,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IfExpandService } from '../utils/conditional/if-expanded.service';
+import { HeadingLevel } from '../wizard';
 import { ClrAccordionPanel } from './accordion-panel';
 import { ClrAccordionModule } from './accordion.module';
 import { AccordionPanelModel } from './models/accordion.model';
@@ -22,6 +23,8 @@ import { AccordionService } from './providers/accordion.service';
     <clr-accordion>
       <clr-accordion-panel
         [(clrAccordionPanelOpen)]="open"
+        [clrAccordionPanelHeadingEnabled]="showHeading"
+        [clrAccordionPanelHeadingLevel]="headingLevel"
         [clrAccordionPanelDisabled]="disabled"
         (clrAccordionPanelOpenChange)="change($event)"
       >
@@ -36,6 +39,8 @@ class TestComponent {
   open = false;
   disabled = false;
   showDescription = false;
+  showHeading = false;
+  headingLevel: HeadingLevel = 3;
   change = state => {
     return state;
   };
@@ -176,6 +181,13 @@ describe('ClrAccordionPanel', () => {
         accordionPanel.togglePanel();
         expect(component.change).toHaveBeenCalledWith(false);
       });
+
+      it('when [clrAccordionPanelHeadingEnabled] is not set at all, heading role should not be present', () => {
+        const accordionPanel = fixture.debugElement.query(By.directive(ClrAccordionPanel)).nativeElement as HTMLElement;
+        const panelHeading = accordionPanel.querySelector('[role="heading"]');
+
+        expect(panelHeading).toBeNull();
+      });
     });
   });
 
@@ -216,6 +228,7 @@ describe('ClrAccordionPanel', () => {
 
     it('should set the appropriate aria attribute values', () => {
       const panelRegion = panelElement.querySelector('[role="region"]');
+      const panelHeading = panelElement.querySelector('[role="heading"]');
       const headerButton = panelElement.querySelector('button');
 
       expect(panelRegion.getAttribute('aria-labelledby')).toBe(headerButton.getAttribute('id'));
@@ -225,6 +238,8 @@ describe('ClrAccordionPanel', () => {
       expect(headerButton.getAttribute('aria-expanded')).toBe('false');
       expect(headerButton.getAttribute('aria-controls')).toBe(panelRegion.getAttribute('id'));
       expect(headerButton.getAttribute('disabled')).toBe(null);
+
+      expect(panelHeading).toBeNull();
 
       headerButton.click();
       fixture.detectChanges();
@@ -267,6 +282,16 @@ describe('ClrAccordionPanel', () => {
       fixture.componentInstance.showDescription = true;
       fixture.detectChanges();
       expect(panelElement.querySelector('.clr-accordion-header-has-description')).toBeTruthy();
+    });
+
+    it('should allow the aria-level attribute to be set to an explicit value', () => {
+      fixture.componentInstance.headingLevel = 5;
+      fixture.componentInstance.showHeading = true;
+      fixture.detectChanges();
+
+      const panelHeading = panelElement.querySelector('[role="heading"]');
+      expect(panelHeading).not.toBeNull();
+      expect(panelHeading.getAttribute('aria-level')).toBe('5');
     });
   });
 });
