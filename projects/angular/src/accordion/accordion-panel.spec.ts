@@ -183,7 +183,7 @@ describe('ClrAccordionPanel', () => {
       });
 
       it('when [clrAccordionPanelHeadingEnabled] is not set at all, heading role should not be present', () => {
-        const accordionPanel = fixture.debugElement.query(By.directive(ClrAccordionPanel)).componentInstance;
+        const accordionPanel = fixture.debugElement.query(By.directive(ClrAccordionPanel)).nativeElement as HTMLElement;
         const panelHeading = accordionPanel.querySelector('[role="heading"]');
 
         expect(panelHeading).toBeNull();
