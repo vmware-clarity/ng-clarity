@@ -13,6 +13,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class FormsFileDemo {
   readonly form = new FormGroup({
-    file: new FormControl(),
+    files: new FormControl(),
   });
 }

@@ -15,7 +15,7 @@
       accept=".txt,text/plain"
       multiple
       required
-      formControlName="file"
+      formControlName="files"
       clrFileInput
       [clrMaxFileSize]="500"
     />
@@ -28,13 +28,13 @@
   </clr-file-input-container>
 
   <pre>
-touched: {{ form.controls.file.touched }}
+touched: {{ form.controls.files.touched }}
 
-status: {{ form.controls.file.status }}
+status: {{ form.controls.files.status }}
 
-value (length): {{ form.controls.file.value?.length }}
+value (length): {{ form.controls.files.value?.length }}
 
-errors: {{ form.controls.file.errors | json }}
+errors: {{ form.controls.files.errors | json }}
   </pre>
 
   <clr-file-input-container>
