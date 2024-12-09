@@ -12,6 +12,7 @@ export * from './datalist/index';
 export * from './datepicker/index';
 export * from './file-input/index';
 export * from './input/index';
+export * from './number-picker/index';
 export * from './password/index';
 export * from './radio/index';
 export * from './select/index';

@@ -1,0 +1,49 @@
+<h2>Number Picker</h2>
+<h3>Container and component</h3>
+<form clrForm [formGroup]="form">
+  <h4>Default</h4>
+  <clr-number-picker-container>
+    <label>Number Input</label>
+    <clr-number-picker formControlName="number" placeholder="Placeholder"></clr-number-picker>
+    <clr-control-helper>Helper Text</clr-control-helper>
+    <clr-control-error>Helper Error</clr-control-error>
+    <clr-control-success>Helper Success</clr-control-success>
+  </clr-number-picker-container>
+  <h4>Required</h4>
+  <clr-number-picker-container>
+    <label>Number Input</label>
+    <clr-number-picker formControlName="numberRequired" placeholder="Placeholder" required></clr-number-picker>
+    <clr-control-helper>Helper Text</clr-control-helper>
+    <clr-control-error>Helper Error</clr-control-error>
+    <clr-control-success>Helper Success</clr-control-success>
+  </clr-number-picker-container>
+  <h4>Readonly</h4>
+  <clr-number-picker-container>
+    <label>Number Input</label>
+    <clr-number-picker formControlName="numberReadonly" placeholder="Placeholder" readonly></clr-number-picker>
+    <clr-control-helper>Helper Text</clr-control-helper>
+    <clr-control-error>Helper Error</clr-control-error>
+    <clr-control-success>Helper Success</clr-control-success>
+  </clr-number-picker-container>
+  <h4>Disabled</h4>
+  <clr-number-picker-container>
+    <label>Number Input</label>
+    <clr-number-picker formControlName="numberDisabled" placeholder="Placeholder"></clr-number-picker>
+    <clr-control-helper>Helper Text</clr-control-helper>
+    <clr-control-error>Helper Error</clr-control-error>
+    <clr-control-success>Helper Success</clr-control-success>
+  </clr-number-picker-container>
+</form>
+<h3>Component Only</h3>
+<h4>Default</h4>
+<clr-number-picker placeholder="Placeholder"></clr-number-picker>
+<h4>Default with value</h4>
+<clr-number-picker [value]="10" placeholder="Placeholder"></clr-number-picker>
+<h4>Max 10</h4>
+<clr-number-picker max="10" placeholder="Placeholder"></clr-number-picker>
+<h4>Min 5</h4>
+<clr-number-picker min="5" placeholder="Placeholder"></clr-number-picker>
+<h4>Readonly</h4>
+<clr-number-picker placeholder="Placeholder" readonly></clr-number-picker>
+<h4>Disabled</h4>
+<clr-number-picker placeholder="Placeholder" disabled></clr-number-picker>
