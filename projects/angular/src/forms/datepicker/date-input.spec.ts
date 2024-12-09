@@ -120,7 +120,7 @@ export default function () {
         it('should refocus input after selecting a date for a11y', async () => {
           const input: HTMLInputElement = context.testElement.querySelector('input');
           expect(document.activeElement).not.toBe(input);
-          dateNavigationService.notifySelectedDayChanged(new DayModel(2019, 1, 1));
+          dateNavigationService.notifySelectedDayChanged(new DayModel(2019, 1, 1), true);
           context.detectChanges();
           await context.fixture.whenStable();
           expect(document.activeElement).toBe(input);
@@ -134,7 +134,7 @@ export default function () {
           input.value = '';
           input.dispatchEvent(new Event('change'));
 
-          dateNavigationService.notifySelectedDayChanged(new DayModel(2019, 3, 12));
+          dateNavigationService.notifySelectedDayChanged(new DayModel(2019, 3, 12), true);
           context.detectChanges();
 
           expect(input.value).toBe('04/12/2019');
@@ -225,7 +225,7 @@ export default function () {
         it('outputs the date when the user selects a Date from the Date Picker', () => {
           expect(context.testComponent.date).toBeUndefined();
 
-          dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1));
+          dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1), true);
 
           expect(context.testComponent.date.getFullYear()).toBe(2015);
           expect(context.testComponent.date.getMonth()).toBe(1);
@@ -263,16 +263,16 @@ export default function () {
         });
 
         it('displays the date on the input when the selectedDay is updated', () => {
-          dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1));
+          dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1), true);
           expect(context.clarityElement.value).toBe('02/01/2015');
 
-          dateNavigationService.notifySelectedDayChanged(new DayModel(2018, 5, 1));
+          dateNavigationService.notifySelectedDayChanged(new DayModel(2018, 5, 1), true);
           expect(context.clarityElement.value).toBe('06/01/2018');
         });
 
         it('calls the DateIOService toLocaleDisplayFormatString method to display the selectedDay', () => {
           spyOn(dateIOService, 'toLocaleDisplayFormatString');
-          dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1));
+          dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1), true);
           expect(dateIOService.toLocaleDisplayFormatString).toHaveBeenCalled();
         });
       });
@@ -393,7 +393,7 @@ export default function () {
       it('updates the model and the input element when selectedDay updated notification is received', () => {
         expect(fixture.componentInstance.dateValue).toBeUndefined();
 
-        dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1));
+        dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1), true);
 
         fixture.detectChanges();
 
@@ -693,7 +693,8 @@ export default function () {
 
         const date = new Date();
         dateNavigationService.notifySelectedDayChanged(
-          new DayModel(date.getFullYear(), date.getMonth(), date.getDate())
+          new DayModel(date.getFullYear(), date.getMonth(), date.getDate()),
+          true
         );
         fixture.detectChanges();
 
@@ -716,7 +717,7 @@ export default function () {
       it('outputs the date appropriately when switching between user updates and programmatic updates', () => {
         expect(fixture.componentInstance.date).toBeUndefined();
 
-        dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1));
+        dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1), true);
         fixture.detectChanges();
         expect(fixture.componentInstance.date.getFullYear()).toBe(2015);
 
@@ -724,7 +725,7 @@ export default function () {
         fixture.detectChanges();
         expect(fixture.componentInstance.date.getFullYear()).toBe(2019);
 
-        dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1));
+        dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1), true);
         fixture.detectChanges();
         expect(fixture.componentInstance.date.getFullYear()).toBe(2015);
       });

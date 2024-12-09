@@ -40,6 +40,7 @@ export default {
     disabled: false,
     placeholder: '',
     id: '',
+    showActionButtons: false,
     // outputs
     clrDateChange: action('clrDateChange'),
     // story helpers
@@ -50,7 +51,7 @@ export default {
 
 const DatePickerTemplate: StoryFn = args => ({
   template: `
-    <clr-date-container>
+    <clr-date-container [showActionButtons]="showActionButtons">
       <label>Date</label>
       <input
         #date
@@ -98,5 +99,12 @@ export const MaxDate: StoryObj = {
   render: DatePickerTemplate,
   args: {
     max: Date.now() + 2592000000,
+  },
+};
+
+export const ActionButtons: StoryObj = {
+  render: DatePickerTemplate,
+  args: {
+    showActionButtons: true,
   },
 };

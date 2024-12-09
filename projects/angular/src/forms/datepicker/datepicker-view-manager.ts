@@ -8,6 +8,7 @@
 import { Component } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
@@ -17,13 +18,20 @@ import { ViewManagerService } from './providers/view-manager.service';
   providers: [DatepickerFocusService],
   host: {
     '[class.datepicker]': 'true',
+    '[class.has-action-buttons]': 'hasActionButtons',
     '[attr.aria-modal]': 'true',
     '[attr.aria-label]': 'commonStrings.keys.datepickerDialogLabel',
     role: 'dialog',
   },
 })
 export class ClrDatepickerViewManager {
-  constructor(public commonStrings: ClrCommonStringsService, private viewManagerService: ViewManagerService) {}
+  hasActionButtons = this.dateNavigationService.hasActionButtons;
+
+  constructor(
+    public commonStrings: ClrCommonStringsService,
+    private viewManagerService: ViewManagerService,
+    private dateNavigationService: DateNavigationService
+  ) {}
 
   /**
    * Returns if the current view is the monthpicker.

@@ -8,11 +8,10 @@
 import { Component, Input } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
-import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
+import { DatePickerHelperService } from './providers/datepicker-helper.service';
 
 @Component({
   selector: 'clr-day',
@@ -41,8 +40,7 @@ export class ClrDay {
 
   constructor(
     private _dateNavigationService: DateNavigationService,
-    private _toggleService: ClrPopoverToggleService,
-    private dateFormControlService: DateFormControlService,
+    private _datePickerHelperService: DatePickerHelperService,
     private commonStrings: ClrCommonStringsService
   ) {}
 
@@ -81,8 +79,6 @@ export class ClrDay {
       return;
     }
     const day: DayModel = this.dayView.dayModel;
-    this._dateNavigationService.notifySelectedDayChanged(day);
-    this.dateFormControlService.markAsDirty();
-    this._toggleService.open = false;
+    this._datePickerHelperService.selectDay(day);
   }
 }

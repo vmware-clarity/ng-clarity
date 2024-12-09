@@ -20,16 +20,27 @@ import { DayModel } from '../model/day.model';
  */
 @Injectable()
 export class DateNavigationService {
-  selectedDay: DayModel;
+  interimSelectedDay: DayModel;
   focusedDay: DayModel;
+  hasActionButtons = false;
 
+  private _selectedDay: DayModel;
   private _displayedCalendar: CalendarModel;
   private _todaysFullDate: Date = new Date();
   private _today: DayModel;
   private _selectedDayChange = new Subject<DayModel>();
+  private _interimSelectedDayChange = new Subject<DayModel>();
   private _displayedCalendarChange = new Subject<void>();
   private _focusOnCalendarChange = new Subject<void>();
   private _focusedDayChange = new Subject<DayModel>();
+
+  get selectedDay(): DayModel {
+    return this.hasActionButtons ? this.interimSelectedDay : this._selectedDay;
+  }
+
+  set selectedDay(selectedDay: DayModel) {
+    this._selectedDay = selectedDay;
+  }
 
   get today(): DayModel {
     return this._today;
@@ -41,6 +52,10 @@ export class DateNavigationService {
 
   get selectedDayChange(): Observable<DayModel> {
     return this._selectedDayChange.asObservable();
+  }
+
+  get interimSelectedDayChange(): Observable<DayModel> {
+    return this._interimSelectedDayChange.asObservable();
   }
 
   /**
@@ -68,9 +83,8 @@ export class DateNavigationService {
    * Notifies that the selected day has changed so that the date can be emitted to the user.
    * Note: Only to be called from day.ts
    */
-  notifySelectedDayChanged(dayModel: DayModel) {
-    this.selectedDay = dayModel;
-    this._selectedDayChange.next(dayModel);
+  notifySelectedDayChanged(dayModel: DayModel, emitEvent: boolean) {
+    this.compareAndSelectDate(dayModel, emitEvent);
   }
 
   /**
@@ -126,6 +140,41 @@ export class DateNavigationService {
       this.setDisplayedCalendar(new CalendarModel(this.focusedDay.year, this.focusedDay.month));
     }
     this._focusOnCalendarChange.next();
+  }
+
+  setSelectedDay(dayModel: DayModel | undefined): void {
+    this.selectedDay = dayModel;
+    this._selectedDayChange.next(dayModel);
+  }
+
+  getSelectedDate() {
+    return this._selectedDay;
+  }
+
+  syncInterimDateValues() {
+    this.setInterimSelectedDay(this.getSelectedDate());
+  }
+
+  private setInterimSelectedDay(dayModel: DayModel | undefined): void {
+    this.interimSelectedDay = dayModel;
+    this._interimSelectedDayChange.next(dayModel);
+  }
+
+  private updateSelectedDay(dayObject: { startDate: DayModel }, emitEvent: boolean): void {
+    const { startDate } = dayObject;
+    if (startDate !== null) {
+      if (emitEvent) {
+        this.setSelectedDay(startDate);
+      } else {
+        this.setInterimSelectedDay(startDate);
+      }
+    }
+  }
+
+  private compareAndSelectDate(selectedDay: DayModel, emitEvent: boolean) {
+    const dayObject: { startDate: DayModel } = { startDate: null };
+    dayObject.startDate = selectedDay;
+    this.updateSelectedDay(dayObject, emitEvent);
   }
 
   // not a setter because i want this to remain private

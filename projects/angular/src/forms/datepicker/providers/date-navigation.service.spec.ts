@@ -160,7 +160,7 @@ export default function () {
         expect(dateNavigationService.selectedDay).toBeUndefined();
 
         const testDayModel: DayModel = new DayModel(2015, 1, 1);
-        expect(dateNavigationService.notifySelectedDayChanged(testDayModel));
+        expect(dateNavigationService.notifySelectedDayChanged(testDayModel, true));
 
         expect(dateNavigationService.selectedDay).toEqual(testDayModel);
       });
@@ -258,7 +258,7 @@ export default function () {
         });
 
         const test: DayModel = new DayModel(2015, 1, 1);
-        dateNavigationService.notifySelectedDayChanged(test);
+        dateNavigationService.notifySelectedDayChanged(test, true);
 
         expect(dayModel).toEqual(test);
       });

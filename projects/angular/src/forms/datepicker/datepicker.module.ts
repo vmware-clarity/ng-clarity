@@ -26,6 +26,7 @@ import { ClrCalendar } from './calendar';
 import { ClrDateContainer } from './date-container';
 import { ClrDateInput } from './date-input';
 import { ClrDateInputValidator } from './date-input.validator';
+import { ClrDatepickerActions, ClrDatepickerApplyAction, ClrDatepickerCancelAction } from './datepicker-action-buttons';
 import { ClrDatepickerViewManager } from './datepicker-view-manager';
 import { ClrDay } from './day';
 import { ClrDaypicker } from './daypicker';
@@ -42,6 +43,9 @@ export const CLR_DATEPICKER_DIRECTIVES: Type<any>[] = [
   ClrYearpicker,
   ClrDaypicker,
   ClrCalendar,
+  ClrDatepickerActions,
+  ClrDatepickerApplyAction,
+  ClrDatepickerCancelAction,
 ];
 
 @NgModule({

@@ -22,3 +22,78 @@
 .clr-example-input {
   display: inline-block;
 }
+.date-section {
+  margin: 0 $clr_baselineRem_0_83;
+  .flex-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: $clr_baselineRem_0_83;
+  }
+  .card {
+    flex-basis: 47%;
+    margin: $clr_baselineRem_1 $clr_baselineRem_0_625;
+    display: flex;
+    flex-wrap: wrap;
+    &::before {
+      content: attr(data-heading);
+      position: absolute;
+      top: calc(-1 * $clr_baselineRem_0_5);
+      left: $clr_baselineRem_0_5;
+      background: var(--clr-global-app-background);
+      padding: 0 $clr_baselineRem_0_416;
+      border: 0;
+      font-weight: 400;
+      font-size: $clr_baselineRem_0_75;
+    }
+  }
+  .clr-form-control {
+    margin: 0 !important;
+  }
+  .clr-form-horizontal .clr-form-control > .clr-control-label {
+    width: unset;
+  }
+  .card-content {
+    padding: $clr_baselineRem_1_5 var(--cds-global-space-7);
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    &::after {
+      margin-bottom: $clr_baselineRem_0_25;
+      display: block;
+      content: '';
+    }
+  }
+  .features {
+    display: flex;
+    padding: var(--cds-global-space-5);
+    .title {
+      padding-right: var(--cds-global-space-8);
+      margin-right: var(--cds-global-space-5);
+      border-right: $clr_baselineRem_1px solid var(--clr-card-border-color);
+    }
+    .features-list {
+      display: flex;
+    }
+    clr-toggle-wrapper + clr-toggle-wrapper {
+      margin: 0 var(--cds-global-space-7);
+    }
+    .card {
+      flex-basis: 100%;
+      padding: var(--cds-global-space-7);
+      align-items: center;
+    }
+  }
+
+  .card-validations {
+    position: relative;
+    padding: var(--cds-global-space-7);
+    border-top: var(--clr-card-border-width) solid var(--clr-card-border-color);
+    width: 100%;
+
+    .form-input-wrapper {
+      display: flex;
+      justify-content: space-evenly;
+    }
+  }
+}
