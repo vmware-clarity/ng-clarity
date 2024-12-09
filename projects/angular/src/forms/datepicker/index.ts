@@ -14,5 +14,6 @@ export * from './monthpicker';
 export * from './yearpicker';
 export * from './calendar';
 export * from './day';
+export * from './datepicker-action-buttons';
 
 export * from './datepicker.module';

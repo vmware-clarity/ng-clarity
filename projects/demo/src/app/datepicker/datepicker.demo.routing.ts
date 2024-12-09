@@ -21,6 +21,7 @@ import { DatepickerInTemplateDrivenFormsDemo } from './datepicker-in-template-dr
 import { DatepickerKKJDemo } from './datepicker-KKJ';
 import { DatepickerLocaleData } from './datepicker-locale-data';
 import { DatepickerMinMaxDemo } from './datepicker-min-max';
+import { DatePickerWithActionButtonsDemo } from './datepicker-with-action-buttons';
 import { DatepickerDemo } from './datepicker.demo';
 import { DisabledDemo } from './disabled';
 import { DatepickerLayoutDemo } from './layout';
@@ -43,6 +44,7 @@ const ROUTES: Routes = [
       { path: 'disabled', component: DisabledDemo },
       { path: 'layout', component: DatepickerLayoutDemo },
       { path: 'datepicker-min-max', component: DatepickerMinMaxDemo },
+      { path: 'with-action-buttons', component: DatePickerWithActionButtonsDemo },
       {
         path: 'locale-data',
         component: DatepickerLocaleData,
