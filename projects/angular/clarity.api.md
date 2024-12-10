@@ -547,11 +547,11 @@ export class ClrBreadcrumbs {
     // (undocumented)
     clrBreadcrumbItemClick: EventEmitter<BreadcrumbItem>;
     // (undocumented)
-    commonStrings: ClrCommonStringsService;
+    protected commonStrings: ClrCommonStringsService;
     // (undocumented)
-    expand(): void;
+    protected expand(): void;
     // (undocumented)
-    handleItemClick(breadcrumb: BreadcrumbItem): void;
+    protected handleItemClick(breadcrumb: BreadcrumbItem): void;
     // (undocumented)
     isExpanded: boolean;
     // Warning: (ae-forgotten-export) The symbol "BreadcrumbItem" needs to be exported by the entry point index.d.ts
@@ -559,9 +559,9 @@ export class ClrBreadcrumbs {
     // (undocumented)
     items: BreadcrumbItem[];
     // (undocumented)
-    limit: number;
+    protected limit: number;
     // (undocumented)
-    max: number;
+    protected max: number;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbs, "clr-breadcrumbs", never, { "items": "items"; }, { "clrBreadcrumbItemClick": "clrBreadcrumbItemClick"; }, never, never, false, never>;
     // (undocumented)
@@ -579,7 +579,7 @@ export class ClrBreadcrumbsModule {
     // Warning: (ae-forgotten-export) The symbol "i7_3" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBreadcrumbsModule, [typeof i1_44.ClrBreadcrumbs, typeof i2_31.ClrBreadcrumbItem], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i7_3.ClrHostWrappingModule, typeof i6_9.RouterModule], [typeof i1_44.ClrBreadcrumbs, typeof i2_31.ClrBreadcrumbItem, typeof i6_9.RouterModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBreadcrumbsModule, [typeof i1_44.ClrBreadcrumbs, typeof i2_31.ClrBreadcrumbItem], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i7_3.ClrHostWrappingModule, typeof i6_9.RouterModule], [typeof i1_44.ClrBreadcrumbs]>;
 }
 
 // @public (undocumented)
@@ -969,7 +969,7 @@ export interface ClrCommonStrings {
     alertPreviousAlertAriaLabel: string;
     allColumnsSelected: string;
     // (undocumented)
-    breadcrumb: string;
+    breadcrumbsLabel: string;
     // (undocumented)
     browse: string;
     // (undocumented)

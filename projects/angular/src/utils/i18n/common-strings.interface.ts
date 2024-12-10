@@ -320,5 +320,5 @@ export interface ClrCommonStrings {
   unselectedTreeNode: string;
 
   // Breadcrumbs
-  breadcrumb: string;
+  breadcrumbsLabel: string;
 }

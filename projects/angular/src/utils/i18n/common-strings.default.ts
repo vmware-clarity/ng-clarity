@@ -135,5 +135,5 @@ export const commonStringsDefault: ClrCommonStrings = {
   unselectedTreeNode: 'unselected',
 
   // Breadcrumbs
-  breadcrumb: 'breadcrumb',
+  breadcrumbsLabel: 'breadcrumbs',
 };

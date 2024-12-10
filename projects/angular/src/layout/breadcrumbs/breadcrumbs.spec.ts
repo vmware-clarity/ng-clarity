@@ -24,20 +24,16 @@ class TestComponent {
     { label: 'Grandchild Page', url: '/grandchild' },
     { label: 'Last Page', url: '/last' },
   ];
-  isExpanded = false;
-  handleItemClick = breadcrumb => {
-    return breadcrumb;
-  };
 }
-let breadcrumbs: DebugElement;
-let breadcrumbList: DebugElement;
 
 describe('ClrBreadcrumbs', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
+  let breadcrumbs: DebugElement;
+  let breadcrumbList: DebugElement;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [
         ClrLayoutModule,
         RouterTestingModule.withRoutes([
@@ -46,16 +42,13 @@ describe('ClrBreadcrumbs', () => {
         ]),
       ],
       declarations: [TestComponent],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     breadcrumbs = fixture.debugElement.query(By.css('clr-breadcrumbs'));
     breadcrumbList = breadcrumbs.query(By.css('.clr-breadcrumb-menu'));
-  });
-  it('should create breadcrumbs component', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should have each breadcrumb as a clickable item which navigates to its corresponding page', fakeAsync(() => {

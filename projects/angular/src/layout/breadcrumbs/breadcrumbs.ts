@@ -17,26 +17,26 @@ import { BreadcrumbItem } from './model/breadcrumbs.model';
   styleUrls: ['./_breadcrumbs.clarity.scss'],
   host: {
     class: 'clr-breadcrumb',
-    '[attr.aria-label]': 'commonStrings.keys.breadcrumb',
+    '[attr.aria-label]': 'commonStrings.keys.breadcrumbsLabel',
     '[attr.role]': '"navigation"',
   },
 })
 export class ClrBreadcrumbs {
   isExpanded = false;
-  max: number = MAX_DISPLAY_ITEMS;
-  limit: number = MAX_DISPLAY_ITEMS;
-
   @Input() items: BreadcrumbItem[] = [];
   @Output() clrBreadcrumbItemClick: EventEmitter<BreadcrumbItem> = new EventEmitter<BreadcrumbItem>();
 
-  constructor(public commonStrings: ClrCommonStringsService) {}
+  protected limit: number = MAX_DISPLAY_ITEMS;
+  protected max: number = MAX_DISPLAY_ITEMS;
 
-  handleItemClick(breadcrumb: BreadcrumbItem) {
-    this.clrBreadcrumbItemClick.emit(breadcrumb);
-  }
+  constructor(protected commonStrings: ClrCommonStringsService) {}
 
-  expand() {
+  protected expand() {
     this.isExpanded = true;
     this.limit = this.items?.length;
+  }
+
+  protected handleItemClick(breadcrumb: BreadcrumbItem) {
+    this.clrBreadcrumbItemClick.emit(breadcrumb);
   }
 }

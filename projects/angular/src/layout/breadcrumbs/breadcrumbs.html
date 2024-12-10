@@ -7,10 +7,16 @@
     </clr-breadcrumb-item>
     <ng-container *ngFor="let breadcrumb of items | slice: -limit : items.length; let isLastItem=last">
       <clr-breadcrumb-item>
-        <a *ngIf="!isLastItem" (click)="handleItemClick(breadcrumb)" [routerLink]="breadcrumb?.url">
-          {{ breadcrumb?.label }}
-        </a>
-        <span *ngIf="isLastItem" aria-current="page">{{ breadcrumb?.label }}</span>
+        <span *ngIf="isLastItem; else breadcrumbLinks" aria-current="page">{{ breadcrumb?.label }}</span>
+
+        <ng-template #breadcrumbLinks>
+          <a *ngIf="breadcrumb?.routerLink" (click)="handleItemClick(breadcrumb)" [routerLink]="breadcrumb?.routerLink">
+            {{ breadcrumb?.label }}
+          </a>
+          <a *ngIf="!breadcrumb?.routerLink" (click)="handleItemClick(breadcrumb)" [href]="breadcrumb?.url">
+            {{ breadcrumb?.label }}
+          </a>
+        </ng-template>
       </clr-breadcrumb-item>
     </ng-container>
   </ng-container>
