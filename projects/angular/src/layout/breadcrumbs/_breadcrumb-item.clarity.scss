@@ -4,10 +4,13 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:meta';
+@use '../breadcrumbs/variables.breadcrumbs' as breadcrumb-variables;
 
-export * from './layout.module';
-export * from './main-container/index';
-export * from './nav/index';
-export * from './tabs/index';
-export * from './vertical-nav/index';
-export * from './breadcrumbs/index';
+.clr-breadcrumb-link {
+  &::after {
+    content: '/';
+    margin: 0 breadcrumb-variables.$clr-breadcrumb-item-space;
+    color: breadcrumb-variables.$clr-breadcrumb-active-color;
+  }
+}

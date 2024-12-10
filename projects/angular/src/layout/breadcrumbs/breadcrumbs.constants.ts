@@ -5,9 +5,4 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './layout.module';
-export * from './main-container/index';
-export * from './nav/index';
-export * from './tabs/index';
-export * from './vertical-nav/index';
-export * from './breadcrumbs/index';
+export const MAX_DISPLAY_ITEMS = 3;
