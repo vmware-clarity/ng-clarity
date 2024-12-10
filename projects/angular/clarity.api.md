@@ -332,8 +332,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     // (undocumented)
     panelOpenChange: EventEmitter<boolean>;
     // (undocumented)
-    protected parent: ClrAccordionPanel;
-    // (undocumented)
     protected stepCompleteText(panelNumber: number): string;
     // (undocumented)
     protected stepErrorText(panelNumber: number): string;
@@ -3922,7 +3920,7 @@ export class ClrStepperModule {
 
 // @public (undocumented)
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
-    constructor(parent: ClrAccordionPanel, platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     // Warning: (ae-forgotten-export) The symbol "AccordionStatus" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -3941,11 +3939,9 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    protected parent: ClrAccordionPanel;
-    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-step-title", "clr-step-description", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [{ optional: true; skipSelf: true; }, null, null, { optional: true; }, { optional: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
 }
 
 // @public (undocumented)

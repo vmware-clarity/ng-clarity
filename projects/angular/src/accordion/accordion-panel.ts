@@ -61,22 +61,12 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   private _panelIndex: number;
 
   constructor(
-    @Optional()
-    @SkipSelf()
-    protected parent: ClrAccordionPanel,
+    @Optional() @SkipSelf() private parent: ClrAccordionPanel,
     public commonStrings: ClrCommonStringsService,
     private accordionService: AccordionService,
     private ifExpandService: IfExpandService,
     private cdr: ChangeDetectorRef
   ) {}
-
-  get headingLevel() {
-    if (this.explicitHeadingLevel) {
-      return this.explicitHeadingLevel;
-    }
-
-    return this.parent ? 4 : 3;
-  }
 
   get id(): string {
     return this._id;
@@ -87,6 +77,14 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
 
   get panelNumber() {
     return this._panelIndex + 1;
+  }
+
+  get headingLevel() {
+    if (this.explicitHeadingLevel) {
+      return this.explicitHeadingLevel;
+    }
+
+    return this.parent ? 4 : 3;
   }
 
   ngOnInit() {

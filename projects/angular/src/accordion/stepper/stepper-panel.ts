@@ -15,7 +15,6 @@ import {
   OnInit,
   Optional,
   PLATFORM_ID,
-  SkipSelf,
   ViewChild,
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
@@ -46,9 +45,6 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    @Optional()
-    @SkipSelf()
-    protected override parent: ClrAccordionPanel,
     @Inject(PLATFORM_ID) private platformId: any,
     public override commonStrings: ClrCommonStringsService,
     @Optional() private formGroupName: FormGroupName,
@@ -57,7 +53,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     ifExpandService: IfExpandService,
     cdr: ChangeDetectorRef
   ) {
-    super(parent, commonStrings, stepperService, ifExpandService, cdr);
+    super(null, commonStrings, stepperService, ifExpandService, cdr);
   }
 
   override get id(): string {
