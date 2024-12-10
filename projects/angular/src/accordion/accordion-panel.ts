@@ -15,9 +15,11 @@ import {
   Input,
   OnChanges,
   OnInit,
+  Optional,
   Output,
   QueryList,
   SimpleChanges,
+  SkipSelf,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -25,6 +27,7 @@ import { tap } from 'rxjs/operators';
 import { IfExpandService } from '../utils/conditional/if-expanded.service';
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
+import { HeadingLevel } from '../wizard';
 import { ClrAccordionDescription } from './accordion-description';
 import { AccordionPanelModel } from './models/accordion.model';
 import { AccordionService } from './providers/accordion.service';
@@ -42,6 +45,12 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   @Input('clrAccordionPanelDisabled') @HostBinding('class.clr-accordion-panel-disabled') disabled = false;
   @Input('clrAccordionPanelOpen') panelOpen = false;
 
+  @Input('clrAccordionPanelHeadingEnabled') headingEnabled = false;
+  /**
+   * Level of the accordion/stepper heading from 1 to 6.
+   */
+  @Input('clrAccordionPanelHeadingLevel') explicitHeadingLevel: HeadingLevel;
+
   @Output('clrAccordionPanelOpenChange') panelOpenChange = new EventEmitter<boolean>();
 
   @ContentChildren(ClrAccordionDescription) accordionDescription: QueryList<ClrAccordionDescription>;
@@ -52,6 +61,7 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   private _panelIndex: number;
 
   constructor(
+    @Optional() @SkipSelf() private parent: ClrAccordionPanel,
     public commonStrings: ClrCommonStringsService,
     private accordionService: AccordionService,
     private ifExpandService: IfExpandService,
@@ -67,6 +77,14 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
 
   get panelNumber() {
     return this._panelIndex + 1;
+  }
+
+  get headingLevel() {
+    if (this.explicitHeadingLevel) {
+      return this.explicitHeadingLevel;
+    }
+
+    return this.parent ? 4 : 3;
   }
 
   ngOnInit() {
