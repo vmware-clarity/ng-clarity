@@ -7,5 +7,6 @@
 
 export interface BreadcrumbItem {
   label: string;
-  url: string;
+  url?: string;
+  routerLink?: string;
 }

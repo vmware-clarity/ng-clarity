@@ -16,7 +16,7 @@ import { ClrBreadcrumbs } from './breadcrumbs';
 
 @NgModule({
   declarations: [ClrBreadcrumbs, ClrBreadcrumbItem],
-  exports: [ClrBreadcrumbs, ClrBreadcrumbItem, RouterModule],
+  exports: [ClrBreadcrumbs],
   imports: [CommonModule, ClrIconModule, ClrHostWrappingModule, RouterModule],
 })
 export class ClrBreadcrumbsModule {}

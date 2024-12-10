@@ -44,7 +44,7 @@ export class BreadcrumbsDemo implements OnInit {
         url += `/${routeURL}`;
       }
       if (child.snapshot.data['breadcrumb'] && child.snapshot.url.length) {
-        breadcrumbs.push({ label: child.snapshot.data['breadcrumb'], url: url });
+        breadcrumbs.push({ label: child.snapshot.data['breadcrumb'], routerLink: url });
       }
 
       return this.createBreadcrumbs(child, url, breadcrumbs);
