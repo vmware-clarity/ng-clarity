@@ -49,6 +49,38 @@ class TestComponent {
 @Component({
   template: `
     <clr-accordion>
+      <clr-accordion-panel
+        [clrAccordionPanelOpen]="true"
+        [clrAccordionPanelHeadingEnabled]="true"
+        (clrAccordionPanelOpenChange)="change($event)"
+      >
+        <clr-accordion-title>title 1</clr-accordion-title>
+        <clr-accordion-content>
+          <clr-accordion>
+            <clr-accordion-panel
+              id="nested-accordion-panel"
+              [clrAccordionPanelOpen]="true"
+              [clrAccordionPanelHeadingEnabled]="true"
+              (clrAccordionPanelOpenChange)="change($event)"
+            >
+              <clr-accordion-title>nested title</clr-accordion-title>
+              <clr-accordion-content>nested panel</clr-accordion-content>
+            </clr-accordion-panel>
+          </clr-accordion>
+        </clr-accordion-content>
+      </clr-accordion-panel>
+    </clr-accordion>
+  `,
+})
+class TestNestedAccordionComponent {
+  change = state => {
+    return state;
+  };
+}
+
+@Component({
+  template: `
+    <clr-accordion>
       <clr-accordion-panel (clrAccordionPanelOpenChange)="change($event)">
         <clr-accordion-title>title</clr-accordion-title>
         <clr-accordion-description>description</clr-accordion-description>
@@ -190,7 +222,7 @@ describe('ClrAccordionPanel', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        declarations: [TestComponent, TestNoBindingComponent],
+        declarations: [TestComponent, TestNoBindingComponent, TestNestedAccordionComponent],
         imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
       });
 
@@ -294,6 +326,24 @@ describe('ClrAccordionPanel', () => {
       const panelHeading = accordionPanel.querySelector('[role="heading"]');
 
       expect(panelHeading).toBeNull();
+    });
+
+    it('default heading aria-level should be present in nested accordion', () => {
+      const fixture: ComponentFixture<TestNestedAccordionComponent> =
+        TestBed.createComponent(TestNestedAccordionComponent);
+      fixture.detectChanges();
+
+      const accordionPanel = fixture.debugElement.query(By.directive(ClrAccordionPanel)).nativeElement as Element;
+      const panelHeading = accordionPanel.querySelector('[role="heading"]');
+
+      expect(panelHeading).not.toBeNull();
+      expect(panelHeading.getAttribute('aria-level')).toBe('3');
+
+      const nestedAccordionPanel = accordionPanel.querySelector('#nested-accordion-panel');
+      const nestedPanelHeading = nestedAccordionPanel.querySelector('[role="heading"]');
+
+      expect(nestedPanelHeading).not.toBeNull();
+      expect(nestedPanelHeading.getAttribute('aria-level')).toBe('4');
     });
   });
 });
