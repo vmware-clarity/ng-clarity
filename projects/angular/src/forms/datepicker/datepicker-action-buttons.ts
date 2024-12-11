@@ -5,26 +5,27 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive, HostBinding, HostListener, Optional } from '@angular/core';
+import { Component, Directive, HostListener, Optional } from '@angular/core';
 
 import { DatePickerHelperService } from './providers/datepicker-helper.service';
 
 @Component({
   selector: 'clr-datepicker-actions',
-  template: `
-    <div class="action-buttons">
-      <ng-content></ng-content>
-    </div>
-  `,
+  template: ` <ng-content></ng-content> `,
+  host: {
+    '[class.datepicker-actions]': 'true',
+  },
 })
 export class ClrDatepickerActions {}
 
 @Directive({
   selector: '[clrDatepickerApplyAction]',
+  host: {
+    '[class.btn]': 'true',
+    '[class.btn-primary]': 'true',
+  },
 })
 export class ClrDatepickerApplyAction {
-  @HostBinding('class') className = 'btn btn-primary';
-
   constructor(@Optional() private datePickerHelperService: DatePickerHelperService) {}
 
   @HostListener('click')
@@ -35,10 +36,12 @@ export class ClrDatepickerApplyAction {
 
 @Directive({
   selector: '[clrDatepickerCancelAction]',
+  host: {
+    '[class.btn]': 'true',
+    '[class.btn-outline]': 'true',
+  },
 })
 export class ClrDatepickerCancelAction {
-  @HostBinding('class') className = 'btn btn-outline';
-
   constructor(@Optional() private datePickerHelperService: DatePickerHelperService) {}
 
   @HostListener('click')

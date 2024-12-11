@@ -10,6 +10,7 @@
 @use '../../utils/variables/variables.global';
 @use 'variables.datepicker' as datepicker-variables;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../button/variables.buttons' as button-variables;
 
 @include meta.load-css('properties.datepicker');
 
@@ -33,7 +34,7 @@
 
 @mixin generate-calendar-focus-style() {
   &:hover {
-    background: datepicker-variables.$clr-calendar-btn-hover-color;
+    background: datepicker-variables.$clr-calendar-btn-hover-focus-color;
   }
 
   &:focus {
@@ -60,7 +61,6 @@
   &.is-selected {
     background: datepicker-variables.$clr-calendar-active-cell-background-color;
     color: datepicker-variables.$clr-calendar-active-cell-color;
-    border: none;
     &:focus {
       background: datepicker-variables.$clr-calendar-active-focus-cell-background-color;
     }
@@ -80,10 +80,10 @@
 @include mixins.exports('datepicker.clarity') {
   .datepicker {
     display: flex;
-    flex-flow: column;
+    flex-direction: column;
 
     //Dimensions
-    margin-top: tokens.$cds-global-space-4;
+    margin-top: datepicker-variables.$clr-calendar-margin-top;
     padding: datepicker-variables.$clr-calendar-padding;
     width: datepicker-variables.$clr-calendar-width;
     height: datepicker-variables.$clr-calendar-height;
@@ -94,13 +94,6 @@
     border-radius: tokens.$cds-alias-object-border-radius-100;
     box-shadow: tokens.$cds-alias-object-shadow-100;
     z-index: map.get(variables.$clr-layers, dropdown-menu);
-    justify-content: space-between;
-
-    clr-daypicker,
-    clr-monthpicker,
-    clr-yearpicker {
-      min-height: calc(100% - mixins.baselinePx(50));
-    }
 
     &.has-action-buttons {
       height: calc(
@@ -108,19 +101,16 @@
       );
     }
 
-    .action-buttons {
+    .datepicker-actions {
       min-width: 100%;
       height: datepicker-variables.$clr-calendar-action-buttons-height;
       display: flex;
-      border-top: 1px solid #cbd4d8;
+      border-top: tokens.$cds-global-space-1 solid tokens.$cds-alias-object-container-border-color;
       justify-content: end;
-      align-items: end;
+      padding-top: tokens.$cds-global-space-7;
+      gap: button-variables.$clr-btn-horizontal-margin;
       button {
-        margin-top: 0;
-        margin-bottom: 0;
-        &.btn-primary {
-          margin-right: 0;
-        }
+        margin: 0;
       }
     }
   }
@@ -213,9 +203,7 @@
     &.is-disabled {
       color: tokens.$cds-alias-object-interaction-color-disabled;
       pointer-events: none;
-      &:hover {
-        background: none;
-      }
+      background: none;
     }
   }
 

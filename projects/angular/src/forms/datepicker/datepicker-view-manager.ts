@@ -25,8 +25,6 @@ import { ViewManagerService } from './providers/view-manager.service';
   },
 })
 export class ClrDatepickerViewManager {
-  hasActionButtons = this.dateNavigationService.hasActionButtons;
-
   constructor(
     public commonStrings: ClrCommonStringsService,
     private viewManagerService: ViewManagerService,
@@ -52,5 +50,9 @@ export class ClrDatepickerViewManager {
    */
   get isDayView(): boolean {
     return this.viewManagerService.isDayView;
+  }
+
+  protected get hasActionButtons() {
+    return this.dateNavigationService.hasActionButtons;
   }
 }
