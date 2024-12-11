@@ -948,6 +948,7 @@ export interface ClrCommonStrings {
     datagridExpandableRowsHelperText: string;
     datagridFilterAriaLabel: string;
     datagridFilterDialogAriaLabel: string;
+    datagridFilterTitle: string;
     // (undocumented)
     datepickerCurrentDecade: string;
     // (undocumented)
@@ -1517,6 +1518,8 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDa
     //
     // (undocumented)
     set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter<T, ClrDatagridFilterInterface<T>>);
+    // (undocumented)
+    filterTitle: string;
     // (undocumented)
     ngOnChanges(): void;
     // (undocumented)

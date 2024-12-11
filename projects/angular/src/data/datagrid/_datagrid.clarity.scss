@@ -1411,10 +1411,20 @@
     font-weight: normal;
 
     .datagrid-filter-close-wrapper {
-      text-align: right;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: #{tokens.$cds-global-space-3};
+      margin-bottom: #{tokens.$cds-global-space-3};
+      @include mixins.generate-typography-token('TableHeaders-11-SB-CPT');
+
+      .datagrid-filter-title {
+        display: inline-flex;
+      }
 
       .close {
         float: none;
+        font-size: unset;
       }
     }
 
