@@ -263,8 +263,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     return this.elementRef.nativeElement.classList.contains('clr-wizard--inline');
   }
 
-  get stopModalAnimations(): string {
-    return this._stopModalAnimations ? 'true' : 'false';
+  get stopModalAnimations(): boolean {
+    return this._stopModalAnimations;
   }
 
   ngAfterContentInit(): void {
