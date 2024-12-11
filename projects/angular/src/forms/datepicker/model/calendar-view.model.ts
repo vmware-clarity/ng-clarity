@@ -44,6 +44,15 @@ export class CalendarViewModel {
   }
 
   /**
+   * Updates the selected day in the calendar
+   */
+  updateSelectedDay(day: DayModel | undefined): void {
+    this.setSelectedDay(this.selectedDay, false);
+    this.selectedDay = day;
+    this.setSelectedDay(day, true);
+  }
+
+  /**
    * Generates a 6x7 matrix of DayViewModel based on the Calendar.
    * The 6x7 matrix is structured according to the first day of the week.
    * 6 rows to accommodate months which might have dates spanning over 6 weeks.
@@ -158,9 +167,7 @@ export class CalendarViewModel {
    * Initialize the selected day if the day is in the calendar.
    */
   private initializeSelectedDay(): void {
-    if (this.selectedDay && this.isDayInCalendarView(this.selectedDay)) {
-      this.currMonthDayViews[this.selectedDay.date - 1].isSelected = true;
-    }
+    this.setSelectedDay(this.selectedDay, true);
   }
 
   /**
@@ -186,6 +193,12 @@ export class CalendarViewModel {
   private setFocusableFlag(day: DayModel, flag: boolean): void {
     if (day) {
       this.currMonthDayViews[day.date - 1].isFocusable = flag;
+    }
+  }
+
+  private setSelectedDay(day: DayModel, flag: boolean) {
+    if (day && this.isDayInCalendarView(day)) {
+      this.currMonthDayViews[day?.date - 1].isSelected = flag;
     }
   }
 }
