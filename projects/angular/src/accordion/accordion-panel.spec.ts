@@ -23,7 +23,6 @@ import { AccordionService } from './providers/accordion.service';
     <clr-accordion>
       <clr-accordion-panel
         [(clrAccordionPanelOpen)]="open"
-        [clrAccordionPanelHeadingEnabled]="showHeading"
         [clrAccordionPanelHeadingLevel]="headingLevel"
         [clrAccordionPanelDisabled]="disabled"
         (clrAccordionPanelOpenChange)="change($event)"
@@ -39,8 +38,7 @@ class TestComponent {
   open = false;
   disabled = false;
   showDescription = false;
-  showHeading = false;
-  headingLevel: HeadingLevel = 3;
+  headingLevel: HeadingLevel;
   change = state => {
     return state;
   };
@@ -301,10 +299,9 @@ describe('ClrAccordionPanel', () => {
       expect(panelElement.querySelector('[role="heading"]')).toBeNull();
 
       fixture.componentInstance.headingLevel = 5;
-      fixture.componentInstance.showHeading = true;
       fixture.detectChanges();
-
       const panelHeading = panelElement.querySelector('[role="heading"]');
+
       expect(panelHeading).not.toBeNull();
       expect(panelHeading.getAttribute('aria-level')).toBe('5');
     });
