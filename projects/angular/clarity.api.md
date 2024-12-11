@@ -2101,8 +2101,6 @@ export class ClrDatepickerApplyAction {
     // Warning: (ae-forgotten-export) The symbol "DatePickerHelperService" needs to be exported by the entry point index.d.ts
     constructor(datePickerHelperService: DatePickerHelperService);
     // (undocumented)
-    className: string;
-    // (undocumented)
     onClick(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatepickerApplyAction, "[clrDatepickerApplyAction]", never, {}, {}, never, never, false, never>;
@@ -2113,8 +2111,6 @@ export class ClrDatepickerApplyAction {
 // @public (undocumented)
 export class ClrDatepickerCancelAction {
     constructor(datePickerHelperService: DatePickerHelperService);
-    // (undocumented)
-    className: string;
     // (undocumented)
     onClick(): void;
     // (undocumented)
@@ -2151,7 +2147,7 @@ export class ClrDatepickerViewManager {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    hasActionButtons: boolean;
+    protected get hasActionButtons(): boolean;
     get isDayView(): boolean;
     get isMonthView(): boolean;
     get isYearView(): boolean;
