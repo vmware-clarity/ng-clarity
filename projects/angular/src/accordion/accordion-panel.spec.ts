@@ -49,11 +49,7 @@ class TestComponent {
 @Component({
   template: `
     <clr-accordion>
-      <clr-accordion-panel
-        [clrAccordionPanelOpen]="true"
-        [clrAccordionPanelHeadingEnabled]="true"
-        (clrAccordionPanelOpenChange)="change($event)"
-      >
+      <clr-accordion-panel [clrAccordionPanelOpen]="true" [clrAccordionPanelHeadingEnabled]="true">
         <clr-accordion-title>title 1</clr-accordion-title>
         <clr-accordion-content>
           <clr-accordion>
@@ -61,7 +57,6 @@ class TestComponent {
               id="nested-accordion-panel"
               [clrAccordionPanelOpen]="true"
               [clrAccordionPanelHeadingEnabled]="true"
-              (clrAccordionPanelOpenChange)="change($event)"
             >
               <clr-accordion-title>nested title</clr-accordion-title>
               <clr-accordion-content>nested panel</clr-accordion-content>
@@ -72,11 +67,7 @@ class TestComponent {
     </clr-accordion>
   `,
 })
-class TestNestedAccordionComponent {
-  change = state => {
-    return state;
-  };
-}
+class TestNestedAccordionComponent {}
 
 @Component({
   template: `
@@ -319,21 +310,20 @@ describe('ClrAccordionPanel', () => {
     });
 
     it('when [clrAccordionPanelHeadingEnabled] is not set at all, heading role should not be present', () => {
-      const fixture: ComponentFixture<TestNoBindingComponent> = TestBed.createComponent(TestNoBindingComponent);
+      const fixture = TestBed.createComponent(TestNoBindingComponent);
       fixture.detectChanges();
 
-      const accordionPanel = fixture.debugElement.query(By.directive(ClrAccordionPanel)).nativeElement as HTMLElement;
+      const accordionPanel: HTMLElement = fixture.debugElement.query(By.directive(ClrAccordionPanel)).nativeElement;
       const panelHeading = accordionPanel.querySelector('[role="heading"]');
 
       expect(panelHeading).toBeNull();
     });
 
     it('default heading aria-level should be present in nested accordion', () => {
-      const fixture: ComponentFixture<TestNestedAccordionComponent> =
-        TestBed.createComponent(TestNestedAccordionComponent);
+      const fixture = TestBed.createComponent(TestNestedAccordionComponent);
       fixture.detectChanges();
 
-      const accordionPanel = fixture.debugElement.query(By.directive(ClrAccordionPanel)).nativeElement as Element;
+      const accordionPanel: HTMLElement = fixture.debugElement.query(By.directive(ClrAccordionPanel)).nativeElement;
       const panelHeading = accordionPanel.querySelector('[role="heading"]');
 
       expect(panelHeading).not.toBeNull();
