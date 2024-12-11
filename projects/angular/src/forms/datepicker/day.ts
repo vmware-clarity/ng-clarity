@@ -77,6 +77,9 @@ export class ClrDay {
    * Updates the selectedDay when the ClrDay is selected and closes the datepicker popover.
    */
   selectDay(): void {
+    if (this.dayView.isDisabled) {
+      return;
+    }
     const day: DayModel = this.dayView.dayModel;
     this._dateNavigationService.notifySelectedDayChanged(day);
     this.dateFormControlService.markAsDirty();
