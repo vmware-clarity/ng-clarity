@@ -69,11 +69,25 @@ export class PopoverDirective implements AfterViewInit {
           'scroll'
         ).subscribe(() => {
           if (this.overlayRef) {
-            this.overlayRef.updatePosition();
+            if (this.elementIsVisibleInViewport(this.popoverService.anchorElementRef.nativeElement)) {
+              this.overlayRef.updatePosition();
+            } else {
+              this.removeOverlay();
+            }
           }
         })
       );
     });
+  }
+
+  //Check if element is in ViewPort
+  elementIsVisibleInViewport(el, partiallyVisible = false) {
+    const { top, left, bottom, right } = el.getBoundingClientRect();
+    const { innerHeight, innerWidth } = window;
+    return partiallyVisible
+      ? ((top > 0 && top < innerHeight) || (bottom > 0 && bottom < innerHeight)) &&
+          ((left > 0 && left < innerWidth) || (right > 0 && right < innerWidth))
+      : top >= 0 && left >= 0 && bottom <= innerHeight && right <= innerWidth;
   }
 
   //The below method is taken from https://gist.github.com/oscarmarina/3a546cff4d106a49a5be417e238d9558
@@ -153,8 +167,8 @@ export class PopoverDirective implements AfterViewInit {
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
         positionStrategy: positionStrategy,
         scrollStrategy: this.popoverService.scrollToClose
-          ? this.overlay.scrollStrategies.noop()
-          : this.overlay.scrollStrategies.reposition(),
+          ? this.overlay.scrollStrategies.close()
+          : this.overlay.scrollStrategies.reposition({ autoClose: true }),
         panelClass: this.popoverService.panelClass,
         hasBackdrop: false,
       })

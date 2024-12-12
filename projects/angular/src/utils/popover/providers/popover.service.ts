@@ -16,7 +16,7 @@ import { ClrCDKPopoverPositions } from '../enums/cdk-signpost-position.enum';
 @Injectable()
 export class ClrPopoverService {
   outsideClickClose = true;
-  scrollToClose = true;
+  scrollToClose = false;
   anchorElementRef: ElementRef;
   closeButtonRef: ElementRef;
   contentRef: ElementRef;
