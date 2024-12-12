@@ -54,4 +54,51 @@
       margin-top: 0;
     }
   }
+
+  .clr-file-list {
+    .clr-file-list-item {
+      margin-top: tokens.$cds-global-space-5;
+      max-width: 500px;
+    }
+
+    .clr-file-label-and-status-icon {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .clr-file-label {
+      white-space: wrap;
+      height: unset;
+      margin-right: tokens.$cds-global-space-2;
+    }
+
+    .clr-file-clear-button {
+      padding-right: tokens.$cds-global-space-2;
+      padding-left: tokens.$cds-global-space-2;
+      margin: 0;
+      height: tokens.$cds-alias-typography-caption-line-height; // match label text line height
+
+      cds-icon {
+        margin: 0;
+      }
+    }
+  }
+
+  .clr-form-compact {
+    .clr-file-list-item {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      column-gap: tokens.$cds-global-space-3;
+
+      .clr-subtext {
+        margin: 0 !important;
+      }
+    }
+
+    .clr-file-list-break {
+      flex-basis: 100%;
+      height: 0;
+    }
+  }
 }

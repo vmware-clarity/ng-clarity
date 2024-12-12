@@ -82,11 +82,19 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
   }
 
   get showValid(): boolean {
-    return this.touched && this.state === CONTROL_STATE.VALID && !!this.controlSuccessComponent;
+    return this.touched && this.state === CONTROL_STATE.VALID && this.successMessagePresent;
   }
 
   get showInvalid(): boolean {
-    return this.touched && this.state === CONTROL_STATE.INVALID && !!this.controlErrorComponent;
+    return this.touched && this.state === CONTROL_STATE.INVALID && this.errorMessagePresent;
+  }
+
+  protected get successMessagePresent() {
+    return !!this.controlSuccessComponent;
+  }
+
+  protected get errorMessagePresent() {
+    return !!this.controlErrorComponent;
   }
 
   private get touched() {
