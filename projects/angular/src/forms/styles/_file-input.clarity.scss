@@ -54,4 +54,22 @@
       margin-top: 0;
     }
   }
+
+  .clr-file-list {
+    .clr-file-list-file-wrapper {
+      margin-top: tokens.$cds-global-space-5;
+    }
+
+    .clr-file-list-clear-file-btn {
+      padding-right: 0;
+      padding-left: tokens.$cds-global-space-2;
+    }
+  }
+
+  .clr-form-compact {
+    .clr-file-list-break {
+      flex-basis: 100%;
+      height: 0;
+    }
+  }
 }
