@@ -2,8 +2,8 @@
   <div [ngClass]="getPanelStateClasses(panel)">
     <div
       class="clr-accordion-header"
-      [attr.role]="headingEnabled || (explicitHeadingLevel && headingEnabled !== false)  ? 'heading' : null"
-      [attr.aria-level]="headingEnabled || (explicitHeadingLevel && headingEnabled !== false)  ? headingLevel : null"
+      [attr.role]="headingEnabled || explicitHeadingLevel ? 'heading' : null"
+      [attr.aria-level]="headingEnabled || explicitHeadingLevel ? headingLevel : null"
     >
       <button
         type="button"
