@@ -43,6 +43,8 @@ const template = `
     <clr-accordion-panel
       *ngFor="let _ of createArray(panelCount); let i = index"
       [clrAccordionPanelOpen]="!!openIndices[i]"
+      [clrAccordionPanelHeadingEnabled]="clrAccordionPanelHeadingEnabled"
+      [clrAccordionPanelHeadingLevel]="clrAccordionPanelHeadingLevel"
     >
       <clr-accordion-title>
         {{ title }} {{ i + 1 }} {{ alignmentTest && i === 2 ? '(alignment test)' : '' }}
