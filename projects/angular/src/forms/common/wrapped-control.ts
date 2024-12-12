@@ -68,8 +68,8 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     protected el: ElementRef<HTMLElement>
   ) {
     if (injector) {
-      this.ngControlService = injector.get(NgControlService, null);
-      this.ifControlStateService = injector.get(IfControlStateService, null);
+      this.ngControlService = injector.get(NgControlService, null, { host: true });
+      this.ifControlStateService = injector.get(IfControlStateService, null, { host: true });
       this.controlClassService = injector.get(ControlClassService, null);
       this.markControlService = injector.get(MarkControlService, null);
       this.differs = injector.get(KeyValueDiffers, null);
