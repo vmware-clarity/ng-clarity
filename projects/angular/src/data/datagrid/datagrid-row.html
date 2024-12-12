@@ -47,11 +47,10 @@
           [ngClass]="{ 'clr-form-control-disabled': !clrDgSelectable }"
           role="gridcell"
         >
-          <clr-checkbox-wrapper>
+          <div class="clr-checkbox-wrapper">
             <input
               tabindex="-1"
               type="checkbox"
-              clrCheckbox
               [ngModel]="selected"
               (ngModelChange)="toggle($event)"
               [id]="checkboxId"
@@ -62,7 +61,7 @@
             <label [for]="checkboxId" class="clr-control-label clr-col-null" (click)="clearRanges($event)">
               <span class="clr-sr-only">{{clrDgRowSelectionLabel || commonStrings.keys.select}}</span>
             </label>
-          </clr-checkbox-wrapper>
+          </div>
         </div>
         <div
           *ngIf="selection.selectionType === SELECTION_TYPE.Single"
