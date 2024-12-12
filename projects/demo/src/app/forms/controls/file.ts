@@ -15,4 +15,8 @@ export class FormsFileDemo {
   readonly form = new FormGroup({
     file: new FormControl(),
   });
+
+  readonly advancedForm = new FormGroup({
+    files: new FormControl(),
+  });
 }
