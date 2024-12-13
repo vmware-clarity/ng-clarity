@@ -31,7 +31,7 @@
             <clr-accordion-content>Accordion 2 content</clr-accordion-content>
           </clr-accordion-panel>
         </clr-accordion>
-        <button #nextBtn clrStepButton="next">NEXT</button>
+        <button #nextBtn [clrLoading]="state" clrStepButton="next" (click)="loadingDemo()">NEXT</button>
       </ng-template>
     </clr-step-content>
   </clr-stepper-panel>
