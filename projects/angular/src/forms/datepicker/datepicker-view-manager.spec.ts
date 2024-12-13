@@ -14,6 +14,7 @@ import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
+import { DatePickerHelperService } from './providers/datepicker-helper.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
@@ -31,6 +32,7 @@ export default function () {
         LocaleHelperService,
         DateIOService,
         DateFormControlService,
+        DatePickerHelperService,
       ]);
       viewManagerService = context.getClarityProvider(ViewManagerService);
     });
