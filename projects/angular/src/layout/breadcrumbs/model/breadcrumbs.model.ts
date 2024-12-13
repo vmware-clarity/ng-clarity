@@ -9,4 +9,6 @@ export interface BreadcrumbItem {
   label: string;
   url?: string;
   routerLink?: string;
+  queryParams?: { [key: string]: string };
+  target?: string;
 }

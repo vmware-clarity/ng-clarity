@@ -10,10 +10,21 @@
         <span *ngIf="isLastItem; else breadcrumbLinks" aria-current="page">{{ breadcrumb?.label }}</span>
 
         <ng-template #breadcrumbLinks>
-          <a *ngIf="breadcrumb?.routerLink" (click)="handleItemClick(breadcrumb)" [routerLink]="breadcrumb?.routerLink">
+          <a
+            *ngIf="breadcrumb?.routerLink"
+            [routerLink]="breadcrumb?.routerLink"
+            [queryParams]="breadcrumb?.queryParams"
+            [target]="breadcrumb?.target"
+            (click)="handleItemClick(breadcrumb)"
+          >
             {{ breadcrumb?.label }}
           </a>
-          <a *ngIf="!breadcrumb?.routerLink" (click)="handleItemClick(breadcrumb)" [href]="breadcrumb?.url">
+          <a
+            *ngIf="!breadcrumb?.routerLink"
+            [href]="breadcrumb?.url"
+            [target]="breadcrumb?.target"
+            (click)="handleItemClick(breadcrumb)"
+          >
             {{ breadcrumb?.label }}
           </a>
         </ng-template>
