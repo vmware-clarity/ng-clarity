@@ -53,7 +53,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     ifExpandService: IfExpandService,
     cdr: ChangeDetectorRef
   ) {
-    super(commonStrings, stepperService, ifExpandService, cdr);
+    super(null, commonStrings, stepperService, ifExpandService, cdr);
   }
 
   override get id(): string {

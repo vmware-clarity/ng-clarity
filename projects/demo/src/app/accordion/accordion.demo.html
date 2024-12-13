@@ -68,6 +68,22 @@
   </clr-accordion-panel>
 </clr-accordion>
 
+<h2>Angular - nested accordion</h2>
+
+<clr-accordion>
+  <clr-accordion-panel [clrAccordionPanelOpen]="true" [clrAccordionPanelHeadingEnabled]="true">
+    <clr-accordion-title>Parent Title 1</clr-accordion-title>
+    <clr-accordion-content>
+      <clr-accordion>
+        <clr-accordion-panel [clrAccordionPanelHeadingLevel]="5" [clrAccordionPanelOpen]="true">
+          <clr-accordion-title>Nested Title</clr-accordion-title>
+          <clr-accordion-content>Nested content</clr-accordion-content>
+        </clr-accordion-panel>
+      </clr-accordion>
+    </clr-accordion-content>
+  </clr-accordion-panel>
+</clr-accordion>
+
 <h2>Angular - complex multi panel example (first panel {{stepOpen ? 'open' : 'closed'}})</h2>
 
 <button (click)="disableThirdPanel = !disableThirdPanel" class="btn">
