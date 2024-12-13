@@ -145,7 +145,6 @@
             & > .clr-input-group {
               max-width: 100%;
               width: 100%;
-              padding-right: mixins.baselinePx(10);
 
               & > .clr-input {
                 width: calc(100% - tokens.$cds-global-space-9);

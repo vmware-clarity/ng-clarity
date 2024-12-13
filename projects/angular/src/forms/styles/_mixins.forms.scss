@@ -55,7 +55,8 @@
   transition: background-size 0.2s ease;
 
   &:focus,
-  &.clr-focus {
+  &.clr-focus,
+  &:focus-within {
     border-bottom-color: $border-color;
     background-size: 100% 100%;
   }
@@ -83,7 +84,8 @@
 ) {
   color: $text-color;
   border-bottom: #{tokens.$cds-alias-object-border-width-100} solid #{$border-color};
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
 }
 
 @mixin disabled-form-fields() {

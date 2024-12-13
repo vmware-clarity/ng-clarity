@@ -15,11 +15,11 @@
   }
 
   .clr-input {
-    @include forms-mixins.custom-inputs-reset(calc(4 * #{forms-variables.$clr-forms-baseline}));
+    @include forms-mixins.custom-inputs-reset(forms-variables.$clr-forms-input-wrapper-height);
     @include forms-mixins.form-fields-appearance();
 
     padding: forms-variables.$clr-forms-input-padding;
-    max-height: calc(4 * #{forms-variables.$clr-forms-baseline});
+    max-height: forms-variables.$clr-forms-input-wrapper-height;
     @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
 
     &[readonly] {

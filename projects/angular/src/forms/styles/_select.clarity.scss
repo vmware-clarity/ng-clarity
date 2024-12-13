@@ -139,6 +139,7 @@
   .clr-error select {
     &:not([multiple]) {
       border-bottom-color: forms-variables.$clr-forms-invalid-color;
+      @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-invalid-color);
     }
     &[multiple] {
       border-color: forms-variables.$clr-forms-invalid-color;
@@ -148,6 +149,7 @@
   .clr-success select {
     &:not([multiple]) {
       border-bottom-color: forms-variables.$clr-forms-valid-color;
+      @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-valid-color);
     }
     &[multiple] {
       border-color: forms-variables.$clr-forms-valid-color;
