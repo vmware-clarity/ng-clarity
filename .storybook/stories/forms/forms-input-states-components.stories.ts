@@ -23,13 +23,13 @@ import { CommonModules } from '../../helpers/common';
         <clr-control-error>State Subtext</clr-control-error>
         <clr-control-success>State Subtext</clr-control-success>
       </clr-input-container>
-      <clr-input-container>
+      <clr-number-input-container>
         <label>Number</label>
-        <input type="number" clrInput name="age" formControlName="age" />
+        <input type="number" clrNumberInput name="age" formControlName="age" />
         <clr-control-helper>Helper Subtext</clr-control-helper>
         <clr-control-error>State Subtext</clr-control-error>
         <clr-control-success>State Subtext</clr-control-success>
-      </clr-input-container>
+      </clr-number-input-container>
       <clr-password-container>
         <label>Password</label>
         <input type="password" clrPassword name="password" formControlName="password" />
