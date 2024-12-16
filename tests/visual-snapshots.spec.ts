@@ -17,9 +17,9 @@ const browser = process.env['CLARITY_VRT_BROWSER'];
 const matrixKey = browser;
 
 const usedScreenshotPaths: string[] = [];
-const storiesFileString = path.join('.', 'dist', 'docs', 'stories.json');
+const storiesFilePath = path.join('.', 'dist', 'docs', 'stories.json');
 
-const stories: Story[] = JSON.parse(fs.readFileSync(storiesFileString).toString());
+const stories: Story[] = JSON.parse(fs.readFileSync(storiesFilePath).toString());
 
 for (const { storyId, component } of stories) {
   if (storyId.endsWith('--docs') || !component) {

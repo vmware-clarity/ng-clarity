@@ -53,8 +53,8 @@ async function main() {
   });
 
   // And write a file for the storybook-visual-regression-test `playwright` test to read.
-  const storiesFileString = path.join('.', 'dist', 'docs', 'stories.json');
-  fs.writeFileSync(storiesFileString, JSON.stringify(storyIds, undefined, 2));
+  const storiesFilePath = path.join('.', 'dist', 'docs', 'stories.json');
+  fs.writeFileSync(storiesFilePath, JSON.stringify(storyIds, undefined, 2));
 
   await browser.close();
   await closeServer(server);
