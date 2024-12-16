@@ -18,11 +18,11 @@ import { ClrLayoutModule } from '../layout.module';
 })
 class TestComponent {
   menuItems = [
-    { label: 'Home', url: '/home' },
-    { label: 'Parent Page', url: '/parent' },
-    { label: 'Current Page', url: '/child' },
-    { label: 'Grandchild Page', url: '/grandchild' },
-    { label: 'Last Page', url: '/last' },
+    { label: 'Home', routerLink: '/home' },
+    { label: 'Parent Page', routerLink: '/parent' },
+    { label: 'Current Page', routerLink: '/child' },
+    { label: 'Grandchild Page', routerLink: '/grandchild' },
+    { label: 'Last Page', routerLink: '/last' },
   ];
 }
 
@@ -80,9 +80,9 @@ describe('ClrBreadcrumbs', () => {
 
   it('should not show collapsed state with ellipsis if less than 3 nested pages', () => {
     component.menuItems = [
-      { label: 'Home', url: '/home' },
-      { label: 'Parent Page', url: '/parent' },
-      { label: 'Current Page', url: '/child' },
+      { label: 'Home', routerLink: '/home' },
+      { label: 'Parent Page', routerLink: '/parent' },
+      { label: 'Current Page', routerLink: '/child' },
     ];
     fixture.detectChanges();
     const firstItem = breadcrumbList.children[0];
