@@ -13,17 +13,17 @@ import { CommonModules } from 'helpers/common';
 import { ClrBreadcrumbs, ClrBreadcrumbsModule } from '../../../projects/angular/src/layout/breadcrumbs';
 
 const menuItems = [
-  { label: 'Home', url: '/home' },
-  { label: 'Parent Page', url: '/parent' },
-  { label: 'Child Page', url: '/child' },
+  { label: 'Home', routerLink: '/home' },
+  { label: 'Parent Page', routerLink: '/parent' },
+  { label: 'Child Page', routerLink: '/child' },
 ];
 
 const menuItemsCollapsed = [
-  { label: 'Home', url: '/home' },
-  { label: 'Parent Page', url: '/parent' },
-  { label: 'Child Page', url: '/child' },
-  { label: 'Grandchild Page', url: '/grandchild' },
-  { label: 'Current Page', url: '/current' },
+  { label: 'Home', routerLink: '/home' },
+  { label: 'Parent Page', routerLink: '/parent' },
+  { label: 'Child Page', routerLink: '/child' },
+  { label: 'Grandchild Page', routerLink: '/grandchild' },
+  { label: 'Current Page', routerLink: '/current' },
 ];
 
 class TestComponent {}
