@@ -7,7 +7,7 @@
 
 export interface BreadcrumbItem {
   label: string;
-  url?: string;
+  href?: string;
   routerLink?: string;
   queryParams?: { [key: string]: string };
   target?: string;

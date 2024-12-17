@@ -10,11 +10,8 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-breadcrumb-item',
   template: `
-      <span class="clr-breadcrumb-link">
-        <ng-content />
-      </span>
+    <ng-content />
   `,
-  styleUrls: ['./_breadcrumb-item.clarity.scss'],
   host: {
     class: 'clr-breadcrumb-item',
     '[attr.role]': '"list-item"',

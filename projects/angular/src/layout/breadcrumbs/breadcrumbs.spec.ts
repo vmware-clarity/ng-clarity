@@ -14,7 +14,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ClrLayoutModule } from '../layout.module';
 
 @Component({
-  template: ` <clr-breadcrumbs [items]="menuItems"></clr-breadcrumbs> `,
+  template: `<clr-breadcrumbs [items]="menuItems"></clr-breadcrumbs>`,
 })
 class TestComponent {
   menuItems = [
@@ -52,7 +52,7 @@ describe('ClrBreadcrumbs', () => {
   });
 
   it('should have each breadcrumb as a clickable item which navigates to its corresponding page', fakeAsync(() => {
-    const item = breadcrumbList.queryAll(By.css('.clr-breadcrumb-link'))[1].query(By.css('a'));
+    const item = breadcrumbList.queryAll(By.css('.clr-breadcrumb-item'))[1].query(By.css('a'));
     item.nativeElement.click();
     fixture.detectChanges();
     tick(1);
@@ -61,21 +61,21 @@ describe('ClrBreadcrumbs', () => {
   }));
 
   it('should have a seperator between breadcrumbs', () => {
-    const link = breadcrumbList.nativeElement.querySelector('.clr-breadcrumb-link');
+    const link = breadcrumbList.nativeElement.querySelector('.clr-breadcrumb-item a');
     const delimiter = window.getComputedStyle(link, ':after').getPropertyValue('content');
     expect(delimiter).toEqual('"/"');
   });
 
   it('should have the current page as the last item in a breadcrumb', () => {
     const currentItem = breadcrumbList.children[breadcrumbList.children.length - 1];
-    expect(currentItem.children[0].children[0].nativeElement.textContent).toEqual('Last Page');
+    expect(currentItem.children[0].nativeElement.textContent).toEqual('Last Page');
   });
 
   it('should show collapsed state with ellipsis as the first breadcrumb if more than 3 nested pages', () => {
     const firstItem = breadcrumbList.children[0];
-    expect(
-      firstItem.children[0].query(By.css('.clr-breadcrumb-expand')).children[0].nativeElement.getAttribute('shape')
-    ).toEqual('ellipsis-horizontal');
+    expect(firstItem.query(By.css('.clr-breadcrumb-expand')).children[0].nativeElement.getAttribute('shape')).toEqual(
+      'ellipsis-horizontal'
+    );
   });
 
   it('should not show collapsed state with ellipsis if less than 3 nested pages', () => {
@@ -86,16 +86,16 @@ describe('ClrBreadcrumbs', () => {
     ];
     fixture.detectChanges();
     const firstItem = breadcrumbList.children[0];
-    expect(firstItem.children[0].children[0].nativeElement.textContent.trim()).toEqual('Home');
+    expect(firstItem.children[0].nativeElement.textContent.trim()).toEqual('Home');
   });
 
   it('should show last 3 breadcrumbs if more than 3 nested pages', () => {
     const firstItem = breadcrumbList.children[1];
     const secondItem = breadcrumbList.children[2];
     const thirdItem = breadcrumbList.children[3];
-    expect(firstItem.children[0].children[0].nativeElement.textContent.trim()).toEqual('Current Page');
-    expect(secondItem.children[0].children[0].nativeElement.textContent.trim()).toEqual('Grandchild Page');
-    expect(thirdItem.children[0].children[0].nativeElement.textContent.trim()).toEqual('Last Page');
+    expect(firstItem.children[0].nativeElement.textContent.trim()).toEqual('Current Page');
+    expect(secondItem.children[0].nativeElement.textContent.trim()).toEqual('Grandchild Page');
+    expect(thirdItem.children[0].nativeElement.textContent.trim()).toEqual('Last Page');
   });
 
   it('should show all breadcrumbs if breadcrumbs are expanded', () => {

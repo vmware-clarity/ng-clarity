@@ -4,43 +4,57 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use '../../utils/mixins';
 @use 'variables.breadcrumbs' as breadcrumb-variables;
 @use '@cds/core/tokens/tokens.scss';
 @include meta.load-css('properties.breadcrumbs');
 
-.clr-breadcrumb-menu {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-
-  .clr-breadcrumb-item {
+@include mixins.exports('breadcrumbs.clarity') {
+  .clr-breadcrumb-menu {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    min-height: mixins.baselinePx(24);
-    font-family: breadcrumb-variables.$clr-breadcrumb-font-family;
-    color: breadcrumb-variables.$clr-breadcrumb-link-color;
-    @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
-    a {
-      text-decoration: none;
-    }
-  }
 
-  .active {
-    color: breadcrumb-variables.$clr-breadcrumb-active-color;
-  }
+    .clr-breadcrumb-item {
+      display: flex;
+      align-items: center;
+      min-height: mixins.baselinePx(24);
+      font-family: breadcrumb-variables.$clr-breadcrumb-font-family;
+      color: breadcrumb-variables.$clr-breadcrumb-link-color;
+      @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
 
-  .clr-breadcrumb-item:last-child {
-    color: breadcrumb-variables.$clr-breadcrumb-active-color;
-    .clr-breadcrumb-link {
-      &::after {
-        display: none;
+      a {
+        text-decoration: none;
+
+        &::after {
+          content: '/';
+          margin: 0 breadcrumb-variables.$clr-breadcrumb-item-space;
+          color: breadcrumb-variables.$clr-breadcrumb-active-color;
+        }
       }
     }
-  }
 
-  .clr-breadcrumb-expand {
-    cursor: pointer;
+    .active {
+      color: breadcrumb-variables.$clr-breadcrumb-active-color;
+    }
+
+    .clr-breadcrumb-item:last-child {
+      color: breadcrumb-variables.$clr-breadcrumb-active-color;
+    }
+
+    .clr-breadcrumb-expand {
+      margin: 0;
+      padding: 0;
+      gap: 0;
+      min-width: fit-content;
+
+      &::after {
+        content: '/';
+        margin: 0 breadcrumb-variables.$clr-breadcrumb-item-space;
+        color: breadcrumb-variables.$clr-breadcrumb-active-color;
+      }
+    }
   }
 }
