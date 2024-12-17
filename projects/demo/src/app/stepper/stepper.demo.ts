@@ -7,12 +7,15 @@
 
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ClrLoadingState } from '@clr/angular';
 
 @Component({
   templateUrl: 'stepper.demo.html',
   styleUrls: ['./stepper.demo.scss'],
 })
 export class StepperDemo {
+  state: ClrLoadingState = ClrLoadingState.DEFAULT;
+
   showSecondStep = true;
   initialStep = 'name';
   form: FormGroup = this.getReactiveForm();
@@ -35,6 +38,13 @@ export class StepperDemo {
     password: false,
   };
   loading = false;
+
+  loadingDemo() {
+    this.state = ClrLoadingState.LOADING;
+    setTimeout(() => {
+      this.state = ClrLoadingState.SUCCESS;
+    }, 1500);
+  }
 
   submit() {
     console.log('reactive form submit', this.form.value);
