@@ -5,8 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './signpost';
-export * from './signpost-content';
-export * from './signpost-title';
-export * from './signpost-trigger';
-export * from './signpost.module';
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'clr-signpost-title',
+  template: `<ng-content></ng-content>`,
+  host: { '[class.signpost-title]': 'true' },
+})
+export class ClrSignpostTitle {}
