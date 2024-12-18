@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { sleep } from '@cds/core/internal';
 import {
   ClrConditionalModule,
   ClrDatagridColumn,
@@ -141,10 +140,9 @@ export const ColumnFilter: StoryObj = {
   render: ColumnFilterTemplate,
 };
 
-export const ColumnNumberFilterOpened: StoryObj = {
+export const ColumnNumberFilterOpened = {
   render: ColumnFilterTemplate,
-  play: async ({ canvasElement }) => {
-    (canvasElement.querySelector('clr-dg-numeric-filter .datagrid-filter-toggle') as HTMLElement).click();
-    await sleep(100);
+  play({ canvasElement }) {
+    canvasElement.querySelector('clr-dg-numeric-filter .datagrid-filter-toggle').click();
   },
 };
