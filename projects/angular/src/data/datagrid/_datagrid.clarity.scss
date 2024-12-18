@@ -1414,8 +1414,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: #{tokens.$cds-global-space-3};
-      margin-bottom: #{tokens.$cds-global-space-3};
+      gap: tokens.$cds-global-space-3;
+      margin-bottom: tokens.$cds-global-space-3;
       @include mixins.generate-typography-token('TableHeaders-11-SB-CPT');
 
       .datagrid-filter-title {
