@@ -9,9 +9,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'clr-breadcrumb-item',
-  template: `
-    <ng-content />
-  `,
+  template: '<ng-content />',
   host: {
     class: 'clr-breadcrumb-item',
     '[attr.role]': '"list-item"',

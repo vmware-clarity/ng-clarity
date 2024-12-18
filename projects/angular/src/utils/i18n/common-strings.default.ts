@@ -136,4 +136,5 @@ export const commonStringsDefault: ClrCommonStrings = {
 
   // Breadcrumbs
   breadcrumbsLabel: 'breadcrumbs',
+  expandBreadcrumbsLabel: 'Expand breadcrumbs',
 };

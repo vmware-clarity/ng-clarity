@@ -1032,6 +1032,8 @@ export interface ClrCommonStrings {
     detailPaneStart: string;
     expand: string;
     // (undocumented)
+    expandBreadcrumbsLabel: string;
+    // (undocumented)
     fileCount: string;
     filterItems: string;
     firstPage: string;

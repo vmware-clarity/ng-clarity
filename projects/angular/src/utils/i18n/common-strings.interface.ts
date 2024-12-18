@@ -321,4 +321,5 @@ export interface ClrCommonStrings {
 
   // Breadcrumbs
   breadcrumbsLabel: string;
+  expandBreadcrumbsLabel: string;
 }
