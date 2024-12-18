@@ -61,7 +61,5 @@ const takeFullPageScreenshot = (component, storyName) => {
   return ScreenshotOptions[component]?.fullPageScreenshot || ScreenshotOptions[storyName]?.fullPageScreenshot;
 };
 
-fs.writeFileSync(
-  path.join(`.`, `tests`, `snapshots`, `used-screenshot-paths-${matrixKey}.txt`),
-  usedScreenshotPaths.join('\n')
-);
+const unusedScreenshotsFilePath = path.join('.', 'tests', 'snapshots', `used-screenshot-paths-${matrixKey}.txt`);
+fs.writeFileSync(unusedScreenshotsFilePath, usedScreenshotPaths.join('\n'));
