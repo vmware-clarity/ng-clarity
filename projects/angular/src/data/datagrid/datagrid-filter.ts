@@ -163,7 +163,7 @@ export class ClrDatagridFilter<T = any>
 
       this.setToggleButtonAriaLabel(columnTitle);
       this.setTitle(columnTitle);
-      this.cdr.detectChanges();
+      this.cdr.markForCheck();
     });
   }
 
