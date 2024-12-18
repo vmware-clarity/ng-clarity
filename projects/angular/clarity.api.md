@@ -2098,25 +2098,24 @@ export class ClrDatepickerActions {
 
 // @public (undocumented)
 export class ClrDatepickerApplyAction {
-    // Warning: (ae-forgotten-export) The symbol "DatePickerHelperService" needs to be exported by the entry point index.d.ts
-    constructor(datePickerHelperService: DatePickerHelperService);
+    constructor(toggleService: ClrPopoverToggleService, dateNavigationService: DateNavigationService, dateFormControlService: DateFormControlService);
     // (undocumented)
     onClick(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatepickerApplyAction, "[clrDatepickerApplyAction]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerApplyAction, [{ optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerApplyAction, never>;
 }
 
 // @public (undocumented)
 export class ClrDatepickerCancelAction {
-    constructor(datePickerHelperService: DatePickerHelperService);
+    constructor(toggleService: ClrPopoverToggleService, dateNavigationService: DateNavigationService);
     // (undocumented)
     onClick(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatepickerCancelAction, "[clrDatepickerCancelAction]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerCancelAction, [{ optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerCancelAction, never>;
 }
 
 // @public (undocumented)
@@ -2159,16 +2158,18 @@ export class ClrDatepickerViewManager {
 
 // @public (undocumented)
 export class ClrDay {
-    constructor(_dateNavigationService: DateNavigationService, _datePickerHelperService: DatePickerHelperService, commonStrings: ClrCommonStringsService);
+    constructor(_dateNavigationService: DateNavigationService, _toggleService: ClrPopoverToggleService, dateFormControlService: DateFormControlService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get dayString(): string;
     // Warning: (ae-forgotten-export) The symbol "DayViewModel" needs to be exported by the entry point index.d.ts
     get dayView(): DayViewModel;
     set dayView(day: DayViewModel);
     onDayViewFocus(): void;
+    // (undocumented)
+    onSelectDay: EventEmitter<DayModel>;
     selectDay(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDay, "clr-day", never, { "dayView": "clrDayView"; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDay, "clr-day", never, { "dayView": "clrDayView"; }, { "onSelectDay": "selectDay"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDay, never>;
 }

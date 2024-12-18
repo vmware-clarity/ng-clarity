@@ -25,7 +25,6 @@ import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
-import { DatePickerHelperService } from './providers/datepicker-helper.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
@@ -85,7 +84,6 @@ import { ViewManagerService } from './providers/view-manager.service';
     DateFormControlService,
     ViewManagerService,
     IfControlStateService,
-    DatePickerHelperService,
   ],
   hostDirectives: [ClrPopoverHostDirective],
   host: {
@@ -176,7 +174,6 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     this.subscriptions.push(
       this.toggleService.openChange.subscribe(open => {
         if (open) {
-          this.dateNavigationService.syncInterimDateValues();
           this.initializeCalendar();
         } else {
           this.toggleButton.nativeElement.focus();

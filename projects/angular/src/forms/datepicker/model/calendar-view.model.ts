@@ -43,13 +43,11 @@ export class CalendarViewModel {
     this.focusableDay = day;
   }
 
-  /**
-   * Updates the selected day in the calendar
-   */
-  updateSelectedDay(day: DayModel | undefined): void {
-    this.setSelectedDay(this.selectedDay, false);
-    this.selectedDay = day;
-    this.setSelectedDay(day, true);
+  updateSelectedDay(day: DayModel): void {
+    if (day && this.isDayInCalendarView(day)) {
+      this.currMonthDayViews.forEach(day => (day.isSelected = false));
+      this.currMonthDayViews[day.date - 1].isSelected = true;
+    }
   }
 
   /**
@@ -167,7 +165,9 @@ export class CalendarViewModel {
    * Initialize the selected day if the day is in the calendar.
    */
   private initializeSelectedDay(): void {
-    this.setSelectedDay(this.selectedDay, true);
+    if (this.selectedDay && this.isDayInCalendarView(this.selectedDay)) {
+      this.currMonthDayViews[this.selectedDay.date - 1].isSelected = true;
+    }
   }
 
   /**
@@ -193,12 +193,6 @@ export class CalendarViewModel {
   private setFocusableFlag(day: DayModel, flag: boolean): void {
     if (day) {
       this.currMonthDayViews[day.date - 1].isFocusable = flag;
-    }
-  }
-
-  private setSelectedDay(day: DayModel, flag: boolean) {
-    if (day && this.isDayInCalendarView(day)) {
-      this.currMonthDayViews[day?.date - 1].isSelected = flag;
     }
   }
 }

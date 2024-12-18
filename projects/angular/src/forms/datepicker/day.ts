@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+import { ClrPopoverToggleService } from '../../utils';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
+import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
-import { DatePickerHelperService } from './providers/datepicker-helper.service';
 
 @Component({
   selector: 'clr-day',
@@ -36,11 +37,14 @@ import { DatePickerHelperService } from './providers/datepicker-helper.service';
   host: { '[class.day]': 'true' },
 })
 export class ClrDay {
+  @Output('selectDay') onSelectDay = new EventEmitter<DayModel>();
+
   private _dayView: DayViewModel;
 
   constructor(
     private _dateNavigationService: DateNavigationService,
-    private _datePickerHelperService: DatePickerHelperService,
+    private _toggleService: ClrPopoverToggleService,
+    private dateFormControlService: DateFormControlService,
     private commonStrings: ClrCommonStringsService
   ) {}
 
@@ -79,6 +83,12 @@ export class ClrDay {
       return;
     }
     const day: DayModel = this.dayView.dayModel;
-    this._datePickerHelperService.selectDay(day);
+    this._dateNavigationService.notifySelectedDayChanged(day, !this._dateNavigationService.hasActionButtons);
+    if (!this._dateNavigationService.hasActionButtons) {
+      this.dateFormControlService.markAsDirty();
+      this._toggleService.open = false;
+    } else {
+      this.onSelectDay.emit(day);
+    }
   }
 }
