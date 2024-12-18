@@ -26,6 +26,10 @@ export class ColumnsService {
     return this.columnStates.filter(state => state.hideable).length > 0;
   }
 
+  get visibleColumns(): ColumnState[] {
+    return this.columnStates.filter(state => !state.hidden);
+  }
+
   cache() {
     this._cache = this.columns.map(subject => {
       const value = { ...subject.value };
