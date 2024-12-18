@@ -1509,7 +1509,7 @@ export class ClrDatagridDetailHeader implements AfterViewInit {
 // Warning: (ae-forgotten-export) The symbol "CustomFilter" needs to be exported by the entry point index.d.ts
 //
 // @public
-export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, OnChanges, OnDestroy {
+export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, DoCheck, OnDestroy {
     constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, smartToggleService: ClrPopoverToggleService, platformId: any, elementRef: ElementRef<HTMLElement>, keyNavigation: KeyNavigationGridController);
     get active(): boolean;
     // (undocumented)
@@ -1523,7 +1523,7 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter<T, ClrDatagridFilterInterface<T>>);
     // (undocumented)
-    ngOnChanges(): void;
+    ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -3642,8 +3642,7 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     // (undocumented)
     signpostContentId: string;
     // (undocumented)
-  
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, {  "signpostCloseAriaLabel": "clrSignpostCloseAriaLabel"; "position": "clrPosition"; }, {}, never, ["clr-signpost-title", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "signpostCloseAriaLabel": "clrSignpostCloseAriaLabel"; "position": "clrPosition"; }, {}, never, ["clr-signpost-title", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [null, { optional: true; }, null, null, null, null, null]>;
 }

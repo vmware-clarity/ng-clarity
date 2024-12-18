@@ -8,11 +8,11 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
+  DoCheck,
   ElementRef,
   EventEmitter,
   Inject,
   Input,
-  OnChanges,
   OnDestroy,
   Optional,
   Output,
@@ -83,7 +83,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
 })
 export class ClrDatagridFilter<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>
-  implements CustomFilter, OnChanges, OnDestroy
+  implements CustomFilter, DoCheck, OnDestroy
 {
   @Output('clrDgFilterOpenChange') openChange = new EventEmitter<boolean>(false);
 
@@ -153,10 +153,8 @@ export class ClrDatagridFilter<T = any>
     return !!this.filter && this.filter.isActive();
   }
 
-  ngOnChanges() {
-    setTimeout(() => {
-      this.setToggleButtonAriaLabel();
-    });
+  ngDoCheck() {
+    this.setToggleButtonAriaLabel();
   }
 
   override ngOnDestroy(): void {
