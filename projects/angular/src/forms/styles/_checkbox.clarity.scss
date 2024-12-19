@@ -95,7 +95,10 @@
     }
   }
 
-  .clr-error .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label::before {
+  .clr-error
+    .clr-checkbox-wrapper:not(.datagrid-select .clr-checkbox-wrapper)
+    input[type='checkbox']
+    + .clr-control-label::before {
     border-color: forms-variables.$clr-forms-invalid-color;
   }
 
