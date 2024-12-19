@@ -16,6 +16,9 @@ import { NgControlService } from './providers/ng-control.service';
   selector: 'label',
 })
 export class ClrLabel implements OnInit, OnDestroy {
+  @Input('id') idInput: string;
+  @HostBinding('attr.id') idAttr: string;
+
   @Input('for') @HostBinding('attr.for') forAttr: string;
 
   private enableGrid = true;
@@ -50,7 +53,12 @@ export class ClrLabel implements OnInit, OnDestroy {
       this.renderer.addClass(this.el.nativeElement, `clr-col-md-${this.layoutService.labelSize}`);
     }
     if (this.controlIdService && !this.forAttr) {
-      this.subscriptions.push(this.controlIdService.idChange.subscribe(id => (this.forAttr = id)));
+      this.subscriptions.push(
+        this.controlIdService.idChange.subscribe(id => {
+          this.forAttr = id;
+          this.idAttr = this.idInput || `${id}-label`;
+        })
+      );
     }
   }
 
