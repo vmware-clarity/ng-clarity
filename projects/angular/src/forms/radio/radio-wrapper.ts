@@ -7,7 +7,6 @@
 
 import { Component, ContentChild, OnInit } from '@angular/core';
 
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrLabel } from '../common/label';
 import { ControlIdService } from '../common/providers/control-id.service';
 
@@ -23,11 +22,7 @@ import { ControlIdService } from '../common/providers/control-id.service';
   },
   providers: [ControlIdService],
 })
-export class ClrRadioWrapper implements DynamicWrapper, OnInit {
-  // We need both _dynamic for HostWrapper and ContentChild(ClrLabel) in cases where
-  // the user puts a radio inside a wrapper without a label, host wrapping doesn't apply
-  // but we'd still need to insert a label
-  _dynamic = false;
+export class ClrRadioWrapper implements OnInit {
   @ContentChild(ClrLabel, { static: true }) label: ClrLabel;
 
   ngOnInit() {

@@ -10,7 +10,6 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
 import { ClrAbstractContainer } from './abstract-container';
@@ -33,9 +32,7 @@ import { WrappedFormControl } from './wrapped-control';
   template: `<ng-content></ng-content>`,
   providers: [ControlIdService],
 })
-class TestWrapper implements DynamicWrapper {
-  _dynamic = false;
-}
+class TestWrapper {}
 
 @Directive({
   selector: '[testControl]',
@@ -54,9 +51,7 @@ class TestControl extends WrappedFormControl<TestWrapper> {
   `,
   providers: [ControlIdService],
 })
-class TestWrapper2 implements DynamicWrapper {
-  _dynamic = false;
-}
+class TestWrapper2 {}
 
 @Directive({
   selector: '[testControl2]',
@@ -72,9 +67,7 @@ class TestControl2 extends WrappedFormControl<TestWrapper2> {
   template: `<div id="wrapper"><ng-content></ng-content></div>`,
   providers: [ControlIdService, NgControlService, IfControlStateService, ControlClassService],
 })
-class TestWrapper3 extends ClrAbstractContainer implements DynamicWrapper {
-  _dynamic = false;
-}
+class TestWrapper3 extends ClrAbstractContainer {}
 
 @Directive({
   selector: '[testControl3]',
@@ -297,7 +290,6 @@ export default function (): void {
         spyOn(HostWrapper.prototype, 'get').and.callThrough();
         setupTest(this, WithWrapperNoId, TestControl);
         expect(HostWrapper.prototype.get).toHaveBeenCalledWith(ControlIdService);
-        expect(this.wrapper._dynamic).toBe(false);
       });
 
       it('sets the id of the host to the id given by the service', function (this: TestContext) {
@@ -317,7 +309,6 @@ export default function (): void {
         spyOn(HostWrapper.prototype, 'get').and.callThrough();
         setupTest(this, NoWrapperNoId, TestControl);
         expect(HostWrapper.prototype.get).toHaveBeenCalledWith(ControlIdService);
-        expect(this.wrapper._dynamic).toBe(true);
       });
 
       it('sets the id of the host to the id given by the service', function (this: TestContext) {

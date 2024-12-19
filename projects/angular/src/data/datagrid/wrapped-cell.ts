@@ -7,8 +7,6 @@
 
 import { AfterViewInit, Component, EmbeddedViewRef, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
-
 @Component({
   selector: 'dg-wrapped-cell',
   template: `
@@ -17,8 +15,7 @@ import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
     </ng-template>
   `,
 })
-export class WrappedCell implements DynamicWrapper, AfterViewInit, OnDestroy {
-  _dynamic = false;
+export class WrappedCell implements AfterViewInit, OnDestroy {
   @ViewChild('cellPortal') templateRef: TemplateRef<void>;
   cellView: EmbeddedViewRef<void>; // the cells projected view
 
