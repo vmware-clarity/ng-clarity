@@ -10,6 +10,7 @@ import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
 import { Keys } from '../../utils/enums/keys.enum';
+import { animationFrameTick } from '../../utils/testing/helpers.spec';
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { ClrDatagrid } from './datagrid';
@@ -186,6 +187,39 @@ class MultiSelectionNgForTest {
 class SingleSelectionTest {
   items = [1, 2, 3];
   selected: any;
+}
+
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column>User ID</clr-dg-column>
+      <clr-dg-column>Name</clr-dg-column>
+
+      <clr-dg-row *clrDgItems="let user of users">
+        <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+        <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+
+        <clr-dg-row-detail *clrIfExpanded="true">
+          <clr-dg-cell>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</clr-dg-cell>
+          <clr-dg-cell>Proin in neque in ante placerat mattis id sed quam.</clr-dg-cell>
+        </clr-dg-row-detail>
+      </clr-dg-row>
+
+      <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+    </clr-datagrid>
+  `,
+})
+class ExpandablePerColumnTest {
+  users = [
+    {
+      id: 1,
+      name: 'john',
+    },
+    {
+      id: 2,
+      name: 'doe',
+    },
+  ];
 }
 
 @Component({
@@ -900,7 +934,7 @@ export default function (): void {
         expect(cells.length).toBe(12); // 3*2 data, 3 select radios, 3 headers
         // need to start with this cell exactly, because it has tabindex=0
         cells[0].focus();
-        expect(document.activeElement).toBe(cells[0]);
+        expect(document.activeElement).toEqual(cells[0]);
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
         // second time, to avoid cycling over cells with radios
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
@@ -983,6 +1017,41 @@ export default function (): void {
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'Home', ctrlKey: true }));
         expect(document.activeElement).toBe(cells[0]);
       });
+    });
+
+    describe('Focus on expandable per column', () => {
+      // We use ExpandablePerColumnTest to test focusing on expanded content in cells
+      let context: TestContext<ClrDatagrid<number>, ExpandablePerColumnTest>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, ExpandablePerColumnTest, [Selection]);
+      });
+
+      it('Moves focus on per column expanded cell', fakeAsync(() => {
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+
+        cells[0].focus();
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
+
+        animationFrameTick();
+
+        expect(document.activeElement).toBe(cells[2]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowLeft }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowLeft }));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
+
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
+
+        expect(document.activeElement).toBe(cells[8]);
+      }));
     });
 
     describe('Single selection', function () {
