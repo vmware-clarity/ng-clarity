@@ -10,7 +10,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { DynamicWrapper } from './dynamic-wrapper';
 import { HostWrapper } from './host-wrapper';
 import { ClrHostWrappingModule } from './host-wrapping.module';
 
@@ -21,9 +20,7 @@ const WRAPPER_SERVICE = new InjectionToken<number>('WrapperService');
   template: `Hello <ng-content></ng-content>!`,
   providers: [{ provide: WRAPPER_SERVICE, useValue: 42 }],
 })
-class WrapperComponent implements DynamicWrapper {
-  _dynamic = false;
-}
+class WrapperComponent {}
 
 @Directive({
   selector: '[wrappedDirective]',
@@ -94,10 +91,6 @@ describe('Host wrapping', function () {
       expect(this.fixture.nativeElement.textContent.trim()).toBe('Hello World!');
     });
 
-    it("doesn't mark the wrapper as dynamically created", function (this: TestContext<ExplicitTest>) {
-      expect(this.wrapper._dynamic).toBe(false);
-    });
-
     it('proxies to the default injector', function (this: TestContext<ExplicitTest>) {
       expect(this.wrapped.injected).toBe(42);
     });
@@ -119,10 +112,6 @@ describe('Host wrapping', function () {
 
     it('creates a wrapper and projects the host into it', function (this: TestContext<WrappingTest>) {
       expect(this.fixture.nativeElement.textContent.trim()).toBe('Hello World!');
-    });
-
-    it('marks the wrapper as dynamically created', function (this: TestContext<WrappingTest>) {
-      expect(this.wrapper._dynamic).toBe(true);
     });
 
     it("proxies to the newly created wrapper's injector", function (this: TestContext<WrappingTest>) {

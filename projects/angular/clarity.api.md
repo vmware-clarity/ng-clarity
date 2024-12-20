@@ -178,10 +178,8 @@ export const CLR_VERTICAL_NAV_DIRECTIVES: Type<any>[];
 // @public (undocumented)
 export const CLR_WIZARD_DIRECTIVES: any[];
 
-// Warning: (ae-forgotten-export) The symbol "DynamicWrapper" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy, AfterContentInit {
+export abstract class ClrAbstractContainer implements OnDestroy, AfterContentInit {
     constructor(ifControlStateService: IfControlStateService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
     addGrid(): boolean;
@@ -199,8 +197,6 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
     controlHelperComponent: ClrControlHelper;
     // (undocumented)
     controlSuccessComponent: ClrControlSuccess;
-    // (undocumented)
-    _dynamic: boolean;
     // Warning: (ae-forgotten-export) The symbol "IfControlStateService" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -739,10 +735,8 @@ export class ClrCheckboxModule {
 }
 
 // @public (undocumented)
-export class ClrCheckboxWrapper implements DynamicWrapper, OnInit, OnDestroy {
+export class ClrCheckboxWrapper implements OnInit, OnDestroy {
     constructor(toggleService: BehaviorSubject<boolean>);
-    // (undocumented)
-    _dynamic: boolean;
     // (undocumented)
     label: ClrLabel;
     // (undocumented)
@@ -3420,9 +3414,7 @@ export class ClrRadioModule {
 }
 
 // @public (undocumented)
-export class ClrRadioWrapper implements DynamicWrapper, OnInit {
-    // (undocumented)
-    _dynamic: boolean;
+export class ClrRadioWrapper implements OnInit {
     // (undocumented)
     label: ClrLabel;
     // (undocumented)
@@ -5138,7 +5130,7 @@ export const TOGGLE_SERVICE_PROVIDER: {
 export function ToggleServiceFactory(): BehaviorSubject<boolean>;
 
 // @public (undocumented)
-export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
+export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
     // (undocumented)
     protected controlIdService: ControlIdService;
@@ -5452,11 +5444,9 @@ export class ÇlrTabsWillyWonka extends WillyWonka {
 }
 
 // @public (undocumented)
-export class ÇlrWrappedCell implements DynamicWrapper, AfterViewInit, OnDestroy {
+export class ÇlrWrappedCell implements AfterViewInit, OnDestroy {
     // (undocumented)
     cellView: EmbeddedViewRef<void>;
-    // (undocumented)
-    _dynamic: boolean;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -5470,11 +5460,9 @@ export class ÇlrWrappedCell implements DynamicWrapper, AfterViewInit, OnDestroy
 }
 
 // @public (undocumented)
-export class ÇlrWrappedColumn implements DynamicWrapper, AfterViewInit, OnDestroy {
+export class ÇlrWrappedColumn implements AfterViewInit, OnDestroy {
     // (undocumented)
     columnView: EmbeddedViewRef<void>;
-    // (undocumented)
-    _dynamic: boolean;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -5488,9 +5476,7 @@ export class ÇlrWrappedColumn implements DynamicWrapper, AfterViewInit, OnDestr
 }
 
 // @public (undocumented)
-export class ÇlrWrappedRow implements DynamicWrapper, AfterViewInit, OnDestroy {
-    // (undocumented)
-    _dynamic: boolean;
+export class ÇlrWrappedRow implements AfterViewInit, OnDestroy {
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
