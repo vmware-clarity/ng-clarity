@@ -31,7 +31,7 @@
 
     cds-icon,
     clr-icon {
-      fill: variables.$clr-close-color;
+      --color: variables.$clr-close-color;
     }
 
     &:hover {
@@ -39,7 +39,7 @@
 
       cds-icon,
       clr-icon {
-        fill: variables.$clr-close-color-hover;
+        --color: variables.$clr-close-color-hover;
       }
     }
 
@@ -48,7 +48,7 @@
 
       cds-icon,
       clr-icon {
-        fill: variables.$clr-close-color-active;
+        --color: variables.$clr-close-color-active;
       }
     }
 
