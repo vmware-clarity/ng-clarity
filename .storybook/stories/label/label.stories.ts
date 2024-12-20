@@ -60,6 +60,12 @@ const LabelAllTemplate: StoryFn = args => ({
         <span class="text">{{ content }}</span>
       </span>
     </div>
+    <h6>Clickable Anchor Labels</h6>
+    <div style="margin-top: 5px">
+      <a href="javascript://" class="label clickable" *ngFor="let type of LABEL_COLOR_TYPES" [class]="type">
+        <span class="text">{{ content }}</span>
+      </a>
+    </div>
 
     <h6>Status Labels</h6>
     <div style="margin-top: 5px">
