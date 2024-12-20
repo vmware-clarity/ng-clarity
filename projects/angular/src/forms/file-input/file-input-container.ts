@@ -14,6 +14,8 @@ import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrFileInput } from './file-input';
+import { ClrFileList } from './file-list';
+import { ClrFileError, ClrFileSuccess } from './file-messages';
 
 @Component({
   selector: 'clr-file-input-container',
@@ -32,12 +34,10 @@ import { ClrFileInput } from './file-input';
           (click)="browse()"
         >
           <cds-icon shape="folder-open"></cds-icon>
-          <span class="clr-file-input-browse-button-text">
-            {{ fileInput?.selection?.buttonLabel || customButtonLabel || commonStrings.keys.browse }}
-          </span>
+          <span class="clr-file-input-browse-button-text">{{ browseButtonText }}</span>
         </button>
         <button
-          *ngIf="fileInput?.selection?.fileCount"
+          *ngIf="!fileList && fileInput?.selection?.fileCount"
           type="button"
           class="btn btn-sm clr-file-input-clear-button"
           [attr.aria-label]="fileInput?.selection?.clearFilesButtonLabel"
@@ -63,6 +63,12 @@ import { ClrFileInput } from './file-input';
       <ng-content select="clr-control-helper" *ngIf="showHelper"></ng-content>
       <ng-content select="clr-control-error" *ngIf="showInvalid"></ng-content>
       <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
+
+      <!-- If this is present, this file input becomes an "advanced" file input. -->
+      <ng-container *ngIf="fileList">
+        <div class="clr-file-list-break"></div>
+        <ng-content select="clr-file-list"></ng-content>
+      </ng-container>
     </div>
   `,
   host: {
@@ -75,18 +81,37 @@ import { ClrFileInput } from './file-input';
 export class ClrFileInputContainer extends ClrAbstractContainer {
   @Input('clrButtonLabel') customButtonLabel: string;
 
-  protected readonly commonStrings = inject(ClrCommonStringsService);
-
-  @ContentChild(forwardRef(() => ClrFileInput)) protected readonly fileInput: ClrFileInput;
+  @ContentChild(forwardRef(() => ClrFileInput)) readonly fileInput: ClrFileInput;
+  @ContentChild(forwardRef(() => ClrFileList)) protected readonly fileList: ClrFileList;
 
   @ViewChild('browseButton') private browseButtonElementRef: ElementRef<HTMLButtonElement>;
+
+  // These are for the "message present" override properties
+  @ContentChild(ClrFileSuccess) private readonly fileSuccessComponent: ClrFileSuccess;
+  @ContentChild(ClrFileError) private readonly fileErrorComponent: ClrFileError;
+
+  private readonly commonStrings = inject(ClrCommonStringsService);
 
   protected get disabled() {
     return this.fileInput.elementRef.nativeElement.disabled;
   }
 
+  protected get browseButtonText() {
+    const selectionButtonLabel = this.fileList ? undefined : this.fileInput?.selection?.buttonLabel;
+
+    return selectionButtonLabel || this.customButtonLabel || this.commonStrings.keys.browse;
+  }
+
   protected get browseButtonDescribedBy() {
     return `${this.label?.idAttr} ${this.fileInput.elementRef.nativeElement.getAttribute('aria-describedby')}`;
+  }
+
+  protected override get successMessagePresent() {
+    return super.successMessagePresent || !!this.fileSuccessComponent;
+  }
+
+  protected override get errorMessagePresent() {
+    return super.errorMessagePresent || !!this.fileErrorComponent;
   }
 
   protected browse() {
