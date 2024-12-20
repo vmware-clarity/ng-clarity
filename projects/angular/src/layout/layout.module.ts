@@ -7,12 +7,13 @@
 
 import { NgModule } from '@angular/core';
 
+import { ClrBreadcrumbsModule } from './breadcrumbs';
 import { ClrMainContainerModule } from './main-container/main-container.module';
 import { ClrNavigationModule } from './nav/navigation.module';
 import { ClrTabsModule } from './tabs/tabs.module';
 import { ClrVerticalNavModule } from './vertical-nav/vertical-nav.module';
 
 @NgModule({
-  exports: [ClrMainContainerModule, ClrNavigationModule, ClrTabsModule, ClrVerticalNavModule],
+  exports: [ClrMainContainerModule, ClrNavigationModule, ClrTabsModule, ClrVerticalNavModule, ClrBreadcrumbsModule],
 })
 export class ClrLayoutModule {}
