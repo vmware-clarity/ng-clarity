@@ -49,21 +49,26 @@ class WrapperTest {}
 class ExistingGridTest {}
 
 @Component({
-  template: `<label>
-    <clr-signpost>
-      <cds-icon id="signpost-trigger" shape="info-standard" clrSignpostTrigger>Trigger</cds-icon>
-      <clr-signpost-content *clrIfOpen> Signpost content </clr-signpost-content>
-    </clr-signpost>
-  </label>`,
+  template: `
+    <label>
+      <clr-signpost>
+        <cds-icon id="signpost-trigger" shape="info-standard" clrSignpostTrigger>Trigger</cds-icon>
+        <clr-signpost-content *clrIfOpen>Signpost content</clr-signpost-content>
+      </clr-signpost>
+    </label>
+  `,
 })
 class SignpostTest {
   @ViewChild(ClrSignpostTrigger) signpostTrigger: ClrSignpostTrigger;
 }
+
 @Component({
-  template: `<label>
-    Test
-    <input type="text" />
-  </label>`,
+  template: `
+    <label>
+      Test
+      <input type="text" />
+    </label>
+  `,
 })
 class DefaultClickBehaviorTest {}
 
@@ -195,6 +200,7 @@ export default function (): void {
       const label = fixture.nativeElement.querySelector('label');
       expect(label.getAttribute('for')).toBe('updatedFor');
     });
+
     it('signposts work inside labels', function () {
       TestBed.configureTestingModule({
         imports: [ClrSignpostModule, ClrIconModule],
@@ -207,6 +213,7 @@ export default function (): void {
       fixture.detectChanges();
       expect(fixture.componentInstance.signpostTrigger.isOpen).toBe(true);
     });
+
     it('focus input on label click', function () {
       TestBed.configureTestingModule({
         declarations: [ClrLabel, DefaultClickBehaviorTest],

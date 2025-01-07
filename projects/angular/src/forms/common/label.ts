@@ -93,7 +93,7 @@ export class ClrLabel implements OnInit, OnDestroy {
     this.enableGrid = false;
   }
 
-  preventOnSignpostTarget(event) {
+  private preventDefaultOnSignpostTarget(event) {
     if (this.signpost && this.signpost.nativeElement && this.signpost.nativeElement.contains(event.target)) {
       event.preventDefault();
     }
