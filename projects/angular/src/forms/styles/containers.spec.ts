@@ -11,7 +11,7 @@ import { ClrIconModule } from '../../icon/icon.module';
 
 @Component({
   template: `
-    <form class="clr-form clr-form-{{ layout }}">
+    <form class="clr-form clr-form-{{ layout }}" style="width: 2000px">
       <div class="clr-form-control" [ngClass]="{ 'clr-row': grid }" id="text">
         <label
           for="{{ layout }}-basic"
