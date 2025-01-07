@@ -2730,7 +2730,7 @@ export class ClrLabel implements OnInit, OnDestroy {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLabel, "label", never, { "idInput": "id"; "forAttr": "for"; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLabel, "label", never, { "idInput": "id"; "forAttr": "for"; }, {}, ["signpost"], never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLabel, [{ optional: true; }, { optional: true; }, { optional: true; }, null, null]>;
 }

@@ -5,9 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, HostBinding, Input, OnDestroy, OnInit, Optional, Renderer2 } from '@angular/core';
+import {
+  ContentChild,
+  Directive,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Renderer2,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ClrSignpost } from '../../popover';
 import { ControlIdService } from './providers/control-id.service';
 import { LayoutService } from './providers/layout.service';
 import { NgControlService } from './providers/ng-control.service';
@@ -21,6 +33,7 @@ export class ClrLabel implements OnInit, OnDestroy {
 
   @Input('for') @HostBinding('attr.for') forAttr: string;
 
+  @ContentChild(ClrSignpost, { read: ElementRef }) private signpost: ElementRef;
   private enableGrid = true;
   private subscriptions: Subscription[] = [];
 
@@ -68,5 +81,21 @@ export class ClrLabel implements OnInit, OnDestroy {
 
   disableGrid() {
     this.enableGrid = false;
+  }
+
+  /**
+   * Allowing signposts inside labels to work without disabling default behavior. <label> is spreading a click event to its children so signposts get
+   * automatically closed once clicked inside a <label>.
+   * @param event
+   */
+  @HostListener('click', ['$event'])
+  private onClick(event) {
+    this.preventDefaultOnSignpostTarget(event);
+  }
+
+  private preventDefaultOnSignpostTarget(event) {
+    if (this.signpost && this.signpost.nativeElement && this.signpost.nativeElement.contains(event.target)) {
+      event.preventDefault();
+    }
   }
 }
