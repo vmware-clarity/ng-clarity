@@ -76,13 +76,15 @@ export const nestingComponents: Component[] = [
   {
     name: 'combobox',
     template: `
-<clr-combobox name="one" required aria-label="one" class="foo">
-  <clr-options>
-    <clr-option clrValue="1" id="custom-id-1">1</clr-option>
-    <clr-option clrValue="2">2</clr-option>
-    <clr-option clrValue="3">3</clr-option>
-  </clr-options>
-</clr-combobox>`,
+<clr-combobox-container>
+  <clr-combobox>
+    <clr-options>
+      <clr-option clrValue="1">1</clr-option>
+      <clr-option clrValue="2">2</clr-option>
+      <clr-option clrValue="3">3</clr-option>
+    </clr-options>
+  </clr-combobox>
+</clr-combobox-container>`,
   },
   {
     name: 'datagrid',
@@ -108,7 +110,6 @@ export const nestingComponents: Component[] = [
     name: 'datalist',
     template: `
 <clr-datalist-container>
-  <label>Datalist</label>
   <input clrDatalistInput placeholder="Option" autocomplete="off" />
   <datalist>
     <option [value]="'1'"></option>
@@ -121,7 +122,6 @@ export const nestingComponents: Component[] = [
     name: 'date-picker',
     template: `
 <clr-date-container>
-  <label class="clr-required-mark">Datepicker</label>
   <input type="date" autocomplete="off" clrDate required />
 </clr-date-container>`,
   },
@@ -145,31 +145,32 @@ export const nestingComponents: Component[] = [
     name: 'file-picker',
     template: `
 <clr-file-input-container>
-  <label>Label</label>
   <input type="file" multiple clrFileInput />
 </clr-file-input-container>`,
   },
   {
     name: 'header',
     template: `
-<clr-header>
-  <div class="branding">
-    <a href="javascript://" class="nav-link">
-      <cds-icon shape="vm-bug"></cds-icon>
-      <span class="title">Project Clarity</span>
-    </a>
-  </div>
-  <div class="header-nav">
-    <a href="javascript://" class="nav-link nav-text">Home</a>
-    <a href="javascript://" class="nav-link nav-text">About</a>
-    <a href="javascript://" class="nav-link nav-text">Services</a>
-  </div>
-  <div class="header-actions">
-    <a href="javascript://" class="nav-link">
-      <cds-icon shape="cog"></cds-icon>
-    </a>
-  </div>
-</clr-header>`,
+<clr-main-container>
+  <clr-header>
+    <div class="branding">
+      <a href="javascript://" class="nav-link">
+        <cds-icon shape="vm-bug"></cds-icon>
+        <span class="title">Project Clarity</span>
+      </a>
+    </div>
+    <div class="header-nav">
+      <a href="javascript://" class="nav-link nav-text">Home</a>
+      <a href="javascript://" class="nav-link nav-text">About</a>
+      <a href="javascript://" class="nav-link nav-text">Services</a>
+    </div>
+    <div class="header-actions">
+      <a href="javascript://" class="nav-link">
+        <cds-icon shape="cog"></cds-icon>
+      </a>
+    </div>
+  </clr-header>
+</clr-main-container>`,
   },
   {
     name: 'icon',
@@ -179,7 +180,6 @@ export const nestingComponents: Component[] = [
     name: 'input',
     template: `
 <clr-input-container>
-  <label class="clr-required-mark">Age</label>
   <input clrInput type="text" required />
 </clr-input-container>`,
   },
@@ -221,7 +221,6 @@ export const nestingComponents: Component[] = [
     name: 'password',
     template: `
 <clr-password-container>
-  <label class="clr-required-mark">Password</label>
   <input clrPassword autocomplete="current-password" required />
 </clr-password-container>`,
   },
@@ -233,7 +232,6 @@ export const nestingComponents: Component[] = [
     name: 'radio',
     template: `
 <clr-radio-container>
-  <label class="clr-required-mark">Radio</label>
   <clr-radio-wrapper>
     <input type="radio" clrRadio value="option1"/>
     <label>Option 1</label>
@@ -248,7 +246,6 @@ export const nestingComponents: Component[] = [
     name: 'range',
     template: `
 <clr-range-container>
-  <label class="clr-required-mark">Range</label>
   <input type="range" clrRange required />
 </clr-range-container>`,
   },
@@ -256,7 +253,6 @@ export const nestingComponents: Component[] = [
     name: 'select',
     template: `
 <clr-select-container>
-  <label class="clr-required-mark">Select</label>
   <select clrSelect required>
     <option value="one">One</option>
     <option value="two">Two</option>
@@ -390,14 +386,6 @@ export const nestingComponents: Component[] = [
 `,
   },
   {
-    name: 'toggle',
-    template: `
-<clr-toggle-wrapper>
-  <input type="checkbox" clrToggle />
-  <label>Toggle</label>
-</clr-toggle-wrapper>`,
-  },
-  {
     name: 'tabs',
     template: `
 <clr-tabs>
@@ -429,7 +417,6 @@ export const nestingComponents: Component[] = [
     name: 'textarea',
     template: `
 <clr-textarea-container>
-  <label class="clr-required-mark">Description</label>
   <textarea clrTextarea required></textarea>
 </clr-textarea-container>`,
   },
@@ -437,7 +424,6 @@ export const nestingComponents: Component[] = [
     name: 'toggle',
     template: `
 <clr-toggle-container>
-  <label class="clr-required-mark">Toggle switch</label>
   <clr-toggle-wrapper>
     <input type="checkbox" clrToggle required value="option1" />
     <label>Option 1</label>
@@ -496,10 +482,10 @@ export const nestingComponents: Component[] = [
 <clr-tree>
   <clr-tree-node [clrExpanded]="true">
     A
-    <clr-tree-node [clrDisabled]="true">A-1</clr-tree-node>
-    <clr-tree-node [clrExpanded]="true" [clrDisabled]="true">
+    <clr-tree-node>A-1</clr-tree-node>
+    <clr-tree-node [clrExpanded]="true">
       A-2
-      <clr-tree-node [clrDisabled]="true">A-2.1</clr-tree-node>
+      <clr-tree-node>A-2.1</clr-tree-node>
       <clr-tree-node>A-2.2</clr-tree-node>
       <clr-tree-node>A-2.3</clr-tree-node>
     </clr-tree-node>

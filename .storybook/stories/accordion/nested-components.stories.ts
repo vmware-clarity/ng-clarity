@@ -41,11 +41,55 @@ export default {
   },
 };
 
+const nestedComponentNames = [
+  'accordion',
+  'alert',
+  'badge',
+  'button',
+  'button-group',
+  'card',
+  'checkbox',
+  'combobox',
+  'datagrid',
+  'datalist',
+  'date-picker',
+  'dropdown',
+  'file-picker',
+  'icon button',
+  'input',
+  'label',
+  'list',
+  'modal',
+  'password',
+  'progress-bar',
+  'radio',
+  'range',
+  'select',
+  'signpost',
+  'side-panel',
+  'stack-view',
+  'stepper',
+  'spinner',
+  'table',
+  'textarea',
+  'timeline',
+  'toggle',
+  'tooltip',
+  'timeline',
+  'tree-view',
+  'wizard',
+];
+
 const template = `
   <clr-accordion>
     <clr-accordion-panel [clrAccordionPanelOpen]="true">
       <clr-accordion-title>Parent Title</clr-accordion-title>
-      <clr-accordion-content>${nestingComponents.map(a => a.template).join('<br />')}</clr-accordion-content>
+      <clr-accordion-content>
+        ${nestingComponents
+          .filter(comp => nestedComponentNames.includes(comp.name))
+          .map(a => `<div><h5>${a.name}</h5>${a.template}</div>`)
+          .join('<hr/>')}
+      </clr-accordion-content>
     </clr-accordion-panel>
   </clr-accordion>
 `;
