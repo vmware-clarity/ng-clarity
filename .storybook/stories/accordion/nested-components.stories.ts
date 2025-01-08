@@ -80,16 +80,16 @@ const nestedComponentNames = [
   'wizard',
 ];
 
+const nesting = nestingComponents
+  .filter(comp => nestedComponentNames.includes(comp.name))
+  .map(a => `<div><h5>${a.name}</h5>${a.template}</div>`)
+  .join('<hr/>');
+
 const template = `
   <clr-accordion>
     <clr-accordion-panel [clrAccordionPanelOpen]="true">
       <clr-accordion-title>Parent Title</clr-accordion-title>
-      <clr-accordion-content>
-        ${nestingComponents
-          .filter(comp => nestedComponentNames.includes(comp.name))
-          .map(a => `<div><h5>${a.name}</h5>${a.template}</div>`)
-          .join('<hr/>')}
-      </clr-accordion-content>
+      <clr-accordion-content>${nesting}</clr-accordion-content>
     </clr-accordion-panel>
   </clr-accordion>
 `;
