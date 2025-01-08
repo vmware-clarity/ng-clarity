@@ -45,19 +45,7 @@ const template = `
   <clr-accordion>
     <clr-accordion-panel [clrAccordionPanelOpen]="true">
       <clr-accordion-title>Parent Title</clr-accordion-title>
-      <clr-accordion-content>
-        ${nestingComponents.map(a => a.template).join('<br />')}
-
-        <clr-input-container>
-          <label>Input</label>
-          <input clrInput placeholder="No label, wrapper" name="two" />
-        </clr-input-container>
-        <br />
-        <clr-textarea-container>
-          <label>Textarea</label>
-          <textarea clrTextarea></textarea>
-        </clr-textarea-container>
-      </clr-accordion-content>
+      <clr-accordion-content>${nestingComponents.map(a => a.template).join('<br />')}</clr-accordion-content>
     </clr-accordion-panel>
   </clr-accordion>
 `;

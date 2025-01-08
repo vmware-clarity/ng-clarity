@@ -64,8 +64,12 @@ export const nestingComponents: Component[] = [
     template: `
 <clr-checkbox-container>
   <clr-checkbox-wrapper>
-    <input type="checkbox" clrCheckbox value="option1" name="options1"/>
+    <input type="checkbox" clrCheckbox value="option1"/>
     <label>Option 1</label>
+  </clr-checkbox-wrapper>
+  <clr-checkbox-wrapper>
+    <input type="checkbox" clrCheckbox value="option2"/>
+    <label>Option 2</label>
   </clr-checkbox-wrapper>
 </clr-checkbox-container>`,
   },
@@ -105,8 +109,8 @@ export const nestingComponents: Component[] = [
     template: `
 <clr-datalist-container>
   <label>Datalist</label>
-  <input clrDatalistInput placeholder="Option" name="Option" autocomplete="off" />
-  <datalist id="clr-custom-datalistid-1">
+  <input clrDatalistInput placeholder="Option" autocomplete="off" />
+  <datalist>
     <option [value]="'1'"></option>
     <option [value]="'2'"></option>
     <option [value]="'3'"></option>
@@ -115,19 +119,57 @@ export const nestingComponents: Component[] = [
   },
   {
     name: 'date-picker',
-    template: ``,
+    template: `
+<clr-date-container>
+  <label class="clr-required-mark">Datepicker</label>
+  <input type="date" autocomplete="off" clrDate required />
+</clr-date-container>`,
   },
   {
     name: 'dropdown',
-    template: ``,
+    template: `
+<clr-dropdown>
+  <button class="btn btn-outline-primary" clrDropdownTrigger>
+    Dropdown
+    <cds-icon shape="angle" direction="down"></cds-icon>
+  </button>
+  <clr-dropdown-menu>
+    <div aria-label="Action 1" clrDropdownItem>Action 1</div>
+    <div aria-label="Action 2" clrDropdownItem>Action 2</div>
+    <div aria-label="Action 3" clrDropdownItem>Action 3</div>
+  </clr-dropdown-menu>
+</clr-dropdown>
+`,
   },
   {
     name: 'file-picker',
-    template: ``,
+    template: `
+<clr-file-input-container>
+  <label>Label</label>
+  <input type="file" multiple clrFileInput />
+</clr-file-input-container>`,
   },
   {
     name: 'header',
-    template: ``,
+    template: `
+<clr-header>
+  <div class="branding">
+    <a href="javascript://" class="nav-link">
+      <cds-icon shape="vm-bug"></cds-icon>
+      <span class="title">Project Clarity</span>
+    </a>
+  </div>
+  <div class="header-nav">
+    <a href="javascript://" class="nav-link nav-text">Home</a>
+    <a href="javascript://" class="nav-link nav-text">About</a>
+    <a href="javascript://" class="nav-link nav-text">Services</a>
+  </div>
+  <div class="header-actions">
+    <a href="javascript://" class="nav-link">
+      <cds-icon shape="cog"></cds-icon>
+    </a>
+  </div>
+</clr-header>`,
   },
   {
     name: 'icon',
@@ -135,7 +177,11 @@ export const nestingComponents: Component[] = [
   },
   {
     name: 'input',
-    template: ``,
+    template: `
+<clr-input-container>
+  <label class="clr-required-mark">Age</label>
+  <input clrInput type="text" required />
+</clr-input-container>`,
   },
   {
     name: 'label',
@@ -143,48 +189,138 @@ export const nestingComponents: Component[] = [
   },
   {
     name: 'list',
-    template: ``,
+    template: `
+<ul class="list">
+  <li>Chicken Breast</li>
+  <li>Flour</li>
+  <li>Garlic</li>
+  <li>Honey</li>
+</ul>`,
+  },
+  {
+    name: 'login',
+    template: `Login Page SHOULD not be nested anywhere.`,
   },
   {
     name: 'modal',
-    template: ``,
+    template: `
+<button class="btn btn-primary" (click)="modal.open()">Open Modal</button>
+<clr-modal #modal >
+  <h3 class="modal-title">I have a nice title</h3>
+  <div class="modal-body">
+    <p>But not much to say...</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="modal.close()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close()">Ok</button>
+  </div>
+</clr-modal>
+    `,
   },
   {
     name: 'password',
-    template: ``,
+    template: `
+<clr-password-container>
+  <label class="clr-required-mark">Password</label>
+  <input clrPassword autocomplete="current-password" required />
+</clr-password-container>`,
   },
   {
     name: 'progress-bar',
-    template: ``,
+    template: `<clr-progress-bar clrValue="40" clrMax="100"></clr-progress-bar>`,
   },
   {
     name: 'radio',
-    template: ``,
+    template: `
+<clr-radio-container>
+  <label class="clr-required-mark">Radio</label>
+  <clr-radio-wrapper>
+    <input type="radio" clrRadio value="option1"/>
+    <label>Option 1</label>
+  </clr-radio-wrapper>
+  <clr-radio-wrapper>
+    <input type="radio" clrRadio value="option2"/>
+    <label>Option 2</label>
+  </clr-radio-wrapper>
+</clr-radio-container>`,
   },
   {
     name: 'range',
-    template: ``,
+    template: `
+<clr-range-container>
+  <label class="clr-required-mark">Range</label>
+  <input type="range" clrRange required />
+</clr-range-container>`,
   },
   {
     name: 'select',
-    template: ``,
+    template: `
+<clr-select-container>
+  <label class="clr-required-mark">Select</label>
+  <select clrSelect required>
+    <option value="one">One</option>
+    <option value="two">Two</option>
+    <option value="three">Three</option>
+  </select>
+</clr-select-container>`,
   },
   {
     name: 'side-panel',
-    template: ``,
+    template: `
+<button class="btn btn-primary" (click)="sidePanel.open()">Open Side panel</button>
+<clr-side-panel #sidePanel [clrSidePanelStaticBackdrop]="true">
+  <h3 class="side-panel-title">I have a nice title</h3>
+  <div class="side-panel-body">
+    <p>But not much to say...</p>
+  </div>
+  <div class="side-panel-footer">
+    <button type="button" class="btn btn-outline" (click)="sidePanel.close()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="sidePanel.close()">Ok</button>
+  </div>
+</clr-side-panel>
+    `,
   },
   {
     name: 'signpost',
-    template: ``,
+    template: `
+<clr-signpost>
+  <clr-signpost-content *clrIfOpen>
+    Default Signpost Position: right-middle
+  </clr-signpost-content>
+</clr-signpost>`,
   },
-
   {
     name: 'spinner',
     template: `<clr-spinner clrInline></clr-spinner><span>Downloading</span>`,
   },
   {
     name: 'stack-view',
-    template: ``,
+    template: `
+<clr-stack-view>
+  <clr-stack-header>Angular stack view</clr-stack-header>
+
+  <clr-stack-block [clrStackViewLevel]="1">
+    <clr-stack-label>Label 1</clr-stack-label>
+    <clr-stack-content>Content 1</clr-stack-content>
+  </clr-stack-block>
+
+  <clr-stack-block [clrStackViewLevel]="1">
+    <clr-stack-label>Label 2</clr-stack-label>
+    <clr-stack-content>Content 2</clr-stack-content>
+    <clr-stack-block [clrStackViewLevel]="2">
+      <clr-stack-label>Sub-label 1</clr-stack-label>
+      <clr-stack-content>Sub-content 1</clr-stack-content>
+    </clr-stack-block>
+    <clr-stack-block [clrStackViewLevel]="2">
+      <clr-stack-label>Sub-label 2</clr-stack-label>
+      <clr-stack-content>Sub-content 2</clr-stack-content>
+    </clr-stack-block>
+    <clr-stack-block [clrStackViewLevel]="2">
+      <clr-stack-label>Sub-label 3</clr-stack-label>
+      <clr-stack-content>Sub-content 3</clr-stack-content>
+    </clr-stack-block>
+  </clr-stack-block>
+</clr-stack-view>`,
   },
   {
     // stepper depends on form creation function in the story. Check accordion nesting for more info.
@@ -263,15 +399,54 @@ export const nestingComponents: Component[] = [
   },
   {
     name: 'tabs',
-    template: ``,
+    template: `
+<clr-tabs>
+  <clr-tab>
+    <button clrTabLink>Dashboard</button>
+    <clr-tab-content *clrIfActive>
+      <p cds-text="body" cds-layout="m-t:md">
+        Content for Dashboard tab. Here is a
+        <a href="javascript://">link</a>
+        that can be accessed via clicking or through keyboard via tabbing.
+      </p>
+    </clr-tab-content>
+  </clr-tab>
+  <clr-tab>
+    <button clrTabLink>Management</button>
+    <clr-tab-content *clrIfActive>
+      <p cds-text="body" cds-layout="m-t:md">Content for Management tab.</p>
+    </clr-tab-content>
+  </clr-tab>
+  <clr-tab>
+    <button clrTabLink>Cloud</button>
+    <clr-tab-content *clrIfActive>
+      <p cds-text="body" cds-layout="m-t:md">Content for Cloud tab.</p>
+    </clr-tab-content>
+  </clr-tab>
+</clr-tabs>`,
   },
   {
     name: 'textarea',
-    template: ``,
+    template: `
+<clr-textarea-container>
+  <label class="clr-required-mark">Description</label>
+  <textarea clrTextarea required></textarea>
+</clr-textarea-container>`,
   },
   {
     name: 'toggle',
-    template: ``,
+    template: `
+<clr-toggle-container>
+  <label class="clr-required-mark">Toggle switch</label>
+  <clr-toggle-wrapper>
+    <input type="checkbox" clrToggle required value="option1" />
+    <label>Option 1</label>
+  </clr-toggle-wrapper>
+  <clr-toggle-wrapper>
+    <input type="checkbox" clrToggle required value="option2" />
+    <label>Option 2</label>
+  </clr-toggle-wrapper>
+</clr-toggle-container>`,
   },
   {
     name: 'tooltip',
