@@ -16,7 +16,7 @@ export class NumberInputDemoComponent {
   form = new FormGroup({
     number: new FormControl(5),
     numberRequired: new FormControl(),
-    numberReadonly: new FormControl(),
+    numberReadonly: new FormControl('123'),
     numberDisabled: new FormControl({ value: null, disabled: true }),
   });
 }

@@ -83,6 +83,10 @@
     .clr-input-group-icon-action {
       color: forms-variables.$clr-forms-text-disabled-color;
       cursor: not-allowed;
+
+      cds-icon {
+        fill: forms-variables.$clr-forms-input-group-icon-disabled-color;
+      }
     }
   }
 

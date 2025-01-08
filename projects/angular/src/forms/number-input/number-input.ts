@@ -34,7 +34,7 @@ export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> 
     injector: Injector,
     @Self()
     @Optional()
-    control: NgControl,
+    private control: NgControl,
     renderer: Renderer2,
     el: ElementRef<HTMLInputElement>
   ) {
@@ -45,18 +45,44 @@ export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> 
     }
   }
 
+  get readonly() {
+    return this.el?.nativeElement.getAttribute('readonly') !== null;
+  }
+
   @HostListener('focus')
   triggerFocus() {
-    if (this.focusService) {
+    if (!this.readonly && this.focusService) {
       this.focusService.focused = true;
     }
   }
 
   @HostListener('blur')
   override triggerValidation() {
-    super.triggerValidation();
-    if (this.focusService) {
-      this.focusService.focused = false;
+    if (!this.readonly) {
+      super.triggerValidation();
+      if (this.focusService) {
+        this.focusService.focused = false;
+      }
+    }
+  }
+
+  stepUp(event): void {
+    const inputElement: HTMLInputElement = this.el.nativeElement as HTMLInputElement;
+    if (inputElement) {
+      event.preventDefault();
+      inputElement.stepUp();
+      inputElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+      this.control.control.markAllAsTouched();
+    }
+  }
+
+  stepDown(event): void {
+    const inputElement: HTMLInputElement = this.el.nativeElement as HTMLInputElement;
+    if (inputElement) {
+      event.preventDefault();
+      inputElement.stepDown();
+      inputElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+      this.control.control.markAllAsTouched();
     }
   }
 }

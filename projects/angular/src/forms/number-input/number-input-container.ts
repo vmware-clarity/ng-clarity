@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, ElementRef, forwardRef, Optional } from '@angular/core';
+import { Component, ContentChild, forwardRef, Optional } from '@angular/core';
 
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
@@ -29,7 +29,7 @@ import { ClrNumberInput } from './number-input';
             <button
               type="button"
               class="clr-input-group-icon-action"
-              (click)="stepDown($event)"
+              (click)="input.stepDown($event)"
               [disabled]="control?.disabled"
             >
               <cds-icon shape="minus" size="sm"></cds-icon>
@@ -38,7 +38,7 @@ import { ClrNumberInput } from './number-input';
             <button
               type="button"
               class="clr-input-group-icon-action"
-              (click)="stepUp($event)"
+              (click)="input.stepUp($event)"
               [disabled]="control?.disabled"
             >
               <cds-icon shape="plus" size="sm"></cds-icon>
@@ -68,7 +68,7 @@ import { ClrNumberInput } from './number-input';
   host: {
     '[class.clr-form-control]': 'true',
     '[class.clr-form-control-disabled]': 'control?.disabled',
-    '[class.clr-form-control-readonly]': 'readonly',
+    '[class.clr-form-control-readonly]': 'input.readonly',
     '[class.clr-row]': 'addGrid()',
   },
   providers: [FocusService, IfControlStateService, NgControlService, ControlIdService, ControlClassService],
@@ -76,10 +76,9 @@ import { ClrNumberInput } from './number-input';
 export class ClrNumberInputContainer extends ClrAbstractContainer {
   focus = false;
 
-  @ContentChild(forwardRef(() => ClrNumberInput), { read: ElementRef }) protected readonly input: ElementRef;
+  @ContentChild(forwardRef(() => ClrNumberInput)) protected readonly input: ClrNumberInput;
 
   constructor(
-    public el: ElementRef,
     controlClassService: ControlClassService,
     @Optional() layoutService: LayoutService,
     ngControlService: NgControlService,
@@ -89,28 +88,5 @@ export class ClrNumberInputContainer extends ClrAbstractContainer {
     super(ifControlStateService, layoutService, controlClassService, ngControlService);
 
     this.subscriptions.push(focusService.focusChange.subscribe(state => (this.focus = state)));
-  }
-
-  protected get readonly() {
-    // eslint-disable-next-line eqeqeq
-    return this.input?.nativeElement.getAttribute('readonly') != null;
-  }
-
-  stepUp(event): void {
-    if (this.input) {
-      event.preventDefault();
-      this.input.nativeElement.stepUp();
-      this.input.nativeElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
-      this.control.control.markAllAsTouched();
-    }
-  }
-
-  stepDown(event): void {
-    if (this.input) {
-      event.preventDefault();
-      this.input.nativeElement.stepDown();
-      this.input.nativeElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
-      this.control.control.markAllAsTouched();
-    }
   }
 }
