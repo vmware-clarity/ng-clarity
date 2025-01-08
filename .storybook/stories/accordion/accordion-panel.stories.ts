@@ -16,6 +16,8 @@ const template = `
     <clr-accordion-panel
       [clrAccordionPanelOpen]="clrAccordionPanelOpen"
       [clrAccordionPanelDisabled]="clrAccordionPanelDisabled"
+      [clrAccordionPanelHeadingEnabled]="clrAccordionPanelHeadingEnabled"
+      [clrAccordionPanelHeadingLevel]="clrAccordionPanelHeadingLevel"
       (clrAccordionPanelOpenChange)="clrAccordionPanelOpenChange($event)"
     >
       <clr-accordion-title>{{ title }}</clr-accordion-title>

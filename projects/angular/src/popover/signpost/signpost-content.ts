@@ -38,6 +38,7 @@ const POSITIONS: string[] = [
     <div class="signpost-wrap">
       <div class="popover-pointer"></div>
       <div class="signpost-content-header">
+        <ng-content select="clr-signpost-title"></ng-content>
         <button
           type="button"
           [attr.aria-label]="signpostCloseAriaLabel || commonStrings.keys.signpostClose"
