@@ -70,9 +70,9 @@ export class DateNavigationService {
    * Notifies that the selected day has changed so that the date can be emitted to the user.
    * Note: Only to be called from day.ts
    */
-  notifySelectedDayChanged(dayModel: DayModel, emitEvent = true) {
+  notifySelectedDayChanged(dayModel: DayModel, { emitEvent }: { emitEvent?: boolean } = {}) {
     this.selectedDay = dayModel;
-    if (emitEvent) {
+    if (emitEvent !== false) {
       this._selectedDayChange.next(dayModel);
     }
   }
