@@ -171,7 +171,7 @@ export default function () {
         expect(toggleButton.title).toEqual('Choose date');
         expect(toggleButton.attributes['aria-label'].value).toEqual('Choose date');
 
-        dateNavigationService.notifySelectedDayChanged(new DayModel(2022, 1, 1), true);
+        dateNavigationService.notifySelectedDayChanged(new DayModel(2022, 1, 1));
         context.detectChanges();
         await context.fixture.whenStable();
 

@@ -36,7 +36,7 @@ export class ClrDatepickerApplyAction {
   @HostListener('click')
   onClick() {
     if (this.dateNavigationService.selectedDay) {
-      this.dateNavigationService.notifySelectedDayChanged(this.dateNavigationService.selectedDay, true);
+      this.dateNavigationService.notifySelectedDayChanged(this.dateNavigationService.selectedDay);
       this.dateFormControlService.markAsDirty();
     }
     this.toggleService.open = false;
