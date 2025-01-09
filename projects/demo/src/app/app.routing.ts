@@ -19,6 +19,10 @@ export const APP_ROUTES: Routes = [
   { path: 'alert', loadChildren: () => import('./alert/alert.demo.module').then(m => m.AlertDemoModule) },
   { path: 'badges', loadChildren: () => import('./badges/badges.demo.module').then(m => m.BadgesDemoModule) },
   {
+    path: 'breadcrumbs',
+    loadChildren: () => import('./breadcrumbs/breadcrumbs.demo.module').then(m => m.BreadcrumbsDemoModule),
+  },
+  {
     path: 'button-group',
     loadChildren: () => import('./button-group/button-group.demo.module').then(m => m.ButtonGroupDemoModule),
   },

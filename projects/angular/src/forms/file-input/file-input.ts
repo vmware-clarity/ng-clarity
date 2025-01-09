@@ -30,6 +30,7 @@ export interface ClrFileInputSelection {
 @Directive({
   selector: 'input[type="file"][clrFileInput]',
   host: {
+    tabindex: '-1', // Remove the hidden file `input` element from the tab order because the browse `button` replaces it.
     '[class.clr-file-input]': 'true',
   },
 })
