@@ -73,7 +73,6 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
       [attr.aria-label]="commonStrings.keys.datagridFilterDialogAriaLabel"
     >
       <div class="datagrid-filter-close-wrapper">
-        <span class="datagrid-filter-title">{{ filterTitle }}</span>
         <button type="button" class="close" clrPopoverCloseButton>
           <cds-icon shape="window-close" [attr.title]="commonStrings.keys.close"></cds-icon>
         </button>
@@ -92,7 +91,6 @@ export class ClrDatagridFilter<T = any>
   ariaExpanded = false;
   popoverId = uniqueIdFactory();
   toggleButtonAriaLabel: string;
-  filterTitle: string;
 
   // Smart Popover
   smartPosition: ClrPopoverPosition = {
@@ -159,10 +157,7 @@ export class ClrDatagridFilter<T = any>
 
   ngOnChanges() {
     setTimeout(() => {
-      const columnTitle = this.getColumnTitle();
-
-      this.setToggleButtonAriaLabel(columnTitle);
-      this.setTitle(columnTitle);
+      this.setToggleButtonAriaLabel();
       this.cdr.markForCheck();
     });
   }
@@ -176,27 +171,14 @@ export class ClrDatagridFilter<T = any>
    * This is not in a getter to prevent "expression has changed after it was checked" errors.
    * And it's more performant this way since it only runs on change.
    */
-  private setToggleButtonAriaLabel(columnTitle: string) {
-    columnTitle = columnTitle?.toLocaleLowerCase();
+  private setToggleButtonAriaLabel() {
+    const columnElement = this.elementRef.nativeElement?.closest('clr-dg-column');
+    const columnTitleElement = columnElement?.querySelector('.datagrid-column-title');
+
+    const columnTitle = columnTitleElement?.textContent.trim().toLocaleLowerCase();
 
     this.toggleButtonAriaLabel = this.commonStrings.parse(this.commonStrings.keys.datagridFilterAriaLabel, {
       COLUMN: columnTitle || '',
     });
-  }
-
-  /**
-   * This is not in a getter to prevent "expression has changed after it was checked" errors.
-   */
-  private setTitle(columnTitle: string) {
-    this.filterTitle = this.commonStrings.parse(this.commonStrings.keys.datagridFilterTitle, {
-      COLUMN: columnTitle || '',
-    });
-  }
-
-  private getColumnTitle() {
-    const columnElement = this.elementRef.nativeElement?.closest('clr-dg-column');
-    const columnTitleElement = columnElement?.querySelector('.datagrid-column-title');
-
-    return columnTitleElement?.textContent.trim();
   }
 }
