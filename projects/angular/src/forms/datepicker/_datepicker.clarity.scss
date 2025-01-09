@@ -61,6 +61,7 @@
   &.is-selected {
     background: datepicker-variables.$clr-calendar-active-cell-background-color;
     color: datepicker-variables.$clr-calendar-active-cell-color;
+
     &:focus {
       background: datepicker-variables.$clr-calendar-active-focus-cell-background-color;
     }
@@ -109,6 +110,7 @@
       justify-content: end;
       padding-top: tokens.$cds-global-space-7;
       gap: button-variables.$clr-btn-horizontal-margin;
+
       button {
         margin: 0;
       }

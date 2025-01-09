@@ -116,7 +116,7 @@ export class ClrCalendar implements OnDestroy {
   setSelectedDay(day: DayModel) {
     const hasActionButtons = this._dateNavigationService.hasActionButtons;
     this.calendarViewModel.updateSelectedDay(day);
-    this._dateNavigationService.notifySelectedDayChanged(day, !hasActionButtons);
+    this._dateNavigationService.notifySelectedDayChanged(day, { emitEvent: !hasActionButtons });
     if (!hasActionButtons) {
       this._dateFormControlService.markAsDirty();
       this._toggleService.open = false;

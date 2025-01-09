@@ -46,25 +46,18 @@
         </div>
         <div class="card-validations">
           <div class="form-input-wrapper clr-form-horizontal">
-            <ng-container
-              *ngTemplateOutlet="validators; context: { minDateFc: 'minDate', maxDateFc: 'maxDate' }"
-            ></ng-container>
+            <clr-input-container>
+              <label>Min Date</label>
+              <input type="text" placeholder="yyyy-mm-dd" formControlName="minDate" clrInput />
+            </clr-input-container>
+
+            <clr-input-container>
+              <label>Max Date</label>
+              <input type="text" placeholder="yyyy-mm-dd" clrInput formControlName="maxDate" />
+            </clr-input-container>
           </div>
         </div>
       </div>
     </div>
   </section>
 </form>
-<ng-template #validators let-minDateFc="minDateFc" let-maxDateFc="maxDateFc">
-  <ng-container [formGroup]="dateForm">
-    <clr-input-container>
-      <label>Min Date</label>
-      <input type="text" placeholder="yyyy-mm-dd" [formControlName]="minDateFc" clrInput />
-    </clr-input-container>
-
-    <clr-input-container>
-      <label>Max Date</label>
-      <input type="text" placeholder="yyyy-mm-dd" clrInput [formControlName]="maxDateFc" />
-    </clr-input-container>
-  </ng-container>
-</ng-template>
