@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { Keys } from '../../utils/enums/keys.enum';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrCalendar } from './calendar';
 import { DayModel } from './model/day.model';
@@ -38,6 +39,7 @@ export default function () {
         LocaleHelperService,
         DatepickerFocusService,
         DateFormControlService,
+        ClrCommonStringsService,
       ]);
     });
 
@@ -50,6 +52,32 @@ export default function () {
       it('renders the weekdays', () => {
         const days: HTMLElement[] = context.clarityElement.querySelectorAll('.weekdays .calendar-cell');
         expect(days.length).toBe(7);
+      });
+
+      it('does not render week number header by default', () => {
+        const weekNumberHeader: HTMLElement = context.clarityElement.querySelector('.week-number');
+        expect(weekNumberHeader).toBeNull();
+      });
+
+      it('does not render week numbers by default', () => {
+        const weekNumbers: HTMLElement[] = context.clarityElement.querySelectorAll('.week-number-cell');
+        expect(weekNumbers.length).toBe(0);
+      });
+
+      it('renders week number header when enabled', () => {
+        context.testComponent.showWeekNumbers = true;
+        context.detectChanges();
+
+        const weekNumberHeader: HTMLElement = context.clarityElement.querySelector('.week-number');
+        expect(weekNumberHeader).not.toBeNull();
+      });
+
+      it('renders week numbers when enabled', () => {
+        context.testComponent.showWeekNumbers = true;
+        context.detectChanges();
+
+        const weekNumbers: HTMLElement[] = context.clarityElement.querySelectorAll('.week-number-cell');
+        expect(weekNumbers.length).toBe(6);
       });
     });
 
@@ -165,6 +193,8 @@ export default function () {
 }
 
 @Component({
-  template: `<clr-calendar></clr-calendar>`,
+  template: `<clr-calendar [clrShowWeekNumbers]="showWeekNumbers"></clr-calendar>`,
 })
-class TestComponent {}
+class TestComponent {
+  showWeekNumbers = false;
+}

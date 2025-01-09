@@ -708,13 +708,15 @@ export class ClrCalendar implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "DateNavigationService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "DatepickerFocusService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "DateIOService" needs to be exported by the entry point index.d.ts
-    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _dateIOService: DateIOService, _elRef: ElementRef<HTMLElement>);
+    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _dateIOService: DateIOService, _elRef: ElementRef<HTMLElement>, commonStringsService: ClrCommonStringsService);
     // Warning: (ae-forgotten-export) The symbol "CalendarModel" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
     get calendar(): CalendarModel;
     // Warning: (ae-forgotten-export) The symbol "CalendarViewModel" needs to be exported by the entry point index.d.ts
     calendarViewModel: CalendarViewModel;
+    // (undocumented)
+    commonStringsService: ClrCommonStringsService;
     // (undocumented)
     get focusedDay(): DayModel;
     // Warning: (ae-forgotten-export) The symbol "ClrDayOfWeek" needs to be exported by the entry point index.d.ts
@@ -727,9 +729,11 @@ export class ClrCalendar implements OnDestroy {
     // (undocumented)
     get selectedDay(): DayModel;
     // (undocumented)
+    showWeekNumbers: boolean;
+    // (undocumented)
     get today(): DayModel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCalendar, "clr-calendar", never, {}, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCalendar, "clr-calendar", never, { "showWeekNumbers": "clrShowWeekNumbers"; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCalendar, never>;
 }
@@ -1027,6 +1031,8 @@ export interface ClrCommonStrings {
     datepickerToggleChangeDateLabel: string;
     // (undocumented)
     datepickerToggleChooseDateLabel: string;
+    // (undocumented)
+    datepickerWeekNumber: string;
     detailExpandableAriaLabel: string;
     detailPaneEnd: string;
     detailPaneStart: string;
@@ -2080,7 +2086,9 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     protected renderer: Renderer2;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container", never, { "clrPosition": "clrPosition"; }, {}, never, ["label", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    showWeekNumbers: boolean;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container", never, { "showWeekNumbers": "clrShowWeekNumbers"; "clrPosition": "clrPosition"; }, {}, never, ["label", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, { optional: true; }, null, null]>;
 }
@@ -2172,7 +2180,9 @@ export class ClrDatepickerViewManager {
     get isMonthView(): boolean;
     get isYearView(): boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerViewManager, "clr-datepicker-view-manager", never, {}, {}, never, never, false, never>;
+    showWeekNumbers: boolean;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerViewManager, "clr-datepicker-view-manager", never, { "showWeekNumbers": "clrShowWeekNumbers"; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerViewManager, never>;
 }
@@ -2208,9 +2218,11 @@ export class ClrDaypicker {
     nextMonth(): void;
     previousMonth(): void;
     // (undocumented)
+    showWeekNumbers: boolean;
+    // (undocumented)
     get yearAttrString(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDaypicker, "clr-daypicker", never, {}, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDaypicker, "clr-daypicker", never, { "showWeekNumbers": "clrShowWeekNumbers"; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDaypicker, never>;
 }

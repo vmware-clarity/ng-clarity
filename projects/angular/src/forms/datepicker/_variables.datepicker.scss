@@ -12,12 +12,16 @@ $clr-calendar-background-color: var(--clr-calendar-background-color) !default;
 $clr-calendar-border-color: var(--clr-calendar-border-color) !default;
 $clr-calendar-margin-top: #{tokens.$cds-global-space-4};
 $clr-calendar-padding: #{tokens.$cds-global-space-7};
+$clr-calendar-week-number-separator-color: var(--clr-calendar-week-number-separator-color) !default;
 
 // (7 days in the week * 36px + 2 * 16px padding + 2px for border
 $clr-calendar-width: calc(
   calc(7 * #{tokens.$cds-global-space-11}) + calc(2 * #{tokens.$cds-global-space-7}) +
     calc(2 * #{tokens.$cds-alias-object-border-width-100})
 );
+
+// 1 extra square for the week number
+$clr-calendar-with-week-number-width: calc($clr-calendar-width + #{tokens.$cds-global-space-11});
 
 //(8 = 6 date rows + 1 row for day heading + 1 row for calendar switches and month/year pickers) + 2 * 16px padding + 2px for border
 $clr-calendar-height: calc(
@@ -48,6 +52,7 @@ $clr-calendar-active-focus-cell-background-color: var(--clr-calendar-active-focu
 $clr-calendar-active-cell-color: var(--clr-calendar-active-cell-color) !default;
 
 $clr-calendar-weekday-font-size: var(--clr-calendar-weekday-font-size);
+$clr-calendar-week-number-font-size: var(--clr-calendar-week-number-font-size);
 
 $clr-switcher-width: calc($clr-calendar-click-target * 3);
 
