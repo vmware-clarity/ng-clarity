@@ -2415,6 +2415,8 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     // (undocumented)
     protected readonly fileList: ClrFileList;
     // (undocumented)
+    focusBrowseButton(): void;
+    // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileInputContainer, "clr-file-input-container", never, { "customButtonLabel": "clrButtonLabel"; }, {}, ["fileInput", "fileList", "fileSuccessComponent", "fileErrorComponent"], ["label", "[clrFileInput]", "clr-control-helper", "clr-control-error", "clr-control-success", "clr-file-list"], false, never>;
