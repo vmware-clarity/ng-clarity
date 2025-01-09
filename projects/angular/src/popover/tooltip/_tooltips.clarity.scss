@@ -211,16 +211,16 @@
     & > .btn + .tooltip-content,
     &.tooltip-top-right > .btn + .tooltip-content,
     &.tooltip-top-left > .btn + .tooltip-content {
-      margin-bottom: tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-vertical-margin;
+      margin-bottom: calc(tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-vertical-margin);
     }
 
     &.tooltip-bottom-right > .btn + .tooltip-content,
     &.tooltip-bottom-left > .btn + .tooltip-content {
-      margin-top: tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-vertical-margin;
+      margin-top: calc(tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-vertical-margin);
     }
 
     &.tooltip-right > .btn + .tooltip-content {
-      margin-left: tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-horizontal-margin;
+      margin-left: calc(tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-horizontal-margin);
     }
   }
 
