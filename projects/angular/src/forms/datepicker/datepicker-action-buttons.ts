@@ -24,7 +24,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
 })
 export class ClrDatepickerActions {
   constructor(
-    public commonStrings: ClrCommonStringsService,
+    protected commonStrings: ClrCommonStringsService,
     private toggleService: ClrPopoverToggleService,
     private dateNavigationService: DateNavigationService,
     private dateFormControlService: DateFormControlService
