@@ -29,7 +29,6 @@ import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { MockDatepickerEnabledService } from './providers/datepicker-enabled.service.mock';
-import { DatePickerHelperService } from './providers/datepicker-helper.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
@@ -45,7 +44,6 @@ const DATEPICKER_PROVIDERS: any[] = [
   DateIOService,
   ControlIdService,
   DateFormControlService,
-  DatePickerHelperService,
 ];
 
 export default function () {

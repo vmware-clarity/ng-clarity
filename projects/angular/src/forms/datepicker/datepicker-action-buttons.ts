@@ -5,9 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive, HostListener, Optional } from '@angular/core';
+import { Component, Directive, HostListener } from '@angular/core';
 
-import { DatePickerHelperService } from './providers/datepicker-helper.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { DateFormControlService } from './providers/date-form-control.service';
+import { DateNavigationService } from './providers/date-navigation.service';
 
 @Component({
   selector: 'clr-datepicker-actions',
@@ -26,11 +28,18 @@ export class ClrDatepickerActions {}
   },
 })
 export class ClrDatepickerApplyAction {
-  constructor(@Optional() private datePickerHelperService: DatePickerHelperService) {}
-
+  constructor(
+    private toggleService: ClrPopoverToggleService,
+    private dateNavigationService: DateNavigationService,
+    private dateFormControlService: DateFormControlService
+  ) {}
   @HostListener('click')
   onClick() {
-    this.datePickerHelperService?.persistSelectedDates();
+    if (this.dateNavigationService.selectedDay) {
+      this.dateNavigationService.notifySelectedDayChanged(this.dateNavigationService.selectedDay, true);
+      this.dateFormControlService.markAsDirty();
+    }
+    this.toggleService.open = false;
   }
 }
 
@@ -42,10 +51,11 @@ export class ClrDatepickerApplyAction {
   },
 })
 export class ClrDatepickerCancelAction {
-  constructor(@Optional() private datePickerHelperService: DatePickerHelperService) {}
+  constructor(private toggleService: ClrPopoverToggleService, private dateNavigationService: DateNavigationService) {}
 
   @HostListener('click')
   onClick() {
-    this.datePickerHelperService?.closeDatePicker();
+    this.dateNavigationService.resetSelectedDay();
+    this.toggleService.open = false;
   }
 }

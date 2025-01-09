@@ -5,13 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
 import { DateNavigationService } from './providers/date-navigation.service';
-import { DatePickerHelperService } from './providers/datepicker-helper.service';
 
 @Component({
   selector: 'clr-day',
@@ -36,13 +35,11 @@ import { DatePickerHelperService } from './providers/datepicker-helper.service';
   host: { '[class.day]': 'true' },
 })
 export class ClrDay {
+  @Output('selectDay') onSelectDay = new EventEmitter<DayModel>();
+
   private _dayView: DayViewModel;
 
-  constructor(
-    private _dateNavigationService: DateNavigationService,
-    private _datePickerHelperService: DatePickerHelperService,
-    private commonStrings: ClrCommonStringsService
-  ) {}
+  constructor(private _dateNavigationService: DateNavigationService, private commonStrings: ClrCommonStringsService) {}
 
   /**
    * DayViewModel input which is used to build the Day View.
@@ -79,6 +76,6 @@ export class ClrDay {
       return;
     }
     const day: DayModel = this.dayView.dayModel;
-    this._datePickerHelperService.selectDay(day);
+    this.onSelectDay.emit(day);
   }
 }

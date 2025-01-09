@@ -18,18 +18,6 @@ export class DatePickerWithActionButtonsDemo {
     showActionButtons: new FormControl(true),
     date: new FormControl(),
     minDate: new FormControl('2024-02-01'),
-    maxDate: new FormControl('2024-12-31'),
+    maxDate: new FormControl('2025-12-31'),
   });
-
-  stDateChanged(date: Date) {
-    console.log(date);
-  }
-
-  endDateChanged(date: Date) {
-    console.log(date);
-  }
-
-  addDays(date = new Date(), days) {
-    return new Date(date.getTime() + 86400000 * days);
-  }
 }
