@@ -103,7 +103,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
   }
 
   protected get browseButtonDescribedBy() {
-    return `${this.label?.idAttr} ${this.fileInput.elementRef.nativeElement.getAttribute('aria-describedby')}`;
+    return `${this.label?.forAttr} ${this.fileInput.elementRef.nativeElement.getAttribute('aria-describedby')}`;
   }
 
   protected override get successMessagePresent() {
@@ -114,6 +114,10 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     return super.errorMessagePresent || !!this.fileErrorComponent;
   }
 
+  focusBrowseButton() {
+    this.browseButtonElementRef.nativeElement.focus();
+  }
+
   protected browse() {
     this.fileInput.elementRef.nativeElement.click();
   }
@@ -122,6 +126,6 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     this.fileInput.elementRef.nativeElement.value = '';
     this.fileInput.elementRef.nativeElement.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
 
-    this.browseButtonElementRef.nativeElement.focus();
+    this.focusBrowseButton();
   }
 }

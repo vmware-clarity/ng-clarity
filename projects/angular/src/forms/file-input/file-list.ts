@@ -105,6 +105,7 @@ export class ClrFileList {
     const newFiles = files.filter(file => file !== fileToRemove);
 
     selectFiles(fileInputElement, newFiles);
+    this.fileInputContainer.focusBrowseButton();
   }
 
   protected createFileMessagesTemplateContext(file: File): ClrFileMessagesTemplateContext {
