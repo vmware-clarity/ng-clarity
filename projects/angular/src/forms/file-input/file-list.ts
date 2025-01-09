@@ -40,7 +40,7 @@ import {
               [attr.aria-label]="getClearFileLabel(file.name)"
               (click)="clearFile(file)"
             >
-              <cds-icon shape="times"></cds-icon>
+              <cds-icon shape="times" status="neutral"></cds-icon>
             </button>
           </span>
 
