@@ -44,7 +44,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   showColumnsMenuDescription: 'Show or hide columns menu',
   allColumnsSelected: 'All columns selected',
   signpostToggle: 'Signpost Toggle',
-  signpostClose: 'Signpost Close',
+  signpostClose: 'Close',
   loading: 'Loading',
   // Datagrid
   detailPaneStart: 'Start of row details',
@@ -133,4 +133,8 @@ export const commonStringsDefault: ClrCommonStrings = {
   // Tree
   selectedTreeNode: 'selected',
   unselectedTreeNode: 'unselected',
+
+  // Breadcrumbs
+  breadcrumbsLabel: 'breadcrumbs',
+  expandBreadcrumbsLabel: 'Expand breadcrumbs',
 };

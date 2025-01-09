@@ -38,9 +38,10 @@ const POSITIONS: string[] = [
     <div class="signpost-wrap">
       <div class="popover-pointer"></div>
       <div class="signpost-content-header">
+        <ng-content select="clr-signpost-title"></ng-content>
         <button
           type="button"
-          [attr.aria-label]="commonStrings.keys.signpostClose"
+          [attr.aria-label]="signpostCloseAriaLabel || commonStrings.keys.signpostClose"
           class="signpost-action close"
           (click)="close()"
           [attr.aria-controls]="signpostContentId"
@@ -56,6 +57,8 @@ const POSITIONS: string[] = [
   host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
 })
 export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
+  @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;
+
   signpostContentId = uniqueIdFactory();
 
   private document: Document;
