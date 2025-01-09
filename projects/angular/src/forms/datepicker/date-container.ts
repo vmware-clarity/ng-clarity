@@ -128,6 +128,11 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     );
   }
 
+  @Input('showActionButtons')
+  set showActionButtons(flag: boolean) {
+    this.dateNavigationService.hasActionButtons = flag;
+  }
+
   @Input('clrPosition')
   set clrPosition(position: string) {
     if (position && (ClrPopoverPositions as Record<string, any>)[position]) {
@@ -172,6 +177,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
           this.initializeCalendar();
         } else {
           this.toggleButton.nativeElement.focus();
+          this.dateNavigationService.resetSelectedDay();
         }
       })
     );
