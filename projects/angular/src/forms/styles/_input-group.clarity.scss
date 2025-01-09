@@ -15,7 +15,7 @@
     @include forms-mixins.input-border-bottom-animation();
     position: relative;
     max-width: 100%;
-    height: tokens.$cds-global-space-9;
+    max-height: forms-variables.$clr-forms-input-wrapper-height;
 
     &.clr-focus {
       width: auto;
@@ -45,14 +45,6 @@
 
     .clr-input-group-addon {
       color: forms-variables.$clr-forms-subtext-color;
-
-      &:first-child {
-        padding: 0 0 0 #{tokens.$cds-global-space-11};
-      }
-
-      &:last-child {
-        padding: 0 #{tokens.$cds-global-space-11} 0 0;
-      }
     }
 
     .clr-input-group-icon-action {
