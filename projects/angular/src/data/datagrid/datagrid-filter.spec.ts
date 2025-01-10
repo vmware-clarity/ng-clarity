@@ -45,7 +45,6 @@ export default function (): void {
           toggleService,
           'browser' as any,
           undefined,
-          undefined,
           undefined
         );
       });
