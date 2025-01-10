@@ -29,7 +29,7 @@ import { ClrNumberInput } from './number-input';
             <button
               type="button"
               class="clr-input-group-icon-action"
-              (click)="input.stepDown($event)"
+              (click)="input.stepDown()"
               [disabled]="control?.disabled"
             >
               <cds-icon shape="minus" size="sm"></cds-icon>
@@ -38,7 +38,7 @@ import { ClrNumberInput } from './number-input';
             <button
               type="button"
               class="clr-input-group-icon-action"
-              (click)="input.stepUp($event)"
+              (click)="input.stepUp()"
               [disabled]="control?.disabled"
             >
               <cds-icon shape="plus" size="sm"></cds-icon>

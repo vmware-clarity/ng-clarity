@@ -32,8 +32,8 @@ export class ClrInput extends WrappedFormControl<ClrInputContainer> {
       console.warn(`Warning: Inputs of type "number" should utilize the number-input component for proper handling.\n
   Example usage:
   <clr-number-input-container>
-    <label for="numberInput">Number Input</label>
-    <input clrInput id="numberInput" type="number"/>
+    <label>Number Input</label>
+    <input clrNumberInput type="number"/>
   </clr-number-input-container>
       `);
     }
