@@ -135,7 +135,7 @@ export interface ClrCommonStrings {
    */
   datagridFilterAriaLabel: string;
   /**
-   * Datagrid filter toggle button
+   * Datagrid filter label
    */
   datagridFilterLabel: string;
   /**
