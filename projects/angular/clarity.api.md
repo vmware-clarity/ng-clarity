@@ -3070,13 +3070,15 @@ export class ClrNavLevel implements OnInit {
 export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> {
     constructor(focusService: FocusService_2, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
+    protected el: ElementRef<HTMLInputElement>;
+    // (undocumented)
     protected index: number;
     // (undocumented)
     get readonly(): boolean;
     // (undocumented)
-    stepDown(event: any): void;
+    stepDown(): void;
     // (undocumented)
-    stepUp(event: any): void;
+    stepUp(): void;
     // (undocumented)
     triggerFocus(): void;
     // (undocumented)
