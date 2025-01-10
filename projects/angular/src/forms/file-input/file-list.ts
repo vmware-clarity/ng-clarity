@@ -10,7 +10,7 @@ import { Component, ContentChild, inject, Injector } from '@angular/core';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrFileInputContainer } from './file-input-container';
-import { ClrFileListValidationErrors } from './file-input-validator';
+import { ClrFileListValidationErrors } from './file-input-validator-errors';
 import { selectFiles } from './file-input.helpers';
 import { CLR_FILE_MESSAGES_TEMPLATE_CONTEXT } from './file-messages';
 import {
@@ -36,11 +36,11 @@ import {
           <span class="label clr-file-label">
             {{ file.name }}
             <button
-              class="btn btn-sm btn-link btn-icon clr-file-clear-button"
+              class="btn btn-sm btn-link-neutral btn-icon clr-file-clear-button"
               [attr.aria-label]="getClearFileLabel(file.name)"
               (click)="clearFile(file)"
             >
-              <cds-icon shape="times" status="neutral"></cds-icon>
+              <cds-icon shape="times"></cds-icon>
             </button>
           </span>
 

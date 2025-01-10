@@ -10,6 +10,7 @@ import { ClrFileInputModule, ClrFormLayout } from '@clr/angular';
 import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
 
 import { clearFiles, selectFiles } from '../../../projects/angular/src/forms/file-input/file-input.helpers';
+import { toCamelCase, toKebabCase } from '../../helpers/casing.helpers';
 
 export default {
   title: 'File Input/File Input States',
@@ -42,8 +43,8 @@ const fileInputStatesTemplate: StoryFn = args => ({
 });
 
 function fileInputTemplateFn(label: string) {
-  const id = `${label.toLowerCase().replace(/\s+/g, '-')}-file-input`;
-  const ngModel = `${label[0].toLowerCase()}${label.substring(1).replace(/\s+/g, '')}File`;
+  const id = `${toKebabCase(label)}-file-input`;
+  const ngModel = `${toCamelCase(label)}File`;
 
   return `
 <clr-file-input-container>

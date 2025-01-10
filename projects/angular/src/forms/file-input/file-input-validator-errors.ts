@@ -5,6 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+export interface ClrFileListValidationErrors {
+  required?: boolean;
+  accept?: ClrFileAcceptError[];
+  minFileSize?: ClrFileMinFileSizeError[];
+  maxFileSize?: ClrFileMaxFileSizeError[];
+}
+
 export interface ClrFileAcceptError {
   /**
    * The name of the selected file.

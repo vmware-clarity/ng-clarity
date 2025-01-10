@@ -8,14 +8,7 @@
 import { Directive, ElementRef, Input } from '@angular/core';
 import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 
-import { ClrFileAcceptError, ClrFileMaxFileSizeError, ClrFileMinFileSizeError } from './file-input-validator-errors';
-
-export interface ClrFileListValidationErrors {
-  required?: boolean;
-  accept?: ClrFileAcceptError[];
-  minFileSize?: ClrFileMinFileSizeError[];
-  maxFileSize?: ClrFileMaxFileSizeError[];
-}
+import { ClrFileListValidationErrors } from './file-input-validator-errors';
 
 @Directive({
   selector: 'input[type="file"][clrFileInput]',
