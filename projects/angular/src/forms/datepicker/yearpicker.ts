@@ -50,8 +50,12 @@ import { ViewManagerService } from './providers/view-manager.service';
         type="button"
         class="calendar-btn year"
         [attr.tabindex]="getTabIndex(year)"
-        [class.is-selected]="year === calendarYear"
+        [class.is-selected]="year === calendarYear || year === calendarEndYear"
+        [class.is-start-range]="getIsRangeStartYear(year)"
+        [class.is-end-range]="getIsRangeEndYear(year)"
+        [class.in-range]="isInRange(year)"
         (click)="changeYear(year)"
+        (mouseenter)="onHover(year)"
       >
         {{ year }}
       </button>
@@ -87,8 +91,23 @@ export class ClrYearpicker implements AfterViewInit {
   /**
    * Gets the year which the user is currently on.
    */
+  get calendarEndYear(): number {
+    return this._dateNavigationService.selectedEndDay?.year;
+  }
+
+  /**
+   * Gets the year which the user is currently on.
+   */
   get calendarYear(): number {
     return this._dateNavigationService.displayedCalendar.year;
+  }
+
+  getIsRangeStartYear(year: number): boolean {
+    return this._dateNavigationService.isRangePicker && year === this._dateNavigationService.selectedDay?.year;
+  }
+
+  getIsRangeEndYear(year: number): boolean {
+    return this._dateNavigationService.isRangePicker && year === this._dateNavigationService.selectedEndDay?.year;
   }
 
   /**
@@ -110,16 +129,16 @@ export class ClrYearpicker implements AfterViewInit {
       const key = normalizeKey(event.key);
       if (key === Keys.ArrowUp) {
         event.preventDefault();
-        this.incrementFocusYearBy(-1);
+        this.incrementFocusYearBy(-2);
       } else if (key === Keys.ArrowDown) {
         event.preventDefault();
-        this.incrementFocusYearBy(1);
+        this.incrementFocusYearBy(2);
       } else if (key === Keys.ArrowRight) {
         event.preventDefault();
-        this.incrementFocusYearBy(5);
+        this.incrementFocusYearBy(1);
       } else if (key === Keys.ArrowLeft) {
         event.preventDefault();
-        this.incrementFocusYearBy(-5);
+        this.incrementFocusYearBy(-1);
       }
     }
   }
@@ -131,6 +150,13 @@ export class ClrYearpicker implements AfterViewInit {
   changeYear(year: number): void {
     this._dateNavigationService.changeYear(year);
     this._viewManagerService.changeToDayView();
+  }
+
+  /**
+   * Calls the DateNavigationService to update the hovered year value of the calendar
+   */
+  onHover(year: number): void {
+    this._dateNavigationService.hoveredYear = year;
   }
 
   /**
@@ -168,11 +194,30 @@ export class ClrYearpicker implements AfterViewInit {
     if (!this.yearRangeModel.inRange(this._focusedYear)) {
       if (this.yearRangeModel.inRange(this.calendarYear)) {
         this._focusedYear = this.calendarYear;
+      } else if (this.yearRangeModel.inRange(this.calendarEndYear)) {
+        this._focusedYear = this.calendarEndYear;
       } else {
         this._focusedYear = this.yearRangeModel.middleYear;
       }
     }
     return this._focusedYear === year ? 0 : -1;
+  }
+
+  /**
+   * Applicable only to date range picker
+   * Compares the year passed is in between the start and end date range
+   */
+  isInRange(year: number): boolean {
+    if (!this._dateNavigationService.isRangePicker) {
+      return false;
+    }
+    if (this._dateNavigationService.selectedDay?.year && this.calendarEndYear) {
+      return year > this.calendarYear && year < this.calendarEndYear;
+    } else if (this._dateNavigationService.selectedDay?.year && !this.calendarEndYear) {
+      return year > this.calendarYear && year < this._dateNavigationService.hoveredYear;
+    } else {
+      return false;
+    }
   }
 
   /**

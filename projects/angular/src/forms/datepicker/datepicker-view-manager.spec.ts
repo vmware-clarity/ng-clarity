@@ -21,6 +21,10 @@ export default function () {
   describe('Datepicker View Manager Component', () => {
     let context: TestContext<ClrDatepickerViewManager, TestComponent>;
     let viewManagerService: ViewManagerService;
+    let dateNavigationService: DateNavigationService;
+    let dateIOService: DateIOService;
+
+    let hostElement;
 
     beforeEach(function () {
       context = this.create(ClrDatepickerViewManager, TestComponent, [
@@ -33,6 +37,18 @@ export default function () {
         DateFormControlService,
       ]);
       viewManagerService = context.getClarityProvider(ViewManagerService);
+      dateNavigationService = context.getClarityProvider(DateNavigationService);
+      dateIOService = context.getClarityProvider(DateIOService);
+    });
+
+    it('shows the daypicker when dayView is set to true with range options', () => {
+      dateNavigationService.isRangePicker = true;
+      dateIOService.setRangeOptions([{ label: 'Today', value: [new Date(), new Date()] }]);
+      context.fixture.detectChanges();
+      hostElement = context.clarityElement.querySelector('.datepicker-view-manager');
+      expect(context.clarityDirective.isDayView).toBe(true);
+      expect(hostElement.children.length).toBe(1);
+      expect(hostElement.children[0].tagName).toBe('CLR-DAYPICKER');
     });
 
     it('shows the daypicker when dayView is set to true', () => {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DayViewModel } from './model/day-view.model';
@@ -22,6 +22,9 @@ import { DateNavigationService } from './providers/date-navigation.service';
       [class.is-excluded]="dayView.isExcluded"
       [class.is-disabled]="dayView.isDisabled"
       [class.is-selected]="dayView.isSelected"
+      [class.in-range]="isInRange()"
+      [class.is-start-range]="isRangeStartDay"
+      [class.is-end-range]="isRangeEndDay"
       [attr.tabindex]="dayView.tabIndex"
       (click)="selectDay()"
       (focus)="onDayViewFocus()"
@@ -61,6 +64,30 @@ export class ClrDay {
       : this._dayView.dayModel.toDateString();
   }
 
+  get isRangeStartDay(): boolean {
+    return (
+      this._dateNavigationService.isRangePicker &&
+      this.dayView?.dayModel?.toComparisonString() === this._dateNavigationService.selectedDay?.toComparisonString()
+    );
+  }
+
+  get isRangeEndDay(): boolean {
+    return (
+      this._dateNavigationService.isRangePicker &&
+      this.dayView?.dayModel?.toComparisonString() === this._dateNavigationService.selectedEndDay?.toComparisonString()
+    );
+  }
+
+  /**
+   * Calls the DateNavigationService to update the hovered day value of the calendar
+   */
+  @HostListener('mouseenter')
+  hoverListener(): void {
+    if (!this.dayView.isDisabled) {
+      this._dateNavigationService.hoveredDay = this.dayView.dayModel;
+    }
+  }
+
   /**
    * Updates the focusedDay in the DateNavigationService when the ClrDay is focused.
    */
@@ -77,5 +104,28 @@ export class ClrDay {
     }
     const day: DayModel = this.dayView.dayModel;
     this.onSelectDay.emit(day);
+  }
+
+  /**
+   * Applicable only to date range picker
+   * Compares whether the day is in between the start and end date range
+   */
+  isInRange(): boolean {
+    if (!this._dateNavigationService.isRangePicker) {
+      return false;
+    }
+    if (this._dateNavigationService.selectedDay && this._dateNavigationService.selectedEndDay) {
+      return (
+        this._dayView.dayModel?.isAfter(this._dateNavigationService.selectedDay) &&
+        this._dayView.dayModel?.isBefore(this._dateNavigationService.selectedEndDay)
+      );
+    } else if (this._dateNavigationService.selectedDay && !this._dateNavigationService.selectedEndDay) {
+      return (
+        this._dayView.dayModel?.isAfter(this._dateNavigationService.selectedDay) &&
+        this._dayView.dayModel?.isBefore(this._dateNavigationService.hoveredDay)
+      );
+    } else {
+      return false;
+    }
   }
 }

@@ -7,7 +7,7 @@
 
 import { Injectable, OnDestroy } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription, takeUntil } from 'rxjs';
 
 import { NgControlService } from '../providers/ng-control.service';
 
@@ -21,6 +21,8 @@ export enum CONTROL_STATE {
 export class IfControlStateService implements OnDestroy {
   private subscriptions: Subscription[] = [];
   private control: NgControl;
+  private additionalControls: NgControl[];
+  private unSubscribeAdditionalControls: Subject<boolean> = new Subject();
 
   // Implement our own status changes observable, since Angular controls don't
   private _statusChanges = new BehaviorSubject(CONTROL_STATE.NONE);
@@ -39,6 +41,19 @@ export class IfControlStateService implements OnDestroy {
             })
           );
         }
+      }),
+      ngControlService.additionalControlsChanges.subscribe((controls: NgControl[]) => {
+        if (controls) {
+          this.additionalControls = controls;
+          this.unSubscribeAdditionalControls.next(true);
+          // Subscribe to the status change events, only after touched
+          // and emit the control
+          this.additionalControls?.forEach((control: NgControl) => {
+            control?.statusChanges?.pipe(takeUntil(this.unSubscribeAdditionalControls)).subscribe(() => {
+              this.triggerStatusChange();
+            });
+          });
+        }
       })
     );
   }
@@ -49,6 +64,7 @@ export class IfControlStateService implements OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.unSubscribeAdditionalControls.next(true);
   }
 
   triggerStatusChange() {
@@ -56,8 +72,15 @@ export class IfControlStateService implements OnDestroy {
     if (this.control) {
       // These status values are mutually exclusive, so a control
       // cannot be both valid AND invalid or invalid AND disabled.
-      const status = CONTROL_STATE[this.control.status];
-      this._statusChanges.next(['VALID', 'INVALID'].includes(status) ? status : CONTROL_STATE.NONE);
+      let finalStatus = CONTROL_STATE.NONE;
+      const additionalControlsStatus = this.additionalControls?.map(control => control.status) || [];
+      const combinedStatus = [this.control.status, ...additionalControlsStatus];
+      if (combinedStatus.includes(CONTROL_STATE.INVALID)) {
+        finalStatus = CONTROL_STATE.INVALID;
+      } else if (combinedStatus.includes(CONTROL_STATE.VALID)) {
+        finalStatus = CONTROL_STATE.VALID;
+      }
+      this._statusChanges.next(finalStatus);
     }
   }
 }
