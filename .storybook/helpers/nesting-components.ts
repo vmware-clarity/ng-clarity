@@ -5,45 +5,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export interface Component {
-  name: string;
-  template: string;
-}
-
-export const nestingComponents: Component[] = [
-  {
-    name: 'accordion',
-    template: `
+export const baseComponentTemplates = {
+  accordion: `
 <clr-accordion>
   <clr-accordion-panel [clrAccordionPanelOpen]="true">
     <clr-accordion-title>Nested Title</clr-accordion-title>
     <clr-accordion-content>Nested content</clr-accordion-content>
   </clr-accordion-panel>
 </clr-accordion>`,
-  },
-  {
-    name: 'alert',
-    template: `<clr-alert><clr-alert-item><span class="alert-text">Alert text</span></clr-alert-item></clr-alert>`,
-  },
-  {
-    name: 'badge',
-    template: `<span class="badge badge-info">2</span>`,
-  },
-  {
-    name: 'button',
-    template: `<button class="btn">Default</button>`,
-  },
-  {
-    name: 'button-group',
-    template: `
+  alert: `<clr-alert><clr-alert-item><span class="alert-text">Alert text</span></clr-alert-item></clr-alert>`,
+  badge: `<span class="badge badge-info">2</span>`,
+  button: `<button class="btn">Default</button>`,
+  'button-group': `
 <clr-button-group>
   <clr-button><cds-icon shape="home"></cds-icon>Button 1</clr-button>
   <clr-button><cds-icon shape="home"></cds-icon>Button 2</clr-button>
 </clr-button-group>`,
-  },
-  {
-    name: 'card',
-    template: `
+  card: `
 <div class="card">
   <div class="card-header">Header</div>
   <div class="card-block">
@@ -58,10 +36,7 @@ export const nestingComponents: Component[] = [
   </div>
 </div>
 `,
-  },
-  {
-    name: 'checkbox',
-    template: `
+  checkbox: `
 <clr-checkbox-container>
   <clr-checkbox-wrapper>
     <input type="checkbox" clrCheckbox value="option1"/>
@@ -72,10 +47,7 @@ export const nestingComponents: Component[] = [
     <label>Option 2</label>
   </clr-checkbox-wrapper>
 </clr-checkbox-container>`,
-  },
-  {
-    name: 'combobox',
-    template: `
+  combobox: `
 <clr-combobox-container>
   <clr-combobox>
     <clr-options>
@@ -85,10 +57,7 @@ export const nestingComponents: Component[] = [
     </clr-options>
   </clr-combobox>
 </clr-combobox-container>`,
-  },
-  {
-    name: 'datagrid',
-    template: `
+  datagrid: `
 <clr-datagrid>
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>First Name</clr-dg-column>
@@ -105,10 +74,7 @@ export const nestingComponents: Component[] = [
   </clr-dg-row>
   <clr-dg-footer>2 users</clr-dg-footer>
 </clr-datagrid>`,
-  },
-  {
-    name: 'datalist',
-    template: `
+  datalist: `
 <clr-datalist-container>
   <input clrDatalistInput placeholder="Option" autocomplete="off" />
   <datalist>
@@ -117,17 +83,11 @@ export const nestingComponents: Component[] = [
     <option [value]="'3'"></option>
   </datalist>
 </clr-datalist-container>`,
-  },
-  {
-    name: 'date-picker',
-    template: `
+  'date-picker': `
 <clr-date-container>
   <input type="date" autocomplete="off" clrDate required />
 </clr-date-container>`,
-  },
-  {
-    name: 'dropdown',
-    template: `
+  dropdown: `
 <clr-dropdown>
   <button class="btn btn-outline-primary" clrDropdownTrigger>
     Dropdown
@@ -140,17 +100,11 @@ export const nestingComponents: Component[] = [
   </clr-dropdown-menu>
 </clr-dropdown>
 `,
-  },
-  {
-    name: 'file-picker',
-    template: `
+  'file-picker': `
 <clr-file-input-container>
   <input type="file" multiple clrFileInput />
 </clr-file-input-container>`,
-  },
-  {
-    name: 'header',
-    template: `
+  header: `
 <clr-main-container>
   <clr-header>
     <div class="branding">
@@ -171,39 +125,21 @@ export const nestingComponents: Component[] = [
     </div>
   </clr-header>
 </clr-main-container>`,
-  },
-  {
-    name: 'icon',
-    template: `<cds-icon shape="bell" title="bell" badge="none"></cds-icon>`,
-  },
-  {
-    name: 'input',
-    template: `
+  icon: `<cds-icon shape="bell" title="bell" badge="none"></cds-icon>`,
+  input: `
 <clr-input-container>
   <input clrInput type="text" required />
 </clr-input-container>`,
-  },
-  {
-    name: 'label',
-    template: `<span class="label">Admin</span>`,
-  },
-  {
-    name: 'list',
-    template: `
+  label: `<span class="label">Admin</span>`,
+  list: `
 <ul class="list">
   <li>Chicken Breast</li>
   <li>Flour</li>
   <li>Garlic</li>
   <li>Honey</li>
 </ul>`,
-  },
-  {
-    name: 'login',
-    template: `Login Page SHOULD not be nested anywhere.`,
-  },
-  {
-    name: 'modal',
-    template: `
+  login: `Login Page SHOULD not be nested anywhere.`,
+  modal: `
 <button class="btn btn-primary" (click)="modal.open()">Open Modal</button>
 <clr-modal #modal >
   <h3 class="modal-title">I have a nice title</h3>
@@ -216,21 +152,12 @@ export const nestingComponents: Component[] = [
   </div>
 </clr-modal>
     `,
-  },
-  {
-    name: 'password',
-    template: `
+  password: `
 <clr-password-container>
   <input clrPassword autocomplete="current-password" required />
 </clr-password-container>`,
-  },
-  {
-    name: 'progress-bar',
-    template: `<clr-progress-bar clrValue="40" clrMax="100"></clr-progress-bar>`,
-  },
-  {
-    name: 'radio',
-    template: `
+  'progress-bar': `<clr-progress-bar clrValue="40" clrMax="100"></clr-progress-bar>`,
+  radio: `
 <clr-radio-container>
   <clr-radio-wrapper>
     <input type="radio" clrRadio value="option1"/>
@@ -241,17 +168,11 @@ export const nestingComponents: Component[] = [
     <label>Option 2</label>
   </clr-radio-wrapper>
 </clr-radio-container>`,
-  },
-  {
-    name: 'range',
-    template: `
+  range: `
 <clr-range-container>
   <input type="range" clrRange required />
 </clr-range-container>`,
-  },
-  {
-    name: 'select',
-    template: `
+  select: `
 <clr-select-container>
   <select clrSelect required>
     <option value="one">One</option>
@@ -259,10 +180,7 @@ export const nestingComponents: Component[] = [
     <option value="three">Three</option>
   </select>
 </clr-select-container>`,
-  },
-  {
-    name: 'side-panel',
-    template: `
+  'side-panel': `
 <button class="btn btn-primary" (click)="sidePanel.open()">Open Side panel</button>
 <clr-side-panel #sidePanel [clrSidePanelStaticBackdrop]="true">
   <h3 class="side-panel-title">I have a nice title</h3>
@@ -275,23 +193,14 @@ export const nestingComponents: Component[] = [
   </div>
 </clr-side-panel>
     `,
-  },
-  {
-    name: 'signpost',
-    template: `
+  signpost: `
 <clr-signpost>
   <clr-signpost-content *clrIfOpen>
     Default Signpost Position: right-middle
   </clr-signpost-content>
 </clr-signpost>`,
-  },
-  {
-    name: 'spinner',
-    template: `<clr-spinner clrInline></clr-spinner><span>Downloading</span>`,
-  },
-  {
-    name: 'stack-view',
-    template: `
+  spinner: `<clr-spinner clrInline></clr-spinner><span>Downloading</span>`,
+  'stack-view': `
 <clr-stack-view>
   <clr-stack-header>Angular stack view</clr-stack-header>
 
@@ -317,11 +226,7 @@ export const nestingComponents: Component[] = [
     </clr-stack-block>
   </clr-stack-block>
 </clr-stack-view>`,
-  },
-  {
-    // stepper depends on form creation function in the story. Check accordion nesting for more info.
-    name: 'stepper',
-    template: `
+  stepper: `
 <form clrStepper [formGroup]="form">
   <clr-stepper-panel formGroupName="step1">
     <clr-step-title>Legal Name</clr-step-title>
@@ -349,10 +254,7 @@ export const nestingComponents: Component[] = [
     </clr-step-content>
   </clr-stepper-panel>
 </form>`,
-  },
-  {
-    name: 'table',
-    template: `
+  table: `
 <div class="clr-row">
   <div class="clr-col-12">
     <table class="table">
@@ -382,12 +284,8 @@ export const nestingComponents: Component[] = [
       </tbody>
     </table>
   </div>
-</div>
-`,
-  },
-  {
-    name: 'tabs',
-    template: `
+</div>`,
+  tabs: `
 <clr-tabs>
   <clr-tab>
     <button clrTabLink>Dashboard</button>
@@ -412,17 +310,11 @@ export const nestingComponents: Component[] = [
     </clr-tab-content>
   </clr-tab>
 </clr-tabs>`,
-  },
-  {
-    name: 'textarea',
-    template: `
+  textarea: `
 <clr-textarea-container>
   <textarea clrTextarea required></textarea>
 </clr-textarea-container>`,
-  },
-  {
-    name: 'toggle',
-    template: `
+  toggle: `
 <clr-toggle-container>
   <clr-toggle-wrapper>
     <input type="checkbox" clrToggle required value="option1" />
@@ -433,20 +325,14 @@ export const nestingComponents: Component[] = [
     <label>Option 2</label>
   </clr-toggle-wrapper>
 </clr-toggle-container>`,
-  },
-  {
-    name: 'tooltip',
-    template: `
+  tooltip: `
 <clr-tooltip>
   <cds-icon clrTooltipTrigger shape="info-circle" size="24"></cds-icon>
   <clr-tooltip-content [clrPosition]="'top-right'" [clrSize]="'sm'">
     This is a basic tooltip
   </clr-tooltip-content>
 </clr-tooltip>`,
-  },
-  {
-    name: 'timeline',
-    template: `
+  timeline: `
 <clr-timeline [clrLayout]="'horizontal'">
   <clr-timeline-step [clrState]="'success'">
     <clr-timeline-step-header>1:00 pm</clr-timeline-step-header>
@@ -473,12 +359,8 @@ export const nestingComponents: Component[] = [
     <clr-timeline-step-title>Not Started</clr-timeline-step-title>
     <clr-timeline-step-description>This step has not been started.</clr-timeline-step-description>
   </clr-timeline-step>
-</clr-timeline>
-    `,
-  },
-  {
-    name: 'tree-view',
-    template: `
+</clr-timeline>`,
+  'tree-view': `
 <clr-tree>
   <clr-tree-node [clrExpanded]="true">
     A
@@ -492,11 +374,7 @@ export const nestingComponents: Component[] = [
     <clr-tree-node>A-3</clr-tree-node>
   </clr-tree-node>
 </clr-tree>`,
-  },
-
-  {
-    name: 'vertical-nav',
-    template: `
+  'vertical-nav': `
 <clr-vertical-nav [clrVerticalNavCollapsible]="true">
   <clr-vertical-nav-group [clrVerticalNavGroupExpanded]="true">
     <cds-icon shape="bars" clrVerticalNavIcon></cds-icon>
@@ -520,11 +398,8 @@ export const nestingComponents: Component[] = [
       </a>
     </clr-vertical-nav-group-children>
   </clr-vertical-nav-group>
-  </clr-vertical-nav>`,
-  },
-  {
-    name: 'wizard',
-    template: `
+</clr-vertical-nav>`,
+  wizard: `
 <button class="btn btn-primary" (click)="wizard.open()">Open Wizard</button>
 <clr-wizard #wizard [clrWizardSize]="'xl'">
   <clr-wizard-title>Wizard Title</clr-wizard-title>
@@ -548,5 +423,4 @@ export const nestingComponents: Component[] = [
     <p class="content-for-page-3">Content for step 3</p>
   </clr-wizard-page>
 </clr-wizard>`,
-  },
-];
+};

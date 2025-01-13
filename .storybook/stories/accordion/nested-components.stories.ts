@@ -5,41 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
-import { nestingComponents } from '../../helpers/nesting-components';
-
-function getForm({ firstStepControlValue = undefined }: { firstStepControlValue?: string } = {}) {
-  const controls: { [key: string]: AbstractControl } = {};
-
-  for (let i = 0; i < 100; i++) {
-    controls[`step${i + 1}`] = new FormGroup({
-      value: new FormControl(i === 0 ? firstStepControlValue : undefined),
-    });
-  }
-
-  return new FormGroup(controls);
-}
-
-export default {
-  title: 'Accordion/Nested Components',
-  decorators: [
-    moduleMetadata({
-      imports: [...CommonModules, ClarityModule],
-    }),
-  ],
-  argTypes: {
-    // story helpers
-    form: { control: { disable: true }, table: { disable: true }, mapping: { ['form-mapping-key']: getForm() } },
-  },
-  args: {
-    // story helpers
-    form: 'form-mapping-key',
-  },
-};
+import { baseComponentTemplates } from '../../helpers/nesting-components';
 
 const nestedComponentNames = [
   'accordion',
@@ -55,7 +26,7 @@ const nestedComponentNames = [
   'date-picker',
   'dropdown',
   'file-picker',
-  'icon button',
+  'icon',
   'input',
   'label',
   'list',
@@ -72,7 +43,6 @@ const nestedComponentNames = [
   'spinner',
   'table',
   'textarea',
-  'timeline',
   'toggle',
   'tooltip',
   'timeline',
@@ -80,16 +50,41 @@ const nestedComponentNames = [
   'wizard',
 ];
 
-const nesting = nestingComponents
-  .filter(comp => nestedComponentNames.includes(comp.name))
-  .map(a => `<div><h5>${a.name}</h5>${a.template}</div>`)
+const stepperFormGroup = new FormGroup({
+  step1: new FormGroup({
+    value: new FormControl(undefined),
+  }),
+  step2: new FormGroup({
+    value: new FormControl(undefined),
+  }),
+});
+
+export default {
+  title: 'Accordion/Nested Components',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClarityModule],
+    }),
+  ],
+  argTypes: {
+    // story helpers
+    form: { control: { disable: true }, table: { disable: true }, mapping: { ['form-mapping-key']: stepperFormGroup } },
+  },
+  args: {
+    // story helpers
+    form: 'form-mapping-key',
+  },
+};
+
+const nestedComponents = nestedComponentNames
+  .map(name => `<div><h5>${name}</h5>${baseComponentTemplates[name]}</div>`)
   .join('<hr/>');
 
 const template = `
   <clr-accordion>
     <clr-accordion-panel [clrAccordionPanelOpen]="true">
       <clr-accordion-title>Parent Title</clr-accordion-title>
-      <clr-accordion-content>${nesting}</clr-accordion-content>
+      <clr-accordion-content>${nestedComponents}</clr-accordion-content>
     </clr-accordion-panel>
   </clr-accordion>
 `;
