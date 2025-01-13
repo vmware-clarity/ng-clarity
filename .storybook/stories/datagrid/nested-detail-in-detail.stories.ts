@@ -29,6 +29,19 @@ export default {
 
 const NestedDetailInDetailTemplate: StoryFn = args => ({
   template: `
+    <style>
+      .highlight {
+        border: 1px solid var(--cds-alias-status-danger) !important;
+      }
+      .electronegativity-container {
+        display: flex;
+        justify-content: space-between;
+
+        .electronegativity-bar {
+          background-color: var(--cds-alias-status-info);
+        }
+      }
+    </style>
     <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
 
     <clr-datagrid>
@@ -41,10 +54,9 @@ const NestedDetailInDetailTemplate: StoryFn = args => ({
         <clr-dg-cell>{{ element.name }}</clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
         <clr-dg-cell>{{ element.number }}</clr-dg-cell>
-        <clr-dg-cell>
-          <div [style.width.%]="(element.electronegativity * 100) / 4" class="electronegativity-container">
-            {{ element.electronegativity }}
-          </div>
+        <clr-dg-cell class="electronegativity-container">
+          {{ element.electronegativity }}
+          <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
         </clr-dg-cell>
       </clr-dg-row>
 
