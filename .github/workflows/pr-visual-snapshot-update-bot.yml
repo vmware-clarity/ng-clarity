@@ -41,7 +41,6 @@ jobs:
         run: |
           # apply changes
           git apply ${{ runner.temp }}/artifacts/visual-snapshot-changes-*.diff/visual-snapshot-changes-*.diff
-          rm ${{ runner.temp }}/artifacts/visual-snapshot-changes-*.diff/visual-snapshot-changes-*.diff
 
           # delete unused screenshots
           npm run ts-node -- ./scripts/delete-unused-screenshots.ts
