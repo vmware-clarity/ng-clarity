@@ -110,7 +110,7 @@ export class ClarityModule {
     // Warning: (ae-forgotten-export) The symbol "i18_2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof i1.ClrEmphasisModule, typeof i2_4.ClrDataModule, typeof i3_2.ClrIconModule, typeof i4_12.ClrModalModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule, typeof i8_6.ClrButtonModule, typeof i9_2.ClrFormsModule, typeof i10_5.ClrLayoutModule, typeof i11_3.ClrPopoverModule, typeof i12_3.ClrWizardModule, typeof i13_4.ClrSidePanelModule, typeof i14_2.ClrStepperModule, typeof i15.ClrSpinnerModule, typeof i16_2.ClrProgressBarModule, typeof i17_2.ClrPopoverModuleNext, typeof i18_2.ClrTimelineModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof i1.ClrEmphasisModule, typeof i2_4.ClrDataModule, typeof i3_2.ClrIconModule, typeof i4_12.ClrModalModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule, typeof i8_6.ClrButtonModule, typeof i9_2.ClrFormsModule, typeof i10_5.ClrLayoutModule, typeof i11_3.ClrPopoverModule, typeof i12_3.ClrWizardModule, typeof i13_4.ClrSidePanelModule, typeof i14_3.ClrStepperModule, typeof i15.ClrSpinnerModule, typeof i16_2.ClrProgressBarModule, typeof i17_2.ClrPopoverModuleNext, typeof i18_2.ClrTimelineModule]>;
 }
 
 // @public (undocumented)
@@ -2543,7 +2543,7 @@ export class ClrFormsModule {
     // Warning: (ae-forgotten-export) The symbol "i14_2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i6.CommonModule], [typeof i2_6.ClrCommonFormsModule, typeof i3_7.ClrCheckboxModule, typeof i4_5.ClrComboboxModule, typeof i5_5.ClrDatepickerModule, typeof i6_7.ClrFileInputModule, typeof i7_5.ClrInputModule, typeof i8_5.ClrPasswordModule, typeof i9_5.ClrRadioModule, typeof i10_4.ClrSelectModule, typeof i11_2.ClrTextareaModule, typeof i12_2.ClrRangeModule, typeof i13_2.ClrDatalistModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i6.CommonModule], [typeof i2_6.ClrCommonFormsModule, typeof i3_7.ClrCheckboxModule, typeof i4_5.ClrComboboxModule, typeof i5_5.ClrDatepickerModule, typeof i6_7.ClrFileInputModule, typeof i7_5.ClrInputModule, typeof i8_5.ClrPasswordModule, typeof i9_5.ClrRadioModule, typeof i10_4.ClrSelectModule, typeof i11_2.ClrTextareaModule, typeof i12_2.ClrRangeModule, typeof i13_2.ClrDatalistModule, typeof i14_2.ClrNumberInputModule]>;
 }
 
 // @public (undocumented)
@@ -4891,7 +4891,7 @@ export class ClrWizardModule {
     // Warning: (ae-forgotten-export) The symbol "i11_4" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof i1_47.ClrWizard, typeof i2_35.ClrWizardPage, typeof i3_26.ClrWizardStepnav, typeof i4_18.ClrWizardStepnavItem, typeof i5_14.ClrWizardButton, typeof i6_10.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_8.ClrWizardPageTitle, typeof i9_7.ClrWizardPageNavTitle, typeof i10_6.ClrWizardPageButtons, typeof i11_4.ClrWizardPageHeaderActions], [typeof i6.CommonModule, typeof i4_12.ClrModalModule, typeof i1_2.ClrAlertModule], [typeof i1_47.ClrWizard, typeof i2_35.ClrWizardPage, typeof i3_26.ClrWizardStepnav, typeof i4_18.ClrWizardStepnavItem, typeof i5_14.ClrWizardButton, typeof i6_10.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_8.ClrWizardPageTitle, typeof i9_7.ClrWizardPageNavTitle, typeof i10_6.ClrWizardPageButtons, typeof i11_4.ClrWizardPageHeaderActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof i1_48.ClrWizard, typeof i2_36.ClrWizardPage, typeof i3_26.ClrWizardStepnav, typeof i4_18.ClrWizardStepnavItem, typeof i5_14.ClrWizardButton, typeof i6_10.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_8.ClrWizardPageTitle, typeof i9_7.ClrWizardPageNavTitle, typeof i10_6.ClrWizardPageButtons, typeof i11_4.ClrWizardPageHeaderActions], [typeof i6.CommonModule, typeof i4_12.ClrModalModule, typeof i1_2.ClrAlertModule], [typeof i1_48.ClrWizard, typeof i2_36.ClrWizardPage, typeof i3_26.ClrWizardStepnav, typeof i4_18.ClrWizardStepnavItem, typeof i5_14.ClrWizardButton, typeof i6_10.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_8.ClrWizardPageTitle, typeof i9_7.ClrWizardPageNavTitle, typeof i10_6.ClrWizardPageButtons, typeof i11_4.ClrWizardPageHeaderActions]>;
 }
 
 // @public
