@@ -39,20 +39,38 @@
     <p>1, 2...</p>
 
     <form clrForm>
-      <clr-input-container>
+      <clr-number-input-container>
         <label>What comes after 2?</label>
-        <input clrInput type="number" name="number" placeholder="Enter a number" [(ngModel)]="model.sequenceOne" />
-      </clr-input-container>
+        <input
+          clrNumberInput
+          type="number"
+          name="number"
+          placeholder="Enter a number"
+          [(ngModel)]="model.sequenceOne"
+        />
+      </clr-number-input-container>
 
-      <clr-input-container>
+      <clr-number-input-container>
         <label>What is the next number in the sequence?</label>
-        <input clrInput type="number" name="number2" placeholder="Enter a number" [(ngModel)]="model.sequenceTwo" />
-      </clr-input-container>
+        <input
+          clrNumberInput
+          type="number"
+          name="number2"
+          placeholder="Enter a number"
+          [(ngModel)]="model.sequenceTwo"
+        />
+      </clr-number-input-container>
 
-      <clr-input-container>
+      <clr-number-input-container>
         <label>What is the next number in the sequence?</label>
-        <input clrInput type="number" name="number3" placeholder="Enter a number" [(ngModel)]="model.sequenceThree" />
-      </clr-input-container>
+        <input
+          clrNumberInput
+          type="number"
+          name="number3"
+          placeholder="Enter a number"
+          [(ngModel)]="model.sequenceThree"
+        />
+      </clr-number-input-container>
     </form>
   </clr-wizard-page>
 
