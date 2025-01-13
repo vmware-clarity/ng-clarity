@@ -65,8 +65,11 @@ jobs:
           git config user.name "GitHub"
           git config user.email "noreply@github.com"
 
+          # set environment variable for sourceHeadBranch
+          sourceHeadBranch=${{steps.get-pr-event.outputs.sourceHeadBranch}}
+
           # commit changes
-          git commit --message 'chore: update visual snapshots for `${{steps.get-pr-event.outputs.sourceHeadBranch}}`'
+          git commit --message "chore: update visual snapshots for '$sourceHeadBranch'"
 
           # push changes
           git push $repositoryUrl HEAD:refs/heads/$updateBranchName --force
