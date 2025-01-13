@@ -76,8 +76,8 @@
 
     .clr-file-clear-button {
       margin: 0;
-      padding-right: tokens.$cds-global-space-1;
-      padding-left: tokens.$cds-global-space-1;
+      padding: 0;
+      min-width: tokens.$cds-global-space-7;
       height: tokens.$cds-alias-typography-caption-line-height; // match label text line height
 
       cds-icon {
