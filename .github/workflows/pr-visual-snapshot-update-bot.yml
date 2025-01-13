@@ -60,13 +60,11 @@ jobs:
         run: |
           repositoryUrl=${{github.server_url}}/${{github.repository}}.git
           updateBranchName=visual-snapshot-update/pr-${{steps.get-pr-event.outputs.pullRequestNumber}}
+          sourceHeadBranch=${{steps.get-pr-event.outputs.sourceHeadBranch}}
 
           # configure git
           git config user.name "GitHub"
           git config user.email "noreply@github.com"
-
-          # set environment variable for sourceHeadBranch
-          sourceHeadBranch=${{steps.get-pr-event.outputs.sourceHeadBranch}}
 
           # commit changes
           git commit --message "chore: update visual snapshots for '$sourceHeadBranch'"
