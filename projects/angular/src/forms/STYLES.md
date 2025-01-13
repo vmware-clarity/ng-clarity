@@ -48,6 +48,7 @@
 | --clr-forms-datalist-caret-disabled-color                    | Color of disabled datalist caret                      |
 | --clr-forms-datalist-caret-icon-size                         | Size of datalist caret                                |
 | --clr-forms-input-group-icon-action-size                     | Size of action icon                                   |
+| --clr-forms-input-group-icon-disabled-color                  | Color for action icons in disabled input              |
 
 ## CSS Classes
 
