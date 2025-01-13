@@ -8,10 +8,10 @@
 <h2>Full Datagrid demo</h2>
 
 <form clrForm (submit)="$event.preventDefault(); reset()">
-  <clr-input-container>
+  <clr-number-input-container>
     <label>Number of users</label>
-    <input clrInput type="number" name="total" [(ngModel)]="options.totalUsers" />
-  </clr-input-container>
+    <input clrNumberInput type="number" name="total" [(ngModel)]="options.totalUsers" />
+  </clr-number-input-container>
 
   <clr-select-container>
     <label>Rows per page</label>

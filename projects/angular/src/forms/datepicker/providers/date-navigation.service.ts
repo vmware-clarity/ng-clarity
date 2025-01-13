@@ -20,8 +20,10 @@ import { DayModel } from '../model/day.model';
  */
 @Injectable()
 export class DateNavigationService {
+  persistedDate: DayModel;
   selectedDay: DayModel;
   focusedDay: DayModel;
+  hasActionButtons = false;
 
   private _displayedCalendar: CalendarModel;
   private _todaysFullDate: Date = new Date();
@@ -66,11 +68,12 @@ export class DateNavigationService {
 
   /**
    * Notifies that the selected day has changed so that the date can be emitted to the user.
-   * Note: Only to be called from day.ts
    */
-  notifySelectedDayChanged(dayModel: DayModel) {
+  notifySelectedDayChanged(dayModel: DayModel, { emitEvent } = { emitEvent: true }) {
     this.selectedDay = dayModel;
-    this._selectedDayChange.next(dayModel);
+    if (emitEvent) {
+      this._selectedDayChange.next(dayModel);
+    }
   }
 
   /**
@@ -126,6 +129,10 @@ export class DateNavigationService {
       this.setDisplayedCalendar(new CalendarModel(this.focusedDay.year, this.focusedDay.month));
     }
     this._focusOnCalendarChange.next();
+  }
+
+  resetSelectedDay() {
+    this.selectedDay = this.persistedDate;
   }
 
   // not a setter because i want this to remain private

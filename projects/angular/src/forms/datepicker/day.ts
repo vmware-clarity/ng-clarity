@@ -5,13 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
-import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 
 @Component({
@@ -37,14 +35,11 @@ import { DateNavigationService } from './providers/date-navigation.service';
   host: { '[class.day]': 'true' },
 })
 export class ClrDay {
+  @Output('selectDay') onSelectDay = new EventEmitter<DayModel>();
+
   private _dayView: DayViewModel;
 
-  constructor(
-    private _dateNavigationService: DateNavigationService,
-    private _toggleService: ClrPopoverToggleService,
-    private dateFormControlService: DateFormControlService,
-    private commonStrings: ClrCommonStringsService
-  ) {}
+  constructor(private _dateNavigationService: DateNavigationService, private commonStrings: ClrCommonStringsService) {}
 
   /**
    * DayViewModel input which is used to build the Day View.
@@ -81,8 +76,6 @@ export class ClrDay {
       return;
     }
     const day: DayModel = this.dayView.dayModel;
-    this._dateNavigationService.notifySelectedDayChanged(day);
-    this.dateFormControlService.markAsDirty();
-    this._toggleService.open = false;
+    this.onSelectDay.emit(day);
   }
 }

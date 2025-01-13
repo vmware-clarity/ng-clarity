@@ -44,6 +44,7 @@
 
     // Input group
     --clr-forms-input-group-icon-action-size: #{tokens.$cds-global-space-7};
+    --clr-forms-input-group-icon-disabled-color: #{tokens.$cds-alias-status-disabled};
 
     // Checkbox
     --clr-forms-checkbox-height: #{tokens.$cds-global-space-7};
