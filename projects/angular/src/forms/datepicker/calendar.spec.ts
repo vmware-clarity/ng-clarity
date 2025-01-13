@@ -11,6 +11,7 @@ import { TestContext } from '../../data/datagrid/helpers.spec';
 import { Keys } from '../../utils/enums/keys.enum';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrCalendar } from './calendar';
+import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -159,6 +160,16 @@ export default function () {
         context.clarityDirective.onKeyDown(rightArrowEvent);
 
         assertFocusedDay(2015, 0, 2);
+      });
+
+      it('updates the selected day when a Date is selected', () => {
+        const testDayView: DayViewModel = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
+        context.clarityDirective.setSelectedDay(testDayView.dayModel);
+        context.detectChanges();
+        expect(dateNavigationService.selectedDay).not.toBeUndefined();
+        expect(dateNavigationService.selectedDay.date).toBe(testDayView.dayModel.date);
+        expect(dateNavigationService.selectedDay.month).toBe(testDayView.dayModel.month);
+        expect(dateNavigationService.selectedDay.year).toBe(testDayView.dayModel.year);
       });
     });
   });
