@@ -26,13 +26,13 @@ jobs:
           token: ${{secrets.GITHUB_TOKEN}}
           sourceRunId: ${{github.event.workflow_run.id}}
       - name: Create Temp Directory
-        run: mkdir -p ${{ runner.temp }}/artifacts/
+        run: mkdir -p ${{runner.temp}}/artifacts/
       - name: Download Changes
         uses: dawidd6/action-download-artifact@v2
         with:
           name: visual-snapshot-changes-.+\.diff
           name_is_regexp: true
-          path: ${{ runner.temp }}/artifacts/
+          path: ${{runner.temp}}/artifacts/
           workflow: ${{github.event.workflow_run.workflow_id}}
           run_id: ${{github.event.workflow_run.id}}
           if_no_artifact_found: ignore
@@ -40,7 +40,7 @@ jobs:
         id: apply-changes
         run: |
           # apply changes
-          git apply ${{ runner.temp }}/artifacts/visual-snapshot-changes-*.diff/visual-snapshot-changes-*.diff
+          git apply ${{runner.temp}}/artifacts/visual-snapshot-changes-*.diff/visual-snapshot-changes-*.diff
 
           # delete unused screenshots
           npm run ts-node -- ./scripts/delete-unused-screenshots.ts
