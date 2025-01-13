@@ -100,8 +100,8 @@ export class ClarityModule {
     // Warning: (ae-forgotten-export) The symbol "i8_6" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i9_2" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i10_5" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i11_3" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i12_3" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i11_4" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i12_4" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i13_4" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i14_2" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point index.d.ts
@@ -110,7 +110,7 @@ export class ClarityModule {
     // Warning: (ae-forgotten-export) The symbol "i18_2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof i1.ClrEmphasisModule, typeof i2_4.ClrDataModule, typeof i3_2.ClrIconModule, typeof i4_12.ClrModalModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule, typeof i8_6.ClrButtonModule, typeof i9_2.ClrFormsModule, typeof i10_5.ClrLayoutModule, typeof i11_3.ClrPopoverModule, typeof i12_3.ClrWizardModule, typeof i13_4.ClrSidePanelModule, typeof i14_2.ClrStepperModule, typeof i15.ClrSpinnerModule, typeof i16_2.ClrProgressBarModule, typeof i17_2.ClrPopoverModuleNext, typeof i18_2.ClrTimelineModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof i1.ClrEmphasisModule, typeof i2_4.ClrDataModule, typeof i3_2.ClrIconModule, typeof i4_12.ClrModalModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule, typeof i8_6.ClrButtonModule, typeof i9_2.ClrFormsModule, typeof i10_5.ClrLayoutModule, typeof i11_4.ClrPopoverModule, typeof i12_4.ClrWizardModule, typeof i13_4.ClrSidePanelModule, typeof i14_2.ClrStepperModule, typeof i15.ClrSpinnerModule, typeof i16_2.ClrProgressBarModule, typeof i17_2.ClrPopoverModuleNext, typeof i18_2.ClrTimelineModule]>;
 }
 
 // @public (undocumented)
@@ -186,6 +186,8 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
     constructor(ifControlStateService: IfControlStateService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
     addGrid(): boolean;
+    // (undocumented)
+    additionalControls: NgControl[];
     // (undocumented)
     control: NgControl;
     // (undocumented)
@@ -727,6 +729,8 @@ export class ClrCalendar implements OnDestroy {
     //
     // (undocumented)
     get selectedDay(): DayModel;
+    // (undocumented)
+    get selectedEndDay(): DayModel;
     // (undocumented)
     setSelectedDay(day: DayModel): void;
     // (undocumented)
@@ -2056,15 +2060,21 @@ export class ClrDataModule {
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "DatepickerEnabledService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ViewManagerService" needs to be exported by the entry point index.d.ts
-    constructor(renderer: Renderer2, toggleService: ClrPopoverToggleService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FocusService_2, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
+    constructor(renderer: Renderer2, elem: ElementRef, toggleService: ClrPopoverToggleService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FocusService_2, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
     // (undocumented)
     set actionButton(button: ElementRef<HTMLButtonElement>);
     // (undocumented)
     set clrPosition(position: string);
     // (undocumented)
+    clrRangeEndEl: ClrDateRangeEndInput;
+    // (undocumented)
+    clrRangeStartEl: ClrDateRangeStartInput;
+    // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     protected controlClassService: ControlClassService;
+    // (undocumented)
+    protected elem: ElementRef;
     // (undocumented)
     focus: boolean;
     // (undocumented)
@@ -2074,6 +2084,10 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     protected layoutService: LayoutService;
     // (undocumented)
+    set max(dateString: string);
+    // (undocumented)
+    set min(dateString: string);
+    // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
     protected ngControlService: NgControlService;
@@ -2082,29 +2096,58 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     get popoverPosition(): ClrPopoverPosition;
     // (undocumented)
-    protected renderer: Renderer2;
+    set rangeOptions(rangeOptions: any);
     // (undocumented)
+    protected renderer: Renderer2;
     set showActionButtons(flag: boolean);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container", never, { "showActionButtons": "showActionButtons"; "clrPosition": "clrPosition"; }, {}, never, ["label", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, { "showActionButtons": "showActionButtons"; "clrPosition": "clrPosition"; "rangeOptions": "rangeOptions"; "min": "min"; "max": "max"; }, {}, ["clrRangeStartEl", "clrRangeEndEl"], ["label", "[clrDate]", "[clrRangeStartDate]", "[clrRangeEndDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, { optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, null, { optional: true; }, null, null]>;
 }
 
 // @public (undocumented)
-export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
-    constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef<HTMLInputElement>, renderer: Renderer2, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: any, focusService: FocusService_2, datepickerFocusService: DatepickerFocusService);
-    // (undocumented)
-    protected control: NgControl;
+export class ClrDateInput extends ClrDateInputBase implements AfterViewInit {
     // (undocumented)
     set date(date: Date | string);
     // (undocumented)
     dateChange: EventEmitter<Date>;
     // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    onValueChange(target: HTMLInputElement): void;
+    // (undocumented)
+    protected updateDate(value: Date, setByUserInteraction?: boolean): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInput, "[clrDate]", never, { "date": "clrDate"; }, { "dateChange": "clrDateChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInput, never>;
+}
+
+// @public (undocumented)
+export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> implements OnInit, OnDestroy {
+    constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef<HTMLInputElement>, renderer: Renderer2, document: any, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: any, focusService: FocusService_2, datepickerFocusService: DatepickerFocusService);
+    // (undocumented)
+    protected control: NgControl;
+    // (undocumented)
+    protected dateIOService: DateIOService;
+    // (undocumented)
+    protected dateNavigationService: DateNavigationService;
+    // (undocumented)
+    protected datepickerFocusService: DatepickerFocusService;
+    // (undocumented)
+    protected datepickerHasFormControl(): boolean;
+    // (undocumented)
     get disabled(): boolean | string;
     set disabled(value: boolean | string);
     // (undocumented)
+    protected document: any;
+    // (undocumented)
     protected el: ElementRef<HTMLInputElement>;
+    // (undocumented)
+    protected getValidDateValueFromDate(date: Date): Date;
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -2116,11 +2159,7 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     // (undocumented)
     static ngAcceptInputType_date: Date | null | string;
     // (undocumented)
-    ngAfterViewInit(): void;
-    // (undocumented)
     ngOnInit(): void;
-    // (undocumented)
-    onValueChange(target: HTMLInputElement): void;
     // (undocumented)
     placeholder: string;
     // (undocumented)
@@ -2132,9 +2171,16 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     // (undocumented)
     triggerValidation(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInput, "[clrDate]", never, { "placeholder": "placeholder"; "date": "clrDate"; "min": "min"; "max": "max"; "disabled": "disabled"; }, { "dateChange": "clrDateChange"; }, never, never, false, never>;
+    protected updateInput(date: Date): void;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInput, [null, null, null, null, { optional: true; self: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, null, { optional: true; }, null]>;
+    protected usingClarityDatepicker(): boolean;
+    // (undocumented)
+    protected usingNativeDatepicker(): boolean;
+    protected validateDateRange(): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputBase, never, never, { "placeholder": "placeholder"; "min": "min"; "max": "max"; "disabled": "disabled"; }, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInputBase, [null, null, null, null, null, { optional: true; self: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, null, { optional: true; }, null]>;
 }
 
 // @public (undocumented)
@@ -2143,7 +2189,7 @@ export class ClrDateInputValidator implements Validator {
     // (undocumented)
     validate(control: AbstractControl): ValidationErrors;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputValidator, "[clrDate]", never, {}, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputValidator, "[clrDate], [clrRangeStartDate], [clrRangeEndDate]", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInputValidator, [{ optional: true; }]>;
 }
@@ -2156,7 +2202,7 @@ export class ClrDatepickerActions {
     // (undocumented)
     protected cancel(): void;
     // (undocumented)
-    commonStrings: ClrCommonStringsService;
+    protected commonStrings: ClrCommonStringsService;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerActions, "clr-datepicker-actions", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -2180,25 +2226,107 @@ export class ClrDatepickerModule {
     // Warning: (ae-forgotten-export) The symbol "i8_4" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i9_4" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i10_3" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i11_2" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i12_2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrDatepickerViewManager, typeof i6_6.ClrMonthpicker, typeof i7_4.ClrYearpicker, typeof i8_4.ClrDaypicker, typeof i9_4.ClrCalendar, typeof i10_3.ClrDatepickerActions], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i7_3.ClrHostWrappingModule, typeof i6_2.ClrConditionalModule, typeof i17_2.ClrPopoverModuleNext, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrDatepickerViewManager, typeof i6_6.ClrMonthpicker, typeof i7_4.ClrYearpicker, typeof i8_4.ClrDaypicker, typeof i9_4.ClrCalendar, typeof i10_3.ClrDatepickerActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrDateRangeStartInput, typeof i6_6.ClrDateRangeEndInput, typeof i4_8.ClrDateRangeStartInputValidator, typeof i4_8.ClrDateRangeEndInputValidator, typeof i7_4.ClrDatepickerViewManager, typeof i8_4.ClrMonthpicker, typeof i9_4.ClrYearpicker, typeof i10_3.ClrDaypicker, typeof i11_2.ClrCalendar, typeof i12_2.ClrDatepickerActions], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i7_3.ClrHostWrappingModule, typeof i6_2.ClrConditionalModule, typeof i17_2.ClrPopoverModuleNext, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrDateRangeStartInput, typeof i6_6.ClrDateRangeEndInput, typeof i4_8.ClrDateRangeStartInputValidator, typeof i4_8.ClrDateRangeEndInputValidator, typeof i7_4.ClrDatepickerViewManager, typeof i8_4.ClrMonthpicker, typeof i9_4.ClrYearpicker, typeof i10_3.ClrDaypicker, typeof i11_2.ClrCalendar, typeof i12_2.ClrDatepickerActions]>;
 }
 
 // @public (undocumented)
 export class ClrDatepickerViewManager {
-    constructor(commonStrings: ClrCommonStringsService, viewManagerService: ViewManagerService, dateNavigationService: DateNavigationService);
+    constructor(commonStrings: ClrCommonStringsService, viewManagerService: ViewManagerService, dateNavigationService: DateNavigationService, dateIOService: DateIOService);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
+    protected get dateRangeOptions(): any;
+    // (undocumented)
     protected get hasActionButtons(): boolean;
+    // (undocumented)
+    get hasRangeOptions(): any;
     get isDayView(): boolean;
     get isMonthView(): boolean;
     get isYearView(): boolean;
     // (undocumented)
+    onRangeOptionSelect(selectedRange: any): void;
+    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerViewManager, "clr-datepicker-view-manager", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerViewManager, never>;
+}
+
+// @public (undocumented)
+export class ClrDateRangeEndInput extends ClrDateInputBase implements AfterViewInit {
+    // (undocumented)
+    set date(date: Date | string);
+    // (undocumented)
+    dateChange: EventEmitter<Date>;
+    // (undocumented)
+    get inputSize(): number;
+    // (undocumented)
+    inputWidth: number;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    onValueChange(target: HTMLInputElement): void;
+    // (undocumented)
+    triggerControlInputValidation(): void;
+    // (undocumented)
+    protected updateDate(value: Date, setByUserInteraction?: boolean): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateRangeEndInput, "[clrRangeEndDate]", never, { "inputWidth": "inputWidth"; "date": "clrRangeEndDate"; }, { "dateChange": "clrRangeEndDateChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateRangeEndInput, never>;
+}
+
+// @public (undocumented)
+export class ClrDateRangeEndInputValidator implements Validator {
+    constructor(dateIOService: DateIOService, dateNavigationService: DateNavigationService);
+    // (undocumented)
+    validate(control: AbstractControl): ValidationErrors;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateRangeEndInputValidator, "[clrRangeEndDate]", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateRangeEndInputValidator, [{ optional: true; }, { optional: true; }]>;
+}
+
+// @public (undocumented)
+export class ClrDateRangeStartInput extends ClrDateInputBase implements AfterViewInit {
+    // (undocumented)
+    set date(date: Date | string);
+    // (undocumented)
+    dateChange: EventEmitter<Date>;
+    // (undocumented)
+    get inputSize(): number;
+    // (undocumented)
+    inputWidth: number;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    onValueChange(target: HTMLInputElement): void;
+    // (undocumented)
+    triggerControlInputValidation(): void;
+    // (undocumented)
+    protected updateDate(value: Date, setByUserInteraction?: boolean): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateRangeStartInput, "[clrRangeStartDate]", never, { "inputWidth": "inputWidth"; "date": "clrRangeStartDate"; }, { "dateChange": "clrRangeStartDateChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateRangeStartInput, never>;
+}
+
+// @public (undocumented)
+export class ClrDateRangeStartInputValidator implements Validator {
+    constructor(dateIOService: DateIOService, dateNavigationService: DateNavigationService);
+    // (undocumented)
+    validate(control: AbstractControl): ValidationErrors;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateRangeStartInputValidator, "[clrRangeStartDate]", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateRangeStartInputValidator, [{ optional: true; }, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -2209,6 +2337,12 @@ export class ClrDay {
     // Warning: (ae-forgotten-export) The symbol "DayViewModel" needs to be exported by the entry point index.d.ts
     get dayView(): DayViewModel;
     set dayView(day: DayViewModel);
+    hoverListener(): void;
+    isInRange(): boolean;
+    // (undocumented)
+    get isRangeEndDay(): boolean;
+    // (undocumented)
+    get isRangeStartDay(): boolean;
     onDayViewFocus(): void;
     // (undocumented)
     onSelectDay: EventEmitter<DayModel>;
@@ -2537,12 +2671,12 @@ export class ClrFormsModule {
     // Warning: (ae-forgotten-export) The symbol "i8_5" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i9_5" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i10_4" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i11_2" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i12_2" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i11_3" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i12_3" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i13_2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i6.CommonModule], [typeof i2_6.ClrCommonFormsModule, typeof i3_7.ClrCheckboxModule, typeof i4_5.ClrComboboxModule, typeof i5_5.ClrDatepickerModule, typeof i6_7.ClrFileInputModule, typeof i7_5.ClrInputModule, typeof i8_5.ClrPasswordModule, typeof i9_5.ClrRadioModule, typeof i10_4.ClrSelectModule, typeof i11_2.ClrTextareaModule, typeof i12_2.ClrRangeModule, typeof i13_2.ClrDatalistModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i6.CommonModule], [typeof i2_6.ClrCommonFormsModule, typeof i3_7.ClrCheckboxModule, typeof i4_5.ClrComboboxModule, typeof i5_5.ClrDatepickerModule, typeof i6_7.ClrFileInputModule, typeof i7_5.ClrInputModule, typeof i8_5.ClrPasswordModule, typeof i9_5.ClrRadioModule, typeof i10_4.ClrSelectModule, typeof i11_3.ClrTextareaModule, typeof i12_3.ClrRangeModule, typeof i13_2.ClrDatalistModule]>;
 }
 
 // @public (undocumented)
@@ -2993,13 +3127,35 @@ export class ClrModalModule {
 
 // @public (undocumented)
 export class ClrMonthpicker implements AfterViewInit {
-    constructor(_viewManagerService: ViewManagerService, _localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef<HTMLElement>);
+    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef, _viewManagerService: ViewManagerService, commonStrings: ClrCommonStringsService);
+    get calendarEndMonthIndex(): number;
     get calendarMonthIndex(): number;
+    get calendarYear(): number;
     changeMonth(monthIndex: number): void;
+    changeToYearView(): void;
+    // (undocumented)
+    commonStrings: ClrCommonStringsService;
+    // (undocumented)
+    get currentCalendarMonth(): number;
+    // (undocumented)
+    get currentCalendarYear(): number;
+    currentYear(): void;
+    // (undocumented)
+    getIsRangeEndMonth(monthIndex: number): boolean;
+    // (undocumented)
+    getIsRangeStartMonth(monthIndex: number): boolean;
     getTabIndex(monthIndex: number): number;
+    isInRange(monthIndex: number): boolean;
+    // (undocumented)
+    isSelected(monthIndex: number): boolean;
     get monthNames(): ReadonlyArray<string>;
+    nextYear(): void;
     ngAfterViewInit(): void;
+    onHover(monthIndex: number): void;
     onKeyDown(event: KeyboardEvent): void;
+    previousYear(): void;
+    // (undocumented)
+    get yearAttrString(): string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrMonthpicker, "clr-monthpicker", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -4835,10 +4991,10 @@ export class ClrWizardModule {
     // Warning: (ae-forgotten-export) The symbol "i8_8" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i9_7" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i10_6" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i11_4" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i11_5" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof i1_47.ClrWizard, typeof i2_35.ClrWizardPage, typeof i3_26.ClrWizardStepnav, typeof i4_18.ClrWizardStepnavItem, typeof i5_14.ClrWizardButton, typeof i6_10.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_8.ClrWizardPageTitle, typeof i9_7.ClrWizardPageNavTitle, typeof i10_5.ClrWizardPageButtons, typeof i11_4.ClrWizardPageHeaderActions], [typeof i6.CommonModule, typeof i4_12.ClrModalModule, typeof i1_2.ClrAlertModule], [typeof i1_47.ClrWizard, typeof i2_35.ClrWizardPage, typeof i3_26.ClrWizardStepnav, typeof i4_18.ClrWizardStepnavItem, typeof i5_14.ClrWizardButton, typeof i6_10.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_8.ClrWizardPageTitle, typeof i9_7.ClrWizardPageNavTitle, typeof i10_5.ClrWizardPageButtons, typeof i11_4.ClrWizardPageHeaderActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof i1_47.ClrWizard, typeof i2_35.ClrWizardPage, typeof i3_26.ClrWizardStepnav, typeof i4_18.ClrWizardStepnavItem, typeof i5_14.ClrWizardButton, typeof i6_10.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_8.ClrWizardPageTitle, typeof i9_7.ClrWizardPageNavTitle, typeof i10_6.ClrWizardPageButtons, typeof i11_5.ClrWizardPageHeaderActions], [typeof i6.CommonModule, typeof i4_12.ClrModalModule, typeof i1_2.ClrAlertModule], [typeof i1_47.ClrWizard, typeof i2_35.ClrWizardPage, typeof i3_26.ClrWizardStepnav, typeof i4_18.ClrWizardStepnavItem, typeof i5_14.ClrWizardButton, typeof i6_10.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_8.ClrWizardPageTitle, typeof i9_7.ClrWizardPageNavTitle, typeof i10_6.ClrWizardPageButtons, typeof i11_5.ClrWizardPageHeaderActions]>;
 }
 
 // @public
@@ -5004,14 +5160,21 @@ export class ClrWizardTitle {
 // @public (undocumented)
 export class ClrYearpicker implements AfterViewInit {
     constructor(_dateNavigationService: DateNavigationService, _viewManagerService: ViewManagerService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService);
+    get calendarEndYear(): number;
     get calendarYear(): number;
     changeYear(year: number): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     currentDecade(): void;
+    // (undocumented)
+    getIsRangeEndYear(year: number): boolean;
+    // (undocumented)
+    getIsRangeStartYear(year: number): boolean;
     getTabIndex(year: number): number;
+    isInRange(year: number): boolean;
     nextDecade(): void;
     ngAfterViewInit(): void;
+    onHover(year: number): void;
     onKeyDown(event: KeyboardEvent): void;
     previousDecade(): void;
     // Warning: (ae-forgotten-export) The symbol "YearRangeModel" needs to be exported by the entry point index.d.ts
@@ -5219,7 +5382,7 @@ export function ToggleServiceFactory(): BehaviorSubject<boolean>;
 
 // @public (undocumented)
 export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
-    constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
+    constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, _ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
     // (undocumented)
     protected controlIdService: ControlIdService;
     // (undocumented)
