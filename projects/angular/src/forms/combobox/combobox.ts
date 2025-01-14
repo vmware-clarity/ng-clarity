@@ -259,15 +259,13 @@ export class ClrCombobox<T>
   onBlur() {
     this.focused = false;
 
-    if (this.onTouchedCallback) {
-      this.onTouchedCallback();
-    }
+    this.onTouchedCallback?.();
 
-    if (this.control?.control.updateOn === 'change' && this.control?.control?.errors?.required) {
+    if (this.control?.control?.updateOn === 'change' && this.control?.control?.errors?.required) {
       this.updateControlValue();
     }
 
-    if (this.control?.control.updateOn === 'blur') {
+    if (this.control?.control?.updateOn === 'blur') {
       this.control.control.updateValueAndValidity();
     }
   }
@@ -365,7 +363,7 @@ export class ClrCombobox<T>
     if (this.controlStateService) {
       this.subscriptions.push(
         this.controlStateService.statusChanges.subscribe(invalid => {
-          this.invalid = this.control?.control.touched && invalid === CONTROL_STATE.INVALID;
+          this.invalid = this.control?.control?.touched && invalid === CONTROL_STATE.INVALID;
         })
       );
     }
