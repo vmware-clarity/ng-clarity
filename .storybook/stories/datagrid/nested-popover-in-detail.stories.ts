@@ -36,9 +36,6 @@ export default {
 const NestedPopoverInDetailTemplate: StoryFn = args => ({
   template: `
     <style>
-      .highlight {
-        border: 1px solid var(--cds-alias-status-danger) !important;
-      }
       .electronegativity-container {
         display: flex;
         justify-content: space-between;
