@@ -261,7 +261,7 @@ export class ClrCombobox<T>
 
     this.onTouchedCallback?.();
 
-    if (this.control?.control?.updateOn === 'change' && this.control?.control?.errors?.required) {
+    if (this.control?.control?.updateOn === 'change' && this.control.control.errors?.required) {
       this.updateControlValue();
     }
 
