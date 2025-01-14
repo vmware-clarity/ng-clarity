@@ -25,6 +25,11 @@ export default {
   args: {
     // inputs
     clrButtonLabel: commonStringsDefault.browse,
+    clrMinFileSize: 50,
+    clrMaxFileSize: 500,
+    // input attributes
+    accept: 'text/plain',
+    multiple: true,
   },
 };
 
@@ -32,7 +37,17 @@ const advancedAdvancedFileInputTemplate = `
   <form clrForm [clrLayout]="clrLayout">
     <clr-file-input-container [clrButtonLabel]="clrButtonLabel">
       <label>File</label>
-      <input type="file" name="file" [(ngModel)]="file" clrFileInput required multiple />
+      <input
+        type="file"
+        name="file"
+        [(ngModel)]="file"
+        clrFileInput
+        [accept]="accept"
+        [multiple]="multiple"
+        [clrMinFileSize]="clrMinFileSize"
+        [clrMaxFileSize]="clrMaxFileSize"
+        required
+      />
       <clr-control-helper>Helper message</clr-control-helper>
       <clr-control-success>Success message</clr-control-success>
       <clr-control-error *clrIfError="'required'">Required</clr-control-error>
@@ -42,6 +57,9 @@ const advancedAdvancedFileInputTemplate = `
         <ng-template clr-file-messages let-file let-errors="errors">
           <clr-file-info>Info text for {{ file.name }}</clr-file-info>
           <clr-file-success>Success message for {{ file.name }}</clr-file-success>
+          <clr-file-error *ngIf="errors.accept">File type not accepted</clr-file-error>
+          <clr-file-error *ngIf="errors.minFileSize">File size too small</clr-file-error>
+          <clr-file-error *ngIf="errors.maxFileSize">File size too large</clr-file-error>
         </ng-template>
       </clr-file-list>
     </clr-file-input-container>

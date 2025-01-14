@@ -2423,6 +2423,10 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
 // @public (undocumented)
 export class ClrFileInputContainer extends ClrAbstractContainer {
     // (undocumented)
+    protected get accept(): string;
+    // (undocumented)
+    protected addFilesToSelection(newFiles: FileList): void;
+    // (undocumented)
     protected browse(): void;
     // (undocumented)
     protected get browseButtonDescribedBy(): string;
@@ -2442,6 +2446,8 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     protected readonly fileList: ClrFileList;
     // (undocumented)
     focusBrowseButton(): void;
+    // (undocumented)
+    protected get multiple(): boolean;
     // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)

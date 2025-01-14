@@ -14,6 +14,7 @@ import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrFileInput } from './file-input';
+import { selectFiles } from './file-input.helpers';
 import { ClrFileList } from './file-list';
 import { ClrFileError, ClrFileSuccess } from './file-messages';
 
@@ -25,6 +26,21 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-file-input-wrapper">
         <ng-content select="[clrFileInput]"></ng-content>
+
+        <!-- file input to handle adding new files to selection when file list is present (prevent replacing selected files on the main file input) -->
+        <input
+          *ngIf="fileList"
+          #fileListFileInput
+          type="file"
+          class="clr-file-input"
+          tabindex="-1"
+          aria-hidden="true"
+          [accept]="accept"
+          [multiple]="multiple"
+          [disabled]="disabled"
+          (change)="addFilesToSelection(fileListFileInput.files)"
+        />
+
         <button
           #browseButton
           type="button"
@@ -65,7 +81,7 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
       <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
 
       <!-- If this is present, this file input becomes an "advanced" file input. -->
-      <ng-container *ngIf="fileList">
+      <ng-container>
         <div class="clr-file-list-break"></div>
         <ng-content select="clr-file-list"></ng-content>
       </ng-container>
@@ -85,12 +101,21 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
   @ContentChild(forwardRef(() => ClrFileList)) protected readonly fileList: ClrFileList;
 
   @ViewChild('browseButton') private browseButtonElementRef: ElementRef<HTMLButtonElement>;
+  @ViewChild('fileListFileInput') private fileListFileInputElementRef: ElementRef<HTMLInputElement>;
 
   // These are for the "message present" override properties
   @ContentChild(ClrFileSuccess) private readonly fileSuccessComponent: ClrFileSuccess;
   @ContentChild(ClrFileError) private readonly fileErrorComponent: ClrFileError;
 
   private readonly commonStrings = inject(ClrCommonStringsService);
+
+  protected get accept() {
+    return this.fileInput.elementRef.nativeElement.accept;
+  }
+
+  protected get multiple() {
+    return this.fileInput.elementRef.nativeElement.multiple;
+  }
 
   protected get disabled() {
     return this.fileInput.elementRef.nativeElement.disabled;
@@ -119,7 +144,10 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
   }
 
   protected browse() {
-    this.fileInput.elementRef.nativeElement.click();
+    const fileInputElementRef =
+      this.fileList && this.multiple ? this.fileListFileInputElementRef : this.fileInput.elementRef;
+
+    fileInputElementRef.nativeElement.click();
   }
 
   protected clearSelectedFiles() {
@@ -127,5 +155,26 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     this.fileInput.elementRef.nativeElement.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
 
     this.focusBrowseButton();
+  }
+
+  protected addFilesToSelection(newFiles: FileList) {
+    if (!newFiles.length) {
+      return;
+    }
+
+    const existingFiles = Array.from(this.fileInput.elementRef.nativeElement.files);
+
+    // start with new files
+    const mergedFiles = [...Array.from(newFiles)];
+
+    // add existing files if a new file doesn't have the same name
+    for (const existingFile of existingFiles) {
+      if (!mergedFiles.some(file => file.name === existingFile.name)) {
+        mergedFiles.push(existingFile);
+      }
+    }
+
+    // update file selection
+    selectFiles(this.fileInput.elementRef.nativeElement, mergedFiles);
   }
 }
