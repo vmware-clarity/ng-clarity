@@ -234,7 +234,7 @@ export const baseComponentTemplates = {
     <clr-step-content>
       <clr-input-container>
         <label>First Name</label>
-        <input clrInput formControlName="value" />
+        <input clrInput formControlName="value" required/>
       </clr-input-container>
 
       <button clrStepButton="next">next</button>
