@@ -62,6 +62,14 @@ const ExpandableRowsTemplate: StoryFn = args => ({
         visibility: visible;
         opacity: 1;
       }
+      .electronegativity-container {
+        display: flex;
+        justify-content: space-between;
+
+        .electronegativity-bar {
+          background-color: var(--cds-alias-status-info);
+        }
+      }
     </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
@@ -114,10 +122,9 @@ const ExpandableRowsTemplate: StoryFn = args => ({
         </clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
         <clr-dg-cell>{{ element.number }}</clr-dg-cell>
-        <clr-dg-cell>
-          <div [style.width.%]="(element.electronegativity * 100) / 4" class="electronegativity-container">
-            {{ element.electronegativity }}
-          </div>
+        <clr-dg-cell class="electronegativity-container">
+          {{ element.electronegativity }}
+          <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
         </clr-dg-cell>
         <clr-dg-row-detail *clrIfExpanded>
           <div>

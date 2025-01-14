@@ -162,7 +162,7 @@
 
   // panel states
   .clr-accordion-panel-open {
-    .clr-accordion-header {
+    > .clr-accordion-header {
       box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
     }
     .clr-accordion-panel-complete > .clr-accordion-header {
@@ -232,18 +232,18 @@
   // temporary overrides to match stackview until stepper, accordion and stackview are aligned
   // https://github.com/vmware/clarity/issues/3471
   .clr-accordion:not(.clr-stepper-forms) {
-    .clr-accordion-header {
+    .clr-accordion-header:not(.clr-stepper-header) {
       box-shadow: none;
     }
 
-    .clr-accordion-panel:first-child .clr-accordion-header {
+    .clr-accordion-panel:first-child .clr-accordion-header:not(.clr-stepper-header) {
       border-top-left-radius: accordion-variables.$clr-accordion-border-radius;
       border-top-right-radius: accordion-variables.$clr-accordion-border-radius;
     }
 
-    .clr-accordion-panel:last-child {
-      .clr-accordion-content,
-      .clr-accordion-header {
+    .clr-accordion-panel:last-child .clr-accordion-header:not(.clr-stepper-header) {
+      &,
+      & + .clr-accordion-content-region > .clr-accordion-content {
         border-bottom-left-radius: accordion-variables.$clr-accordion-border-radius;
         border-bottom-right-radius: accordion-variables.$clr-accordion-border-radius;
       }
