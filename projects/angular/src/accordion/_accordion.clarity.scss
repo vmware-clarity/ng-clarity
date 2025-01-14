@@ -241,13 +241,12 @@
       border-top-right-radius: accordion-variables.$clr-accordion-border-radius;
     }
 
-    .clr-accordion-panel:last-child .clr-accordion-header:not(.clr-stepper-header),
-    .clr-accordion-panel:last-child
-      .clr-accordion-header:not(.clr-stepper-header)
-      + .clr-accordion-content-region
-      > .clr-accordion-content {
-      border-bottom-left-radius: accordion-variables.$clr-accordion-border-radius;
-      border-bottom-right-radius: accordion-variables.$clr-accordion-border-radius;
+    .clr-accordion-panel:last-child .clr-accordion-header:not(.clr-stepper-header) {
+      &,
+      & + .clr-accordion-content-region > .clr-accordion-content {
+        border-bottom-left-radius: accordion-variables.$clr-accordion-border-radius;
+        border-bottom-right-radius: accordion-variables.$clr-accordion-border-radius;
+      }
     }
 
     .clr-accordion-header-button {
