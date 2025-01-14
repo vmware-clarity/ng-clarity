@@ -81,6 +81,10 @@ export const APP_ROUTES: Routes = [
       import('./overlay-clipping/overlay-clipping.demo.module').then(m => m.OverlayClippingDemoModule),
   },
   {
+    path: 'number-input',
+    loadChildren: () => import('./number-input/number-input.demo.module').then(m => m.NumberInputDemoModule),
+  },
+  {
     path: 'password',
     loadChildren: () => import('./password/password.demo.module').then(m => m.PasswordDemoModule),
   },

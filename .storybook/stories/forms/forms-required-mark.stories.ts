@@ -54,10 +54,10 @@ const RequiredMarkTemplate: StoryFn = args => ({
         <label class="clr-required-mark">Name</label>
         <input clrInput formControlName="name" [placeholder]="namePlaceholder" required />
       </clr-input-container>
-      <clr-input-container>
+      <clr-number-input-container>
         <label class="clr-required-mark">Age</label>
-        <input clrInput formControlName="age" type="number" min="0" required />
-      </clr-input-container>
+        <input clrNumberInput formControlName="age" type="number" min="0" required />
+      </clr-number-input-container>
       <clr-password-container>
         <label class="clr-required-mark">Password</label>
         <input clrPassword autocomplete="current-password" formControlName="password" required />

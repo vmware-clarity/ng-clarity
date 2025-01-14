@@ -10,10 +10,12 @@ import { Subscription } from 'rxjs';
 
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrDayOfWeek } from './interfaces/day-of-week.interface';
 import { CalendarViewModel } from './model/calendar-view.model';
 import { CalendarModel } from './model/calendar.model';
 import { DayModel } from './model/day.model';
+import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
@@ -37,7 +39,9 @@ export class ClrCalendar implements OnDestroy {
     private _dateNavigationService: DateNavigationService,
     private _datepickerFocusService: DatepickerFocusService,
     private _dateIOService: DateIOService,
-    private _elRef: ElementRef<HTMLElement>
+    private _elRef: ElementRef<HTMLElement>,
+    private _dateFormControlService: DateFormControlService,
+    private _toggleService: ClrPopoverToggleService
   ) {
     this.generateCalendarView();
     this.initializeSubscriptions();
@@ -106,6 +110,16 @@ export class ClrCalendar implements OnDestroy {
         default:
           break; // No default case. ESLint x-(
       }
+    }
+  }
+
+  setSelectedDay(day: DayModel) {
+    const hasActionButtons = this._dateNavigationService.hasActionButtons;
+    this.calendarViewModel.updateSelectedDay(day);
+    this._dateNavigationService.notifySelectedDayChanged(day, { emitEvent: !hasActionButtons });
+    if (!hasActionButtons) {
+      this._dateFormControlService.markAsDirty();
+      this._toggleService.open = false;
     }
   }
 
