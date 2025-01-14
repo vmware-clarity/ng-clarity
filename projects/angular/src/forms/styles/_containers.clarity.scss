@@ -39,7 +39,8 @@
 
     .clr-input,
     .clr-textarea,
-    .clr-select {
+    .clr-select,
+    .clr-number-input {
       color: forms-variables.$clr-forms-text-disabled-color;
       border-bottom-color: forms-variables.$clr-forms-border-disabled-color;
     }

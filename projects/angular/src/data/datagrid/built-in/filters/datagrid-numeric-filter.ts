@@ -24,10 +24,10 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
       <div class="datagrid-numeric-filter-form">
-        <div class="clr-form-control">
+        <clr-number-input-container>
           <label class="clr-control-label">{{ fromLabelValue }}</label>
           <input
-            clrInput
+            clrNumberInput
             class="datagrid-numeric-filter-input"
             #input_low
             type="number"
@@ -37,11 +37,11 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
             [placeholder]="minPlaceholderValue"
             [attr.aria-label]="minPlaceholderValue"
           />
-        </div>
-        <div class="clr-form-control">
+        </clr-number-input-container>
+        <clr-number-input-container>
           <label class="clr-control-label">{{ toLabelValue }}</label>
           <input
-            clrInput
+            clrNumberInput
             class="datagrid-numeric-filter-input"
             #input_high
             type="number"
@@ -51,7 +51,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
             [placeholder]="maxPlaceholderValue"
             [attr.aria-label]="maxPlaceholderValue"
           />
-        </div>
+        </clr-number-input-container>
       </div>
     </clr-dg-filter>
   `,

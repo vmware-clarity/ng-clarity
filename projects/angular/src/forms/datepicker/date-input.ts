@@ -230,7 +230,7 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     }
 
     if (this.dateNavigationService) {
-      this.dateNavigationService.selectedDay = date
+      this.dateNavigationService.persistedDate = this.dateNavigationService.selectedDay = date
         ? new DayModel(date.getFullYear(), date.getMonth(), date.getDate())
         : null;
     }
