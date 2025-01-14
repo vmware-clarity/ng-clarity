@@ -162,7 +162,7 @@
 
   // panel states
   .clr-accordion-panel-open {
-    .clr-accordion-header {
+    > .clr-accordion-header {
       box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
     }
     .clr-accordion-panel-complete > .clr-accordion-header {
