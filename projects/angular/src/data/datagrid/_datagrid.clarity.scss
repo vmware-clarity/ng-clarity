@@ -892,6 +892,14 @@
     z-index: map.get(variables.$clr-layers, datagrid-host); // Keeps the spinner above the datagrid header.
   }
 
+  .datagrid-rows.datagrid-overflow-ellipsis
+    > .datagrid-row
+    .datagrid-cell:not(.datagrid-row-actions, .datagrid-select, .datagrid-expandable-caret) {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
   .datagrid-compact {
     .datagrid-header {
       min-height: tokens.$cds-global-space-9;

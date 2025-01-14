@@ -52,6 +52,11 @@ import { TableSizeService } from './providers/table-size.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
+interface DatagridDensity {
+  compact?: boolean;
+  overflowEllipsis?: boolean;
+}
+
 @Component({
   selector: 'clr-datagrid',
   templateUrl: './datagrid.html',
@@ -75,10 +80,12 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
   host: {
     '[class.datagrid-host]': 'true',
     '[class.datagrid-detail-open]': 'detailService.isOpen',
+    '[class.datagrid-compact]': 'density?.compact',
   },
 })
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
   @Input('clrLoadingMoreItems') loadingMoreItems: boolean;
+  @Input('clrDgDensity') density: DatagridDensity;
 
   @Input() clrDgSingleSelectionAriaLabel: string = this.commonStrings.keys.singleSelectionAriaLabel;
   @Input() clrDgSingleActionableAriaLabel: string = this.commonStrings.keys.singleActionableAriaLabel;
