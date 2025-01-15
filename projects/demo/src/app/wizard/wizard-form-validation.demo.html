@@ -37,11 +37,11 @@
     <ng-template clrPageNavTitle>Enter a number</ng-template>
     <!-- optional -->
     <form clrForm #formPageTwo="ngForm">
-      <clr-input-container>
+      <clr-number-input-container>
         <label>Please your lucky number!</label>
-        <input clrInput type="number" required [(ngModel)]="model.number" name="number" #number="ngModel" />
+        <input clrNumberInput type="number" required [(ngModel)]="model.number" name="number" #number="ngModel" />
         <clr-control-error>This field cannot be empty!</clr-control-error>
-      </clr-input-container>
+      </clr-number-input-container>
     </form>
   </clr-wizard-page>
 
