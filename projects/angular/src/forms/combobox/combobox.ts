@@ -203,7 +203,7 @@ export class ClrCombobox<T>
   }
 
   private get disabled() {
-    return this.control && this.control.disabled;
+    return this.control?.disabled;
   }
 
   ngAfterContentInit() {
@@ -232,7 +232,7 @@ export class ClrCombobox<T>
       const multiModel: T[] = this.optionSelectionService.selectionModel.model as T[];
       if (multiModel && multiModel.length > 0) {
         const lastItem: T = multiModel[multiModel.length - 1];
-        this.control.control.markAsTouched();
+        this.control?.control.markAsTouched();
         this.optionSelectionService.unselect(lastItem);
       }
     }
@@ -360,7 +360,7 @@ export class ClrCombobox<T>
     if (this.controlStateService) {
       this.subscriptions.push(
         this.controlStateService.statusChanges.subscribe(invalid => {
-          this.invalid = this.control.control.touched && invalid === CONTROL_STATE.INVALID;
+          this.invalid = this.control?.control.touched && invalid === CONTROL_STATE.INVALID;
         })
       );
     }
