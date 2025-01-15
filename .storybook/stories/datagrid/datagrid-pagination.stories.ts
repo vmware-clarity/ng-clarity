@@ -59,10 +59,15 @@ const PaginationTemplate: StoryFn = args => ({
   template: `
     <style>
       .highlight {
-        border: 1px solid red !important;
+        border: 1px solid var(--cds-alias-status-danger) !important;
       }
       .electronegativity-container {
-        border-bottom: 4px solid #119cd4;
+        display: flex;
+        justify-content: space-between;
+
+        .electronegativity-bar {
+          background-color: var(--cds-alias-status-info);
+        }
       }
     </style>
     <clr-datagrid
@@ -88,10 +93,9 @@ const PaginationTemplate: StoryFn = args => ({
         <clr-dg-cell>{{ element.name }}</clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
         <clr-dg-cell>{{ element.number }}</clr-dg-cell>
-        <clr-dg-cell>
-          <div [style.width.%]="(element.electronegativity * 100) / 4" class="electronegativity-container">
-            {{ element.electronegativity }}
-          </div>
+        <clr-dg-cell class="electronegativity-container">
+          {{ element.electronegativity }}
+          <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
         </clr-dg-cell>
         <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
           <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>

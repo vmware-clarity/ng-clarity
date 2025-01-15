@@ -1429,6 +1429,9 @@
       .clr-form-control {
         margin-top: 0;
       }
+      input.datagrid-numeric-filter-input {
+        width: tokens.$cds-global-space-15;
+      }
     }
   }
 
