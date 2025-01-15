@@ -5215,6 +5215,8 @@ export class ClrYearpicker implements AfterViewInit {
     constructor(_dateNavigationService: DateNavigationService, _viewManagerService: ViewManagerService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService);
     get calendarEndYear(): number;
     get calendarYear(): number;
+    // (undocumented)
+    changeToDayView(): void;
     changeYear(year: number): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
