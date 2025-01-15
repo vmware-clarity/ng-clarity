@@ -17,14 +17,11 @@ export class DateRangePickerDemo implements OnInit {
   dateForm = new FormGroup({
     showActionButtons: new FormControl(true),
     showRangeOptions: new FormControl(true),
-    date: new FormControl(),
+
+    startDate: new FormControl(),
+    endDate: new FormControl(),
     minDate: new FormControl('2024-02-01'),
     maxDate: new FormControl('2025-12-31'),
-
-    startDateV1: new FormControl(),
-    endDateV1: new FormControl(),
-    minDateV1: new FormControl('2024-02-01'),
-    maxDateV1: new FormControl('2025-12-31'),
   });
 
   dateRangeOptions = [
@@ -36,11 +33,11 @@ export class DateRangePickerDemo implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.dateForm.get('startDateV1').statusChanges.subscribe(status => {
-      console.log('🚀 ~ DateRangePickerDemo ~ startDateV1 ~ status:', status);
+    this.dateForm.get('startDate').statusChanges.subscribe(status => {
+      console.log('🚀 startDate ~ status:', status);
     });
-    this.dateForm.get('endDateV1').statusChanges.subscribe(status => {
-      console.log('🚀 ~ DateRangePickerDemo ~ endDateV1 ~ status:', status);
+    this.dateForm.get('endDate').statusChanges.subscribe(status => {
+      console.log('🚀 endDate ~ status:', status);
     });
   }
   stDateChanged(date: Date) {
