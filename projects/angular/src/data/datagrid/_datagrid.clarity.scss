@@ -151,6 +151,17 @@
     &.cdk-virtual-scrollable .datagrid-rows {
       flex-grow: 0;
     }
+
+    .datagrid-rows.datagrid-overflow-ellipsis > .datagrid-row .datagrid-scrolling-cells {
+      > .datagrid-cell:not(.datagrid-row-actions, .datagrid-select, .datagrid-expandable-caret) {
+        &,
+        * {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+      }
+    }
   }
 
   .datagrid-container {
@@ -892,15 +903,11 @@
     z-index: map.get(variables.$clr-layers, datagrid-host); // Keeps the spinner above the datagrid header.
   }
 
-  .datagrid-rows.datagrid-overflow-ellipsis
-    > .datagrid-row
-    .datagrid-cell:not(.datagrid-row-actions, .datagrid-select, .datagrid-expandable-caret) {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
   .datagrid-compact {
+    .datagrid-row-replaced .datagrid-row-detail .datagrid-cell {
+      padding: tables-variables.$clr-table-cell-compact-padding;
+    }
+
     .datagrid-header {
       min-height: tokens.$cds-global-space-9;
     }

@@ -35,6 +35,7 @@ import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { ClrDatagridRow } from './datagrid-row';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType } from './enums/selection-type';
+import { DatagridDensity } from './interfaces/density.intrface';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
@@ -51,11 +52,6 @@ import { StateProvider } from './providers/state.provider';
 import { TableSizeService } from './providers/table-size.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
-
-interface DatagridDensity {
-  compact?: boolean;
-  overflowEllipsis?: boolean;
-}
 
 @Component({
   selector: 'clr-datagrid',
