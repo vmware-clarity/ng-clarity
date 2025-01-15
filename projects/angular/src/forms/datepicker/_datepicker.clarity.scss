@@ -295,6 +295,12 @@
     color: datepicker-variables.$clr-calendar-btn-picker-trigger-color;
     text-align: center;
     @include mixins.overflow-ellipsis();
+
+    &.year-range {
+      width: unset;
+      align-content: center;
+      padding: tokens.$cds-global-space-5;
+    }
   }
 
   .monthpicker,

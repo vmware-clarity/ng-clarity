@@ -18,32 +18,44 @@ import { ViewManagerService } from './providers/view-manager.service';
 @Component({
   selector: 'clr-yearpicker',
   template: `
-    <div class="year-switchers">
-      <button
-        class="calendar-btn switcher"
-        type="button"
-        (click)="previousDecade()"
-        [attr.aria-label]="commonStrings.keys.datepickerPreviousDecade"
-      >
-        <cds-icon shape="angle" direction="left" [attr.title]="commonStrings.keys.datepickerPreviousDecade"></cds-icon>
-      </button>
-      <button
-        class="calendar-btn switcher"
-        type="button"
-        (click)="currentDecade()"
-        [attr.aria-label]="commonStrings.keys.datepickerCurrentDecade"
-      >
-        <cds-icon shape="event" [attr.title]="commonStrings.keys.datepickerCurrentDecade"></cds-icon>
-      </button>
-      <button
-        class="calendar-btn switcher"
-        type="button"
-        (click)="nextDecade()"
-        [attr.aria-label]="commonStrings.keys.datepickerNextDecade"
-      >
-        <cds-icon shape="angle" direction="right" [attr.title]="commonStrings.keys.datepickerNextDecade"></cds-icon>
-      </button>
+    <div class="calendar-header">
+      <div class="calendar-pickers">
+        <button class="calendar-btn yearpicker-trigger year-range" type="button" (click)="changeToDayView()">
+          {{ yearRangeModel.yearRange[0] }} - {{ yearRangeModel.yearRange[yearRangeModel.yearRange.length - 1] }}
+        </button>
+      </div>
+      <div class="year-switchers">
+        <button
+          class="calendar-btn switcher"
+          type="button"
+          (click)="previousDecade()"
+          [attr.aria-label]="commonStrings.keys.datepickerPreviousDecade"
+        >
+          <cds-icon
+            shape="angle"
+            direction="left"
+            [attr.title]="commonStrings.keys.datepickerPreviousDecade"
+          ></cds-icon>
+        </button>
+        <button
+          class="calendar-btn switcher"
+          type="button"
+          (click)="currentDecade()"
+          [attr.aria-label]="commonStrings.keys.datepickerCurrentDecade"
+        >
+          <cds-icon shape="event" [attr.title]="commonStrings.keys.datepickerCurrentDecade"></cds-icon>
+        </button>
+        <button
+          class="calendar-btn switcher"
+          type="button"
+          (click)="nextDecade()"
+          [attr.aria-label]="commonStrings.keys.datepickerNextDecade"
+        >
+          <cds-icon shape="angle" direction="right" [attr.title]="commonStrings.keys.datepickerNextDecade"></cds-icon>
+        </button>
+      </div>
     </div>
+
     <div class="years">
       <button
         *ngFor="let year of yearRangeModel.yearRange"
@@ -218,6 +230,10 @@ export class ClrYearpicker implements AfterViewInit {
     } else {
       return false;
     }
+  }
+
+  changeToDayView() {
+    this._viewManagerService.changeToDayView();
   }
 
   /**
