@@ -37,10 +37,7 @@ const PlaceholderTemplate: StoryFn = args => ({
   template: `
     <style>
       .highlight {
-        border: 1px solid red !important;
-      }
-      .electronegativity-container {
-        border-bottom: 4px solid #119cd4;
+        border: 1px solid var(--cds-alias-status-danger) !important;
       }
     </style>
     <clr-datagrid ${args.height ? '[style.height.px]="height"' : ''} [ngClass]="{ 'datagrid-compact': compact }">

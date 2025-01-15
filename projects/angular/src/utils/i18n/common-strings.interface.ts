@@ -23,6 +23,14 @@ export interface ClrCommonStrings {
    */
   hide: string;
   /**
+   * Apply button
+   */
+  apply: string;
+  /**
+   * Cancel button
+   */
+  cancel: string;
+  /**
    * Expandable components: expand caret
    */
   expand: string;

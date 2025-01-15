@@ -1427,6 +1427,10 @@
     .datagrid-numeric-filter-form {
       display: flex;
       gap: tokens.$cds-global-space-6;
+
+      input.datagrid-numeric-filter-input {
+        width: tokens.$cds-global-space-15;
+      }
     }
 
     .clr-form-control {
