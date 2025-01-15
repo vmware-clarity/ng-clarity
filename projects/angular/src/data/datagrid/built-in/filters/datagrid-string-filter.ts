@@ -36,7 +36,7 @@ import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
       <clr-input-container>
-        <label>{{ filterLabel }}</label>
+        <label>{{ labelValue }}</label>
         <input
           #input
           type="text"
@@ -78,7 +78,7 @@ export class DatagridStringFilter<T = any>
    */
   @ViewChild(ClrDatagridFilter) filterContainer: ClrDatagridFilter<T>;
 
-  filterLabel = '';
+  labelValue = '';
   private initFilterValue: string;
   private subs: Subscription[] = [];
 
@@ -176,7 +176,7 @@ export class DatagridStringFilter<T = any>
    */
   private setFilterLabel() {
     if (this.label) {
-      this.filterLabel = this.label;
+      this.labelValue = this.label;
 
       return;
     }
@@ -184,7 +184,7 @@ export class DatagridStringFilter<T = any>
     const columnElement = this.elementRef.nativeElement?.closest('clr-dg-column');
     const columnTitleElement = columnElement?.querySelector('.datagrid-column-title');
 
-    this.filterLabel = this.commonStrings.parse(this.commonStrings.keys.datagridFilterLabel, {
+    this.labelValue = this.commonStrings.parse(this.commonStrings.keys.datagridFilterLabel, {
       COLUMN: columnTitleElement?.textContent.trim() || '',
     });
   }
