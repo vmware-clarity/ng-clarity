@@ -5176,12 +5176,12 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, Da
     set customStringFilter(value: ClrDatagridStringFilterInterface<T> | RegisteredFilter<T, DatagridStringFilterImpl<T>>);
     filterContainer: ClrDatagridFilter<T>;
     // (undocumented)
-    filterLabel: string;
-    // (undocumented)
     filterValueChange: EventEmitter<any>;
     input: ElementRef<HTMLInputElement>;
     // (undocumented)
     label: string;
+    // (undocumented)
+    labelValue: string;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
