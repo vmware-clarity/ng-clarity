@@ -15,7 +15,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class DateRangePickerDemo implements OnInit {
   dateForm = new FormGroup({
-    showActionButtons: new FormControl(true),
     showRangeOptions: new FormControl(true),
 
     startDate: new FormControl(),
