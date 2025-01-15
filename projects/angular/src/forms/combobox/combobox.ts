@@ -360,7 +360,7 @@ export class ClrCombobox<T>
     if (this.controlStateService) {
       this.subscriptions.push(
         this.controlStateService.statusChanges.subscribe(invalid => {
-          this.invalid = this.control?.control?.touched && invalid === CONTROL_STATE.INVALID;
+          this.invalid = this.control?.control.touched && invalid === CONTROL_STATE.INVALID;
         })
       );
     }
