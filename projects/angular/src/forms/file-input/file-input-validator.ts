@@ -33,12 +33,12 @@ export class ClrFileInputValidator implements Validator {
 
     const accept = fileInputElement.accept ? fileInputElement.accept.split(',').map(type => type.trim()) : null;
 
-    if (files?.length > 0 && (accept?.length || this.minFileSize || this.maxFileSize)) {
+    if (files?.length > 0 && (accept || this.minFileSize || this.maxFileSize)) {
       for (let i = 0; i < files.length; i++) {
         const file = files.item(i);
 
         // accept validation (native attribute)
-        if (accept?.length) {
+        if (accept) {
           const [fileExtension] = file.name.match(/\..+$/);
 
           if (!accept.includes(file.type) && !accept.includes(fileExtension)) {
