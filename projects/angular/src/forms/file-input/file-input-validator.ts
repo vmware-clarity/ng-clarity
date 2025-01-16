@@ -29,39 +29,30 @@ export class ClrFileInputValidator implements Validator {
       errors.required = true;
     }
 
-    // accept validation (native attribute)
-    if (fileInputElement.accept && files?.length > 0) {
-      const accept = fileInputElement.accept.split(',').map(type => type.trim());
+    const accept = fileInputElement.accept ? fileInputElement.accept.split(',').map(type => type.trim()) : null;
 
+    if (files?.length > 0 && (accept || this.minFileSize || this.maxFileSize)) {
       for (let i = 0; i < files.length; i++) {
         const file = files.item(i);
-        const [fileExtension] = file.name.match(/\..+$/);
 
-        if (!accept.includes(file.type) && !accept.includes(fileExtension)) {
-          errors.accept = errors.accept || [];
-          errors.accept.push({ name: file.name, accept, type: file.type, extension: fileExtension });
+        // accept validation (native attribute)
+        if (accept) {
+          const [fileExtension] = file.name.match(/\..+$/);
+
+          if (!accept.includes(file.type) && !accept.includes(fileExtension)) {
+            errors.accept = errors.accept || [];
+            errors.accept.push({ name: file.name, accept, type: file.type, extension: fileExtension });
+          }
         }
-      }
-    }
 
-    // min file validation (custom input)
-    if (this.minFileSize && files?.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        const file = files.item(i);
-
-        if (file.size < this.minFileSize) {
+        // min file validation (custom input)
+        if (this.minFileSize && file.size < this.minFileSize) {
           errors.minFileSize = errors.minFileSize || [];
           errors.minFileSize.push({ name: file.name, minFileSize: this.minFileSize, actualFileSize: file.size });
         }
-      }
-    }
 
-    // max file validation (custom input)
-    if (this.maxFileSize && files?.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        const file = files.item(i);
-
-        if (file.size > this.maxFileSize) {
+        // max file validation (custom input)
+        if (this.maxFileSize && file.size > this.maxFileSize) {
           errors.maxFileSize = errors.maxFileSize || [];
           errors.maxFileSize.push({ name: file.name, maxFileSize: this.maxFileSize, actualFileSize: file.size });
         }

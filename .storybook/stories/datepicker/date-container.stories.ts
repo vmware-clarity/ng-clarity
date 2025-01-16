@@ -28,13 +28,14 @@ export default {
   args: {
     // inputs
     clrPosition: 'bottom-left',
+    showActionButtons: false,
   },
 };
 
 const DatePickerTemplate: StoryFn = args => ({
   template: `
     <div style="margin-top: 300px; display: flex; justify-content: center">
-      <clr-date-container [clrPosition]="clrPosition">
+      <clr-date-container [showActionButtons]="showActionButtons" [clrPosition]="clrPosition">
         <label>Date</label>
         <input type="date" autocomplete="off" clrDate />
       </clr-date-container>

@@ -23,6 +23,14 @@ export interface ClrCommonStrings {
    */
   hide: string;
   /**
+   * Apply button
+   */
+  apply: string;
+  /**
+   * Cancel button
+   */
+  cancel: string;
+  /**
    * Expandable components: expand caret
    */
   expand: string;
@@ -134,6 +142,10 @@ export interface ClrCommonStrings {
    * Datagrid filter toggle button
    */
   datagridFilterAriaLabel: string;
+  /**
+   * Datagrid filter label
+   */
+  datagridFilterLabel: string;
   /**
    * Datagrid filter dialog
    */
