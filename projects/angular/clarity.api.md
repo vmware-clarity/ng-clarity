@@ -5505,7 +5505,7 @@ export class ÇlrDatagridSelectionCellDirective {
 
 // @public (undocumented)
 export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
-    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
+    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
     // Warning: (ae-forgotten-export) The symbol "CdkVirtualForInputs" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -5542,7 +5542,7 @@ export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridVirtualScrollDirective<any>, "[ClrVirtualScroll]", never, { "cdkVirtualForOf": "clrVirtualRowsOf"; "cdkVirtualForTrackBy": "clrVirtualRowsTrackBy"; "cdkVirtualForTemplate": "clrVirtualRowsTemplate"; "cdkVirtualForTemplateCacheSize": "clrVirtualRowsTemplateCacheSize"; "itemSize": "clrVirtualRowsItemSize"; "minBufferPx": "clrVirtualRowsMinBufferPx"; "maxBufferPx": "clrVirtualRowsMaxBufferPx"; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridVirtualScrollDirective<any>, [null, null, { skipSelf: true; }, null, null, null, null, null, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridVirtualScrollDirective<any>, [null, null, { skipSelf: true; }, null, null, null, null, null, null, null, null, null, null]>;
 }
 
 // @public (undocumented)
