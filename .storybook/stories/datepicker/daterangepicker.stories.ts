@@ -5,27 +5,31 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDateInput, ClrDatepickerModule, ClrFormsModule } from '@clr/angular';
+import { ClrDatepickerModule, ClrDateRangeEndInput, ClrDateRangeStartInput } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
 export default {
-  title: 'Datepicker/Datepicker',
-  component: ClrDateInput,
+  title: 'Datepicker/DateRangepicker',
+  component: ClrDateRangeStartInput,
+  subcomponents: { ClrDateRangeEndInput },
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrFormsModule, ClrDatepickerModule],
+      imports: [...CommonModules, ClrDatepickerModule],
     }),
   ],
   argTypes: {
     // inputs
-    clrDate: { control: { type: 'date' } },
+    clrRangeStartDate: { control: { type: 'date' } },
+    clrRangeEndDate: { control: { type: 'date' } },
     max: { control: { type: 'date' } },
     min: { control: { type: 'date' } },
+    disabled: { control: { type: 'boolean' } },
     // outputs
-    clrDateChange: { control: { disable: true } },
+    clrRangeStartDateChange: { control: { disable: true } },
+    clrRangeEndDateChange: { control: { disable: true } },
     // methods
     onValueChange: { control: { disable: true }, table: { disable: true } },
     setFocusStates: { control: { disable: true }, table: { disable: true } },
@@ -36,75 +40,68 @@ export default {
     getDateString: { control: { disable: true }, table: { disable: true } },
   },
   args: {
-    // inputs
     disabled: false,
     placeholder: '',
     id: '',
-    showActionButtons: false,
     // outputs
-    clrDateChange: action('clrDateChange'),
+    clrRangeStartDateChange: action('clrRangeStartDateChange'),
+    clrRangeEndDateChange: action('clrRangeEndDateChange'),
     // story helpers
     getDateObject: date => date && new Date(date),
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
   },
 };
 
-const DatePickerTemplate: StoryFn = args => ({
+const DateRangePickerTemplate: StoryFn = args => ({
   template: `
-    <clr-date-container [showActionButtons]="showActionButtons">
-      <label>Date</label>
+    <clr-date-range-container [min]="getDateString(min)" [max]="getDateString(max)">
+      <label for="dateRangeCtrl">Date Range</label>
       <input
-        #date
+        #startDate
+        id="startDate"
+        aria-labelledby="dateRangeCtrl"
+        name="startDate"
         type="date"
-        [id]="id"
-        [clrDate]="getDateObject(clrDate)"
-        [min]="getDateString(min)"
-        [max]="getDateString(max)"
         [disabled]="disabled"
-        [placeholder]="placeholder"
-        (clrDateChange)="clrDateChange($event)"
-        autocomplete="off"
+        [clrRangeStartDate]="getDateObject(clrRangeStartDate)"
+        (clrRangeStartDateChange)="clrRangeStartDateChange($event)"
       />
-    </clr-date-container>
+      <input
+        #endDate
+        id="endDate"
+        aria-labelledby="dateRangeCtrl"
+        name="endDate"
+        type="date"
+        [disabled]="disabled"
+        [clrRangeEndDate]="getDateObject(clrRangeEndDate)"
+        (clrRangeEndDateChange)="clrRangeEndDateChange($event)"
+      />
+    </clr-date-range-container>
   `,
   props: { ...args },
 });
 
-export const Datepicker: StoryObj = {
-  render: DatePickerTemplate,
-};
-
-export const DefaultDate: StoryObj = {
-  render: DatePickerTemplate,
-  args: {
-    clrDate: '2025-01-01 00:00:00.000',
-  },
+export const DateRangePicker: StoryObj = {
+  render: DateRangePickerTemplate,
 };
 
 export const Disabled: StoryObj = {
-  render: DatePickerTemplate,
+  render: DateRangePickerTemplate,
   args: {
     disabled: true,
   },
 };
 
 export const MinDate: StoryObj = {
-  render: DatePickerTemplate,
+  render: DateRangePickerTemplate,
   args: {
     min: Date.now() - 2592000000,
   },
 };
 
 export const MaxDate: StoryObj = {
-  render: DatePickerTemplate,
+  render: DateRangePickerTemplate,
   args: {
     max: Date.now() + 2592000000,
-  },
-};
-
-export const ActionButtons: StoryObj = {
-  render: DatePickerTemplate,
-  args: {
-    showActionButtons: true,
   },
 };
