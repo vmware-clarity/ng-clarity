@@ -1415,6 +1415,7 @@
 
       .close {
         float: none;
+        font-size: unset;
       }
     }
 
@@ -1426,12 +1427,14 @@
     .datagrid-numeric-filter-form {
       display: flex;
       gap: tokens.$cds-global-space-6;
-      .clr-form-control {
-        margin-top: 0;
-      }
+
       input.datagrid-numeric-filter-input {
         width: tokens.$cds-global-space-15;
       }
+    }
+
+    .clr-form-control {
+      margin-top: 0;
     }
   }
 

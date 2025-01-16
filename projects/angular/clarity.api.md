@@ -1009,6 +1009,7 @@ export interface ClrCommonStrings {
     datagridExpandableRowsHelperText: string;
     datagridFilterAriaLabel: string;
     datagridFilterDialogAriaLabel: string;
+    datagridFilterLabel: string;
     // (undocumented)
     datepickerCurrentDecade: string;
     // (undocumented)
@@ -5168,8 +5169,8 @@ export class DatagridPropertyStringFilter<T = any> implements ClrDatagridStringF
 // Warning: (ae-forgotten-export) The symbol "DatagridStringFilterImpl" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements CustomFilter, AfterViewInit, OnDestroy {
-    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, smartToggleService: ClrPopoverToggleService, ngZone: NgZone);
+export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements CustomFilter, AfterViewInit, OnChanges, OnDestroy {
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, smartToggleService: ClrPopoverToggleService, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     set customStringFilter(value: ClrDatagridStringFilterInterface<T> | RegisteredFilter<T, DatagridStringFilterImpl<T>>);
@@ -5178,7 +5179,13 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, Da
     filterValueChange: EventEmitter<any>;
     input: ElementRef<HTMLInputElement>;
     // (undocumented)
+    label: string;
+    // (undocumented)
+    labelValue: string;
+    // (undocumented)
     ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnChanges(): void;
     // (undocumented)
     ngOnDestroy(): void;
     open: boolean;
@@ -5188,7 +5195,7 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, Da
     get value(): string;
     set value(value: string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridStringFilter<any>, "clr-dg-string-filter", never, { "placeholder": "clrFilterPlaceholder"; "customStringFilter": "clrDgStringFilter"; "value": "clrFilterValue"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridStringFilter<any>, "clr-dg-string-filter", never, { "placeholder": "clrFilterPlaceholder"; "label": "clrFilterLabel"; "customStringFilter": "clrDgStringFilter"; "value": "clrFilterValue"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridStringFilter<any>, never>;
 }
