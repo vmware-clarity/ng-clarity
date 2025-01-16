@@ -144,6 +144,13 @@ export const ColumnFilter: StoryObj = {
   render: ColumnFilterTemplate,
 };
 
+export const ColumnNameFilterOpened = {
+  render: ColumnFilterTemplate,
+  play({ canvasElement }) {
+    canvasElement.querySelector('clr-dg-string-filter .datagrid-filter-toggle').click();
+  },
+};
+
 export const ColumnNumberFilterOpened = {
   render: ColumnFilterTemplate,
   play({ canvasElement }) {

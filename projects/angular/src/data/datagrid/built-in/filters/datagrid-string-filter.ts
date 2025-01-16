@@ -7,11 +7,13 @@
 
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
   NgZone,
+  OnChanges,
   OnDestroy,
   Output,
   ViewChild,
@@ -33,27 +35,31 @@ import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
   providers: [{ provide: CustomFilter, useExisting: DatagridStringFilter }],
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
-      <input
-        #input
-        type="text"
-        autocomplete="off"
-        name="search"
-        [(ngModel)]="value"
-        class="clr-input"
-        [attr.aria-label]="placeholderValue"
-        [placeholder]="placeholderValue"
-      />
+      <clr-input-container>
+        <label>{{ labelValue }}</label>
+        <input
+          #input
+          type="text"
+          autocomplete="off"
+          name="search"
+          [(ngModel)]="value"
+          clrInput
+          [attr.aria-label]="placeholderValue"
+          [placeholder]="placeholderValue"
+        />
+      </clr-input-container>
     </clr-dg-filter>
   `,
 })
 export class DatagridStringFilter<T = any>
   extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>>
-  implements CustomFilter, AfterViewInit, OnDestroy
+  implements CustomFilter, AfterViewInit, OnChanges, OnDestroy
 {
   /**
    * Provide a way to pass external placeholder and aria-label to the filter input
    */
   @Input('clrFilterPlaceholder') placeholder: string;
+  @Input('clrFilterLabel') label: string;
 
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
@@ -72,6 +78,7 @@ export class DatagridStringFilter<T = any>
    */
   @ViewChild(ClrDatagridFilter) filterContainer: ClrDatagridFilter<T>;
 
+  labelValue = '';
   private initFilterValue: string;
   private subs: Subscription[] = [];
 
@@ -80,6 +87,8 @@ export class DatagridStringFilter<T = any>
     private domAdapter: DomAdapter,
     public commonStrings: ClrCommonStringsService,
     private smartToggleService: ClrPopoverToggleService,
+    private elementRef: ElementRef<HTMLElement>,
+    private cdr: ChangeDetectorRef,
     private ngZone: NgZone
   ) {
     super(filters);
@@ -150,8 +159,33 @@ export class DatagridStringFilter<T = any>
     );
   }
 
+  ngOnChanges() {
+    setTimeout(() => {
+      this.setFilterLabel();
+      this.cdr.markForCheck();
+    });
+  }
+
   override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.subs.forEach(sub => sub.unsubscribe());
+  }
+
+  /**
+   * This is not in a getter to prevent "expression has changed after it was checked" errors.
+   */
+  private setFilterLabel() {
+    if (this.label) {
+      this.labelValue = this.label;
+
+      return;
+    }
+
+    const columnElement = this.elementRef.nativeElement?.closest('clr-dg-column');
+    const columnTitleElement = columnElement?.querySelector('.datagrid-column-title');
+
+    this.labelValue = this.commonStrings.parse(this.commonStrings.keys.datagridFilterLabel, {
+      COLUMN: columnTitleElement?.textContent.trim() || '',
+    });
   }
 }
