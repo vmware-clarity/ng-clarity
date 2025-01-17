@@ -35,7 +35,7 @@ export class ClrIfError extends AbstractIfState {
    * @param state CONTROL_STATE
    */
   protected override handleState(state: CONTROL_STATE) {
-    if (this.error && this.control && !!this.control.invalid) {
+    if (this.error && this.control && this.control.invalid) {
       this.displayError(this.control.hasError(this.error));
     } else if (this.error && !!this.additionalControls?.length) {
       const invalidControl = this.additionalControls?.filter(control => control.hasError(this.error))[0];

@@ -31,6 +31,7 @@ import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrDateRangeEndInput } from './date-range-end-input';
 import { ClrDateRangeStartInput } from './date-range-start-input';
+import { ClrDateInput } from './date-single-input';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -109,6 +110,7 @@ import { ViewManagerService } from './providers/view-manager.service';
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
 
+  @ContentChild(ClrDateInput) clrDateEl: ClrDateInput;
   @ContentChild(ClrDateRangeStartInput) clrRangeStartEl: ClrDateRangeStartInput;
   @ContentChild(ClrDateRangeEndInput) clrRangeEndEl: ClrDateRangeEndInput;
 
@@ -168,7 +170,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     }
   }
 
-  @Input('rangeOptions')
+  @Input()
   set rangeOptions(rangeOptions) {
     this.dateIOService.setRangeOptions(rangeOptions);
   }
@@ -277,6 +279,9 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
 
   private dateRangeStucturalChecks() {
     if (this.dateNavigationService.isRangePicker) {
+      if (this.clrDateEl) {
+        console.error('Error! clr-date-range-container must contain clrRangeStartDate and clrRangeStartDate inputs');
+      }
       if (!this.clrRangeStartEl) {
         console.error('Error! clr-date-range-container must contain clrRangeStartDate input');
       }

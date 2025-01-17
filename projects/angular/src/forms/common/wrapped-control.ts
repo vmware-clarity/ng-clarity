@@ -129,12 +129,12 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     }
 
     if (this.ngControlService && this._ngControl) {
-      if (!this.ngControlService.getControl()) {
+      if (!this.ngControlService.control) {
         this.ngControl = this._ngControl;
         this.ngControlService.setControl(this.ngControl);
         this.differ = this.differs.find(this._ngControl).create();
       } else {
-        this.ngControl = this.ngControlService.getControl();
+        this.ngControl = this.ngControlService.control;
         this.ngControlService.addAdditionalControl(this._ngControl);
         this.additionalDiffer.set(this._ngControl, this.differs.find(this._ngControl).create());
       }
@@ -195,7 +195,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
       this.ngControl.control.updateValueAndValidity();
     }
     if (this.ngControlService && this.ngControlService.hasAdditionalControls) {
-      this.ngControlService.getAdditionalControls()?.forEach((ngControl: NgControl) => {
+      this.ngControlService.additionalControls?.forEach((ngControl: NgControl) => {
         ngControl.control.markAsTouched();
         ngControl.control.updateValueAndValidity();
       });

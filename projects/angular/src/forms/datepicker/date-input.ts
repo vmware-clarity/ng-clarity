@@ -72,8 +72,6 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
 
   @Input()
   set min(dateString: string) {
-    this.dateIOService.setMinDate(dateString);
-    this.triggerControlValidation();
     if (!this.dateNavigationService.isRangePicker) {
       this.dateIOService.setMinDate(dateString);
       this.triggerControlValidation();
@@ -82,8 +80,6 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
 
   @Input()
   set max(dateString: string) {
-    this.dateIOService.setMaxDate(dateString);
-    this.triggerControlValidation();
     if (!this.dateNavigationService.isRangePicker) {
       this.dateIOService.setMaxDate(dateString);
       this.triggerControlValidation();
@@ -177,8 +173,8 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
    */
   protected validateDateRange() {
     if (this.dateNavigationService.isRangePicker) {
-      const primaryControl = this.ngControlService?.getControl();
-      const additionalControls = this.ngControlService?.getAdditionalControls();
+      const primaryControl = this.ngControlService?.control;
+      const additionalControls = this.ngControlService?.additionalControls;
       const isValid = this.dateNavigationService.selectedDay?.isBefore(this.dateNavigationService.selectedEndDay, true);
       if (
         isValid &&

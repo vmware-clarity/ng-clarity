@@ -42,6 +42,14 @@ export class NgControlService {
     return !!this._additionalControls?.length;
   }
 
+  get control() {
+    return this._control;
+  }
+
+  get additionalControls() {
+    return this._additionalControls;
+  }
+
   setControl(control: NgControl) {
     this._control = control;
     this._controlChanges.next(control);
@@ -54,13 +62,5 @@ export class NgControlService {
   addAdditionalControl(control: NgControl) {
     this._additionalControls.push(control);
     this._additionalControlsChanges.next(this._additionalControls);
-  }
-
-  getControl() {
-    return this._control;
-  }
-
-  getAdditionalControls() {
-    return this._additionalControls;
   }
 }
