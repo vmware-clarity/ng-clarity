@@ -151,15 +151,15 @@
     &.cdk-virtual-scrollable .datagrid-rows {
       flex-grow: 0;
     }
+  }
 
-    .datagrid-rows.datagrid-overflow-ellipsis > .datagrid-row .datagrid-scrolling-cells {
-      > .datagrid-cell:not(.datagrid-row-actions, .datagrid-select, .datagrid-expandable-caret) {
-        &,
-        * {
-          text-overflow: ellipsis;
-          overflow: hidden;
-          white-space: nowrap;
-        }
+  .datagrid-overflow-ellipsis .datagrid-row .datagrid-scrolling-cells {
+    > .datagrid-cell:not(.datagrid-row-actions, .datagrid-select, .datagrid-expandable-caret) {
+      &,
+      * {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
     }
   }

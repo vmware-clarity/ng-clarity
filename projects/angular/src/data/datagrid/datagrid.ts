@@ -35,7 +35,6 @@ import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { ClrDatagridRow } from './datagrid-row';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType } from './enums/selection-type';
-import { DatagridDensity } from './interfaces/density.intrface';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
@@ -76,12 +75,10 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
   host: {
     '[class.datagrid-host]': 'true',
     '[class.datagrid-detail-open]': 'detailService.isOpen',
-    '[class.datagrid-compact]': 'density?.compact',
   },
 })
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
   @Input('clrLoadingMoreItems') loadingMoreItems: boolean;
-  @Input('clrDgDensity') density: DatagridDensity;
 
   @Input() clrDgSingleSelectionAriaLabel: string = this.commonStrings.keys.singleSelectionAriaLabel;
   @Input() clrDgSingleActionableAriaLabel: string = this.commonStrings.keys.singleActionableAriaLabel;
