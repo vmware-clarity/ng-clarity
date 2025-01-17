@@ -15,16 +15,34 @@ import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';
 import { ClrFileInputValidator } from './file-input-validator';
 import { ClrFileInputValueAccessor } from './file-input-value-accessor';
+import { ClrFileList } from './file-list';
+import { ClrFileError, ClrFileInfo, ClrFileSuccess } from './file-messages';
+import { ClrFileMessagesTemplate } from './file-messages-template';
 
 @NgModule({
   imports: [CommonModule, ClrIconModule, ClrCommonFormsModule],
-  declarations: [ClrFileInput, ClrFileInputContainer, ClrFileInputValidator, ClrFileInputValueAccessor],
+  declarations: [
+    ClrFileInput,
+    ClrFileInputContainer,
+    ClrFileInputValidator,
+    ClrFileInputValueAccessor,
+    ClrFileList,
+    ClrFileMessagesTemplate,
+    ClrFileInfo,
+    ClrFileSuccess,
+    ClrFileError,
+  ],
   exports: [
     ClrCommonFormsModule,
     ClrFileInput,
     ClrFileInputContainer,
     ClrFileInputValidator,
     ClrFileInputValueAccessor,
+    ClrFileList,
+    ClrFileMessagesTemplate,
+    ClrFileInfo,
+    ClrFileSuccess,
+    ClrFileError,
   ],
 })
 export class ClrFileInputModule {
