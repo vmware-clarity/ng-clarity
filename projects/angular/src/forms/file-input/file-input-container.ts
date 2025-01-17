@@ -162,13 +162,11 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
       return;
     }
 
-    const existingFiles = Array.from(this.fileInput.elementRef.nativeElement.files);
-
     // start with new files
-    const mergedFiles = [...Array.from(newFiles)];
+    const mergedFiles = [...newFiles];
 
     // add existing files if a new file doesn't have the same name
-    for (const existingFile of existingFiles) {
+    for (const existingFile of this.fileInput.elementRef.nativeElement.files) {
       if (!mergedFiles.some(file => file.name === existingFile.name)) {
         mergedFiles.push(existingFile);
       }
