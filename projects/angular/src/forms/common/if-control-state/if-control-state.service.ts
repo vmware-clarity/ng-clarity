@@ -48,12 +48,12 @@ export class IfControlStateService {
           return EMPTY;
         }
       }),
-      map(combinedStatus => {
+      map(controlStatuses => {
         // These status values are mutually exclusive, so a control
         // cannot be both valid AND invalid or invalid AND disabled.
-        if (combinedStatus.includes(CONTROL_STATE.INVALID)) {
+        if (controlStatuses.includes(CONTROL_STATE.INVALID)) {
           return CONTROL_STATE.INVALID;
-        } else if (combinedStatus.includes(CONTROL_STATE.VALID)) {
+        } else if (controlStatuses.includes(CONTROL_STATE.VALID)) {
           return CONTROL_STATE.VALID;
         } else {
           return CONTROL_STATE.NONE;
