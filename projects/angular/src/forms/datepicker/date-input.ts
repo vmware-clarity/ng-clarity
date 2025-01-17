@@ -132,19 +132,6 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
     this.setFocus(false);
   }
 
-  // @HostListener('change', ['$event.target'])
-  // onValueChange(target: HTMLInputElement) {
-  //   const validDateValue = this.dateIOService.getDateValueFromDateString(target.value);
-  //   if (this.usingClarityDatepicker() && validDateValue) {
-  //     this.updateDate(validDateValue, true);
-  //   } else if (this.usingNativeDatepicker()) {
-  //     const [year, month, day] = target.value.split('-');
-  //     this.updateDate(new Date(+year, +month - 1, +day), true);
-  //   } else {
-  //     this.emitDateOutput(null);
-  //   }
-  // }
-
   protected usingClarityDatepicker() {
     return this.datepickerEnabledService.isEnabled;
   }
@@ -185,7 +172,7 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
   }
 
   /**
-   * Incase of date range error, both start & end date field valdiation has to be triggered
+   * Incase of date range error, both start & end date field validation has to be triggered
    * if either of the field gets updated
    */
   protected validateDateRange() {
