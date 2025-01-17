@@ -85,6 +85,7 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
       this.triggerControlValidation();
     }
   }
+
   get disabled() {
     if (this.dateFormControlService) {
       return this.dateFormControlService.disabled || !!this.control?.control?.disabled;
