@@ -39,6 +39,7 @@ export default {
     clrDgSelectable: true,
     clrDgSelected: false,
     clrDgRowSelectionLabel: '',
+    clrDgReplace: false,
     // outputs
     clrDgExpandedChange: action('clrDgExpandedChange'),
     clrDgSelectedChange: action('clrDgSelectedChange'),
@@ -48,7 +49,9 @@ export default {
     singleSelectable: false,
     multiSelectable: false,
     expandable: false,
+    detailColumns: false,
     compact: false,
+    overflowEllipsis: false,
     hidableColumns: false,
     height: 0,
     openTooltip: false,
@@ -62,11 +65,12 @@ const ExpandableRowsTemplate: StoryFn = args => ({
         visibility: visible;
         opacity: 1;
       }
-      .electronegativity-container {
+      clr-dg-cell.datagrid-cell.electronegativity-container {
         display: flex;
         justify-content: space-between;
 
         .electronegativity-bar {
+          height: var(--cds-global-space-7);
           background-color: var(--cds-alias-status-info);
         }
       }
@@ -75,7 +79,7 @@ const ExpandableRowsTemplate: StoryFn = args => ({
       ${args.height ? '[style.height.px]="height"' : ''}
       ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
       ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
-      [ngClass]="{ 'datagrid-compact': compact }"
+      [ngClass]="{ 'datagrid-compact': compact, 'datagrid-overflow-ellipsis': overflowEllipsis }"
     >
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
@@ -85,6 +89,9 @@ const ExpandableRowsTemplate: StoryFn = args => ({
       </clr-dg-column>
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
+      </clr-dg-column>
+      <clr-dg-column [style.width.px]="400" *ngIf="overflowEllipsis">
+        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Long text width 400px</ng-container>
       </clr-dg-column>
       <clr-dg-column>
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
@@ -104,6 +111,7 @@ const ExpandableRowsTemplate: StoryFn = args => ({
       >
         <clr-dg-cell>
           <a
+            *ngIf="!overflowEllipsis"
             href="javascript:void(0)"
             role="tooltip"
             aria-haspopup="true"
@@ -122,29 +130,71 @@ const ExpandableRowsTemplate: StoryFn = args => ({
         </clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
         <clr-dg-cell>{{ element.number }}</clr-dg-cell>
+        <clr-dg-cell *ngIf="overflowEllipsis">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+          Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed
+          arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh lacus, in
+          eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum
+        </clr-dg-cell>
         <clr-dg-cell class="electronegativity-container">
           {{ element.electronegativity }}
           <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
         </clr-dg-cell>
-        <clr-dg-row-detail *clrIfExpanded>
-          <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
-            Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
-            sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh lacus,
-            in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum vulputate
-            sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere ipsum tincidunt velit
-            pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet metus finibus
-            hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit diam.
-          </div>
-          <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
-            Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
-            sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh lacus,
-            in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum vulputate
-            sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere ipsum tincidunt velit
-            pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet metus finibus
-            hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit diam.
-          </div>
+
+        <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="clrDgReplace">
+          <ng-template [ngIf]="!detailColumns">
+            <div>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+              Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
+              sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh
+              lacus, in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum
+              vulputate sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere ipsum tincidunt
+              velit pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet metus
+              finibus hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit diam.
+            </div>
+            <div>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+              Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
+              sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh
+              lacus, in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum
+              vulputate sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere ipsum tincidunt
+              velit pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet metus
+              finibus hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit diam.
+            </div>
+          </ng-template>
+
+          <ng-template [ngIf]="detailColumns">
+            <clr-dg-cell>
+              <a
+                href="javascript:void(0)"
+                role="tooltip"
+                aria-haspopup="true"
+                class="tooltip tooltip-lg tooltip-bottom-right"
+              >
+                <cds-icon shape="exclamation-circle" solid></cds-icon>
+                <span class="tooltip-content" [class.open-tooltip]="openTooltip && index === 0">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed
+                  quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget,
+                  pellentesque sed arcu. Vivamus in dui lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Proin in neque in ante placerat mattis id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem
+                  quam, pellentesque aliquet suscipit eget, pellentesque sed arcu. Vivamus in dui lectus.
+                </span>
+              </a>
+              {{ element.name }}
+            </clr-dg-cell>
+            <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
+            <clr-dg-cell>{{ element.number }}</clr-dg-cell>
+            <clr-dg-cell *ngIf="overflowEllipsis">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+              Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
+              sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh
+              lacus, in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum
+            </clr-dg-cell>
+            <clr-dg-cell class="electronegativity-container">
+              {{ element.electronegativity }}
+              <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
+            </clr-dg-cell>
+          </ng-template>
         </clr-dg-row-detail>
       </clr-dg-row>
 
@@ -161,4 +211,15 @@ const ExpandableRowsTemplate: StoryFn = args => ({
 
 export const ExpandableRows: StoryObj = {
   render: ExpandableRowsTemplate,
+};
+
+export const DenseExpandableRows: StoryObj = {
+  render: ExpandableRowsTemplate,
+  args: {
+    compact: true,
+    overflowEllipsis: true,
+    multiSelectable: true,
+    clrDgReplace: true,
+    detailColumns: true,
+  },
 };
