@@ -41,6 +41,18 @@ export class ClrDateInput extends ClrDateInputBase implements AfterViewInit {
     }
   }
 
+  @Input()
+  set min(dateString: string) {
+    this.dateIOService.setMinDate(dateString);
+    this.triggerControlValidation();
+  }
+
+  @Input()
+  set max(dateString: string) {
+    this.dateIOService.setMaxDate(dateString);
+    this.triggerControlValidation();
+  }
+
   @HostListener('change', ['$event.target'])
   onValueChange(target: HTMLInputElement) {
     const validDateValue = this.dateIOService.getDateValueFromDateString(target.value);
@@ -112,6 +124,14 @@ export class ClrDateInput extends ClrDateInputBase implements AfterViewInit {
     } else if (!date && this.previousDateChange) {
       this.dateChange.emit(null);
       this.previousDateChange = null;
+    }
+  }
+
+  private triggerControlValidation() {
+    if (this.datepickerHasFormControl()) {
+      // Set `emitEvent` to false to prevent unnecessary value change event. Status change event will be emitted by `setErrors` below.
+      this.control.control?.updateValueAndValidity({ emitEvent: false });
+      this.control.control?.setErrors(this.control.control.errors);
     }
   }
 

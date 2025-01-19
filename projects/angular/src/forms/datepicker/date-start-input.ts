@@ -15,21 +15,22 @@ import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { datesAreEqual } from './utils/date-utils';
 
 @Directive({
-  selector: '[clrRangeEndDate]',
+  selector: '[clrStartDate]',
   host: {
     '[class.clr-input]': 'true',
+    '[style.text-align]': "'right'",
   },
   providers: [DatepickerFocusService],
 })
-export class ClrDateRangeEndInput extends ClrDateInputBase implements AfterViewInit {
-  @Output('clrRangeEndDateChange') dateChange = new EventEmitter<Date>(false);
+export class ClrStartDateInput extends ClrDateInputBase implements AfterViewInit {
+  @Output('clrStartDateChange') dateChange = new EventEmitter<Date>(false);
 
   @Input('inputWidth') inputWidth = 13;
 
-  private initialClrDateInputValue: Date;
+  private initialClrStartDateValue: Date;
   private previousDateChange: Date;
 
-  @Input('clrRangeEndDate')
+  @Input('clrStartDate')
   set date(date: Date | string) {
     if (typeof date === 'string') {
       date = new Date(date);
@@ -38,8 +39,8 @@ export class ClrDateRangeEndInput extends ClrDateInputBase implements AfterViewI
       this.updateDate(this.getValidDateValueFromDate(date as Date));
     }
 
-    if (!this.initialClrDateInputValue) {
-      this.initialClrDateInputValue = date as Date;
+    if (!this.initialClrStartDateValue) {
+      this.initialClrStartDateValue = date as Date;
     }
   }
 
@@ -76,6 +77,7 @@ export class ClrDateRangeEndInput extends ClrDateInputBase implements AfterViewI
     // input object, we reflect it with the right date on the input field using the IO service. I am not sure if
     // these are major issues or not but just noting them down here.
     this.processInitialInputs();
+    this.addSeparatorSymbol();
   }
 
   triggerControlInputValidation() {
@@ -95,7 +97,7 @@ export class ClrDateRangeEndInput extends ClrDateInputBase implements AfterViewI
     }
 
     if (this.dateNavigationService) {
-      this.dateNavigationService.persistedEndDate = this.dateNavigationService.selectedEndDay = date
+      this.dateNavigationService.persistedDate = this.dateNavigationService.selectedDay = date
         ? new DayModel(date.getFullYear(), date.getMonth(), date.getDate())
         : null;
     }
@@ -115,7 +117,7 @@ export class ClrDateRangeEndInput extends ClrDateInputBase implements AfterViewI
   }
 
   private listenForUserSelectedDayChanges() {
-    return this.dateNavigationService.selectedEndDayChange.subscribe(dayModel =>
+    return this.dateNavigationService.selectedDayChange.subscribe(dayModel =>
       this.updateDate(dayModel?.toDate(), true)
     );
   }
@@ -134,7 +136,14 @@ export class ClrDateRangeEndInput extends ClrDateInputBase implements AfterViewI
     if (this.datepickerHasFormControl()) {
       this.updateDate(this.dateIOService.getDateValueFromDateString(this.control.value));
     } else {
-      this.updateDate(this.initialClrDateInputValue);
+      this.updateDate(this.initialClrStartDateValue);
     }
+  }
+
+  private addSeparatorSymbol() {
+    const separatorSpan = this.document.createElement('span');
+    separatorSpan.className = 'date-range-separator';
+    separatorSpan.textContent = '-';
+    this.el.nativeElement.parentNode?.insertBefore(separatorSpan, this.el.nativeElement.nextSibling);
   }
 }

@@ -70,22 +70,6 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
     super(viewContainerRef, ClrDateContainer, injector, control, renderer, el);
   }
 
-  @Input()
-  set min(dateString: string) {
-    if (!this.dateNavigationService.isRangePicker) {
-      this.dateIOService.setMinDate(dateString);
-      this.triggerControlValidation();
-    }
-  }
-
-  @Input()
-  set max(dateString: string) {
-    if (!this.dateNavigationService.isRangePicker) {
-      this.dateIOService.setMaxDate(dateString);
-      this.triggerControlValidation();
-    }
-  }
-
   get disabled() {
     if (this.dateFormControlService) {
       return this.dateFormControlService.disabled || !!this.control?.control?.disabled;
@@ -192,14 +176,6 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
   private setFocus(focus: boolean) {
     if (this.focusService) {
       this.focusService.focused = focus;
-    }
-  }
-
-  private triggerControlValidation() {
-    if (this.datepickerHasFormControl()) {
-      // Set `emitEvent` to false to prevent unnecessary value change event. Status change event will be emitted by `setErrors` below.
-      this.control.control?.updateValueAndValidity({ emitEvent: false });
-      this.control.control?.setErrors(this.control.control.errors);
     }
   }
 

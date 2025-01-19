@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDatepickerModule, ClrDateRangeEndInput, ClrDateRangeStartInput } from '@clr/angular';
+import { ClrDatepickerModule, ClrEndDateInput, ClrStartDateInput } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
@@ -13,8 +13,8 @@ import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Datepicker/DateRangepicker',
-  component: ClrDateRangeStartInput,
-  subcomponents: { ClrDateRangeEndInput },
+  component: ClrStartDateInput,
+  subcomponents: { ClrEndDateInput },
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrDatepickerModule],
@@ -22,14 +22,14 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrRangeStartDate: { control: { type: 'date' } },
-    clrRangeEndDate: { control: { type: 'date' } },
+    clrStartDate: { control: { type: 'date' } },
+    clrEndDate: { control: { type: 'date' } },
     max: { control: { type: 'date' } },
     min: { control: { type: 'date' } },
     disabled: { control: { type: 'boolean' } },
     // outputs
-    clrRangeStartDateChange: { control: { disable: true } },
-    clrRangeEndDateChange: { control: { disable: true } },
+    clrStartDateChange: { control: { disable: true } },
+    clrEndDateChange: { control: { disable: true } },
     // methods
     onValueChange: { control: { disable: true }, table: { disable: true } },
     setFocusStates: { control: { disable: true }, table: { disable: true } },
@@ -44,8 +44,8 @@ export default {
     placeholder: '',
     id: '',
     // outputs
-    clrRangeStartDateChange: action('clrRangeStartDateChange'),
-    clrRangeEndDateChange: action('clrRangeEndDateChange'),
+    clrStartDateChange: action('clrStartDateChange'),
+    clrEndDateChange: action('clrEndDateChange'),
     // story helpers
     getDateObject: date => date && new Date(date),
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
@@ -62,8 +62,8 @@ const DateRangePickerTemplate: StoryFn = args => ({
         name="startDate"
         type="date"
         [disabled]="disabled"
-        [clrRangeStartDate]="getDateObject(clrRangeStartDate)"
-        (clrRangeStartDateChange)="clrRangeStartDateChange($event)"
+        [clrStartDate]="getDateObject(clrStartDate)"
+        (clrStartDateChange)="clrStartDateChange($event)"
       />
       <input
         id="endDate"
@@ -71,8 +71,8 @@ const DateRangePickerTemplate: StoryFn = args => ({
         name="endDate"
         type="date"
         [disabled]="disabled"
-        [clrRangeEndDate]="getDateObject(clrRangeEndDate)"
-        (clrRangeEndDateChange)="clrRangeEndDateChange($event)"
+        [clrEndDate]="getDateObject(clrEndDate)"
+        (clrEndDateChange)="clrEndDateChange($event)"
       />
     </clr-date-range-container>
   `,

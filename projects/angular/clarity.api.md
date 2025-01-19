@@ -2072,13 +2072,13 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     set actionButton(button: ElementRef<HTMLButtonElement>);
     // (undocumented)
-    clrDateEl: ClrDateInput;
+    clrDateInput: ClrDateInput;
+    // (undocumented)
+    clrEndDateInput: ClrEndDateInput;
     // (undocumented)
     set clrPosition(position: string);
     // (undocumented)
-    clrRangeEndEl: ClrDateRangeEndInput;
-    // (undocumented)
-    clrRangeStartEl: ClrDateRangeStartInput;
+    clrStartDateInput: ClrStartDateInput;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -2111,7 +2111,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     protected renderer: Renderer2;
     set showActionButtons(flag: boolean);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, { "showActionButtons": "showActionButtons"; "clrPosition": "clrPosition"; "rangeOptions": "rangeOptions"; "min": "min"; "max": "max"; }, {}, ["clrDateEl", "clrRangeStartEl", "clrRangeEndEl"], ["label", "[clrDate]", "[clrRangeStartDate]", "[clrRangeEndDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, { "showActionButtons": "showActionButtons"; "clrPosition": "clrPosition"; "rangeOptions": "rangeOptions"; "min": "min"; "max": "max"; }, {}, ["clrDateInput", "clrStartDateInput", "clrEndDateInput"], ["label", "[clrDate]", "[clrStartDate]", "[clrEndDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, null, { optional: true; }, null, null]>;
 }
@@ -2123,6 +2123,10 @@ export class ClrDateInput extends ClrDateInputBase implements AfterViewInit {
     // (undocumented)
     dateChange: EventEmitter<Date>;
     // (undocumented)
+    set max(dateString: string);
+    // (undocumented)
+    set min(dateString: string);
+    // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnInit(): void;
@@ -2131,7 +2135,7 @@ export class ClrDateInput extends ClrDateInputBase implements AfterViewInit {
     // (undocumented)
     protected updateDate(value: Date, setByUserInteraction?: boolean): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInput, "[clrDate]", never, { "date": "clrDate"; }, { "dateChange": "clrDateChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInput, "[clrDate]", never, { "date": "clrDate"; "min": "min"; "max": "max"; }, { "dateChange": "clrDateChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInput, never>;
 }
@@ -2163,10 +2167,6 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
     // (undocumented)
     get inputType(): string;
     // (undocumented)
-    set max(dateString: string);
-    // (undocumented)
-    set min(dateString: string);
-    // (undocumented)
     static ngAcceptInputType_date: Date | null | string;
     // (undocumented)
     ngOnInit(): void;
@@ -2188,7 +2188,7 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
     protected usingNativeDatepicker(): boolean;
     protected validateDateRange(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputBase, never, never, { "placeholder": "placeholder"; "min": "min"; "max": "max"; "disabled": "disabled"; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputBase, never, never, { "placeholder": "placeholder"; "disabled": "disabled"; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInputBase, [null, null, null, null, null, { optional: true; self: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, null, { optional: true; }, null]>;
 }
@@ -2199,7 +2199,7 @@ export class ClrDateInputValidator implements Validator {
     // (undocumented)
     validate(control: AbstractControl): ValidationErrors;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputValidator, "[clrDate], [clrRangeStartDate], [clrRangeEndDate]", never, {}, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputValidator, "[clrDate], [clrStartDate], [clrEndDate]", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInputValidator, [{ optional: true; }]>;
 }
@@ -2240,7 +2240,7 @@ export class ClrDatepickerModule {
     // Warning: (ae-forgotten-export) The symbol "i12_2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrDateRangeStartInput, typeof i6_6.ClrDateRangeEndInput, typeof i4_8.ClrDateRangeStartInputValidator, typeof i4_8.ClrDateRangeEndInputValidator, typeof i7_4.ClrDatepickerViewManager, typeof i8_4.ClrMonthpicker, typeof i9_4.ClrYearpicker, typeof i10_3.ClrDaypicker, typeof i11_2.ClrCalendar, typeof i12_2.ClrDatepickerActions], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i7_3.ClrHostWrappingModule, typeof i6_2.ClrConditionalModule, typeof i17_2.ClrPopoverModuleNext, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrDateRangeStartInput, typeof i6_6.ClrDateRangeEndInput, typeof i4_8.ClrDateRangeStartInputValidator, typeof i4_8.ClrDateRangeEndInputValidator, typeof i7_4.ClrDatepickerViewManager, typeof i8_4.ClrMonthpicker, typeof i9_4.ClrYearpicker, typeof i10_3.ClrDaypicker, typeof i11_2.ClrCalendar, typeof i12_2.ClrDatepickerActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrStartDateInput, typeof i6_6.ClrEndDateInput, typeof i4_8.ClrStartDateInputValidator, typeof i4_8.ClrEndDateInputValidator, typeof i7_4.ClrDatepickerViewManager, typeof i8_4.ClrMonthpicker, typeof i9_4.ClrYearpicker, typeof i10_3.ClrDaypicker, typeof i11_2.ClrCalendar, typeof i12_2.ClrDatepickerActions], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i7_3.ClrHostWrappingModule, typeof i6_2.ClrConditionalModule, typeof i17_2.ClrPopoverModuleNext, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrStartDateInput, typeof i6_6.ClrEndDateInput, typeof i4_8.ClrStartDateInputValidator, typeof i4_8.ClrEndDateInputValidator, typeof i7_4.ClrDatepickerViewManager, typeof i8_4.ClrMonthpicker, typeof i9_4.ClrYearpicker, typeof i10_3.ClrDaypicker, typeof i11_2.ClrCalendar, typeof i12_2.ClrDatepickerActions]>;
 }
 
 // @public (undocumented)
@@ -2263,80 +2263,6 @@ export class ClrDatepickerViewManager {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerViewManager, "clr-datepicker-view-manager", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerViewManager, never>;
-}
-
-// @public (undocumented)
-export class ClrDateRangeEndInput extends ClrDateInputBase implements AfterViewInit {
-    // (undocumented)
-    set date(date: Date | string);
-    // (undocumented)
-    dateChange: EventEmitter<Date>;
-    // (undocumented)
-    get inputSize(): number;
-    // (undocumented)
-    inputWidth: number;
-    // (undocumented)
-    ngAfterViewInit(): void;
-    // (undocumented)
-    ngOnInit(): void;
-    // (undocumented)
-    onValueChange(target: HTMLInputElement): void;
-    // (undocumented)
-    triggerControlInputValidation(): void;
-    // (undocumented)
-    protected updateDate(value: Date, setByUserInteraction?: boolean): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateRangeEndInput, "[clrRangeEndDate]", never, { "inputWidth": "inputWidth"; "date": "clrRangeEndDate"; }, { "dateChange": "clrRangeEndDateChange"; }, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateRangeEndInput, never>;
-}
-
-// @public (undocumented)
-export class ClrDateRangeEndInputValidator implements Validator {
-    constructor(dateIOService: DateIOService, dateNavigationService: DateNavigationService);
-    // (undocumented)
-    validate(control: AbstractControl): ValidationErrors;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateRangeEndInputValidator, "[clrRangeEndDate]", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateRangeEndInputValidator, [{ optional: true; }, { optional: true; }]>;
-}
-
-// @public (undocumented)
-export class ClrDateRangeStartInput extends ClrDateInputBase implements AfterViewInit {
-    // (undocumented)
-    set date(date: Date | string);
-    // (undocumented)
-    dateChange: EventEmitter<Date>;
-    // (undocumented)
-    get inputSize(): number;
-    // (undocumented)
-    inputWidth: number;
-    // (undocumented)
-    ngAfterViewInit(): void;
-    // (undocumented)
-    ngOnInit(): void;
-    // (undocumented)
-    onValueChange(target: HTMLInputElement): void;
-    // (undocumented)
-    triggerControlInputValidation(): void;
-    // (undocumented)
-    protected updateDate(value: Date, setByUserInteraction?: boolean): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateRangeStartInput, "[clrRangeStartDate]", never, { "inputWidth": "inputWidth"; "date": "clrRangeStartDate"; }, { "dateChange": "clrRangeStartDateChange"; }, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateRangeStartInput, never>;
-}
-
-// @public (undocumented)
-export class ClrDateRangeStartInputValidator implements Validator {
-    constructor(dateIOService: DateIOService, dateNavigationService: DateNavigationService);
-    // (undocumented)
-    validate(control: AbstractControl): ValidationErrors;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateRangeStartInputValidator, "[clrRangeStartDate]", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateRangeStartInputValidator, [{ optional: true; }, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -2491,6 +2417,43 @@ export class ClrEmphasisModule {
     //
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, never, [typeof i1_2.ClrAlertModule]>;
+}
+
+// @public (undocumented)
+export class ClrEndDateInput extends ClrDateInputBase implements AfterViewInit {
+    // (undocumented)
+    set date(date: Date | string);
+    // (undocumented)
+    dateChange: EventEmitter<Date>;
+    // (undocumented)
+    get inputSize(): number;
+    // (undocumented)
+    inputWidth: number;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    onValueChange(target: HTMLInputElement): void;
+    // (undocumented)
+    triggerControlInputValidation(): void;
+    // (undocumented)
+    protected updateDate(value: Date, setByUserInteraction?: boolean): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrEndDateInput, "[clrEndDate]", never, { "inputWidth": "inputWidth"; "date": "clrEndDate"; }, { "dateChange": "clrEndDateChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrEndDateInput, never>;
+}
+
+// @public (undocumented)
+export class ClrEndDateInputValidator implements Validator {
+    constructor(dateIOService: DateIOService, dateNavigationService: DateNavigationService);
+    // (undocumented)
+    validate(control: AbstractControl): ValidationErrors;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrEndDateInputValidator, "[clrEndDate]", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrEndDateInputValidator, [{ optional: true; }, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -4286,6 +4249,43 @@ export class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStandaloneCdkTrapFocus, never, never, {}, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStandaloneCdkTrapFocus, [null, null, { optional: true; }]>;
+}
+
+// @public (undocumented)
+export class ClrStartDateInput extends ClrDateInputBase implements AfterViewInit {
+    // (undocumented)
+    set date(date: Date | string);
+    // (undocumented)
+    dateChange: EventEmitter<Date>;
+    // (undocumented)
+    get inputSize(): number;
+    // (undocumented)
+    inputWidth: number;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    onValueChange(target: HTMLInputElement): void;
+    // (undocumented)
+    triggerControlInputValidation(): void;
+    // (undocumented)
+    protected updateDate(value: Date, setByUserInteraction?: boolean): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStartDateInput, "[clrStartDate]", never, { "inputWidth": "inputWidth"; "date": "clrStartDate"; }, { "dateChange": "clrStartDateChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStartDateInput, never>;
+}
+
+// @public (undocumented)
+export class ClrStartDateInputValidator implements Validator {
+    constructor(dateIOService: DateIOService, dateNavigationService: DateNavigationService);
+    // (undocumented)
+    validate(control: AbstractControl): ValidationErrors;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStartDateInputValidator, "[clrStartDate]", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStartDateInputValidator, [{ optional: true; }, { optional: true; }]>;
 }
 
 // @public (undocumented)

@@ -29,9 +29,9 @@ import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
-import { ClrDateRangeEndInput } from './date-range-end-input';
-import { ClrDateRangeStartInput } from './date-range-start-input';
+import { ClrEndDateInput } from './date-end-input';
 import { ClrDateInput } from './date-single-input';
+import { ClrStartDateInput } from './date-start-input';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -49,8 +49,8 @@ import { ViewManagerService } from './providers/view-manager.service';
       <div class="clr-input-wrapper" clrPopoverAnchor>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <ng-content select="[clrDate]"></ng-content>
-          <ng-content select="[clrRangeStartDate]"></ng-content>
-          <ng-content select="[clrRangeEndDate]"></ng-content>
+          <ng-content select="[clrStartDate]"></ng-content>
+          <ng-content select="[clrEndDate]"></ng-content>
           <button
             #actionButton
             type="button"
@@ -110,9 +110,9 @@ import { ViewManagerService } from './providers/view-manager.service';
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
 
-  @ContentChild(ClrDateInput) clrDateEl: ClrDateInput;
-  @ContentChild(ClrDateRangeStartInput) clrRangeStartEl: ClrDateRangeStartInput;
-  @ContentChild(ClrDateRangeEndInput) clrRangeEndEl: ClrDateRangeEndInput;
+  @ContentChild(ClrDateInput) clrDateInput: ClrDateInput;
+  @ContentChild(ClrStartDateInput) clrStartDateInput: ClrStartDateInput;
+  @ContentChild(ClrEndDateInput) clrEndDateInput: ClrEndDateInput;
 
   private toggleButton: ElementRef<HTMLButtonElement>;
 
@@ -178,18 +178,18 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   @Input()
   set min(dateString: string) {
     this.dateIOService.setMinDate(dateString);
-    if (this.clrRangeStartEl && this.clrRangeEndEl) {
-      this.clrRangeStartEl.triggerControlInputValidation();
-      this.clrRangeEndEl.triggerControlInputValidation();
+    if (this.clrStartDateInput && this.clrEndDateInput) {
+      this.clrStartDateInput.triggerControlInputValidation();
+      this.clrEndDateInput.triggerControlInputValidation();
     }
   }
 
   @Input()
   set max(dateString: string) {
     this.dateIOService.setMaxDate(dateString);
-    if (this.clrRangeStartEl && this.clrRangeEndEl) {
-      this.clrRangeStartEl.triggerControlInputValidation();
-      this.clrRangeEndEl.triggerControlInputValidation();
+    if (this.clrStartDateInput && this.clrEndDateInput) {
+      this.clrStartDateInput.triggerControlInputValidation();
+      this.clrEndDateInput.triggerControlInputValidation();
     }
   }
 
@@ -279,14 +279,14 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
 
   private dateRangeStucturalChecks() {
     if (this.dateNavigationService.isRangePicker) {
-      if (this.clrDateEl) {
-        console.error('Error! clr-date-range-container must contain clrRangeStartDate and clrRangeStartDate inputs');
+      if (this.clrDateInput) {
+        console.error('Error! clr-date-range-container must contain clrStartDate and clrEndDate inputs');
       }
-      if (!this.clrRangeStartEl) {
-        console.error('Error! clr-date-range-container must contain clrRangeStartDate input');
+      if (!this.clrStartDateInput) {
+        console.error('Error! clr-date-range-container must contain clrStartDate input');
       }
-      if (!this.clrRangeEndEl) {
-        console.error('Error! clr-date-range-container must contain clrRangeEndDate input');
+      if (!this.clrEndDateInput) {
+        console.error('Error! clr-date-range-container must contain clrEndDate input');
       }
     }
   }

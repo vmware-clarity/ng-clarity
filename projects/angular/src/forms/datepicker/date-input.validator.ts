@@ -12,7 +12,7 @@ import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 
 @Directive({
-  selector: '[clrDate], [clrRangeStartDate], [clrRangeEndDate]',
+  selector: '[clrDate], [clrStartDate], [clrEndDate]',
   providers: [{ provide: NG_VALIDATORS, useExisting: ClrDateInputValidator, multi: true }],
 })
 export class ClrDateInputValidator implements Validator {
@@ -36,10 +36,10 @@ export class ClrDateInputValidator implements Validator {
 }
 
 @Directive({
-  selector: '[clrRangeStartDate]',
-  providers: [{ provide: NG_VALIDATORS, useExisting: ClrDateRangeStartInputValidator, multi: true }],
+  selector: '[clrStartDate]',
+  providers: [{ provide: NG_VALIDATORS, useExisting: ClrStartDateInputValidator, multi: true }],
 })
-export class ClrDateRangeStartInputValidator implements Validator {
+export class ClrStartDateInputValidator implements Validator {
   constructor(
     @Optional() private dateIOService: DateIOService,
     @Optional() private dateNavigationService: DateNavigationService
@@ -54,7 +54,7 @@ export class ClrDateRangeStartInputValidator implements Validator {
         this.dateNavigationService.selectedEndDay &&
         value > this.dateNavigationService.selectedEndDay.toDate()
       ) {
-        return { range: { range: true } };
+        return { range: { startDate: value, endDate: this.dateNavigationService.selectedEndDay.toDate() } };
       }
     }
 
@@ -63,10 +63,10 @@ export class ClrDateRangeStartInputValidator implements Validator {
 }
 
 @Directive({
-  selector: '[clrRangeEndDate]',
-  providers: [{ provide: NG_VALIDATORS, useExisting: ClrDateRangeEndInputValidator, multi: true }],
+  selector: '[clrEndDate]',
+  providers: [{ provide: NG_VALIDATORS, useExisting: ClrEndDateInputValidator, multi: true }],
 })
-export class ClrDateRangeEndInputValidator implements Validator {
+export class ClrEndDateInputValidator implements Validator {
   constructor(
     @Optional() private dateIOService: DateIOService,
     @Optional() private dateNavigationService: DateNavigationService
@@ -81,7 +81,7 @@ export class ClrDateRangeEndInputValidator implements Validator {
         this.dateNavigationService.selectedDay &&
         value < this.dateNavigationService.selectedDay.toDate()
       ) {
-        return { range: { range: true } };
+        return { range: { startDate: this.dateNavigationService.selectedDay.toDate(), endDate: value } };
       }
     }
 
