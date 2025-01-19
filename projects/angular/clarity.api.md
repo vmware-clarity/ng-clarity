@@ -2117,7 +2117,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
 }
 
 // @public (undocumented)
-export class ClrDateInput extends ClrDateInputBase implements AfterViewInit {
+export class ClrDateInput extends ClrDateInputBase {
     // (undocumented)
     set date(date: Date | string);
     // (undocumented)
@@ -2184,10 +2184,6 @@ export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContain
     protected abstract updateDayModel(dayModel: DayModel): void;
     // (undocumented)
     protected abstract get userSelectedDayChange(): Observable<DayModel>;
-    // (undocumented)
-    protected usingClarityDatepicker(): boolean;
-    // (undocumented)
-    protected usingNativeDatepicker(): boolean;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputBase, never, never, { "placeholder": "placeholder"; "disabled": "disabled"; }, {}, never, never, false, never>;
     // (undocumented)
@@ -2421,7 +2417,7 @@ export class ClrEmphasisModule {
 }
 
 // @public (undocumented)
-export class ClrEndDateInput extends ClrDateInputBase implements AfterViewInit {
+export class ClrEndDateInput extends ClrDateInputBase {
     // (undocumented)
     set date(date: Date | string);
     // (undocumented)
