@@ -56,7 +56,7 @@ export class ClrDatepickerViewManager {
   }
 
   get hasRangeOptions() {
-    return this.dateNavigationService?.isRangePicker && this.dateRangeOptions?.length;
+    return !!this.dateNavigationService?.isRangePicker && !!this.dateRangeOptions?.length;
   }
 
   protected get hasActionButtons() {

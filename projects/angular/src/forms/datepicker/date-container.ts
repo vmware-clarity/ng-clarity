@@ -177,19 +177,27 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
 
   @Input()
   set min(dateString: string) {
-    this.dateIOService.setMinDate(dateString);
-    if (this.clrStartDateInput && this.clrEndDateInput) {
-      this.clrStartDateInput.triggerControlInputValidation();
-      this.clrEndDateInput.triggerControlInputValidation();
+    if (this.dateNavigationService.isRangePicker) {
+      this.dateIOService.setMinDate(dateString);
+      this.clrStartDateInput?.triggerControlInputValidation();
+      this.clrEndDateInput?.triggerControlInputValidation();
+    } else {
+      console.error(
+        'Error! The date container [min] input only works for date range pickers. Use the native `min` attribute/property for single-date inputs.'
+      );
     }
   }
 
   @Input()
   set max(dateString: string) {
-    this.dateIOService.setMaxDate(dateString);
-    if (this.clrStartDateInput && this.clrEndDateInput) {
-      this.clrStartDateInput.triggerControlInputValidation();
-      this.clrEndDateInput.triggerControlInputValidation();
+    if (this.dateNavigationService.isRangePicker) {
+      this.dateIOService.setMaxDate(dateString);
+      this.clrStartDateInput?.triggerControlInputValidation();
+      this.clrEndDateInput?.triggerControlInputValidation();
+    } else {
+      console.error(
+        'Error! The date container [max] input only works for date range pickers. Use the native `max` attribute/property for single-date inputs.'
+      );
     }
   }
 

@@ -24,9 +24,9 @@ export class ClrDateInputValidator implements Validator {
       const minDate = this.dateIOService.disabledDates.minDate.toDate();
       const maxDate = this.dateIOService.disabledDates.maxDate.toDate();
 
-      if (value && value < this.dateIOService.disabledDates.minDate.toDate()) {
+      if (value && value < minDate) {
         return { min: { min: minDate.toLocaleDateString(), actual: value.toLocaleDateString() } };
-      } else if (value && value > this.dateIOService.disabledDates.maxDate.toDate()) {
+      } else if (value && value > maxDate) {
         return { max: { max: maxDate.toLocaleDateString(), actual: value.toLocaleDateString() } };
       }
     }
@@ -48,13 +48,10 @@ export class ClrStartDateInputValidator implements Validator {
   validate(control: AbstractControl): ValidationErrors {
     if (this.dateIOService) {
       const value = this.dateIOService.getDateValueFromDateString(control.value);
-      if (
-        value &&
-        this.dateNavigationService &&
-        this.dateNavigationService.selectedEndDay &&
-        value > this.dateNavigationService.selectedEndDay.toDate()
-      ) {
-        return { range: { startDate: value, endDate: this.dateNavigationService.selectedEndDay.toDate() } };
+      const endDate = this.dateNavigationService?.selectedEndDay?.toDate();
+
+      if (value && endDate && value > endDate) {
+        return { range: { startDate: value, endDate } };
       }
     }
 
@@ -75,13 +72,10 @@ export class ClrEndDateInputValidator implements Validator {
   validate(control: AbstractControl): ValidationErrors {
     if (this.dateIOService) {
       const value = this.dateIOService.getDateValueFromDateString(control.value);
-      if (
-        value &&
-        this.dateNavigationService &&
-        this.dateNavigationService.selectedDay &&
-        value < this.dateNavigationService.selectedDay.toDate()
-      ) {
-        return { range: { startDate: this.dateNavigationService.selectedDay.toDate(), endDate: value } };
+      const startDate = this.dateNavigationService?.selectedDay?.toDate();
+
+      if (value && startDate && value < startDate) {
+        return { range: { startDate, endDate: value } };
       }
     }
 
