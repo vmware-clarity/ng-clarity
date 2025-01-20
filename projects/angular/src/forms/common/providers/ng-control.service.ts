@@ -18,10 +18,16 @@ export interface Helpers {
 
 @Injectable()
 export class NgControlService {
+  private _control: NgControl;
+
   // Observable to subscribe to the control, since its not available immediately for projected content
   private _controlChanges = new Subject<NgControl>();
 
   private _helpers = new Subject<Helpers>();
+
+  get control() {
+    return this._control;
+  }
 
   get controlChanges(): Observable<NgControl> {
     return this._controlChanges.asObservable();
@@ -32,6 +38,7 @@ export class NgControlService {
   }
 
   setControl(control: NgControl) {
+    this._control = control;
     this._controlChanges.next(control);
   }
 

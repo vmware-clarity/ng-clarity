@@ -8,6 +8,8 @@
 import { Directive, ElementRef, Input } from '@angular/core';
 import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 
+import { ClrFileListValidationErrors } from './file-input-validator-errors';
+
 @Directive({
   selector: 'input[type="file"][clrFileInput]',
   providers: [{ provide: NG_VALIDATORS, useExisting: ClrFileInputValidator, multi: true }],
@@ -22,7 +24,7 @@ export class ClrFileInputValidator implements Validator {
     const files = control.value;
     const fileInputElement = this.elementRef.nativeElement;
 
-    const errors: ValidationErrors = {};
+    const errors: ClrFileListValidationErrors = {};
 
     // required validation (native attribute)
     if (fileInputElement.required && files?.length === 0) {
