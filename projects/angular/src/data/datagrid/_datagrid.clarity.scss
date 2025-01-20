@@ -155,12 +155,9 @@
 
   .datagrid-overflow-ellipsis .datagrid-row .datagrid-scrolling-cells {
     > .datagrid-cell:not(.datagrid-row-actions, .datagrid-select, .datagrid-expandable-caret) {
-      &,
-      *:not(.tooltip, .tooltip-content) {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
   }
 

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrConditionalModule, ClrDatagridModule, ClrDatagridRow } from '@clr/angular';
+import { ClrConditionalModule, ClrDatagridModule, ClrDatagridRow, ClrTooltipModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
@@ -16,7 +16,7 @@ export default {
   component: ClrDatagridRow,
   decorators: [
     moduleMetadata({
-      imports: [ClrDatagridModule, ClrConditionalModule],
+      imports: [ClrDatagridModule, ClrTooltipModule, ClrConditionalModule],
     }),
   ],
   argTypes: {
@@ -126,6 +126,16 @@ const ExpandableRowsTemplate: StoryFn = args => ({
               aliquet suscipit eget, pellentesque sed arcu. Vivamus in dui lectus.
             </span>
           </a>
+          <clr-tooltip *ngIf="overflowEllipsis">
+            <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
+            <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+              Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
+              sed arcu. Vivamus in dui lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in
+              ante placerat mattis id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque
+              aliquet suscipit eget, pellentesque sed arcu. Vivamus in dui lectus.
+            </clr-tooltip-content>
+          </clr-tooltip>
           {{ element.name }}
         </clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
@@ -165,21 +175,16 @@ const ExpandableRowsTemplate: StoryFn = args => ({
 
           <ng-template [ngIf]="detailColumns">
             <clr-dg-cell>
-              <a
-                href="javascript:void(0)"
-                role="tooltip"
-                aria-haspopup="true"
-                class="tooltip tooltip-lg tooltip-bottom-right"
-              >
-                <cds-icon shape="exclamation-circle" solid></cds-icon>
-                <span class="tooltip-content" [class.open-tooltip]="openTooltip && index === 0">
+              <clr-tooltip>
+                <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
+                <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed
                   quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget,
                   pellentesque sed arcu. Vivamus in dui lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Proin in neque in ante placerat mattis id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem
                   quam, pellentesque aliquet suscipit eget, pellentesque sed arcu. Vivamus in dui lectus.
-                </span>
-              </a>
+                </clr-tooltip-content>
+              </clr-tooltip>
               {{ element.name }}
             </clr-dg-cell>
             <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
