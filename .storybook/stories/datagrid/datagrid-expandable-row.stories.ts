@@ -90,8 +90,8 @@ const ExpandableRowsTemplate: StoryFn = args => ({
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
       </clr-dg-column>
-      <clr-dg-column [style.width.px]="400" *ngIf="overflowEllipsis">
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Long text width 400px</ng-container>
+      <clr-dg-column [style.width.px]="250" *ngIf="overflowEllipsis">
+        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Long text width 250px</ng-container>
       </clr-dg-column>
       <clr-dg-column>
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
