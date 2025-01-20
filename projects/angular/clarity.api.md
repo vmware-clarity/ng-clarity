@@ -2127,13 +2127,9 @@ export class ClrDateInput extends ClrDateInputBase implements AfterViewInit {
     // (undocumented)
     set min(dateString: string);
     // (undocumented)
-    ngAfterViewInit(): void;
+    protected updateDayModel(dayModel: DayModel): void;
     // (undocumented)
-    ngOnInit(): void;
-    // (undocumented)
-    onValueChange(target: HTMLInputElement): void;
-    // (undocumented)
-    protected updateDate(value: Date, setByUserInteraction?: boolean): void;
+    protected get userSelectedDayChange(): Observable<DayModel>;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInput, "[clrDate]", never, { "date": "clrDate"; "min": "min"; "max": "max"; }, { "dateChange": "clrDateChange"; }, never, never, false, never>;
     // (undocumented)
@@ -2141,10 +2137,12 @@ export class ClrDateInput extends ClrDateInputBase implements AfterViewInit {
 }
 
 // @public (undocumented)
-export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> implements OnInit, OnDestroy {
-    constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef<HTMLInputElement>, renderer: Renderer2, document: any, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: any, focusService: FocusService_2, datepickerFocusService: DatepickerFocusService);
+export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
+    constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef<HTMLInputElement>, renderer: Renderer2, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: any, focusService: FocusService_2, datepickerFocusService: DatepickerFocusService);
     // (undocumented)
     protected control: NgControl;
+    // (undocumented)
+    protected abstract dateChange: EventEmitter<Date>;
     // (undocumented)
     protected dateIOService: DateIOService;
     // (undocumented)
@@ -2157,11 +2155,7 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
     get disabled(): boolean | string;
     set disabled(value: boolean | string);
     // (undocumented)
-    protected document: any;
-    // (undocumented)
     protected el: ElementRef<HTMLInputElement>;
-    // (undocumented)
-    protected getValidDateValueFromDate(date: Date): Date;
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -2169,7 +2163,11 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
     // (undocumented)
     static ngAcceptInputType_date: Date | null | string;
     // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
     ngOnInit(): void;
+    // (undocumented)
+    onValueChange(target: HTMLInputElement): void;
     // (undocumented)
     placeholder: string;
     // (undocumented)
@@ -2177,20 +2175,23 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
     // (undocumented)
     protected renderer: Renderer2;
     // (undocumented)
+    protected setDate(date: Date | string): void;
+    // (undocumented)
     setFocusStates(): void;
     // (undocumented)
     triggerValidation(): void;
     // (undocumented)
-    protected updateInput(date: Date): void;
+    protected abstract updateDayModel(dayModel: DayModel): void;
+    // (undocumented)
+    protected abstract get userSelectedDayChange(): Observable<DayModel>;
     // (undocumented)
     protected usingClarityDatepicker(): boolean;
     // (undocumented)
     protected usingNativeDatepicker(): boolean;
-    protected validateDateRange(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputBase, never, never, { "placeholder": "placeholder"; "disabled": "disabled"; }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInputBase, [null, null, null, null, null, { optional: true; self: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, null, { optional: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInputBase, [null, null, null, null, { optional: true; self: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, null, { optional: true; }, null]>;
 }
 
 // @public (undocumented)
@@ -2253,7 +2254,7 @@ export class ClrDatepickerViewManager {
     // (undocumented)
     protected get hasActionButtons(): boolean;
     // (undocumented)
-    get hasRangeOptions(): any;
+    get hasRangeOptions(): boolean;
     get isDayView(): boolean;
     get isMonthView(): boolean;
     get isYearView(): boolean;
@@ -2430,15 +2431,11 @@ export class ClrEndDateInput extends ClrDateInputBase implements AfterViewInit {
     // (undocumented)
     inputWidth: number;
     // (undocumented)
-    ngAfterViewInit(): void;
-    // (undocumented)
-    ngOnInit(): void;
-    // (undocumented)
-    onValueChange(target: HTMLInputElement): void;
-    // (undocumented)
     triggerControlInputValidation(): void;
     // (undocumented)
-    protected updateDate(value: Date, setByUserInteraction?: boolean): void;
+    protected updateDayModel(dayModel: DayModel): void;
+    // (undocumented)
+    protected get userSelectedDayChange(): Observable<DayModel>;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrEndDateInput, "[clrEndDate]", never, { "inputWidth": "inputWidth"; "date": "clrEndDate"; }, { "dateChange": "clrEndDateChange"; }, never, never, false, never>;
     // (undocumented)
@@ -4264,13 +4261,11 @@ export class ClrStartDateInput extends ClrDateInputBase implements AfterViewInit
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
-    ngOnInit(): void;
-    // (undocumented)
-    onValueChange(target: HTMLInputElement): void;
-    // (undocumented)
     triggerControlInputValidation(): void;
     // (undocumented)
-    protected updateDate(value: Date, setByUserInteraction?: boolean): void;
+    protected updateDayModel(dayModel: DayModel): void;
+    // (undocumented)
+    protected get userSelectedDayChange(): Observable<DayModel>;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStartDateInput, "[clrStartDate]", never, { "inputWidth": "inputWidth"; "date": "clrStartDate"; }, { "dateChange": "clrStartDateChange"; }, never, never, false, never>;
     // (undocumented)
