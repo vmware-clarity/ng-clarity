@@ -70,7 +70,7 @@ const ExpandableRowsTemplate: StoryFn = args => ({
         justify-content: space-between;
 
         .electronegativity-bar {
-          height: var(--cds-global-space-7);
+          max-height: var(--cds-global-space-8);
           background-color: var(--cds-alias-status-info);
         }
       }
