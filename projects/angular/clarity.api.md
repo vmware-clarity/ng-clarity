@@ -2072,13 +2072,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     set actionButton(button: ElementRef<HTMLButtonElement>);
     // (undocumented)
-    clrDateInput: ClrDateInput;
-    // (undocumented)
-    clrEndDateInput: ClrEndDateInput;
-    // (undocumented)
     set clrPosition(position: string);
-    // (undocumented)
-    clrStartDateInput: ClrStartDateInput;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)

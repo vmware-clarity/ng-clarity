@@ -110,9 +110,9 @@ import { ViewManagerService } from './providers/view-manager.service';
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
 
-  @ContentChild(ClrDateInput) clrDateInput: ClrDateInput;
-  @ContentChild(ClrStartDateInput) clrStartDateInput: ClrStartDateInput;
-  @ContentChild(ClrEndDateInput) clrEndDateInput: ClrEndDateInput;
+  @ContentChild(ClrDateInput) private clrDateInput: ClrDateInput;
+  @ContentChild(ClrStartDateInput) private clrStartDateInput: ClrStartDateInput;
+  @ContentChild(ClrEndDateInput) private clrEndDateInput: ClrEndDateInput;
 
   private toggleButton: ElementRef<HTMLButtonElement>;
 
