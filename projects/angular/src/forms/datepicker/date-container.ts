@@ -48,9 +48,14 @@ import { ViewManagerService } from './providers/view-manager.service';
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper" clrPopoverAnchor>
         <div class="clr-input-group" [class.clr-focus]="focus">
+          <!-- render range inputs only if using clr-date-range-container -->
+          <ng-container *ngIf="isRangePicker">
+            <ng-content select="[clrStartDate]"></ng-content>
+            <span class="date-range-separator">-</span>
+            <ng-content select="[clrEndDate]"></ng-content>
+          </ng-container>
+          <!-- no *ngIf for the singe-date input because it breaks the "auto-wrapped" date picker -->
           <ng-content select="[clrDate]"></ng-content>
-          <ng-content select="[clrStartDate]"></ng-content>
-          <ng-content select="[clrEndDate]"></ng-content>
           <button
             #actionButton
             type="button"
@@ -110,9 +115,9 @@ import { ViewManagerService } from './providers/view-manager.service';
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
 
-  @ContentChild(ClrDateInput) clrDateInput: ClrDateInput;
-  @ContentChild(ClrStartDateInput) clrStartDateInput: ClrStartDateInput;
-  @ContentChild(ClrEndDateInput) clrEndDateInput: ClrEndDateInput;
+  @ContentChild(ClrDateInput) private readonly clrDateInput: ClrDateInput;
+  @ContentChild(ClrStartDateInput) private readonly clrStartDateInput: ClrStartDateInput;
+  @ContentChild(ClrEndDateInput) private readonly clrEndDateInput: ClrEndDateInput;
 
   private toggleButton: ElementRef<HTMLButtonElement>;
 
@@ -158,7 +163,9 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
    */
   @Input('showActionButtons')
   set showActionButtons(flag: boolean) {
-    if (!this.dateNavigationService.isRangePicker) {
+    if (this.dateNavigationService.isRangePicker && !flag) {
+      console.error('Error! The date range picker requires action buttons, [showActionButtons] cannot be turned off.');
+    } else {
       this.dateNavigationService.hasActionButtons = flag;
     }
   }
@@ -231,8 +238,12 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     );
   }
 
+  protected get isRangePicker(): boolean {
+    return this.dateNavigationService.isRangePicker;
+  }
+
   ngAfterViewInit(): void {
-    this.dateRangeStucturalChecks();
+    this.dateRangeStructuralChecks();
     this.subscriptions.push(
       this.toggleService.openChange.subscribe(open => {
         if (open) {
@@ -285,7 +296,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     this.dateNavigationService.initializeCalendar();
   }
 
-  private dateRangeStucturalChecks() {
+  private dateRangeStructuralChecks() {
     if (this.dateNavigationService.isRangePicker) {
       if (this.clrDateInput) {
         console.error('Error! clr-date-range-container must contain clrStartDate and clrEndDate inputs');

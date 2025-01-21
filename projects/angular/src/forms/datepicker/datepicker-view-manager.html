@@ -6,19 +6,20 @@
 -->
 
 <ng-container *ngIf="hasRangeOptions; else calendarView">
-  <div class="options-wrapper">
-    <div
-      class="range-option"
-      *ngFor="let option of dateRangeOptions; let i = index"
-      [ngClass]="{'active': !!option?.isCustomRange}"
-      [attr.aria-label]="option?.label"
-      tabindex="0"
-      (keyup.enter)="onRangeOptionSelect(option)"
-      (click)="onRangeOptionSelect(option)"
-    >
-      {{option.label}}
-    </div>
-  </div>
+  <clr-vertical-nav>
+    <ng-container *ngFor="let option of dateRangeOptions">
+      <a
+        clrVerticalNavLink
+        href="javascript:void(0)"
+        [attr.aria-label]="option?.label"
+        tabindex="0"
+        (keyup.enter)="onRangeOptionSelect(option)"
+        (click)="onRangeOptionSelect(option)"
+      >
+        {{option.label}}
+      </a>
+    </ng-container>
+  </clr-vertical-nav>
 
   <div class="datepicker-view-manager">
     <ng-container *ngTemplateOutlet="calendarView"></ng-container>

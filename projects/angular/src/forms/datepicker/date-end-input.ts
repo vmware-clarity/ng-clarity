@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Directive, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { Directive, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 
 import { ClrDateInputBase } from './date-input';
 import { DayModel } from './model/day.model';
@@ -18,7 +18,7 @@ import { DatepickerFocusService } from './providers/datepicker-focus.service';
   },
   providers: [DatepickerFocusService],
 })
-export class ClrEndDateInput extends ClrDateInputBase implements AfterViewInit {
+export class ClrEndDateInput extends ClrDateInputBase {
   @Output('clrEndDateChange') override dateChange = new EventEmitter<Date>(false);
 
   @Input('inputWidth') inputWidth = 13;

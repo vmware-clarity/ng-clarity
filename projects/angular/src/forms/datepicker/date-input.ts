@@ -175,17 +175,26 @@ export abstract class ClrDateInputBase
     }
   }
 
-  protected usingClarityDatepicker() {
+  private usingClarityDatepicker() {
     return this.datepickerEnabledService.isEnabled;
   }
 
-  protected usingNativeDatepicker() {
+  private usingNativeDatepicker() {
     return !this.datepickerEnabledService.isEnabled;
   }
 
   private setFocus(focus: boolean) {
     if (this.focusService) {
       this.focusService.focused = focus;
+    }
+  }
+
+  private populateServicesFromContainerComponent() {
+    if (!this.container) {
+      this.dateIOService = this.getProviderFromContainer(DateIOService);
+      this.dateNavigationService = this.getProviderFromContainer(DateNavigationService);
+      this.datepickerEnabledService = this.getProviderFromContainer(DatepickerEnabledService);
+      this.dateFormControlService = this.getProviderFromContainer(DateFormControlService);
     }
   }
 
@@ -199,6 +208,7 @@ export abstract class ClrDateInputBase
 
   private updateDate(value: Date, setByUserInteraction = false) {
     const date = this.getValidDateValueFromDate(value);
+
     if (setByUserInteraction) {
       this.emitDateOutput(date);
     } else {
@@ -232,16 +242,6 @@ export abstract class ClrDateInputBase
     }
   }
 
-  private emitDateOutput(date: Date) {
-    if (!datesAreEqual(date, this.previousDateChange)) {
-      this.dateChange.emit(date);
-      this.previousDateChange = date;
-    } else if (!date && this.previousDateChange) {
-      this.dateChange.emit(null);
-      this.previousDateChange = null;
-    }
-  }
-
   private getValidDateValueFromDate(date: Date) {
     if (this.dateIOService) {
       const dateString = this.dateIOService.toLocaleDisplayFormatString(date);
@@ -251,12 +251,13 @@ export abstract class ClrDateInputBase
     }
   }
 
-  private populateServicesFromContainerComponent() {
-    if (!this.container) {
-      this.dateIOService = this.getProviderFromContainer(DateIOService);
-      this.dateNavigationService = this.getProviderFromContainer(DateNavigationService);
-      this.datepickerEnabledService = this.getProviderFromContainer(DatepickerEnabledService);
-      this.dateFormControlService = this.getProviderFromContainer(DateFormControlService);
+  private emitDateOutput(date: Date) {
+    if (!datesAreEqual(date, this.previousDateChange)) {
+      this.dateChange.emit(date);
+      this.previousDateChange = date;
+    } else if (!date && this.previousDateChange) {
+      this.dateChange.emit(null);
+      this.previousDateChange = null;
     }
   }
 
@@ -294,7 +295,7 @@ export abstract class ClrDateInputBase
   }
 
   /**
-   * Incase of date range error, both start & end date field validation has to be triggered
+   * In case of date range error, both start & end date field validation has to be triggered
    * if either of the field gets updated
    */
   private validateDateRange() {
