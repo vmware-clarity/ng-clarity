@@ -158,9 +158,11 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
    */
   @Input('showActionButtons')
   set showActionButtons(flag: boolean) {
-    if (!this.dateNavigationService.isRangePicker) {
-      this.dateNavigationService.hasActionButtons = flag;
+    if (this.dateNavigationService.isRangePicker && !flag) {
+      console.error('Error! The date range picker requires action buttons, [showActionButtons] cannot be turned off.');
     }
+
+    this.dateNavigationService.hasActionButtons = flag;
   }
 
   @Input('clrPosition')
