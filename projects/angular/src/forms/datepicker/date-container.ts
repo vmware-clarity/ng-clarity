@@ -232,7 +232,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   }
 
   ngAfterViewInit(): void {
-    this.dateRangeStucturalChecks();
+    this.dateRangeStructuralChecks();
     this.subscriptions.push(
       this.toggleService.openChange.subscribe(open => {
         if (open) {
@@ -285,7 +285,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     this.dateNavigationService.initializeCalendar();
   }
 
-  private dateRangeStucturalChecks() {
+  private dateRangeStructuralChecks() {
     if (this.dateNavigationService.isRangePicker) {
       if (this.clrDateInput) {
         console.error('Error! clr-date-range-container must contain clrStartDate and clrEndDate inputs');
