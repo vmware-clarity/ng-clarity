@@ -48,9 +48,14 @@ import { ViewManagerService } from './providers/view-manager.service';
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper" clrPopoverAnchor>
         <div class="clr-input-group" [class.clr-focus]="focus">
+          <!-- render range inputs only if using clr-date-range-container -->
+          <ng-container *ngIf="isRangePicker">
+            <ng-content select="[clrStartDate]"></ng-content>
+            <span class="date-range-separator">-</span>
+            <ng-content select="[clrEndDate]"></ng-content>
+          </ng-container>
+          <!-- no *ngIf for the singe-date input because it breaks the "auto-wrapped" date picker -->
           <ng-content select="[clrDate]"></ng-content>
-          <ng-content select="[clrStartDate]"></ng-content>
-          <ng-content select="[clrEndDate]"></ng-content>
           <button
             #actionButton
             type="button"
@@ -231,6 +236,10 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     return (
       (this.control && this.control.disabled) || (this.dateFormControlService && this.dateFormControlService.disabled)
     );
+  }
+
+  protected get isRangePicker(): boolean {
+    return this.dateNavigationService.isRangePicker;
   }
 
   ngAfterViewInit(): void {

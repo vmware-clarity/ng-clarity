@@ -5,8 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT } from '@angular/common';
-import { AfterViewInit, Directive, EventEmitter, HostBinding, inject, Input, Output } from '@angular/core';
+import { Directive, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 
 import { ClrDateInputBase } from './date-input';
 import { DayModel } from './model/day.model';
@@ -20,12 +19,10 @@ import { DatepickerFocusService } from './providers/datepicker-focus.service';
   },
   providers: [DatepickerFocusService],
 })
-export class ClrStartDateInput extends ClrDateInputBase implements AfterViewInit {
+export class ClrStartDateInput extends ClrDateInputBase {
   @Output('clrStartDateChange') override dateChange = new EventEmitter<Date>(false);
 
   @Input('inputWidth') inputWidth = 13;
-
-  private readonly document = inject(DOCUMENT);
 
   @Input('clrStartDate')
   set date(date: Date | string) {
@@ -41,12 +38,6 @@ export class ClrStartDateInput extends ClrDateInputBase implements AfterViewInit
     return this.dateNavigationService.selectedDayChange;
   }
 
-  override ngAfterViewInit() {
-    super.ngAfterViewInit();
-
-    this.addSeparatorSymbol();
-  }
-
   triggerControlInputValidation() {
     if (this.datepickerHasFormControl()) {
       this.control.control?.updateValueAndValidity({ emitEvent: false });
@@ -56,12 +47,5 @@ export class ClrStartDateInput extends ClrDateInputBase implements AfterViewInit
 
   protected override updateDayModel(dayModel: DayModel) {
     this.dateNavigationService.persistedDate = this.dateNavigationService.selectedDay = dayModel;
-  }
-
-  private addSeparatorSymbol() {
-    const separatorSpan = this.document.createElement('span');
-    separatorSpan.className = 'date-range-separator';
-    separatorSpan.textContent = '-';
-    this.el.nativeElement.parentNode?.insertBefore(separatorSpan, this.el.nativeElement.nextSibling);
   }
 }
