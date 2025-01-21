@@ -126,7 +126,7 @@ export const ActionOverflow: StoryObj = {
   render: ActionOverflowTemplate,
 };
 
-export const DenseActionOverflow: StoryObj = {
+export const CompactOverflowEllipsisActionOverflow: StoryObj = {
   render: ActionOverflowTemplate,
   args: {
     compact: true,

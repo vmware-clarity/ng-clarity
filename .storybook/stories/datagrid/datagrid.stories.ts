@@ -196,7 +196,7 @@ export const CompactMultiSelectWithSelection: StoryObj = {
   },
 };
 
-export const Dense: StoryObj = {
+export const CompactOverflowEllipsis: StoryObj = {
   render: DatagridTemplate,
   args: {
     compact: true,

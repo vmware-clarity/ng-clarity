@@ -218,7 +218,7 @@ export const ExpandableRows: StoryObj = {
   render: ExpandableRowsTemplate,
 };
 
-export const DenseExpandableRows: StoryObj = {
+export const CompactOverflowEllipsisExpandableRows: StoryObj = {
   render: ExpandableRowsTemplate,
   args: {
     compact: true,
