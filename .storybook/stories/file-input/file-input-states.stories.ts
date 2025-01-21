@@ -10,6 +10,7 @@ import { ClrFileInputModule, ClrFormLayout } from '@clr/angular';
 import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
 
 import { clearFiles, selectFiles } from '../../../projects/angular/src/forms/file-input/file-input.helpers';
+import { toCamelCase, toKebabCase } from '../../helpers/casing.helpers';
 
 export default {
   title: 'File Input/File Input States',
@@ -27,68 +28,10 @@ export default {
 const fileInputStatesTemplate: StoryFn = args => ({
   template: `
     <form clrForm [clrLayout]="clrLayout">
-      <clr-file-input-container>
-        <label>Success State</label>
-        <input
-          id="success-state-file-input"
-          type="file"
-          name="success-state-file"
-          [(ngModel)]="successStateFile"
-          clrFileInput
-          required
-          multiple
-        />
-        <clr-control-helper>Helper message</clr-control-helper>
-        <clr-control-success>Success message</clr-control-success>
-        <clr-control-error *clrIfError="'required'">Required</clr-control-error>
-      </clr-file-input-container>
-
-      <clr-file-input-container>
-        <label>Error State</label>
-        <input
-          id="error-state-file-input"
-          type="file"
-          name="error-state-file"
-          [(ngModel)]="errorStateFile"
-          clrFileInput
-          required
-          multiple
-        />
-        <clr-control-helper>Helper message</clr-control-helper>
-        <clr-control-error *clrIfError="'required'">Required</clr-control-error>
-      </clr-file-input-container>
-
-      <clr-file-input-container>
-        <label>Multiple Files</label>
-        <input
-          id="multiple-files-file-input"
-          type="file"
-          name="multiple-files-file"
-          [(ngModel)]="multipleFilesFile"
-          clrFileInput
-          required
-          multiple
-        />
-        <clr-control-helper>Helper message</clr-control-helper>
-        <clr-control-success>Success message</clr-control-success>
-        <clr-control-error *clrIfError="'required'">Required</clr-control-error>
-      </clr-file-input-container>
-
-      <clr-file-input-container>
-        <label>Long Filename</label>
-        <input
-          id="long-filename-file-input"
-          type="file"
-          name="long-filename-file"
-          [(ngModel)]="longFilenameFile"
-          clrFileInput
-          required
-          multiple
-        />
-        <clr-control-helper>Helper message</clr-control-helper>
-        <clr-control-success>Success message</clr-control-success>
-        <clr-control-error *clrIfError="'required'">Required</clr-control-error>
-      </clr-file-input-container>
+      <div>${fileInputTemplateFn('Success State')}</div>
+      <div>${fileInputTemplateFn('Error State')}</div>
+      <div>${fileInputTemplateFn('Multiple Files')}</div>
+      <div>${fileInputTemplateFn('Long Filename')}</div>
 
       <clr-file-input-container>
         <label>Disabled</label>
@@ -98,6 +41,29 @@ const fileInputStatesTemplate: StoryFn = args => ({
   `,
   props: { ...args },
 });
+
+function fileInputTemplateFn(label: string) {
+  const id = `${toKebabCase(label)}-file-input`;
+  const ngModel = `${toCamelCase(label)}File`;
+
+  return `
+<clr-file-input-container>
+  <label>${label}</label>
+  <input
+    id="${id}"
+    name="${id}"
+    type="file"
+    multiple
+    required
+    clrFileInput
+    [(ngModel)]="${ngModel}"
+  />
+  <clr-control-helper>Helper message</clr-control-helper>
+  <clr-control-success>Success message</clr-control-success>
+  <clr-control-error *clrIfError="'required'">Required</clr-control-error>
+</clr-file-input-container>
+`;
+}
 
 export const VerticalFileInputStates: StoryObj = {
   render: fileInputStatesTemplate,

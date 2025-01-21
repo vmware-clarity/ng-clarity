@@ -31,6 +31,7 @@ export interface ClrFileInputSelection {
   selector: 'input[type="file"][clrFileInput]',
   host: {
     tabindex: '-1', // Remove the hidden file `input` element from the tab order because the browse `button` replaces it.
+    'aria-hidden': 'true', // Remove the hidden file `input` element from the accessibility tree because the browse `button` replaces it.
     '[class.clr-file-input]': 'true',
   },
 })

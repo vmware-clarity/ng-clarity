@@ -8,6 +8,8 @@
 import { Directive, ElementRef, Input } from '@angular/core';
 import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 
+import { ClrFileListValidationErrors } from './file-input-validator-errors';
+
 @Directive({
   selector: 'input[type="file"][clrFileInput]',
   providers: [{ provide: NG_VALIDATORS, useExisting: ClrFileInputValidator, multi: true }],
@@ -22,21 +24,21 @@ export class ClrFileInputValidator implements Validator {
     const files = control.value;
     const fileInputElement = this.elementRef.nativeElement;
 
-    const errors: ValidationErrors = {};
+    const errors: ClrFileListValidationErrors = {};
 
     // required validation (native attribute)
     if (fileInputElement.required && files?.length === 0) {
       errors.required = true;
     }
 
-    const accept = fileInputElement.accept?.split(',').map(type => type.trim());
+    const accept = fileInputElement.accept ? fileInputElement.accept.split(',').map(type => type.trim()) : null;
 
-    if (files?.length > 0 && (accept?.length || this.minFileSize || this.maxFileSize)) {
+    if (files?.length > 0 && (accept || this.minFileSize || this.maxFileSize)) {
       for (let i = 0; i < files.length; i++) {
         const file = files.item(i);
 
         // accept validation (native attribute)
-        if (accept?.length) {
+        if (accept) {
           const [fileExtension] = file.name.match(/\..+$/);
 
           if (!accept.includes(file.type) && !accept.includes(fileExtension)) {

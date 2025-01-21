@@ -30,6 +30,16 @@ export default {
 
 const NestedDatagridTemplate: StoryFn = args => ({
   template: `
+    <style>
+      .electronegativity-container {
+        display: flex;
+        justify-content: space-between;
+
+        .electronegativity-bar {
+          background-color: var(--cds-alias-status-info);
+        }
+      }
+    </style>
     <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
 
     <button type="button" class="btn btn-primary" (click)="modalOpen = true">Open Modal</button>
@@ -47,10 +57,9 @@ const NestedDatagridTemplate: StoryFn = args => ({
             <clr-dg-cell>{{ element.name }}</clr-dg-cell>
             <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
             <clr-dg-cell>{{ element.number }}</clr-dg-cell>
-            <clr-dg-cell>
-              <div [style.width.%]="(element.electronegativity * 100) / 4" class="electronegativity-container">
-                {{ element.electronegativity }}
-              </div>
+            <clr-dg-cell class="electronegativity-container">
+              {{ element.electronegativity }}
+              <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
             </clr-dg-cell>
           </clr-dg-row>
 
