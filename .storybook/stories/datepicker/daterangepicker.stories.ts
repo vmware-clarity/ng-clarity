@@ -11,6 +11,10 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
+const addDays = (date = new Date(), days) => {
+  return new Date(date.getTime() + 86400000 * days);
+};
+
 export default {
   title: 'Datepicker/DateRangepicker',
   component: ClrStartDateInput,
@@ -38,6 +42,7 @@ export default {
     // story helpers
     getDateObject: { control: { disable: true }, table: { disable: true } },
     getDateString: { control: { disable: true }, table: { disable: true } },
+    predefinedDateRanges: { control: { type: 'object' } },
   },
   args: {
     disabled: false,
@@ -49,12 +54,13 @@ export default {
     // story helpers
     getDateObject: date => date && new Date(date),
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
+    predefinedDateRanges: [],
   },
 };
 
 const DateRangePickerTemplate: StoryFn = args => ({
   template: `
-    <clr-date-range-container [min]="getDateString(min)" [max]="getDateString(max)">
+    <clr-date-range-container [min]="getDateString(min)" [max]="getDateString(max)" [rangeOptions]="predefinedDateRanges">
       <label for="dateRangeCtrl">Date Range</label>
       <input
         id="startDate"
@@ -87,5 +93,18 @@ export const Disabled: StoryObj = {
   render: DateRangePickerTemplate,
   args: {
     disabled: true,
+  },
+};
+
+export const PredefinedDateRanges: StoryObj = {
+  render: DateRangePickerTemplate,
+  args: {
+    predefinedDateRanges: [
+      { label: 'Today', value: [new Date(), new Date()] },
+      { label: 'Last 7 Days', value: [addDays(new Date(), -7), addDays(new Date(), -1)] },
+      { label: 'Last 14 Days', value: [addDays(new Date(), -14), addDays(new Date(), -1)] },
+      { label: 'Last 30 Days', value: [addDays(new Date(), -30), addDays(new Date(), -1)] },
+      { label: 'Last 90 Days', value: [addDays(new Date(), -90), addDays(new Date(), -1)] },
+    ],
   },
 };

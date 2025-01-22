@@ -6,7 +6,7 @@
 -->
 
 <ng-container *ngIf="hasRangeOptions; else calendarView">
-  <clr-vertical-nav>
+  <clr-vertical-nav class="clr-date-range-picker-nav">
     <ng-container *ngFor="let option of dateRangeOptions">
       <a
         clrVerticalNavLink
