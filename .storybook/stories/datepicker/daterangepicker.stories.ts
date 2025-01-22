@@ -11,10 +11,6 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
-const addDays = (date = new Date(), days) => {
-  return new Date(date.getTime() + 86400000 * days);
-};
-
 export default {
   title: 'Datepicker/DateRangepicker',
   component: ClrStartDateInput,
@@ -108,3 +104,7 @@ export const PredefinedDateRanges: StoryObj = {
     ],
   },
 };
+
+function addDays(date = new Date(), days: number) {
+  return new Date(date.getTime() + 86400000 * days);
+}
