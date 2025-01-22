@@ -2,13 +2,10 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property          | Description                 |
-| ---------------------------- | --------------------------- |
-| --clr-breadcrumb-link-color  | Breadcrumb item link color  |
-| --clr-breadcrumb-item-space  | Breadcrumb item spacing     |
-| --clr-breadcrumb-font-weight | Breadcrumb item font weight |
-| --clr-breadcrumb-font-size   | Breadcrumb item font size   |
-| --clr-breadcrumb-line-height | Breadcrumb item line height |
+| CSS Custom Property         | Description                |
+| --------------------------- | -------------------------- |
+| --clr-breadcrumb-link-color | Breadcrumb item link color |
+| --clr-breadcrumb-item-space | Breadcrumb item spacing    |
 
 ## CSS Classes
 
