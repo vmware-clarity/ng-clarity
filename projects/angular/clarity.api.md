@@ -5338,7 +5338,6 @@ export class ClrWizardTitle {
 // @public (undocumented)
 export class ClrYearpicker implements AfterViewInit {
     constructor(_dateNavigationService: DateNavigationService, _viewManagerService: ViewManagerService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService);
-    get calendarEndYear(): number;
     get calendarYear(): number;
     // (undocumented)
     changeToDayView(): void;
@@ -5357,6 +5356,10 @@ export class ClrYearpicker implements AfterViewInit {
     onHover(year: number): void;
     onKeyDown(event: KeyboardEvent): void;
     previousDecade(): void;
+    // (undocumented)
+    get selectedEndYear(): number;
+    // (undocumented)
+    get selectedStartYear(): number;
     // Warning: (ae-forgotten-export) The symbol "YearRangeModel" needs to be exported by the entry point index.d.ts
     yearRangeModel: YearRangeModel;
     // (undocumented)
