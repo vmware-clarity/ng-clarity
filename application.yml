@@ -1,0 +1,14 @@
+detect:
+  project.name: vcf-clarity
+  project.version.name: 17.5
+  tools: DETECTOR
+  wait.for.results: true
+  source.path: C:/Users/vm021552/repo/vmware-clarity/ng-clarity
+  output.path: C:/Users/vm021552/repo/vmware-clarity/ng-clarity
+  included.detector.types: npm
+  required.detector.types: npm
+  notices.report: true
+  risk.report.pdf: true
+  detector.search.depth: 6
+  npm:
+    dependency.types.excluded: DEV
