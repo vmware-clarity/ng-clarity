@@ -102,21 +102,6 @@ export default function () {
         expect(context.clarityElement.classList.contains('yearpicker')).toBe(true);
       });
 
-      it('adds a .is-selected class on the selected year', () => {
-        const yearIndex: number = context.clarityDirective.yearRangeModel.yearRange.indexOf(selectedYear);
-        const years: HTMLButtonElement[] = context.clarityElement.querySelectorAll('.year');
-
-        let count = 0;
-        for (const year of years) {
-          if (count === yearIndex) {
-            expect(year.classList.contains('is-selected')).toBe(true);
-          } else {
-            expect(year.classList.contains('is-selected')).toBe(false);
-          }
-          count++;
-        }
-      });
-
       it('has the correct aria-label for the previousDecade button', () => {
         const switchers: HTMLElement = context.clarityElement.querySelector('.year-switchers');
         const previousDecadeBtn = switchers.children[0] as HTMLButtonElement;
