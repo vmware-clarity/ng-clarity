@@ -20,19 +20,18 @@
     .clr-breadcrumb-item {
       display: flex;
       align-items: center;
-      min-height: mixins.baselinePx(24);
-      font-family: breadcrumb-variables.$clr-breadcrumb-font-family;
-      color: breadcrumb-variables.$clr-breadcrumb-link-color;
       @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
 
       a {
         text-decoration: none;
+        text-align: center;
+        line-height: mixins.baselinePx(24);
+      }
 
-        &::after {
-          content: '/';
-          margin: 0 breadcrumb-variables.$clr-breadcrumb-item-space;
-          color: breadcrumb-variables.$clr-breadcrumb-active-color;
-        }
+      &::after {
+        content: '/';
+        margin: 0 breadcrumb-variables.$clr-breadcrumb-item-space;
+        color: breadcrumb-variables.$clr-breadcrumb-active-color;
       }
     }
 
@@ -42,6 +41,15 @@
 
     .clr-breadcrumb-item:last-child {
       color: breadcrumb-variables.$clr-breadcrumb-active-color;
+
+      span {
+        text-align: center;
+        line-height: mixins.baselinePx(24);
+      }
+
+      &::after {
+        display: none;
+      }
     }
 
     .clr-breadcrumb-expand {
@@ -49,12 +57,6 @@
       padding: 0;
       gap: 0;
       min-width: fit-content;
-
-      &::after {
-        content: '/';
-        margin: 0 breadcrumb-variables.$clr-breadcrumb-item-space;
-        color: breadcrumb-variables.$clr-breadcrumb-active-color;
-      }
     }
   }
 }

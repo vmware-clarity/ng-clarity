@@ -8,9 +8,7 @@
 @use '../../utils/variables/variables';
 
 // COLOR
-$clr-breadcrumb-link-color: var(--clr-breadcrumb-link-color);
 $clr-breadcrumb-active-color: var(--cds-alias-typography-color-400);
 
 // TYPOGRAPHIC STYLES
-$clr-breadcrumb-font-family: #{variables.$clr-font};
 $clr-breadcrumb-item-space: var(--clr-breadcrumb-item-space);
