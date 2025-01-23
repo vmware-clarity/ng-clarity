@@ -36,6 +36,7 @@ export default {
     clrDgDetailCloseLabel: '',
     clrDgDetailOpenLabel: '',
     clrDgExpanded: false,
+    clrDgReplace: false,
     clrDgSelectable: true,
     clrDgSelected: false,
     clrDgRowSelectionLabel: '',
@@ -48,7 +49,6 @@ export default {
     highlight: true,
     singleSelectable: false,
     multiSelectable: false,
-    expandable: false,
     detailColumns: false,
     compact: false,
     overflowEllipsis: false,
@@ -216,6 +216,40 @@ const ExpandableRowsTemplate: StoryFn = args => ({
 
 export const ExpandableRows: StoryObj = {
   render: ExpandableRowsTemplate,
+};
+
+export const ExpandedExpandableRows: StoryObj = {
+  render: ExpandableRowsTemplate,
+  args: {
+    clrDgExpanded: true,
+  },
+};
+
+export const CompactExpandedExpandableRows: StoryObj = {
+  render: ExpandableRowsTemplate,
+  args: {
+    compact: true,
+    clrDgExpanded: true,
+  },
+};
+
+export const ExpandedColumnReplaceExpandableRows: StoryObj = {
+  render: ExpandableRowsTemplate,
+  args: {
+    clrDgExpanded: true,
+    clrDgReplace: true,
+    detailColumns: true,
+  },
+};
+
+export const CompactExpandedColumnReplaceExpandableRows: StoryObj = {
+  render: ExpandableRowsTemplate,
+  args: {
+    compact: true,
+    clrDgExpanded: true,
+    clrDgReplace: true,
+    detailColumns: true,
+  },
 };
 
 export const CompactOverflowEllipsisExpandableRows: StoryObj = {
