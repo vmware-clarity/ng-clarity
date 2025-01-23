@@ -62,7 +62,7 @@ import { ViewManagerService } from './providers/view-manager.service';
         type="button"
         class="calendar-btn year"
         [attr.tabindex]="getTabIndex(year)"
-        [class.is-selected]="year === calendarYear || year === calendarEndYear"
+        [class.is-selected]="year === selectedStartYear || year === selectedEndYear"
         [class.is-start-range]="getIsRangeStartYear(year)"
         [class.is-end-range]="getIsRangeEndYear(year)"
         [class.in-range]="isInRange(year)"
@@ -100,10 +100,11 @@ export class ClrYearpicker implements AfterViewInit {
     this._focusedYear = this.calendarYear;
   }
 
-  /**
-   * Gets the year which the user is currently on.
-   */
-  get calendarEndYear(): number {
+  get selectedStartYear(): number {
+    return this._dateNavigationService.selectedDay?.year;
+  }
+
+  get selectedEndYear(): number {
     return this._dateNavigationService.selectedEndDay?.year;
   }
 
@@ -206,8 +207,8 @@ export class ClrYearpicker implements AfterViewInit {
     if (!this.yearRangeModel.inRange(this._focusedYear)) {
       if (this.yearRangeModel.inRange(this.calendarYear)) {
         this._focusedYear = this.calendarYear;
-      } else if (this.yearRangeModel.inRange(this.calendarEndYear)) {
-        this._focusedYear = this.calendarEndYear;
+      } else if (this.yearRangeModel.inRange(this.selectedEndYear)) {
+        this._focusedYear = this.selectedEndYear;
       } else {
         this._focusedYear = this.yearRangeModel.middleYear;
       }
@@ -223,10 +224,10 @@ export class ClrYearpicker implements AfterViewInit {
     if (!this._dateNavigationService.isRangePicker) {
       return false;
     }
-    if (this._dateNavigationService.selectedDay?.year && this.calendarEndYear) {
-      return year > this.calendarYear && year < this.calendarEndYear;
-    } else if (this._dateNavigationService.selectedDay?.year && !this.calendarEndYear) {
-      return year > this.calendarYear && year < this._dateNavigationService.hoveredYear;
+    if (this._dateNavigationService.selectedDay?.year && this.selectedEndYear) {
+      return year > this.selectedStartYear && year < this.selectedEndYear;
+    } else if (this._dateNavigationService.selectedDay?.year && !this.selectedEndYear) {
+      return year > this.selectedStartYear && year < this._dateNavigationService.hoveredYear;
     } else {
       return false;
     }
