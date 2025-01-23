@@ -28,9 +28,6 @@ import { NgControlService } from './providers/ng-control.service';
   selector: 'label',
 })
 export class ClrLabel implements OnInit, OnDestroy {
-  @Input('id') idInput: string;
-  @HostBinding('attr.id') idAttr: string;
-
   @Input('for') @HostBinding('attr.for') forAttr: string;
 
   @ContentChild(ClrSignpost, { read: ElementRef }) private signpost: ElementRef;
@@ -45,8 +42,17 @@ export class ClrLabel implements OnInit, OnDestroy {
     private el: ElementRef<HTMLLabelElement>
   ) {}
 
+  @HostBinding('attr.id')
+  get idAttr() {
+    return this.labelId;
+  }
+
   get labelText(): string {
     return this.el.nativeElement && this.el.nativeElement.textContent;
+  }
+
+  get labelId(): string {
+    return this.el.nativeElement.getAttribute('id') || this.controlIdService?.id + '-label';
   }
 
   ngOnInit() {
@@ -64,14 +70,9 @@ export class ClrLabel implements OnInit, OnDestroy {
     ) {
       this.renderer.addClass(this.el.nativeElement, 'clr-col-12');
       this.renderer.addClass(this.el.nativeElement, `clr-col-md-${this.layoutService.labelSize}`);
-    }
-    if (this.controlIdService && !this.forAttr) {
-      this.subscriptions.push(
-        this.controlIdService.idChange.subscribe(id => {
-          this.forAttr = id;
-          this.idAttr = this.idInput || `${id}-label`;
-        })
-      );
+      if (this.controlIdService && !this.forAttr) {
+        this.subscriptions.push(this.controlIdService.idChange.subscribe(id => (this.forAttr = id)));
+      }
     }
   }
 

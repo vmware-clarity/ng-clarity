@@ -128,7 +128,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
   }
 
   protected get browseButtonDescribedBy() {
-    return `${this.label?.forAttr} ${this.fileInput.elementRef.nativeElement.getAttribute('aria-describedby')}`;
+    return `${this.label.labelId} ${this.fileInput.elementRef.nativeElement.getAttribute('aria-describedby')}`;
   }
 
   protected override get successMessagePresent() {
