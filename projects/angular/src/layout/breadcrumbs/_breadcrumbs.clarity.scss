@@ -25,10 +25,10 @@
       a {
         text-decoration: none;
         text-align: center;
-        line-height: mixins.baselinePx(24);
+        line-height: tokens.$cds-global-space-9;
       }
 
-      &::after {
+      &:not(:last-child):after {
         content: '/';
         margin: 0 breadcrumb-variables.$clr-breadcrumb-item-space;
         color: breadcrumb-variables.$clr-breadcrumb-active-color;
@@ -41,15 +41,6 @@
 
     .clr-breadcrumb-item:last-child {
       color: breadcrumb-variables.$clr-breadcrumb-active-color;
-
-      span {
-        text-align: center;
-        line-height: mixins.baselinePx(24);
-      }
-
-      &::after {
-        display: none;
-      }
     }
 
     .clr-breadcrumb-expand {
