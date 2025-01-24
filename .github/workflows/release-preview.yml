@@ -36,6 +36,8 @@ jobs:
           --blackduck.api.token=$BD_ACCESS_TOKEN /
           --detect.project.name=$BD_PROJECT_NAME /
           --detect.project.version.name=17.6 /
+          --detect.project.version.phase=PRERELEASE /
+          --detect.clone.project.version.latest=true /
           --detect.tools=DETECTOR /
           --detect.wait.for.results=true /
           --detect.included.detector.types=npm /
