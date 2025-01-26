@@ -6,9 +6,10 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Subject } from 'rxjs';
 
+import { DateRangeInput } from '../interfaces/date-range.interface';
 import { CalendarModel } from '../model/calendar.model';
 import { DayModel } from '../model/day.model';
 
@@ -21,16 +22,24 @@ import { DayModel } from '../model/day.model';
 @Injectable()
 export class DateNavigationService {
   persistedDate: DayModel;
+  persistedEndDate: DayModel;
   selectedDay: DayModel;
+  selectedEndDay: DayModel;
   focusedDay: DayModel;
+  hoveredDay: DayModel;
+  hoveredMonth: number;
+  hoveredYear: number;
+  isRangePicker = false;
   hasActionButtons = false;
 
   private _displayedCalendar: CalendarModel;
   private _todaysFullDate: Date = new Date();
   private _today: DayModel;
   private _selectedDayChange = new Subject<DayModel>();
+  private _selectedEndDayChange = new Subject<DayModel>();
   private _displayedCalendarChange = new Subject<void>();
   private _focusOnCalendarChange = new Subject<void>();
+  private _refreshCalendarView = new Subject<void>();
   private _focusedDayChange = new Subject<DayModel>();
 
   get today(): DayModel {
@@ -43,6 +52,10 @@ export class DateNavigationService {
 
   get selectedDayChange(): Observable<DayModel> {
     return this._selectedDayChange.asObservable();
+  }
+
+  get selectedEndDayChange(): Observable<DayModel> {
+    return this._selectedEndDayChange.asObservable();
   }
 
   /**
@@ -63,17 +76,38 @@ export class DateNavigationService {
    * This observable lets the subscriber know that the focused day in the displayed calendar has changed.
    */
   get focusedDayChange(): Observable<DayModel> {
-    return this._focusedDayChange.asObservable();
+    return this._focusedDayChange.asObservable().pipe(tap((day: DayModel) => (this.focusedDay = day)));
+  }
+
+  /**
+   * This observable lets the subscriber know that the displayed calendar has changed.
+   */
+  get refreshCalendarView(): Observable<void> {
+    return this._refreshCalendarView.asObservable();
   }
 
   /**
    * Notifies that the selected day has changed so that the date can be emitted to the user.
    */
-  notifySelectedDayChanged(dayModel: DayModel, { emitEvent } = { emitEvent: true }) {
-    this.selectedDay = dayModel;
-    if (emitEvent) {
-      this._selectedDayChange.next(dayModel);
+  notifySelectedDayChanged(dayObject: DayModel | DateRangeInput, { emitEvent } = { emitEvent: true }): void {
+    if (this.isRangePicker) {
+      const { startDate, endDate } = dayObject as DateRangeInput;
+      if (startDate && endDate) {
+        this.setSelectedDay(startDate, emitEvent);
+        this.setSelectedEndDay(endDate, emitEvent);
+      } else {
+        if (endDate !== null) {
+          this.setSelectedEndDay(endDate, emitEvent);
+        }
+        if (startDate !== null) {
+          this.setSelectedDay(startDate, emitEvent);
+        }
+      }
+    } else {
+      const day = dayObject as DayModel;
+      this.setSelectedDay(day, emitEvent);
     }
+    this._refreshCalendarView.next();
   }
 
   /**
@@ -112,6 +146,20 @@ export class DateNavigationService {
   }
 
   /**
+   * Moves the displayed calendar to the next year.
+   */
+  moveToNextYear(): void {
+    this.setDisplayedCalendar(this._displayedCalendar.nextYear());
+  }
+
+  /**
+   * Moves the displayed calendar to the previous year.
+   */
+  moveToPreviousYear(): void {
+    this.setDisplayedCalendar(this._displayedCalendar.previousYear());
+  }
+
+  /**
    * Moves the displayed calendar to the current month and year.
    */
   moveToCurrentMonth(): void {
@@ -121,8 +169,14 @@ export class DateNavigationService {
     this._focusOnCalendarChange.next();
   }
 
+  moveToSpecificMonth(day: DayModel) {
+    if (!this.displayedCalendar.isDayInCalendar(day)) {
+      this.setDisplayedCalendar(new CalendarModel(day.year, day.month));
+    }
+  }
+
   incrementFocusDay(value: number): void {
-    this.focusedDay = this.focusedDay.incrementBy(value);
+    this.hoveredDay = this.focusedDay = this.focusedDay.incrementBy(value);
     if (this._displayedCalendar.isDayInCalendar(this.focusedDay)) {
       this._focusedDayChange.next(this.focusedDay);
     } else {
@@ -133,6 +187,25 @@ export class DateNavigationService {
 
   resetSelectedDay() {
     this.selectedDay = this.persistedDate;
+    this.selectedEndDay = this.persistedEndDate;
+  }
+
+  convertDateToDayModel(date: Date): DayModel {
+    return new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  private setSelectedDay(dayModel: DayModel | undefined, emitEvent): void {
+    this.selectedDay = dayModel;
+    if (emitEvent) {
+      this._selectedDayChange.next(dayModel);
+    }
+  }
+
+  private setSelectedEndDay(dayModel: DayModel | undefined, emitEvent): void {
+    this.selectedEndDay = dayModel;
+    if (emitEvent) {
+      this._selectedEndDayChange.next(dayModel);
+    }
   }
 
   // not a setter because i want this to remain private

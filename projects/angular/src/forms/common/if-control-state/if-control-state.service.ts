@@ -6,7 +6,8 @@
  */
 
 import { Injectable } from '@angular/core';
-import { EMPTY, map, merge, Observable, shareReplay, startWith, Subject, switchMap } from 'rxjs';
+import { NgControl } from '@angular/forms';
+import { combineLatest, EMPTY, map, merge, Observable, shareReplay, startWith, Subject, switchMap } from 'rxjs';
 
 import { NgControlService } from '../providers/ng-control.service';
 
@@ -31,15 +32,32 @@ export class IfControlStateService {
   }
 
   private getStatusChanges(ngControlService: NgControlService) {
-    return ngControlService.controlChanges.pipe(
-      switchMap(control =>
-        control ? merge(control.statusChanges, this.triggerStatusChangeSubject.pipe(map(() => control.status))) : EMPTY
-      ),
-      map(controlStatus => {
+    return combineLatest([
+      ngControlService.controlChanges,
+      ngControlService.additionalControlsChanges.pipe(startWith<NgControl[]>([])),
+    ]).pipe(
+      switchMap(([control, additionalControls]) => {
+        if (control) {
+          const controls = [control, ...additionalControls];
+
+          return merge(
+            combineLatest(controls.map(control => control.statusChanges)),
+            this.triggerStatusChangeSubject.pipe(map(() => controls.map(control => control.status)))
+          );
+        } else {
+          return EMPTY;
+        }
+      }),
+      map(controlStatuses => {
         // These status values are mutually exclusive, so a control
         // cannot be both valid AND invalid or invalid AND disabled.
-        const status = CONTROL_STATE[controlStatus];
-        return [CONTROL_STATE.VALID, CONTROL_STATE.INVALID].includes(status) ? status : CONTROL_STATE.NONE;
+        if (controlStatuses.includes(CONTROL_STATE.INVALID)) {
+          return CONTROL_STATE.INVALID;
+        } else if (controlStatuses.includes(CONTROL_STATE.VALID)) {
+          return CONTROL_STATE.VALID;
+        } else {
+          return CONTROL_STATE.NONE;
+        }
       }),
       startWith(CONTROL_STATE.NONE)
     );

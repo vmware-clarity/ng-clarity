@@ -44,7 +44,7 @@ export default {
     // outputs
     clrDateChange: action('clrDateChange'),
     // story helpers
-    getDateObject: date => new Date(date),
+    getDateObject: date => date && new Date(date),
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
   },
 };
@@ -57,7 +57,7 @@ const DatePickerTemplate: StoryFn = args => ({
         #date
         type="date"
         [id]="id"
-        [clrDate]="getDateObject(clrDate || date.value)"
+        [clrDate]="getDateObject(clrDate)"
         [min]="getDateString(min)"
         [max]="getDateString(max)"
         [disabled]="disabled"
@@ -77,7 +77,7 @@ export const Datepicker: StoryObj = {
 export const DefaultDate: StoryObj = {
   render: DatePickerTemplate,
   args: {
-    clrDate: '2022-01-01 00:00:00.000',
+    clrDate: '2025-01-01 00:00:00.000',
   },
 };
 
