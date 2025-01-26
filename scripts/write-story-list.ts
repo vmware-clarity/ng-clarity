@@ -8,6 +8,7 @@
 import * as fs from 'fs';
 import * as http from 'http';
 import * as nodeStatic from 'node-static';
+import * as path from 'node:path';
 import * as playwright from 'playwright';
 
 import { Story } from '../tests/helpers/story.interface';
@@ -52,7 +53,8 @@ async function main() {
   });
 
   // And write a file for the storybook-visual-regression-test `playwright` test to read.
-  fs.writeFileSync('./dist/docs/stories.json', JSON.stringify(storyIds, undefined, 2));
+  const storiesFilePath = path.join('.', 'dist', 'docs', 'stories.json');
+  fs.writeFileSync(storiesFilePath, JSON.stringify(storyIds, undefined, 2));
 
   await browser.close();
   await closeServer(server);

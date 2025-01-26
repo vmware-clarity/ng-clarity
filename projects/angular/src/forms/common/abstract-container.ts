@@ -27,6 +27,7 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
   @ContentChild(ClrControlHelper) controlHelperComponent: ClrControlHelper;
 
   control: NgControl;
+  additionalControls: NgControl[];
   _dynamic = false;
 
   protected subscriptions: Subscription[] = [];
@@ -52,6 +53,9 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
     this.subscriptions.push(
       ngControlService.controlChanges.subscribe(control => {
         this.control = control;
+      }),
+      ngControlService.additionalControlsChanges.subscribe(controls => {
+        this.additionalControls = controls;
       })
     );
   }
@@ -82,15 +86,23 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
   }
 
   get showValid(): boolean {
-    return this.touched && this.state === CONTROL_STATE.VALID && !!this.controlSuccessComponent;
+    return this.touched && this.state === CONTROL_STATE.VALID && this.successMessagePresent;
   }
 
   get showInvalid(): boolean {
-    return this.touched && this.state === CONTROL_STATE.INVALID && !!this.controlErrorComponent;
+    return this.touched && this.state === CONTROL_STATE.INVALID && this.errorMessagePresent;
+  }
+
+  protected get successMessagePresent() {
+    return !!this.controlSuccessComponent;
+  }
+
+  protected get errorMessagePresent() {
+    return !!this.controlErrorComponent;
   }
 
   private get touched() {
-    return this.control?.touched;
+    return !!(this.control?.touched || this.additionalControls?.some(control => control.touched));
   }
 
   ngAfterContentInit() {

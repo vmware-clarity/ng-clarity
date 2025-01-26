@@ -10,6 +10,7 @@
 @use '../../utils/variables/variables.global';
 @use 'variables.datepicker' as datepicker-variables;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../button/variables.buttons' as button-variables;
 
 @include meta.load-css('properties.datepicker');
 
@@ -32,14 +33,23 @@
 }
 
 @mixin generate-calendar-focus-style() {
-  &:hover,
-  &:focus {
+  &:hover {
     background: datepicker-variables.$clr-calendar-btn-hover-focus-color;
+  }
+
+  &.in-range {
+    background: datepicker-variables.$clr-calendar-in-range-cell-background-color;
+
+    &:not(.is-today) {
+      border-radius: 0;
+    }
   }
 
   &:focus {
     //Only because we have defined a background color for focus above
-    outline: 0;
+    outline: tokens.$cds-alias-object-interaction-outline;
+    outline-color: tokens.$cds-global-color-blue-700;
+    outline-offset: calc(-1 * tokens.$cds-global-space-2);
   }
 
   &:active {
@@ -47,9 +57,38 @@
   }
 }
 
+@mixin generate-current-date-style() {
+  &.is-today {
+    color: datepicker-variables.$clr-calendar-today-date-cell-color;
+    border: tokens.$cds-global-space-1 solid datepicker-variables.$clr-calendar-today-date-cell-border-color;
+    font-weight: datepicker-variables.$clr-calendar-today-date-cell-font-weight;
+  }
+}
+
+@mixin generate-selected-date-style() {
+  &.is-selected,
+  &.is-start-range,
+  &.is-end-range {
+    background: datepicker-variables.$clr-calendar-active-cell-background-color;
+    color: datepicker-variables.$clr-calendar-active-cell-color;
+  }
+  &.is-start-range:not(.is-end-range) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &.is-end-range:not(.is-start-range) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &.is-selected:focus {
+    background: datepicker-variables.$clr-calendar-active-focus-cell-background-color;
+  }
+}
+
 @mixin generate-calendar-hover-active-color-style() {
-  &:hover,
-  &:focus {
+  &:hover {
     color: datepicker-variables.$clr-calendar-btn-hover-focus-color-text;
   }
 
@@ -61,7 +100,9 @@
 @include mixins.exports('datepicker.clarity') {
   .datepicker {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
 
     //Dimensions
     margin-top: datepicker-variables.$clr-calendar-margin-top;
@@ -74,8 +115,45 @@
     border: tokens.$cds-alias-object-border-width-100 solid datepicker-variables.$clr-calendar-border-color;
     border-radius: tokens.$cds-alias-object-border-radius-100;
     box-shadow: tokens.$cds-alias-object-shadow-100;
-    overflow: hidden;
     z-index: map.get(variables.$clr-layers, dropdown-menu);
+
+    .datepicker-view-manager {
+      width: calc(datepicker-variables.$clr-calendar-width - calc(1 * datepicker-variables.$clr-calendar-padding));
+      padding-left: datepicker-variables.$clr-calendar-padding;
+    }
+
+    &.has-range-option {
+      width: calc(
+        datepicker-variables.$clr-calendar-width + datepicker-variables.$clr-calendar-options-width +
+          datepicker-variables.$clr-calendar-padding + calc(2 * tokens.$cds-alias-object-border-width-100)
+      );
+    }
+
+    &.has-action-buttons {
+      height: calc(
+        datepicker-variables.$clr-calendar-height + datepicker-variables.$clr-calendar-action-buttons-height
+      );
+    }
+
+    .datepicker-actions {
+      min-width: 100%;
+      height: datepicker-variables.$clr-calendar-action-buttons-height;
+      display: flex;
+      border-top: tokens.$cds-global-space-1 solid tokens.$cds-alias-object-container-border-color;
+      justify-content: end;
+      padding-top: tokens.$cds-global-space-7;
+      gap: button-variables.$clr-btn-horizontal-margin;
+
+      button {
+        margin: 0;
+      }
+    }
+  }
+
+  .clr-date-range-picker-nav {
+    width: datepicker-variables.$clr-calendar-options-width;
+    border-radius: tokens.$cds-alias-object-border-radius-100;
+    height: 100%;
   }
 
   .calendar-header {
@@ -116,7 +194,7 @@
   }
 
   .day {
-    display: inline-block;
+    display: inline;
   }
 
   .weekdays {
@@ -150,6 +228,8 @@
     @include generate-calendar-focus-style();
     @include generate-calendar-hover-active-color-style();
     @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
+    @include generate-current-date-style();
+    @include generate-selected-date-style();
 
     //Dimensions
     width: 100%;
@@ -157,30 +237,14 @@
     //Other Props
     color: inherit;
 
-    &.is-today {
-      color: datepicker-variables.$clr-calendar-today-date-cell-color;
-      font-weight: datepicker-variables.$clr-calendar-today-date-cell-font-weight;
-    }
-
     &.is-excluded {
       display: none;
-    }
-
-    &.is-selected {
-      background: datepicker-variables.$clr-calendar-active-cell-background-color;
-      color: datepicker-variables.$clr-calendar-active-cell-color;
-    }
-
-    &.is-selected:focus {
-      background: datepicker-variables.$clr-calendar-active-focus-cell-background-color;
     }
 
     &.is-disabled {
       color: tokens.$cds-alias-object-interaction-color-disabled;
       pointer-events: none;
-      &:hover {
-        background: none;
-      }
+      background: none;
     }
   }
 
@@ -207,6 +271,12 @@
     color: datepicker-variables.$clr-calendar-btn-picker-trigger-color;
     text-align: center;
     @include mixins.overflow-ellipsis();
+
+    &.year-range {
+      width: unset;
+      align-content: center;
+      padding: tokens.$cds-global-space-5;
+    }
   }
 
   .monthpicker,
@@ -219,6 +289,7 @@
   .years {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
 
     //Other props
     overflow: hidden;
@@ -228,9 +299,8 @@
     gap: tokens.$cds-global-space-6;
   }
 
-  .monthpicker,
   .years {
-    flex-wrap: wrap;
+    flex-direction: row;
   }
 
   .month,
@@ -238,8 +308,10 @@
     @include generate-calendar-button($padding: datepicker-variables.$clr-calendar-month-cell-padding);
     @include generate-calendar-hover-active-color-style();
     @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+    @include generate-current-date-style();
+    @include generate-selected-date-style();
 
-    height: datepicker-variables.$clr-calendar-month-cell-height;
+    height: datepicker-variables.$clr-calendar-year-cell-height;
     width: datepicker-variables.$clr-month-year-btn-width;
 
     &.is-disabled {
@@ -249,19 +321,11 @@
         background: none;
       }
     }
-
-    &.is-selected {
-      background: datepicker-variables.$clr-calendar-active-cell-background-color;
-      color: datepicker-variables.$clr-calendar-active-cell-color;
-    }
-
-    &.is-selected:focus {
-      background: datepicker-variables.$clr-calendar-active-focus-cell-background-color;
-    }
   }
 
   .month {
     text-align: center;
+    height: datepicker-variables.$clr-calendar-month-cell-height;
     @include mixins.overflow-ellipsis();
   }
 

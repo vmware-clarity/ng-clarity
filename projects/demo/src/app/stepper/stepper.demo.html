@@ -7,7 +7,7 @@
 
 <h1>Stepper</h1>
 
-<h2>Stepper with a nested accordion inside it</h2>
+<h2>Stepper with a nested Accordion inside it</h2>
 
 <form clrStepper clrForm [formGroup]="formGroup">
   <clr-stepper-panel formGroupName="group">
@@ -31,11 +31,46 @@
             <clr-accordion-content>Accordion 2 content</clr-accordion-content>
           </clr-accordion-panel>
         </clr-accordion>
-        <button #nextBtn clrStepButton="next">NEXT</button>
+        <button #nextBtn [clrLoading]="state" clrStepButton="next" (click)="loadingDemo()">NEXT</button>
       </ng-template>
     </clr-step-content>
   </clr-stepper-panel>
 </form>
+
+<h2>Accordion with a nested Stepper inside it</h2>
+
+<clr-accordion>
+  <clr-accordion-panel [clrAccordionPanelOpen]="true">
+    <clr-accordion-title>Accordion 1</clr-accordion-title>
+    <clr-accordion-description>
+      The full license information can be found in LICENSE in the root directory.
+    </clr-accordion-description>
+    <clr-accordion-content>
+      <form clrStepper clrForm [formGroup]="formGroup">
+        <clr-stepper-panel formGroupName="group">
+          <clr-step-title>Nested Accordion</clr-step-title>
+          <clr-step-description> Demonstrate Nested accordion issue </clr-step-description>
+          <clr-step-content *clrIfExpanded>
+            <clr-input-container>
+              <label>First Name</label>
+              <input clrInput formControlName="first" minlength="4" />
+              <clr-control-error *clrIfError="'minlength'">First Name Length</clr-control-error>
+            </clr-input-container>
+
+            <clr-input-container>
+              <label>Last Name</label>
+              <input clrInput formControlName="last" />
+              <clr-control-error *clrIfError="'required'">Last Name Required</clr-control-error>
+            </clr-input-container>
+
+            <button clrStepButton="previous">previous</button>
+            <button clrStepButton="next">next</button>
+          </clr-step-content>
+        </clr-stepper-panel>
+      </form>
+    </clr-accordion-content>
+  </clr-accordion-panel>
+</clr-accordion>
 
 <h2>Angular - Stepper Reactive Forms</h2>
 

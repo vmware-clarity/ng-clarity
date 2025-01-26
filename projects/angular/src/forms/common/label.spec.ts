@@ -10,6 +10,8 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { ClrIconModule } from '../../icon/icon.module';
+import { ClrSignpostModule, ClrSignpostTrigger } from '../../popover';
+import { ClrInput } from '../input/input';
 import { ClrInputContainer } from '../input/input-container';
 import { ClrLabel } from './label';
 import { ControlIdService } from './providers/control-id.service';
@@ -46,6 +48,55 @@ class WrapperTest {}
   template: `<label for="hello" class="clr-col-12 clr-col-md-3"></label>`,
 })
 class ExistingGridTest {}
+
+@Component({
+  template: `
+    <label>
+      <clr-signpost>
+        <cds-icon id="signpost-trigger" shape="info-standard" clrSignpostTrigger>Trigger</cds-icon>
+        <clr-signpost-content *clrIfOpen>Signpost content</clr-signpost-content>
+      </clr-signpost>
+    </label>
+  `,
+})
+class SignpostTest {
+  @ViewChild(ClrSignpostTrigger) signpostTrigger: ClrSignpostTrigger;
+}
+
+@Component({
+  template: `
+    <label>
+      Test
+      <input type="text" />
+    </label>
+  `,
+})
+class DefaultClickBehaviorTest {}
+
+@Component({
+  template: `<label id="explicit-label"></label>`,
+})
+class ExplicitIdTest {}
+
+@Component({
+  template: `
+    <clr-input-container>
+      <label>Label</label>
+      <input clrInput />
+    </clr-input-container>
+  `,
+})
+class ControlIdTest {}
+
+@Component({
+  template: `
+    <clr-input-container>
+      <label>Label</label>
+      <input id="explicit-control" clrInput />
+    </clr-input-container>
+  `,
+})
+class ExplicitControlIdTest {}
 
 export default function (): void {
   describe('ClrLabel', () => {
@@ -174,6 +225,66 @@ export default function (): void {
       fixture.detectChanges();
       const label = fixture.nativeElement.querySelector('label');
       expect(label.getAttribute('for')).toBe('updatedFor');
+    });
+
+    it('leaves the id attribute untouched if it exists (with control id service)', function () {
+      TestBed.configureTestingModule({ declarations: [ClrLabel, ExplicitIdTest], providers: [ControlIdService] });
+      const fixture = TestBed.createComponent(ExplicitIdTest);
+      fixture.detectChanges();
+      const label = fixture.nativeElement.querySelector('label');
+      expect(label.getAttribute('id')).toBe('explicit-label');
+    });
+
+    it('leaves the id attribute untouched if it exists (without control id service)', function () {
+      TestBed.configureTestingModule({ declarations: [ClrLabel, ExplicitIdTest] });
+      const fixture = TestBed.createComponent(ExplicitIdTest);
+      fixture.detectChanges();
+      const label = fixture.nativeElement.querySelector('label');
+      expect(label.getAttribute('id')).toBe('explicit-label');
+    });
+
+    it('uses the control id when present', function () {
+      TestBed.configureTestingModule({ declarations: [ClrLabel, ClrInputContainer, ClrInput, ControlIdTest] });
+      const fixture = TestBed.createComponent(ControlIdTest);
+      fixture.detectChanges();
+      const input = fixture.nativeElement.querySelector('input');
+      const label = fixture.nativeElement.querySelector('label');
+      expect(label.getAttribute('id')).toBe(`${input.id}-label`);
+    });
+
+    it('uses an explicit control id when present', function () {
+      TestBed.configureTestingModule({ declarations: [ClrLabel, ClrInputContainer, ClrInput, ExplicitControlIdTest] });
+      const fixture = TestBed.createComponent(ExplicitControlIdTest);
+      fixture.detectChanges();
+      const label = fixture.nativeElement.querySelector('label');
+      expect(label.id).toBe('explicit-control-label');
+      expect(label.getAttribute('for')).toBe('explicit-control');
+    });
+
+    it('signposts work inside labels', function () {
+      TestBed.configureTestingModule({
+        imports: [ClrSignpostModule, ClrIconModule],
+        declarations: [ClrLabel, SignpostTest],
+      });
+      const fixture = TestBed.createComponent(SignpostTest);
+      fixture.detectChanges();
+      const signpostTrigger = fixture.nativeElement.querySelector('#signpost-trigger');
+      signpostTrigger.click();
+      fixture.detectChanges();
+      expect(fixture.componentInstance.signpostTrigger.isOpen).toBe(true);
+    });
+
+    it('focus input on label click', function () {
+      TestBed.configureTestingModule({
+        declarations: [ClrLabel, DefaultClickBehaviorTest],
+      });
+      const fixture = TestBed.createComponent(DefaultClickBehaviorTest);
+      fixture.detectChanges();
+      const label = fixture.nativeElement.querySelector('label');
+      label.click();
+      fixture.detectChanges();
+      const input = fixture.nativeElement.querySelector('input');
+      expect(document.activeElement).toBe(input);
     });
   });
 }

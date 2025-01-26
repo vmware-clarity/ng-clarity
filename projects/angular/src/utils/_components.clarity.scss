@@ -111,6 +111,7 @@
 @forward '../forms/styles/range.clarity';
 @forward '../forms/styles/datalist.clarity';
 @forward '../forms/styles/password.clarity';
+@forward '../forms/styles/number-input.clarity';
 @forward '../forms/datepicker/datepicker.clarity';
 @forward '../forms/combobox/combobox.clarity';
 
@@ -148,3 +149,6 @@
 
 // Timeline
 @forward '../timeline/timeline.clarity';
+
+// Breadcrumbs
+@forward '../layout/breadcrumbs/breadcrumbs.clarity';

@@ -12,6 +12,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IfExpandService } from '../utils/conditional/if-expanded.service';
+import { HeadingLevel } from '../wizard';
 import { ClrAccordionPanel } from './accordion-panel';
 import { ClrAccordionModule } from './accordion.module';
 import { AccordionPanelModel } from './models/accordion.model';
@@ -22,6 +23,7 @@ import { AccordionService } from './providers/accordion.service';
     <clr-accordion>
       <clr-accordion-panel
         [(clrAccordionPanelOpen)]="open"
+        [clrAccordionPanelHeadingLevel]="headingLevel"
         [clrAccordionPanelDisabled]="disabled"
         (clrAccordionPanelOpenChange)="change($event)"
       >
@@ -36,10 +38,34 @@ class TestComponent {
   open = false;
   disabled = false;
   showDescription = false;
+  headingLevel: HeadingLevel;
   change = state => {
     return state;
   };
 }
+
+@Component({
+  template: `
+    <clr-accordion>
+      <clr-accordion-panel [clrAccordionPanelOpen]="true" [clrAccordionPanelHeadingEnabled]="true">
+        <clr-accordion-title>title 1</clr-accordion-title>
+        <clr-accordion-content>
+          <clr-accordion>
+            <clr-accordion-panel
+              id="nested-accordion-panel"
+              [clrAccordionPanelOpen]="true"
+              [clrAccordionPanelHeadingEnabled]="true"
+            >
+              <clr-accordion-title>nested title</clr-accordion-title>
+              <clr-accordion-content>nested panel</clr-accordion-content>
+            </clr-accordion-panel>
+          </clr-accordion>
+        </clr-accordion-content>
+      </clr-accordion-panel>
+    </clr-accordion>
+  `,
+})
+class TestNestedAccordionComponent {}
 
 @Component({
   template: `
@@ -185,7 +211,7 @@ describe('ClrAccordionPanel', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        declarations: [TestComponent],
+        declarations: [TestComponent, TestNoBindingComponent, TestNestedAccordionComponent],
         imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
       });
 
@@ -267,6 +293,44 @@ describe('ClrAccordionPanel', () => {
       fixture.componentInstance.showDescription = true;
       fixture.detectChanges();
       expect(panelElement.querySelector('.clr-accordion-header-has-description')).toBeTruthy();
+    });
+
+    it('should allow the aria-level attribute to be set to an explicit value', () => {
+      expect(panelElement.querySelector('[role="heading"]')).toBeNull();
+
+      fixture.componentInstance.headingLevel = 5;
+      fixture.detectChanges();
+      const panelHeading = panelElement.querySelector('[role="heading"]');
+
+      expect(panelHeading).not.toBeNull();
+      expect(panelHeading.getAttribute('aria-level')).toBe('5');
+    });
+
+    it('when [clrAccordionPanelHeadingEnabled] is not set at all, heading role should not be present', () => {
+      const fixture = TestBed.createComponent(TestNoBindingComponent);
+      fixture.detectChanges();
+
+      const accordionPanel: HTMLElement = fixture.debugElement.query(By.directive(ClrAccordionPanel)).nativeElement;
+      const panelHeading = accordionPanel.querySelector('[role="heading"]');
+
+      expect(panelHeading).toBeNull();
+    });
+
+    it('default heading aria-level should be present in nested accordion', () => {
+      const fixture = TestBed.createComponent(TestNestedAccordionComponent);
+      fixture.detectChanges();
+
+      const accordionPanel: HTMLElement = fixture.debugElement.query(By.directive(ClrAccordionPanel)).nativeElement;
+      const panelHeading = accordionPanel.querySelector('[role="heading"]');
+
+      expect(panelHeading).not.toBeNull();
+      expect(panelHeading.getAttribute('aria-level')).toBe('3');
+
+      const nestedAccordionPanel = accordionPanel.querySelector('#nested-accordion-panel');
+      const nestedPanelHeading = nestedAccordionPanel.querySelector('[role="heading"]');
+
+      expect(nestedPanelHeading).not.toBeNull();
+      expect(nestedPanelHeading.getAttribute('aria-level')).toBe('4');
     });
   });
 });

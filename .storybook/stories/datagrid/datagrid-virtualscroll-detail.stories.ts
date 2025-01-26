@@ -70,12 +70,12 @@ const DatagridDetailsTemplate: StoryFn = args => ({
   template: `
     <style>
       .electronegativity-container {
-        background-color: #119cd4;
-        display: inline-block;
-      }
-      .electronegativity-text {
-        width: 3rem;
-        display: inline-block;
+        display: flex;
+        justify-content: space-between;
+
+        .electronegativity-bar {
+          background-color: var(--cds-alias-status-info);
+        }
       }
     </style>
     <clr-datagrid
@@ -130,11 +130,9 @@ const DatagridDetailsTemplate: StoryFn = args => ({
           <clr-dg-cell>{{ element.name }}</clr-dg-cell>
           <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
           <clr-dg-cell>{{ element.number }}</clr-dg-cell>
-          <clr-dg-cell>
-            <span class="electronegativity-text">{{ element.electronegativity }}</span>
-            <span [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-container">
-              &nbsp;
-            </span>
+          <clr-dg-cell class="electronegativity-container">
+            {{ element.electronegativity }}
+            <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
           </clr-dg-cell>
         </clr-dg-row>
       </ng-template>

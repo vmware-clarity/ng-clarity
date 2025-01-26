@@ -367,10 +367,16 @@
   .signpost-content-header {
     display: flex;
     justify-content: flex-end;
+    gap: tokens.$cds-global-space-3;
     width: 100%;
     background-color: inherit;
     top: 0;
     border-radius: signpost-variables.$clr-signpost-border-radius;
+
+    .signpost-title {
+      @include mixins.generate-typography-token('TableHeaders-11-SB-CPT');
+      margin-right: auto;
+    }
   }
 
   .signpost-wrap {

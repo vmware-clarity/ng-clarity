@@ -750,7 +750,7 @@
     .datagrid-row-detail {
       .datagrid-cell {
         display: block;
-        padding-top: tokens.$cds-global-space-6;
+        padding: tables-variables.$clr-table-cell-padding;
 
         &.datagrid-hidden-column {
           display: none;
@@ -893,6 +893,10 @@
   }
 
   .datagrid-compact {
+    .datagrid-row-replaced .datagrid-row-detail .datagrid-cell {
+      padding: tables-variables.$clr-table-cell-compact-padding;
+    }
+
     .datagrid-header {
       min-height: tokens.$cds-global-space-9;
     }
@@ -1415,6 +1419,7 @@
 
       .close {
         float: none;
+        font-size: unset;
       }
     }
 
@@ -1426,9 +1431,14 @@
     .datagrid-numeric-filter-form {
       display: flex;
       gap: tokens.$cds-global-space-6;
-      .clr-form-control {
-        margin-top: 0;
+
+      input.datagrid-numeric-filter-input {
+        width: tokens.$cds-global-space-15;
       }
+    }
+
+    .clr-form-control {
+      margin-top: 0;
     }
   }
 
