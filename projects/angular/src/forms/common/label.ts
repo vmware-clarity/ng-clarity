@@ -50,6 +50,10 @@ export class ClrLabel implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Prevent id attributes from being removed by the `undefined` host binding.
+    // This happens when a `label` is used outside of a control container and other use cases.
+    this.idAttr = this.idInput;
+
     // Only add the clr-control-label if it is inside a control container
     if (this.controlIdService || this.ngControlService) {
       this.renderer.addClass(this.el.nativeElement, 'clr-control-label');
