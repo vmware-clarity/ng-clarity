@@ -86,7 +86,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     private _scrollingService: ScrollingService,
     public commonStrings: ClrCommonStringsService,
     private modalStackService: ModalStackService,
-    private configuration: ClrModalConfigurationService
+    private configuration: ClrModalConfigurationService,
+    private elementRef: ElementRef
   ) {}
 
   get pinned(): boolean {
@@ -113,6 +114,10 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   get backdrop(): boolean {
     return this.configuration.backdrop;
+  }
+
+  private get hostElement(): HTMLElement {
+    return (this.elementRef.nativeElement as HTMLElement).closest('.modal-host') || document.body;
   }
 
   // Detect when _open is set to true and set no-scrolling to true
@@ -180,13 +185,13 @@ export class ClrModal implements OnChanges, OnDestroy {
   }
 
   private displaySideBySide() {
-    document.body.classList.add('clr-side-panel-pinned-' + this.size);
+    this.hostElement.classList.add('clr-side-panel-pinned-' + this.size);
   }
 
   private displayOverlapping() {
-    document.body.classList.forEach(clazz => {
+    this.hostElement.classList.forEach(clazz => {
       if (clazz.startsWith('clr-side-panel-pinned-')) {
-        document.body.classList.remove(clazz);
+        this.hostElement.classList.remove(clazz);
       }
     });
   }
