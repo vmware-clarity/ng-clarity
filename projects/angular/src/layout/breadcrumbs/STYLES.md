@@ -8,10 +8,9 @@
 
 ## CSS Classes
 
-| Class name            | Description                              |
-| --------------------- | ---------------------------------------- |
-| clr-breadcrumb        | Breadcrumb element                       |
-| clr-breadcrumb-menu   | Breadcrumb menu                          |
-| clr-breadcrumb-item   | Breadcrumb menu item                     |
-| clr-breadcrumb-expand | Breadcrumb expand control                |
-| active                | Current breadcrumb in the page hierarchy |
+| Class name            | Description               |
+| --------------------- | ------------------------- |
+| clr-breadcrumb        | Breadcrumb element        |
+| clr-breadcrumb-menu   | Breadcrumb menu           |
+| clr-breadcrumb-item   | Breadcrumb menu item      |
+| clr-breadcrumb-expand | Breadcrumb expand control |

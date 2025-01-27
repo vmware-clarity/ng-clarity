@@ -35,10 +35,6 @@
       }
     }
 
-    .active {
-      color: breadcrumb-variables.$clr-breadcrumb-active-color;
-    }
-
     .clr-breadcrumb-item:last-child {
       color: breadcrumb-variables.$clr-breadcrumb-active-color;
     }
