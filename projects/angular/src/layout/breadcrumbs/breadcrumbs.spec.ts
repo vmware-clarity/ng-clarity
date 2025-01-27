@@ -61,7 +61,7 @@ describe('ClrBreadcrumbs', () => {
   }));
 
   it('should have a seperator between breadcrumbs', () => {
-    const link = breadcrumbList.nativeElement.querySelector('.clr-breadcrumb-item a');
+    const link = breadcrumbList.nativeElement.querySelector('.clr-breadcrumb-item');
     const delimiter = window.getComputedStyle(link, ':after').getPropertyValue('content');
     expect(delimiter).toEqual('"/"');
   });
