@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrSignpostModule, ClrSignpostTrigger } from '../../popover';
+import { ClrInput } from '../input/input';
 import { ClrInputContainer } from '../input/input-container';
 import { ClrLabel } from './label';
 import { ControlIdService } from './providers/control-id.service';
@@ -71,6 +72,31 @@ class SignpostTest {
   `,
 })
 class DefaultClickBehaviorTest {}
+
+@Component({
+  template: `<label id="explicit-label"></label>`,
+})
+class ExplicitIdTest {}
+
+@Component({
+  template: `
+    <clr-input-container>
+      <label>Label</label>
+      <input clrInput />
+    </clr-input-container>
+  `,
+})
+class ControlIdTest {}
+
+@Component({
+  template: `
+    <clr-input-container>
+      <label>Label</label>
+      <input id="explicit-control" clrInput />
+    </clr-input-container>
+  `,
+})
+class ExplicitControlIdTest {}
 
 export default function (): void {
   describe('ClrLabel', () => {
@@ -199,6 +225,40 @@ export default function (): void {
       fixture.detectChanges();
       const label = fixture.nativeElement.querySelector('label');
       expect(label.getAttribute('for')).toBe('updatedFor');
+    });
+
+    it('leaves the id attribute untouched if it exists (with control id service)', function () {
+      TestBed.configureTestingModule({ declarations: [ClrLabel, ExplicitIdTest], providers: [ControlIdService] });
+      const fixture = TestBed.createComponent(ExplicitIdTest);
+      fixture.detectChanges();
+      const label = fixture.nativeElement.querySelector('label');
+      expect(label.getAttribute('id')).toBe('explicit-label');
+    });
+
+    it('leaves the id attribute untouched if it exists (without control id service)', function () {
+      TestBed.configureTestingModule({ declarations: [ClrLabel, ExplicitIdTest] });
+      const fixture = TestBed.createComponent(ExplicitIdTest);
+      fixture.detectChanges();
+      const label = fixture.nativeElement.querySelector('label');
+      expect(label.getAttribute('id')).toBe('explicit-label');
+    });
+
+    it('uses the control id when present', function () {
+      TestBed.configureTestingModule({ declarations: [ClrLabel, ClrInputContainer, ClrInput, ControlIdTest] });
+      const fixture = TestBed.createComponent(ControlIdTest);
+      fixture.detectChanges();
+      const input = fixture.nativeElement.querySelector('input');
+      const label = fixture.nativeElement.querySelector('label');
+      expect(label.getAttribute('id')).toBe(`${input.id}-label`);
+    });
+
+    it('uses an explicit control id when present', function () {
+      TestBed.configureTestingModule({ declarations: [ClrLabel, ClrInputContainer, ClrInput, ExplicitControlIdTest] });
+      const fixture = TestBed.createComponent(ExplicitControlIdTest);
+      fixture.detectChanges();
+      const label = fixture.nativeElement.querySelector('label');
+      expect(label.id).toBe('explicit-control-label');
+      expect(label.getAttribute('for')).toBe('explicit-control');
     });
 
     it('signposts work inside labels', function () {

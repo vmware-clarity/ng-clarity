@@ -18,6 +18,6 @@ export const CLR_SIDEPANEL_DIRECTIVES: Type<any>[] = [ClrSidePanel];
 @NgModule({
   imports: [CommonModule, CdkTrapFocusModule, ClrIconModule, ClrModalModule],
   declarations: [CLR_SIDEPANEL_DIRECTIVES],
-  exports: [CLR_SIDEPANEL_DIRECTIVES, ClrIconModule],
+  exports: [CLR_SIDEPANEL_DIRECTIVES, ClrModalModule, ClrIconModule],
 })
 export class ClrSidePanelModule {}
