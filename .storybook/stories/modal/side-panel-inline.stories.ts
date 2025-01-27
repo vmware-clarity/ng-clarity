@@ -182,7 +182,7 @@ export const SidePanelPinnable: StoryObj = {
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
-    clrsidePanelSize: 'md',
+    clrSidePanelSize: 'md',
     clrSidePanelBackdrop: false,
     clrSidePanelPinnable: true,
     title: 'Pinnable Side Panel',
