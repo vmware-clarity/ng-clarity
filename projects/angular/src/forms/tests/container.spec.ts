@@ -226,9 +226,9 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       if (test.form) {
         // Handle setting disabled based on reactive form
         test.form.get('model').reset({ value: '', disabled: true });
+        fixture.detectChanges();
+        expect(containerEl.className).toContain('clr-form-control-disabled');
       }
-      fixture.detectChanges();
-      expect(containerEl.className).toContain('clr-form-control-disabled');
     });
 
     it('implements ngOnDestroy', () => {

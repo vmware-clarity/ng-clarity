@@ -14,7 +14,9 @@ export class DayViewModel {
     public isExcluded: boolean = false,
     public isDisabled: boolean = false,
     public isSelected: boolean = false,
-    public isFocusable: boolean = false
+    public isFocusable: boolean = false,
+    public isRangeStartDay: boolean = false,
+    public isRangeEndDay: boolean = false
   ) {}
 
   /**

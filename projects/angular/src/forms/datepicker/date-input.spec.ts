@@ -22,7 +22,7 @@ import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrDateContainer } from './date-container';
-import { ClrDateInput } from './date-input';
+import { ClrDateInput } from './date-single-input';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';

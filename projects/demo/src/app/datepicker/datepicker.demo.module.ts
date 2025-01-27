@@ -26,6 +26,7 @@ import { DatepickerMinMaxDemo } from './datepicker-min-max';
 import { DatePickerWithActionButtonsDemo } from './datepicker-with-action-buttons';
 import { DatepickerDemo } from './datepicker.demo';
 import { ROUTING } from './datepicker.demo.routing';
+import { DateRangePickerDemo } from './daterangepicker';
 import { DisabledDemo } from './disabled';
 import { DatepickerLayoutDemo } from './layout';
 import { NgModelAutoWrappedDatepickerDemo } from './ngmodel-auto-wrapped';
@@ -52,6 +53,7 @@ import { NgModelExplicitWrapperDemo } from './ngmodel-wrapper-explicit-wrapper';
     DisabledDemo,
     DatepickerLayoutDemo,
     DatepickerMinMaxDemo,
+    DateRangePickerDemo,
     DatePickerWithActionButtonsDemo,
   ],
   exports: [
@@ -73,6 +75,7 @@ import { NgModelExplicitWrapperDemo } from './ngmodel-wrapper-explicit-wrapper';
     DisabledDemo,
     DatepickerLayoutDemo,
     DatepickerMinMaxDemo,
+    DateRangePickerDemo,
     DatePickerWithActionButtonsDemo,
   ],
 })
