@@ -12,7 +12,7 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules, removeFocusOutline } from '../../helpers/common';
 
 export default {
-  title: 'Modal/Side Panel',
+  title: 'Modal/Side Panel (inline)',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrSidePanelModule],
@@ -49,43 +49,45 @@ export default {
   },
 };
 
-const SidePanelTemplate: StoryFn = args => ({
+const InlineSidePanelTemplate: StoryFn = args => ({
   template: `
     <div class="main-container">
       <div class="content-container">
         <div class="content-area" style="height: 300px">
-          <button type="button" class="btn btn-primary" (click)="clrSidePanelOpen = true">Open Side Panel</button>
-          <clr-side-panel
-            [clrSidePanelBackdrop]="clrSidePanelBackdrop"
-            [clrSidePanelPinnable]="clrSidePanelPinnable"
-            [clrSidePanelStaticBackdrop]="clrSidePanelStaticBackdrop"
-            [clrSidePanelCloseButtonAriaLabel]="clrSidePanelCloseButtonAriaLabel"
-            [clrSidePanelLabelledById]="clrSidePanelLabelledById"
-            [clrSidePanelOpen]="clrSidePanelOpen"
-            [clrSidePanelSize]="clrSidePanelSize"
-            [clrSidePanelSkipAnimation]="clrSidePanelSkipAnimation"
-            (clrSidePanelOpenChange)="clrSidePanelOpen = $event; clrSidePanelOpenChange($event)"
-            [clrSidePanelPreventClose]="clrSidePanelPreventClose"
-            (clrSidePanelAlternateClose)="clrSidePanelAltClose($event)"
-            #sidePanel
-          >
-            <h3 class="side-panel-title">{{ title }}</h3>
-            <div class="side-panel-body">
-              {{ body }}
+          <div clrModalHost cds-layout="p:md" style="border: 1px dashed hotpink; width: 800px; height: 200px">
+            <button type="button" class="btn btn-primary" (click)="clrSidePanelOpen = true">Open Side Panel</button>
+            <clr-side-panel
+              [clrSidePanelBackdrop]="clrSidePanelBackdrop"
+              [clrSidePanelPinnable]="clrSidePanelPinnable"
+              [clrSidePanelStaticBackdrop]="clrSidePanelStaticBackdrop"
+              [clrSidePanelCloseButtonAriaLabel]="clrSidePanelCloseButtonAriaLabel"
+              [clrSidePanelLabelledById]="clrSidePanelLabelledById"
+              [clrSidePanelOpen]="clrSidePanelOpen"
+              [clrSidePanelSize]="clrSidePanelSize"
+              [clrSidePanelSkipAnimation]="clrSidePanelSkipAnimation"
+              (clrSidePanelOpenChange)="clrSidePanelOpen = $event; clrSidePanelOpenChange($event)"
+              [clrSidePanelPreventClose]="clrSidePanelPreventClose"
+              (clrSidePanelAlternateClose)="clrSidePanelAltClose($event)"
+              #sidePanel
+            >
+              <h3 class="side-panel-title">{{ title }}</h3>
+              <div class="side-panel-body">
+                {{ body }}
+              </div>
+              <div class="side-panel-footer">
+                <button type="button" class="btn btn-outline" (click)="clrSidePanelOpen = false">Force Close</button>
+                <button type="button" class="btn btn-primary" (click)="sidePanel.close()">Close</button>
+              </div>
+            </clr-side-panel>
+            <div>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+              Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
+              sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh
+              lacus, in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum
+              vulputate sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere ipsum tincidunt
+              velit pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet metus
+              finibus hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit diam.
             </div>
-            <div class="side-panel-footer">
-              <button type="button" class="btn btn-outline" (click)="clrSidePanelOpen = false">Force Close</button>
-              <button type="button" class="btn btn-primary" (click)="sidePanel.close()">Close</button>
-            </div>
-          </clr-side-panel>
-          <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
-            Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
-            sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh lacus,
-            in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum vulputate
-            sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere ipsum tincidunt velit
-            pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet metus finibus
-            hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit diam.
           </div>
         </div>
       </div>
@@ -95,11 +97,11 @@ const SidePanelTemplate: StoryFn = args => ({
 });
 
 export const SidePanel: StoryObj = {
-  render: SidePanelTemplate,
+  render: InlineSidePanelTemplate,
 };
 
 export const SidePanelSmall: StoryObj = {
-  render: SidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
@@ -111,7 +113,7 @@ export const SidePanelSmall: StoryObj = {
 };
 
 export const SidePanelMedium: StoryObj = {
-  render: SidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
@@ -123,7 +125,7 @@ export const SidePanelMedium: StoryObj = {
 };
 
 export const SidePanelLarge: StoryObj = {
-  render: SidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
@@ -135,7 +137,7 @@ export const SidePanelLarge: StoryObj = {
 };
 
 export const SidePanelExtraLarge: StoryObj = {
-  render: SidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
@@ -147,7 +149,7 @@ export const SidePanelExtraLarge: StoryObj = {
 };
 
 export const SidePanelWithoutBackdrop: StoryObj = {
-  render: SidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
@@ -159,7 +161,7 @@ export const SidePanelWithoutBackdrop: StoryObj = {
 };
 
 export const SidePanelAlternateClose: StoryObj = {
-  render: SidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
@@ -176,7 +178,7 @@ export const SidePanelAlternateClose: StoryObj = {
 };
 
 export const SidePanelPinnable: StoryObj = {
-  render: SidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
@@ -189,7 +191,7 @@ export const SidePanelPinnable: StoryObj = {
 };
 
 export const SidePanelFullScreen: StoryObj = {
-  render: SidePanelTemplate,
+  render: InlineSidePanelTemplate,
   play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
