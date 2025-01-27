@@ -126,12 +126,12 @@ export class ClrModal implements OnChanges, OnDestroy {
       if (changes._open.currentValue) {
         !this.pinnable && this._scrollingService.stopScrolling();
         this.modalStackService.trackModalOpen(this);
-        if (this.pinned) {
+        if (this.pinnable && this.pinned) {
           this.displaySideBySide();
         }
       } else {
         this._scrollingService.resumeScrolling();
-        if (this.pinned) {
+        if (this.pinnable && this.pinned) {
           this.displayOverlapping();
         }
       }
@@ -189,9 +189,9 @@ export class ClrModal implements OnChanges, OnDestroy {
   }
 
   private displayOverlapping() {
-    this.hostElement.classList.forEach(clazz => {
-      if (clazz.startsWith('clr-side-panel-pinned-')) {
-        this.hostElement.classList.remove(clazz);
+    this.hostElement.classList.forEach(className => {
+      if (className.startsWith('clr-side-panel-pinned-')) {
+        this.hostElement.classList.remove(className);
       }
     });
   }
