@@ -40,7 +40,6 @@ export default {
     clrDgSelectable: true,
     clrDgSelected: false,
     clrDgRowSelectionLabel: '',
-    clrDgReplace: false,
     // outputs
     clrDgExpandedChange: action('clrDgExpandedChange'),
     clrDgSelectedChange: action('clrDgSelectedChange'),
