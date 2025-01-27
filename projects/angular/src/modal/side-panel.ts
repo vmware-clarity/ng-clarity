@@ -5,7 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
 import { ClrModal } from './modal';
 import { ClrModalConfigurationService } from './modal-configuration.service';
@@ -17,7 +27,7 @@ import { ClrModalConfigurationService } from './modal-configuration.service';
     '[class.side-panel]': 'true',
   },
 })
-export class ClrSidePanel implements OnInit {
+export class ClrSidePanel implements OnInit, AfterViewInit {
   @Input('clrSidePanelOpen') _open = false;
   @Output('clrSidePanelOpenChange') openChange = new EventEmitter<boolean>(false);
   @Input('clrSidePanelCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
@@ -30,20 +40,39 @@ export class ClrSidePanel implements OnInit {
 
   @ViewChild(ClrModal) private modal: ClrModal;
 
+  private _pinnable = false;
+
   constructor(private element: ElementRef<HTMLElement>, private configuration: ClrModalConfigurationService) {}
 
   @Input()
   get clrSidePanelBackdrop(): boolean {
     return this.configuration.backdrop;
   }
+
   set clrSidePanelBackdrop(backdrop: boolean) {
     if (backdrop !== undefined) {
       this.configuration.backdrop = backdrop;
     }
   }
 
+  @Input()
+  get clrSidePanelPinnable(): boolean {
+    return this._pinnable;
+  }
+
+  set clrSidePanelPinnable(pinnable: boolean) {
+    this._pinnable = pinnable;
+    if (this.modal) {
+      this.modal.pinnable = pinnable;
+    }
+  }
+
   ngOnInit(): void {
     this.configuration.fadeMove = 'fadeLeft';
+  }
+
+  ngAfterViewInit() {
+    this.modal.pinnable = this._pinnable;
   }
 
   open() {
