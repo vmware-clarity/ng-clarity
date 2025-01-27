@@ -83,7 +83,7 @@ import { ColumnsService } from './providers/columns.service';
 })
 export class ClrDatagridColumnToggle implements OnDestroy {
   popoverId = uniqueIdFactory();
-  openState: boolean;
+  openState = false;
 
   // Smart Popover
   smartPosition: ClrPopoverPosition = {
