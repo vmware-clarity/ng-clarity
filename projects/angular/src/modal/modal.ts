@@ -75,52 +75,17 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @Input('clrModalLabelledById') labelledBy: string;
 
-  // For now we only want to expose this as input on the side panel
-  pinnable = false;
-
   // presently this is only used by inline wizards
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
-  private _pinned = false;
 
-  private _size: string;
+  @Input('clrModalSize') size: string;
 
   constructor(
     private _scrollingService: ScrollingService,
     public commonStrings: ClrCommonStringsService,
     private modalStackService: ModalStackService,
-    private configuration: ClrModalConfigurationService,
-    private elementRef: ElementRef
+    private configuration: ClrModalConfigurationService
   ) {}
-
-  @Input('clrModalSize')
-  get size(): string {
-    return this._size;
-  }
-
-  set size(value: string) {
-    if (this._size !== value) {
-      this._size = value;
-      if (this.pinnable && this.pinned) {
-        this.displayOverlapping();
-        this.displaySideBySide();
-      }
-    }
-  }
-
-  get pinned(): boolean {
-    return this._pinned;
-  }
-
-  set pinned(pinned: boolean) {
-    if (this.pinnable) {
-      this._pinned = pinned;
-      if (pinned) {
-        this.displaySideBySide();
-      } else {
-        this.displayOverlapping();
-      }
-    }
-  }
 
   get fadeMove(): string {
     return this.skipAnimation ? '' : this.configuration.fadeMove;
@@ -133,31 +98,20 @@ export class ClrModal implements OnChanges, OnDestroy {
     return this.configuration.backdrop;
   }
 
-  private get hostElement(): HTMLElement {
-    return (this.elementRef.nativeElement as HTMLElement).closest('.clr-modal-host') || document.body;
-  }
-
   // Detect when _open is set to true and set no-scrolling to true
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
     if (!this.bypassScrollService && changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
       if (changes._open.currentValue) {
-        !this.pinnable && this._scrollingService.stopScrolling();
+        this._scrollingService.stopScrolling();
         this.modalStackService.trackModalOpen(this);
-        if (this.pinnable && this.pinned) {
-          this.displaySideBySide();
-        }
       } else {
         this._scrollingService.resumeScrolling();
-        if (this.pinnable && this.pinned) {
-          this.displayOverlapping();
-        }
       }
     }
   }
 
   ngOnDestroy(): void {
     this._scrollingService.resumeScrolling();
-    this.displayOverlapping();
   }
 
   open(): void {
@@ -179,7 +133,7 @@ export class ClrModal implements OnChanges, OnDestroy {
   }
 
   close(): void {
-    if (this.stopClose || (this.pinnable && this.pinned)) {
+    if (this.stopClose) {
       this.altClose.emit(false);
       return;
     }
@@ -189,27 +143,11 @@ export class ClrModal implements OnChanges, OnDestroy {
     this._open = false;
   }
 
-  togglePinned() {
-    this.pinned = !this.pinned;
-  }
-
   fadeDone(e: AnimationEvent) {
     if (e.toState === 'void') {
       // TODO: Investigate if we can decouple from animation events
       this._openChanged.emit(false);
       this.modalStackService.trackModalClose(this);
     }
-  }
-
-  private displaySideBySide() {
-    this.hostElement.classList.add('clr-side-panel-pinned-' + this.size);
-  }
-
-  private displayOverlapping() {
-    this.hostElement.classList.forEach(className => {
-      if (className.startsWith('clr-side-panel-pinned-')) {
-        this.hostElement.classList.remove(className);
-      }
-    });
   }
 }
