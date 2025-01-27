@@ -8,6 +8,7 @@
 import { Component } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { ViewManagerService } from './providers/view-manager.service';
@@ -18,6 +19,7 @@ import { ViewManagerService } from './providers/view-manager.service';
   providers: [DatepickerFocusService],
   host: {
     '[class.datepicker]': 'true',
+    '[class.has-range-option]': 'hasRangeOptions',
     '[class.has-action-buttons]': 'hasActionButtons',
     '[attr.aria-modal]': 'true',
     '[attr.aria-label]': 'commonStrings.keys.datepickerDialogLabel',
@@ -28,7 +30,8 @@ export class ClrDatepickerViewManager {
   constructor(
     public commonStrings: ClrCommonStringsService,
     private viewManagerService: ViewManagerService,
-    private dateNavigationService: DateNavigationService
+    private dateNavigationService: DateNavigationService,
+    private dateIOService: DateIOService
   ) {}
 
   /**
@@ -52,7 +55,22 @@ export class ClrDatepickerViewManager {
     return this.viewManagerService.isDayView;
   }
 
+  get hasRangeOptions() {
+    return !!this.dateNavigationService?.isRangePicker && !!this.dateRangeOptions?.length;
+  }
+
   protected get hasActionButtons() {
     return this.dateNavigationService.hasActionButtons;
+  }
+
+  protected get dateRangeOptions() {
+    return this.dateIOService.getRangeOptions();
+  }
+
+  onRangeOptionSelect(selectedRange) {
+    const startDate = this.dateNavigationService.convertDateToDayModel(selectedRange?.value[0]),
+      endDate = this.dateNavigationService.convertDateToDayModel(selectedRange?.value[1]);
+    this.dateNavigationService.notifySelectedDayChanged({ startDate, endDate }, { emitEvent: !this.hasActionButtons });
+    this.dateNavigationService.moveToSpecificMonth(startDate);
   }
 }
