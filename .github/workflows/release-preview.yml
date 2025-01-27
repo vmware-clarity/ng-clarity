@@ -37,7 +37,8 @@ jobs:
           --detect.project.name=$BD_PROJECT_NAME /
           --detect.project.version.name=$NEXT_RELEASE_VERSION /
           --detect.project.version.phase=PRERELEASE /
-          --detect.clone.project.version.latest=true /
+          --detect.project.version.license="MIT License" /
+          --detect.project.version.distribution=OPENSOURCE /
           --detect.tools=DETECTOR /
           --detect.wait.for.results=true /
           --detect.included.detector.types=npm /
