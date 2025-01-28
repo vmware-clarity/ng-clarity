@@ -20,6 +20,7 @@ import { DatagridConditionalSelectionsDemo } from './conditional-selection/condi
 import { DatagridCustomRenderingDemo } from './custom-rendering/custom-rendering';
 import { DatagridDemo } from './datagrid.demo';
 import { ROUTING } from './datagrid.demo.routing';
+import { DatagridDensityDemo } from './density/density';
 import { DatagridDetailDemo } from './detail/detail';
 import { DetailWrapper } from './expandable-rows/detail-wrapper';
 import { DatagridExpandableRowsDemo } from './expandable-rows/expandable-rows';
@@ -54,6 +55,7 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridBasicStructureDemo,
     DatagridBindingPropertiesDemo,
     DatagridCompactDemo,
+    DatagridDensityDemo,
     DatagridCustomRenderingDemo,
     DatagridFilteringDemo,
     DatagridFullDemo,
@@ -90,6 +92,7 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridBasicStructureDemo,
     DatagridBindingPropertiesDemo,
     DatagridCompactDemo,
+    DatagridDensityDemo,
     DatagridCustomRenderingDemo,
     DatagridFilteringDemo,
     DatagridFullDemo,
