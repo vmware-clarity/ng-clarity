@@ -25,6 +25,9 @@ import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-t
 import { Point, Popover } from './popover';
 import { PopoverOptions } from './popover-options.interface';
 
+/**
+ * Fallback to hide when *clrIfOpen is not being used
+ */
 const isOffScreenClassName = 'is-off-screen';
 
 @Directive()
