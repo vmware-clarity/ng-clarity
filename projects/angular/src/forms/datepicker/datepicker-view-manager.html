@@ -5,7 +5,30 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
 -->
 
-<clr-monthpicker *ngIf="isMonthView"></clr-monthpicker>
-<clr-yearpicker *ngIf="isYearView"></clr-yearpicker>
-<clr-daypicker *ngIf="isDayView"></clr-daypicker>
-<clr-datepicker-actions *ngIf="hasActionButtons"></clr-datepicker-actions>
+<ng-container *ngIf="hasRangeOptions; else calendarView">
+  <clr-vertical-nav class="clr-date-range-picker-nav">
+    <ng-container *ngFor="let option of dateRangeOptions">
+      <a
+        clrVerticalNavLink
+        href="javascript:void(0)"
+        [attr.aria-label]="option?.label"
+        tabindex="0"
+        (keyup.enter)="onRangeOptionSelect(option)"
+        (click)="onRangeOptionSelect(option)"
+      >
+        {{option.label}}
+      </a>
+    </ng-container>
+  </clr-vertical-nav>
+
+  <div class="datepicker-view-manager">
+    <ng-container *ngTemplateOutlet="calendarView"></ng-container>
+  </div>
+</ng-container>
+
+<ng-template #calendarView>
+  <clr-monthpicker *ngIf="isMonthView"></clr-monthpicker>
+  <clr-yearpicker *ngIf="isYearView"></clr-yearpicker>
+  <clr-daypicker *ngIf="isDayView"></clr-daypicker>
+  <clr-datepicker-actions *ngIf="hasActionButtons"></clr-datepicker-actions>
+</ng-template>
