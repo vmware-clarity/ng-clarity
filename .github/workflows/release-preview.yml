@@ -24,27 +24,10 @@ jobs:
       - name: Public Api Check
         run: npm run public-api:check
       - name: Preview Release
-        run: npm run preview
-      - name: BlackDuck Scan Release
         env:
-          NEXT_RELEASE_VERSION: ${{ env.NEXT_RELEASE_VERSION }}
-          BD_PROJECT_NAME: ${{ secrets.BD_PROJECT_NAME }}
-          BD_URL: ${{ secrets.BD_URL }}
           BD_ACCESS_TOKEN: ${{ secrets.BD_ACCESS_TOKEN }}
-        run: bash <(curl -k -s -L https://detect.blackduck.com/detect10.sh) /
-          --blackduck.url=$BD_URL /
-          --blackduck.api.token=$BD_ACCESS_TOKEN /
-          --detect.project.name=$BD_PROJECT_NAME /
-          --detect.project.version.name=$NEXT_RELEASE_VERSION /
-          --detect.project.version.phase=PRERELEASE /
-          --detect.project.version.license="MIT License" /
-          --detect.project.version.distribution=OPENSOURCE /
-          --detect.tools=DETECTOR /
-          --detect.wait.for.results=true /
-          --detect.included.detector.types=npm /
-          --detect.required.detector.types=npm /
-          --detect.detector.search.depth=6 /
-          --detect.npm.dependency.types.excluded=DEV
+          BD_RELEASE_PHASE: PRERELEASE
+        run: npm run preview
       - name: Deploy Docs Preview
         continue-on-error: true
         timeout-minutes: 5

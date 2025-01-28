@@ -21,15 +21,13 @@ module.exports = {
           noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES'],
         },
       },
-      [
-        '@semantic-release/exec',
-        {
-          verifyReleaseCmd: 'echo "NEXT_RELEASE_VERSION=${nextRelease.version}" >> $GITHUB_ENV',
-        },
-      ],
     ],
     '@semantic-release/release-notes-generator',
     './scripts/semantic-release-add-peer-dependency.js',
+    './scripts/execute-blackduck-scan.sh' +
+      ' ${process.env.BD_ACCESS_TOKEN}' +
+      ' ${nextRelease.version}' +
+      ' ${process.env.BD_RELEASE_PHASE}',
     '@semantic-release/github',
     [
       '@amanda-mitchell/semantic-release-npm-multiple',
