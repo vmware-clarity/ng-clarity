@@ -9,6 +9,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { TooltipsAngularDemo } from './tooltips-angular';
+import { TooltipsAngularOnPushDemo } from './tooltips-angular-on-push';
 import { TooltipsButtonsDemo } from './tooltips-buttons';
 import { TooltipsDirectionsDemo } from './tooltips-directions';
 import { TooltipsIconDemo } from './tooltips-icons';
@@ -25,6 +26,7 @@ const ROUTES: Routes = [
       { path: 'sizes', component: TooltipsSizesDemo },
       { path: 'directions', component: TooltipsDirectionsDemo },
       { path: 'angular', component: TooltipsAngularDemo },
+      { path: 'angular-on-push', component: TooltipsAngularOnPushDemo },
       { path: 'icon-tooltips', component: TooltipsIconDemo },
       { path: 'text-tooltips', component: TooltipsTextDemo },
       { path: 'button-tooltips', component: TooltipsButtonsDemo },

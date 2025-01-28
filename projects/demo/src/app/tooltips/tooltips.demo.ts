@@ -17,6 +17,7 @@ import { Component } from '@angular/core';
       <li><a [routerLink]="['./sizes']">Sizes</a></li>
       <li><a [routerLink]="['./directions']">Directions</a></li>
       <li><a [routerLink]="['./angular']">Angular component</a></li>
+      <li><a [routerLink]="['./angular-on-push']">Angular component (on push)</a></li>
     </ul>
     <router-outlet></router-outlet>
   `,
