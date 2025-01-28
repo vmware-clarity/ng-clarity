@@ -25,8 +25,8 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribute-set';
 import { FocusService } from '../common/providers/focus.service';
@@ -262,14 +262,16 @@ export abstract class ClrDateInputBase
   }
 
   private listenForControlValueChanges() {
-    return of(this.datepickerHasFormControl())
-      .pipe(
-        filter(hasControl => hasControl),
-        switchMap(() => this.control.valueChanges),
-        // only update date value if not being set by user
-        filter(() => !this.datepickerFocusService.elementIsFocused(this.el.nativeElement))
-      )
-      .subscribe((value: string) => this.updateDate(this.dateIOService.getDateValueFromDateString(value)));
+    if (this.datepickerHasFormControl()) {
+      return this.control.valueChanges
+        .pipe(
+          // only update date value if not being set by user
+          filter(() => !this.datepickerFocusService.elementIsFocused(this.el.nativeElement))
+        )
+        .subscribe((value: string) => this.updateDate(this.dateIOService.getDateValueFromDateString(value)));
+    } else {
+      return null;
+    }
   }
 
   private listenForUserSelectedDayChanges() {

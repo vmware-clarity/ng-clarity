@@ -151,7 +151,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub?.unsubscribe());
   }
 
   @HostListener('blur')
