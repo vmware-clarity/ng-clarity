@@ -10,7 +10,6 @@ import {
   ChangeDetectorRef,
   Directive,
   ElementRef,
-  HostBinding,
   Injector,
   NgZone,
   OnDestroy,
@@ -25,7 +24,11 @@ import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-t
 import { Point, Popover } from './popover';
 import { PopoverOptions } from './popover-options.interface';
 
-@Directive()
+@Directive({
+  host: {
+    '[class.is-off-screen]': 'isOffScreen',
+  },
+})
 export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   /*
    * Until https://github.com/angular/angular/issues/8785 is supported, we don't have any way to instantiate
@@ -44,6 +47,11 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   protected popoverOptions: PopoverOptions = {};
   protected ignoredElement: any;
 
+  /*
+   * Fallback to hide when *clrIfOpen is not being used
+   */
+  protected isOffScreen: boolean;
+
   private updateAnchor = false;
   private popoverInstance: Popover;
   private subscription: Subscription;
@@ -59,27 +67,22 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
     this.anchorElem = parentHost.nativeElement;
 
     this.popoverInstance = new Popover(this.el.nativeElement);
-    this.subscription = this.toggleService.openChange.subscribe(change => {
-      if (change) {
+    this.subscription = this.toggleService.openChange.subscribe(open => {
+      if (open) {
         this.anchor();
         this.attachESCListener();
       } else {
         this.release();
         this.detachESCListener();
       }
+
+      this.isOffScreen = !open;
+      this.ref.markForCheck(); // support on push change detection
     });
     if (this.toggleService.open) {
       this.anchor();
       this.attachESCListener();
     }
-  }
-
-  /*
-   * Fallback to hide when *clrIfOpen is not being used
-   */
-  @HostBinding('class.is-off-screen')
-  get isOffScreen() {
-    return this.toggleService.open ? false : true;
   }
 
   ngAfterViewChecked() {
