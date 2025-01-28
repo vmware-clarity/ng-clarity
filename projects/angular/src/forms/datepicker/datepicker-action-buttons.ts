@@ -31,7 +31,17 @@ export class ClrDatepickerActions {
   ) {}
 
   protected apply() {
-    if (this.dateNavigationService.selectedDay) {
+    if (
+      this.dateNavigationService.isRangePicker &&
+      this.dateNavigationService.selectedDay &&
+      this.dateNavigationService.selectedEndDay
+    ) {
+      this.dateNavigationService.notifySelectedDayChanged({
+        startDate: this.dateNavigationService.selectedDay,
+        endDate: this.dateNavigationService.selectedEndDay,
+      });
+      this.dateFormControlService.markAsDirty();
+    } else if (!this.dateNavigationService.isRangePicker && this.dateNavigationService.selectedDay) {
       this.dateNavigationService.notifySelectedDayChanged(this.dateNavigationService.selectedDay);
       this.dateFormControlService.markAsDirty();
     }

@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { DateRangeInput } from './interfaces/date-range.interface';
 import { ClrDayOfWeek } from './interfaces/day-of-week.interface';
 import { CalendarViewModel } from './model/calendar-view.model';
 import { CalendarModel } from './model/calendar.model';
@@ -60,6 +61,10 @@ export class ClrCalendar implements OnDestroy {
 
   get selectedDay(): DayModel {
     return this._dateNavigationService.selectedDay;
+  }
+
+  get selectedEndDay(): DayModel {
+    return this._dateNavigationService.selectedEndDay;
   }
 
   get focusedDay(): DayModel {
@@ -115,11 +120,11 @@ export class ClrCalendar implements OnDestroy {
 
   setSelectedDay(day: DayModel) {
     const hasActionButtons = this._dateNavigationService.hasActionButtons;
-    this.calendarViewModel.updateSelectedDay(day);
-    this._dateNavigationService.notifySelectedDayChanged(day, { emitEvent: !hasActionButtons });
+    const selectedDates: DayModel | DateRangeInput = this.updateCalendarViewModal(day);
+    this._dateNavigationService.notifySelectedDayChanged(selectedDates, { emitEvent: !hasActionButtons });
     if (!hasActionButtons) {
       this._dateFormControlService.markAsDirty();
-      this._toggleService.open = false;
+      this.validateAndCloseDatePicker();
     }
   }
 
@@ -147,6 +152,54 @@ export class ClrCalendar implements OnDestroy {
         this._datepickerFocusService.focusCell(this._elRef);
       })
     );
+
+    this._subs.push(
+      this._dateNavigationService.refreshCalendarView.subscribe(() => {
+        this.refreshCalendarViewModal();
+      })
+    );
+  }
+
+  private validateAndCloseDatePicker() {
+    if (
+      (this._dateNavigationService.isRangePicker &&
+        this._dateNavigationService.selectedDay &&
+        this._dateNavigationService.selectedEndDay) ||
+      (!this._dateNavigationService.isRangePicker && this._dateNavigationService.selectedDay)
+    ) {
+      this._toggleService.open = false;
+    }
+  }
+
+  private updateCalendarViewModal(day: DayModel): DayModel | DateRangeInput {
+    const startDate = this.calendarViewModel.selectedDay || null,
+      isRangePicker = this._dateNavigationService.isRangePicker;
+    let endDate = this.calendarViewModel.selectedEndDay || null;
+
+    if (isRangePicker) {
+      if (!startDate || (!!startDate && !!endDate) || (!!startDate && day?.isBefore(startDate))) {
+        this.calendarViewModel.updateSelectedDay(day);
+        if (endDate) {
+          endDate = undefined;
+          this.calendarViewModel.updateSelectedEndDay(endDate);
+        }
+      } else {
+        this.calendarViewModel.updateSelectedEndDay(day);
+      }
+    } else {
+      this.calendarViewModel.updateSelectedDay(day);
+    }
+
+    return isRangePicker
+      ? { startDate: this.calendarViewModel.selectedDay, endDate: this.calendarViewModel.selectedEndDay }
+      : this.calendarViewModel.selectedDay;
+  }
+
+  private refreshCalendarViewModal() {
+    this.calendarViewModel.updateSelectedDay(this._dateNavigationService.selectedDay);
+    if (this._dateNavigationService.isRangePicker) {
+      this.calendarViewModel.updateSelectedEndDay(this._dateNavigationService.selectedEndDay);
+    }
   }
 
   /**
@@ -156,6 +209,7 @@ export class ClrCalendar implements OnDestroy {
     this.calendarViewModel = new CalendarViewModel(
       this.calendar,
       this.selectedDay,
+      this.selectedEndDay,
       this.focusedDay,
       this.today,
       this._localeHelperService.firstDayOfWeek,
