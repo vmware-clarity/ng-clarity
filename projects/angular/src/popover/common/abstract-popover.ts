@@ -17,6 +17,7 @@ import {
   SkipSelf,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
@@ -24,11 +25,9 @@ import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-t
 import { Point, Popover } from './popover';
 import { PopoverOptions } from './popover-options.interface';
 
-@Directive({
-  host: {
-    '[class.is-off-screen]': 'isOffScreen',
-  },
-})
+const isOffScreenClassName = 'is-off-screen';
+
+@Directive()
 export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   /*
    * Until https://github.com/angular/angular/issues/8785 is supported, we don't have any way to instantiate
@@ -47,11 +46,6 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   protected popoverOptions: PopoverOptions = {};
   protected ignoredElement: any;
 
-  /*
-   * Fallback to hide when *clrIfOpen is not being used
-   */
-  protected isOffScreen: boolean;
-
   private updateAnchor = false;
   private popoverInstance: Popover;
   private subscription: Subscription;
@@ -67,17 +61,16 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
     this.anchorElem = parentHost.nativeElement;
 
     this.popoverInstance = new Popover(this.el.nativeElement);
-    this.subscription = this.toggleService.openChange.subscribe(open => {
+    this.subscription = this.toggleService.openChange.pipe(startWith(this.toggleService.open)).subscribe(open => {
       if (open) {
         this.anchor();
         this.attachESCListener();
+        this.renderer.removeClass(this.el.nativeElement, isOffScreenClassName);
       } else {
         this.release();
         this.detachESCListener();
+        this.renderer.addClass(this.el.nativeElement, isOffScreenClassName);
       }
-
-      this.isOffScreen = !open;
-      this.ref.markForCheck(); // support on push change detection
     });
     if (this.toggleService.open) {
       this.anchor();
