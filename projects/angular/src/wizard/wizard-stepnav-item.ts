@@ -25,11 +25,13 @@ import { ClrWizardPage } from './wizard-page';
         <cds-icon
           *ngIf="hasError"
           shape="error-standard"
+          role="img"
           [attr.aria-label]="commonStrings.keys.wizardStepError"
         ></cds-icon>
         <cds-icon
           *ngIf="!hasError && isComplete"
           shape="success-standard"
+          role="img"
           [attr.aria-label]="commonStrings.keys.wizardStepSuccess"
         ></cds-icon>
       </div>
