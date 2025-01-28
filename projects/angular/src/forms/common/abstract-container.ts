@@ -9,7 +9,6 @@ import { AfterContentInit, ContentChild, Directive, OnDestroy, Optional } from '
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
 import { CONTROL_STATE, IfControlStateService } from './if-control-state/if-control-state.service';
@@ -20,7 +19,7 @@ import { NgControlService } from './providers/ng-control.service';
 import { ClrControlSuccess } from './success';
 
 @Directive()
-export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy, AfterContentInit {
+export abstract class ClrAbstractContainer implements OnDestroy, AfterContentInit {
   @ContentChild(ClrLabel, { static: false }) label: ClrLabel;
   @ContentChild(ClrControlSuccess) controlSuccessComponent: ClrControlSuccess;
   @ContentChild(ClrControlError) controlErrorComponent: ClrControlError;
@@ -28,7 +27,6 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
 
   control: NgControl;
   additionalControls: NgControl[];
-  _dynamic = false;
 
   protected subscriptions: Subscription[] = [];
 

@@ -25,7 +25,6 @@ import {
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { CONTROL_SUFFIX } from './abstract-control';
 import { IfControlStateService } from './if-control-state/if-control-state.service';
@@ -41,7 +40,7 @@ export enum CHANGE_KEYS {
 }
 
 @Directive()
-export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
+export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   _id: string;
 
   protected controlIdService: ControlIdService;

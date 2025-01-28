@@ -7,8 +7,6 @@
 
 import { AfterViewInit, Component, EmbeddedViewRef, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
-
 @Component({
   selector: 'dg-wrapped-column',
   template: `
@@ -17,9 +15,7 @@ import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
     </ng-template>
   `,
 })
-export class WrappedColumn implements DynamicWrapper, AfterViewInit, OnDestroy {
-  _dynamic = false;
-
+export class WrappedColumn implements AfterViewInit, OnDestroy {
   @ViewChild('columnPortal') templateRef: TemplateRef<void>;
   columnView: EmbeddedViewRef<void>; // the columns projected view (in memory)
 
