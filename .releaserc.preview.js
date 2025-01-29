@@ -6,7 +6,13 @@
  */
 
 module.exports = {
-  branches: ['main', '+([0-9]).x', { name: 'beta', prerelease: true }, { name: 'next', prerelease: true }],
+  branches: [
+    'main',
+    '+([0-9]).x',
+    'add-black-duck-scan_cde-2527',
+    { name: 'beta', prerelease: true },
+    { name: 'next', prerelease: true },
+  ],
   plugins: [
     [
       '@semantic-release/commit-analyzer',
@@ -22,33 +28,17 @@ module.exports = {
         },
       },
     ],
-    '@semantic-release/release-notes-generator',
-    './scripts/semantic-release-add-peer-dependency.js',
     [
       '@semantic-release/exec',
       {
-        verifyConditionsCmd:
-          './scripts/execute-blackduck-scan.sh' +
-          ' ${process.env.BD_ACCESS_TOKEN}' +
+        verifyReleaseCmd:
+          'bash ./scripts/execute-blackduck-scan.sh' +
           ' ${nextRelease.version}' +
+          ' ${process.env.BD_ACCESS_TOKEN}' +
           ' ${process.env.BD_RELEASE_PHASE}',
       },
     ],
-    '@semantic-release/github',
-    [
-      '@amanda-mitchell/semantic-release-npm-multiple',
-      {
-        registries: {
-          angular: {
-            npmPublish: true,
-            pkgRoot: './dist/clr-angular',
-          },
-          ui: {
-            npmPublish: true,
-            pkgRoot: './dist/clr-ui',
-          },
-        },
-      },
-    ],
+    '@semantic-release/release-notes-generator',
+    './scripts/semantic-release-add-peer-dependency.js',
   ],
 };
