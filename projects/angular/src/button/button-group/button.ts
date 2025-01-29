@@ -6,6 +6,7 @@
  */
 
 import { Component, EventEmitter, Input, Optional, Output, SkipSelf, TemplateRef, ViewChild } from '@angular/core';
+import { RouterLinkActive } from '@angular/router';
 
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrLoadingState } from '../../utils/loading/loading';
@@ -34,6 +35,7 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
 })
 export class ClrButton implements LoadingListener {
   @Output('click') _click = new EventEmitter<boolean>(false);
+  @Input('routerLinkActive') routerLinkActiveClasses: string;
 
   @ViewChild('buttonProjectedRef', { static: true }) templateRef: TemplateRef<ClrButton>;
 
@@ -48,9 +50,8 @@ export class ClrButton implements LoadingListener {
   private _id: string = uniqueIdFactory();
 
   constructor(
-    @SkipSelf()
-    @Optional()
-    public buttonInGroupService: ButtonInGroupService
+    @Optional() private readonly routerLinkActive: RouterLinkActive,
+    @SkipSelf() @Optional() public buttonInGroupService: ButtonInGroupService
   ) {}
 
   @Input('clrInMenu')
@@ -71,7 +72,7 @@ export class ClrButton implements LoadingListener {
 
   @Input('class')
   get classNames(): string {
-    return this._classNames;
+    return this.routerLinkActive?.isActive ? `${this._classNames} ${this.routerLinkActiveClasses}` : this._classNames;
   }
   set classNames(value: string) {
     if (typeof value === 'string') {

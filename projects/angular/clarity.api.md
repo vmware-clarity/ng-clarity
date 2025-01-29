@@ -589,7 +589,7 @@ export class ClrBreadcrumbsModule {
 
 // @public (undocumented)
 export class ClrButton implements LoadingListener {
-    constructor(buttonInGroupService: ButtonInGroupService);
+    constructor(routerLinkActive: RouterLinkActive, buttonInGroupService: ButtonInGroupService);
     // Warning: (ae-forgotten-export) The symbol "ButtonInGroupService" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -622,14 +622,16 @@ export class ClrButton implements LoadingListener {
     // (undocumented)
     get role(): string;
     // (undocumented)
+    routerLinkActiveClasses: string;
+    // (undocumented)
     templateRef: TemplateRef<ClrButton>;
     // (undocumented)
     get type(): string;
     set type(value: string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, { "inMenu": "clrInMenu"; "classNames": "class"; "name": "name"; "type": "type"; "id": "id"; "disabled": "disabled"; }, { "_click": "click"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, { "routerLinkActiveClasses": "routerLinkActive"; "inMenu": "clrInMenu"; "classNames": "class"; "name": "name"; "type": "type"; "id": "id"; "disabled": "disabled"; }, { "_click": "click"; }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{ optional: true; skipSelf: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{ optional: true; }, { optional: true; skipSelf: true; }]>;
 }
 
 // @public (undocumented)

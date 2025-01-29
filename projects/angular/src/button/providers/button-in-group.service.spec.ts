@@ -22,7 +22,7 @@ export default function (): void {
         testButton = button;
       });
 
-      const mockButton: ClrButton = new ClrButton(null);
+      const mockButton: ClrButton = new ClrButton(null, null);
       mockButton.inMenu = true;
 
       buttonInGroupService.updateButtonGroup(mockButton);
