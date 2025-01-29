@@ -9,7 +9,6 @@ import { Component, Directive, NgModule, Type, ViewContainerRef } from '@angular
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
 import { ClrCommonFormsModule } from './common.module';
 import { ControlIdService } from './providers/control-id.service';
@@ -27,9 +26,7 @@ import { WrappedFormControl } from './wrapped-control';
   `,
   providers: [ControlIdService],
 })
-class GenericWrapper implements DynamicWrapper {
-  _dynamic = false;
-}
+class GenericWrapper {}
 
 @Directive({
   selector: '[genericControl]',

@@ -8,7 +8,6 @@
 import { Component, ContentChild, Inject, InjectionToken, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrLabel } from '../common/label';
 import { ControlIdService } from '../common/providers/control-id.service';
 
@@ -31,11 +30,7 @@ export const IS_TOGGLE_PROVIDER = { provide: IS_TOGGLE, useFactory: isToggleFact
   },
   providers: [ControlIdService, IS_TOGGLE_PROVIDER],
 })
-export class ClrCheckboxWrapper implements DynamicWrapper, OnInit, OnDestroy {
-  // We need both _dynamic for HostWrapper and ContentChild(ClrLabel) in cases where
-  // the user puts a radio inside a wrapper without a label, host wrapping doesn't apply
-  // but we'd still need to insert a label
-  _dynamic = false;
+export class ClrCheckboxWrapper implements OnInit, OnDestroy {
   @ContentChild(ClrLabel, { static: true }) label: ClrLabel;
   toggle = false;
   private subscriptions: Subscription[] = [];
