@@ -7,12 +7,24 @@
 
 import { Component } from '@angular/core';
 
+import { Inventory } from '../datagrid/inventory/inventory';
+import { User } from '../datagrid/inventory/user';
+
 @Component({
   selector: 'clr-modal-tabs-angular',
   styleUrls: ['./tabs.demo.scss'],
+  providers: [Inventory],
   templateUrl: './tabs-angular.demo.html',
 })
 export class TabsAngularDemo {
   layout = 'vertical';
   inOverflow = false;
+
+  users: User[];
+
+  constructor(inventory: Inventory) {
+    inventory.size = 10;
+    inventory.reset();
+    this.users = inventory.all;
+  }
 }
