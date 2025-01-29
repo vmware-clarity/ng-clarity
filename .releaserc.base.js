@@ -22,23 +22,16 @@ module.exports = {
         },
       },
     ],
-    '@semantic-release/release-notes-generator',
-    './scripts/semantic-release-add-peer-dependency.js',
-    '@semantic-release/github',
     [
-      '@amanda-mitchell/semantic-release-npm-multiple',
+      '@semantic-release/exec',
       {
-        registries: {
-          angular: {
-            npmPublish: true,
-            pkgRoot: './dist/clr-angular',
-          },
-          ui: {
-            npmPublish: true,
-            pkgRoot: './dist/clr-ui',
-          },
-        },
+        verifyReleaseCmd:
+          'bash ./scripts/execute-blackduck-scan.sh' +
+          ' ${nextRelease.version}' +
+          ' ${process.env.BD_ACCESS_TOKEN}' +
+          ' ${process.env.BD_RELEASE_PHASE}',
       },
     ],
+    '@semantic-release/release-notes-generator',
   ],
 };
