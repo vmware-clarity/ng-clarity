@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -9,7 +9,6 @@ import { AfterContentInit, ContentChild, Directive, OnDestroy, Optional } from '
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
 import { CONTROL_STATE, IfControlStateService } from './if-control-state/if-control-state.service';
@@ -20,7 +19,7 @@ import { NgControlService } from './providers/ng-control.service';
 import { ClrControlSuccess } from './success';
 
 @Directive()
-export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy, AfterContentInit {
+export abstract class ClrAbstractContainer implements OnDestroy, AfterContentInit {
   @ContentChild(ClrLabel, { static: false }) label: ClrLabel;
   @ContentChild(ClrControlSuccess) controlSuccessComponent: ClrControlSuccess;
   @ContentChild(ClrControlError) controlErrorComponent: ClrControlError;
@@ -28,7 +27,6 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
 
   control: NgControl;
   additionalControls: NgControl[];
-  _dynamic = false;
 
   protected subscriptions: Subscription[] = [];
 
