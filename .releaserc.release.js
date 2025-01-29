@@ -5,35 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+const baseReleaseConfig = require('./.releaserc.base.js');
+
 module.exports = {
-  branches: ['main', '+([0-9]).x', { name: 'beta', prerelease: true }, { name: 'next', prerelease: true }],
+  ...baseReleaseConfig,
   plugins: [
-    [
-      '@semantic-release/commit-analyzer',
-      {
-        releaseRules: [
-          { breaking: true, release: 'major' },
-          { type: 'feat', release: 'minor' },
-          { type: 'fix', release: 'patch' },
-          { type: 'chore', release: false },
-        ],
-        parserOpts: {
-          noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES'],
-        },
-      },
-    ],
-    [
-      '@semantic-release/exec',
-      {
-        verifyReleaseCmd:
-          'bash ./scripts/execute-blackduck-scan.sh' +
-          ' ${nextRelease.version}' +
-          ' ${process.env.BD_ACCESS_TOKEN}' +
-          ' ${process.env.BD_RELEASE_PHASE}',
-      },
-    ],
-    '@semantic-release/release-notes-generator',
-    './scripts/semantic-release-add-peer-dependency.js',
+    ...baseReleaseConfig.plugins,
     '@semantic-release/github',
     [
       '@amanda-mitchell/semantic-release-npm-multiple',
