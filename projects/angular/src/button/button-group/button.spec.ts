@@ -7,7 +7,14 @@
 
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Routes } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
+import {
+  RouterLinkButtonGroupDemoRouteOneComponent,
+  RouterLinkButtonGroupDemoRouteThreeComponent,
+  RouterLinkButtonGroupDemoRouteTwoComponent,
+} from '../../../../demo/src/app/button-group/angular/router-link/router-link-button-group';
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { ClrLoadingModule } from '../../utils/loading/loading.module';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
@@ -54,12 +61,38 @@ export class ButtonViewTestComponent {
   load = true;
 }
 
+@Component({
+  template: `
+    <clr-button-group>
+      <clr-button id="button-one" routerLink="route-one" routerLinkActive="btn-primary">1</clr-button>
+      <clr-button id="button-two" routerLink="route-two" routerLinkActive="btn-primary">2</clr-button>
+      <clr-button id="button-two" routerLink="route-three" routerLinkActive="btn-primary">3</clr-button>
+    </clr-button-group>
+  `,
+})
+class TestButtonWithRouterLinkActiveComponent {}
+
 export default function (): void {
   describe('Buttons', () => {
     let fixture: ComponentFixture<any>;
     let debugEl: DebugElement;
     let componentInstance: any;
     let buttons: HTMLButtonElement[];
+
+    const routes: Routes = [
+      {
+        path: 'route-one',
+        component: RouterLinkButtonGroupDemoRouteOneComponent,
+      },
+      {
+        path: 'route-two',
+        component: RouterLinkButtonGroupDemoRouteTwoComponent,
+      },
+      {
+        path: 'route-three',
+        component: RouterLinkButtonGroupDemoRouteThreeComponent,
+      },
+    ];
 
     describe('Typescript API', () => {
       beforeEach(() => {
@@ -246,6 +279,37 @@ export default function (): void {
 
         const newButtons: HTMLButtonElement[] = debugEl.nativeElement.querySelectorAll('button');
         expect(newButtons[0].children.length).toBe(0);
+      });
+    });
+
+    describe('with routerLinkActive', () => {
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          imports: [ClrButtonGroupModule, RouterTestingModule.withRoutes(routes)],
+          declarations: [TestButtonWithRouterLinkActiveComponent],
+        });
+
+        fixture = TestBed.createComponent(TestButtonWithRouterLinkActiveComponent);
+        fixture.detectChanges();
+        debugEl = fixture.debugElement;
+        componentInstance = debugEl.componentInstance;
+        buttons = debugEl.nativeElement.querySelectorAll('button');
+      });
+
+      it('does not set the routerLinkActive classes when no button is active', async () => {
+        expect(buttons[0].classList.contains('btn-primary')).toBeFalse();
+        expect(buttons[1].classList.contains('btn-primary')).toBeFalse();
+        expect(buttons[2].classList.contains('btn-primary')).toBeFalse();
+      });
+
+      it('sets the routerLinkActive classes only on the active button', async () => {
+        buttons[0].click();
+        await fixture.whenStable();
+        fixture.detectChanges();
+
+        expect(buttons[0].classList.contains('btn-primary')).toBeTrue();
+        expect(buttons[1].classList.contains('btn-primary')).toBeFalse();
+        expect(buttons[2].classList.contains('btn-primary')).toBeFalse();
       });
     });
   });
