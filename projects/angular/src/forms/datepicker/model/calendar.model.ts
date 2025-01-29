@@ -58,6 +58,20 @@ export class CalendarModel {
   }
 
   /**
+   * Returns CalendarModel of the previous year.
+   */
+  previousYear(): CalendarModel {
+    return new CalendarModel(this.year - 1, this.month);
+  }
+
+  /**
+   * Returns CalendarModel of the next year.
+   */
+  nextYear(): CalendarModel {
+    return new CalendarModel(this.year + 1, this.month);
+  }
+
+  /**
    * Populates the days array with the DayModels in the current Calendar.
    */
   private initializeDaysInCalendar(): void {

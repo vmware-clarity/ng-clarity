@@ -7,8 +7,6 @@
 
 import { AfterViewInit, Component, EmbeddedViewRef, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
-
 @Component({
   selector: 'dg-wrapped-row',
   template: `
@@ -17,9 +15,7 @@ import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
     </ng-template>
   `,
 })
-export class WrappedRow implements DynamicWrapper, AfterViewInit, OnDestroy {
-  _dynamic = false;
-
+export class WrappedRow implements AfterViewInit, OnDestroy {
   @ViewChild('rowPortal') templateRef: TemplateRef<void>;
   rowView: EmbeddedViewRef<void>; // the rows projected view (in memory)
 

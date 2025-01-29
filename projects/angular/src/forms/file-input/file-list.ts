@@ -53,6 +53,7 @@ import {
         </div>
 
         <ng-container
+          *ngIf="fileMessagesTemplate"
           [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
           [ngTemplateOutletContext]="fileMessagesTemplateContext"
           [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
