@@ -33,6 +33,5 @@ module.exports = {
       },
     ],
     '@semantic-release/release-notes-generator',
-    './scripts/semantic-release-add-peer-dependency.js',
   ],
 };
