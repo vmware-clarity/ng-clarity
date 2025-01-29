@@ -10,7 +10,6 @@ import {
   ChangeDetectorRef,
   Directive,
   ElementRef,
-  HostBinding,
   Injector,
   NgZone,
   OnDestroy,
@@ -18,12 +17,18 @@ import {
   SkipSelf,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { Point, Popover } from './popover';
 import { PopoverOptions } from './popover-options.interface';
+
+/**
+ * Fallback to hide when *clrIfOpen is not being used
+ */
+const isOffScreenClassName = 'is-off-screen';
 
 @Directive()
 export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
@@ -59,27 +64,21 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
     this.anchorElem = parentHost.nativeElement;
 
     this.popoverInstance = new Popover(this.el.nativeElement);
-    this.subscription = this.toggleService.openChange.subscribe(change => {
-      if (change) {
+    this.subscription = this.toggleService.openChange.pipe(startWith(this.toggleService.open)).subscribe(open => {
+      if (open) {
         this.anchor();
         this.attachESCListener();
+        this.renderer.removeClass(this.el.nativeElement, isOffScreenClassName);
       } else {
         this.release();
         this.detachESCListener();
+        this.renderer.addClass(this.el.nativeElement, isOffScreenClassName);
       }
     });
     if (this.toggleService.open) {
       this.anchor();
       this.attachESCListener();
     }
-  }
-
-  /*
-   * Fallback to hide when *clrIfOpen is not being used
-   */
-  @HostBinding('class.is-off-screen')
-  get isOffScreen() {
-    return this.toggleService.open ? false : true;
   }
 
   ngAfterViewChecked() {

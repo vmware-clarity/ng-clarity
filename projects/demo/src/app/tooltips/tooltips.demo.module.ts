@@ -10,6 +10,7 @@ import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 
 import { TooltipsAngularDemo } from './tooltips-angular';
+import { TooltipsAngularOnPushDemo } from './tooltips-angular-on-push';
 import { TooltipsButtonsDemo } from './tooltips-buttons';
 import { TooltipsDirectionsDemo } from './tooltips-directions';
 import { TooltipsIconDemo } from './tooltips-icons';
@@ -25,6 +26,7 @@ import { ROUTING } from './tooltips.demo.routing';
     TooltipsSizesDemo,
     TooltipsDirectionsDemo,
     TooltipsAngularDemo,
+    TooltipsAngularOnPushDemo,
     TooltipsIconDemo,
     TooltipsTextDemo,
     TooltipsButtonsDemo,
