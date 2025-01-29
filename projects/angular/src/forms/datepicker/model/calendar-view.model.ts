@@ -18,7 +18,8 @@ export class CalendarViewModel {
 
   constructor(
     public calendar: CalendarModel,
-    private selectedDay: DayModel,
+    public selectedDay: DayModel,
+    public selectedEndDay: DayModel,
     private focusableDay: DayModel,
     private today: DayModel,
     public firstDayOfWeek: number,
@@ -49,6 +50,15 @@ export class CalendarViewModel {
   updateSelectedDay(day: DayModel | undefined): void {
     this.setSelectedDay(this.selectedDay, false);
     this.selectedDay = day;
+    this.setSelectedDay(day, true);
+  }
+
+  /**
+   * Updates the selected end day in the calendar
+   */
+  updateSelectedEndDay(day: DayModel | undefined): void {
+    this.setSelectedDay(this.selectedEndDay, false);
+    this.selectedEndDay = day;
     this.setSelectedDay(day, true);
   }
 
@@ -168,6 +178,7 @@ export class CalendarViewModel {
    */
   private initializeSelectedDay(): void {
     this.setSelectedDay(this.selectedDay, true);
+    this.setSelectedDay(this.selectedEndDay, true);
   }
 
   /**
@@ -181,6 +192,9 @@ export class CalendarViewModel {
     } else if (this.selectedDay && this.isDayInCalendarView(this.selectedDay)) {
       this.setFocusableFlag(this.selectedDay, true);
       this.focusableDay = this.selectedDay.clone();
+    } else if (this.selectedEndDay && this.isDayInCalendarView(this.selectedEndDay)) {
+      this.setFocusableFlag(this.selectedEndDay, true);
+      this.focusableDay = this.selectedEndDay.clone();
     } else if (this.isDayInCalendarView(this.today)) {
       this.setFocusableFlag(this.today, true);
       this.focusableDay = this.today.clone();

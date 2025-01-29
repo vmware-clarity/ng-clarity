@@ -5,6 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export interface DynamicWrapper {
-  _dynamic: boolean;
-}
+import { Directive } from '@angular/core';
+
+@Directive({
+  selector: '[clrModalHost]',
+  host: { '[class.clr-modal-host]': 'true' },
+})
+export class ClrModalHostDirective {}
