@@ -31,7 +31,6 @@ import { ColumnsService } from './providers/columns.service';
       clrPopoverAnchor
       clrPopoverOpenCloseButton
       [attr.aria-controls]="popoverId"
-      [attr.aria-owns]="popoverId"
       [attr.aria-expanded]="openState"
       [attr.aria-haspopup]="'menu'"
     >
