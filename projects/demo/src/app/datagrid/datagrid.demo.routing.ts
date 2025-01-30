@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -16,6 +16,7 @@ import { DatagridCompactDemo } from './compact/compact';
 import { DatagridConditionalSelectionsDemo } from './conditional-selection/conditional-selection';
 import { DatagridCustomRenderingDemo } from './custom-rendering/custom-rendering';
 import { DatagridDemo } from './datagrid.demo';
+import { DatagridDensityDemo } from './density/density';
 import { DatagridDetailDemo } from './detail/detail';
 import { DatagridExpandableRowsDemo } from './expandable-rows/expandable-rows';
 import { DatagridFilteringDemo } from './filtering/filtering';
@@ -70,6 +71,7 @@ const ROUTES: Routes = [
       { path: 'scrolling', component: DatagridScrollingDemo },
       { path: 'column-sizing', component: DatagridColumnSizingDemo },
       { path: 'compact', component: DatagridCompactDemo },
+      { path: 'density', component: DatagridDensityDemo },
       { path: 'detail', component: DatagridDetailDemo },
       { path: 'expandable-rows', component: DatagridExpandableRowsDemo },
       { path: 'full', component: DatagridFullDemo },

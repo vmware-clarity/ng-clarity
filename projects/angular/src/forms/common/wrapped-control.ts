@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -25,7 +25,6 @@ import {
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { CONTROL_SUFFIX } from './abstract-control';
 import { IfControlStateService } from './if-control-state/if-control-state.service';
@@ -41,7 +40,7 @@ export enum CHANGE_KEYS {
 }
 
 @Directive()
-export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
+export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   _id: string;
 
   protected controlIdService: ControlIdService;
@@ -151,7 +150,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub?.unsubscribe());
   }
 
   @HostListener('blur')
