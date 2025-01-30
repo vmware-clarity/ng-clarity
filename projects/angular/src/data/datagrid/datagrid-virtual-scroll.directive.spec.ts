@@ -18,6 +18,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { animationFrameScheduler, BehaviorSubject, Observable } from 'rxjs';
 
 import { ClarityModule } from '../../clr-angular.module';
+import { Keys } from '../../utils/enums/keys.enum';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 
@@ -221,18 +222,18 @@ export default function (): void {
 
         expect(document.activeElement).toBe(headerCheckboxCell);
 
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         // active checkbox input with ID clr-dg-row-cb364
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[22]);
 
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb383
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[41]);
 
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
