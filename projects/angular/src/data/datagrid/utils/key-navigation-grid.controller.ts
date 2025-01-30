@@ -9,6 +9,8 @@ import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { Keys } from '../../../utils/enums/keys.enum';
+
 export function getTabableItems(el: HTMLElement) {
   const tabableSelector = [
     'a[href]',
@@ -103,19 +105,19 @@ export class KeyNavigationGridController implements OnDestroy {
           // Skip column resize events
           if (
             (e.target as HTMLElement).classList.contains('drag-handle') &&
-            (e.key === 'ArrowLeft' || e.key === 'ArrowRight')
+            (e.key === Keys.ArrowLeft || e.key === Keys.ArrowRight)
           ) {
             return;
           }
           if (
-            e.key === 'ArrowUp' ||
-            e.key === 'ArrowDown' ||
-            e.key === 'ArrowLeft' ||
-            e.key === 'ArrowRight' ||
-            e.key === 'End' ||
-            e.key === 'Home' ||
-            e.key === 'PageUp' ||
-            e.key === 'PageDown'
+            e.key === Keys.ArrowUp ||
+            e.key === Keys.ArrowDown ||
+            e.key === Keys.ArrowLeft ||
+            e.key === Keys.ArrowRight ||
+            e.key === Keys.End ||
+            e.key === Keys.Home ||
+            e.key === Keys.PageUp ||
+            e.key === Keys.PageDown
           ) {
             const { x, y } = this.getNextItemCoordinate(e);
             const activeItem = this.rows
@@ -171,7 +173,7 @@ export class KeyNavigationGridController implements OnDestroy {
 
   private getNextItemCoordinate(e: any) {
     let currentCell = this.cells ? Array.from(this.cells).find(i => i.getAttribute('tabindex') === '0') : null;
-    if (e.key === 'Tab') {
+    if (e.key === Keys.Tab) {
       currentCell = document.activeElement as HTMLElement;
     }
     const currentRow = this.rows && currentCell ? Array.from(this.rows).find(r => r.contains(currentCell)) : null;
@@ -185,35 +187,35 @@ export class KeyNavigationGridController implements OnDestroy {
     let y = currentRow && currentCell && this.rows ? Array.from(this.rows).indexOf(currentRow) : 0;
 
     const dir = this.host.dir;
-    const inlineStart = dir === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
-    const inlineEnd = dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+    const inlineStart = dir === 'rtl' ? Keys.ArrowRight : Keys.ArrowLeft;
+    const inlineEnd = dir === 'rtl' ? Keys.ArrowLeft : Keys.ArrowRight;
 
     const itemsPerPage =
       Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
 
-    if (e.key === 'ArrowUp' && y !== 0) {
+    if (e.key === Keys.ArrowUp && y !== 0) {
       y = y - 1;
-    } else if (e.key === 'ArrowDown' && y < numOfRows) {
+    } else if (e.key === Keys.ArrowDown && y < numOfRows) {
       y = y + 1;
     } else if (e.key === inlineStart && x !== 0) {
       x = x - 1;
     } else if (e.key === inlineEnd && x < numOfColumns) {
       x = x + 1;
-    } else if (e.key === 'End') {
+    } else if (e.key === Keys.End) {
       x = numOfColumns;
 
       if (e.ctrlKey) {
         y = numOfRows;
       }
-    } else if (e.key === 'Home') {
+    } else if (e.key === Keys.Home) {
       x = 0;
 
       if (e.ctrlKey) {
         y = 0;
       }
-    } else if (e.key === 'PageUp') {
+    } else if (e.key === Keys.PageUp) {
       y = y - itemsPerPage > 0 ? y - itemsPerPage + 1 : 1;
-    } else if (e.key === 'PageDown') {
+    } else if (e.key === Keys.PageDown) {
       y = y + itemsPerPage < numOfRows ? y + itemsPerPage : numOfRows;
     }
 
