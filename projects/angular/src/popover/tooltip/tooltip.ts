@@ -15,7 +15,7 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
   selector: 'clr-tooltip',
   template: `<ng-content></ng-content>`,
   host: {
-    '[class.tooltip]': 'true',
+    '[class.clr-tooltip-container]': 'true',
   },
   providers: [TooltipIdService, TooltipMouseService],
   hostDirectives: [ClrPopoverHostDirective],

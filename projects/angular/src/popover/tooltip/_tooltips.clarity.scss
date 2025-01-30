@@ -29,20 +29,21 @@
   );
 }
 
-@mixin vertical-tooltip-generator($dirA: top, $dirB: right) {
+@mixin vertical-tooltip-generator($dirA: top, $dirB: right, $plain: false) {
   $oppA: map.get(mixins.$opp-directions, $dirA);
   $oppB: map.get(mixins.$opp-directions, $dirB);
 
   @include common-tooltip-styles;
 
-  position: absolute;
-  #{$dirA}: auto;
-  #{$oppA}: 100%;
-  #{$oppB}: 50%;
-  #{$dirB}: auto;
-
+  @if $plain {
+    position: absolute;
+    #{$dirA}: auto;
+    #{$oppA}: 100%;
+    #{$oppB}: 50%;
+    #{$dirB}: auto;
+    margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
+  }
   border-#{$oppA}-#{$oppB}-radius: 0;
-  margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
 
   &::before {
     content: '';
@@ -60,19 +61,20 @@
   }
 }
 
-@mixin horizontal-tooltip-generator($dirA: right) {
+@mixin horizontal-tooltip-generator($dirA: right, $plain: false) {
   $oppA: map.get(mixins.$opp-directions, $dirA);
-
-  position: absolute;
-  #{$dirA}: auto;
-  #{$oppA}: 100%;
-  top: 50%;
-  bottom: auto;
-
   @include common-tooltip-styles;
 
+  @if $plain {
+    position: absolute;
+    #{$dirA}: auto;
+    #{$oppA}: 100%;
+    top: 50%;
+    bottom: auto;
+    margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
+  }
+
   border-top-#{$oppA}-radius: 0;
-  margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
 
   &::before {
     content: '';
@@ -153,32 +155,32 @@
     & > .tooltip-content,
     &.tooltip-top-right > .tooltip-content,
     .tooltip-content.tooltip-top-right {
-      @include vertical-tooltip-generator(top, right);
+      @include vertical-tooltip-generator(top, right, true);
     }
 
     &.tooltip-top-left > .tooltip-content,
     .tooltip-content.tooltip-top-left {
-      @include vertical-tooltip-generator(top, left);
+      @include vertical-tooltip-generator(top, left, true);
     }
 
     &.tooltip-bottom-right > .tooltip-content,
     .tooltip-content.tooltip-bottom-right {
-      @include vertical-tooltip-generator(bottom, right);
+      @include vertical-tooltip-generator(bottom, right, true);
     }
 
     &.tooltip-bottom-left > .tooltip-content,
     .tooltip-content.tooltip-bottom-left {
-      @include vertical-tooltip-generator(bottom, left);
+      @include vertical-tooltip-generator(bottom, left, true);
     }
 
     &.tooltip-right > .tooltip-content,
     .tooltip-content.tooltip-right {
-      @include horizontal-tooltip-generator(right);
+      @include horizontal-tooltip-generator(right, true);
     }
 
     &.tooltip-left > .tooltip-content,
     .tooltip-content.tooltip-left {
-      @include horizontal-tooltip-generator(left);
+      @include horizontal-tooltip-generator(left, true);
     }
 
     //Tooltips Size
@@ -243,5 +245,88 @@
   //the tooltip component faces.
   .tooltip-trigger:focus + .tooltip-content {
     visibility: visible;
+  }
+
+  //Angular Tooltip Moved to new container.
+
+  .clr-tooltip-container {
+    // position: absolute !important;
+    text-align: left;
+    overflow: visible;
+    display: inline-block;
+
+    & > .tooltip-content {
+      //Both visibility and opacity are needed. Opacity handles the transition.
+      //And visibility makes sure that the user cant select the text in the tooltip-content
+      //when hidden
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s linear;
+      white-space: normal;
+      z-index: map.get(variables.$clr-layers, tooltips);
+
+      &::after {
+        position: absolute;
+        top: -20px;
+        left: -20px;
+        right: -20px;
+        bottom: -20px;
+        content: '';
+        // make sure this is underneath the tooltip so that user can use their mouse to select text
+        z-index: -1;
+      }
+    }
+
+    &.cdk-overlay-pane {
+      .tooltip-content {
+        display: block;
+        opacity: 1;
+      }
+    }
+
+    &.top-right > .tooltip-content {
+      @include vertical-tooltip-generator(top, right, false);
+    }
+
+    &.top-left > .tooltip-content {
+      @include vertical-tooltip-generator(top, left, false);
+    }
+
+    &.bottom-right > .tooltip-content {
+      @include vertical-tooltip-generator(bottom, right, false);
+    }
+
+    &.bottom-left > .tooltip-content {
+      @include vertical-tooltip-generator(bottom, left, false);
+    }
+
+    &.right > .tooltip-content {
+      @include horizontal-tooltip-generator(right, false);
+    }
+
+    &.left > .tooltip-content {
+      @include horizontal-tooltip-generator(left, false);
+    }
+
+    //Tooltips Size
+    &.tooltip-xs > .tooltip-content,
+    .tooltip-content.tooltip-xs {
+      width: tokens.$cds-global-space-14;
+    }
+
+    &.tooltip-sm > .tooltip-content,
+    .tooltip-content.tooltip-sm {
+      width: mixins.baselinePx(120);
+    }
+
+    &.tooltip-md > .tooltip-content,
+    .tooltip-content.tooltip-md {
+      width: mixins.baselinePx(240);
+    }
+
+    &.tooltip-lg > .tooltip-content,
+    .tooltip-content.tooltip-lg {
+      width: mixins.baselinePx(360);
+    }
   }
 }

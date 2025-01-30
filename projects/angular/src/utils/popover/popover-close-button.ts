@@ -9,8 +9,7 @@ import { AfterViewInit, Directive, ElementRef, EventEmitter, HostListener, OnDes
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { ClrPopoverEventsService } from './providers/popover-events.service';
-import { ClrPopoverToggleService } from './providers/popover-toggle.service';
+import { ClrPopoverService } from './providers/popover.service';
 
 @Directive({
   selector: '[clrPopoverCloseButton]',
@@ -23,13 +22,9 @@ export class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(
-    private elementRef: ElementRef<HTMLButtonElement>,
-    private smartEventsService: ClrPopoverEventsService,
-    private smartOpenService: ClrPopoverToggleService
-  ) {
+  constructor(private elementRef: ElementRef<HTMLButtonElement>, private popoverService: ClrPopoverService) {
     this.subscriptions.push(
-      smartOpenService.openChange.pipe(filter(value => !value)).subscribe(() => {
+      popoverService.openChange.pipe(filter(value => !value)).subscribe(() => {
         this.closeChange.next();
       })
     );
@@ -37,13 +32,13 @@ export class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
 
   @HostListener('click', ['$event'])
   handleClick(event: MouseEvent) {
-    this.smartOpenService.toggleWithEvent(event);
-    this.smartEventsService.setAnchorFocus();
+    this.popoverService.toggleWithEvent(event);
+    this.popoverService.setOpenedButtonFocus();
   }
 
   ngAfterViewInit() {
-    this.smartEventsService.closeButtonRef = this.elementRef;
-    this.smartEventsService.setCloseFocus();
+    this.popoverService.closeButtonRef = this.elementRef;
+    this.popoverService.setCloseFocus();
   }
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());

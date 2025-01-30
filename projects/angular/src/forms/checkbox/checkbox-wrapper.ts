@@ -35,9 +35,9 @@ export class ClrCheckboxWrapper implements OnInit, OnDestroy {
   toggle = false;
   private subscriptions: Subscription[] = [];
 
-  constructor(@Inject(IS_TOGGLE) toggleService: BehaviorSubject<boolean>) {
+  constructor(@Inject(IS_TOGGLE) stateService: BehaviorSubject<boolean>) {
     this.subscriptions.push(
-      toggleService.subscribe(state => {
+      stateService.subscribe(state => {
         this.toggle = state;
       })
     );

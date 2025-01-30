@@ -8,7 +8,7 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { ClrTabOverflowContent } from './tab-overflow-content';
 
 @Component({
@@ -23,7 +23,7 @@ describe('TabOverflowContent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ClrTabOverflowContent, TestComponent],
-      providers: [ClrPopoverToggleService],
+      providers: [ClrPopoverService],
     });
 
     fixture = TestBed.createComponent(TestComponent);

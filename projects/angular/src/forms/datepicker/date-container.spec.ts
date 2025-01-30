@@ -12,9 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { PopoverPosition } from '../../popover/common/popover-positions';
 import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
@@ -33,7 +31,7 @@ import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
 const DATEPICKER_PROVIDERS: any[] = [
-  ClrPopoverToggleService,
+  ClrPopoverService,
   DateNavigationService,
   ViewManagerService,
   LocaleHelperService,
@@ -52,7 +50,7 @@ export default function () {
     let enabledService: MockDatepickerEnabledService;
     let dateFormControlService: DateFormControlService;
     let dateNavigationService: DateNavigationService;
-    let toggleService: ClrPopoverToggleService;
+    let popoverService: ClrPopoverService;
     let container: any;
 
     beforeEach(function () {
@@ -69,7 +67,7 @@ export default function () {
 
       enabledService = context.getClarityProvider(DatepickerEnabledService) as MockDatepickerEnabledService;
       dateFormControlService = context.getClarityProvider(DateFormControlService);
-      toggleService = context.getClarityProvider(ClrPopoverToggleService);
+      popoverService = context.getClarityProvider(ClrPopoverService);
       dateNavigationService = context.getClarityProvider(DateNavigationService);
       container = context.clarityDirective;
     });
@@ -207,7 +205,7 @@ export default function () {
     describe('Typescript API', () => {
       it('marks the date control as touched when the datepicker popover is toggled', () => {
         spyOn(dateFormControlService, 'markAsTouched');
-        toggleService.open = true;
+        popoverService.open = true;
         expect(dateFormControlService.markAsTouched).toHaveBeenCalled();
       });
 
@@ -238,7 +236,7 @@ export default function () {
       <clr-control-success>Valid</clr-control-success>
     </clr-date-container>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  providers: [FocusService],
 })
 class TestComponent {
   model = '';
