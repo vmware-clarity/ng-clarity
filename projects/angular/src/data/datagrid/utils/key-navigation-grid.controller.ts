@@ -103,19 +103,19 @@ export class KeyNavigationGridController implements OnDestroy {
           // Skip column resize events
           if (
             (e.target as HTMLElement).classList.contains('drag-handle') &&
-            (e.code === 'ArrowLeft' || e.code === 'ArrowRight')
+            (e.key === 'ArrowLeft' || e.key === 'ArrowRight')
           ) {
             return;
           }
           if (
-            e.code === 'ArrowUp' ||
-            e.code === 'ArrowDown' ||
-            e.code === 'ArrowLeft' ||
-            e.code === 'ArrowRight' ||
-            e.code === 'End' ||
-            e.code === 'Home' ||
-            e.code === 'PageUp' ||
-            e.code === 'PageDown'
+            e.key === 'ArrowUp' ||
+            e.key === 'ArrowDown' ||
+            e.key === 'ArrowLeft' ||
+            e.key === 'ArrowRight' ||
+            e.key === 'End' ||
+            e.key === 'Home' ||
+            e.key === 'PageUp' ||
+            e.key === 'PageDown'
           ) {
             const { x, y } = this.getNextItemCoordinate(e);
             const activeItem = this.rows
@@ -171,7 +171,7 @@ export class KeyNavigationGridController implements OnDestroy {
 
   private getNextItemCoordinate(e: any) {
     let currentCell = this.cells ? Array.from(this.cells).find(i => i.getAttribute('tabindex') === '0') : null;
-    if (e.code === 'Tab') {
+    if (e.key === 'Tab') {
       currentCell = document.activeElement as HTMLElement;
     }
     const currentRow = this.rows && currentCell ? Array.from(this.rows).find(r => r.contains(currentCell)) : null;
@@ -191,29 +191,29 @@ export class KeyNavigationGridController implements OnDestroy {
     const itemsPerPage =
       Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
 
-    if (e.code === 'ArrowUp' && y !== 0) {
+    if (e.key === 'ArrowUp' && y !== 0) {
       y = y - 1;
-    } else if (e.code === 'ArrowDown' && y < numOfRows) {
+    } else if (e.key === 'ArrowDown' && y < numOfRows) {
       y = y + 1;
-    } else if (e.code === inlineStart && x !== 0) {
+    } else if (e.key === inlineStart && x !== 0) {
       x = x - 1;
-    } else if (e.code === inlineEnd && x < numOfColumns) {
+    } else if (e.key === inlineEnd && x < numOfColumns) {
       x = x + 1;
-    } else if (e.code === 'End') {
+    } else if (e.key === 'End') {
       x = numOfColumns;
 
       if (e.ctrlKey) {
         y = numOfRows;
       }
-    } else if (e.code === 'Home') {
+    } else if (e.key === 'Home') {
       x = 0;
 
       if (e.ctrlKey) {
         y = 0;
       }
-    } else if (e.code === 'PageUp') {
+    } else if (e.key === 'PageUp') {
       y = y - itemsPerPage > 0 ? y - itemsPerPage + 1 : 1;
-    } else if (e.code === 'PageDown') {
+    } else if (e.key === 'PageDown') {
       y = y + itemsPerPage < numOfRows ? y + itemsPerPage : numOfRows;
     }
 
