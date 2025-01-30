@@ -222,7 +222,7 @@ export default function (): void {
 
         expect(document.activeElement).toBe(headerCheckboxCell);
 
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         // active checkbox input with ID clr-dg-row-cb364
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[22]);
 
