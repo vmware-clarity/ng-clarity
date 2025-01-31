@@ -18,6 +18,8 @@ export enum Keys {
   Spacebar = ' ',
   Home = 'Home',
   End = 'End',
+  PageDown = 'PageDown',
+  PageUp = 'PageUp',
 }
 
 export enum IEKeys {
