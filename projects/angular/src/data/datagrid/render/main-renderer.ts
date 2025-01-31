@@ -151,6 +151,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.intersectionObserver?.disconnect();
   }
 
   toggleDetailPane(state: boolean) {

@@ -27,21 +27,7 @@
     <clr-tab>
       <button clrTabLink>Management</button>
       <clr-tab-content>
-        <clr-datagrid>
-          <clr-dg-column>User ID</clr-dg-column>
-          <clr-dg-column>Name</clr-dg-column>
-          <clr-dg-column>Creation date</clr-dg-column>
-          <clr-dg-column>Favorite color</clr-dg-column>
-
-          <clr-dg-row *ngFor="let user of users">
-            <clr-dg-cell>{{user.id}}</clr-dg-cell>
-            <clr-dg-cell>{{user.name}}</clr-dg-cell>
-            <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
-            <clr-dg-cell>{{user.color}}</clr-dg-cell>
-          </clr-dg-row>
-
-          <clr-dg-footer>{{users.length}} users</clr-dg-footer>
-        </clr-datagrid>
+        <p>Content for Management tab.</p>
       </clr-tab-content>
     </clr-tab>
   </clr-tabs>
@@ -60,27 +46,18 @@
     <clr-tab>
       <button clrTabLink>Dashboard</button>
       <clr-tab-content clrTabContentId="content1" *clrIfActive>
-        <clr-datagrid>
-          <clr-dg-column>User ID</clr-dg-column>
-          <clr-dg-column>Name</clr-dg-column>
-          <clr-dg-column>Creation date</clr-dg-column>
-          <clr-dg-column>Favorite color</clr-dg-column>
-
-          <clr-dg-row *ngFor="let user of users">
-            <clr-dg-cell>{{user.id}}</clr-dg-cell>
-            <clr-dg-cell>{{user.name}}</clr-dg-cell>
-            <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
-            <clr-dg-cell>{{user.color}}</clr-dg-cell>
-          </clr-dg-row>
-
-          <clr-dg-footer>{{users.length}} users</clr-dg-footer>
-        </clr-datagrid>
+        <p>
+          Content for Dashboard tab. Here is a <a href="javascript://">link</a> that can be accessed via clicking or
+          through keyboard via tabbing.
+        </p>
       </clr-tab-content>
     </clr-tab>
 
     <clr-tab>
       <button clrTabLink>Management</button>
-      <clr-tab-content *clrIfActive="true"> Test </clr-tab-content>
+      <clr-tab-content *clrIfActive="true">
+        <p>Content for Management tab.</p>
+      </clr-tab-content>
     </clr-tab>
 
     <clr-tab>

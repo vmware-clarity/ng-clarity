@@ -23,9 +23,9 @@ import { User } from '../inventory/user';
 
       <clr-dg-row *ngFor="let user of users">
         <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-        <clr-dg-cell
-          >aReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongUninterruptedContent</clr-dg-cell
-        >
+        <clr-dg-cell>
+          aReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongUninterruptedContent
+        </clr-dg-cell>
         <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
         <clr-dg-cell>{{ user.color }}</clr-dg-cell>
       </clr-dg-row>
