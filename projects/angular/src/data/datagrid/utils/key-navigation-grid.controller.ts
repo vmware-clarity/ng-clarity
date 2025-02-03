@@ -7,7 +7,7 @@
 
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { Keys } from '../../../utils/enums/keys.enum';
 
@@ -100,15 +100,13 @@ export class KeyNavigationGridController implements OnDestroy {
         });
 
       fromEvent(this.grid, 'focusout')
-        .pipe(takeUntil(this.destroy$))
+        .pipe(debounceTime(0), takeUntil(this.destroy$))
         .subscribe(() => {
-          setTimeout(() => {
-            if (this.grid.contains(document.activeElement)) {
-              return;
-            }
+          if (this.grid.contains(document.activeElement)) {
+            return;
+          }
 
-            this.removeActiveCell();
-          });
+          this.removeActiveCell();
         });
 
       fromEvent(this.grid, 'keydown')
