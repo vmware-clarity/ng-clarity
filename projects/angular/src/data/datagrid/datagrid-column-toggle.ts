@@ -31,8 +31,8 @@ import { ColumnsService } from './providers/columns.service';
       clrPopoverAnchor
       clrPopoverOpenCloseButton
       [attr.aria-controls]="popoverId"
-      [attr.aria-owns]="popoverId"
       [attr.aria-expanded]="openState"
+      [attr.aria-haspopup]="'menu'"
     >
       {{ commonStrings.keys.pickColumns }}
     </button>
@@ -83,7 +83,7 @@ import { ColumnsService } from './providers/columns.service';
 })
 export class ClrDatagridColumnToggle implements OnDestroy {
   popoverId = uniqueIdFactory();
-  openState: boolean;
+  openState = false;
 
   // Smart Popover
   smartPosition: ClrPopoverPosition = {
