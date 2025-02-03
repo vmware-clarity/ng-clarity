@@ -17,7 +17,7 @@
         *ngIf="breadcrumb.routerLink"
         [routerLink]="breadcrumb.routerLink"
         [queryParams]="breadcrumb.queryParams"
-        [target]="breadcrumb.target"
+        [target]="breadcrumb.target || '_self'"
         (click)="handleItemClick(breadcrumb)"
       >
         {{ breadcrumb.label }}
@@ -25,7 +25,7 @@
       <a
         *ngIf="breadcrumb.href"
         [href]="breadcrumb.href"
-        [target]="breadcrumb.target"
+        [target]="breadcrumb.target || '_self'"
         (click)="handleItemClick(breadcrumb)"
       >
         {{ breadcrumb.label }}
