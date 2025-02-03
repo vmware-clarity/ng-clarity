@@ -61,7 +61,7 @@ type CdkFixedSizeVirtualScrollInputs = Pick<CdkFixedSizeVirtualScroll, 'itemSize
 
 const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = {
   itemSize: 32,
-  minBufferPx: 200,
+  minBufferPx: 400,
   maxBufferPx: 400,
 };
 
@@ -113,11 +113,12 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     items.smartenUp();
     datagrid.hasVirtualScroller = true;
     datagrid.detailService.preventFocusScroll = true;
+    datagrid.keyNavigation.strategy = 'virtualScroller';
 
     this.datagridElementRef = datagrid.el;
 
     // default
-    this.cdkVirtualForTemplateCacheSize = 20;
+    this.cdkVirtualForTemplateCacheSize = 400;
 
     this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
       attributeFilter: ['class'],

@@ -34,6 +34,13 @@
   <div>Rows: {{totalRows}}, Cols: {{totalCols}}</div>
 </div>
 
+<input
+  #globalFilterInputElement
+  clrInput
+  [ngModel]="globalFilter"
+  (ngModelChange)="setGlobalFilter(globalFilterInputElement.value)"
+/>
+
 <h3>Dynamic cols and rows</h3>
 <clr-datagrid
   [(clrDgSelected)]="selectedRows"
@@ -51,8 +58,9 @@
     let-row
     [clrVirtualRowsOf]="data.rows"
     [clrVirtualRowsItemSize]="24"
-    [clrVirtualRowsMinBufferPx]="200"
+    [clrVirtualRowsMinBufferPx]="400"
     [clrVirtualRowsMaxBufferPx]="400"
+    [clrVirtualRowsTemplateCacheSize]="400"
     [clrVirtualRowsTrackBy]="rowByIndex"
     (renderedRangeChange)="renderRangeChange($event)"
   >

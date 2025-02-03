@@ -38,6 +38,7 @@ export interface KeyNavigationGridConfig {
 @Injectable()
 export class KeyNavigationGridController implements OnDestroy {
   skipItemFocus = false;
+  strategy: 'regular' | 'virtualScroller' = 'regular';
 
   private host: HTMLElement;
   private config: KeyNavigationGridConfig;
@@ -102,6 +103,7 @@ export class KeyNavigationGridController implements OnDestroy {
       fromEvent(this.grid, 'keydown')
         .pipe(takeUntil(this.destroy$))
         .subscribe((e: KeyboardEvent) => {
+          console.log(e);
           // Skip column resize events
           if (
             (e.target as HTMLElement).classList.contains('drag-handle') &&
@@ -214,7 +216,17 @@ export class KeyNavigationGridController implements OnDestroy {
         y = 0;
       }
     } else if (e.key === Keys.PageUp) {
-      y = y - itemsPerPage > 0 ? y - itemsPerPage + 1 : 1;
+      console.log(y);
+
+      y =
+        this.strategy === 'virtualScroller'
+          ? numOfRows / 4 < y
+            ? Math.floor(numOfRows / 4)
+            : 1
+          : y - itemsPerPage > 0
+          ? y - itemsPerPage + 1
+          : 1;
+      console.log(y);
     } else if (e.key === Keys.PageDown) {
       y = y + itemsPerPage < numOfRows ? y + itemsPerPage : numOfRows;
     }
