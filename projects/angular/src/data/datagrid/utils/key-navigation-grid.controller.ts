@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -8,6 +8,8 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { Keys } from '../../../utils/enums/keys.enum';
 
 export function getTabableItems(el: HTMLElement) {
   const tabableSelector = [
@@ -103,19 +105,19 @@ export class KeyNavigationGridController implements OnDestroy {
           // Skip column resize events
           if (
             (e.target as HTMLElement).classList.contains('drag-handle') &&
-            (e.code === 'ArrowLeft' || e.code === 'ArrowRight')
+            (e.key === Keys.ArrowLeft || e.key === Keys.ArrowRight)
           ) {
             return;
           }
           if (
-            e.code === 'ArrowUp' ||
-            e.code === 'ArrowDown' ||
-            e.code === 'ArrowLeft' ||
-            e.code === 'ArrowRight' ||
-            e.code === 'End' ||
-            e.code === 'Home' ||
-            e.code === 'PageUp' ||
-            e.code === 'PageDown'
+            e.key === Keys.ArrowUp ||
+            e.key === Keys.ArrowDown ||
+            e.key === Keys.ArrowLeft ||
+            e.key === Keys.ArrowRight ||
+            e.key === Keys.End ||
+            e.key === Keys.Home ||
+            e.key === Keys.PageUp ||
+            e.key === Keys.PageDown
           ) {
             const { x, y } = this.getNextItemCoordinate(e);
             const activeItem = this.rows
@@ -171,7 +173,7 @@ export class KeyNavigationGridController implements OnDestroy {
 
   private getNextItemCoordinate(e: any) {
     let currentCell = this.cells ? Array.from(this.cells).find(i => i.getAttribute('tabindex') === '0') : null;
-    if (e.code === 'Tab') {
+    if (e.key === Keys.Tab) {
       currentCell = document.activeElement as HTMLElement;
     }
     const currentRow = this.rows && currentCell ? Array.from(this.rows).find(r => r.contains(currentCell)) : null;
@@ -185,35 +187,35 @@ export class KeyNavigationGridController implements OnDestroy {
     let y = currentRow && currentCell && this.rows ? Array.from(this.rows).indexOf(currentRow) : 0;
 
     const dir = this.host.dir;
-    const inlineStart = dir === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
-    const inlineEnd = dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+    const inlineStart = dir === 'rtl' ? Keys.ArrowRight : Keys.ArrowLeft;
+    const inlineEnd = dir === 'rtl' ? Keys.ArrowLeft : Keys.ArrowRight;
 
     const itemsPerPage =
       Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
 
-    if (e.code === 'ArrowUp' && y !== 0) {
+    if (e.key === Keys.ArrowUp && y !== 0) {
       y = y - 1;
-    } else if (e.code === 'ArrowDown' && y < numOfRows) {
+    } else if (e.key === Keys.ArrowDown && y < numOfRows) {
       y = y + 1;
-    } else if (e.code === inlineStart && x !== 0) {
+    } else if (e.key === inlineStart && x !== 0) {
       x = x - 1;
-    } else if (e.code === inlineEnd && x < numOfColumns) {
+    } else if (e.key === inlineEnd && x < numOfColumns) {
       x = x + 1;
-    } else if (e.code === 'End') {
+    } else if (e.key === Keys.End) {
       x = numOfColumns;
 
       if (e.ctrlKey) {
         y = numOfRows;
       }
-    } else if (e.code === 'Home') {
+    } else if (e.key === Keys.Home) {
       x = 0;
 
       if (e.ctrlKey) {
         y = 0;
       }
-    } else if (e.code === 'PageUp') {
+    } else if (e.key === Keys.PageUp) {
       y = y - itemsPerPage > 0 ? y - itemsPerPage + 1 : 1;
-    } else if (e.code === 'PageDown') {
+    } else if (e.key === Keys.PageDown) {
       y = y + itemsPerPage < numOfRows ? y + itemsPerPage : numOfRows;
     }
 

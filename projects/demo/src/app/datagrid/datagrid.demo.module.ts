@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -20,6 +20,7 @@ import { DatagridConditionalSelectionsDemo } from './conditional-selection/condi
 import { DatagridCustomRenderingDemo } from './custom-rendering/custom-rendering';
 import { DatagridDemo } from './datagrid.demo';
 import { ROUTING } from './datagrid.demo.routing';
+import { DatagridDensityDemo } from './density/density';
 import { DatagridDetailDemo } from './detail/detail';
 import { DetailWrapper } from './expandable-rows/detail-wrapper';
 import { DatagridExpandableRowsDemo } from './expandable-rows/expandable-rows';
@@ -54,6 +55,7 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridBasicStructureDemo,
     DatagridBindingPropertiesDemo,
     DatagridCompactDemo,
+    DatagridDensityDemo,
     DatagridCustomRenderingDemo,
     DatagridFilteringDemo,
     DatagridFullDemo,
@@ -90,6 +92,7 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridBasicStructureDemo,
     DatagridBindingPropertiesDemo,
     DatagridCompactDemo,
+    DatagridDensityDemo,
     DatagridCustomRenderingDemo,
     DatagridFilteringDemo,
     DatagridFullDemo,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -50,6 +50,7 @@ export default {
     multiSelectable: false,
     detailColumns: false,
     compact: false,
+    overflowEllipsis: false,
     hidableColumns: false,
     height: 0,
     openTooltip: false,
@@ -68,6 +69,7 @@ const ExpandableRowsTemplate: StoryFn = args => ({
         justify-content: space-between;
 
         .electronegativity-bar {
+          max-height: var(--cds-global-space-8);
           background-color: var(--cds-alias-status-info);
         }
       }
@@ -76,7 +78,7 @@ const ExpandableRowsTemplate: StoryFn = args => ({
       ${args.height ? '[style.height.px]="height"' : ''}
       ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
       ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
-      [ngClass]="{ 'datagrid-compact': compact }"
+      [ngClass]="{ 'datagrid-compact': compact, 'datagrid-overflow-ellipsis': overflowEllipsis }"
     >
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
@@ -86,6 +88,9 @@ const ExpandableRowsTemplate: StoryFn = args => ({
       </clr-dg-column>
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
+      </clr-dg-column>
+      <clr-dg-column [style.width.px]="250" *ngIf="overflowEllipsis">
+        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Long text width 250px</ng-container>
       </clr-dg-column>
       <clr-dg-column>
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
@@ -105,6 +110,7 @@ const ExpandableRowsTemplate: StoryFn = args => ({
       >
         <clr-dg-cell>
           <a
+            *ngIf="!overflowEllipsis"
             href="javascript:void(0)"
             role="tooltip"
             aria-haspopup="true"
@@ -119,14 +125,31 @@ const ExpandableRowsTemplate: StoryFn = args => ({
               aliquet suscipit eget, pellentesque sed arcu. Vivamus in dui lectus.
             </span>
           </a>
+          <clr-tooltip *ngIf="overflowEllipsis">
+            <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
+            <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+              Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
+              sed arcu. Vivamus in dui lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in
+              ante placerat mattis id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque
+              aliquet suscipit eget, pellentesque sed arcu. Vivamus in dui lectus.
+            </clr-tooltip-content>
+          </clr-tooltip>
           {{ element.name }}
         </clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
         <clr-dg-cell>{{ element.number }}</clr-dg-cell>
+        <clr-dg-cell *ngIf="overflowEllipsis">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+          Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed
+          arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh lacus, in
+          eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum
+        </clr-dg-cell>
         <clr-dg-cell class="electronegativity-container">
           {{ element.electronegativity }}
           <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
         </clr-dg-cell>
+
         <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="clrDgReplace">
           <ng-template [ngIf]="!detailColumns">
             <div>
@@ -148,6 +171,7 @@ const ExpandableRowsTemplate: StoryFn = args => ({
               finibus hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit diam.
             </div>
           </ng-template>
+
           <ng-template [ngIf]="detailColumns">
             <clr-dg-cell>
               <clr-tooltip>
@@ -164,6 +188,12 @@ const ExpandableRowsTemplate: StoryFn = args => ({
             </clr-dg-cell>
             <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
             <clr-dg-cell>{{ element.number }}</clr-dg-cell>
+            <clr-dg-cell *ngIf="overflowEllipsis">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+              Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
+              sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh
+              lacus, in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum
+            </clr-dg-cell>
             <clr-dg-cell class="electronegativity-container">
               {{ element.electronegativity }}
               <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
@@ -216,6 +246,17 @@ export const CompactExpandedColumnReplaceExpandableRows: StoryObj = {
   args: {
     compact: true,
     clrDgExpanded: true,
+    clrDgReplace: true,
+    detailColumns: true,
+  },
+};
+
+export const CompactOverflowEllipsisExpandableRows: StoryObj = {
+  render: ExpandableRowsTemplate,
+  args: {
+    compact: true,
+    overflowEllipsis: true,
+    multiSelectable: true,
     clrDgReplace: true,
     detailColumns: true,
   },

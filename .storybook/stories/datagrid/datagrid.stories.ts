@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -51,6 +51,7 @@ export default {
     multiSelectable: false,
     expandable: false,
     compact: false,
+    overflowEllipsis: false,
     hidableColumns: false,
     height: 0,
     selectedRows: [],
@@ -73,7 +74,7 @@ const DatagridTemplate: StoryFn = args => ({
       ${args.height ? '[style.height.px]="height"' : ''}
       ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
       ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
-      [ngClass]="{ 'datagrid-compact': compact }"
+      [ngClass]="{ 'datagrid-compact': compact, 'datagrid-overflow-ellipsis': overflowEllipsis }"
       [clrDetailExpandableAriaLabel]="clrDetailExpandableAriaLabel"
       [clrDgDisablePageFocus]="clrDgDisablePageFocus"
       [clrDgLoading]="clrDgLoading"
@@ -94,6 +95,9 @@ const DatagridTemplate: StoryFn = args => ({
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
       </clr-dg-column>
+      <clr-dg-column [style.width.px]="250" *ngIf="overflowEllipsis">
+        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Long text width 250px</ng-container>
+      </clr-dg-column>
       <clr-dg-column>
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
       </clr-dg-column>
@@ -106,6 +110,12 @@ const DatagridTemplate: StoryFn = args => ({
         <clr-dg-cell>{{ element.name }}</clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
         <clr-dg-cell>{{ element.number }}</clr-dg-cell>
+        <clr-dg-cell *ngIf="overflowEllipsis">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+          Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed
+          arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh lacus, in
+          eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum
+        </clr-dg-cell>
         <clr-dg-cell class="electronegativity-container">
           {{ element.electronegativity }}
           <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
@@ -183,5 +193,13 @@ export const CompactMultiSelectWithSelection: StoryObj = {
     compact: true,
     multiSelectable: true,
     selectedRows: [1],
+  },
+};
+
+export const CompactOverflowEllipsis: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    compact: true,
+    overflowEllipsis: true,
   },
 };

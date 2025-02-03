@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -10,6 +10,7 @@
 @use '../../image/icons.clarity';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
+@use '../../popover/dropdown/menu-mixins.clarity';
 @use '../../button/variables.buttons' as button-variables;
 @use '../../forms/styles/variables.forms' as forms-variables;
 @use '../../modal/variables.modal' as modal-variables;
@@ -69,55 +70,7 @@
   }
 
   .action-item {
-    color: datagrid-variables.$clr-datagrid-popover-font-color;
-    @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
-
-    background: transparent;
-    border: 0;
-    cursor: pointer;
-    display: block;
-    margin: 0;
-    padding: 0 tokens.$cds-global-space-9 0 tokens.$cds-global-space-7;
-    text-align: left;
-    width: 100%;
-
-    &:hover,
-    &:focus {
-      text-decoration: none;
-      background-color: datagrid-variables.$clr-datagrid-action-popover-hover-color;
-    }
-
-    &.active {
-      background-color: datagrid-variables.$clr-datagrid-row-hover-color;
-      color: datagrid-variables.$clr-datagrid-row-hover-font-color;
-    }
-
-    &:focus {
-      outline: 0;
-    }
-
-    &.disabled,
-    &:disabled {
-      cursor: not-allowed;
-      opacity: 0.4;
-      user-select: none;
-
-      &:hover {
-        background: none;
-      }
-
-      &:active,
-      &:focus {
-        background: none;
-        box-shadow: none;
-      }
-    }
-
-    cds-icon,
-    clr-icon {
-      vertical-align: middle;
-      transform: translate3d(0px, calc(-1 * tokens.$cds-global-space-1), 0);
-    }
+    @include menu-mixins.generate-dropdown-item();
   }
 }
 
@@ -151,6 +104,12 @@
     &.cdk-virtual-scrollable .datagrid-rows {
       flex-grow: 0;
     }
+  }
+
+  .datagrid-overflow-ellipsis .datagrid-row .datagrid-scrolling-cells > .datagrid-cell {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   .datagrid-container {

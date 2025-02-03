@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -18,6 +18,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { animationFrameScheduler, BehaviorSubject, Observable } from 'rxjs';
 
 import { ClarityModule } from '../../clr-angular.module';
+import { Keys } from '../../utils/enums/keys.enum';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 
@@ -221,18 +222,18 @@ export default function (): void {
 
         expect(document.activeElement).toBe(headerCheckboxCell);
 
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         // active checkbox input with ID clr-dg-row-cb364
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[22]);
 
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb383
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[41]);
 
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
