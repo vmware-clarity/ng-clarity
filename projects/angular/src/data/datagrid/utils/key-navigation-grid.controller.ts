@@ -102,7 +102,13 @@ export class KeyNavigationGridController implements OnDestroy {
       fromEvent(this.grid, 'focusout')
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          this.removeActiveCell();
+          setTimeout(() => {
+            if (this.grid.contains(document.activeElement)) {
+              return;
+            }
+
+            this.removeActiveCell();
+          });
         });
 
       fromEvent(this.grid, 'keydown')
