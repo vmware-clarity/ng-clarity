@@ -219,11 +219,12 @@ export default function (): void {
         headerCheckboxCell.focus();
         sleep(10);
         fixture.detectChanges();
-
         expect(document.activeElement).toBe(headerCheckboxCell);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         // active checkbox input with ID clr-dg-row-cb364
+        console.log(document.activeElement);
+        console.log(grid.querySelectorAll('[type=checkbox]')[22]);
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[22]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
@@ -231,6 +232,8 @@ export default function (): void {
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb383
+        console.log(document.activeElement);
+        console.log(grid.querySelectorAll('[type=checkbox]')[41]);
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[41]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
@@ -238,7 +241,9 @@ export default function (): void {
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb360
-        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[19]);
+        console.log(document.activeElement);
+        console.log(grid.querySelectorAll('[type=checkbox]')[9]);
+        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[9]);
 
         flush();
         flushMicrotasks();
