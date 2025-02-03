@@ -103,7 +103,6 @@ export class KeyNavigationGridController implements OnDestroy {
       fromEvent(this.grid, 'keydown')
         .pipe(takeUntil(this.destroy$))
         .subscribe((e: KeyboardEvent) => {
-          console.log(e);
           // Skip column resize events
           if (
             (e.target as HTMLElement).classList.contains('drag-handle') &&
@@ -216,17 +215,11 @@ export class KeyNavigationGridController implements OnDestroy {
         y = 0;
       }
     } else if (e.key === Keys.PageUp) {
-      console.log(y);
-
-      y =
-        this.strategy === 'virtualScroller'
-          ? numOfRows / 4 < y
-            ? Math.floor(numOfRows / 4)
-            : 1
-          : y - itemsPerPage > 0
-          ? y - itemsPerPage + 1
-          : 1;
-      console.log(y);
+      if (this.strategy === 'virtualScroller') {
+        y = numOfRows / 4 < y ? Math.floor(numOfRows / 4) : 1;
+      } else {
+        y = y - itemsPerPage > 0 ? y - itemsPerPage + 1 : 1;
+      }
     } else if (e.key === Keys.PageDown) {
       y = y + itemsPerPage < numOfRows ? y + itemsPerPage : numOfRows;
     }
