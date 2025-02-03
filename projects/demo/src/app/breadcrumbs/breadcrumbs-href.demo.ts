@@ -16,6 +16,6 @@ export class BreadcrumbsHrefDemo {
   menuItems = [
     { label: 'Paints', href: '/demo/breadcrumbs/href' },
     { label: 'Watercolor', href: '/demo/breadcrumbs/href' },
-    { label: 'Daniel Smith', href: '/daniel smith' },
+    { label: 'Sennelier', href: '/demo/breadcrumbs/href/sennelier' },
   ];
 }
