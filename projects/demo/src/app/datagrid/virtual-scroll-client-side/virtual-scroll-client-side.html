@@ -71,6 +71,17 @@
 </clr-datagrid>
 
 <h3>Dynamic rows with sorting</h3>
+
+<clr-input-container>
+  <label>Global Name Filter</label>
+  <input
+    #globalFilterInputElement
+    clrInput
+    [ngModel]="globalFilter"
+    (ngModelChange)="setGlobalFilter(globalFilterInputElement.value)"
+  />
+</clr-input-container>
+
 <clr-datagrid *ngIf="{ users: users | async }; let data" [(clrDgSelected)]="selectedUsers" style="height: 30rem">
   <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
