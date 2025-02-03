@@ -24,6 +24,12 @@ class TestComponent {
     { label: 'Grandchild Page', routerLink: '/grandchild' },
     { label: 'Last Page', routerLink: '/last' },
   ];
+
+  menuItemsHref = [
+    { label: 'Home', href: '/home' },
+    { label: 'Parent Page', href: '/parent' },
+    { label: 'Current Page', href: '/child' },
+  ];
 }
 
 describe('ClrBreadcrumbs', () => {
