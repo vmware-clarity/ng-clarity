@@ -1,0 +1,51 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Basic with OnPush Wrapper</h2>
+
+<clr-tabs>
+  <clr-tab>
+    <button clrTabLink>Initial</button>
+    <clr-tab-content> Click on any of the tabs with datagrid to make sure it's loading properly </clr-tab-content>
+  </clr-tab>
+  <clr-tab>
+    <button clrTabLink>With Datagrid 1</button>
+    <clr-tab-content>
+      <basic-on-push-wrapper-demo></basic-on-push-wrapper-demo>
+    </clr-tab-content>
+  </clr-tab>
+
+  <clr-tab>
+    <button clrTabLink>Without Datagrid</button>
+    <clr-tab-content>Empty Tab</clr-tab-content>
+  </clr-tab>
+
+  <clr-tab>
+    <button clrTabLink>With Datagrid 2</button>
+    <clr-tab-content>
+      <basic-on-push-wrapper-demo></basic-on-push-wrapper-demo>
+    </clr-tab-content>
+  </clr-tab>
+</clr-tabs>
+
+<h2>Nested in Accordion</h2>
+<clr-accordion>
+  <clr-accordion-panel>
+    <clr-accordion-title>Step 1</clr-accordion-title>
+    <clr-accordion-content><basic-on-push-wrapper-demo></basic-on-push-wrapper-demo></clr-accordion-content>
+  </clr-accordion-panel>
+
+  <clr-accordion-panel>
+    <clr-accordion-title>Step 2</clr-accordion-title>
+    <clr-accordion-content><basic-on-push-wrapper-demo></basic-on-push-wrapper-demo></clr-accordion-content>
+  </clr-accordion-panel>
+
+  <clr-accordion-panel>
+    <clr-accordion-title>Step 3</clr-accordion-title>
+    <clr-accordion-content><basic-on-push-wrapper-demo></basic-on-push-wrapper-demo></clr-accordion-content>
+  </clr-accordion-panel>
+</clr-accordion>

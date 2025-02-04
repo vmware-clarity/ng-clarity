@@ -12,6 +12,8 @@ import { ClarityModule } from '@clr/angular';
 
 import { UtilsDemoModule } from '../_utils/utils.module';
 import { DatagridBasicStructureDemo } from './basic-structure/basic-structure';
+import { DatagridBasicOnPushDemo } from './basic-with-on-push/basic-on-push';
+import { DatagridBasicOnPushWrapperDemo } from './basic-with-on-push/basic-on-push-wrapper';
 import { DatagridBindingPropertiesDemo } from './binding-properties/binding-properties';
 import { DatagridBuiltInFiltersDemo } from './built-in-filters/built-in-filters';
 import { DatagridColumnSizingDemo } from './column-sizing/column-sizing';
@@ -53,6 +55,8 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
   declarations: [
     DatagridDemo,
     DatagridBasicStructureDemo,
+    DatagridBasicOnPushDemo,
+    DatagridBasicOnPushWrapperDemo,
     DatagridBindingPropertiesDemo,
     DatagridCompactDemo,
     DatagridDensityDemo,
@@ -90,6 +94,8 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
   exports: [
     DatagridDemo,
     DatagridBasicStructureDemo,
+    DatagridBasicOnPushDemo,
+    DatagridBasicOnPushWrapperDemo,
     DatagridBindingPropertiesDemo,
     DatagridCompactDemo,
     DatagridDensityDemo,

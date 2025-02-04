@@ -9,6 +9,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DatagridBasicStructureDemo } from './basic-structure/basic-structure';
+import { DatagridBasicOnPushDemo } from './basic-with-on-push/basic-on-push';
 import { DatagridBindingPropertiesDemo } from './binding-properties/binding-properties';
 import { DatagridBuiltInFiltersDemo } from './built-in-filters/built-in-filters';
 import { DatagridColumnSizingDemo } from './column-sizing/column-sizing';
@@ -50,6 +51,7 @@ const ROUTES: Routes = [
       { path: '', redirectTo: 'structure', pathMatch: 'full' },
       { path: 'kitchen-sink', component: DatagridKitchenSinkDemo },
       { path: 'structure', component: DatagridBasicStructureDemo },
+      { path: 'on-push', component: DatagridBasicOnPushDemo },
       { path: 'custom-rendering', component: DatagridCustomRenderingDemo },
       { path: 'smart-iterator', component: DatagridSmartIteratorDemo },
       { path: 'binding-properties', component: DatagridBindingPropertiesDemo },

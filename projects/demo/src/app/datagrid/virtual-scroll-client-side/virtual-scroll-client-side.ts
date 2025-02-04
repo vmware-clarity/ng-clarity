@@ -37,6 +37,7 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
   selectedUsers: User[] = [];
   timeCD: ChangeDetectionPerfRecord;
   sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
+  globalFilter = '';
 
   pokemonComparator = new PokemonComparator();
 
@@ -73,6 +74,16 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
     this.rows.subscribe(() => {
       this.cdr.detectChanges();
     });
+  }
+
+  setGlobalFilter(value: string) {
+    this.globalFilter = value;
+
+    if (value) {
+      this.users = new BehaviorSubject<User[]>(this.inventory.all.filter(user => user.name.includes(value)));
+    } else {
+      this.users = this.inventory.getAllUsersSubject();
+    }
   }
 
   changeDatagridDimensions() {
