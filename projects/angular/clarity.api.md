@@ -589,7 +589,7 @@ export class ClrBreadcrumbsModule {
 
 // @public (undocumented)
 export class ClrButton implements LoadingListener {
-    constructor(buttonInGroupService: ButtonInGroupService);
+    constructor(routerLinkActive: RouterLinkActive, buttonInGroupService: ButtonInGroupService);
     // Warning: (ae-forgotten-export) The symbol "ButtonInGroupService" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -622,14 +622,16 @@ export class ClrButton implements LoadingListener {
     // (undocumented)
     get role(): string;
     // (undocumented)
+    routerLinkActiveClasses: string;
+    // (undocumented)
     templateRef: TemplateRef<ClrButton>;
     // (undocumented)
     get type(): string;
     set type(value: string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, { "inMenu": "clrInMenu"; "classNames": "class"; "name": "name"; "type": "type"; "id": "id"; "disabled": "disabled"; }, { "_click": "click"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, { "routerLinkActiveClasses": "routerLinkActive"; "inMenu": "clrInMenu"; "classNames": "class"; "name": "name"; "type": "type"; "id": "id"; "disabled": "disabled"; }, { "_click": "click"; }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{ optional: true; skipSelf: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{ optional: true; }, { optional: true; skipSelf: true; }]>;
 }
 
 // @public (undocumented)
@@ -3150,6 +3152,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     _open: boolean;
     // (undocumented)
     _openChanged: EventEmitter<boolean>;
+    // (undocumented)
+    scrollTop(): void;
     // (undocumented)
     size: string;
     // (undocumented)
@@ -5767,7 +5771,7 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
 
 // @public (undocumented)
 export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
-    constructor(datagrid: ClrDatagrid, organizer: DatagridRenderOrganizer, items: Items, page: Page, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController);
+    constructor(datagrid: ClrDatagrid, organizer: DatagridRenderOrganizer, items: Items, page: Page, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController, changeDetectorRef: ChangeDetectorRef);
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)

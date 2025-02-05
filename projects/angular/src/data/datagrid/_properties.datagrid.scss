@@ -19,6 +19,7 @@
     --clr-datagrid-icon-color: #{tokens.$cds-alias-object-interaction-color};
     --clr-datagrid-row-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
     --clr-datagrid-row-active-color: #{tokens.$cds-alias-object-interaction-background-active};
+    /* unused, remove in v18 */
     --clr-datagrid-row-hover-font-color: #{tokens.$cds-alias-typography-color-500};
     --clr-datagrid-action-toggle-color: #{tokens.$cds-alias-object-interaction-color-active};
     --clr-datagrid-pagination-btn-color: #{tokens.$cds-alias-object-interaction-color};
@@ -28,6 +29,7 @@
     --clr-datagrid-popover-bg-color: #{tokens.$cds-alias-object-container-background};
     --clr-datagrid-popover-border-color: #{tokens.$cds-alias-object-border-color};
     --clr-datagrid-popover-font-color: #{tokens.$cds-alias-typography-color-400};
+    /* unused, remove in v18 */
     --clr-datagrid-action-popover-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
     --clr-datagrid-row-selected: #{tokens.$cds-alias-typography-color-500};
     --clr-datagrid-row-selected-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
