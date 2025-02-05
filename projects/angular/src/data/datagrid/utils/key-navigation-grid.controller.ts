@@ -181,38 +181,6 @@ export class KeyNavigationGridController implements OnDestroy {
     }
   }
 
-  calcKeyArrowUp(y: number) {
-    return y !== 0 ? y - 1 : y;
-  }
-
-  calcKeyArrowDown(y: number, numOfRows: number) {
-    return y < numOfRows ? y + 1 : y;
-  }
-
-  calcKeyArrowLeft(x: number) {
-    return x !== 0 ? x - 1 : x;
-  }
-
-  calcKeyArrowRight(x: number, numOfColumns: number) {
-    return x < numOfColumns ? x + 1 : x;
-  }
-
-  calcKeyEnd(countX: number, y: number, countY: number, ctrlKeyPressed: boolean) {
-    return { x: countX, y: ctrlKeyPressed ? countY : y };
-  }
-
-  calcKeyHome(countX: number, y: number, countY: number, ctrlKeyPressed: boolean) {
-    return { x: countX, y: ctrlKeyPressed ? countY : y };
-  }
-
-  calcKeyPageUp(y: number, itemsPerPage: number) {
-    return y - itemsPerPage > 0 ? y - itemsPerPage + 1 : 1;
-  }
-
-  calcKeyPageDown(y: number, itemsPerPage: number, numOfRows: number) {
-    return y + itemsPerPage < numOfRows ? y + itemsPerPage : numOfRows;
-  }
-
   private getNextItemCoordinate(e: any) {
     let currentCell = this.cells ? Array.from(this.cells).find(i => i.getAttribute('tabindex') === '0') : null;
     if (e.key === Keys.Tab) {
@@ -222,11 +190,11 @@ export class KeyNavigationGridController implements OnDestroy {
     const numOfRows = this.rows ? this.rows.length - 1 : 0;
     const numOfColumns = this.cells ? Math.floor(this.cells.length / this.rows.length - 1) : 0;
 
-    const x =
+    let x =
       currentRow && currentCell
         ? Array.from(currentRow.querySelectorAll(this.config.keyGridCells)).indexOf(currentCell)
         : 0;
-    const y = currentRow && currentCell && this.rows ? Array.from(this.rows).indexOf(currentRow) : 0;
+    let y = currentRow && currentCell && this.rows ? Array.from(this.rows).indexOf(currentRow) : 0;
 
     const dir = this.host.dir;
     const inlineStart = dir === 'rtl' ? Keys.ArrowRight : Keys.ArrowLeft;
@@ -235,25 +203,32 @@ export class KeyNavigationGridController implements OnDestroy {
     const itemsPerPage =
       Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
 
-    switch (e.key) {
-      case Keys.ArrowUp:
-        return { x, y: this.calcKeyArrowUp(y) };
-      case Keys.ArrowDown:
-        return { x, y: this.calcKeyArrowDown(y, numOfRows) };
-      case inlineStart:
-        return { x: this.calcKeyArrowLeft(x), y };
-      case inlineEnd:
-        return { x: this.calcKeyArrowRight(x, numOfColumns), y };
-      case Keys.End:
-        return this.calcKeyEnd(numOfColumns, y, numOfRows, e.ctrlKey);
-      case Keys.Home:
-        return this.calcKeyHome(0, y, 0, e.ctrlKey);
-      case Keys.PageUp:
-        return { x, y: this.calcKeyPageUp(y, itemsPerPage) };
-      case Keys.PageDown:
-        return { x, y: this.calcKeyPageDown(y, itemsPerPage, numOfRows) };
-      default:
-        return { x, y };
+    if (e.key === Keys.ArrowUp && y !== 0) {
+      y = y - 1;
+    } else if (e.key === Keys.ArrowDown && y < numOfRows) {
+      y = y + 1;
+    } else if (e.key === inlineStart && x !== 0) {
+      x = x - 1;
+    } else if (e.key === inlineEnd && x < numOfColumns) {
+      x = x + 1;
+    } else if (e.key === Keys.End) {
+      x = numOfColumns;
+
+      if (e.ctrlKey) {
+        y = numOfRows;
+      }
+    } else if (e.key === Keys.Home) {
+      x = 0;
+
+      if (e.ctrlKey) {
+        y = 0;
+      }
+    } else if (e.key === Keys.PageUp) {
+      y = y - itemsPerPage > 0 ? y - itemsPerPage + 1 : 1;
+    } else if (e.key === Keys.PageDown) {
+      y = y + itemsPerPage < numOfRows ? y + itemsPerPage : numOfRows;
     }
+
+    return { x, y };
   }
 }
