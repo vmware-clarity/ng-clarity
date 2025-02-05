@@ -70,4 +70,25 @@
   @include mixins.input-placeholder-wrapper() {
     color: forms-variables.$clr-forms-placeholder-color;
   }
+
+  /* CDE-2572 fix. Make the input full-width if a grid column is applied */
+  .clr-control-container {
+    &.clr-col-1,
+    &.clr-col-2,
+    &.clr-col-3,
+    &.clr-col-4,
+    &.clr-col-5,
+    &.clr-col-6,
+    &.clr-col-7,
+    &.clr-col-8,
+    &.clr-col-9,
+    &.clr-col-10,
+    &.clr-col-11,
+    &.clr-col-12 {
+      .clr-input,
+      .clr-input-group {
+        width: 100%;
+      }
+    }
+  }
 }
