@@ -26,6 +26,7 @@ import {
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+import { ClrModal } from '../modal/modal';
 import { ClrCommonStringsService } from '../utils';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ButtonHubService } from './providers/button-hub.service';
@@ -132,6 +133,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   private _disableStepnav = false;
   private differ: any; // for marking when the collection of wizard pages has been added to or deleted from
   private subscriptions: Subscription[] = [];
+
+  @ViewChild(ClrModal) private readonly modal: ClrModal;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -488,6 +491,9 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
       //   tabs content to make the wizard more accessible.
       this.pageTitle?.nativeElement.focus();
       this.currentPageChanged.emit();
+
+      // scroll to top of page in case there is long page content
+      this.modal?.scrollTop();
     });
   }
 
