@@ -78,6 +78,8 @@ export class ClrModal implements OnChanges, OnDestroy {
   // presently this is only used by inline wizards
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
 
+  @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
+
   constructor(
     private _scrollingService: ScrollingService,
     public commonStrings: ClrCommonStringsService,
@@ -147,5 +149,9 @@ export class ClrModal implements OnChanges, OnDestroy {
       this._openChanged.emit(false);
       this.modalStackService.trackModalClose(this);
     }
+  }
+
+  scrollTop() {
+    this.bodyElementRef.nativeElement.scrollTo(0, 0);
   }
 }
