@@ -51,7 +51,7 @@ export interface Cells {
 
       <ng-template
         *ngIf="data.rows"
-        ClrVirtualScroll
+        clrVirtualScroll
         let-row
         [clrVirtualRowsOf]="data.rows"
         [clrVirtualRowsItemSize]="24"
