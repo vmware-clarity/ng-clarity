@@ -6,7 +6,7 @@
  */
 
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { fromEvent, Subject, throttleTime } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { Keys } from '../../../utils/enums/keys.enum';
@@ -38,7 +38,6 @@ export interface KeyNavigationGridConfig {
 @Injectable()
 export class KeyNavigationGridController implements OnDestroy {
   skipItemFocus = false;
-  strategy: 'regular' | 'virtualScroller' = 'regular';
 
   private host: HTMLElement;
   private config: KeyNavigationGridConfig;
@@ -111,7 +110,7 @@ export class KeyNavigationGridController implements OnDestroy {
         });
 
       fromEvent(this.grid, 'keydown')
-        .pipe(takeUntil(this.destroy$))
+        .pipe(throttleTime(1), takeUntil(this.destroy$))
         .subscribe((e: KeyboardEvent) => {
           // Skip column resize events
           if (
@@ -203,8 +202,6 @@ export class KeyNavigationGridController implements OnDestroy {
 
     const itemsPerPage =
       Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
-    // console.log('itemsPerPage', itemsPerPage)
-    // console.log('numOfRows', numOfRows)
 
     if (e.key === Keys.ArrowUp && y !== 0) {
       y = y - 1;
@@ -227,23 +224,6 @@ export class KeyNavigationGridController implements OnDestroy {
         y = 0;
       }
     } else if (e.key === Keys.PageUp) {
-      // if (this.strategy === 'virtualScroller') {
-      //   // console.log('initial y', y)
-      //   // numOfRows are all the rows currently rendered
-      //   // itemsPerPage are total rows that are visible at once
-      //   // half the difference between them is the count not visible before/after rows
-      //   // removing 3 from half the difference will force single scroll UP by not selecting a barely visible row
-      //   // const position = Math.floor((numOfRows - itemsPerPage) / 2) - 3;
-      //   // const position = 1;
-      //
-      //   // The threshold is to ensure the current Y position need
-      //   // const threshold = numOfRows / 4;
-      //
-      //   // y = y >= threshold ? position : 1;
-      //   y = y - itemsPerPage > 0 ? y - itemsPerPage + 1 : 1;
-      //   // console.log('calced y', y)
-      // } else {
-      // }
       y = y - itemsPerPage > 0 ? y - itemsPerPage + 1 : 1;
     } else if (e.key === Keys.PageDown) {
       y = y + itemsPerPage < numOfRows ? y + itemsPerPage : numOfRows;
