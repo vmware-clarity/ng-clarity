@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -9,6 +9,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DatagridBasicStructureDemo } from './basic-structure/basic-structure';
+import { DatagridBasicOnPushDemo } from './basic-with-on-push/basic-on-push';
 import { DatagridBindingPropertiesDemo } from './binding-properties/binding-properties';
 import { DatagridBuiltInFiltersDemo } from './built-in-filters/built-in-filters';
 import { DatagridColumnSizingDemo } from './column-sizing/column-sizing';
@@ -16,6 +17,7 @@ import { DatagridCompactDemo } from './compact/compact';
 import { DatagridConditionalSelectionsDemo } from './conditional-selection/conditional-selection';
 import { DatagridCustomRenderingDemo } from './custom-rendering/custom-rendering';
 import { DatagridDemo } from './datagrid.demo';
+import { DatagridDensityDemo } from './density/density';
 import { DatagridDetailDemo } from './detail/detail';
 import { DatagridExpandableRowsDemo } from './expandable-rows/expandable-rows';
 import { DatagridFilteringDemo } from './filtering/filtering';
@@ -49,6 +51,7 @@ const ROUTES: Routes = [
       { path: '', redirectTo: 'structure', pathMatch: 'full' },
       { path: 'kitchen-sink', component: DatagridKitchenSinkDemo },
       { path: 'structure', component: DatagridBasicStructureDemo },
+      { path: 'on-push', component: DatagridBasicOnPushDemo },
       { path: 'custom-rendering', component: DatagridCustomRenderingDemo },
       { path: 'smart-iterator', component: DatagridSmartIteratorDemo },
       { path: 'binding-properties', component: DatagridBindingPropertiesDemo },
@@ -70,6 +73,7 @@ const ROUTES: Routes = [
       { path: 'scrolling', component: DatagridScrollingDemo },
       { path: 'column-sizing', component: DatagridColumnSizingDemo },
       { path: 'compact', component: DatagridCompactDemo },
+      { path: 'density', component: DatagridDensityDemo },
       { path: 'detail', component: DatagridDetailDemo },
       { path: 'expandable-rows', component: DatagridExpandableRowsDemo },
       { path: 'full', component: DatagridFullDemo },

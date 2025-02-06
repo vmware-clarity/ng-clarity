@@ -1,0 +1,150 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Dense Datagrid</h2>
+
+<p>
+  To increase the information density of your Datagrid, add the
+  <code class="clr-code">datagrid-compact</code> and/or <code class="clr-code">datagrid-overflow-ellipsis</code> classes
+  to it. Those classes decrease the amount of whitespace in the default Datagrid style so that you can display more rows
+  in the fixed height. Or if your Datagrid doesn't have a fixed height, you could decrease the overall amount of space
+  that it takes.
+</p>
+
+<form clrForm>
+  <clr-radio-container>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="detail" value="default" [(ngModel)]="detail" />
+      <label>Default expand details</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="detail" value="columns" [(ngModel)]="detail" />
+      <label>Per Column expand details</label>
+    </clr-radio-wrapper>
+  </clr-radio-container>
+
+  <clr-checkbox-container>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="replace" [(ngModel)]="compact" />
+      <label>Compact</label>
+    </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="replace" [(ngModel)]="overflowEllipsis" />
+      <label>Overflow ellipsis</label>
+    </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="replace" [(ngModel)]="replace" />
+      <label>Replace row</label>
+    </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="fixed-height" [(ngModel)]="fixedHeight" />
+      <label>Fixed height</label>
+    </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="selectable" [(ngModel)]="selectable" />
+      <label>Selectable</label>
+    </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="remove-row-detail" [(ngModel)]="removeRowDetail" />
+      <label>Remove Row Detail</label>
+    </clr-checkbox-wrapper>
+  </clr-checkbox-container>
+</form>
+
+<clr-datagrid
+  [style.height.px]="fixedHeight ? 500 : null"
+  [class.datagrid-compact]="compact"
+  [class.datagrid-overflow-ellipsis]="overflowEllipsis"
+  [(clrDgSelected)]="selected"
+>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Pokemon</clr-dg-column>
+  <clr-dg-column [style.width.px]="110">Creation date</clr-dg-column>
+  <clr-dg-column [style.width.px]="120">Favorite color</clr-dg-column>
+  <clr-dg-column>Long Text Dynamic Width</clr-dg-column>
+  <clr-dg-column [style.width.px]="400">Long Text Static Width 400px</clr-dg-column>
+  <clr-dg-row *ngFor="let user of users; let i = index;">
+    <clr-dg-action-overflow>
+      <button class="action-item">Edit</button>
+      <button class="action-item">Delete</button>
+    </clr-dg-action-overflow>
+    <clr-dg-cell>
+      <clr-tooltip>
+        <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
+        <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+          Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
+          sed arcu. Vivamus in dui lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in
+          ante placerat mattis id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque
+          aliquet suscipit eget, pellentesque sed arcu. Vivamus in dui lectus.
+        </clr-tooltip-content>
+      </clr-tooltip>
+      {{user.id}}
+    </clr-dg-cell>
+    <clr-dg-cell>
+      <cds-icon shape="user"></cds-icon>
+      {{user.name}}
+    </clr-dg-cell>
+    <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
+    <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+    <clr-dg-cell
+      ><span
+        >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortor tellus, tincidunt eget mauris molestie,
+        ullamcorper facilisis lacus. Vivamus sagittis suscipit libero, et tristique justo consectetur egete justo
+        consectetur eget.</span
+      ></clr-dg-cell
+    >
+    <clr-dg-cell
+      >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortor tellus, tincidunt eget mauris molestie,
+      ullamcorper facilisis lacus. Vivamus sagittis suscipit libero, et tristique justo consectetur eget.</clr-dg-cell
+    >
+
+    <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="!removeRowDetail">
+      <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="replace">
+        <ng-template [ngIf]="detail === 'default'">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+          Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
+          sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh lacus,
+          in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum vulputate
+          sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere ipsum tincidunt velit
+          pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet metus finibus
+          hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit diam.
+        </ng-template>
+
+        <ng-template [ngIf]="detail === 'columns'">
+          <clr-dg-cell>{{user.id}}</clr-dg-cell>
+          <clr-dg-cell>
+            <cds-icon shape="user"></cds-icon>
+            {{user.name}}
+          </clr-dg-cell>
+          <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
+          <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+          <clr-dg-cell>
+            <span class="color-square" [style.backgroundColor]="user.color"></span>
+          </clr-dg-cell>
+          <clr-dg-cell>
+            <span>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed toror tellus, tincidunt eget mauris molestie,
+              ullamcorper facilisis lacus. Vivamus sagittis suscipit libero, et tristique justo consectetur egete justo
+              consectetur eget.
+            </span>
+          </clr-dg-cell>
+          <clr-dg-cell>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortor tellus, tincidunt eget mauris molestie,
+            ullamcorper facilisis lacus. Vivamus sagittis suscipit libero, et tristique justo consectetur eget.
+          </clr-dg-cell>
+        </ng-template>
+      </clr-dg-row-detail>
+    </ng-container>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{users.length}} users</clr-dg-footer>
+</clr-datagrid>

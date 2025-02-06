@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
   ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
@@ -28,6 +28,7 @@
 
       <div class="modal-content">
         <div class="modal-header--accessible">
+          <ng-content select=".leading-button"></ng-content>
           <div class="modal-title-wrapper" #title id="{{modalId}}" cdkFocusInitial tabindex="-1">
             <ng-content select=".modal-title"></ng-content>
           </div>
@@ -41,7 +42,7 @@
             <cds-icon shape="window-close"></cds-icon>
           </button>
         </div>
-        <div class="modal-body-wrapper">
+        <div #body class="modal-body-wrapper">
           <ng-content select=".modal-body"></ng-content>
         </div>
         <ng-content select=".modal-footer"></ng-content>
@@ -49,6 +50,6 @@
     </div>
     <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   </div>
-
-  <div [@fade] *ngIf="backdrop" class="modal-backdrop" aria-hidden="true" (click)="backdropClick()"></div>
 </div>
+
+<div [@fade] *ngIf="backdrop" class="modal-backdrop" aria-hidden="true" (click)="backdropClick()"></div>

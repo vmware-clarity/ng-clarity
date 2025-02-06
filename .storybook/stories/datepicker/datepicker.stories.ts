@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -40,23 +40,24 @@ export default {
     disabled: false,
     placeholder: '',
     id: '',
+    showActionButtons: false,
     // outputs
     clrDateChange: action('clrDateChange'),
     // story helpers
-    getDateObject: date => new Date(date),
+    getDateObject: date => date && new Date(date),
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
   },
 };
 
 const DatePickerTemplate: StoryFn = args => ({
   template: `
-    <clr-date-container>
+    <clr-date-container [showActionButtons]="showActionButtons">
       <label>Date</label>
       <input
         #date
         type="date"
         [id]="id"
-        [clrDate]="getDateObject(clrDate || date.value)"
+        [clrDate]="getDateObject(clrDate)"
         [min]="getDateString(min)"
         [max]="getDateString(max)"
         [disabled]="disabled"
@@ -76,7 +77,7 @@ export const Datepicker: StoryObj = {
 export const DefaultDate: StoryObj = {
   render: DatePickerTemplate,
   args: {
-    clrDate: '2022-01-01 00:00:00.000',
+    clrDate: '2025-01-01 00:00:00.000',
   },
 };
 
@@ -98,5 +99,12 @@ export const MaxDate: StoryObj = {
   render: DatePickerTemplate,
   args: {
     max: Date.now() + 2592000000,
+  },
+};
+
+export const ActionButtons: StoryObj = {
+  render: DatePickerTemplate,
+  args: {
+    showActionButtons: true,
   },
 };

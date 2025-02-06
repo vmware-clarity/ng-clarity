@@ -6,7 +6,7 @@
   </tr>
   <tr class="calendar-row" *ngFor="let row of calendarViewModel.calendarView">
     <td *ngFor="let dayView of row" class="calendar-cell">
-      <clr-day [clrDayView]="dayView" aria-hidden="true"></clr-day>
+      <clr-day [clrDayView]="dayView" (selectDay)="setSelectedDay($event)"></clr-day>
     </td>
   </tr>
 </table>

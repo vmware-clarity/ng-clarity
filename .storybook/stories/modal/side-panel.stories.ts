@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -38,6 +38,7 @@ export default {
     clrSidePanelCloseButtonAriaLabel: commonStringsDefault.close,
     clrSidePanelLabelledById: '',
     clrSidePanelSize: 'md',
+    clrSidePanelPinnable: false,
     clrSidePanelSkipAnimation: false,
     // outputs
     clrSidePanelOpenChange: action('clrSidePanelOpenChange'),
@@ -56,6 +57,7 @@ const SidePanelTemplate: StoryFn = args => ({
           <button type="button" class="btn btn-primary" (click)="clrSidePanelOpen = true">Open Side Panel</button>
           <clr-side-panel
             [clrSidePanelBackdrop]="clrSidePanelBackdrop"
+            [clrSidePanelPinnable]="clrSidePanelPinnable"
             [clrSidePanelStaticBackdrop]="clrSidePanelStaticBackdrop"
             [clrSidePanelCloseButtonAriaLabel]="clrSidePanelCloseButtonAriaLabel"
             [clrSidePanelLabelledById]="clrSidePanelLabelledById"
@@ -170,6 +172,19 @@ export const SidePanelAlternateClose: StoryObj = {
     },
     title: 'Side Panel with alternate close',
     body: 'This is a medium side panel without backdrop.',
+  },
+};
+
+export const SidePanelPinnable: StoryObj = {
+  render: SidePanelTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrSidePanelOpen: true,
+    clrSidePanelSize: 'md',
+    clrSidePanelBackdrop: false,
+    clrSidePanelPinnable: true,
+    title: 'Pinnable Side Panel',
+    body: 'This is a medium pinnable side panel without backdrop.',
   },
 };
 

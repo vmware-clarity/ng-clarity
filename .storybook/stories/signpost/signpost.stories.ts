@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -44,23 +44,37 @@ export default {
   args: {
     // inputs
     clrPosition: 'right-middle',
+    clrSignpostCloseAriaLabel: 'Info Close',
     // story helpers
     content: 'Hello World!',
+    title: 'Title',
   },
 };
 
-const template = `
-  <div style="padding: 250px; text-align: center">
-    <clr-signpost>
-      <clr-signpost-content [clrPosition]="clrPosition">
-        {{ content }}
-      </clr-signpost-content>
-    </clr-signpost>
-  </div>
-`;
-
 const SignpostTemplate: StoryFn = args => ({
-  template,
+  template: `
+    <div style="padding: 250px; text-align: center">
+      <clr-signpost>
+        <clr-signpost-content [clrPosition]="clrPosition" [clrSignpostCloseAriaLabel]="clrSignpostCloseAriaLabel">
+          {{ content }}
+        </clr-signpost-content>
+      </clr-signpost>
+    </div>
+  `,
+  props: args,
+});
+
+const SignpostTitleTemplate: StoryFn = args => ({
+  template: `
+    <div style="padding: 250px; text-align: center">
+      <clr-signpost>
+        <clr-signpost-content [clrPosition]="clrPosition">
+          <clr-signpost-title>{{ title }}</clr-signpost-title>
+          {{ content }}
+        </clr-signpost-content>
+      </clr-signpost>
+    </div>
+  `,
   props: args,
 });
 
@@ -83,5 +97,12 @@ export const OpenedLongContent = {
   },
   args: {
     content: 'Hello World! '.repeat(110),
+  },
+};
+
+export const SignpostWithTitle: StoryObj = {
+  render: SignpostTitleTemplate,
+  play({ canvasElement }) {
+    canvasElement.querySelector('button').click();
   },
 };

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -23,13 +23,13 @@ import { CommonModules } from '../../helpers/common';
         <clr-control-error>State Subtext</clr-control-error>
         <clr-control-success>State Subtext</clr-control-success>
       </clr-input-container>
-      <clr-input-container>
+      <clr-number-input-container>
         <label>Number</label>
-        <input type="number" clrInput name="age" formControlName="age" />
+        <input type="number" clrNumberInput name="age" formControlName="age" />
         <clr-control-helper>Helper Subtext</clr-control-helper>
         <clr-control-error>State Subtext</clr-control-error>
         <clr-control-success>State Subtext</clr-control-success>
-      </clr-input-container>
+      </clr-number-input-container>
       <clr-password-container>
         <label>Password</label>
         <input type="password" clrPassword name="password" formControlName="password" />

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -18,6 +18,10 @@ export const APP_ROUTES: Routes = [
   },
   { path: 'alert', loadChildren: () => import('./alert/alert.demo.module').then(m => m.AlertDemoModule) },
   { path: 'badges', loadChildren: () => import('./badges/badges.demo.module').then(m => m.BadgesDemoModule) },
+  {
+    path: 'breadcrumbs',
+    loadChildren: () => import('./breadcrumbs/breadcrumbs.demo.module').then(m => m.BreadcrumbsDemoModule),
+  },
   {
     path: 'button-group',
     loadChildren: () => import('./button-group/button-group.demo.module').then(m => m.ButtonGroupDemoModule),
@@ -75,6 +79,10 @@ export const APP_ROUTES: Routes = [
     path: 'overlay-clipping',
     loadChildren: () =>
       import('./overlay-clipping/overlay-clipping.demo.module').then(m => m.OverlayClippingDemoModule),
+  },
+  {
+    path: 'number-input',
+    loadChildren: () => import('./number-input/number-input.demo.module').then(m => m.NumberInputDemoModule),
   },
   {
     path: 'password',

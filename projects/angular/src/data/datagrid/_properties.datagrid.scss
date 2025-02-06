@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -19,6 +19,7 @@
     --clr-datagrid-icon-color: #{tokens.$cds-alias-object-interaction-color};
     --clr-datagrid-row-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
     --clr-datagrid-row-active-color: #{tokens.$cds-alias-object-interaction-background-active};
+    /* unused, remove in v18 */
     --clr-datagrid-row-hover-font-color: #{tokens.$cds-alias-typography-color-500};
     --clr-datagrid-action-toggle-color: #{tokens.$cds-alias-object-interaction-color-active};
     --clr-datagrid-pagination-btn-color: #{tokens.$cds-alias-object-interaction-color};
@@ -28,6 +29,7 @@
     --clr-datagrid-popover-bg-color: #{tokens.$cds-alias-object-container-background};
     --clr-datagrid-popover-border-color: #{tokens.$cds-alias-object-border-color};
     --clr-datagrid-popover-font-color: #{tokens.$cds-alias-typography-color-400};
+    /* unused, remove in v18 */
     --clr-datagrid-action-popover-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
     --clr-datagrid-row-selected: #{tokens.$cds-alias-typography-color-500};
     --clr-datagrid-row-selected-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
