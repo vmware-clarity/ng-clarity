@@ -13,6 +13,7 @@ import {
   flush,
   flushMicrotasks,
   TestBed,
+  tick,
 } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { animationFrameScheduler, BehaviorSubject, Observable } from 'rxjs';
@@ -223,6 +224,7 @@ export default function (): void {
         expect(document.activeElement).toBe(headerCheckboxCell);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        tick(1);
         // active checkbox input with ID clr-dg-row-cb364
         console.log(document.activeElement);
         console.log(grid.querySelectorAll('[type=checkbox]')[22]);
@@ -230,6 +232,7 @@ export default function (): void {
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         sleep();
+        tick(1);
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb383
@@ -239,6 +242,7 @@ export default function (): void {
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         sleep();
+        tick(1);
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb360
