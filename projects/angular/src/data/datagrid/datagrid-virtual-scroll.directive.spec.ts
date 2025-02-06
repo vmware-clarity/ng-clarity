@@ -226,8 +226,6 @@ export default function (): void {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         tick(1);
         // active checkbox input with ID clr-dg-row-cb364
-        console.log(document.activeElement);
-        console.log(grid.querySelectorAll('[type=checkbox]')[22]);
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[22]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
@@ -236,8 +234,6 @@ export default function (): void {
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb383
-        console.log(document.activeElement);
-        console.log(grid.querySelectorAll('[type=checkbox]')[41]);
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[41]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
@@ -246,8 +242,6 @@ export default function (): void {
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb360
-        console.log(document.activeElement);
-        console.log(grid.querySelectorAll('[type=checkbox]')[19]);
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[19]);
 
         flush();
