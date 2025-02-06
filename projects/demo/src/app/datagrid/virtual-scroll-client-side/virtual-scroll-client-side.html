@@ -51,9 +51,8 @@
     let-row
     [clrVirtualRowsOf]="data.rows"
     [clrVirtualRowsItemSize]="24"
-    [clrVirtualRowsMinBufferPx]="400"
+    [clrVirtualRowsMinBufferPx]="200"
     [clrVirtualRowsMaxBufferPx]="400"
-    [clrVirtualRowsTemplateCacheSize]="800"
     [clrVirtualRowsTrackBy]="rowByIndex"
     (renderedRangeChange)="renderRangeChange($event)"
   >
@@ -95,7 +94,7 @@
     let-user
     [clrVirtualRowsOf]="data.users"
     [clrVirtualRowsItemSize]="32"
-    [clrVirtualRowsMinBufferPx]="400"
+    [clrVirtualRowsMinBufferPx]="200"
     [clrVirtualRowsMaxBufferPx]="400"
     [clrVirtualRowsTemplateCacheSize]="400"
     (renderedRangeChange)="renderRangeChange($event)"
