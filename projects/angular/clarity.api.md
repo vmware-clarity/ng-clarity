@@ -4941,10 +4941,10 @@ export class ClrVerticalNav implements OnDestroy {
     // (undocumented)
     triggerId: string;
     // (undocumented)
-    get verticalNavTriggerLabel(): string;
-    set verticalNavTriggerLabel(value: string);
+    get verticalNavToggleLabel(): string;
+    set verticalNavToggleLabel(value: string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "verticalNavTriggerLabel": "clrVerticalNavTriggerLabel"; "collapsible": "clrVerticalNavCollapsible"; "collapsed": "clrVerticalNavCollapsed"; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "verticalNavToggleLabel": "clrVerticalNavToggleLabel"; "collapsible": "clrVerticalNavCollapsible"; "collapsed": "clrVerticalNavCollapsed"; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, never>;
 }
