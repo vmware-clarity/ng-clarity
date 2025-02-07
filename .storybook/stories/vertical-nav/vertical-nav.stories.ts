@@ -42,6 +42,7 @@ export default {
     // inputs
     clrVerticalNavCollapsible: false,
     clrVerticalNavCollapsed: false,
+    clrVerticalNavToggleLabel: '',
     // outputs
     clrVerticalNavCollapsedChange: action('clrVerticalNavCollapsedChange'),
     // story helpers
@@ -57,6 +58,7 @@ const VerticalNavTemplate: StoryFn = args => ({
       <div class="content-container">
         <clr-vertical-nav
           [clrVerticalNavCollapsible]="clrVerticalNavCollapsible"
+          [clrVerticalNavToggleLabel]="clrVerticalNavToggleLabel"
           [clrVerticalNavCollapsed]="clrVerticalNavCollapsed"
           (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
         >

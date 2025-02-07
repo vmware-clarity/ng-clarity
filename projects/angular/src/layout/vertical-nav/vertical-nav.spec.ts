@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrIconModule } from '../../icon/icon.module';
+import { commonStringsDefault } from '../../utils';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNav } from './vertical-nav';
 import { ClrVerticalNavModule } from './vertical-nav.module';
@@ -482,6 +483,38 @@ export default function (): void {
         fixture.destroy();
       });
 
+      it('supports an input to change aria-label on collapsible vertical nav toggle', () => {
+        fixture.componentInstance.collapsible = true;
+        fixture.componentInstance.collapsed = true;
+        fixture.detectChanges();
+
+        const trigger: HTMLElement = compiled.querySelector('.nav-trigger');
+        const vertNav: HTMLElement = compiled.querySelector('.nav-btn');
+
+        expect(trigger.getAttribute('aria-label')).toBe(commonStringsDefault.verticalNavToggle);
+        expect(vertNav.getAttribute('aria-label')).toBe(commonStringsDefault.verticalNavToggle);
+
+        const verticalNavTriggerLabel = 'Changed label string';
+        fixture.componentInstance.toggleLabel = verticalNavTriggerLabel;
+        fixture.detectChanges();
+
+        expect(trigger.getAttribute('aria-label')).toBe(verticalNavTriggerLabel);
+        expect(vertNav.getAttribute('aria-label')).toBe(verticalNavTriggerLabel);
+      });
+
+      it('collapsible vertical nav toggle buttons should have aria-control pointing to nav content id', () => {
+        fixture.componentInstance.collapsible = true;
+        fixture.componentInstance.collapsed = true;
+        fixture.detectChanges();
+
+        const trigger: HTMLElement = compiled.querySelector('.nav-trigger');
+        const vertNav: HTMLElement = compiled.querySelector('.nav-btn');
+        const content: HTMLElement = compiled.querySelector('.nav-content');
+
+        expect(trigger.getAttribute('aria-controls')).toBe(content.id);
+        expect(vertNav.getAttribute('aria-controls')).toBe(content.id);
+      });
+
       it('supports an input to enable the collapsible behavior of the nav', () => {
         expect(vertNavService.collapsible).toBe(false);
 
@@ -643,6 +676,7 @@ class ViewBasicsTestComponent {
       #nav
       [clrVerticalNavCollapsible]="collapsible"
       [clrVerticalNavCollapsed]="collapsed"
+      [clrVerticalNavToggleLabel]="toggleLabel"
       (clrVerticalNavCollapsedChange)="updateCollapsed($event)"
     ></clr-vertical-nav>
   `,
@@ -650,6 +684,7 @@ class ViewBasicsTestComponent {
 class APITestComponent {
   collapsible = false;
   collapsed = false;
+  toggleLabel: string;
   collapsedChange: boolean;
 
   @ViewChild('nav') nav: ClrVerticalNav;
