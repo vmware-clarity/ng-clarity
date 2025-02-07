@@ -26,12 +26,12 @@ import { VerticalNavService } from './providers/vertical-nav.service';
   },
 })
 export class ClrVerticalNav implements OnDestroy {
-  triggerId = uniqueIdFactory();
+  @Input('clrVerticalNavToggleLabel') toggleLabel: string;
+  contentId = uniqueIdFactory();
 
   @Output('clrVerticalNavCollapsedChange') private _collapsedChanged = new EventEmitter<boolean>(true);
 
   private _sub: Subscription;
-  private _verticalNavToggleLabel: string;
 
   constructor(
     private _navService: VerticalNavService,
@@ -42,18 +42,6 @@ export class ClrVerticalNav implements OnDestroy {
     this._sub = _navService.collapsedChanged.subscribe(value => {
       this._collapsedChanged.emit(value);
     });
-  }
-
-  @Input('clrVerticalNavToggleLabel')
-  get verticalNavToggleLabel() {
-    if (this._verticalNavToggleLabel) {
-      return this._verticalNavToggleLabel;
-    }
-
-    return this.commonStrings.keys.verticalNavToggle;
-  }
-  set verticalNavToggleLabel(value: string) {
-    this._verticalNavToggleLabel = value;
   }
 
   @Input('clrVerticalNavCollapsible')

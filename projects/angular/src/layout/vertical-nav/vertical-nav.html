@@ -9,9 +9,9 @@
   type="button"
   class="nav-trigger"
   [class.on-collapse]="collapsed"
-  [attr.aria-controls]="triggerId"
+  [attr.aria-controls]="contentId"
   [attr.aria-expanded]="ariaExpanded"
-  [attr.aria-label]="verticalNavToggleLabel"
+  [attr.aria-label]="toggleLabel || commonStrings.keys.verticalNavToggle"
   (click)="toggleByButton()"
   *ngIf="collapsible"
 >
@@ -21,7 +21,7 @@
     [attr.direction]="(this.collapsed) ? 'right' : 'left'"
   ></cds-icon>
 </button>
-<div [id]="triggerId" class="nav-content">
+<div [id]="contentId" class="nav-content">
   <ng-content></ng-content>
   <button
     type="button"

@@ -4931,6 +4931,8 @@ export class ClrVerticalNav implements OnDestroy {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
+    contentId: string;
+    // (undocumented)
     get hasIcons(): boolean;
     // (undocumented)
     get hasNavGroups(): boolean;
@@ -4939,12 +4941,9 @@ export class ClrVerticalNav implements OnDestroy {
     // (undocumented)
     toggleByButton(): void;
     // (undocumented)
-    triggerId: string;
+    toggleLabel: string;
     // (undocumented)
-    get verticalNavToggleLabel(): string;
-    set verticalNavToggleLabel(value: string);
-    // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "verticalNavToggleLabel": "clrVerticalNavToggleLabel"; "collapsible": "clrVerticalNavCollapsible"; "collapsed": "clrVerticalNavCollapsed"; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "toggleLabel": "clrVerticalNavToggleLabel"; "collapsible": "clrVerticalNavCollapsible"; "collapsed": "clrVerticalNavCollapsed"; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, never>;
 }
