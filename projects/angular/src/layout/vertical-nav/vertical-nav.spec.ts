@@ -11,7 +11,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrIconModule } from '../../icon/icon.module';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { commonStringsDefault } from '../../utils';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNav } from './vertical-nav';
 import { ClrVerticalNavModule } from './vertical-nav.module';
@@ -471,7 +471,6 @@ export default function (): void {
 
     describe('Template API', () => {
       let vertNavService: VerticalNavService;
-      const commonStrings = new ClrCommonStringsService();
 
       beforeEach(() => {
         fixture = TestBed.createComponent(APITestComponent);
@@ -484,18 +483,16 @@ export default function (): void {
         fixture.destroy();
       });
 
-      it('supports an input to change aria-label on collapsible vertical nav trigger', () => {
+      it('supports an input to change aria-label on collapsible vertical nav toggle', () => {
         fixture.componentInstance.collapsible = true;
         fixture.detectChanges();
 
-        expect(vertNavService.collapsible).toBe(true);
-
         const trigger: HTMLElement = compiled.querySelector('.nav-trigger');
 
-        expect(trigger.getAttribute('aria-label')).toBe(commonStrings.keys.verticalNavToggle);
+        expect(trigger.getAttribute('aria-label')).toBe(commonStringsDefault.verticalNavToggle);
 
         const verticalNavTriggerLabel = 'Changed label string';
-        fixture.componentInstance.clrVerticalNavToggleLabel = verticalNavTriggerLabel;
+        fixture.componentInstance.toggleLabel = verticalNavTriggerLabel;
         fixture.detectChanges();
 
         expect(trigger.getAttribute('aria-label')).toBe(verticalNavTriggerLabel);
@@ -662,15 +659,15 @@ class ViewBasicsTestComponent {
       #nav
       [clrVerticalNavCollapsible]="collapsible"
       [clrVerticalNavCollapsed]="collapsed"
-      [clrVerticalNavToggleLabel]="clrVerticalNavToggleLabel"
+      [clrVerticalNavToggleLabel]="toggleLabel"
       (clrVerticalNavCollapsedChange)="updateCollapsed($event)"
     ></clr-vertical-nav>
   `,
 })
 class APITestComponent {
-  clrVerticalNavToggleLabel: string;
   collapsible = false;
   collapsed = false;
+  toggleLabel: string;
   collapsedChange: boolean;
 
   @ViewChild('nav') nav: ClrVerticalNav;

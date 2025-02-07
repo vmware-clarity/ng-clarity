@@ -29,7 +29,8 @@
     class="nav-btn"
     aria-hidden="true"
     tabindex="-1"
-    [attr.aria-label]="commonStrings.keys.verticalNavToggle"
+    [attr.aria-controls]="contentId"
+    [attr.aria-label]="toggleLabel || commonStrings.keys.verticalNavToggle"
     *ngIf="collapsible && collapsed"
   ></button>
 </div>
