@@ -495,7 +495,7 @@ export default function (): void {
         expect(trigger.getAttribute('aria-label')).toBe(commonStrings.keys.verticalNavToggle);
 
         const verticalNavTriggerLabel = 'Changed label string';
-        fixture.componentInstance.clrVerticalNavTriggerLabel = verticalNavTriggerLabel;
+        fixture.componentInstance.clrVerticalNavToggleLabel = verticalNavTriggerLabel;
         fixture.detectChanges();
 
         expect(trigger.getAttribute('aria-label')).toBe(verticalNavTriggerLabel);
@@ -662,13 +662,13 @@ class ViewBasicsTestComponent {
       #nav
       [clrVerticalNavCollapsible]="collapsible"
       [clrVerticalNavCollapsed]="collapsed"
-      [clrVerticalNavTriggerLabel]="clrVerticalNavTriggerLabel"
+      [clrVerticalNavToggleLabel]="clrVerticalNavToggleLabel"
       (clrVerticalNavCollapsedChange)="updateCollapsed($event)"
     ></clr-vertical-nav>
   `,
 })
 class APITestComponent {
-  clrVerticalNavTriggerLabel: string;
+  clrVerticalNavToggleLabel: string;
   collapsible = false;
   collapsed = false;
   collapsedChange: boolean;

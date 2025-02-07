@@ -31,7 +31,7 @@ export class ClrVerticalNav implements OnDestroy {
   @Output('clrVerticalNavCollapsedChange') private _collapsedChanged = new EventEmitter<boolean>(true);
 
   private _sub: Subscription;
-  private _verticalNavTriggerLabel: string;
+  private _verticalNavToggleLabel: string;
 
   constructor(
     private _navService: VerticalNavService,
@@ -44,16 +44,16 @@ export class ClrVerticalNav implements OnDestroy {
     });
   }
 
-  @Input('clrVerticalNavTriggerLabel')
-  get verticalNavTriggerLabel() {
-    if (this._verticalNavTriggerLabel) {
-      return this._verticalNavTriggerLabel;
+  @Input('clrVerticalNavToggleLabel')
+  get verticalNavToggleLabel() {
+    if (this._verticalNavToggleLabel) {
+      return this._verticalNavToggleLabel;
     }
 
     return this.commonStrings.keys.verticalNavToggle;
   }
-  set verticalNavTriggerLabel(value: string) {
-    this._verticalNavTriggerLabel = value;
+  set verticalNavToggleLabel(value: string) {
+    this._verticalNavToggleLabel = value;
   }
 
   @Input('clrVerticalNavCollapsible')

@@ -44,7 +44,7 @@ export default {
   args: {
     // inputs
     clrVerticalNavGroupExpanded: false,
-    clrVerticalNavTriggerLabel: '',
+    clrVerticalNavToggleLabel: '',
     // outputs
     clrVerticalNavGroupExpandedChange: action('clrVerticalNavGroupExpandedChange'),
     // story helpers
@@ -58,7 +58,7 @@ const NavGroupTemplate: StoryFn = args => ({
   template: `
     <div class="main-container">
       <div class="content-container">
-        <clr-vertical-nav [clrVerticalNavCollapsible]="true" [clrVerticalNavTriggerLabel]="clrVerticalNavTriggerLabel">
+        <clr-vertical-nav [clrVerticalNavCollapsible]="true" [clrVerticalNavToggleLabel]="clrVerticalNavToggleLabel">
           <clr-vertical-nav-group
             [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
             (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
