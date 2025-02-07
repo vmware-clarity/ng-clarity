@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrIconModule } from '../../icon/icon.module';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNav } from './vertical-nav';
 import { ClrVerticalNavModule } from './vertical-nav.module';
@@ -470,6 +471,7 @@ export default function (): void {
 
     describe('Template API', () => {
       let vertNavService: VerticalNavService;
+      const commonStrings = new ClrCommonStringsService();
 
       beforeEach(() => {
         fixture = TestBed.createComponent(APITestComponent);
@@ -480,6 +482,23 @@ export default function (): void {
 
       afterEach(() => {
         fixture.destroy();
+      });
+
+      it('supports an input to change aria-label on collapsible vertical nav trigger', () => {
+        fixture.componentInstance.collapsible = true;
+        fixture.detectChanges();
+
+        expect(vertNavService.collapsible).toBe(true);
+
+        const trigger: HTMLElement = compiled.querySelector('.nav-trigger');
+
+        expect(trigger.getAttribute('aria-label')).toBe(commonStrings.keys.verticalNavToggle);
+
+        const verticalNavTriggerLabel = 'Changed label string';
+        fixture.componentInstance.clrVerticalNavTriggerLabel = verticalNavTriggerLabel;
+        fixture.detectChanges();
+
+        expect(trigger.getAttribute('aria-label')).toBe(verticalNavTriggerLabel);
       });
 
       it('supports an input to enable the collapsible behavior of the nav', () => {
@@ -643,11 +662,13 @@ class ViewBasicsTestComponent {
       #nav
       [clrVerticalNavCollapsible]="collapsible"
       [clrVerticalNavCollapsed]="collapsed"
+      [clrVerticalNavTriggerLabel]="clrVerticalNavTriggerLabel"
       (clrVerticalNavCollapsedChange)="updateCollapsed($event)"
     ></clr-vertical-nav>
   `,
 })
 class APITestComponent {
+  clrVerticalNavTriggerLabel: string;
   collapsible = false;
   collapsed = false;
   collapsedChange: boolean;

@@ -9,6 +9,7 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core
 import { Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
@@ -25,9 +26,12 @@ import { VerticalNavService } from './providers/vertical-nav.service';
   },
 })
 export class ClrVerticalNav implements OnDestroy {
+  triggerId = uniqueIdFactory();
+
   @Output('clrVerticalNavCollapsedChange') private _collapsedChanged = new EventEmitter<boolean>(true);
 
   private _sub: Subscription;
+  private _verticalNavTriggerLabel: string;
 
   constructor(
     private _navService: VerticalNavService,
@@ -38,6 +42,18 @@ export class ClrVerticalNav implements OnDestroy {
     this._sub = _navService.collapsedChanged.subscribe(value => {
       this._collapsedChanged.emit(value);
     });
+  }
+
+  @Input('clrVerticalNavTriggerLabel')
+  get verticalNavTriggerLabel() {
+    if (this._verticalNavTriggerLabel) {
+      return this._verticalNavTriggerLabel;
+    }
+
+    return this.commonStrings.keys.verticalNavToggle;
+  }
+  set verticalNavTriggerLabel(value: string) {
+    this._verticalNavTriggerLabel = value;
   }
 
   @Input('clrVerticalNavCollapsible')
