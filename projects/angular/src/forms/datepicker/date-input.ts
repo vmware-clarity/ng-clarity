@@ -11,6 +11,7 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
+  forwardRef,
   HostBinding,
   HostListener,
   Inject,
@@ -70,7 +71,7 @@ export abstract class ClrDateInputBase
     @Self()
     @Optional()
     protected control: NgControl,
-    @Optional() private container: ClrDateContainer,
+    @Optional() @Inject(forwardRef(() => ClrDateContainer)) private container: ClrDateContainer,
     @Optional() protected dateIOService: DateIOService,
     @Optional() protected dateNavigationService: DateNavigationService,
     @Optional() private datepickerEnabledService: DatepickerEnabledService,
