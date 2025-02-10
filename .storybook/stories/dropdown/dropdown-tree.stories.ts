@@ -6,7 +6,7 @@
  */
 
 import { ClrDropdown, ClrDropdownModule, ClrPopoverModule, ClrTreeViewModule } from '@clr/angular';
-import { moduleMetadata, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 import { filesRoot } from 'helpers/files.data';
 

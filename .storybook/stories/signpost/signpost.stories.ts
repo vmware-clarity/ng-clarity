@@ -6,7 +6,7 @@
  */
 
 import { ClrPopoverModule, ClrSignpostContent, ClrSignpostModule } from '@clr/angular';
-import { moduleMetadata } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 

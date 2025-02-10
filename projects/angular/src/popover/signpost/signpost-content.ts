@@ -92,6 +92,8 @@ export const AvailablePopoverPositions = [
   host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
 })
 export class ClrSignpostContent implements OnDestroy, OnChanges {
+  @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;
+
   signpostContentId = uniqueIdFactory();
 
   private document: Document;

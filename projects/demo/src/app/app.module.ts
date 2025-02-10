@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,7 +21,15 @@ import { LandingComponent } from './landing.component';
 
 @NgModule({
   declarations: [AppComponent, LandingComponent, AppContentContainerComponent, CdsThemeSelectComponent],
-  imports: [BrowserAnimationsModule, CommonModule, FormsModule, ReactiveFormsModule, ClarityModule, ROUTING],
+  imports: [
+    BrowserAnimationsModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ClarityModule,
+    ROUTING,
+    ScrollingModule,
+  ],
   providers: [cdsThemePathLocationStrategyProvider],
   bootstrap: [AppComponent],
 })

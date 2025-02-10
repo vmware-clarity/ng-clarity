@@ -6,7 +6,7 @@
  */
 
 import { CLR_MENU_POSITIONS, ClrDropdownMenu, ClrDropdownModule, ClrPopoverModule } from '@clr/angular';
-import { moduleMetadata, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
 export default {

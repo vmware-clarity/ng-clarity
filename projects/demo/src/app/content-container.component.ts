@@ -26,7 +26,7 @@ import { APP_ROUTES } from './app.routing';
         </a>
       </ng-container>
     </clr-vertical-nav>
-    <main class="content-area">
+    <main class="content-area" cdkScrollable>
       <router-outlet></router-outlet>
     </main>
 

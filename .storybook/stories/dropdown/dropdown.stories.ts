@@ -6,7 +6,7 @@
  */
 
 import { ClrDropdown, ClrDropdownModule, ClrPopoverModule } from '@clr/angular';
-import { moduleMetadata, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
 const DROPDOWN_BUTTON_TYPE: string[] = ['btn-primary', 'btn-outline-primary', 'btn-link'];

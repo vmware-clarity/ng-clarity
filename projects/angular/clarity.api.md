@@ -3525,7 +3525,7 @@ export class ClrPasswordModule {
 
 // @public (undocumented)
 export class ClrPopoverAnchor {
-    constructor(popoverService: ClrPopoverService, element: ElementRef<HTMLButtonElement>);
+    constructor(smartEventService: ClrPopoverEventsService, element: ElementRef<HTMLButtonElement>);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverAnchor, "[clrPopoverAnchor]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -3534,7 +3534,7 @@ export class ClrPopoverAnchor {
 
 // @public (undocumented)
 export class ClrPopoverContent implements OnDestroy {
-    constructor(document: Document, container: ViewContainerRef, template: TemplateRef<any>, renderer: Renderer2, overlay: Overlay, overlayContainer: OverlayContainer, popoverService: ClrPopoverService);
+    constructor(document: Document, container: ViewContainerRef, template: TemplateRef<any>, renderer: Renderer2, overlay: Overlay, overlayContainer: OverlayContainer, popoverService: ClrPopoverService, smartEventsService: ClrPopoverEventsService);
     // (undocumented)
     set contentAt(position: ClrPopoverPosition | ConnectedPosition[]);
     // (undocumented)
@@ -3551,6 +3551,45 @@ export class ClrPopoverContent implements OnDestroy {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": "clrPopoverContent"; "contentAt": "clrPopoverContentAt"; "outsideClickClose": "clrPopoverContentOutsideClickToClose"; "scrollToClose": "clrPopoverContentScrollToClose"; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, never>;
+}
+
+// @public (undocumented)
+export class ClrPopoverEventsService implements OnDestroy {
+    constructor(renderer: Renderer2, smartOpenService: ClrPopoverToggleService, document: HTMLDocument);
+    // (undocumented)
+    addClickListener(): void;
+    // (undocumented)
+    addEscapeListener(): void;
+    // (undocumented)
+    addScrollListener(): void;
+    // (undocumented)
+    anchorButtonRef: ElementRef;
+    // (undocumented)
+    closeButtonRef: ElementRef;
+    // (undocumented)
+    contentRef: ElementRef;
+    // (undocumented)
+    ignoredEvent: any;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    outsideClickClose: boolean;
+    // (undocumented)
+    removeClickListener(): void;
+    // (undocumented)
+    removeEscapeListener(): void;
+    // (undocumented)
+    removeScrollListener(): void;
+    // (undocumented)
+    scrollToClose: boolean;
+    // (undocumented)
+    setAnchorFocus(): void;
+    // (undocumented)
+    setCloseFocus(): void;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverEventsService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverEventsService>;
 }
 
 // @public (undocumented)
@@ -3584,6 +3623,55 @@ export interface ClrPopoverPosition {
     content: ClrAlignment;
     // (undocumented)
     side: ClrSide;
+}
+
+export class ClrPopoverPositionService {
+    constructor(eventService: ClrPopoverEventsService, platformId: any);
+    // Warning: (ae-forgotten-export) The symbol "ClrPopoverContentOffset" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    alignContent(content: HTMLElement): ClrPopoverContentOffset;
+    // (undocumented)
+    platformId: any;
+    // (undocumented)
+    position: ClrPopoverPosition;
+    // (undocumented)
+    realign(): void;
+    // (undocumented)
+    shouldRealign: Observable<void>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverPositionService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverPositionService>;
+}
+
+// @public (undocumented)
+export class ClrPopoverToggleService {
+    // (undocumented)
+    getEventChange(): Observable<Event>;
+    // (undocumented)
+    get open(): boolean;
+    set open(value: boolean);
+    // (undocumented)
+    get openChange(): Observable<boolean>;
+    // (undocumented)
+    get openEvent(): Event;
+    set openEvent(event: Event);
+    // (undocumented)
+    get originalEvent(): Event;
+    // (undocumented)
+    get popoverAligned(): Observable<HTMLElement>;
+    // (undocumented)
+    popoverAlignedEmit(popoverNode: HTMLElement): void;
+    // (undocumented)
+    get popoverVisible(): Observable<boolean>;
+    // (undocumented)
+    popoverVisibleEmit(visible: boolean): void;
+    toggleWithEvent(event: any): void;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverToggleService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverToggleService>;
 }
 
 // @public (undocumented)
@@ -5629,7 +5717,7 @@ export class ÇlrActiveOompaLoompa extends OompaLoompa {
 
 // @public (undocumented)
 export class ÇlrClrPopoverCloseButton implements OnDestroy, AfterViewInit {
-    constructor(elementRef: ElementRef<HTMLButtonElement>, popoverService: ClrPopoverService);
+    constructor(elementRef: ElementRef<HTMLButtonElement>, popoverService: ClrPopoverService, smartEventsService: ClrPopoverEventsService);
     // (undocumented)
     closeChange: EventEmitter<void>;
     // (undocumented)

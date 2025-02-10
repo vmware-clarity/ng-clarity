@@ -17,8 +17,8 @@ const POSITIONS = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'righ
 const AvailablePopoverPositions = [
   ClrCDKPopoverPositions['bottom-left'],
   ClrCDKPopoverPositions['bottom-right'],
-  ClrCDKPopoverPositions.left,
-  ClrCDKPopoverPositions.right,
+  ClrCDKPopoverPositions['left'],
+  ClrCDKPopoverPositions['right'],
   ClrCDKPopoverPositions['top-left'],
   ClrCDKPopoverPositions['top-right'],
 ];
@@ -58,6 +58,7 @@ export class ClrTooltipContent implements OnInit {
     popoverService.contentRef = elementRef;
     popoverService.availablePositions = AvailablePopoverPositions;
     popoverService.popoverPositions = ClrCDKPopoverPositions;
+    popoverService.scrollToClose = true;
     popoverService.panelClass = 'clr-tooltip-container';
     if (!parentHost) {
       throw new Error('clr-tooltip-content should only be used inside of a clr-tooltip');

@@ -6,7 +6,7 @@
  */
 
 import { ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 import { ExamplePopoverComponent } from './example-popover.component';
@@ -42,27 +42,29 @@ export default {
   },
 };
 
-const template = `
-  <div style="height: 100vh; width: 100%; display: flex; gap: 50px; justify-content: space-between">
-    <div style="flex-direction: column; align-items: center; display: flex; gap: 50px">
-      <ng-container *ngFor="let pos of positions">
-        <example-popover [popoverPosition]="pos" [open]="open"></example-popover>
-      </ng-container>
+const PopoverTemplate: StoryFn = args => ({
+  template: `
+    <div style="height: 100vh; width: 100%; display: flex; gap: 50px; justify-content: space-between">
+      <div style="flex-direction: column; align-items: center; display: flex; gap: 50px">
+        <ng-container *ngFor="let pos of positions">
+          <example-popover [popoverPosition]="pos" [open]="open"></example-popover>
+        </ng-container>
+      </div>
+      <div style="flex-direction: column; align-items: center; display: flex; gap: 50px">
+        <ng-container *ngFor="let pos of positions">
+          <example-popover [popoverPosition]="pos" [open]="open"></example-popover>
+        </ng-container>
+      </div>
+      <div style="flex-direction: column; align-items: center; display: flex; gap: 50px">
+        <ng-container *ngFor="let pos of positions">
+          <example-popover [popoverPosition]="pos" [open]="open"></example-popover>
+        </ng-container>
+      </div>
     </div>
-    <div style="flex-direction: column; align-items: center; display: flex; gap: 50px">
-      <ng-container *ngFor="let pos of positions">
-        <example-popover [popoverPosition]="pos" [open]="open"></example-popover>
-      </ng-container>
-    </div>
-    <div style="flex-direction: column; align-items: center; display: flex; gap: 50px">
-      <ng-container *ngFor="let pos of positions">
-        <example-popover [popoverPosition]="pos" [open]="open"></example-popover>
-      </ng-container>
-    </div>
-  </div>
-`;
-
-export const Initial: Story = args => ({
-  template,
+  `,
   props: args,
 });
+
+export const Popover: StoryObj = {
+  render: PopoverTemplate,
+};

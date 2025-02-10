@@ -6,7 +6,7 @@
  */
 
 import { ClrPopoverModule, ClrTooltipContent, ClrTooltipModule } from '@clr/angular';
-import { moduleMetadata, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 const tooltipPositions = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'];
 const tooltipSizes = ['xs', 'sm', 'md', 'lg'];

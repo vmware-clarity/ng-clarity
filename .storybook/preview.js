@@ -97,15 +97,33 @@ export const globalTypes = {
   },
 };
 
-const themeDecorator = (story, { globals }) => {
-  const { theme } = globals;
-  document.body.setAttribute(cdsThemeAttribute, theme);
+// const themeDecorator = (story, { globals }) => {
+//   const { theme } = globals;
+//   document.body.setAttribute(cdsThemeAttribute, theme);
 
-  return story();
-};
+//   return story();
+// };
 
+// export const decorators = [
+//   themeDecorator,
+//   applicationConfig({
+//     providers: [provideAnimations()],
+//   }),
+// ];
+
+//Re-render the component on changing the control value
 export const decorators = [
-  themeDecorator,
+  (storyFn, context) => {
+    document.body.setAttribute(cdsThemeAttribute, context);
+    const story = storyFn();
+    return {
+      ...story,
+      moduleMetadata: {
+        ...story.moduleMetadata,
+        providers: [...(story.moduleMetadata?.providers || []), { provide: '_tmp_', useValue: story.props }],
+      },
+    };
+  },
   applicationConfig({
     providers: [provideAnimations()],
   }),
