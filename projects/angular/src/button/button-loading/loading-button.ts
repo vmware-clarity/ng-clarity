@@ -16,21 +16,21 @@ const MIN_BUTTON_WIDTH = 42;
 @Component({
   selector: 'button[clrLoading]',
   template: `
-    <div @parent [ngSwitch]="state">
-      <span *ngSwitchCase="buttonState.LOADING">
+    <span @parent [ngSwitch]="state">
+      <ng-container *ngSwitchCase="buttonState.LOADING">
         <span @spinner class="spinner spinner-inline"></span>
-      </span>
-      <span *ngSwitchCase="buttonState.SUCCESS">
+      </ng-container>
+      <ng-container *ngSwitchCase="buttonState.SUCCESS">
         <span
           @validated
           (@validated.done)="this.loadingStateChange(this.buttonState.DEFAULT)"
           class="spinner spinner-inline spinner-check"
         ></span>
-      </span>
-      <span *ngSwitchCase="buttonState.DEFAULT" @defaultButton>
+      </ng-container>
+      <span *ngSwitchCase="buttonState.DEFAULT" @defaultButton class="clr-loading-btn-content">
         <ng-content></ng-content>
       </span>
-    </div>
+    </span>
   `,
   providers: [{ provide: LoadingListener, useExisting: ClrLoadingButton }],
   animations: [

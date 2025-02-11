@@ -4,35 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const defaultStory: Story = args => ({
-  template: `
-    <div>
-      Unordered List
-      <ul [ngClass]="{ 'list': !unstyled, 'list-unstyled': unstyled, compact }">
-        <li *ngFor="let _ of createArray(itemCount); let i = index">
-          Item {{i + 1}}
-        </li>
-      </ul>
-    </div>
-
-    <div style="margin-top: 20px;">
-      Ordered List
-      <ol [ngClass]="{ 'list': !unstyled, 'list-unstyled': unstyled, compact }">
-        <li *ngFor="let _ of createArray(itemCount); let i = index">
-          Item {{i + 1}}
-        </li>
-      </ol>
-    </div>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'List/List',
   argTypes: {
     // story helpers
@@ -43,27 +17,39 @@ const defaultParameters: Parameters = {
     createArray: n => new Array(n),
     itemCount: 4,
     unstyled: false,
-    compact: false,
   },
 };
 
-const variants: Parameters[] = [
-  {
-    unstyled: false,
-    compact: false,
-  },
-  {
-    unstyled: false,
-    compact: true,
-  },
-  {
-    unstyled: true,
-    compact: false,
-  },
-  {
-    unstyled: true,
-    compact: true,
-  },
-];
+const ListTemplate: Story = args => ({
+  template: `
+    <div>
+      Unordered List
+      <ul [ngClass]="{ 'list': !unstyled, 'list-unstyled': unstyled }">
+        <li *ngFor="let _ of createArray(itemCount); let i = index">
+          Item {{i + 1}}
+        </li>
+      </ul>
+    </div>
 
-setupStorybook([], defaultStory, defaultParameters, variants);
+    <div style="margin-top: 20px;">
+      Ordered List
+      <ol [ngClass]="{ 'list': !unstyled, 'list-unstyled': unstyled }">
+        <li *ngFor="let _ of createArray(itemCount); let i = index">
+          Item {{i + 1}}
+        </li>
+      </ol>
+    </div>
+  `,
+  props: args,
+});
+
+export const List: StoryObj = {
+  render: ListTemplate,
+};
+
+export const UnstyledList: StoryObj = {
+  render: ListTemplate,
+  args: {
+    unstyled: true,
+  },
+};

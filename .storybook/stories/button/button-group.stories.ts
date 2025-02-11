@@ -4,41 +4,28 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_MENU_POSITIONS, ClrButtonGroup, ClrButtonGroupModule, commonStringsDefault } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import {
+  CLR_MENU_POSITIONS,
+  ClrButtonGroup,
+  ClrButtonGroupModule,
+  ClrLoadingModule,
+  commonStringsDefault,
+} from '@clr/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const defaultStory: Story = args => ({
-  template: `
-    <div style="margin-top: 200px; text-align: center;">
-      <clr-button-group [clrMenuPosition]="clrMenuPosition" [clrToggleButtonAriaLabel]="clrToggleButtonAriaLabel">
-        <clr-button
-          *ngFor="let _ of createArray(buttonCount); let i = index"
-          [clrInMenu]="false"
-          [disabled]="disabledButtonsPosition.includes(i+1)"
-        >
-          {{content}} {{i + 1}}
-        </clr-button>
-        <clr-button
-          *ngFor="let _ of createArray(inMenuButtonCount); let i = index"
-          [clrInMenu]="true"
-        >
-          {{content}} {{buttonCount + i + 1}}
-        </clr-button>
-      </clr-button-group>
-    </div>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Button/Button Group',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrButtonGroupModule, ClrLoadingModule],
+    }),
+  ],
   component: ClrButtonGroup,
   argTypes: {
     // inputs
     clrMenuPosition: { defaultValue: 'bottom-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
+    loading: { defaultValue: false, control: { type: 'boolean' } },
     clrToggleButtonAriaLabel: { defaultValue: commonStringsDefault.rowActions },
     // methods
     getMoveIndex: { control: { disable: true }, table: { disable: true } },
@@ -62,16 +49,48 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [
-  {
-    disabledButtonsPosition: [],
-  },
-  {
-    disabledButtonsPosition: [2],
-  },
-  {
-    disabledButtonsPosition: [2, 3],
-  },
-];
+const ButtonGroupTemplate: StoryFn = args => ({
+  template: `
+        <div style="margin-top: 200px; text-align: center;">
+          <clr-button-group [clrMenuPosition]="clrMenuPosition" [clrToggleButtonAriaLabel]="clrToggleButtonAriaLabel">
+            <clr-button
+              *ngFor="let _ of createArray(buttonCount); let i = index"
+              [clrInMenu]="false"
+              [clrLoading]="loading"
+              [disabled]="disabledButtonsPosition.includes(i+1)"
+            >
+              <cds-icon shape="home"></cds-icon>
+              {{content}} {{i + 1}}
+            </clr-button>
+            <clr-button
+              *ngFor="let _ of createArray(inMenuButtonCount); let i = index"
+              [clrInMenu]="true"
+            >
+              {{content}} {{buttonCount + i + 1}}
+            </clr-button>
+          </clr-button-group>
+        </div>
+      `,
+  props: args,
+});
 
-setupStorybook(ClrButtonGroupModule, defaultStory, defaultParameters, variants);
+export const ButtonGroup: StoryObj = {
+  render: ButtonGroupTemplate,
+};
+
+export const ButtonGroupLoading: StoryObj = {
+  render: ButtonGroupTemplate,
+
+  args: {
+    inMenuButtonCount: 0,
+    loading: true,
+  },
+};
+
+export const Disabled: StoryObj = {
+  render: ButtonGroupTemplate,
+
+  args: {
+    disabledButtonsPosition: [1, 2],
+  },
+};

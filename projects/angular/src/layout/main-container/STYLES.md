@@ -28,8 +28,6 @@
 | --clr-header-bg-color                      | Header background color                                |
 | --clr-header-divider-color                 | Color of the header divider                            |
 | --clr-header-divider-opacity               | Opacity of the header divider                          |
-| --clr-header-divider-width                 | Width of the header divider                            |
-| --clr-header-divider-height                | Height of the header divider                           |
 | --clr-header-nav-opacity                   | Header nav item opacity                                |
 | --clr-header-nav-hover-opacity             | Header nav item opacity on hover                       |
 | --clr-header-2-bg-color                    | Second version of header background color              |
@@ -44,18 +42,8 @@
 | --clr-header-title-color                   | Header branding title text color                       |
 | --clr-header-title-font-weight             | Header branding title text fort weight                 |
 | --clr-header-title-font-family             | Header branding title font family                      |
-| --clr-header-title-font-size               | Header branding title font size                        |
-| --clr-header-title-line-height             | Header branding title line height                      |
-| --clr-header-title-letter-spacing          | Header branding title letter spacing                   |
-| --clr-header-branding-min-width            | Header branding minimal width                          |
-| --clr-header-branding-padding              | Header branding padding                                |
-| --clr-header-branding-icon-gap             | Gap between icon and text in header branding section   |
-| --clr-header-branding-logo-size            | Size of the logo image in header branding section      |
-| --clr-header-nav-link-padding              | Header navigation buttons padding                      |
 | --clr-header-nav-link-line-height          | Header navigation buttons line-height                  |
 | --clr-header-nav-link-font-size            | Header navigation buttons font size                    |
-| --clr-header-action-caret-right            | Right margin of the header nav action caret            |
-| --clr-header-search-height                 | Header search input height                             |
 | --clr-header-search-icon-size              | Header search icon size                                |
 | --clr-header-search-margin-left            | Header search field left margin                        |
 | --clr-header-search-margin-right           | Header search field right margin                       |
@@ -64,9 +52,6 @@
 | --clr-header-search-border-active          | Border of active/focused search field                  |
 | --clr-header-search-border-hover           | Border of hovered search field                         |
 | --clr-header-search-placeholder-text-color | Text color of the header search placeholder            |
-| --clr-header-action-caret-size             | Header action dropdown caret size                      |
-| --clr-header-action-icon-size              | Header action icon size                                |
-| --clr-header-action-caret-gap              | Header action dropdown caret gap                       |
 
 ## CSS Classes
 
