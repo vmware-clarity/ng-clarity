@@ -62,7 +62,7 @@ export class ClrPopoverContent implements OnDestroy {
     private overlayContainer: OverlayContainer,
     private popoverService: ClrPopoverService
   ) {
-    overlayContainer.getContainerElement().classList.add('clr-container-element');
+    // overlayContainer.getContainerElement().classList.add('clr-container-element');
   }
 
   @Input('clrPopoverContent')
@@ -123,7 +123,7 @@ export class ClrPopoverContent implements OnDestroy {
           .flexibleConnectedTo(this.popoverService.anchorElementRef)
           .withPositions([this.preferredPosition, ...this.positions]),
         scrollStrategy: this.popoverService.scrollToClose
-          ? this.overlay.scrollStrategies.noop()
+          ? this.overlay.scrollStrategies.close()
           : this.overlay.scrollStrategies.reposition(),
         panelClass: 'clr-popover-content',
         hasBackdrop: false,

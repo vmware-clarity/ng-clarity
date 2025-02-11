@@ -5,7 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComboboxModule, ClrDropdownModule, ClrModalModule, ClrSignpostModule } from '@clr/angular';
+import {
+  ClrComboboxModule,
+  ClrDropdownModule,
+  ClrModalModule,
+  ClrPopoverModule,
+  ClrSignpostModule,
+} from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
@@ -15,7 +21,14 @@ export default {
   title: 'Modal/Nested Popover',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrModalModule, ClrComboboxModule, ClrDropdownModule, ClrSignpostModule],
+      imports: [
+        ...CommonModules,
+        ClrModalModule,
+        ClrComboboxModule,
+        ClrDropdownModule,
+        ClrSignpostModule,
+        ClrPopoverModule,
+      ],
     }),
   ],
   argTypes: {
