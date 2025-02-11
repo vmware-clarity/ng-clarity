@@ -35,7 +35,7 @@ import { Selection } from './providers/selection';
     '[class.datagrid-row-detail]': 'true',
     '[class.datagrid-container]': 'cells.length === 0',
     '[attr.id]': 'expand.expandableId',
-    role: 'gridcell',
+    '[attr.role]': "cells.length ? 'row' : 'gridcell'",
   },
 })
 export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
@@ -67,7 +67,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
   get beginningOfExpandableContentAriaText() {
     return (
       this._beginningOfExpandableContentAriaText ||
-      `${this.commonStrings.keys.datagridExpandableBeginningOf} 
+      `${this.commonStrings.keys.datagridExpandableBeginningOf}
       ${this.commonStrings.keys.datagridExpandableRowContent}`
     );
   }
@@ -75,7 +75,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
   get endOfExpandableContentAriaText() {
     return (
       this._endOfExpandableContentAriaText ||
-      `${this.commonStrings.keys.datagridExpandableEndOf} 
+      `${this.commonStrings.keys.datagridExpandableEndOf}
       ${this.commonStrings.keys.datagridExpandableRowContent}`
     );
   }
