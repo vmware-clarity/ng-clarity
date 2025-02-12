@@ -27,15 +27,24 @@ import { Selection } from './providers/selection';
       {{ beginningOfExpandableContentAriaText }}
       {{ commonStrings.keys.datagridExpandableRowsHelperText }}
     </div>
-    <ng-content></ng-content>
+    <ng-container *ngIf="hasCells" [ngTemplateOutlet]="noCells"></ng-container>
+
+    <ng-container *ngIf="!hasCells">
+      <clr-dg-cell>
+        <ng-container [ngTemplateOutlet]="noCells"></ng-container>
+      </clr-dg-cell>
+    </ng-container>
+
+    <ng-template #noCells>
+      <ng-content></ng-content>
+    </ng-template>
     <div class="clr-sr-only">{{ endOfExpandableContentAriaText }}</div>
   `,
   host: {
     '[class.datagrid-row-flex]': 'true',
     '[class.datagrid-row-detail]': 'true',
-    '[class.datagrid-container]': 'cells.length === 0',
     '[attr.id]': 'expand.expandableId',
-    '[attr.role]': "cells.length ? 'row' : 'gridcell'",
+    role: 'row',
   },
 })
 export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
@@ -62,6 +71,10 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
   @Input('clrDgReplace')
   set replace(value: boolean) {
     this.expand.setReplace(!!value);
+  }
+
+  get hasCells() {
+    return !!this.cells?.length;
   }
 
   get beginningOfExpandableContentAriaText() {
