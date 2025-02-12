@@ -33,16 +33,13 @@
 }
 
 @mixin generate-calendar-focus-style() {
-  &:hover {
-    background: datepicker-variables.$clr-calendar-btn-hover-focus-color;
-  }
-
   &.in-range {
     background: datepicker-variables.$clr-calendar-in-range-cell-background-color;
+    border-radius: 0;
+  }
 
-    &:not(.is-today) {
-      border-radius: 0;
-    }
+  &:hover {
+    background: datepicker-variables.$clr-calendar-btn-hover-focus-color;
   }
 
   &:focus {
@@ -50,6 +47,7 @@
     outline: tokens.$cds-alias-object-interaction-outline;
     outline-color: tokens.$cds-global-color-blue-700;
     outline-offset: calc(-1 * tokens.$cds-global-space-2);
+    background: tokens.$cds-alias-object-interaction-background-hover;
   }
 
   &:active {
@@ -323,10 +321,16 @@
     }
   }
 
-  .month {
-    text-align: center;
-    height: datepicker-variables.$clr-calendar-month-cell-height;
-    @include mixins.overflow-ellipsis();
+  .months {
+    row-gap: tokens.$cds-global-space-3;
+    flex-wrap: wrap;
+    display: flex;
+
+    .month {
+      text-align: center;
+      height: datepicker-variables.$clr-calendar-month-cell-height;
+      @include mixins.overflow-ellipsis();
+    }
   }
 
   .year {
