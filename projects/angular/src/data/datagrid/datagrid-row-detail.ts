@@ -27,9 +27,9 @@ import { Selection } from './providers/selection';
       {{ beginningOfExpandableContentAriaText }}
       {{ commonStrings.keys.datagridExpandableRowsHelperText }}
     </div>
-    <ng-container *ngIf="hasCells" [ngTemplateOutlet]="noCells"></ng-container>
+    <ng-container *ngIf="this.cells?.length > 0" [ngTemplateOutlet]="noCells"></ng-container>
 
-    <ng-container *ngIf="!hasCells">
+    <ng-container *ngIf="this.cells?.length === 0">
       <clr-dg-cell>
         <ng-container [ngTemplateOutlet]="noCells"></ng-container>
       </clr-dg-cell>
@@ -71,10 +71,6 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
   @Input('clrDgReplace')
   set replace(value: boolean) {
     this.expand.setReplace(!!value);
-  }
-
-  get hasCells() {
-    return !!this.cells?.length;
   }
 
   get beginningOfExpandableContentAriaText() {

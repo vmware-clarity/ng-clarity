@@ -52,7 +52,7 @@ export class KeyNavigationGridController implements OnDestroy {
 
   constructor(private zone: NgZone) {
     this.config = {
-      keyGridRows: '[role=row]:not(.datagrid-placeholder)',
+      keyGridRows: '[role=row]:not(.datagrid-placeholder):not([style*="display: none"])',
       keyGridCells:
         '[role=gridcell]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), [role=columnheader]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), .datagrid-detail-caret',
       keyGrid: '[role=grid]',
@@ -209,7 +209,13 @@ export class KeyNavigationGridController implements OnDestroy {
   }
 
   private getNextForExpandedRowCoordinate(e: any, currentCellCoords: CellCoordinates) {
-    if (e.key === Keys.PageUp || e.key === Keys.PageDown) {
+    if (
+      e.key === Keys.PageUp ||
+      e.key === Keys.PageDown ||
+      e.key === Keys.Home ||
+      e.key === Keys.ArrowRight ||
+      e.key === Keys.ArrowLeft
+    ) {
       return this.getNextItemCoordinate(e, currentCellCoords);
     }
 
@@ -378,15 +384,13 @@ export class KeyNavigationGridController implements OnDestroy {
   }
 
   private isExpandedRow(index: number): boolean {
-    return !!this.rows[index].querySelector('.datagrid-row-detail');
+    const selectedElement: HTMLElement = this.rows[index].querySelector('.datagrid-row-detail');
+
+    return selectedElement ? selectedElement.style.display !== 'none' : false;
   }
 
   private isDetailsRow(index: number): boolean {
     return this.rows[index].classList.contains('datagrid-row-detail');
-  }
-
-  private getExpandedRowCell(index: number) {
-    return this.rows[index].querySelector('.datagrid-row-detail[role="gridcell"]') as HTMLElement;
   }
 
   private isRowReplaced(index: number): boolean {
