@@ -137,16 +137,17 @@ export class KeyNavigationGridController implements OnDestroy {
             const currentCellCoords = this.getCurrentCellCoordinates();
 
             let nextCellCoords: CellCoordinates;
-            console.log('curr row', this.rows[currentCellCoords.y]);
-            console.log('curr row cells', this.getCellsForRow(currentCellCoords.y));
             console.log('currentCellCoords', currentCellCoords);
             console.log('isRowReplaced', this.isRowReplaced(currentCellCoords.y));
             console.log('isRowExpanded', this.isExpandedRow(currentCellCoords.y));
             console.log('isDetailsRow', this.isDetailsRow(currentCellCoords.y));
 
             if (this.isExpandedRow(currentCellCoords.y) || this.isDetailsRow(currentCellCoords.y)) {
+              console.log('getNextForExpandedRowCoordinate');
+
               nextCellCoords = this.getNextForExpandedRowCoordinate(e, currentCellCoords);
             } else {
+              console.log('getNextItemCoordinate');
               nextCellCoords = this.getNextItemCoordinate(e, currentCellCoords);
 
               if (this.isExpandedRow(nextCellCoords.y) && e.key === Keys.ArrowUp) {
@@ -220,13 +221,6 @@ export class KeyNavigationGridController implements OnDestroy {
 
     console.log(inlineStart, inlineEnd, itemsPerPage);
 
-    // if (e.key === Keys.ArrowUp && currentCellCoords.y !== 0) {
-    //   if (isReplaced) {
-    //     console.log('nextCellCoords', nextCellCoords);
-    //   }
-    //   nextCellCoords.y = currentCellCoords.y - 1;
-    // }
-
     // if (currentRowCells.length === 1 && !isActionCell) {
     //   currentRowCells[0].setAttribute('col-index', String(currentCellCoords.x));
     // } else {
@@ -239,7 +233,23 @@ export class KeyNavigationGridController implements OnDestroy {
     //     }
     //   }
 
-    if (e.key === Keys.ArrowDown && currentCellCoords.y < numOfRows) {
+    if (e.key === Keys.ArrowUp && currentCellCoords.y !== 0) {
+      nextCellCoords.y = currentCellCoords.y - 1;
+
+      if (isActionCell) {
+        nextCellCoords.y = nextCellCoords.y - 1;
+      } else if (this.isRowReplaced(nextCellCoords.y)) {
+        nextCellCoords.y = nextCellCoords.y - 1;
+
+        if (!this.isDetailsRow(nextCellCoords.y)) {
+          nextCellCoords.x = currentCellCoords.x + 1;
+        }
+      } else if (this.isDetailsRow(currentCellCoords.y) && !this.isDetailsRow(nextCellCoords.y)) {
+        nextCellCoords.x = currentCellCoords.x + 1;
+      } else if (!isActionCell && this.isDetailsRow(nextCellCoords.y)) {
+        nextCellCoords.x = currentCellCoords.x - 1;
+      }
+    } else if (e.key === Keys.ArrowDown && currentCellCoords.y < numOfRows) {
       nextCellCoords.y = currentCellCoords.y + 1;
 
       if (isActionCell || this.isRowReplaced(nextCellCoords.y)) {
@@ -284,6 +294,14 @@ export class KeyNavigationGridController implements OnDestroy {
 
     if (e.key === Keys.ArrowUp && currentCellCoords.y !== 0) {
       nextCellCoords.y = currentCellCoords.y - 1;
+
+      if (this.isDetailsRow(nextCellCoords.y)) {
+        if (isActionCell) {
+          nextCellCoords.y = nextCellCoords.y - 1;
+        } else {
+          nextCellCoords.x = nextCellCoords.x - 1;
+        }
+      }
     } else if (e.key === Keys.ArrowDown && currentCellCoords.y < numOfRows) {
       nextCellCoords.y = currentCellCoords.y + 1;
 
