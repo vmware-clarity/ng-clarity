@@ -10,6 +10,7 @@ import {
   ClrConditionalModule,
   ClrDatagridModule,
   ClrDropdownModule,
+  ClrPopoverModule,
   ClrSignpostModule,
 } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
@@ -20,7 +21,14 @@ export default {
   title: 'Datagrid/Nested Popover In Detail',
   decorators: [
     moduleMetadata({
-      imports: [ClrDatagridModule, ClrConditionalModule, ClrComboboxModule, ClrDropdownModule, ClrSignpostModule],
+      imports: [
+        ClrDatagridModule,
+        ClrConditionalModule,
+        ClrComboboxModule,
+        ClrDropdownModule,
+        ClrSignpostModule,
+        ClrPopoverModule,
+      ],
     }),
   ],
   argTypes: {

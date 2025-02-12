@@ -66,7 +66,7 @@ export class PopoverDirective implements AfterViewInit {
     this.zone.runOutsideAngular(() => {
       this.subscriptions.push(
         fromEvent(
-          this.scrollableParent?.scrollParent ? this.scrollableParent?.scrollParent : 'body',
+          this.scrollableParent?.scrollParent ? this.scrollableParent?.scrollParent : window.document,
           'scroll'
         ).subscribe(() => {
           if (this.overlayRef) {

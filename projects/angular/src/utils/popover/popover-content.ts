@@ -62,7 +62,7 @@ export class ClrPopoverContent implements OnDestroy {
     private overlayContainer: OverlayContainer,
     private popoverService: ClrPopoverService
   ) {
-    // overlayContainer.getContainerElement().classList.add('clr-container-element');
+    overlayContainer.getContainerElement().classList.add('clr-container-element');
   }
 
   @Input('clrPopoverContent')
