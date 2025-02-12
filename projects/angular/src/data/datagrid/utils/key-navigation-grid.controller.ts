@@ -209,23 +209,20 @@ export class KeyNavigationGridController implements OnDestroy {
   }
 
   private getNextForExpandedRowCoordinate(e: any, currentCellCoords: CellCoordinates) {
+    if (e.key === Keys.PageUp || e.key === Keys.PageDown) {
+      return this.getNextItemCoordinate(e, currentCellCoords);
+    }
+
     if (
-      e.key === Keys.PageUp ||
-      e.key === Keys.PageDown ||
-      e.key === Keys.Home ||
-      e.key === Keys.ArrowRight ||
-      e.key === Keys.ArrowLeft
+      !this.isDetailsRow(currentCellCoords.y) &&
+      !this.isRowReplaced(currentCellCoords.y) &&
+      (e.key === Keys.Home || e.key === Keys.End || e.key === Keys.ArrowRight || e.key === Keys.ArrowLeft)
     ) {
       return this.getNextItemCoordinate(e, currentCellCoords);
     }
 
-    const { numOfRows, numOfColumns, inlineStart, inlineEnd, itemsPerPage, isActionCell, nextCellCoords } =
+    const { numOfRows, numOfColumns, inlineStart, inlineEnd, isActionCell, nextCellCoords } =
       this.getCalcVariables(currentCellCoords);
-
-    // const isActionCell = this.isActionCell(currentCellCoords);
-    // const isExpandCell = this.isExpandCell(currentCellCoords.y);
-
-    console.log(inlineStart, inlineEnd, itemsPerPage);
 
     // if (currentRowCells.length === 1 && !isActionCell) {
     //   currentRowCells[0].setAttribute('col-index', String(currentCellCoords.x));
@@ -242,7 +239,7 @@ export class KeyNavigationGridController implements OnDestroy {
     if (e.key === Keys.ArrowUp && currentCellCoords.y !== 0) {
       nextCellCoords.y = currentCellCoords.y - 1;
 
-      if (isActionCell) {
+      if (isActionCell && this.isDetailsRow(nextCellCoords.y)) {
         nextCellCoords.y = nextCellCoords.y - 1;
       } else if (this.isRowReplaced(nextCellCoords.y)) {
         nextCellCoords.y = nextCellCoords.y - 1;
@@ -265,31 +262,37 @@ export class KeyNavigationGridController implements OnDestroy {
       } else {
         nextCellCoords.x = currentCellCoords.x + 1;
       }
+    } else if (e.key === inlineStart) {
+      if (currentCellCoords.x !== 0) {
+        nextCellCoords.x = currentCellCoords.x - 1;
+      } else {
+        nextCellCoords.y = currentCellCoords.y - 1;
+      }
+    } else if (e.key === inlineEnd && currentCellCoords.x < numOfColumns) {
+      if (
+        currentCellCoords.x === 0 &&
+        this.isRowReplaced(currentCellCoords.y) &&
+        !this.isDetailsRow(currentCellCoords.y)
+      ) {
+        nextCellCoords.y = currentCellCoords.y + 1;
+      } else {
+        nextCellCoords.x = currentCellCoords.x + 1;
+      }
+    } else if (e.key === Keys.End) {
+      nextCellCoords.x = this.getCellsForRow(currentCellCoords.y).length - 1;
+
+      if (e.ctrlKey) {
+        nextCellCoords.x = numOfColumns;
+        nextCellCoords.y = numOfRows;
+      }
+    } else if (e.key === Keys.Home) {
+      nextCellCoords.x = 0;
+      nextCellCoords.y = currentCellCoords.y - 1;
+
+      if (e.ctrlKey) {
+        nextCellCoords.y = 0;
+      }
     }
-
-    // if (e.key === inlineStart && currentCellCoords.x !== 0) {
-    //   nextCellCoords.x = currentCellCoords.x - 1;
-    // }
-
-    // if (e.key === inlineEnd && currentCellCoords.x < numOfColumns) {
-    //   nextCellCoords.x = currentCellCoords.x + 1;
-    // }
-
-    // if (e.key === Keys.End) {
-    //   nextCellCoords.x = numOfColumns;
-    //
-    //   if (e.ctrlKey) {
-    //     nextCellCoords.y = numOfRows;
-    //   }
-    // }
-
-    // if (e.key === Keys.Home) {
-    //   nextCellCoords.x = 0;
-    //
-    //   if (e.ctrlKey) {
-    //     nextCellCoords.y = 0;
-    //   }
-    // }
 
     return nextCellCoords;
   }
