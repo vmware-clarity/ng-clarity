@@ -12,6 +12,7 @@
 @use '../../utils/mixins';
 @use 'variables.dropdown' as dropdown-variables;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../layout/tabs/tabs.clarity' as tabs;
 
 @include meta.load-css('properties.dropdown');
 
@@ -142,6 +143,7 @@
 
       &.active {
         position: relative;
+        @include tabs.nav-link-border-appearence('left');
       }
 
       &.expandable {
@@ -188,20 +190,6 @@
     .btn,
     .dropdown-item {
       @include menu-mixins.generate-dropdown-item-height();
-    }
-
-    .dropdown-item {
-      &.active:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        border: none;
-        border-left: var(--cds-alias-object-border-width-300) solid var(--cds-alias-status-info);
-        transition: border-left 0.2s ease-in;
-      }
     }
 
     a.dropdown-item {
