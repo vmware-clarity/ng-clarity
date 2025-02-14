@@ -68,7 +68,6 @@
 | datagrid-column-handle           | Button for resizing the column.                                                                |
 | datagrid-column-resize-tracker   | Visual indicator for column resizing.                                                          |
 | datagrid-column-separator        | Separator between columns.                                                                     |
-| datagrid-container               | Internal class set if there are no datagrid cells inside row detail.                           |
 | datagrid-detail-body             | Main datagrid detail body element.                                                             |
 | datagrid-detail-header           | Main datagrid detail header element.                                                           |
 | datagrid-empty                   | Internal class set on datagrid placeholder if datagrid is empty.                               |
