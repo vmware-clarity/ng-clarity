@@ -26,6 +26,12 @@ const menuItemsCollapsed = [
   { label: 'Current Page', routerLink: '/current' },
 ];
 
+const menuItemsHref = [
+  { label: 'Home', href: '#' },
+  { label: 'Parent Page', href: '#' },
+  { label: 'Child Page', href: '#' },
+];
+
 class TestComponent {}
 
 export default {
@@ -62,11 +68,13 @@ export default {
     items: { control: { disable: true } },
     menuItemsCollapsed: { control: { disable: true }, table: { disable: true } },
     menuItems: { control: 'object' },
+    menuItemsHref: { control: 'object' },
   },
   args: {
     // story helpers
     menuItems,
     menuItemsCollapsed,
+    menuItemsHref,
     clrBreadcrumbItemClick: action('clrBreadcrumItemClick'),
   },
 };
@@ -85,8 +93,19 @@ const BreadcrumbCollapsedTemplate: StoryFn = args => ({
   props: args,
 });
 
-export const Initial: StoryObj = {
+const BreadcrumbHrefTemplate: StoryFn = args => ({
+  template: `
+    <clr-breadcrumbs [items]="menuItemsHref"></clr-breadcrumbs>
+  `,
+  props: args,
+});
+
+export const BreadcrumbWithRouter: StoryObj = {
   render: BreadcrumbInitialTemplate,
+};
+
+export const BreadcrumbWithHref: StoryObj = {
+  render: BreadcrumbHrefTemplate,
 };
 
 export const Collapsed: StoryObj = {
