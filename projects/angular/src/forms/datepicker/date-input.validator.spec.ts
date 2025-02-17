@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { ClrDatepickerModule } from './datepicker.module';
+import { DateNavigationService } from './providers/date-navigation.service';
 
 @Component({
   template: `
@@ -30,6 +31,7 @@ export default function () {
       TestBed.configureTestingModule({
         imports: [ReactiveFormsModule, ClrDatepickerModule],
         declarations: [TestComponent],
+        providers: [DateNavigationService],
       });
 
       fixture = TestBed.createComponent(TestComponent);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -9,7 +9,6 @@ import { Component, Directive, NgModule, Type, ViewContainerRef } from '@angular
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
 import { ClrCommonFormsModule } from './common.module';
 import { ControlIdService } from './providers/control-id.service';
@@ -27,9 +26,7 @@ import { WrappedFormControl } from './wrapped-control';
   `,
   providers: [ControlIdService],
 })
-class GenericWrapper implements DynamicWrapper {
-  _dynamic = false;
-}
+class GenericWrapper {}
 
 @Directive({
   selector: '[genericControl]',

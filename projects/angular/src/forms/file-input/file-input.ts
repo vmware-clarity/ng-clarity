@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -30,6 +30,8 @@ export interface ClrFileInputSelection {
 @Directive({
   selector: 'input[type="file"][clrFileInput]',
   host: {
+    tabindex: '-1', // Remove the hidden file `input` element from the tab order because the browse `button` replaces it.
+    'aria-hidden': 'true', // Remove the hidden file `input` element from the accessibility tree because the browse `button` replaces it.
     '[class.clr-file-input]': 'true',
   },
 })

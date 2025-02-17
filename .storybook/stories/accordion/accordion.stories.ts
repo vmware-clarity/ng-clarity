@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -43,6 +43,8 @@ const template = `
     <clr-accordion-panel
       *ngFor="let _ of createArray(panelCount); let i = index"
       [clrAccordionPanelOpen]="!!openIndices[i]"
+      [clrAccordionPanelHeadingEnabled]="clrAccordionPanelHeadingEnabled"
+      [clrAccordionPanelHeadingLevel]="clrAccordionPanelHeadingLevel"
     >
       <clr-accordion-title>
         {{ title }} {{ i + 1 }} {{ alignmentTest && i === 2 ? '(alignment test)' : '' }}

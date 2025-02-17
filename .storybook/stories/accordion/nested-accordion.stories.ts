@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -38,11 +38,17 @@ const template = `
     <clr-accordion-panel
       *ngFor="let _ of createArray(panelCount); let i = index"
       [clrAccordionPanelOpen]="openIndex === i"
+      [clrAccordionPanelHeadingEnabled]="clrAccordionPanelHeadingEnabled"
+      [clrAccordionPanelHeadingLevel]="clrAccordionPanelHeadingLevel"
     >
       <clr-accordion-title>Parent Title {{ i + 1 }}</clr-accordion-title>
       <clr-accordion-content>
         <clr-accordion>
-          <clr-accordion-panel [clrAccordionPanelOpen]="nestedOpenIndex === i">
+          <clr-accordion-panel
+            [clrAccordionPanelOpen]="nestedOpenIndex === i"
+            [clrAccordionPanelHeadingEnabled]="clrNestedAccordionPanelHeadingEnabled"
+            [clrAccordionPanelHeadingLevel]="clrNestedAccordionPanelHeadingLevel"
+          >
             <clr-accordion-title>Nested Title</clr-accordion-title>
             <clr-accordion-content>Nested content</clr-accordion-content>
           </clr-accordion-panel>
