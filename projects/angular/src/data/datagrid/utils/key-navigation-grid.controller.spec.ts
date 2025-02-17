@@ -268,5 +268,202 @@ export default function (): void {
         expect(document.activeElement).toBe(cells[0]);
       });
     });
+
+    describe('Expandable datagrid', function () {
+      let context: TestContext<ClrDatagrid<number>, TestComponent>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, TestComponent);
+        context.testComponent.noRowDetail = false;
+        context.detectChanges();
+      });
+
+      //  data matrix 4*3 data, 4 headers, 4 expand. Legend: 0h -> Index: 0, Type: header/expand/data
+      // | 0h| 1h| 2h| 3h|
+      // | 4e| 5d| 6d| 7d|
+      // | 8e| 9d|10d|11d|
+      // |12e|13d|14d|15d|
+      // |16e|17d|18d|19d|
+
+      it('Moves focus across cells with expand no action cells', function () {
+        // check cell flow: start at index 0 -> 4 -> 5 -> 6 -> 10 -> 9 -> 5 -> 4 end
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        expect(grid).toBeDefined();
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(20);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[4].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[5]);
+
+        // second time, to avoid cycling over cells with radios
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[10]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(document.activeElement).toBe(cells[9]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[5]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(document.activeElement).toBe(cells[4].querySelector('button.datagrid-expandable-caret-button'));
+      });
+
+      it('Moves focus with PageDown and PageUp with expand no action cells', function () {
+        // cell flow: start at index 0 (check) -> 1 (check) -> 17 (check) -> 5 (check)  end
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+
+        // focus at most left header cell
+        cells[0].focus();
+
+        // focus at bottom datagrid cell
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[16].querySelector('button.datagrid-expandable-caret-button'));
+
+        // focus at top datagrid cell
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[4].querySelector('button.datagrid-expandable-caret-button'));
+      });
+
+      it('Moves focus on Home and End with expand no action cells', function () {
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        cells[0].focus();
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[4].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
+        expect(document.activeElement).toBe(cells[4].querySelector('button.datagrid-expandable-caret-button'));
+      });
+
+      it('Moves focus on Ctrl-Home and Ctrl-End with expand no action cells', function () {
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        cells[0].focus();
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[19]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[0]);
+      });
+    });
+
+    describe('Expandable datagrid with actions', function () {
+      let context: TestContext<ClrDatagrid<number>, TestComponent>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, TestComponent, [Selection]);
+        context.testComponent.selected = [];
+        context.testComponent.noRowDetail = false;
+        context.detectChanges();
+      });
+
+      //  data matrix 4*3 data, 5 headers, 4 check, 4 expand.
+      //  Legend: 0h -> Index: 0, Type: header/check/expand/data
+      // | 0h| 1h| 2h| 3h| 4h|
+      // | 5c| 6e| 7d| 8d| 9h|
+      // |10c|11e|12d|13d|14h|
+      // |15c|16e|17d|18d|19h|
+      // |20c|21e|22d|23d|24h|
+
+      it('Moves focus across cells with action and expand cells', function () {
+        // check cell flow: start at index 0 -> 5 -> 6 -> 7 -> 8 -> 13 -> 12 -> 7 -> 6 -> 5 end
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        expect(grid).toBeDefined();
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(25);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[8]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[13]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(document.activeElement).toBe(cells[12]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+      });
+
+      it('Moves focus with PageDown and PageUp with action and expand cells', function () {
+        // cell flow: start at index 0 (check) -> 20 (check) -> 5 (check)  end
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+
+        // focus at most left header cell
+        cells[0].focus();
+
+        // focus at bottom datagrid cell
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[20].querySelector('[type=checkbox]'));
+
+        // focus at top datagrid cell
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+      });
+
+      it('Moves focus on Home and End with action and expand cells', function () {
+        // cell flow: start at index 0 (check) -> 4 (check) -> 7 (check) -> 4 (check) end
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+
+        cells[0].focus();
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End }));
+        expect(document.activeElement).toBe(cells[9]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+      });
+
+      it('Moves focus on Ctrl-Home and Ctrl-End with and expand action cells', function () {
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        cells[0].focus();
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[24]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[0]);
+      });
+    });
   });
 }
