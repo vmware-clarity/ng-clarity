@@ -158,6 +158,14 @@ export default function (): void {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
         expect(document.activeElement).toBe(cells[0]);
       });
+
+      it('Moves focus to a clicked element', function () {
+        const testCell = 7;
+        expect(document.activeElement).not.toBe(cells[testCell]);
+
+        cells[testCell].dispatchEvent(new MouseEvent('mousedown', { buttons: 1, bubbles: true }));
+        expect(document.activeElement).toBe(cells[testCell]);
+      });
     });
 
     describe('Basic datagrid with actions', function () {
