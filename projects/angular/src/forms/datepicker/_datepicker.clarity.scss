@@ -176,13 +176,13 @@
   .calendar-table {
     // clr-calendar have dispaly: inline, preventing flex from having an effect.
     flex: 1 1 auto;
-
+    border-spacing: 0 var(--cds-global-space-3);
     //Dimensions
     width: 100%;
   }
 
-  .calendar-cell,
-  .calendar-table .calendar-cell {
+  td.calendar-cell,
+  td.calendar-table .calendar-cell {
     //Dimensions
     @include mixins.min-equilateral(datepicker-variables.$clr-calendar-click-target);
     padding: 0;
@@ -284,17 +284,15 @@
 
   .monthpicker,
   .yearpicker,
-  .years {
+  .daypicker {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+    gap: tokens.$cds-global-space-5;
+    height: calc(calc((9 * var(--cds-global-space-10))) + calc(3 * var(--cds-global-space-5)));
 
     //Other props
     overflow: hidden;
-  }
-
-  .yearpicker {
-    gap: tokens.$cds-global-space-6;
   }
 
   .years {
@@ -321,16 +319,17 @@
     }
   }
 
-  .months {
+  .months,
+  .years {
     row-gap: tokens.$cds-global-space-3;
     flex-wrap: wrap;
     display: flex;
+  }
 
-    .month {
-      text-align: center;
-      height: datepicker-variables.$clr-calendar-month-cell-height;
-      @include mixins.overflow-ellipsis();
-    }
+  .month {
+    text-align: center;
+    height: datepicker-variables.$clr-calendar-month-cell-height;
+    @include mixins.overflow-ellipsis();
   }
 
   .year {
