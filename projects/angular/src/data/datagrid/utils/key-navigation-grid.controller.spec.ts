@@ -793,8 +793,127 @@ export default function (): void {
       });
     });
 
-    // describe('Expandable datagrid with expanded detail row and actions', function () {
-    //
-    // });
+    describe('Expandable datagrid with expanded detail row and actions', function () {
+      let context: TestContext<ClrDatagrid<number>, TestComponent>;
+      let grid: HTMLElement;
+      let cells: NodeListOf<HTMLElement>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, TestComponent, [Selection]);
+        context.testComponent.selected = [];
+        context.testComponent.autoExpand = true;
+        context.testComponent.showRowDetail = true;
+        context.testComponent.columns = false;
+        context.detectChanges();
+
+        grid = context.clarityElement.querySelector('[role=grid]');
+        expect(grid).toBeDefined();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(27);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+      });
+
+      //  the matrix looks very close to regular not expanded expandable grid, but the underlying algorithm is different
+      //  data matrix 4*3 data, 5 headers, 4 check, 4 expand.
+      //  2 extra expanded rows with columns 2*3 data
+      //  Legend: 0h -> Index: 0, Type: header/check/expand/data
+      // | 0h| 1h| 2h| 3h| 4h|
+      // | 5c| 6e| 7d| 8d| 9h|
+      // |10c|11e|12d|13d|14h|
+      // |       |----15d----|
+      // |16c|17e|18d|19d|20h|
+      // |       |----21d----|
+      // |22c|23e|24d|25d|26h|
+
+      it('Moves focus across data cells with action and expanded detail rows', function () {
+        // check cell flow: start at index
+        // 0 -> 5 -> 6 -> 11 -> 12 -> 13 -> 15 -> 18 -> 21 -> 24 -> 25 -> 21 -> 18
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[12]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[13]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[15]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[18]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[21]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[24]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[25]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[21]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[18]);
+      });
+
+      it('Moves focus between sticky and data cells with actions and expanded detail rows', function () {
+        // check cell flow: start at index
+        // 0 -> 5 -> 10 -> 11 -> 12 -> 15 -> 11
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[12]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[15]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(document.activeElement).toBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+      });
+
+      it('Moves focus on Home and End with action and expanded detail row', function () {
+        // cell flow: start at index
+        // 0 -> 5 -> 10 -> 14 -> 15 -> 10
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End }));
+        expect(document.activeElement).toBe(cells[14]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[15]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
+        expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
+      });
+    });
   });
 }
