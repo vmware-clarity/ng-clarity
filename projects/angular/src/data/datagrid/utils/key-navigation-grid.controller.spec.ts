@@ -83,9 +83,19 @@ export default function (): void {
   describe('Key navigation controller', function () {
     describe('Basic datagrid', function () {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
+      let grid: HTMLElement;
+      let cells: NodeListOf<HTMLElement>;
 
       beforeEach(function () {
         context = this.create(ClrDatagrid, TestComponent);
+
+        grid = context.clarityElement.querySelector('[role=grid]');
+        expect(grid).toBeDefined();
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(15);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
       });
 
       //  data matrix 4*3 data, 3 headers. Legend: 0h -> Index: 0, Type: header/data
@@ -96,18 +106,12 @@ export default function (): void {
       // |12d|13d|14d|
 
       it('Moves focus across cells no action cells', function () {
-        // cell flow: start at index 0 -> 3 -> 4 (check) -> 5 (check) -> 8 (check)-> 7 (check)-> 4 (check) end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        expect(grid).toBeDefined();
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        expect(cells.length).toBe(15);
-
-        // need to start with this cell exactly, because it has tabindex=0
-        cells[0].focus();
+        // cell flow: start at index 0 -> 3 -> 4 -> 5 -> 8 -> 7 -> 4 end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[3]);
+
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        console.log(document.activeElement);
         expect(document.activeElement).toBe(cells[4]);
 
         // second time, to avoid cycling over cells with radios
@@ -125,12 +129,7 @@ export default function (): void {
       });
 
       it('Moves focus with PageDown and PageUp no action cells', function () {
-        // cell flow: start at index 0 (check) -> 12 (check) -> 3 (check)  end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-
-        // focus at most left header cell
-        cells[0].focus();
+        // cell flow: start at index 0 -> 12 -> 3 end
 
         // focus at bottom datagrid cell
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
@@ -142,10 +141,6 @@ export default function (): void {
       });
 
       it('Moves focus on Home and End no action cells', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[0].focus();
-
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[3]);
 
@@ -157,12 +152,9 @@ export default function (): void {
       });
 
       it('Moves focus on Ctrl-Home and Ctrl-End no action cells', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[0].focus();
-
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
         expect(document.activeElement).toBe(cells[14]);
+
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
         expect(document.activeElement).toBe(cells[0]);
       });
@@ -170,11 +162,21 @@ export default function (): void {
 
     describe('Basic datagrid with actions', function () {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
+      let grid: HTMLElement;
+      let cells: NodeListOf<HTMLElement>;
 
       beforeEach(function () {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.detectChanges();
+
+        grid = context.clarityElement.querySelector('[role=grid]');
+        expect(grid).toBeDefined();
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(20);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
       });
 
       // Legend: 0h -> Index: 0, Type: header/check/action/data
@@ -187,13 +189,6 @@ export default function (): void {
 
       it('Moves focus across cells with action cells', function () {
         // check cell flow: start at index 0 -> 5 -> 6 -> 7 -> 8 -> 13 -> 12 -> 7 -> 6 -> 5 end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        expect(grid).toBeDefined();
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        expect(cells.length).toBe(20);
-
-        // need to start with this cell exactly, because it has tabindex=0
-        cells[0].focus();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[4].querySelector('[type=checkbox]'));
@@ -225,11 +220,6 @@ export default function (): void {
 
       it('Moves focus with PageDown and PageUp with action cells', function () {
         // cell flow: start at index 0 (check) -> 16 (check) -> 4 (check)  end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-
-        // focus at most left header cell
-        cells[0].focus();
 
         // focus at bottom datagrid cell
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
@@ -242,10 +232,6 @@ export default function (): void {
 
       it('Moves focus on Home and End with action cells', function () {
         // cell flow: start at index 0 (check) -> 4 (check) -> 7 (check) -> 4 (check) end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-
-        cells[0].focus();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[4].querySelector('[type=checkbox]'));
@@ -258,10 +244,6 @@ export default function (): void {
       });
 
       it('Moves focus on Ctrl-Home and Ctrl-End with action cells', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[0].focus();
-
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
         expect(document.activeElement).toBe(cells[19]);
 
@@ -272,11 +254,21 @@ export default function (): void {
 
     describe('Expandable datagrid', function () {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
+      let grid: HTMLElement;
+      let cells: NodeListOf<HTMLElement>;
 
       beforeEach(function () {
         context = this.create(ClrDatagrid, TestComponent);
         context.testComponent.showRowDetail = true;
         context.detectChanges();
+
+        grid = context.clarityElement.querySelector('[role=grid]');
+        expect(grid).toBeDefined();
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(20);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
       });
 
       //  data matrix 4*3 data, 4 headers, 4 expand. Legend: 0h -> Index: 0, Type: header/expand/data
@@ -288,13 +280,6 @@ export default function (): void {
 
       it('Moves focus across cells with expand no action cells', function () {
         // check cell flow: start at index 0 -> 4 -> 5 -> 6 -> 10 -> 9 -> 5 -> 4 end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        expect(grid).toBeDefined();
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        expect(cells.length).toBe(20);
-
-        // need to start with this cell exactly, because it has tabindex=0
-        cells[0].focus();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[4].querySelector('button.datagrid-expandable-caret-button'));
@@ -321,11 +306,6 @@ export default function (): void {
 
       it('Moves focus with PageDown and PageUp with expand no action cells', function () {
         // cell flow: start at index 0 (check) -> 1 (check) -> 17 (check) -> 5 (check)  end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-
-        // focus at most left header cell
-        cells[0].focus();
 
         // focus at bottom datagrid cell
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
@@ -337,10 +317,6 @@ export default function (): void {
       });
 
       it('Moves focus on Home and End with expand no action cells', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[0].focus();
-
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[4].querySelector('button.datagrid-expandable-caret-button'));
 
@@ -352,10 +328,6 @@ export default function (): void {
       });
 
       it('Moves focus on Ctrl-Home and Ctrl-End with expand no action cells', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[0].focus();
-
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
         expect(document.activeElement).toBe(cells[19]);
 
@@ -366,12 +338,22 @@ export default function (): void {
 
     describe('Expandable datagrid with actions', function () {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
+      let grid: HTMLElement;
+      let cells: NodeListOf<HTMLElement>;
 
       beforeEach(function () {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.testComponent.showRowDetail = true;
         context.detectChanges();
+
+        grid = context.clarityElement.querySelector('[role=grid]');
+        expect(grid).toBeDefined();
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(25);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
       });
 
       //  data matrix 4*3 data, 5 headers, 4 check, 4 expand.
@@ -384,13 +366,6 @@ export default function (): void {
 
       it('Moves focus across cells with action and expand cells', function () {
         // check cell flow: start at index 0 -> 5 -> 6 -> 7 -> 8 -> 13 -> 12 -> 7 -> 6 -> 5 end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        expect(grid).toBeDefined();
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        expect(cells.length).toBe(25);
-
-        // need to start with this cell exactly, because it has tabindex=0
-        cells[0].focus();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
@@ -422,11 +397,6 @@ export default function (): void {
 
       it('Moves focus with PageDown and PageUp with action and expand cells', function () {
         // cell flow: start at index 0 (check) -> 20 (check) -> 5 (check)  end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-
-        // focus at most left header cell
-        cells[0].focus();
 
         // focus at bottom datagrid cell
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
@@ -439,10 +409,6 @@ export default function (): void {
 
       it('Moves focus on Home and End with action and expand cells', function () {
         // cell flow: start at index 0 (check) -> 4 (check) -> 7 (check) -> 4 (check) end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-
-        cells[0].focus();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
@@ -455,10 +421,6 @@ export default function (): void {
       });
 
       it('Moves focus on Ctrl-Home and Ctrl-End with and expand action cells', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[0].focus();
-
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
         expect(document.activeElement).toBe(cells[24]);
 
@@ -469,6 +431,8 @@ export default function (): void {
 
     describe('Expandable datagrid with expanded column row and actions', function () {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
+      let grid: HTMLElement;
+      let cells: NodeListOf<HTMLElement>;
 
       beforeEach(function () {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
@@ -476,6 +440,14 @@ export default function (): void {
         context.testComponent.autoExpand = true;
         context.testComponent.showRowDetail = true;
         context.detectChanges();
+
+        grid = context.clarityElement.querySelector('[role=grid]');
+        expect(grid).toBeDefined();
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(31);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
       });
 
       //  data matrix 4*3 data, 5 headers, 4 check, 4 expand.
@@ -493,13 +465,6 @@ export default function (): void {
         // check cell flow: start at index
         // 0 -> 5 -> 6 -> 7 -> 8 -> 13 -> 16 -> 21 -> 24 -> 29 -> 24 -> 23 -> 20 -> 15 -> 12 -> 7
         // end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        expect(grid).toBeDefined();
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        expect(cells.length).toBe(31);
-
-        // need to start with this cell exactly, because it has tabindex=0
-        cells[0].focus();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
@@ -551,13 +516,6 @@ export default function (): void {
         // check cell flow: start at index
         // 0 -> 5 -> 10 -> 11 -> 19 -> 18 -> 26 -> 27 -> 19 -> 18 -> 10 -> 11 -> 6
         // end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        expect(grid).toBeDefined();
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        expect(cells.length).toBe(31);
-
-        // need to start with this cell exactly, because it has tabindex=0
-        cells[0].focus();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
@@ -600,13 +558,6 @@ export default function (): void {
         // check cell flow: start at index
         // 0 -> 5 -> 10 -> 11 -> 12 -> 11 -> 12 -> 15 -> 11
         // end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        expect(grid).toBeDefined();
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        expect(cells.length).toBe(31);
-
-        // need to start with this cell exactly, because it has tabindex=0
-        cells[0].focus();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
@@ -637,10 +588,6 @@ export default function (): void {
         // cell flow: start at index
         // 0 -> 5 -> 10 -> 14 -> 10 -> 14 -> 17 -> 10
         // end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-
-        cells[0].focus();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
@@ -667,6 +614,8 @@ export default function (): void {
 
     describe('Expandable datagrid with expanded replace column row and actions', function () {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
+      let grid: HTMLElement;
+      let cells: NodeListOf<HTMLElement>;
 
       beforeEach(function () {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
@@ -675,6 +624,15 @@ export default function (): void {
         context.testComponent.showRowDetail = true;
         context.testComponent.replaceCells = true;
         context.detectChanges();
+
+        grid = context.clarityElement.querySelector('[role=grid]');
+        expect(grid).toBeDefined();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(31);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
       });
 
       //  the matrix looks very close to regular not expanded expandable grid, but the underlying algorithm is different
@@ -693,13 +651,6 @@ export default function (): void {
         // check cell flow: start at index
         // 0 -> 5 -> 6 -> 7 -> 15 -> 16 -> 24 -> 29 -> 28 -> 23 -> 15 -> 16 -> 8
         // end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        expect(grid).toBeDefined();
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        expect(cells.length).toBe(31);
-
-        // need to start with this cell exactly, because it has tabindex=0
-        cells[0].focus();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
@@ -746,13 +697,6 @@ export default function (): void {
         // check cell flow: start at index
         // 0 -> 5 -> 10 -> 11 -> 15 -> 11
         // end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        expect(grid).toBeDefined();
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        expect(cells.length).toBe(31);
-
-        // need to start with this cell exactly, because it has tabindex=0
-        cells[0].focus();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
@@ -774,10 +718,6 @@ export default function (): void {
         // cell flow: start at index
         // 0 -> 5 -> 10 -> 17 -> 10
         // end
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-
-        cells[0].focus();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
