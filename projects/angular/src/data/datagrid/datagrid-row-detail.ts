@@ -30,7 +30,7 @@ import { Selection } from './providers/selection';
     <ng-container *ngIf="this.cells?.length > 0" [ngTemplateOutlet]="noCells"></ng-container>
 
     <ng-container *ngIf="this.cells?.length === 0">
-      <clr-dg-cell>
+      <clr-dg-cell class="datagrid-container">
         <ng-container [ngTemplateOutlet]="noCells"></ng-container>
       </clr-dg-cell>
     </ng-container>
@@ -76,7 +76,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
   get beginningOfExpandableContentAriaText() {
     return (
       this._beginningOfExpandableContentAriaText ||
-      `${this.commonStrings.keys.datagridExpandableBeginningOf} 
+      `${this.commonStrings.keys.datagridExpandableBeginningOf}
       ${this.commonStrings.keys.datagridExpandableRowContent}`
     );
   }
@@ -84,7 +84,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
   get endOfExpandableContentAriaText() {
     return (
       this._endOfExpandableContentAriaText ||
-      `${this.commonStrings.keys.datagridExpandableEndOf} 
+      `${this.commonStrings.keys.datagridExpandableEndOf}
       ${this.commonStrings.keys.datagridExpandableRowContent}`
     );
   }

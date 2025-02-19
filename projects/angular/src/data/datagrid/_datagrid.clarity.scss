@@ -196,6 +196,15 @@
       .datagrid-cell {
         padding-top: 0;
         border: none;
+
+        &.datagrid-container {
+          @include mixins.generate-typography-token(
+            'BODY-14-RG-STD',
+            (
+              font-size: tables-variables.$clr-table-fontsize,
+            )
+          );
+        }
       }
     }
 
