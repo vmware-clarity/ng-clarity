@@ -31,13 +31,6 @@ export default function (): void {
       expect(context.clarityElement.classList.contains('datagrid-row-detail')).toBe(true);
     });
 
-    it("adds the .datagrid-container class to the host if it doesn't contain cells", function () {
-      expect(context.clarityElement.classList.contains('datagrid-container')).toBe(true);
-      context.testComponent.cell = true;
-      context.detectChanges();
-      expect(context.clarityElement.classList.contains('datagrid-container')).toBe(false);
-    });
-
     it('updates the Expand provider with the [clrDgReplace] input', function () {
       const expand: DatagridIfExpandService = context.getClarityProvider(DatagridIfExpandService);
       let expandState = false;
@@ -63,8 +56,8 @@ export default function (): void {
       expect(context.clarityElement.getAttribute('id')).not.toBeNull();
     });
 
-    it('should have role=gridcell', function () {
-      expect(context.clarityElement.getAttribute('role')).toBe('gridcell');
+    it('should have role=row', function () {
+      expect(context.clarityElement.getAttribute('role')).toBe('row');
     });
   });
 }
