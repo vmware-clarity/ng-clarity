@@ -67,16 +67,14 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
   get beginningOfExpandableContentAriaText() {
     return (
       this._beginningOfExpandableContentAriaText ||
-      `${this.commonStrings.keys.datagridExpandableBeginningOf} 
-      ${this.commonStrings.keys.datagridExpandableRowContent}`
+      `${this.commonStrings.keys.datagridExpandableBeginningOf} ${this.commonStrings.keys.datagridExpandableRowContent}`
     );
   }
 
   get endOfExpandableContentAriaText() {
     return (
       this._endOfExpandableContentAriaText ||
-      `${this.commonStrings.keys.datagridExpandableEndOf} 
-      ${this.commonStrings.keys.datagridExpandableRowContent}`
+      `${this.commonStrings.keys.datagridExpandableEndOf} ${this.commonStrings.keys.datagridExpandableRowContent}`
     );
   }
 
