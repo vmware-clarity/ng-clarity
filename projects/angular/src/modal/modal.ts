@@ -8,6 +8,7 @@
 import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
 import {
   Component,
+  ContentChild,
   ElementRef,
   EventEmitter,
   HostBinding,
@@ -16,6 +17,7 @@ import {
   OnDestroy,
   Output,
   SimpleChange,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
 
@@ -78,7 +80,8 @@ export class ClrModal implements OnChanges, OnDestroy {
   // presently this is only used by inline wizards
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
 
-  @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
+  // Provide raw modal content. This is used by the wizard so that the same template can be rendered with and without a modal.
+  @ContentChild('clrInternalModalContentTemplate') protected readonly modalContentTemplate: TemplateRef<any>;
 
   constructor(
     private _scrollingService: ScrollingService,
@@ -149,9 +152,5 @@ export class ClrModal implements OnChanges, OnDestroy {
       this._openChanged.emit(false);
       this.modalStackService.trackModalClose(this);
     }
-  }
-
-  scrollTop() {
-    this.bodyElementRef.nativeElement.scrollTo(0, 0);
   }
 }
