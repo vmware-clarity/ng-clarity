@@ -14,6 +14,7 @@
 @use 'sass:meta';
 @use '../modal/variables.modal' as modal-variables;
 @use '../utils/mixins';
+@use '../utils/variables/variables.global';
 @use 'variables.wizard' as wizard-variables;
 
 @use '@cds/core/tokens/tokens.scss';
@@ -507,6 +508,19 @@
 
     .clr-wizard-stepnav {
       padding-top: tokens.$cds-global-space-9;
+    }
+  }
+
+  .clr-wizard--in-page {
+    display: block;
+    height: calc(100% + #{variables.$clr-content-area-padding-top} + #{variables.$clr-content-area-padding-bottom});
+    width: unset; // 100% from the inline wizard styles does not work
+
+    // offset content area padding
+    margin: -#{variables.$clr-content-area-padding-top} -#{variables.$clr-content-area-padding-right} -#{variables.$clr-content-area-padding-bottom} -#{variables.$clr-content-area-padding-left} !important;
+
+    .clr-wizard-footer-buttons-wrapper {
+      justify-content: flex-start;
     }
   }
 
