@@ -14,6 +14,7 @@ import { LoadingListener } from '../loading/loading-listener';
 @Injectable()
 export class IfExpandService implements LoadingListener {
   expandable = 0;
+  hasExpandTemplate = false;
 
   protected _loading = false;
   protected _expanded = false;
