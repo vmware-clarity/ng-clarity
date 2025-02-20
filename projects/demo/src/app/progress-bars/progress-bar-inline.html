@@ -10,7 +10,7 @@
   <div class="progress-block">
     <label>Simple Layout</label>
     <div class="progress">
-      <progress value="{{inlineProgress}}" max="100" [attr.data-displayval]="inlineProgress + '%'"></progress>
+      <progress [value]="inlineProgress" max="100" [attr.data-displayval]="inlineProgress + '%'"></progress>
     </div>
     <span>More text</span>
   </div>

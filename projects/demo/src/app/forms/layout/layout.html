@@ -10,7 +10,7 @@
 <form class="clr-form clr-form-{{layout}}">
   <div class="clr-form-control" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label
-      for="{{layout}}-basic"
+      [for]="layout + 'basic'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     >
@@ -18,7 +18,7 @@
     </label>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}">
       <div class="clr-input-wrapper">
-        <input type="text" id="{{layout}}-basic" placeholder="Enter value here" class="clr-input" />
+        <input type="text" [id]="layout + 'basic'" placeholder="Enter value here" class="clr-input" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
@@ -27,7 +27,7 @@
 
   <div class="clr-form-control clr-form-control-disabled" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label
-      for="{{layout}}-disabled"
+      [for]="layout + 'disabled'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     >
@@ -37,7 +37,7 @@
       <div class="clr-input-wrapper">
         <input
           type="text"
-          id="{{layout}}-disabled"
+          [id]="layout + 'disabled'"
           placeholder="Enter value here"
           class="clr-input"
           value="test value"
@@ -51,7 +51,7 @@
 
   <div class="clr-form-control" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label
-      for="{{layout}}-basic-error"
+      [for]="layout + 'basic-error'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     >
@@ -62,7 +62,7 @@
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}"
     >
       <div class="clr-input-wrapper">
-        <input type="text" id="{{layout}}-basic-error" placeholder="Enter value here" class="clr-input" />
+        <input type="text" [id]="layout + 'basic-error'" placeholder="Enter value here" class="clr-input" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
@@ -71,7 +71,7 @@
 
   <div class="clr-form-control" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label
-      for="{{layout}}-long"
+      [for]="layout + 'long'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     >
@@ -88,7 +88,7 @@
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}"
     >
       <div class="clr-input-wrapper">
-        <input type="text" id="{{layout}}-long" placeholder="Enter value here" class="clr-input" />
+        <input type="text" [id]="layout + 'long'" placeholder="Enter value here" class="clr-input" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">
@@ -110,31 +110,31 @@
         <input
           type="checkbox"
           name="checkbox1"
-          id="{{layout}}-checkbox1"
+          [id]="layout + 'checkbox1'"
           placeholder="Enter value here"
           class="clr-checkbox"
         />
-        <label for="{{layout}}-checkbox1" class="clr-control-label">option 1</label>
+        <label [for]="layout + 'checkbox1'" class="clr-control-label">option 1</label>
       </div>
       <div class="clr-checkbox-wrapper">
         <input
           type="checkbox"
           name="checkbox2"
-          id="{{layout}}-checkbox2"
+          [id]="layout + 'checkbox2'"
           placeholder="Enter value here"
           class="clr-checkbox"
         />
-        <label for="{{layout}}-checkbox2" class="clr-control-label">option 2</label>
+        <label [for]="layout + 'checkbox2'" class="clr-control-label">option 2</label>
       </div>
       <div class="clr-checkbox-wrapper">
         <input
           type="checkbox"
           name="checkbox3"
-          id="{{layout}}-checkbox3"
+          [id]="layout + 'checkbox3'"
           placeholder="Enter value here"
           class="clr-checkbox"
         />
-        <label for="{{layout}}-checkbox3" class="clr-control-label">option 3</label>
+        <label [for]="layout + 'checkbox3'" class="clr-control-label">option 3</label>
       </div>
       <div class="clr-subtext-wrapper">
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -156,11 +156,11 @@
         <input
           type="checkbox"
           name="checkbox1"
-          id="{{layout}}-checkbox7"
+          [id]="layout + 'checkbox7'"
           placeholder="Enter value here"
           class="clr-checkbox"
         />
-        <label for="{{layout}}-checkbox7" class="clr-control-label">option 1</label>
+        <label [for]="layout + 'checkbox7'" class="clr-control-label">option 1</label>
       </div>
       <div class="clr-subtext-wrapper">
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -172,11 +172,11 @@
         <input
           type="checkbox"
           name="checkbox2"
-          id="{{layout}}-checkbox8"
+          [id]="layout + 'checkbox8'"
           placeholder="Enter value here"
           class="clr-checkbox"
         />
-        <label for="{{layout}}-checkbox8" class="clr-control-label">option 2</label>
+        <label [for]="layout + 'checkbox8'" class="clr-control-label">option 2</label>
       </div>
       <div class="clr-subtext-wrapper">
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -188,11 +188,11 @@
         <input
           type="checkbox"
           name="checkbox3"
-          id="{{layout}}-checkbox9"
+          [id]="layout + 'checkbox9'"
           placeholder="Enter value here"
           class="clr-checkbox"
         />
-        <label for="{{layout}}-checkbox9" class="clr-control-label">option 3</label>
+        <label [for]="layout + 'checkbox9'" class="clr-control-label">option 3</label>
       </div>
       <div class="clr-subtext-wrapper">
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -213,31 +213,31 @@
         <input
           type="checkbox"
           name="checkbox4"
-          id="{{layout}}-checkbox10"
+          [id]="layout + 'checkbox10'"
           placeholder="Enter value here"
           class="clr-checkbox"
         />
-        <label for="{{layout}}-checkbox10" class="clr-control-label">option 1</label>
+        <label [for]="layout + 'checkbox10'" class="clr-control-label">option 1</label>
       </div>
       <div class="clr-checkbox-wrapper">
         <input
           type="checkbox"
           name="checkbox5"
-          id="{{layout}}-checkbox11"
+          [id]="layout + 'checkbox11'"
           placeholder="Enter value here"
           class="clr-checkbox"
         />
-        <label for="{{layout}}-checkbox11" class="clr-control-label">option 2</label>
+        <label [for]="layout + 'checkbox11'" class="clr-control-label">option 2</label>
       </div>
       <div class="clr-checkbox-wrapper">
         <input
           type="checkbox"
           name="checkbox6"
-          id="{{layout}}-checkbox12"
+          [id]="layout + 'checkbox12'"
           placeholder="Enter value here"
           class="clr-checkbox"
         />
-        <label for="{{layout}}-checkbox12" class="clr-control-label">option 3</label>
+        <label [for]="layout + 'checkbox12'" class="clr-control-label">option 3</label>
       </div>
       <div class="clr-subtext-wrapper">
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -258,31 +258,31 @@
         <input
           type="checkbox"
           name="checkbox7"
-          id="{{layout}}-checkbox13"
+          [id]="layout + 'checkbox13'"
           placeholder="Enter value here"
           class="clr-checkbox"
         />
-        <label for="{{layout}}-checkbox13" class="clr-control-label">option 1</label>
+        <label [for]="layout + 'checkbox13'" class="clr-control-label">option 1</label>
       </div>
       <div class="clr-checkbox-wrapper">
         <input
           type="checkbox"
           name="checkbox8"
-          id="{{layout}}-checkbox14"
+          [id]="layout + 'checkbox14'"
           placeholder="Enter value here"
           class="clr-checkbox"
         />
-        <label for="{{layout}}-checkbox14" class="clr-control-label">option 2</label>
+        <label [for]="layout + 'checkbox14'" class="clr-control-label">option 2</label>
       </div>
       <div class="clr-checkbox-wrapper">
         <input
           type="checkbox"
           name="checkbox9"
-          id="{{layout}}-checkbox15"
+          [id]="layout + 'checkbox15'"
           placeholder="Enter value here"
           class="clr-checkbox"
         />
-        <label for="{{layout}}-checkbox15" class="clr-control-label">option 3</label>
+        <label [for]="layout + 'checkbox15'" class="clr-control-label">option 3</label>
       </div>
       <div class="clr-subtext-wrapper">
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -297,16 +297,16 @@
     </label>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}">
       <div class="clr-radio-wrapper">
-        <input type="radio" id="{{layout}}-radio1" name="radio-basic" class="clr-radio" />
-        <label for="{{layout}}-radio1" class="clr-control-label">option 1</label>
+        <input type="radio" [id]="layout + 'radio1'" name="radio-basic" class="clr-radio" />
+        <label [for]="layout + 'radio1'" class="clr-control-label">option 1</label>
       </div>
       <div class="clr-radio-wrapper">
-        <input type="radio" id="{{layout}}-radio2" name="radio-basic" class="clr-radio" />
-        <label for="{{layout}}-radio2" class="clr-control-label">option 2</label>
+        <input type="radio" [id]="layout + 'radio2'" name="radio-basic" class="clr-radio" />
+        <label [for]="layout + 'radio2'" class="clr-control-label">option 2</label>
       </div>
       <div class="clr-radio-wrapper">
-        <input type="radio" id="{{layout}}-radio3" name="radio-basic" class="clr-radio" />
-        <label for="{{layout}}-radio3" class="clr-control-label">option 3</label>
+        <input type="radio" [id]="layout + 'radio3'" name="radio-basic" class="clr-radio" />
+        <label [for]="layout + 'radio3'" class="clr-control-label">option 3</label>
       </div>
       <div class="clr-subtext-wrapper">
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -324,16 +324,16 @@
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}"
     >
       <div class="clr-radio-wrapper">
-        <input type="radio" name="radio2" id="{{layout}}-radio4" placeholder="Enter value here" class="clr-radio" />
-        <label for="{{layout}}-radio4" class="clr-control-label">option 1</label>
+        <input type="radio" name="radio2" [id]="layout + 'radio4'" placeholder="Enter value here" class="clr-radio" />
+        <label [for]="layout + 'radio4'" class="clr-control-label">option 1</label>
       </div>
       <div class="clr-radio-wrapper">
-        <input type="radio" name="radio2" id="{{layout}}-radio5" placeholder="Enter value here" class="clr-radio" />
-        <label for="{{layout}}-radio5" class="clr-control-label">option 2</label>
+        <input type="radio" name="radio2" [id]="layout + 'radio5'" placeholder="Enter value here" class="clr-radio" />
+        <label [for]="layout + 'radio5'" class="clr-control-label">option 2</label>
       </div>
       <div class="clr-radio-wrapper">
-        <input type="radio" name="radio2" id="{{layout}}-radio6" placeholder="Enter value here" class="clr-radio" />
-        <label for="{{layout}}-radio6" class="clr-control-label">option 3</label>
+        <input type="radio" name="radio2" [id]="layout + 'radio6'" placeholder="Enter value here" class="clr-radio" />
+        <label [for]="layout + 'radio6'" class="clr-control-label">option 3</label>
       </div>
       <div class="clr-subtext-wrapper">
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -351,16 +351,16 @@
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}"
     >
       <div class="clr-radio-wrapper">
-        <input type="radio" name="radio3" id="{{layout}}-radio7" placeholder="Enter value here" class="clr-radio" />
-        <label for="{{layout}}-radio7" class="clr-control-label">option 1</label>
+        <input type="radio" name="radio3" [id]="layout + 'radio7'" placeholder="Enter value here" class="clr-radio" />
+        <label [for]="layout + 'radio7'" class="clr-control-label">option 1</label>
       </div>
       <div class="clr-radio-wrapper">
-        <input type="radio" name="radio3" id="{{layout}}-radio8" placeholder="Enter value here" class="clr-radio" />
-        <label for="{{layout}}-radio8" class="clr-control-label">option 2</label>
+        <input type="radio" name="radio3" [id]="layout + 'radio8'" placeholder="Enter value here" class="clr-radio" />
+        <label [for]="layout + 'radio8'" class="clr-control-label">option 2</label>
       </div>
       <div class="clr-radio-wrapper">
-        <input type="radio" name="radio3" id="{{layout}}-radio9" placeholder="Enter value here" class="clr-radio" />
-        <label for="{{layout}}-radio9" class="clr-control-label">option 3</label>
+        <input type="radio" name="radio3" [id]="layout + 'radio9'" placeholder="Enter value here" class="clr-radio" />
+        <label [for]="layout + 'radio9'" class="clr-control-label">option 3</label>
       </div>
       <div class="clr-subtext-wrapper">
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -445,7 +445,7 @@
 
   <div class="clr-form-control" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label
-      for="{{layout}}-file"
+      [for]="layout + 'file'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     >
@@ -453,8 +453,8 @@
     </label>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}">
       <div class="clr-file-wrapper">
-        <label for="{{layout}}-file" class="clr-control-label"><span class="btn btn-sm">browse</span></label>
-        <input #fileInput type="file" id="{{layout}}-file" placeholder="Enter value here" class="clr-file" />
+        <label [for]="layout + 'file'" class="clr-control-label"><span class="btn btn-sm">browse</span></label>
+        <input #fileInput type="file" [id]="layout + 'file'" placeholder="Enter value here" class="clr-file" />
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
       <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -465,7 +465,7 @@
 
   <div class="clr-form-control" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label
-      for="{{layout}}-file2"
+      [for]="layout + 'file2'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     >
@@ -476,8 +476,8 @@
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}"
     >
       <div class="clr-file-wrapper">
-        <label for="{{layout}}-file2" class="clr-control-label"><span class="btn btn-sm">browse</span></label>
-        <input type="file" id="{{layout}}-file2" placeholder="Enter value here" class="clr-file" />
+        <label [for]="layout + 'file2'" class="clr-control-label"><span class="btn btn-sm">browse</span></label>
+        <input type="file" [id]="layout + 'file2'" placeholder="Enter value here" class="clr-file" />
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
       <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -487,7 +487,7 @@
 
   <div class="clr-form-control" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label
-      for="{{layout}}-file3"
+      [for]="layout + 'file3'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     >
@@ -495,7 +495,7 @@
     </label>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}">
       <div class="clr-file-wrapper">
-        <input type="file" id="{{layout}}-file" placeholder="Enter value here" />
+        <input type="file" [id]="layout + 'file'" placeholder="Enter value here" />
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
       <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -505,7 +505,7 @@
 
   <div class="clr-form-control" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label
-      for="{{layout}}-file4"
+      [for]="layout + 'file4'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     >
@@ -516,7 +516,7 @@
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}"
     >
       <div class="clr-file-wrapper">
-        <input type="file" id="{{layout}}-file2" placeholder="Enter value here" />
+        <input type="file" [id]="layout + 'file2'" placeholder="Enter value here" />
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
       <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -526,7 +526,7 @@
 
   <div class="clr-form-control" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label
-      for="{{layout}}-basic"
+      [for]="layout + 'basic'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     >
@@ -534,7 +534,7 @@
     </label>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}">
       <div class="clr-input-wrapper">
-        <input type="text" id="{{layout}}-basic" placeholder="Enter value here" class="clr-input" />
+        <input type="text" [id]="layout + 'basic'" placeholder="Enter value here" class="clr-input" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">
@@ -555,13 +555,13 @@
 
   <div class="clr-form-control" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label
-      for="{{layout}}-nosubtext"
+      [for]="layout + 'nosubtext'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     ></label>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}">
       <div class="clr-input-wrapper">
-        <input type="text" id="{{layout}}-nolabel" placeholder="No label" class="clr-input" />
+        <input type="text" [id]="layout + 'nolabel'" placeholder="No label" class="clr-input" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
@@ -570,7 +570,7 @@
 
   <div class="clr-form-control" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label
-      for="{{layout}}-nosubtext"
+      [for]="layout + 'nosubtext'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     >
@@ -578,7 +578,7 @@
     </label>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}">
       <div class="clr-input-wrapper">
-        <input type="text" id="{{layout}}-nosubtext" placeholder="Enter value here" class="clr-input" />
+        <input type="text" [id]="layout + 'nosubtext'" placeholder="Enter value here" class="clr-input" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
     </div>
@@ -586,13 +586,13 @@
 
   <div class="clr-form-control" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label
-      for="{{layout}}-nosubtext"
+      [for]="layout + 'nosubtext'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     ></label>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}">
       <div class="clr-input-wrapper">
-        <input type="text" id="{{layout}}-onlyinput" placeholder="No label or subtext" class="clr-input" />
+        <input type="text" [id]="layout + 'onlyinput'" placeholder="No label or subtext" class="clr-input" />
       </div>
     </div>
   </div>
@@ -603,7 +603,7 @@
     [style.display]="(!grid && layout !== 'vertical') ? 'none' : ''"
   >
     <label
-      for="{{layout}}-multiple"
+      [for]="layout + 'multiple'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     >
@@ -611,21 +611,21 @@
     </label>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-3': grid}">
       <div class="clr-input-wrapper">
-        <input type="text" id="{{layout}}-multiple" placeholder="Enter value here" class="clr-input" size="100" />
+        <input type="text" [id]="layout + 'multiple'" placeholder="Enter value here" class="clr-input" size="100" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-3': grid}">
       <div class="clr-input-wrapper">
-        <input type="text" id="{{layout}}-multiple" placeholder="Enter value here" class="clr-input" />
+        <input type="text" [id]="layout + 'multiple'" placeholder="Enter value here" class="clr-input" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-3': grid}">
       <div class="clr-input-wrapper">
-        <input type="text" id="{{layout}}-multiple" placeholder="Enter value here" class="clr-input" />
+        <input type="text" [id]="layout + 'multiple'" placeholder="Enter value here" class="clr-input" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
@@ -638,7 +638,7 @@
     [style.display]="(!grid && layout !== 'vertical') ? 'none' : ''"
   >
     <label
-      for="{{layout}}-multiple-error"
+      [for]="layout + 'multiple-error'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     >
@@ -646,21 +646,21 @@
     </label>
     <div class="clr-control-container clr-error" [ngClass]="{'clr-col-12': grid, 'clr-col-md-3': grid}">
       <div class="clr-input-wrapper">
-        <input type="text" id="{{layout}}-multiple-error" placeholder="Enter value here" class="clr-input" />
+        <input type="text" [id]="layout + 'multiple-error'" placeholder="Enter value here" class="clr-input" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-3': grid}">
       <div class="clr-input-wrapper">
-        <input type="text" id="{{layout}}-multiple-error" placeholder="Enter value here" class="clr-input" />
+        <input type="text" [id]="layout + 'multiple-error'" placeholder="Enter value here" class="clr-input" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
     <div class="clr-control-container clr-error" [ngClass]="{'clr-col-12': grid, 'clr-col-md-3': grid}">
       <div class="clr-input-wrapper">
-        <input type="text" id="{{layout}}-multiple-error" placeholder="Enter value here" class="clr-input" />
+        <input type="text" [id]="layout + 'multiple-error'" placeholder="Enter value here" class="clr-input" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
@@ -669,7 +669,7 @@
 
   <div class="clr-form-control" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label
-      for="{{layout}}-textarea-basic"
+      [for]="layout + 'textarea-basic'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     >
@@ -678,7 +678,7 @@
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}">
       <div class="clr-textarea-wrapper">
         <textarea
-          id="{{layout}}-textarea-basic"
+          [id]="layout + 'textarea-basic'"
           rows="5"
           placeholder="Enter value here"
           class="clr-textarea"
@@ -691,7 +691,7 @@
 
   <div class="clr-form-control" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label
-      for="{{layout}}-textarea-basic-error"
+      [for]="layout + 'textarea-basic-error'"
       class="clr-control-label"
       [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}"
     >
@@ -703,7 +703,7 @@
     >
       <div class="clr-textarea-wrapper">
         <textarea
-          id="{{layout}}-textarea-basic-error"
+          [id]="layout + 'textarea-basic-error'"
           rows="5"
           placeholder="Enter value here"
           class="clr-textarea"
