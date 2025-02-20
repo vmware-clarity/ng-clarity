@@ -10,7 +10,37 @@
 
 @include mixins.exports('forms.wrappers') {
   .clr-form {
+    $widthSize: 100%;
     padding: forms-variables.$clr-forms-baseline;
+
+    &.clr-form-compact {
+      $widthSize: calc(100% - #{forms-variables.$clr-forms-icon-size});
+    }
+
+    &-full {
+      .clr-form-control {
+        .clr-control-container,
+        .clr-input-group,
+        .clr-select-wrapper,
+        .clr-input-wrapper,
+        .clr-textarea-wrapper,
+        .clr-number-input-wrapper,
+        input,
+        textarea,
+        select {
+          width: 100%;
+          max-width: 100%;
+        }
+
+        .clr-combobox-wrapper,
+        .clr-combobox-input-wrapper,
+        .clr-combobox,
+        input {
+          width: $widthSize;
+          max-width: $widthSize;
+        }
+      }
+    }
   }
 
   .clr-form-group {
