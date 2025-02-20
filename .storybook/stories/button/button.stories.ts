@@ -167,7 +167,7 @@ const ButtonLinkTemplate: StoryFn = args => ({
       [disabled]="disabled"
       (click)="click($event)"
     >
-      <cds-icon *ngIf="iconShape" [shape]="iconShape"></cds-icon>
+      <cds-icon *ngIf="iconShape" [attr.shape]="iconShape"></cds-icon>
       {{ content }}
     </a>
   `,
