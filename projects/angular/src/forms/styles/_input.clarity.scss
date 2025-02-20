@@ -10,6 +10,7 @@
 
 @include mixins.exports('forms.input') {
   .clr-input-wrapper {
+    display: inline-flex;
     white-space: nowrap;
     max-height: forms-variables.$clr-forms-input-wrapper-height;
   }

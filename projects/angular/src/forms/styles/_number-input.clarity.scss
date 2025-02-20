@@ -13,7 +13,7 @@
 
 @include mixins.exports('forms.number-input') {
   .clr-number-input-wrapper {
-    display: inline-block;
+    display: inline-flex;
     white-space: nowrap;
     max-height: forms-variables.$clr-forms-input-wrapper-height;
 

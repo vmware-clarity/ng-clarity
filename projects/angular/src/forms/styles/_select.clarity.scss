@@ -15,6 +15,7 @@
 @include mixins.exports('forms.select') {
   .clr-select-wrapper,
   .clr-multiselect-wrapper {
+    display: inline-flex;
     position: relative;
     white-space: nowrap;
 
@@ -73,7 +74,6 @@
 
   .clr-select-wrapper {
     max-height: calc(4 * #{forms-variables.$clr-forms-baseline});
-    display: inline-block;
 
     &::after {
       position: absolute;

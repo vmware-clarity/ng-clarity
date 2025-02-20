@@ -214,5 +214,15 @@
       flex-basis: auto;
       display: inline-block;
     }
+
+    &.clr-form-full .clr-control-container {
+      flex-wrap: nowrap;
+      .clr-form-control {
+        flex: 0 0 auto;
+      }
+      .clr-subtext {
+        flex: 0 0 auto;
+      }
+    }
   }
 }
