@@ -13,6 +13,7 @@
 @use 'sass:string';
 @use 'sass:meta';
 @use '../modal/variables.modal' as modal-variables;
+@use '../timeline/variables.timeline' as timeline-variables;
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
 @use 'variables.wizard' as wizard-variables;
@@ -141,7 +142,6 @@
       order: -1;
       overflow: hidden;
       overflow-y: auto;
-      border-right: var(--clr-global-borderwidth) solid wizard-variables.$clr-wizard-stepnav-border-color;
       background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
       border-radius: wizard-variables.$clr-wizard-border-radius 0 0 wizard-variables.$clr-wizard-border-radius;
     }
@@ -167,8 +167,6 @@
 
     .clr-wizard-stepnav-item {
       display: block;
-      border-left: wizard-variables.$clr-wizard-stepnav-border-size solid
-        wizard-variables.$clr-wizard-stepnav-item-border-color;
 
       margin-bottom: tokens.$cds-global-space-1;
       color: wizard-variables.$clr-wizard-stepnav-text;
@@ -188,7 +186,6 @@
       &.active {
         color: wizard-variables.$clr-wizard-stepnav-text--active;
         background-color: wizard-variables.$clr-wizard-stepnav-selected-bgcolor;
-        border-left-color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
 
         &:hover {
           background-color: wizard-variables.$clr-wizard-stepnav-selected-hover-bgcolor;
@@ -217,19 +214,13 @@
       }
 
       &.complete {
-        border-color: wizard-variables.$clr-wizard-stepnav-item-border-color--active;
-        transition: border-color 0.2s ease-in;
-
-        .clr-wizard-stepnav-link-icon cds-icon {
+        .clr-wizard-stepnav-link-icon {
           --color: #{wizard-variables.$clr-wizard-stepnav-link-complete-icon-color};
         }
       }
 
       &.error {
-        border-color: wizard-variables.$clr-wizard-stepnav-item-error-border-color;
-        transition: border-color 0.2s ease-in;
-
-        .clr-wizard-stepnav-link-icon cds-icon {
+        .clr-wizard-stepnav-link-icon {
           --color: #{wizard-variables.$clr-wizard-stepnav-link-error-icon-color};
         }
       }
@@ -242,6 +233,7 @@
     .clr-wizard-stepnav-link {
       width: 100%;
       display: flex;
+      gap: 0;
       place-content: normal;
       color: inherit;
       align-items: center;
@@ -255,13 +247,29 @@
 
       @include mixins.generate-typography-token('BODY-14-MD-STD');
 
-      .clr-wizard-stepnav-link-icon {
-        display: flex; // this vertically centers the icon
-      }
-
       .clr-wizard-stepnav-link-icon,
       .clr-wizard-stepnav-link-page-number {
         width: tokens.$cds-global-space-7;
+      }
+    }
+
+    .clr-wizard-stepnav-link-body {
+      // This makes these rules override the timeline styles.
+      &.clr-timeline-step-body.clr-wizard-stepnav-link-body {
+        display: flex;
+        flex-direction: row;
+
+        &::before {
+          z-index: 10;
+          margin-top: calc(-1 * tokens.$cds-global-space-5);
+        }
+
+        &--trailing-dotted-line {
+          &::before {
+            background: none;
+            border: tokens.$cds-alias-object-border-width-100 timeline-variables.$clr-timeline-line-color dashed;
+          }
+        }
       }
     }
 

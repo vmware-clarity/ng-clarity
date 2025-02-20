@@ -22,38 +22,30 @@ import { ClrWizardPage } from './wizard-page';
       [attr.disabled]="isDisabled ? '' : null"
       [attr.aria-labelledby]="labelledby"
     >
-      <div class="clr-wizard-stepnav-link-icon">
-        <cds-icon
-          *ngIf="hasError"
-          [id]="stepIconId"
-          shape="error-standard"
-          role="img"
-          [attr.aria-label]="commonStrings.keys.wizardStepError"
-        ></cds-icon>
-        <cds-icon
-          *ngIf="!hasError && isComplete"
-          [id]="stepIconId"
-          shape="success-standard"
-          role="img"
-          [attr.aria-label]="commonStrings.keys.wizardStepSuccess"
-        ></cds-icon>
+      <cds-icon
+        *ngIf="icon; let icon"
+        [id]="stepIconId"
+        role="img"
+        class="clr-wizard-stepnav-link-icon"
+        [attr.shape]="icon.shape"
+        [attr.aria-label]="icon.label"
+      ></cds-icon>
+      <div
+        class="clr-timeline-step-body clr-wizard-stepnav-link-body"
+        [ngClass]="{ 'clr-wizard-stepnav-link-body--trailing-dotted-line': hasTrailingDottedLine }"
+      >
+        <span [id]="stepTextId" class="clr-sr-only">{{ commonStrings.keys.wizardStep }}</span>
+        <div [id]="stepNumberId" class="clr-wizard-stepnav-link-page-number"><ng-content></ng-content></div>
+        <span [id]="stepTitleId" class="clr-wizard-stepnav-link-title">
+          <ng-template [ngTemplateOutlet]="page.navTitle"></ng-template>
+        </span>
       </div>
-
-      <span [id]="stepTextId" class="clr-sr-only">{{ commonStrings.keys.wizardStep }}</span>
-      <div [id]="stepNumberId" class="clr-wizard-stepnav-link-page-number">
-        <ng-content></ng-content>
-      </div>
-      <span [id]="stepTitleId" class="clr-wizard-stepnav-link-title">
-        <ng-template [ngTemplateOutlet]="page.navTitle"></ng-template>
-      </span>
     </button>
   `,
   host: {
     '[id]': 'id',
     '[attr.aria-current]': 'stepAriaCurrent',
     '[attr.aria-controls]': 'page.id',
-    '[class.clr-nav-link]': 'true',
-    '[class.nav-item]': 'true',
     '[class.active]': 'isCurrent',
     '[class.disabled]': 'isDisabled',
     '[class.no-click]': '!canNavigate',
@@ -125,6 +117,34 @@ export class ClrWizardStepnavItem {
     const allIds = this.isComplete ? [this.stepIconId, ...textIds] : textIds;
 
     return allIds.join(' ');
+  }
+
+  protected get icon(): { shape: string; label: string } {
+    if (this.isCurrent) {
+      return {
+        shape: 'dot-circle',
+        label: this.commonStrings.keys.wizardStepCurrent || this.commonStrings.keys.timelineStepCurrent,
+      };
+    } else if (this.hasError) {
+      return {
+        shape: 'error-standard',
+        label: this.commonStrings.keys.wizardStepError || this.commonStrings.keys.timelineStepError,
+      };
+    } else if (this.isComplete) {
+      return {
+        shape: 'success-standard',
+        label: this.commonStrings.keys.wizardStepSuccess || this.commonStrings.keys.timelineStepSuccess,
+      };
+    } else {
+      return {
+        shape: 'circle',
+        label: this.commonStrings.keys.wizardStepNotStarted || this.commonStrings.keys.timelineStepNotStarted,
+      };
+    }
+  }
+
+  protected get hasTrailingDottedLine(): boolean {
+    return this.page.hasError || !this.page.completed;
   }
 
   click(): void {
