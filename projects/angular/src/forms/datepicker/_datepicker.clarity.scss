@@ -116,6 +116,9 @@
     z-index: map.get(variables.$clr-layers, dropdown-menu);
 
     .datepicker-view-manager {
+      display: flex;
+      flex-direction: column;
+      row-gap: calc(2 * datepicker-variables.$clr-calendar-button-gap);
       width: calc(datepicker-variables.$clr-calendar-width - calc(1 * datepicker-variables.$clr-calendar-padding));
       padding-left: datepicker-variables.$clr-calendar-padding;
     }
@@ -129,8 +132,10 @@
 
     &.has-action-buttons {
       height: calc(
-        datepicker-variables.$clr-calendar-height + datepicker-variables.$clr-calendar-action-buttons-height
+        datepicker-variables.$clr-calendar-height + datepicker-variables.$clr-calendar-action-buttons-height +
+          calc(2 * datepicker-variables.$clr-calendar-button-gap)
       );
+      row-gap: calc(2 * datepicker-variables.$clr-calendar-button-gap);
     }
 
     .datepicker-actions {
@@ -158,6 +163,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: calc(7 * datepicker-variables.$clr-calendar-click-target);
   }
 
   .calendar-switchers,
@@ -176,7 +182,7 @@
   .calendar-table {
     // clr-calendar have dispaly: inline, preventing flex from having an effect.
     flex: 1 1 auto;
-    border-spacing: 0 var(--cds-global-space-3);
+    border-spacing: 0 datepicker-variables.$clr-calendar-button-gap;
     //Dimensions
     width: 100%;
   }
@@ -286,10 +292,10 @@
   .yearpicker,
   .daypicker {
     display: flex;
-    flex-direction: column;
     flex-wrap: wrap;
-    gap: tokens.$cds-global-space-5;
+    row-gap: tokens.$cds-global-space-5;
     height: calc(calc((9 * var(--cds-global-space-10))) + calc(3 * var(--cds-global-space-5)));
+    width: calc(7 * datepicker-variables.$clr-calendar-click-target);
 
     //Other props
     overflow: hidden;
@@ -321,7 +327,7 @@
 
   .months,
   .years {
-    row-gap: tokens.$cds-global-space-3;
+    row-gap: datepicker-variables.$clr-calendar-button-gap;
     flex-wrap: wrap;
     display: flex;
   }

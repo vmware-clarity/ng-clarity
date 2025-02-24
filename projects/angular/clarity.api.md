@@ -5371,8 +5371,6 @@ export class ClrYearpicker implements AfterViewInit {
     changeYear(year: number): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
-    // (undocumented)
-    get currentCalendarYear(): number;
     currentDecade(): void;
     // (undocumented)
     getIsRangeEndYear(year: number): boolean;
