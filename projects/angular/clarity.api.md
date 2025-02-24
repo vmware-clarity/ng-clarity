@@ -5391,6 +5391,8 @@ export class ClrYearpicker implements AfterViewInit {
     // (undocumented)
     getIsRangeStartYear(year: number): boolean;
     getTabIndex(year: number): number;
+    // (undocumented)
+    isCurrentCalendarYear(year: number): boolean;
     isInRange(year: number): boolean;
     nextDecade(): void;
     ngAfterViewInit(): void;
