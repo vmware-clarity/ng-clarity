@@ -52,8 +52,9 @@
 
 ## CSS Classes
 
-| Class name        | Description                          |
-| ----------------- | ------------------------------------ |
-| clr-form          | Main form element.                   |
-| clr-form-group    | Form group identifier.               |
-| clr-required-mark | Add required mark on the right side. |
+| Class name          | Description                                           |
+| ------------------- | ----------------------------------------------------- |
+| clr-form            | Main form element.                                    |
+| clr-form-group      | Form group identifier.                                |
+| clr-form-full-width | Make all controls to take 100% width of the container |
+| clr-required-mark   | Add required mark on the right side.                  |

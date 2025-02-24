@@ -146,7 +146,6 @@ class FormsStoryComponent {
   _isDisabled = false;
   _isSuccess = false;
   _isError = false;
-  _isFullWidth = false;
 
   form = new FormGroup({
     name: new FormControl(),
@@ -165,6 +164,7 @@ class FormsStoryComponent {
   });
 
   @Input() clrLayout = ClrFormLayout.HORIZONTAL;
+  @Input() isFullWidth = false;
 
   constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
@@ -194,15 +194,6 @@ class FormsStoryComponent {
     this._isSuccess = value;
     this.setControlsState();
   }
-
-  @Input()
-  get isFullWidth() {
-    return this._isFullWidth;
-  }
-  set isFullWidth(value: boolean) {
-    this._isFullWidth = value;
-  }
-
   setControlsState() {
     this.form.enable();
     Object.keys(this.form.controls).forEach(control => {
