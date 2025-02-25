@@ -27,6 +27,7 @@ class ChangeDetectionPerfRecord {
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {
+  range: ListRange;
   totalRows = 10000;
   totalCols = 5;
   cols: Column[];
@@ -74,6 +75,10 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
     this.rows.subscribe(() => {
       this.cdr.detectChanges();
     });
+  }
+
+  wheeled($event) {
+    console.log($event);
   }
 
   setGlobalFilter(value: string) {
@@ -128,6 +133,7 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
   }
 
   renderRangeChange($event: ListRange) {
+    this.range = $event;
     console.log($event);
     // this.loadMore($event);
   }

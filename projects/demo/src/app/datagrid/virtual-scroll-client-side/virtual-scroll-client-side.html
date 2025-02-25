@@ -40,6 +40,7 @@
   *ngIf="{ rows: rows | async }; let data"
   style="height: 32rem"
   class="datagrid-compact"
+  (wheel)="wheeled($event)"
 >
   <clr-dg-column *ngFor="let col of cols trackBy: colByIndex">
     <ng-container>{{col.name}}</ng-container>
@@ -66,7 +67,13 @@
     </clr-dg-row>
   </ng-template>
 
-  <clr-dg-footer> {{data.rows.length}} </clr-dg-footer>
+  <clr-dg-footer>
+    <div style="display: inline-block">Rows {{range?.start + 1}} - {{range?.end}} of {{data.rows.length}}</div>
+    <cds-icon shape="step-forward-2" direction="down"></cds-icon>
+    <cds-icon shape="angle" direction="left"></cds-icon>
+    <cds-icon shape="angle" direction="right"></cds-icon>
+    <cds-icon shape="step-forward-2"></cds-icon>
+  </clr-dg-footer>
 </clr-datagrid>
 
 <h3>Dynamic rows with sorting</h3>
