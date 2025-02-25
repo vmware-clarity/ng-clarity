@@ -223,7 +223,7 @@ export class KeyNavigationGridController implements OnDestroy {
         if (this.isDetailsRow(nextCellCoords.y)) {
           nextCellCoords.x = 0;
         } else {
-          nextCellCoords.x = this.actionCellCount(nextCellCoords.y).length;
+          nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
         }
 
         return nextCellCoords;
@@ -235,12 +235,12 @@ export class KeyNavigationGridController implements OnDestroy {
         nextCellCoords.y = nextCellCoords.y - 1;
 
         if (!this.isDetailsRow(nextCellCoords.y)) {
-          nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y).length;
+          nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
         }
       } else if (this.isDetailsRow(currentCellCoords.y) && !this.isDetailsRow(nextCellCoords.y)) {
-        nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y).length;
+        nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
       } else if (!isActionCell && this.isDetailsRow(nextCellCoords.y)) {
-        nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y).length;
+        nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
       }
     } else if (e.key === Keys.ArrowDown && currentCellCoords.y < numOfRows) {
       nextCellCoords.y = currentCellCoords.y + 1;
@@ -253,7 +253,7 @@ export class KeyNavigationGridController implements OnDestroy {
         if (this.isDetailsRow(nextCellCoords.y)) {
           nextCellCoords.x = 0;
         } else {
-          nextCellCoords.x = this.actionCellCount(nextCellCoords.y).length;
+          nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
         }
         return nextCellCoords;
       }
@@ -261,21 +261,21 @@ export class KeyNavigationGridController implements OnDestroy {
       if (isActionCell || this.isRowReplaced(nextCellCoords.y)) {
         nextCellCoords.y = nextCellCoords.y + 1;
       } else if (this.getCellsForRow(currentCellCoords.y).length > numOfColumns) {
-        nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y).length;
+        nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
       } else {
-        nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y).length;
+        nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
       }
     } else if (e.key === inlineStart) {
       if (currentCellCoords.x !== 0) {
         nextCellCoords.x = currentCellCoords.x - 1;
       } else if (!isActionCell) {
         nextCellCoords.y = currentCellCoords.y - 1;
-        nextCellCoords.x = this.actionCellCount(nextCellCoords.y).length - 1;
+        nextCellCoords.x = this.actionCellCount(nextCellCoords.y) - 1;
       }
     } else if (e.key === inlineEnd && currentCellCoords.x < numOfColumns) {
       if (
         isActionCell &&
-        currentCellCoords.x < this.actionCellCount(currentCellCoords.x).length &&
+        currentCellCoords.x < this.actionCellCount(currentCellCoords.x) &&
         this.isRowReplaced(currentCellCoords.y) &&
         !this.isDetailsRow(currentCellCoords.y)
       ) {
@@ -319,7 +319,7 @@ export class KeyNavigationGridController implements OnDestroy {
         if (isActionCell) {
           nextCellCoords.y = nextCellCoords.y - 1;
         } else {
-          nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y).length;
+          nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
         }
       }
     } else if (e.key === Keys.ArrowDown && currentCellCoords.y < numOfRows) {
@@ -333,7 +333,7 @@ export class KeyNavigationGridController implements OnDestroy {
 
       if (!isActionCell && this.isRowReplaced(nextCellCoords.y)) {
         nextCellCoords.y = nextCellCoords.y + 1;
-        nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y).length;
+        nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
       }
     } else if (e.key === inlineStart && currentCellCoords.x !== 0) {
       nextCellCoords.x = currentCellCoords.x - 1;
@@ -426,10 +426,16 @@ export class KeyNavigationGridController implements OnDestroy {
   }
 
   private actionCellCount(index: number) {
-    return Array.from(this.rows[index].querySelectorAll('.datagrid-row-sticky .datagrid-cell'));
+    return this.actionCellsAsArray(index).length;
+  }
+
+  private actionCellsAsArray(index: number) {
+    return Array.from(
+      this.rows[index].querySelectorAll('.datagrid-row-sticky .datagrid-cell, .datagrid-row-sticky .datagrid-column')
+    );
   }
 
   private isActionCell(cellCoords: CellCoordinates) {
-    return !!this.actionCellCount(cellCoords.y)[cellCoords.x];
+    return !!this.actionCellsAsArray(cellCoords.y)[cellCoords.x];
   }
 }
