@@ -48,7 +48,8 @@
         opacity: 1;
         top: 0;
         @include mixins.equilateral(100%);
-        border: tokens.$cds-alias-object-interaction-outline;
+        // using cds-alias-object-interaction-outline token will be better when focus state get implemented
+        border: Highlight solid 2px;
 
         &::-ms-check {
           display: none;
