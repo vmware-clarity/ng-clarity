@@ -20,25 +20,30 @@ import { ClrWizardPage } from './wizard-page';
       class="btn btn-link clr-wizard-stepnav-link"
       (click)="click()"
       [attr.disabled]="isDisabled ? '' : null"
+      [attr.aria-labelledby]="labelledby"
     >
       <div class="clr-wizard-stepnav-link-icon">
         <cds-icon
           *ngIf="hasError"
+          [id]="stepIconId"
           shape="error-standard"
           role="img"
           [attr.aria-label]="commonStrings.keys.wizardStepError"
         ></cds-icon>
         <cds-icon
           *ngIf="!hasError && isComplete"
+          [id]="stepIconId"
           shape="success-standard"
           role="img"
           [attr.aria-label]="commonStrings.keys.wizardStepSuccess"
         ></cds-icon>
       </div>
 
-      <span class="clr-sr-only">{{ commonStrings.keys.wizardStep }}</span>
-      <div class="clr-wizard-stepnav-link-page-number"><ng-content></ng-content></div>
-      <span class="clr-wizard-stepnav-link-title">
+      <span [id]="stepTextId" class="clr-sr-only">{{ commonStrings.keys.wizardStep }}</span>
+      <div [id]="stepNumberId" class="clr-wizard-stepnav-link-page-number">
+        <ng-content></ng-content>
+      </div>
+      <span [id]="stepTitleId" class="clr-wizard-stepnav-link-title">
         <ng-template [ngTemplateOutlet]="page.navTitle"></ng-template>
       </span>
     </button>
@@ -97,6 +102,29 @@ export class ClrWizardStepnavItem {
   get canNavigate(): boolean {
     this.pageGuard();
     return this.pageCollection.previousPageIsCompleted(this.page);
+  }
+
+  protected get stepIconId() {
+    return `${this.id}-step-icon`;
+  }
+
+  protected get stepTextId() {
+    return `${this.id}-step-text`;
+  }
+
+  protected get stepNumberId() {
+    return `${this.id}-step-number`;
+  }
+
+  protected get stepTitleId() {
+    return `${this.id}-step-title`;
+  }
+
+  protected get labelledby() {
+    const textIds = [this.stepTextId, this.stepNumberId, this.stepTitleId];
+    const allIds = this.isComplete ? [this.stepIconId, ...textIds] : textIds;
+
+    return allIds.join(' ');
   }
 
   click(): void {
