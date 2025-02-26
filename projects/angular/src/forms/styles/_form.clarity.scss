@@ -10,7 +10,7 @@
 
 @include mixins.exports('forms.wrappers') {
   .clr-form {
-    $maxWidthSize: calc(100% - #{forms-variables.$clr-forms-icon-size});
+    $widthSize: calc(100% - #{forms-variables.$clr-forms-icon-size});
     padding: forms-variables.$clr-forms-baseline;
 
     &-full-width {
@@ -20,8 +20,7 @@
         .clr-input-wrapper,
         .clr-number-input-wrapper,
         .clr-combobox {
-          width: 100%;
-          max-width: $maxWidthSize;
+          width: $widthSize;
         }
 
         .clr-combobox-wrapper,
@@ -63,7 +62,7 @@
           right: forms-variables.$clr-forms-baseline;
         }
         .clr-control-container:not(.clr-error):not(.clr-success) textarea {
-          max-width: $maxWidthSize;
+          width: $widthSize;
         }
       }
     }
