@@ -419,8 +419,18 @@ export default function (): void {
         expect(context.clarityElement.querySelector('clr-expandable-animation')).not.toBeNull();
       });
 
-      it('button must contain aria-controls', function () {
+      it('button must not contain aria-controls with template when not expanded', function () {
         const button = context.clarityElement.querySelector('.datagrid-expandable-caret-button');
+        expect(button.getAttribute('aria-controls')).toBeNull();
+      });
+
+      it('button must contain aria-controls when expanded', function () {
+        const button: HTMLButtonElement = context.clarityElement.querySelector('.datagrid-expandable-caret-button');
+        expect(button.getAttribute('aria-controls')).toBeNull();
+
+        button.dispatchEvent(new MouseEvent('click', { buttons: 1, bubbles: true }));
+        context.detectChanges();
+
         expect(button.getAttribute('aria-controls')).not.toBeNull();
       });
 

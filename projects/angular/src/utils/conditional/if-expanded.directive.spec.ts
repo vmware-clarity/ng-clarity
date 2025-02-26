@@ -68,6 +68,35 @@ export default function (): void {
         this.fixture.detectChanges();
         expect(this.testElement.textContent.trim()).toBe('2');
       });
+
+      it('have template reference', function () {
+        expect(this.expand.hasExpandTemplate).toBe(true);
+      });
+    });
+
+    describe('Template Ref', function () {
+      beforeEach(function () {
+        /*
+         * Since IfExpanded is a structural directive that isn't rendered in the DOM immediately,
+         * we can't use our usual shortcut, we need to rely on @ViewChild.
+         * A quick investigation didn't reveal a better solution yet, we might want to look into it more.
+         */
+        TestBed.configureTestingModule({
+          declarations: [ClrIfExpanded, SimpleTemplateTest, TestCounter],
+          providers: [IfExpandService],
+        });
+        this.fixture = TestBed.createComponent(SimpleTemplateTest);
+        this.fixture.detectChanges();
+        this.expand = TestBed.get(IfExpandService);
+      });
+
+      afterEach(function () {
+        this.fixture.destroy();
+      });
+
+      it("don't have template reference", function () {
+        expect(this.expand.hasExpandTemplate).toBe(false);
+      });
     });
 
     describe('Parent interaction', function () {
@@ -106,6 +135,16 @@ export default function (): void {
   providers: [{ provide: 'counter', useValue: { total: 0 } }],
 })
 class SimpleTest {
+  @ViewChild(ClrIfExpanded) ifExpanded: ClrIfExpanded;
+
+  constructor(@Inject('counter') public counter: { total: number }) {}
+}
+
+@Component({
+  template: `<test-counter [clrIfExpanded]></test-counter>`,
+  providers: [{ provide: 'counter', useValue: { total: 0 } }],
+})
+class SimpleTemplateTest {
   @ViewChild(ClrIfExpanded) ifExpanded: ClrIfExpanded;
 
   constructor(@Inject('counter') public counter: { total: number }) {}
