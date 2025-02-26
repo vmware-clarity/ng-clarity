@@ -57,6 +57,7 @@ import DatagridMainRendererSpecs from './render/main-renderer.spec';
 import NoopDomAdapterSpecs from './render/noop-dom-adapter.spec';
 import DatagridRenderOrganizerSpecs from './render/render-organizer.spec';
 import DatagridRowRendererSpecs from './render/row-renderer.spec';
+import KeyNavigationSpec from './utils/key-navigation-grid.controller.spec';
 import WrappedCellSpec from './wrapped-cell.spec';
 import WrappedColumnSpec from './wrapped-column.spec';
 import WrappedRowSpec from './wrapped-row.spec';
@@ -93,6 +94,7 @@ describe('Datagrid', function () {
     DatagridFooterSpecs();
     DatagridPlaceholderSpecs();
     DatagridSpecs();
+    KeyNavigationSpec();
     DatagridVirtualScrollSpec();
     DatagridColumnToggleSpecs();
     DatagridColumnToggleButtonSpecs();
