@@ -68,11 +68,18 @@
   </ng-template>
 
   <clr-dg-footer>
-    <div style="display: inline-block">Rows {{range?.start + 1}} - {{range?.end}} of {{data.rows.length}}</div>
-    <cds-icon shape="step-forward-2" direction="down"></cds-icon>
-    <cds-icon shape="angle" direction="left"></cds-icon>
-    <cds-icon shape="angle" direction="right"></cds-icon>
-    <cds-icon shape="step-forward-2"></cds-icon>
+    <div class="footer-counters">Rows {{range?.start + 1}} - {{range?.end}} of {{data.rows.length}}</div>
+    <clr-dropdown>
+      <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
+        Jump to
+        <cds-icon shape="angle" direction="down"></cds-icon>
+      </button>
+      <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
+        <div *ngFor="let index of getIndexes(data.rows)" (click)="scrollToIndex(index)" clrDropdownItem>
+          {{index + 1}}
+        </div>
+      </clr-dropdown-menu>
+    </clr-dropdown>
   </clr-dg-footer>
 </clr-datagrid>
 
@@ -132,5 +139,17 @@
     </clr-dg-detail-body>
   </clr-dg-detail>
 
-  <clr-dg-footer> {{data.users?.length}} </clr-dg-footer>
+  <clr-dg-footer>
+    <div class="footer-counters">Users {{data.users.length}}</div>
+    <clr-dropdown>
+      <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
+        Jump to <cds-icon shape="angle" direction="down"></cds-icon>
+      </button>
+      <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
+        <div *ngFor="let index of getIndexes(data.users)" (click)="scrollToIndex(index)" clrDropdownItem>
+          {{index + 1}}
+        </div>
+      </clr-dropdown-menu>
+    </clr-dropdown>
+  </clr-dg-footer>
 </clr-datagrid>
