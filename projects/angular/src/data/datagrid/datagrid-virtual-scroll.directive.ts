@@ -260,7 +260,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   scrollToIndex(index: number, behaviour: ScrollBehavior = 'auto') {
-    console.log(this.virtualScrollViewport);
     this.virtualScrollViewport?.scrollToIndex(index, behaviour);
   }
 

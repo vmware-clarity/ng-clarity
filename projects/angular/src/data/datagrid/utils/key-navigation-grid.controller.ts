@@ -96,7 +96,6 @@ export class KeyNavigationGridController implements OnDestroy {
       fromEvent(this.grid, 'wheel')
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          console.log('wheel');
           this.removeActiveCell();
         });
 
