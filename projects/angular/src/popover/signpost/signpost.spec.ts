@@ -61,7 +61,7 @@ export default function (): void {
       it('has a default aria-label on the default trigger', function (this: Context) {
         const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
 
-        expect(signpostToggle.getAttribute('aria-label')).toEqual('Signpost Toggle');
+        expect(signpostToggle.getAttribute('aria-label')).toEqual('Info');
       });
     });
 
