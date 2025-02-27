@@ -47,7 +47,7 @@ export default {
 
 const HeaderColorTemplate: StoryFn = args => ({
   template: `
-    <header class="{{ color }}">
+    <header [class]="color">
       <div class="branding">
         <a href="javascript://" class="nav-link">
           <cds-icon shape="vm-bug"></cds-icon>
