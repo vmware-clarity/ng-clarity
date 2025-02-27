@@ -215,7 +215,7 @@ export class KeyNavigationGridController implements OnDestroy {
     if (e.key === Keys.ArrowUp && currentCellCoords.y !== 0) {
       nextCellCoords.y = currentCellCoords.y - 1;
 
-      if (isSingleCellExpandedRow && !isActionCell) {
+      if (isSingleCellExpandedRow && !isActionCell && this.isRowReplaced(currentCellCoords.y)) {
         if (this.isRowReplaced(nextCellCoords.y)) {
           nextCellCoords.y = nextCellCoords.y - 1;
         }

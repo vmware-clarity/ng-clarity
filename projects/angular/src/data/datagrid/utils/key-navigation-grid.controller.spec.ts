@@ -778,7 +778,7 @@ export default function (): void {
 
       it('Moves focus across data cells with action and expanded detail rows', function () {
         // check cell flow: start at index
-        // 0 -> 5 -> 6 -> 11 -> 12 -> 13 -> 15 -> 18 -> 21 -> 24 -> 25 -> 21 -> 18
+        // 0 -> 5 -> 6 -> 11 -> 12 -> 13 -> 8 -> 3 -> 8 -> 13 -> 15 -> 18 -> 21 -> 24 -> 25 -> 21 -> 18
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -794,6 +794,18 @@ export default function (): void {
         expect(document.activeElement).toBe(cells[12]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[13]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[8]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[3]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[8]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[13]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
