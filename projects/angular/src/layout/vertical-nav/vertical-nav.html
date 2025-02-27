@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
   ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
@@ -9,8 +9,9 @@
   type="button"
   class="nav-trigger"
   [class.on-collapse]="collapsed"
+  [attr.aria-controls]="contentId"
   [attr.aria-expanded]="ariaExpanded"
-  [attr.aria-label]="commonStrings.keys.verticalNavToggle"
+  [attr.aria-label]="toggleLabel || commonStrings.keys.verticalNavToggle"
   (click)="toggleByButton()"
   *ngIf="collapsible"
 >
@@ -20,7 +21,7 @@
     [attr.direction]="(this.collapsed) ? 'right' : 'left'"
   ></cds-icon>
 </button>
-<div class="nav-content">
+<div [id]="contentId" class="nav-content">
   <ng-content></ng-content>
   <button
     type="button"
@@ -28,7 +29,8 @@
     class="nav-btn"
     aria-hidden="true"
     tabindex="-1"
-    [attr.aria-label]="commonStrings.keys.verticalNavToggle"
+    [attr.aria-controls]="contentId"
+    [attr.aria-label]="toggleLabel || commonStrings.keys.verticalNavToggle"
     *ngIf="collapsible && collapsed"
   ></button>
 </div>

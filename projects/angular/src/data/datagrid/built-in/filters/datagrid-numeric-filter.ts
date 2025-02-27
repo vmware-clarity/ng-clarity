@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -24,10 +24,10 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
       <div class="datagrid-numeric-filter-form">
-        <div class="clr-form-control">
+        <clr-number-input-container>
           <label class="clr-control-label">{{ fromLabelValue }}</label>
           <input
-            clrInput
+            clrNumberInput
             class="datagrid-numeric-filter-input"
             #input_low
             type="number"
@@ -37,11 +37,11 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
             [placeholder]="minPlaceholderValue"
             [attr.aria-label]="minPlaceholderValue"
           />
-        </div>
-        <div class="clr-form-control">
+        </clr-number-input-container>
+        <clr-number-input-container>
           <label class="clr-control-label">{{ toLabelValue }}</label>
           <input
-            clrInput
+            clrNumberInput
             class="datagrid-numeric-filter-input"
             #input_high
             type="number"
@@ -51,7 +51,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
             [placeholder]="maxPlaceholderValue"
             [attr.aria-label]="maxPlaceholderValue"
           />
-        </div>
+        </clr-number-input-container>
       </div>
     </clr-dg-filter>
   `,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -15,11 +15,11 @@
   }
 
   .clr-input {
-    @include forms-mixins.custom-inputs-reset(calc(4 * #{forms-variables.$clr-forms-baseline}));
+    @include forms-mixins.custom-inputs-reset(forms-variables.$clr-forms-input-wrapper-height);
     @include forms-mixins.form-fields-appearance();
 
     padding: forms-variables.$clr-forms-input-padding;
-    max-height: calc(4 * #{forms-variables.$clr-forms-baseline});
+    max-height: forms-variables.$clr-forms-input-wrapper-height;
     @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
 
     &[readonly] {

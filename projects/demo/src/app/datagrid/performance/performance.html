@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
   ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
@@ -23,14 +23,14 @@
 </div>
 
 <div>
-  <clr-input-container>
+  <clr-number-input-container>
     <label>Total Cols</label>
-    <input clrInput type="number" name="cols" [(ngModel)]="totalCols" />
-  </clr-input-container>
-  <clr-input-container>
+    <input clrNumberInput type="number" name="cols" [(ngModel)]="totalCols" />
+  </clr-number-input-container>
+  <clr-number-input-container>
     <label>Rows</label>
-    <input clrInput id="rows" type="number" name="rows" [(ngModel)]="totalRows" />
-  </clr-input-container>
+    <input clrNumberInput id="rows" type="number" name="rows" [(ngModel)]="totalRows" />
+  </clr-number-input-container>
   <button class="btn" (click)="changeDatagridDimensions()">Recalculate Datagrid</button>
   <div>Rows: {{totalRows}}, Cols: {{totalCols}}</div>
 </div>

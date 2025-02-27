@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -13,6 +13,8 @@ import { ClrFormsModule } from '../forms.module';
 import { clearFiles, selectFiles } from './file-input.helpers';
 
 interface TestComponent {
+  accept: string;
+
   get control(): FormControl<FileList>;
 }
 
@@ -23,11 +25,11 @@ interface TestComponent {
         <label>File</label>
         <input
           type="file"
-          accept=".txt,text/plain"
           formControlName="files"
           clrFileInput
           [clrMinFileSize]="100"
           [clrMaxFileSize]="500"
+          [accept]="accept"
           multiple
           required
         />
@@ -42,6 +44,8 @@ interface TestComponent {
   `,
 })
 class ReactiveTest implements TestComponent {
+  accept = '.txt,text/plain';
+
   readonly form = new FormGroup({
     files: new FormControl<FileList>(undefined),
   });
@@ -58,12 +62,12 @@ class ReactiveTest implements TestComponent {
       <input
         #ngModel="ngModel"
         type="file"
-        accept=".txt,text/plain"
         name="files"
         [(ngModel)]="files"
         clrFileInput
         [clrMinFileSize]="100"
         [clrMaxFileSize]="500"
+        [accept]="accept"
         required
         multiple
       />
@@ -78,6 +82,7 @@ class ReactiveTest implements TestComponent {
 })
 class TemplateDrivenTest implements TestComponent {
   files: FileList;
+  accept = '.txt,text/plain';
 
   @ViewChild('ngModel') private readonly ngModel: NgModel;
 
@@ -138,6 +143,16 @@ function fileInputValidatorSpec(testComponent: Type<TestComponent>) {
     fixture.detectChanges();
 
     expect(getErrorMessages(nativeElement)).toBe('File type not accepted');
+  });
+
+  it('should not show the file type error when `accept` is an empty string', () => {
+    fixture.componentInstance.accept = '';
+    fixture.detectChanges();
+
+    selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'image.png')]);
+    fixture.detectChanges();
+
+    expect(nativeElement.querySelector('clr-control-error')).toBeNull();
   });
 
   it('should show the file size error when the file is too small', () => {

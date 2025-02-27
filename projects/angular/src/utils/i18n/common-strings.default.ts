@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -12,6 +12,8 @@ export const commonStringsDefault: ClrCommonStrings = {
   close: 'Close',
   show: 'Show',
   hide: 'Hide',
+  apply: 'Apply',
+  cancel: 'Cancel',
   expand: 'Expand',
   collapse: 'Collapse',
   more: 'More',
@@ -41,10 +43,11 @@ export const commonStringsDefault: ClrCommonStrings = {
   maxValue: 'Max value',
   modalContentStart: 'Beginning of Modal Content',
   modalContentEnd: 'End of Modal Content',
+  sidePanelPin: 'Pin Side Panel',
   showColumnsMenuDescription: 'Show or hide columns menu',
   allColumnsSelected: 'All columns selected',
   signpostToggle: 'Signpost Toggle',
-  signpostClose: 'Signpost Close',
+  signpostClose: 'Close',
   loading: 'Loading',
   // Datagrid
   detailPaneStart: 'Start of row details',
@@ -53,6 +56,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   singleActionableAriaLabel: 'Single actionable header',
   detailExpandableAriaLabel: 'Toggle more row content',
   datagridFilterAriaLabel: '{COLUMN} filter',
+  datagridFilterLabel: '{COLUMN} filter',
   datagridFilterDialogAriaLabel: 'Filter dialog',
   columnSeparatorAriaLabel: 'Column resize handle',
   columnSeparatorDescription: 'Use left or right key to resize the column',
@@ -106,7 +110,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   wizardStep: 'Step',
   wizardStepSuccess: 'Completed',
   wizardStepError: 'Error',
-  wizardStepnavAriaLabel: 'Step navigation',
+  wizardStepnavAriaLabel: 'Wizard steps',
 
   /**
    * Password Input
@@ -133,4 +137,8 @@ export const commonStringsDefault: ClrCommonStrings = {
   // Tree
   selectedTreeNode: 'selected',
   unselectedTreeNode: 'unselected',
+
+  // Breadcrumbs
+  breadcrumbsLabel: 'breadcrumbs',
+  expandBreadcrumbsLabel: 'Expand breadcrumbs',
 };

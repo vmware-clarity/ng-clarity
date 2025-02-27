@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -29,6 +29,7 @@ import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-t
 import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';
 import { ClrTab } from './tab';
+import { ClrTabAction } from './tab-action.directive';
 import { ClrTabLink } from './tab-link.directive';
 import { ClrTabOverflowContent } from './tab-overflow-content';
 import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
@@ -91,6 +92,7 @@ import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
           </clr-tab-overflow-content>
         </div>
       </ng-container>
+      <ng-content select="clr-tabs-actions"></ng-content>
     </ul>
     <ng-container #tabContentViewContainer></ng-container>
   `,
@@ -106,6 +108,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
 
   @ViewChild(ClrKeyFocus, { static: true }) keyFocus: ClrKeyFocus;
 
+  @ContentChildren(ClrTabAction, { read: ElementRef, descendants: true }) tabsActions: QueryList<ElementRef>;
   @ContentChildren(ClrTab) private tabs: QueryList<ClrTab>;
 
   private subscriptions: Subscription[] = [];
@@ -178,6 +181,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
 
   ngAfterContentInit() {
     this.subscriptions.push(this.listenForTabLinkChanges());
+    this.subscriptions.push(this.listedForTabsActionsChanges());
 
     if (typeof this.ifActiveService.current === 'undefined' && this.tabLinkDirectives[0]) {
       this.tabLinkDirectives[0].activate();
@@ -252,7 +256,14 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // This is because we have another handler on the tabOverflowTrigger element itself.
     // As this handler method is on the document level so the event bubbles up to it and conflicts
     // with the tabOverflowTrigger handler resulting in opening the tab overflow and closing it right away consecutively.
-    if (event.target === tabOverflowTrigger || tabOverflowTrigger.contains(event.target as HTMLElement)) {
+    const isTabsAction = this.tabsActions.some(action =>
+      (action.nativeElement as HTMLElement).contains(event.target as HTMLElement)
+    );
+    if (
+      event.target === tabOverflowTrigger ||
+      tabOverflowTrigger.contains(event.target as HTMLElement) ||
+      isTabsAction
+    ) {
       return;
     }
 
@@ -262,10 +273,21 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     }
   }
 
+  private setTabLinkElements() {
+    this._tabLinkDirectives = this.tabs.map(tab => tab.tabLink);
+    this.tabLinkElements = this._tabLinkDirectives.map(tab => tab.el.nativeElement);
+    if (this.tabsActions && this.tabsActions) {
+      this.tabLinkElements.push(...this.tabsActions.map(action => action.nativeElement));
+    }
+  }
+
   private listenForTabLinkChanges() {
-    return this.tabs.changes.pipe(startWith(this.tabs.map(tab => tab.tabLink))).subscribe(() => {
-      this._tabLinkDirectives = this.tabs.map(tab => tab.tabLink);
-      this.tabLinkElements = this._tabLinkDirectives.map(tab => tab.el.nativeElement);
-    });
+    return this.tabs.changes
+      .pipe(startWith(this.tabs.map(tab => tab.tabLink)))
+      .subscribe(() => this.setTabLinkElements());
+  }
+
+  private listedForTabsActionsChanges() {
+    return this.tabsActions.changes.subscribe(() => this.setTabLinkElements());
   }
 }
