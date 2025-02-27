@@ -275,7 +275,7 @@ export class KeyNavigationGridController implements OnDestroy {
     } else if (e.key === inlineEnd && currentCellCoords.x < numOfColumns) {
       if (
         isActionCell &&
-        currentCellCoords.x < this.actionCellCount(currentCellCoords.x) &&
+        currentCellCoords.x === this.actionCellCount(currentCellCoords.x) - 1 &&
         this.isRowReplaced(currentCellCoords.y) &&
         !this.isDetailsRow(currentCellCoords.y)
       ) {
