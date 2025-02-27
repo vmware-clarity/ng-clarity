@@ -70,7 +70,12 @@ export interface Cells {
         </clr-dg-row>
       </ng-template>
 
-      <clr-dg-footer> {{ data.rows.length }} </clr-dg-footer>
+      <clr-dg-footer>
+        {{ data.rows.length }}
+        <button class="btn btn-sm btn-icon btn-outline-neutral">
+          <cds-icon shape="step-forward-2" (click)="scrollToIndex(0)"></cds-icon>
+        </button>
+      </clr-dg-footer>
     </clr-datagrid>
   `,
 })
@@ -122,6 +127,10 @@ class FullTest implements OnInit {
     }
 
     return rows;
+  }
+
+  scrollToIndex(index: number) {
+    this.virtualScroll.scrollToIndex(index);
   }
 
   colByIndex(index: number, col: Column) {
@@ -248,16 +257,15 @@ export default function (): void {
         fixture.destroy();
       }));
 
-      // it('allows to manually resize the datagrid', function () {
-      //   const organizer: DatagridRenderOrganizer = context.getClarityProvider(DatagridRenderOrganizer);
-      //   let resizeSteps = 0;
-      //   organizer.renderStep.subscribe(() => {
-      //     resizeSteps++;
-      //   });
-      //   expect(resizeSteps).toBe(0);
-      //   context.clarityDirective.resize();
-      //   expect(resizeSteps).toBe(5);
-      // });
+      it('Spy on Scroll to index', fakeAsync(() => {
+        fixture.detectChanges();
+        const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');
+
+        instance.scrollToIndex(300);
+        expect(spyVirtualScroll).toHaveBeenCalledWith(300);
+
+        fixture.destroy();
+      }));
     });
   });
 }
