@@ -53,7 +53,7 @@ const NestedPopoverInScrollTemplate: StoryFn = args => ({
         }
       }
     </style>
-    <clr-datagrid [style.height.px]="250" cdkScrollable>
+    <clr-datagrid [style.height.px]="250">
       <clr-dg-column [style.width.px]="250">Name</clr-dg-column>
       <clr-dg-column [style.width.px]="250">Symbol</clr-dg-column>
       <clr-dg-column [style.width.px]="250">Number</clr-dg-column>

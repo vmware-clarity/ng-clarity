@@ -5,7 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrConditionalModule, ClrDatagrid, ClrDatagridModule, commonStringsDefault } from '@clr/angular';
+import {
+  ClrConditionalModule,
+  ClrDatagrid,
+  ClrDatagridModule,
+  ClrPopoverModule,
+  commonStringsDefault,
+} from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
@@ -16,7 +22,7 @@ export default {
   component: ClrDatagrid,
   decorators: [
     moduleMetadata({
-      imports: [ClrDatagridModule, ClrConditionalModule],
+      imports: [ClrDatagridModule, ClrConditionalModule, ClrPopoverModule],
     }),
   ],
   argTypes: {
@@ -128,7 +134,12 @@ const DatagridTemplate: StoryFn = args => ({
             <button class="action-item">Edit</button>
             <button class="action-item">Delete</button>
           </clr-dg-action-overflow>
-          <clr-dg-cell>{{ element.name }}</clr-dg-cell>
+          <clr-dg-cell>
+            {{ element.name }}
+            <clr-signpost>
+              <clr-signpost-content>This is a signpost.</clr-signpost-content>
+            </clr-signpost>
+          </clr-dg-cell>
           <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
           <clr-dg-cell>{{ element.number }}</clr-dg-cell>
           <clr-dg-cell class="electronegativity-container">

@@ -28,6 +28,7 @@ export class ClrPopoverService {
   panelClass: string;
   popoverPositions: ClrCDKPopoverPositions;
   availablePositions: any;
+  hasBackdrop: false;
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;

@@ -6,7 +6,7 @@
  */
 
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
-import { ConnectedPosition, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
+import { ConnectedPosition, Overlay, OverlayConfig, OverlayRef, ScrollDispatcher } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
 import { AfterViewInit, Directive, Inject, NgZone } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
@@ -31,6 +31,7 @@ export class PopoverDirective implements AfterViewInit {
   constructor(
     private overlay: Overlay,
     @Inject(ClrPopoverService) private popoverService: ClrPopoverService,
+    private scrollDispatcher: ScrollDispatcher,
     private zone: NgZone
   ) {}
 
@@ -144,9 +145,11 @@ export class PopoverDirective implements AfterViewInit {
   }
 
   removeOverlay(): void {
+    //Detach Overlay Reference
     if (this.overlayRef?.hasAttached()) {
       this.overlayRef.detach();
     }
+    //Detach Dom Portal
     if (this.domPortal?.isAttached) {
       this.domPortal.detach();
     }
@@ -156,12 +159,17 @@ export class PopoverDirective implements AfterViewInit {
   }
 
   private _createOverlayRef(): OverlayRef {
+    //fetch all Scrolling Containers registered with CDK
+    const scrollableAncestors = this.scrollDispatcher.getAncestorScrollContainers(this.popoverService.anchorElementRef);
+
     const positionStrategy = this.overlay
       .position()
       .flexibleConnectedTo(this.popoverService.anchorElementRef)
       .setOrigin(this.popoverService.anchorElementRef)
       .withPush(true)
-      .withPositions([this.preferredPosition, ...this.popoverService.availablePositions]);
+      .withPositions([this.preferredPosition, ...this.popoverService.availablePositions])
+      .withFlexibleDimensions(true)
+      .withScrollableContainers(scrollableAncestors);
 
     const overlay = this.overlay.create(
       new OverlayConfig({
@@ -171,13 +179,21 @@ export class PopoverDirective implements AfterViewInit {
           ? this.overlay.scrollStrategies.close()
           : this.overlay.scrollStrategies.reposition({ autoClose: true }),
         panelClass: this.popoverService.panelClass,
-        hasBackdrop: false,
+        hasBackdrop: this.popoverService.hasBackdrop,
       })
     );
 
-    // positionStrategy?.positionChanges?.subscribe(d => {
-    //   console.log('🚀 ~ PopoverDirective ~ positionStrategy.positionChanges.subscribe ~ positionChanges:', d);
-    // });
+    this.subscriptions.push(
+      positionStrategy?.positionChanges?.subscribe(change => {
+        //Close the overlay when the Origin is clipped
+        if (change.scrollableViewProperties.isOriginClipped) {
+          // //Running the zone is essential to invoke HostBinding
+          this.zone.run(() => {
+            this.popoverService.open = false;
+          });
+        }
+      })
+    );
 
     this.subscriptions.push(
       overlay.keydownEvents().subscribe(event => {
@@ -188,6 +204,7 @@ export class PopoverDirective implements AfterViewInit {
         }
       })
     );
+
     this.subscriptions.push(
       overlay.outsidePointerEvents().subscribe(event => {
         // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
@@ -211,6 +228,7 @@ export class PopoverDirective implements AfterViewInit {
         }
       })
     );
+
     this.subscriptions.push(
       overlay.detachments().subscribe(() => {
         this.popoverService.open = false;
