@@ -215,6 +215,16 @@ export default function (): void {
         fixture.destroy();
       });
 
+      it('Spy on Scroll to index', fakeAsync(() => {
+        fixture.detectChanges();
+        const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');
+
+        instance.scrollToIndex(300);
+        expect(spyVirtualScroll).toHaveBeenCalledWith(300);
+
+        fixture.destroy();
+      }));
+
       it('Moves focus on PageDown and PageUp', fakeAsync(() => {
         finishInit(fixture);
         fixture.autoDetectChanges();
@@ -254,16 +264,6 @@ export default function (): void {
         discardPeriodicTasks();
 
         fixture.autoDetectChanges(false);
-        fixture.destroy();
-      }));
-
-      it('Spy on Scroll to index', fakeAsync(() => {
-        fixture.detectChanges();
-        const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');
-
-        instance.scrollToIndex(300);
-        expect(spyVirtualScroll).toHaveBeenCalledWith(300);
-
         fixture.destroy();
       }));
     });
