@@ -222,6 +222,9 @@ export default function (): void {
         instance.scrollToIndex(300);
         expect(spyVirtualScroll).toHaveBeenCalledWith(300);
 
+        instance.scrollToIndex(0);
+        expect(spyVirtualScroll).toHaveBeenCalledWith(0);
+
         fixture.destroy();
       }));
 
