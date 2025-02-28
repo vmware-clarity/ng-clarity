@@ -48,6 +48,8 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
         this.expandedChange.emit(expand.expanded);
       })
     );
+
+    expand.hasExpandTemplate = !!template;
   }
 
   @Input('clrIfExpanded')

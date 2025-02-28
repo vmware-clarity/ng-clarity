@@ -108,7 +108,7 @@
               class="datagrid-expandable-caret-button"
               [attr.aria-expanded]="expand.expanded"
               [attr.aria-label]="expand.expanded ? clrDgDetailCloseLabel : clrDgDetailOpenLabel"
-              [attr.aria-controls]="expandableId"
+              [attr.aria-controls]="expand.hasExpandTemplate && !expand.expanded ? null : expandableId"
             >
               <cds-icon
                 shape="angle"
