@@ -220,9 +220,11 @@ export default function (): void {
         const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');
 
         instance.scrollToIndex(300);
+        fixture.detectChanges();
         expect(spyVirtualScroll).toHaveBeenCalledWith(300);
 
         instance.scrollToIndex(0);
+        fixture.detectChanges();
         expect(spyVirtualScroll).toHaveBeenCalledWith(0);
 
         fixture.destroy();
@@ -246,13 +248,19 @@ export default function (): void {
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         // active checkbox input with ID clr-dg-row-cb364
-        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[22]);
+        console.log('active', document.activeElement);
+        console.log('21', grid.querySelectorAll('[type=checkbox]')[21]);
+        console.log('22', grid.querySelectorAll('[type=checkbox]')[22]);
+        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[21]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb383
+        console.log('active', document.activeElement);
+        console.log('40', grid.querySelectorAll('[type=checkbox]')[40]);
+        console.log('41', grid.querySelectorAll('[type=checkbox]')[41]);
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[41]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
@@ -260,6 +268,9 @@ export default function (): void {
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb360
+        console.log('active', document.activeElement);
+        console.log('last 18', grid.querySelectorAll('[type=checkbox]')[18]);
+        console.log('last 19', grid.querySelectorAll('[type=checkbox]')[19]);
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[19]);
 
         flush();
