@@ -70,12 +70,7 @@ export interface Cells {
         </clr-dg-row>
       </ng-template>
 
-      <clr-dg-footer>
-        {{ data.rows.length }}
-        <button class="btn btn-sm btn-icon btn-outline-neutral">
-          <cds-icon shape="step-forward-2" (click)="scrollToIndex(0)"></cds-icon>
-        </button>
-      </clr-dg-footer>
+      <clr-dg-footer>{{ data.rows.length }}</clr-dg-footer>
     </clr-datagrid>
   `,
 })
@@ -127,10 +122,6 @@ class FullTest implements OnInit {
     }
 
     return rows;
-  }
-
-  scrollToIndex(index: number) {
-    this.virtualScroll.scrollToIndex(index);
   }
 
   colByIndex(index: number, col: Column) {
@@ -219,11 +210,11 @@ export default function (): void {
         fixture.detectChanges();
         const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');
 
-        instance.scrollToIndex(300);
+        instance.virtualScroll.scrollToIndex(300);
         fixture.detectChanges();
         expect(spyVirtualScroll).toHaveBeenCalledWith(300);
 
-        instance.scrollToIndex(0);
+        instance.virtualScroll.scrollToIndex(0);
         fixture.detectChanges();
         expect(spyVirtualScroll).toHaveBeenCalledWith(0);
 
