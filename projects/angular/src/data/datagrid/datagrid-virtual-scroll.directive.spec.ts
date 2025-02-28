@@ -124,6 +124,10 @@ class FullTest implements OnInit {
     return rows;
   }
 
+  scrollToIndex(index: number) {
+    this.virtualScroll.scrollToIndex(index);
+  }
+
   colByIndex(index: number, col: Column) {
     return col.index;
   }
@@ -210,11 +214,11 @@ export default function (): void {
         fixture.detectChanges();
         const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');
 
-        instance.virtualScroll.scrollToIndex(300);
+        instance.scrollToIndex(300);
         fixture.detectChanges();
         expect(spyVirtualScroll).toHaveBeenCalledWith(300);
 
-        instance.virtualScroll.scrollToIndex(0);
+        instance.scrollToIndex(0);
         fixture.detectChanges();
         expect(spyVirtualScroll).toHaveBeenCalledWith(0);
 
