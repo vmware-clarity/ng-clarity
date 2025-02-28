@@ -778,7 +778,7 @@ export default function (): void {
 
       it('Moves focus across data cells with action and expanded detail rows', function () {
         // check cell flow: start at index
-        // 0 -> 5 -> 6 -> 11 -> 12 -> 13 -> 8 -> 3 -> 8 -> 13 -> 15 -> 18 -> 21 -> 24 -> 25 -> 21 -> 18
+        // 0 -> 5 -> 6 -> 11 -> 12 -> 13 -> 8 -> 3 -> 8 -> 13 -> 15 -> 18 -> 21 -> 24 -> 25 -> 21 -> 18 -> 19 -> 15
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -828,6 +828,12 @@ export default function (): void {
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
         expect(document.activeElement).toBe(cells[18]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[19]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[15]);
       });
 
       it('Moves focus between sticky and data cells with actions and expanded detail rows', function () {

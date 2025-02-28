@@ -215,13 +215,16 @@ export class KeyNavigationGridController implements OnDestroy {
     if (e.key === Keys.ArrowUp && currentCellCoords.y !== 0) {
       nextCellCoords.y = currentCellCoords.y - 1;
 
-      if (isSingleCellExpandedRow && !isActionCell && this.isRowReplaced(currentCellCoords.y)) {
-        if (this.isRowReplaced(nextCellCoords.y)) {
+      if (isSingleCellExpandedRow && !isActionCell) {
+        if (this.isRowReplaced(currentCellCoords.y)) {
           nextCellCoords.y = nextCellCoords.y - 1;
         }
 
         if (this.isDetailsRow(nextCellCoords.y)) {
           nextCellCoords.x = 0;
+        } else if (this.isDetailsRow(currentCellCoords.y) === false) {
+          // false check is intentional, the ! operator may be missed easily in this case
+          nextCellCoords.x = currentCellCoords.x;
         } else {
           nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
         }
