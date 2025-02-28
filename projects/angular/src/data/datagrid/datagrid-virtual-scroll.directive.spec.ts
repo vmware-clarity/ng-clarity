@@ -70,7 +70,7 @@ export interface Cells {
         </clr-dg-row>
       </ng-template>
 
-      <clr-dg-footer>{{ data.rows.length }}</clr-dg-footer>
+      <clr-dg-footer> {{ data.rows.length }} </clr-dg-footer>
     </clr-datagrid>
   `,
 })
@@ -122,10 +122,6 @@ class FullTest implements OnInit {
     }
 
     return rows;
-  }
-
-  scrollToIndex(index: number) {
-    this.virtualScroll.scrollToIndex(index);
   }
 
   colByIndex(index: number, col: Column) {
@@ -214,11 +210,11 @@ export default function (): void {
         fixture.detectChanges();
         const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');
 
-        instance.scrollToIndex(300);
+        instance.virtualScroll.scrollToIndex(300);
         fixture.detectChanges();
         expect(spyVirtualScroll).toHaveBeenCalledWith(300);
 
-        instance.scrollToIndex(0);
+        instance.virtualScroll.scrollToIndex(0);
         fixture.detectChanges();
         expect(spyVirtualScroll).toHaveBeenCalledWith(0);
 
@@ -242,21 +238,21 @@ export default function (): void {
         expect(document.activeElement).toBe(headerCheckboxCell);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        // active checkbox input with ID clr-dg-row-cb386
-        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[21]);
+        // active checkbox input with ID clr-dg-row-cb364
+        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[22]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
-        // active checkbox input with ID clr-dg-row-cb405
-        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[40]);
+        // active checkbox input with ID clr-dg-row-cb383
+        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[41]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
-        // active checkbox input with ID clr-dg-row-cb384
+        // active checkbox input with ID clr-dg-row-cb360
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[19]);
 
         flush();
