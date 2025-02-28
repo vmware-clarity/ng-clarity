@@ -98,10 +98,11 @@ export default function (): void {
         cells[0].focus();
       });
 
-      //  data matrix 4*3 data, 3 headers. Legend: 0h -> Index: 0, Type: header/data
+      // Legend: 0h -> Index: 0, Type: header/data
+      // data matrix 4*3 data, 3 headers.
       // | 0h| 1h| 2h|
-      // | 3d| 4d| 5h|
-      // | 6d| 7c| 8d|
+      // | 3d| 4d| 5d|
+      // | 6d| 7d| 8d|
       // | 9d|10d|11d|
       // |12d|13d|14d|
 
@@ -187,7 +188,7 @@ export default function (): void {
         cells[0].focus();
       });
 
-      // Legend: 0h -> Index: 0, Type: header/check/action/data
+      // Legend: 0h -> Index: 0, Type: header/check/data
       // data matrix 4*3 data, 4 checkbox, 4 headers.
       // | 0h| 1h| 2h| 3h|
       // | 4c| 5d| 6d| 7d|
@@ -279,7 +280,8 @@ export default function (): void {
         cells[0].focus();
       });
 
-      //  data matrix 4*3 data, 4 headers, 4 expand. Legend: 0h -> Index: 0, Type: header/expand/data
+      // Legend: 0h -> Index: 0, Type: header/expand/data
+      // data matrix 4*3 data, 4 headers, 4 expand.
       // | 0h| 1h| 2h| 3h|
       // | 4e| 5d| 6d| 7d|
       // | 8e| 9d|10d|11d|
@@ -364,13 +366,13 @@ export default function (): void {
         cells[0].focus();
       });
 
-      //  data matrix 4*3 data, 5 headers, 4 check, 4 expand.
       //  Legend: 0h -> Index: 0, Type: header/check/expand/data
+      //  data matrix 4*3 data, 5 headers, 4 check, 4 expand.
       // | 0h| 1h| 2h| 3h| 4h|
-      // | 5c| 6e| 7d| 8d| 9h|
-      // |10c|11e|12d|13d|14h|
-      // |15c|16e|17d|18d|19h|
-      // |20c|21e|22d|23d|24h|
+      // | 5c| 6e| 7d| 8d| 9d|
+      // |10c|11e|12d|13d|14d|
+      // |15c|16e|17d|18d|19d|
+      // |20c|21e|22d|23d|24d|
 
       it('Moves focus across cells with action and expand cells', function () {
         // check cell flow: start at index 0 -> 5 -> 6 -> 7 -> 8 -> 13 -> 12 -> 7 -> 6 -> 5 end
@@ -458,16 +460,16 @@ export default function (): void {
         cells[0].focus();
       });
 
-      //  data matrix 4*3 data, 5 headers, 4 check, 4 expand.
-      //  2 extra expanded rows with columns 2*3 data
-      //  Legend: 0h -> Index: 0, Type: header/check/expand/data
+      // Legend: 0h -> Index: 0, Type: header/check/expand/data
+      // data matrix 4*3 data, 5 headers, 4 check, 4 expand.
+      // 2 extra expanded rows with columns 2*3 data
       // | 0h| 1h| 2h| 3h| 4h|
-      // | 5c| 6e| 7d| 8d| 9h|
-      // |10c|11e|12d|13d|14h|
-      // |       |15d|16d|17h|
-      // |18c|19e|20d|21d|22h|
-      // |       |23d|24d|25h|
-      // |26c|27e|28d|29d|30h|
+      // | 5c| 6e| 7d| 8d| 9d|
+      // |10c|11e|12d|13d|14d|
+      // |       |15d|16d|17d|
+      // |18c|19e|20d|21d|22d|
+      // |       |23d|24d|25d|
+      // |26c|27e|28d|29d|30d|
 
       it('Moves focus across data cells with action and expanded rows', function () {
         // check cell flow: start at index
@@ -643,17 +645,17 @@ export default function (): void {
         cells[0].focus();
       });
 
+      //  Legend: 0h -> Index: 0, Type: header/check/expand/data
       //  the matrix looks very close to regular not expanded expandable grid, but the underlying algorithm is different
       //  data matrix 4*3 data, 5 headers, 4 check, 4 expand.
       //  2 extra expanded rows with columns 2*3 data
-      //  Legend: 0h -> Index: 0, Type: header/check/expand/data
       // | 0h| 1h| 2h| 3h| 4h|
-      // | 5c| 6e| 7d| 8d| 9h|
-      // |10c|11e|12d|13d|14h| -> 12, 13 and 14 are replaced and hidden
-      // |       |15d|16d|17h|
-      // |18c|19e|20d|21d|22h| -> 20, 21 and 22 are replaced and hidden
-      // |       |23d|24d|25h|
-      // |26c|27e|28d|29d|30h|
+      // | 5c| 6e| 7d| 8d| 9d|
+      // |10c|11e|12d|13d|14d| -> 12, 13 and 14 are replaced and hidden
+      // |       |15d|16d|17d|
+      // |18c|19e|20d|21d|22d| -> 20, 21 and 22 are replaced and hidden
+      // |       |23d|24d|25d|
+      // |26c|27e|28d|29d|30d|
 
       it('Moves focus across data cells with action and expanded rows', function () {
         // check cell flow: start at index
@@ -764,17 +766,17 @@ export default function (): void {
         cells[0].focus();
       });
 
+      //  Legend: 0h -> Index: 0, Type: header/check/expand/data
       //  the matrix looks very close to regular not expanded expandable grid, but the underlying algorithm is different
       //  data matrix 4*3 data, 5 headers, 4 check, 4 expand.
       //  2 extra expanded rows with columns 2*3 data
-      //  Legend: 0h -> Index: 0, Type: header/check/expand/data
       // | 0h| 1h| 2h| 3h| 4h|
-      // | 5c| 6e| 7d| 8d| 9h|
-      // |10c|11e|12d|13d|14h|
+      // | 5c| 6e| 7d| 8d| 9d|
+      // |10c|11e|12d|13d|14d|
       // |       |----15d----|
-      // |16c|17e|18d|19d|20h|
+      // |16c|17e|18d|19d|20d|
       // |       |----21d----|
-      // |22c|23e|24d|25d|26h|
+      // |22c|23e|24d|25d|26d|
 
       it('Moves focus across data cells with action and expanded detail rows', function () {
         // check cell flow: start at index
@@ -906,17 +908,17 @@ export default function (): void {
         cells[0].focus();
       });
 
+      //  Legend: 0h -> Index: 0, Type: header/check/expand/data
       //  the matrix looks very close to regular not expanded expandable grid, but the underlying algorithm is different
       //  data matrix 4*3 data, 5 headers, 4 check, 4 expand.
       //  2 extra expanded rows with columns 2*1 data
-      //  Legend: 0h -> Index: 0, Type: header/check/expand/data
       // | 0h| 1h| 2h| 3h| 4h|
-      // | 5c| 6e| 7d| 8d| 9h|
-      // |10c|11e|12d|13d|14h| -> 12, 13 and 14 are replaced and hidden
+      // | 5c| 6e| 7d| 8d| 9d|
+      // |10c|11e|12d|13d|14d| -> 12, 13 and 14 are replaced and hidden
       // |       |----15d----|
-      // |16c|17e|18d|19d|20h| -> 18, 19 and 20 are replaced and hidden
+      // |16c|17e|18d|19d|20d| -> 18, 19 and 20 are replaced and hidden
       // |       |----21d----|
-      // |22c|23e|24d|25d|26h|
+      // |22c|23e|24d|25d|26d|
 
       it('Moves focus across data cells with action and expanded replaced detail rows', function () {
         // check cell flow: start at index
