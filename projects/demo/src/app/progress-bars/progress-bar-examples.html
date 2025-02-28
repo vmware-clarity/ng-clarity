@@ -9,7 +9,7 @@
   <div *ngFor="let example of examples" class="progbar-examples">
     <h4>{{example.title}}</h4>
     <div [ngClass]="example.cssClassnames()">
-      <progress value="{{example.value}}" max="100" [attr.data-displayval]="example.value + '%'"></progress>
+      <progress [value]="example.value" max="100" [attr.data-displayval]="example.value + '%'"></progress>
       <span *ngIf="example.isLabeled">{{example.value}}%</span>
     </div>
     <p>

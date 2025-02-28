@@ -5312,9 +5312,11 @@ export class ClrWizardPageTitle {
 export class ClrWizardStepnav {
     constructor(pageService: PageCollectionService);
     // (undocumented)
+    label: string;
+    // (undocumented)
     pageService: PageCollectionService;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, {}, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": "label"; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnav, never>;
 }
@@ -5339,6 +5341,8 @@ export class ClrWizardStepnavItem {
     // (undocumented)
     get isDisabled(): boolean;
     // (undocumented)
+    protected get labelledby(): string;
+    // (undocumented)
     navService: WizardNavigationService;
     // (undocumented)
     page: ClrWizardPage;
@@ -5346,6 +5350,14 @@ export class ClrWizardStepnavItem {
     pageCollection: PageCollectionService;
     // (undocumented)
     get stepAriaCurrent(): string;
+    // (undocumented)
+    protected get stepIconId(): string;
+    // (undocumented)
+    protected get stepNumberId(): string;
+    // (undocumented)
+    protected get stepTextId(): string;
+    // (undocumented)
+    protected get stepTitleId(): string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnavItem, "[clr-wizard-stepnav-item]", never, { "page": "page"; }, {}, never, ["*"], false, never>;
     // (undocumented)

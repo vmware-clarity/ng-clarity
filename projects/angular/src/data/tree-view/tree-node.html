@@ -40,7 +40,7 @@
     <input
       aria-hidden="true"
       type="checkbox"
-      id="{{nodeId}}-check"
+      [id]="nodeId + '-check'"
       class="clr-checkbox"
       [disabled]="disabled"
       [checked]="_model.selected.value === STATES.SELECTED"
@@ -49,7 +49,7 @@
       (focus)="focusTreeNode()"
       tabindex="-1"
     />
-    <label for="{{nodeId}}-check" class="clr-control-label">
+    <label [for]="nodeId + '-check'" class="clr-control-label">
       <ng-container [ngTemplateOutlet]="treenodeContent"></ng-container>
     </label>
   </div>
