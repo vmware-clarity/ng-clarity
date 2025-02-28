@@ -247,30 +247,21 @@ export default function (): void {
         expect(document.activeElement).toBe(headerCheckboxCell);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        // active checkbox input with ID clr-dg-row-cb364
-        console.log('active', document.activeElement);
-        console.log('21', grid.querySelectorAll('[type=checkbox]')[21]);
-        console.log('22', grid.querySelectorAll('[type=checkbox]')[22]);
+        // active checkbox input with ID clr-dg-row-cb386
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[21]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
-        // active checkbox input with ID clr-dg-row-cb383
-        console.log('active', document.activeElement);
-        console.log('40', grid.querySelectorAll('[type=checkbox]')[40]);
-        console.log('41', grid.querySelectorAll('[type=checkbox]')[41]);
-        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[41]);
+        // active checkbox input with ID clr-dg-row-cb405
+        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[40]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
-        // active checkbox input with ID clr-dg-row-cb360
-        console.log('active', document.activeElement);
-        console.log('last 18', grid.querySelectorAll('[type=checkbox]')[18]);
-        console.log('last 19', grid.querySelectorAll('[type=checkbox]')[19]);
+        // active checkbox input with ID clr-dg-row-cb384
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[19]);
 
         flush();
