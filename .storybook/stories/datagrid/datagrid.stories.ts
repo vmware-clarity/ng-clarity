@@ -32,6 +32,7 @@ export default {
     resize: { control: { disable: true } },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
+    toggleEvenRows: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // inputs
@@ -44,9 +45,14 @@ export default {
     // outputs
     clrDgRefresh: action('clrDgRefresh'),
     clrDgSelectedChange: action('clrDgSelectedChange'),
+    clrDgCustomSelectAll(this: { selectedRows: number[] }, selectAllChecked: boolean) {
+      action('clrDgCustomSelectAll').apply(this, [selectAllChecked]);
+      this.selectedRows = selectAllChecked ? elements.map((element, i) => i).filter(i => i % 2) : [];
+    },
     clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     // story helpers
     elements,
+    useCustomSelectAll: false,
     singleSelectable: false,
     multiSelectable: false,
     expandable: false,
@@ -83,7 +89,9 @@ const DatagridTemplate: StoryFn = args => ({
       [clrDgSingleActionableAriaLabel]="clrDgSingleActionableAriaLabel"
       [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
       (clrDgRefresh)="clrDgRefresh($event)"
+      (clrDgSelectedChange)="clrDgSelectedChange($event)"
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
+      ${args.useCustomSelectAll ? '(clrDgCustomSelectAll)="clrDgCustomSelectAll($event)"' : ''}
       (clrDgRefresh)="clrDgRefresh($event)"
     >
       <clr-dg-column [style.width.px]="250">

@@ -53,8 +53,13 @@ export default {
     clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     clrRenderRangeChange: action('clrRenderRangeChange'),
     clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
+    clrDgCustomSelectAll(this: { selectedRows: number[] }, selectAllChecked: boolean) {
+      action('clrDgCustomSelectAll').apply(this, [selectAllChecked]);
+      this.selectedRows = selectAllChecked ? behaviorElements.value.map((element, i) => i).filter(i => i % 2) : [];
+    },
     // story helpers
     behaviorElements,
+    useCustomSelectAll: false,
     singleSelectable: false,
     multiSelectable: false,
     expandable: false,
@@ -94,6 +99,7 @@ const DatagridTemplate: StoryFn = args => ({
       [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
       (clrDgRefresh)="clrDgRefresh($event)"
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
+      ${args.useCustomSelectAll ? '(clrDgCustomSelectAll)="clrDgCustomSelectAll($event)"' : ''}
       [clrLoadingMoreItems]="clrLoadingMoreItems"
     >
       <clr-dg-column [style.width.px]="250">

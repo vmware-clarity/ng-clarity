@@ -96,6 +96,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @Output('clrDgRefresh') refresh = new EventEmitter<ClrDatagridStateInterface<T>>(false);
 
   /**
+   * The application can provide custom select all logic.
+   */
+  @Output('clrDgCustomSelectAll') customSelectAll = new EventEmitter<boolean>();
+
+  /**
    * We grab the smart iterator from projected content
    */
   @ContentChild(ClrDatagridItems) iterator: ClrDatagridItems<T>;
@@ -225,13 +230,17 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   get allSelected() {
     return this.selection.isAllSelected();
   }
-  set allSelected(_value: boolean) {
-    /**
-     * This is a setter but we ignore the value.
-     * It's strange, but it lets us have an indeterminate state where only
-     * some of the items are selected.
-     */
-    this.selection.toggleAll();
+  set allSelected(value: boolean) {
+    if (this.customSelectAll.observed) {
+      this.customSelectAll.emit(value);
+    } else {
+      /**
+       * This is a setter but we ignore the value.
+       * It's strange, but it lets us have an indeterminate state where only
+       * some of the items are selected.
+       */
+      this.selection.toggleAll();
+    }
   }
 
   ngAfterContentInit() {
