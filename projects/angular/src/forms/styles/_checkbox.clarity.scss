@@ -102,7 +102,8 @@
     border-color: forms-variables.$clr-forms-invalid-color;
   }
 
-  .clr-form-control-disabled .clr-checkbox-wrapper {
+  .clr-form-control-disabled .clr-checkbox-wrapper,
+  .clr-checkbox-wrapper.clr-checkbox-wrapper-disabled {
     .clr-control-label {
       cursor: not-allowed;
 
