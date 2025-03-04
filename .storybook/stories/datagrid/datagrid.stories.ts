@@ -62,6 +62,7 @@ export default {
     overflowEllipsis: false,
     hidableColumns: false,
     height: 0,
+    selectedRowIndexes: [],
     selectedRows: [],
     toggleSelectAll,
   },
@@ -81,7 +82,7 @@ const DatagridTemplate: StoryFn = args => ({
     </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
-      ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
+      ${args.multiSelectable ? '[clrDgSelected]="selectedRows"' : ''}
       ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
       [ngClass]="{ 'datagrid-compact': compact, 'datagrid-overflow-ellipsis': overflowEllipsis }"
       [clrDetailExpandableAriaLabel]="clrDetailExpandableAriaLabel"
@@ -115,11 +116,7 @@ const DatagridTemplate: StoryFn = args => ({
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
       </clr-dg-column>
 
-      <clr-dg-row
-        *clrDgItems="let element of elements; let index = index"
-        [clrDgItem]="element"
-        [clrDgSelected]="selectedRows.includes(index)"
-      >
+      <clr-dg-row *clrDgItems="let element of elements; let index = index" [clrDgItem]="element">
         <clr-dg-cell>{{ element.name }}</clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
         <clr-dg-cell>{{ element.number }}</clr-dg-cell>
@@ -151,16 +148,7 @@ const DatagridTemplate: StoryFn = args => ({
 
 // toggles selection of every even element
 function toggleSelectAll($event: any, data: Element[]) {
-  const selectedData = [];
-  if ($event.target.checked) {
-    for (let i = 0; i < data.length; i++) {
-      if (i % 2) {
-        selectedData.push(i);
-      }
-    }
-  }
-
-  return selectedData;
+  return $event.target.checked ? data.filter((el, i) => i % 2) : [];
 }
 
 export const Datagrid: StoryObj = {
@@ -183,7 +171,7 @@ export const MultiSelectWithSelection: StoryObj = {
   render: DatagridTemplate,
   args: {
     multiSelectable: true,
-    selectedRows: [1],
+    selectedRows: [elements[1]],
   },
 };
 
@@ -219,7 +207,7 @@ export const CompactMultiSelectWithSelection: StoryObj = {
   args: {
     compact: true,
     multiSelectable: true,
-    selectedRows: [1],
+    selectedRows: [elements[1]],
   },
 };
 

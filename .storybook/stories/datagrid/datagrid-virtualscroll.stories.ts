@@ -91,7 +91,7 @@ const DatagridTemplate: StoryFn = args => ({
     <clr-datagrid
       *ngIf="{ elements: behaviorElements | async }; let data"
       ${args.height ? '[style.height.px]="height"' : ''}
-      ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
+      ${args.multiSelectable ? '[clrDgSelected]="selectedRows"' : ''}
       ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
       [ngClass]="{ 'datagrid-compact': compact }"
       [clrDetailExpandableAriaLabel]="clrDetailExpandableAriaLabel"
@@ -106,7 +106,11 @@ const DatagridTemplate: StoryFn = args => ({
       [clrLoadingMoreItems]="clrLoadingMoreItems"
     >
       <clr-checkbox-wrapper *ngIf="customSelectAll && data.elements" class="clr-dg-custom-select-all">
-        <input clrCheckbox type="checkbox" (click)="selectedRows = toggleSelectAll($event, data.elements)" />
+        <input
+          clrCheckbox
+          type="checkbox"
+          (click)="selectedRows = toggleSelectAll($event, data.elements, selectedRowIndexes)"
+        />
       </clr-checkbox-wrapper>
 
       <clr-dg-column [style.width.px]="250">
@@ -131,7 +135,7 @@ const DatagridTemplate: StoryFn = args => ({
         [clrVirtualRowsTemplateCacheSize]="400"
         (renderedRangeChange)="clrRenderRangeChange($event)"
       >
-        <clr-dg-row [clrDgItem]="element" [clrDgSelected]="selectedRows.includes(index)">
+        <clr-dg-row [clrDgItem]="element">
           <clr-dg-action-overflow
             *ngIf="actionOverflow"
             [clrDgActionOverflowOpen]="clrDgActionOverflowOpen && index === 0"
@@ -164,16 +168,7 @@ const DatagridTemplate: StoryFn = args => ({
 
 // toggles selection of every even element
 function toggleSelectAll($event: any, data: Element[]) {
-  const selectedData = [];
-  if ($event.target.checked) {
-    for (let i = 0; i < data.length; i++) {
-      if (i % 2) {
-        selectedData.push(i);
-      }
-    }
-  }
-
-  return selectedData;
+  return $event.target.checked ? data.filter((el, i) => i % 2) : [];
 }
 
 function setExpanded($event, element) {
@@ -200,7 +195,7 @@ export const MultiSelectWithSelection: StoryObj = {
   render: DatagridTemplate,
   args: {
     multiSelectable: true,
-    selectedRows: [1],
+    selectedRows: [behaviorElements.value[1]],
   },
 };
 
@@ -236,7 +231,7 @@ export const CompactMultiSelectWithSelection: StoryObj = {
   args: {
     compact: true,
     multiSelectable: true,
-    selectedRows: [1],
+    selectedRows: [behaviorElements.value[1]],
   },
 };
 
