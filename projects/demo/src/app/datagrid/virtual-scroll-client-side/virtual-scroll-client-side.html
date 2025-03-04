@@ -36,6 +36,8 @@
 
 <h3>Dynamic cols and rows</h3>
 <clr-datagrid
+  [clrDgCustomSelectAllEnabled]="true"
+  (clrDgCustomSelectAll)="toggleSelectAllRows($event)"
   [(clrDgSelected)]="selectedRows"
   *ngIf="{ rows: rows | async }; let data"
   style="height: 32rem"
