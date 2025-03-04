@@ -32,6 +32,7 @@ export default {
     type: { control: 'inline-radio', options: CheckboxType },
     createArray: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: 100 } },
+    values: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // inputs
@@ -41,6 +42,8 @@ export default {
     label: 'Options',
     createArray: n => new Array(n),
     optionCount: 4,
+    values: [],
+    disabledIndexes: [],
   },
 };
 
@@ -51,7 +54,7 @@ const CheckboxToggleContainerTemplate: StoryFn = args => {
       <${containerSelector} [clrInline]="clrInline">
         <label>{{ label }}</label>
         <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
-          <input type="checkbox" ${directive} />
+          <input type="checkbox" ${directive} [disabled]="disabledIndexes.includes(i)" [(ngModel)]="values[i]" />
           <label>Option {{ i + 1 }}</label>
         </${wrapperSelector}>
       </${containerSelector}>
@@ -114,8 +117,54 @@ const CheckBoxAllTemplate: StoryFn = args => {
   };
 };
 
-export const CheckboxOrToggleContainer: StoryObj = {
+export const CheckboxContainer: StoryObj = {
   render: CheckboxToggleContainerTemplate,
+  args: {
+    type: CheckboxType.Checkbox,
+  },
+};
+
+export const ToggleContainer: StoryObj = {
+  render: CheckboxToggleContainerTemplate,
+  args: {
+    type: CheckboxType.Toggle,
+  },
+};
+
+export const CheckboxContainerDisabled: StoryObj = {
+  render: CheckboxToggleContainerTemplate,
+  args: {
+    type: CheckboxType.Checkbox,
+    optionCount: 4,
+    disabledIndexes: [0, 1, 2, 3],
+  },
+};
+
+export const ToggleContainerDisabled: StoryObj = {
+  render: CheckboxToggleContainerTemplate,
+  args: {
+    type: CheckboxType.Toggle,
+    optionCount: 4,
+    disabledIndexes: [0, 1, 2, 3],
+  },
+};
+
+export const CheckboxContainerPartiallyDisabled: StoryObj = {
+  render: CheckboxToggleContainerTemplate,
+  args: {
+    type: CheckboxType.Checkbox,
+    optionCount: 4,
+    disabledIndexes: [0, 2],
+  },
+};
+
+export const ToggleContainerPartiallyDisabled: StoryObj = {
+  render: CheckboxToggleContainerTemplate,
+  args: {
+    type: CheckboxType.Toggle,
+    optionCount: 4,
+    disabledIndexes: [0, 2],
+  },
 };
 
 export const ShowcaseCheckboxContainer: StoryObj = {
