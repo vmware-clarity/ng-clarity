@@ -45,6 +45,7 @@ export default {
     clrLoadingMoreItems: false,
     clrDgPreserveSelection: false,
     clrDgRowSelection: false,
+    clrDgCustomSelectAllEnabled: false,
     clrDgSingleActionableAriaLabel: commonStringsDefault.singleActionableAriaLabel,
     clrDgSingleSelectionAriaLabel: commonStringsDefault.singleSelectionAriaLabel,
     // outputs
@@ -59,7 +60,6 @@ export default {
     },
     // story helpers
     behaviorElements,
-    useCustomSelectAll: false,
     singleSelectable: false,
     multiSelectable: false,
     expandable: false,
@@ -95,11 +95,12 @@ const DatagridTemplate: StoryFn = args => ({
       [clrDgLoading]="clrDgLoading"
       [clrDgPreserveSelection]="clrDgPreserveSelection"
       [clrDgRowSelection]="clrDgRowSelection"
+      [clrDgCustomSelectAllEnabled]="clrDgCustomSelectAllEnabled"
       [clrDgSingleActionableAriaLabel]="clrDgSingleActionableAriaLabel"
       [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
       (clrDgRefresh)="clrDgRefresh($event)"
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
-      ${args.useCustomSelectAll ? '(clrDgCustomSelectAll)="clrDgCustomSelectAll($event)"' : ''}
+      (clrDgCustomSelectAll)="clrDgCustomSelectAll($event)"
       [clrLoadingMoreItems]="clrLoadingMoreItems"
     >
       <clr-dg-column [style.width.px]="250">

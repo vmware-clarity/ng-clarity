@@ -98,6 +98,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /**
    * The application can provide custom select all logic.
    */
+  @Input('clrDgCustomSelectAllEnabled') customSelectAllEnabled = false;
   @Output('clrDgCustomSelectAll') customSelectAll = new EventEmitter<boolean>();
 
   /**
@@ -231,7 +232,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     return this.selection.isAllSelected();
   }
   set allSelected(value: boolean) {
-    if (this.customSelectAll.observed) {
+    if (this.customSelectAllEnabled) {
       this.customSelectAll.emit(value);
     } else {
       /**
