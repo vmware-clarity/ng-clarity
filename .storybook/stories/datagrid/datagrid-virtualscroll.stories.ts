@@ -5,7 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrConditionalModule, ClrDatagrid, ClrDatagridModule, commonStringsDefault } from '@clr/angular';
+import {
+  ClrCheckboxModule,
+  ClrConditionalModule,
+  ClrDatagrid,
+  ClrDatagridModule,
+  commonStringsDefault,
+} from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
@@ -16,7 +22,7 @@ export default {
   component: ClrDatagrid,
   decorators: [
     moduleMetadata({
-      imports: [ClrDatagridModule, ClrConditionalModule],
+      imports: [ClrDatagridModule, ClrConditionalModule, ClrCheckboxModule],
     }),
   ],
   argTypes: {
@@ -34,6 +40,7 @@ export default {
     resize: { control: { disable: true } },
     // story helpers
     behaviorElements: { control: { disable: true }, table: { disable: true } },
+    toggleSelectAll: { control: { disable: true }, table: { disable: true } },
     setExpanded: { control: { disable: true }, table: { disable: true } },
   },
   args: {
@@ -55,6 +62,7 @@ export default {
     clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
     // story helpers
     behaviorElements,
+    customSelectAll: false,
     singleSelectable: false,
     multiSelectable: false,
     expandable: false,
@@ -63,6 +71,7 @@ export default {
     hidableColumns: false,
     height: 480,
     selectedRows: [],
+    toggleSelectAll,
     setExpanded,
   },
 };
@@ -96,6 +105,10 @@ const DatagridTemplate: StoryFn = args => ({
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
       [clrLoadingMoreItems]="clrLoadingMoreItems"
     >
+      <clr-checkbox-wrapper *ngIf="customSelectAll && data.elements" class="clr-dg-custom-select-all">
+        <input clrCheckbox type="checkbox" (click)="selectedRows = toggleSelectAll($event, data.elements)" />
+      </clr-checkbox-wrapper>
+
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
       </clr-dg-column>
@@ -148,6 +161,20 @@ const DatagridTemplate: StoryFn = args => ({
   `,
   props: { ...args },
 });
+
+// toggles selection of every even element
+function toggleSelectAll($event: any, data: Element[]) {
+  const selectedData = [];
+  if ($event.target.checked) {
+    for (let i = 0; i < data.length; i++) {
+      if (i % 2) {
+        selectedData.push(i);
+      }
+    }
+  }
+
+  return selectedData;
+}
 
 function setExpanded($event, element) {
   element.expanded = $event;

@@ -47,6 +47,7 @@ export default {
     clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     // story helpers
     elements,
+    customSelectAll: false,
     singleSelectable: false,
     multiSelectable: false,
     expandable: false,
@@ -86,6 +87,10 @@ const DatagridTemplate: StoryFn = args => ({
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
       (clrDgRefresh)="clrDgRefresh($event)"
     >
+      <clr-checkbox-wrapper *ngIf="customSelectAll" class="clr-dg-custom-select-all">
+        <input clrCheckbox type="checkbox" (click)="toggleSelectAllRows()" />
+      </clr-checkbox-wrapper>
+
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
       </clr-dg-column>
