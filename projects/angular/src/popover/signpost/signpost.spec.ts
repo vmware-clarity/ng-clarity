@@ -63,6 +63,14 @@ export default function (): void {
 
         expect(signpostToggle.getAttribute('aria-label')).toEqual('Signpost Toggle');
       });
+
+      it('allows a custom aria-label for the default trigger', function (this: Context) {
+        this.fixture.componentInstance.signpost.signpostTriggerAriaLabel = 'custom label';
+        this.detectChanges();
+        const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+
+        expect(signpostToggle.getAttribute('aria-label')).toBe('custom label');
+      });
     });
 
     describe('focus management', function () {
@@ -263,7 +271,7 @@ class TestCustomTriggerSignpost {
 @Component({
   template: `
     <button #outsideClick type="button">Button to test clicks outside of the dropdown component</button>
-    <clr-signpost>
+    <clr-signpost [clrSignpostTriggerAriaLabel]="signpostTriggerAriaLabel">
       <clr-signpost-content *clrIfOpen="openState">
         <button class="dummy-button" type="button">dummy button</button>
         Signpost content
@@ -275,6 +283,7 @@ class TestDefaultSignpost {
   @ViewChild(ClrSignpost) signpost: ClrSignpost;
 
   openState = false;
+  signpostTriggerAriaLabel: string;
 
   @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn: ElementRef<HTMLButtonElement>;
 }
