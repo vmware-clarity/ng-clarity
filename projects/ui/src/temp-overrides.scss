@@ -17,6 +17,10 @@
     --cds-alias-object-interaction-background-selected-hover: #{tokens.$cds-global-color-construction-100};
     --cds-alias-object-interaction-background-selected-active: #{tokens.$cds-global-color-construction-200};
 
+    // object focus tokens
+    // set style to auto to accommodate a11y with default browser double outline
+    --cds-alias-object-interaction-outline: Highlight auto 2px;
+
     // status interaction tokens
     --cds-alias-object-interaction-info-selected: #{tokens.$cds-global-color-blue-900};
     --cds-alias-object-interaction-info-active: #{tokens.$cds-alias-object-interaction-info-click};
