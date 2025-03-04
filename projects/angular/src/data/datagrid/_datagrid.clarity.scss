@@ -112,18 +112,6 @@
     white-space: nowrap;
   }
 
-  .datagrid-container {
-    width: auto;
-    @include mixins.generate-typography-token(
-      'BODY-14-RG-STD',
-      (
-        font-size: tables-variables.$clr-table-fontsize,
-      )
-    );
-    padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-      tables-variables.$clr-table-bottomcellpadding;
-  }
-
   .datagrid-expandable-caret {
     padding: tokens.$cds-global-space-2 datagrid-variables.$clr-datagrid-horizontal-padding tokens.$cds-global-space-3;
     text-align: center;
@@ -208,6 +196,15 @@
       .datagrid-cell {
         padding-top: 0;
         border: none;
+
+        &.datagrid-container {
+          @include mixins.generate-typography-token(
+            'BODY-14-RG-STD',
+            (
+              font-size: tables-variables.$clr-table-fontsize,
+            )
+          );
+        }
       }
     }
 
@@ -718,14 +715,6 @@
 
       .datagrid-expandable-caret {
         padding-top: tokens.$cds-global-space-2;
-      }
-
-      &.datagrid-container {
-        border-top: tokens.$cds-alias-object-border-width-100 solid tables-variables.$clr-table-border-color;
-
-        .datagrid-cell {
-          border-top: none;
-        }
       }
     }
   }
