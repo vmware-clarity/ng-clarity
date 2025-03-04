@@ -137,6 +137,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
 
+  @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
+
   /**
    * Subscriptions to all the services and queries changes
    */
@@ -382,12 +384,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   toggleAllSelected($event: any) {
     $event.preventDefault();
-
-    if (this.hasVirtualScroller) {
-      return;
-    }
-
-    this.allSelected = !this.allSelected;
+    this.selectAllCheckbox?.nativeElement.click();
   }
 
   resize(): void {

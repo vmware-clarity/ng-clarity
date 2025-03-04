@@ -26,6 +26,7 @@
                       <!-- We need to move focus and space-key handling to the parent because of keyboard arrow key navigation,
                            which is not able to transfer focus directly on the input when focused with the tab key -->
                       <input
+                        #selectAllCheckbox
                         type="checkbox"
                         [id]="selectAllId"
                         [(ngModel)]="allSelected"
