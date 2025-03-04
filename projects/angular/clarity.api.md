@@ -4016,9 +4016,11 @@ export class ClrSignpost {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     set customTrigger(trigger: ClrSignpostTrigger);
+    // (undocumented)
+    signpostTriggerAriaLabel: string;
     useCustomTrigger: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, {}, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": "clrSignpostTriggerAriaLabel"; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
 }
