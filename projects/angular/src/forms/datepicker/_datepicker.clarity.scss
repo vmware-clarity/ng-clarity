@@ -118,7 +118,7 @@
     .datepicker-view-manager {
       display: flex;
       flex-direction: column;
-      row-gap: calc(2 * datepicker-variables.$clr-calendar-button-gap);
+      row-gap: tokens.$cds-global-space-5;
       width: calc(datepicker-variables.$clr-calendar-width - calc(1 * datepicker-variables.$clr-calendar-padding));
       padding-left: datepicker-variables.$clr-calendar-padding;
     }
@@ -133,9 +133,9 @@
     &.has-action-buttons {
       height: calc(
         datepicker-variables.$clr-calendar-height + datepicker-variables.$clr-calendar-action-buttons-height +
-          calc(2 * datepicker-variables.$clr-calendar-button-gap)
+          tokens.$cds-global-space-5
       );
-      row-gap: calc(2 * datepicker-variables.$clr-calendar-button-gap);
+      row-gap: tokens.$cds-global-space-5;
     }
 
     .datepicker-actions {
@@ -294,7 +294,7 @@
     display: flex;
     flex-wrap: wrap;
     row-gap: tokens.$cds-global-space-5;
-    height: calc(calc((9 * var(--cds-global-space-10))) + calc(3 * var(--cds-global-space-5)));
+    height: calc(calc(9 * tokens.$cds-global-space-10) + calc(3 * tokens.$cds-global-space-5));
     width: calc(7 * datepicker-variables.$clr-calendar-click-target);
 
     //Other props
