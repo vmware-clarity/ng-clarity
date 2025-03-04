@@ -22,7 +22,7 @@ export default {
   argTypes: {
     // inputs
     clrSidePanelSize: {
-      options: ['sm', 'md', 'lg', 'xl', 'full-screen'],
+      options: [null, 'sm', 'md', 'lg', 'xl', 'full-screen'],
       control: 'radio',
     },
     // outputs
@@ -37,7 +37,7 @@ export default {
     // inputs
     clrSidePanelCloseButtonAriaLabel: commonStringsDefault.close,
     clrSidePanelLabelledById: '',
-    clrSidePanelSize: 'md',
+    clrSidePanelSize: null,
     clrSidePanelPinnable: false,
     clrSidePanelSkipAnimation: false,
     // outputs

@@ -156,7 +156,7 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
   }
 
   private displaySideBySide() {
-    this.hostElement.classList.add('clr-side-panel-pinned-' + this.size);
+    this.hostElement.classList.add('clr-side-panel-pinned-' + (this.size || 'md'));
   }
 
   private displayOverlapping() {
