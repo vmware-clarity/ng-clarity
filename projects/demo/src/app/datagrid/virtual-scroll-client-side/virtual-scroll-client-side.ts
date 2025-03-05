@@ -29,7 +29,6 @@ class ChangeDetectionPerfRecord {
 })
 export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {
   @ViewChild(ClrDatagridVirtualScrollDirective) virtualScroller: ClrDatagridVirtualScrollDirective<any>;
-  @ViewChild('ala') alaVirtualScroller: ClrDatagridVirtualScrollDirective<any>;
 
   range: ListRange;
   totalRows = 10000;
@@ -79,10 +78,6 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
     this.rows.subscribe(() => {
       this.cdr.detectChanges();
     });
-  }
-
-  wheeled($event) {
-    console.log($event);
   }
 
   setGlobalFilter(value: string) {
