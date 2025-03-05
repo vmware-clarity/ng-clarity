@@ -21,7 +21,7 @@ import { behaviorElements } from '../../helpers/elements.data';
 
 @Component({
   selector: 'virtual-scroll-wrapper',
-  template: ` <ng-content></ng-content> `,
+  template: `<ng-content></ng-content>`,
 })
 export class VirtualScrollWrapper {
   @ContentChild(ClrDatagridVirtualScrollDirective) scroller: ClrDatagridVirtualScrollDirective<any>;
