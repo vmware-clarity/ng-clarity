@@ -25,10 +25,10 @@ const actionableItemSelectors = [
   '[role=button]:not([disabled])',
 ];
 
-export function getTabableItems(el: HTMLElement) {
-  const tabableItemSelectors = [...actionableItemSelectors, '[tabindex="0"]:not([disabled])'];
-  const tabableSelector = tabableItemSelectors.join(',');
-  return Array.from(el.querySelectorAll(tabableSelector)) as HTMLElement[];
+export function getTabbableItems(el: HTMLElement) {
+  const tabbableItemSelectors = [...actionableItemSelectors, '[tabindex="0"]:not([disabled])'];
+  const tabbableSelector = tabbableItemSelectors.join(',');
+  return Array.from(el.querySelectorAll(tabbableSelector)) as HTMLElement[];
 }
 
 function isActionableItem(el: HTMLElement) {
@@ -193,7 +193,7 @@ export class KeyNavigationGridController implements OnDestroy {
     activeCell.setAttribute('tabindex', '0');
     this._activeCell = activeCell;
 
-    const actionableItems = getTabableItems(activeCell);
+    const actionableItems = getTabbableItems(activeCell);
     const item =
       activeCell.getAttribute('role') !== 'columnheader' && actionableItems[0] ? actionableItems[0] : activeCell;
 
