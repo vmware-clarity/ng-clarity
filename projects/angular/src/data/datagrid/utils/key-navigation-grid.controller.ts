@@ -11,7 +11,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { Keys } from '../../../utils/enums/keys.enum';
 
-const actionableItems = [
+const actionableItemSelectors = [
   'a[href]',
   'area[href]',
   'input:not([disabled])',
@@ -26,13 +26,13 @@ const actionableItems = [
 ];
 
 export function getTabableItems(el: HTMLElement) {
-  const tabableItems = [...actionableItems, '*[tabindex="0"]:not([disabled])'];
-  const tabableSelector = tabableItems.join(',');
+  const tabableItemSelectors = [...actionableItemSelectors, '*[tabindex="0"]:not([disabled])'];
+  const tabableSelector = tabableItemSelectors.join(',');
   return Array.from(el.querySelectorAll(tabableSelector)) as HTMLElement[];
 }
 
 function isActionableItem(el: HTMLElement) {
-  const actionableSelector = actionableItems.join(',');
+  const actionableSelector = actionableItemSelectors.join(',');
   return el.matches(actionableSelector);
 }
 
@@ -100,7 +100,7 @@ export class KeyNavigationGridController implements OnDestroy {
                 )
               : null;
             if (activeCell) {
-              this.setActiveCell(activeCell, isActionableItem(e.target as HTMLElement));
+              this.setActiveCell(activeCell, { keepFocus: isActionableItem(e.target as HTMLElement) });
             }
           }
         });
@@ -183,7 +183,7 @@ export class KeyNavigationGridController implements OnDestroy {
     return this._activeCell;
   }
 
-  setActiveCell(activeCell: HTMLElement, actionableItem = false) {
+  setActiveCell(activeCell: HTMLElement, { keepFocus } = { keepFocus: false }) {
     const prior = this.cells ? Array.from(this.cells).find(c => c.getAttribute('tabindex') === '0') : null;
 
     if (prior) {
@@ -197,7 +197,7 @@ export class KeyNavigationGridController implements OnDestroy {
     const item =
       activeCell.getAttribute('role') !== 'columnheader' && actionableItems[0] ? actionableItems[0] : activeCell;
 
-    if (!this.skipItemFocus && !actionableItem) {
+    if (!(this.skipItemFocus || keepFocus)) {
       item.focus();
     }
   }
