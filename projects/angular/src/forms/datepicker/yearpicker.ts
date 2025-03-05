@@ -66,6 +66,7 @@ import { ViewManagerService } from './providers/view-manager.service';
         [class.is-start-range]="getIsRangeStartYear(year)"
         [class.is-end-range]="getIsRangeEndYear(year)"
         [class.in-range]="isInRange(year)"
+        [class.is-today]="isCurrentCalendarYear(year)"
         (click)="changeYear(year)"
         (mouseenter)="onHover(year)"
       >
@@ -113,6 +114,10 @@ export class ClrYearpicker implements AfterViewInit {
    */
   get calendarYear(): number {
     return this._dateNavigationService.displayedCalendar.year;
+  }
+
+  isCurrentCalendarYear(year: number): boolean {
+    return year === new Date().getFullYear();
   }
 
   getIsRangeStartYear(year: number): boolean {

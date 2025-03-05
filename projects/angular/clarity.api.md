@@ -750,6 +750,8 @@ export class ClrCalendar implements OnDestroy {
 export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, toggle: string);
     // (undocumented)
+    get controlDisabled(): boolean;
+    // (undocumented)
     ngOnInit(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrCheckbox, "[clrCheckbox],[clrToggle]", never, {}, {}, never, never, false, never>;
@@ -760,6 +762,8 @@ export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
 // @public (undocumented)
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
+    // (undocumented)
+    protected get allCheckboxesDisabled(): boolean;
     // (undocumented)
     checkboxes: QueryList<ClrCheckbox>;
     // (undocumented)
@@ -803,6 +807,8 @@ export class ClrCheckboxModule {
 export class ClrCheckboxWrapper implements OnInit, OnDestroy {
     constructor(toggleService: BehaviorSubject<boolean>);
     // (undocumented)
+    checkbox: ClrCheckbox;
+    // (undocumented)
     label: ClrLabel;
     // (undocumented)
     ngOnDestroy(): void;
@@ -811,7 +817,7 @@ export class ClrCheckboxWrapper implements OnInit, OnDestroy {
     // (undocumented)
     toggle: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxWrapper, "clr-checkbox-wrapper,clr-toggle-wrapper", never, {}, {}, ["label"], ["[clrCheckbox],[clrToggle]", "label"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxWrapper, "clr-checkbox-wrapper,clr-toggle-wrapper", never, {}, {}, ["label", "checkbox"], ["[clrCheckbox],[clrToggle]", "label"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckboxWrapper, never>;
 }
@@ -4016,9 +4022,11 @@ export class ClrSignpost {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     set customTrigger(trigger: ClrSignpostTrigger);
+    // (undocumented)
+    signpostTriggerAriaLabel: string;
     useCustomTrigger: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, {}, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": "clrSignpostTriggerAriaLabel"; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
 }
@@ -5389,6 +5397,8 @@ export class ClrYearpicker implements AfterViewInit {
     // (undocumented)
     getIsRangeStartYear(year: number): boolean;
     getTabIndex(year: number): number;
+    // (undocumented)
+    isCurrentCalendarYear(year: number): boolean;
     isInRange(year: number): boolean;
     nextDecade(): void;
     ngAfterViewInit(): void;

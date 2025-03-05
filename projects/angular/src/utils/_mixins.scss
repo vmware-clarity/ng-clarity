@@ -37,7 +37,7 @@ $clr-outline-spread: variables.$clr_baselineRem_2px;
 @mixin include-slim-outline-style-form-fields($width: tokens.$cds-global-space-2) {
   outline-color: Highlight;
   outline-color: -webkit-focus-ring-color;
-  outline-style: solid;
+  outline-style: auto;
   outline-width: $width;
 }
 

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild } from '@angular/core';
+import { Component, ContentChild, Input } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
@@ -21,7 +21,7 @@ import { ClrSignpostTrigger } from './signpost-trigger';
         type="button"
         class="signpost-action btn btn-sm btn-icon btn-link"
         clrSignpostTrigger
-        [attr.aria-label]="commonStrings.keys.signpostToggle"
+        [attr.aria-label]="signpostTriggerAriaLabel || commonStrings.keys.signpostToggle"
       >
         <cds-icon shape="info-circle" [attr.title]="commonStrings.keys.info"></cds-icon>
       </button>
@@ -52,6 +52,8 @@ export class ClrSignpost {
    *
    */
   useCustomTrigger = false;
+
+  @Input('clrSignpostTriggerAriaLabel') signpostTriggerAriaLabel: string;
 
   constructor(public commonStrings: ClrCommonStringsService) {}
 
