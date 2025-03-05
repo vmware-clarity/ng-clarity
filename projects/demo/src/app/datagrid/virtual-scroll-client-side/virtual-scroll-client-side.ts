@@ -27,6 +27,7 @@ class ChangeDetectionPerfRecord {
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {
+  allSelected = false;
   totalRows = 10000;
   totalCols = 5;
   cols: Column[];
@@ -62,6 +63,18 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
       window.console.log('CHANGE DETECTION TIME', after - before);
       return retValue;
     };
+  }
+
+  toggleSelectAllRows() {
+    if (this.allSelected) {
+      this.allSelected = false;
+
+      this.selectedRows = [];
+    } else {
+      this.allSelected = true;
+
+      this.selectedRows = [...this.allRows.value];
+    }
   }
 
   ngAfterViewChecked(): void {

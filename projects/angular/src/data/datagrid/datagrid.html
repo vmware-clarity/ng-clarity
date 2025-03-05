@@ -22,7 +22,10 @@
                     *ngIf="selection.selectionType === SELECTION_TYPE.Multi"
                     (keydown.space)="toggleAllSelected($event)"
                   >
-                    <div *ngIf="!hasVirtualScroller" class="clr-checkbox-wrapper">
+                    <div
+                      *ngIf="!hasVirtualScroller && !clrDgCustomSelectAll.children.length"
+                      class="clr-checkbox-wrapper"
+                    >
                       <!-- We need to move focus and space-key handling to the parent because of keyboard arrow key navigation,
                            which is not able to transfer focus directly on the input when focused with the tab key -->
                       <input
@@ -36,6 +39,10 @@
                       <label [for]="selectAllId" class="clr-control-label clr-col-null">
                         <span class="clr-sr-only">{{commonStrings.keys.selectAll}}</span>
                       </label>
+                    </div>
+
+                    <div #clrDgCustomSelectAll>
+                      <ng-content select="clr-checkbox-wrapper.clr-dg-custom-select-all"></ng-content>
                     </div>
 
                     <div class="datagrid-column-separator"></div>

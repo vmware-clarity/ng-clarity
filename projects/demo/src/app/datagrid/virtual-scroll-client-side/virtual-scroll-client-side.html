@@ -41,6 +41,10 @@
   style="height: 32rem"
   class="datagrid-compact"
 >
+  <clr-checkbox-wrapper class="clr-dg-custom-select-all">
+    <input clrCheckbox type="checkbox" (click)="toggleSelectAllRows()" />
+  </clr-checkbox-wrapper>
+
   <clr-dg-column *ngFor="let col of cols trackBy: colByIndex">
     <ng-container>{{col.name}}</ng-container>
   </clr-dg-column>
