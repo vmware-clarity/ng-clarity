@@ -40,7 +40,6 @@
   *ngIf="{ rows: rows | async }; let data"
   style="height: 32rem"
   class="datagrid-compact"
-  (wheel)="wheeled($event)"
 >
   <clr-dg-column *ngFor="let col of cols trackBy: colByIndex">
     <ng-container>{{col.name}}</ng-container>
