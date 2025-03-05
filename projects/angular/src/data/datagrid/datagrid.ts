@@ -33,6 +33,7 @@ import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridItems } from './datagrid-items';
 import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { ClrDatagridRow } from './datagrid-row';
+import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType } from './enums/selection-type';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';
@@ -104,6 +105,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * Custom placeholder detection
    */
   @ContentChild(ClrDatagridPlaceholder) placeholder: ClrDatagridPlaceholder<T>;
+
+  /**
+   * Expose virtual scroll directive for applications to access methods like `scrollToIndex`.
+   */
+  @ContentChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<any>;
 
   /**
    * Hideable Column data source / detection.
