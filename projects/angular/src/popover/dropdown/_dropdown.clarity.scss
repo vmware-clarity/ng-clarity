@@ -12,6 +12,7 @@
 @use '../../utils/mixins';
 @use 'variables.dropdown' as dropdown-variables;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../layout/tabs/tabs.clarity' as tabs;
 
 @include meta.load-css('properties.dropdown');
 
@@ -139,6 +140,11 @@
       @include menu-mixins.generate-dropdown-item();
 
       @extend %dropdown-content;
+
+      &.active {
+        position: relative;
+        @include tabs.nav-link-border-appearence('left');
+      }
 
       &.expandable {
         padding-right: tokens.$cds-global-space-5;
