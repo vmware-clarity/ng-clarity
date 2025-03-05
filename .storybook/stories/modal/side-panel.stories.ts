@@ -51,7 +51,8 @@ export default {
 
 const SidePanelTemplate: StoryFn = args => ({
   template: `
-    <div class="main-container">
+    <!-- The clrModalHost is needed, because the following containers are not direct children of the body -->
+    <div class="main-container" clrModalHost>
       <div class="content-container">
         <div class="content-area" style="height: 300px">
           <button type="button" class="btn btn-primary" (click)="clrSidePanelOpen = true">Open Side Panel</button>
