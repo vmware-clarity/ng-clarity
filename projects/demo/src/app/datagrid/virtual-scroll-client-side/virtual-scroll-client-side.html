@@ -121,7 +121,7 @@
     [clrVirtualRowsMinBufferPx]="200"
     [clrVirtualRowsMaxBufferPx]="400"
     [clrVirtualRowsTemplateCacheSize]="400"
-    (renderedRangeChange)="renderRangeChange($event)"
+    (renderedRangeChange)="renderUserRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="user">
       <clr-dg-cell>{{user.id}}</clr-dg-cell>
@@ -145,7 +145,7 @@
   </clr-dg-detail>
 
   <clr-dg-footer>
-    <div class="footer-counters">Rows {{range?.start + 1}} - {{range?.end}} of {{data.users.length}}</div>
+    <div class="footer-counters">Rows {{userRange?.start + 1}} - {{userRange?.end}} of {{data.users.length}}</div>
     <clr-dropdown>
       <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
         Snap Jump to
