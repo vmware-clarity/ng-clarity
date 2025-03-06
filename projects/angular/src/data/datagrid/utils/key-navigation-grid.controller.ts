@@ -21,12 +21,12 @@ const actionableItemSelectors = [
   'iframe',
   'object',
   'embed',
-  '*[contenteditable=true]',
+  '[contenteditable=true]',
   '[role=button]:not([disabled])',
 ];
 
 export function getTabableItems(el: HTMLElement) {
-  const tabableItemSelectors = [...actionableItemSelectors, '*[tabindex="0"]:not([disabled])'];
+  const tabableItemSelectors = [...actionableItemSelectors, '[tabindex="0"]:not([disabled])'];
   const tabableSelector = tabableItemSelectors.join(',');
   return Array.from(el.querySelectorAll(tabableSelector)) as HTMLElement[];
 }
@@ -197,7 +197,7 @@ export class KeyNavigationGridController implements OnDestroy {
     const item =
       activeCell.getAttribute('role') !== 'columnheader' && actionableItems[0] ? actionableItems[0] : activeCell;
 
-    if (!(this.skipItemFocus || keepFocus)) {
+    if (!this.skipItemFocus && !keepFocus) {
       item.focus();
     }
   }
