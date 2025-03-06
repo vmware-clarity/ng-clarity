@@ -14,6 +14,7 @@ $clr-calendar-background-color: var(--clr-calendar-background-color) !default;
 $clr-calendar-border-color: var(--clr-calendar-border-color) !default;
 $clr-calendar-margin-top: #{tokens.$cds-global-space-4};
 $clr-calendar-padding: #{tokens.$cds-global-space-7};
+$clr-calendar-button-gap: #{tokens.$cds-global-space-3};
 
 // (7 days in the week * 36px + 2 * 16px padding + 2px for border
 $clr-calendar-width: calc(
@@ -25,10 +26,10 @@ $clr-calendar-action-buttons-height: calc(
   button-variables.$clr-btn-height + tokens.$cds-global-space-7
 ); // Button Height + Padding set on .datepicker-actions class
 
-//(8 = 6 date rows + 1 row for day heading + 1 row for calendar switches and month/year pickers) + 2 * 16px padding + 2px for border
+//(8 = 6 date rows + 1 row for day heading + 1 row for calendar switches and month/year pickers) + 2 * 16px padding + 2px for border + 6 * 4px vertical gap for buttons
 $clr-calendar-height: calc(
   calc(8 * #{tokens.$cds-global-space-11}) + calc(2 * #{tokens.$cds-global-space-7}) +
-    calc(2 * #{tokens.$cds-alias-object-border-width-100})
+    calc(2 * #{tokens.$cds-alias-object-border-width-100}) + calc(6 * $clr-calendar-button-gap)
 );
 
 $clr-calendar-btn-color: var(--clr-calendar-btn-color) !default;
