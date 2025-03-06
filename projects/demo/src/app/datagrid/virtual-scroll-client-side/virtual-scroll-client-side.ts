@@ -6,11 +6,10 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { AfterViewChecked, ApplicationRef, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, ApplicationRef, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ClrDatagridSortOrder } from '@clr/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { ClrDatagridVirtualScrollDirective } from '../../../../../angular/src/data/datagrid/datagrid-virtual-scroll.directive';
 import { Column, DynamicData, Row } from '../inventory/dynamic-data';
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -28,8 +27,6 @@ class ChangeDetectionPerfRecord {
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {
-  @ViewChild(ClrDatagridVirtualScrollDirective) virtualScroller: ClrDatagridVirtualScrollDirective<any>;
-
   range: ListRange;
   totalRows = 10000;
   totalCols = 5;
@@ -135,10 +132,6 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
     this.range = $event;
     console.log($event);
     // this.loadMore($event);
-  }
-
-  scrollToIndex(index: number) {
-    this.virtualScroller.scrollToIndex(index, 'smooth');
   }
 
   getIndexes(rows: any[]) {

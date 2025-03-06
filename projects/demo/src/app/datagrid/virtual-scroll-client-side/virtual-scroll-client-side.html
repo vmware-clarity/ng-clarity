@@ -36,6 +36,7 @@
 
 <h3>Dynamic cols and rows</h3>
 <clr-datagrid
+  #dynamicRowsDatagrid
   [(clrDgSelected)]="selectedRows"
   *ngIf="{ rows: rows | async }; let data"
   style="height: 32rem"
@@ -70,11 +71,15 @@
     <div class="footer-counters">Rows {{range?.start + 1}} - {{range?.end}} of {{data.rows.length}}</div>
     <clr-dropdown>
       <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
-        Jump to
+        Smooth Jump to
         <cds-icon shape="angle" direction="down"></cds-icon>
       </button>
       <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
-        <div *ngFor="let index of getIndexes(data.rows)" (click)="scrollToIndex(index)" clrDropdownItem>
+        <div
+          *ngFor="let index of getIndexes(data.rows)"
+          (click)="dynamicRowsDatagrid.virtualScroll.scrollToIndex(index, 'smooth')"
+          clrDropdownItem
+        >
           {{index + 1}}
         </div>
       </clr-dropdown-menu>
@@ -95,6 +100,7 @@
 </clr-input-container>
 
 <clr-datagrid
+  #usersDatagrid
   *ngIf="{ users: users | async }; let data"
   [(clrDgSelected)]="selectedUsers"
   class="datagrid-compact"
@@ -138,5 +144,22 @@
     </clr-dg-detail-body>
   </clr-dg-detail>
 
-  <clr-dg-footer> {{data.users?.length}} </clr-dg-footer>
+  <clr-dg-footer>
+    <div class="footer-counters">Rows {{range?.start + 1}} - {{range?.end}} of {{data.users.length}}</div>
+    <clr-dropdown>
+      <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
+        Snap Jump to
+        <cds-icon shape="angle" direction="down"></cds-icon>
+      </button>
+      <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
+        <div
+          *ngFor="let index of getIndexes(data.users)"
+          (click)="usersDatagrid.virtualScroll.scrollToIndex(index, 'auto')"
+          clrDropdownItem
+        >
+          {{index + 1}}
+        </div>
+      </clr-dropdown-menu>
+    </clr-dropdown>
+  </clr-dg-footer>
 </clr-datagrid>
