@@ -92,6 +92,7 @@ const DatagridDetailsTemplate: StoryFn = args => ({
       [clrDgSingleActionableAriaLabel]="clrDgSingleActionableAriaLabel"
       [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
       (clrDgRefresh)="clrDgRefresh($event)"
+      (clrDgSelectedChange)="clrDgSelectedChange($event)"
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
       [clrLoadingMoreItems]="clrLoadingMoreItems"
     >
