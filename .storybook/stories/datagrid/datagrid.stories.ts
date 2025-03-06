@@ -83,8 +83,8 @@ const DatagridTemplate: StoryFn = args => ({
       [clrDgSingleActionableAriaLabel]="clrDgSingleActionableAriaLabel"
       [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
       (clrDgRefresh)="clrDgRefresh($event)"
+      (clrDgSelectedChange)="clrDgSelectedChange($event)"
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
-      (clrDgRefresh)="clrDgRefresh($event)"
     >
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>

@@ -24,6 +24,7 @@ export class DatagridDensityDemo {
   overflowEllipsis = true;
   compact = true;
   removeRowDetail = false;
+  showAnchor = false;
 
   constructor() {
     this.users = DatagridKitchenSinkData.users;
