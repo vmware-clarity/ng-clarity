@@ -111,7 +111,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     private readonly injector: EnvironmentInjector
   ) {
     items.smartenUp();
-    datagrid.hasVirtualScroller = true;
     datagrid.detailService.preventFocusScroll = true;
 
     this.datagridElementRef = datagrid.el;
