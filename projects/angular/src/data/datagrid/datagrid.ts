@@ -97,7 +97,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @Output('clrDgRefresh') refresh = new EventEmitter<ClrDatagridStateInterface<T>>(false);
 
   /**
-   * Expose virtual scroll directive for applications to access its public methods like `scrollToIndex`.
+   * Expose virtual scroll directive for applications to access its public methods
    */
   @ContentChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<any>;
 
