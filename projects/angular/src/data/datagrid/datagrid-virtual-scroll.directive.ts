@@ -235,7 +235,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       }),
       this.datagrid.refresh.subscribe(datagridState => {
         if (datagridState.filters) {
-          this.virtualScrollViewport.scrollToIndex(0);
+          this.scrollToIndex(0);
         }
       }),
       this.columnsService.columnsStateChange.subscribe(() => {
