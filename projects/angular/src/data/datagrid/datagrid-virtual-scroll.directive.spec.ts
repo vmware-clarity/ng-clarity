@@ -206,6 +206,21 @@ export default function (): void {
         fixture.destroy();
       });
 
+      it('Spy on Scroll to index', fakeAsync(() => {
+        fixture.detectChanges();
+        const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');
+
+        instance.virtualScroll.scrollToIndex(300);
+        fixture.detectChanges();
+        expect(spyVirtualScroll).toHaveBeenCalledWith(300);
+
+        instance.virtualScroll.scrollToIndex(0);
+        fixture.detectChanges();
+        expect(spyVirtualScroll).toHaveBeenCalledWith(0);
+
+        fixture.destroy();
+      }));
+
       it('Moves focus on PageDown and PageUp', fakeAsync(() => {
         finishInit(fixture);
         fixture.autoDetectChanges();
@@ -247,17 +262,6 @@ export default function (): void {
         fixture.autoDetectChanges(false);
         fixture.destroy();
       }));
-
-      // it('allows to manually resize the datagrid', function () {
-      //   const organizer: DatagridRenderOrganizer = context.getClarityProvider(DatagridRenderOrganizer);
-      //   let resizeSteps = 0;
-      //   organizer.renderStep.subscribe(() => {
-      //     resizeSteps++;
-      //   });
-      //   expect(resizeSteps).toBe(0);
-      //   context.clarityDirective.resize();
-      //   expect(resizeSteps).toBe(5);
-      // });
     });
   });
 }
