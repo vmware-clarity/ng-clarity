@@ -102,6 +102,7 @@ const DatagridTemplate: StoryFn = args => ({
       [clrDgSingleActionableAriaLabel]="clrDgSingleActionableAriaLabel"
       [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
       (clrDgRefresh)="clrDgRefresh($event)"
+      (clrDgSelectedChange)="clrDgSelectedChange($event)"
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
       [clrLoadingMoreItems]="clrLoadingMoreItems"
     >
@@ -123,7 +124,6 @@ const DatagridTemplate: StoryFn = args => ({
         clrVirtualScroll
         let-element
         let-index="index"
-        let-#scroller="clrVirtualScroll"
         [clrVirtualRowsOf]="data.elements"
         [clrVirtualRowsTemplateCacheSize]="400"
         (renderedRangeChange)="clrRenderRangeChange($event)"
