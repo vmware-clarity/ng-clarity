@@ -11,22 +11,29 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { Keys } from '../../../utils/enums/keys.enum';
 
+const actionableItemSelectors = [
+  'a[href]',
+  'area[href]',
+  'input:not([disabled])',
+  'button:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  'iframe',
+  'object',
+  'embed',
+  '[contenteditable=true]',
+  '[role=button]:not([disabled])',
+];
+
 export function getTabableItems(el: HTMLElement) {
-  const tabableSelector = [
-    'a[href]',
-    'area[href]',
-    'input:not([disabled])',
-    'button:not([disabled])',
-    'select:not([disabled])',
-    'textarea:not([disabled])',
-    'iframe',
-    'object',
-    'embed',
-    '*[tabindex]:not([disabled])',
-    '*[contenteditable=true]',
-    '[role=button]:not([disabled])',
-  ].join(',');
+  const tabableItemSelectors = [...actionableItemSelectors, '[tabindex="0"]:not([disabled])'];
+  const tabableSelector = tabableItemSelectors.join(',');
   return Array.from(el.querySelectorAll(tabableSelector)) as HTMLElement[];
+}
+
+function isActionableItem(el: HTMLElement) {
+  const actionableSelector = actionableItemSelectors.join(',');
+  return el.matches(actionableSelector);
 }
 
 export interface KeyNavigationGridConfig {
@@ -93,7 +100,7 @@ export class KeyNavigationGridController implements OnDestroy {
                 )
               : null;
             if (activeCell) {
-              this.setActiveCell(activeCell);
+              this.setActiveCell(activeCell, { keepFocus: isActionableItem(e.target as HTMLElement) });
             }
           }
         });
@@ -176,7 +183,7 @@ export class KeyNavigationGridController implements OnDestroy {
     return this._activeCell;
   }
 
-  setActiveCell(activeCell: HTMLElement) {
+  setActiveCell(activeCell: HTMLElement, { keepFocus } = { keepFocus: false }) {
     const prior = this.cells ? Array.from(this.cells).find(c => c.getAttribute('tabindex') === '0') : null;
 
     if (prior) {
@@ -186,10 +193,11 @@ export class KeyNavigationGridController implements OnDestroy {
     activeCell.setAttribute('tabindex', '0');
     this._activeCell = activeCell;
 
-    const items = getTabableItems(activeCell);
-    const item = activeCell.getAttribute('role') !== 'columnheader' && items[0] ? items[0] : activeCell;
+    const actionableItems = getTabableItems(activeCell);
+    const item =
+      activeCell.getAttribute('role') !== 'columnheader' && actionableItems[0] ? actionableItems[0] : activeCell;
 
-    if (!this.skipItemFocus) {
+    if (!this.skipItemFocus && !keepFocus) {
       item.focus();
     }
   }
