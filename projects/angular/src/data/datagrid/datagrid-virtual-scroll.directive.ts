@@ -71,6 +71,7 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 })
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
+  @Output() topIndexChange = new EventEmitter<number>();
 
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
 
@@ -229,6 +230,9 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       }),
       this.cdkVirtualFor.dataStream.subscribe(data => {
         this.updateAriaRowCount(data.length);
+      }),
+      this.virtualScrollViewport.scrolledIndexChange.subscribe(index => {
+        this.topIndexChange.emit(index);
       }),
       this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
         this.renderedRangeChange.emit(renderedRange);
