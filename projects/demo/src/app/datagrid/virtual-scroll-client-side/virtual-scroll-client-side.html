@@ -56,6 +56,7 @@
     [clrVirtualRowsMaxBufferPx]="400"
     [clrVirtualRowsTrackBy]="rowByIndex"
     (renderedRangeChange)="renderRangeChange($event)"
+    (topIndexChange)="topIndexChange($event)"
   >
     <clr-dg-row [clrDgItem]="row">
       <clr-dg-cell *ngFor="let col of cols trackBy: colByIndex">{{row.cells[col.name]}}</clr-dg-cell>
@@ -68,7 +69,8 @@
   </ng-template>
 
   <clr-dg-footer>
-    <div class="footer-counters">Rows {{range?.start + 1}} - {{range?.end}} of {{data.rows.length}}</div>
+    <div class="footer-counters">Top index {{topIndex}}</div>
+    <div class="footer-counters">Rendered rows {{range?.start + 1}} - {{range?.end}} of {{data.rows.length}}</div>
     <clr-dropdown>
       <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
         Smooth Jump to
@@ -84,6 +86,31 @@
         </div>
       </clr-dropdown-menu>
     </clr-dropdown>
+
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="dynamicRowsDatagrid.virtualScroll.scrollToIndex(0, 'smooth')"
+    >
+      <cds-icon shape="step-forward-2" direction="left"></cds-icon>
+    </button>
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="dynamicRowsDatagrid.virtualScroll.scrollToIndex(topIndex - 19, 'smooth')"
+    >
+      <cds-icon shape="angle" direction="up"></cds-icon>
+    </button>
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="dynamicRowsDatagrid.virtualScroll.scrollToIndex(topIndex + 19, 'smooth')"
+    >
+      <cds-icon shape="angle" direction="down"></cds-icon>
+    </button>
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="dynamicRowsDatagrid.virtualScroll.scrollToIndex(data.rows.length, 'smooth')"
+    >
+      <cds-icon shape="step-forward-2" direction="right"></cds-icon>
+    </button>
   </clr-dg-footer>
 </clr-datagrid>
 
