@@ -193,12 +193,17 @@ export class KeyNavigationGridController implements OnDestroy {
     activeCell.setAttribute('tabindex', '0');
     this._activeCell = activeCell;
 
-    const actionableItems = getTabbableItems(activeCell);
-    const item =
-      activeCell.getAttribute('role') !== 'columnheader' && actionableItems[0] ? actionableItems[0] : activeCell;
-
     if (!this.skipItemFocus && !keepFocus) {
-      item.focus();
+      let elementToFocus: HTMLElement;
+
+      if (activeCell.getAttribute('role') === 'columnheader') {
+        elementToFocus = activeCell;
+      } else {
+        const tabbableElements = getTabbableItems(activeCell);
+        elementToFocus = tabbableElements.length ? tabbableElements[0] : activeCell;
+      }
+
+      elementToFocus.focus();
     }
   }
 
