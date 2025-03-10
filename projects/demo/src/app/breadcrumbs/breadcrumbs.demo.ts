@@ -16,18 +16,18 @@ import { distinctUntilChanged, filter } from 'rxjs';
   styleUrls: ['./breadcrumbs.demo.scss'],
 })
 export class BreadcrumbsDemo implements OnInit {
-  menuItems = [];
+  breadcrumbs = [];
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.menuItems = this.createBreadcrumbs(this.activatedRoute.root);
+    this.breadcrumbs = this.createBreadcrumbs(this.activatedRoute.root);
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
         distinctUntilChanged()
       )
-      .subscribe(() => (this.menuItems = this.createBreadcrumbs(this.activatedRoute.root)));
+      .subscribe(() => (this.breadcrumbs = this.createBreadcrumbs(this.activatedRoute.root)));
   }
 
   createBreadcrumbs(route: ActivatedRoute, url = '', breadcrumbs: BreadcrumbItem[] = []): BreadcrumbItem[] {
