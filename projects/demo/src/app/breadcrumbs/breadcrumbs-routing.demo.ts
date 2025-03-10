@@ -7,20 +7,19 @@
 
 import { Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { BreadcrumbItem } from '@clr/angular';
 import { Observable } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
-
-import { MenuItem } from './breadcrumbs.demo.model';
 
 @Component({
   selector: 'clr-breadcrumbs-routing-demo',
   templateUrl: './breadcrumbs-routing.demo.html',
 })
 export class BreadcrumbsRoutingDemo {
-  readonly menuItems: Observable<MenuItem[]>;
+  readonly breadcrumbs: Observable<BreadcrumbItem[]>;
 
   constructor(router: Router, activatedRoute: ActivatedRoute) {
-    this.menuItems = router.events.pipe(
+    this.breadcrumbs = router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       startWith(undefined),
       map(() => createBreadcrumbs(activatedRoute.root))
@@ -28,8 +27,8 @@ export class BreadcrumbsRoutingDemo {
   }
 }
 
-function createBreadcrumbs(route: ActivatedRoute): MenuItem[] {
-  const breadcrumbs: MenuItem[] = [];
+function createBreadcrumbs(route: ActivatedRoute): BreadcrumbItem[] {
+  const breadcrumbs: BreadcrumbItem[] = [];
   let currentUrl = '';
 
   let currentRoute = route;
