@@ -7,5 +7,6 @@
 
 export interface MenuItem {
   label: string;
-  routerLink: string;
+  routerLink?: string;
+  href?: string;
 }
