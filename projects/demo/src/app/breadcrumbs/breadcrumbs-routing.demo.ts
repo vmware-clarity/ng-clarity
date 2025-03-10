@@ -7,8 +7,10 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { distinctUntilChanged, filter } from 'rxjs';
+import { Observable } from 'rxjs';
+import { filter, map, startWith } from 'rxjs/operators';
 
+import { BreadcrumbDemoService } from './breadcrumb.demo.service';
 import { MenuItem } from './breadcrumbs.demo.model';
 
 @Component({
@@ -16,39 +18,19 @@ import { MenuItem } from './breadcrumbs.demo.model';
   templateUrl: './breadcrumbs-routing.demo.html',
 })
 export class BreadcrumbsRoutingDemo implements OnInit {
-  menuItems = [];
+  menuItems: Observable<MenuItem[]>;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private breadcrumbservice: BreadcrumbDemoService
+  ) {}
 
   ngOnInit(): void {
-    this.menuItems = this.createBreadcrumbs(this.activatedRoute.root);
-    console.log('Menu:', this.menuItems);
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        distinctUntilChanged()
-      )
-      .subscribe(() => (this.menuItems = this.createBreadcrumbs(this.activatedRoute.root)));
-  }
-
-  createBreadcrumbs(route: ActivatedRoute, url = '', breadcrumbs: MenuItem[] = []): MenuItem[] {
-    const children: ActivatedRoute[] = route.children;
-
-    if (children.length === 0) {
-      return breadcrumbs;
-    }
-
-    for (const child of children) {
-      const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
-      if (routeURL !== '') {
-        url += `/${routeURL}`;
-      }
-      if (child.snapshot.data['breadcrumb'] && child.snapshot.url.length) {
-        breadcrumbs.push({ label: child.snapshot.data['breadcrumb'], routerLink: url });
-      }
-
-      return this.createBreadcrumbs(child, url, breadcrumbs);
-    }
-    return breadcrumbs;
+    this.menuItems = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      startWith(undefined),
+      map(() => this.breadcrumbservice.createBreadcrumbs(this.activatedRoute.root))
+    );
   }
 }
