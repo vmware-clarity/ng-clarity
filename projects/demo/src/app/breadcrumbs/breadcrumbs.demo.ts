@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { distinctUntilChanged, filter } from 'rxjs';
+import { filter, map, Observable, startWith } from 'rxjs';
 
 import { MenuItem } from './breadcrumbs.demo.model';
 
@@ -16,40 +16,37 @@ import { MenuItem } from './breadcrumbs.demo.model';
   templateUrl: './breadcrumbs.demo.html',
   styleUrls: ['./breadcrumbs.demo.scss'],
 })
-export class BreadcrumbsDemo implements OnInit {
-  menuItems = [];
+export class BreadcrumbsDemo {
+  readonly menuItems: Observable<MenuItem[]>;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
-
-  ngOnInit(): void {
-    this.menuItems = this.createBreadcrumbs(this.activatedRoute.root);
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        distinctUntilChanged()
-      )
-      .subscribe(() => (this.menuItems = this.createBreadcrumbs(this.activatedRoute.root)));
+  constructor(router: Router, activatedRoute: ActivatedRoute) {
+    this.menuItems = router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      startWith(undefined),
+      map(() => createBreadcrumbs(activatedRoute.root))
+    );
   }
+}
 
-  createBreadcrumbs(route: ActivatedRoute, url = '', breadcrumbs: MenuItem[] = []): MenuItem[] {
-    const children: ActivatedRoute[] = route.children;
+function createBreadcrumbs(route: ActivatedRoute): MenuItem[] {
+  const breadcrumbs: MenuItem[] = [];
+  let currentUrl = '';
 
-    if (children.length === 0) {
-      return breadcrumbs;
+  let currentRoute = route;
+
+  while (currentRoute.children.length !== 0) {
+    currentRoute = currentRoute.children[0];
+    const currentRouteLabel = currentRoute.snapshot.data['breadcrumb'];
+    const currentRouteUrl = currentRoute.snapshot.url.map(segment => segment.path).join('/');
+
+    if (currentRouteUrl) {
+      currentUrl += `/${currentRouteUrl}`;
     }
 
-    for (const child of children) {
-      const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
-      if (routeURL !== '') {
-        url += `/${routeURL}`;
-      }
-      if (child.snapshot.data['breadcrumb'] && child.snapshot.url.length) {
-        breadcrumbs.push({ label: child.snapshot.data['breadcrumb'], routerLink: url });
-      }
-
-      return this.createBreadcrumbs(child, url, breadcrumbs);
+    if (currentRouteLabel && currentRouteUrl) {
+      breadcrumbs.push({ label: currentRouteLabel, routerLink: currentUrl });
     }
-
-    return breadcrumbs;
   }
+
+  return breadcrumbs;
 }
