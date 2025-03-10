@@ -8,6 +8,8 @@
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { BreadcrumbsHrefDemo } from './breadcrumbs-href.demo';
+import { BreadcrumbsRoutingDemo } from './breadcrumbs-routing.demo';
 import { BreadcrumbsDemo } from './breadcrumbs.demo';
 import { WNCotmanDemo } from './pages/coltman';
 import { DanielSmithDemo } from './pages/daniel-smith';
@@ -26,79 +28,89 @@ const ROUTES: Routes = [
     component: BreadcrumbsDemo,
     children: [
       {
-        path: '',
-        redirectTo: 'paints',
-        pathMatch: 'full',
-      },
-      {
-        path: 'paints',
-        component: PaintsDemo,
-        data: {
-          breadcrumb: 'Paints',
-        },
+        path: 'routing',
+        component: BreadcrumbsRoutingDemo,
         children: [
           {
             path: '',
-            component: PaintsListDemo,
+            redirectTo: 'paints',
+            pathMatch: 'full',
           },
           {
-            path: 'watercolor',
-            component: WatercolorDemo,
+            path: 'paints',
+            component: PaintsDemo,
             data: {
-              breadcrumb: 'Watercolor',
+              breadcrumb: 'Paints',
             },
             children: [
               {
                 path: '',
-                component: WatercolorListDemo,
+                component: PaintsListDemo,
               },
               {
-                path: 'daniel-smith',
-                component: DanielSmithDemo,
+                path: 'watercolor',
+                component: WatercolorDemo,
                 data: {
-                  breadcrumb: 'Daniel Smith',
-                },
-              },
-              {
-                path: 'winsor-newton',
-                component: WinsorNewtonDemo,
-                data: {
-                  breadcrumb: 'Winsor & Newton',
+                  breadcrumb: 'Watercolor',
                 },
                 children: [
                   {
-                    path: 'cotman',
-                    component: WNCotmanDemo,
+                    path: '',
+                    component: WatercolorListDemo,
+                  },
+                  {
+                    path: 'daniel-smith',
+                    component: DanielSmithDemo,
                     data: {
-                      breadcrumb: 'Cotman',
+                      breadcrumb: 'Daniel Smith',
                     },
                   },
                   {
-                    path: 'professional',
-                    component: WNProfessionalDemo,
+                    path: 'winsor-newton',
+                    component: WinsorNewtonDemo,
                     data: {
-                      breadcrumb: 'Professional',
+                      breadcrumb: 'Winsor & Newton',
                     },
+                    children: [
+                      {
+                        path: 'cotman',
+                        component: WNCotmanDemo,
+                        data: {
+                          breadcrumb: 'Cotman',
+                        },
+                      },
+                      {
+                        path: 'professional',
+                        component: WNProfessionalDemo,
+                        data: {
+                          breadcrumb: 'Professional',
+                        },
+                      },
+                    ],
                   },
                 ],
+              },
+              {
+                path: 'oils',
+                component: OilsDemo,
+                data: {
+                  breadcrumb: 'Oils',
+                },
               },
             ],
           },
           {
-            path: 'oils',
-            component: OilsDemo,
+            path: 'tools',
+            component: ToolsDemo,
             data: {
-              breadcrumb: 'Oils',
+              breadcrumb: 'Tools',
             },
           },
         ],
       },
       {
-        path: 'tools',
-        component: ToolsDemo,
-        data: {
-          breadcrumb: 'Tools',
-        },
+        path: 'href',
+        component: BreadcrumbsHrefDemo,
       },
     ],
   },

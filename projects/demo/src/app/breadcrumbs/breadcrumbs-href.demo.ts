@@ -8,8 +8,14 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-breadcrumbs-demo',
-  templateUrl: './breadcrumbs.demo.html',
+  selector: 'clr-breadcrumbs-href-demo',
+  templateUrl: './breadcrumbs-href.demo.html',
   styleUrls: ['./breadcrumbs.demo.scss'],
 })
-export class BreadcrumbsDemo {}
+export class BreadcrumbsHrefDemo {
+  menuItems = [
+    { label: 'Paints', href: '/demo/breadcrumbs/href' },
+    { label: 'Watercolor', href: '/demo/breadcrumbs/href' },
+    { label: 'Sennelier', href: '/demo/breadcrumbs/href/sennelier' },
+  ];
+}
