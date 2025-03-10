@@ -7,9 +7,8 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { BreadcrumbItem } from '@clr/angular';
 import { distinctUntilChanged, filter } from 'rxjs';
-
-import { MenuItem } from './breadcrumbs.demo.model';
 
 @Component({
   selector: 'clr-breadcrumbs-demo',
@@ -31,7 +30,7 @@ export class BreadcrumbsDemo implements OnInit {
       .subscribe(() => (this.menuItems = this.createBreadcrumbs(this.activatedRoute.root)));
   }
 
-  createBreadcrumbs(route: ActivatedRoute, url = '', breadcrumbs: MenuItem[] = []): MenuItem[] {
+  createBreadcrumbs(route: ActivatedRoute, url = '', breadcrumbs: BreadcrumbItem[] = []): BreadcrumbItem[] {
     const children: ActivatedRoute[] = route.children;
 
     if (children.length === 0) {
