@@ -58,11 +58,11 @@ const RowTemplate: StoryFn = args => ({
         (clrDgExpandedChange)="index === 0 && clrDgExpandedChange($event)"
         (clrDgSelectedChange)="index === 0 && clrDgSelectedChange($event)"
       >
-        <clr-dg-cell>{{ !(emptyRow && index === 0) ? element.name : '' }}</clr-dg-cell>
-        <clr-dg-cell>{{ !(emptyRow && index === 0) ? element.symbol : '' }}</clr-dg-cell>
-        <clr-dg-cell>{{ !(emptyRow && index === 0) ? element.number : '' }}</clr-dg-cell>
+        <clr-dg-cell>{{ emptyRow && index === 0 ? '' : element.name }}</clr-dg-cell>
+        <clr-dg-cell>{{ emptyRow && index === 0 ? '' : element.symbol }}</clr-dg-cell>
+        <clr-dg-cell>{{ emptyRow && index === 0 ? '' : element.number }}</clr-dg-cell>
         <clr-dg-cell class="electronegativity-container">
-          {{ !(emptyRow && index === 0) ? element.electronegativity : '' }}
+          {{ emptyRow && index === 0 ? '' : element.electronegativity }}
           <div
             *ngIf="!(emptyRow && index === 0)"
             [style.width.%]="(element.electronegativity * 100) / 5"
