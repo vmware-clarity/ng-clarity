@@ -64,7 +64,7 @@ const RowTemplate: StoryFn = args => ({
         <clr-dg-cell class="electronegativity-container">
           {{ emptyRow && index === 0 ? '' : element.electronegativity }}
           <div
-            *ngIf="!(emptyRow && index === 0)"
+            *ngIf="!emptyRow || index !== 0"
             [style.width.%]="(element.electronegativity * 100) / 5"
             class="electronegativity-bar"
           >
