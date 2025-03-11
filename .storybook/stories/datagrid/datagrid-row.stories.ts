@@ -155,7 +155,7 @@ export const emptyRow: StoryObj = {
   },
 };
 
-export const compactemptyRow: StoryObj = {
+export const compactEmptyRow: StoryObj = {
   render: RowTemplate,
   args: {
     emptyRow: true,
