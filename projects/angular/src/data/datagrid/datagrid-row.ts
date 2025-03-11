@@ -69,6 +69,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   checkboxId: string;
   expandableId: string;
   replaced: boolean;
+  showSkeleton = true;
   displayCells = false;
   expandAnimationTrigger = false;
 

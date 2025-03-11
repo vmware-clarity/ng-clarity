@@ -150,7 +150,11 @@
       </ng-container>
       <!-- placeholder for projecting other sticky cells as pinned-->
     </div>
-    <div class="datagrid-row-scrollable" [ngClass]="{'is-replaced': replaced && expanded}">
+    <div
+      [style.display]="showSkeleton ? 'none' : ''"
+      class="datagrid-row-scrollable"
+      [ngClass]="{'is-replaced': replaced && expanded}"
+    >
       <div class="datagrid-scrolling-cells">
         <ng-content select="clr-dg-cell"></ng-content>
         <ng-container #scrollableCells></ng-container>
@@ -159,6 +163,7 @@
       <ng-template *ngIf="replaced && !expand.loading" [ngTemplateOutlet]="detail"></ng-template>
       <ng-template *ngIf="!replaced && !expand.loading" [ngTemplateOutlet]="detail"></ng-template>
     </div>
+    <clr-dg-cell class="loading-skeleton" *ngIf="showSkeleton">&nbsp;</clr-dg-cell>
   </div>
 </ng-template>
 

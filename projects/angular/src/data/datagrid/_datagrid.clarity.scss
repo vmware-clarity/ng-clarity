@@ -103,7 +103,35 @@
 
     &.cdk-virtual-scrollable .datagrid-rows {
       flex-grow: 0;
+
+      //&.datagrid-skeleton-loading .datagrid-row-scrollable .datagrid-cell {
+      //  overflow: hidden;
+      //  white-space: nowrap;
+      //  background-color: tables-variables.$clr-table-bgcolor;
+      //  color: tables-variables.$clr-table-bgcolor;
+      //  fill: tables-variables.$clr-table-bgcolor;
+      //  position: relative;
+      //
+      //  &:before {
+      //    content: '';
+      //    position: absolute;
+      //    display: block;
+      //    width: 98%;
+      //    height: 70%;
+      //    background-color: tokens.$cds-alias-object-container-background-dark;
+      //    border-radius: 4px;
+      //    top: 0;
+      //    left: 0;
+      //    margin: 4px;
+      //  }
+      //}
     }
+
+    //.datagrid-rows.datagrid-skeleton-loading .datagrid-row-scrollable .datagrid-cell {
+    //  overflow: hidden;
+    //  white-space: nowrap;
+    //  background-color: tokens.$cds-alias-object-container-background-dark;
+    //}
   }
 
   .datagrid-overflow-ellipsis .datagrid-row .datagrid-scrolling-cells > .datagrid-cell {
