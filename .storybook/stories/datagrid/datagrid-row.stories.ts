@@ -58,12 +58,18 @@ const RowTemplate: StoryFn = args => ({
         (clrDgExpandedChange)="index === 0 && clrDgExpandedChange($event)"
         (clrDgSelectedChange)="index === 0 && clrDgSelectedChange($event)"
       >
-        <clr-dg-cell>{{ element.name }}</clr-dg-cell>
-        <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
-        <clr-dg-cell>{{ element.number }}</clr-dg-cell>
+        <clr-dg-cell>{{ emptyRows && index % 2 ? element.name : '' }}</clr-dg-cell>
+        <clr-dg-cell>{{ emptyRows && index % 2 ? element.symbol : '' }}</clr-dg-cell>
+        <clr-dg-cell>{{ emptyRows && index % 2 ? element.number : '' }}</clr-dg-cell>
         <clr-dg-cell class="electronegativity-container">
-          {{ element.electronegativity }}
-          <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
+          {{ emptyRows && index % 2 ? element.electronegativity : '' }}
+          <div
+            *ngIf="emptyRows && index % 2"
+            [style.width.%]="(element.electronegativity * 100) / 5"
+            class="electronegativity-bar"
+          >
+            &nbsp;
+          </div>
         </clr-dg-cell>
         <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
           <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
@@ -119,6 +125,7 @@ export default {
     expandable: false,
     compact: false,
     hidableColumns: false,
+    emptyRows: false,
     height: 0,
   },
 };
@@ -133,9 +140,25 @@ export const singleSelection: StoryObj = {
     singleSelectable: true,
   },
 };
+
 export const multiSelection: StoryObj = {
   render: RowTemplate,
   args: {
     multiSelectable: true,
+  },
+};
+
+export const emptyRows: StoryObj = {
+  render: RowTemplate,
+  args: {
+    emptyRows: true,
+  },
+};
+
+export const compactEmptyRows: StoryObj = {
+  render: RowTemplate,
+  args: {
+    emptyRows: true,
+    compact: true,
   },
 };
