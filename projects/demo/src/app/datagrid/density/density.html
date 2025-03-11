@@ -52,6 +52,10 @@
       <input type="checkbox" clrCheckbox name="remove-row-detail" [(ngModel)]="removeRowDetail" />
       <label>Remove Row Detail</label>
     </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="show-anchor" [(ngModel)]="showAnchor" />
+      <label>Show interactive anchor</label>
+    </clr-checkbox-wrapper>
   </clr-checkbox-container>
 </form>
 
@@ -74,7 +78,7 @@
       <button class="action-item">Delete</button>
     </clr-dg-action-overflow>
     <clr-dg-cell>
-      <clr-tooltip>
+      <clr-tooltip *ngIf="showAnchor">
         <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
         <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
@@ -89,6 +93,7 @@
     <clr-dg-cell>
       <cds-icon shape="user"></cds-icon>
       {{user.name}}
+      <a *ngIf="showAnchor" target="_blank" href="javascript:void(0)">interactive anchor</a>
     </clr-dg-cell>
     <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
     <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
@@ -110,6 +115,7 @@
     <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="!removeRowDetail">
       <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="replace">
         <ng-template [ngIf]="detail === 'default'">
+          <a *ngIf="showAnchor" target="_blank" href="javascript:void(0)">interactive anchor</a>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
           Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
           sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh lacus,
@@ -120,10 +126,14 @@
         </ng-template>
 
         <ng-template [ngIf]="detail === 'columns'">
-          <clr-dg-cell>{{user.id}}</clr-dg-cell>
+          <clr-dg-cell>
+            {{user.id}}
+            <a *ngIf="showAnchor" target="_blank" href="javascript:void(0)">interactive anchor</a>
+          </clr-dg-cell>
           <clr-dg-cell>
             <cds-icon shape="user"></cds-icon>
             {{user.name}}
+            <a *ngIf="showAnchor" target="_blank" href="javascript:void(0)">interactive anchor</a>
           </clr-dg-cell>
           <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
           <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>

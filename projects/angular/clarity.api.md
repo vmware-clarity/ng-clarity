@@ -69,6 +69,22 @@ import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 
 // @public (undocumented)
+export interface BreadcrumbItem {
+    // (undocumented)
+    href?: string;
+    // (undocumented)
+    label: string;
+    // (undocumented)
+    queryParams?: {
+        [key: string]: string;
+    };
+    // (undocumented)
+    routerLink?: string;
+    // (undocumented)
+    target?: string;
+}
+
+// @public (undocumented)
 export class CdsIconCustomTag {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<CdsIconCustomTag, "cds-icon", never, {}, {}, never, never, false, never>;
@@ -559,8 +575,6 @@ export class ClrBreadcrumbs {
     protected handleItemClick(breadcrumb: BreadcrumbItem): void;
     // (undocumented)
     isExpanded: boolean;
-    // Warning: (ae-forgotten-export) The symbol "BreadcrumbItem" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     items: BreadcrumbItem[];
     // (undocumented)
@@ -750,6 +764,8 @@ export class ClrCalendar implements OnDestroy {
 export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, toggle: string);
     // (undocumented)
+    get controlDisabled(): boolean;
+    // (undocumented)
     ngOnInit(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrCheckbox, "[clrCheckbox],[clrToggle]", never, {}, {}, never, never, false, never>;
@@ -760,6 +776,8 @@ export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
 // @public (undocumented)
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
+    // (undocumented)
+    protected get allCheckboxesDisabled(): boolean;
     // (undocumented)
     checkboxes: QueryList<ClrCheckbox>;
     // (undocumented)
@@ -803,6 +821,8 @@ export class ClrCheckboxModule {
 export class ClrCheckboxWrapper implements OnInit, OnDestroy {
     constructor(toggleService: BehaviorSubject<boolean>);
     // (undocumented)
+    checkbox: ClrCheckbox;
+    // (undocumented)
     label: ClrLabel;
     // (undocumented)
     ngOnDestroy(): void;
@@ -811,7 +831,7 @@ export class ClrCheckboxWrapper implements OnInit, OnDestroy {
     // (undocumented)
     toggle: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxWrapper, "clr-checkbox-wrapper,clr-toggle-wrapper", never, {}, {}, ["label"], ["[clrCheckbox],[clrToggle]", "label"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxWrapper, "clr-checkbox-wrapper,clr-toggle-wrapper", never, {}, {}, ["label", "checkbox"], ["[clrCheckbox],[clrToggle]", "label"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckboxWrapper, never>;
 }
@@ -1261,8 +1281,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     //
     // (undocumented)
     expandableRows: ExpandableRowsCount;
-    // (undocumented)
-    hasVirtualScroller: boolean;
     // Warning: (ae-forgotten-export) The symbol "Items" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -1319,8 +1337,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     set trackBy(value: ClrDatagridItemsTrackByFunction<T>);
     updateDetailState(): void;
+    virtualScroll: ÇlrDatagridVirtualScrollDirective<any>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": "clrLoadingMoreItems"; "clrDgSingleSelectionAriaLabel": "clrDgSingleSelectionAriaLabel"; "clrDgSingleActionableAriaLabel": "clrDgSingleActionableAriaLabel"; "clrDetailExpandableAriaLabel": "clrDetailExpandableAriaLabel"; "clrDgDisablePageFocus": "clrDgDisablePageFocus"; "loading": "clrDgLoading"; "selected": "clrDgSelected"; "singleSelected": "clrDgSingleSelected"; "clrDgPreserveSelection": "clrDgPreserveSelection"; "rowSelectionMode": "clrDgRowSelection"; "trackBy": "clrDgItemsTrackBy"; }, { "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; "refresh": "clrDgRefresh"; }, ["iterator", "placeholder", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": "clrLoadingMoreItems"; "clrDgSingleSelectionAriaLabel": "clrDgSingleSelectionAriaLabel"; "clrDgSingleActionableAriaLabel": "clrDgSingleActionableAriaLabel"; "clrDetailExpandableAriaLabel": "clrDetailExpandableAriaLabel"; "clrDgDisablePageFocus": "clrDgDisablePageFocus"; "loading": "clrDgLoading"; "selected": "clrDgSelected"; "singleSelected": "clrDgSingleSelected"; "clrDgPreserveSelection": "clrDgPreserveSelection"; "rowSelectionMode": "clrDgRowSelection"; "trackBy": "clrDgItemsTrackBy"; }, { "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; "refresh": "clrDgRefresh"; }, ["virtualScroll", "iterator", "placeholder", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagrid<any>, never>;
 }
@@ -4018,9 +4037,11 @@ export class ClrSignpost {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     set customTrigger(trigger: ClrSignpostTrigger);
+    // (undocumented)
+    signpostTriggerAriaLabel: string;
     useCustomTrigger: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, {}, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": "clrSignpostTriggerAriaLabel"; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
 }
@@ -5391,6 +5412,8 @@ export class ClrYearpicker implements AfterViewInit {
     // (undocumented)
     getIsRangeStartYear(year: number): boolean;
     getTabIndex(year: number): number;
+    // (undocumented)
+    isCurrentCalendarYear(year: number): boolean;
     isInRange(year: number): boolean;
     nextDecade(): void;
     ngAfterViewInit(): void;
@@ -5872,6 +5895,8 @@ export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     ngOnDestroy(): void;
     // (undocumented)
     renderedRangeChange: EventEmitter<ListRange>;
+    // (undocumented)
+    scrollToIndex(index: number, behaviour?: ScrollBehavior): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "cdkVirtualForOf": "clrVirtualRowsOf"; "cdkVirtualForTrackBy": "clrVirtualRowsTrackBy"; "cdkVirtualForTemplate": "clrVirtualRowsTemplate"; "cdkVirtualForTemplateCacheSize": "clrVirtualRowsTemplateCacheSize"; "itemSize": "clrVirtualRowsItemSize"; "minBufferPx": "clrVirtualRowsMinBufferPx"; "maxBufferPx": "clrVirtualRowsMaxBufferPx"; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
     // (undocumented)

@@ -282,13 +282,13 @@ export class ClrDatagridColumn<T = any>
 
   get ariaSort() {
     switch (this._sortOrder) {
-      default:
-      case ClrDatagridSortOrder.UNSORTED:
-        return 'none';
       case ClrDatagridSortOrder.ASC:
         return 'ascending';
       case ClrDatagridSortOrder.DESC:
         return 'descending';
+      case ClrDatagridSortOrder.UNSORTED:
+      default:
+        return 'none';
     }
   }
 

@@ -27,6 +27,8 @@ class ChangeDetectionPerfRecord {
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {
+  range: ListRange;
+  userRange: ListRange;
   totalRows = 10000;
   totalCols = 5;
   cols: Column[];
@@ -128,7 +130,26 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
   }
 
   renderRangeChange($event: ListRange) {
+    this.range = $event;
     console.log($event);
     // this.loadMore($event);
+  }
+
+  renderUserRangeChange($event: ListRange) {
+    this.userRange = $event;
+    console.log($event);
+    // this.loadMore($event);
+  }
+
+  getIndexes(rows: any[]) {
+    const result = [];
+
+    for (let i = 0; i < rows.length; i++) {
+      if (i % 1000 === 0) {
+        result.push(i);
+      }
+    }
+
+    return result;
   }
 }

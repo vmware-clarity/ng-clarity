@@ -111,7 +111,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     private readonly injector: EnvironmentInjector
   ) {
     items.smartenUp();
-    datagrid.hasVirtualScroller = true;
     datagrid.detailService.preventFocusScroll = true;
 
     this.datagridElementRef = datagrid.el;
@@ -236,7 +235,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       }),
       this.datagrid.refresh.subscribe(datagridState => {
         if (datagridState.filters) {
-          this.virtualScrollViewport.scrollToIndex(0);
+          this.scrollToIndex(0);
         }
       }),
       this.columnsService.columnsStateChange.subscribe(() => {
@@ -257,6 +256,10 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
+  }
+
+  scrollToIndex(index: number, behaviour: ScrollBehavior = 'auto') {
+    this.virtualScrollViewport?.scrollToIndex(index, behaviour);
   }
 
   private updateCdkVirtualForInputs() {

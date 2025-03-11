@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 
+import { BreadcrumbsHrefDemo } from './breadcrumbs-href.demo';
+import { BreadcrumbsRoutingDemo } from './breadcrumbs-routing.demo';
 import { BreadcrumbsDemo } from './breadcrumbs.demo';
 import { ROUTING } from './breadcrumbs.demo.routing';
 import { WNCotmanDemo } from './pages/coltman';
@@ -24,6 +26,8 @@ import { WinsorNewtonDemo } from './pages/winsor-newton';
 @NgModule({
   imports: [CommonModule, ClarityModule, ROUTING],
   declarations: [
+    BreadcrumbsHrefDemo,
+    BreadcrumbsRoutingDemo,
     BreadcrumbsDemo,
     PaintsDemo,
     PaintsListDemo,
@@ -36,6 +40,8 @@ import { WinsorNewtonDemo } from './pages/winsor-newton';
     DanielSmithDemo,
   ],
   exports: [
+    BreadcrumbsHrefDemo,
+    BreadcrumbsRoutingDemo,
     BreadcrumbsDemo,
     PaintsDemo,
     PaintsListDemo,

@@ -27,12 +27,16 @@ export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     injector: Injector,
     @Self()
     @Optional()
-    control: NgControl,
+    private control: NgControl,
     renderer: Renderer2,
     el: ElementRef<HTMLInputElement>,
     @Attribute('clrToggle') private toggle: string
   ) {
     super(vcr, ClrCheckboxWrapper, injector, control, renderer, el);
+  }
+
+  get controlDisabled() {
+    return this.control?.disabled;
   }
 
   override ngOnInit() {

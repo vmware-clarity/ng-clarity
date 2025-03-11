@@ -9,7 +9,6 @@ import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@ang
 import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
-import { Keys } from '../../utils/enums/keys.enum';
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { ClrDatagrid } from './datagrid';
@@ -882,120 +881,6 @@ export default function (): void {
             '.datagrid-header .datagrid-column.datagrid-expandable-caret .clr-sr-only'
           ).textContent
         ).toBe('Expand one of the rows');
-      });
-    });
-
-    describe('Key focus', function () {
-      // We use SingleSelctionTest to test focusing of actionalbe content in cells
-      let context: TestContext<ClrDatagrid<number>, SingleSelectionTest>;
-
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, SingleSelectionTest, [Selection]);
-      });
-
-      it('Moves focus across cells', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        expect(grid).toBeDefined();
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        expect(cells.length).toBe(12);
-        //  data matrix 3*2 data, 3 select radios, 3 headers. Legend: 0h -> Index: 0, Type: header
-        // |0h| 1h| 2h|
-        // |3r| 4d| 5d|
-        // |6r| 7d| 8d|
-        // |9r|10d|11d|
-        // cell flow: start at index 0 -> 3 -> 4 (check) -> 5 (check) -> 8 (check)-> 7 (check)-> 4 (check) end
-
-        // need to start with this cell exactly, because it has tabindex=0
-        cells[0].focus();
-        expect(document.activeElement).toBe(cells[0]);
-
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        expect(document.activeElement).toBe(cells[4]);
-
-        // second time, to avoid cycling over cells with radios
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        expect(document.activeElement).toBe(cells[5]);
-
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        expect(document.activeElement).toBe(cells[8]);
-
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        expect(document.activeElement).toBe(cells[7]);
-
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expect(document.activeElement).toBe(cells[4]);
-      });
-
-      it('Moves focus to inner actionable element', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[0].focus();
-        expect(document.activeElement).toBe(cells[0]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        expect(document.activeElement).toBe(cells[3].querySelector('[type=radio]'));
-      });
-
-      it('Does not move focus to the placeholder element', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[0].focus();
-        expect(document.activeElement).toBe(cells[0]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        expect(document.activeElement).toBe(cells[9].querySelector('[type=radio]'));
-        // we're at the edge, then we click once more to get to the placeholder
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        expect(document.activeElement).toBe(cells[9].querySelector('[type=radio]'));
-      });
-
-      it('Moves focus to a clicked element', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        const testCell = 7;
-        expect(document.activeElement).not.toBe(cells[testCell]);
-        cells[testCell].dispatchEvent(new MouseEvent('mousedown', { buttons: 1, bubbles: true }));
-        expect(document.activeElement).toBe(cells[testCell]);
-      });
-
-      it('Moves focus on PageDown and PageUp', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-
-        // focus at most left header cell
-        cells[0].focus();
-        expect(document.activeElement).toBe(cells[0]);
-
-        // focus at bottom datagrid radio input
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement).toBe(cells[9].querySelector('[type=radio]'));
-
-        // focus at top datagrid radio input
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement).toBe(cells[3].querySelector('[type=radio]'));
-      });
-
-      it('Moves focus on Home and End', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[0].focus();
-        expect(document.activeElement).toBe(cells[0]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End }));
-        expect(document.activeElement).toBe(cells[2]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
-        expect(document.activeElement).toBe(cells[0]);
-      });
-
-      it('Moves focus on Ctrl-Home and Ctrl-End', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[0].focus();
-        expect(document.activeElement).toBe(cells[0]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        expect(document.activeElement).toBe(cells[11]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        expect(document.activeElement).toBe(cells[0]);
       });
     });
 

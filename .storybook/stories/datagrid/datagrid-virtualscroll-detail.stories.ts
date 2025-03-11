@@ -5,7 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrConditionalModule, ClrDatagrid, ClrDatagridModule, commonStringsDefault } from '@clr/angular';
+import {
+  ClrConditionalModule,
+  ClrDatagrid,
+  ClrDatagridModule,
+  ClrDropdownModule,
+  commonStringsDefault,
+} from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
@@ -16,7 +22,7 @@ export default {
   component: ClrDatagrid,
   decorators: [
     moduleMetadata({
-      imports: [ClrDatagridModule, ClrConditionalModule],
+      imports: [ClrDatagridModule, ClrConditionalModule, ClrDropdownModule],
     }),
   ],
   argTypes: {
@@ -32,6 +38,7 @@ export default {
     // methods
     dataChanged: { control: { disable: true } },
     resize: { control: { disable: true } },
+    scrollToIndexBehaviour: { control: 'radio', options: ['auto', 'smooth'] },
     // story helpers
     behaviorElements: { control: { disable: true }, table: { disable: true } },
     setExpanded: { control: { disable: true }, table: { disable: true } },
@@ -55,6 +62,7 @@ export default {
     clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
     // story helpers
     behaviorElements,
+    scrollToIndexBehaviour: 'smooth',
     singleSelectable: false,
     multiSelectable: false,
     actionOverflow: false,
@@ -79,6 +87,7 @@ const DatagridDetailsTemplate: StoryFn = args => ({
       }
     </style>
     <clr-datagrid
+      #datagrid
       *ngIf="{ elements: behaviorElements | async }; let data"
       ${args.height ? '[style.height.px]="height"' : ''}
       ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
@@ -92,6 +101,7 @@ const DatagridDetailsTemplate: StoryFn = args => ({
       [clrDgSingleActionableAriaLabel]="clrDgSingleActionableAriaLabel"
       [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
       (clrDgRefresh)="clrDgRefresh($event)"
+      (clrDgSelectedChange)="clrDgSelectedChange($event)"
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
       [clrLoadingMoreItems]="clrLoadingMoreItems"
     >
@@ -142,7 +152,22 @@ const DatagridDetailsTemplate: StoryFn = args => ({
           <pre>{{ detail | json }}</pre>
         </clr-dg-detail-body>
       </clr-dg-detail>
-      <clr-dg-footer>{{ data.elements?.length }}</clr-dg-footer>
+
+      <clr-dg-footer>
+        {{ data.elements?.length }}
+        <clr-dropdown>
+          <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
+            Jump to
+            <cds-icon shape="angle" direction="down"></cds-icon>
+          </button>
+          <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
+            <div (click)="datagrid.virtualScroll.scrollToIndex(20, scrollToIndexBehaviour)" clrDropdownItem>20</div>
+            <div (click)="datagrid.virtualScroll.scrollToIndex(60, scrollToIndexBehaviour)" clrDropdownItem>60</div>
+            <div (click)="datagrid.virtualScroll.scrollToIndex(80, scrollToIndexBehaviour)" clrDropdownItem>80</div>
+            <div (click)="datagrid.virtualScroll.scrollToIndex(100, scrollToIndexBehaviour)" clrDropdownItem>100</div>
+          </clr-dropdown-menu>
+        </clr-dropdown>
+      </clr-dg-footer>
     </clr-datagrid>
     {{ details }}
   `,
