@@ -919,6 +919,7 @@
 
     .datagrid-footer {
       padding: 0 tokens.$cds-global-space-7;
+      min-height: tables-variables.$clr-table-compact-row-height;
       line-height: tokens.$cds-global-space-9 - tokens.$cds-global-space-1;
 
       .pagination {

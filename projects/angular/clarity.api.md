@@ -69,6 +69,22 @@ import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 
 // @public (undocumented)
+export interface BreadcrumbItem {
+    // (undocumented)
+    href?: string;
+    // (undocumented)
+    label: string;
+    // (undocumented)
+    queryParams?: {
+        [key: string]: string;
+    };
+    // (undocumented)
+    routerLink?: string;
+    // (undocumented)
+    target?: string;
+}
+
+// @public (undocumented)
 export class CdsIconCustomTag {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<CdsIconCustomTag, "cds-icon", never, {}, {}, never, never, false, never>;
@@ -559,8 +575,6 @@ export class ClrBreadcrumbs {
     protected handleItemClick(breadcrumb: BreadcrumbItem): void;
     // (undocumented)
     isExpanded: boolean;
-    // Warning: (ae-forgotten-export) The symbol "BreadcrumbItem" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     items: BreadcrumbItem[];
     // (undocumented)
