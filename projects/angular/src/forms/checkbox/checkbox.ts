@@ -39,6 +39,10 @@ export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     return this.control?.disabled;
   }
 
+  protected get controlChecked() {
+    return this.control?.value;
+  }
+
   override ngOnInit() {
     super.ngOnInit();
 

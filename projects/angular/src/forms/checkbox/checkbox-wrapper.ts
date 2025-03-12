@@ -29,6 +29,8 @@ export const IS_TOGGLE_PROVIDER = { provide: IS_TOGGLE, useFactory: isToggleFact
     '[class.clr-checkbox-wrapper]': '!toggle',
     '[class.clr-checkbox-wrapper-disabled]': 'checkbox?.controlDisabled',
     '[class.clr-toggle-wrapper]': 'toggle',
+    '[attr.role]': 'toggle ? "switch" : null',
+    '[attr.aria-checked]': 'toggle ? checkbox?.controlChecked : null',
   },
   providers: [ControlIdService, IS_TOGGLE_PROVIDER],
 })
