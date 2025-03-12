@@ -34,6 +34,7 @@ export default {
     clrDgSelectedChange: { control: { disable: true } },
     clrDgSingleSelectedChange: { control: { disable: true } },
     clrRenderRangeChange: { control: { disable: true } },
+    clrTopIndexChange: { control: { disable: true } },
     clrDgActionOverflowOpenChange: { control: { disable: true } },
     // methods
     dataChanged: { control: { disable: true } },
@@ -42,6 +43,7 @@ export default {
     // story helpers
     behaviorElements: { control: { disable: true }, table: { disable: true } },
     setExpanded: { control: { disable: true }, table: { disable: true } },
+    topIndex: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // inputs
@@ -59,6 +61,7 @@ export default {
     clrDgSelectedChange: action('clrDgSelectedChange'),
     clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     clrRenderRangeChange: action('clrRenderRangeChange'),
+    clrTopIndexChange: action('clrTopIndexChange'),
     clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
     // story helpers
     behaviorElements,
@@ -69,6 +72,9 @@ export default {
     actionOverflow: false,
     compact: false,
     hidableColumns: false,
+    topIndex: 0,
+    scrollOffset: 16,
+    showFooterNavButtons: false,
     height: 480,
     selectedRows: [],
     setExpanded,
@@ -85,6 +91,18 @@ const DatagridTemplate: StoryFn = args => ({
         .electronegativity-bar {
           background-color: var(--cds-alias-status-info);
         }
+      }
+      .footer-button {
+        min-width: var(--cds-global-space-9);
+        margin: 0 0 0 var(--cds-global-space-5);
+        padding: 0;
+      }
+      .footer-counter {
+        display: inline-block;
+        border-right: var(--cds-alias-object-border-color) solid var(--cds-global-space-1);
+        padding: 0 var(--cds-global-space-5);
+        margin: 0 var(--cds-global-space-5);
+        font-weight: var(--cds-global-typography-font-weight-semibold);
       }
     </style>
     <clr-datagrid
@@ -127,6 +145,7 @@ const DatagridTemplate: StoryFn = args => ({
         [clrVirtualRowsOf]="data.elements"
         [clrVirtualRowsTemplateCacheSize]="400"
         (renderedRangeChange)="clrRenderRangeChange($event)"
+        (topIndexChange)="clrTopIndexChange($event); topIndex = $event"
       >
         <clr-dg-row [clrDgItem]="element" [clrDgSelected]="selectedRows.includes(index)">
           <clr-dg-action-overflow
@@ -154,19 +173,47 @@ const DatagridTemplate: StoryFn = args => ({
       </ng-template>
 
       <clr-dg-footer>
-        {{ data.elements?.length }}
-        <clr-dropdown>
-          <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
-            Jump to
+        <div class="footer-counter">Total rows {{ data.elements?.length }}</div>
+        <div class="footer-counter" *ngIf="showFooterNavButtons">Top index {{ topIndex }}</div>
+        <div *ngIf="showFooterNavButtons" style="display: inline-block">
+          <clr-dropdown>
+            <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
+              Jump to
+              <cds-icon shape="angle" direction="down"></cds-icon>
+            </button>
+            <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
+              <div (click)="datagrid.virtualScroll.scrollToIndex(20, scrollToIndexBehaviour)" clrDropdownItem>20</div>
+              <div (click)="datagrid.virtualScroll.scrollToIndex(60, scrollToIndexBehaviour)" clrDropdownItem>60</div>
+              <div (click)="datagrid.virtualScroll.scrollToIndex(80, scrollToIndexBehaviour)" clrDropdownItem>80</div>
+              <div (click)="datagrid.virtualScroll.scrollToIndex(100, scrollToIndexBehaviour)" clrDropdownItem>100</div>
+            </clr-dropdown-menu>
+          </clr-dropdown>
+
+          <button
+            class="btn btn-sm btn-link-neutral footer-button"
+            (click)="datagrid.virtualScroll.scrollToIndex(0, scrollToIndexBehaviour)"
+          >
+            <cds-icon shape="step-forward-2" direction="left"></cds-icon>
+          </button>
+          <button
+            class="btn btn-sm btn-link-neutral footer-button"
+            (click)="datagrid.virtualScroll.scrollToIndex(topIndex - scrollOffset, scrollToIndexBehaviour)"
+          >
+            <cds-icon shape="angle" direction="up"></cds-icon>
+          </button>
+          <button
+            class="btn btn-sm btn-link-neutral footer-button"
+            (click)="datagrid.virtualScroll.scrollToIndex(topIndex + scrollOffset, scrollToIndexBehaviour)"
+          >
             <cds-icon shape="angle" direction="down"></cds-icon>
           </button>
-          <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
-            <div (click)="datagrid.virtualScroll.scrollToIndex(20, scrollToIndexBehaviour)" clrDropdownItem>20</div>
-            <div (click)="datagrid.virtualScroll.scrollToIndex(60, scrollToIndexBehaviour)" clrDropdownItem>60</div>
-            <div (click)="datagrid.virtualScroll.scrollToIndex(80, scrollToIndexBehaviour)" clrDropdownItem>80</div>
-            <div (click)="datagrid.virtualScroll.scrollToIndex(100, scrollToIndexBehaviour)" clrDropdownItem>100</div>
-          </clr-dropdown-menu>
-        </clr-dropdown>
+          <button
+            class="btn btn-sm btn-link-neutral footer-button"
+            (click)="datagrid.virtualScroll.scrollToIndex(data.elements?.length, scrollToIndexBehaviour)"
+          >
+            <cds-icon shape="step-forward-2" direction="right"></cds-icon>
+          </button>
+        </div>
       </clr-dg-footer>
     </clr-datagrid>
   `,
@@ -255,5 +302,17 @@ export const FullCompact: StoryObj = {
     expandable: true,
     hidableColumns: true,
     multiSelectable: true,
+  },
+};
+
+export const FullCompactWithButtonNavigationPattern: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    actionOverflow: true,
+    compact: true,
+    expandable: true,
+    hidableColumns: true,
+    multiSelectable: true,
+    showFooterNavButtons: true,
   },
 };
