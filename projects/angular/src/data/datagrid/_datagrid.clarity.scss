@@ -633,6 +633,26 @@
       }
     }
 
+    // Increase interaction area for action buttons without changing layout
+    .datagrid-detail-caret,
+    .datagrid-row-actions,
+    .datagrid-expandable-caret {
+      position: relative;
+
+      .datagrid-action-toggle,
+      .datagrid-detail-caret-button,
+      .datagrid-expandable-caret-button {
+        &:before {
+          content: '';
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          top: 0;
+          left: 0;
+        }
+      }
+    }
+
     .datagrid-placeholder-container {
       flex: 1 1 auto;
       display: flex;
