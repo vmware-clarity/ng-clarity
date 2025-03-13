@@ -42,7 +42,6 @@ export default {
     // story helpers
     behaviorElements: { control: { disable: true }, table: { disable: true } },
     setExpanded: { control: { disable: true }, table: { disable: true } },
-    topIndex: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // inputs
@@ -88,6 +87,10 @@ const DatagridTemplate: StoryFn = args => ({
         .electronegativity-bar {
           background-color: var(--cds-alias-status-info);
         }
+      }
+      .footer-nav-buttons {
+        display: inline-block;
+        margin-left: var(--cds-global-space-5);
       }
       .footer-button {
         min-width: var(--cds-global-space-9);
@@ -162,8 +165,8 @@ const DatagridTemplate: StoryFn = args => ({
       </ng-template>
 
       <clr-dg-footer>
-        <div>Total rows {{ data.elements?.length }}</div>
-        <div *ngIf="showFooterNavButtons" style="display: inline-block">
+        {{ data.elements?.length }}
+        <div *ngIf="showFooterNavButtons" class="footer-nav-buttons">
           <clr-dropdown>
             <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
               Jump to
