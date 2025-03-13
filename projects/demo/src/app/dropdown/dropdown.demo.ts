@@ -19,6 +19,7 @@ import { Component } from '@angular/core';
       <li><a [routerLink]="['./angular-nested']">Nested menu with Angular</a></li>
       <li><a [routerLink]="['./multi-click']">Stay Open After Click Event (Angular)</a></li>
       <li><a [routerLink]="['./dropdown-header']">Dropdown Header</a></li>
+      <li><a [routerLink]="['./relative-positioning']">Relative CSS Positioning</a></li>
     </ul>
     <router-outlet></router-outlet>
   `,
