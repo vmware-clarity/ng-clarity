@@ -43,7 +43,7 @@ jobs:
 
             * 🙏 The Clarity team thanks you for opening a pull request
             * ⏳ The build for this PR has started
-            * 🍿 In the meantime, explore it in [StackBlitz](https://stackblitz.com/~/github.com/${{steps.get-pr-event.outputs.sourceHeadRepo}}/pull/${{steps.get-pr-event.outputs.pullRequestNumber}})
+            * 🍿 In the meantime, explore it in [StackBlitz](https://stackblitz.com/~/github.com/${{github.repository}}/pull/${{steps.get-pr-event.outputs.pullRequestNumber}})
             * 📫 I'll update this comment when the build has finished
 
             Thank you,
@@ -62,7 +62,7 @@ jobs:
             * 🙏 The Clarity team thanks you for opening a pull request
             * 🎉 The build for this PR has succeeded
             * 🔍 The PR is now ready for review
-            * 🍿 In the meantime, view a [preview of this PR](https://${{steps.get-pr-event.outputs.pullRequestNumber}}--${{secrets.NETLIFY_SITE_NAME}}.netlify.app) or explore it in [StackBlitz](https://stackblitz.com/~/github.com/${{steps.get-pr-event.outputs.sourceHeadRepo}}/pull/${{steps.get-pr-event.outputs.pullRequestNumber}})
+            * 🍿 In the meantime, view a [preview of this PR](https://${{steps.get-pr-event.outputs.pullRequestNumber}}--${{secrets.NETLIFY_SITE_NAME}}.netlify.app) or explore it in [StackBlitz](https://stackblitz.com/~/github.com/${{github.repository}}/pull/${{steps.get-pr-event.outputs.pullRequestNumber}})
             * 🖐 You can always follow up here. If you're a VMware employee, you can also reach us on our [internal Clarity Support space](https://chat.google.com/room/AAAA5GLgPr4)
 
             Thank you,
@@ -80,7 +80,7 @@ jobs:
 
             * 😭 The build for this PR has failed
             * 🗒 Please check out the [build log](${{github.event.workflow_run.html_url}})
-            * 🍿 Although the build failed, you can still view a [preview of this PR](https://${{steps.get-pr-event.outputs.pullRequestNumber}}--${{secrets.NETLIFY_SITE_NAME}}.netlify.app) or explore it in [StackBlitz](https://stackblitz.com/~/github.com/${{steps.get-pr-event.outputs.sourceHeadRepo}}/pull/${{steps.get-pr-event.outputs.pullRequestNumber}})
+            * 🍿 Although the build failed, you can still view a [preview of this PR](https://${{steps.get-pr-event.outputs.pullRequestNumber}}--${{secrets.NETLIFY_SITE_NAME}}.netlify.app) or explore it in [StackBlitz](https://stackblitz.com/~/github.com/${{github.repository}}/pull/${{steps.get-pr-event.outputs.pullRequestNumber}})
             * 🖐 You can always follow up here. If you're a VMware employee, you can also reach us on our [internal Clarity Support space](https://chat.google.com/room/AAAA5GLgPr4)
 
             Thank you,
@@ -98,7 +98,7 @@ jobs:
 
             * 😭 The build for this PR has failed
             * 🗒 Please check the [build log](${{github.event.workflow_run.html_url}})
-            * 🍿 In the meantime, explore it in [StackBlitz](https://stackblitz.com/~/github.com/${{steps.get-pr-event.outputs.sourceHeadRepo}}/pull/${{steps.get-pr-event.outputs.pullRequestNumber}})
+            * 🍿 In the meantime, explore it in [StackBlitz](https://stackblitz.com/~/github.com/${{github.repository}}/pull/${{steps.get-pr-event.outputs.pullRequestNumber}})
             * 🖐 You can always follow up here. If you're a VMware employee, you can also reach us on our [internal Clarity Support space](https://chat.google.com/room/AAAA5GLgPr4)
 
             Thank you,
