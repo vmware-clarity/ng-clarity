@@ -5894,11 +5894,13 @@ export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     // (undocumented)
     renderedRangeChange: EventEmitter<ListRange>;
     // (undocumented)
+    scrollDown(offset: number, behaviour?: ScrollBehavior): void;
+    // (undocumented)
     scrollToIndex(index: number, behaviour?: ScrollBehavior): void;
     // (undocumented)
-    topIndexChange: EventEmitter<number>;
+    scrollUp(offset: number, behaviour?: ScrollBehavior): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "cdkVirtualForOf": "clrVirtualRowsOf"; "cdkVirtualForTrackBy": "clrVirtualRowsTrackBy"; "cdkVirtualForTemplate": "clrVirtualRowsTemplate"; "cdkVirtualForTemplateCacheSize": "clrVirtualRowsTemplateCacheSize"; "itemSize": "clrVirtualRowsItemSize"; "minBufferPx": "clrVirtualRowsMinBufferPx"; "maxBufferPx": "clrVirtualRowsMaxBufferPx"; }, { "renderedRangeChange": "renderedRangeChange"; "topIndexChange": "topIndexChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "cdkVirtualForOf": "clrVirtualRowsOf"; "cdkVirtualForTrackBy": "clrVirtualRowsTrackBy"; "cdkVirtualForTemplate": "clrVirtualRowsTemplate"; "cdkVirtualForTemplateCacheSize": "clrVirtualRowsTemplateCacheSize"; "itemSize": "clrVirtualRowsItemSize"; "minBufferPx": "clrVirtualRowsMinBufferPx"; "maxBufferPx": "clrVirtualRowsMaxBufferPx"; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridVirtualScrollDirective<any>, [null, null, { skipSelf: true; }, null, null, null, null, null, null, null, null, null, null]>;
 }
