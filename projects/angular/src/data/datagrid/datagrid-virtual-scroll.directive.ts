@@ -71,7 +71,6 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 })
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
-  @Output() topIndexChange = new EventEmitter<number>();
 
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
 
@@ -82,6 +81,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   private virtualScrollViewport: CdkVirtualScrollViewport;
   private cdkVirtualFor: CdkVirtualForOf<T>;
   private subscriptions: Subscription[] = [];
+  private topIndex = 0;
   private mutationChanges: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
     mutations.forEach((mutation: MutationRecord) => {
       // it is possible this to be called twice because the old class is removed and the new added
@@ -232,7 +232,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         this.updateAriaRowCount(data.length);
       }),
       this.virtualScrollViewport.scrolledIndexChange.subscribe(index => {
-        this.topIndexChange.emit(index);
+        this.topIndex = index;
       }),
       this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
         this.renderedRangeChange.emit(renderedRange);
@@ -260,6 +260,14 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
+  }
+
+  scrollUp(offset: number, behaviour: ScrollBehavior = 'auto') {
+    this.scrollToIndex(this.topIndex - offset, behaviour);
+  }
+
+  scrollDown(offset: number, behaviour: ScrollBehavior = 'auto') {
+    this.scrollToIndex(this.topIndex + offset, behaviour);
   }
 
   scrollToIndex(index: number, behaviour: ScrollBehavior = 'auto') {

@@ -29,7 +29,6 @@ class ChangeDetectionPerfRecord {
 export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {
   range: ListRange;
   userRange: ListRange;
-  topIndex = 0;
   totalRows = 10000;
   totalCols = 5;
   cols: Column[];
@@ -128,12 +127,6 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
 
   rowByIndex(index: number, row: Row) {
     return row.index;
-  }
-
-  topIndexChange($event: number) {
-    this.topIndex = $event;
-    console.log($event);
-    // this.loadMore($event);
   }
 
   renderRangeChange($event: ListRange) {
