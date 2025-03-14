@@ -69,6 +69,8 @@ export default {
     actionOverflow: false,
     compact: false,
     hidableColumns: false,
+    scrollOffset: 16,
+    showFooterNavButtons: false,
     height: 480,
     selectedRows: [],
     setExpanded,
@@ -85,6 +87,15 @@ const DatagridTemplate: StoryFn = args => ({
         .electronegativity-bar {
           background-color: var(--cds-alias-status-info);
         }
+      }
+      .footer-nav-buttons {
+        display: inline-block;
+        margin-left: var(--cds-global-space-5);
+      }
+      .footer-button {
+        min-width: var(--cds-global-space-9);
+        margin: 0 0 0 var(--cds-global-space-5);
+        padding: 0;
       }
     </style>
     <clr-datagrid
@@ -155,18 +166,45 @@ const DatagridTemplate: StoryFn = args => ({
 
       <clr-dg-footer>
         {{ data.elements?.length }}
-        <clr-dropdown>
-          <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
-            Jump to
+        <div *ngIf="showFooterNavButtons" class="footer-nav-buttons">
+          <clr-dropdown>
+            <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
+              Jump to
+              <cds-icon shape="angle" direction="down"></cds-icon>
+            </button>
+            <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
+              <div (click)="datagrid.virtualScroll.scrollToIndex(20, scrollToIndexBehaviour)" clrDropdownItem>20</div>
+              <div (click)="datagrid.virtualScroll.scrollToIndex(60, scrollToIndexBehaviour)" clrDropdownItem>60</div>
+              <div (click)="datagrid.virtualScroll.scrollToIndex(80, scrollToIndexBehaviour)" clrDropdownItem>80</div>
+              <div (click)="datagrid.virtualScroll.scrollToIndex(100, scrollToIndexBehaviour)" clrDropdownItem>100</div>
+            </clr-dropdown-menu>
+          </clr-dropdown>
+
+          <button
+            class="btn btn-sm btn-link-neutral footer-button"
+            (click)="datagrid.virtualScroll.scrollToIndex(0, scrollToIndexBehaviour)"
+          >
+            <cds-icon shape="step-forward-2" direction="left"></cds-icon>
+          </button>
+          <button
+            class="btn btn-sm btn-link-neutral footer-button"
+            (click)="datagrid.virtualScroll.scrollUp(scrollOffset, scrollToIndexBehaviour)"
+          >
+            <cds-icon shape="angle" direction="up"></cds-icon>
+          </button>
+          <button
+            class="btn btn-sm btn-link-neutral footer-button"
+            (click)="datagrid.virtualScroll.scrollDown(scrollOffset, scrollToIndexBehaviour)"
+          >
             <cds-icon shape="angle" direction="down"></cds-icon>
           </button>
-          <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
-            <div (click)="datagrid.virtualScroll.scrollToIndex(20, scrollToIndexBehaviour)" clrDropdownItem>20</div>
-            <div (click)="datagrid.virtualScroll.scrollToIndex(60, scrollToIndexBehaviour)" clrDropdownItem>60</div>
-            <div (click)="datagrid.virtualScroll.scrollToIndex(80, scrollToIndexBehaviour)" clrDropdownItem>80</div>
-            <div (click)="datagrid.virtualScroll.scrollToIndex(100, scrollToIndexBehaviour)" clrDropdownItem>100</div>
-          </clr-dropdown-menu>
-        </clr-dropdown>
+          <button
+            class="btn btn-sm btn-link-neutral footer-button"
+            (click)="datagrid.virtualScroll.scrollToIndex(data.elements?.length, scrollToIndexBehaviour)"
+          >
+            <cds-icon shape="step-forward-2" direction="right"></cds-icon>
+          </button>
+        </div>
       </clr-dg-footer>
     </clr-datagrid>
   `,
@@ -255,5 +293,17 @@ export const FullCompact: StoryObj = {
     expandable: true,
     hidableColumns: true,
     multiSelectable: true,
+  },
+};
+
+export const FullCompactWithButtonNavigationPattern: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    actionOverflow: true,
+    compact: true,
+    expandable: true,
+    hidableColumns: true,
+    multiSelectable: true,
+    showFooterNavButtons: true,
   },
 };
