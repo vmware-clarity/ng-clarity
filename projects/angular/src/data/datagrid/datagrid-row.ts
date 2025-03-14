@@ -48,6 +48,7 @@ let nbRow = 0;
   templateUrl: './datagrid-row.html',
   host: {
     '[class.datagrid-row]': 'true',
+    '[class.datagrid-skeleton-row]': 'showSkeleton',
     '[class.datagrid-selected]': 'selected',
     '[attr.aria-owns]': 'id',
     role: 'rowgroup',

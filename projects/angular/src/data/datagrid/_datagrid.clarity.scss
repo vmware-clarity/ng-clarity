@@ -164,18 +164,18 @@
       border-top: none;
     }
 
-    &:hover,
-    &:hover .datagrid-row-sticky {
+    &:not(.datagrid-skeleton-row):hover,
+    &:not(.datagrid-skeleton-row):hover .datagrid-row-sticky {
       background-color: datagrid-variables.$clr-datagrid-row-hover-color;
     }
 
-    &.datagrid-selected,
-    &.datagrid-selected .datagrid-row-sticky {
+    &:not(.datagrid-skeleton-row).datagrid-selected,
+    &:not(.datagrid-skeleton-row).datagrid-selected .datagrid-row-sticky {
       color: datagrid-variables.$clr-datagrid-row-selected;
       background-color: datagrid-variables.$clr-datagrid-row-selected-background-color;
     }
 
-    &.datagrid-selected {
+    &.datagrid-selected:not(.datagrid-skeleton-row) {
       &:hover,
       &:hover .datagrid-row-sticky {
         background-color: datagrid-variables.$clr-datagrid-row-selected-hover-background-color;
@@ -186,8 +186,8 @@
       }
     }
 
-    &:active,
-    &:active .datagrid-row-sticky {
+    &:not(.datagrid-skeleton-row):active,
+    &:not(.datagrid-skeleton-row):active .datagrid-row-sticky {
       background-color: datagrid-variables.$clr-datagrid-row-active-color;
     }
 
