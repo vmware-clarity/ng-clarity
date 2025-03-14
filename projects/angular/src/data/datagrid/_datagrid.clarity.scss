@@ -308,13 +308,14 @@
     clr-dg-cell.loading-skeleton > div {
       border-radius: tokens.$cds-alias-object-border-radius-100;
       background: linear-gradient(
-        225deg,
-        tokens.$cds-alias-object-container-background-shade 8%,
-        tokens.$cds-alias-object-container-background-tint 18%,
-        tokens.$cds-alias-object-container-background-dark 33%
+        90deg,
+        tokens.$cds-alias-object-container-background-tint 1%,
+        tokens.$cds-alias-object-container-background-dark 30%,
+        tokens.$cds-alias-object-container-background-dark 70%,
+        tokens.$cds-alias-object-container-background-tint 100%
       );
-      background-size: 150% 100%;
-      animation: 4s shine linear infinite;
+      background-size: 200% 100%;
+      animation: 3s shine ease-in-out infinite;
     }
 
     .datagrid-row-detail {

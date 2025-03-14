@@ -38,7 +38,7 @@
     class="datagrid-row-master datagrid-row-flex"
     [class.datagrid-row-detail-open]="detailService.isRowOpen(item)"
   >
-    <div class="datagrid-row-sticky">
+    <div [style.display]="showSkeleton ? 'none' : ''" class="datagrid-row-sticky">
       <!-- Sticky elements here -->
       <ng-container #stickyCells>
         <div
