@@ -1,0 +1,56 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+:root [cds-theme] {
+  --cds-alias-utility-gray: var(--cds-global-color-construction-600);
+  --cds-alias-object-container-backdrop-background: hsla(0, 0%, 100%, 0.6);
+  --cds-alias-object-interaction-background-hover: var(--cds-global-color-construction-50);
+  --cds-alias-object-interaction-background-active: var(--cds-global-color-construction-100);
+  --cds-alias-object-interaction-background-selected: var(--cds-global-color-blue-75);
+  --cds-alias-object-interaction-background-selected-hover: var(--cds-global-color-construction-100);
+  --cds-alias-object-interaction-background-selected-active: var(--cds-global-color-construction-200);
+  --cds-alias-object-interaction-outline: Highlight auto 2px;
+  --cds-alias-object-interaction-info-selected: var(--cds-global-color-blue-900);
+  --cds-alias-object-interaction-info-active: var(--cds-alias-object-interaction-info-click);
+  --cds-alias-object-interaction-success-active: var(--cds-alias-object-interaction-success-click);
+  --cds-alias-object-interaction-warning-active: var(--cds-alias-object-interaction-warning-click);
+  --cds-alias-object-interaction-danger-active: var(--cds-alias-object-interaction-danger-click);
+  --cds-alias-object-interaction-neutral-active: var(--cds-alias-object-interaction-neutral-click);
+  --cds-alias-object-interaction-inverse-active: var(--cds-alias-object-interaction-inverse-click);
+  --cds-alias-object-interaction-background-shade: var(--cds-global-color-construction-100);
+  --cds-alias-object-interaction-background-shade-hover: var(--cds-global-color-construction-200);
+  --cds-alias-object-interaction-background-shade-active: var(--cds-global-color-construction-300);
+  --cds-alias-object-interaction-background-shade-selected: var(--cds-global-color-white);
+  --cds-alias-object-interaction-background-shade-selected-hover: var(--cds-global-color-construction-200);
+  --cds-alias-object-interaction-background-shade-selected-active: var(--cds-global-color-construction-300);
+  --cds-alias-object-container-background-inverse: var(--cds-global-color-construction-600);
+  --cds-alias-object-container-background-inverse-tint: var(--cds-global-color-construction-800);
+  --cds-alias-object-container-background-inverse-shade: var(--cds-global-color-construction-500);
+}
+:root [cds-theme~=dark] {
+  --cds-alias-utility-gray: var(--cds-global-color-construction-300);
+  --cds-alias-status-warning-dark: var(--cds-global-color-ochre-600);
+  --cds-alias-status-warning-tint: var(--cds-global-color-ochre-900);
+  --cds-alias-status-danger-tint: var(--cds-global-color-red-900);
+  --cds-alias-object-container-backdrop-background: var(--cds-alias-object-opacity-300);
+  --cds-alias-object-interaction-background-hover: var(--cds-global-color-construction-800);
+  --cds-alias-object-interaction-background-active: var(--cds-global-color-construction-600);
+  --cds-alias-object-interaction-background-selected: var(--cds-global-color-blue-900);
+  --cds-alias-object-interaction-background-selected-active: var(--cds-global-color-construction-600);
+  --cds-alias-object-interaction-background-selected-hover: var(--cds-global-color-construction-700);
+  --cds-alias-object-interaction-info-selected: var(--cds-global-color-blue-500);
+  --cds-alias-object-interaction-background-shade: var(--cds-global-color-construction-900);
+  --cds-alias-object-interaction-background-shade-hover: var(--cds-global-color-construction-800);
+  --cds-alias-object-interaction-background-shade-active: var(--cds-global-color-construction-600);
+  --cds-alias-object-interaction-background-shade-selected: var(--cds-global-color-blue-900);
+  --cds-alias-object-interaction-background-shade-selected-hover: var(--cds-global-color-construction-800);
+  --cds-alias-object-interaction-background-shade-selected-active: var(--cds-global-color-construction-600);
+  --cds-alias-object-container-background-inverse: var(--cds-global-color-construction-200);
+  --cds-alias-object-container-background-inverse-tint: var(--cds-global-color-construction-100);
+  --cds-alias-object-container-background-inverse-shade: var(--cds-global-color-construction-300);
+}
+
+/*# sourceMappingURL=temp-overrides.css.map */

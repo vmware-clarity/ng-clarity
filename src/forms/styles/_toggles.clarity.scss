@@ -1,0 +1,238 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../../button/variables.toggles' as toggle-variables;
+@use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+
+@mixin clr-toggle-transition-styles() {
+  transition-duration: toggle-variables.$clr-toggle-transition-time;
+  transition-timing-function: toggle-variables.$clr-toggle-transition-animation;
+}
+
+@include meta.load-css('../../button/properties.toggles');
+
+@include mixins.exports('toggles.clarity') {
+  $clr-toggle-switch-spacing-negative: calc(-1 * #{toggle-variables.$clr-toggle-switch-spacing});
+  $clr-toggle-icon-margin: calc(
+    #{toggle-variables.$clr-toggle-switch-base-width} + #{toggle-variables.$clr-toggle-switch-base-spacing}
+  );
+  $clr-toggle-icon-margin-negative: calc(-1 * #{$clr-toggle-icon-margin});
+  $clr-toggle-icon-dot-place: calc(-1 * #{$clr-toggle-icon-margin});
+
+  //Remove the default checkbox appearance
+  %custom-checkbox {
+    @include mixins.clr-appearance-normal();
+  }
+
+  .clr-toggle-wrapper {
+    vertical-align: middle;
+    position: relative;
+    display: block;
+    margin-right: tokens.$cds-global-space-6;
+    height: toggle-variables.$clr-toggle-height;
+
+    label {
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+      margin-right: 0;
+      margin-left: $clr-toggle-icon-margin;
+      height: toggle-variables.$clr-toggle-height;
+    }
+
+    input[type='checkbox'] {
+      @extend %custom-checkbox;
+
+      position: absolute;
+      top: tokens.$cds-global-space-4;
+      right: tokens.$cds-global-space-4;
+      @include mixins.equilateral(tokens.$cds-global-space-7);
+      opacity: 0;
+    }
+
+    input[type='checkbox'] + label::before {
+      position: absolute;
+      display: inline-block;
+      content: '';
+      border: tokens.$cds-alias-object-border-width-200 solid toggle-variables.$clr-toggle-bg-color-off;
+      border-radius: tokens.$cds-alias-object-border-radius-200;
+      height: toggle-variables.$clr-toggle-switch-base-height;
+      width: toggle-variables.$clr-toggle-switch-base-width;
+      background-color: toggle-variables.$clr-toggle-bg-color-off;
+      top: tokens.$cds-global-space-3;
+
+      right: 0;
+      left: $clr-toggle-icon-margin-negative;
+      @include clr-toggle-transition-styles;
+      transition-property: border-color, background-color;
+    }
+
+    input[type='checkbox']:focus + label::before {
+      @include mixins.include-outline-style-form-fields();
+    }
+
+    input[type='checkbox']:checked + label::before {
+      border-color: toggle-variables.$clr-toggle-bg-color-on;
+      background-color: toggle-variables.$clr-toggle-bg-color-on;
+      @include clr-toggle-transition-styles;
+      transition-property: border-color, background-color;
+    }
+
+    //Toggle Switch
+    input[type='checkbox'] + label::after {
+      position: absolute;
+      display: inline-block;
+      content: '';
+      border: tokens.$cds-alias-object-border-width-200 solid toggle-variables.$clr-toggle-handle-border-color;
+      border-radius: tokens.$cds-alias-object-border-radius-300;
+      right: 0;
+      top: tokens.$cds-global-space-3;
+      background-color: toggle-variables.$clr-toggle-handle-bg-color;
+
+      @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
+      left: $clr-toggle-icon-dot-place;
+      @include clr-toggle-transition-styles;
+      transition-property: right, left;
+    }
+
+    input[type='checkbox']:checked + label::after {
+      border-color: toggle-variables.$clr-toggle-handle-border-color-on;
+      right: $clr-toggle-icon-dot-place;
+      left: $clr-toggle-switch-spacing-negative;
+      @include clr-toggle-transition-styles;
+      transition-property: right, left;
+    }
+
+    &.disabled {
+      label {
+        cursor: not-allowed;
+      }
+
+      input[type='checkbox']:checked + label::before {
+        border-color: toggle-variables.$clr-toggle-disabled-on-border-color;
+        background-color: toggle-variables.$clr-toggle-disabled-on-bg-color;
+      }
+    }
+
+    // TODO: cleanup hard-coded sizes in here. not sure what they are keying on...
+    input[type='checkbox']:disabled + label {
+      cursor: not-allowed;
+
+      &::before {
+        // toggle disabled/off bg color
+        background-color: toggle-variables.$clr-toggle-disabled-off-bg-color;
+        // toggle disabled/off border color (excluding the handle circle)
+        border-color: toggle-variables.$clr-toggle-disabled-off-border-color;
+      }
+
+      &::after {
+        // toggle handle color for disabled/off and inner part of handle disabled/on
+        background-color: toggle-variables.$clr-toggle-disabled-off-bg-color;
+        border-color: toggle-variables.$clr-toggle-disabled-off-handle-border-color;
+        @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
+        top: tokens.$cds-global-space-3;
+      }
+    }
+
+    input[type='checkbox']:checked:disabled + label::before {
+      // toggle disabled/on border color
+      border-color: toggle-variables.$clr-toggle-disabled-on-border-color;
+      // toggle disabled/on bg color
+      background-color: toggle-variables.$clr-toggle-disabled-on-bg-color;
+    }
+
+    input[type='checkbox']:checked:disabled + label::after {
+      // toggle disabled on handle circle border color
+      border-color: toggle-variables.$clr-toggle-disabled-on-handle-border-color;
+      @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
+      top: tokens.$cds-global-space-3;
+      left: $clr-toggle-switch-spacing-negative;
+    }
+
+    input[type='checkbox']:disabled + label::after {
+      left: $clr-toggle-icon-margin-negative;
+    }
+
+    // Allow for label to be on the right of the toggle switch.
+    &.right-label {
+      label {
+        margin-left: $clr-toggle-icon-margin;
+        margin-right: 0;
+      }
+
+      input[type='checkbox'] + label::before {
+        right: 0;
+        left: $clr-toggle-icon-margin-negative;
+      }
+
+      input[type='checkbox'] + label::after {
+        right: 0;
+        left: $clr-toggle-icon-dot-place;
+        transition-property: left;
+      }
+
+      input[type='checkbox']:checked + label::after {
+        left: $clr-toggle-switch-spacing-negative;
+        transition-property: left;
+      }
+    }
+
+    .clr-control-label {
+      display: block;
+      @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+      padding: tokens.$cds-global-space-3 0;
+      margin-top: 0;
+    }
+  }
+
+  // These are the inline styles overrides
+  .clr-control-inline .clr-toggle-wrapper .clr-control-label {
+    display: inline-block;
+    margin-right: 0;
+  }
+
+  // This sets the option to move the toggles to the right of the label
+  .clr-toggle-right {
+    label {
+      display: inline-block;
+      margin-left: 0;
+      margin-right: $clr-toggle-icon-margin;
+    }
+
+    input[type='checkbox'] + label::before {
+      left: unset;
+      right: $clr-toggle-icon-margin-negative;
+    }
+
+    input[type='checkbox'] + label::after {
+      left: unset;
+      right: $clr-toggle-switch-spacing-negative;
+      transition-property: right;
+    }
+
+    input[type='checkbox']:checked + label::after {
+      left: unset;
+      right: $clr-toggle-icon-dot-place;
+      transition-property: right;
+    }
+
+    input[type='checkbox']:disabled + label::after {
+      left: unset;
+      right: $clr-toggle-switch-spacing-negative;
+    }
+
+    input[type='checkbox']:checked:disabled + label::after {
+      left: unset;
+      right: $clr-toggle-icon-dot-place;
+    }
+
+    .clr-control-inline .clr-toggle-wrapper .clr-control-label {
+      margin-right: $clr-toggle-icon-margin;
+    }
+  }
+}

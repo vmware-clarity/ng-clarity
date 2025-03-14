@@ -1,0 +1,14 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+// OG Theme: This is for generating the OG Clarity Theme
+
+// Clarity component code (consumes the variables and theme overrides)
+@use 'utils/components.clarity';
+
+// Metropolis font
+@use 'typography/font-metropolis';
