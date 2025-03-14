@@ -6,81 +6,44 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ClrDatagridSortOrder } from '@clr/angular';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { ChangeDetectorRef, Component } from '@angular/core';
 
-import { DynamicData, Row } from '../inventory/dynamic-data';
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
-import { PokemonComparator } from '../utils/pokemon-comparator';
 
 @Component({
   selector: 'clr-datagrid-virtual-scroll-empty-rows-demo',
-  providers: [DynamicData, Inventory],
+  providers: [Inventory],
   templateUrl: './virtual-scroll-empty-rows.html',
   styleUrls: ['../datagrid.demo.scss'],
 })
-export class DatagridVirtualScrollEmptyRowsDemo implements OnInit, AfterViewChecked {
+export class DatagridVirtualScrollEmptyRowsDemo {
   userRange: ListRange;
   totalRows = 10000;
-  users: Observable<User[]>;
+  users: User[];
 
   selectedUsers: User[] = [];
-  sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
-  globalFilter = '';
 
-  pokemonComparator = new PokemonComparator();
-
-  constructor(public inventory: Inventory, private dynamicData: DynamicData, private cdr: ChangeDetectorRef) {
-    this.users = new BehaviorSubject<User[]>(Array(this.totalRows));
-
-    this.users.subscribe(users => {
-      console.log(users);
-    });
-  }
-
-  ngAfterViewChecked(): void {
-    this.cdr.detectChanges();
-  }
-
-  ngOnInit(): void {
-    // this.calculateDatagrid();
-  }
-
-  setGlobalFilter(value: string) {
-    this.globalFilter = value;
-
-    if (value) {
-      this.users = new BehaviorSubject<User[]>(this.inventory.all.filter(user => user.name.includes(value)));
-    } else {
-      this.users = this.inventory.getAllUsersSubject();
-    }
-  }
-
-  calculateDatagrid() {
-    this.loadUsers();
-  }
-
-  loadUsers() {
-    this.inventory.size = this.totalRows;
-    this.inventory.all = [];
-    this.inventory.lazyLoadUsers(this.inventory.size);
-
-    this.users = this.inventory.getAllUsersSubject();
-  }
-
-  setExpanded($event: boolean, user: User | Row) {
-    user.expanded = $event;
+  constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
+    this.users = Array(this.totalRows);
   }
 
   renderUserRangeChange($event: ListRange) {
     this.userRange = $event;
     console.log($event);
+    const generatedData = this.inventory.addBySize(($event.end - $event.start) * 3, $event.start);
+
+    for (let i = 0; i < generatedData.length; i++) {
+      this.users[generatedData[i].id] = generatedData[i];
+    }
+
+    setTimeout(() => {
+      this.users = [...this.users];
+      this.cdr.detectChanges();
+    }, 2000);
   }
 
-  rowByIndex(index: number, user: User) {
-    console.log(user);
+  rowByIndex(index: number) {
     return index;
   }
 

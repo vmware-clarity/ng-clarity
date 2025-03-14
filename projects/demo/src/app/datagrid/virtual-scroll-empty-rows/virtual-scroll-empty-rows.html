@@ -7,24 +7,17 @@
 
 <h2>Virtual scroll empty rows</h2>
 
-<clr-datagrid
-  #datagrid
-  *ngIf="{ users: users | async }; let data"
-  [(clrDgSelected)]="selectedUsers"
-  class="datagrid-compact"
-  style="height: 30rem"
->
-  <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
-  <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
-  <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
-  <clr-dg-column [clrDgField]="'pokemon.name'" [clrDgSortBy]="pokemonComparator">Pokemon</clr-dg-column>
-  <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column>
+<clr-datagrid #datagrid [(clrDgSelected)]="selectedUsers" class="datagrid-compact" style="height: 30rem">
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>Pokemon</clr-dg-column>
+  <clr-dg-column>Favorite color</clr-dg-column>
 
   <ng-template
-    *ngIf="data.users"
     clrVirtualScroll
     let-user
-    [clrVirtualRowsOf]="data.users"
+    [clrVirtualRowsOf]="users"
     [clrVirtualRowsItemSize]="32"
     [clrVirtualRowsMinBufferPx]="200"
     [clrVirtualRowsMaxBufferPx]="400"
@@ -37,8 +30,8 @@
       <clr-dg-cell>{{user?.name}}</clr-dg-cell>
       <clr-dg-cell>{{user?.creation | date}}</clr-dg-cell>
       <clr-dg-cell>
-        {{user?.pokemon.name}}
-        <span class="badge badge-5">#{{user?.pokemon.number}}</span>
+        {{user?.pokemon?.name}}
+        <span class="badge badge-5">#{{user?.pokemon?.number}}</span>
       </clr-dg-cell>
       <clr-dg-cell>
         <span class="color-square" [style.backgroundColor]="user?.color"></span>
@@ -54,8 +47,7 @@
   </clr-dg-detail>
 
   <clr-dg-footer>
-    {{users[0]}}
-    <div class="footer-counters">Rows {{userRange?.start + 1}} - {{userRange?.end}} of {{data.users.length}}</div>
+    <div class="footer-counters">Rows {{userRange?.start + 1}} - {{userRange?.end}} of {{users.length}}</div>
     <clr-dropdown>
       <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
         Snap Jump to
@@ -63,7 +55,7 @@
       </button>
       <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
         <div
-          *ngFor="let index of getIndexes(data.users)"
+          *ngFor="let index of getIndexes(users)"
           (click)="datagrid.virtualScroll.scrollToIndex(index, 'auto')"
           clrDropdownItem
         >
