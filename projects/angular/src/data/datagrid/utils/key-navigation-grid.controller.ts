@@ -201,6 +201,7 @@ export class KeyNavigationGridController implements OnDestroy {
       } else {
         const tabbableElements = getTabbableItems(activeCell);
         elementToFocus = tabbableElements.length ? tabbableElements[0] : activeCell;
+        elementToFocus.setAttribute('tabindex', '0');
       }
 
       elementToFocus.focus();
