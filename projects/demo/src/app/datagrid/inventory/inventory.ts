@@ -37,12 +37,12 @@ export class Inventory {
     this._all = this._all.concat(this.addBySize());
   }
 
-  addBySize(size = this.size) {
+  addBySize(size = this.size, startCount = this.generatedCount) {
     const newData: User[] = [];
 
     for (let i = 0; i < size; i++) {
       newData.push({
-        id: this.generatedCount + i,
+        id: startCount + i,
         name: this.getItem(i, NAMES),
         creation: new Date(Date.now() * Math.random()),
         color: this.getItem(i, COLORS),

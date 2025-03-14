@@ -19,6 +19,12 @@
 @use 'variables.datagrid' as datagrid-variables;
 @use '@cds/core/tokens/tokens.scss';
 
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}
+
 @mixin clr-datagrid-header-bg {
   background-color: tables-variables.$clr-thead-bgcolor;
 }
@@ -158,18 +164,18 @@
       border-top: none;
     }
 
-    &:hover,
-    &:hover .datagrid-row-sticky {
+    &:not(.datagrid-skeleton-row):hover,
+    &:not(.datagrid-skeleton-row):hover .datagrid-row-sticky {
       background-color: datagrid-variables.$clr-datagrid-row-hover-color;
     }
 
-    &.datagrid-selected,
-    &.datagrid-selected .datagrid-row-sticky {
+    &:not(.datagrid-skeleton-row).datagrid-selected,
+    &:not(.datagrid-skeleton-row).datagrid-selected .datagrid-row-sticky {
       color: datagrid-variables.$clr-datagrid-row-selected;
       background-color: datagrid-variables.$clr-datagrid-row-selected-background-color;
     }
 
-    &.datagrid-selected {
+    &.datagrid-selected:not(.datagrid-skeleton-row) {
       &:hover,
       &:hover .datagrid-row-sticky {
         background-color: datagrid-variables.$clr-datagrid-row-selected-hover-background-color;
@@ -180,8 +186,8 @@
       }
     }
 
-    &:active,
-    &:active .datagrid-row-sticky {
+    &:not(.datagrid-skeleton-row):active,
+    &:not(.datagrid-skeleton-row):active .datagrid-row-sticky {
       background-color: datagrid-variables.$clr-datagrid-row-active-color;
     }
 
@@ -298,6 +304,19 @@
     flex: 1 1 auto;
     display: flex;
     flex-flow: row nowrap;
+
+    clr-dg-cell.loading-skeleton > div {
+      border-radius: tokens.$cds-alias-object-border-radius-100;
+      background: linear-gradient(
+        90deg,
+        tokens.$cds-alias-object-container-background-tint 1%,
+        tokens.$cds-alias-object-container-background-dark 30%,
+        tokens.$cds-alias-object-container-background-dark 70%,
+        tokens.$cds-alias-object-container-background-tint 100%
+      );
+      background-size: 200% 100%;
+      animation: 3s shine ease-in-out infinite;
+    }
 
     .datagrid-row-detail {
       display: flex;
