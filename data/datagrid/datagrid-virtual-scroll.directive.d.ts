@@ -31,6 +31,7 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
     private virtualScrollViewport;
     private cdkVirtualFor;
     private subscriptions;
+    private topIndex;
     private mutationChanges;
     private viewRepeater;
     private cdkVirtualForInputs;
@@ -52,7 +53,9 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
     ngAfterViewInit(): void;
     ngDoCheck(): void;
     ngOnDestroy(): void;
-    scrollToIndex(index: number, behaviour?: ScrollBehavior): void;
+    scrollUp(offset: number, behavior?: ScrollBehavior): void;
+    scrollDown(offset: number, behavior?: ScrollBehavior): void;
+    scrollToIndex(index: number, behavior?: ScrollBehavior): void;
     private updateCdkVirtualForInputs;
     private updateFixedSizeVirtualScrollInputs;
     private updateAriaRowCount;

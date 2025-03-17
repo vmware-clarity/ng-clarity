@@ -21334,6 +21334,7 @@ class ClrDatagridVirtualScrollDirective {
         this.renderedRangeChange = new EventEmitter();
         this._cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
         this.subscriptions = [];
+        this.topIndex = 0;
         this.mutationChanges = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 // it is possible this to be called twice because the old class is removed and the new added
@@ -21419,6 +21420,8 @@ class ClrDatagridVirtualScrollDirective {
             this.cdkVirtualFor.cdkVirtualForOf = newItems;
         }), this.cdkVirtualFor.dataStream.subscribe(data => {
             this.updateAriaRowCount(data.length);
+        }), this.virtualScrollViewport.scrolledIndexChange.subscribe(index => {
+            this.topIndex = index;
         }), this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
             this.renderedRangeChange.emit(renderedRange);
         }), this.datagrid.refresh.subscribe(datagridState => {
@@ -21441,8 +21444,14 @@ class ClrDatagridVirtualScrollDirective {
             subscription.unsubscribe();
         });
     }
-    scrollToIndex(index, behaviour = 'auto') {
-        this.virtualScrollViewport?.scrollToIndex(index, behaviour);
+    scrollUp(offset, behavior = 'auto') {
+        this.scrollToIndex(this.topIndex - offset, behavior);
+    }
+    scrollDown(offset, behavior = 'auto') {
+        this.scrollToIndex(this.topIndex + offset, behavior);
+    }
+    scrollToIndex(index, behavior = 'auto') {
+        this.virtualScrollViewport?.scrollToIndex(index, behavior);
     }
     updateCdkVirtualForInputs() {
         if (this.cdkVirtualFor) {
