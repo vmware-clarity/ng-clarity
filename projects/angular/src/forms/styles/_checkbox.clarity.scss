@@ -15,6 +15,11 @@
 @include mixins.exports('forms.checkbox') {
   $mark-half-size: calc(#{forms-variables.$clr-forms-checkbox-mark-size} * 0.5);
 
+  //Remove the default checkbox appearance
+  %custom-checkbox {
+    @include mixins.clr-appearance-normal();
+  }
+
   // @TODO un-nest the checkbox from the wrapper, after old forms are removed
   .clr-checkbox-wrapper {
     @include forms-mixins.form-flatten-validate-text();
@@ -35,7 +40,8 @@
     //Opacity is set to 0 so that the input remains accessible
     input[type='checkbox'] {
       @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-checkbox-size);
-      appearance: none;
+      @extend %custom-checkbox;
+      border-radius: forms-variables.$clr-forms-checkbox-border-radius; // Style outline radius properly
 
       //Checkbox base
       &::before {
@@ -46,8 +52,8 @@
 
         border-radius: forms-variables.$clr-forms-checkbox-border-radius;
       }
-      &:focus::before {
-        @include mixins.include-outline-style-form-fields();
+      &:focus {
+        @include mixins.include-outline-style-form-fields(tokens.$cds-global-space-2);
       }
       //Checkmark
       &::after {
@@ -60,7 +66,6 @@
           forms-variables.$clr-forms-checkbox-mark-color;
         border-bottom: forms-variables.$clr-forms-checkbox-mark-border-size solid
           forms-variables.$clr-forms-checkbox-mark-color;
-        top: calc(calc(#{forms-variables.$clr-forms-baseline} * 4 - #{alert-variables.$clr-icon-dimension-sm}) * 0.5);
         left: $mark-half-size;
         transform: translate(0, $mark-half-size) rotate(-45deg);
       }

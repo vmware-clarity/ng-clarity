@@ -94,7 +94,7 @@
 }
 
 @mixin checkbox-radio-input-styles($size) {
-  //Display
+  position: relative;
   //NOTE: Even though the input is invisible, we assign it a height
   //and width so that it aligns right behind the fake checkbox
   //and so that the user's default input size doesn't affect it

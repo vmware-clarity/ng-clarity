@@ -11,6 +11,11 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('forms.radio') {
+  //Remove the default radio appearance
+  %custom-radio {
+    @include mixins.clr-appearance-normal();
+  }
+
   // @TODO un-nest the radio inputs when old forms are removed
   .clr-radio-wrapper {
     @include forms-mixins.form-flatten-validate-text();
@@ -22,7 +27,8 @@
     //Hide the default radio
     input[type='radio'] {
       @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-radio-size);
-      appearance: none;
+      @extend %custom-radio;
+      border-radius: 50%; // Style outline radius properly
 
       //Radio button base
       &::before {
@@ -34,29 +40,24 @@
       }
 
       //Checked Radio Styles
-      &:checked::before {
-        box-shadow: forms-variables.$clr-forms-radio-selected-shadow;
-        border: none;
+      &:checked {
+        &::before {
+          border: none;
+          box-shadow: forms-variables.$clr-forms-radio-selected-shadow;
+        }
+        &:disabled::before {
+          //background-color around the dot
+          box-shadow: forms-variables.$clr-forms-radio-checked-disabled-shadow;
+        }
       }
 
-      //Outline color for unchecked radios
       &:focus {
-        &::before {
-          @include mixins.include-outline-style-form-fields();
-          //Outline color for checked radios
-          &:checked {
-            @include mixins.include-outline-style-form-fields();
-          }
-        }
+        @include mixins.include-outline-style-form-fields(tokens.$cds-global-space-2);
       }
 
       &:disabled::before {
         background-color: forms-variables.$clr-forms-radio-disabled-background-color;
         border-color: tokens.$cds-alias-object-interaction-color-disabled;
-        &:checked {
-          //background-color around the dot
-          box-shadow: forms-variables.$clr-forms-radio-checked-disabled-shadow;
-        }
       }
     }
 
