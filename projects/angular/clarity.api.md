@@ -764,8 +764,6 @@ export class ClrCalendar implements OnDestroy {
 export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, toggle: string);
     // (undocumented)
-    protected get controlChecked(): any;
-    // (undocumented)
     get controlDisabled(): boolean;
     // (undocumented)
     ngOnInit(): void;
@@ -821,9 +819,11 @@ export class ClrCheckboxModule {
 
 // @public (undocumented)
 export class ClrCheckboxWrapper implements OnInit, OnDestroy {
-    constructor(toggleService: BehaviorSubject<boolean>);
+    constructor(toggleService: BehaviorSubject<boolean>, el: ElementRef<HTMLElement>);
     // (undocumented)
     checkbox: ClrCheckbox;
+    // (undocumented)
+    protected get controlChecked(): boolean;
     // (undocumented)
     label: ClrLabel;
     // (undocumented)

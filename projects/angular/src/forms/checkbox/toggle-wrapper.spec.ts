@@ -83,5 +83,26 @@ export default function (): void {
         expect(containerEl.className).not.toContain('clr-checkbox-wrapper');
       });
     });
+
+    describe('a11y', () => {
+      let fixture, containerDE, containerEl;
+
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],
+          declarations: [ClrCheckboxWrapper, ClrCheckbox, FullTest],
+          providers: [IfControlStateService, NgControl, NgControlService, LayoutService],
+        });
+        fixture = TestBed.createComponent(FullTest);
+
+        containerDE = fixture.debugElement.query(By.directive(ClrCheckboxWrapper));
+        containerEl = containerDE.nativeElement;
+        fixture.detectChanges();
+      });
+
+      it('should have the role attribute', () => {
+        expect(containerEl.getAttribute('role')).toBe('switch');
+      });
+    });
   });
 }

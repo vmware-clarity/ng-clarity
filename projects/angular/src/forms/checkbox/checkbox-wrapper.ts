@@ -5,7 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, forwardRef, Inject, InjectionToken, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ContentChild,
+  ElementRef,
+  forwardRef,
+  Inject,
+  InjectionToken,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { ClrLabel } from '../common/label';
@@ -30,7 +39,7 @@ export const IS_TOGGLE_PROVIDER = { provide: IS_TOGGLE, useFactory: isToggleFact
     '[class.clr-checkbox-wrapper-disabled]': 'checkbox?.controlDisabled',
     '[class.clr-toggle-wrapper]': 'toggle',
     '[attr.role]': 'toggle ? "switch" : null',
-    '[attr.aria-checked]': 'toggle ? checkbox?.controlChecked : null',
+    '[attr.aria-checked]': 'toggle ? controlChecked : null',
   },
   providers: [ControlIdService, IS_TOGGLE_PROVIDER],
 })
@@ -40,12 +49,16 @@ export class ClrCheckboxWrapper implements OnInit, OnDestroy {
   toggle = false;
   private subscriptions: Subscription[] = [];
 
-  constructor(@Inject(IS_TOGGLE) toggleService: BehaviorSubject<boolean>) {
+  constructor(@Inject(IS_TOGGLE) toggleService: BehaviorSubject<boolean>, private el: ElementRef<HTMLElement>) {
     this.subscriptions.push(
       toggleService.subscribe(state => {
         this.toggle = state;
       })
     );
+  }
+
+  protected get controlChecked() {
+    return this.el.nativeElement?.querySelector<HTMLInputElement>("input[type='checkbox']")?.checked;
   }
 
   ngOnInit() {
