@@ -38,7 +38,7 @@ export default {
     // methods
     dataChanged: { control: { disable: true } },
     resize: { control: { disable: true } },
-    scrollToIndexBehaviour: { control: 'radio', options: ['auto', 'smooth'] },
+    scrollToIndexBehavior: { control: 'radio', options: ['auto', 'smooth'] },
     // story helpers
     behaviorElements: { control: { disable: true }, table: { disable: true } },
     setExpanded: { control: { disable: true }, table: { disable: true } },
@@ -62,7 +62,7 @@ export default {
     clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
     // story helpers
     behaviorElements,
-    scrollToIndexBehaviour: 'smooth',
+    scrollToIndexBehavior: 'smooth',
     singleSelectable: false,
     multiSelectable: false,
     actionOverflow: false,
@@ -173,34 +173,34 @@ const DatagridDetailsTemplate: StoryFn = args => ({
               <cds-icon shape="angle" direction="down"></cds-icon>
             </button>
             <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
-              <div (click)="datagrid.virtualScroll.scrollToIndex(20, scrollToIndexBehaviour)" clrDropdownItem>20</div>
-              <div (click)="datagrid.virtualScroll.scrollToIndex(60, scrollToIndexBehaviour)" clrDropdownItem>60</div>
-              <div (click)="datagrid.virtualScroll.scrollToIndex(80, scrollToIndexBehaviour)" clrDropdownItem>80</div>
-              <div (click)="datagrid.virtualScroll.scrollToIndex(100, scrollToIndexBehaviour)" clrDropdownItem>100</div>
+              <div (click)="datagrid.virtualScroll.scrollToIndex(20, scrollToIndexBehavior)" clrDropdownItem>20</div>
+              <div (click)="datagrid.virtualScroll.scrollToIndex(60, scrollToIndexBehavior)" clrDropdownItem>60</div>
+              <div (click)="datagrid.virtualScroll.scrollToIndex(80, scrollToIndexBehavior)" clrDropdownItem>80</div>
+              <div (click)="datagrid.virtualScroll.scrollToIndex(100, scrollToIndexBehavior)" clrDropdownItem>100</div>
             </clr-dropdown-menu>
           </clr-dropdown>
 
           <button
             class="btn btn-sm btn-link-neutral footer-button"
-            (click)="datagrid.virtualScroll.scrollToIndex(0, scrollToIndexBehaviour)"
+            (click)="datagrid.virtualScroll.scrollToIndex(0, scrollToIndexBehavior)"
           >
             <cds-icon shape="step-forward-2" direction="left"></cds-icon>
           </button>
           <button
             class="btn btn-sm btn-link-neutral footer-button"
-            (click)="datagrid.virtualScroll.scrollUp(scrollOffset, scrollToIndexBehaviour)"
+            (click)="datagrid.virtualScroll.scrollUp(scrollOffset, scrollToIndexBehavior)"
           >
             <cds-icon shape="angle" direction="up"></cds-icon>
           </button>
           <button
             class="btn btn-sm btn-link-neutral footer-button"
-            (click)="datagrid.virtualScroll.scrollDown(scrollOffset, scrollToIndexBehaviour)"
+            (click)="datagrid.virtualScroll.scrollDown(scrollOffset, scrollToIndexBehavior)"
           >
             <cds-icon shape="angle" direction="down"></cds-icon>
           </button>
           <button
             class="btn btn-sm btn-link-neutral footer-button"
-            (click)="datagrid.virtualScroll.scrollToIndex(data.elements?.length, scrollToIndexBehaviour)"
+            (click)="datagrid.virtualScroll.scrollToIndex(data.elements?.length, scrollToIndexBehavior)"
           >
             <cds-icon shape="step-forward-2" direction="right"></cds-icon>
           </button>

@@ -5894,11 +5894,11 @@ export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     // (undocumented)
     renderedRangeChange: EventEmitter<ListRange>;
     // (undocumented)
-    scrollDown(offset: number, behaviour?: ScrollBehavior): void;
+    scrollDown(offset: number, behavior?: ScrollBehavior): void;
     // (undocumented)
-    scrollToIndex(index: number, behaviour?: ScrollBehavior): void;
+    scrollToIndex(index: number, behavior?: ScrollBehavior): void;
     // (undocumented)
-    scrollUp(offset: number, behaviour?: ScrollBehavior): void;
+    scrollUp(offset: number, behavior?: ScrollBehavior): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "cdkVirtualForOf": "clrVirtualRowsOf"; "cdkVirtualForTrackBy": "clrVirtualRowsTrackBy"; "cdkVirtualForTemplate": "clrVirtualRowsTemplate"; "cdkVirtualForTemplateCacheSize": "clrVirtualRowsTemplateCacheSize"; "itemSize": "clrVirtualRowsItemSize"; "minBufferPx": "clrVirtualRowsMinBufferPx"; "maxBufferPx": "clrVirtualRowsMaxBufferPx"; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
     // (undocumented)

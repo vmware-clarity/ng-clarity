@@ -186,5 +186,30 @@
         </div>
       </clr-dropdown-menu>
     </clr-dropdown>
+
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="usersDatagrid.virtualScroll.scrollToIndex(0, 'auto')"
+    >
+      <cds-icon shape="step-forward-2" direction="left"></cds-icon>
+    </button>
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="usersDatagrid.virtualScroll.scrollUp(19, 'auto')"
+    >
+      <cds-icon shape="angle" direction="up"></cds-icon>
+    </button>
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="usersDatagrid.virtualScroll.scrollDown(19, 'auto')"
+    >
+      <cds-icon shape="angle" direction="down"></cds-icon>
+    </button>
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="usersDatagrid.virtualScroll.scrollToIndex(data.users.length, 'auto')"
+    >
+      <cds-icon shape="step-forward-2" direction="right"></cds-icon>
+    </button>
   </clr-dg-footer>
 </clr-datagrid>

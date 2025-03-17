@@ -262,16 +262,16 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     });
   }
 
-  scrollUp(offset: number, behaviour: ScrollBehavior = 'auto') {
-    this.scrollToIndex(this.topIndex - offset, behaviour);
+  scrollUp(offset: number, behavior: ScrollBehavior = 'auto') {
+    this.scrollToIndex(this.topIndex - offset, behavior);
   }
 
-  scrollDown(offset: number, behaviour: ScrollBehavior = 'auto') {
-    this.scrollToIndex(this.topIndex + offset, behaviour);
+  scrollDown(offset: number, behavior: ScrollBehavior = 'auto') {
+    this.scrollToIndex(this.topIndex + offset, behavior);
   }
 
-  scrollToIndex(index: number, behaviour: ScrollBehavior = 'auto') {
-    this.virtualScrollViewport?.scrollToIndex(index, behaviour);
+  scrollToIndex(index: number, behavior: ScrollBehavior = 'auto') {
+    this.virtualScrollViewport?.scrollToIndex(index, behavior);
   }
 
   private updateCdkVirtualForInputs() {
