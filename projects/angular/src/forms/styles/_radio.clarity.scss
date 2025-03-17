@@ -16,60 +16,59 @@
     @include forms-mixins.form-flatten-validate-text();
     position: relative;
     display: flex;
+    align-items: center;
+    gap: tokens.$cds-global-space-5;
 
     //Hide the default radio
     input[type='radio'] {
       @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-radio-size);
+      appearance: none;
+
+      //Radio button base
+      &::before {
+        @include forms-mixins.checkbox-radio-shared-inactive(
+          forms-variables.$clr-forms-radio-height,
+          forms-variables.$clr-forms-border-color
+        );
+        border-radius: 50%;
+      }
+
+      //Checked Radio Styles
+      &:checked::before {
+        box-shadow: forms-variables.$clr-forms-radio-selected-shadow;
+        border: none;
+      }
+
+      //Outline color for unchecked radios
+      &:focus {
+        &::before {
+          @include mixins.include-outline-style-form-fields();
+          //Outline color for checked radios
+          &:checked {
+            @include mixins.include-outline-style-form-fields();
+          }
+        }
+      }
+
+      &:disabled::before {
+        background-color: forms-variables.$clr-forms-radio-disabled-background-color;
+        border-color: tokens.$cds-alias-object-interaction-color-disabled;
+        &:checked {
+          //background-color around the dot
+          box-shadow: forms-variables.$clr-forms-radio-checked-disabled-shadow;
+        }
+      }
     }
 
     .clr-control-label {
       @include forms-mixins.checkbox-radio-label-styles(
         forms-variables.$clr-forms-radio-label-height,
-        forms-variables.$clr-forms-radio-padding-left,
         forms-variables.$clr-forms-radio-label-color,
         'SECONDARY-13-RG-CPT'
       );
-    }
-
-    .clr-control-label:empty {
-      padding-left: 0;
-    }
-
-    //Radio button base
-    input[type='radio'] + .clr-control-label::before {
-      @include forms-mixins.checkbox-radio-shared-inactive(
-        forms-variables.$clr-forms-radio-height,
-        forms-variables.$clr-forms-radio-top,
-        0,
-        forms-variables.$clr-forms-border-color
-      );
-      border-radius: 50%;
-    }
-
-    //Checked Radio Styles
-    input[type='radio']:checked + .clr-control-label::before {
-      box-shadow: forms-variables.$clr-forms-radio-selected-shadow;
-      border: none;
-    }
-
-    //Outline color for unchecked radios
-    input[type='radio']:focus + .clr-control-label::before {
-      @include mixins.include-outline-style-form-fields();
-    }
-
-    //Outline color for checked radios
-    input[type='radio']:focus:checked + .clr-control-label::before {
-      @include mixins.include-outline-style-form-fields();
-    }
-
-    input[type='radio']:disabled + .clr-control-label::before {
-      background-color: forms-variables.$clr-forms-radio-disabled-background-color;
-      border-color: tokens.$cds-alias-object-interaction-color-disabled;
-    }
-
-    input[type='radio']:checked:disabled + .clr-control-label::before {
-      //background-color around the dot
-      box-shadow: forms-variables.$clr-forms-radio-checked-disabled-shadow;
+      &:empty {
+        padding-left: 0;
+      }
     }
   }
 
@@ -80,7 +79,7 @@
     }
   }
 
-  .clr-error .clr-radio-wrapper input[type='radio'] + .clr-control-label::before {
+  .clr-error .clr-radio-wrapper input[type='radio']::before {
     border-color: forms-variables.$clr-forms-invalid-color;
   }
 
