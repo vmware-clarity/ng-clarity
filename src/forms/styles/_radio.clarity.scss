@@ -40,9 +40,15 @@
       }
 
       //Checked Radio Styles
-      &:checked::before {
-        box-shadow: forms-variables.$clr-forms-radio-selected-shadow;
-        border: none;
+      &:checked {
+        &::before {
+          border: none;
+          box-shadow: forms-variables.$clr-forms-radio-selected-shadow;
+        }
+        &:disabled::before {
+          //background-color around the dot
+          box-shadow: forms-variables.$clr-forms-radio-checked-disabled-shadow;
+        }
       }
 
       &:focus {
@@ -52,10 +58,6 @@
       &:disabled::before {
         background-color: forms-variables.$clr-forms-radio-disabled-background-color;
         border-color: tokens.$cds-alias-object-interaction-color-disabled;
-        &:checked {
-          //background-color around the dot
-          box-shadow: forms-variables.$clr-forms-radio-checked-disabled-shadow;
-        }
       }
     }
 

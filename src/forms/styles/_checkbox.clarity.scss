@@ -52,9 +52,7 @@
 
         border-radius: forms-variables.$clr-forms-checkbox-border-radius;
       }
-      &:focus {
-        @include mixins.include-outline-style-form-fields(tokens.$cds-global-space-2);
-      }
+
       //Checkmark
       &::after {
         position: absolute;
@@ -69,26 +67,32 @@
         left: $mark-half-size;
         transform: translate(0, $mark-half-size) rotate(-45deg);
       }
-      &:checked::before {
-        background: forms-variables.$clr-forms-checkbox-background-color;
-        border: none;
+
+      &:focus {
+        @include mixins.include-outline-style-form-fields(tokens.$cds-global-space-2);
       }
 
-      &:checked::after {
-        display: inline-block;
+      &:checked {
+        &::before {
+          background: forms-variables.$clr-forms-checkbox-background-color;
+          border: none;
+        }
+        &::after {
+          display: inline-block;
+        }
       }
 
-      &.clr-indeterminate::before,
-      &:indeterminate::before {
-        border: #{tokens.$cds-alias-object-border-width-100} solid forms-variables.$clr-forms-checkbox-indeterminate-border-color;
-      }
-
-      &.clr-indeterminate::after,
-      &:indeterminate::after {
-        border-left: none;
-        border-bottom-color: forms-variables.$clr-forms-checkbox-indeterminate-border-color;
-        display: inline-block;
-        transform: translate(0, $mark-half-size);
+      &.clr-indeterminate,
+      &:indeterminate {
+        &::before {
+          border: #{tokens.$cds-alias-object-border-width-100} solid forms-variables.$clr-forms-checkbox-indeterminate-border-color;
+        }
+        &::after {
+          border-left: none;
+          border-bottom-color: forms-variables.$clr-forms-checkbox-indeterminate-border-color;
+          display: inline-block;
+          transform: translate(0, $mark-half-size);
+        }
       }
     }
 
@@ -114,13 +118,14 @@
       border-color: forms-variables.$clr-forms-checkbox-disabled-border-color;
     }
 
-    input[type='checkbox']:checked::before {
-      background-color: forms-variables.$clr-forms-checkbox-disabled-checked-background-color;
-      border: none;
-    }
-
-    input[type='checkbox']:checked::after {
-      border-color: forms-variables.$clr-forms-checkbox-disabled-mark-color;
+    input[type='checkbox']:checked {
+      &::before {
+        background-color: forms-variables.$clr-forms-checkbox-disabled-checked-background-color;
+        border: none;
+      }
+      &::after {
+        border-color: forms-variables.$clr-forms-checkbox-disabled-mark-color;
+      }
     }
 
     input[type='checkbox'].clr-indeterminate::after,
