@@ -27,7 +27,7 @@
     "_build:demo": "ng build clr-demo --configuration production",
     "_build:storybook": "ng run clr-angular:build-storybook",
     "_build:core": "npm-run-all _build:core:tokens _build:core:lib",
-    "_build:core:lib": "rollup --config ./projects/core/rollup.config.js",
+    "_build:core:lib": "rollup --version && tsc --version && rollup --config ./projects/core/rollup.config.js",
     "_build:core:tokens": "ts-node ./projects/core/build/build.tokens.ts",
     "_build:ui": "npm-run-all _build:ui:css _build:ui:prefix _build:ui:optimize _build:ui:src _build:ui:style-docs _build:ui:package",
     "_build:ui:css": "sass ./projects/ui/src:./dist/clr-ui --precision=8 --load-path=node_modules",
