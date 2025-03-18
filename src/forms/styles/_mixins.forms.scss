@@ -94,20 +94,14 @@
 }
 
 @mixin checkbox-radio-input-styles($size) {
-  //Positioning
-  position: absolute;
-  opacity: 0;
-  top: #{tokens.$cds-global-space-3};
-  left: 0;
-
-  //Display
+  position: relative;
   //NOTE: Even though the input is invisible, we assign it a height
   //and width so that it aligns right behind the fake checkbox
   //and so that the user's default input size doesn't affect it
   @include mixins.equilateral($size);
 }
 
-@mixin checkbox-radio-label-styles($min-height, $padding-left, $color, $typography) {
+@mixin checkbox-radio-label-styles($min-height, $color, $typography) {
   //Positioning
   position: relative;
 
@@ -116,17 +110,12 @@
   margin-top: 0;
   cursor: pointer;
   min-height: $min-height;
-  padding: #{tokens.$cds-global-space-3} 0 #{tokens.$cds-global-space-3} $padding-left;
+  padding: #{tokens.$cds-global-space-3} 0;
   color: $color;
   @include mixins.generate-typography-token($typography);
 }
 
-@mixin checkbox-radio-shared-inactive($size, $top, $left, $border-color) {
-  //Positioning
-  position: absolute;
-  top: $top;
-  left: $left;
-
+@mixin checkbox-radio-shared-inactive($size, $border-color) {
   //Display
   content: '';
   display: inline-block;
