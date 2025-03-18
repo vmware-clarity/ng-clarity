@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -59,7 +60,7 @@
     $cds-global-typography-display-line-height-static,
     $cds-global-typography-display-line-height
   );
-  
+
   font-size: $cds-global-typography-display-font-size;
   font-weight: $cds-global-typography-display-font-weight;
   line-height: $cds-global-typography-display-line-height;
@@ -85,7 +86,7 @@
 
 [cds-text*='title'] {
   $lh-gap: getLineHeightGap($cds-global-typography-title-line-height-static, $cds-global-typography-title-line-height);
-  
+
   font-size: $cds-global-typography-title-font-size;
   font-weight: $cds-global-typography-title-font-weight;
   line-height: $cds-global-typography-title-line-height;
@@ -99,7 +100,7 @@
     $cds-global-typography-section-line-height-static,
     $cds-global-typography-section-line-height
   );
-  
+
   font-size: $cds-global-typography-section-font-size;
   font-weight: $cds-global-typography-section-font-weight;
   line-height: $cds-global-typography-section-line-height;
@@ -113,7 +114,7 @@
     $cds-global-typography-subsection-line-height-static,
     $cds-global-typography-subsection-line-height
   );
-  
+
   font-size: $cds-global-typography-subsection-font-size;
   font-weight: $cds-global-typography-subsection-font-weight;
   line-height: $cds-global-typography-subsection-line-height;
@@ -124,7 +125,7 @@
 
 [cds-text*='body'] {
   $lh-gap: getLineHeightGap($cds-global-typography-body-line-height-static, $cds-global-typography-body-line-height);
-  
+
   font-weight: $cds-global-typography-body-font-weight;
   font-size: $cds-global-typography-body-font-size;
   letter-spacing: $cds-global-typography-body-letter-spacing;
@@ -149,7 +150,7 @@ body[cds-text*='body'] {
     $cds-global-typography-message-line-height-static,
     $cds-global-typography-message-line-height
   );
-  
+
   font-size: $cds-global-typography-message-font-size;
   font-weight: $cds-global-typography-message-font-weight;
   line-height: $cds-global-typography-message-line-height;
@@ -163,7 +164,7 @@ body[cds-text*='body'] {
     $cds-global-typography-secondary-line-height-static,
     $cds-global-typography-secondary-line-height
   );
-  
+
   font-size: $cds-global-typography-secondary-font-size;
   font-weight: $cds-global-typography-secondary-font-weight;
   line-height: $cds-global-typography-secondary-line-height;
@@ -177,7 +178,7 @@ body[cds-text*='body'] {
     $cds-global-typography-caption-line-height-static,
     $cds-global-typography-caption-line-height
   );
-  
+
   font-size: $cds-global-typography-caption-font-size;
   font-weight: $cds-global-typography-caption-font-weight;
   line-height: $cds-global-typography-caption-line-height;
@@ -191,7 +192,7 @@ body[cds-text*='body'] {
     $cds-global-typography-smallcaption-line-height-static,
     $cds-global-typography-smallcaption-line-height
   );
-  
+
   font-size: $cds-global-typography-smallcaption-font-size;
   font-weight: $cds-global-typography-smallcaption-font-weight;
   line-height: $cds-global-typography-smallcaption-line-height;

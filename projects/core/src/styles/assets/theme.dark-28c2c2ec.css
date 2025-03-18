@@ -1,9 +1,10 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-[cds-theme~=dark] {
+[cds-theme~='dark'] {
   --cds-global-typography-color-500: var(--cds-global-color-white);
   --cds-global-typography-color-400: var(--cds-global-color-construction-100);
   --cds-global-typography-color-300: var(--cds-global-color-construction-200);
@@ -44,9 +45,12 @@
   --cds-alias-object-border-color: var(--cds-global-color-construction-500);
   --cds-alias-object-border-color-tint: var(--cds-global-color-construction-400);
   --cds-alias-object-border-color-shade: var(--cds-global-color-construction-600);
-  --cds-alias-object-shadow-100: 0 var(--cds-global-space-1) var(--cds-global-space-2) 0 var(--cds-alias-object-opacity-300);
-  --cds-alias-object-shadow-200: 0 var(--cds-global-space-1) var(--cds-global-space-2) 0 var(--cds-alias-object-opacity-200);
-  --cds-alias-object-shadow-300: 0 var(--cds-global-space-1) var(--cds-global-space-2) 0 var(--cds-alias-object-opacity-100);
+  --cds-alias-object-shadow-100: 0 var(--cds-global-space-1) var(--cds-global-space-2) 0
+    var(--cds-alias-object-opacity-300);
+  --cds-alias-object-shadow-200: 0 var(--cds-global-space-1) var(--cds-global-space-2) 0
+    var(--cds-alias-object-opacity-200);
+  --cds-alias-object-shadow-300: 0 var(--cds-global-space-1) var(--cds-global-space-2) 0
+    var(--cds-alias-object-opacity-100);
   --cds-alias-object-interaction-color: var(--cds-global-color-construction-200);
   --cds-alias-object-interaction-color-hover: var(--cds-global-color-construction-50);
   --cds-alias-object-interaction-color-active: var(--cds-global-color-construction-100);

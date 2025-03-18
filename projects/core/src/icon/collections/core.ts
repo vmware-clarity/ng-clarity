@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClarityIcons } from '../icon.service.js';
 import { IconAlias, IconShapeTuple } from '../interfaces/icon.interfaces.js';
-
 import { angleDoubleIcon, angleDoubleIconName } from '../shapes/angle-double.js';
 import { angleIcon, angleIconName } from '../shapes/angle.js';
 import { arrowIcon, arrowIconName } from '../shapes/arrow.js';
@@ -17,6 +17,8 @@ import { checkCircleIcon, checkCircleIconName } from '../shapes/check-circle.js'
 import { checkIcon, checkIconName } from '../shapes/check.js';
 import { cloudIcon, cloudIconName } from '../shapes/cloud.js';
 import { cogIcon, cogIconName } from '../shapes/cog.js';
+import { detailCollapseIcon, detailCollapseIconName } from '../shapes/detail-collapse.js';
+import { detailExpandIcon, detailExpandIconName } from '../shapes/detail-expand.js';
 import { ellipsisHorizontalIcon, ellipsisHorizontalIconName } from '../shapes/ellipsis-horizontal.js';
 import { ellipsisVerticalIcon, ellipsisVerticalIconName } from '../shapes/ellipsis-vertical.js';
 import { errorStandardIcon, errorStandardIconName } from '../shapes/error-standard.js';
@@ -45,8 +47,6 @@ import { viewColumnsIcon, viewColumnsIconName } from '../shapes/view-columns.js'
 import { vmBugInverseIcon, vmBugInverseIconName } from '../shapes/vm-bug-inverse.js';
 import { vmBugIcon, vmBugIconName } from '../shapes/vm-bug.js';
 import { warningStandardIcon, warningStandardIconName } from '../shapes/warning-standard.js';
-import { detailExpandIcon, detailExpandIconName } from '../shapes/detail-expand.js';
-import { detailCollapseIcon, detailCollapseIconName } from '../shapes/detail-collapse.js';
 
 export const coreCollectionIcons: IconShapeTuple[] = [
   angleIcon,

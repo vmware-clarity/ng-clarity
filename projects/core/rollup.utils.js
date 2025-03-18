@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -40,7 +41,9 @@ export const packageCheck = dir => {
 export const webComponentAnalyer = () => {
   return execute({
     commands: [
-      `cd ./projects/core/src && cem analyze --config ${resolve('./projects/core/custom-elements-manifest.config.mjs')}`, // https://github.com/open-wc/custom-elements-manifest/tree/master/packages/analyzer
+      `cd ./projects/core/src && cem analyze --config ${resolve(
+        './projects/core/custom-elements-manifest.config.mjs'
+      )}`, // https://github.com/open-wc/custom-elements-manifest/tree/master/packages/analyzer
     ],
     hook: 'writeBundle',
   });

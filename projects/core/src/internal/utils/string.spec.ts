@@ -1,32 +1,33 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import {
   camelCaseToKebabCase,
-  convertStringPropertyToObjectConfig,
-  interpolateNaively,
-  setStyles,
-  setPropStyles,
-  transformToSpacedString,
-  transformToString,
-  transformToUnspacedString,
   capitalizeFirstLetter,
-  kebabCaseToCamelCase,
-  kebabCaseToPascalCase,
+  convertStringPropertyToObjectConfig,
   getNumericValueFromCssSecondsStyleValue,
+  interpolateNaively,
   isPrefixedBy,
   isPrefixedOrSuffixedBy,
   isSuffixedBy,
+  kebabCaseToCamelCase,
+  kebabCaseToPascalCase,
   pluckPixelValue,
   pluckValueFromStringUnit,
   removePrefix,
-  removeSuffix,
   removePrefixOrSuffix,
+  removeSuffix,
   replaceWord,
+  setPropStyles,
+  setStyles,
   transformSpacedStringToArray,
+  transformToSpacedString,
+  transformToString,
+  transformToUnspacedString,
   trimExtraWhitespace,
 } from './string.js';
 
@@ -423,7 +424,7 @@ describe('Functional Helper: ', () => {
       return true;
     }
 
-    const badObj: { nope: null; [key: string]: any } = {
+    const badObj: { [key: string]: any; nope: null } = {
       func: ohai,
       inlineFunc: () => {
         return false;
