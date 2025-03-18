@@ -43,7 +43,8 @@ const config = {
   ],
   package: {
     exports: [
-      { input: './projects/core/styles/module.tokens.css', output: './projects/core/styles/module.tokens.min.css' },
+      './styles/module.tokens.css',
+      './styles/module.tokens.min.css',
       './icon/shapes/*',
       './icon/icon.service.js',
       './tokens/tokens.js',
