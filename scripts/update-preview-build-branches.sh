@@ -2,6 +2,17 @@
 git config user.name "Clarity Update Bot"
 git config user.email "noreply@github.com"
 
+# create branches for manual dispatches where the branches are not created.
+if [[ `git branch --list preview-build/$GIT_BRANCH/clr-ui` == '' ]] || [[ `git branch --list preview-build/$GIT_BRANCH/clr-angular` == '' ]]
+then
+   echo "Branches for $branch_name does not exists."
+   git checkout -b preview-build/$GIT_BRANCH/clr-ui
+   git push -u origin preview-build/$GIT_BRANCH/clr-ui
+   git checkout -b preview-build/$GIT_BRANCH/clr-angular
+   git push -u origin preview-build/$GIT_BRANCH/clr-angular
+
+fi
+
 # fetch preview build branch remotes
 git fetch origin preview-build/$GIT_BRANCH/clr-ui
 git fetch origin preview-build/$GIT_BRANCH/clr-angular
