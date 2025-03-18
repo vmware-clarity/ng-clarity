@@ -1,5 +1,6 @@
 name: Update Preview Build Branches
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
