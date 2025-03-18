@@ -9,7 +9,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: update-preview-build-branches
+  group: update-preview-build-branches-${{github.ref_name}}
   cancel-in-progress: true
 jobs:
   update-preview-build-branches:
