@@ -55,9 +55,15 @@
         @include mixins.include-outline-style-form-fields(tokens.$cds-global-space-2);
       }
 
-      &:disabled::before {
-        background-color: forms-variables.$clr-forms-radio-disabled-background-color;
-        border-color: tokens.$cds-alias-object-interaction-color-disabled;
+      &:disabled {
+        + label {
+          cursor: not-allowed;
+          color: forms-variables.$clr-forms-radio-label-disabled-color;
+        }
+        &::before {
+          background-color: forms-variables.$clr-forms-radio-disabled-background-color;
+          border-color: tokens.$cds-alias-object-interaction-color-disabled;
+        }
       }
     }
 

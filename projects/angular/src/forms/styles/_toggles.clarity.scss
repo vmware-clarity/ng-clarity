@@ -98,7 +98,9 @@
 
       // TODO: cleanup hard-coded sizes in here. not sure what they are keying on...
       &:disabled {
-        cursor: not-allowed;
+        + label {
+          cursor: not-allowed;
+        }
 
         &:not(:checked) {
           left: 0;

@@ -94,6 +94,32 @@
           transform: translate(0, $mark-half-size);
         }
       }
+
+      &:disabled {
+        + label {
+          cursor: not-allowed;
+          color: forms-variables.$clr-forms-label-disabled-color;
+        }
+        &::before {
+          background-color: forms-variables.$clr-forms-checkbox-disabled-background-color;
+          border-color: forms-variables.$clr-forms-checkbox-disabled-border-color;
+        }
+        &:checked {
+          &::before {
+            background-color: forms-variables.$clr-forms-checkbox-disabled-checked-background-color;
+            border: none;
+          }
+          &::after {
+            border-color: forms-variables.$clr-forms-checkbox-disabled-mark-color;
+          }
+        }
+
+        &.clr-indeterminate::after,
+        &:indeterminate::after {
+          border-color: forms-variables.$clr-forms-checkbox-disabled-indeterminate-color;
+          border-left: none;
+        }
+      }
     }
 
     &.clr-checkbox-inline {
