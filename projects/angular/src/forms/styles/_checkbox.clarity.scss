@@ -26,7 +26,6 @@
     position: relative;
     display: flex;
     align-items: center;
-    gap: tokens.$cds-global-space-5;
 
     .clr-control-label {
       @include forms-mixins.checkbox-radio-label-styles(
@@ -39,9 +38,11 @@
     //Hide the default checkbox behind the pseudo elements
     //Opacity is set to 0 so that the input remains accessible
     input[type='checkbox'] {
+      cursor: pointer;
       @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-checkbox-size);
       @extend %custom-checkbox;
       border-radius: forms-variables.$clr-forms-checkbox-border-radius; // Style outline radius properly
+      padding: tokens.$cds-global-space-3 0;
 
       //Checkbox base
       &::before {
@@ -69,7 +70,10 @@
       }
 
       &:focus {
-        @include mixins.include-outline-style-form-fields(tokens.$cds-global-space-2);
+        outline: none;
+        &::before {
+          @include mixins.include-outline-style-form-fields(mixins.baselinePx(3));
+        }
       }
 
       &:checked {

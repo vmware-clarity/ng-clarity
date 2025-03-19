@@ -28,8 +28,8 @@
     align-items: center;
     margin-right: tokens.$cds-global-space-6;
     height: toggle-variables.$clr-toggle-height;
-    gap: tokens.$cds-global-space-5;
     justify-content: start;
+    gap: tokens.$cds-global-space-5;
 
     label {
       display: inline-block;
@@ -41,6 +41,7 @@
 
     input[type='checkbox'] {
       position: relative;
+      cursor: pointer;
       @extend %custom-checkbox;
       height: toggle-variables.$clr-toggle-switch-base-height;
       width: toggle-variables.$clr-toggle-switch-base-width;
@@ -77,7 +78,10 @@
       }
 
       &:focus {
-        @include mixins.include-outline-style-form-fields(tokens.$cds-global-space-2);
+        outline: none;
+        &::before {
+          @include mixins.include-outline-style-form-fields(mixins.baselinePx(3));
+        }
       }
 
       &:checked {
