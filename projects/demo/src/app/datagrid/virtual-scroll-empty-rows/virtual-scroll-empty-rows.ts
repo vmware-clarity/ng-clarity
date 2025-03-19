@@ -6,7 +6,8 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ClrDatagrid, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -20,37 +21,75 @@ import { User } from '../inventory/user';
 export class DatagridVirtualScrollEmptyRowsDemo {
   userRange: ListRange;
   totalRows = 10000;
-  users: User[];
+  users: User[] = [];
 
   selectedUsers: User[] = [];
+  selectionUsers: User[] = [];
+  @ViewChild('datagrid') datagrid: ClrDatagrid;
+  private started: boolean;
 
   constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
-    this.users = Array(this.totalRows);
+    // this.users = Array(this.totalRows);
+  }
+
+  refresh(state: ClrDatagridStateInterface) {
+    console.log('refresh', state);
   }
 
   renderUserRangeChange($event: ListRange) {
-    this.userRange = $event;
+    this.users = this.datagrid.virtualScroll.cdkVirtualForOf as User[];
     console.log($event);
-    const generatedData = this.inventory.addBySize(($event.end - $event.start) * 3, $event.start);
-
-    for (let i = 0; i < generatedData.length; i++) {
-      this.users[generatedData[i].id] = generatedData[i];
+    if (!this.userRange) {
+      this.userRange = {
+        start: $event.start,
+        end: $event.end,
+      };
     }
 
-    setTimeout(() => {
-      this.users = [...this.users];
-      this.cdr.detectChanges();
-    }, 2000);
+    if (!this.started) {
+      console.log(this.userRange);
+      // this.started = true;
+      this.userRange = {
+        start: $event.start,
+        end: $event.end > this.totalRows ? this.totalRows : $event.end,
+      };
+
+      console.log(this.userRange);
+      // this.userRange = $event
+      setTimeout(() => {
+        // $event.start = Math.floor($event.start / 2);
+        const generatedData = this.inventory.addBySize(this.userRange.end - this.userRange.start, this.userRange.start);
+
+        this.userRange.end = this.userRange.start + generatedData.length;
+        console.log(generatedData);
+        console.log(this.users);
+
+        this.datagrid.virtualScroll.clearItems();
+        this.cdr.detectChanges();
+
+        this.datagrid.virtualScroll.updateListRange(this.userRange, generatedData);
+        this.cdr.detectChanges();
+        this.started = false;
+      }, 500);
+    } else {
+      console.log('ala');
+    }
   }
 
-  rowByIndex(index: number) {
-    return index;
+  jumpTo(index: number) {
+    this.datagrid.virtualScroll.clearItems();
+    this.userRange = null;
+    this.datagrid.virtualScroll.scrollToIndex(index, 'auto');
   }
 
-  getIndexes(rows: any[]) {
+  rowByIndex(index: number, user: User) {
+    return user?.id;
+  }
+
+  getIndexes(count: number) {
     const result = [];
 
-    for (let i = 0; i < rows.length; i++) {
+    for (let i = 0; i < count; i++) {
       if (i % 1000 === 0) {
         result.push(i);
       }
