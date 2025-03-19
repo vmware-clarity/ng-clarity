@@ -103,6 +103,13 @@ export default function (): void {
       it('should have the role attribute', () => {
         expect(containerEl.getAttribute('role')).toBe('switch');
       });
+
+      it('should toggle the aria-checked attribute based on the state of the toggle switch', () => {
+        expect(containerEl.getAttribute('aria-checked')).toBe('false');
+        containerEl.querySelector('input').click();
+        fixture.detectChanges();
+        expect(containerEl.getAttribute('aria-checked')).toBe('true');
+      });
     });
   });
 }
