@@ -20,6 +20,10 @@ import { ClrCheckboxWrapper, IS_TOGGLE } from './checkbox-wrapper';
  */
 @Directive({
   selector: '[clrCheckbox],[clrToggle]',
+  host: {
+    '[attr.role]': 'toggle !== null ? "switch" : null',
+    '[attr.aria-checked]': 'toggle !== null ? controlChecked : null',
+  },
 })
 export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
   constructor(
@@ -37,6 +41,10 @@ export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
 
   get controlDisabled() {
     return this.control?.disabled;
+  }
+
+  protected get controlChecked() {
+    return (this.el.nativeElement as HTMLInputElement)?.checked;
   }
 
   override ngOnInit() {
