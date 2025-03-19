@@ -38,7 +38,7 @@
     class="datagrid-row-master datagrid-row-flex"
     [class.datagrid-row-detail-open]="detailService.isRowOpen(item)"
   >
-    <div [style.display]="showSkeleton ? 'none' : ''" class="datagrid-row-sticky">
+    <div class="datagrid-row-sticky">
       <!-- Sticky elements here -->
       <ng-container #stickyCells>
         <div
@@ -150,11 +150,7 @@
       </ng-container>
       <!-- placeholder for projecting other sticky cells as pinned-->
     </div>
-    <div
-      [style.display]="showSkeleton ? 'none' : ''"
-      class="datagrid-row-scrollable"
-      [ngClass]="{'is-replaced': replaced && expanded}"
-    >
+    <div class="datagrid-row-scrollable" [ngClass]="{'is-replaced': replaced && expanded}">
       <div class="datagrid-scrolling-cells">
         <ng-content select="clr-dg-cell"></ng-content>
         <ng-container #scrollableCells></ng-container>
@@ -163,7 +159,7 @@
       <ng-template *ngIf="replaced && !expand.loading" [ngTemplateOutlet]="detail"></ng-template>
       <ng-template *ngIf="!replaced && !expand.loading" [ngTemplateOutlet]="detail"></ng-template>
     </div>
-    <clr-dg-cell class="loading-skeleton" *ngIf="showSkeleton"></clr-dg-cell>
+    <clr-dg-cell class="skeleton-loading" *ngIf="skeletonLoading"></clr-dg-cell>
   </div>
 </ng-template>
 

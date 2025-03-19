@@ -21,6 +21,9 @@ $clr-animation-duration: 0.2s;
 $clr-animation-easing: ease-in-out;
 
 @keyframes clr-skeleton-loading {
+  from {
+    background-position-x: 0;
+  }
   to {
     background-position-x: -200%;
   }
@@ -50,7 +53,7 @@ $clr-animation-easing: ease-in-out;
     }
   }
 
-  .loading-skeleton:before {
+  .skeleton-loading:before {
     content: '';
     display: inline-block;
     width: 100%;
