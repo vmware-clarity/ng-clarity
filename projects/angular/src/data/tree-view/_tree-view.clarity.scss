@@ -116,7 +116,7 @@
 
   // selected
   .clr-treenode-content .clr-treenode-link.active,
-  .clr-treenode-checkbox:has(input[type='checkbox']:checked) {
+  .clr-treenode-checkbox:has(input[type='checkbox']:not(:disabled):checked) {
     color: tree-view-variables.$clr-tree-node-content-selected-color;
     background-color: tree-view-variables.$clr-tree-node-content-bg-selected-color;
   }
@@ -165,7 +165,7 @@
 
   // selected
   .clr-treenode-content .clr-treenode-link.active,
-  .clr-treenode-checkbox input[type='checkbox']:checked {
+  .clr-treenode-checkbox:has(input[type='checkbox']:not(:disabled):checked) {
     &:hover {
       background-color: tree-view-variables.$clr-tree-node-content-bg-selected-hover-color;
     }

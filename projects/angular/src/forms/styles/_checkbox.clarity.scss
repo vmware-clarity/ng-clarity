@@ -38,11 +38,14 @@
     //Hide the default checkbox behind the pseudo elements
     //Opacity is set to 0 so that the input remains accessible
     input[type='checkbox'] {
-      cursor: pointer;
       @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-checkbox-size);
       @extend %custom-checkbox;
       border-radius: forms-variables.$clr-forms-checkbox-border-radius; // Style outline radius properly
       padding: tokens.$cds-global-space-3 0;
+
+      &:not(:disabled) {
+        cursor: pointer;
+      }
 
       //Checkbox base
       &::before {

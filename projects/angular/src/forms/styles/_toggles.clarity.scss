@@ -41,12 +41,15 @@
 
     input[type='checkbox'] {
       position: relative;
-      cursor: pointer;
       @extend %custom-checkbox;
       height: toggle-variables.$clr-toggle-switch-base-height;
       width: toggle-variables.$clr-toggle-switch-base-width;
       flex: 0 0 auto;
       border-radius: tokens.$cds-alias-object-border-radius-200; // Style outline radius properly
+
+      &:not(:disabled) {
+        cursor: pointer;
+      }
 
       &::before {
         position: absolute;

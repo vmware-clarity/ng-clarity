@@ -25,11 +25,14 @@
 
     //Hide the default radio
     input[type='radio'] {
-      cursor: pointer;
       @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-radio-size);
       @extend %custom-radio;
       border-radius: 50%; // Style outline radius properly
       padding: tokens.$cds-global-space-3 0;
+
+      &:not(:disabled) {
+        cursor: pointer;
+      }
 
       //Radio button base
       &::before {
