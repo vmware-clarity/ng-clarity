@@ -249,6 +249,13 @@
       }
     }
 
+    //Problem is visible on nested Accordion with 2+ panels
+    //2nd not :not(.clr-stepper-header) is just to add more specificity to avoid important
+    .clr-accordion-panel:not(:first-child) .clr-accordion-header:not(.clr-stepper-header) {
+      border-top-left-radius: unset;
+      border-top-right-radius: unset;
+    }
+
     .clr-accordion-header-button {
       align-items: center;
       padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6};
