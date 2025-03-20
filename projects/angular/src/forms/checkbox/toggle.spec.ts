@@ -62,15 +62,8 @@ export default function (): void {
       fixture.detectChanges();
     });
 
-    it('should have the role attribute', () => {
+    it('should have role="switch" attribute', () => {
       expect(containerEl.getAttribute('role')).toBe('switch');
-    });
-
-    it('should toggle the aria-checked attribute based on the state of the toggle switch', () => {
-      expect(containerEl.getAttribute('aria-checked')).toBe('false');
-      containerEl.click();
-      fixture.detectChanges();
-      expect(containerEl.getAttribute('aria-checked')).toBe('true');
     });
   });
 }
