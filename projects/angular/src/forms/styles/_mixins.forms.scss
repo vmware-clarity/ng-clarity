@@ -118,6 +118,7 @@
 @mixin checkbox-radio-shared-inactive($size, $border-color) {
   //Display
   content: '';
+  position: absolute;
   display: inline-block;
   @include mixins.equilateral($size);
   border: variables.$clr-global-borderwidth solid $border-color;
