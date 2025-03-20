@@ -7,6 +7,20 @@
 
 <h2>Virtual scroll empty rows</h2>
 
+<form clrForm>
+  <clr-number-input-container>
+    <label>Total Rows</label>
+    <input clrNumberInput type="number" name="rows" [(ngModel)]="totalRows" />
+  </clr-number-input-container>
+  <clr-toggle-container>
+    <label>Append Items</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle name="appendItems" [(ngModel)]="appendItems" />
+      <label>{{appendItems ? 'ON' : 'OFF' }}</label>
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
+</form>
+
 <clr-datagrid
   #datagrid
   [(clrDgSelected)]="selectedUsers"
@@ -26,7 +40,7 @@
     let-index="index"
     [clrVirtualRowsOf]="users"
     [clrVirtualTotalItems]="totalRows"
-    [clrVirtualAlwaysAppend]="true"
+    [clrVirtualAppendItems]="appendItems"
     [clrVirtualRowsItemSize]="24"
     [clrVirtualRowsMinBufferPx]="200"
     [clrVirtualRowsMaxBufferPx]="400"

@@ -21,10 +21,10 @@ import { User } from '../inventory/user';
 export class DatagridVirtualScrollEmptyRowsDemo {
   userRange: ListRange;
   totalRows = 10000;
+  appendItems = true;
   users: User[] = [];
 
   selectedUsers: User[] = [];
-  selectionUsers: User[] = [];
   @ViewChild('datagrid') datagrid: ClrDatagrid;
   private started: boolean;
 
@@ -37,43 +37,21 @@ export class DatagridVirtualScrollEmptyRowsDemo {
   }
 
   renderUserRangeChange($event: ListRange) {
-    this.users = this.datagrid.virtualScroll.cdkVirtualForOf as User[];
     console.log($event);
-    if (!this.userRange) {
-      this.userRange = {
-        start: $event.start,
-        end: $event.end,
-      };
-    }
 
-    if (!this.started) {
-      console.log(this.userRange);
-      // this.started = true;
-      this.userRange = {
-        start: $event.start,
-        end: $event.end > this.totalRows ? this.totalRows : $event.end,
-      };
+    this.userRange = {
+      start: $event.start,
+      end: $event.end > this.totalRows ? this.totalRows : $event.end,
+    };
 
-      console.log(this.userRange);
-      // this.userRange = $event
-      setTimeout(() => {
-        // $event.start = Math.floor($event.start / 2);
-        const generatedData = this.inventory.addBySize(this.userRange.end - this.userRange.start, this.userRange.start);
+    setTimeout(() => {
+      const generatedData = this.inventory.addBySize(this.userRange.end - this.userRange.start, this.userRange.start);
 
-        this.userRange.end = this.userRange.start + generatedData.length;
-        console.log(generatedData);
-        console.log(this.users);
+      this.userRange.end = this.userRange.start + generatedData.length;
 
-        this.datagrid.virtualScroll.clearItems();
-        this.cdr.detectChanges();
-
-        this.datagrid.virtualScroll.updateListRange(this.userRange, generatedData);
-        this.cdr.detectChanges();
-        this.started = false;
-      }, 500);
-    } else {
-      console.log('ala');
-    }
+      this.datagrid.virtualScroll.updateItemRange(this.userRange.start, generatedData);
+      this.cdr.detectChanges();
+    }, 1000);
   }
 
   jumpTo(index: number) {

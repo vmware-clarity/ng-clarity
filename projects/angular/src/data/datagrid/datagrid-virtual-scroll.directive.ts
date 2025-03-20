@@ -71,6 +71,7 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 })
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
+  @Input('clrVirtualAppendItems') appendItems = true;
 
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
 
@@ -277,12 +278,14 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.cdkVirtualForOf = Array(this._totalItems);
   }
 
-  updateListRange(listRange: ListRange, data: T[]) {
+  updateItemRange(start: number, data: T[]) {
+    if (!this.appendItems) {
+      this.clearItems();
+    }
+
     const items = this.items.all;
 
-    for (let i = listRange.start; i < listRange.end; i++) {
-      items[i] = data[i - listRange.start];
-    }
+    items.splice(start, data.length, ...data);
 
     this.items.all = items;
   }
