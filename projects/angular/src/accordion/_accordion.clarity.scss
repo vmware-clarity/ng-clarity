@@ -106,14 +106,18 @@
     display: inline-block;
   }
 
-  .clr-accordion-header-has-description {
+  .clr-accordion-header-has-description,
+  .clr-stepper-header-has-description {
     .clr-accordion-title {
       min-width: accordion-variables.$clr-accordion-step-title-min-width;
       max-width: mixins.baselinePx(264);
       width: 100%;
-      @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-        margin-left: tokens.$cds-global-space-7;
-      }
+    }
+  }
+
+  clr-stepper-header-has-description .clr-accordion-title {
+    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+      margin-left: tokens.$cds-global-space-7;
     }
   }
 
