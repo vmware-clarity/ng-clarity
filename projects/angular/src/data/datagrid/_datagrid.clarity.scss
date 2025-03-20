@@ -185,6 +185,15 @@
       background-color: datagrid-variables.$clr-datagrid-row-active-color;
     }
 
+    &.datagrid-row-skeleton {
+      background-color: unset;
+
+      .datagrid-row-scrollable,
+      .datagrid-row-sticky {
+        display: none;
+      }
+    }
+
     .datagrid-row-detail-wrapper {
       flex: 1 1 auto;
       display: flex;

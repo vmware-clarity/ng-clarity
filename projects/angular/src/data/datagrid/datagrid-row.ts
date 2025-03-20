@@ -48,7 +48,7 @@ let nbRow = 0;
   templateUrl: './datagrid-row.html',
   host: {
     '[class.datagrid-row]': 'true',
-    '[class.datagrid-skeleton-row]': 'showSkeleton',
+    '[class.datagrid-row-skeleton]': 'skeletonLoading',
     '[class.datagrid-selected]': 'selected',
     '[attr.aria-owns]': 'id',
     role: 'rowgroup',
@@ -64,7 +64,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   @Output('clrDgExpandedChange') expandedChange = new EventEmitter<boolean>(false);
   @Input('clrDgDetailDisabled') detailDisabled = false;
   @Input('clrDgDetailHidden') detailHidden = false;
-  @Input('clrDgSkeletonLoading') showSkeleton = false;
+  @Input('clrDgSkeletonLoading') skeletonLoading = false;
 
   id: string;
   radioId: string;
