@@ -5870,6 +5870,8 @@ export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     get cdkVirtualForOf(): CdkVirtualForInputs<T>['cdkVirtualForOf'];
     set cdkVirtualForOf(value: CdkVirtualForInputs<T>['cdkVirtualForOf']);
     // (undocumented)
+    cdkVirtualForOfChange: EventEmitter<T[]>;
+    // (undocumented)
     get cdkVirtualForTemplate(): CdkVirtualForInputs<T>['cdkVirtualForTemplate'];
     set cdkVirtualForTemplate(value: CdkVirtualForInputs<T>['cdkVirtualForTemplate']);
     // (undocumented)
@@ -5911,7 +5913,7 @@ export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     // (undocumented)
     updateItemRange(start: number, data: T[]): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "appendItems": "clrVirtualAppendItems"; "cdkVirtualForOf": "clrVirtualRowsOf"; "cdkVirtualForTrackBy": "clrVirtualRowsTrackBy"; "cdkVirtualForTemplate": "clrVirtualRowsTemplate"; "cdkVirtualForTemplateCacheSize": "clrVirtualRowsTemplateCacheSize"; "itemSize": "clrVirtualRowsItemSize"; "minBufferPx": "clrVirtualRowsMinBufferPx"; "maxBufferPx": "clrVirtualRowsMaxBufferPx"; "totalItems": "clrVirtualTotalItems"; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "appendItems": "clrVirtualAppendItems"; "cdkVirtualForOf": "clrVirtualRowsOf"; "cdkVirtualForTrackBy": "clrVirtualRowsTrackBy"; "cdkVirtualForTemplate": "clrVirtualRowsTemplate"; "cdkVirtualForTemplateCacheSize": "clrVirtualRowsTemplateCacheSize"; "itemSize": "clrVirtualRowsItemSize"; "minBufferPx": "clrVirtualRowsMinBufferPx"; "maxBufferPx": "clrVirtualRowsMaxBufferPx"; "totalItems": "clrVirtualTotalItems"; }, { "renderedRangeChange": "renderedRangeChange"; "cdkVirtualForOfChange": "clrVirtualRowsOfChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridVirtualScrollDirective<any>, [null, null, { skipSelf: true; }, null, null, null, null, null, null, null, null, null, null]>;
 }

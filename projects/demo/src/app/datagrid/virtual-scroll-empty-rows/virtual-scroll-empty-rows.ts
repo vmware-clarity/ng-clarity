@@ -22,14 +22,20 @@ export class DatagridVirtualScrollEmptyRowsDemo {
   userRange: ListRange;
   totalRows = 10000;
   appendItems = true;
-  users: User[] = [];
+  _users: User[] = [];
 
   selectedUsers: User[] = [];
   @ViewChild('datagrid') datagrid: ClrDatagrid;
-  private started: boolean;
 
-  constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
-    // this.users = Array(this.totalRows);
+  constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {}
+
+  get users() {
+    return this._users;
+  }
+
+  set users(users) {
+    this._users = users;
+    this.cdr.detectChanges();
   }
 
   refresh(state: ClrDatagridStateInterface) {
