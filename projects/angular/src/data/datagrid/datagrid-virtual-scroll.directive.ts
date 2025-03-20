@@ -71,6 +71,7 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 })
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
+  @Input('clrVirtualAppendItems') appendItems = true;
 
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
 
@@ -95,6 +96,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
     cdkVirtualForTrackBy: index => index,
   };
+  private _totalItems: number;
 
   constructor(
     private readonly changeDetectorRef: ChangeDetectorRef,
@@ -195,6 +197,16 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.updateFixedSizeVirtualScrollInputs();
   }
 
+  @Input('clrVirtualTotalItems')
+  get totalItems() {
+    return this._totalItems;
+  }
+  set totalItems(value: number) {
+    this._totalItems = value;
+
+    this.clearItems();
+  }
+
   ngAfterViewInit() {
     this.injector.runInContext(() => {
       this.virtualScrollViewport = this.createVirtualScrollViewportForDatagrid(
@@ -260,6 +272,22 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
+  }
+
+  clearItems() {
+    this.cdkVirtualForOf = Array(this._totalItems);
+  }
+
+  updateItemRange(start: number, data: T[]) {
+    if (!this.appendItems) {
+      this.clearItems();
+    }
+
+    const items = this.items.all;
+
+    items.splice(start, data.length, ...data);
+
+    this.items.all = items;
   }
 
   scrollUp(offset: number, behavior: ScrollBehavior = 'auto') {

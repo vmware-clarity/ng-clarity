@@ -6,7 +6,8 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ClrDatagrid, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -20,37 +21,53 @@ import { User } from '../inventory/user';
 export class DatagridVirtualScrollEmptyRowsDemo {
   userRange: ListRange;
   totalRows = 10000;
-  users: User[];
+  appendItems = true;
+  users: User[] = [];
 
   selectedUsers: User[] = [];
+  @ViewChild('datagrid') datagrid: ClrDatagrid;
+  private started: boolean;
 
   constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
-    this.users = Array(this.totalRows);
+    // this.users = Array(this.totalRows);
+  }
+
+  refresh(state: ClrDatagridStateInterface) {
+    console.log('refresh', state);
   }
 
   renderUserRangeChange($event: ListRange) {
-    this.userRange = $event;
     console.log($event);
-    const generatedData = this.inventory.addBySize(($event.end - $event.start) * 3, $event.start);
 
-    for (let i = 0; i < generatedData.length; i++) {
-      this.users[generatedData[i].id] = generatedData[i];
-    }
+    this.userRange = {
+      start: $event.start,
+      end: $event.end > this.totalRows ? this.totalRows : $event.end,
+    };
 
     setTimeout(() => {
-      this.users = [...this.users];
+      const generatedData = this.inventory.addBySize(this.userRange.end - this.userRange.start, this.userRange.start);
+
+      this.userRange.end = this.userRange.start + generatedData.length;
+
+      this.datagrid.virtualScroll.updateItemRange(this.userRange.start, generatedData);
       this.cdr.detectChanges();
-    }, 2000);
+    }, 1000);
   }
 
-  rowByIndex(index: number) {
-    return index;
+  jumpTo(index: number) {
+    this.datagrid.virtualScroll.clearItems();
+    this.userRange = null;
+    this.datagrid.virtualScroll.scrollToIndex(index, 'auto');
   }
 
-  getIndexes(rows: any[]) {
+  rowByIndex(index: number, user: User) {
+    return user?.id;
+  }
+
+  getIndexes(count: number) {
     const result = [];
 
-    for (let i = 0; i < rows.length; i++) {
+    for (let i = 0; i < count; i++) {
       if (i % 1000 === 0) {
         result.push(i);
       }
