@@ -52,6 +52,7 @@ export default {
     clrLoadingMoreItems: false,
     clrDgPreserveSelection: false,
     clrDgRowSelection: false,
+    clrDgSkeletonLoading: false,
     clrDgSingleActionableAriaLabel: commonStringsDefault.singleActionableAriaLabel,
     clrDgSingleSelectionAriaLabel: commonStringsDefault.singleSelectionAriaLabel,
     // outputs
@@ -139,7 +140,11 @@ const DatagridTemplate: StoryFn = args => ({
         [clrVirtualRowsTemplateCacheSize]="400"
         (renderedRangeChange)="clrRenderRangeChange($event)"
       >
-        <clr-dg-row [clrDgItem]="element" [clrDgSelected]="selectedRows.includes(index)">
+        <clr-dg-row
+          [clrDgItem]="element"
+          [clrDgSelected]="selectedRows.includes(index)"
+          [clrDgSkeletonLoading]="clrDgSkeletonLoading && index === 0"
+        >
           <clr-dg-action-overflow
             *ngIf="actionOverflow"
             [clrDgActionOverflowOpen]="clrDgActionOverflowOpen && index === 0"
@@ -246,6 +251,13 @@ export const ManageColumns: StoryObj = {
   },
 };
 
+export const SkeletonLoading: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    clrDgSkeletonLoading: true,
+  },
+};
+
 export const Compact: StoryObj = {
   render: DatagridTemplate,
   args: {
@@ -272,6 +284,14 @@ export const CompactMultiSelectWithSelection: StoryObj = {
     compact: true,
     multiSelectable: true,
     selectedRows: [1],
+  },
+};
+
+export const CompactSkeletonLoading: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    clrDgSkeletonLoading: true,
+    compact: true,
   },
 };
 

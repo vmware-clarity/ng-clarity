@@ -48,6 +48,7 @@ import { DatagridTestCasesAsyncDemo } from './test-cases-async/test-cases-async'
 import { DatagridTestCasesDemo } from './test-cases/test-cases';
 import { ColorFilter } from './utils/color-filter';
 import { DatagridVirtualScrollClientSideDemo } from './virtual-scroll-client-side/virtual-scroll-client-side';
+import { DatagridVirtualScrollEmptyRowsDemo } from './virtual-scroll-empty-rows/virtual-scroll-empty-rows';
 import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-side/virtual-scroll-server-side';
 
 @NgModule({
@@ -84,6 +85,7 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridTestCasesDemo,
     DatagridTestCasesAsyncDemo,
     DatagridVirtualScrollClientSideDemo,
+    DatagridVirtualScrollEmptyRowsDemo,
     DatagridVirtualScrollServerSideDemo,
     DatagridKitchenSinkDemo,
     DatagridConditionalSelectionsDemo,
@@ -110,6 +112,7 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridSelectionRowModeDemo,
     DatagridPreserveSelectionDemo,
     DatagridVirtualScrollClientSideDemo,
+    DatagridVirtualScrollEmptyRowsDemo,
     DatagridVirtualScrollServerSideDemo,
     DatagridServerDrivenDemo,
     DatagridSmartIteratorDemo,
