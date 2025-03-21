@@ -27,7 +27,11 @@ export class DatagridVirtualScrollEmptyRowsDemo {
   selectedUsers: User[] = [];
   @ViewChild('datagrid') datagrid: ClrDatagrid;
 
-  constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {}
+  constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
+    inventory.size = this.totalRows;
+    inventory.latency = 1000;
+    inventory.reset();
+  }
 
   get users() {
     return this._users;
@@ -42,26 +46,20 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     console.log('refresh', state);
   }
 
-  renderUserRangeChange($event: ListRange) {
+  async renderUserRangeChange($event: ListRange) {
     console.log($event);
 
     this.userRange = {
       start: $event.start,
-      end: $event.end > this.totalRows ? this.totalRows : $event.end,
+      end: $event.end,
     };
 
-    setTimeout(() => {
-      const generatedData = this.inventory.addBySize(this.userRange.end - this.userRange.start, this.userRange.start);
+    const result = await this.inventory.fetch($event.start, $event.end - $event.start);
 
-      this.userRange.end = this.userRange.start + generatedData.length;
-
-      this.datagrid.virtualScroll.updateItemRange(this.userRange.start, generatedData);
-      this.cdr.detectChanges();
-    }, 1000);
+    this.datagrid.virtualScroll.updateItemRange($event.start, result.users);
   }
 
   jumpTo(index: number) {
-    this.datagrid.virtualScroll.clearItems();
     this.userRange = null;
     this.datagrid.virtualScroll.scrollToIndex(index, 'auto');
   }
