@@ -29,7 +29,6 @@ export interface Column {
 
 export interface Row {
   index: number;
-  expanded: boolean;
   cells: Cells;
 }
 
@@ -65,7 +64,7 @@ export interface Cells {
         <clr-dg-row [clrDgItem]="row">
           <clr-dg-cell *ngFor="let col of cols; trackBy: colByIndex">{{ row.cells[col.name] }}</clr-dg-cell>
           <ng-container ngProjectAs="clr-dg-row-detail">
-            <clr-dg-row-detail [clrIfExpanded]="row.expanded" (clrIfExpandedChange)="setExpanded($event, row)">
+            <clr-dg-row-detail *clrIfExpanded>
               {{ row | json }}
             </clr-dg-row-detail>
           </ng-container>
@@ -117,7 +116,6 @@ class FullTest implements OnInit {
       const newRow: Row = {
         index: i,
         cells: {} as Cells,
-        expanded: false,
       };
       for (let j = 0; j < columns.length; j++) {
         newRow.cells[columns[j].name] = `${columns[j].name} row-${i + 1}`;
@@ -134,10 +132,6 @@ class FullTest implements OnInit {
 
   rowByIndex(index: number, row: Row) {
     return row?.index;
-  }
-
-  setExpanded($event: boolean, item: Row) {
-    item.expanded = $event;
   }
 }
 
