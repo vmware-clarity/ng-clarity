@@ -135,7 +135,7 @@ export const ButtonGroupLoading: StoryObj = {
   },
 };
 
-export const Disabled: StoryObj = {
+export const DisabledButtons: StoryObj = {
   render: ButtonGroupTemplate,
 
   args: {
@@ -143,7 +143,7 @@ export const Disabled: StoryObj = {
   },
 };
 
-export const Overflow: StoryObj = {
+export const ButtonGroupOverflow: StoryObj = {
   render: ButtonGroupTemplate,
   args: {
     clrMenuPosition: 'top-left',
