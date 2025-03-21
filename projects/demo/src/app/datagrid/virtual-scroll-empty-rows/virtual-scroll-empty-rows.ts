@@ -20,7 +20,7 @@ import { User } from '../inventory/user';
 })
 export class DatagridVirtualScrollEmptyRowsDemo {
   userRange: ListRange;
-  totalRows = 10000;
+  _totalRows = 10000;
   appendItems = true;
   _users: User[] = [];
 
@@ -31,6 +31,20 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     inventory.size = this.totalRows;
     inventory.latency = 1000;
     inventory.reset();
+  }
+
+  get totalRows() {
+    return this._totalRows;
+  }
+
+  set totalRows(totalRows) {
+    this._totalRows = totalRows;
+    this.inventory.size = totalRows;
+    this.inventory.generatedCount = 0;
+    this.inventory.reset();
+    this.renderUserRangeChange(this.userRange).then(() => {
+      // this.cdr.detectChanges();
+    });
   }
 
   get users() {
