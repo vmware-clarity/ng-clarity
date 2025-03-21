@@ -116,6 +116,7 @@ export class Inventory {
   }
 
   fetch(skip = 0, limit: number = this._currentQuery.length): Promise<FetchResult> {
+    this._checkCurrentQuery();
     // Stringify and parse to mimic new object creation like a real HTTP request
     const items = JSON.stringify(this._currentQuery.slice(skip, skip + limit));
     const result: FetchResult = { users: JSON.parse(items), length: this._currentQuery.length };

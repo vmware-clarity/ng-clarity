@@ -29,7 +29,6 @@ export interface Column {
 
 export interface Row {
   index: number;
-  expanded: boolean;
   cells: Cells;
 }
 
@@ -53,7 +52,9 @@ export interface Cells {
         *ngIf="data.rows"
         clrVirtualScroll
         let-row
-        [clrVirtualRowsOf]="data.rows"
+        [(clrVirtualRowsOf)]="data.rows"
+        [clrVirtualTotalItems]="totalRows"
+        [clrVirtualAppendItems]="appendItems"
         [clrVirtualRowsItemSize]="24"
         [clrVirtualRowsMinBufferPx]="200"
         [clrVirtualRowsMaxBufferPx]="400"
@@ -61,9 +62,9 @@ export interface Cells {
         [clrVirtualRowsTrackBy]="rowByIndex"
       >
         <clr-dg-row [clrDgItem]="row">
-          <clr-dg-cell *ngFor="let col of cols; trackBy: colByIndex">{{ row.cells[col.name] }}</clr-dg-cell>
+          <clr-dg-cell *ngFor="let col of cols; trackBy: colByIndex">{{ row?.cells[col.name] }}</clr-dg-cell>
           <ng-container ngProjectAs="clr-dg-row-detail">
-            <clr-dg-row-detail [clrIfExpanded]="row.expanded" (clrIfExpandedChange)="setExpanded($event, row)">
+            <clr-dg-row-detail *clrIfExpanded>
               {{ row | json }}
             </clr-dg-row-detail>
           </ng-container>
@@ -76,6 +77,8 @@ export interface Cells {
 })
 class FullTest implements OnInit {
   @ViewChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<any>;
+  totalRows = 1000;
+  appendItems = true;
   rows: Observable<Row[]>;
   cols: Column[] = [];
   selectedRows: Row[] = [];
@@ -88,7 +91,7 @@ class FullTest implements OnInit {
   }
 
   ngOnInit(): void {
-    this.allRows.next(this.createRows(this.cols));
+    this.allRows.next(this.createRows(this.cols, this.totalRows));
 
     this.rows.subscribe(() => {
       this.cdr.detectChanges();
@@ -107,13 +110,12 @@ class FullTest implements OnInit {
     return columns;
   }
 
-  createRows(columns: Column[], rowCount = 1000) {
+  createRows(columns: Column[], rowCount: number) {
     const rows: Row[] = [];
     for (let i = 0; i < rowCount; i++) {
       const newRow: Row = {
         index: i,
         cells: {} as Cells,
-        expanded: false,
       };
       for (let j = 0; j < columns.length; j++) {
         newRow.cells[columns[j].name] = `${columns[j].name} row-${i + 1}`;
@@ -129,11 +131,7 @@ class FullTest implements OnInit {
   }
 
   rowByIndex(index: number, row: Row) {
-    return row.index;
-  }
-
-  setExpanded($event: boolean, item: Row) {
-    item.expanded = $event;
+    return row?.index;
   }
 }
 
@@ -203,6 +201,16 @@ export default function (): void {
         instance.virtualScroll.cdkVirtualForTemplateCacheSize = 5000;
         expect(instance.virtualScroll.cdkVirtualForTemplateCacheSize).toBe(5000);
 
+        expect(instance.virtualScroll.totalItems).toBe(1000);
+        instance.virtualScroll.totalItems = 5000;
+        fixture.detectChanges();
+        expect(instance.virtualScroll.totalItems).toBe(5000);
+
+        expect(instance.virtualScroll.appendItems).toBe(true);
+        instance.appendItems = false;
+        fixture.detectChanges();
+        expect(instance.virtualScroll.appendItems).toBe(false);
+
         fixture.destroy();
       });
 
@@ -217,6 +225,21 @@ export default function (): void {
         instance.virtualScroll.scrollToIndex(0);
         fixture.detectChanges();
         expect(spyVirtualScroll).toHaveBeenCalledWith(0);
+
+        fixture.destroy();
+      }));
+
+      it('Spy on update item range', fakeAsync(() => {
+        fixture.detectChanges();
+        const spyVirtualScroll = spyOn(instance.virtualScroll, 'updateItemRange');
+
+        instance.virtualScroll.updateItemRange(300, 100);
+        fixture.detectChanges();
+        expect(spyVirtualScroll).toHaveBeenCalledWith(300, 100);
+
+        instance.virtualScroll.updateItemRange(0, 100);
+        fixture.detectChanges();
+        expect(spyVirtualScroll).toHaveBeenCalledWith(0, 100);
 
         fixture.destroy();
       }));
