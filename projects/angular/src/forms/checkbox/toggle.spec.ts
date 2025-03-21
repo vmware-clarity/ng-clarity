@@ -6,8 +6,12 @@
  */
 
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 
+import { ClrCommonFormsModule } from '../common';
+import { NgControlService } from '../common/providers/ng-control.service';
 import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
@@ -40,5 +44,26 @@ export default function (): void {
     ControlStandaloneSpec(StandaloneUseTest);
     TemplateDrivenSpec(ClrCheckboxWrapper, ClrCheckbox, TemplateDrivenTest, 'clr-checkbox');
     ReactiveSpec(ClrCheckboxWrapper, ClrCheckbox, ReactiveTest, 'clr-checkbox');
+  });
+
+  describe('a11y', () => {
+    let fixture, containerDE, containerEl;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [ClrCommonFormsModule, FormsModule],
+        declarations: [ClrCheckbox, TemplateDrivenTest],
+        providers: [NgControl, NgControlService],
+      });
+
+      fixture = TestBed.createComponent(TemplateDrivenTest);
+      containerDE = fixture.debugElement.query(By.directive(ClrCheckbox));
+      containerEl = containerDE.nativeElement;
+      fixture.detectChanges();
+    });
+
+    it('should have role="switch" attribute', () => {
+      expect(containerEl.getAttribute('role')).toBe('switch');
+    });
   });
 }
