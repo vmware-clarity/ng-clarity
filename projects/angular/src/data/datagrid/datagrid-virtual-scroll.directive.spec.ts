@@ -133,7 +133,7 @@ class FullTest implements OnInit {
   }
 
   rowByIndex(index: number, row: Row) {
-    return row.index;
+    return row?.index;
   }
 
   setExpanded($event: boolean, item: Row) {
