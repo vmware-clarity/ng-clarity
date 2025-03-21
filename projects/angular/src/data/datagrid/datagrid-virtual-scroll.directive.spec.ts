@@ -62,7 +62,7 @@ export interface Cells {
         [clrVirtualRowsTrackBy]="rowByIndex"
       >
         <clr-dg-row [clrDgItem]="row">
-          <clr-dg-cell *ngFor="let col of cols; trackBy: colByIndex">{{ row.cells[col.name] }}</clr-dg-cell>
+          <clr-dg-cell *ngFor="let col of cols; trackBy: colByIndex">{{ row?.cells[col.name] }}</clr-dg-cell>
           <ng-container ngProjectAs="clr-dg-row-detail">
             <clr-dg-row-detail *clrIfExpanded>
               {{ row | json }}
