@@ -145,6 +145,9 @@ export const Disabled: StoryObj = {
 
 export const Overflow: StoryObj = {
   render: ButtonGroupTemplate,
+  args: {
+    clrMenuPosition: 'top-left',
+  },
   play({ canvasElement }) {
     (canvasElement.querySelector('.dropdown-toggle') as HTMLElement).click();
   },
