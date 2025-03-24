@@ -82,7 +82,7 @@ const ButtonGroupTemplate: StoryFn = args => ({
           {{ content }} {{ i + 1 }}
         </clr-button>
         <clr-button *ngFor="let _ of createArray(inMenuButtonCount); let i = index" [clrInMenu]="true">
-          {{ content }} {{ buttonCount + i + 1 }}
+          {{ content }} {{ buttonCount + i + 1 }} {{ i % 2 ? 'and a half' : '' }}
         </clr-button>
       </clr-button-group>
     </div>
@@ -135,10 +135,20 @@ export const ButtonGroupLoading: StoryObj = {
   },
 };
 
-export const Disabled: StoryObj = {
+export const DisabledButtons: StoryObj = {
   render: ButtonGroupTemplate,
 
   args: {
     disabledButtonsPosition: [1, 2],
+  },
+};
+
+export const ButtonGroupOverflow: StoryObj = {
+  render: ButtonGroupTemplate,
+  args: {
+    clrMenuPosition: 'top-left',
+  },
+  play({ canvasElement }) {
+    (canvasElement.querySelector('.dropdown-toggle') as HTMLElement).click();
   },
 };
