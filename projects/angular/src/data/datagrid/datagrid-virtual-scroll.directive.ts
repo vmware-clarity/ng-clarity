@@ -203,9 +203,23 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     return this._totalItems;
   }
   set totalItems(value: number) {
+    if (this._totalItems === value) {
+      return;
+    }
+
     this._totalItems = value;
 
-    this.clearItems();
+    let newData: T[];
+    if (this.items.all.length > value) {
+      newData = this.items.all.slice(0, value);
+    } else {
+      this.items.all[value - 1] = undefined;
+      newData = this.items.all;
+    }
+
+    this.cdkVirtualForOf = newData;
+
+    this.cdkVirtualForOfChange.emit(this.items.all);
   }
 
   ngAfterViewInit() {
