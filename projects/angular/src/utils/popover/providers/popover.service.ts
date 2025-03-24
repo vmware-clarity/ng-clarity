@@ -96,14 +96,14 @@ export class ClrPopoverService {
   }
 
   setCloseFocus(): void {
-    this.closeButtonRef.nativeElement.focus();
+    this.closeButtonRef.nativeElement?.focus();
   }
 
   setOpenedButtonFocus(): void {
     if (this.openButtonRef) {
-      this.openButtonRef.nativeElement.focus();
+      this.openButtonRef?.nativeElement?.focus();
     } else {
-      this.anchorElementRef.nativeElement.focus();
+      this.anchorElementRef?.nativeElement?.focus();
     }
   }
 }

@@ -6,7 +6,14 @@
  */
 
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
-import { ConnectedPosition, Overlay, OverlayConfig, OverlayRef, ScrollDispatcher } from '@angular/cdk/overlay';
+import {
+  CdkScrollable,
+  ConnectedPosition,
+  Overlay,
+  OverlayConfig,
+  OverlayRef,
+  ScrollDispatcher,
+} from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
 import { AfterViewInit, Directive, Inject, NgZone } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
@@ -37,7 +44,11 @@ export class PopoverDirective implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.popoverService.open) {
-      this.showOverlay();
+      this.popoverService.anchorElementRef
+        ? this.showOverlay()
+        : setTimeout(() => {
+            this.showOverlay();
+          }, 0);
     }
     this.subscriptions.push(
       this.popoverService.openChange.subscribe(change => {
@@ -49,7 +60,7 @@ export class PopoverDirective implements AfterViewInit {
       })
     );
     // Get Scrollable Parent when there is no cdkScrollable directive set
-    this.scrollableParent = this.getScrollParent(this.popoverService.anchorElementRef.nativeElement);
+    this.scrollableParent = this.getScrollParent(this.popoverService.anchorElementRef?.nativeElement);
     this.listenToMouseEvents();
   }
 
@@ -71,7 +82,7 @@ export class PopoverDirective implements AfterViewInit {
           'scroll'
         ).subscribe(() => {
           if (this.overlayRef) {
-            if (this.elementIsVisibleInViewport(this.popoverService.anchorElementRef.nativeElement)) {
+            if (this.elementIsVisibleInViewport(this.popoverService.anchorElementRef?.nativeElement)) {
               this.overlayRef.updatePosition();
             } else {
               this.removeOverlay();
@@ -139,9 +150,11 @@ export class PopoverDirective implements AfterViewInit {
       this.overlayRef.attach(this.domPortal);
     }
 
-    this.popoverService.contentRef.nativeElement.focus();
     // this.overlayRef.updatePosition();
-    setTimeout(() => this.popoverService.popoverVisibleEmit(true));
+    setTimeout(() => {
+      this.popoverService.popoverVisibleEmit(true);
+      this.popoverService.contentRef.nativeElement.focus();
+    });
   }
 
   removeOverlay(): void {
@@ -160,7 +173,10 @@ export class PopoverDirective implements AfterViewInit {
 
   private _createOverlayRef(): OverlayRef {
     //fetch all Scrolling Containers registered with CDK
-    const scrollableAncestors = this.scrollDispatcher.getAncestorScrollContainers(this.popoverService.anchorElementRef);
+    let scrollableAncestors: CdkScrollable[];
+    if (this.popoverService.anchorElementRef) {
+      scrollableAncestors = this.scrollDispatcher.getAncestorScrollContainers(this.popoverService.anchorElementRef);
+    }
 
     const positionStrategy = this.overlay
       .position()
@@ -224,7 +240,7 @@ export class PopoverDirective implements AfterViewInit {
 
         if (this.popoverService.outsideClickClose) {
           this.popoverService.open = false;
-          this.popoverService.setOpenedButtonFocus();
+          // this.popoverService.setOpenedButtonFocus();
         }
       })
     );

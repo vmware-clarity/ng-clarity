@@ -84,10 +84,10 @@ export class ClrTooltipContent implements OnInit {
     return this._position;
   }
   set position(value: string) {
-    // const oldPosition = this._position;
+    const oldPosition = this._position;
     const newPosition = POSITIONS.includes(value as any) ? (value as Position) : defaultPosition;
     this._position = newPosition;
-    // this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
+    this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
     this.popoverService.position = this._position;
   }
 

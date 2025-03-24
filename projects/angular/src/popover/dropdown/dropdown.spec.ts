@@ -281,7 +281,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrDropdownModule, ClrModalModule, NoopAnimationsModule],
+        imports: [ClrDropdownModule, ClrModalModule, NoopAnimationsModule, ClrPopoverModule],
         declarations: [DropdownItemThatOpensModalTestComponent],
       });
 

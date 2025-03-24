@@ -48,6 +48,7 @@ export default {
     // story helpers
     content: 'Hello World!',
     title: 'Title',
+    clrIfOpen: false,
   },
 };
 
@@ -55,7 +56,11 @@ const SignpostTemplate: StoryFn = args => ({
   template: `
     <div style="padding: 250px; text-align: center">
       <clr-signpost>
-        <clr-signpost-content [clrPosition]="clrPosition" [clrSignpostCloseAriaLabel]="clrSignpostCloseAriaLabel">
+        <clr-signpost-content
+          [clrPosition]="clrPosition"
+          [clrSignpostCloseAriaLabel]="clrSignpostCloseAriaLabel"
+          *clrIfOpen="clrIfOpen"
+        >
           {{ content }}
         </clr-signpost-content>
       </clr-signpost>
@@ -68,7 +73,7 @@ const SignpostTitleTemplate: StoryFn = args => ({
   template: `
     <div style="padding: 250px; text-align: center">
       <clr-signpost>
-        <clr-signpost-content [clrPosition]="clrPosition">
+        <clr-signpost-content [clrPosition]="clrPosition" *clrIfOpen="clrIfOpen">
           <clr-signpost-title>{{ title }}</clr-signpost-title>
           {{ content }}
         </clr-signpost-content>
@@ -86,6 +91,13 @@ export const Opened = {
   render: SignpostTemplate,
   play({ canvasElement }) {
     canvasElement.querySelector('button').click();
+  },
+};
+
+export const OpenedWithClrifopen = {
+  render: SignpostTemplate,
+  args: {
+    clrIfOpen: true,
   },
 };
 
