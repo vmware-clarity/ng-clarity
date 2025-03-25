@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 :root [cds-theme] {
+  --cds-global-typography-font-family: var(--clr-metropolis-font-family);
   --cds-alias-utility-gray: var(--cds-global-color-construction-600);
   --cds-alias-object-container-backdrop-background: hsla(0, 0%, 100%, 0.6);
   --cds-alias-object-interaction-background-hover: var(--cds-global-color-construction-50);
