@@ -236,7 +236,9 @@
       box-shadow: none;
     }
 
-    .clr-accordion-panel:first-child .clr-accordion-header:not(.clr-stepper-header) {
+    .clr-accordion-panel:first-child
+      > div[class*='clr-accordion-panel-']
+      > .clr-accordion-header:not(.clr-stepper-header) {
       border-top-left-radius: accordion-variables.$clr-accordion-border-radius;
       border-top-right-radius: accordion-variables.$clr-accordion-border-radius;
     }
