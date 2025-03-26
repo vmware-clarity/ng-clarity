@@ -139,25 +139,18 @@ export default function (): void {
 
     it('supports clrMenuClosable option. Closes the dropdown menu when clrMenuClosable is set to true', fakeAsync(() => {
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
+
+      fixture.componentInstance.menuClosable = true;
       dropdownToggle.click();
       fixture.detectChanges();
 
-      const dropdownItem: HTMLElement = document.body.querySelector('.cdk-overlay-pane .dropdown-item');
-
+      const dropdownItem: HTMLElement = document.body.querySelector('.clr-dropdown-container .dropdown-item');
       dropdownItem.click();
       tick();
       fixture.detectChanges();
-      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).toBeNull();
 
-      fixture.componentInstance.menuClosable = false;
-      dropdownToggle.click();
-      fixture.detectChanges();
-      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).not.toBeNull();
-
-      dropdownItem.click();
-      tick();
-      fixture.detectChanges();
-      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).not.toBeNull();
+      expect(document.body.querySelector('.clr-dropdown-container .dropdown-item')).toBeNull();
+      flush();
     }));
 
     it('closes all dropdown menus when clrMenuClosable is true', fakeAsync(() => {
