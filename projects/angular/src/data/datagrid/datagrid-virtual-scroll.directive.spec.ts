@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
 import {
   ComponentFixture,
   discardPeriodicTasks,
@@ -52,9 +52,8 @@ export interface Cells {
         *ngIf="data.rows"
         clrVirtualScroll
         let-row
-        [(clrVirtualRowsOf)]="data.rows"
-        [clrVirtualTotalItems]="totalRows"
-        [clrVirtualAppendItems]="appendItems"
+        [clrVirtualRowsOf]="data.rows"
+        [clrVirtualPersistItems]="persistItems"
         [clrVirtualRowsItemSize]="24"
         [clrVirtualRowsMinBufferPx]="200"
         [clrVirtualRowsMaxBufferPx]="400"
@@ -75,10 +74,10 @@ export interface Cells {
     </clr-datagrid>
   `,
 })
-class FullTest implements OnInit {
+class FullTest implements OnInit, AfterViewInit {
   @ViewChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<any>;
   totalRows = 1000;
-  appendItems = true;
+  persistItems = true;
   rows: Observable<Row[]>;
   cols: Column[] = [];
   selectedRows: Row[] = [];
@@ -88,6 +87,10 @@ class FullTest implements OnInit {
   constructor(private cdr: ChangeDetectorRef) {
     this.rows = this.allRows.asObservable();
     this.cols = this.createColumns();
+  }
+
+  ngAfterViewInit() {
+    this.virtualScroll.totalItems = this.totalRows;
   }
 
   ngOnInit(): void {
@@ -206,10 +209,10 @@ export default function (): void {
         fixture.detectChanges();
         expect(instance.virtualScroll.totalItems).toBe(5000);
 
-        expect(instance.virtualScroll.appendItems).toBe(true);
-        instance.appendItems = false;
+        expect(instance.virtualScroll.persistItems).toBe(true);
+        instance.persistItems = false;
         fixture.detectChanges();
-        expect(instance.virtualScroll.appendItems).toBe(false);
+        expect(instance.virtualScroll.persistItems).toBe(false);
 
         fixture.destroy();
       });

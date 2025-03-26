@@ -31,7 +31,7 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     data: User[];
   };
 
-  selectedUsers: User[] = [];
+  _selectedUsers: User[] = [];
   @ViewChild('datagrid') datagrid: ClrDatagrid;
 
   constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
@@ -60,13 +60,14 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     });
   }
 
-  get users() {
-    return this._users;
+  get selectedUsers() {
+    return this._selectedUsers;
   }
 
-  set users(users) {
-    this._users = users;
-    this.cdr.detectChanges();
+  set selectedUsers(users) {
+    console.log(users);
+    this._selectedUsers = users;
+    // this.cdr.detectChanges();
   }
 
   refresh(state: ClrDatagridStateInterface) {
