@@ -19,18 +19,31 @@ import { User } from '../inventory/user';
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridVirtualScrollEmptyRowsDemo {
+  useAPI = true;
   userRange: ListRange;
   _totalRows = 10000;
-  appendItems = true;
+  persistItems = false;
   _users: User[] = [];
+
+  dataRange: {
+    total: number;
+    skip: number;
+    data: User[];
+  };
 
   selectedUsers: User[] = [];
   @ViewChild('datagrid') datagrid: ClrDatagrid;
 
   constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
     inventory.size = this.totalRows;
-    inventory.latency = 1000;
+    inventory.latency = 500;
     inventory.reset();
+
+    this.dataRange = {
+      total: this.totalRows,
+      skip: 0,
+      data: [],
+    };
   }
 
   get totalRows() {
@@ -70,7 +83,18 @@ export class DatagridVirtualScrollEmptyRowsDemo {
 
     const result = await this.inventory.fetch($event.start, $event.end - $event.start);
 
-    this.datagrid.virtualScroll.updateItemRange($event.start, result.users);
+    if (this.useAPI) {
+      this.datagrid.virtualScroll.totalItems = result.length;
+      this.datagrid.virtualScroll.updateItemRange($event.start, result.users);
+    } else {
+      this.dataRange = {
+        total: result.length,
+        data: result.users,
+        skip: $event.start,
+      };
+
+      this.cdr.detectChanges();
+    }
   }
 
   jumpTo(index: number) {

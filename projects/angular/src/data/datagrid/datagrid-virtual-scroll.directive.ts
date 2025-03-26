@@ -71,8 +71,7 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 })
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
-  @Output('clrVirtualRowsOfChange') cdkVirtualForOfChange = new EventEmitter<T[]>();
-  @Input('clrVirtualAppendItems') appendItems = true;
+  @Input('clrVirtualPersistItems') persistItems = true;
 
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
 
@@ -198,7 +197,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.updateFixedSizeVirtualScrollInputs();
   }
 
-  @Input('clrVirtualTotalItems')
   get totalItems() {
     return this._totalItems;
   }
@@ -209,17 +207,14 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
     this._totalItems = value;
 
-    let newData: T[];
-    if (this.items.all.length > value) {
-      newData = this.items.all.slice(0, value);
-    } else {
-      this.items.all[value - 1] = undefined;
-      newData = this.items.all;
-    }
+    this.clearItems();
+  }
 
-    this.cdkVirtualForOf = newData;
+  @Input('clrVirtualDataRange')
+  set dataRange(range: { total: number; skip: number; data: T[] }) {
+    this.totalItems = range.total;
 
-    this.cdkVirtualForOfChange.emit(this.items.all);
+    this.updateItemRange(range.skip, range.data);
   }
 
   ngAfterViewInit() {
@@ -290,19 +285,17 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   clearItems() {
-    this.cdkVirtualForOf = Array(this._totalItems);
-
-    this.cdkVirtualForOfChange.emit(this.items.all);
+    this.cdkVirtualForOf = Array(this.totalItems);
   }
 
-  updateItemRange(start: number, data: T[]) {
-    if (!this.appendItems) {
+  updateItemRange(skip: number, data: T[]) {
+    if (!this.persistItems) {
       this.clearItems();
     }
 
     const items = this.items.all;
 
-    items.splice(start, data.length, ...data);
+    items.splice(skip, data.length, ...data);
 
     this.items.all = items;
   }
