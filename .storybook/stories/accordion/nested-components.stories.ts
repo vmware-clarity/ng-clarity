@@ -10,7 +10,7 @@ import { ClarityModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
-import { baseComponentTemplates } from '../../helpers/nesting-components';
+import { renderNestedComponent } from '../../helpers/nesting-components';
 
 const nestedComponentNames = [
   'accordion',
@@ -76,15 +76,17 @@ export default {
   },
 };
 
-const nestedComponents = nestedComponentNames
-  .map(name => `<div><h5>${name}</h5>${baseComponentTemplates[name]}</div>`)
-  .join('<hr/>');
+const nestedComponents = renderNestedComponent(nestedComponentNames);
 
 const template = `
   <clr-accordion>
     <clr-accordion-panel [clrAccordionPanelOpen]="true">
-      <clr-accordion-title>Parent Title</clr-accordion-title>
+      <clr-accordion-title>Short Title</clr-accordion-title>
       <clr-accordion-content>${nestedComponents}</clr-accordion-content>
+    </clr-accordion-panel>
+    <clr-accordion-panel>
+      <clr-accordion-title>Accrodion Title</clr-accordion-title>
+      <clr-accordion-content>Content</clr-accordion-content>
     </clr-accordion-panel>
   </clr-accordion>
 `;
