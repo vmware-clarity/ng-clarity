@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -26,6 +26,7 @@ import { ProjectionUpdateTest3Demo } from './angular/projection-update-test-3/pr
 import { ProjectionUpdateTest4Demo } from './angular/projection-update-test-4/projection-update-test-4';
 import { ProjectionUpdateTest5Demo } from './angular/projection-update-test-5/projection-update-test-5';
 import { ProjectionUpdateTest6Demo } from './angular/projection-update-test-6/projection-update-test-6';
+import { RouterLinkButtonGroupDemo } from './angular/router-link/router-link-button-group';
 import { ButtonGroupDemo } from './button-group.demo';
 import { ROUTING } from './button-group.demo.routing';
 import { StaticButtonGroupBasicStructureDemo } from './static/basic-structure/basic-structure';
@@ -57,6 +58,7 @@ import { ButtonGroupTypes } from './static/types/button-group-types';
     ProjectionUpdateTest4Demo,
     ProjectionUpdateTest5Demo,
     ProjectionUpdateTest6Demo,
+    RouterLinkButtonGroupDemo,
     LoadingButtonGroupDemo,
 
     StaticButtonGroupBasicStructureDemo,

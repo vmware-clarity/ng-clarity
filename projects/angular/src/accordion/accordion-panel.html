@@ -1,13 +1,17 @@
 <ng-container *ngIf="panel | async; let panel">
   <div [ngClass]="getPanelStateClasses(panel)">
-    <div class="clr-accordion-header">
+    <div
+      class="clr-accordion-header"
+      [attr.role]="headingEnabled || explicitHeadingLevel ? 'heading' : null"
+      [attr.aria-level]="headingEnabled || explicitHeadingLevel ? headingLevel : null"
+    >
       <button
         type="button"
         class="clr-accordion-header-button"
         (click)="togglePanel()"
         [id]="getAccordionHeaderId(panel.templateId)"
         [disabled]="panel.disabled"
-        [attr.aria-controls]="getAccordionContentId(panel.templateId)"
+        [attr.aria-controls]="!panel.disabled && panel.open ? getAccordionContentId(panel.templateId) : null"
         [attr.aria-expanded]="panel.open"
         [class.clr-accordion-header-has-description]="(accordionDescription.changes | async)?.length || accordionDescription.length"
         #headerButton

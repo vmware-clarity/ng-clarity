@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
   ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
@@ -16,11 +16,11 @@
   (clrModalAlternateClose)="modalCancel()"
   [clrModalLabelledById]="wizardId"
 >
-  <div class="modal-nav clr-wizard-stepnav-wrapper" role="region" [attr.aria-label]="stepnavAriaLabel">
-    <div class="clr-wizard-title" id="{{wizardId}}" role="heading" [attr.aria-level]="wizardTitle.headingLevel || 1">
+  <div class="modal-nav clr-wizard-stepnav-wrapper" role="region">
+    <div class="clr-wizard-title" [id]="wizardId" role="heading" [attr.aria-level]="wizardTitle.headingLevel || 1">
       <ng-content select="clr-wizard-title"></ng-content>
     </div>
-    <clr-wizard-stepnav></clr-wizard-stepnav>
+    <clr-wizard-stepnav [label]="stepnavAriaLabel"></clr-wizard-stepnav>
   </div>
 
   <div class="modal-title" role="heading" [attr.aria-level]="navService.currentPage?.pageTitle.headingLevel || 2">

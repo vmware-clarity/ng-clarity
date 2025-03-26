@@ -1,0 +1,35 @@
+name: Update Preview Build Branches
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - next
+      - beta
+permissions:
+  contents: write
+concurrency:
+  group: update-preview-build-branches-${{github.ref_name}}
+  cancel-in-progress: true
+jobs:
+  update-preview-build-branches:
+    name: Update Preview Build Branches
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Disable Docs Builds
+        run: node ./scripts/clear-npm-script.js _build:demo _build:storybook
+      - name: Build
+        run: npm run build
+      - name: Update Preview Build Branches
+        env:
+          GIT_BRANCH: ${{github.ref_name}}
+          GIT_COMMIT_SHA: ${{github.sha}}
+        run: ./scripts/update-preview-build-branches.sh

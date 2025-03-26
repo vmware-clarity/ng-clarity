@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -27,6 +27,8 @@ class ChangeDetectionPerfRecord {
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {
+  range: ListRange;
+  userRange: ListRange;
   totalRows = 10000;
   totalCols = 5;
   cols: Column[];
@@ -37,6 +39,7 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
   selectedUsers: User[] = [];
   timeCD: ChangeDetectionPerfRecord;
   sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
+  globalFilter = '';
 
   pokemonComparator = new PokemonComparator();
 
@@ -73,6 +76,16 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
     this.rows.subscribe(() => {
       this.cdr.detectChanges();
     });
+  }
+
+  setGlobalFilter(value: string) {
+    this.globalFilter = value;
+
+    if (value) {
+      this.users = new BehaviorSubject<User[]>(this.inventory.all.filter(user => user.name.includes(value)));
+    } else {
+      this.users = this.inventory.getAllUsersSubject();
+    }
   }
 
   changeDatagridDimensions() {
@@ -117,7 +130,26 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
   }
 
   renderRangeChange($event: ListRange) {
+    this.range = $event;
     console.log($event);
     // this.loadMore($event);
+  }
+
+  renderUserRangeChange($event: ListRange) {
+    this.userRange = $event;
+    console.log($event);
+    // this.loadMore($event);
+  }
+
+  getIndexes(rows: any[]) {
+    const result = [];
+
+    for (let i = 0; i < rows.length; i++) {
+      if (i % 1000 === 0) {
+        result.push(i);
+      }
+    }
+
+    return result;
   }
 }

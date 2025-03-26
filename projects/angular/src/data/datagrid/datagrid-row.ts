@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -48,6 +48,7 @@ let nbRow = 0;
   templateUrl: './datagrid-row.html',
   host: {
     '[class.datagrid-row]': 'true',
+    '[class.datagrid-row-skeleton]': 'skeletonLoading',
     '[class.datagrid-selected]': 'selected',
     '[attr.aria-owns]': 'id',
     role: 'rowgroup',
@@ -63,6 +64,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   @Output('clrDgExpandedChange') expandedChange = new EventEmitter<boolean>(false);
   @Input('clrDgDetailDisabled') detailDisabled = false;
   @Input('clrDgDetailHidden') detailHidden = false;
+  @Input('clrDgSkeletonLoading') skeletonLoading = false;
 
   id: string;
   radioId: string;

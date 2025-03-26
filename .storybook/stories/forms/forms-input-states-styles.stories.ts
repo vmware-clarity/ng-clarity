@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -27,12 +27,13 @@ export default {
     isDisabled: false,
     isError: false,
     isSuccess: false,
+    isFullWidth: false,
   },
 };
 
 const FormInputTemplate: StoryFn = args => ({
   template: `
-    <form [class]="'clr-form clr-form-' + clrLayout">
+    <form [class]="'clr-form clr-form-' + clrLayout" [class.clr-form-full-width]="isFullWidth">
       <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
         <label class="clr-control-label">Text</label>
         <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
@@ -238,6 +239,21 @@ export const CompactInputStates: StoryObj = {
   args: { clrLayout: ClrFormLayout.COMPACT },
 };
 
+export const FullWidthInputStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isFullWidth: true },
+};
+
+export const VerticaFullWidthInputStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { clrLayout: ClrFormLayout.VERTICAL, isFullWidth: true },
+};
+
+export const CompactFullWidthInputStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { clrLayout: ClrFormLayout.COMPACT, isFullWidth: true },
+};
+
 export const DisabledStates: StoryObj = {
   render: FormInputTemplate,
   args: { isDisabled: true },
@@ -258,6 +274,21 @@ export const CompactErrorStates: StoryObj = {
   args: { isError: true, clrLayout: ClrFormLayout.COMPACT },
 };
 
+export const FullWidthErrorStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isError: true, isFullWidth: true },
+};
+
+export const VerticalFullWidthErrorStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isError: true, clrLayout: ClrFormLayout.VERTICAL, isFullWidth: true },
+};
+
+export const CompactFullWidthErrorStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isError: true, clrLayout: ClrFormLayout.COMPACT, isFullWidth: true },
+};
+
 export const SuccessStates: StoryObj = {
   render: FormInputTemplate,
   args: { isSuccess: true },
@@ -271,4 +302,19 @@ export const VerticalSuccessStates: StoryObj = {
 export const CompactSuccessStates: StoryObj = {
   render: FormInputTemplate,
   args: { isSuccess: true, clrLayout: ClrFormLayout.COMPACT },
+};
+
+export const FullWidthSuccessStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isSuccess: true, isFullWidth: true },
+};
+
+export const FullWidthVerticalSuccessStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isSuccess: true, clrLayout: ClrFormLayout.VERTICAL, isFullWidth: true },
+};
+
+export const FullWidthCompactSuccessStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isSuccess: true, clrLayout: ClrFormLayout.COMPACT, isFullWidth: true },
 };

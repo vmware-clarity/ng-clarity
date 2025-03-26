@@ -1,17 +1,15 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
-import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 
 @Component({
@@ -24,6 +22,9 @@ import { DateNavigationService } from './providers/date-navigation.service';
       [class.is-excluded]="dayView.isExcluded"
       [class.is-disabled]="dayView.isDisabled"
       [class.is-selected]="dayView.isSelected"
+      [class.in-range]="isInRange()"
+      [class.is-start-range]="isRangeStartDay"
+      [class.is-end-range]="isRangeEndDay"
       [attr.tabindex]="dayView.tabIndex"
       (click)="selectDay()"
       (focus)="onDayViewFocus()"
@@ -37,14 +38,11 @@ import { DateNavigationService } from './providers/date-navigation.service';
   host: { '[class.day]': 'true' },
 })
 export class ClrDay {
+  @Output('selectDay') onSelectDay = new EventEmitter<DayModel>();
+
   private _dayView: DayViewModel;
 
-  constructor(
-    private _dateNavigationService: DateNavigationService,
-    private _toggleService: ClrPopoverToggleService,
-    private dateFormControlService: DateFormControlService,
-    private commonStrings: ClrCommonStringsService
-  ) {}
+  constructor(private _dateNavigationService: DateNavigationService, private commonStrings: ClrCommonStringsService) {}
 
   /**
    * DayViewModel input which is used to build the Day View.
@@ -66,6 +64,30 @@ export class ClrDay {
       : this._dayView.dayModel.toDateString();
   }
 
+  get isRangeStartDay(): boolean {
+    return (
+      this._dateNavigationService.isRangePicker &&
+      this.dayView?.dayModel?.toComparisonString() === this._dateNavigationService.selectedDay?.toComparisonString()
+    );
+  }
+
+  get isRangeEndDay(): boolean {
+    return (
+      this._dateNavigationService.isRangePicker &&
+      this.dayView?.dayModel?.toComparisonString() === this._dateNavigationService.selectedEndDay?.toComparisonString()
+    );
+  }
+
+  /**
+   * Calls the DateNavigationService to update the hovered day value of the calendar
+   */
+  @HostListener('mouseenter')
+  hoverListener(): void {
+    if (!this.dayView.isDisabled) {
+      this._dateNavigationService.hoveredDay = this.dayView.dayModel;
+    }
+  }
+
   /**
    * Updates the focusedDay in the DateNavigationService when the ClrDay is focused.
    */
@@ -81,8 +103,29 @@ export class ClrDay {
       return;
     }
     const day: DayModel = this.dayView.dayModel;
-    this._dateNavigationService.notifySelectedDayChanged(day);
-    this.dateFormControlService.markAsDirty();
-    this._toggleService.open = false;
+    this.onSelectDay.emit(day);
+  }
+
+  /**
+   * Applicable only to date range picker
+   * Compares whether the day is in between the start and end date range
+   */
+  isInRange(): boolean {
+    if (!this._dateNavigationService.isRangePicker) {
+      return false;
+    }
+    if (this._dateNavigationService.selectedDay && this._dateNavigationService.selectedEndDay) {
+      return (
+        this._dayView.dayModel?.isAfter(this._dateNavigationService.selectedDay) &&
+        this._dayView.dayModel?.isBefore(this._dateNavigationService.selectedEndDay)
+      );
+    } else if (this._dateNavigationService.selectedDay && !this._dateNavigationService.selectedEndDay) {
+      return (
+        this._dayView.dayModel?.isAfter(this._dateNavigationService.selectedDay) &&
+        this._dayView.dayModel?.isBefore(this._dateNavigationService.hoveredDay, true)
+      );
+    } else {
+      return false;
+    }
   }
 }

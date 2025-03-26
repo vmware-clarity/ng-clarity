@@ -1,0 +1,67 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Virtual scroll empty rows</h2>
+
+<clr-datagrid #datagrid [(clrDgSelected)]="selectedUsers" class="datagrid-compact" style="height: 30rem">
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>Pokemon</clr-dg-column>
+  <clr-dg-column>Favorite color</clr-dg-column>
+
+  <ng-template
+    clrVirtualScroll
+    let-user
+    [clrVirtualRowsOf]="users"
+    [clrVirtualRowsItemSize]="32"
+    [clrVirtualRowsMinBufferPx]="200"
+    [clrVirtualRowsMaxBufferPx]="400"
+    [clrVirtualRowsTemplateCacheSize]="400"
+    [clrVirtualRowsTrackBy]="rowByIndex"
+    (renderedRangeChange)="renderUserRangeChange($event)"
+  >
+    <clr-dg-row [clrDgItem]="user" [clrDgSkeletonLoading]="!user">
+      <clr-dg-cell>{{user?.id}}</clr-dg-cell>
+      <clr-dg-cell>{{user?.name}}</clr-dg-cell>
+      <clr-dg-cell>{{user?.creation | date}}</clr-dg-cell>
+      <clr-dg-cell>
+        {{user?.pokemon?.name}}
+        <span class="badge badge-5">#{{user?.pokemon?.number}}</span>
+      </clr-dg-cell>
+      <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user?.color"></span>
+      </clr-dg-cell>
+    </clr-dg-row>
+  </ng-template>
+
+  <clr-dg-detail *clrIfDetail="let detail">
+    <clr-dg-detail-header> {{detail.name}} </clr-dg-detail-header>
+    <clr-dg-detail-body>
+      <pre>{{detail | json}}</pre>
+    </clr-dg-detail-body>
+  </clr-dg-detail>
+
+  <clr-dg-footer>
+    <div class="footer-counters">Rows {{userRange?.start + 1}} - {{userRange?.end}} of {{users.length}}</div>
+    <clr-dropdown>
+      <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
+        Snap Jump to
+        <cds-icon shape="angle" direction="down"></cds-icon>
+      </button>
+      <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
+        <div
+          *ngFor="let index of getIndexes(users)"
+          (click)="datagrid.virtualScroll.scrollToIndex(index, 'auto')"
+          clrDropdownItem
+        >
+          {{index + 1}}
+        </div>
+      </clr-dropdown-menu>
+    </clr-dropdown>
+  </clr-dg-footer>
+</clr-datagrid>

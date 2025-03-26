@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -15,10 +15,15 @@ const RowTemplate: StoryFn = args => ({
   template: `
     <style>
       .highlight {
-        border: 1px solid red !important;
+        border: 1px solid var(--cds-alias-status-danger) !important;
       }
       .electronegativity-container {
-        border-bottom: 4px solid #119cd4;
+        display: flex;
+        justify-content: space-between;
+
+        .electronegativity-bar {
+          background-color: var(--cds-alias-status-info);
+        }
       }
     </style>
     <clr-datagrid
@@ -53,12 +58,17 @@ const RowTemplate: StoryFn = args => ({
         (clrDgExpandedChange)="index === 0 && clrDgExpandedChange($event)"
         (clrDgSelectedChange)="index === 0 && clrDgSelectedChange($event)"
       >
-        <clr-dg-cell>{{ element.name }}</clr-dg-cell>
-        <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
-        <clr-dg-cell>{{ element.number }}</clr-dg-cell>
-        <clr-dg-cell>
-          <div [style.width.%]="(element.electronegativity * 100) / 4" class="electronegativity-container">
-            {{ element.electronegativity }}
+        <clr-dg-cell>{{ emptyRow && index === 0 ? '' : element.name }}</clr-dg-cell>
+        <clr-dg-cell>{{ emptyRow && index === 0 ? '' : element.symbol }}</clr-dg-cell>
+        <clr-dg-cell>{{ emptyRow && index === 0 ? '' : element.number }}</clr-dg-cell>
+        <clr-dg-cell class="electronegativity-container">
+          {{ emptyRow && index === 0 ? '' : element.electronegativity }}
+          <div
+            *ngIf="!emptyRow || index !== 0"
+            [style.width.%]="(element.electronegativity * 100) / 5"
+            class="electronegativity-bar"
+          >
+            &nbsp;
           </div>
         </clr-dg-cell>
         <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
@@ -115,6 +125,7 @@ export default {
     expandable: false,
     compact: false,
     hidableColumns: false,
+    emptyRow: false,
     height: 0,
   },
 };
@@ -129,9 +140,25 @@ export const singleSelection: StoryObj = {
     singleSelectable: true,
   },
 };
+
 export const multiSelection: StoryObj = {
   render: RowTemplate,
   args: {
     multiSelectable: true,
+  },
+};
+
+export const emptyRow: StoryObj = {
+  render: RowTemplate,
+  args: {
+    emptyRow: true,
+  },
+};
+
+export const compactEmptyRow: StoryObj = {
+  render: RowTemplate,
+  args: {
+    emptyRow: true,
+    compact: true,
   },
 };

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -17,8 +17,9 @@ const browser = process.env['CLARITY_VRT_BROWSER'];
 const matrixKey = browser;
 
 const usedScreenshotPaths: string[] = [];
+const storiesFilePath = path.join('.', 'dist', 'docs', 'stories.json');
 
-const stories: Story[] = JSON.parse(fs.readFileSync('./dist/docs/stories.json').toString());
+const stories: Story[] = JSON.parse(fs.readFileSync(storiesFilePath).toString());
 
 for (const { storyId, component } of stories) {
   if (storyId.endsWith('--docs') || !component) {
@@ -60,4 +61,5 @@ const takeFullPageScreenshot = (component, storyName) => {
   return ScreenshotOptions[component]?.fullPageScreenshot || ScreenshotOptions[storyName]?.fullPageScreenshot;
 };
 
-fs.writeFileSync(`./tests/snapshots/used-screenshot-paths-${matrixKey}.txt`, usedScreenshotPaths.join('\n'));
+const unusedScreenshotsFilePath = path.join('.', 'tests', 'snapshots', `used-screenshot-paths-${matrixKey}.txt`);
+fs.writeFileSync(unusedScreenshotsFilePath, usedScreenshotPaths.join('\n'));

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -15,7 +15,7 @@ $clr-tree-node-touch-target: #{tokens.$cds-global-space-10} !default;
 $clr-tree-node-children-margin: $clr-tree-node-touch-target !default;
 $clr-tree-node-content-icon-margin-right: #{tokens.$cds-global-space-5} !default;
 $clr-tree-checkbox-padding-top: 0 !default;
-$clr-tree-checkbox-padding-left: 0 !default;
+$clr-tree-checkbox-padding-left: #{tokens.$cds-global-space-5} !default;
 
 // @deprecated in v17 in favor of $clr-tree-node-content-padding. Will be removed in v18.
 $clr-tree-node-link-padding-left: #{tokens.$cds-global-space-5} !default;

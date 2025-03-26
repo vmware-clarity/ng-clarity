@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -230,16 +230,16 @@ export class ClrDatagridColumn<T = any>
     }
 
     switch (value) {
-      // the Unsorted case happens when the current state is either Asc or Desc
-      default:
-      case ClrDatagridSortOrder.UNSORTED:
-        this._sort.clear();
-        break;
       case ClrDatagridSortOrder.ASC:
         this.sort(false);
         break;
       case ClrDatagridSortOrder.DESC:
         this.sort(true);
+        break;
+      // the Unsorted case happens when the current state is neither Asc or Desc
+      case ClrDatagridSortOrder.UNSORTED:
+      default:
+        this._sort.clear();
         break;
     }
   }
@@ -284,13 +284,13 @@ export class ClrDatagridColumn<T = any>
 
   get ariaSort() {
     switch (this._sortOrder) {
-      default:
-      case ClrDatagridSortOrder.UNSORTED:
-        return 'none';
       case ClrDatagridSortOrder.ASC:
         return 'ascending';
       case ClrDatagridSortOrder.DESC:
         return 'descending';
+      case ClrDatagridSortOrder.UNSORTED:
+      default:
+        return 'none';
     }
   }
 

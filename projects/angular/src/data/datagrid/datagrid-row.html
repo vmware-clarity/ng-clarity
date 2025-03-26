@@ -47,11 +47,10 @@
           [ngClass]="{ 'clr-form-control-disabled': !clrDgSelectable }"
           role="gridcell"
         >
-          <clr-checkbox-wrapper>
+          <div class="clr-checkbox-wrapper">
             <input
               tabindex="-1"
               type="checkbox"
-              clrCheckbox
               [ngModel]="selected"
               (ngModelChange)="toggle($event)"
               [id]="checkboxId"
@@ -62,7 +61,7 @@
             <label [for]="checkboxId" class="clr-control-label clr-col-null" (click)="clearRanges($event)">
               <span class="clr-sr-only">{{clrDgRowSelectionLabel || commonStrings.keys.select}}</span>
             </label>
-          </clr-checkbox-wrapper>
+          </div>
         </div>
         <div
           *ngIf="selection.selectionType === SELECTION_TYPE.Single"
@@ -109,7 +108,7 @@
               class="datagrid-expandable-caret-button"
               [attr.aria-expanded]="expand.expanded"
               [attr.aria-label]="expand.expanded ? clrDgDetailCloseLabel : clrDgDetailOpenLabel"
-              [attr.aria-controls]="expandableId"
+              [attr.aria-controls]="expand.hasExpandTemplate && !expand.expanded ? null : expandableId"
             >
               <cds-icon
                 shape="angle"
@@ -160,6 +159,7 @@
       <ng-template *ngIf="replaced && !expand.loading" [ngTemplateOutlet]="detail"></ng-template>
       <ng-template *ngIf="!replaced && !expand.loading" [ngTemplateOutlet]="detail"></ng-template>
     </div>
+    <clr-dg-cell class="skeleton-loading" *ngIf="skeletonLoading"></clr-dg-cell>
   </div>
 </ng-template>
 

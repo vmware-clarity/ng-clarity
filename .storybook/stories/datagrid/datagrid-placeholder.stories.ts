@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -37,10 +37,7 @@ const PlaceholderTemplate: StoryFn = args => ({
   template: `
     <style>
       .highlight {
-        border: 1px solid red !important;
-      }
-      .electronegativity-container {
-        border-bottom: 4px solid #119cd4;
+        border: 1px solid var(--cds-alias-status-danger) !important;
       }
     </style>
     <clr-datagrid ${args.height ? '[style.height.px]="height"' : ''} [ngClass]="{ 'datagrid-compact': compact }">

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -28,16 +28,16 @@ $clr-outline-color-inverse: hsla(0, 0%, 100%, 0.09) !default;
 $clr-outline-blur: variables.$clr_baselineRem_2px;
 $clr-outline-spread: variables.$clr_baselineRem_2px;
 
-@mixin include-outline-style-form-fields() {
+@mixin include-outline-style-form-fields($offset: tokens.$cds-alias-object-interaction-outline-offset) {
   outline: tokens.$cds-alias-object-interaction-outline;
   outline-color: -webkit-focus-ring-color;
-  outline-offset: tokens.$cds-alias-object-interaction-outline-offset;
+  outline-offset: $offset;
 }
 
 @mixin include-slim-outline-style-form-fields($width: tokens.$cds-global-space-2) {
   outline-color: Highlight;
   outline-color: -webkit-focus-ring-color;
-  outline-style: solid;
+  outline-style: auto;
   outline-width: $width;
 }
 

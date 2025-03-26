@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -62,6 +62,14 @@ export default function (): void {
         const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
 
         expect(signpostToggle.getAttribute('aria-label')).toEqual('Signpost Toggle');
+      });
+
+      it('allows a custom aria-label for the default trigger', function (this: Context) {
+        this.fixture.componentInstance.signpost.signpostTriggerAriaLabel = 'custom label';
+        this.detectChanges();
+        const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+
+        expect(signpostToggle.getAttribute('aria-label')).toBe('custom label');
       });
     });
 
@@ -263,7 +271,7 @@ class TestCustomTriggerSignpost {
 @Component({
   template: `
     <button #outsideClick type="button">Button to test clicks outside of the dropdown component</button>
-    <clr-signpost>
+    <clr-signpost [clrSignpostTriggerAriaLabel]="signpostTriggerAriaLabel">
       <clr-signpost-content *clrIfOpen="openState">
         <button class="dummy-button" type="button">dummy button</button>
         Signpost content
@@ -275,6 +283,7 @@ class TestDefaultSignpost {
   @ViewChild(ClrSignpost) signpost: ClrSignpost;
 
   openState = false;
+  signpostTriggerAriaLabel: string;
 
   @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn: ElementRef<HTMLButtonElement>;
 }

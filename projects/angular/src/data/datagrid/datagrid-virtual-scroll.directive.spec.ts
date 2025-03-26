@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -18,6 +18,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { animationFrameScheduler, BehaviorSubject, Observable } from 'rxjs';
 
 import { ClarityModule } from '../../clr-angular.module';
+import { Keys } from '../../utils/enums/keys.enum';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 
@@ -50,7 +51,7 @@ export interface Cells {
 
       <ng-template
         *ngIf="data.rows"
-        ClrVirtualScroll
+        clrVirtualScroll
         let-row
         [clrVirtualRowsOf]="data.rows"
         [clrVirtualRowsItemSize]="24"
@@ -205,6 +206,21 @@ export default function (): void {
         fixture.destroy();
       });
 
+      it('Spy on Scroll to index', fakeAsync(() => {
+        fixture.detectChanges();
+        const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');
+
+        instance.virtualScroll.scrollToIndex(300);
+        fixture.detectChanges();
+        expect(spyVirtualScroll).toHaveBeenCalledWith(300);
+
+        instance.virtualScroll.scrollToIndex(0);
+        fixture.detectChanges();
+        expect(spyVirtualScroll).toHaveBeenCalledWith(0);
+
+        fixture.destroy();
+      }));
+
       it('Moves focus on PageDown and PageUp', fakeAsync(() => {
         finishInit(fixture);
         fixture.autoDetectChanges();
@@ -221,18 +237,18 @@ export default function (): void {
 
         expect(document.activeElement).toBe(headerCheckboxCell);
 
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         // active checkbox input with ID clr-dg-row-cb364
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[22]);
 
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb383
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[41]);
 
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
@@ -246,17 +262,6 @@ export default function (): void {
         fixture.autoDetectChanges(false);
         fixture.destroy();
       }));
-
-      // it('allows to manually resize the datagrid', function () {
-      //   const organizer: DatagridRenderOrganizer = context.getClarityProvider(DatagridRenderOrganizer);
-      //   let resizeSteps = 0;
-      //   organizer.renderStep.subscribe(() => {
-      //     resizeSteps++;
-      //   });
-      //   expect(resizeSteps).toBe(0);
-      //   context.clarityDirective.resize();
-      //   expect(resizeSteps).toBe(5);
-      // });
     });
   });
 }
