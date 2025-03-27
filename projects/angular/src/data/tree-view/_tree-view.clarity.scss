@@ -98,7 +98,7 @@
       margin-left: tree-view-variables.$clr-tree-node-touch-target;
     }
 
-    &.clr-treenode-text-only {
+    .clr-treenode-content:not(:has(.clr-treenode-link)) {
       padding-left: tokens.$cds-global-space-5;
     }
 
