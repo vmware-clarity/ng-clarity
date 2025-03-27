@@ -2,7 +2,7 @@ import * as i0 from '@angular/core';
 import { Directive, NgModule, Optional, Input, Injectable, Component, ChangeDetectionStrategy, EventEmitter, SkipSelf, HostBinding, Output, ContentChildren, PLATFORM_ID, Inject, ViewChild, HostListener, Renderer2, InjectionToken, ElementRef, NgZone, ChangeDetectorRef, ContentChild, ComponentFactoryResolver, KeyValueDiffers, Self, forwardRef, Attribute, TemplateRef, ViewContainerRef, LOCALE_ID, inject, Injector, VERSION, EnvironmentInjector, IterableDiffers } from '@angular/core';
 import * as i5 from '@angular/common';
 import { CommonModule, isPlatformBrowser, DOCUMENT, NgForOf, getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, getLocaleFirstDayOfWeek, getLocaleDateFormat, FormatWidth } from '@angular/common';
-import { ClarityIcons, angleIcon, exclamationCircleIcon, checkCircleIcon, ellipsisHorizontalIcon, windowCloseIcon, infoCircleIcon, timesIcon, angleDoubleIcon, eventIcon, calendarIcon, folderOpenIcon, eyeHideIcon, eyeIcon, ellipsisVerticalIcon, viewColumnsIcon, arrowIcon, stepForward2Icon, filterGridCircleIcon, filterGridIcon, errorStandardIcon, helpIcon, infoStandardIcon, noteIcon, successStandardIcon, warningStandardIcon, circleIcon, dotCircleIcon } from '@cds/core/icon';
+import { ClarityIcons, angleIcon, exclamationCircleIcon, checkCircleIcon, ellipsisHorizontalIcon, windowCloseIcon, infoCircleIcon, timesIcon, angleDoubleIcon, eventIcon, calendarIcon, folderOpenIcon, minusIcon, plusIcon, eyeHideIcon, eyeIcon, ellipsisVerticalIcon, viewColumnsIcon, arrowIcon, stepForward2Icon, filterGridCircleIcon, filterGridIcon, errorStandardIcon, helpIcon, infoStandardIcon, noteIcon, successStandardIcon, warningStandardIcon, circleIcon, dotCircleIcon } from '@cds/core/icon';
 import { map, tap, startWith, distinctUntilChanged, filter, skipUntil, debounceTime, takeUntil, take, first, switchMap as switchMap$1 } from 'rxjs/operators';
 import * as i3 from 'rxjs';
 import { Subject, BehaviorSubject, Observable, fromEvent, isObservable, of, shareReplay, combineLatest, startWith as startWith$1, switchMap, merge, map as map$1, EMPTY, ReplaySubject, tap as tap$1 } from 'rxjs';
@@ -16331,7 +16331,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrNumberInputModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, minusIcon, plusIcon);
     }
 }
 ClrNumberInputModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNumberInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
