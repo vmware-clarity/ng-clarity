@@ -13,6 +13,7 @@
 @use 'sass:string';
 @use 'sass:meta';
 @use '../modal/variables.modal' as modal-variables;
+@use '../timeline/variables.timeline' as timeline-variables;
 @use '../utils/mixins';
 @use 'variables.wizard' as wizard-variables;
 
@@ -140,7 +141,6 @@
       order: -1;
       overflow: hidden;
       overflow-y: auto;
-      border-right: var(--clr-global-borderwidth) solid wizard-variables.$clr-wizard-stepnav-border-color;
       background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
       border-radius: wizard-variables.$clr-wizard-border-radius 0 0 wizard-variables.$clr-wizard-border-radius;
     }
@@ -166,8 +166,6 @@
 
     .clr-wizard-stepnav-item {
       display: block;
-      border-left: wizard-variables.$clr-wizard-stepnav-border-size solid
-        wizard-variables.$clr-wizard-stepnav-item-border-color;
 
       margin-bottom: tokens.$cds-global-space-1;
       color: wizard-variables.$clr-wizard-stepnav-text;
@@ -187,7 +185,6 @@
       &.active {
         color: wizard-variables.$clr-wizard-stepnav-text--active;
         background-color: wizard-variables.$clr-wizard-stepnav-selected-bgcolor;
-        border-left-color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
 
         &:hover {
           background-color: wizard-variables.$clr-wizard-stepnav-selected-hover-bgcolor;
@@ -216,19 +213,13 @@
       }
 
       &.complete {
-        border-color: wizard-variables.$clr-wizard-stepnav-item-border-color--active;
-        transition: border-color 0.2s ease-in;
-
-        .clr-wizard-stepnav-link-icon cds-icon {
+        .clr-wizard-stepnav-link-icon {
           --color: #{wizard-variables.$clr-wizard-stepnav-link-complete-icon-color};
         }
       }
 
       &.error {
-        border-color: wizard-variables.$clr-wizard-stepnav-item-error-border-color;
-        transition: border-color 0.2s ease-in;
-
-        .clr-wizard-stepnav-link-icon cds-icon {
+        .clr-wizard-stepnav-link-icon {
           --color: #{wizard-variables.$clr-wizard-stepnav-link-error-icon-color};
         }
       }
@@ -241,26 +232,109 @@
     .clr-wizard-stepnav-link {
       width: 100%;
       display: flex;
+      gap: 0;
       place-content: normal;
       color: inherit;
-      align-items: center;
       text-align: left;
       text-transform: none;
       margin: 0;
       padding: tokens.$cds-global-space-5;
       height: auto;
-      min-height: tokens.$cds-global-space-12;
+      min-height: tokens.$cds-alias-typography-body-line-height;
       max-width: inherit;
 
       @include mixins.generate-typography-token('BODY-14-MD-STD');
 
-      .clr-wizard-stepnav-link-icon {
-        display: flex; // this vertically centers the icon
-      }
-
-      .clr-wizard-stepnav-link-icon,
       .clr-wizard-stepnav-link-page-number {
         width: tokens.$cds-global-space-7;
+        min-width: tokens.$cds-global-space-7;
+      }
+    }
+
+    // timeline style adjustments for wizard
+    .clr-timeline.clr-wizard-stepnav-list {
+      // define calculation variables
+      --clr-internal-wizard-timeline-default-icon-size: #{tokens.$cds-global-space-9};
+      --clr-internal-wizard-timeline-default-line-top: #{tokens.$cds-global-space-5};
+      --clr-internal-wizard-timeline-default-line-height: calc(100% - #{tokens.$cds-global-space-6});
+
+      // define variables that are used in styles
+      --clr-timeline-icon-size: var(--clr-internal-wizard-timeline-default-icon-size);
+      --clr-internal-wizard-timeline-line-top: var(--clr-internal-wizard-timeline-default-line-top);
+      --clr-internal-wizard-timeline-line-height: var(--clr-internal-wizard-timeline-default-line-height);
+
+      &.clr-timeline-vertical {
+        padding: 0;
+        min-width: unset;
+
+        .clr-timeline-step:not(:last-of-type) {
+          margin-bottom: tokens.$cds-global-space-5;
+        }
+      }
+
+      .clr-timeline-step.clr-wizard-stepnav-item {
+        .clr-wizard-stepnav-link {
+          align-items: start;
+
+          .clr-wizard-stepnav-link-body {
+            margin-top: calc(
+              0.5 *
+                (var(--clr-internal-wizard-timeline-default-icon-size) - tokens.$cds-alias-typography-body-line-height)
+            );
+          }
+        }
+      }
+
+      .clr-wizard-stepnav-item.not-started {
+        // define calculation variables
+        --clr-internal-wizard-timeline-not-started-icon-size: calc(
+          var(--clr-internal-wizard-timeline-default-icon-size) * (20 / 24)
+        );
+        --clr-internal-wizard-timeline-not-started-icon-offset: calc(
+          0.5 *
+            (
+              var(--clr-internal-wizard-timeline-default-icon-size) -
+                var(--clr-internal-wizard-timeline-not-started-icon-size)
+            )
+        );
+        --clr-internal-wizard-timeline-not-started-line-top: calc(
+          var(--clr-internal-wizard-timeline-default-line-top) +
+            var(--clr-internal-wizard-timeline-not-started-icon-offset)
+        );
+        --clr-internal-wizard-timeline-not-started-line-height: calc(
+          var(--clr-internal-wizard-timeline-default-line-height) +
+            (2 * var(--clr-internal-wizard-timeline-not-started-icon-offset))
+        );
+
+        // define variables that are used in styles
+        --clr-timeline-icon-size: var(--clr-internal-wizard-timeline-not-started-icon-size);
+        --clr-internal-wizard-timeline-line-top: var(--clr-internal-wizard-timeline-not-started-line-top);
+        --clr-internal-wizard-timeline-line-height: var(--clr-internal-wizard-timeline-not-started-line-height);
+
+        .clr-wizard-stepnav-link-icon {
+          margin-left: var(--clr-internal-wizard-timeline-not-started-icon-offset);
+        }
+      }
+
+      .clr-wizard-stepnav-link-body {
+        // This makes these rules override the timeline styles.
+        &.clr-timeline-step-body.clr-wizard-stepnav-link-body.clr-timeline-step-body.clr-wizard-stepnav-link-body {
+          display: flex;
+          flex-direction: row;
+
+          &::before {
+            z-index: 10;
+            top: var(--clr-internal-wizard-timeline-line-top);
+            height: var(--clr-internal-wizard-timeline-line-height);
+          }
+
+          &--trailing-dotted-line {
+            &::before {
+              background: none;
+              border: tokens.$cds-alias-object-border-width-100 timeline-variables.$clr-timeline-line-color dashed;
+            }
+          }
+        }
       }
     }
 

@@ -1138,8 +1138,10 @@ export interface ClrCommonStrings {
     verticalNavToggle: string;
     warning: string;
     wizardStep: string;
+    wizardStepCurrent: string;
     wizardStepError: string;
     wizardStepnavAriaLabel: string;
+    wizardStepNotStarted: string;
     wizardStepSuccess: string;
 }
 
@@ -5353,6 +5355,13 @@ export class ClrWizardStepnavItem {
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     get hasError(): boolean;
+    // (undocumented)
+    protected get hasTrailingDottedLine(): boolean;
+    // (undocumented)
+    protected get icon(): {
+        shape: string;
+        label: string;
+    };
     // (undocumented)
     get id(): string;
     // (undocumented)
