@@ -19,11 +19,9 @@ import { User } from '../inventory/user';
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridVirtualScrollEmptyRowsDemo {
-  useAPI = true;
   userRange: ListRange;
   _totalRows = 10000;
   persistItems = false;
-  _users: User[] = [];
 
   dataRange: {
     total: number;
@@ -82,20 +80,9 @@ export class DatagridVirtualScrollEmptyRowsDemo {
       end: $event.end,
     };
 
-    const result = await this.inventory.fetch($event.start, $event.end - $event.start);
+    this.dataRange = await this.getData($event);
 
-    if (this.useAPI) {
-      this.datagrid.virtualScroll.totalItems = result.length;
-      this.datagrid.virtualScroll.updateItemRange($event.start, result.users);
-    } else {
-      this.dataRange = {
-        total: result.length,
-        data: result.users,
-        skip: $event.start,
-      };
-
-      this.cdr.detectChanges();
-    }
+    this.cdr.detectChanges();
   }
 
   jumpTo(index: number) {
@@ -117,5 +104,15 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     }
 
     return result;
+  }
+
+  private async getData($event: ListRange) {
+    const result = await this.inventory.fetch($event.start, $event.end - $event.start);
+
+    return {
+      total: result.length,
+      data: result.users,
+      skip: $event.start,
+    };
   }
 }
