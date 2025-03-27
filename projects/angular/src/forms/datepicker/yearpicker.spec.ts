@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -12,11 +12,8 @@ import { TestContext } from '../../data/datagrid/helpers.spec';
 import { Keys } from '../../utils/enums/keys.enum';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { DateFormControlService } from './providers/date-form-control.service';
-import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
-import { DatePickerHelperService } from './providers/datepicker-helper.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { ClrYearpicker } from './yearpicker';
@@ -44,9 +41,6 @@ export default function () {
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
           ClrCommonStringsService,
-          DatePickerHelperService,
-          DateIOService,
-          DateFormControlService,
         ]);
       });
 
@@ -106,21 +100,6 @@ export default function () {
 
       it('adds a .yearpicker class on the host', () => {
         expect(context.clarityElement.classList.contains('yearpicker')).toBe(true);
-      });
-
-      it('adds a .is-selected class on the selected year', () => {
-        const yearIndex: number = context.clarityDirective.yearRangeModel.yearRange.indexOf(selectedYear);
-        const years: HTMLButtonElement[] = context.clarityElement.querySelectorAll('.year');
-
-        let count = 0;
-        for (const year of years) {
-          if (count === yearIndex) {
-            expect(year.classList.contains('is-selected')).toBe(true);
-          } else {
-            expect(year.classList.contains('is-selected')).toBe(false);
-          }
-          count++;
-        }
       });
 
       it('has the correct aria-label for the previousDecade button', () => {
@@ -183,9 +162,6 @@ export default function () {
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
           ClrCommonStringsService,
-          DatePickerHelperService,
-          DateIOService,
-          DateFormControlService,
         ]);
       });
 
@@ -260,7 +236,7 @@ export default function () {
         context.clarityDirective.changeYear(2015);
 
         expect(viewManagerService.isYearView).toBe(false);
-        expect(viewManagerService.isMonthView).toBe(true);
+        expect(viewManagerService.isDayView).toBe(true);
       });
 
       it('updates year value in the date navigation service', () => {
@@ -292,9 +268,6 @@ export default function () {
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
           ClrCommonStringsService,
-          DatePickerHelperService,
-          DateIOService,
-          DateFormControlService,
         ]);
       }
 

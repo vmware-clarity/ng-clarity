@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -31,6 +31,14 @@ export default {
     clrDetailAriaLabelledBy: {
       description: "Id or multiple space separated Id's referencing existing text on the page",
     },
+    disabledDetailIndex: {
+      description: 'Disabled detail button index.',
+      control: { type: 'number', min: -1, max: 50 },
+    },
+    hiddenDetailIndex: {
+      description: 'Hidden detail button index.',
+      control: { type: 'number', min: -1, max: 50 },
+    },
   },
   args: {
     //inputs
@@ -48,6 +56,8 @@ export default {
     compact: false,
     hidableColumns: false,
     height: 0,
+    disabledDetailIndex: -1,
+    hiddenDetailIndex: -1,
   },
 };
 
@@ -75,10 +85,15 @@ const DetailTemplate: StoryFn = args => {
     template: `
       <style>
         .highlight {
-          border: 1px solid red !important;
+          border: 1px solid var(--cds-alias-status-danger) !important;
         }
         .electronegativity-container {
-          border-bottom: 4px solid #119cd4;
+          display: flex;
+          justify-content: space-between;
+
+          .electronegativity-bar {
+            background-color: var(--cds-alias-status-info);
+          }
         }
       </style>
       <clr-datagrid
@@ -100,14 +115,18 @@ const DetailTemplate: StoryFn = args => {
           <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
         </clr-dg-column>
 
-        <clr-dg-row *clrDgItems="let element of elements; let index = index" [clrDgItem]="element">
+        <clr-dg-row
+          *clrDgItems="let element of elements; let index = index"
+          [clrDgItem]="element"
+          [clrDgDetailDisabled]="disabledDetailIndex === index"
+          [clrDgDetailHidden]="hiddenDetailIndex === index"
+        >
           <clr-dg-cell>{{ element.name }}</clr-dg-cell>
           <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
           <clr-dg-cell>{{ element.number }}</clr-dg-cell>
-          <clr-dg-cell>
-            <div [style.width.%]="(element.electronegativity * 100) / 4" class="electronegativity-container">
-              {{ element.electronegativity }}
-            </div>
+          <clr-dg-cell class="electronegativity-container">
+            {{ element.electronegativity }}
+            <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
           </clr-dg-cell>
           <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
             <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
@@ -205,5 +224,31 @@ export const OpenLongUninterruptedContentDetail: StoryObj = {
   args: {
     detailContentType: 'datagrid',
     showLongUninterruptedContent: true,
+  },
+};
+
+export const DisabledDetailButton: StoryObj = {
+  render: DetailTemplate,
+  play({ canvasElement }: StoryContext) {
+    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+
+    removeFocusOutline({ canvasElement });
+  },
+  args: {
+    detailContentType: 'datagrid',
+    disabledDetailIndex: 1,
+  },
+};
+
+export const HiddenDetailButton: StoryObj = {
+  render: DetailTemplate,
+  play({ canvasElement }: StoryContext) {
+    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+
+    removeFocusOutline({ canvasElement });
+  },
+  args: {
+    detailContentType: 'datagrid',
+    hiddenDetailIndex: 1,
   },
 };

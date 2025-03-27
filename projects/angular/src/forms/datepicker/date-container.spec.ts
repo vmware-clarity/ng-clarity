@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -29,7 +29,6 @@ import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { MockDatepickerEnabledService } from './providers/datepicker-enabled.service.mock';
-import { DatePickerHelperService } from './providers/datepicker-helper.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
@@ -45,7 +44,6 @@ const DATEPICKER_PROVIDERS: any[] = [
   DateIOService,
   ControlIdService,
   DateFormControlService,
-  DatePickerHelperService,
 ];
 
 export default function () {
@@ -101,7 +99,7 @@ export default function () {
         context.detectChanges();
         actionButton.click();
         context.detectChanges();
-        expect(document.activeElement).toEqual(actionButton);
+        expect(document.activeElement).toBe(actionButton);
       });
 
       it('should not call focus when date-picker is not visible', () => {

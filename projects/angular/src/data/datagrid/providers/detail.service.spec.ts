@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -42,7 +42,7 @@ export default function (): void {
       provider.open('value', button);
       expect(provider.isOpen);
       provider.close();
-      expect(document.activeElement).toEqual(button);
+      expect(document.activeElement).toBe(button);
       expect(button.focus).toHaveBeenCalled();
       document.body.removeChild(button);
     });

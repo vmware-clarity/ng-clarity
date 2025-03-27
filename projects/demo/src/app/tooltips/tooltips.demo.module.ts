@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -10,6 +10,7 @@ import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 
 import { TooltipsAngularDemo } from './tooltips-angular';
+import { TooltipsAngularOnPushDemo } from './tooltips-angular-on-push';
 import { TooltipsButtonsDemo } from './tooltips-buttons';
 import { TooltipsDirectionsDemo } from './tooltips-directions';
 import { TooltipsIconDemo } from './tooltips-icons';
@@ -25,6 +26,7 @@ import { ROUTING } from './tooltips.demo.routing';
     TooltipsSizesDemo,
     TooltipsDirectionsDemo,
     TooltipsAngularDemo,
+    TooltipsAngularOnPushDemo,
     TooltipsIconDemo,
     TooltipsTextDemo,
     TooltipsButtonsDemo,

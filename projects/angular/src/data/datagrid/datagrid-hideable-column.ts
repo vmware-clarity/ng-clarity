@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -57,15 +57,15 @@ export class ClrDatagridHideableColumn implements OnDestroy {
 
   constructor(
     private titleTemplateRef: TemplateRef<any>,
-    private viewContainerRef: ViewContainerRef,
+    viewContainerRef: ViewContainerRef,
     private columnsService: ColumnsService,
     @Optional()
     @Inject(COLUMN_STATE)
     private columnState: BehaviorSubject<ColumnState>
   ) {
-    this.viewContainerRef.createEmbeddedView(this.titleTemplateRef);
+    viewContainerRef.createEmbeddedView(titleTemplateRef);
 
-    if (!this.columnState) {
+    if (!columnState) {
       throw new Error('The *clrDgHideableColumn directive can only be used inside of a clr-dg-column component.');
     }
   }

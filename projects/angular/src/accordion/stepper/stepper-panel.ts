@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -32,16 +32,15 @@ import { StepperService } from './providers/stepper.service';
 
 @Component({
   selector: 'clr-stepper-panel',
-  templateUrl: '../accordion-panel.html',
-  host: { '[class.clr-accordion-panel]': 'true' },
+  templateUrl: 'stepper-panel.html',
+  host: { '[class.clr-stepper-panel]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: stepAnimation,
   providers: [IfExpandService],
 })
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
-  override isAccordion = false;
-
-  @ViewChild('headerButton') headerButton: ElementRef;
+  @ViewChild('headerButton') headerButton: ElementRef<HTMLButtonElement>;
+  readonly AccordionStatus = AccordionStatus;
 
   private subscriptions: Subscription[] = [];
 
@@ -54,7 +53,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     ifExpandService: IfExpandService,
     cdr: ChangeDetectorRef
   ) {
-    super(commonStrings, stepperService, ifExpandService, cdr);
+    super(null, commonStrings, stepperService, ifExpandService, cdr);
   }
 
   override get id(): string {
@@ -104,9 +103,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
       this.stepperService.activeStep
         .pipe(filter(panelId => isPlatformBrowser(this.platformId) && panelId === this.id))
         .subscribe(() => {
-          //Adding timeout so that the status of the previous step is read by Voice Over on Safari,
-          //before focusing on the next stepper panel header
-          setTimeout(() => this.headerButton.nativeElement.focus(), 1500);
+          this.headerButton.nativeElement.focus();
         })
     );
   }

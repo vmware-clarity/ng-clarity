@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -91,7 +91,7 @@ export default function (): void {
       it('calls to update the selection when an option is clicked', () => {
         spyOn(optionSelectionService, 'select');
 
-        context.clarityDirective.onClick();
+        context.clarityDirective.elRef.nativeElement.click();
 
         expect(optionSelectionService.select).toHaveBeenCalled();
       });

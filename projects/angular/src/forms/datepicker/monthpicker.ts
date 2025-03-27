@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -14,7 +14,6 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-
 @Component({
   selector: 'clr-monthpicker',
   template: `
@@ -96,7 +95,6 @@ export class ClrMonthpicker implements AfterViewInit {
   ) {
     this._focusedMonthIndex = this.calendarMonthIndex;
   }
-
   /**
    * Gets the months array which is used to rendered the monthpicker view.
    * Months are in the TranslationWidth.Wide format.
@@ -104,7 +102,6 @@ export class ClrMonthpicker implements AfterViewInit {
   get monthNames(): ReadonlyArray<string> {
     return this._localeHelperService.localeMonthsWide;
   }
-
   /**
    * Gets the month value of the Calendar.
    */
@@ -164,7 +161,7 @@ export class ClrMonthpicker implements AfterViewInit {
   }
 
   /**
-   * Focuses on the current calendar month when the view is initialized.
+   * Focuses on the current calendar month when the View is initialized.
    */
   ngAfterViewInit() {
     this._datepickerFocusService.focusCell(this._elRef);
@@ -215,6 +212,7 @@ export class ClrMonthpicker implements AfterViewInit {
   onHover(monthIndex: number): void {
     this._dateNavigationService.hoveredMonth = monthIndex;
   }
+
   /**
    * Calls the DateNavigationService to update the month value of the calendar.
    * Also changes the view to the daypicker.

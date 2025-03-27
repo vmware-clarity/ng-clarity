@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -21,7 +21,7 @@ import { POPOVER_HOST_ANCHOR } from './popover-host-anchor.token';
 class TestPopover extends AbstractPopover {
   closeOnOutsideClick = true;
 
-  constructor(injector: Injector, @Optional() parent: ElementRef) {
+  constructor(injector: Injector, @Optional() parent: ElementRef<HTMLElement>) {
     super(injector, parent);
   }
 }
@@ -41,7 +41,7 @@ class TestPopoverWithIfOpenDirective {
   providers: [ClrPopoverToggleService, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
 })
 class InputFocusPopover {
-  @ViewChild('ignoreInput') ignore: ElementRef;
+  @ViewChild('ignoreInput') ignore: ElementRef<HTMLInputElement>;
   @ViewChild('ignoreElement') popover: any; // cant use TestPopoverIgnoreElement as type since it will refer to class before declaration in es2015+
 
   constructor(private toggleService: ClrPopoverToggleService) {}
@@ -56,7 +56,7 @@ class InputFocusPopover {
   template: `<div class="test-popover">Popover</div>`,
 })
 class TestPopoverIgnoreElement extends AbstractPopover {
-  constructor(injector: Injector, @Optional() parent: ElementRef, parentHost: InputFocusPopover) {
+  constructor(injector: Injector, @Optional() parent: ElementRef<HTMLElement>, parentHost: InputFocusPopover) {
     super(injector, parent);
     if (parentHost && parentHost.ignore) {
       this.ignoredElement = parentHost.ignore.nativeElement;

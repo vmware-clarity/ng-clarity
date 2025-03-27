@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
   ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
@@ -40,7 +40,7 @@
     <input
       aria-hidden="true"
       type="checkbox"
-      id="{{nodeId}}-check"
+      [id]="nodeId + '-check'"
       class="clr-checkbox"
       [disabled]="disabled"
       [checked]="_model.selected.value === STATES.SELECTED"
@@ -49,7 +49,7 @@
       (focus)="focusTreeNode()"
       tabindex="-1"
     />
-    <label for="{{nodeId}}-check" class="clr-control-label">
+    <label [for]="nodeId + '-check'" class="clr-control-label">
       <ng-container [ngTemplateOutlet]="treenodeContent"></ng-container>
     </label>
   </div>
@@ -65,8 +65,7 @@
   <ng-template #treenodeContent>
     <ng-content></ng-content>
     <div class="clr-sr-only" *ngIf="featuresService.selectable || ariaSelected">
-      <span *ngIf="ariaSelected"> selected</span>
-      <span *ngIf="!ariaSelected"> unselected</span>
+      <span> {{ariaSelected ? commonStrings.keys.selectedTreeNode : commonStrings.keys.unselectedTreeNode}}</span>
     </div>
   </ng-template>
 </div>

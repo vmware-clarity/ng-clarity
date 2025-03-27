@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
+import { DateRangeInput } from '../interfaces/date-range.interface';
 import { CalendarModel } from '../model/calendar.model';
 import { DayModel } from '../model/day.model';
 
@@ -21,6 +21,8 @@ import { DayModel } from '../model/day.model';
  */
 @Injectable()
 export class DateNavigationService {
+  persistedDate: DayModel;
+  persistedEndDate: DayModel;
   selectedDay: DayModel;
   selectedEndDay: DayModel;
   focusedDay: DayModel;
@@ -28,6 +30,7 @@ export class DateNavigationService {
   hoveredMonth: number;
   hoveredYear: number;
   isRangePicker = false;
+  hasActionButtons = false;
 
   private _displayedCalendar: CalendarModel;
   private _todaysFullDate: Date = new Date();
@@ -36,6 +39,7 @@ export class DateNavigationService {
   private _selectedEndDayChange = new Subject<DayModel>();
   private _displayedCalendarChange = new Subject<void>();
   private _focusOnCalendarChange = new Subject<void>();
+  private _refreshCalendarView = new Subject<void>();
   private _focusedDayChange = new Subject<DayModel>();
 
   get today(): DayModel {
@@ -76,27 +80,34 @@ export class DateNavigationService {
   }
 
   /**
-   * Notifies that the selected day has changed so that the date can be emitted to the user.
-   * Note: Only to be called from day.ts
+   * This observable lets the subscriber know that the displayed calendar has changed.
    */
-  notifySelectedDayChanged(dayModel: DayModel) {
+  get refreshCalendarView(): Observable<void> {
+    return this._refreshCalendarView.asObservable();
+  }
+
+  /**
+   * Notifies that the selected day has changed so that the date can be emitted to the user.
+   */
+  notifySelectedDayChanged(dayObject: DayModel | DateRangeInput, { emitEvent } = { emitEvent: true }): void {
     if (this.isRangePicker) {
-      if (
-        !this.selectedDay ||
-        (!!this.selectedDay && !!this.selectedEndDay) ||
-        (!!this.selectedDay && dayModel?.isBefore(this.selectedDay))
-      ) {
-        if (this.selectedEndDay) {
-          this.hoveredDay = this.hoveredMonth = this.hoveredYear = undefined;
-          this.setSelectedEndDay(undefined);
-        }
-        this.setSelectedDay(dayModel);
+      const { startDate, endDate } = dayObject as DateRangeInput;
+      if (startDate && endDate) {
+        this.setSelectedDay(startDate, emitEvent);
+        this.setSelectedEndDay(endDate, emitEvent);
       } else {
-        this.setSelectedEndDay(dayModel);
+        if (endDate !== null) {
+          this.setSelectedEndDay(endDate, emitEvent);
+        }
+        if (startDate !== null) {
+          this.setSelectedDay(startDate, emitEvent);
+        }
       }
     } else {
-      this.setSelectedDay(dayModel);
+      const day = dayObject as DayModel;
+      this.setSelectedDay(day, emitEvent);
     }
+    this._refreshCalendarView.next();
   }
 
   /**
@@ -135,16 +146,6 @@ export class DateNavigationService {
   }
 
   /**
-   * Moves the displayed calendar to the current month and year.
-   */
-  moveToCurrentMonth(): void {
-    if (!this.displayedCalendar.isDayInCalendar(this.today)) {
-      this.setDisplayedCalendar(new CalendarModel(this.today.year, this.today.month));
-    }
-    this._focusOnCalendarChange.next();
-  }
-
-  /**
    * Moves the displayed calendar to the next year.
    */
   moveToNextYear(): void {
@@ -158,8 +159,24 @@ export class DateNavigationService {
     this.setDisplayedCalendar(this._displayedCalendar.previousYear());
   }
 
+  /**
+   * Moves the displayed calendar to the current month and year.
+   */
+  moveToCurrentMonth(): void {
+    if (!this.displayedCalendar.isDayInCalendar(this.today)) {
+      this.setDisplayedCalendar(new CalendarModel(this.today.year, this.today.month));
+    }
+    this._focusOnCalendarChange.next();
+  }
+
+  moveToSpecificMonth(day: DayModel) {
+    if (!this.displayedCalendar.isDayInCalendar(day)) {
+      this.setDisplayedCalendar(new CalendarModel(day.year, day.month));
+    }
+  }
+
   incrementFocusDay(value: number): void {
-    this.focusedDay = this.focusedDay.incrementBy(value);
+    this.hoveredDay = this.focusedDay = this.focusedDay.incrementBy(value);
     if (this._displayedCalendar.isDayInCalendar(this.focusedDay)) {
       this._focusedDayChange.next(this.focusedDay);
     } else {
@@ -168,32 +185,26 @@ export class DateNavigationService {
     this._focusOnCalendarChange.next();
   }
 
-  setSelectedDay(dayModel: DayModel | undefined): void {
+  resetSelectedDay() {
+    this.selectedDay = this.persistedDate;
+    this.selectedEndDay = this.persistedEndDate;
+  }
+
+  convertDateToDayModel(date: Date): DayModel {
+    return new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  private setSelectedDay(dayModel: DayModel | undefined, emitEvent): void {
     this.selectedDay = dayModel;
-    this.updateDisplayedCalendarOnDaySelection(dayModel);
-    this._selectedDayChange.next(dayModel);
-  }
-
-  setSelectedEndDay(dayModel: DayModel | undefined): void {
-    this.selectedEndDay = dayModel;
-    this.updateDisplayedCalendarOnDaySelection(dayModel);
-    this._selectedEndDayChange.next(dayModel);
-  }
-
-  updateDisplayedCalendarOnDaySelection(day: DayModel | undefined): void {
-    if (day && this._displayedCalendar && !this._displayedCalendar.isDayInCalendar(day)) {
-      this.setDisplayedCalendar(new CalendarModel(day.year, day.month));
+    if (emitEvent) {
+      this._selectedDayChange.next(dayModel);
     }
   }
 
-  validateDateRange() {
-    if (!this.selectedDay || !this.selectedEndDay) {
-      if (this.selectedDay) {
-        this.setSelectedDay(undefined);
-      }
-      if (this.selectedEndDay) {
-        this.setSelectedEndDay(undefined);
-      }
+  private setSelectedEndDay(dayModel: DayModel | undefined, emitEvent): void {
+    this.selectedEndDay = dayModel;
+    if (emitEvent) {
+      this._selectedEndDayChange.next(dayModel);
     }
   }
 

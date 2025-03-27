@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -650,12 +650,12 @@ export default function (): void {
       });
 
       describe('Aria-label', () => {
-        it('clrWizardStepnavAriaLabel input sets and updates aria-label for the stepnav section', () => {
-          const stepnavWrapper = context.hostElement.querySelector('.clr-wizard-stepnav-wrapper');
-          expect(stepnavWrapper.getAttribute('aria-label')).toBe('Label for stepnav');
+        it('clrWizardStepnavAriaLabel input sets and updates aria-label for the stepnav', () => {
+          const stepnav = context.hostElement.querySelector('.clr-wizard-stepnav nav');
+          expect(stepnav.getAttribute('aria-label')).toBe('Label for stepnav');
           context.hostComponent.stepnavAriaLabel = 'Updated step navigation label';
           context.detectChanges();
-          expect(stepnavWrapper.getAttribute('aria-label')).toBe('Updated step navigation label');
+          expect(stepnav.getAttribute('aria-label')).toBe('Updated step navigation label');
         });
       });
     });
@@ -798,7 +798,7 @@ export default function (): void {
           wizard.pageCollection.lastPage.makeCurrent();
           context.detectChanges();
           const titleString = context.hostElement.querySelector('.modal-title').textContent.trim();
-          expect(titleString).toEqual(document.activeElement.textContent.trim());
+          expect(document.activeElement.textContent.trim()).toBe(titleString);
         });
       });
     });

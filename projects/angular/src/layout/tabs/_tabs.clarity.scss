@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -36,77 +36,89 @@
   [data-hidden='true'] {
     display: none;
   }
-}
 
-button.nav-link {
-  border-radius: 0;
-  text-transform: capitalize;
-  min-width: 0;
-}
-
-.tabs-overflow {
-  position: relative;
-
-  .dropdown-menu {
-    padding: tokens.$cds-global-space-0;
-    box-shadow: tokens.$cds-alias-object-shadow-100;
-    overflow: hidden;
+  button.nav-link {
+    border-radius: 0;
+    text-transform: capitalize;
+    min-width: 0;
   }
 
-  .btn {
-    line-height: mixins.baselinePx(20);
-    font-size: tokens.$cds-alias-typography-font-size-4;
-    padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6;
-    border-radius: tokens.$cds-global-space-0;
+  .tabs-overflow {
+    position: relative;
+
+    .dropdown-menu {
+      padding: tokens.$cds-global-space-0;
+      box-shadow: tokens.$cds-alias-object-shadow-100;
+      overflow: hidden;
+    }
+
+    .btn {
+      line-height: mixins.baselinePx(20);
+      font-size: tokens.$cds-alias-typography-font-size-4;
+      padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6;
+      border-radius: tokens.$cds-global-space-0;
+    }
   }
-}
 
-.tab-content {
-  display: inline;
-}
-
-@include mixins.fixForIE11AndUp {
   .tab-content {
-    display: inline-block;
-    width: 100%;
+    display: inline;
   }
-}
 
-.tabs-vertical {
-  display: flex;
-
-  // Must be direct child, so horizontal tabs can be nested in vertical tabs
-  & > .nav {
-    height: auto;
-    box-shadow: none;
-    flex-direction: column;
-    align-items: stretch;
-    margin-right: tokens.$cds-global-space-9;
-    overflow: auto;
-    flex-shrink: 0;
-    padding: tokens.$cds-global-space-3;
-    width: mixins.baselinePx(240);
-    min-width: tokens.$cds-global-space-12;
-
-    gap: tokens.$cds-global-space-5;
-
-    .nav-link {
-      text-align: left;
-      padding: 0 tokens.$cds-global-space-6;
-      border: none;
-      flex-shrink: 0;
-      margin-top: 0;
-      margin-left: 0;
+  @include mixins.fixForIE11AndUp {
+    .tab-content {
+      display: inline-block;
       width: 100%;
+    }
+  }
 
-      &.btn {
-        margin-bottom: tokens.$cds-global-space-1;
-      }
+  .tabs-vertical {
+    display: flex;
 
-      &.active,
-      &:hover {
-        @include nav-link-border-appearence('left');
+    // Must be direct child, so horizontal tabs can be nested in vertical tabs
+    & > .nav {
+      height: auto;
+      box-shadow: none;
+      flex-direction: column;
+      align-items: stretch;
+      margin-right: tokens.$cds-global-space-9;
+      overflow: auto;
+      flex-shrink: 0;
+      padding: tokens.$cds-global-space-3;
+      width: mixins.baselinePx(240);
+      min-width: tokens.$cds-global-space-12;
+
+      gap: tokens.$cds-global-space-5;
+
+      .nav-link {
+        text-align: left;
+        padding: 0 tokens.$cds-global-space-6;
+        border: none;
+        flex-shrink: 0;
+        margin-top: 0;
+        margin-left: 0;
+        width: 100%;
+
+        &.btn {
+          margin-bottom: tokens.$cds-global-space-1;
+        }
+
+        &.active,
+        &:hover {
+          @include nav-link-border-appearence('left');
+        }
       }
+    }
+  }
+
+  .tabs-actions {
+    display: inline-flex;
+    width: 100%;
+
+    &[position~='left'] {
+      justify-content: start;
+    }
+    &[position~='right'] {
+      justify-content: end;
     }
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -32,16 +32,16 @@ export class DatagridHeaderRenderer implements OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private el: ElementRef,
+    private el: ElementRef<HTMLElement>,
     private renderer: Renderer2,
-    private organizer: DatagridRenderOrganizer,
+    organizer: DatagridRenderOrganizer,
     private domAdapter: DomAdapter,
     private columnResizerService: ColumnResizerService,
     private columnsService: ColumnsService,
     @Inject(COLUMN_STATE) private columnState: BehaviorSubject<ColumnState>
   ) {
     this.subscriptions.push(
-      this.organizer.filterRenderSteps(DatagridRenderStep.CLEAR_WIDTHS).subscribe(() => this.clearWidth())
+      organizer.filterRenderSteps(DatagridRenderStep.CLEAR_WIDTHS).subscribe(() => this.clearWidth())
     );
   }
 

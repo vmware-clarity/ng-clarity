@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -20,8 +20,8 @@ export class DatagridDetailDemo implements AfterViewInit {
   selection: User[] = [];
   singleSelection: User;
   state: any = null;
-  preState: any = null;
   stateEvent: any = null;
+  private _preState: any = null;
 
   constructor(inventory: Inventory, private cdr: ChangeDetectorRef) {
     inventory.size = 103;
@@ -29,9 +29,16 @@ export class DatagridDetailDemo implements AfterViewInit {
     this.users = inventory.all;
   }
 
+  get preState() {
+    return this._preState;
+  }
+  set preState(value: any) {
+    this._preState = value;
+    this.cdr.detectChanges();
+  }
+
   ngAfterViewInit() {
     // We must set it here, or the extra columns are not removed on initialization
     this.preState = this.users[0];
-    this.cdr.detectChanges();
   }
 }

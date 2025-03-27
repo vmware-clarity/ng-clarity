@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -18,28 +18,37 @@ export interface Helpers {
 
 @Injectable()
 export class NgControlService {
-  // Observable to subscribe to the control, since its not available immediately for projected content
   private _control: NgControl;
-  private _controlChanges = new Subject<NgControl>();
   private _additionalControls: NgControl[] = [];
-  private _additionalControlChanges = new Subject<NgControl[]>();
+
+  // Observable to subscribe to the control, since its not available immediately for projected content
+  private _controlChanges = new Subject<NgControl>();
+  private _additionalControlsChanges = new Subject<NgControl[]>();
 
   private _helpers = new Subject<Helpers>();
+
+  get control() {
+    return this._control;
+  }
 
   get controlChanges(): Observable<NgControl> {
     return this._controlChanges.asObservable();
   }
 
-  get helpersChange(): Observable<Helpers> {
-    return this._helpers.asObservable();
+  get additionalControls() {
+    return this._additionalControls;
   }
 
-  get additionalControlChanges(): Observable<NgControl[]> {
-    return this._additionalControlChanges.asObservable();
+  get additionalControlsChanges(): Observable<NgControl[]> {
+    return this._additionalControlsChanges.asObservable();
   }
 
   get hasAdditionalControls() {
     return !!this._additionalControls?.length;
+  }
+
+  get helpersChange(): Observable<Helpers> {
+    return this._helpers.asObservable();
   }
 
   setControl(control: NgControl) {
@@ -47,20 +56,12 @@ export class NgControlService {
     this._controlChanges.next(control);
   }
 
-  setHelpers(state: Helpers) {
-    this._helpers.next(state);
-  }
-
   addAdditionalControl(control: NgControl) {
     this._additionalControls.push(control);
-    this._additionalControlChanges.next(this._additionalControls);
+    this._additionalControlsChanges.next(this._additionalControls);
   }
 
-  getControl() {
-    return this._control;
-  }
-
-  getAdditionalControls() {
-    return this._additionalControls;
+  setHelpers(state: Helpers) {
+    this._helpers.next(state);
   }
 }

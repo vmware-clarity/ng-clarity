@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -42,6 +42,7 @@ export default {
     // inputs
     clrVerticalNavCollapsible: false,
     clrVerticalNavCollapsed: false,
+    clrVerticalNavToggleLabel: '',
     // outputs
     clrVerticalNavCollapsedChange: action('clrVerticalNavCollapsedChange'),
     // story helpers
@@ -57,6 +58,7 @@ const VerticalNavTemplate: StoryFn = args => ({
       <div class="content-container">
         <clr-vertical-nav
           [clrVerticalNavCollapsible]="clrVerticalNavCollapsible"
+          [clrVerticalNavToggleLabel]="clrVerticalNavToggleLabel"
           [clrVerticalNavCollapsed]="clrVerticalNavCollapsed"
           (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
         >

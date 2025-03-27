@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -31,8 +31,8 @@ import { ColumnsService } from './providers/columns.service';
       clrPopoverAnchor
       clrPopoverOpenCloseButton
       [attr.aria-controls]="popoverId"
-      [attr.aria-owns]="popoverId"
       [attr.aria-expanded]="openState"
+      [attr.aria-haspopup]="'menu'"
     >
       {{ commonStrings.keys.pickColumns }}
     </button>
@@ -83,7 +83,7 @@ import { ColumnsService } from './providers/columns.service';
 })
 export class ClrDatagridColumnToggle implements OnDestroy {
   popoverId = uniqueIdFactory();
-  openState: boolean;
+  openState = false;
 
   // Smart Popover
   smartPosition: ClrPopoverPosition = {

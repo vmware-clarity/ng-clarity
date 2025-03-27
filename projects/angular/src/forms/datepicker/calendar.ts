@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -10,10 +10,13 @@ import { Subscription } from 'rxjs';
 
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { DateRangeInput } from './interfaces/date-range.interface';
 import { ClrDayOfWeek } from './interfaces/day-of-week.interface';
 import { CalendarViewModel } from './model/calendar-view.model';
 import { CalendarModel } from './model/calendar.model';
 import { DayModel } from './model/day.model';
+import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
@@ -37,7 +40,9 @@ export class ClrCalendar implements OnDestroy {
     private _dateNavigationService: DateNavigationService,
     private _datepickerFocusService: DatepickerFocusService,
     private _dateIOService: DateIOService,
-    private _elRef: ElementRef
+    private _elRef: ElementRef<HTMLElement>,
+    private _dateFormControlService: DateFormControlService,
+    private _toggleService: ClrPopoverToggleService
   ) {
     this.generateCalendarView();
     this.initializeSubscriptions();
@@ -113,6 +118,16 @@ export class ClrCalendar implements OnDestroy {
     }
   }
 
+  setSelectedDay(day: DayModel) {
+    const hasActionButtons = this._dateNavigationService.hasActionButtons;
+    const selectedDates: DayModel | DateRangeInput = this.updateCalendarViewModal(day);
+    this._dateNavigationService.notifySelectedDayChanged(selectedDates, { emitEvent: !hasActionButtons });
+    if (!hasActionButtons) {
+      this._dateFormControlService.markAsDirty();
+      this.validateAndCloseDatePicker();
+    }
+  }
+
   /**
    * Initialize subscriptions to:
    * 1. update the calendar view model.
@@ -133,22 +148,58 @@ export class ClrCalendar implements OnDestroy {
     );
 
     this._subs.push(
-      this._dateNavigationService.selectedDayChange.subscribe((selectedDay: DayModel) => {
-        this.calendarViewModel.updateSelectedDay(selectedDay);
-      })
-    );
-
-    this._subs.push(
-      this._dateNavigationService.selectedEndDayChange.subscribe((selectedDay: DayModel) => {
-        this.calendarViewModel.updateSelectedEndDay(selectedDay);
-      })
-    );
-
-    this._subs.push(
       this._dateNavigationService.focusOnCalendarChange.subscribe(() => {
         this._datepickerFocusService.focusCell(this._elRef);
       })
     );
+
+    this._subs.push(
+      this._dateNavigationService.refreshCalendarView.subscribe(() => {
+        this.refreshCalendarViewModal();
+      })
+    );
+  }
+
+  private validateAndCloseDatePicker() {
+    if (
+      (this._dateNavigationService.isRangePicker &&
+        this._dateNavigationService.selectedDay &&
+        this._dateNavigationService.selectedEndDay) ||
+      (!this._dateNavigationService.isRangePicker && this._dateNavigationService.selectedDay)
+    ) {
+      this._toggleService.open = false;
+    }
+  }
+
+  private updateCalendarViewModal(day: DayModel): DayModel | DateRangeInput {
+    const startDate = this.calendarViewModel.selectedDay || null,
+      isRangePicker = this._dateNavigationService.isRangePicker;
+    let endDate = this.calendarViewModel.selectedEndDay || null;
+
+    if (isRangePicker) {
+      if (!startDate || (!!startDate && !!endDate) || (!!startDate && day?.isBefore(startDate))) {
+        this.calendarViewModel.updateSelectedDay(day);
+        if (endDate) {
+          endDate = undefined;
+          this.calendarViewModel.updateSelectedEndDay(endDate);
+        }
+      } else {
+        this.calendarViewModel.updateSelectedEndDay(day);
+      }
+    } else {
+      this.calendarViewModel.updateSelectedDay(day);
+    }
+
+    return isRangePicker
+      ? { startDate: this.calendarViewModel.selectedDay, endDate: this.calendarViewModel.selectedEndDay }
+      : this.calendarViewModel.selectedDay;
+  }
+
+  private refreshCalendarViewModal() {
+    this.calendarViewModel.updateSelectedDay(this._dateNavigationService.selectedDay);
+    if (this._dateNavigationService.isRangePicker) {
+      this.calendarViewModel.updateSelectedEndDay(this._dateNavigationService.selectedEndDay);
+    }
   }
 
   /**

@@ -1,12 +1,23 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, HostBinding, Input, OnChanges, OnDestroy, Output, SimpleChange } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChange,
+  ViewChild,
+} from '@angular/core';
 
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
@@ -48,15 +59,16 @@ import { ModalStackService } from './modal-stack.service';
 })
 export class ClrModal implements OnChanges, OnDestroy {
   modalId = uniqueIdFactory();
+  @ViewChild('title') title: ElementRef<HTMLElement>;
 
   @Input('clrModalOpen') @HostBinding('class.open') _open = false;
   @Output('clrModalOpenChange') _openChanged = new EventEmitter<boolean>(false);
 
   @Input('clrModalClosable') closable = true;
   @Input('clrModalCloseButtonAriaLabel') closeButtonAriaLabel = this.commonStrings.keys.close;
-  @Input('clrModalSize') size: string;
+  @Input('clrModalSize') size = 'md';
   @Input('clrModalStaticBackdrop') staticBackdrop = true;
-  @Input('clrModalSkipAnimation') skipAnimation = 'false';
+  @Input('clrModalSkipAnimation') skipAnimation = false;
 
   @Input('clrModalPreventClose') stopClose = false;
   @Output('clrModalAlternateClose') altClose = new EventEmitter<boolean>(false);
@@ -65,6 +77,8 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   // presently this is only used by inline wizards
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
+
+  @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
 
   constructor(
     private _scrollingService: ScrollingService,
@@ -88,7 +102,7 @@ export class ClrModal implements OnChanges, OnDestroy {
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
     if (!this.bypassScrollService && changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
       if (changes._open.currentValue) {
-        this.backdrop && this._scrollingService.stopScrolling();
+        this._scrollingService.stopScrolling();
         this.modalStackService.trackModalOpen(this);
       } else {
         this._scrollingService.resumeScrolling();
@@ -109,6 +123,15 @@ export class ClrModal implements OnChanges, OnDestroy {
     this.modalStackService.trackModalOpen(this);
   }
 
+  backdropClick(): void {
+    if (this.staticBackdrop) {
+      this.title.nativeElement.focus();
+      return;
+    }
+
+    this.close();
+  }
+
   close(): void {
     if (this.stopClose) {
       this.altClose.emit(false);
@@ -126,5 +149,9 @@ export class ClrModal implements OnChanges, OnDestroy {
       this._openChanged.emit(false);
       this.modalStackService.trackModalClose(this);
     }
+  }
+
+  scrollTop() {
+    this.bodyElementRef.nativeElement.scrollTo(0, 0);
   }
 }

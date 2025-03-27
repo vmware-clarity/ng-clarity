@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -34,10 +34,10 @@ export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
     public template: TemplateRef<NgForOfContext<T>>,
     private differs: IterableDiffers,
     private items: Items,
-    private vcr: ViewContainerRef
+    vcr: ViewContainerRef
   ) {
     items.smartenUp();
-    this.iterableProxy = new NgForOf<T>(this.vcr, this.template, this.differs);
+    this.iterableProxy = new NgForOf<T>(vcr, template, differs);
     this.subscriptions.push(
       items.change.subscribe(newItems => {
         this.iterableProxy.ngForOf = newItems;

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -10,7 +10,6 @@
 @include mixins.exports('responsive-nav.properties') {
   :root [cds-theme] {
     --clr-sliding-panel-text-color: #{tokens.$cds-global-color-gray-700}; // CDS token
-    --clr-nav-background-color: #{tokens.$cds-alias-object-container-background-dark};
     --clr-responsive-nav-trigger-bg-color: #{tokens.$cds-global-color-gray-0}; // CDS token
 
     --clr-responsive-nav-trigger-border-radius: #{tokens.$cds-alias-object-border-radius-100};

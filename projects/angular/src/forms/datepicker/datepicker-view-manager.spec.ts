@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -14,7 +14,6 @@ import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
-import { DatePickerHelperService } from './providers/datepicker-helper.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
@@ -22,6 +21,9 @@ export default function () {
   describe('Datepicker View Manager Component', () => {
     let context: TestContext<ClrDatepickerViewManager, TestComponent>;
     let viewManagerService: ViewManagerService;
+    let dateNavigationService: DateNavigationService;
+    let dateIOService: DateIOService;
+
     let hostElement;
 
     beforeEach(function () {
@@ -32,12 +34,21 @@ export default function () {
         DateNavigationService,
         LocaleHelperService,
         DateIOService,
-        DatePickerHelperService,
         DateFormControlService,
       ]);
       viewManagerService = context.getClarityProvider(ViewManagerService);
-      hostElement = context.clarityElement;
-      context.clarityElement = context.clarityElement.querySelector('.datepicker-view-manager');
+      dateNavigationService = context.getClarityProvider(DateNavigationService);
+      dateIOService = context.getClarityProvider(DateIOService);
+    });
+
+    it('shows the daypicker when dayView is set to true with range options', () => {
+      dateNavigationService.isRangePicker = true;
+      dateIOService.setRangeOptions([{ label: 'Today', value: [new Date(), new Date()] }]);
+      context.fixture.detectChanges();
+      hostElement = context.clarityElement.querySelector('.datepicker-view-manager');
+      expect(context.clarityDirective.isDayView).toBe(true);
+      expect(hostElement.children.length).toBe(1);
+      expect(hostElement.children[0].tagName).toBe('CLR-DAYPICKER');
     });
 
     it('shows the daypicker when dayView is set to true', () => {
@@ -65,7 +76,7 @@ export default function () {
     });
 
     it('has the .datepicker class added to the host', () => {
-      expect(hostElement.classList.contains('datepicker')).toBe(true);
+      expect(context.clarityElement.classList.contains('datepicker')).toBe(true);
     });
   });
 }
@@ -74,7 +85,7 @@ export default function () {
   template: `<clr-datepicker-view-manager></clr-datepicker-view-manager>`,
 })
 class TestComponent {
-  constructor(private dateNavigationService: DateNavigationService) {
-    this.dateNavigationService.initializeCalendar();
+  constructor(dateNavigationService: DateNavigationService) {
+    dateNavigationService.initializeCalendar();
   }
 }

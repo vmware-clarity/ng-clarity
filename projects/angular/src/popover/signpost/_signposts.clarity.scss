@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -367,15 +367,21 @@
   .signpost-content-header {
     display: flex;
     justify-content: flex-end;
+    gap: tokens.$cds-global-space-3;
     width: 100%;
     background-color: inherit;
     top: 0;
     border-radius: signpost-variables.$clr-signpost-border-radius;
+
+    .signpost-title {
+      @include mixins.generate-typography-token('TableHeaders-11-SB-CPT');
+      margin-right: auto;
+    }
   }
 
   .signpost-wrap {
     gap: tokens.$cds-global-space-5;
-    padding: tokens.$cds-global-space-7;
+    padding: tokens.$cds-global-space-7 tokens.$cds-global-space-7 mixins.baselinePx(15);
     border: tokens.$cds-alias-object-border-width-100 solid signpost-variables.$clr-signpost-content-border-color;
     border-radius: signpost-variables.$clr-signpost-border-radius;
     background-color: signpost-variables.$clr-signpost-content-bg-color;
@@ -386,10 +392,10 @@
   }
 
   .signpost-content-body {
-    padding: 0;
+    padding-bottom: tokens.$cds-global-space-1;
     color: signpost-variables.$clr-signpost-content-color;
     text-align: left;
-    max-height: mixins.baselinePx(480);
+    max-height: mixins.baselinePx(450);
     overflow-y: auto;
 
     @include mixins.generate-typography-token('BODY-14-RG-CPT');

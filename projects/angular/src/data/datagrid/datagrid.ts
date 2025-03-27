@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -33,6 +33,7 @@ import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridItems } from './datagrid-items';
 import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { ClrDatagridRow } from './datagrid-row';
+import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType } from './enums/selection-type';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';
@@ -96,6 +97,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @Output('clrDgRefresh') refresh = new EventEmitter<ClrDatagridStateInterface<T>>(false);
 
   /**
+   * Expose virtual scroll directive for applications to access its public methods
+   */
+  @ContentChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<any>;
+
+  /**
    * We grab the smart iterator from projected content
    */
   @ContentChild(ClrDatagridItems) iterator: ClrDatagridItems<T>;
@@ -117,8 +123,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   @ContentChildren(ClrDatagridRow) rows: QueryList<ClrDatagridRow<T>>;
 
-  @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef;
-  @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef;
+  @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef<HTMLElement>;
+  @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef<HTMLElement>;
   @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
   @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
   @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
@@ -126,7 +132,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
 
   selectAllId: string;
-  hasVirtualScroller: boolean;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
@@ -150,14 +155,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     public el: ElementRef<HTMLElement>,
     private page: Page,
     public commonStrings: ClrCommonStringsService,
-    private columnsService: ColumnsService,
     public keyNavigation: KeyNavigationGridController,
     private zone: NgZone
   ) {
     const datagridId = uniqueIdFactory();
 
     this.selectAllId = 'clr-dg-select-all-' + datagridId;
-    this.detailService.id = datagridId;
+    detailService.id = datagridId;
   }
 
   /**
@@ -272,12 +276,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         this.updateDetailState();
 
         // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
-        const active = this.keyNavigation.getActiveCell();
-
-        if (active) {
-          this.zone.runOutsideAngular(() => {
-            setTimeout(() => this.keyNavigation.setActiveCell(active));
-          });
+        if (this.virtualScroll) {
+          const active = this.keyNavigation.getActiveCell();
+          if (active) {
+            this.zone.runOutsideAngular(() => {
+              setTimeout(() => this.keyNavigation.setActiveCell(active));
+            });
+          }
         }
       })
     );
@@ -373,7 +378,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   toggleAllSelected($event: any) {
     $event.preventDefault();
 
-    if (this.hasVirtualScroller) {
+    if (this.virtualScroll) {
       return;
     }
 
@@ -399,7 +404,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       if (row) {
         this.detailService.open(row.item, row.detailButton.nativeElement);
         // always keep open when virtual scroll is available otherwise close it
-      } else if (!this.hasVirtualScroller) {
+      } else if (!this.virtualScroll) {
         // Using setTimeout to make sure the inner cycles in rows are done
         setTimeout(() => {
           this.detailService.close();

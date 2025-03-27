@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -16,10 +16,12 @@ import { ClrTemplateRefModule } from '../../utils/template-ref/template-ref.modu
 import { ActiveOompaLoompa } from './chocolate/active-oompa-loompa';
 import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';
 import { ClrTab } from './tab';
+import { ClrTabAction } from './tab-action.directive';
 import { ClrTabContent } from './tab-content';
 import { ClrTabLink } from './tab-link.directive';
 import { ClrTabOverflowContent } from './tab-overflow-content';
 import { ClrTabs } from './tabs';
+import { ClrTabsActions } from './tabs-actions';
 
 export const CLR_TABS_DIRECTIVES: Type<any>[] = [
   ClrTabContent,
@@ -27,6 +29,8 @@ export const CLR_TABS_DIRECTIVES: Type<any>[] = [
   ClrTabs,
   ClrTabOverflowContent,
   ClrTabLink,
+  ClrTabAction,
+  ClrTabsActions,
   TabsWillyWonka,
   ActiveOompaLoompa,
 ];

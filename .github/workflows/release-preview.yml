@@ -24,11 +24,13 @@ jobs:
       - name: Public Api Check
         run: npm run public-api:check
       - name: Preview Release
-        run: npm run preview
+        env:
+          BD_ACCESS_TOKEN: ${{ secrets.BD_ACCESS_TOKEN }}
+          BD_RELEASE_PHASE: PRERELEASE
+        run: npx semantic-release --extends ./.releaserc.base.js --dry-run --no-ci
       - name: Deploy Docs Preview
         continue-on-error: true
         timeout-minutes: 5
         env:
-          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-        run: npx netlify-cli deploy
+        run: npx netlify-cli deploy --site storybook-clarity-design

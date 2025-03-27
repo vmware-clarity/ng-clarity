@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -221,14 +221,13 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       test.disabled = true;
       fixture.detectChanges();
       // Have to wait for the whole control to settle or it doesn't track
-
       await fixture.whenStable();
       expect(containerEl.className).not.toContain('clr-form-control-disabled');
       if (test.form) {
         // Handle setting disabled based on reactive form
         test.form.get('model').reset({ value: '', disabled: true });
         fixture.detectChanges();
-        expect(containerEl.className).toContain('clr-form-control-disabled', containerEl.className);
+        expect(containerEl.className).toContain('clr-form-control-disabled');
       }
     });
 

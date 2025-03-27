@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -190,7 +190,7 @@ export class WizardNavigationService implements OnDestroy {
    * @memberof WizardNavigationService
    */
   constructor(public pageCollection: PageCollectionService, public buttonService: ButtonHubService) {
-    this.previousButtonSubscription = this.buttonService.previousBtnClicked.subscribe(() => {
+    this.previousButtonSubscription = buttonService.previousBtnClicked.subscribe(() => {
       const currentPage = this.currentPage;
       if (this.currentPageIsFirst || currentPage.previousStepDisabled) {
         return;
@@ -201,25 +201,25 @@ export class WizardNavigationService implements OnDestroy {
       }
     });
 
-    this.nextButtonSubscription = this.buttonService.nextBtnClicked.subscribe(() => {
+    this.nextButtonSubscription = buttonService.nextBtnClicked.subscribe(() => {
       this.checkAndCommitCurrentPage('next');
     });
 
-    this.dangerButtonSubscription = this.buttonService.dangerBtnClicked.subscribe(() => {
+    this.dangerButtonSubscription = buttonService.dangerBtnClicked.subscribe(() => {
       this.checkAndCommitCurrentPage('danger');
     });
 
-    this.finishButtonSubscription = this.buttonService.finishBtnClicked.subscribe(() => {
+    this.finishButtonSubscription = buttonService.finishBtnClicked.subscribe(() => {
       this.checkAndCommitCurrentPage('finish');
     });
 
-    this.customButtonSubscription = this.buttonService.customBtnClicked.subscribe((type: string) => {
+    this.customButtonSubscription = buttonService.customBtnClicked.subscribe((type: string) => {
       if (!this.wizardStopNavigation) {
         this.currentPage.customButtonClicked.emit(type);
       }
     });
 
-    this.cancelButtonSubscription = this.buttonService.cancelBtnClicked.subscribe(() => {
+    this.cancelButtonSubscription = buttonService.cancelBtnClicked.subscribe(() => {
       if (this.wizardStopNavigation) {
         return;
       }
@@ -231,7 +231,7 @@ export class WizardNavigationService implements OnDestroy {
       }
     });
 
-    this.pagesResetSubscription = this.pageCollection.pagesReset.subscribe(() => {
+    this.pagesResetSubscription = pageCollection.pagesReset.subscribe(() => {
       this.setFirstPageCurrent();
     });
   }

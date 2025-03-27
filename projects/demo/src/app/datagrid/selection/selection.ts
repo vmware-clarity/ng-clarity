@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -30,10 +30,10 @@ export class DatagridSelectionDemo {
   loading = true;
 
   constructor(private inventory: Inventory) {
-    this.inventory.size = this.total;
-    this.inventory.latency = 500;
-    this.inventory.reset();
-    this.clientNoTrackByUsers = this.clientTrackByIndexUsers = this.clientTrackByIdUsers = this.inventory.all;
+    inventory.size = this.total;
+    inventory.latency = 500;
+    inventory.reset();
+    this.clientNoTrackByUsers = this.clientTrackByIndexUsers = this.clientTrackByIdUsers = inventory.all;
   }
 
   trackByIndex: TrackByFunction<User> = index => index;

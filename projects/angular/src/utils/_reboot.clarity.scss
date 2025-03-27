@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 // @deprecated Bootstrap dependencies are deprecated since 1.0. Review for removal of this file before 2.0
-// (note that there is a section at the bottom that's not related to bootstap but may also be candidate for removal by 2.0)
+// (note that there is a section at the bottom that's not related to bootstrap but may also be candidate for removal by 2.0)
 @use 'sass:map';
 @use 'sass:meta';
 @use '../layout/nav/variables.nav' as nav-variables;
@@ -407,25 +407,5 @@
 
   table {
     border-spacing: 0;
-  }
-
-  a:link {
-    color: nav-variables.$clr-link-color;
-  }
-
-  a:visited {
-    color: nav-variables.$clr-link-visited-color;
-
-    &:hover {
-      color: nav-variables.$clr-link-visited-color-hover;
-    }
-  }
-
-  a:hover {
-    color: nav-variables.$clr-link-hover-color;
-  }
-
-  a:active {
-    color: nav-variables.$clr-link-active-color;
   }
 }

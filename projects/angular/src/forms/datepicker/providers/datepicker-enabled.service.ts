@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -17,7 +17,7 @@ export class DatepickerEnabledService {
   private _innerWidth: number;
 
   constructor(@Inject(DOCUMENT) private _document: any) {
-    if (this._document) {
+    if (_document) {
       this._isUserAgentMobile = MOBILE_USERAGENT_REGEX.test(_document.defaultView.navigator.userAgent);
       this._innerWidth = _document.defaultView.innerWidth;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -10,6 +10,7 @@ import {
   AfterContentInit,
   AfterViewChecked,
   AfterViewInit,
+  ChangeDetectorRef,
   ContentChildren,
   Directive,
   ElementRef,
@@ -22,6 +23,7 @@ import {
 import { Subscription } from 'rxjs';
 
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
+import { ClrDatagrid } from '../datagrid';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnStateDiff } from '../interfaces/column-state.interface';
@@ -59,6 +61,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   private _heightSet = false;
   private shouldStabilizeColumns = true;
   private subscriptions: Subscription[] = [];
+  private intersectionObserver: IntersectionObserver = null;
 
   /**
    * Indicates if we want to re-compute columns width. This should only happen:
@@ -68,37 +71,49 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   private columnsSizesStable = false;
 
   constructor(
+    private datagrid: ClrDatagrid,
     private organizer: DatagridRenderOrganizer,
     private items: Items,
     private page: Page,
-    private domAdapter: DomAdapter,
-    private el: ElementRef,
+    private el: ElementRef<HTMLElement>,
     private renderer: Renderer2,
-    private detailService: DetailService,
+    detailService: DetailService,
     private tableSizeService: TableSizeService,
     private columnsService: ColumnsService,
     private ngZone: NgZone,
-    private keyNavigation: KeyNavigationGridController
+    private keyNavigation: KeyNavigationGridController,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
     this.subscriptions.push(
-      this.organizer
-        .filterRenderSteps(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS)
-        .subscribe(() => this.computeHeadersWidth())
+      organizer.filterRenderSteps(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS).subscribe(() => this.computeHeadersWidth())
     );
 
     this.subscriptions.push(
-      this.page.sizeChange.subscribe(() => {
+      page.sizeChange.subscribe(() => {
         if (this._heightSet) {
           this.resetDatagridHeight();
         }
       })
     );
-    this.subscriptions.push(this.detailService.stateChange.subscribe(state => this.toggleDetailPane(state)));
-    this.subscriptions.push(this.items.change.subscribe(() => (this.shouldStabilizeColumns = true)));
+    this.subscriptions.push(detailService.stateChange.subscribe(state => this.toggleDetailPane(state)));
+    this.subscriptions.push(items.change.subscribe(() => (this.shouldStabilizeColumns = true)));
   }
 
   ngOnInit() {
     this.columnsService.columnsStateChange.subscribe(change => this.columnStateChanged(change));
+    // Datagrid used in other components like Accordion, Tabs or wrapped in onPush component which have their content
+    // hidden by default gets initialised without being visible and breakes rendering cycle.
+    // Should run only the first time if the datagrid is not visible on first initialization.
+    if (this.el.nativeElement.offsetParent === null) {
+      this.intersectionObserver = new IntersectionObserver(([entry]) => {
+        if ((this.el.nativeElement.offsetParent || entry.isIntersecting) && this.columnsSizesStable) {
+          this.columnsSizesStable = false;
+          this.changeDetectorRef.markForCheck();
+          this.intersectionObserver.disconnect();
+        }
+      });
+      this.intersectionObserver.observe(this.el.nativeElement);
+    }
   }
 
   ngAfterContentInit() {
@@ -122,9 +137,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
 
   ngAfterViewChecked() {
     if (this.shouldStabilizeColumns) {
-      setTimeout(() => {
-        this.stabilizeColumns();
-      }, 0);
+      this.stabilizeColumns();
     }
 
     if (this.shouldComputeHeight()) {
@@ -138,15 +151,16 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.intersectionObserver?.disconnect();
   }
 
   toggleDetailPane(state: boolean) {
     if (this.headers) {
       if (state && !this.columnsService.hasCache()) {
         this.columnsService.cache();
-        this.headers.forEach((_header, index) => {
+        this.columnsService.visibleColumns.forEach((header, index) => {
           if (index > 0) {
-            this.columnsService.emitStateChangeAt(index, {
+            this.columnsService.emitStateChangeAt(header.columnIndex, {
               changes: [DatagridColumnChanges.HIDDEN],
               hidden: state,
             });
@@ -254,6 +268,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
                 row.expandableRow?.cells.get(columnIndex)?.setHidden(state);
               }
             });
+            this.updateColumnSeparatorsVisibility();
             this.keyNavigation.resetKeyGrid();
             break;
           case DatagridColumnChanges.INITIALIZE:
@@ -276,7 +291,6 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
    * Triggers a whole re-rendring cycle to set column sizes, if needed.
    */
   private stabilizeColumns() {
-    this.shouldStabilizeColumns = false;
     if (this.columnsSizesStable) {
       // Nothing to do.
       return;
@@ -286,5 +300,16 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
       this.organizer.resize();
       this.columnsSizesStable = true;
     }
+  }
+
+  private updateColumnSeparatorsVisibility() {
+    const visibleColumns = this.datagrid.columns.filter(column => !column.isHidden);
+    visibleColumns.forEach((column, index) => {
+      if (index === visibleColumns.length - 1) {
+        column.showSeparator = false;
+      } else if (!column.showSeparator) {
+        column.showSeparator = true;
+      }
+    });
   }
 }

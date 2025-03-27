@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -59,11 +59,11 @@ export class Selection<T = any> {
    */
   private subscriptions: Subscription[] = [];
 
-  constructor(private _items: Items<T>, private _filters: FiltersProvider<T>) {
+  constructor(private _items: Items<T>, filters: FiltersProvider<T>) {
     this.id = 'clr-dg-selection' + nbSelection++;
 
     this.subscriptions.push(
-      this._filters.change.subscribe(() => {
+      filters.change.subscribe(() => {
         if (!this._selectable || this.preserveSelection) {
           return;
         }
@@ -72,7 +72,7 @@ export class Selection<T = any> {
     );
 
     this.subscriptions.push(
-      this._items.allChanges.subscribe(updatedItems => {
+      _items.allChanges.subscribe(updatedItems => {
         // Reset the lockedRefs;
         const updateLockedRef: T[] = [];
 
@@ -87,11 +87,11 @@ export class Selection<T = any> {
 
             // if the currentSingle has been set before data was loaded, we look up and save the ref from current data set
             if (this.currentSingle && !this.prevSingleSelectionRef) {
-              this.prevSingleSelectionRef = this._items.trackBy(this.currentSingle);
+              this.prevSingleSelectionRef = _items.trackBy(this.currentSingle);
             }
 
             updatedItems.forEach(item => {
-              const ref = this._items.trackBy(item);
+              const ref = _items.trackBy(item);
               // If one of the updated items is the previously selectedSingle, set it as the new one
               if (this.prevSingleSelectionRef === ref) {
                 newSingle = item;
@@ -106,7 +106,7 @@ export class Selection<T = any> {
             // Therefore, we should delete the currentSingle if it used to be defined but doesn't exist anymore.
             // No explicit "delete" is required, since newSingle would be undefined at this point.
             // Marking it as selectionUpdated here will set currentSingle to undefined below in the setTimeout.
-            if (this._items.smart && !newSingle) {
+            if (_items.smart && !newSingle) {
               selectionUpdated = true;
             }
 
@@ -130,7 +130,7 @@ export class Selection<T = any> {
             if (this.current.length > 0 && this.prevSelectionRefs.length !== this.current.length) {
               this.prevSelectionRefs = [];
               this.current.forEach(item => {
-                this.prevSelectionRefs.push(this._items.trackBy(item));
+                this.prevSelectionRefs.push(_items.trackBy(item));
               });
             }
 
@@ -140,7 +140,7 @@ export class Selection<T = any> {
             //
             // The both loops below that goes over updatedItems could be combined into one.
             updatedItems.forEach(item => {
-              const ref = this._items.trackBy(item);
+              const ref = _items.trackBy(item);
               if (this.lockedRefs.indexOf(ref) > -1) {
                 updateLockedRef.push(ref);
               }
@@ -151,7 +151,7 @@ export class Selection<T = any> {
             // the if statement below results in broken behavior.
             if (leftOver.length > 0) {
               updatedItems.forEach(item => {
-                const ref = this._items.trackBy(item);
+                const ref = _items.trackBy(item);
                 // Look in current selected refs array if item is selected, and update actual value
                 const selectedIndex = this.prevSelectionRefs.indexOf(ref);
                 if (selectedIndex > -1) {
@@ -162,7 +162,7 @@ export class Selection<T = any> {
 
               // Filter out any unmatched items if we're using smart datagrids where we expect all items to be
               // present
-              if (this._items.smart) {
+              if (_items.smart) {
                 leftOver = leftOver.filter(selected => updatedItems.indexOf(selected) > -1);
                 if (this.current.length !== leftOver.length) {
                   selectionUpdated = true;

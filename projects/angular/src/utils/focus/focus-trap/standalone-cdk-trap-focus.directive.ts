@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -18,7 +18,11 @@ export class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
    * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
    * https://github.com/storybookjs/storybook/issues/23534
    */
-  constructor(elementRef: ElementRef, focusTrapFactory: FocusTrapFactory, @Optional() @Inject(DOCUMENT) document: any) {
+  constructor(
+    elementRef: ElementRef<HTMLElement>,
+    focusTrapFactory: FocusTrapFactory,
+    @Optional() @Inject(DOCUMENT) document: any
+  ) {
     super(elementRef, focusTrapFactory, document);
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -38,9 +38,10 @@ const POSITIONS: string[] = [
     <div class="signpost-wrap">
       <div class="popover-pointer"></div>
       <div class="signpost-content-header">
+        <ng-content select="clr-signpost-title"></ng-content>
         <button
           type="button"
-          [attr.aria-label]="commonStrings.keys.signpostClose"
+          [attr.aria-label]="signpostCloseAriaLabel || commonStrings.keys.signpostClose"
           class="signpost-action close"
           (click)="close()"
           [attr.aria-controls]="signpostContentId"
@@ -56,6 +57,8 @@ const POSITIONS: string[] = [
   host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
 })
 export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
+  @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;
+
   signpostContentId = uniqueIdFactory();
 
   private document: Document;
@@ -65,9 +68,9 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     injector: Injector,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
-    parentHost: ElementRef,
+    parentHost: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
-    private signpostIdService: SignpostIdService,
+    signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
     @Inject(PLATFORM_ID) private platformId: any,
     @Inject(DOCUMENT) document: any
@@ -79,7 +82,7 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     // Defaults
     this.position = 'right-middle';
     this.closeOnOutsideClick = true;
-    this.signpostIdService.setId(this.signpostContentId);
+    signpostIdService.setId(this.signpostContentId);
 
     this.document = document;
   }

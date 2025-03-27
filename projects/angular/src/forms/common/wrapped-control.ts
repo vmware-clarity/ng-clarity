@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -25,7 +25,6 @@ import {
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { CONTROL_SUFFIX } from './abstract-control';
 import { IfControlStateService } from './if-control-state/if-control-state.service';
@@ -41,13 +40,11 @@ export enum CHANGE_KEYS {
 }
 
 @Directive()
-export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
+export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   _id: string;
 
-  protected renderer: Renderer2;
   protected controlIdService: ControlIdService;
   protected ngControlService: NgControlService;
-  protected el: ElementRef<any>;
   protected index = 0;
   protected subscriptions: Subscription[] = [];
 
@@ -68,12 +65,9 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     protected wrapperType: Type<W>,
     injector: Injector,
     private _ngControl: NgControl | null,
-    renderer: Renderer2,
-    el: ElementRef
+    protected renderer: Renderer2,
+    protected el: ElementRef<HTMLElement>
   ) {
-    this.renderer = renderer;
-    this.el = el;
-
     if (injector) {
       this.ngControlService = injector.get(NgControlService, null);
       this.ifControlStateService = injector.get(IfControlStateService, null);
@@ -134,12 +128,12 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     }
 
     if (this.ngControlService && this._ngControl) {
-      if (!this.ngControlService.getControl()) {
+      if (!this.ngControlService.control) {
         this.ngControl = this._ngControl;
         this.ngControlService.setControl(this.ngControl);
         this.differ = this.differs.find(this._ngControl).create();
       } else {
-        this.ngControl = this.ngControlService.getControl();
+        this.ngControl = this.ngControlService.control;
         this.ngControlService.addAdditionalControl(this._ngControl);
         this.additionalDiffer.set(this._ngControl, this.differs.find(this._ngControl).create());
       }
@@ -156,7 +150,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub?.unsubscribe());
   }
 
   @HostListener('blur')
@@ -200,7 +194,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
       this.ngControl.control.updateValueAndValidity();
     }
     if (this.ngControlService && this.ngControlService.hasAdditionalControls) {
-      this.ngControlService.getAdditionalControls()?.forEach((ngControl: NgControl) => {
+      this.ngControlService.additionalControls?.forEach((ngControl: NgControl) => {
         ngControl.control.markAsTouched();
         ngControl.control.updateValueAndValidity();
       });

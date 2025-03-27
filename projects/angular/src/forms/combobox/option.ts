@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -33,12 +33,12 @@ export class ClrOption<T> implements OnInit {
   private _value: T;
 
   constructor(
-    public elRef: ElementRef,
+    public elRef: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     private focusHandler: ComboboxFocusHandler<T>,
     private optionSelectionService: OptionSelectionService<T>
   ) {
-    this.optionProxy.el = this.elRef.nativeElement;
+    this.optionProxy.el = elRef.nativeElement;
   }
 
   @Input('id')
@@ -78,8 +78,9 @@ export class ClrOption<T> implements OnInit {
     }
   }
 
-  @HostListener('click')
-  onClick() {
+  @HostListener('click', ['$event'])
+  onClick(event: MouseEvent) {
+    event.stopPropagation();
     if (this.optionSelectionService.multiselectable) {
       this.optionSelectionService.toggle(this.value);
     } else {

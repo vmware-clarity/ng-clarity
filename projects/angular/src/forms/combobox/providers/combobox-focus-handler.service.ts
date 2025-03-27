@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -224,13 +224,10 @@ export class ComboboxFocusHandler<T> {
 export const COMBOBOX_FOCUS_HANDLER_PROVIDER = customFocusableItemProvider(ComboboxFocusHandler);
 
 export class OptionData<T> {
-  id: string;
   el: HTMLElement;
-  value: T;
-  constructor(id: string, value: T) {
-    this.id = id;
-    this.value = value;
-  }
+
+  constructor(public id: string, public value: T) {}
+
   equals(other: OptionData<T>): boolean {
     if (!other) {
       return false;

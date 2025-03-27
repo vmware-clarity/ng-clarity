@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -17,6 +17,7 @@ import {
   PLATFORM_ID,
   Renderer2,
 } from '@angular/core';
+import { ClarityIcons, timesIcon } from '@cds/core/icon';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -26,20 +27,25 @@ import { ClrStandaloneCdkTrapFocus } from '../../utils/focus/focus-trap';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
 
-import '@cds/core/internal-components/close-button/register.js';
+const createCloseButton = (document: Document, ariaLabel: string) => {
+  ClarityIcons.addIcons(timesIcon);
 
-const createCdsCloseButton = (document: Document, ariaLabel: string) => {
-  const cdsCloseButton = document.createElement('cds-internal-close-button');
-  cdsCloseButton.setAttribute('icon-size', '32');
-  cdsCloseButton.setAttribute('aria-label', ariaLabel);
-  cdsCloseButton.setAttribute('aria-hidden', 'true');
-  cdsCloseButton.setAttribute('type', 'button');
+  const closeButton = document.createElement('button');
+  closeButton.setAttribute('aria-label', ariaLabel);
+  closeButton.setAttribute('aria-hidden', 'true');
+  closeButton.innerHTML = `
+    <cds-icon
+      inner-offset="1"
+      shape="times"
+      size="32"
+    ></cds-icon>
+  `;
   /**
    * The button is hidden by default based on our Desktop-first approach.
    */
-  cdsCloseButton.setAttribute('hidden', 'true');
-  cdsCloseButton.className = 'clr-nav-close';
-  return cdsCloseButton;
+  closeButton.setAttribute('hidden', 'true');
+  closeButton.className = 'clr-nav-close';
+  return closeButton;
 };
 
 @Directive({
@@ -123,7 +129,7 @@ export class ClrNavLevel implements OnInit {
   }
 
   ngAfterViewInit() {
-    const closeButton = createCdsCloseButton(this._document, this.closeButtonAriaLabel);
+    const closeButton = createCloseButton(this._document, this.closeButtonAriaLabel);
     this.renderer.listen(closeButton, 'click', this.close.bind(this));
     this.renderer.insertBefore(this.elementRef.nativeElement, closeButton, this.elementRef.nativeElement.firstChild); // Adding the button at the top of the nav
 

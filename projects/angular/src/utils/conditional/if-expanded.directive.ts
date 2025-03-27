@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -38,16 +38,18 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
   constructor(
     @Optional() private template: TemplateRef<any>,
     private container: ViewContainerRef,
-    private el: ElementRef,
+    private el: ElementRef<HTMLElement>,
     private renderer: Renderer2,
     private expand: IfExpandService
   ) {
     this._subscriptions.push(
       expand.expandChange.subscribe(() => {
         this.updateView();
-        this.expandedChange.emit(this.expand.expanded);
+        this.expandedChange.emit(expand.expanded);
       })
     );
+
+    expand.hasExpandTemplate = !!template;
   }
 
   @Input('clrIfExpanded')

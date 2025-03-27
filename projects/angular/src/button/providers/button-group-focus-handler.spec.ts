@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -102,7 +102,7 @@ export default function (): void {
         this.focusHandler.initialFocus = InitialFocus.LAST_ITEM;
         this.focusHandler.initialize({ menu: this.menu, menuToggle: this.menuToggle });
         const lastChild = this.menu.children[this.menu.children.length - 1];
-        expect(document.activeElement).toEqual(lastChild);
+        expect(document.activeElement).toBe(lastChild);
       });
 
       it('focus last button in the menu on key down events', function (this: TestContext) {
@@ -110,7 +110,7 @@ export default function (): void {
         this.menu.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         this.menu.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         const lastChild = this.menu.children[this.menu.children.length - 1];
-        expect(document.activeElement).toEqual(lastChild);
+        expect(document.activeElement).toBe(lastChild);
       });
 
       it('does not prevent moving focus to a different part of the page', function (this: TestContext) {

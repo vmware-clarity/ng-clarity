@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -12,7 +12,7 @@ import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 
 @Directive({
-  selector: '[clrDate], [clrRangeStartDate], [clrRangeEndDate]',
+  selector: '[clrDate], [clrStartDate], [clrEndDate]',
   providers: [{ provide: NG_VALIDATORS, useExisting: ClrDateInputValidator, multi: true }],
 })
 export class ClrDateInputValidator implements Validator {
@@ -23,21 +23,23 @@ export class ClrDateInputValidator implements Validator {
       const value = this.dateIOService.getDateValueFromDateString(control.value);
       const minDate = this.dateIOService.disabledDates.minDate.toDate();
       const maxDate = this.dateIOService.disabledDates.maxDate.toDate();
-      if (value && value < this.dateIOService.disabledDates.minDate.toDate()) {
+
+      if (value && value < minDate) {
         return { min: { min: minDate.toLocaleDateString(), actual: value.toLocaleDateString() } };
-      } else if (value && value > this.dateIOService.disabledDates.maxDate.toDate()) {
+      } else if (value && value > maxDate) {
         return { max: { max: maxDate.toLocaleDateString(), actual: value.toLocaleDateString() } };
       }
     }
+
     return null;
   }
 }
 
 @Directive({
-  selector: '[clrRangeStartDate]',
-  providers: [{ provide: NG_VALIDATORS, useExisting: ClrDateRangeStartInputValidator, multi: true }],
+  selector: '[clrStartDate]',
+  providers: [{ provide: NG_VALIDATORS, useExisting: ClrStartDateInputValidator, multi: true }],
 })
-export class ClrDateRangeStartInputValidator implements Validator {
+export class ClrStartDateInputValidator implements Validator {
   constructor(
     @Optional() private dateIOService: DateIOService,
     @Optional() private dateNavigationService: DateNavigationService
@@ -46,13 +48,10 @@ export class ClrDateRangeStartInputValidator implements Validator {
   validate(control: AbstractControl): ValidationErrors {
     if (this.dateIOService) {
       const value = this.dateIOService.getDateValueFromDateString(control.value);
-      if (
-        value &&
-        this.dateNavigationService &&
-        this.dateNavigationService.selectedEndDay &&
-        value > this.dateNavigationService.selectedEndDay.toDate()
-      ) {
-        return { range: { range: true } };
+      const endDate = this.dateNavigationService?.selectedEndDay?.toDate();
+
+      if (value && endDate && value > endDate) {
+        return { range: { startDate: value, endDate } };
       }
     }
 
@@ -61,10 +60,10 @@ export class ClrDateRangeStartInputValidator implements Validator {
 }
 
 @Directive({
-  selector: '[clrRangeEndDate]',
-  providers: [{ provide: NG_VALIDATORS, useExisting: ClrDateRangeEndInputValidator, multi: true }],
+  selector: '[clrEndDate]',
+  providers: [{ provide: NG_VALIDATORS, useExisting: ClrEndDateInputValidator, multi: true }],
 })
-export class ClrDateRangeEndInputValidator implements Validator {
+export class ClrEndDateInputValidator implements Validator {
   constructor(
     @Optional() private dateIOService: DateIOService,
     @Optional() private dateNavigationService: DateNavigationService
@@ -73,13 +72,10 @@ export class ClrDateRangeEndInputValidator implements Validator {
   validate(control: AbstractControl): ValidationErrors {
     if (this.dateIOService) {
       const value = this.dateIOService.getDateValueFromDateString(control.value);
-      if (
-        value &&
-        this.dateNavigationService &&
-        this.dateNavigationService.selectedDay &&
-        value < this.dateNavigationService.selectedDay.toDate()
-      ) {
-        return { range: { range: true } };
+      const startDate = this.dateNavigationService?.selectedDay?.toDate();
+
+      if (value && startDate && value < startDate) {
+        return { range: { startDate, endDate: value } };
       }
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -22,8 +22,8 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
   providers: [ClrPopoverToggleService, ClrPopoverEventsService],
 })
 class TestHost {
-  @ViewChild('closeButton', { read: ElementRef, static: true }) closeButton: ElementRef;
-  @ViewChild('toggleButton', { read: ElementRef, static: true }) toggleButton: ElementRef;
+  @ViewChild('closeButton', { read: ElementRef, static: true }) closeButton: ElementRef<HTMLButtonElement>;
+  @ViewChild('toggleButton', { read: ElementRef, static: true }) toggleButton: ElementRef<HTMLButtonElement>;
   openState;
 
   handleClose() {

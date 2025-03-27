@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -22,6 +22,14 @@ export interface ClrCommonStrings {
    * Hide button
    */
   hide: string;
+  /**
+   * Apply button
+   */
+  apply: string;
+  /**
+   * Cancel button
+   */
+  cancel: string;
   /**
    * Expandable components: expand caret
    */
@@ -135,6 +143,10 @@ export interface ClrCommonStrings {
    */
   datagridFilterAriaLabel: string;
   /**
+   * Datagrid filter label
+   */
+  datagridFilterLabel: string;
+  /**
    * Datagrid filter dialog
    */
   datagridFilterDialogAriaLabel: string;
@@ -147,6 +159,14 @@ export interface ClrCommonStrings {
    */
   columnSeparatorDescription: string;
   /**
+   * Numeric filter from label string
+   */
+  fromLabel: string;
+  /**
+   * Numeric filter to label string
+   */
+  toLabel: string;
+  /**
    * Modal start of content
    */
   modalContentStart: string;
@@ -154,6 +174,11 @@ export interface ClrCommonStrings {
    * Modal end of content
    */
   modalContentEnd: string;
+
+  /**
+   * Side Panel pin dialog
+   */
+  sidePanelPin: string;
 
   /**
    * Datagrid Show columns menu description
@@ -266,6 +291,11 @@ export interface ClrCommonStrings {
   comboboxOpen: string;
 
   /**
+   * Wizard: Screen-reader text for "step" (read before step number).
+   */
+  wizardStep: string;
+
+  /**
    * Wizard: Screen-reader text for completed step.
    */
   wizardStepSuccess: string;
@@ -301,4 +331,12 @@ export interface ClrCommonStrings {
   fileCount: string;
   clearFile: string;
   clearFiles: string;
+
+  // Tree
+  selectedTreeNode: string;
+  unselectedTreeNode: string;
+
+  // Breadcrumbs
+  breadcrumbsLabel: string;
+  expandBreadcrumbsLabel: string;
 }

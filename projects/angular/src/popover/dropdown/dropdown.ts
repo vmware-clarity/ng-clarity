@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -35,11 +35,11 @@ export class ClrDropdown implements OnDestroy {
     public parent: ClrDropdown,
     public toggleService: ClrPopoverToggleService,
     public focusHandler: DropdownFocusHandler,
-    private cdr: ChangeDetectorRef,
+    cdr: ChangeDetectorRef,
     dropdownService: RootDropdownService
   ) {
-    this.subscriptions.push(dropdownService.changes.subscribe(value => (this.toggleService.open = value)));
-    this.subscriptions.push(toggleService.openChange.subscribe(() => this.cdr.markForCheck()));
+    this.subscriptions.push(dropdownService.changes.subscribe(value => (toggleService.open = value)));
+    this.subscriptions.push(toggleService.openChange.subscribe(() => cdr.markForCheck()));
   }
 
   ngOnDestroy() {

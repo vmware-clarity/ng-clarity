@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -38,6 +38,7 @@ $clr-forms-input-wrapper-height: var(--clr-forms-input-wrapper-height);
 
 // Input group
 $clr-forms-input-group-icon-action-size: var(--clr-forms-input-group-icon-action-size);
+$clr-forms-input-group-icon-disabled-color: var(--clr-forms-input-group-icon-disabled-color);
 
 // Typographic - obsolete should be removed ATM
 $clr-forms-label-font-weight: var(--clr-forms-label-font-weight) !default;
@@ -86,7 +87,7 @@ $clr-forms-checkbox-disabled-mark-color: var(--clr-forms-checkbox-disabled-mark-
 $clr-forms-checkbox-label-height: calc(#{$clr-forms-baseline} * 4);
 $clr-forms-checkbox-top: calc(calc(#{$clr-forms-checkbox-label-height} - #{$clr-forms-checkbox-height}) * 0.5) !default;
 
-$clr-forms-checkbox-size: #{tokens.$cds-global-space-7};
+$clr-forms-checkbox-size: #{tokens.$cds-global-space-9};
 $clr-forms-checkbox-padding-left: calc(#{$clr-forms-checkbox-height} + #{tokens.$cds-global-space-5});
 $clr-forms-checkbox-mark-size: calc(#{$clr-forms-checkbox-height} * 0.5);
 $clr-forms-checkbox-mark-border-size: calc(#{$clr-forms-checkbox-height} * 0.125);

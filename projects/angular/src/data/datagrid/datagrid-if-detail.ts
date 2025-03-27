@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -35,7 +35,7 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     private viewContainer: ViewContainerRef,
     private detailService: DetailService
   ) {
-    this.detailService.enabled = true;
+    detailService.enabled = true;
   }
 
   @Input('clrIfDetail')

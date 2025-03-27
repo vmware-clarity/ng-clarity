@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -29,6 +29,8 @@ export class DatagridFullDemo {
 
     server: false,
     latency: '500',
+    nameFilter: 'd',
+    loadRowActionsDynamically: false,
   };
 
   resetting = true;
@@ -40,8 +42,8 @@ export class DatagridFullDemo {
   isServerDriven = false;
   loading = true;
   total: number;
-
-  nameFilter = 'd';
+  rowActions: string[] = ['Edit', 'Delete'];
+  rowActionsLoading = false;
 
   pokemonComparator = new PokemonComparator();
   pokemonFilter = new PokemonFilter();
@@ -51,6 +53,24 @@ export class DatagridFullDemo {
   }
 
   trackById: TrackByFunction<User> = (_index, item) => item.id;
+
+  loadDynamicRowActions() {
+    if (!this.options.loadRowActionsDynamically) {
+      return;
+    }
+    this.rowActionsLoading = true;
+    setTimeout(() => {
+      this.rowActions = [
+        'Edit',
+        'Delete',
+        'Dynamic Action 1',
+        'Dynamic Action 2',
+        'Dynamic Action 3',
+        'Dynamic Action 3',
+      ];
+      this.rowActionsLoading = false;
+    }, 2000);
+  }
 
   reset() {
     this.resetting = true;
@@ -102,7 +122,7 @@ export class DatagridFullDemo {
     this.loading = false;
   }
 
-  clrDgActionOverflowOpenChangeFn($event: boolean) {
-    console.log('clrDgActionOverflowOpenChange event', $event);
+  clrDgActionOverflowOpenChangeFn(opened: boolean) {
+    console.log('clrDgActionOverflowOpenChange event', opened);
   }
 }

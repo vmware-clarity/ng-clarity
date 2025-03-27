@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
   ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
@@ -8,10 +8,10 @@
 <h2>Full Datagrid demo</h2>
 
 <form clrForm (submit)="$event.preventDefault(); reset()">
-  <clr-input-container>
+  <clr-number-input-container>
     <label>Number of users</label>
-    <input clrInput type="number" name="total" [(ngModel)]="options.totalUsers" />
-  </clr-input-container>
+    <input clrNumberInput type="number" name="total" [(ngModel)]="options.totalUsers" />
+  </clr-number-input-container>
 
   <clr-select-container>
     <label>Rows per page</label>
@@ -36,6 +36,15 @@
       <input type="checkbox" clrCheckbox [(ngModel)]="options.server" name="server" />
       <label>Server-driven</label>
     </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+      <input
+        type="checkbox"
+        clrCheckbox
+        [(ngModel)]="options.loadRowActionsDynamically"
+        name="load-row-actions-dynamically"
+      />
+      <label>Load Row Actions dynamically</label>
+    </clr-checkbox-wrapper>
   </clr-checkbox-container>
 
   <clr-select-container>
@@ -49,6 +58,12 @@
       <option value="2000">2s</option>
     </select>
   </clr-select-container>
+
+  <clr-input-container *ngIf="!isServerDriven">
+    <label>Name filter</label>
+    <input clrInput type="text" name="nameFilter" [(ngModel)]="options.nameFilter" />
+    <clr-control-helper>Pre applied client side filter</clr-control-helper>
+  </clr-input-container>
 
   <button class="btn btn-primary">Apply</button>
 </form>
@@ -66,7 +81,7 @@
     <clr-dg-column>
       <ng-container *clrDgHideableColumn>User ID</ng-container>
     </clr-dg-column>
-    <clr-dg-column [clrDgField]="'name'" [(clrFilterValue)]="nameFilter">
+    <clr-dg-column [clrDgField]="'name'" [(clrFilterValue)]="options.nameFilter">
       <ng-container *clrDgHideableColumn>Name</ng-container>
     </clr-dg-column>
     <clr-dg-column [clrDgField]="'creation'">
@@ -86,15 +101,17 @@
 
     <clr-dg-placeholder>No users found</clr-dg-placeholder>
     <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-      <clr-dg-action-overflow (clrDgActionOverflowOpenChange)="clrDgActionOverflowOpenChangeFn($event)">
-        <button class="action-item">
-          <cds-icon shape="note"></cds-icon>
-          Edit
-        </button>
-        <button class="action-item">
-          <cds-icon shape="trash"></cds-icon>
-          Delete
-        </button>
+      <clr-dg-action-overflow
+        (click)="loadDynamicRowActions()"
+        (clrDgActionOverflowOpenChange)="clrDgActionOverflowOpenChangeFn($event)"
+      >
+        <span *ngIf="rowActionsLoading; else actions">
+          <span class="spinner spinner-inline">Loading...</span>
+          Loading...
+        </span>
+        <ng-template #actions>
+          <button class="action-item" *ngFor="let action of rowActions">{{ action }}</button>
+        </ng-template>
       </clr-dg-action-overflow>
 
       <clr-dg-cell>{{user.id}}</clr-dg-cell>

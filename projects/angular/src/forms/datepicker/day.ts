@@ -1,23 +1,21 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, HostListener, Input } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
 import { DateNavigationService } from './providers/date-navigation.service';
-import { DatePickerHelperService } from './providers/datepicker-helper.service';
 
 @Component({
   selector: 'clr-day',
   template: `
     <button
-      #dayBtn
       class="day-btn"
       type="button"
       [class.is-today]="dayView.isTodaysDate"
@@ -40,13 +38,11 @@ import { DatePickerHelperService } from './providers/datepicker-helper.service';
   host: { '[class.day]': 'true' },
 })
 export class ClrDay {
+  @Output('selectDay') onSelectDay = new EventEmitter<DayModel>();
+
   private _dayView: DayViewModel;
 
-  constructor(
-    private _dateNavigationService: DateNavigationService,
-    private _datePickerHelperService: DatePickerHelperService,
-    private commonStrings: ClrCommonStringsService
-  ) {}
+  constructor(private _dateNavigationService: DateNavigationService, private commonStrings: ClrCommonStringsService) {}
 
   /**
    * DayViewModel input which is used to build the Day View.
@@ -103,8 +99,11 @@ export class ClrDay {
    * Updates the selectedDay when the ClrDay is selected and closes the datepicker popover.
    */
   selectDay(): void {
+    if (this.dayView.isDisabled) {
+      return;
+    }
     const day: DayModel = this.dayView.dayModel;
-    this._datePickerHelperService.selectDay(day);
+    this.onSelectDay.emit(day);
   }
 
   /**
@@ -123,7 +122,7 @@ export class ClrDay {
     } else if (this._dateNavigationService.selectedDay && !this._dateNavigationService.selectedEndDay) {
       return (
         this._dayView.dayModel?.isAfter(this._dateNavigationService.selectedDay) &&
-        this._dayView.dayModel?.isBefore(this._dateNavigationService.hoveredDay)
+        this._dayView.dayModel?.isBefore(this._dateNavigationService.hoveredDay, true)
       );
     } else {
       return false;

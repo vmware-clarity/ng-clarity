@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -49,8 +49,8 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
   private isWithinMaxResizeRange: boolean;
   private unlisteners: (() => void)[] = [];
 
-  @ViewChild('resizeTracker') private resizeTrackerRef: ElementRef;
-  @ViewChild('columnHandle') private columnHandleRef: ElementRef;
+  @ViewChild('resizeTracker') private resizeTrackerRef: ElementRef<HTMLElement>;
+  @ViewChild('columnHandle') private columnHandleRef: ElementRef<HTMLElement>;
 
   constructor(
     private columnResizerService: ColumnResizerService,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -21,6 +21,7 @@ import { DatepickerInTemplateDrivenFormsDemo } from './datepicker-in-template-dr
 import { DatepickerKKJDemo } from './datepicker-KKJ';
 import { DatepickerLocaleData } from './datepicker-locale-data';
 import { DatepickerMinMaxDemo } from './datepicker-min-max';
+import { DatePickerWithActionButtonsDemo } from './datepicker-with-action-buttons';
 import { DatepickerDemo } from './datepicker.demo';
 import { DateRangePickerDemo } from './daterangepicker';
 import { DisabledDemo } from './disabled';
@@ -45,6 +46,7 @@ const ROUTES: Routes = [
       { path: 'layout', component: DatepickerLayoutDemo },
       { path: 'datepicker-min-max', component: DatepickerMinMaxDemo },
       { path: 'date-range-picker', component: DateRangePickerDemo },
+      { path: 'with-action-buttons', component: DatePickerWithActionButtonsDemo },
       {
         path: 'locale-data',
         component: DatepickerLocaleData,

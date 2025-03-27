@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -15,7 +15,6 @@ import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
-import { DatePickerHelperService } from './providers/datepicker-helper.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
@@ -30,7 +29,6 @@ export default function () {
         ClrPopoverToggleService,
         DateFormControlService,
         DateIOService,
-        DatePickerHelperService,
         ViewManagerService,
       ]);
     });
@@ -197,31 +195,14 @@ export default function () {
       it('updates the selected day when a Date is selected', () => {
         const dateNavigationService: DateNavigationService = context.getClarityProvider(DateNavigationService);
         const testDayView: DayViewModel = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
+        spyOn(context.clarityDirective.onSelectDay, 'emit');
 
         expect(dateNavigationService.selectedDay).toBeUndefined();
 
         context.clarityDirective.dayView = testDayView;
         context.clarityDirective.selectDay();
         context.detectChanges();
-
-        expect(dateNavigationService.selectedDay).not.toBeUndefined();
-        expect(dateNavigationService.selectedDay.date).toBe(testDayView.dayModel.date);
-        expect(dateNavigationService.selectedDay.month).toBe(testDayView.dayModel.month);
-        expect(dateNavigationService.selectedDay.year).toBe(testDayView.dayModel.year);
-      });
-
-      it('notifies the DateNavigationService when the user selects a date', () => {
-        const dateNavigationService: DateNavigationService = context.getClarityProvider(DateNavigationService);
-        spyOn(dateNavigationService, 'notifySelectedDayChanged');
-
-        context.clarityDirective.dayView = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
-
-        context.clarityDirective.selectDay();
-        context.detectChanges();
-
-        expect(dateNavigationService.notifySelectedDayChanged).toHaveBeenCalledWith(
-          context.clarityDirective.dayView.dayModel
-        );
+        expect(context.clarityDirective.onSelectDay.emit).toHaveBeenCalled();
       });
 
       it('closes the popover when a Date is selected', () => {
@@ -254,12 +235,10 @@ export default function () {
       });
 
       it('marks the date control as dirty when a date is selected', () => {
-        const dateFormControlService: DateFormControlService = context.getClarityProvider(DateFormControlService);
-        spyOn(dateFormControlService, 'markAsDirty');
+        spyOn(context.clarityDirective.onSelectDay, 'emit');
 
         context.clarityDirective.selectDay();
-
-        expect(dateFormControlService.markAsDirty).toHaveBeenCalled();
+        expect(context.clarityDirective.onSelectDay.emit).toHaveBeenCalled();
       });
     });
   });

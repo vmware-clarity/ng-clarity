@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -39,7 +39,8 @@
 
     .clr-input,
     .clr-textarea,
-    .clr-select {
+    .clr-select,
+    .clr-number-input {
       color: forms-variables.$clr-forms-text-disabled-color;
       border-bottom-color: forms-variables.$clr-forms-border-disabled-color;
     }
@@ -79,6 +80,13 @@
 
   .clr-control-container {
     display: inline-block;
+
+    @include mixins.generate-typography-token(
+      'SECONDARY-13-RG-EXP',
+      (
+        font-size: forms-variables.$clr-forms-field-font-size,
+      )
+    );
   }
 
   .clr-control-inline {
@@ -146,8 +154,7 @@
   .clr-form:not(.clr-form-compact) .clr-control-container {
     &.clr-error,
     &.clr-success {
-      & > .clr-subtext-wrapper,
-      & > .clr-validate-icon {
+      & > .clr-subtext-wrapper .clr-validate-icon {
         margin-left: calc(-1 * #{tokens.$cds-global-space-3});
       }
     }
@@ -175,6 +182,7 @@
 
     .clr-control-container {
       display: flex;
+      flex-wrap: wrap;
     }
 
     .clr-subtext {

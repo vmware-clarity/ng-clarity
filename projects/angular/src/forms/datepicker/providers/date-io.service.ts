@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -33,15 +33,15 @@ export class DateIOService {
     minDate: new DayModel(0, 0, 1),
     maxDate: new DayModel(9999, 11, 31),
   };
-  isDateRangePicker = false;
+
   cldrLocaleDateFormat: string = DEFAULT_LOCALE_FORMAT;
 
   private dateRangeOptions;
   private localeDisplayFormat: InputDateDisplayFormat = LITTLE_ENDIAN;
   private delimiters: [string, string] = ['/', '/'];
 
-  constructor(private _localeHelperService: LocaleHelperService) {
-    this.cldrLocaleDateFormat = this._localeHelperService.localeDateFormat;
+  constructor(localeHelperService: LocaleHelperService) {
+    this.cldrLocaleDateFormat = localeHelperService.localeDateFormat;
     this.initializeLocaleDisplayFormat();
   }
 
@@ -74,19 +74,9 @@ export class DateIOService {
     }
   }
 
-  setIsDateRangePicker(flag: boolean) {
-    this.isDateRangePicker = flag;
-  }
-
   setRangeOptions(rangeOptions: DateRangeOption[]) {
-    let validatedRangeOption = this.validateDateRangeOptions(rangeOptions);
-    const hasCustomRangeOption = validatedRangeOption.findIndex(rangeOption => !!rangeOption.isCustomRange);
-    if (validatedRangeOption.length) {
-      if (hasCustomRangeOption === -1) {
-        validatedRangeOption = [...validatedRangeOption, { label: 'Custom Range', value: [], isCustomRange: true }];
-      }
-      this.dateRangeOptions = validatedRangeOption;
-    }
+    const validatedRangeOption = this.validateDateRangeOptions(rangeOptions);
+    this.dateRangeOptions = validatedRangeOption || [];
   }
 
   getRangeOptions() {
@@ -132,6 +122,21 @@ export class DateIOService {
       // secondPart is month && thirdPart is date
       return this.validateAndGetDate(firstPart, secondPart, thirdPart);
     }
+  }
+
+  private validateDateRangeOptions(rangeOptions: DateRangeOption[]): DateRangeOption[] {
+    const validOptions = [];
+    rangeOptions?.forEach((rangeOption: DateRangeOption) => {
+      if (
+        rangeOption?.value?.length !== 2 ||
+        Object.prototype.toString.call(rangeOption?.value[0]) !== '[object Date]' ||
+        Object.prototype.toString.call(rangeOption?.value[1]) !== '[object Date]'
+      ) {
+        return;
+      }
+      validOptions.push(rangeOption);
+    });
+    return validOptions;
   }
 
   private initializeLocaleDisplayFormat(): void {
@@ -207,22 +212,5 @@ export class DateIOService {
     }
     const result: number = parseToFourDigitYear(y);
     return result !== -1 ? new Date(result, m, d) : null;
-  }
-
-  private validateDateRangeOptions(rangeOptions: DateRangeOption[]): DateRangeOption[] {
-    const validOptions = [];
-    rangeOptions?.forEach((rangeOption: DateRangeOption) => {
-      if (
-        !rangeOption.isCustomRange &&
-        (!rangeOption.value?.length ||
-          rangeOption.value?.length !== 2 ||
-          Object.prototype.toString.call(rangeOption?.value[0]) !== '[object Date]' ||
-          Object.prototype.toString.call(rangeOption?.value[1]) !== '[object Date]')
-      ) {
-        return;
-      }
-      validOptions.push(rangeOption);
-    });
-    return validOptions;
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -255,10 +255,12 @@ export default function (): void {
         const expectedUpdatedTitle = 'This is my bar';
 
         it('projects page nav title as expected', () => {
-          expect(myStepnavItem.textContent.trim()).toBe(expectedInitialTitle, 'projects initial value');
+          const titleElement = myStepnavItem.querySelector('.clr-wizard-stepnav-link-title');
+
+          expect(titleElement.textContent.trim()).toBe(expectedInitialTitle, 'projects initial value');
           fixture.componentInstance.projector = 'bar';
           fixture.detectChanges();
-          expect(myStepnavItem.textContent.trim()).toBe(expectedUpdatedTitle, 'projects updated value');
+          expect(titleElement.textContent.trim()).toBe(expectedUpdatedTitle, 'projects updated value');
         });
       });
     });
@@ -268,15 +270,32 @@ export default function (): void {
         it('should have id', () => {
           expect(myStepnavItem.hasAttribute('id')).toBeTruthy('stepnav item should have an id');
           const myId = myStepnavItem.getAttribute('id');
-          expect(myId).toBe(testItemComponent.id, 'stepnav item id should contain id');
+          expect(myId).toBe('mock-id', 'stepnav item id should contain id');
         });
 
         it('should have aria-controls attribute', () => {
-          const pageId = testItemComponent.page.id;
-
           expect(myStepnavItem.hasAttribute('aria-controls')).toBeTruthy('stepnav item should have aria-controls attr');
           const myAriaControls = myStepnavItem.getAttribute('aria-controls');
-          expect(myAriaControls).toBe(pageId, 'aria-controls should contain page id');
+          expect(myAriaControls).toBe('this-is-my-page-id-0', 'aria-controls should contain page id');
+        });
+
+        it('should have aria-labelledby attribute on the button', () => {
+          const stepNavButton = myStepnavItem.querySelector<HTMLButtonElement>('button.clr-wizard-stepnav-link');
+
+          expect(stepNavButton.getAttribute('aria-labelledby')).toBe(
+            'mock-id-step-text mock-id-step-number mock-id-step-title'
+          );
+        });
+
+        it('should have aria-labelledby attribute on the button including the icon when is complete', () => {
+          fakeOutPage.completed = true;
+          fixture.detectChanges();
+
+          const stepNavButton = myStepnavItem.querySelector<HTMLButtonElement>('button.clr-wizard-stepnav-link');
+
+          expect(stepNavButton.getAttribute('aria-labelledby')).toBe(
+            'mock-id-step-icon mock-id-step-text mock-id-step-number mock-id-step-title'
+          );
         });
 
         it('should add disabled attribute when isDisabled return true', () => {
@@ -475,25 +494,24 @@ export default function (): void {
           fakeOutPage.completed = true;
           fakeOutPage.hasError = true;
           fixture.detectChanges();
-          expect(myStepnavItem.querySelector('cds-icon[shape="error-standard"]')).not.toBeNull();
+
+          const iconElement = myStepnavItem.querySelector('cds-icon[shape="error-standard"]');
+          expect(iconElement).not.toBeNull();
+          expect(iconElement.getAttribute('aria-label')).toBe('Error');
         });
 
-        it('should have a span with text "Error" when page has an error', () => {
-          fakeOutPage.completed = true;
-          fakeOutPage.hasError = true;
-          fixture.detectChanges();
-          const spans: NodeList = myStepnavItem.querySelectorAll('span.clr-sr-only');
-          expect(spans.length).toEqual(1);
-          expect(spans[0].textContent).toEqual('Error');
-        });
-
-        it('should have a span with text "Completed" when page is completed', () => {
+        it('should have a cds-icon when page has is complete', () => {
+          expect(myStepnavItem.classList.contains('error')).toBe(
+            false,
+            'stepnav item does not have .error class when page has no error'
+          );
           fakeOutPage.completed = true;
           fakeOutPage.hasError = false;
           fixture.detectChanges();
-          const spans: NodeList = myStepnavItem.querySelectorAll('span.clr-sr-only');
-          expect(spans.length).toEqual(1);
-          expect(spans[0].textContent).toEqual('Completed');
+
+          const iconElement = myStepnavItem.querySelector('cds-icon[shape="success-standard"]');
+          expect(iconElement).not.toBeNull();
+          expect(iconElement.getAttribute('aria-label')).toBe('Completed');
         });
       });
 

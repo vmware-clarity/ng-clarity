@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -7,6 +7,7 @@
 
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
+import { EMPTY } from 'rxjs';
 
 import { NgControlService } from '../providers/ng-control.service';
 import { CONTROL_STATE, IfControlStateService } from './if-control-state.service';
@@ -19,12 +20,6 @@ export default function (): void {
       testControl = new FormControl();
       ngControlService = new NgControlService();
       service = new IfControlStateService(ngControlService);
-    });
-
-    it('subscribes to the statusChanges when the control is emitted', () => {
-      spyOn(testControl.statusChanges, 'subscribe').and.callThrough();
-      ngControlService.setControl(testControl);
-      expect(testControl.statusChanges.subscribe).toHaveBeenCalled();
     });
 
     it('should not throw error when triggerStatusChange is called and control is not set yet', () => {
@@ -57,13 +52,7 @@ export default function (): void {
       const cb = jasmine.createSpy('cb');
       const sub = service.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
       const fakeControl = {
-        statusChanges: {
-          subscribe: () => {
-            return function unsubscribe() {
-              // Do nothing
-            };
-          },
-        },
+        statusChanges: EMPTY,
         /* Disabled is not implemented yet so we could use it to test uncovered case */
         status: 'DISABLED',
         touched: true,
@@ -78,13 +67,7 @@ export default function (): void {
       const cb = jasmine.createSpy('cb');
       const sub = service.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
       const fakeControl = {
-        statusChanges: {
-          subscribe: () => {
-            return function unsubscribe() {
-              // Do nothing
-            };
-          },
-        },
+        statusChanges: EMPTY,
         status: 'INVALID',
         touched: false,
       };
@@ -98,13 +81,7 @@ export default function (): void {
       const cb = jasmine.createSpy('cb');
       const sub = service.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
       const fakeControl = {
-        statusChanges: {
-          subscribe: () => {
-            return function unsubscribe() {
-              // Do nothing
-            };
-          },
-        },
+        statusChanges: EMPTY,
         status: 'INVALID',
         touched: true,
       };
@@ -119,13 +96,7 @@ export default function (): void {
       const cb = jasmine.createSpy('cb');
       const sub = service.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
       const fakeControl = {
-        statusChanges: {
-          subscribe: () => {
-            return function unsubscribe() {
-              // Do nothing
-            };
-          },
-        },
+        statusChanges: EMPTY,
         status: 'VALID',
         touched: true,
       };

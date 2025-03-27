@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -37,6 +37,7 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
   private removeClickListenerFn: VoidFunction | null = null;
 
   private shouldRealign = false;
+  private previousContentHeight: number | null = null;
 
   // Check-collector pattern:
   // In order to get accurate content height/width values, we cannot calculate alignment offsets until
@@ -77,9 +78,16 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
   }
 
   ngAfterContentChecked(): void {
-    if (this.smartOpenService.open && this.view && this.shouldRealign) {
-      // Channel content-check event through the check-collector
-      this.checkCollector.emit();
+    if (this.smartOpenService.open && this.view) {
+      const rootNodeOffsetHeight = this.view.rootNodes[0].offsetHeight;
+      if (
+        this.shouldRealign ||
+        (this.previousContentHeight !== null && this.previousContentHeight !== rootNodeOffsetHeight)
+      ) {
+        // Channel content-check event through the check-collector
+        this.previousContentHeight = rootNodeOffsetHeight;
+        this.checkCollector.emit();
+      }
     }
   }
 

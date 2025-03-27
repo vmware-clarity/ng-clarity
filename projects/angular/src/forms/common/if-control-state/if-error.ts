@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -35,7 +35,7 @@ export class ClrIfError extends AbstractIfState {
    * @param state CONTROL_STATE
    */
   protected override handleState(state: CONTROL_STATE) {
-    if (this.error && this.control && !!this.control.invalid) {
+    if (this.error && this.control && this.control.invalid) {
       this.displayError(this.control.hasError(this.error));
     } else if (this.error && !!this.additionalControls?.length) {
       const invalidControl = this.additionalControls?.filter(control => control.hasError(this.error))[0];

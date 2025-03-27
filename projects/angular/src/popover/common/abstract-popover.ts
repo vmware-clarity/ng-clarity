@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -10,7 +10,6 @@ import {
   ChangeDetectorRef,
   Directive,
   ElementRef,
-  HostBinding,
   Injector,
   NgZone,
   OnDestroy,
@@ -18,12 +17,18 @@ import {
   SkipSelf,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { Point, Popover } from './popover';
 import { PopoverOptions } from './popover-options.interface';
+
+/**
+ * Fallback to hide when *clrIfOpen is not being used
+ */
+const isOffScreenClassName = 'is-off-screen';
 
 @Directive()
 export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
@@ -33,7 +38,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
    */
   closeOnOutsideClick = false;
 
-  protected el: ElementRef;
+  protected el: ElementRef<HTMLElement>;
   protected toggleService: ClrPopoverToggleService;
   protected renderer: Renderer2;
   protected ngZone: NgZone;
@@ -49,7 +54,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   private subscription: Subscription;
   private documentESCListener: VoidFunction | null = null;
 
-  constructor(injector: Injector, @SkipSelf() protected parentHost: ElementRef) {
+  constructor(injector: Injector, @SkipSelf() protected parentHost: ElementRef<HTMLElement>) {
     this.el = injector.get(ElementRef);
     this.toggleService = injector.get(ClrPopoverToggleService);
     this.renderer = injector.get(Renderer2);
@@ -59,27 +64,21 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
     this.anchorElem = parentHost.nativeElement;
 
     this.popoverInstance = new Popover(this.el.nativeElement);
-    this.subscription = this.toggleService.openChange.subscribe(change => {
-      if (change) {
+    this.subscription = this.toggleService.openChange.pipe(startWith(this.toggleService.open)).subscribe(open => {
+      if (open) {
         this.anchor();
         this.attachESCListener();
+        this.renderer.removeClass(this.el.nativeElement, isOffScreenClassName);
       } else {
         this.release();
         this.detachESCListener();
+        this.renderer.addClass(this.el.nativeElement, isOffScreenClassName);
       }
     });
     if (this.toggleService.open) {
       this.anchor();
       this.attachESCListener();
     }
-  }
-
-  /*
-   * Fallback to hide when *clrIfOpen is not being used
-   */
-  @HostBinding('class.is-off-screen')
-  get isOffScreen() {
-    return this.toggleService.open ? false : true;
   }
 
   ngAfterViewChecked() {

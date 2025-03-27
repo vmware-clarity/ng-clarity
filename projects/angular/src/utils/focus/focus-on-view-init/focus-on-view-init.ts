@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -34,14 +34,14 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
   private _isEnabled: boolean;
 
   constructor(
-    private el: ElementRef,
+    private el: ElementRef<HTMLElement>,
     @Inject(PLATFORM_ID) private platformId: any,
     @Inject(FOCUS_ON_VIEW_INIT) private focusOnViewInit: boolean,
     @Inject(DOCUMENT) document: any,
     private renderer: Renderer2,
     ngZone: NgZone
   ) {
-    this._isEnabled = this.focusOnViewInit;
+    this._isEnabled = focusOnViewInit;
 
     // Angular compiler doesn't understand the type Document
     // when working out the metadata for injectable parameters,
@@ -55,8 +55,8 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
         .subscribe(() => {
           if (!this.directFocus) {
             // manually set attributes and styles should be removed
-            this.renderer.removeAttribute(this.el.nativeElement, 'tabindex');
-            this.renderer.setStyle(this.el.nativeElement, 'outline', null);
+            renderer.removeAttribute(el.nativeElement, 'tabindex');
+            renderer.setStyle(el.nativeElement, 'outline', null);
           }
         })
     );

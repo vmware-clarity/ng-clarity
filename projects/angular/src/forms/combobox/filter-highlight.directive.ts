@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -26,7 +26,7 @@ export class ClrFilterHighlight<T> implements AfterViewInit, OnDestroy {
   private filter = '';
 
   constructor(
-    private element: ElementRef,
+    private element: ElementRef<HTMLElement>,
     private optionSelectionService: OptionSelectionService<T>,
     @Inject(PLATFORM_ID) private platformId: any
   ) {}
