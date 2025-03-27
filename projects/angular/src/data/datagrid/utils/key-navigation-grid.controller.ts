@@ -10,6 +10,10 @@ import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { Keys } from '../../../utils/enums/keys.enum';
+import { KeyNavigationGridStrategyInterface } from '../interfaces/key-nav-grid-strategy.interface';
+import { ClrDefaultKeyNavigationStrategy } from './key-navigation-strategies/default';
+import { ClrExpandedColumnsRowKeyNavigationStrategy } from './key-navigation-strategies/expanded-columns-row';
+import { ClrExpandedDetailsRowKeyNavigationStrategy } from './key-navigation-strategies/expanded-details-row';
 
 const actionableItemSelectors = [
   'a[href]',
@@ -143,10 +147,38 @@ export class KeyNavigationGridController implements OnDestroy {
           ) {
             const currentCellCoords = this.getCurrentCellCoordinates();
 
-            const nextCellCoords =
-              this.isExpandedRow(currentCellCoords.y) || this.isDetailsRow(currentCellCoords.y)
-                ? this.getNextForExpandedRowCoordinate(e, currentCellCoords)
-                : this.getNextItemCoordinate(e, currentCellCoords);
+            //build strategy
+            let strategy: KeyNavigationGridStrategyInterface;
+            switch (true) {
+              case ClrDefaultKeyNavigationStrategy.isDetailsRow(currentCellCoords.y, this.rows):
+                // use ClrExpandedDetailsRowKeyNavigationStrategy
+                strategy = new ClrExpandedDetailsRowKeyNavigationStrategy(
+                  this.host,
+                  this.rows,
+                  this.cells,
+                  this.config
+                );
+                break;
+              case ClrDefaultKeyNavigationStrategy.isExpandedRow(currentCellCoords.y, this.rows):
+                // use ClrExpandedColumnsRowKeyNavigationStrategy
+                strategy = new ClrExpandedColumnsRowKeyNavigationStrategy(
+                  this.host,
+                  this.rows,
+                  this.cells,
+                  this.config
+                );
+                break;
+              default:
+                // use ClrDefaultKeyNavigationStrategy
+                strategy = new ClrDefaultKeyNavigationStrategy(this.host, this.rows, this.cells, this.config);
+            }
+
+            const nextCellCoords = this.getNextItemStrategyCoordinate(e, currentCellCoords, strategy);
+
+            // const nextCellCoords =
+            //   this.isExpandedRow(currentCellCoords.y) || this.isDetailsRow(currentCellCoords.y)
+            //     ? this.getNextForExpandedRowCoordinate(e, currentCellCoords)
+            //     : this.getNextItemCoordinate(e, currentCellCoords);
 
             const activeItem = this.rows
               ? (Array.from(this.getCellsForRow(nextCellCoords.y))[nextCellCoords.x] as HTMLElement)
@@ -208,196 +240,226 @@ export class KeyNavigationGridController implements OnDestroy {
   }
 
   private getNextForExpandedRowCoordinate(e: any, currentCellCoords: CellCoordinates) {
-    if (e.key === Keys.PageUp || e.key === Keys.PageDown) {
-      return this.getNextItemCoordinate(e, currentCellCoords);
-    }
+    // if (e.key === Keys.PageUp || e.key === Keys.PageDown) {
+    //   return this.getNextItemCoordinate(e, currentCellCoords);
+    // }
+    //
+    // if (
+    //   !this.isDetailsRow(currentCellCoords.y) &&
+    //   !this.isRowReplaced(currentCellCoords.y) &&
+    //   (e.key === Keys.Home || e.key === Keys.End || e.key === Keys.ArrowRight || e.key === Keys.ArrowLeft)
+    // ) {
+    //   return this.getNextItemCoordinate(e, currentCellCoords);
+    // }
+    //
+    // const { numOfRows, numOfColumns, inlineStart, inlineEnd, isActionCell, nextCellCoords } =
+    //   this.getCalcVariables(currentCellCoords);
+    //
+    // const isSingleCellExpandedRow = this.isSingleCellExpandedRow(currentCellCoords.y);
+    //
+    // if (e.key === Keys.ArrowUp && currentCellCoords.y !== 0) {
+    //   nextCellCoords.y = currentCellCoords.y - 1;
+    //
+    //   if (isSingleCellExpandedRow && !isActionCell) {
+    //     if (this.isRowReplaced(currentCellCoords.y)) {
+    //       nextCellCoords.y = nextCellCoords.y - 1;
+    //     }
+    //
+    //     if (this.isDetailsRow(nextCellCoords.y)) {
+    //       nextCellCoords.x = 0;
+    //     } else if (this.isDetailsRow(currentCellCoords.y) === false) {
+    //       // false check is intentional, the ! operator may be missed easily in this case
+    //       nextCellCoords.x = currentCellCoords.x;
+    //     } else {
+    //       nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
+    //     }
+    //
+    //     return nextCellCoords;
+    //   }
+    //
+    //   if (isActionCell && this.isDetailsRow(nextCellCoords.y)) {
+    //     nextCellCoords.y = nextCellCoords.y - 1;
+    //   } else if (this.isRowReplaced(nextCellCoords.y)) {
+    //     nextCellCoords.y = nextCellCoords.y - 1;
+    //
+    //     if (!this.isDetailsRow(nextCellCoords.y)) {
+    //       nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
+    //     }
+    //   } else if (this.isDetailsRow(currentCellCoords.y) && !this.isDetailsRow(nextCellCoords.y)) {
+    //     nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
+    //   } else if (!isActionCell && this.isDetailsRow(nextCellCoords.y)) {
+    //     nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
+    //   }
+    // } else if (e.key === Keys.ArrowDown && currentCellCoords.y < numOfRows) {
+    //   nextCellCoords.y = currentCellCoords.y + 1;
+    //
+    //   if (isSingleCellExpandedRow && !isActionCell) {
+    //     if (this.isRowReplaced(nextCellCoords.y)) {
+    //       nextCellCoords.y = nextCellCoords.y + 1;
+    //     }
+    //
+    //     if (this.isDetailsRow(nextCellCoords.y)) {
+    //       nextCellCoords.x = 0;
+    //     } else {
+    //       nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
+    //     }
+    //     return nextCellCoords;
+    //   }
+    //
+    //   if (isActionCell || this.isRowReplaced(nextCellCoords.y)) {
+    //     nextCellCoords.y = nextCellCoords.y + 1;
+    //   } else if (this.getCellsForRow(currentCellCoords.y).length > numOfColumns) {
+    //     nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
+    //   } else {
+    //     nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
+    //   }
+    // } else if (e.key === inlineStart) {
+    //   if (currentCellCoords.x !== 0) {
+    //     nextCellCoords.x = currentCellCoords.x - 1;
+    //   } else if (!isActionCell) {
+    //     nextCellCoords.y = currentCellCoords.y - 1;
+    //     nextCellCoords.x = this.actionCellCount(nextCellCoords.y) - 1;
+    //   }
+    // } else if (e.key === inlineEnd && currentCellCoords.x < numOfColumns) {
+    //   if (
+    //     isActionCell &&
+    //     currentCellCoords.x === this.actionCellCount(currentCellCoords.x) - 1 &&
+    //     this.isRowReplaced(currentCellCoords.y) &&
+    //     !this.isDetailsRow(currentCellCoords.y)
+    //   ) {
+    //     nextCellCoords.y = currentCellCoords.y + 1;
+    //     nextCellCoords.x = 0;
+    //   } else {
+    //     nextCellCoords.x = currentCellCoords.x + 1;
+    //   }
+    // } else if (e.key === Keys.End) {
+    //   nextCellCoords.x = this.getCellsForRow(currentCellCoords.y).length - 1;
+    //
+    //   if (e.ctrlKey) {
+    //     nextCellCoords.x = numOfColumns;
+    //     nextCellCoords.y = numOfRows;
+    //   }
+    // } else if (e.key === Keys.Home) {
+    //   nextCellCoords.x = 0;
+    //   nextCellCoords.y = currentCellCoords.y - 1;
+    //
+    //   if (e.ctrlKey) {
+    //     nextCellCoords.y = 0;
+    //   }
+    // }
 
-    if (
-      !this.isDetailsRow(currentCellCoords.y) &&
-      !this.isRowReplaced(currentCellCoords.y) &&
-      (e.key === Keys.Home || e.key === Keys.End || e.key === Keys.ArrowRight || e.key === Keys.ArrowLeft)
-    ) {
-      return this.getNextItemCoordinate(e, currentCellCoords);
-    }
-
-    const { numOfRows, numOfColumns, inlineStart, inlineEnd, isActionCell, nextCellCoords } =
-      this.getCalcVariables(currentCellCoords);
-
-    const isSingleCellExpandedRow = this.isSingleCellExpandedRow(currentCellCoords.y);
-
-    if (e.key === Keys.ArrowUp && currentCellCoords.y !== 0) {
-      nextCellCoords.y = currentCellCoords.y - 1;
-
-      if (isSingleCellExpandedRow && !isActionCell) {
-        if (this.isRowReplaced(currentCellCoords.y)) {
-          nextCellCoords.y = nextCellCoords.y - 1;
-        }
-
-        if (this.isDetailsRow(nextCellCoords.y)) {
-          nextCellCoords.x = 0;
-        } else if (this.isDetailsRow(currentCellCoords.y) === false) {
-          // false check is intentional, the ! operator may be missed easily in this case
-          nextCellCoords.x = currentCellCoords.x;
-        } else {
-          nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
-        }
-
-        return nextCellCoords;
-      }
-
-      if (isActionCell && this.isDetailsRow(nextCellCoords.y)) {
-        nextCellCoords.y = nextCellCoords.y - 1;
-      } else if (this.isRowReplaced(nextCellCoords.y)) {
-        nextCellCoords.y = nextCellCoords.y - 1;
-
-        if (!this.isDetailsRow(nextCellCoords.y)) {
-          nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
-        }
-      } else if (this.isDetailsRow(currentCellCoords.y) && !this.isDetailsRow(nextCellCoords.y)) {
-        nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
-      } else if (!isActionCell && this.isDetailsRow(nextCellCoords.y)) {
-        nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
-      }
-    } else if (e.key === Keys.ArrowDown && currentCellCoords.y < numOfRows) {
-      nextCellCoords.y = currentCellCoords.y + 1;
-
-      if (isSingleCellExpandedRow && !isActionCell) {
-        if (this.isRowReplaced(nextCellCoords.y)) {
-          nextCellCoords.y = nextCellCoords.y + 1;
-        }
-
-        if (this.isDetailsRow(nextCellCoords.y)) {
-          nextCellCoords.x = 0;
-        } else {
-          nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
-        }
-        return nextCellCoords;
-      }
-
-      if (isActionCell || this.isRowReplaced(nextCellCoords.y)) {
-        nextCellCoords.y = nextCellCoords.y + 1;
-      } else if (this.getCellsForRow(currentCellCoords.y).length > numOfColumns) {
-        nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
-      } else {
-        nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
-      }
-    } else if (e.key === inlineStart) {
-      if (currentCellCoords.x !== 0) {
-        nextCellCoords.x = currentCellCoords.x - 1;
-      } else if (!isActionCell) {
-        nextCellCoords.y = currentCellCoords.y - 1;
-        nextCellCoords.x = this.actionCellCount(nextCellCoords.y) - 1;
-      }
-    } else if (e.key === inlineEnd && currentCellCoords.x < numOfColumns) {
-      if (
-        isActionCell &&
-        currentCellCoords.x === this.actionCellCount(currentCellCoords.x) - 1 &&
-        this.isRowReplaced(currentCellCoords.y) &&
-        !this.isDetailsRow(currentCellCoords.y)
-      ) {
-        nextCellCoords.y = currentCellCoords.y + 1;
-        nextCellCoords.x = 0;
-      } else {
-        nextCellCoords.x = currentCellCoords.x + 1;
-      }
-    } else if (e.key === Keys.End) {
-      nextCellCoords.x = this.getCellsForRow(currentCellCoords.y).length - 1;
-
-      if (e.ctrlKey) {
-        nextCellCoords.x = numOfColumns;
-        nextCellCoords.y = numOfRows;
-      }
-    } else if (e.key === Keys.Home) {
-      nextCellCoords.x = 0;
-      nextCellCoords.y = currentCellCoords.y - 1;
-
-      if (e.ctrlKey) {
-        nextCellCoords.y = 0;
-      }
-    }
-
-    return nextCellCoords;
+    return currentCellCoords;
   }
 
-  private getNextItemCoordinate(e: any, currentCellCoords: CellCoordinates) {
-    const { numOfRows, numOfColumns, inlineStart, inlineEnd, itemsPerPage, isActionCell, nextCellCoords } =
-      this.getCalcVariables(currentCellCoords);
+  private getNextItemStrategyCoordinate(
+    e: KeyboardEvent,
+    currentCellCoords: CellCoordinates,
+    strategy: KeyNavigationGridStrategyInterface
+  ) {
+    const inlineStart = this.host.dir === 'rtl' ? Keys.ArrowRight : Keys.ArrowLeft;
+    const inlineEnd = this.host.dir === 'rtl' ? Keys.ArrowLeft : Keys.ArrowRight;
 
-    if (e.key === Keys.ArrowUp && currentCellCoords.y !== 0) {
-      nextCellCoords.y = currentCellCoords.y - 1;
-
-      if (this.isSingleCellExpandedRow(nextCellCoords.y) && !isActionCell && this.isDetailsRow(nextCellCoords.y)) {
-        nextCellCoords.x = 0;
-        return nextCellCoords;
-      }
-
-      if (this.isDetailsRow(nextCellCoords.y)) {
-        if (isActionCell) {
-          nextCellCoords.y = nextCellCoords.y - 1;
-        } else {
-          nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
-        }
-      }
-    } else if (e.key === Keys.ArrowDown && currentCellCoords.y < numOfRows) {
-      nextCellCoords.y = currentCellCoords.y + 1;
-
-      if (this.isSingleCellExpandedRow(nextCellCoords.y) && !isActionCell && this.isRowReplaced(nextCellCoords.y)) {
-        nextCellCoords.x = 0;
-        nextCellCoords.y = nextCellCoords.y + 1;
-        return nextCellCoords;
-      }
-
-      if (!isActionCell && this.isRowReplaced(nextCellCoords.y)) {
-        nextCellCoords.y = nextCellCoords.y + 1;
-        nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
-      }
-    } else if (e.key === inlineStart && currentCellCoords.x !== 0) {
-      nextCellCoords.x = currentCellCoords.x - 1;
-    } else if (e.key === inlineEnd && currentCellCoords.x < numOfColumns) {
-      nextCellCoords.x = currentCellCoords.x + 1;
-    } else if (e.key === Keys.End) {
-      nextCellCoords.x = numOfColumns;
-
-      if (e.ctrlKey) {
-        nextCellCoords.y = numOfRows;
-      }
-    } else if (e.key === Keys.Home) {
-      nextCellCoords.x = 0;
-
-      if (e.ctrlKey) {
-        nextCellCoords.y = 0;
-      }
-    } else if (e.key === Keys.PageUp) {
-      nextCellCoords.y = currentCellCoords.y - itemsPerPage > 0 ? currentCellCoords.y - itemsPerPage + 1 : 1;
-    } else if (e.key === Keys.PageDown) {
-      nextCellCoords.y =
-        currentCellCoords.y + itemsPerPage < numOfRows ? currentCellCoords.y + itemsPerPage : numOfRows;
+    switch (e.key) {
+      case Keys.ArrowUp:
+        return strategy.keyUp(currentCellCoords);
+      case Keys.ArrowDown:
+        return strategy.keyDown(currentCellCoords);
+      case inlineStart:
+        return strategy.keyLeft(currentCellCoords);
+      case inlineEnd:
+        return strategy.keyRight(currentCellCoords);
+      case Keys.Home:
+        return strategy.keyHome(currentCellCoords, e.ctrlKey);
+      case Keys.End:
+        return strategy.keyEnd(currentCellCoords, e.ctrlKey);
+      case Keys.PageUp:
+        return strategy.keyPageUp(currentCellCoords);
+      case Keys.PageDown:
+        return strategy.keyPageDown(currentCellCoords);
+      default:
+        return currentCellCoords;
     }
-
-    return nextCellCoords;
   }
+
+  // private getNextItemCoordinate(e: any, currentCellCoords: CellCoordinates) {
+  //   // const { numOfRows, numOfColumns, inlineStart, inlineEnd, itemsPerPage, isActionCell, nextCellCoords } =
+  //   //   this.getCalcVariables(currentCellCoords);
+  //   //
+  //   // if (e.key === Keys.ArrowUp && currentCellCoords.y !== 0) {
+  //   //   // nextCellCoords.y = currentCellCoords.y - 1;
+  //   //   //
+  //   //   // if (this.isSingleCellExpandedRow(nextCellCoords.y) && !isActionCell && this.isDetailsRow(nextCellCoords.y)) {
+  //   //   //   nextCellCoords.x = 0;
+  //   //   //   return nextCellCoords;
+  //   //   // }
+  //   //   //
+  //   //   // if (this.isDetailsRow(nextCellCoords.y)) {
+  //   //   //   if (isActionCell) {
+  //   //   //     nextCellCoords.y = nextCellCoords.y - 1;
+  //   //   //   } else {
+  //   //   //     nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
+  //   //   //   }
+  //   //   // }
+  //   // } else if (e.key === Keys.ArrowDown && currentCellCoords.y < numOfRows) {
+  //   //   // nextCellCoords.y = currentCellCoords.y + 1;
+  //   //   //
+  //   //   // if (this.isSingleCellExpandedRow(nextCellCoords.y) && !isActionCell && this.isRowReplaced(nextCellCoords.y)) {
+  //   //   //   nextCellCoords.x = 0;
+  //   //   //   nextCellCoords.y = nextCellCoords.y + 1;
+  //   //   //   return nextCellCoords;
+  //   //   // }
+  //   //   //
+  //   //   // if (!isActionCell && this.isRowReplaced(nextCellCoords.y)) {
+  //   //   //   nextCellCoords.y = nextCellCoords.y + 1;
+  //   //   //   nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
+  //   //   // }
+  //   // } else if (e.key === inlineStart && currentCellCoords.x !== 0) {
+  //   //   // nextCellCoords.x = currentCellCoords.x - 1;
+  //   // } else if (e.key === inlineEnd && currentCellCoords.x < numOfColumns) {
+  //   //   // nextCellCoords.x = currentCellCoords.x + 1;
+  //   // } else if (e.key === Keys.End) {
+  //   //   // nextCellCoords.x = numOfColumns;
+  //   //   //
+  //   //   // if (e.ctrlKey) {
+  //   //   //   nextCellCoords.y = numOfRows;
+  //   //   // }
+  //   // } else if (e.key === Keys.Home) {
+  //   //   // nextCellCoords.x = 0;
+  //   //   //
+  //   //   // if (e.ctrlKey) {
+  //   //   //   nextCellCoords.y = 0;
+  //   //   // }
+  //   // } else if (e.key === Keys.PageUp) {
+  //   //   // nextCellCoords.y = currentCellCoords.y - itemsPerPage > 0 ? currentCellCoords.y - itemsPerPage + 1 : 1;
+  //   // } else if (e.key === Keys.PageDown) {
+  //   //   // nextCellCoords.y = currentCellCoords.y + itemsPerPage < numOfRows ? currentCellCoords.y + itemsPerPage : numOfRows;
+  //   // }
+  //   //
+  //   // return nextCellCoords;
+  // }
 
   private getCalcVariables(currentCellCoords: CellCoordinates) {
-    const numOfRows = this.rows ? this.rows.length - 1 : 0;
-
-    // calculate numOfColumns based on header cells.
-    const numOfColumns = numOfRows ? this.getCellsForRow(0).length - 1 : 0;
-
-    const dir = this.host.dir;
-    const inlineStart = dir === 'rtl' ? Keys.ArrowRight : Keys.ArrowLeft;
-    const inlineEnd = dir === 'rtl' ? Keys.ArrowLeft : Keys.ArrowRight;
-
-    const itemsPerPage =
-      Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
-
-    const isActionCell = this.isActionCell(currentCellCoords);
-
-    const nextCellCoords: CellCoordinates = {
-      x: currentCellCoords.x,
-      y: currentCellCoords.y,
-    };
-
-    return { numOfRows, numOfColumns, inlineStart, inlineEnd, itemsPerPage, isActionCell, nextCellCoords };
+    return currentCellCoords;
+    // const numOfRows = this.rows ? this.rows.length - 1 : 0;
+    //
+    // // calculate numOfColumns based on header cells.
+    // const numOfColumns = numOfRows ? this.getCellsForRow(0).length - 1 : 0;
+    //
+    // const dir = this.host.dir;
+    // const inlineStart = dir === 'rtl' ? Keys.ArrowRight : Keys.ArrowLeft;
+    // const inlineEnd = dir === 'rtl' ? Keys.ArrowLeft : Keys.ArrowRight;
+    //
+    // const itemsPerPage =
+    //   Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
+    //
+    // const isActionCell = this.isActionCell(currentCellCoords);
+    //
+    // const nextCellCoords: CellCoordinates = {
+    //   x: currentCellCoords.x,
+    //   y: currentCellCoords.y,
+    // };
+    //
+    // return { numOfRows, numOfColumns, inlineStart, inlineEnd, itemsPerPage, isActionCell, nextCellCoords };
   }
 
   private getCurrentCellCoordinates() {
@@ -419,39 +481,39 @@ export class KeyNavigationGridController implements OnDestroy {
     return this.rows[index].querySelectorAll(this.config.keyGridCells);
   }
 
-  private isExpandedRow(index: number) {
-    const selectedElement: HTMLElement = this.rows[index].querySelector('.datagrid-row-detail');
+  // private isExpandedRow(index: number) {
+  //   const selectedElement: HTMLElement = this.rows[index].querySelector('.datagrid-row-detail');
+  //
+  //   return selectedElement ? selectedElement.style.display !== 'none' : false;
+  // }
+  //
+  // private isDetailsRow(index: number) {
+  //   return this.rows[index].classList.contains('datagrid-row-detail');
+  // }
 
-    return selectedElement ? selectedElement.style.display !== 'none' : false;
-  }
-
-  private isDetailsRow(index: number) {
-    return this.rows[index].classList.contains('datagrid-row-detail');
-  }
-
-  private isRowReplaced(index: number) {
-    return !!this.rows[index].closest('clr-dg-row.datagrid-row-replaced');
-  }
-
-  private isSingleCellExpandedRow(index: number) {
-    const row = this.rows[index].classList.contains('datagrid-row-detail')
-      ? this.rows[index]
-      : this.rows[index].querySelector('.datagrid-row-detail');
-
-    return row?.querySelectorAll(this.config.keyGridCells).length === 1;
-  }
-
-  private actionCellCount(index: number) {
-    return this.actionCellsAsArray(index).length;
-  }
-
-  private actionCellsAsArray(index: number) {
-    return Array.from(
-      this.rows[index].querySelectorAll('.datagrid-row-sticky .datagrid-cell, .datagrid-row-sticky .datagrid-column')
-    );
-  }
-
-  private isActionCell(cellCoords: CellCoordinates) {
-    return !!this.actionCellsAsArray(cellCoords.y)[cellCoords.x];
-  }
+  // private isRowReplaced(index: number) {
+  //   return !!this.rows[index].closest('clr-dg-row.datagrid-row-replaced');
+  // }
+  //
+  // private isSingleCellExpandedRow(index: number) {
+  //   const row = this.rows[index].classList.contains('datagrid-row-detail')
+  //     ? this.rows[index]
+  //     : this.rows[index].querySelector('.datagrid-row-detail');
+  //
+  //   return row?.querySelectorAll(this.config.keyGridCells).length === 1;
+  // }
+  //
+  // private actionCellCount(index: number) {
+  //   return this.actionCellsAsArray(index).length;
+  // }
+  //
+  // private actionCellsAsArray(index: number) {
+  //   return Array.from(
+  //     this.rows[index].querySelectorAll('.datagrid-row-sticky .datagrid-cell, .datagrid-row-sticky .datagrid-column')
+  //   );
+  // }
+  //
+  // private isActionCell(cellCoords: CellCoordinates) {
+  //   return !!this.actionCellsAsArray(cellCoords.y)[cellCoords.x];
+  // }
 }
