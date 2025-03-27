@@ -111,9 +111,6 @@
       min-width: accordion-variables.$clr-accordion-step-title-min-width;
       max-width: mixins.baselinePx(264);
       width: 100%;
-      @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-        margin-left: tokens.$cds-global-space-7;
-      }
     }
   }
 
