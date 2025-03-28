@@ -24,6 +24,7 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
     private columnsService;
     private readonly injector;
     renderedRangeChange: EventEmitter<ListRange>;
+    persistItems: boolean;
     private _cdkFixedSizeVirtualScrollInputs;
     private readonly datagridElementRef;
     private gridRoleElement;
@@ -35,6 +36,7 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
     private mutationChanges;
     private viewRepeater;
     private cdkVirtualForInputs;
+    private _totalItems;
     constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
     get cdkVirtualForOf(): CdkVirtualForInputs<T>['cdkVirtualForOf'];
     set cdkVirtualForOf(value: CdkVirtualForInputs<T>['cdkVirtualForOf']);
@@ -50,18 +52,27 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
     set minBufferPx(value: CdkFixedSizeVirtualScrollInputs['minBufferPx']);
     get maxBufferPx(): CdkFixedSizeVirtualScrollInputs['maxBufferPx'];
     set maxBufferPx(value: CdkFixedSizeVirtualScrollInputs['maxBufferPx']);
+    set dataRange(range: {
+        total: number;
+        skip: number;
+        data: T[];
+    });
+    get totalItems(): number;
+    private set totalItems(value);
     ngAfterViewInit(): void;
     ngDoCheck(): void;
     ngOnDestroy(): void;
     scrollUp(offset: number, behavior?: ScrollBehavior): void;
     scrollDown(offset: number, behavior?: ScrollBehavior): void;
     scrollToIndex(index: number, behavior?: ScrollBehavior): void;
+    private populatePlaceholderData;
+    private updateDataRange;
     private updateCdkVirtualForInputs;
     private updateFixedSizeVirtualScrollInputs;
     private updateAriaRowCount;
     private updateAriaRowIndexes;
     private createVirtualScrollViewportForDatagrid;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridVirtualScrollDirective<any>, [null, null, { skipSelf: true; }, null, null, null, null, null, null, null, null, null, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "cdkVirtualForOf": "clrVirtualRowsOf"; "cdkVirtualForTrackBy": "clrVirtualRowsTrackBy"; "cdkVirtualForTemplate": "clrVirtualRowsTemplate"; "cdkVirtualForTemplateCacheSize": "clrVirtualRowsTemplateCacheSize"; "itemSize": "clrVirtualRowsItemSize"; "minBufferPx": "clrVirtualRowsMinBufferPx"; "maxBufferPx": "clrVirtualRowsMaxBufferPx"; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "persistItems": "clrVirtualPersistItems"; "cdkVirtualForOf": "clrVirtualRowsOf"; "cdkVirtualForTrackBy": "clrVirtualRowsTrackBy"; "cdkVirtualForTemplate": "clrVirtualRowsTemplate"; "cdkVirtualForTemplateCacheSize": "clrVirtualRowsTemplateCacheSize"; "itemSize": "clrVirtualRowsItemSize"; "minBufferPx": "clrVirtualRowsMinBufferPx"; "maxBufferPx": "clrVirtualRowsMaxBufferPx"; "dataRange": "clrVirtualDataRange"; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
 }
 export {};
