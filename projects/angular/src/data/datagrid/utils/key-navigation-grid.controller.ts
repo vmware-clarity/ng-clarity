@@ -150,7 +150,7 @@ export class KeyNavigationGridController implements OnDestroy {
             //build strategy
             let strategy: KeyNavigationGridStrategyInterface;
             switch (true) {
-              case ClrDefaultKeyNavigationStrategy.isDetailsRow(currentCellCoords.y, this.rows):
+              case this.isSingleCellExpandedRow(currentCellCoords.y):
                 strategy = new ClrExpandedDetailsRowKeyNavigationStrategy(
                   this.host,
                   this.rows,
@@ -158,6 +158,7 @@ export class KeyNavigationGridController implements OnDestroy {
                   this.config
                 );
                 break;
+              case ClrDefaultKeyNavigationStrategy.isDetailsRow(currentCellCoords.y, this.rows):
               case ClrDefaultKeyNavigationStrategy.isExpandedRow(currentCellCoords.y, this.rows):
                 strategy = new ClrExpandedColumnsRowKeyNavigationStrategy(
                   this.host,
@@ -231,118 +232,6 @@ export class KeyNavigationGridController implements OnDestroy {
     }
   }
 
-  private getNextForExpandedRowCoordinate(e: any, currentCellCoords: CellCoordinates) {
-    // if (e.key === Keys.PageUp || e.key === Keys.PageDown) {
-    //   return this.getNextItemCoordinate(e, currentCellCoords);
-    // }
-    //
-    // if (
-    //   !this.isDetailsRow(currentCellCoords.y) &&
-    //   !this.isRowReplaced(currentCellCoords.y) &&
-    //   (e.key === Keys.Home || e.key === Keys.End || e.key === Keys.ArrowRight || e.key === Keys.ArrowLeft)
-    // ) {
-    //   return this.getNextItemCoordinate(e, currentCellCoords);
-    // }
-    //
-    // const { numOfRows, numOfColumns, inlineStart, inlineEnd, isActionCell, nextCellCoords } =
-    //   this.getCalcVariables(currentCellCoords);
-    //
-    // const isSingleCellExpandedRow = this.isSingleCellExpandedRow(currentCellCoords.y);
-    //
-    // if (e.key === Keys.ArrowUp && currentCellCoords.y !== 0) {
-    //   nextCellCoords.y = currentCellCoords.y - 1;
-    //
-    //   if (isSingleCellExpandedRow && !isActionCell) {
-    //     if (this.isRowReplaced(currentCellCoords.y)) {
-    //       nextCellCoords.y = nextCellCoords.y - 1;
-    //     }
-    //
-    //     if (this.isDetailsRow(nextCellCoords.y)) {
-    //       nextCellCoords.x = 0;
-    //     } else if (this.isDetailsRow(currentCellCoords.y) === false) {
-    //       // false check is intentional, the ! operator may be missed easily in this case
-    //       nextCellCoords.x = currentCellCoords.x;
-    //     } else {
-    //       nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
-    //     }
-    //
-    //     return nextCellCoords;
-    //   }
-    //
-    //   if (isActionCell && this.isDetailsRow(nextCellCoords.y)) {
-    //     nextCellCoords.y = nextCellCoords.y - 1;
-    //   } else if (this.isRowReplaced(nextCellCoords.y)) {
-    //     nextCellCoords.y = nextCellCoords.y - 1;
-    //
-    //     if (!this.isDetailsRow(nextCellCoords.y)) {
-    //       nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
-    //     }
-    //   } else if (this.isDetailsRow(currentCellCoords.y) && !this.isDetailsRow(nextCellCoords.y)) {
-    //     nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
-    //   } else if (!isActionCell && this.isDetailsRow(nextCellCoords.y)) {
-    //     nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
-    //   }
-    // } else if (e.key === Keys.ArrowDown && currentCellCoords.y < numOfRows) {
-    //   nextCellCoords.y = currentCellCoords.y + 1;
-    //
-    //   if (isSingleCellExpandedRow && !isActionCell) {
-    //     if (this.isRowReplaced(nextCellCoords.y)) {
-    //       nextCellCoords.y = nextCellCoords.y + 1;
-    //     }
-    //
-    //     if (this.isDetailsRow(nextCellCoords.y)) {
-    //       nextCellCoords.x = 0;
-    //     } else {
-    //       nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
-    //     }
-    //     return nextCellCoords;
-    //   }
-    //
-    //   if (isActionCell || this.isRowReplaced(nextCellCoords.y)) {
-    //     nextCellCoords.y = nextCellCoords.y + 1;
-    //   } else if (this.getCellsForRow(currentCellCoords.y).length > numOfColumns) {
-    //     nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
-    //   } else {
-    //     nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
-    //   }
-    // } else if (e.key === inlineStart) {
-    //   if (currentCellCoords.x !== 0) {
-    //     nextCellCoords.x = currentCellCoords.x - 1;
-    //   } else if (!isActionCell) {
-    //     nextCellCoords.y = currentCellCoords.y - 1;
-    //     nextCellCoords.x = this.actionCellCount(nextCellCoords.y) - 1;
-    //   }
-    // } else if (e.key === inlineEnd && currentCellCoords.x < numOfColumns) {
-    //   if (
-    //     isActionCell &&
-    //     currentCellCoords.x === this.actionCellCount(currentCellCoords.x) - 1 &&
-    //     this.isRowReplaced(currentCellCoords.y) &&
-    //     !this.isDetailsRow(currentCellCoords.y)
-    //   ) {
-    //     nextCellCoords.y = currentCellCoords.y + 1;
-    //     nextCellCoords.x = 0;
-    //   } else {
-    //     nextCellCoords.x = currentCellCoords.x + 1;
-    //   }
-    // } else if (e.key === Keys.End) {
-    //   nextCellCoords.x = this.getCellsForRow(currentCellCoords.y).length - 1;
-    //
-    //   if (e.ctrlKey) {
-    //     nextCellCoords.x = numOfColumns;
-    //     nextCellCoords.y = numOfRows;
-    //   }
-    // } else if (e.key === Keys.Home) {
-    //   nextCellCoords.x = 0;
-    //   nextCellCoords.y = currentCellCoords.y - 1;
-    //
-    //   if (e.ctrlKey) {
-    //     nextCellCoords.y = 0;
-    //   }
-    // }
-
-    return currentCellCoords;
-  }
-
   private getNextItemStrategyCoordinate(
     e: KeyboardEvent,
     currentCellCoords: CellCoordinates,
@@ -390,5 +279,13 @@ export class KeyNavigationGridController implements OnDestroy {
 
   private getCellsForRow(index: number) {
     return this.rows[index].querySelectorAll(this.config.keyGridCells);
+  }
+
+  private isSingleCellExpandedRow(index: number) {
+    const row = this.rows[index].classList.contains('datagrid-row-detail')
+      ? this.rows[index]
+      : this.rows[index].querySelector('.datagrid-row-detail');
+
+    return row?.querySelectorAll(this.config.keyGridCells).length === 1;
   }
 }

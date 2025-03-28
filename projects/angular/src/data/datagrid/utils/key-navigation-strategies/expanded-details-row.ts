@@ -30,10 +30,10 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
 
     nextCellCoords.y = currentCellCoords.y - 1;
 
-    const isSingleCellExpandedRow = this.isSingleCellExpandedRow(currentCellCoords.y);
+    // const isSingleCellExpandedRow = this.isSingleCellExpandedRow(currentCellCoords.y);
     const isActionCell = this.isActionCell(currentCellCoords);
 
-    if (isSingleCellExpandedRow && !isActionCell) {
+    if (!isActionCell) {
       if (this.isRowReplaced(currentCellCoords.y)) {
         nextCellCoords.y = nextCellCoords.y - 1;
       }
@@ -48,11 +48,10 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
         default:
           nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
       }
-
-      return nextCellCoords;
     }
 
-    /// TODO: more is needed
+    /// TODO: more is needed?
+
     return nextCellCoords;
   }
 
@@ -60,8 +59,25 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     console.log('keyDown ClrExpandedDetailsRowKeyNavigationStrategy');
     const nextCellCoords = this.createNextCellCoords(currentCellCoords);
 
+    nextCellCoords.y = currentCellCoords.y + 1;
+
+    const isActionCell = this.isActionCell(currentCellCoords);
+
+    if (!isActionCell) {
+      if (this.isRowReplaced(nextCellCoords.y)) {
+        nextCellCoords.y = nextCellCoords.y + 1;
+      }
+
+      if (this.isDetailsRow(nextCellCoords.y)) {
+        nextCellCoords.x = 0;
+      } else {
+        nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
+      }
+    }
+
     return nextCellCoords;
   }
+
   keyLeft(currentCellCoords: CellCoordinates) {
     console.log('keyLeft ClrExpandedDetailsRowKeyNavigationStrategy');
 
@@ -69,6 +85,13 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
 
     if (!this.isDetailsRow(currentCellCoords.y) && !this.isRowReplaced(currentCellCoords.y)) {
       return super.keyLeft(currentCellCoords);
+    }
+
+    if (currentCellCoords.x !== 0) {
+      nextCellCoords.x = currentCellCoords.x - 1;
+    } else if (!this.isActionCell(currentCellCoords)) {
+      nextCellCoords.y = currentCellCoords.y - 1;
+      nextCellCoords.x = this.actionCellCount(nextCellCoords.y) - 1;
     }
 
     return nextCellCoords;
@@ -83,6 +106,25 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
       return super.keyRight(currentCellCoords);
     }
 
+    // calculate numOfColumns based on header cells.
+    const numOfColumns = this.rows?.length - 1 ? this.getCellsForRow(0).length - 1 : 0;
+
+    if (currentCellCoords.x >= numOfColumns) {
+      return nextCellCoords;
+    }
+
+    if (
+      this.isActionCell(currentCellCoords) &&
+      currentCellCoords.x === this.actionCellCount(currentCellCoords.x) - 1 &&
+      this.isRowReplaced(currentCellCoords.y) &&
+      !this.isDetailsRow(currentCellCoords.y)
+    ) {
+      nextCellCoords.y = currentCellCoords.y + 1;
+      nextCellCoords.x = 0;
+    } else {
+      nextCellCoords.x = currentCellCoords.x + 1;
+    }
+
     return nextCellCoords;
   }
 
@@ -95,6 +137,15 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
       return super.keyEnd(currentCellCoords, ctrlKey);
     }
 
+    nextCellCoords.x = this.getCellsForRow(currentCellCoords.y).length - 1;
+
+    const numOfRows = this.rows ? this.rows.length - 1 : 0;
+    const numOfColumns = numOfRows ? this.getCellsForRow(0).length - 1 : 0;
+    if (ctrlKey) {
+      nextCellCoords.x = numOfColumns;
+      nextCellCoords.y = numOfRows;
+    }
+
     return nextCellCoords;
   }
 
@@ -105,6 +156,13 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
 
     if (!this.isDetailsRow(currentCellCoords.y) && !this.isRowReplaced(currentCellCoords.y)) {
       return super.keyHome(currentCellCoords, ctrlKey);
+    }
+
+    nextCellCoords.x = 0;
+    nextCellCoords.y = currentCellCoords.y - 1;
+
+    if (ctrlKey) {
+      nextCellCoords.y = 0;
     }
 
     return nextCellCoords;
