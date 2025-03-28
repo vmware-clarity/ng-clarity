@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
 import {
   ComponentFixture,
   discardPeriodicTasks,
@@ -53,6 +53,7 @@ export interface Cells {
         clrVirtualScroll
         let-row
         [clrVirtualRowsOf]="data.rows"
+        [clrVirtualDataRange]="dataRange"
         [clrVirtualPersistItems]="persistItems"
         [clrVirtualRowsItemSize]="24"
         [clrVirtualRowsMinBufferPx]="200"
@@ -74,9 +75,15 @@ export interface Cells {
     </clr-datagrid>
   `,
 })
-class FullTest implements OnInit, AfterViewInit {
+class FullTest implements OnInit {
   @ViewChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<any>;
-  totalRows = 1000;
+  _totalRows = 1000;
+  dataRange: {
+    total: number;
+    skip: number;
+    data: Row[];
+  };
+
   persistItems = true;
   rows: Observable<Row[]>;
   cols: Column[] = [];
@@ -87,10 +94,31 @@ class FullTest implements OnInit, AfterViewInit {
   constructor(private cdr: ChangeDetectorRef) {
     this.rows = this.allRows.asObservable();
     this.cols = this.createColumns();
+
+    this.dataRange = {
+      total: this.totalRows,
+      skip: 0,
+      data: [],
+    };
   }
 
-  ngAfterViewInit() {
-    this.virtualScroll.totalItems = this.totalRows;
+  get totalRows(): number {
+    return this._totalRows;
+  }
+  set totalRows(value: number) {
+    this._totalRows = value;
+
+    this.dataRange = {
+      total: this.totalRows,
+      skip: this.dataRange.skip,
+      data: this.dataRange.data,
+    };
+
+    this.cdr.detectChanges();
+  }
+
+  updateDataRange(value: { total: number; skip: number; data: Row[] }) {
+    this.dataRange = value;
   }
 
   ngOnInit(): void {
@@ -205,7 +233,7 @@ export default function (): void {
         expect(instance.virtualScroll.cdkVirtualForTemplateCacheSize).toBe(5000);
 
         expect(instance.virtualScroll.totalItems).toBe(1000);
-        instance.virtualScroll.totalItems = 5000;
+        instance.totalRows = 5000;
         fixture.detectChanges();
         expect(instance.virtualScroll.totalItems).toBe(5000);
 
@@ -232,17 +260,29 @@ export default function (): void {
         fixture.destroy();
       }));
 
-      it('Spy on update item range', fakeAsync(() => {
+      it('Spy on update data range', fakeAsync(() => {
         fixture.detectChanges();
-        const spyVirtualScroll = spyOn(instance.virtualScroll, 'updateItemRange');
+        const spyVirtualScroll = spyOn(instance.virtualScroll, 'updateDataRange');
 
-        instance.virtualScroll.updateItemRange(300, 100);
-        fixture.detectChanges();
-        expect(spyVirtualScroll).toHaveBeenCalledWith(300, 100);
+        let dataRange = {
+          total: 500,
+          skip: 100,
+          data: Array(100),
+        };
 
-        instance.virtualScroll.updateItemRange(0, 100);
+        instance.updateDataRange(dataRange);
         fixture.detectChanges();
-        expect(spyVirtualScroll).toHaveBeenCalledWith(0, 100);
+        expect(spyVirtualScroll).toHaveBeenCalledWith(dataRange.skip, dataRange.data);
+
+        dataRange = {
+          total: 1000,
+          skip: 500,
+          data: Array(200),
+        };
+
+        instance.updateDataRange(dataRange);
+        fixture.detectChanges();
+        expect(spyVirtualScroll).toHaveBeenCalledWith(dataRange.skip, dataRange.data);
 
         fixture.destroy();
       }));

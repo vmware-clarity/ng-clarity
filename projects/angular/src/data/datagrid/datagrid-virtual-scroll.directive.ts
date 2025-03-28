@@ -197,24 +197,25 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.updateFixedSizeVirtualScrollInputs();
   }
 
+  @Input('clrVirtualDataRange')
+  set dataRange(range: { total: number; skip: number; data: T[] }) {
+    this.totalItems = range.total;
+
+    this.updateDataRange(range.skip, range.data);
+  }
+
   get totalItems() {
     return this._totalItems;
   }
-  set totalItems(value: number) {
+
+  private set totalItems(value: number) {
     if (this._totalItems === value) {
       return;
     }
 
     this._totalItems = value;
 
-    this.clearItems();
-  }
-
-  @Input('clrVirtualDataRange')
-  set dataRange(range: { total: number; skip: number; data: T[] }) {
-    this.totalItems = range.total;
-
-    this.updateItemRange(range.skip, range.data);
+    this.populatePlaceholderData();
   }
 
   ngAfterViewInit() {
@@ -284,22 +285,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     });
   }
 
-  clearItems() {
-    this.cdkVirtualForOf = Array(this.totalItems);
-  }
-
-  updateItemRange(skip: number, data: T[]) {
-    if (!this.persistItems) {
-      this.clearItems();
-    }
-
-    const items = this.items.all;
-
-    items.splice(skip, data.length, ...data);
-
-    this.items.all = items;
-  }
-
   scrollUp(offset: number, behavior: ScrollBehavior = 'auto') {
     this.scrollToIndex(this.topIndex - offset, behavior);
   }
@@ -310,6 +295,22 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
   scrollToIndex(index: number, behavior: ScrollBehavior = 'auto') {
     this.virtualScrollViewport?.scrollToIndex(index, behavior);
+  }
+
+  private populatePlaceholderData() {
+    this.cdkVirtualForOf = Array(this.totalItems);
+  }
+
+  private updateDataRange(skip: number, data: T[]) {
+    if (!this.persistItems) {
+      this.populatePlaceholderData();
+    }
+
+    const items = this.items.all;
+
+    items.splice(skip, data.length, ...data);
+
+    this.items.all = items;
   }
 
   private updateCdkVirtualForInputs() {

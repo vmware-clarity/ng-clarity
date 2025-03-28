@@ -5877,8 +5877,6 @@ export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     get cdkVirtualForTrackBy(): CdkVirtualForInputs<T>['cdkVirtualForTrackBy'];
     set cdkVirtualForTrackBy(value: CdkVirtualForInputs<T>['cdkVirtualForTrackBy']);
     // (undocumented)
-    clearItems(): void;
-    // (undocumented)
     set dataRange(range: {
         total: number;
         skip: number;
@@ -5913,9 +5911,6 @@ export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     scrollUp(offset: number, behavior?: ScrollBehavior): void;
     // (undocumented)
     get totalItems(): number;
-    set totalItems(value: number);
-    // (undocumented)
-    updateItemRange(skip: number, data: T[]): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "persistItems": "clrVirtualPersistItems"; "cdkVirtualForOf": "clrVirtualRowsOf"; "cdkVirtualForTrackBy": "clrVirtualRowsTrackBy"; "cdkVirtualForTemplate": "clrVirtualRowsTemplate"; "cdkVirtualForTemplateCacheSize": "clrVirtualRowsTemplateCacheSize"; "itemSize": "clrVirtualRowsItemSize"; "minBufferPx": "clrVirtualRowsMinBufferPx"; "maxBufferPx": "clrVirtualRowsMaxBufferPx"; "dataRange": "clrVirtualDataRange"; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
     // (undocumented)
