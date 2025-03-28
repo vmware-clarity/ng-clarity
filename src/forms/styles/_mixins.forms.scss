@@ -25,10 +25,12 @@
 }
 
 // Used to provide an inline set of labels for checkbox/radios
-@mixin form-inline-input() {
+@mixin form-inline-input($wrap: false) {
   display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
+  @if $wrap {
+    flex-wrap: wrap;
+    align-content: flex-start;
+  }
 
   .clr-control-label {
     display: inline-block;
