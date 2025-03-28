@@ -90,7 +90,7 @@
   }
 
   .clr-control-inline {
-    @include forms-mixins.form-inline-input();
+    @include forms-mixins.form-inline-input(true);
   }
 
   .clr-subtext {
