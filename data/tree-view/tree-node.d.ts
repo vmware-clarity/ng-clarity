@@ -37,7 +37,6 @@ export declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterVi
     set expanded(value: boolean);
     set clrForTypeAhead(value: string);
     get ariaSelected(): boolean;
-    get treeNodeContentTextOnly(): boolean;
     get treeNodeLink(): ClrTreeNodeLink;
     private get isParent();
     ngOnInit(): void;
