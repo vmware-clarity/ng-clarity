@@ -46,16 +46,13 @@ export class ClrDefaultKeyNavigationStrategy implements KeyNavigationGridStrateg
       return nextCellCoords;
     }
 
-    const isActionCell = this.isActionCell(currentCellCoords);
-
     nextCellCoords.y = currentCellCoords.y - 1;
+
+    const isActionCell = this.isActionCell(currentCellCoords);
 
     if (this.isSingleCellExpandedRow(nextCellCoords.y) && !isActionCell && this.isDetailsRow(nextCellCoords.y)) {
       nextCellCoords.x = 0;
-      return nextCellCoords;
-    }
-
-    if (this.isDetailsRow(nextCellCoords.y)) {
+    } else if (this.isDetailsRow(nextCellCoords.y)) {
       if (isActionCell) {
         nextCellCoords.y = nextCellCoords.y - 1;
       } else {
