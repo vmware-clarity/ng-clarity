@@ -169,7 +169,26 @@ export class ClrExpandedColumnsRowKeyNavigationStrategy extends ClrDefaultKeyNav
   keyPageUp(currentCellCoords: CellCoordinates) {
     console.log('keyPageUp ClrExpandedDetailsRowKeyNavigationStrategy');
 
-    const nextCellCoords = super.keyPageUp(currentCellCoords);
+    const nextCellCoords = this.createNextCellCoords(currentCellCoords);
+    const itemsPerPage = this.getItemsPerPage();
+
+    nextCellCoords.y = currentCellCoords.y - itemsPerPage > 0 ? currentCellCoords.y - itemsPerPage + 1 : 1;
+
+    const isActionCell = this.isActionCell(currentCellCoords);
+
+    if (isActionCell && this.isDetailsRow(nextCellCoords.y)) {
+      nextCellCoords.y = nextCellCoords.y - 1;
+    } else if (this.isRowReplaced(nextCellCoords.y)) {
+      nextCellCoords.y = nextCellCoords.y - 1;
+
+      if (!this.isDetailsRow(nextCellCoords.y)) {
+        nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
+      }
+    } else if (this.isDetailsRow(currentCellCoords.y) && !this.isDetailsRow(nextCellCoords.y)) {
+      nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
+    } else if (!isActionCell && this.isDetailsRow(nextCellCoords.y)) {
+      nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
+    }
 
     return nextCellCoords;
   }

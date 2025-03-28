@@ -153,6 +153,18 @@ export class ClrDefaultKeyNavigationStrategy implements KeyNavigationGridStrateg
 
     nextCellCoords.y = currentCellCoords.y - itemsPerPage > 0 ? currentCellCoords.y - itemsPerPage + 1 : 1;
 
+    const isActionCell = this.isActionCell(currentCellCoords);
+
+    if (this.isSingleCellExpandedRow(nextCellCoords.y) && !isActionCell && this.isDetailsRow(nextCellCoords.y)) {
+      nextCellCoords.x = 0;
+    } else if (this.isDetailsRow(nextCellCoords.y)) {
+      if (isActionCell) {
+        nextCellCoords.y = nextCellCoords.y - 1;
+      } else {
+        nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
+      }
+    }
+
     return nextCellCoords;
   }
 
@@ -162,7 +174,20 @@ export class ClrDefaultKeyNavigationStrategy implements KeyNavigationGridStrateg
     const numOfRows = this.rows ? this.rows.length - 1 : 0;
     const itemsPerPage = this.getItemsPerPage();
 
-    nextCellCoords.y = currentCellCoords.y + itemsPerPage < numOfRows ? currentCellCoords.y + itemsPerPage : numOfRows;
+    nextCellCoords.y = currentCellCoords.y + itemsPerPage >= numOfRows ? numOfRows : currentCellCoords.y + itemsPerPage;
+
+    const isActionCell = this.isActionCell(currentCellCoords);
+    if (this.isSingleCellExpandedRow(nextCellCoords.y) && !isActionCell && this.isRowReplaced(nextCellCoords.y)) {
+      nextCellCoords.x = 0;
+      nextCellCoords.y = nextCellCoords.y + 1;
+    } else if (!isActionCell && this.isDetailsRow(nextCellCoords.y)) {
+      nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
+    } else if (!isActionCell && this.isRowReplaced(nextCellCoords.y)) {
+      nextCellCoords.y = nextCellCoords.y + 1;
+      nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
+    } else if (isActionCell && this.isDetailsRow(nextCellCoords.y)) {
+      nextCellCoords.y = nextCellCoords.y - 1;
+    }
 
     return nextCellCoords;
   }

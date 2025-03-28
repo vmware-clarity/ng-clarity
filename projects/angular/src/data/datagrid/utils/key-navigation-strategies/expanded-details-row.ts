@@ -50,8 +50,6 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
       }
     }
 
-    /// TODO: more is needed?
-
     return nextCellCoords;
   }
 
