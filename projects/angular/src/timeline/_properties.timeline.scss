@@ -24,5 +24,7 @@
     --clr-timeline-step-title-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
 
     --clr-timeline-step-internal-spacing: #{tokens.$cds-global-space-6}; // internal property cannot be exposed
+
+    --clr-timeline-icon-size: #{tokens.$cds-global-space-11};
   }
 }

@@ -108,6 +108,8 @@ export const commonStringsDefault: ClrCommonStrings = {
   datagridExpandableRowsHelperText: `Screen reader table commands may not work for viewing expanded content, please use your screen reader's browse mode to read the content exposed by this button`,
   // Wizard
   wizardStep: 'Step',
+  wizardStepNotStarted: 'Not started',
+  wizardStepCurrent: 'Current',
   wizardStepSuccess: 'Completed',
   wizardStepError: 'Error',
   wizardStepnavAriaLabel: 'Wizard steps',
