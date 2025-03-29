@@ -4,6 +4,9 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
+@use '@cds/core/tokens/tokens.scss';
+
 .typography-demo-table {
   td > * {
     margin-top: 0;
@@ -11,6 +14,40 @@
 
   td > ul.list-unstyled {
     margin-left: 0;
-    list-style-position: 0;
+    list-style-position: inside;
   }
+}
+
+.wrapper {
+  position: relative;
+  min-height: tokens.$cds-global-space-15;
+  height: tokens.$cds-global-space-15;
+}
+
+.font {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.9;
+
+  margin: tokens.$cds-global-space-4;
+}
+
+.broadhevan {
+  font-family: Broadhevan, sans-serif;
+  color: tokens.$cds-alias-status-info;
+  opacity: 0.5;
+  z-index: 9;
+}
+
+.metropolis {
+  font-family: Metropolis, sans-serif;
+  color: tokens.$cds-alias-typography-color-450;
+  z-index: 8;
+}
+
+.clarity-city {
+  font-family: 'Clarity City', sans-serif;
+  color: tokens.$cds-alias-status-danger;
+  z-index: 7;
 }
