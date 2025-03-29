@@ -99,6 +99,7 @@ export class ClrDatagridColumn<T = any>
   @Input('clrFilterStringPlaceholder') filterStringPlaceholder: string;
   @Input('clrFilterNumberMaxPlaceholder') filterNumberMaxPlaceholder: string;
   @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder: string;
+  @Input('clrDgSortDisableUnsort') clrDgSortDisableUnsort = false;
 
   @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
@@ -202,16 +203,12 @@ export class ClrDatagridColumn<T = any>
   set sortBy(comparator: ClrDatagridComparatorInterface<T> | string) {
     if (typeof comparator === 'string') {
       this._sortBy = new DatagridPropertyComparator(comparator);
+    } else if (comparator) {
+      this._sortBy = comparator;
+    } else if (this.field) {
+      this._sortBy = new DatagridPropertyComparator(this.field);
     } else {
-      if (comparator) {
-        this._sortBy = comparator;
-      } else {
-        if (this.field) {
-          this._sortBy = new DatagridPropertyComparator(this.field);
-        } else {
-          delete this._sortBy;
-        }
-      }
+      delete this._sortBy;
     }
   }
 
@@ -236,10 +233,11 @@ export class ClrDatagridColumn<T = any>
       case ClrDatagridSortOrder.DESC:
         this.sort(true);
         break;
-      // the Unsorted case happens when the current state is neither Asc or Desc
+      // the Unsorted case happens when the current state is neither Asc nor Desc
       case ClrDatagridSortOrder.UNSORTED:
       default:
         this._sort.clear();
+        this._sortDirection = null;
         break;
     }
   }
@@ -354,6 +352,14 @@ export class ClrDatagridColumn<T = any>
    */
   sort(reverse?: boolean) {
     if (!this.sortable) {
+      return;
+    }
+
+    if (!this.clrDgSortDisableUnsort && reverse === undefined && this.sortOrder === ClrDatagridSortOrder.DESC) {
+      this._sortOrder = ClrDatagridSortOrder.UNSORTED;
+      this._sort.clear();
+      this._sortDirection = null;
+      this.sortOrderChange.emit(this._sortOrder);
       return;
     }
 
