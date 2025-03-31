@@ -153,16 +153,18 @@ export class ClrDefaultKeyNavigationStrategy implements KeyNavigationGridStrateg
 
     nextCellCoords.y = currentCellCoords.y - itemsPerPage > 0 ? currentCellCoords.y - itemsPerPage + 1 : 1;
 
-    const isActionCell = this.isActionCell(currentCellCoords);
-
-    if (this.isSingleCellExpandedRow(nextCellCoords.y) && !isActionCell && this.isDetailsRow(nextCellCoords.y)) {
+    if (this.isActionCell(currentCellCoords) && this.isDetailsRow(nextCellCoords.y)) {
+      nextCellCoords.y = nextCellCoords.y - 1;
+    } else if (this.isDetailsRow(nextCellCoords.y) && this.isSingleCellExpandedRow(nextCellCoords.y)) {
       nextCellCoords.x = 0;
     } else if (this.isDetailsRow(nextCellCoords.y)) {
-      if (isActionCell) {
-        nextCellCoords.y = nextCellCoords.y - 1;
-      } else {
-        nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
-      }
+      nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
+    } else if (this.isRowReplaced(nextCellCoords.y)) {
+      nextCellCoords.y = nextCellCoords.y + 1;
+
+      nextCellCoords.x = this.isSingleCellExpandedRow(nextCellCoords.y)
+        ? 0
+        : nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
     }
 
     return nextCellCoords;
@@ -213,9 +215,7 @@ export class ClrDefaultKeyNavigationStrategy implements KeyNavigationGridStrateg
   }
 
   protected isSingleCellExpandedRow(index: number) {
-    const row = this.rows[index].classList.contains('datagrid-row-detail')
-      ? this.rows[index]
-      : this.rows[index].querySelector('.datagrid-row-detail');
+    const row = this.isDetailsRow(index) ? this.rows[index] : this.rows[index].querySelector('.datagrid-row-detail');
 
     return row?.querySelectorAll(this.config.keyGridCells).length === 1;
   }
