@@ -15,6 +15,7 @@ import { renderNestedComponent } from '../../helpers/nesting-components';
 const nestedComponentNames = [
   'accordion',
   'alert',
+  'alertLightWeight',
   'badge',
   'button',
   'button-group',
