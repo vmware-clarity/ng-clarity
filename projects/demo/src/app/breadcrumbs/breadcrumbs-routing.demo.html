@@ -1,0 +1,30 @@
+<!--
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-breadcrumbs-example">
+  <h3>Breadcrumbs - Angular Routing</h3>
+  <div class="main-container">
+    <header class="header">
+      <div class="branding">
+        <a routerLink="./paints" routerLinkActive="active">
+          <cds-icon shape="paint-roller"></cds-icon>
+          <span class="title">Art Shop</span>
+        </a>
+      </div>
+    </header>
+    <div class="content-container">
+      <clr-vertical-nav>
+        <a clrVerticalNavLink routerLink="./paints" routerLinkActive="active">Paints</a>
+        <a clrVerticalNavLink routerLink="./tools" routerLinkActive="active">Tools</a>
+      </clr-vertical-nav>
+      <div class="content-area breadcrumbs-content-area">
+        <clr-breadcrumbs [items]="breadcrumbs | async"></clr-breadcrumbs>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

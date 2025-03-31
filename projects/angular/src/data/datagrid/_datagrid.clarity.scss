@@ -112,18 +112,6 @@
     white-space: nowrap;
   }
 
-  .datagrid-container {
-    width: auto;
-    @include mixins.generate-typography-token(
-      'BODY-14-RG-STD',
-      (
-        font-size: tables-variables.$clr-table-fontsize,
-      )
-    );
-    padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-      tables-variables.$clr-table-bottomcellpadding;
-  }
-
   .datagrid-expandable-caret {
     padding: tokens.$cds-global-space-2 datagrid-variables.$clr-datagrid-horizontal-padding tokens.$cds-global-space-3;
     text-align: center;
@@ -197,6 +185,15 @@
       background-color: datagrid-variables.$clr-datagrid-row-active-color;
     }
 
+    &.datagrid-row-skeleton {
+      background-color: unset;
+
+      .datagrid-row-scrollable,
+      .datagrid-row-sticky {
+        display: none;
+      }
+    }
+
     .datagrid-row-detail-wrapper {
       flex: 1 1 auto;
       display: flex;
@@ -208,6 +205,15 @@
       .datagrid-cell {
         padding-top: 0;
         border: none;
+
+        &.datagrid-container {
+          @include mixins.generate-typography-token(
+            'BODY-14-RG-STD',
+            (
+              font-size: tables-variables.$clr-table-fontsize,
+            )
+          );
+        }
       }
     }
 
@@ -636,6 +642,26 @@
       }
     }
 
+    // Increase interaction area for action buttons without changing layout
+    .datagrid-detail-caret,
+    .datagrid-row-actions,
+    .datagrid-expandable-caret {
+      position: relative;
+
+      .datagrid-action-toggle,
+      .datagrid-detail-caret-button,
+      .datagrid-expandable-caret-button {
+        &:before {
+          content: '';
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          top: 0;
+          left: 0;
+        }
+      }
+    }
+
     .datagrid-placeholder-container {
       flex: 1 1 auto;
       display: flex;
@@ -718,14 +744,6 @@
 
       .datagrid-expandable-caret {
         padding-top: tokens.$cds-global-space-2;
-      }
-
-      &.datagrid-container {
-        border-top: tokens.$cds-alias-object-border-width-100 solid tables-variables.$clr-table-border-color;
-
-        .datagrid-cell {
-          border-top: none;
-        }
       }
     }
   }
@@ -930,6 +948,7 @@
 
     .datagrid-footer {
       padding: 0 tokens.$cds-global-space-7;
+      min-height: tables-variables.$clr-table-compact-row-height;
       line-height: tokens.$cds-global-space-9 - tokens.$cds-global-space-1;
 
       .pagination {

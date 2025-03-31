@@ -15,7 +15,7 @@ $clr-tree-node-touch-target: #{tokens.$cds-global-space-10} !default;
 $clr-tree-node-children-margin: $clr-tree-node-touch-target !default;
 $clr-tree-node-content-icon-margin-right: #{tokens.$cds-global-space-5} !default;
 $clr-tree-checkbox-padding-top: 0 !default;
-$clr-tree-checkbox-padding-left: 0 !default;
+$clr-tree-checkbox-padding-left: #{tokens.$cds-global-space-5} !default;
 
 // @deprecated in v17 in favor of $clr-tree-node-content-padding. Will be removed in v18.
 $clr-tree-node-link-padding-left: #{tokens.$cds-global-space-5} !default;

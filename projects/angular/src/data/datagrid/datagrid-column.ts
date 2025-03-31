@@ -230,16 +230,16 @@ export class ClrDatagridColumn<T = any>
     }
 
     switch (value) {
-      // the Unsorted case happens when the current state is either Asc or Desc
-      default:
-      case ClrDatagridSortOrder.UNSORTED:
-        this._sort.clear();
-        break;
       case ClrDatagridSortOrder.ASC:
         this.sort(false);
         break;
       case ClrDatagridSortOrder.DESC:
         this.sort(true);
+        break;
+      // the Unsorted case happens when the current state is neither Asc or Desc
+      case ClrDatagridSortOrder.UNSORTED:
+      default:
+        this._sort.clear();
         break;
     }
   }
@@ -284,13 +284,13 @@ export class ClrDatagridColumn<T = any>
 
   get ariaSort() {
     switch (this._sortOrder) {
-      default:
-      case ClrDatagridSortOrder.UNSORTED:
-        return 'none';
       case ClrDatagridSortOrder.ASC:
         return 'ascending';
       case ClrDatagridSortOrder.DESC:
         return 'descending';
+      case ClrDatagridSortOrder.UNSORTED:
+      default:
+        return 'none';
     }
   }
 

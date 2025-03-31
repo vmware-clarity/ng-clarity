@@ -29,7 +29,6 @@ export interface Column {
 
 export interface Row {
   index: number;
-  expanded: boolean;
   cells: Cells;
 }
 
@@ -54,6 +53,8 @@ export interface Cells {
         clrVirtualScroll
         let-row
         [clrVirtualRowsOf]="data.rows"
+        [clrVirtualDataRange]="dataRange"
+        [clrVirtualPersistItems]="persistItems"
         [clrVirtualRowsItemSize]="24"
         [clrVirtualRowsMinBufferPx]="200"
         [clrVirtualRowsMaxBufferPx]="400"
@@ -61,9 +62,9 @@ export interface Cells {
         [clrVirtualRowsTrackBy]="rowByIndex"
       >
         <clr-dg-row [clrDgItem]="row">
-          <clr-dg-cell *ngFor="let col of cols; trackBy: colByIndex">{{ row.cells[col.name] }}</clr-dg-cell>
+          <clr-dg-cell *ngFor="let col of cols; trackBy: colByIndex">{{ row?.cells[col.name] }}</clr-dg-cell>
           <ng-container ngProjectAs="clr-dg-row-detail">
-            <clr-dg-row-detail [clrIfExpanded]="row.expanded" (clrIfExpandedChange)="setExpanded($event, row)">
+            <clr-dg-row-detail *clrIfExpanded>
               {{ row | json }}
             </clr-dg-row-detail>
           </ng-container>
@@ -76,6 +77,14 @@ export interface Cells {
 })
 class FullTest implements OnInit {
   @ViewChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<any>;
+  _totalRows = 1000;
+  dataRange: {
+    total: number;
+    skip: number;
+    data: Row[];
+  };
+
+  persistItems = true;
   rows: Observable<Row[]>;
   cols: Column[] = [];
   selectedRows: Row[] = [];
@@ -85,10 +94,35 @@ class FullTest implements OnInit {
   constructor(private cdr: ChangeDetectorRef) {
     this.rows = this.allRows.asObservable();
     this.cols = this.createColumns();
+
+    this.dataRange = {
+      total: this.totalRows,
+      skip: 0,
+      data: [],
+    };
+  }
+
+  get totalRows(): number {
+    return this._totalRows;
+  }
+  set totalRows(value: number) {
+    this._totalRows = value;
+
+    this.dataRange = {
+      total: this.totalRows,
+      skip: this.dataRange.skip,
+      data: this.dataRange.data,
+    };
+
+    this.cdr.detectChanges();
+  }
+
+  updateDataRange(value: { total: number; skip: number; data: Row[] }) {
+    this.dataRange = value;
   }
 
   ngOnInit(): void {
-    this.allRows.next(this.createRows(this.cols));
+    this.allRows.next(this.createRows(this.cols, this.totalRows));
 
     this.rows.subscribe(() => {
       this.cdr.detectChanges();
@@ -107,13 +141,12 @@ class FullTest implements OnInit {
     return columns;
   }
 
-  createRows(columns: Column[], rowCount = 1000) {
+  createRows(columns: Column[], rowCount: number) {
     const rows: Row[] = [];
     for (let i = 0; i < rowCount; i++) {
       const newRow: Row = {
         index: i,
         cells: {} as Cells,
-        expanded: false,
       };
       for (let j = 0; j < columns.length; j++) {
         newRow.cells[columns[j].name] = `${columns[j].name} row-${i + 1}`;
@@ -129,11 +162,7 @@ class FullTest implements OnInit {
   }
 
   rowByIndex(index: number, row: Row) {
-    return row.index;
-  }
-
-  setExpanded($event: boolean, item: Row) {
-    item.expanded = $event;
+    return row?.index;
   }
 }
 
@@ -203,8 +232,60 @@ export default function (): void {
         instance.virtualScroll.cdkVirtualForTemplateCacheSize = 5000;
         expect(instance.virtualScroll.cdkVirtualForTemplateCacheSize).toBe(5000);
 
+        expect(instance.virtualScroll.totalItems).toBe(1000);
+        instance.totalRows = 5000;
+        fixture.detectChanges();
+        expect(instance.virtualScroll.totalItems).toBe(5000);
+
+        expect(instance.virtualScroll.persistItems).toBe(true);
+        instance.persistItems = false;
+        fixture.detectChanges();
+        expect(instance.virtualScroll.persistItems).toBe(false);
+
         fixture.destroy();
       });
+
+      it('Spy on Scroll to index', fakeAsync(() => {
+        fixture.detectChanges();
+        const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');
+
+        instance.virtualScroll.scrollToIndex(300);
+        fixture.detectChanges();
+        expect(spyVirtualScroll).toHaveBeenCalledWith(300);
+
+        instance.virtualScroll.scrollToIndex(0);
+        fixture.detectChanges();
+        expect(spyVirtualScroll).toHaveBeenCalledWith(0);
+
+        fixture.destroy();
+      }));
+
+      it('Spy on update data range', fakeAsync(() => {
+        fixture.detectChanges();
+        const spyVirtualScroll = spyOn(instance.virtualScroll, 'updateDataRange');
+
+        let dataRange = {
+          total: 500,
+          skip: 100,
+          data: Array(100),
+        };
+
+        instance.updateDataRange(dataRange);
+        fixture.detectChanges();
+        expect(spyVirtualScroll).toHaveBeenCalledWith(dataRange.skip, dataRange.data);
+
+        dataRange = {
+          total: 1000,
+          skip: 500,
+          data: Array(200),
+        };
+
+        instance.updateDataRange(dataRange);
+        fixture.detectChanges();
+        expect(spyVirtualScroll).toHaveBeenCalledWith(dataRange.skip, dataRange.data);
+
+        fixture.destroy();
+      }));
 
       it('Moves focus on PageDown and PageUp', fakeAsync(() => {
         finishInit(fixture);
@@ -247,17 +328,6 @@ export default function (): void {
         fixture.autoDetectChanges(false);
         fixture.destroy();
       }));
-
-      // it('allows to manually resize the datagrid', function () {
-      //   const organizer: DatagridRenderOrganizer = context.getClarityProvider(DatagridRenderOrganizer);
-      //   let resizeSteps = 0;
-      //   organizer.renderStep.subscribe(() => {
-      //     resizeSteps++;
-      //   });
-      //   expect(resizeSteps).toBe(0);
-      //   context.clarityDirective.resize();
-      //   expect(resizeSteps).toBe(5);
-      // });
     });
   });
 }
