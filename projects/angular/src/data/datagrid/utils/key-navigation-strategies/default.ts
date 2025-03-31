@@ -176,17 +176,15 @@ export class ClrDefaultKeyNavigationStrategy implements KeyNavigationGridStrateg
 
     nextCellCoords.y = currentCellCoords.y + itemsPerPage >= numOfRows ? numOfRows : currentCellCoords.y + itemsPerPage;
 
-    const isActionCell = this.isActionCell(currentCellCoords);
-    if (this.isSingleCellExpandedRow(nextCellCoords.y) && !isActionCell && this.isRowReplaced(nextCellCoords.y)) {
-      nextCellCoords.x = 0;
-      nextCellCoords.y = nextCellCoords.y + 1;
-    } else if (!isActionCell && this.isDetailsRow(nextCellCoords.y)) {
-      nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
-    } else if (!isActionCell && this.isRowReplaced(nextCellCoords.y)) {
-      nextCellCoords.y = nextCellCoords.y + 1;
-      nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
-    } else if (isActionCell && this.isDetailsRow(nextCellCoords.y)) {
+    if (this.isActionCell(currentCellCoords) && this.isDetailsRow(nextCellCoords.y)) {
       nextCellCoords.y = nextCellCoords.y - 1;
+    } else if (this.isSingleCellExpandedRow(nextCellCoords.y)) {
+      nextCellCoords.x = 0;
+    } else if (this.isDetailsRow(nextCellCoords.y)) {
+      nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
+    } else if (this.isRowReplaced(nextCellCoords.y)) {
+      nextCellCoords.y = nextCellCoords.y + 1;
+      nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
     }
 
     return nextCellCoords;
