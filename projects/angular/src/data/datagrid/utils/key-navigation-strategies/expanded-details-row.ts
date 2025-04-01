@@ -30,10 +30,7 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
 
     nextCellCoords.y = currentCellCoords.y - 1;
 
-    // const isSingleCellExpandedRow = this.isSingleCellExpandedRow(currentCellCoords.y);
-    const isActionCell = this.isActionCell(currentCellCoords);
-
-    if (!isActionCell) {
+    if (!this.isActionCell(currentCellCoords)) {
       if (this.isRowReplaced(currentCellCoords.y)) {
         nextCellCoords.y = nextCellCoords.y - 1;
       }
@@ -169,15 +166,76 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
   keyPageUp(currentCellCoords: CellCoordinates) {
     console.log('keyPageUp ClrExpandedDetailsRowKeyNavigationStrategy');
 
-    const nextCellCoords = super.keyPageUp(currentCellCoords);
+    const nextCellCoords = this.createNextCellCoords(currentCellCoords);
+    const itemsPerPage = this.getItemsPerPage();
 
+    nextCellCoords.y = currentCellCoords.y - itemsPerPage > 0 ? currentCellCoords.y - itemsPerPage + 1 : 1;
+
+    if (!this.isActionCell(currentCellCoords)) {
+      if (this.isRowReplaced(nextCellCoords.y)) {
+        nextCellCoords.y = nextCellCoords.y + 1;
+        // nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
+
+        if (this.isExpandedRow(nextCellCoords.y)) {
+          nextCellCoords.x = 0;
+        } else if (this.isDetailsRow(nextCellCoords.y)) {
+          nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
+        }
+      } else if (this.isExpandedRow(nextCellCoords.y)) {
+        nextCellCoords.x = 0;
+      }
+      // else if (!this.isDetailsRow(currentCellCoords.y) && this.isDetailsRow(nextCellCoords.y)) {
+      //   nextCellCoords.x = 0;
+      // }
+      else if (this.isDetailsRow(currentCellCoords.y) && !this.isDetailsRow(nextCellCoords.y)) {
+        nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
+      } else if (this.isDetailsRow(nextCellCoords.y)) {
+        nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
+      }
+    } else if (this.isDetailsRow(nextCellCoords.y)) {
+      nextCellCoords.y = nextCellCoords.y - 1;
+    }
     return nextCellCoords;
   }
 
   keyPageDown(currentCellCoords: CellCoordinates) {
     console.log('keyPageDown ClrExpandedDetailsRowKeyNavigationStrategy');
 
-    const nextCellCoords = super.keyPageDown(currentCellCoords);
+    const nextCellCoords = this.createNextCellCoords(currentCellCoords);
+
+    const numOfRows = this.rows ? this.rows.length - 1 : 0;
+    const itemsPerPage = this.getItemsPerPage();
+
+    nextCellCoords.y = currentCellCoords.y + itemsPerPage >= numOfRows ? numOfRows : currentCellCoords.y + itemsPerPage;
+
+    console.log(this.isDetailsRow(currentCellCoords.y));
+    console.log(this.isDetailsRow(nextCellCoords.y));
+
+    if (!this.isActionCell(currentCellCoords)) {
+      if (this.isRowReplaced(nextCellCoords.y)) {
+        if (nextCellCoords.y < numOfRows) {
+          nextCellCoords.y = nextCellCoords.y + 1;
+        }
+
+        if (this.isExpandedRow(nextCellCoords.y)) {
+          nextCellCoords.x = 0;
+        } else if (this.isDetailsRow(nextCellCoords.y)) {
+          nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
+        }
+      } else if (this.isExpandedRow(nextCellCoords.y)) {
+        nextCellCoords.x = 0;
+      }
+      // else if (!this.isDetailsRow(currentCellCoords.y) && this.isDetailsRow(nextCellCoords.y)) {
+      //   nextCellCoords.x = 0;
+      // }
+      else if (this.isDetailsRow(currentCellCoords.y) && !this.isDetailsRow(nextCellCoords.y)) {
+        nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
+      } else if (this.isDetailsRow(nextCellCoords.y)) {
+        nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
+      }
+    } else if (this.isDetailsRow(nextCellCoords.y)) {
+      nextCellCoords.y = nextCellCoords.y - 1;
+    }
 
     return nextCellCoords;
   }
