@@ -45,6 +45,8 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
         default:
           nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
       }
+    } else {
+      nextCellCoords.y = nextCellCoords.y > 0 ? nextCellCoords.y - 1 : nextCellCoords.y;
     }
 
     return nextCellCoords;
@@ -54,8 +56,12 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     console.log('keyDown ClrExpandedDetailsRowKeyNavigationStrategy');
     const nextCellCoords = this.createNextCellCoords(currentCellCoords);
 
-    nextCellCoords.y = currentCellCoords.y + 1;
+    const numOfRows = this.rows ? this.rows.length - 1 : 0;
+    if (currentCellCoords.y >= numOfRows) {
+      return nextCellCoords;
+    }
 
+    nextCellCoords.y = currentCellCoords.y + 1;
     const isActionCell = this.isActionCell(currentCellCoords);
 
     if (!isActionCell) {
@@ -68,6 +74,8 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
       } else {
         nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
       }
+    } else {
+      nextCellCoords.y = nextCellCoords.y < numOfRows ? nextCellCoords.y + 1 : nextCellCoords.y;
     }
 
     return nextCellCoords;

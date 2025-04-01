@@ -66,7 +66,7 @@ export class ClrExpandedColumnsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     const isActionCell = this.isActionCell(currentCellCoords);
 
     if (isActionCell || this.isRowReplaced(nextCellCoords.y)) {
-      nextCellCoords.y = nextCellCoords.y + 1;
+      nextCellCoords.y = nextCellCoords.y < numOfRows ? nextCellCoords.y + 1 : nextCellCoords.y;
     } else if (this.getCellsForRow(currentCellCoords.y).length > numOfColumns) {
       nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
     } else {
