@@ -190,7 +190,9 @@ export class ClrDefaultKeyNavigationStrategy implements KeyNavigationGridStrateg
       nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
     } else if (this.isRowReplaced(nextCellCoords.y)) {
       nextCellCoords.y = nextCellCoords.y + 1;
-      nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
+      nextCellCoords.x = this.isSingleCellExpandedRow(nextCellCoords.y)
+        ? 0
+        : nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
     }
 
     return nextCellCoords;
