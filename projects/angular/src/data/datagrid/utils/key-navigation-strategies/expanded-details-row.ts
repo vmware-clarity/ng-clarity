@@ -19,7 +19,7 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     console.log('constructor ClrExpandedDetailsRowKeyNavigationStrategy');
   }
 
-  keyUp(currentCellCoords: CellCoordinates) {
+  override keyUp(currentCellCoords: CellCoordinates) {
     console.log('keyUp ClrExpandedDetailsRowKeyNavigationStrategy');
 
     const nextCellCoords = this.createNextCellCoords(currentCellCoords);
@@ -50,7 +50,7 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     return nextCellCoords;
   }
 
-  keyDown(currentCellCoords: CellCoordinates) {
+  override keyDown(currentCellCoords: CellCoordinates) {
     console.log('keyDown ClrExpandedDetailsRowKeyNavigationStrategy');
     const nextCellCoords = this.createNextCellCoords(currentCellCoords);
 
@@ -73,7 +73,7 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     return nextCellCoords;
   }
 
-  keyLeft(currentCellCoords: CellCoordinates) {
+  override keyLeft(currentCellCoords: CellCoordinates) {
     console.log('keyLeft ClrExpandedDetailsRowKeyNavigationStrategy');
 
     const nextCellCoords = this.createNextCellCoords(currentCellCoords);
@@ -92,7 +92,7 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     return nextCellCoords;
   }
 
-  keyRight(currentCellCoords: CellCoordinates) {
+  override keyRight(currentCellCoords: CellCoordinates) {
     console.log('keyRight ClrExpandedDetailsRowKeyNavigationStrategy');
 
     const nextCellCoords = this.createNextCellCoords(currentCellCoords);
@@ -123,7 +123,7 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     return nextCellCoords;
   }
 
-  keyEnd(currentCellCoords: CellCoordinates, ctrlKey: boolean) {
+  override keyEnd(currentCellCoords: CellCoordinates, ctrlKey: boolean) {
     console.log('keyEnd ClrExpandedDetailsRowKeyNavigationStrategy');
 
     const nextCellCoords = this.createNextCellCoords(currentCellCoords);
@@ -144,7 +144,7 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     return nextCellCoords;
   }
 
-  keyHome(currentCellCoords: CellCoordinates, ctrlKey: boolean) {
+  override keyHome(currentCellCoords: CellCoordinates, ctrlKey: boolean) {
     console.log('keyHome ClrExpandedDetailsRowKeyNavigationStrategy');
 
     const nextCellCoords = this.createNextCellCoords(currentCellCoords);
@@ -163,7 +163,7 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     return nextCellCoords;
   }
 
-  keyPageUp(currentCellCoords: CellCoordinates) {
+  override keyPageUp(currentCellCoords: CellCoordinates) {
     console.log('keyPageUp ClrExpandedDetailsRowKeyNavigationStrategy');
 
     const nextCellCoords = this.createNextCellCoords(currentCellCoords);
@@ -198,7 +198,7 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     return nextCellCoords;
   }
 
-  keyPageDown(currentCellCoords: CellCoordinates) {
+  override keyPageDown(currentCellCoords: CellCoordinates) {
     console.log('keyPageDown ClrExpandedDetailsRowKeyNavigationStrategy');
 
     const nextCellCoords = this.createNextCellCoords(currentCellCoords);
