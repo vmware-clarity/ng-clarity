@@ -6,7 +6,8 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ClrDatagrid, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -19,43 +20,99 @@ import { User } from '../inventory/user';
 })
 export class DatagridVirtualScrollEmptyRowsDemo {
   userRange: ListRange;
-  totalRows = 10000;
-  users: User[];
+  _totalRows = 10000;
+  persistItems = false;
 
-  selectedUsers: User[] = [];
+  dataRange: {
+    total: number;
+    skip: number;
+    data: User[];
+  };
+
+  _selectedUsers: User[] = [];
+  @ViewChild('datagrid') datagrid: ClrDatagrid;
 
   constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
-    this.users = Array(this.totalRows);
+    inventory.size = this.totalRows;
+    inventory.latency = 500;
+    inventory.reset();
+
+    this.dataRange = {
+      total: this.totalRows,
+      skip: 0,
+      data: [],
+    };
   }
 
-  renderUserRangeChange($event: ListRange) {
-    this.userRange = $event;
+  get totalRows() {
+    return this._totalRows;
+  }
+
+  set totalRows(totalRows) {
+    this._totalRows = totalRows;
+    this.inventory.size = totalRows;
+    this.inventory.generatedCount = 0;
+    this.inventory.reset();
+    this.renderUserRangeChange(this.userRange).then(() => {
+      // this.cdr.detectChanges();
+    });
+  }
+
+  get selectedUsers() {
+    return this._selectedUsers;
+  }
+
+  set selectedUsers(users) {
+    console.log(users);
+    this._selectedUsers = users;
+    // this.cdr.detectChanges();
+  }
+
+  refresh(state: ClrDatagridStateInterface) {
+    console.log('refresh', state);
+  }
+
+  async renderUserRangeChange($event: ListRange) {
     console.log($event);
-    const generatedData = this.inventory.addBySize(($event.end - $event.start) * 3, $event.start);
 
-    for (let i = 0; i < generatedData.length; i++) {
-      this.users[generatedData[i].id] = generatedData[i];
-    }
+    this.userRange = {
+      start: $event.start,
+      end: $event.end,
+    };
 
-    setTimeout(() => {
-      this.users = [...this.users];
-      this.cdr.detectChanges();
-    }, 2000);
+    this.dataRange = await this.getData($event);
+
+    this.cdr.detectChanges();
   }
 
-  rowByIndex(index: number) {
-    return index;
+  jumpTo(index: number) {
+    this.userRange = null;
+    this.datagrid.virtualScroll.scrollToIndex(index, 'auto');
   }
 
-  getIndexes(rows: any[]) {
+  rowByIndex(index: number, user: User) {
+    return user?.id;
+  }
+
+  getIndexes(count: number) {
     const result = [];
 
-    for (let i = 0; i < rows.length; i++) {
+    for (let i = 0; i < count; i++) {
       if (i % 1000 === 0) {
         result.push(i);
       }
     }
 
     return result;
+  }
+
+  private async getData($event: ListRange) {
+    const result = await this.inventory.fetch($event.start, $event.end - $event.start);
+
+    return {
+      total: result.length,
+      data: result.users,
+      skip: $event.start,
+    };
   }
 }
