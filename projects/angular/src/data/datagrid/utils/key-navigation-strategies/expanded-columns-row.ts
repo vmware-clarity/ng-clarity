@@ -63,14 +63,17 @@ export class ClrExpandedColumnsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     }
 
     nextCellCoords.y = currentCellCoords.y + 1;
-    const isActionCell = this.isActionCell(currentCellCoords);
 
-    if (isActionCell || this.isRowReplaced(nextCellCoords.y)) {
-      nextCellCoords.y = nextCellCoords.y < numOfRows ? nextCellCoords.y + 1 : nextCellCoords.y;
-    } else if (this.getCellsForRow(currentCellCoords.y).length > numOfColumns) {
-      nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
+    if (!this.isActionCell(currentCellCoords)) {
+      if (this.isRowReplaced(nextCellCoords.y)) {
+        nextCellCoords.y = nextCellCoords.y < numOfRows ? nextCellCoords.y + 1 : nextCellCoords.y - 1;
+      } else if (this.getCellsForRow(currentCellCoords.y).length > numOfColumns) {
+        nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
+      } else {
+        nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
+      }
     } else {
-      nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
+      nextCellCoords.y = nextCellCoords.y < numOfRows ? nextCellCoords.y + 1 : nextCellCoords.y - 1;
     }
 
     return nextCellCoords;

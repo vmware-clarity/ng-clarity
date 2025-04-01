@@ -62,9 +62,8 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     }
 
     nextCellCoords.y = currentCellCoords.y + 1;
-    const isActionCell = this.isActionCell(currentCellCoords);
 
-    if (!isActionCell) {
+    if (!this.isActionCell(currentCellCoords)) {
       if (this.isRowReplaced(nextCellCoords.y)) {
         nextCellCoords.y = nextCellCoords.y + 1;
       }
