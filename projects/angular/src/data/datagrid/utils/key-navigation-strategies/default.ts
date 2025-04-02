@@ -154,10 +154,10 @@ export class ClrDefaultKeyNavigationStrategy implements KeyNavigationGridStrateg
     nextCellCoords.y = currentCellCoords.y - itemsPerPage > 0 ? currentCellCoords.y - itemsPerPage + 1 : 1;
 
     if (!this.isActionCell(currentCellCoords)) {
-      if (this.isDetailsRow(nextCellCoords.y) && this.isSingleCellExpandedRow(nextCellCoords.y)) {
-        nextCellCoords.x = 0;
-      } else if (this.isDetailsRow(nextCellCoords.y)) {
-        nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
+      if (this.isDetailsRow(nextCellCoords.y)) {
+        nextCellCoords.x = this.isSingleCellExpandedRow(nextCellCoords.y)
+          ? 0
+          : nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
       } else if (this.isRowReplaced(nextCellCoords.y)) {
         nextCellCoords.y = nextCellCoords.y + 1;
 

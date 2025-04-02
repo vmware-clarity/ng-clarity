@@ -180,28 +180,23 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
 
     if (!this.isActionCell(currentCellCoords)) {
       if (this.isRowReplaced(nextCellCoords.y)) {
-        nextCellCoords.y = nextCellCoords.y + 1;
-        // nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
-
-        if (this.isExpandedRow(nextCellCoords.y)) {
+        if (!this.isDetailsRow(nextCellCoords.y)) {
+          nextCellCoords.y = nextCellCoords.y + 1;
           nextCellCoords.x = 0;
-        } else if (this.isDetailsRow(nextCellCoords.y)) {
-          nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
         }
-      } else if (this.isExpandedRow(nextCellCoords.y)) {
-        nextCellCoords.x = 0;
-      }
-      // else if (!this.isDetailsRow(currentCellCoords.y) && this.isDetailsRow(nextCellCoords.y)) {
-      //   nextCellCoords.x = 0;
-      // }
-      else if (this.isDetailsRow(currentCellCoords.y) && !this.isDetailsRow(nextCellCoords.y)) {
-        nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
-      } else if (this.isDetailsRow(nextCellCoords.y)) {
-        nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
+      } else if (!this.isDetailsRow(currentCellCoords.y)) {
+        if (this.isDetailsRow(nextCellCoords.y)) {
+          nextCellCoords.x = 0;
+        }
+      } else if (this.isDetailsRow(currentCellCoords.y)) {
+        if (!this.isDetailsRow(nextCellCoords.y)) {
+          nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
+        }
       }
     } else if (this.isDetailsRow(nextCellCoords.y)) {
       nextCellCoords.y = nextCellCoords.y - 1;
     }
+
     return nextCellCoords;
   }
 
