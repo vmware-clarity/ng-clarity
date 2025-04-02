@@ -204,12 +204,9 @@ export class ClrExpandedColumnsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     nextCellCoords.y = currentCellCoords.y + itemsPerPage >= numOfRows ? numOfRows : currentCellCoords.y + itemsPerPage;
 
     if (!this.isActionCell(currentCellCoords)) {
-      if (this.isRowReplaced(nextCellCoords.y)) {
+      if (this.isRowReplaced(nextCellCoords.y) && !this.isDetailsRow(nextCellCoords.y)) {
         if (nextCellCoords.y < numOfRows) {
           nextCellCoords.y = nextCellCoords.y + 1;
-        }
-
-        if (this.isDetailsRow(nextCellCoords.y)) {
           nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
         }
       } else if (this.isDetailsRow(currentCellCoords.y) && !this.isDetailsRow(nextCellCoords.y)) {
