@@ -45,8 +45,8 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
         default:
           nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
       }
-    } else {
-      nextCellCoords.y = nextCellCoords.y > 0 ? nextCellCoords.y - 1 : nextCellCoords.y;
+    } else if (this.isDetailsRow(nextCellCoords.y) && nextCellCoords.y > 0) {
+      nextCellCoords.y = nextCellCoords.y - 1;
     }
 
     return nextCellCoords;
