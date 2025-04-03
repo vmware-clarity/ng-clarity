@@ -6,18 +6,7 @@
  */
 
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import {
-  Component,
-  ElementRef,
-  HostBinding,
-  Inject,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Optional,
-  PLATFORM_ID,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, ElementRef, HostBinding, Inject, Input, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
@@ -91,7 +80,7 @@ export const AvailablePopoverPositions = [
   `,
   host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
 })
-export class ClrSignpostContent implements OnDestroy, OnChanges {
+export class ClrSignpostContent implements OnDestroy {
   @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;
 
   signpostContentId = uniqueIdFactory();
@@ -183,10 +172,6 @@ export class ClrSignpostContent implements OnDestroy, OnChanges {
   close() {
     this.popoverService.open = false;
     this.popoverService.setOpenedButtonFocus();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
   }
 
   ngOnDestroy() {
