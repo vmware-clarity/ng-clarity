@@ -85,7 +85,9 @@ export class PopoverDirective implements AfterViewInit {
             if (this.elementIsVisibleInViewport(this.popoverService.anchorElementRef?.nativeElement)) {
               this.overlayRef.updatePosition();
             } else {
-              this.removeOverlay();
+              this.zone.run(() => {
+                this.removeOverlay();
+              });
             }
           }
         })
