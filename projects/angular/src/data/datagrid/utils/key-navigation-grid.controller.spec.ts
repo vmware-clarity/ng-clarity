@@ -1316,6 +1316,9 @@ export default function (): void {
       // |       |33d|34d|35d|
       // |37c|37e|38d|39d|40d| -> row 5
       // |       |41d|42d|43d|
+      //      .........
+      // |59c|60e|61d|62d|63d| -> row 9
+      // |       |64d|65d|66d|
 
       // Covers key navigation over data cells
       // PageDown from expanded main to sub column row
@@ -1333,7 +1336,7 @@ export default function (): void {
         cells[0].focus();
 
         // check cell flow: start at index
-        // 0 -> 5 -> 6 -> 7 -> 8 -> 34 -> 11 -> 39 -> 16
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 34 -> 11 -> 39 -> 65 -> 62 -> 39
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -1350,19 +1353,26 @@ export default function (): void {
 
         // PageDown: from expanded main row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement).toBe(cells[34]);
+        expect(document.activeElement.textContent).toBe(cells[34].textContent);
 
         // PageUp: from expanded sub row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement).toBe(cells[11]);
+        expect(document.activeElement.textContent).toBe(cells[11].textContent);
 
         // PageDown: from expanded sub row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement).toBe(cells[39]);
+        expect(document.activeElement.textContent).toBe(cells[39].textContent);
+
+        // PageDown: from expanded sub row to expanded sub row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement.textContent).toBe(cells[65].textContent);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement.textContent).toBe(cells[62].textContent);
 
         // PageUp: from expanded main row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement).toBe(cells[16]);
+        expect(document.activeElement.textContent).toBe(cells[39].textContent);
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
