@@ -1453,13 +1453,11 @@ export default function (): void {
       // |56c|67e|58d|59d|60d| -> row 9
 
       // Covers key navigation over data cells
-      // PageDown from NOT expanded to replaced column row
-      // PageUp from NOT expanded to replaced column row
-      // PageDown from replaced column row to replaced column row
-      // PageUp from replaced column row to replaced column row
+      // PageDown from NOT expanded to replaced column row (x2 because replaced row can be targeted)
+      // PageUp from NOT expanded to replaced column row (x2 because replaced row can be targeted)
       // PageDown from replaced column row to NOT expanded row
       // PageUp from replaced column row to NOT expanded row
-      it('Moves focus across data cells with actions between expanded replaced column rows', function () {
+      it('Moves focus across data cells with actions between NOT expanded and replaced column rows', function () {
         context.testComponent.replaceCells = true;
         context.testComponent.expandedRowIndexes = [4, 5];
         context.detectChanges();
@@ -1471,7 +1469,7 @@ export default function (): void {
         cells[0].focus();
 
         // check cell flow: start at index
-        // 0 -> 5 -> 6 -> 7 -> 8 -> 34 -> 11 -> 39 -> 65 -> 62 -> 39
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 39 -> 18 -> 13 -> 39 -> 59 -> 54 -> 49 -> 39 -> 59 -> 54 -> 31
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -1524,6 +1522,64 @@ export default function (): void {
         // PageUp: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         expect(document.activeElement.textContent).toBe(cells[31].textContent);
+      });
+
+      // | 0h| 1h| 2h| 3h| 4h| -> row header
+      // | 5c| 6e| 7d| 8d| 9d| -> row 0
+      // |10c|11e|12d|13d|14d| -> row 1 (data cells are replaced and hidden)
+      // |       |15d|16d|17d|
+      // |18c|19e|20d|21d|22d| -> row 2 (data cells are replaced and hidden)
+      // |       |23d|24d|25d|
+      //      .........
+      // |36c|37e|38d|39d|40d| -> row 5 (data cells are replaced and hidden)
+      // |       |41d|42d|43d|
+      // |44c|45e|46d|47d|48d| -> row 6 (data cells are replaced and hidden)
+      // |       |49d|50d|51d|
+      //      .........
+
+      // PageDown from replaced column row to replaced column row
+      // PageUp from replaced column row to replaced column row
+      it('Moves focus across data cells with actions between replaced and replaced column rows', function () {
+        context.testComponent.replaceCells = true;
+        context.testComponent.expandedRowIndexes = [1, 2, 5, 6];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(67);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        // check cell flow: start at index
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 16 -> 42 -> 24 -> 50
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[8]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[16]);
+
+        // PageDown: from replaced row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement.textContent).toBe(cells[42].textContent);
+
+        // PageUp: from replaced row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[24]);
+
+        // PageDown: from replaced row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement.textContent).toBe(cells[50].textContent);
       });
     });
   });
