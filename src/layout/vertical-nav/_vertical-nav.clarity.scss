@@ -341,6 +341,7 @@
     //////
     ///////
     &.has-nav-groups {
+      .nav-content > .nav-link,
       .nav-group .nav-group-text,
       .nav-group .nav-group-trigger {
         font-weight: vertical-nav-variables.$clr-vertical-nav-item-top-level-font-weight;
