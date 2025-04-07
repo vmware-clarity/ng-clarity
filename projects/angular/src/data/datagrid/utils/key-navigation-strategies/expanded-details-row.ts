@@ -211,16 +211,14 @@ export class ClrExpandedDetailsRowKeyNavigationStrategy extends ClrDefaultKeyNav
     nextCellCoords.y = currentCellCoords.y + itemsPerPage >= numOfRows ? numOfRows : currentCellCoords.y + itemsPerPage;
 
     if (!this.isActionCell(currentCellCoords)) {
-      if (this.isRowReplaced(nextCellCoords.y) && !this.isDetailsRow(nextCellCoords.y)) {
-        if (nextCellCoords.y < numOfRows) {
+      if (this.isRowReplaced(nextCellCoords.y)) {
+        if (nextCellCoords.y < numOfRows && !this.isDetailsRow(nextCellCoords.y)) {
           nextCellCoords.y = nextCellCoords.y + 1;
         }
-      } else if (this.isExpandedRow(nextCellCoords.y)) {
-        nextCellCoords.x = 0;
       } else if (this.isDetailsRow(currentCellCoords.y) && !this.isDetailsRow(nextCellCoords.y)) {
         nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
       } else if (this.isDetailsRow(nextCellCoords.y)) {
-        nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
+        nextCellCoords.x = 0;
       }
     } else if (this.isDetailsRow(nextCellCoords.y)) {
       nextCellCoords.y = nextCellCoords.y - 1;
