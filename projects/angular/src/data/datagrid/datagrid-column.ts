@@ -48,9 +48,8 @@ import { WrappedColumn } from './wrapped-column';
       <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button">
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
         <cds-icon
-          *ngIf="sortDirection"
-          shape="arrow"
-          [attr.direction]="sortDirection"
+          [attr.shape]="sortDirection ? 'arrow' : 'two-way-arrows'"
+          [attr.direction]="sortDirection ? sortDirection : 'left'"
           aria-hidden="true"
           class="sort-icon"
         ></cds-icon>
@@ -99,7 +98,7 @@ export class ClrDatagridColumn<T = any>
   @Input('clrFilterStringPlaceholder') filterStringPlaceholder: string;
   @Input('clrFilterNumberMaxPlaceholder') filterNumberMaxPlaceholder: string;
   @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder: string;
-  @Input('clrDgSortDisableUnsort') clrDgSortDisableUnsort = false;
+  @Input('clrDgDisableUnsort') disableUnsort = false;
 
   @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
@@ -355,7 +354,7 @@ export class ClrDatagridColumn<T = any>
       return;
     }
 
-    if (!this.clrDgSortDisableUnsort && reverse === undefined && this.sortOrder === ClrDatagridSortOrder.DESC) {
+    if (!this.disableUnsort && reverse === undefined && this.sortOrder === ClrDatagridSortOrder.DESC) {
       this._sortOrder = ClrDatagridSortOrder.UNSORTED;
       this._sort.clear();
       this._sortDirection = null;
