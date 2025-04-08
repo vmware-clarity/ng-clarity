@@ -13,7 +13,6 @@ export class DefaultKeyNavigationStrategy implements KeyNavigationGridStrategyIn
   constructor(protected utils: KeyNavigationUtils) {}
 
   keyUp(currentCellCoords: CellCoordinates) {
-    console.log('keyUp ClrKeyNavigationStrategy');
     const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
 
     if (currentCellCoords.y === 0) {
@@ -42,7 +41,6 @@ export class DefaultKeyNavigationStrategy implements KeyNavigationGridStrategyIn
   }
 
   keyDown(currentCellCoords: CellCoordinates) {
-    console.log('keyDown ClrKeyNavigationStrategy');
     const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
 
     const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
@@ -72,8 +70,6 @@ export class DefaultKeyNavigationStrategy implements KeyNavigationGridStrategyIn
   }
 
   keyLeft(currentCellCoords: CellCoordinates) {
-    console.log('keyLeft ClrKeyNavigationStrategy');
-
     const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
 
     if (currentCellCoords.x === 0) {
@@ -86,8 +82,6 @@ export class DefaultKeyNavigationStrategy implements KeyNavigationGridStrategyIn
   }
 
   keyRight(currentCellCoords: CellCoordinates) {
-    console.log('keyRight ClrKeyNavigationStrategy');
-
     const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
 
     // calculate numOfColumns based on header cells.
@@ -99,8 +93,6 @@ export class DefaultKeyNavigationStrategy implements KeyNavigationGridStrategyIn
   }
 
   keyEnd(currentCellCoords: CellCoordinates, ctrlKey: boolean) {
-    console.log('keyEnd ClrKeyNavigationStrategy');
-
     const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
     const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
 
@@ -115,8 +107,6 @@ export class DefaultKeyNavigationStrategy implements KeyNavigationGridStrategyIn
   }
 
   keyHome(currentCellCoords: CellCoordinates, ctrlKey: boolean) {
-    console.log('keyHome ClrKeyNavigationStrategy');
-
     const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
 
     nextCellCoords.x = 0;
@@ -129,7 +119,6 @@ export class DefaultKeyNavigationStrategy implements KeyNavigationGridStrategyIn
   }
 
   keyPageUp(currentCellCoords: CellCoordinates) {
-    console.log('keyPageUp ClrKeyNavigationStrategy');
     const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
     const itemsPerPage = this.utils.getItemsPerPage();
 
@@ -157,7 +146,6 @@ export class DefaultKeyNavigationStrategy implements KeyNavigationGridStrategyIn
   }
 
   keyPageDown(currentCellCoords: CellCoordinates) {
-    console.log('keyPageDown ClrKeyNavigationStrategy');
     const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
     const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
     const itemsPerPage = this.utils.getItemsPerPage();

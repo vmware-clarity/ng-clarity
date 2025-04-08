@@ -1353,26 +1353,26 @@ export default function (): void {
 
         // PageDown: from expanded main row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[34].textContent);
+        expect(document.activeElement).toBe(cells[34]);
 
         // PageUp: from expanded sub row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[11].textContent);
+        expect(document.activeElement).toBe(cells[11]);
 
         // PageDown: from expanded sub row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[39].textContent);
+        expect(document.activeElement).toBe(cells[39]);
 
         // PageDown: from expanded sub row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[65].textContent);
+        expect(document.activeElement).toBe(cells[65]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expect(document.activeElement.textContent).toBe(cells[62].textContent);
+        expect(document.activeElement).toBe(cells[62]);
 
         // PageUp: from expanded main row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[39].textContent);
+        expect(document.activeElement).toBe(cells[39]);
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -1487,42 +1487,42 @@ export default function (): void {
 
         // PageDown: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[39].textContent);
+        expect(document.activeElement).toBe(cells[39]);
 
         // PageUp: from replaced row to NOT expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[18].textContent);
+        expect(document.activeElement).toBe(cells[18]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expect(document.activeElement.textContent).toBe(cells[13].textContent);
+        expect(document.activeElement).toBe(cells[13]);
 
         // PageDown: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[39].textContent);
+        expect(document.activeElement).toBe(cells[39]);
 
         // PageDown: from replaced row to NOT expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[59].textContent);
+        expect(document.activeElement).toBe(cells[59]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expect(document.activeElement.textContent).toBe(cells[54].textContent);
+        expect(document.activeElement).toBe(cells[54]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expect(document.activeElement.textContent).toBe(cells[49].textContent);
+        expect(document.activeElement).toBe(cells[49]);
 
         // PageUp: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[31].textContent);
+        expect(document.activeElement).toBe(cells[31]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[59].textContent);
+        expect(document.activeElement).toBe(cells[59]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expect(document.activeElement.textContent).toBe(cells[54].textContent);
+        expect(document.activeElement).toBe(cells[54]);
 
         // PageUp: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[31].textContent);
+        expect(document.activeElement).toBe(cells[31]);
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -1572,7 +1572,7 @@ export default function (): void {
 
         // PageDown: from replaced row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[42].textContent);
+        expect(document.activeElement).toBe(cells[42]);
 
         // PageUp: from replaced row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
@@ -1580,7 +1580,7 @@ export default function (): void {
 
         // PageDown: from replaced row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[50].textContent);
+        expect(document.activeElement).toBe(cells[50]);
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -1637,35 +1637,35 @@ export default function (): void {
 
         // PageDown: from not expanded row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[36].textContent);
+        expect(document.activeElement).toBe(cells[36]);
 
         // PageDown: from expanded sub row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[55].textContent);
+        expect(document.activeElement).toBe(cells[55]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        expect(document.activeElement.textContent).toBe(cells[56].textContent);
+        expect(document.activeElement).toBe(cells[56]);
 
         // PageUp: from not expanded row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[36].textContent);
+        expect(document.activeElement).toBe(cells[36]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expect(document.activeElement.textContent).toBe(cells[33].textContent);
+        expect(document.activeElement).toBe(cells[33]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        expect(document.activeElement.textContent).toBe(cells[34].textContent);
+        expect(document.activeElement).toBe(cells[34]);
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[56].textContent);
+        expect(document.activeElement).toBe(cells[56]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[36].textContent);
+        expect(document.activeElement).toBe(cells[36]);
 
         // PageUp: from expanded sub row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[17].textContent);
+        expect(document.activeElement).toBe(cells[17]);
       });
 
       // Covers key navigation over action cells
@@ -1768,29 +1768,29 @@ export default function (): void {
 
         // PageDown: from expanded main row to expanded detail row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[31].textContent);
+        expect(document.activeElement).toBe(cells[31]);
 
         // PageUp: from expanded detail row to expanded detail row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[10].textContent);
+        expect(document.activeElement).toBe(cells[10]);
 
         // PageDown: from expanded detail row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[34].textContent);
+        expect(document.activeElement).toBe(cells[34]);
 
         // PageDown: from expanded main row to expanded detail row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[58].textContent);
+        expect(document.activeElement).toBe(cells[58]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expect(document.activeElement.textContent).toBe(cells[55].textContent);
+        expect(document.activeElement).toBe(cells[55]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
         expect(document.activeElement).toBe(cells[56]);
 
         // PageUp: from expanded main row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[35].textContent);
+        expect(document.activeElement).toBe(cells[35]);
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -1848,19 +1848,19 @@ export default function (): void {
 
         // PageDown: from expanded main row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[36].textContent);
+        expect(document.activeElement).toBe(cells[36]);
 
         // PageUp: from expanded main row to expanded details row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[16].textContent);
+        expect(document.activeElement).toBe(cells[16]);
 
         // PageDown: from expanded details row to expanded details row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[38].textContent);
+        expect(document.activeElement).toBe(cells[38]);
 
         // PageUp: from expanded details row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[19].textContent);
+        expect(document.activeElement).toBe(cells[19]);
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -1910,51 +1910,51 @@ export default function (): void {
 
         // PageDown: from NOT expanded row to replaced details row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[36].textContent);
+        expect(document.activeElement).toBe(cells[36]);
 
         // PageUp: from replaced details row to NOT expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[17].textContent);
+        expect(document.activeElement).toBe(cells[17]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expect(document.activeElement.textContent).toBe(cells[12].textContent);
+        expect(document.activeElement).toBe(cells[12]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
         expect(document.activeElement).toBe(cells[13]);
 
         // PageDown: from NOT expanded row to replaced details row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[36].textContent);
+        expect(document.activeElement).toBe(cells[36]);
 
         // PageDown: from replaced details row to NOT expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[54].textContent);
+        expect(document.activeElement).toBe(cells[54]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
         expect(document.activeElement).toBe(cells[55]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expect(document.activeElement.textContent).toBe(cells[50].textContent);
+        expect(document.activeElement).toBe(cells[50]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expect(document.activeElement.textContent).toBe(cells[45].textContent);
+        expect(document.activeElement).toBe(cells[45]);
 
         // PageUp: from NOT expanded row to replaced details row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[30].textContent);
+        expect(document.activeElement).toBe(cells[30]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[54].textContent);
+        expect(document.activeElement).toBe(cells[54]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
         expect(document.activeElement).toBe(cells[55]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expect(document.activeElement.textContent).toBe(cells[50].textContent);
+        expect(document.activeElement).toBe(cells[50]);
 
         // PageUp: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expect(document.activeElement.textContent).toBe(cells[30].textContent);
+        expect(document.activeElement).toBe(cells[30]);
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -2005,7 +2005,7 @@ export default function (): void {
 
         // PageDown: from replaced row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[37].textContent);
+        expect(document.activeElement).toBe(cells[37]);
 
         // PageUp: from replaced row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
@@ -2013,7 +2013,7 @@ export default function (): void {
 
         // PageDown: from replaced row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expect(document.activeElement.textContent).toBe(cells[43].textContent);
+        expect(document.activeElement).toBe(cells[43]);
       });
     });
   });
