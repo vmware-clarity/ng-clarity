@@ -10,13 +10,6 @@
 @use 'variables.forms' as forms-variables;
 
 @include mixins.exports('forms.containers') {
-  // Fix of #5009 and #5146
-  .clr-date-container {
-    .clr-input-wrapper {
-      max-width: fit-content;
-    }
-  }
-
   .clr-form-control {
     margin-top: calc(4 * #{forms-variables.$clr-forms-baseline});
     display: flex;
@@ -90,7 +83,7 @@
   }
 
   .clr-control-inline {
-    @include forms-mixins.form-inline-input();
+    @include forms-mixins.form-inline-input(true);
   }
 
   .clr-subtext {

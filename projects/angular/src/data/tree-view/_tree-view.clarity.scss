@@ -25,10 +25,14 @@
 
       .clr-treenode-link,
       .clr-treenode-content,
-      .clr-treenode-checkbox .clr-control-label {
-        color: var(--clr-tree-node-content-disabled-color);
+      .clr-treenode-checkbox {
         background-color: var(--clr-tree-node-content-bg-disabled-color);
+      }
 
+      .clr-treenode-link,
+      .clr-treenode-content,
+      .clr-treenode-checkbox input[type='checkbox'] + .clr-control-label {
+        color: var(--clr-tree-node-content-disabled-color);
         cds-icon,
         clr-icon {
           fill: var(--clr-tree-node-caret-disabled-color);
@@ -64,18 +68,7 @@
 
       .clr-control-label {
         width: 100%;
-        padding: tokens.$cds-global-space-5 tokens.$cds-global-space-5 tokens.$cds-global-space-5
-          tokens.$cds-global-space-10;
-
-        &:before {
-          left: tokens.$cds-global-space-5;
-          top: tokens.$cds-global-space-5;
-        }
-
-        &:after {
-          left: tokens.$cds-global-space-6;
-          top: tokens.$cds-global-space-5;
-        }
+        padding: tokens.$cds-global-space-5 tokens.$cds-global-space-5 tokens.$cds-global-space-5 0;
       }
     }
 
@@ -84,7 +77,7 @@
     }
 
     &:focus > .clr-treenode-content,
-    &:focus > .clr-treenode-checkbox .clr-control-label {
+    &:focus > .clr-treenode-checkbox {
       outline-offset: calc(-1 * tokens.$cds-alias-object-border-width-200);
 
       @include mixins.include-slim-outline-style-form-fields(tokens.$cds-alias-object-border-width-200);
@@ -105,7 +98,7 @@
       margin-left: tree-view-variables.$clr-tree-node-touch-target;
     }
 
-    &.clr-treenode-text-only {
+    &:not(:has(.clr-treenode-link)) {
       padding-left: tokens.$cds-global-space-5;
     }
 
@@ -123,16 +116,28 @@
 
   // selected
   .clr-treenode-content .clr-treenode-link.active,
-  .clr-treenode-checkbox input[type='checkbox']:checked + .clr-control-label {
+  .clr-treenode-checkbox:has(input[type='checkbox']:not(:disabled):checked) {
     color: tree-view-variables.$clr-tree-node-content-selected-color;
     background-color: tree-view-variables.$clr-tree-node-content-bg-selected-color;
   }
 
   .clr-treenode-content .clr-treenode-link,
-  .clr-treenode-checkbox input[type='checkbox'] + .clr-control-label {
+  .clr-treenode-checkbox {
     border-radius: tree-view-variables.$clr-tree-border-radius;
-    color: tree-view-variables.$clr-tree-node-content-color;
     background-color: tree-view-variables.$clr-tree-node-content-bg-color;
+
+    &:hover {
+      background-color: tree-view-variables.$clr-tree-node-content-bg-hover-color;
+    }
+
+    &:active {
+      background-color: tree-view-variables.$clr-tree-node-content-bg-active-color;
+    }
+  }
+
+  .clr-treenode-content .clr-treenode-link,
+  .clr-treenode-checkbox input[type='checkbox'] + .clr-control-label {
+    color: tree-view-variables.$clr-tree-node-content-color;
 
     cds-icon,
     clr-icon {
@@ -141,7 +146,6 @@
 
     &:hover {
       color: tree-view-variables.$clr-tree-node-content-hover-color;
-      background-color: tree-view-variables.$clr-tree-node-content-bg-hover-color;
 
       cds-icon,
       clr-icon {
@@ -151,7 +155,6 @@
 
     &:active {
       color: tree-view-variables.$clr-tree-node-content-active-color;
-      background-color: tree-view-variables.$clr-tree-node-content-bg-active-color;
 
       cds-icon,
       clr-icon {
@@ -162,7 +165,7 @@
 
   // selected
   .clr-treenode-content .clr-treenode-link.active,
-  .clr-treenode-checkbox input[type='checkbox']:checked + .clr-control-label {
+  .clr-treenode-checkbox:has(input[type='checkbox']:not(:disabled):checked) {
     &:hover {
       background-color: tree-view-variables.$clr-tree-node-content-bg-selected-hover-color;
     }
