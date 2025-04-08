@@ -19730,18 +19730,14 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
         if (typeof comparator === 'string') {
             this._sortBy = new DatagridPropertyComparator(comparator);
         }
+        else if (comparator) {
+            this._sortBy = comparator;
+        }
+        else if (this.field) {
+            this._sortBy = new DatagridPropertyComparator(this.field);
+        }
         else {
-            if (comparator) {
-                this._sortBy = comparator;
-            }
-            else {
-                if (this.field) {
-                    this._sortBy = new DatagridPropertyComparator(this.field);
-                }
-                else {
-                    delete this._sortBy;
-                }
-            }
+            delete this._sortBy;
         }
     }
     get sortOrder() {
