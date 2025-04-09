@@ -9,7 +9,7 @@ import { CellCoordinates } from '../key-navigation-grid.controller';
 import { DefaultKeyNavigationStrategy } from './default';
 import { KeyNavigationUtils } from './key-nav-utils';
 
-export class ExpandedDetailsRowKeyNavigationStrategy extends DefaultKeyNavigationStrategy {
+export class ExpandedRowKeyNavigationStrategy extends DefaultKeyNavigationStrategy {
   constructor(utils: KeyNavigationUtils) {
     super(utils);
   }

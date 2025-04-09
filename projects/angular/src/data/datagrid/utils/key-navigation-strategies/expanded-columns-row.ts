@@ -6,10 +6,10 @@
  */
 
 import { CellCoordinates } from '../key-navigation-grid.controller';
-import { DefaultKeyNavigationStrategy } from './default';
+import { ExpandedRowKeyNavigationStrategy } from './expanded-row';
 import { KeyNavigationUtils } from './key-nav-utils';
 
-export class ExpandedColumnsRowKeyNavigationStrategy extends DefaultKeyNavigationStrategy {
+export class ExpandedColumnsRowKeyNavigationStrategy extends ExpandedRowKeyNavigationStrategy {
   constructor(utils: KeyNavigationUtils) {
     super(utils);
   }
@@ -70,85 +70,19 @@ export class ExpandedColumnsRowKeyNavigationStrategy extends DefaultKeyNavigatio
   }
 
   override keyLeft(currentCellCoords: CellCoordinates) {
-    const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
-
-    if (!this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isRowReplaced(currentCellCoords.y)) {
-      return super.keyLeft(currentCellCoords);
-    }
-
-    if (currentCellCoords.x !== 0) {
-      nextCellCoords.x = currentCellCoords.x - 1;
-    } else if (!this.utils.isActionCell(currentCellCoords)) {
-      nextCellCoords.y = currentCellCoords.y - 1;
-      nextCellCoords.x = this.utils.actionCellCount(nextCellCoords.y) - 1;
-    }
-
-    return nextCellCoords;
+    return super.keyLeft(currentCellCoords);
   }
 
   override keyRight(currentCellCoords: CellCoordinates) {
-    const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
-
-    if (!this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isRowReplaced(currentCellCoords.y)) {
-      return super.keyRight(currentCellCoords);
-    }
-
-    // calculate numOfColumns based on header cells.
-    const numOfColumns = this.utils.rows?.length - 1 ? this.utils.getCellsForRow(0).length - 1 : 0;
-
-    if (currentCellCoords.x >= numOfColumns) {
-      return nextCellCoords;
-    }
-
-    if (
-      this.utils.isActionCell(currentCellCoords) &&
-      currentCellCoords.x === this.utils.actionCellCount(currentCellCoords.x) - 1 &&
-      this.utils.isRowReplaced(currentCellCoords.y) &&
-      !this.utils.isDetailsRow(currentCellCoords.y)
-    ) {
-      nextCellCoords.y = currentCellCoords.y + 1;
-      nextCellCoords.x = 0;
-    } else {
-      nextCellCoords.x = currentCellCoords.x + 1;
-    }
-
-    return nextCellCoords;
+    return super.keyRight(currentCellCoords);
   }
 
   override keyEnd(currentCellCoords: CellCoordinates, ctrlKey: boolean) {
-    const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
-
-    if (!this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isRowReplaced(currentCellCoords.y)) {
-      return super.keyEnd(currentCellCoords, ctrlKey);
-    }
-
-    nextCellCoords.x = this.utils.getCellsForRow(currentCellCoords.y).length - 1;
-
-    const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
-    const numOfColumns = numOfRows ? this.utils.getCellsForRow(0).length - 1 : 0;
-    if (ctrlKey) {
-      nextCellCoords.x = numOfColumns;
-      nextCellCoords.y = numOfRows;
-    }
-
-    return nextCellCoords;
+    return super.keyEnd(currentCellCoords, ctrlKey);
   }
 
   override keyHome(currentCellCoords: CellCoordinates, ctrlKey: boolean) {
-    const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
-
-    if (!this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isRowReplaced(currentCellCoords.y)) {
-      return super.keyHome(currentCellCoords, ctrlKey);
-    }
-
-    nextCellCoords.x = 0;
-    nextCellCoords.y = currentCellCoords.y - 1;
-
-    if (ctrlKey) {
-      nextCellCoords.y = 0;
-    }
-
-    return nextCellCoords;
+    return super.keyHome(currentCellCoords, ctrlKey);
   }
 
   override keyPageUp(currentCellCoords: CellCoordinates) {

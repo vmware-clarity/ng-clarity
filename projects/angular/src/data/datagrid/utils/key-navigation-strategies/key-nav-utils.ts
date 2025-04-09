@@ -10,7 +10,7 @@ import { KeyNavigationGridStrategyInterface } from '../../interfaces/key-nav-gri
 import { CellCoordinates, KeyNavigationGridConfig } from '../key-navigation-grid.controller';
 import { DefaultKeyNavigationStrategy } from './default';
 import { ExpandedColumnsRowKeyNavigationStrategy } from './expanded-columns-row';
-import { ExpandedDetailsRowKeyNavigationStrategy } from './expanded-details-row';
+import { ExpandedRowKeyNavigationStrategy } from './expanded-row';
 
 export class KeyNavigationUtils {
   constructor(public host: HTMLElement, public config: KeyNavigationGridConfig) {}
@@ -121,10 +121,9 @@ export class KeyNavigationUtils {
   }
 
   private getNavStrategy(currentCellCoords: CellCoordinates): KeyNavigationGridStrategyInterface {
-    //build strategy
     switch (true) {
       case this.isSingleCellExpandedRow(currentCellCoords.y):
-        return new ExpandedDetailsRowKeyNavigationStrategy(this);
+        return new ExpandedRowKeyNavigationStrategy(this);
       case this.isDetailsRow(currentCellCoords.y):
       case this.isExpandedRow(currentCellCoords.y):
         return new ExpandedColumnsRowKeyNavigationStrategy(this);
