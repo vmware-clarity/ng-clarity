@@ -156,7 +156,7 @@ export class ExpandedDetailsRowKeyNavigationStrategy extends DefaultKeyNavigatio
 
   override keyPageUp(currentCellCoords: CellCoordinates) {
     const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
-    const itemsPerPage = this.utils.getItemsPerPage();
+    const itemsPerPage = this.utils.itemsPerPage;
 
     nextCellCoords.y = currentCellCoords.y - itemsPerPage > 0 ? currentCellCoords.y - itemsPerPage + 1 : 1;
 
@@ -186,7 +186,7 @@ export class ExpandedDetailsRowKeyNavigationStrategy extends DefaultKeyNavigatio
     const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
 
     const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
-    const itemsPerPage = this.utils.getItemsPerPage();
+    const itemsPerPage = this.utils.itemsPerPage;
 
     nextCellCoords.y = currentCellCoords.y + itemsPerPage >= numOfRows ? numOfRows : currentCellCoords.y + itemsPerPage;
 

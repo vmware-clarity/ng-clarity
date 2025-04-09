@@ -10,7 +10,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { Keys } from '../../../utils/enums/keys.enum';
-import { KeyNavigationStrategyBuilder } from './key-navigation-strategies/key-nav-strategy-builder';
+import { KeyNavigationUtils } from './key-navigation-strategies/key-nav-utils';
 
 const actionableItemSelectors = [
   'a[href]',
@@ -52,7 +52,7 @@ export interface CellCoordinates {
 export class KeyNavigationGridController implements OnDestroy {
   skipItemFocus = false;
 
-  private host: HTMLElement;
+  private keyNavUtils: KeyNavigationUtils;
   private config: KeyNavigationGridConfig;
   private listenersAdded = false;
   private destroy$ = new Subject<void>();
@@ -67,18 +67,6 @@ export class KeyNavigationGridController implements OnDestroy {
     };
   }
 
-  private get grid() {
-    return this.host?.querySelector(this.config.keyGrid);
-  }
-
-  private get rows() {
-    return this.host?.querySelectorAll(this.config.keyGridRows) as NodeListOf<HTMLElement>;
-  }
-
-  private get cells() {
-    return this.host?.querySelectorAll(this.config.keyGridCells) as NodeListOf<HTMLElement>;
-  }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -90,13 +78,13 @@ export class KeyNavigationGridController implements OnDestroy {
     }
 
     this.zone.runOutsideAngular(() => {
-      fromEvent(this.grid, 'mousedown')
+      fromEvent(this.keyNavUtils.grid, 'mousedown')
         .pipe(takeUntil(this.destroy$))
         .subscribe((e: MouseEvent) => {
           // preserve right click for context menus & keyboard mouse control https://apple.stackexchange.com/questions/32715/how-do-i-open-the-context-menu-from-a-mac-keyboard
           if (e.buttons === 1 && !e.ctrlKey) {
-            const activeCell = this.cells
-              ? Array.from(this.cells).find(
+            const activeCell = this.keyNavUtils.cells
+              ? Array.from(this.keyNavUtils.cells).find(
                   c => c === e.target || c === (e.target as HTMLElement).closest(this.config.keyGridCells)
                 )
               : null;
@@ -106,23 +94,23 @@ export class KeyNavigationGridController implements OnDestroy {
           }
         });
 
-      fromEvent(this.grid, 'wheel')
+      fromEvent(this.keyNavUtils.grid, 'wheel')
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
           this.removeActiveCell();
         });
 
-      fromEvent(this.grid, 'focusout')
+      fromEvent(this.keyNavUtils.grid, 'focusout')
         .pipe(debounceTime(0), takeUntil(this.destroy$))
         .subscribe(() => {
-          if (this.grid.contains(document.activeElement)) {
+          if (this.keyNavUtils.grid.contains(document.activeElement)) {
             return;
           }
 
           this.removeActiveCell();
         });
 
-      fromEvent(this.grid, 'keydown')
+      fromEvent(this.keyNavUtils.grid, 'keydown')
         .pipe(takeUntil(this.destroy$))
         .subscribe((e: KeyboardEvent) => {
           // Skip column resize events
@@ -142,14 +130,10 @@ export class KeyNavigationGridController implements OnDestroy {
             e.key === Keys.PageUp ||
             e.key === Keys.PageDown
           ) {
-            const strategyBuilder = new KeyNavigationStrategyBuilder(this.host, this.rows, this.cells, this.config);
+            const nextCellCoords = this.keyNavUtils.getNextItemCoordinate(e);
 
-            const nextCellCoords = strategyBuilder.getNextItemCoordinate(e);
-
-            const activeItem = this.rows
-              ? (Array.from(strategyBuilder.keyNavUtils.getCellsForRow(nextCellCoords.y))[
-                  nextCellCoords.x
-                ] as HTMLElement)
+            const activeItem = this.keyNavUtils.rows
+              ? (Array.from(this.keyNavUtils.getCellsForRow(nextCellCoords.y))[nextCellCoords.x] as HTMLElement)
               : null;
 
             if (activeItem) {
@@ -164,14 +148,14 @@ export class KeyNavigationGridController implements OnDestroy {
   }
 
   initializeKeyGrid(host: HTMLElement) {
-    this.host = host;
+    this.keyNavUtils = new KeyNavigationUtils(host, this.config);
     this.addListeners();
     this.resetKeyGrid();
   }
 
   resetKeyGrid() {
-    this.cells?.forEach((i: HTMLElement) => i.setAttribute('tabindex', '-1'));
-    const firstCell = this.cells ? this.cells[0] : null;
+    this.keyNavUtils.cells?.forEach((i: HTMLElement) => i.setAttribute('tabindex', '-1'));
+    const firstCell = this.keyNavUtils.cells ? this.keyNavUtils.cells[0] : null;
     firstCell?.setAttribute('tabindex', '0');
   }
 
@@ -184,7 +168,9 @@ export class KeyNavigationGridController implements OnDestroy {
   }
 
   setActiveCell(activeCell: HTMLElement, { keepFocus } = { keepFocus: false }) {
-    const prior = this.cells ? Array.from(this.cells).find(c => c.getAttribute('tabindex') === '0') : null;
+    const prior = this.keyNavUtils.cells
+      ? Array.from(this.keyNavUtils.cells).find(c => c.getAttribute('tabindex') === '0')
+      : null;
 
     if (prior) {
       prior.setAttribute('tabindex', '-1');

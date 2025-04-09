@@ -5,18 +5,74 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { Keys } from '../../../../utils/enums/keys.enum';
+import { KeyNavigationGridStrategyInterface } from '../../interfaces/key-nav-grid-strategy.interface';
 import { CellCoordinates, KeyNavigationGridConfig } from '../key-navigation-grid.controller';
+import { DefaultKeyNavigationStrategy } from './default';
+import { ExpandedColumnsRowKeyNavigationStrategy } from './expanded-columns-row';
+import { ExpandedDetailsRowKeyNavigationStrategy } from './expanded-details-row';
 
 export class KeyNavigationUtils {
-  constructor(
-    public host: HTMLElement,
-    public rows: NodeListOf<HTMLElement>,
-    public cells: NodeListOf<HTMLElement>,
-    public config: KeyNavigationGridConfig
-  ) {}
+  constructor(public host: HTMLElement, public config: KeyNavigationGridConfig) {}
 
-  getItemsPerPage() {
+  get grid() {
+    return this.host?.querySelector(this.config.keyGrid);
+  }
+
+  get rows() {
+    return this.host?.querySelectorAll(this.config.keyGridRows) as NodeListOf<HTMLElement>;
+  }
+
+  get cells() {
+    return this.host?.querySelectorAll(this.config.keyGridCells) as NodeListOf<HTMLElement>;
+  }
+
+  get currentCellCoordinates() {
+    const currentCell = this.cells ? Array.from(this.cells).find(i => i.getAttribute('tabindex') === '0') : null;
+    const currentRow: HTMLElement = currentCell ? currentCell.closest(this.config.keyGridRows) : null;
+
+    const coordinates: CellCoordinates = {
+      x:
+        currentRow && currentCell
+          ? Array.from(currentRow.querySelectorAll(this.config.keyGridCells)).indexOf(currentCell)
+          : 0,
+      y: currentRow && currentCell && this.rows ? Array.from(this.rows).indexOf(currentRow) : 0,
+    };
+
+    return coordinates;
+  }
+
+  get itemsPerPage() {
     return Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
+  }
+
+  getNextItemCoordinate(e: KeyboardEvent) {
+    const currentCellCoords = this.currentCellCoordinates;
+    const strategy = this.getNavStrategy(currentCellCoords);
+
+    const inlineStart = this.host.dir === 'rtl' ? Keys.ArrowRight : Keys.ArrowLeft;
+    const inlineEnd = this.host.dir === 'rtl' ? Keys.ArrowLeft : Keys.ArrowRight;
+
+    switch (e.key) {
+      case Keys.ArrowUp:
+        return strategy.keyUp(currentCellCoords);
+      case Keys.ArrowDown:
+        return strategy.keyDown(currentCellCoords);
+      case inlineStart:
+        return strategy.keyLeft(currentCellCoords);
+      case inlineEnd:
+        return strategy.keyRight(currentCellCoords);
+      case Keys.Home:
+        return strategy.keyHome(currentCellCoords, e.ctrlKey);
+      case Keys.End:
+        return strategy.keyEnd(currentCellCoords, e.ctrlKey);
+      case Keys.PageUp:
+        return strategy.keyPageUp(currentCellCoords);
+      case Keys.PageDown:
+        return strategy.keyPageDown(currentCellCoords);
+      default:
+        return currentCellCoords;
+    }
   }
 
   getCellsForRow(index: number) {
@@ -64,18 +120,16 @@ export class KeyNavigationUtils {
     };
   }
 
-  getCurrentCellCoordinates() {
-    const currentCell = this.cells ? Array.from(this.cells).find(i => i.getAttribute('tabindex') === '0') : null;
-    const currentRow: HTMLElement = currentCell ? currentCell.closest(this.config.keyGridRows) : null;
-
-    const coordinates: CellCoordinates = {
-      x:
-        currentRow && currentCell
-          ? Array.from(currentRow.querySelectorAll(this.config.keyGridCells)).indexOf(currentCell)
-          : 0,
-      y: currentRow && currentCell && this.rows ? Array.from(this.rows).indexOf(currentRow) : 0,
-    };
-
-    return coordinates;
+  private getNavStrategy(currentCellCoords: CellCoordinates): KeyNavigationGridStrategyInterface {
+    //build strategy
+    switch (true) {
+      case this.isSingleCellExpandedRow(currentCellCoords.y):
+        return new ExpandedDetailsRowKeyNavigationStrategy(this);
+      case this.isDetailsRow(currentCellCoords.y):
+      case this.isExpandedRow(currentCellCoords.y):
+        return new ExpandedColumnsRowKeyNavigationStrategy(this);
+      default:
+        return new DefaultKeyNavigationStrategy(this);
+    }
   }
 }
