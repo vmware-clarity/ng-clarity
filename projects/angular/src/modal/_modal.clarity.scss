@@ -14,20 +14,40 @@
 @include meta.load-css('properties.modal');
 
 @include mixins.exports('modal.clarity') {
-  .clr-side-panel-pinned-sm {
+  .clr-side-panel-pinned-right-sm {
     padding-right: modal-variables.$clr-modal-sm-width !important;
   }
 
-  .clr-side-panel-pinned-md {
+  .clr-side-panel-pinned-right-md {
     padding-right: modal-variables.$clr-modal-md-width !important;
   }
 
-  .clr-side-panel-pinned-lg {
+  .clr-side-panel-pinned-right-lg {
     padding-right: modal-variables.$clr-modal-lg-width !important;
   }
 
-  .clr-side-panel-pinned-xl {
+  .clr-side-panel-pinned-right-xl {
     padding-right: modal-variables.$clr-modal-xl-width !important;
+  }
+
+  :root {
+    --modal-height-width-ratio: 0.5;
+  }
+
+  .clr-side-panel-pinned-bottom-sm {
+    padding-bottom: calc(modal-variables.$clr-modal-sm-width * var(--modal-height-width-ratio)) !important;
+  }
+
+  .clr-side-panel-pinned-bottom-md {
+    padding-bottom: calc(modal-variables.$clr-modal-md-width * var(--modal-height-width-ratio)) !important;
+  }
+
+  .clr-side-panel-pinned-bottom-lg {
+    padding-bottom: calc(modal-variables.$clr-modal-lg-width * var(--modal-height-width-ratio)) !important;
+  }
+
+  .clr-side-panel-pinned-bottom-xl {
+    padding-bottom: calc(modal-variables.$clr-modal-xl-width * var(--modal-height-width-ratio)) !important;
   }
 
   .clr-modal-host {
@@ -37,6 +57,7 @@
     .modal-backdrop {
       position: absolute;
     }
+    box-sizing: border-box;
   }
 
   .modal {
@@ -70,7 +91,6 @@
     .modal {
       left: initial;
       padding: 0;
-      height: 100%;
 
       .modal-content-wrapper {
         height: 100%;
@@ -99,6 +119,34 @@
       .modal-body-wrapper {
         flex: 1 1;
         max-height: 100%;
+      }
+    }
+
+    &.side-panel-bottom {
+      .modal:not(.modal-full-screen) {
+        top: initial;
+        width: 100%;
+        justify-content: end;
+        max-height: 100%;
+        min-height: calc(modal-variables.$clr-modal-sm-width * 0.6);
+
+        height: calc(modal-variables.$clr-modal-md-width * var(--modal-height-width-ratio));
+
+        &:has(.modal-sm) {
+          height: calc(modal-variables.$clr-modal-sm-width * var(--modal-height-width-ratio));
+        }
+
+        &:has(.modal-lg) {
+          height: calc(modal-variables.$clr-modal-lg-width * var(--modal-height-width-ratio));
+        }
+
+        &:has(.modal-xl) {
+          height: calc(modal-variables.$clr-modal-xl-width * var(--modal-height-width-ratio));
+        }
+      }
+      .modal-dialog {
+        max-height: 100%;
+        width: 100%;
       }
     }
   }
