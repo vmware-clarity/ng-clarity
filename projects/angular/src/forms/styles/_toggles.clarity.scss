@@ -56,7 +56,6 @@
         position: absolute;
         display: inline-block;
         content: '';
-        border: tokens.$cds-alias-object-border-width-200 solid toggle-variables.$clr-toggle-bg-color-off;
         border-radius: tokens.$cds-alias-object-border-radius-200;
         height: toggle-variables.$clr-toggle-switch-base-height;
         width: toggle-variables.$clr-toggle-switch-base-width;
@@ -70,11 +69,10 @@
         position: absolute;
         display: inline-block;
         content: '';
-        border: tokens.$cds-alias-object-border-width-200 solid toggle-variables.$clr-toggle-handle-border-color;
         border-radius: tokens.$cds-alias-object-border-radius-300;
         background-color: toggle-variables.$clr-toggle-handle-bg-color;
-        left: tokens.$cds-global-space-2;
-        top: calc(toggle-variables.$clr-toggle-switch-height / 2 - toggle-variables.$clr-toggle-dot-diameter / 2);
+        left: calc(toggle-variables.$clr-toggle-switch-base-height / 2 - toggle-variables.$clr-toggle-dot-diameter / 2);
+        top: calc(toggle-variables.$clr-toggle-switch-base-height / 2 - toggle-variables.$clr-toggle-dot-diameter / 2);
         right: calc(-1 * toggle-variables.$clr-toggle-switch-base-width);
 
         @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
@@ -105,9 +103,12 @@
           border-color: toggle-variables.$clr-toggle-handle-border-color-on;
           @include clr-toggle-transition-styles;
           transition-property: right, left;
-          left: calc(toggle-variables.$clr-toggle-switch-base-width - toggle-variables.$clr-toggle-checked-diameter);
+          left: calc(
+            toggle-variables.$clr-toggle-switch-base-width - toggle-variables.$clr-toggle-checked-diameter -
+              toggle-variables.$clr-toggle-switch-top-spacing
+          );
           right: 0;
-          top: 0;
+          top: toggle-variables.$clr-toggle-switch-top-spacing;
         }
       }
 
