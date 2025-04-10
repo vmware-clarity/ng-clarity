@@ -2,6 +2,7 @@
 /.angular
 **/node_modules
 /dist
+/.rollup.cache
 /projects/angular/clarity.api.md
 /.storybook/preview.js
 /documentation.json
