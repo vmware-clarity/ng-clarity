@@ -9,6 +9,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostBinding,
   HostListener,
   Input,
   OnChanges,
@@ -44,6 +45,7 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
   private _pinnable = false;
   private _pinned = false;
   private originalStopClose: boolean;
+  private _position = 'right';
 
   private _size = 'md';
 
@@ -67,6 +69,22 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
       if (this.clrSidePanelPinnable && this.pinned) {
         this.displayOverlapping();
         this.displaySideBySide();
+      }
+    }
+  }
+
+  @Input('clrSidePanelPosition')
+  get position(): string {
+    return this._position;
+  }
+
+  set position(position: string) {
+    if (position && position !== this._position) {
+      this._position = position;
+      if (this._position === 'right') {
+        this.configuration.fadeMove = 'fadeLeft';
+      } else if (this._position === 'bottom') {
+        this.configuration.fadeMove = 'fadeUp';
       }
     }
   }
@@ -113,8 +131,16 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     return (this.element.nativeElement as HTMLElement).closest('.clr-modal-host') || document.body;
   }
 
+  @HostBinding('class.side-panel-bottom')
+  private get bottomPositionCssClass() {
+    return this.position === 'bottom';
+  }
+
   ngOnInit(): void {
     this.configuration.fadeMove = 'fadeLeft';
+    if (this.position === 'bottom') {
+      this.configuration.fadeMove = 'fadeUp';
+    }
   }
 
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
@@ -159,7 +185,7 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
   }
 
   private displaySideBySide() {
-    this.hostElement.classList.add('clr-side-panel-pinned-' + this.size);
+    this.hostElement.classList.add(`clr-side-panel-pinned-${this.position}-${this.size}`);
   }
 
   private displayOverlapping() {
