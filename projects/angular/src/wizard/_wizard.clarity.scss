@@ -23,81 +23,79 @@
 
 @include mixins.exports('wizard.clarity') {
   .clr-wizard {
-    .modal-dialog {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      // IE/OldEdge
-      box-shadow: wizard-variables.$clr-wizard-box-shadow;
-      height: 50%;
-      max-height: 100%;
-    }
-
-    .modal-content {
-      border-radius: 0 wizard-variables.$clr-wizard-border-radius wizard-variables.$clr-wizard-border-radius 0;
-      box-shadow: none;
-      padding: wizard-variables.$clr-wizard-default-space;
-      flex: 2 2 auto;
-      width: 66%;
-      height: initial;
-      overflow: hidden;
-      display: flex;
-      align-items: flex-start;
-      flex-direction: column;
-      gap: wizard-variables.$clr-wizard-default-space;
-    }
-
-    .modal-header--accessible {
-      flex: 0 0 auto;
-      width: 100%;
-      padding: 0;
-    }
-
-    .modal-title {
-      color: wizard-variables.$clr-wizard-title-text;
+    .clr-wizard-wrapper {
       display: flex;
       flex-direction: row;
+      overflow: hidden;
       width: 100%;
-    }
+      height: 100%;
+      .clr-wizard-content {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        flex: 2 2 auto;
+        width: 66%;
+        height: initial;
+        overflow: hidden;
+        .clr-wizard-pages-wrapper {
+          display: flex;
+          padding: 0 wizard-variables.$clr-wizard-default-space;
+          height: 100%;
+          width: 100%;
+          overflow: hidden;
+          .clr-wizard-page {
+            overflow-y: auto;
+            overflow-x: hidden;
+          }
+        }
+        .wizard-title {
+          color: wizard-variables.$clr-wizard-title-text;
+          @include mixins.generate-typography-token('SECTION-20-STD');
+          padding: wizard-variables.$clr-wizard-default-space;
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          gap: tokens.$cds-global-space-5;
+          &-text {
+            display: inline-block;
+            flex: 0 1 auto;
+            width: 100%;
+            outline: none;
+          }
 
-    .modal-body {
-      flex: 1 1 auto;
-      color: wizard-variables.$clr-wizard-main-text-color;
-      width: 100%;
-    }
+          button.close {
+            font-size: initial;
+            line-height: initial;
+            cds-icon {
+              fill: var(--clr-modal-close-color);
+              height: var(--cds-global-space-9);
+              width: var(--cds-global-space-9);
+            }
+          }
+        }
+        .clr-wizard-footer {
+          width: 100%;
+          height: wizard-variables.$clr-wizard-footer-height;
+          min-height: wizard-variables.$clr-wizard-footer-height;
+          max-height: wizard-variables.$clr-wizard-footer-height;
+          padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-default-space;
+          border-top: var(--clr-global-borderwidth) solid var(--clr-wizard-stepnav-border-color);
 
-    .modal-footer {
-      display: block;
-      width: 100%;
-      flex: 0 0 wizard-variables.$clr-wizard-footer-height;
-      height: wizard-variables.$clr-wizard-footer-height;
-      min-height: wizard-variables.$clr-wizard-footer-height;
-      max-height: wizard-variables.$clr-wizard-footer-height;
-      padding: 0;
+          .clr-wizard-footer-buttons-wrapper {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-end;
+            gap: tokens.$cds-global-space-7;
+          }
+        }
+      }
     }
 
     .clr-wizard-btn {
       margin: 0;
       max-width: 100%;
       display: block;
-    }
-
-    .modal-title-text {
-      display: inline-block;
-      flex: 0 1 auto;
-      width: 100%;
-      outline: none;
-    }
-
-    .modal-title-wrapper {
-      width: 100%;
-    }
-
-    .modal-header-actions-wrapper {
-      flex: 1 0 auto;
-      height: wizard-variables.$clr-wizard-default-space;
-      padding-left: tokens.$cds-global-space-6;
-      padding-right: tokens.$cds-global-space-3;
     }
 
     .clr-wizard-header-action-wrapper {
@@ -273,35 +271,6 @@
       @include mixins.generate-typography-token('SECTION-20-STD');
     }
 
-    // normal modal ignores this. wizard needs it so the nav and content
-    // will take up the full height of the modal...
-    .modal-content-wrapper {
-      display: flex;
-      flex-direction: row;
-      flex: 1 1 100%;
-      @include mixins.equilateral(100%);
-      // firefox fix
-      max-height: 100%;
-
-      // edge fix, related to the firefox fix above
-      .modal-nav {
-        height: auto;
-      }
-    }
-
-    .clr-wizard-footer-buttons {
-      text-align: right;
-      margin: 0;
-    }
-
-    .clr-wizard-footer-buttons-wrapper {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: flex-end;
-      gap: tokens.$cds-global-space-7;
-    }
-
     .clr-wizard-btn-wrapper {
       flex: 0 1 auto;
     }
@@ -315,27 +284,16 @@
       padding: 0;
     }
 
-    .clr-wizard-content {
-      display: block;
-    }
-
     .clr-wizard-page:not([aria-hidden='true']) {
       display: block;
     }
-  }
 
-  .clr-wizard {
-    // sizing stuff is here
-    .modal-dialog {
-      height: 75vh;
-    }
-
-    .modal-body-wrapper {
-      // overriding forced style on .modal
-      max-height: 100%;
-      display: flex;
-      flex-grow: 1;
-      width: 100%;
+    &.clr-wizard--in-page {
+      .clr-wizard-content {
+        .clr-wizard-footer .clr-wizard-footer-buttons-wrapper {
+          justify-content: flex-start;
+        }
+      }
     }
 
     &.wizard-md {
@@ -391,136 +349,123 @@
       position: absolute;
       top: 40%;
     }
-  }
 
-  .clr-wizard-page {
-    & > *:first-child {
-      margin-top: 0;
-
+    .clr-wizard-page {
       & > *:first-child {
         margin-top: 0;
-      }
-    }
 
-    & > form:first-child {
-      padding-top: 0;
-
-      & > .form-block:first-child {
-        margin-top: 0;
-      }
-    }
-  }
-
-  // Inline wizards are used by vSphere plugins to display a wizard inside an iframe that is inside a modal.
-  .clr-wizard--inline {
-    display: block;
-    width: 100%;
-    // you will want to set a fixed width and height for these static wizards
-    // otherwise, you'll get some minor jumping along the right edge when it is
-    // closed...
-
-    & > clr-modal > .modal:focus {
-      // need to remove the outline style or trap-focus directive will make
-      // outline appear in Safari and Microsoft browsers
-      outline-style: none;
-      outline-color: transparent;
-    }
-
-    clr-modal {
-      @include mixins.equilateral(100%);
-      display: block;
-    }
-
-    .modal {
-      padding: 0;
-      position: static;
-      height: 100%;
-      max-height: 100%;
-
-      .content-container {
-        height: 100%;
-
-        .nav-panel {
-          @include mixins.equilateral(99%);
+        & > *:first-child {
+          margin-top: 0;
         }
       }
 
-      .modal-content {
-        box-shadow: none;
+      & > form:first-child {
+        padding-top: 0;
+
+        & > .form-block:first-child {
+          margin-top: 0;
+        }
+      }
+    }
+
+    // Inline wizards are used by vSphere plugins to display a wizard inside an iframe that is inside a modal.
+    .clr-wizard--inline {
+      display: block;
+      width: 100%;
+      // you will want to set a fixed width and height for these static wizards
+      // otherwise, you'll get some minor jumping along the right edge when it is
+      // closed...
+
+      & > clr-modal > .modal:focus {
+        // need to remove the outline style or trap-focus directive will make
+        // outline appear in Safari and Microsoft browsers
+        outline-style: none;
+        outline-color: transparent;
       }
 
-      .modal-dialog {
-        min-height: 100%;
+      clr-modal {
         @include mixins.equilateral(100%);
-        z-index: auto;
+        display: block;
       }
-    }
 
-    .modal-body-wrapper {
-      height: 100%;
-    }
+      .modal {
+        padding: 0;
+        position: static;
+        height: 100%;
+        max-height: 100%;
 
-    .modal-header .close {
-      display: none;
-    }
+        .content-container {
+          height: 100%;
 
-    .nav.navList {
-      padding-top: 0;
-    }
+          .nav-panel {
+            @include mixins.equilateral(99%);
+          }
+        }
 
-    .modal-dialog .modal-content .modal-body .content-area {
-      overflow-y: auto;
-    }
+        .modal-content {
+          box-shadow: none;
+        }
 
-    .modal-backdrop {
-      @include mixins.equilateral(0);
-      display: none;
-    }
+        .modal-dialog {
+          min-height: 100%;
+          @include mixins.equilateral(100%);
+          z-index: auto;
+        }
+      }
 
-    .modal-content-wrapper {
-      align-items: stretch;
-      height: 100%;
-    }
-
-    .clr-wizard-stepnav-wrapper,
-    &.clr-wizard .modal-content {
-      min-height: 100%;
-      height: auto;
-      max-height: 100%;
-
-      .clr-wizard-stepnav {
+      .modal-body-wrapper {
         height: 100%;
       }
+
+      .modal-header .close {
+        display: none;
+      }
+
+      .nav.navList {
+        padding-top: 0;
+      }
+
+      .modal-dialog .modal-content .modal-body .content-area {
+        overflow-y: auto;
+      }
+
+      .modal-backdrop {
+        @include mixins.equilateral(0);
+        display: none;
+      }
+
+      .modal-content-wrapper {
+        align-items: stretch;
+        height: 100%;
+      }
+
+      .clr-wizard-stepnav-wrapper,
+      &.clr-wizard .modal-content {
+        min-height: 100%;
+        height: auto;
+        max-height: 100%;
+
+        .clr-wizard-stepnav {
+          height: 100%;
+        }
+      }
     }
-  }
 
-  .clr-wizard--no-shadow {
-    .modal-content-wrapper,
-    .modal-dialog {
-      box-shadow: none;
-    }
-  }
-
-  .clr-wizard--no-title {
-    .clr-wizard-title {
-      display: none;
+    .clr-wizard--no-shadow {
+      .modal-content-wrapper,
+      .modal-dialog {
+        box-shadow: none;
+      }
     }
 
-    .clr-wizard-stepnav {
-      padding-top: tokens.$cds-global-space-9;
-    }
-  }
+    .clr-wizard--no-title {
+      .clr-wizard-title {
+        display: none;
+      }
 
-  .clr-wizard--in-page {
-    display: block;
-    height: calc(100% + #{variables.$clr-content-area-padding-top} + #{variables.$clr-content-area-padding-bottom});
-    width: unset; // 100% from the inline wizard styles does not work
-
-    // offset content area padding
-    margin: -#{variables.$clr-content-area-padding-top} -#{variables.$clr-content-area-padding-right} -#{variables.$clr-content-area-padding-bottom} -#{variables.$clr-content-area-padding-left} !important;
-
-    .clr-wizard-footer-buttons-wrapper {
-      justify-content: flex-start;
+      .clr-wizard-stepnav {
+        padding-top: tokens.$cds-global-space-9;
+      }
     }
   }
 

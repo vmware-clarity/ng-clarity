@@ -5,9 +5,9 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<ng-container *ngIf="inPage; then wizardTemplate; else wizardModalTemplate"></ng-container>
+<ng-content *ngIf="inPage; then wizard; else wizardInModal"></ng-content>
 
-<ng-template #wizardModalTemplate>
+<ng-template #wizardInModal>
   <clr-modal
     [clrModalOpen]="_open"
     [clrModalSize]="size"
@@ -20,43 +20,35 @@
     [clrModalLabelledById]="wizardId"
   >
     <ng-template #clrInternalModalContentTemplate>
-      <ng-container [ngTemplateOutlet]="wizardTemplate"></ng-container>
+      <ng-container [ngTemplateOutlet]="wizard"></ng-container>
     </ng-template>
   </clr-modal>
 </ng-template>
 
-<!-- This template is tightly coupled to the modal styles. -->
-<ng-template #wizardTemplate>
-  <div class="modal-content-wrapper">
-    <div class="modal-nav clr-wizard-stepnav-wrapper" role="region">
+<ng-template #wizard>
+  <div class="clr-wizard-wrapper">
+    <div class="clr-wizard-stepnav-wrapper" role="region" [attr.aria-label]="stepnavAriaLabel">
       <div class="clr-wizard-title" [id]="wizardId" role="heading" [attr.aria-level]="wizardTitle.headingLevel || 1">
         <ng-content select="clr-wizard-title"></ng-content>
       </div>
-      <clr-wizard-stepnav [label]="stepnavAriaLabel"></clr-wizard-stepnav>
+      <clr-wizard-stepnav></clr-wizard-stepnav>
     </div>
 
-    <div class="modal-content">
-      <div class="modal-header--accessible">
-        <div class="modal-title-wrapper" #title cdkFocusInitial tabindex="-1">
-          <div
-            class="modal-title"
-            role="heading"
-            [attr.aria-level]="navService.currentPage?.pageTitle.headingLevel || 2"
-          >
-            <span tabindex="-1" #pageTitle class="modal-title-text">
-              <ng-template [ngTemplateOutlet]="navService.currentPageTitle"></ng-template>
-            </span>
+    <div class="clr-wizard-content">
+      <div class="wizard-title" role="heading" [attr.aria-level]="navService.currentPage?.pageTitle.headingLevel || 2">
+        <span tabindex="-1" #pageTitle class="wizard-title-text">
+          <ng-template [ngTemplateOutlet]="navService.currentPageTitle"></ng-template>
+        </span>
 
-            <div class="modal-header-actions-wrapper" *ngIf="headerActionService.displayHeaderActionsWrapper">
-              <div *ngIf="headerActionService.showWizardHeaderActions">
-                <ng-content select="clr-wizard-header-action"></ng-content>
-              </div>
-              <div *ngIf="headerActionService.currentPageHasHeaderActions">
-                <ng-template [ngTemplateOutlet]="navService.currentPage.headerActions"></ng-template>
-              </div>
-            </div>
+        <div class="modal-header-actions-wrapper" *ngIf="headerActionService.displayHeaderActionsWrapper">
+          <div *ngIf="headerActionService.showWizardHeaderActions">
+            <ng-content select="clr-wizard-header-action"></ng-content>
+          </div>
+          <div *ngIf="headerActionService.currentPageHasHeaderActions">
+            <ng-template [ngTemplateOutlet]="navService.currentPage.headerActions"></ng-template>
           </div>
         </div>
+
         <button
           *ngIf="closable && !inPage"
           type="button"
@@ -67,14 +59,12 @@
           <cds-icon shape="window-close"></cds-icon>
         </button>
       </div>
-      <div #body class="modal-body-wrapper">
-        <div class="modal-body">
-          <main clr-wizard-pages-wrapper class="clr-wizard-content">
-            <ng-content></ng-content>
-          </main>
-        </div>
-      </div>
-      <div class="modal-footer clr-wizard-footer">
+
+      <main class="clr-wizard-pages-wrapper">
+        <ng-content></ng-content>
+      </main>
+
+      <div class="clr-wizard-footer">
         <div class="clr-wizard-footer-buttons">
           <div
             *ngIf="navService.currentPage && !navService.currentPage.hasButtons"
