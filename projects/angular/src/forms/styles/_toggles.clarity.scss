@@ -6,9 +6,9 @@
  */
 @use 'sass:meta';
 @use '../../button/variables.toggles' as toggle-variables;
+@use 'variables.forms' as forms-variables;
 @use '../../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
-@use '../../image/icons.clarity';
 
 @mixin clr-toggle-transition-styles() {
   transition-duration: toggle-variables.$clr-toggle-transition-time;
@@ -18,6 +18,8 @@
 @include meta.load-css('../../button/properties.toggles');
 
 @include mixins.exports('toggles.clarity') {
+  $mark-half-size: calc(#{forms-variables.$clr-forms-checkbox-mark-size} * 0.5);
+
   //Remove the default checkbox appearance
   %custom-checkbox {
     @include mixins.clr-appearance-normal();
@@ -47,6 +49,9 @@
       width: toggle-variables.$clr-toggle-switch-base-width;
       flex: 0 0 auto;
       border-radius: tokens.$cds-alias-object-border-radius-200; // Style outline radius properly
+      background-color: toggle-variables.$clr-toggle-bg-color-off;
+      @include clr-toggle-transition-styles;
+      transition-property: border-color, background-color;
 
       &:not(:disabled) {
         cursor: pointer;
@@ -56,23 +61,10 @@
         position: absolute;
         display: inline-block;
         content: '';
-        border-radius: tokens.$cds-alias-object-border-radius-200;
-        height: toggle-variables.$clr-toggle-switch-base-height;
-        width: toggle-variables.$clr-toggle-switch-base-width;
-        background-color: toggle-variables.$clr-toggle-bg-color-off;
-        @include clr-toggle-transition-styles;
-        transition-property: border-color, background-color;
-      }
-
-      //Toggle Switch
-      &::after {
-        position: absolute;
-        display: inline-block;
-        content: '';
         border-radius: tokens.$cds-alias-object-border-radius-300;
+        border: tokens.$cds-alias-object-border-width-400 solid toggle-variables.$clr-toggle-handle-border-color;
         background-color: toggle-variables.$clr-toggle-handle-bg-color;
-        left: calc(toggle-variables.$clr-toggle-switch-base-height / 2 - toggle-variables.$clr-toggle-dot-diameter / 2);
-        top: calc(toggle-variables.$clr-toggle-switch-base-height / 2 - toggle-variables.$clr-toggle-dot-diameter / 2);
+        left: 0;
         right: calc(-1 * toggle-variables.$clr-toggle-switch-base-width);
 
         @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
@@ -80,40 +72,50 @@
         transition-property: right, left;
       }
 
+      //Toggle Switch
+      &::after {
+        position: absolute;
+        content: '';
+        display: none;
+        right: tokens.$cds-global-space-3;
+        height: calc(#{$mark-half-size} + #{tokens.$cds-global-space-1});
+        width: forms-variables.$clr-forms-checkbox-mark-size;
+        border-left: forms-variables.$clr-forms-checkbox-mark-border-size solid toggle-variables.$clr-toggle-bg-color-on;
+        border-bottom: forms-variables.$clr-forms-checkbox-mark-border-size solid
+          toggle-variables.$clr-toggle-bg-color-on;
+        transform: translate(0, $mark-half-size) rotate(-45deg);
+      }
+
       &:focus {
-        outline: none;
-        &::before {
-          @include mixins.include-outline-style-form-fields(mixins.baselinePx(3));
-        }
+        @include mixins.include-outline-style-form-fields(mixins.baselinePx(3));
       }
 
       &:checked {
+        border-color: toggle-variables.$clr-toggle-bg-color-on;
+        background-color: toggle-variables.$clr-toggle-bg-color-on;
+        transition-property: border-color, background-color;
+
         &::before {
-          border-color: toggle-variables.$clr-toggle-bg-color-on;
-          background-color: toggle-variables.$clr-toggle-bg-color-on;
-          @include clr-toggle-transition-styles;
-          transition-property: border-color, background-color;
-        }
-        &::after {
-          mask: icons.generateCheckedSuccessIcon();
-          -webkit-mask: icons.generateCheckedSuccessIcon();
-          mask-repeat: no-repeat;
-          -webkit-mask-repeat: no-repeat;
-          @include mixins.equilateral(toggle-variables.$clr-toggle-checked-diameter);
+          @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
+          border-width: tokens.$cds-alias-object-border-width-200;
           border-color: toggle-variables.$clr-toggle-handle-border-color-on;
           @include clr-toggle-transition-styles;
           transition-property: right, left;
-          left: calc(
-            toggle-variables.$clr-toggle-switch-base-width - toggle-variables.$clr-toggle-checked-diameter -
-              toggle-variables.$clr-toggle-switch-top-spacing
-          );
+          left: calc(toggle-variables.$clr-toggle-switch-base-width - toggle-variables.$clr-toggle-dot-diameter);
           right: 0;
-          top: toggle-variables.$clr-toggle-switch-top-spacing;
+        }
+
+        &::after {
+          display: inline-block;
         }
       }
 
-      // TODO: cleanup hard-coded sizes in here. not sure what they are keying on...
       &:disabled {
+        // toggle disabled/off bg color
+        background-color: toggle-variables.$clr-toggle-disabled-off-border-color;
+        // toggle disabled/off border color (excluding the handle circle)
+        border-color: toggle-variables.$clr-toggle-disabled-off-border-color;
+
         + label {
           cursor: not-allowed;
         }
@@ -123,31 +125,31 @@
         }
 
         &::before {
-          // toggle disabled/off bg color
-          background-color: toggle-variables.$clr-toggle-disabled-off-border-color;
-          // toggle disabled/off border color (excluding the handle circle)
-          border-color: toggle-variables.$clr-toggle-disabled-off-border-color;
-        }
-
-        &::after {
           // toggle handle color for disabled/off and inner part of handle disabled/on
           background-color: toggle-variables.$clr-toggle-disabled-off-bg-color;
           border-color: toggle-variables.$clr-toggle-disabled-off-handle-border-color;
-          @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
+        }
+
+        &::after {
+          border-color: toggle-variables.$clr-toggle-disabled-off-border-color;
         }
       }
 
-      &:checked:disabled::before {
+      &:checked:disabled {
         // toggle disabled/on border color
         border-color: toggle-variables.$clr-toggle-disabled-on-border-color;
         // toggle disabled/on bg color
         background-color: toggle-variables.$clr-toggle-disabled-on-bg-color;
-      }
 
-      &:checked:disabled::after {
-        // toggle disabled on handle circle border color
-        border-color: toggle-variables.$clr-toggle-disabled-on-handle-border-color;
-        @include mixins.equilateral(toggle-variables.$clr-toggle-checked-diameter);
+        &::before {
+          // toggle disabled on handle circle border color
+          border-color: toggle-variables.$clr-toggle-disabled-on-handle-border-color;
+        }
+
+        &::after {
+          // toggle disabled on handle circle border color
+          border-color: toggle-variables.$clr-toggle-disabled-on-border-color;
+        }
       }
     }
 
