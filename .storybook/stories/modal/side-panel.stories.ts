@@ -25,6 +25,10 @@ export default {
       options: [null, 'sm', 'md', 'lg', 'xl', 'full-screen'],
       control: 'radio',
     },
+    clrSidePanelPosition: {
+      options: ['right', 'bottom'],
+      control: 'radio',
+    },
     // outputs
     clrSidePanelOpenChange: { control: { disable: true } },
     clrSidePanelAltClose: { control: { disable: true } },
@@ -39,6 +43,7 @@ export default {
     clrSidePanelLabelledById: '',
     clrSidePanelSize: null,
     clrSidePanelPinnable: false,
+    clrSidePanelPosition: 'right',
     clrSidePanelSkipAnimation: false,
     // outputs
     clrSidePanelOpenChange: action('clrSidePanelOpenChange'),
@@ -54,7 +59,7 @@ const SidePanelTemplate: StoryFn = args => ({
     <!-- The clrModalHost is needed, because the following containers are not direct children of the body -->
     <div class="main-container" clrModalHost>
       <div class="content-container">
-        <div class="content-area" style="height: 300px">
+        <div class="content-area">
           <button type="button" class="btn btn-primary" (click)="clrSidePanelOpen = true">Open Side Panel</button>
           <clr-side-panel
             [clrSidePanelBackdrop]="clrSidePanelBackdrop"
@@ -64,6 +69,7 @@ const SidePanelTemplate: StoryFn = args => ({
             [clrSidePanelLabelledById]="clrSidePanelLabelledById"
             [clrSidePanelOpen]="clrSidePanelOpen"
             [clrSidePanelSize]="clrSidePanelSize"
+            [clrSidePanelPosition]="clrSidePanelPosition"
             [clrSidePanelSkipAnimation]="clrSidePanelSkipAnimation"
             (clrSidePanelOpenChange)="clrSidePanelOpen = $event; clrSidePanelOpenChange($event)"
             [clrSidePanelPreventClose]="clrSidePanelPreventClose"
@@ -147,6 +153,58 @@ export const SidePanelExtraLarge: StoryObj = {
   },
 };
 
+export const SidePanelBottomSmall: StoryObj = {
+  render: SidePanelTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrSidePanelOpen: true,
+    clrSidePanelSize: 'sm',
+    clrSidePanelStaticBackdrop: true,
+    clrSidePanelPosition: 'bottom',
+    title: 'Small Side Panel',
+    body: 'This is a small side panel.',
+  },
+};
+
+export const SidePanelBottomMedium: StoryObj = {
+  render: SidePanelTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrSidePanelOpen: true,
+    clrSidePanelSize: 'md',
+    clrSidePanelStaticBackdrop: true,
+    clrSidePanelPosition: 'bottom',
+    title: 'Medium Side Panel',
+    body: 'This is a medium side panel.',
+  },
+};
+
+export const SidePanelBottomLarge: StoryObj = {
+  render: SidePanelTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrSidePanelOpen: true,
+    clrSidePanelSize: 'lg',
+    clrSidePanelStaticBackdrop: true,
+    clrSidePanelPosition: 'bottom',
+    title: 'Large Side Panel',
+    body: 'This is a large side panel.',
+  },
+};
+
+export const SidePanelBottomExtraLarge: StoryObj = {
+  render: SidePanelTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrSidePanelOpen: true,
+    clrSidePanelSize: 'xl',
+    clrSidePanelStaticBackdrop: true,
+    clrSidePanelPosition: 'bottom',
+    title: 'Extra-Large Side Panel',
+    body: 'This is a extra-large side panel.',
+  },
+};
+
 export const SidePanelWithoutBackdrop: StoryObj = {
   render: SidePanelTemplate,
   play: removeFocusOutline,
@@ -196,6 +254,20 @@ export const SidePanelFullScreen: StoryObj = {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'full-screen',
     clrSidePanelStaticBackdrop: true,
+    title: 'Full-Screen Side Panel',
+    body: 'This is a full-screen side panel.',
+    showLongPageContent: false,
+  },
+};
+
+export const SidePanelBottomFullScreen: StoryObj = {
+  render: SidePanelTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrSidePanelOpen: true,
+    clrSidePanelSize: 'full-screen',
+    clrSidePanelStaticBackdrop: true,
+    clrSidePanelPosition: 'bottom',
     title: 'Full-Screen Side Panel',
     body: 'This is a full-screen side panel.',
     showLongPageContent: false,
