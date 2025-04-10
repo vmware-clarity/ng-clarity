@@ -13,15 +13,12 @@ export interface CellCoordinates {
 export declare class KeyNavigationGridController implements OnDestroy {
     private zone;
     skipItemFocus: boolean;
-    private host;
+    private keyNavUtils;
     private config;
     private listenersAdded;
     private destroy$;
     private _activeCell;
     constructor(zone: NgZone);
-    private get grid();
-    private get rows();
-    private get cells();
     ngOnDestroy(): void;
     addListeners(): void;
     initializeKeyGrid(host: HTMLElement): void;
@@ -31,18 +28,6 @@ export declare class KeyNavigationGridController implements OnDestroy {
     setActiveCell(activeCell: HTMLElement, { keepFocus }?: {
         keepFocus: boolean;
     }): void;
-    private getNextForExpandedRowCoordinate;
-    private getNextItemCoordinate;
-    private getCalcVariables;
-    private getCurrentCellCoordinates;
-    private getCellsForRow;
-    private isExpandedRow;
-    private isDetailsRow;
-    private isRowReplaced;
-    private isSingleCellExpandedRow;
-    private actionCellCount;
-    private actionCellsAsArray;
-    private isActionCell;
     static ɵfac: i0.ɵɵFactoryDeclaration<KeyNavigationGridController, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<KeyNavigationGridController>;
 }

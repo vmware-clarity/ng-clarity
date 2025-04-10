@@ -17831,6 +17831,543 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+class DefaultKeyNavigationStrategy {
+    constructor(utils) {
+        this.utils = utils;
+    }
+    keyUp(currentCellCoords) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        if (currentCellCoords.y === 0) {
+            return nextCellCoords;
+        }
+        nextCellCoords.y = currentCellCoords.y - 1;
+        const isActionCell = this.utils.isActionCell(currentCellCoords);
+        if (this.utils.isSingleCellExpandedRow(nextCellCoords.y) &&
+            !isActionCell &&
+            this.utils.isDetailsRow(nextCellCoords.y)) {
+            nextCellCoords.x = 0;
+        }
+        else if (this.utils.isDetailsRow(nextCellCoords.y)) {
+            if (isActionCell) {
+                nextCellCoords.y = nextCellCoords.y - 1;
+            }
+            else {
+                nextCellCoords.x = nextCellCoords.x - this.utils.actionCellCount(currentCellCoords.y);
+            }
+        }
+        return nextCellCoords;
+    }
+    keyDown(currentCellCoords) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
+        if (currentCellCoords.y >= numOfRows) {
+            return nextCellCoords;
+        }
+        const isActionCell = this.utils.isActionCell(currentCellCoords);
+        nextCellCoords.y = currentCellCoords.y + 1;
+        if (this.utils.isSingleCellExpandedRow(nextCellCoords.y) &&
+            !isActionCell &&
+            this.utils.isRowReplaced(nextCellCoords.y)) {
+            nextCellCoords.x = 0;
+            nextCellCoords.y = nextCellCoords.y + 1;
+            return nextCellCoords;
+        }
+        if (!isActionCell && this.utils.isRowReplaced(nextCellCoords.y)) {
+            nextCellCoords.y = nextCellCoords.y + 1;
+            nextCellCoords.x = nextCellCoords.x - this.utils.actionCellCount(currentCellCoords.y);
+        }
+        return nextCellCoords;
+    }
+    keyLeft(currentCellCoords) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        if (currentCellCoords.x === 0) {
+            return nextCellCoords;
+        }
+        nextCellCoords.x = currentCellCoords.x - 1;
+        return nextCellCoords;
+    }
+    keyRight(currentCellCoords) {
+        var _a;
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        // calculate numOfColumns based on header cells.
+        const numOfColumns = ((_a = this.utils.rows) === null || _a === void 0 ? void 0 : _a.length) - 1 ? this.utils.getCellsForRow(0).length - 1 : 0;
+        nextCellCoords.x = currentCellCoords.x < numOfColumns ? nextCellCoords.x + 1 : nextCellCoords.x;
+        return nextCellCoords;
+    }
+    keyEnd(currentCellCoords, ctrlKey) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
+        // calculate X based on header cells.
+        nextCellCoords.x = numOfRows ? this.utils.getCellsForRow(0).length - 1 : 0;
+        if (ctrlKey) {
+            nextCellCoords.y = numOfRows;
+        }
+        return nextCellCoords;
+    }
+    keyHome(currentCellCoords, ctrlKey) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        nextCellCoords.x = 0;
+        if (ctrlKey) {
+            nextCellCoords.y = 0;
+        }
+        return nextCellCoords;
+    }
+    keyPageUp(currentCellCoords) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        const itemsPerPage = this.utils.itemsPerPage;
+        nextCellCoords.y = currentCellCoords.y - itemsPerPage > 0 ? currentCellCoords.y - itemsPerPage + 1 : 1;
+        if (!this.utils.isActionCell(currentCellCoords)) {
+            if (this.utils.isDetailsRow(nextCellCoords.y)) {
+                nextCellCoords.x = this.utils.isSingleCellExpandedRow(nextCellCoords.y)
+                    ? 0
+                    : nextCellCoords.x - this.utils.actionCellCount(currentCellCoords.y);
+            }
+            else if (this.utils.isRowReplaced(nextCellCoords.y)) {
+                nextCellCoords.y = nextCellCoords.y + 1;
+                nextCellCoords.x = this.utils.isSingleCellExpandedRow(nextCellCoords.y)
+                    ? 0
+                    : nextCellCoords.x - this.utils.actionCellCount(currentCellCoords.y);
+            }
+        }
+        else {
+            if (this.utils.isDetailsRow(nextCellCoords.y)) {
+                nextCellCoords.y = nextCellCoords.y - 1;
+            }
+        }
+        return nextCellCoords;
+    }
+    keyPageDown(currentCellCoords) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
+        const itemsPerPage = this.utils.itemsPerPage;
+        nextCellCoords.y = currentCellCoords.y + itemsPerPage >= numOfRows ? numOfRows : currentCellCoords.y + itemsPerPage;
+        if (this.utils.isActionCell(currentCellCoords) && this.utils.isDetailsRow(nextCellCoords.y)) {
+            nextCellCoords.y = nextCellCoords.y - 1;
+        }
+        else if (this.utils.isDetailsRow(nextCellCoords.y) && this.utils.isSingleCellExpandedRow(nextCellCoords.y)) {
+            nextCellCoords.x = 0;
+        }
+        else if (this.utils.isDetailsRow(nextCellCoords.y)) {
+            nextCellCoords.x = nextCellCoords.x - this.utils.actionCellCount(currentCellCoords.y);
+        }
+        else if (this.utils.isRowReplaced(nextCellCoords.y)) {
+            nextCellCoords.y = nextCellCoords.y + 1;
+            nextCellCoords.x = this.utils.isSingleCellExpandedRow(nextCellCoords.y)
+                ? 0
+                : nextCellCoords.x - this.utils.actionCellCount(currentCellCoords.y);
+        }
+        return nextCellCoords;
+    }
+}
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ExpandedRowKeyNavigationStrategy extends DefaultKeyNavigationStrategy {
+    constructor(utils) {
+        super(utils);
+    }
+    keyUp(currentCellCoords) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        if (currentCellCoords.y === 0) {
+            return nextCellCoords;
+        }
+        nextCellCoords.y = currentCellCoords.y - 1;
+        if (!this.utils.isActionCell(currentCellCoords)) {
+            if (this.utils.isRowReplaced(currentCellCoords.y)) {
+                nextCellCoords.y = nextCellCoords.y - 1;
+            }
+            switch (true) {
+                case this.utils.isDetailsRow(nextCellCoords.y):
+                    nextCellCoords.x = 0;
+                    break;
+                case this.utils.isDetailsRow(currentCellCoords.y) === false:
+                    nextCellCoords.x = currentCellCoords.x;
+                    break;
+                default:
+                    nextCellCoords.x = this.utils.actionCellCount(nextCellCoords.y);
+            }
+        }
+        else if (this.utils.isDetailsRow(nextCellCoords.y) && nextCellCoords.y > 0) {
+            nextCellCoords.y = nextCellCoords.y - 1;
+        }
+        return nextCellCoords;
+    }
+    keyDown(currentCellCoords) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
+        if (currentCellCoords.y >= numOfRows) {
+            return nextCellCoords;
+        }
+        nextCellCoords.y = currentCellCoords.y + 1;
+        if (!this.utils.isActionCell(currentCellCoords)) {
+            if (this.utils.isRowReplaced(nextCellCoords.y)) {
+                nextCellCoords.y = nextCellCoords.y + 1;
+            }
+            if (this.utils.isDetailsRow(nextCellCoords.y)) {
+                nextCellCoords.x = 0;
+            }
+            else {
+                nextCellCoords.x = this.utils.actionCellCount(nextCellCoords.y);
+            }
+        }
+        else {
+            nextCellCoords.y = nextCellCoords.y < numOfRows ? nextCellCoords.y + 1 : nextCellCoords.y;
+        }
+        return nextCellCoords;
+    }
+    keyLeft(currentCellCoords) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        if (!this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isRowReplaced(currentCellCoords.y)) {
+            return super.keyLeft(currentCellCoords);
+        }
+        if (currentCellCoords.x !== 0) {
+            nextCellCoords.x = currentCellCoords.x - 1;
+        }
+        else if (!this.utils.isActionCell(currentCellCoords)) {
+            nextCellCoords.y = currentCellCoords.y - 1;
+            nextCellCoords.x = this.utils.actionCellCount(nextCellCoords.y) - 1;
+        }
+        return nextCellCoords;
+    }
+    keyRight(currentCellCoords) {
+        var _a;
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        if (!this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isRowReplaced(currentCellCoords.y)) {
+            return super.keyRight(currentCellCoords);
+        }
+        // calculate numOfColumns based on header cells.
+        const numOfColumns = ((_a = this.utils.rows) === null || _a === void 0 ? void 0 : _a.length) - 1 ? this.utils.getCellsForRow(0).length - 1 : 0;
+        if (currentCellCoords.x >= numOfColumns) {
+            return nextCellCoords;
+        }
+        if (this.utils.isActionCell(currentCellCoords) &&
+            currentCellCoords.x === this.utils.actionCellCount(currentCellCoords.x) - 1 &&
+            this.utils.isRowReplaced(currentCellCoords.y) &&
+            !this.utils.isDetailsRow(currentCellCoords.y)) {
+            nextCellCoords.y = currentCellCoords.y + 1;
+            nextCellCoords.x = 0;
+        }
+        else {
+            nextCellCoords.x = currentCellCoords.x + 1;
+        }
+        return nextCellCoords;
+    }
+    keyEnd(currentCellCoords, ctrlKey) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        if (!this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isRowReplaced(currentCellCoords.y)) {
+            return super.keyEnd(currentCellCoords, ctrlKey);
+        }
+        nextCellCoords.x = this.utils.getCellsForRow(currentCellCoords.y).length - 1;
+        const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
+        const numOfColumns = numOfRows ? this.utils.getCellsForRow(0).length - 1 : 0;
+        if (ctrlKey) {
+            nextCellCoords.x = numOfColumns;
+            nextCellCoords.y = numOfRows;
+        }
+        return nextCellCoords;
+    }
+    keyHome(currentCellCoords, ctrlKey) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        if (!this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isRowReplaced(currentCellCoords.y)) {
+            return super.keyHome(currentCellCoords, ctrlKey);
+        }
+        nextCellCoords.x = 0;
+        nextCellCoords.y = currentCellCoords.y - 1;
+        if (ctrlKey) {
+            nextCellCoords.y = 0;
+        }
+        return nextCellCoords;
+    }
+    keyPageUp(currentCellCoords) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        const itemsPerPage = this.utils.itemsPerPage;
+        nextCellCoords.y = currentCellCoords.y - itemsPerPage > 0 ? currentCellCoords.y - itemsPerPage + 1 : 1;
+        if (!this.utils.isActionCell(currentCellCoords)) {
+            if (this.utils.isRowReplaced(nextCellCoords.y)) {
+                if (!this.utils.isDetailsRow(nextCellCoords.y)) {
+                    nextCellCoords.y = nextCellCoords.y + 1;
+                    nextCellCoords.x = 0;
+                }
+            }
+            else if (!this.utils.isDetailsRow(currentCellCoords.y)) {
+                if (this.utils.isDetailsRow(nextCellCoords.y)) {
+                    nextCellCoords.x = 0;
+                }
+            }
+            else if (this.utils.isDetailsRow(currentCellCoords.y)) {
+                if (!this.utils.isDetailsRow(nextCellCoords.y)) {
+                    nextCellCoords.x = this.utils.actionCellCount(nextCellCoords.y);
+                }
+            }
+        }
+        else if (this.utils.isDetailsRow(nextCellCoords.y)) {
+            nextCellCoords.y = nextCellCoords.y - 1;
+        }
+        return nextCellCoords;
+    }
+    keyPageDown(currentCellCoords) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
+        const itemsPerPage = this.utils.itemsPerPage;
+        nextCellCoords.y = currentCellCoords.y + itemsPerPage >= numOfRows ? numOfRows : currentCellCoords.y + itemsPerPage;
+        if (!this.utils.isActionCell(currentCellCoords)) {
+            if (this.utils.isRowReplaced(nextCellCoords.y)) {
+                if (nextCellCoords.y < numOfRows && !this.utils.isDetailsRow(nextCellCoords.y)) {
+                    nextCellCoords.y = nextCellCoords.y + 1;
+                }
+            }
+            else if (this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isDetailsRow(nextCellCoords.y)) {
+                nextCellCoords.x = currentCellCoords.x + this.utils.actionCellCount(nextCellCoords.y);
+            }
+            else if (this.utils.isDetailsRow(nextCellCoords.y)) {
+                nextCellCoords.x = 0;
+            }
+        }
+        else if (this.utils.isDetailsRow(nextCellCoords.y)) {
+            nextCellCoords.y = nextCellCoords.y - 1;
+        }
+        return nextCellCoords;
+    }
+}
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ExpandedColumnsRowKeyNavigationStrategy extends ExpandedRowKeyNavigationStrategy {
+    constructor(utils) {
+        super(utils);
+    }
+    keyUp(currentCellCoords) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        if (currentCellCoords.y === 0) {
+            return nextCellCoords;
+        }
+        nextCellCoords.y = currentCellCoords.y - 1;
+        const isActionCell = this.utils.isActionCell(currentCellCoords);
+        if (isActionCell && this.utils.isDetailsRow(nextCellCoords.y)) {
+            nextCellCoords.y = nextCellCoords.y - 1;
+        }
+        else if (this.utils.isRowReplaced(nextCellCoords.y)) {
+            nextCellCoords.y = nextCellCoords.y - 1;
+            if (!this.utils.isDetailsRow(nextCellCoords.y)) {
+                nextCellCoords.x = currentCellCoords.x + this.utils.actionCellCount(nextCellCoords.y);
+            }
+        }
+        else if (this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isDetailsRow(nextCellCoords.y)) {
+            nextCellCoords.x = currentCellCoords.x + this.utils.actionCellCount(nextCellCoords.y);
+        }
+        else if (!isActionCell && this.utils.isDetailsRow(nextCellCoords.y)) {
+            nextCellCoords.x = currentCellCoords.x - this.utils.actionCellCount(currentCellCoords.y);
+        }
+        return nextCellCoords;
+    }
+    keyDown(currentCellCoords) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
+        const numOfColumns = numOfRows ? this.utils.getCellsForRow(0).length - 1 : 0;
+        if (currentCellCoords.y >= numOfRows) {
+            return nextCellCoords;
+        }
+        nextCellCoords.y = currentCellCoords.y + 1;
+        if (!this.utils.isActionCell(currentCellCoords)) {
+            if (this.utils.isRowReplaced(nextCellCoords.y)) {
+                nextCellCoords.y = nextCellCoords.y < numOfRows ? nextCellCoords.y + 1 : nextCellCoords.y - 1;
+            }
+            else if (this.utils.getCellsForRow(currentCellCoords.y).length > numOfColumns) {
+                nextCellCoords.x = currentCellCoords.x - this.utils.actionCellCount(currentCellCoords.y);
+            }
+            else {
+                nextCellCoords.x = currentCellCoords.x + this.utils.actionCellCount(nextCellCoords.y);
+            }
+        }
+        else {
+            nextCellCoords.y = nextCellCoords.y < numOfRows ? nextCellCoords.y + 1 : nextCellCoords.y - 1;
+        }
+        return nextCellCoords;
+    }
+    keyLeft(currentCellCoords) {
+        return super.keyLeft(currentCellCoords);
+    }
+    keyRight(currentCellCoords) {
+        return super.keyRight(currentCellCoords);
+    }
+    keyEnd(currentCellCoords, ctrlKey) {
+        return super.keyEnd(currentCellCoords, ctrlKey);
+    }
+    keyHome(currentCellCoords, ctrlKey) {
+        return super.keyHome(currentCellCoords, ctrlKey);
+    }
+    keyPageUp(currentCellCoords) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        const itemsPerPage = this.utils.itemsPerPage;
+        nextCellCoords.y = currentCellCoords.y - itemsPerPage > 0 ? currentCellCoords.y - itemsPerPage + 1 : 1;
+        if (!this.utils.isActionCell(currentCellCoords)) {
+            if (this.utils.isRowReplaced(nextCellCoords.y)) {
+                if (!this.utils.isDetailsRow(nextCellCoords.y)) {
+                    nextCellCoords.y = nextCellCoords.y + 1;
+                    nextCellCoords.x = currentCellCoords.x + this.utils.actionCellCount(nextCellCoords.y);
+                }
+            }
+            else if (this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isDetailsRow(nextCellCoords.y)) {
+                nextCellCoords.x = currentCellCoords.x + this.utils.actionCellCount(nextCellCoords.y);
+            }
+            else if (this.utils.isDetailsRow(nextCellCoords.y)) {
+                nextCellCoords.x = currentCellCoords.x - this.utils.actionCellCount(currentCellCoords.y);
+            }
+        }
+        else if (this.utils.isDetailsRow(nextCellCoords.y)) {
+            nextCellCoords.y = nextCellCoords.y - 1;
+        }
+        return nextCellCoords;
+    }
+    keyPageDown(currentCellCoords) {
+        const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
+        const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
+        const itemsPerPage = this.utils.itemsPerPage;
+        nextCellCoords.y = currentCellCoords.y + itemsPerPage >= numOfRows ? numOfRows : currentCellCoords.y + itemsPerPage;
+        if (!this.utils.isActionCell(currentCellCoords)) {
+            if (this.utils.isRowReplaced(nextCellCoords.y) && !this.utils.isDetailsRow(nextCellCoords.y)) {
+                if (nextCellCoords.y < numOfRows) {
+                    nextCellCoords.y = nextCellCoords.y + 1;
+                    nextCellCoords.x = currentCellCoords.x + this.utils.actionCellCount(nextCellCoords.y);
+                }
+            }
+            else if (this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isDetailsRow(nextCellCoords.y)) {
+                nextCellCoords.x = currentCellCoords.x + this.utils.actionCellCount(nextCellCoords.y);
+            }
+            else if (this.utils.isDetailsRow(nextCellCoords.y)) {
+                nextCellCoords.x = currentCellCoords.x - this.utils.actionCellCount(currentCellCoords.y);
+            }
+        }
+        else if (this.utils.isDetailsRow(nextCellCoords.y)) {
+            nextCellCoords.y = nextCellCoords.y - 1;
+        }
+        return nextCellCoords;
+    }
+}
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class KeyNavigationUtils {
+    constructor(host, config) {
+        this.host = host;
+        this.config = config;
+    }
+    get grid() {
+        var _a;
+        return (_a = this.host) === null || _a === void 0 ? void 0 : _a.querySelector(this.config.keyGrid);
+    }
+    get rows() {
+        var _a;
+        return (_a = this.host) === null || _a === void 0 ? void 0 : _a.querySelectorAll(this.config.keyGridRows);
+    }
+    get cells() {
+        var _a;
+        return (_a = this.host) === null || _a === void 0 ? void 0 : _a.querySelectorAll(this.config.keyGridCells);
+    }
+    get currentCellCoordinates() {
+        const currentCell = this.cells ? Array.from(this.cells).find(i => i.getAttribute('tabindex') === '0') : null;
+        const currentRow = currentCell ? currentCell.closest(this.config.keyGridRows) : null;
+        const coordinates = {
+            x: currentRow && currentCell
+                ? Array.from(currentRow.querySelectorAll(this.config.keyGridCells)).indexOf(currentCell)
+                : 0,
+            y: currentRow && currentCell && this.rows ? Array.from(this.rows).indexOf(currentRow) : 0,
+        };
+        return coordinates;
+    }
+    get itemsPerPage() {
+        var _a;
+        return Math.floor(((_a = this.host) === null || _a === void 0 ? void 0 : _a.querySelector('.datagrid').clientHeight) / this.rows[0].clientHeight) - 1 || 0;
+    }
+    getNextItemCoordinate(e) {
+        const currentCellCoords = this.currentCellCoordinates;
+        const strategy = this.getNavStrategy(currentCellCoords);
+        const inlineStart = this.host.dir === 'rtl' ? Keys.ArrowRight : Keys.ArrowLeft;
+        const inlineEnd = this.host.dir === 'rtl' ? Keys.ArrowLeft : Keys.ArrowRight;
+        switch (e.key) {
+            case Keys.ArrowUp:
+                return strategy.keyUp(currentCellCoords);
+            case Keys.ArrowDown:
+                return strategy.keyDown(currentCellCoords);
+            case inlineStart:
+                return strategy.keyLeft(currentCellCoords);
+            case inlineEnd:
+                return strategy.keyRight(currentCellCoords);
+            case Keys.Home:
+                return strategy.keyHome(currentCellCoords, e.ctrlKey);
+            case Keys.End:
+                return strategy.keyEnd(currentCellCoords, e.ctrlKey);
+            case Keys.PageUp:
+                return strategy.keyPageUp(currentCellCoords);
+            case Keys.PageDown:
+                return strategy.keyPageDown(currentCellCoords);
+            default:
+                return currentCellCoords;
+        }
+    }
+    getCellsForRow(index) {
+        return this.rows[index].querySelectorAll(this.config.keyGridCells);
+    }
+    isExpandedRow(index) {
+        const selectedElement = this.rows[index].querySelector('.datagrid-row-detail');
+        return selectedElement ? selectedElement.style.display !== 'none' : false;
+    }
+    isDetailsRow(index) {
+        return this.rows[index].classList.contains('datagrid-row-detail');
+    }
+    isRowReplaced(index) {
+        return !!this.rows[index].closest('clr-dg-row.datagrid-row-replaced');
+    }
+    isSingleCellExpandedRow(index) {
+        const row = this.isDetailsRow(index) ? this.rows[index] : this.rows[index].querySelector('.datagrid-row-detail');
+        return (row === null || row === void 0 ? void 0 : row.querySelectorAll(this.config.keyGridCells).length) === 1;
+    }
+    actionCellCount(index) {
+        return this.actionCellsAsArray(index).length;
+    }
+    actionCellsAsArray(index) {
+        return Array.from(this.rows[index].querySelectorAll('.datagrid-row-sticky .datagrid-cell, .datagrid-row-sticky .datagrid-column'));
+    }
+    isActionCell(cellCoords) {
+        return !!this.actionCellsAsArray(cellCoords.y)[cellCoords.x];
+    }
+    createNextCellCoords(cellCoords) {
+        return {
+            x: cellCoords.x,
+            y: cellCoords.y,
+        };
+    }
+    getNavStrategy(currentCellCoords) {
+        switch (true) {
+            case this.isSingleCellExpandedRow(currentCellCoords.y):
+                return new ExpandedRowKeyNavigationStrategy(this);
+            case this.isDetailsRow(currentCellCoords.y):
+            case this.isExpandedRow(currentCellCoords.y):
+                return new ExpandedColumnsRowKeyNavigationStrategy(this);
+            default:
+                return new DefaultKeyNavigationStrategy(this);
+        }
+    }
+}
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 const actionableItemSelectors = [
     'a[href]',
     'area[href]',
@@ -17866,18 +18403,6 @@ class KeyNavigationGridController {
             keyGrid: '[role=grid]',
         };
     }
-    get grid() {
-        var _a;
-        return (_a = this.host) === null || _a === void 0 ? void 0 : _a.querySelector(this.config.keyGrid);
-    }
-    get rows() {
-        var _a;
-        return (_a = this.host) === null || _a === void 0 ? void 0 : _a.querySelectorAll(this.config.keyGridRows);
-    }
-    get cells() {
-        var _a;
-        return (_a = this.host) === null || _a === void 0 ? void 0 : _a.querySelectorAll(this.config.keyGridCells);
-    }
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -17887,33 +18412,33 @@ class KeyNavigationGridController {
             return;
         }
         this.zone.runOutsideAngular(() => {
-            fromEvent(this.grid, 'mousedown')
+            fromEvent(this.keyNavUtils.grid, 'mousedown')
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((e) => {
                 // preserve right click for context menus & keyboard mouse control https://apple.stackexchange.com/questions/32715/how-do-i-open-the-context-menu-from-a-mac-keyboard
                 if (e.buttons === 1 && !e.ctrlKey) {
-                    const activeCell = this.cells
-                        ? Array.from(this.cells).find(c => c === e.target || c === e.target.closest(this.config.keyGridCells))
+                    const activeCell = this.keyNavUtils.cells
+                        ? Array.from(this.keyNavUtils.cells).find(c => c === e.target || c === e.target.closest(this.config.keyGridCells))
                         : null;
                     if (activeCell) {
                         this.setActiveCell(activeCell, { keepFocus: isActionableItem(e.target) });
                     }
                 }
             });
-            fromEvent(this.grid, 'wheel')
+            fromEvent(this.keyNavUtils.grid, 'wheel')
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {
                 this.removeActiveCell();
             });
-            fromEvent(this.grid, 'focusout')
+            fromEvent(this.keyNavUtils.grid, 'focusout')
                 .pipe(debounceTime(0), takeUntil(this.destroy$))
                 .subscribe(() => {
-                if (this.grid.contains(document.activeElement)) {
+                if (this.keyNavUtils.grid.contains(document.activeElement)) {
                     return;
                 }
                 this.removeActiveCell();
             });
-            fromEvent(this.grid, 'keydown')
+            fromEvent(this.keyNavUtils.grid, 'keydown')
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((e) => {
                 // Skip column resize events
@@ -17929,12 +18454,9 @@ class KeyNavigationGridController {
                     e.key === Keys.Home ||
                     e.key === Keys.PageUp ||
                     e.key === Keys.PageDown) {
-                    const currentCellCoords = this.getCurrentCellCoordinates();
-                    const nextCellCoords = this.isExpandedRow(currentCellCoords.y) || this.isDetailsRow(currentCellCoords.y)
-                        ? this.getNextForExpandedRowCoordinate(e, currentCellCoords)
-                        : this.getNextItemCoordinate(e, currentCellCoords);
-                    const activeItem = this.rows
-                        ? Array.from(this.getCellsForRow(nextCellCoords.y))[nextCellCoords.x]
+                    const nextCellCoords = this.keyNavUtils.getNextItemCoordinate(e);
+                    const activeItem = this.keyNavUtils.rows
+                        ? Array.from(this.keyNavUtils.getCellsForRow(nextCellCoords.y))[nextCellCoords.x]
                         : null;
                     if (activeItem) {
                         this.setActiveCell(activeItem);
@@ -17946,14 +18468,14 @@ class KeyNavigationGridController {
         this.listenersAdded = true;
     }
     initializeKeyGrid(host) {
-        this.host = host;
+        this.keyNavUtils = new KeyNavigationUtils(host, this.config);
         this.addListeners();
         this.resetKeyGrid();
     }
     resetKeyGrid() {
         var _a;
-        (_a = this.cells) === null || _a === void 0 ? void 0 : _a.forEach((i) => i.setAttribute('tabindex', '-1'));
-        const firstCell = this.cells ? this.cells[0] : null;
+        (_a = this.keyNavUtils.cells) === null || _a === void 0 ? void 0 : _a.forEach((i) => i.setAttribute('tabindex', '-1'));
+        const firstCell = this.keyNavUtils.cells ? this.keyNavUtils.cells[0] : null;
         firstCell === null || firstCell === void 0 ? void 0 : firstCell.setAttribute('tabindex', '0');
     }
     removeActiveCell() {
@@ -17963,7 +18485,9 @@ class KeyNavigationGridController {
         return this._activeCell;
     }
     setActiveCell(activeCell, { keepFocus } = { keepFocus: false }) {
-        const prior = this.cells ? Array.from(this.cells).find(c => c.getAttribute('tabindex') === '0') : null;
+        const prior = this.keyNavUtils.cells
+            ? Array.from(this.keyNavUtils.cells).find(c => c.getAttribute('tabindex') === '0')
+            : null;
         if (prior) {
             prior.setAttribute('tabindex', '-1');
         }
@@ -17980,223 +18504,6 @@ class KeyNavigationGridController {
             }
             elementToFocus.focus();
         }
-    }
-    getNextForExpandedRowCoordinate(e, currentCellCoords) {
-        if (e.key === Keys.PageUp || e.key === Keys.PageDown) {
-            return this.getNextItemCoordinate(e, currentCellCoords);
-        }
-        if (!this.isDetailsRow(currentCellCoords.y) &&
-            !this.isRowReplaced(currentCellCoords.y) &&
-            (e.key === Keys.Home || e.key === Keys.End || e.key === Keys.ArrowRight || e.key === Keys.ArrowLeft)) {
-            return this.getNextItemCoordinate(e, currentCellCoords);
-        }
-        const { numOfRows, numOfColumns, inlineStart, inlineEnd, isActionCell, nextCellCoords } = this.getCalcVariables(currentCellCoords);
-        const isSingleCellExpandedRow = this.isSingleCellExpandedRow(currentCellCoords.y);
-        if (e.key === Keys.ArrowUp && currentCellCoords.y !== 0) {
-            nextCellCoords.y = currentCellCoords.y - 1;
-            if (isSingleCellExpandedRow && !isActionCell) {
-                if (this.isRowReplaced(currentCellCoords.y)) {
-                    nextCellCoords.y = nextCellCoords.y - 1;
-                }
-                if (this.isDetailsRow(nextCellCoords.y)) {
-                    nextCellCoords.x = 0;
-                }
-                else if (this.isDetailsRow(currentCellCoords.y) === false) {
-                    // false check is intentional, the ! operator may be missed easily in this case
-                    nextCellCoords.x = currentCellCoords.x;
-                }
-                else {
-                    nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
-                }
-                return nextCellCoords;
-            }
-            if (isActionCell && this.isDetailsRow(nextCellCoords.y)) {
-                nextCellCoords.y = nextCellCoords.y - 1;
-            }
-            else if (this.isRowReplaced(nextCellCoords.y)) {
-                nextCellCoords.y = nextCellCoords.y - 1;
-                if (!this.isDetailsRow(nextCellCoords.y)) {
-                    nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
-                }
-            }
-            else if (this.isDetailsRow(currentCellCoords.y) && !this.isDetailsRow(nextCellCoords.y)) {
-                nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
-            }
-            else if (!isActionCell && this.isDetailsRow(nextCellCoords.y)) {
-                nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
-            }
-        }
-        else if (e.key === Keys.ArrowDown && currentCellCoords.y < numOfRows) {
-            nextCellCoords.y = currentCellCoords.y + 1;
-            if (isSingleCellExpandedRow && !isActionCell) {
-                if (this.isRowReplaced(nextCellCoords.y)) {
-                    nextCellCoords.y = nextCellCoords.y + 1;
-                }
-                if (this.isDetailsRow(nextCellCoords.y)) {
-                    nextCellCoords.x = 0;
-                }
-                else {
-                    nextCellCoords.x = this.actionCellCount(nextCellCoords.y);
-                }
-                return nextCellCoords;
-            }
-            if (isActionCell || this.isRowReplaced(nextCellCoords.y)) {
-                nextCellCoords.y = nextCellCoords.y + 1;
-            }
-            else if (this.getCellsForRow(currentCellCoords.y).length > numOfColumns) {
-                nextCellCoords.x = currentCellCoords.x - this.actionCellCount(currentCellCoords.y);
-            }
-            else {
-                nextCellCoords.x = currentCellCoords.x + this.actionCellCount(nextCellCoords.y);
-            }
-        }
-        else if (e.key === inlineStart) {
-            if (currentCellCoords.x !== 0) {
-                nextCellCoords.x = currentCellCoords.x - 1;
-            }
-            else if (!isActionCell) {
-                nextCellCoords.y = currentCellCoords.y - 1;
-                nextCellCoords.x = this.actionCellCount(nextCellCoords.y) - 1;
-            }
-        }
-        else if (e.key === inlineEnd && currentCellCoords.x < numOfColumns) {
-            if (isActionCell &&
-                currentCellCoords.x === this.actionCellCount(currentCellCoords.x) - 1 &&
-                this.isRowReplaced(currentCellCoords.y) &&
-                !this.isDetailsRow(currentCellCoords.y)) {
-                nextCellCoords.y = currentCellCoords.y + 1;
-                nextCellCoords.x = 0;
-            }
-            else {
-                nextCellCoords.x = currentCellCoords.x + 1;
-            }
-        }
-        else if (e.key === Keys.End) {
-            nextCellCoords.x = this.getCellsForRow(currentCellCoords.y).length - 1;
-            if (e.ctrlKey) {
-                nextCellCoords.x = numOfColumns;
-                nextCellCoords.y = numOfRows;
-            }
-        }
-        else if (e.key === Keys.Home) {
-            nextCellCoords.x = 0;
-            nextCellCoords.y = currentCellCoords.y - 1;
-            if (e.ctrlKey) {
-                nextCellCoords.y = 0;
-            }
-        }
-        return nextCellCoords;
-    }
-    getNextItemCoordinate(e, currentCellCoords) {
-        const { numOfRows, numOfColumns, inlineStart, inlineEnd, itemsPerPage, isActionCell, nextCellCoords } = this.getCalcVariables(currentCellCoords);
-        if (e.key === Keys.ArrowUp && currentCellCoords.y !== 0) {
-            nextCellCoords.y = currentCellCoords.y - 1;
-            if (this.isSingleCellExpandedRow(nextCellCoords.y) && !isActionCell && this.isDetailsRow(nextCellCoords.y)) {
-                nextCellCoords.x = 0;
-                return nextCellCoords;
-            }
-            if (this.isDetailsRow(nextCellCoords.y)) {
-                if (isActionCell) {
-                    nextCellCoords.y = nextCellCoords.y - 1;
-                }
-                else {
-                    nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
-                }
-            }
-        }
-        else if (e.key === Keys.ArrowDown && currentCellCoords.y < numOfRows) {
-            nextCellCoords.y = currentCellCoords.y + 1;
-            if (this.isSingleCellExpandedRow(nextCellCoords.y) && !isActionCell && this.isRowReplaced(nextCellCoords.y)) {
-                nextCellCoords.x = 0;
-                nextCellCoords.y = nextCellCoords.y + 1;
-                return nextCellCoords;
-            }
-            if (!isActionCell && this.isRowReplaced(nextCellCoords.y)) {
-                nextCellCoords.y = nextCellCoords.y + 1;
-                nextCellCoords.x = nextCellCoords.x - this.actionCellCount(currentCellCoords.y);
-            }
-        }
-        else if (e.key === inlineStart && currentCellCoords.x !== 0) {
-            nextCellCoords.x = currentCellCoords.x - 1;
-        }
-        else if (e.key === inlineEnd && currentCellCoords.x < numOfColumns) {
-            nextCellCoords.x = currentCellCoords.x + 1;
-        }
-        else if (e.key === Keys.End) {
-            nextCellCoords.x = numOfColumns;
-            if (e.ctrlKey) {
-                nextCellCoords.y = numOfRows;
-            }
-        }
-        else if (e.key === Keys.Home) {
-            nextCellCoords.x = 0;
-            if (e.ctrlKey) {
-                nextCellCoords.y = 0;
-            }
-        }
-        else if (e.key === Keys.PageUp) {
-            nextCellCoords.y = currentCellCoords.y - itemsPerPage > 0 ? currentCellCoords.y - itemsPerPage + 1 : 1;
-        }
-        else if (e.key === Keys.PageDown) {
-            nextCellCoords.y =
-                currentCellCoords.y + itemsPerPage < numOfRows ? currentCellCoords.y + itemsPerPage : numOfRows;
-        }
-        return nextCellCoords;
-    }
-    getCalcVariables(currentCellCoords) {
-        var _a;
-        const numOfRows = this.rows ? this.rows.length - 1 : 0;
-        // calculate numOfColumns based on header cells.
-        const numOfColumns = numOfRows ? this.getCellsForRow(0).length - 1 : 0;
-        const dir = this.host.dir;
-        const inlineStart = dir === 'rtl' ? Keys.ArrowRight : Keys.ArrowLeft;
-        const inlineEnd = dir === 'rtl' ? Keys.ArrowLeft : Keys.ArrowRight;
-        const itemsPerPage = Math.floor(((_a = this.host) === null || _a === void 0 ? void 0 : _a.querySelector('.datagrid').clientHeight) / this.rows[0].clientHeight) - 1 || 0;
-        const isActionCell = this.isActionCell(currentCellCoords);
-        const nextCellCoords = {
-            x: currentCellCoords.x,
-            y: currentCellCoords.y,
-        };
-        return { numOfRows, numOfColumns, inlineStart, inlineEnd, itemsPerPage, isActionCell, nextCellCoords };
-    }
-    getCurrentCellCoordinates() {
-        const currentCell = this.cells ? Array.from(this.cells).find(i => i.getAttribute('tabindex') === '0') : null;
-        const currentRow = currentCell ? currentCell.closest(this.config.keyGridRows) : null;
-        const coordinates = {
-            x: currentRow && currentCell
-                ? Array.from(currentRow.querySelectorAll(this.config.keyGridCells)).indexOf(currentCell)
-                : 0,
-            y: currentRow && currentCell && this.rows ? Array.from(this.rows).indexOf(currentRow) : 0,
-        };
-        return coordinates;
-    }
-    getCellsForRow(index) {
-        return this.rows[index].querySelectorAll(this.config.keyGridCells);
-    }
-    isExpandedRow(index) {
-        const selectedElement = this.rows[index].querySelector('.datagrid-row-detail');
-        return selectedElement ? selectedElement.style.display !== 'none' : false;
-    }
-    isDetailsRow(index) {
-        return this.rows[index].classList.contains('datagrid-row-detail');
-    }
-    isRowReplaced(index) {
-        return !!this.rows[index].closest('clr-dg-row.datagrid-row-replaced');
-    }
-    isSingleCellExpandedRow(index) {
-        const row = this.rows[index].classList.contains('datagrid-row-detail')
-            ? this.rows[index]
-            : this.rows[index].querySelector('.datagrid-row-detail');
-        return (row === null || row === void 0 ? void 0 : row.querySelectorAll(this.config.keyGridCells).length) === 1;
-    }
-    actionCellCount(index) {
-        return this.actionCellsAsArray(index).length;
-    }
-    actionCellsAsArray(index) {
-        return Array.from(this.rows[index].querySelectorAll('.datagrid-row-sticky .datagrid-cell, .datagrid-row-sticky .datagrid-column'));
-    }
-    isActionCell(cellCoords) {
-        return !!this.actionCellsAsArray(cellCoords.y)[cellCoords.x];
     }
 }
 KeyNavigationGridController.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: KeyNavigationGridController, deps: [{ token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Injectable });
