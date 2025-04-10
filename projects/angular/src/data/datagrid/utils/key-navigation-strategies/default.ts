@@ -7,7 +7,7 @@
 
 import { KeyNavigationGridStrategyInterface } from '../../interfaces/key-nav-grid-strategy.interface';
 import { CellCoordinates } from '../key-navigation-grid.controller';
-import { KeyNavigationUtils } from './key-nav-utils';
+import { KeyNavigationUtils } from '../key-navigation-utils';
 
 export class DefaultKeyNavigationStrategy implements KeyNavigationGridStrategyInterface {
   constructor(protected utils: KeyNavigationUtils) {}

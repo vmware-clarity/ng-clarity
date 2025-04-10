@@ -6,8 +6,8 @@
  */
 
 import { CellCoordinates } from '../key-navigation-grid.controller';
+import { KeyNavigationUtils } from '../key-navigation-utils';
 import { ExpandedRowKeyNavigationStrategy } from './expanded-row';
-import { KeyNavigationUtils } from './key-nav-utils';
 
 export class ExpandedColumnsRowKeyNavigationStrategy extends ExpandedRowKeyNavigationStrategy {
   constructor(utils: KeyNavigationUtils) {

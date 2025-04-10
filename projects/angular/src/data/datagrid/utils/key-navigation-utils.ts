@@ -5,12 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Keys } from '../../../../utils/enums/keys.enum';
-import { KeyNavigationGridStrategyInterface } from '../../interfaces/key-nav-grid-strategy.interface';
-import { CellCoordinates, KeyNavigationGridConfig } from '../key-navigation-grid.controller';
-import { DefaultKeyNavigationStrategy } from './default';
-import { ExpandedColumnsRowKeyNavigationStrategy } from './expanded-columns-row';
-import { ExpandedRowKeyNavigationStrategy } from './expanded-row';
+import { Keys } from '../../../utils/enums/keys.enum';
+import { KeyNavigationGridStrategyInterface } from '../interfaces/key-nav-grid-strategy.interface';
+import { CellCoordinates, KeyNavigationGridConfig } from './key-navigation-grid.controller';
+import { DefaultKeyNavigationStrategy } from './key-navigation-strategies/default';
+import { ExpandedColumnsRowKeyNavigationStrategy } from './key-navigation-strategies/expanded-columns-row';
+import { ExpandedRowKeyNavigationStrategy } from './key-navigation-strategies/expanded-row';
 
 export class KeyNavigationUtils {
   constructor(public host: HTMLElement, public config: KeyNavigationGridConfig) {}

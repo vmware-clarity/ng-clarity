@@ -10,7 +10,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { Keys } from '../../../utils/enums/keys.enum';
-import { KeyNavigationUtils } from './key-navigation-strategies/key-nav-utils';
+import { KeyNavigationUtils } from './key-navigation-utils';
 
 const actionableItemSelectors = [
   'a[href]',
