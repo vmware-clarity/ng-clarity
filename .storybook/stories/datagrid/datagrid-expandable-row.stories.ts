@@ -173,9 +173,13 @@ const ExpandableRowsTemplate: StoryFn = args => ({
 
           <ng-template [ngIf]="detailColumns">
             <clr-dg-cell>
-              <clr-tooltip>
+              <clr-tooltip [style.position]="openTooltip && index === 0 ? 'static' : null">
                 <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
-                <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
+                <clr-tooltip-content
+                  clrPosition="bottom-right"
+                  clrSize="lg"
+                  [class.open-tooltip]="openTooltip && index === 0"
+                >
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed
                   quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget,
                   pellentesque sed arcu. Vivamus in dui lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -258,5 +262,30 @@ export const CompactOverflowEllipsisExpandableRows: StoryObj = {
     multiSelectable: true,
     clrDgReplace: true,
     detailColumns: true,
+  },
+};
+
+export const ExpandableRowsTooltipOpened: StoryObj = {
+  render: ExpandableRowsTemplate,
+  args: {
+    openTooltip: true,
+  },
+};
+
+export const ExpandedExpandableRowsTooltipOpened: StoryObj = {
+  render: ExpandableRowsTemplate,
+  args: {
+    clrDgExpanded: true,
+    openTooltip: true,
+  },
+};
+
+export const ExpandedColumnReplaceExpandableRowsTooltipOpened: StoryObj = {
+  render: ExpandableRowsTemplate,
+  args: {
+    clrDgExpanded: true,
+    clrDgReplace: true,
+    detailColumns: true,
+    openTooltip: true,
   },
 };
