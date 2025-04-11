@@ -31,8 +31,109 @@ const baseComponentTemplates = {
 </clr-accordion>`,
   },
   alert: {
-    description: `Nested standard alert`,
-    samples: `<clr-alert><clr-alert-item><span class="alert-text">Standard Alert text</span></clr-alert-item></clr-alert>`,
+    description: `Alerts are app level, standard and lightweight. These are samples of standard`,
+    samples: `
+    <clr-alert [clrAlertClosable]="false">
+    <clr-alert-item>
+      <span class="alert-text">Standard alert text</span>
+      <div class="alert-actions">
+        <clr-dropdown>
+          <button class="dropdown-toggle" clrDropdownTrigger>Actions<cds-icon shape="angle" direction="down"></cds-icon></button>
+          <clr-dropdown-menu clrPosition="bottom-right">
+            <a href="..." class="dropdown-item" clrDropdownItem>Shutdown</a>
+            <a href="..." class="dropdown-item" clrDropdownItem>Delete</a>
+            <a href="..." class="dropdown-item" clrDropdownItem>Reboot</a>
+          </clr-dropdown-menu>
+        </clr-dropdown>
+      </div>
+    </clr-alert-item>
+    </clr-alert>
+    <clr-alert [clrAlertType]="'danger'">
+      <clr-alert-item>
+        <span class="alert-text">Standard alert text</span>
+        <div class="alert-actions">
+          <clr-dropdown>
+            <button class="dropdown-toggle" clrDropdownTrigger>Actions<cds-icon shape="angle" direction="down"></cds-icon></button>
+            <clr-dropdown-menu clrPosition="bottom-right">
+              <a href="..." class="dropdown-item" clrDropdownItem>Shutdown</a>
+              <a href="..." class="dropdown-item" clrDropdownItem>Delete</a>
+              <a href="..." class="dropdown-item" clrDropdownItem>Reboot</a>
+            </clr-dropdown-menu>
+          </clr-dropdown>
+        </div>
+      </clr-alert-item>
+    </clr-alert>
+    <clr-alert [clrAlertType]="'warning'"><clr-alert-item><span class="alert-text">Standard alert text</span></clr-alert-item></clr-alert>
+    <clr-alert [clrAlertType]="'success'"><clr-alert-item><span class="alert-text">Standard alert text</span></clr-alert-item></clr-alert>
+    <clr-alert [clrAlertSizeSmall]="true"><clr-alert-item><span class="alert-text">This is a small alert.</span></clr-alert-item></clr-alert>`,
+  },
+  alertApp: {
+    description: `Alerts are app level, standard and lightweight. These are samples of app level.`,
+    samples: `
+  <clr-alert [clrAlertType]="'danger'" [clrAlertAppLevel]="true">
+    <clr-alert-item>
+      <span class="alert-text">This is an app level alert.</span>
+      <div class="alert-actions">
+        <button class="btn alert-action">Fix</button>
+      </div>
+    </clr-alert-item>
+  </clr-alert>
+  <hr />
+  <clr-alerts>
+    <clr-alert [clrAlertType]="'info'" [clrAlertAppLevel]="true">
+      <clr-alert-item>
+        <span class="alert-text">This is the first app level alert.</span>
+        <div class="alert-actions">
+          <button class="btn alert-action">Fix</button>
+        </div>
+      </clr-alert-item>
+    </clr-alert>
+    <clr-alert [clrAlertType]="'danger'" [clrAlertAppLevel]="true">
+      <clr-alert-item>
+        <span class="alert-text">This is a second app level alert.</span>
+        <div class="alert-actions">
+          <button class="btn alert-action">Fix</button>
+        </div>
+      </clr-alert-item>
+    </clr-alert>
+  </clr-alerts>`,
+  },
+  alertLightWeight: {
+    description: `Alerts are app level, standard and lightweight. These are samples of Lightweight alerts`,
+    samples: `
+    <clr-alert [clrAlertLightweight]="true" [clrAlertClosable]="false">
+    <clr-alert-item>
+      <span class="alert-text">Lightweight alert text</span>
+      <div class="alert-actions">
+        <clr-dropdown>
+          <button class="dropdown-toggle" clrDropdownTrigger>Actions<cds-icon shape="angle" direction="down"></cds-icon></button>
+          <clr-dropdown-menu clrPosition="bottom-right">
+            <a href="..." class="dropdown-item" clrDropdownItem>Shutdown</a>
+            <a href="..." class="dropdown-item" clrDropdownItem>Delete</a>
+            <a href="..." class="dropdown-item" clrDropdownItem>Reboot</a>
+          </clr-dropdown-menu>
+        </clr-dropdown>
+      </div>
+    </clr-alert-item>
+    </clr-alert>
+    <clr-alert [clrAlertLightweight]="true" [clrAlertType]="'danger'">
+      <clr-alert-item>
+        <span class="alert-text">Lightweight alert text</span>
+        <div class="alert-actions">
+          <clr-dropdown>
+            <button class="dropdown-toggle" clrDropdownTrigger>Actions<cds-icon shape="angle" direction="down"></cds-icon></button>
+            <clr-dropdown-menu clrPosition="bottom-right">
+              <a href="..." class="dropdown-item" clrDropdownItem>Shutdown</a>
+              <a href="..." class="dropdown-item" clrDropdownItem>Delete</a>
+              <a href="..." class="dropdown-item" clrDropdownItem>Reboot</a>
+            </clr-dropdown-menu>
+          </clr-dropdown>
+        </div>
+      </clr-alert-item>
+    </clr-alert>
+    <clr-alert [clrAlertLightweight]="true" [clrAlertType]="'warning'"><clr-alert-item><span class="alert-text">Lightweight alert text</span></clr-alert-item></clr-alert>
+    <clr-alert [clrAlertLightweight]="true" [clrAlertType]="'success'"><clr-alert-item><span class="alert-text">Lightweight alert text</span></clr-alert-item></clr-alert>
+    <clr-alert [clrAlertLightweight]="true" [clrAlertSizeSmall]="true"><clr-alert-item><span class="alert-text">This is a small lightweight alert.</span></clr-alert-item></clr-alert>`,
   },
   badge: `<span class="badge badge-info">2</span>`,
   button: {
@@ -42,10 +143,22 @@ const baseComponentTemplates = {
   <button class="btn btn-primary">Solid Button</button>
   <button class="btn outline">Outline Buttons</button>`,
   },
+  buttonSM: {
+    description: `You can nest only SM buttons`,
+    samples: `
+  <button class="btn btn-sm">Default</button>
+  <button class="btn btn-primary btn-sm">Solid Button</button>
+  <button class="btn outline btn-sm">Outline Buttons</button>`,
+  },
   'button-group': `
 <clr-button-group>
   <clr-button><cds-icon shape="home"></cds-icon>Button 1</clr-button>
   <clr-button><cds-icon shape="home"></cds-icon>Button 2</clr-button>
+</clr-button-group>`,
+  'button-groupSM': `
+<clr-button-group>
+  <clr-button class="btn-sm"><cds-icon shape="home"></cds-icon>Button 1</clr-button>
+  <clr-button class="btn-sm"><cds-icon shape="home"></cds-icon>Button 2</clr-button>
 </clr-button-group>`,
   card: `
 <div class="card">
@@ -157,6 +270,7 @@ const baseComponentTemplates = {
   <input clrInput type="text" required />
 </clr-input-container>`,
   label: `<span class="label">Admin</span>`,
+  link: '<a href="#stayhere">Test Link</a>',
   list: `
 <ul class="list">
   <li>Chicken Breast</li>
@@ -451,13 +565,23 @@ const baseComponentTemplates = {
 </clr-wizard>`,
 };
 
-export function renderNestedComponent(nestedComponentNames: string[]): string {
+export function renderNestedComponent(
+  nestedComponentNames: string[],
+  showTitle = true,
+  displayInBlocks = true
+): string {
   return nestedComponentNames
     .map(name => {
       if (baseComponentTemplates[name]?.description) {
-        return `<div><h5>${baseComponentTemplates[name].description}</h5>${baseComponentTemplates[name].samples}</div>`;
+        if (showTitle) {
+          return `<div><h5>${baseComponentTemplates[name].description}</h5>${baseComponentTemplates[name].samples}</div>`;
+        } else {
+          return `${baseComponentTemplates[name].samples}`;
+        }
       }
-      return `<div><h5>${name}</h5>${baseComponentTemplates[name]}</div>`;
+      return showTitle
+        ? `<div><h5>${name}</h5>${baseComponentTemplates[name]}</div>`
+        : `${baseComponentTemplates[name]}`;
     })
-    .join('<hr/>');
+    .join(displayInBlocks ? '<hr/>' : '');
 }
