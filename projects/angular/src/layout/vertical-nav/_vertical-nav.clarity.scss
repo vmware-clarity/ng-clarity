@@ -66,6 +66,7 @@
       border-width: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-width;
       border-style: solid;
       border-color: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color;
+      border-top: 0; // to prevent double border - it uses div
     }
 
     .nav-content {
