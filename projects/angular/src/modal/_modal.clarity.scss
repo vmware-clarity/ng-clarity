@@ -213,9 +213,12 @@
     overflow-y: auto;
     overflow-x: hidden;
 
+    .modal-body {
+      padding: 0 modal-variables.$clr-modal-default-space;
+    }
+
     .modal-body,
     .side-panel-body {
-      padding: 0 modal-variables.$clr-modal-default-space;
       color: tokens.$cds-alias-typography-color-400;
       @include mixins.generate-typography-token('BODY-14-RG-STD');
     }
