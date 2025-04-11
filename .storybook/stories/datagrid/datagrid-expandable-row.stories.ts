@@ -61,8 +61,19 @@ const ExpandableRowsTemplate: StoryFn = args => ({
   template: `
     <style>
       .open-tooltip {
-        visibility: visible;
-        opacity: 1;
+        visibility: visible !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        opacity: 1 !important;
+        border: none !important;
+        height: initial !important;
+        width: calc(360 * (1rem / var(--cds-global-base))) !important;
+        overflow: initial !important;
+        padding: var(--cds-global-space-6) !important;
+        margin-top: calc(var(--cds-global-space-6) + var(--cds-global-space-5)) !important;
+
+        transform: translate(73px, 71px);
       }
       clr-dg-cell.datagrid-cell.electronegativity-container {
         display: flex;
@@ -109,25 +120,13 @@ const ExpandableRowsTemplate: StoryFn = args => ({
         (clrDgSelectedChange)="index === 0 && clrDgSelectedChange($event)"
       >
         <clr-dg-cell>
-          <a
-            *ngIf="!overflowEllipsis"
-            href="javascript:void(0)"
-            role="tooltip"
-            aria-haspopup="true"
-            class="tooltip tooltip-lg tooltip-bottom-right"
-          >
-            <cds-icon shape="exclamation-circle" solid></cds-icon>
-            <span class="tooltip-content" [class.open-tooltip]="openTooltip && index === 0">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
-              Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
-              sed arcu. Vivamus in dui lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in
-              ante placerat mattis id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque
-              aliquet suscipit eget, pellentesque sed arcu. Vivamus in dui lectus.
-            </span>
-          </a>
-          <clr-tooltip *ngIf="overflowEllipsis">
+          <clr-tooltip [style.position]="openTooltip && index === 0 ? 'static' : null">
             <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
-            <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
+            <clr-tooltip-content
+              clrPosition="bottom-right"
+              clrSize="lg"
+              [class.open-tooltip]="openTooltip && index === 0"
+            >
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
               Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
               sed arcu. Vivamus in dui lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in
@@ -174,9 +173,13 @@ const ExpandableRowsTemplate: StoryFn = args => ({
 
           <ng-template [ngIf]="detailColumns">
             <clr-dg-cell>
-              <clr-tooltip>
+              <clr-tooltip [style.position]="openTooltip && index === 0 ? 'static' : null">
                 <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
-                <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
+                <clr-tooltip-content
+                  clrPosition="bottom-right"
+                  clrSize="lg"
+                  [class.open-tooltip]="openTooltip && index === 0"
+                >
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed
                   quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget,
                   pellentesque sed arcu. Vivamus in dui lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -259,5 +262,30 @@ export const CompactOverflowEllipsisExpandableRows: StoryObj = {
     multiSelectable: true,
     clrDgReplace: true,
     detailColumns: true,
+  },
+};
+
+export const ExpandableRowsTooltipOpened: StoryObj = {
+  render: ExpandableRowsTemplate,
+  args: {
+    openTooltip: true,
+  },
+};
+
+export const ExpandedExpandableRowsTooltipOpened: StoryObj = {
+  render: ExpandableRowsTemplate,
+  args: {
+    clrDgExpanded: true,
+    openTooltip: true,
+  },
+};
+
+export const ExpandedColumnReplaceExpandableRowsTooltipOpened: StoryObj = {
+  render: ExpandableRowsTemplate,
+  args: {
+    clrDgExpanded: true,
+    clrDgReplace: true,
+    detailColumns: true,
+    openTooltip: true,
   },
 };
