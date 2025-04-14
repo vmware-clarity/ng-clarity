@@ -60,6 +60,10 @@
     @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
       padding: calc(modal-variables.$clr-modal-default-space / 2);
     }
+
+    .modal-body {
+      padding: 0 modal-variables.$clr-modal-default-space;
+    }
   }
 
   .side-panel {
@@ -212,10 +216,6 @@
     max-height: 70vh;
     overflow-y: auto;
     overflow-x: hidden;
-
-    .modal-body {
-      padding: 0 modal-variables.$clr-modal-default-space;
-    }
 
     .modal-body,
     .side-panel-body {
