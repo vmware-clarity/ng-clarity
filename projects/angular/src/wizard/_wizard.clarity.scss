@@ -253,15 +253,9 @@
 
     // timeline style adjustments for wizard
     .clr-timeline.clr-wizard-stepnav-list {
-      // define calculation variables
-      --clr-internal-wizard-timeline-default-icon-size: #{tokens.$cds-global-space-9};
-      --clr-internal-wizard-timeline-default-line-top: #{tokens.$cds-global-space-5};
-      --clr-internal-wizard-timeline-default-line-height: calc(100% - #{tokens.$cds-global-space-6});
-
-      // define variables that are used in styles
-      --clr-timeline-icon-size: var(--clr-internal-wizard-timeline-default-icon-size);
-      --clr-internal-wizard-timeline-line-top: var(--clr-internal-wizard-timeline-default-line-top);
-      --clr-internal-wizard-timeline-line-height: var(--clr-internal-wizard-timeline-default-line-height);
+      --clr-timeline-icon-size: #{tokens.$cds-global-space-9};
+      --clr-internal-wizard-timeline-line-top: #{tokens.$cds-global-space-5};
+      --clr-internal-wizard-timeline-line-height: calc(100% - #{tokens.$cds-global-space-6});
 
       &.clr-timeline-vertical {
         padding: 0;
@@ -277,42 +271,8 @@
           align-items: start;
 
           .clr-wizard-stepnav-link-body {
-            margin-top: calc(
-              0.5 *
-                (var(--clr-internal-wizard-timeline-default-icon-size) - tokens.$cds-alias-typography-body-line-height)
-            );
+            margin-top: calc(0.5 * (var(--clr-timeline-icon-size) - tokens.$cds-alias-typography-body-line-height));
           }
-        }
-      }
-
-      .clr-wizard-stepnav-item.not-started {
-        // define calculation variables
-        --clr-internal-wizard-timeline-not-started-icon-size: calc(
-          var(--clr-internal-wizard-timeline-default-icon-size) * (20 / 24)
-        );
-        --clr-internal-wizard-timeline-not-started-icon-offset: calc(
-          0.5 *
-            (
-              var(--clr-internal-wizard-timeline-default-icon-size) -
-                var(--clr-internal-wizard-timeline-not-started-icon-size)
-            )
-        );
-        --clr-internal-wizard-timeline-not-started-line-top: calc(
-          var(--clr-internal-wizard-timeline-default-line-top) +
-            var(--clr-internal-wizard-timeline-not-started-icon-offset)
-        );
-        --clr-internal-wizard-timeline-not-started-line-height: calc(
-          var(--clr-internal-wizard-timeline-default-line-height) +
-            (2 * var(--clr-internal-wizard-timeline-not-started-icon-offset))
-        );
-
-        // define variables that are used in styles
-        --clr-timeline-icon-size: var(--clr-internal-wizard-timeline-not-started-icon-size);
-        --clr-internal-wizard-timeline-line-top: var(--clr-internal-wizard-timeline-not-started-line-top);
-        --clr-internal-wizard-timeline-line-height: var(--clr-internal-wizard-timeline-not-started-line-height);
-
-        .clr-wizard-stepnav-link-icon {
-          margin-left: var(--clr-internal-wizard-timeline-not-started-icon-offset);
         }
       }
 
