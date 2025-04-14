@@ -14,73 +14,6 @@ import { Selection } from '../providers/selection';
 
 @Component({
   template: `
-    <clr-datagrid [(clrDgSelected)]="selected">
-      <clr-dg-column>First</clr-dg-column>
-      <clr-dg-column>Second</clr-dg-column>
-      <clr-dg-column>Third</clr-dg-column>
-
-      <clr-dg-row *ngFor="let item of items; index as i" [clrDgItem]="item">
-        <clr-dg-cell>{{ item.col1 }}</clr-dg-cell>
-        <clr-dg-cell>{{ item.col2 }}</clr-dg-cell>
-        <clr-dg-cell>{{ item.col3 }}</clr-dg-cell>
-
-        <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="showRowDetail">
-          <clr-dg-row-detail *clrIfExpanded="autoExpand && (i === 1 || i === 2)" [clrDgReplace]="replaceCells">
-            <ng-template [ngIf]="columns">
-              <clr-dg-cell>{{ item.col1 }} replaced</clr-dg-cell>
-              <clr-dg-cell>{{ item.col2 }} replaced</clr-dg-cell>
-              <clr-dg-cell>{{ item.col3 }} replaced</clr-dg-cell>
-            </ng-template>
-
-            <ng-template [ngIf]="!columns">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed
-              quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget,
-              pellentesque sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean
-              sagittis nibh lacus, in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor.
-              Vestibulum vulputate sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere ipsum
-              tincidunt velit pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet
-              metus finibus hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit
-              diam.
-            </ng-template>
-          </clr-dg-row-detail>
-        </ng-container>
-      </clr-dg-row>
-    </clr-datagrid>
-  `,
-})
-class TestComponent {
-  showRowDetail = false;
-  autoExpand = false;
-  columns = true;
-  replaceCells = false;
-  selected: any[];
-
-  items = [
-    {
-      col1: 'row1-col1',
-      col2: 'row1-col2',
-      col3: 'row1-col3',
-    },
-    {
-      col1: 'row2-col1',
-      col2: 'row2-col2',
-      col3: 'row2-col3',
-    },
-    {
-      col1: 'row3-col1',
-      col2: 'row3-col2',
-      col3: 'row3-col3',
-    },
-    {
-      col1: 'row4-col1',
-      col2: 'row4-col2',
-      col3: 'row4-col3',
-    },
-  ];
-}
-
-@Component({
-  template: `
     <clr-datagrid class="datagrid-compact" [style.height.px]="185" [(clrDgSelected)]="selected">
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
@@ -91,7 +24,7 @@ class TestComponent {
         <clr-dg-cell>{{ i * 3 + 1 }}</clr-dg-cell>
         <clr-dg-cell>{{ i * 3 + 2 }}</clr-dg-cell>
 
-        <ng-container ngProjectAs="clr-dg-row-detail">
+        <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="showRowDetail">
           <clr-dg-row-detail *clrIfExpanded="expandedRowIndexes.includes(i)" [clrDgReplace]="replaceCells">
             <ng-template [ngIf]="columns">
               <clr-dg-cell>{{ i * 3 }} replaced</clr-dg-cell>
@@ -106,14 +39,15 @@ class TestComponent {
     </clr-datagrid>
   `,
 })
-class ExtendedPageUpDownTestComponent {
+class TestComponent {
+  showRowDetail = false;
   columns = true;
   replaceCells = false;
-  selected: any[] = [];
+  selected: any[];
 
   expandedRowIndexes: number[] = [];
 
-  items = Array(10);
+  items = Array(4);
 }
 
 export default function (): void {
@@ -484,7 +418,7 @@ export default function (): void {
       beforeEach(function () {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
-        context.testComponent.autoExpand = true;
+        context.testComponent.expandedRowIndexes = [1, 2];
         context.testComponent.showRowDetail = true;
         context.detectChanges();
 
@@ -667,7 +601,7 @@ export default function (): void {
       beforeEach(function () {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
-        context.testComponent.autoExpand = true;
+        context.testComponent.expandedRowIndexes = [1, 2];
         context.testComponent.showRowDetail = true;
         context.testComponent.replaceCells = true;
         context.detectChanges();
@@ -830,7 +764,7 @@ export default function (): void {
       beforeEach(function () {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
-        context.testComponent.autoExpand = true;
+        context.testComponent.expandedRowIndexes = [1, 2];
         context.testComponent.showRowDetail = true;
         context.testComponent.columns = false;
         context.detectChanges();
@@ -1014,7 +948,7 @@ export default function (): void {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.testComponent.columns = false;
-        context.testComponent.autoExpand = true;
+        context.testComponent.expandedRowIndexes = [1, 2];
         context.testComponent.replaceCells = true;
         context.testComponent.showRowDetail = true;
         context.detectChanges();
@@ -1163,12 +1097,16 @@ export default function (): void {
     });
 
     describe('Extended PageUp and PageDown key navigation datagrid with expanded rows and actions', function () {
-      let context: TestContext<ClrDatagrid<number>, ExtendedPageUpDownTestComponent>;
+      let context: TestContext<ClrDatagrid<number>, TestComponent>;
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
       beforeEach(function () {
-        context = this.create(ClrDatagrid, ExtendedPageUpDownTestComponent, [Selection]);
+        context = this.create(ClrDatagrid, TestComponent, [Selection]);
+        context.testComponent.items = Array(10);
+        context.testComponent.selected = [];
+        context.testComponent.showRowDetail = true;
+        context.detectChanges();
 
         grid = context.clarityElement.querySelector('[role=grid]');
         expect(grid).toBeDefined();
