@@ -183,8 +183,6 @@ export const NestedFocusedFormElements: StoryObj = {
 function focusToggle({ canvasElement }: StoryContext) {
   removeFocusOutline({ canvasElement });
 
-  setTimeout(() => {
-    // force keyboard focus outline over input checkbox
-    canvasElement.querySelector<HTMLElement>('input[type=checkbox]').focus();
-  }, 0);
+  // force keyboard focus outline over input checkbox
+  canvasElement.querySelector<HTMLElement>('input[type=checkbox]').focus();
 }
