@@ -170,9 +170,9 @@ export const OpenFullScreenModal: StoryObj = {
   },
 };
 
-export const NoInputFocusCut: StoryObj = {
+export const NestedFocusedFormElements: StoryObj = {
   render: ModalTemplate,
-  play: focusCheckbox,
+  play: focusToggle,
   args: {
     clrModalOpen: true,
     showLongPageContent: false,
@@ -180,7 +180,7 @@ export const NoInputFocusCut: StoryObj = {
   },
 };
 
-function focusCheckbox({ canvasElement }: StoryContext) {
+function focusToggle({ canvasElement }: StoryContext) {
   removeFocusOutline({ canvasElement });
 
   setTimeout(() => {
