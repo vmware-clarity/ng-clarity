@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
+import { ClrCheckboxModule, ClrModal, ClrModalModule, ClrRadioModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
@@ -15,7 +15,7 @@ export default {
   title: 'Modal/Modal',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrModalModule],
+      imports: [...CommonModules, ClrModalModule, ClrCheckboxModule, ClrRadioModule],
     }),
   ],
   component: ClrModal,
@@ -85,6 +85,18 @@ const ModalTemplate: StoryFn = args => ({
       <h3 class="modal-title">{{ title }}</h3>
       <div class="modal-body">
         {{ body }}
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio />
+          <label>Focus on Radio should not cut outline</label>
+        </clr-radio-wrapper>
+        <clr-checkbox-wrapper>
+          <input type="checkbox" clrCheckbox />
+          <label>Focus on Checkbox should not cut outline</label>
+        </clr-checkbox-wrapper>
+        <clr-toggle-wrapper>
+          <input type="checkbox" clrToggle />
+          <label>Focus on Toggle should not cut outline</label>
+        </clr-toggle-wrapper>
         <div *ngIf="showLongModalContent" cds-layout="m-t:md">
           This list is provided to demonstrate scrolling capability within the modal.
           <ul>

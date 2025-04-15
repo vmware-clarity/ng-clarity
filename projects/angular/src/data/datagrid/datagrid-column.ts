@@ -202,16 +202,12 @@ export class ClrDatagridColumn<T = any>
   set sortBy(comparator: ClrDatagridComparatorInterface<T> | string) {
     if (typeof comparator === 'string') {
       this._sortBy = new DatagridPropertyComparator(comparator);
+    } else if (comparator) {
+      this._sortBy = comparator;
+    } else if (this.field) {
+      this._sortBy = new DatagridPropertyComparator(this.field);
     } else {
-      if (comparator) {
-        this._sortBy = comparator;
-      } else {
-        if (this.field) {
-          this._sortBy = new DatagridPropertyComparator(this.field);
-        } else {
-          delete this._sortBy;
-        }
-      }
+      delete this._sortBy;
     }
   }
 
