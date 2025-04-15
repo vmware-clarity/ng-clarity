@@ -170,11 +170,12 @@ export const OpenFullScreenModal: StoryObj = {
   },
 };
 
-export const ModalNoInputFocusCut: StoryObj = {
+export const NoInputFocusCut: StoryObj = {
   render: ModalTemplate,
   play: focusCheckbox,
   args: {
     clrModalOpen: true,
+    showLongPageContent: false,
     showToggle: true,
   },
 };
