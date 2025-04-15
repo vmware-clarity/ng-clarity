@@ -35,7 +35,7 @@
     .modal-content {
       border-radius: 0 wizard-variables.$clr-wizard-border-radius wizard-variables.$clr-wizard-border-radius 0;
       box-shadow: none;
-      padding: wizard-variables.$clr-wizard-default-space 0;
+      padding: 0;
       flex: 2 2 auto;
       width: 66%;
       height: initial;
@@ -43,13 +43,12 @@
       display: flex;
       align-items: flex-start;
       flex-direction: column;
-      gap: wizard-variables.$clr-wizard-default-space;
     }
 
     .modal-header--accessible {
       flex: 0 0 auto;
       width: 100%;
-      padding: 0 wizard-variables.$clr-wizard-default-space;
+      padding: wizard-variables.$clr-wizard-default-space wizard-variables.$clr-wizard-default-space 0;
     }
 
     .modal-title {
@@ -63,7 +62,7 @@
       flex: 1 1 auto;
       color: wizard-variables.$clr-wizard-main-text-color;
       width: 100%;
-      padding: 0 wizard-variables.$clr-wizard-default-space;
+      padding: wizard-variables.$clr-wizard-default-space;
     }
 
     .modal-footer {
@@ -73,7 +72,7 @@
       height: wizard-variables.$clr-wizard-footer-height;
       min-height: wizard-variables.$clr-wizard-footer-height;
       max-height: wizard-variables.$clr-wizard-footer-height;
-      padding: 0 wizard-variables.$clr-wizard-default-space;
+      padding: 0 wizard-variables.$clr-wizard-default-space wizard-variables.$clr-wizard-default-space;
     }
 
     .clr-wizard-btn {
