@@ -174,15 +174,16 @@ export const NestedFocusedFormElements: StoryObj = {
   render: ModalTemplate,
   play: focusToggle,
   args: {
-    clrModalOpen: true,
-    showLongPageContent: false,
     showToggle: true,
+    clrModalOpen: true,
+    clrModalSize: 'lg',
+    title: 'Large Modal',
+    body: 'This is a large modal.',
+    showLongPageContent: false,
   },
 };
 
 function focusToggle({ canvasElement }: StoryContext) {
-  removeFocusOutline({ canvasElement });
-
   // force keyboard focus outline over input checkbox
   canvasElement.querySelector<HTMLElement>('input[type=checkbox]').focus();
 }
