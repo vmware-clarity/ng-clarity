@@ -181,6 +181,10 @@ export const NoInputFocusCut: StoryObj = {
 };
 
 function focusCheckbox({ canvasElement }: StoryContext) {
-  // force keyboard focus outline over input checkbox
-  canvasElement.querySelector<HTMLElement>('input[type=checkbox]')?.focus();
+  removeFocusOutline({ canvasElement });
+
+  setTimeout(() => {
+    // force keyboard focus outline over input checkbox
+    canvasElement.querySelector<HTMLElement>('input[type=checkbox]').focus();
+  }, 0);
 }
