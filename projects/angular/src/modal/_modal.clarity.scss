@@ -122,13 +122,13 @@
     }
 
     .modal-content {
-      padding: modal-variables.$clr-modal-default-space;
+      padding: modal-variables.$clr-modal-default-space 0;
     }
   }
 
   .modal-header {
     border-bottom: none;
-    padding: 0 0 modal-variables.$clr-modal-default-space 0;
+    padding: 0 modal-variables.$clr-modal-default-space modal-variables.$clr-modal-default-space;
 
     // TODO: This class is used only in the clr-modal template.
     // It should be merged this with `.modal-header` in a major version
@@ -215,6 +215,7 @@
 
     .modal-body,
     .side-panel-body {
+      padding: 0 modal-variables.$clr-modal-default-space;
       color: tokens.$cds-alias-typography-color-400;
       @include mixins.generate-typography-token('BODY-14-RG-STD');
     }
@@ -231,7 +232,7 @@
   .side-panel-footer {
     display: flex;
     justify-content: flex-end;
-    padding: modal-variables.$clr-modal-default-space 0 0 0;
+    padding: modal-variables.$clr-modal-default-space modal-variables.$clr-modal-default-space 0;
     gap: tokens.$cds-global-space-5;
 
     .btn {
