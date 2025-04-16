@@ -15,3 +15,7 @@ export function removeFocusOutline({ canvasElement }: Pick<StoryContext, 'canvas
   // remove keyboard focus outline from focused element (e.g. modal title)
   canvasElement.querySelector<HTMLElement>(':focus')?.blur();
 }
+
+export function createArray(n: number): any[] {
+  return new Array(n);
+}
