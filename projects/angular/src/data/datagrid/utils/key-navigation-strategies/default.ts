@@ -101,6 +101,10 @@ export class DefaultKeyNavigationStrategy implements KeyNavigationGridStrategyIn
 
     if (ctrlKey) {
       nextCellCoords.y = numOfRows;
+
+      if (this.utils.isDetailsRow(nextCellCoords.y)) {
+        nextCellCoords.x = this.utils.getCellsForRow(nextCellCoords.y).length - 1;
+      }
     }
 
     return nextCellCoords;
