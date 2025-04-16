@@ -5,17 +5,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrAccordion, ClrAccordionModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { ClrAccordion, ClrAccordionModule, ClrAccordionPanel } from '@clr/angular';
+import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
+import { AccordionStorybookComponent } from './accordion.storybook.component';
 
 export default {
   title: 'Accordion/Accordion',
   component: ClrAccordion,
+  subcomponents: [ClrAccordionPanel],
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrAccordionModule],
+      imports: [...CommonModules, ClrAccordionModule, AccordionStorybookComponent],
     }),
   ],
   argTypes: {
@@ -36,43 +38,25 @@ export default {
     showDescriptions: false,
     alignmentTest: false,
   },
+  render: (args: AccordionStorybookComponent) => ({
+    props: {
+      ...args,
+    },
+    template: `
+      <storybook-accordion ${argsToTemplate(args)}></storybook-accordion>
+    `,
+  }),
 };
 
-const template = `
-  <clr-accordion [clrAccordionMultiPanel]="clrAccordionMultiPanel">
-    <clr-accordion-panel
-      *ngFor="let _ of createArray(panelCount); let i = index"
-      [clrAccordionPanelOpen]="!!openIndices[i]"
-      [clrAccordionPanelHeadingEnabled]="clrAccordionPanelHeadingEnabled"
-      [clrAccordionPanelHeadingLevel]="clrAccordionPanelHeadingLevel"
-    >
-      <clr-accordion-title>
-        {{ title }} {{ i + 1 }} {{ alignmentTest && i === 2 ? '(alignment test)' : '' }}
-      </clr-accordion-title>
-      <clr-accordion-description *ngIf="showDescriptions">Panel {{ i + 1 }} description.</clr-accordion-description>
-      <clr-accordion-content>{{ content }} {{ i + 1 }}</clr-accordion-content>
-    </clr-accordion-panel>
-  </clr-accordion>
-`;
-
-const AccordionTemplate: StoryFn = args => ({
-  template,
-  props: args,
-});
-
-export const Initial: StoryObj = {
-  render: AccordionTemplate,
-};
+export const Default: StoryObj = {};
 
 export const SinglePanelOpened: StoryObj = {
-  render: AccordionTemplate,
   args: {
     openIndices: [true, false, false, false],
   },
 };
 
 export const MultiplePanelsOpened: StoryObj = {
-  render: AccordionTemplate,
   args: {
     clrAccordionMultiPanel: true,
     openIndices: [true, true, false, false],
@@ -80,16 +64,21 @@ export const MultiplePanelsOpened: StoryObj = {
 };
 
 export const WithPanelDescriptions: StoryObj = {
-  render: AccordionTemplate,
   args: {
     showDescriptions: true,
   },
 };
 
 export const AlignmentTest: StoryObj = {
-  render: AccordionTemplate,
   args: {
     showDescriptions: true,
     alignmentTest: true,
+  },
+};
+
+export const Nested: StoryObj = {
+  storyName: 'Visual Testing/Accordion/Nested',
+  args: {
+    showNestedAccordion: true,
   },
 };
