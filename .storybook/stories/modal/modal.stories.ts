@@ -176,10 +176,6 @@ export const NestedFocusedFormElements: StoryObj = {
   args: {
     showToggle: true,
     clrModalOpen: true,
-    clrModalSize: 'full-screen',
-    title: 'Full-Screen Modal',
-    body: 'This is a full-screen modal.',
-    showLongPageContent: false,
   },
 };
 
