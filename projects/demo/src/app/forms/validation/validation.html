@@ -7,8 +7,8 @@
 
 <h2>Validation</h2>
 
-<ng-template #fields>
-  <form clrForm [formGroup]="model" #inputSuccessVertical>
+<ng-template #fields let-layout>
+  <form clrForm [clrLayout]="layout" [formGroup]="model" #inputSuccessVertical>
     <clr-input-container>
       <label>Input</label>
       <input clrInput placeholder="Input control" name="input" formControlName="input" />
@@ -144,17 +144,17 @@
 <button class="btn btn-primary" type="button" (click)="model.reset()">Reset</button>
 
 <h3>Vertical</h3>
-<form clrForm #inputSuccessVertical>
-  <ng-container *ngTemplateOutlet="fields"></ng-container>
+<form clrForm clrLayout="vertical" #inputSuccessVertical>
+  <ng-container *ngTemplateOutlet="fields; context: { $implicit: 'vertical' }"></ng-container>
 </form>
 
 <h3>Horizontal</h3>
-<form clrForm #inputSuccessHorizontal class="clr-form-horizontal">
-  <ng-container *ngTemplateOutlet="fields"></ng-container>
+<form clrForm #inputSuccessHorizontal>
+  <ng-container *ngTemplateOutlet="fields; context: { $implicit: 'horizontal' }"></ng-container>
 </form>
 
 <h3>Compact</h3>
-<form clrForm #inputSuccessCompact class="clr-form-compact">
-  <ng-container *ngTemplateOutlet="fields"></ng-container>
+<form clrForm #inputSuccessCompact clrLayout="compact">
+  <ng-container *ngTemplateOutlet="fields; context: { $implicit: 'compact' }"></ng-container>
 </form>
 No newline at end of file
