@@ -8,38 +8,44 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
 @Component({
   selector: 'forms-input-states-components',
   template: `
-    <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [class.clr-form-full-width]="isFullWidth">
+    <form
+      clrForm
+      [formGroup]="form"
+      [clrLayout]="clrLayout"
+      [class.clr-form-full-width]="isFullWidth"
+      [class.is-readonly]="isReadonly"
+    >
       <clr-input-container>
         <label>Text</label>
-        <input type="text" clrInput name="name" formControlName="name" />
+        <input type="text" clrInput name="name" formControlName="name" [readonly]="isReadonly" />
         <clr-control-helper>Helper Subtext</clr-control-helper>
         <clr-control-error>State Subtext</clr-control-error>
         <clr-control-success>State Subtext</clr-control-success>
       </clr-input-container>
       <clr-number-input-container>
         <label>Number</label>
-        <input type="number" clrNumberInput name="age" formControlName="age" />
+        <input type="number" clrNumberInput name="age" formControlName="age" [readonly]="isReadonly" />
         <clr-control-helper>Helper Subtext</clr-control-helper>
         <clr-control-error>State Subtext</clr-control-error>
         <clr-control-success>State Subtext</clr-control-success>
       </clr-number-input-container>
       <clr-password-container>
         <label>Password</label>
-        <input type="password" clrPassword name="password" formControlName="password" />
+        <input type="password" clrPassword name="password" formControlName="password" [readonly]="isReadonly" />
         <clr-control-helper>Helper Subtext</clr-control-helper>
         <clr-control-error>State Subtext</clr-control-error>
         <clr-control-success>State Subtext</clr-control-success>
       </clr-password-container>
       <clr-textarea-container>
         <label>Textarea</label>
-        <textarea clrTextarea name="description" formControlName="description"></textarea>
+        <textarea clrTextarea name="description" formControlName="description" [readonly]="isReadonly"></textarea>
         <clr-control-helper>Helper Subtext</clr-control-helper>
         <clr-control-error>State Subtext</clr-control-error>
         <clr-control-success>State Subtext</clr-control-success>
@@ -57,7 +63,13 @@ import { CommonModules } from '../../helpers/common';
       </clr-select-container>
       <clr-datalist-container>
         <label>Datalist</label>
-        <input clrDatalistInput placeholder="No label" name="datalist" formControlName="datalist" />
+        <input
+          clrDatalistInput
+          placeholder="No label"
+          name="datalist"
+          formControlName="datalist"
+          [readonly]="isReadonly"
+        />
         <datalist>
           <option value="one"></option>
           <option value="two"></option>
@@ -92,7 +104,7 @@ import { CommonModules } from '../../helpers/common';
       </clr-checkbox-container>
       <clr-date-container>
         <label>Datepicker</label>
-        <input type="date" autocomplete="off" clrDate formControlName="date" name="date" />
+        <input type="date" autocomplete="off" clrDate formControlName="date" name="date" [readonly]="isReadonly" />
         <clr-control-helper>Helper Subtext</clr-control-helper>
         <clr-control-error>State Subtext</clr-control-error>
         <clr-control-success>State Subtext</clr-control-success>
@@ -141,6 +153,21 @@ import { CommonModules } from '../../helpers/common';
       </clr-range-container>
     </form>
   `,
+  styles: [
+    `
+      .is-readonly {
+        clr-range-container,
+        clr-file-input-container,
+        clr-toggle-container,
+        clr-radio-container,
+        clr-checkbox-container,
+        clr-select-container,
+        clr-combobox-container {
+          display: none;
+        }
+      }
+    `,
+  ],
 })
 class FormsStoryComponent {
   _isDisabled = false;
@@ -165,6 +192,7 @@ class FormsStoryComponent {
 
   @Input() clrLayout = ClrFormLayout.HORIZONTAL;
   @Input() isFullWidth = false;
+  @Input() isReadonly = false;
 
   constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
@@ -236,14 +264,6 @@ export default {
     isSuccess: false,
     isFullWidth: false,
   },
-  render: (args: FormsStoryComponent) => ({
-    props: {
-      ...args,
-    },
-    template: `
-      <forms-input-states-components ${argsToTemplate(args)}></forms-input-states-components>
-    `,
-  }),
 };
 
 type Story = StoryObj<FormsStoryComponent>;
@@ -272,6 +292,9 @@ export const CompactFullWidthInputStates: Story = {
 
 export const DisabledStates: Story = {
   args: { isDisabled: true },
+};
+export const ReadonlyStates: Story = {
+  args: { isReadonly: true },
 };
 
 export const ErrorStates: Story = {
