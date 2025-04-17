@@ -13,9 +13,9 @@ import { ClrIconModule } from '../icon/icon.module';
 import { CdkTrapFocusModule } from '../utils/cdk/cdk-trap-focus.module';
 import { ClrModal } from './modal';
 import { ClrModalBody } from './modal-body';
-import { ClrModalHostDirective } from './modal-host.directive';
+import { ClrModalHostComponent } from './modal-host.component';
 
-export const CLR_MODAL_DIRECTIVES: Type<any>[] = [ClrModal, ClrModalBody, ClrModalHostDirective];
+export const CLR_MODAL_DIRECTIVES: Type<any>[] = [ClrModal, ClrModalBody, ClrModalHostComponent];
 
 @NgModule({
   imports: [CommonModule, CdkTrapFocusModule, ClrIconModule],
