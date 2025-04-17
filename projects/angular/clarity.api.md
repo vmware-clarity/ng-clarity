@@ -3256,11 +3256,13 @@ export class ClrModalConfigurationService {
 }
 
 // @public (undocumented)
-export class ClrModalHostDirective {
+export class ClrModalHostComponent {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrModalHostDirective, "[clrModalHost]", never, {}, {}, never, never, false, never>;
+    scrollable: boolean;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalHostDirective, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModalHostComponent, "[clrModalHost]", never, {}, {}, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalHostComponent, never>;
 }
 
 // @public (undocumented)
