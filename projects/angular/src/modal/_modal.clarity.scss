@@ -30,24 +30,22 @@
     padding-right: modal-variables.$clr-modal-xl-width !important;
   }
 
-  :root {
-    --modal-height-width-ratio: 0.5;
-  }
+  $modal-height-width-ratio: 0.5;
 
   .clr-side-panel-pinned-bottom-sm {
-    padding-bottom: calc(modal-variables.$clr-modal-sm-width * var(--modal-height-width-ratio)) !important;
+    padding-bottom: calc(modal-variables.$clr-modal-sm-width * $modal-height-width-ratio) !important;
   }
 
   .clr-side-panel-pinned-bottom-md {
-    padding-bottom: calc(modal-variables.$clr-modal-md-width * var(--modal-height-width-ratio)) !important;
+    padding-bottom: calc(modal-variables.$clr-modal-md-width * $modal-height-width-ratio) !important;
   }
 
   .clr-side-panel-pinned-bottom-lg {
-    padding-bottom: calc(modal-variables.$clr-modal-lg-width * var(--modal-height-width-ratio)) !important;
+    padding-bottom: calc(modal-variables.$clr-modal-lg-width * $modal-height-width-ratio) !important;
   }
 
   .clr-side-panel-pinned-bottom-xl {
-    padding-bottom: calc(modal-variables.$clr-modal-xl-width * var(--modal-height-width-ratio)) !important;
+    padding-bottom: calc(modal-variables.$clr-modal-xl-width * $modal-height-width-ratio) !important;
   }
 
   .clr-modal-host {
@@ -56,6 +54,10 @@
     .modal,
     .modal-backdrop {
       position: absolute;
+    }
+    .clr-modal-host-scrollable {
+      height: 100%;
+      overflow-y: auto;
     }
   }
 
@@ -129,18 +131,18 @@
         max-height: 100%;
         min-height: calc(modal-variables.$clr-modal-sm-width * 0.6);
 
-        height: calc(modal-variables.$clr-modal-md-width * var(--modal-height-width-ratio));
+        height: calc(modal-variables.$clr-modal-md-width * $modal-height-width-ratio);
 
         &:has(.modal-sm) {
-          height: calc(modal-variables.$clr-modal-sm-width * var(--modal-height-width-ratio));
+          height: calc(modal-variables.$clr-modal-sm-width * $modal-height-width-ratio);
         }
 
         &:has(.modal-lg) {
-          height: calc(modal-variables.$clr-modal-lg-width * var(--modal-height-width-ratio));
+          height: calc(modal-variables.$clr-modal-lg-width * $modal-height-width-ratio);
         }
 
         &:has(.modal-xl) {
-          height: calc(modal-variables.$clr-modal-xl-width * var(--modal-height-width-ratio));
+          height: calc(modal-variables.$clr-modal-xl-width * $modal-height-width-ratio);
         }
       }
       .modal-dialog {

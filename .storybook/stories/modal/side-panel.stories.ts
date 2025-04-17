@@ -155,11 +155,16 @@ export const SidePanelExtraLarge: StoryObj = {
 
 export const SidePanelBottomSmall: StoryObj = {
   render: SidePanelTemplate,
-  play: removeFocusOutline,
+  play: ({ canvasElement }) => {
+    removeFocusOutline({ canvasElement });
+    (canvasElement.querySelector('button.pinnable') as HTMLElement).click();
+  },
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'sm',
     clrSidePanelStaticBackdrop: true,
+    clrSidePanelPinnable: true,
+    clrSidePanelBackdrop: false,
     clrSidePanelPosition: 'bottom',
     title: 'Small Side Panel',
     body: 'This is a small side panel.',
@@ -168,11 +173,16 @@ export const SidePanelBottomSmall: StoryObj = {
 
 export const SidePanelBottomMedium: StoryObj = {
   render: SidePanelTemplate,
-  play: removeFocusOutline,
+  play: ({ canvasElement }) => {
+    removeFocusOutline({ canvasElement });
+    (canvasElement.querySelector('button.pinnable') as HTMLElement).click();
+  },
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
     clrSidePanelStaticBackdrop: true,
+    clrSidePanelPinnable: true,
+    clrSidePanelBackdrop: false,
     clrSidePanelPosition: 'bottom',
     title: 'Medium Side Panel',
     body: 'This is a medium side panel.',
@@ -181,11 +191,16 @@ export const SidePanelBottomMedium: StoryObj = {
 
 export const SidePanelBottomLarge: StoryObj = {
   render: SidePanelTemplate,
-  play: removeFocusOutline,
+  play: ({ canvasElement }) => {
+    removeFocusOutline({ canvasElement });
+    (canvasElement.querySelector('button.pinnable') as HTMLElement).click();
+  },
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'lg',
     clrSidePanelStaticBackdrop: true,
+    clrSidePanelPinnable: true,
+    clrSidePanelBackdrop: false,
     clrSidePanelPosition: 'bottom',
     title: 'Large Side Panel',
     body: 'This is a large side panel.',
@@ -194,11 +209,16 @@ export const SidePanelBottomLarge: StoryObj = {
 
 export const SidePanelBottomExtraLarge: StoryObj = {
   render: SidePanelTemplate,
-  play: removeFocusOutline,
+  play: ({ canvasElement }) => {
+    removeFocusOutline({ canvasElement });
+    (canvasElement.querySelector('button.pinnable') as HTMLElement).click();
+  },
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'xl',
     clrSidePanelStaticBackdrop: true,
+    clrSidePanelPinnable: true,
+    clrSidePanelBackdrop: false,
     clrSidePanelPosition: 'bottom',
     title: 'Extra-Large Side Panel',
     body: 'This is a extra-large side panel.',

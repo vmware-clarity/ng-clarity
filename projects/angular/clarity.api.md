@@ -3217,11 +3217,13 @@ export class ClrModalConfigurationService {
 }
 
 // @public (undocumented)
-export class ClrModalHostDirective {
+export class ClrModalHostComponent {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrModalHostDirective, "[clrModalHost]", never, {}, {}, never, never, false, never>;
+    scrollable: boolean;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalHostDirective, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModalHostComponent, "[clrModalHost]", never, {}, {}, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalHostComponent, never>;
 }
 
 // @public (undocumented)
@@ -3236,7 +3238,7 @@ export class ClrModalModule {
     // Warning: (ae-forgotten-export) The symbol "i3_20" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof i1_35.ClrModal, typeof i2_26.ClrModalBody, typeof i3_20.ClrModalHostDirective], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i3_2.ClrIconModule], [typeof i1_35.ClrModal, typeof i2_26.ClrModalBody, typeof i3_20.ClrModalHostDirective, typeof i3_2.ClrIconModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof i1_35.ClrModal, typeof i2_26.ClrModalBody, typeof i3_20.ClrModalHostComponent], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i3_2.ClrIconModule], [typeof i1_35.ClrModal, typeof i2_26.ClrModalBody, typeof i3_20.ClrModalHostComponent, typeof i3_2.ClrIconModule]>;
 }
 
 // @public (undocumented)
