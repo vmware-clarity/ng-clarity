@@ -7,7 +7,7 @@
 
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridRow, ClrTooltipModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
 
@@ -53,17 +53,12 @@ export default {
     overflowEllipsis: false,
     hidableColumns: false,
     height: 0,
-    openTooltip: false,
   },
 };
 
 const ExpandableRowsTemplate: StoryFn = args => ({
   template: `
     <style>
-      .open-tooltip {
-        visibility: visible;
-        opacity: 1;
-      }
       clr-dg-cell.datagrid-cell.electronegativity-container {
         display: flex;
         justify-content: space-between;
@@ -109,23 +104,7 @@ const ExpandableRowsTemplate: StoryFn = args => ({
         (clrDgSelectedChange)="index === 0 && clrDgSelectedChange($event)"
       >
         <clr-dg-cell>
-          <a
-            *ngIf="!overflowEllipsis"
-            href="javascript:void(0)"
-            role="tooltip"
-            aria-haspopup="true"
-            class="tooltip tooltip-lg tooltip-bottom-right"
-          >
-            <cds-icon shape="exclamation-circle" solid></cds-icon>
-            <span class="tooltip-content" [class.open-tooltip]="openTooltip && index === 0">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
-              Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
-              sed arcu. Vivamus in dui lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in
-              ante placerat mattis id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque
-              aliquet suscipit eget, pellentesque sed arcu. Vivamus in dui lectus.
-            </span>
-          </a>
-          <clr-tooltip *ngIf="overflowEllipsis">
+          <clr-tooltip>
             <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
             <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
@@ -261,3 +240,29 @@ export const CompactOverflowEllipsisExpandableRows: StoryObj = {
     detailColumns: true,
   },
 };
+
+export const ExpandableRowsTooltipOpened: StoryObj = {
+  render: ExpandableRowsTemplate,
+  play: focusTooltip,
+};
+
+export const ExpandedExpandableRowsTooltipOpened: StoryObj = {
+  render: ExpandableRowsTemplate,
+  play: focusTooltip,
+  args: {
+    clrDgExpanded: true,
+  },
+};
+
+export const ExpandedColumnExpandableRowsTooltipOpened: StoryObj = {
+  render: ExpandableRowsTemplate,
+  play: focusTooltip,
+  args: {
+    clrDgExpanded: true,
+    detailColumns: true,
+  },
+};
+
+function focusTooltip({ canvasElement }: StoryContext) {
+  canvasElement.querySelector<HTMLButtonElement>('cds-icon[clrTooltipTrigger]')?.focus();
+}

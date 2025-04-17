@@ -14,6 +14,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import docs from '../documentation.json';
 import { THEMES } from './helpers/constants';
+import AutoDocsTemplate from './stories/auto-docs.mdx';
 
 const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
@@ -67,7 +68,7 @@ const customViewports = {
 };
 
 export const parameters = {
-  docs: { inlineStories: true },
+  docs: { page: AutoDocsTemplate },
   options: {
     storySort: {
       method: 'alphabetical',

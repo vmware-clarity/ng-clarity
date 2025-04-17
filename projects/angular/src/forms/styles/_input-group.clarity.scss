@@ -90,11 +90,10 @@
     }
   }
 
-  .clr-form-control-readonly {
-    .clr-input-group {
-      border: none;
-      background: transparent;
-    }
+  .clr-input-group:has(input[readonly]),
+  .clr-form-control-readonly .clr-input-group {
+    border: none;
+    background: transparent;
     .clr-input-group-actions {
       display: none;
     }
