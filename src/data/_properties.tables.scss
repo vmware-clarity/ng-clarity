@@ -1,0 +1,62 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../utils/mixins';
+@use '../utils/variables/variables.global';
+@use 'variables.tables' as table-variables;
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('table.properties') {
+  :root [cds-theme] {
+    --clr-table-borderwidth: #{tokens.$cds-alias-object-border-width-100};
+    --clr-table-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-table-cornercellradius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-table-cell-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7};
+    --clr-table-cell-compact-padding: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-7};
+    --clr-table-noborder-borderwidth: #{tokens.$cds-global-space-0};
+    --clr-table-data-cell-font-size: #{tokens.$cds-global-typography-font-size-4};
+    --clr-table-data-cell-line-height: #{tokens.$cds-global-space-7};
+    --clr-table-data-cell-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
+    --clr-table-header-cell-font-size: #{tokens.$cds-global-typography-font-size-1};
+    --clr-table-header-cell-line-height: #{tokens.$cds-global-space-7};
+    --clr-table-header-cell-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
+
+    // Theme variables
+    // Usage: ./data/_tables.clarity.scss
+    // Usage: ./data/datagrid/_datagrid.clarity.scss
+    --clr-table-bgcolor: #{tokens.$cds-alias-object-container-background}; // var(--clr-color-neutral-0);
+    --clr-thead-bgcolor: #{tokens.$cds-alias-object-container-background-tint}; // var(--clr-color-neutral-50);
+
+    // Usage: ./data/datagrid/_datagrid.clarity.scss
+    --clr-table-header-border-bottom-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-400);
+    --clr-table-footer-border-top-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-400);
+    --clr-table-border-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-400);
+
+    // Usage: ./data/_tables.clarity.scss
+    --clr-tablerow-bordercolor: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-200);
+
+    // Usage: ./data/_tables.clarity.scss
+    // Usage: ./data/datagrid/_datagrid.clarity.scss
+    --clr-table-font-color: #{tokens.$cds-alias-typography-color-400}; // var(--clr-color-neutral-700);
+    --clr-table-margin: #{tokens.$cds-global-space-9} 0 0 0;
+
+    // Table header styles
+    --clr-thead-color: #{tokens.$cds-alias-typography-color-400}; // #{$clr-thead-color};
+
+    --clr-table-smallpadding: #{tokens.$cds-global-space-4};
+    --clr-table-bottomcellpadding: calc(var(--clr-table-cellpadding) - #{tokens.$cds-global-space-1});
+    --clr-table-topcellpadding: #{tokens.$cds-global-space-6};
+    --clr-table-fontsize: #{tokens.$cds-alias-typography-secondary-font-size};
+    // @deprecated in v17 not used for line height calculation, but for vertical padding calculation only
+    --clr-table-lineheight: mixins.baselinePx(14);
+    --clr-table-cellpadding: #{tokens.$cds-global-space-6};
+
+    --clr-table-compact-row-height: #{tokens.$cds-global-space-9};
+    --clr-table-compact-vertical-padding: calc(
+      (var(--clr-table-compact-row-height) - var(--clr-table-lineheight)) * 0.5
+    );
+  }
+}

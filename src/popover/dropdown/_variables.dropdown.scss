@@ -1,0 +1,44 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+$clr-dropdown-active-text-color: var(--clr-dropdown-active-text-color) !default;
+$clr-dropdown-bg-color: var(--clr-dropdown-bg-color) !default;
+$clr-dropdown-border-color: var(--clr-dropdown-border-color) !default;
+$clr-dropdown-divider-color: var(--clr-dropdown-divider-color) !default;
+$clr-dropdown-divider-border-width: var(--clr-dropdown-divider-border-width) !default;
+$clr-dropdown-child-border-color: var(--clr-dropdown-child-border-color) !default;
+
+// @deprecated in favor of '--clr-dropdown-item-hover-bg-color'
+$clr-dropdown-bg-hover-color: var(--clr-dropdown-item-hover-bg-color) !default;
+
+// @deprecated in favor of '--clr-dropdown-item-selected-bg-color'
+$clr-dropdown-selection-color: var(--clr-dropdown-item-selected-bg-color) !default;
+
+// Usage:  ../data/datagrid/_datagrid.clarity.scss
+// Usage:  ../emphasis/alert/_alert.clarity.scss
+$clr-dropdown-text-color: var(--clr-dropdown-text-color) !default;
+
+// Dropdown Header
+$clr-dropdown-header-color: var(--clr-dropdown-header-color) !default;
+$clr-dropdown-header-font-weight: var(--clr-dropdown-header-font-weight) !default;
+
+// Usage: ../popover/dropdown/_menu-mixins.clarity.scss
+// Dropdown Item
+$clr-dropdown-item-font-weight: var(--clr-dropdown-item-font-weight) !default;
+$clr-dropdown-item-color: var(--clr-dropdown-item-color) !default;
+$clr-dropdown-item-bg-color: var(--clr-dropdown-item-bg-color) !default;
+$clr-dropdown-item-hover-color: var(--clr-dropdown-item-hover-color) !default;
+$clr-dropdown-item-hover-bg-color: $clr-dropdown-bg-hover-color !default; // var(--clr-dropdown-item-hover-bg-color) !default;
+$clr-dropdown-item-active-color: var(--clr-dropdown-item-active-color) !default;
+$clr-dropdown-item-active-bg-color: var(
+  --clr-dropdown-item-active-bg-color
+) !default; // var(--clr-dropdown-item-active-bg-color) !default;
+$clr-dropdown-item-selected-color: var(--clr-dropdown-item-selected-color) !default;
+$clr-dropdown-item-selected-bg-color: var(--clr-dropdown-item-selected-bg-color) !default;
+$clr-dropdown-item-selected-hover-bg-color: var(--clr-dropdown-item-selected-hover-bg-color) !default;
+$clr-dropdown-item-selected-active-bg-color: var(--clr-dropdown-item-selected-active-bg-color) !default;
+$clr-dropdown-item-disabled-color: var(--clr-dropdown-item-disabled-color) !default;
+$clr-dropdown-item-disabled-bg-color: var(--clr-dropdown-item-disabled-bg-color) !default;

@@ -1,0 +1,248 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use 'sass:meta';
+@use '../image/icons.clarity';
+@use '../utils/mixins';
+@use '../utils/variables/variables';
+@use 'variables.login' as login-variables;
+@use '../emphasis/alert/variables.alert' as alert-variables;
+@use '@cds/core/tokens/tokens.scss';
+@include meta.load-css('properties.login');
+
+@include mixins.exports('login.clarity') {
+  .login-wrapper {
+    display: flex;
+    height: 100%;
+    background: icons.generateLoginBackground();
+    background-size: 100%;
+    background-position: mixins.baselinePx(580) 0;
+    background-repeat: no-repeat;
+
+    .login {
+      background: login-variables.$clr-login-background-color;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: tokens.$cds-global-space-7;
+      height: auto;
+      min-height: 100vh;
+      width: mixins.baselinePx(580);
+
+      .login-footer,
+      .login-header {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+
+        .actions {
+          margin-left: auto;
+        }
+      }
+
+      .login-header {
+        .logo {
+          height: 16px;
+          width: 100%;
+          -webkit-mask: icons.generateLoginVMWareLogo();
+          mask: icons.generateLoginVMWareLogo();
+          -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+          background-color: login-variables.$clr-login-logo-color;
+        }
+      }
+
+      .login-footer {
+        gap: login-variables.$clr-login-footer-gap;
+        a,
+        .copyright {
+          @include mixins.generate-typography-token('CAPTION-LG-11');
+          color: login-variables.$clr-login-copyright-color;
+        }
+      }
+
+      .login-body {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: mixins.baselinePx(320);
+      }
+
+      .title {
+        @include mixins.generate-typography-token('DISPLAY-40');
+        color: login-variables.$clr-login-title-color;
+
+        .welcome {
+          color: login-variables.$clr-login-welcome-color;
+          margin: 0 0 #{tokens.$cds-global-space-5} 0;
+        }
+
+        .subtitle, // @deprecated in v17
+        .hint {
+          @include mixins.generate-typography-token('SECTION-20-STD');
+          color: login-variables.$clr-login-hint-color;
+          margin: #{tokens.$cds-global-space-5} 0 0 0;
+        }
+      }
+
+      // @deprecated in v17. to be removed in v18
+      .trademark {
+        color: login-variables.$clr-login-trademark-color;
+        font-weight: login-variables.$clr-login-trademark-font-weight;
+        font-family: login-variables.$clr-login-trademark-font-family;
+        font-size: login-variables.$clr-login-trademark-font-size;
+        letter-spacing: login-variables.$clr-login-trademark-letter-spacing;
+      }
+
+      .login-group {
+        display: flex;
+        flex-direction: column;
+        padding-top: #{tokens.$cds-global-space-13};
+        width: 100%;
+
+        // @TODO Are these used? Some are documented on the website but not actually used. Some are neither documented nor used.
+        .auth-source,
+        .username,
+        .password,
+        .checkbox,
+        .clr-form-control {
+          margin: 0 0 #{tokens.$cds-global-space-9} 0;
+        }
+
+        .clr-checkbox-wrapper {
+          margin: 0 0 #{tokens.$cds-global-space-13} 0;
+        }
+
+        // Overrides for new forms layouts to match original login layout
+        .clr-control-container {
+          display: block;
+          width: 100%;
+
+          // Override to make select full width
+          .clr-select-wrapper,
+          .clr-select {
+            width: 100%;
+          }
+
+          // Override to make input full width
+          .clr-input-wrapper > .clr-input {
+            width: 100%;
+          }
+
+          // Override to make password full width
+          .clr-input-wrapper {
+            width: 100%;
+
+            & > .clr-input-group {
+              max-width: 100%;
+              width: 100%;
+
+              & > .clr-input {
+                width: calc(100% - tokens.$cds-global-space-9);
+              }
+            }
+          }
+        }
+
+        // @TODO Is this used? It's not documented on the website or used in the demo app.
+        .tooltip-validation {
+          margin-top: tokens.$cds-global-space-4;
+        }
+
+        // @TODO Is this used? It's not documented on the website or used in the demo app.
+        .tooltip-validation .username,
+        .tooltip-validation .password {
+          width: 100%;
+          margin-top: 0; //Since the top margin is now handled by the tooltip itself
+        }
+
+        .error {
+          @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
+          display: none;
+          padding: tokens.$cds-global-space-5;
+          background: login-variables.$clr-login-error-background-color;
+          color: alert-variables.$clr-alert-danger-font-color;
+          border-radius: tokens.$cds-alias-object-border-radius-100;
+          border: tokens.$cds-alias-object-border-width-100 solid alert-variables.$clr-alert-danger-border-color;
+
+          &:before {
+            content: '';
+            -webkit-mask: icons.generateErrorIcon("'none'");
+            mask: icons.generateErrorIcon("'none'");
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-size: cover;
+            mask-size: cover;
+            background-color: login-variables.$clr-login-error-icon-color;
+            margin: tokens.$cds-global-space-1 tokens.$cds-global-space-4 0 0;
+            @include mixins.equilateral(login-variables.$clr-login-icon-size);
+          }
+
+          &.active {
+            display: flex;
+
+            &:before {
+              flex: 0 0 login-variables.$clr-login-icon-size;
+            }
+          }
+        }
+
+        .btn {
+          margin: #{tokens.$cds-global-space-5} 0;
+          max-width: none;
+        }
+
+        .signup {
+          @include mixins.generate-typography-token('LINK-14');
+          text-align: center;
+        }
+      }
+
+      &:after {
+        position: absolute;
+        content: '';
+        display: block;
+        width: tokens.$cds-global-space-1;
+        height: 100%;
+        background: tokens.$cds-global-color-black;
+        opacity: 0.1;
+        top: 0;
+        right: calc(-1 * tokens.$cds-global-space-2);
+      }
+    }
+  }
+
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) {
+    .login-wrapper {
+      justify-content: center;
+      background: login-variables.$clr-login-background-color;
+
+      .login {
+        width: 100%;
+        margin-left: 0;
+        padding: tokens.$cds-global-space-9 20%;
+
+        &:after {
+          content: none;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
+    .login-wrapper {
+      .login {
+        padding: tokens.$cds-global-space-9 15%;
+      }
+    }
+  }
+}

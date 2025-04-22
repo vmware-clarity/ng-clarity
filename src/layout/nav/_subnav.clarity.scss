@@ -1,0 +1,55 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use 'variables.subnav' as subnav-variables;
+@include meta.load-css('properties.subnav');
+
+@include mixins.exports('subnav.clarity') {
+  /*TODO: deprecated. Remove when the clarity css naming convention is implemented.*/
+  .sub-nav,
+  .subnav {
+    display: flex;
+    // IE/OldEdge
+    box-shadow: subnav-variables.$clr-nav-shadow;
+    @if variables.$clr-use-custom-properties == true {
+      box-shadow: 0
+        (-1 * variables.$clr_baselineRem_1px)
+        0
+        var(--clr-nav-box-shadow-color, variables.$clr-color-neutral-400)
+        inset;
+    }
+    justify-content: space-between; //nav to the first and aside to the very right
+    align-items: center;
+    background-color: subnav-variables.$clr-subnav-bgColor;
+    height: subnav-variables.$clr-subnav-height;
+
+    .nav {
+      flex: 1 1 auto;
+      padding-left: variables.$clr_baselineRem_1;
+    }
+
+    .nav-item,
+    .nav-item a {
+      text-decoration: none;
+    }
+
+    aside {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      height: subnav-variables.$clr-subnav-height;
+      padding: 0 variables.$clr_baselineRem_1;
+
+      & > :last-child {
+        margin-right: 0;
+        padding-right: 0;
+      }
+    }
+  }
+}

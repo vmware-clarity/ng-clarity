@@ -1,0 +1,536 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use 'sass:meta';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
+@use 'variables.alert' as alert-variables;
+@use '../../button/buttons.clarity';
+@use '@cds/core/tokens/tokens.scss';
+
+@include meta.load-css('properties.alert');
+
+@mixin generateAlertType($alertType: 'info') {
+  background: alert-variables.getAlertColor($alertType, bg-color);
+  color: alert-variables.getAlertColor($alertType, color);
+
+  & .alert-items .alert-item a {
+    color: alert-variables.getAlertColor($alertType, color);
+
+    cds-icon,
+    clr-icon {
+      fill: alert-variables.getAlertColor($alertType, color);
+    }
+  }
+
+  $border-prop: alert-variables.getAlertColor($alertType, border-color);
+  @if $border-prop != 'none' {
+    border: alert-variables.$clr-alert-borderwidth solid $border-prop;
+  } @else {
+    border: none;
+  }
+
+  .alert-icon {
+    color: alert-variables.getAlertColor($alertType, icon);
+  }
+
+  $myActionSassVar: alert-variables.getAlertColor($alertType, action);
+
+  .alert-actions .dropdown .dropdown-toggle {
+    color: $myActionSassVar;
+    border-color: alert-variables.getAlertColor($alertType, action-active);
+  }
+
+  .alert-action,
+  .dropdown-toggle {
+    color: $myActionSassVar;
+
+    &.btn {
+      border-color: $myActionSassVar;
+      color: $myActionSassVar;
+
+      cds-icon,
+      clr-icon {
+        color: $myActionSassVar;
+      }
+
+      &:active {
+        color: $myActionSassVar;
+        cds-icon,
+        clr-icon {
+          color: $myActionSassVar;
+        }
+      }
+    }
+  }
+
+  .close {
+    color: alert-variables.getAlertColor($alertType, close-icon);
+
+    cds-icon,
+    clr-icon {
+      fill: alert-variables.getAlertColor($alertType, close-icon);
+    }
+
+    &:focus,
+    &:hover,
+    &:active {
+      color: alert-variables.getAlertColor($alertType, close-icon-hover);
+
+      cds-icon,
+      clr-icon {
+        fill: alert-variables.getAlertColor($alertType, close-icon-hover);
+      }
+    }
+  }
+}
+
+@mixin generateLightweightAlertType($alertType: 'info') {
+  &.alert-#{$alertType} {
+    .alert-text {
+      color: alert-variables.getAlertColor('lightweight-#{$alertType}', color);
+    }
+    .alert-icon {
+      color: alert-variables.getAlertColor('lightweight-#{$alertType}', icon);
+    }
+  }
+}
+
+@include mixins.exports('alert.clarity') {
+  $alertTypes: info, warning, danger, success, neutral;
+
+  .alert-icon {
+    @include mixins.min-equilateral(tokens.$cds-global-space-9);
+  }
+
+  .alert-icon-wrapper {
+    display: inline-flex;
+    flex: 0 0 tokens.$cds-global-space-9;
+  }
+
+  .alert-item {
+    flex: 1 1 auto;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: tokens.$cds-global-space-5;
+    min-height: alert-variables.$clr-alert-item-min-height;
+  }
+
+  .alert-items {
+    flex: 1 1 auto;
+    flex-flow: column nowrap;
+    padding: tokens.$cds-global-space-5 0;
+    gap: tokens.$cds-global-space-5;
+    display: flex;
+  }
+
+  .alert-item > span,
+  .alert-text {
+    flex: 1 1;
+    text-align: left;
+    align-self: center;
+  }
+
+  .alert {
+    @include mixins.generate-typography-token(
+      'SECONDARY-13-RG-STD',
+      (
+        font-size: alert-variables.$clr-alert-font-size,
+        letter-spacing: alert-variables.$clr-alert-letter-spacing,
+      )
+    );
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    border-radius: alert-variables.$clr-alert-borderradius;
+    padding: 0 tokens.$cds-global-space-5;
+    gap: tokens.$cds-global-space-6;
+
+    // To be deleted with refactoring task
+    margin-top: alert-variables.$clr-alert-top-margin;
+
+    @include generateAlertType(info);
+
+    &.alert-info {
+      @include generateAlertType(info);
+    }
+
+    &.alert-success {
+      @include generateAlertType(success);
+    }
+
+    &.alert-warning {
+      @include generateAlertType(warning);
+    }
+
+    &.alert-danger {
+      @include generateAlertType(danger);
+    }
+
+    &.alert-neutral {
+      @include generateAlertType(neutral);
+    }
+
+    .alert-item {
+      > span,
+      .alert-text,
+      .alert-actions {
+        padding: tokens.$cds-global-space-2 0;
+      }
+
+      .clr-icon {
+        @include mixins.equilateral(alert-variables.$clr-alert-icon-dimension-sm);
+        margin-right: alert-variables.$clr-icon-margin-right;
+      }
+
+      .clr-icon + .alert-text {
+        padding-left: 0;
+
+        &::before {
+          content: none;
+        }
+      }
+    }
+
+    .alert-actions {
+      flex: 0 0 auto;
+      white-space: nowrap;
+
+      > {
+        .alert-action,
+        .dropdown {
+          &:not(:last-child) {
+            margin-right: tokens.$cds-global-space-5;
+          }
+        }
+      }
+
+      .dropdown-item {
+        color: dropdown-variables.$clr-dropdown-text-color;
+      }
+    }
+
+    .alert-action,
+    .dropdown-toggle {
+      text-decoration: underline;
+    }
+
+    .alert-action {
+      button.dropdown-toggle:not(.btn) {
+        background: transparent;
+        cursor: pointer;
+        color: dropdown-variables.$clr-dropdown-text-color;
+      }
+    }
+    .dropdown-toggle:not(.btn) {
+      background: transparent;
+      border: none;
+    }
+
+    .close {
+      order: 100;
+      flex: 0 0 tokens.$cds-global-space-9;
+      @include mixins.equilateral(tokens.$cds-global-space-9);
+      margin: tokens.$cds-global-space-5 0;
+
+      cds-icon,
+      clr-icon {
+        @include mixins.min-equilateral(tokens.$cds-global-space-9);
+      }
+    }
+
+    .alert-spinner.spinner-inline {
+      @include mixins.min-equilateral(tokens.$cds-global-space-9);
+      margin: 0;
+
+      &::before,
+      &::after {
+        @include mixins.min-equilateral(tokens.$cds-global-space-9);
+      }
+    }
+
+    .close ~ .alert-item > .alert-actions {
+      padding-right: tokens.$cds-global-space-6;
+
+      & > .alert-action:last-child {
+        margin-right: tokens.$cds-global-space-6;
+      }
+    }
+
+    &.alert-lightweight {
+      background: none;
+      border: none;
+      .alert-items {
+        padding: 0;
+        .alert-item {
+          min-height: 0;
+          margin: 0;
+
+          > span,
+          .alert-actions,
+          .alert-text {
+            @include mixins.generate-typography-token('BODY-14-RG-STD');
+          }
+        }
+      }
+      .close {
+        display: none;
+      }
+
+      &:not(.alert-sm) .alert-icon {
+        margin: 0;
+      }
+
+      @include generateLightweightAlertType(info);
+      @include generateLightweightAlertType(warning);
+      @include generateLightweightAlertType(danger);
+      @include generateLightweightAlertType(success);
+      @include generateLightweightAlertType(neutral);
+    }
+  }
+
+  .alert-app-level {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    overflow-y: auto;
+
+    @include generateAlertType(app-info);
+
+    .alert-item .btn {
+      @extend .btn;
+      @extend .btn-sm;
+      margin: 0;
+    }
+
+    &.alert-info {
+      @include generateAlertType(app-info);
+
+      .alert-item .btn {
+        @extend .btn-info-outline;
+      }
+    }
+
+    &.alert-danger {
+      @include generateAlertType(app-danger);
+
+      .alert-item .btn {
+        @extend .btn-danger-outline;
+      }
+    }
+
+    &.alert-neutral {
+      @include generateAlertType(app-neutral);
+
+      .alert-item .btn {
+        @extend .btn-neutral-outline;
+      }
+    }
+
+    &.alert-warning {
+      @include generateAlertType(app-warning);
+
+      .alert-item .btn {
+        @extend .btn-warning-outline;
+      }
+    }
+
+    &.alert-success {
+      @include generateAlertType(app-success);
+
+      .alert-item .btn {
+        @extend .btn-success-outline;
+      }
+    }
+
+    .alert-items {
+      align-items: center;
+      padding: tokens.$cds-global-space-4;
+    }
+
+    .alert-item {
+      justify-content: center;
+      align-items: center;
+      min-height: tokens.$cds-global-space-9;
+
+      .alert-actions {
+        padding: 0;
+      }
+    }
+
+    .close {
+      margin: var(--cds-global-space-4) 0;
+    }
+  }
+
+  .alert-sm {
+    .alert-items .alert-item {
+      min-height: tokens.$cds-global-space-7;
+    }
+
+    .alert-icon-wrapper {
+      display: flex;
+      flex-basis: tokens.$cds-global-space-7;
+      height: tokens.$cds-global-space-7;
+    }
+
+    .alert-icon {
+      @include mixins.min-equilateral(tokens.$cds-global-space-7);
+    }
+
+    .alert-item > span,
+    .alert-item .alert-text,
+    .alert-item .alert-actions {
+      @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+      padding: 0;
+    }
+
+    .close {
+      margin: tokens.$cds-global-space-3 0;
+    }
+
+    .alert-spinner.spinner-inline {
+      @include mixins.min-equilateral(tokens.$cds-global-space-7);
+
+      &::before,
+      &::after {
+        @include mixins.min-equilateral(tokens.$cds-global-space-7);
+      }
+    }
+
+    &.alert-lightweight {
+      background: none;
+      border: none;
+
+      .alert-items {
+        gap: tokens.$cds-global-space-3;
+
+        .alert-item {
+          padding: tokens.$cds-global-space-3 0;
+
+          > span,
+          .alert-actions,
+          .alert-text {
+            @include mixins.generate-typography-token('CAPTION-LG-11');
+          }
+
+          .alert-icon-wrapper {
+            flex-basis: tokens.$cds-global-space-7;
+            height: tokens.$cds-global-space-7;
+          }
+        }
+      }
+      .close {
+        display: none;
+      }
+    }
+  }
+
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) {
+    .alert {
+      .alert-item {
+        flex-wrap: wrap;
+
+        .alert-text {
+          //90% was just an estimate to distance the text from the
+          //close alert button on medium and smaller breakpoints.
+          max-width: 90%;
+          //needed for safari
+          width: 90%;
+          flex-basis: 90%;
+        }
+
+        .alert-actions {
+          flex: 1 0 100%;
+        }
+      }
+    }
+
+    .alert-app-level {
+      .alert-actions {
+        margin-left: tokens.$cds-global-space-12;
+      }
+    }
+  }
+
+  .alert-hidden {
+    display: none;
+  }
+
+  //alert padding/margin adjustments
+  //Multiple app level alerts
+  .alerts {
+    // To be deleted with refactoring task
+    .alert {
+      margin-top: 0;
+    }
+
+    .alerts-wrapper {
+      display: flex;
+      flex-direction: row;
+      clr-alert {
+        flex: 1 1 100%;
+      }
+    }
+
+    @each $alertType in $alertTypes {
+      &.alert-#{$alertType} {
+        background: var(--clr-app-alert-#{$alertType}-pager-bg-color);
+      }
+    }
+  }
+
+  .alerts-pager {
+    color: var(--clr-app-alert-pager-text-color);
+
+    @each $alertType in $alertTypes {
+      .alert-#{$alertType} & {
+        color: var(--clr-app-alert-#{$alertType}-pager-font-color);
+      }
+    }
+
+    min-height: alert-variables.$clr-alert-min-height;
+    flex: 1 0 var(--clr-app-alert-pager-width);
+  }
+
+  .alerts-pager-button {
+    @include mixins.clr-no-styles-button();
+    color: var(--clr-app-alert-pager-text-color);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    height: var(--clr-btn-appearance-standard-height);
+
+    cds-icon,
+    clr-icon {
+      color: var(--clr-app-alert-pager-text-color);
+
+      @each $alertType in $alertTypes {
+        .alert-#{$alertType} & {
+          color: var(--clr-app-alert-#{$alertType}-pager-font-color);
+        }
+      }
+    }
+  }
+
+  .alerts-pager-control {
+    display: flex;
+    white-space: nowrap;
+    height: 100%;
+    align-items: center;
+    text-align: center;
+    padding: 0 tokens.$cds-global-space-9;
+
+    > * {
+      display: inline-flex;
+      justify-content: center;
+      flex: 1 1 auto;
+    }
+  }
+}

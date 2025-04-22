@@ -1,0 +1,43 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use '@cds/core/tokens/tokens.scss';
+@use '../utils/variables/variables';
+
+$clr-accordion-text-color: var(--clr-accordion-text-color) !default;
+$clr-accordion-text-color-hover: var(--clr-accordion-text-color-hover) !default;
+$clr-accordion-text-color-active: var(--clr-accordion-text-color-active) !default;
+$clr-accordion-panel-disabled-color: var(--clr-accordion-panel-disabled-color) !default;
+$clr-accordion-active-background-color: var(--clr-accordion-active-background-color) !default;
+$clr-accordion-content-background-color: var(--clr-accordion-content-background-color) !default;
+$clr-accordion-header-background-color: var(--clr-accordion-header-background-color) !default;
+$clr-accordion-header-disabled-background-color: var(--clr-accordion-header-disabled-background-color) !default;
+$clr-accordion-header-hover-background-color: var(--clr-accordion-header-hover-background-color) !default;
+$clr-accordion-header-active-background-color: var(--clr-accordion-header-active-background-color) !default;
+$clr-accordion-header-open-background-color: var(--clr-accordion-header-open-background-color) !default;
+$clr-accordion-header-open-active-background-color: var(--clr-accordion-header-open-active-background-color) !default;
+$clr-accordion-header-open-hover-background-color: var(--clr-accordion-header-open-hover-background-color) !default;
+
+$clr-accordion-error-color: var(--clr-accordion-error-color) !default;
+$clr-accordion-complete-color: var(--clr-accordion-complete-color) !default;
+$clr-accordion-header-left-indicator: var(--clr-accordion-header-left-indicator) !default;
+$clr-accordion-header-left-current-indicator: var(--clr-accordion-header-left-current-indicator) !default;
+
+$clr-accordion-content-color: var(--clr-accordion-content-color) !default;
+
+// @Deprecated in v17
+$clr-accordion-content-font-size: var(--clr-accordion-content-font-size) !default;
+$clr-accordion-content-color: var(--clr-accordion-content-color) !default;
+
+$clr-accordion-responsive-breakpoint: map.get(variables.$clr-grid-breakpoints, sm) !default;
+
+$clr-accordion-border-color: var(--clr-accordion-border-color) !default;
+$clr-accordion-border-radius: var(--clr-accordion-border-radius) !default;
+$clr-accordion-border-left-color-complete: var(--clr-accordion-border-left-color-complete) !default;
+$clr-accordion-border-left-color-error: var(--clr-accordion-border-left-color-error) !default;
+
+$clr-accordion-step-title-min-width: var(--clr-accordion-step-title-min-width) !default;
