@@ -1431,10 +1431,19 @@
   /**
    * When in calculate mode
    * - Hide the display elements for datagrid
-   * - Switch display mode for elements with projected content to calcualte sizes.
+   * - Switch display mode for elements with projected content to calculate sizes.
    */
   .datagrid-host.datagrid-calculate-mode {
     display: block;
+
+    // fixed columns are actions, selection and expansion
+    $fixedColumnsWidth: 3 * datagrid-variables.$clr-datagrid-fixed-column-size;
+
+    // browser overflow scroller width different browsers have different scroll width, but is never over 20px.
+    $browserOverflowScrollerWidth: 20px;
+
+    // calced width forces the container to have smaller width to accommodate static not included in calculation parts
+    width: calc(100% - ($fixedColumnsWidth + $browserOverflowScrollerWidth));
 
     // Hide parts of the display table not used for calculation.
     .datagrid,
