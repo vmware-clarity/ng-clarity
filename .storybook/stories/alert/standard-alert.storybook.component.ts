@@ -16,6 +16,7 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
   selector: 'storybook-standard-alert',
   standalone: true,
   template: `
+    <section *ngIf="componentDescription" [innerHTML]="componentDescription"></section>
     <div *ngFor="let alert of ALERT_TYPES" style="margin-top: 5px">
       <clr-alert
         [clrAlertClosable]="clrAlertClosable"
@@ -48,6 +49,7 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
   imports: [NgFor, NgIf, ClrAlertModule, ClrDropdownModule],
 })
 export class StandardAlertStorybookComponent {
+  @Input() componentDescription = null;
   @Input() clrAlertClosable = false;
   @Input() clrAlertIcon;
   @Input() clrAlertLightweight = false;

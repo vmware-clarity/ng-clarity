@@ -18,5 +18,5 @@ import { Component, Input } from '@angular/core';
 })
 export class BadgeStoryBookComponent {
   @Input() context = '42';
-  modifierClasses: string[] = ['', 'badge-info', 'badge-success', 'badge-warning', 'badge-danger'];
+  modifierClasses: string[] = ['', 'badge-info', 'badge-success', 'badge-warning', 'badge-danger', 'badge-purple'];
 }

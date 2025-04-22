@@ -54,6 +54,6 @@ export class CardStorybookComponent {
   @Input() hasImage = true;
 
   get buttonClass() {
-    return getButtonClass({ buttonStyle: this.buttonStyle, buttonType: 'primary' });
+    return getButtonClass({ buttonStyle: this.buttonStyle, buttonType: 'primary', btnSmallSize: true });
   }
 }

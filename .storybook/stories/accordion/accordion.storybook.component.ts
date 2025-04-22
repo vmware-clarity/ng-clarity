@@ -14,6 +14,7 @@ import { createArray } from 'helpers/common';
   selector: 'storybook-accordion',
   standalone: true,
   template: `
+    <section *ngIf="componentDescription" [innerHTML]="componentDescription"></section>
     <clr-accordion [clrAccordionMultiPanel]="clrAccordionMultiPanel">
       <clr-accordion-panel
         *ngFor="let _ of createArray(panelCount); let i = index"
@@ -39,6 +40,7 @@ import { createArray } from 'helpers/common';
   imports: [NgFor, NgIf, NgTemplateOutlet, ClrAccordionModule],
 })
 export class AccordionStorybookComponent {
+  @Input() componentDescription = null;
   @Input() clrAccordionMultiPanel = false;
   @Input() clrAccordionPanelHeadingEnabled = false;
   @Input() clrAccordionPanelHeadingLevel = 1;

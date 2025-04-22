@@ -17,7 +17,7 @@ import { createArray } from 'helpers/common';
   imports: [CommonModule, ClrButtonGroupModule, ClrLoadingModule],
   template: `
     <!-- Default Template -->
-    <div *ngIf="templateMode !== 'showcase'" style="margin-top: 200px; text-align: center">
+    <div *ngIf="templateMode !== 'showcase'" style="margin-top: 20px; text-align: center">
       <ng-container
         *ngTemplateOutlet="buttonGroupTemplate; context: { buttonType: this.buttonType, buttonStyle: this.buttonStyle }"
       ></ng-container>
@@ -36,7 +36,7 @@ import { createArray } from 'helpers/common';
 
     <ng-template #buttonGroupTemplate let-buttonType="buttonType" let-buttonStyle="buttonStyle">
       <clr-button-group
-        [ngClass]="getButtonClass({ buttonType, buttonStyle })"
+        [ngClass]="getButtonClass({ buttonType, buttonStyle, btnSmallSize })"
         [clrMenuPosition]="clrMenuPosition"
         [clrToggleButtonAriaLabel]="clrToggleButtonAriaLabel"
       >
@@ -66,6 +66,7 @@ export class ButtonGroupStorybookComponent {
   @Input() templateMode: 'default' | 'showcase' = 'default';
 
   // Inputs from the story args
+  @Input() btnSmallSize = false; //btn-sm
   @Input() clrMenuPosition = 'bottom-left';
   @Input() loading = false;
   @Input() clrToggleButtonAriaLabel: string = commonStringsDefault.rowActions;
