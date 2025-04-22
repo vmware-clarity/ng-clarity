@@ -1437,7 +1437,7 @@
     display: block;
 
     // fixed columns are actions, selection and expansion
-    $fixedColumnsWidth: 3 * datagrid-variables.$clr-datagrid-fixed-column-size;
+    $fixedColumnsWidth: calc(3 * datagrid-variables.$clr-datagrid-fixed-column-size);
 
     // browser overflow scroller width different browsers have different scroll width, but is never over 20px.
     $browserOverflowScrollerWidth: 20px;
