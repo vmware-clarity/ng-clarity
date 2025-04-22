@@ -209,13 +209,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   private set totalItems(value: number) {
-    if (this._totalItems === value) {
-      return;
-    }
-
     this._totalItems = value;
-
-    this.populatePlaceholderData();
   }
 
   ngAfterViewInit() {
@@ -297,20 +291,17 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.virtualScrollViewport?.scrollToIndex(index, behavior);
   }
 
-  private populatePlaceholderData() {
-    this.cdkVirtualForOf = Array(this.totalItems);
-  }
-
   private updateDataRange(skip: number, data: T[]) {
-    if (!this.persistItems) {
-      this.populatePlaceholderData();
+    let items = this.cdkVirtualForOf as T[];
+    if (!this.persistItems || items?.length !== this.totalItems) {
+      items = Array(this.totalItems);
     }
-
-    const items = this.items.all;
+    console.log('before items', JSON.parse(JSON.stringify(items)));
 
     items.splice(skip, data.length, ...data);
+    console.log('after items', JSON.parse(JSON.stringify(items)));
 
-    this.items.all = items;
+    this.cdkVirtualForOf = items;
   }
 
   private updateCdkVirtualForInputs() {
