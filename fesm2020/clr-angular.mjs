@@ -17740,6 +17740,9 @@ class DefaultKeyNavigationStrategy {
         nextCellCoords.x = numOfRows ? this.utils.getCellsForRow(0).length - 1 : 0;
         if (ctrlKey) {
             nextCellCoords.y = numOfRows;
+            if (this.utils.isDetailsRow(nextCellCoords.y)) {
+                nextCellCoords.x = this.utils.getCellsForRow(nextCellCoords.y).length - 1;
+            }
         }
         return nextCellCoords;
     }
@@ -17896,16 +17899,10 @@ class ExpandedRowKeyNavigationStrategy extends DefaultKeyNavigationStrategy {
     }
     keyEnd(currentCellCoords, ctrlKey) {
         const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
-        if (!this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isRowReplaced(currentCellCoords.y)) {
+        if ((!this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isRowReplaced(currentCellCoords.y)) || ctrlKey) {
             return super.keyEnd(currentCellCoords, ctrlKey);
         }
         nextCellCoords.x = this.utils.getCellsForRow(currentCellCoords.y).length - 1;
-        const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
-        const numOfColumns = numOfRows ? this.utils.getCellsForRow(0).length - 1 : 0;
-        if (ctrlKey) {
-            nextCellCoords.x = numOfColumns;
-            nextCellCoords.y = numOfRows;
-        }
         return nextCellCoords;
     }
     keyHome(currentCellCoords, ctrlKey) {
