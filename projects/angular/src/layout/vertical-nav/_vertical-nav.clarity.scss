@@ -12,7 +12,6 @@
 @use '../tabs/tabs.clarity' as tabs;
 
 @mixin vertical-nav-divider($position: 'border-top') {
-  border: 0;
   #{$position}: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-width solid
     vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color;
 }
@@ -485,6 +484,7 @@
 
       .nav-trigger + .nav-content {
         //Dims
+        border-top: 0;
         @include vertical-nav-divider('border-bottom');
         padding-top: tokens.$cds-global-space-8;
       }
