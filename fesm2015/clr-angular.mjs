@@ -22013,13 +22013,15 @@ class ClrDatagridVirtualScrollDirective {
         (_a = this.virtualScrollViewport) === null || _a === void 0 ? void 0 : _a.scrollToIndex(index, behavior);
     }
     updateDataRange(skip, data) {
-        let items = this.cdkVirtualForOf;
-        if (!this.persistItems || (items === null || items === void 0 ? void 0 : items.length) !== this.totalItems) {
-            items = Array(this.totalItems);
+        if (!this.cdkVirtualForOf) {
+            this.cdkVirtualForOf = Array(this.totalItems);
         }
-        console.log('before items', JSON.parse(JSON.stringify(items)));
+        const items = this.cdkVirtualForOf;
+        if (!this.persistItems || (items === null || items === void 0 ? void 0 : items.length) !== this.totalItems) {
+            items.length = 0;
+            items.length = this.totalItems;
+        }
         items.splice(skip, data.length, ...data);
-        console.log('after items', JSON.parse(JSON.stringify(items)));
         this.cdkVirtualForOf = items;
     }
     updateCdkVirtualForInputs() {
