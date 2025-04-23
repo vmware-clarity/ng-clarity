@@ -13,7 +13,6 @@ import { DropdownAngularCloseItemFalseDemo } from './dropdown-angular-close-item
 import { DropdownAngularNestedDemo } from './dropdown-angular-nested';
 import { DropdownAngularPositioningDemo } from './dropdown-angular-positioning';
 import { DropdownHeaderDemo } from './dropdown-header';
-import { DropdownRelativePositioningDemo } from './dropdown-relative-positioning';
 import { DropdownStaticButtonLinkToggleDemo } from './dropdown-static-buttonlink-toggle';
 import { DropdownStaticDefaultDemo } from './dropdown-static-default';
 import { DropdownStaticIconToggleDemo } from './dropdown-static-icon-toggle';
@@ -33,7 +32,6 @@ import { ROUTING } from './dropdown.demo.routing';
     DropdownAngularNestedDemo,
     DropdownAngularCloseItemFalseDemo,
     DropdownHeaderDemo,
-    DropdownRelativePositioningDemo,
   ],
   exports: [
     DropdownDemo,
@@ -45,7 +43,6 @@ import { ROUTING } from './dropdown.demo.routing';
     DropdownAngularNestedDemo,
     DropdownAngularCloseItemFalseDemo,
     DropdownHeaderDemo,
-    DropdownRelativePositioningDemo,
   ],
 })
 export class DropdownDemoModule {}

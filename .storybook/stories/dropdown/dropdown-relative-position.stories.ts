@@ -1,13 +1,29 @@
-<!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 
-<div class="main-container">
-  <div class="content-container">
+import { ClrDropdown, ClrDropdownModule } from '@clr/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+
+import { CommonModules } from '../../helpers/common';
+
+export default {
+  title: 'Dropdown/Dropdown Relative Position',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrDropdownModule],
+    }),
+  ],
+  component: ClrDropdown,
+};
+
+const DropdownRelativePositionTemplate: StoryFn = args => ({
+  template: `
     <div class="content-area" style="position: relative">
+      <div style="margin-top: 800px"></div>
       <clr-dropdown>
         <button class="btn btn-outline-primary" clrDropdownTrigger>
           Dropdown
@@ -33,6 +49,12 @@
           <div clrDropdownItem>Link 2</div>
         </clr-dropdown-menu>
       </clr-dropdown>
+      <div style="margin-top: 800px"></div>
     </div>
-  </div>
-</div>
+  `,
+  props: args,
+});
+
+export const DropdownRelativePostion: StoryObj = {
+  render: DropdownRelativePositionTemplate,
+};
