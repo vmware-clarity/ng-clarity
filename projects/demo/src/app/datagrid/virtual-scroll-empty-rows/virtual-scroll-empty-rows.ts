@@ -31,6 +31,7 @@ export class DatagridVirtualScrollEmptyRowsDemo {
 
   _selectedUsers: User[] = [];
   @ViewChild('datagrid') datagrid: ClrDatagrid;
+  state: ClrDatagridStateInterface<User>;
 
   constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
     inventory.size = this.totalRows;
@@ -53,7 +54,8 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     this.inventory.size = totalRows;
     this.inventory.generatedCount = 0;
     this.inventory.reset();
-    this.renderUserRangeChange(this.userRange).then(() => {
+    this.renderUserRangeChange(this.userRange).then(x => {
+      console.log(x);
       // this.cdr.detectChanges();
     });
   }
@@ -68,8 +70,30 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     // this.cdr.detectChanges();
   }
 
-  refresh(state: ClrDatagridStateInterface) {
+  async refresh(state: ClrDatagridStateInterface<User>) {
     console.log('refresh', state);
+    this.state = state;
+    const filters: { [prop: string]: any[] } = {};
+
+    if (state.filters) {
+      for (const filter of state.filters) {
+        const { property, value } = filter;
+        filters[property] = [value];
+      }
+    }
+
+    const result = await this.inventory
+      .filter(filters)
+      .sort(state.sort as { by: string; reverse: boolean })
+      .fetch(this.userRange.start, this.userRange.end - this.userRange.start);
+
+    this.dataRange = {
+      total: result.length,
+      data: result.users,
+      skip: this.userRange.start,
+    };
+
+    this.cdr.detectChanges();
   }
 
   async renderUserRangeChange($event: ListRange) {
@@ -80,7 +104,11 @@ export class DatagridVirtualScrollEmptyRowsDemo {
       end: $event.end,
     };
 
-    this.dataRange = await this.getData($event);
+    if (this.state) {
+      await this.refresh(this.state);
+    } else {
+      this.dataRange = await this.getData($event);
+    }
 
     this.cdr.detectChanges();
   }
