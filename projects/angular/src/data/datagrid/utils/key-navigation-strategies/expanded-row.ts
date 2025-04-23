@@ -121,18 +121,11 @@ export class ExpandedRowKeyNavigationStrategy extends DefaultKeyNavigationStrate
   override keyEnd(currentCellCoords: CellCoordinates, ctrlKey: boolean) {
     const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
 
-    if (!this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isRowReplaced(currentCellCoords.y)) {
+    if ((!this.utils.isDetailsRow(currentCellCoords.y) && !this.utils.isRowReplaced(currentCellCoords.y)) || ctrlKey) {
       return super.keyEnd(currentCellCoords, ctrlKey);
     }
 
     nextCellCoords.x = this.utils.getCellsForRow(currentCellCoords.y).length - 1;
-
-    const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
-    const numOfColumns = numOfRows ? this.utils.getCellsForRow(0).length - 1 : 0;
-    if (ctrlKey) {
-      nextCellCoords.x = numOfColumns;
-      nextCellCoords.y = numOfRows;
-    }
 
     return nextCellCoords;
   }
