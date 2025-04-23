@@ -292,14 +292,18 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   private updateDataRange(skip: number, data: T[]) {
-    let items = this.cdkVirtualForOf as T[];
-    if (!this.persistItems || items?.length !== this.totalItems) {
-      items = Array(this.totalItems);
+    if (!this.cdkVirtualForOf) {
+      this.cdkVirtualForOf = Array(this.totalItems);
     }
-    console.log('before items', JSON.parse(JSON.stringify(items)));
+
+    const items = this.cdkVirtualForOf as T[];
+
+    if (!this.persistItems || items?.length !== this.totalItems) {
+      items.length = 0;
+      items.length = this.totalItems;
+    }
 
     items.splice(skip, data.length, ...data);
-    console.log('after items', JSON.parse(JSON.stringify(items)));
 
     this.cdkVirtualForOf = items;
   }

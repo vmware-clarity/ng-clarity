@@ -19,7 +19,11 @@ import { User } from '../inventory/user';
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridVirtualScrollEmptyRowsDemo {
-  userRange: ListRange;
+  userRange: ListRange = {
+    start: 0,
+    end: 100,
+  };
+
   _totalRows = 10000;
   persistItems = false;
 
@@ -82,15 +86,17 @@ export class DatagridVirtualScrollEmptyRowsDemo {
       }
     }
 
+    const start = this.userRange.start;
+
     const result = await this.inventory
       .filter(filters)
       .sort(state.sort as { by: string; reverse: boolean })
-      .fetch(this.userRange.start, this.userRange.end - this.userRange.start);
+      .fetch(start, this.userRange.end - start);
 
     this.dataRange = {
       total: result.length,
       data: result.users,
-      skip: this.userRange.start,
+      skip: start,
     };
 
     this.cdr.detectChanges();
@@ -104,7 +110,7 @@ export class DatagridVirtualScrollEmptyRowsDemo {
       end: $event.end,
     };
 
-    if (this.state) {
+    if (this.state?.filters || this.state?.sort) {
       await this.refresh(this.state);
     } else {
       this.dataRange = await this.getData($event);
