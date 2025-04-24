@@ -514,7 +514,6 @@
   .clr-wizard--in-page {
     display: block;
     height: calc(100% + #{variables.$clr-content-area-padding-top} + #{variables.$clr-content-area-padding-bottom});
-    width: unset; // 100% from the inline wizard styles does not work
 
     // offset content area padding
     margin: -#{variables.$clr-content-area-padding-top} -#{variables.$clr-content-area-padding-right} -#{variables.$clr-content-area-padding-bottom} -#{variables.$clr-content-area-padding-left} !important;
