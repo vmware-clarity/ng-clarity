@@ -60,6 +60,13 @@ export const CheckboxContainer: StoryObj = {
   },
 };
 
+export const CheckboxContainerHelperText: StoryObj = {
+  args: {
+    type: CheckboxType.Checkbox,
+    showHelperText: true,
+  },
+};
+
 export const ToggleContainer: StoryObj = {
   args: {
     type: CheckboxType.Toggle,
@@ -97,10 +104,19 @@ export const ToggleContainerPartiallyDisabled: StoryObj = {
 export const CheckboxContainerInline: StoryObj = {
   args: { type: CheckboxType.Checkbox, clrInline: true },
 };
+
+export const CheckboxContainerInlineHelperText: StoryObj = {
+  args: { type: CheckboxType.Checkbox, clrInline: true, showHelperText: true },
+};
+
 export const ToggleContainerInline: StoryObj = {
   args: { type: CheckboxType.Toggle, clrInline: true },
 };
 
 export const ToggleContainerRightAligned: StoryObj = {
   args: { type: CheckboxType.Toggle, rightAligned: true },
+};
+
+export const ToggleContainerRightAlignedHelperText: StoryObj = {
+  args: { type: CheckboxType.Toggle, rightAligned: true, showHelperText: true },
 };

@@ -77,7 +77,7 @@ export enum CheckboxType {
             [ngModel]="isChecked"
             [disabled]="disabledIndexes.includes(i) || isDisabled"
           />
-          <label>{{ label }}</label>
+          <label>{{ label }} {{ i + 1 }}</label>
         </clr-checkbox-wrapper>
         <clr-control-helper *ngIf="showHelperText">Helper Subtext</clr-control-helper>
       </clr-checkbox-container>
@@ -85,7 +85,7 @@ export enum CheckboxType {
         <label *ngIf="containerLabel">{{ containerLabel }}</label>
         <clr-checkbox-wrapper>
           <input type="checkbox" clrCheckbox value="option1" name="options" [disabled]="isDisabled" />
-          <label>{{ label }}</label>
+          <label>{{ label }} {{ createArray(optionCount).length }}</label>
         </clr-checkbox-wrapper>
       </clr-checkbox-container>
     </ng-template>
@@ -99,7 +99,7 @@ export enum CheckboxType {
             [ngModel]="isChecked"
             [disabled]="disabledIndexes.includes(i) || isDisabled"
           />
-          <label>{{ label }}</label>
+          <label>{{ label }} {{ i + 1 }}</label>
         </clr-toggle-wrapper>
         <clr-control-helper *ngIf="showHelperText">Helper Subtext</clr-control-helper>
       </clr-toggle-container>
@@ -107,7 +107,7 @@ export enum CheckboxType {
         <label *ngIf="containerLabel">{{ containerLabel }}</label>
         <clr-toggle-wrapper>
           <input type="checkbox" clrToggle [disabled]="isDisabled" />
-          <label>{{ label }}</label>
+          <label>{{ label }} {{ createArray(optionCount).length }}</label>
         </clr-toggle-wrapper>
       </clr-toggle-container>
     </ng-template>
