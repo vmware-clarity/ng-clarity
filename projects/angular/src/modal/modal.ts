@@ -83,6 +83,8 @@ export class ClrModal implements OnChanges, OnDestroy {
   // Provide raw modal content. This is used by the wizard so that the same template can be rendered with and without a modal.
   @ContentChild('clrInternalModalContentTemplate') protected readonly modalContentTemplate: TemplateRef<any>;
 
+  @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
+
   constructor(
     private _scrollingService: ScrollingService,
     public commonStrings: ClrCommonStringsService,
@@ -152,5 +154,9 @@ export class ClrModal implements OnChanges, OnDestroy {
       this._openChanged.emit(false);
       this.modalStackService.trackModalClose(this);
     }
+  }
+
+  scrollTop() {
+    this.bodyElementRef.nativeElement.scrollTo(0, 0);
   }
 }
