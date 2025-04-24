@@ -59,6 +59,7 @@ export declare class Items<T = any> {
      * Cleans up our subscriptions to other providers
      */
     destroy(): void;
+    smartenDown(): void;
     smartenUp(): void;
     /**
      * Manually recompute the list of displayed items

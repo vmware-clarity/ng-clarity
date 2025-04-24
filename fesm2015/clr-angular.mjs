@@ -20603,6 +20603,10 @@ class Items {
             this._pageSub.unsubscribe();
         }
     }
+    smartenDown() {
+        this._smart = false;
+        this.destroy();
+    }
     smartenUp() {
         this._smart = true;
         /*
@@ -21955,6 +21959,12 @@ class ClrDatagridVirtualScrollDirective {
         this.updateFixedSizeVirtualScrollInputs();
     }
     set dataRange(range) {
+        if (!range) {
+            return;
+        }
+        if (this.items.smart) {
+            this.items.smartenDown();
+        }
         this.totalItems = range.total;
         this.updateDataRange(range.skip, range.data);
     }
@@ -21973,7 +21983,9 @@ class ClrDatagridVirtualScrollDirective {
         this.gridRoleElement = this.datagridElementRef.nativeElement.querySelector('[role="grid"]');
         this.updateCdkVirtualForInputs();
         this.subscriptions.push(this.items.change.subscribe(newItems => {
-            this.cdkVirtualFor.cdkVirtualForOf = newItems;
+            if (this.items.smart) {
+                this.cdkVirtualFor.cdkVirtualForOf = newItems;
+            }
         }), this.cdkVirtualFor.dataStream.subscribe(data => {
             this.updateAriaRowCount(data.length);
         }), this.virtualScrollViewport.scrolledIndexChange.subscribe(index => {
@@ -22013,16 +22025,12 @@ class ClrDatagridVirtualScrollDirective {
         (_a = this.virtualScrollViewport) === null || _a === void 0 ? void 0 : _a.scrollToIndex(index, behavior);
     }
     updateDataRange(skip, data) {
-        if (!this.cdkVirtualForOf) {
-            this.cdkVirtualForOf = Array(this.totalItems);
-        }
-        const items = this.cdkVirtualForOf;
-        if (!this.persistItems || (items === null || items === void 0 ? void 0 : items.length) !== this.totalItems) {
-            items.length = 0;
-            items.length = this.totalItems;
+        let items = this.cdkVirtualForOf;
+        if (!this.persistItems || !items || (items === null || items === void 0 ? void 0 : items.length) !== this.totalItems) {
+            items = Array(this.totalItems);
         }
         items.splice(skip, data.length, ...data);
-        this.cdkVirtualForOf = items;
+        this.cdkVirtualForOf = Array.from(items);
     }
     updateCdkVirtualForInputs() {
         if (this.cdkVirtualFor) {
