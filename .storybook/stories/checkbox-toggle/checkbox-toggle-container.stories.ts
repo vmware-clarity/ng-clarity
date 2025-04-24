@@ -38,7 +38,6 @@ export default {
     clrInline: false,
     // story helpers
     type: CheckboxType.Checkbox,
-    label: 'Options',
     containerLabel: 'Options',
     createArray: n => new Array(n),
     optionCount: 4,
