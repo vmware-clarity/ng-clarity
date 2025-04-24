@@ -245,7 +245,10 @@
     }
 
     // Remove borders from Middle panel
-    .clr-accordion-panel + .clr-accordion-panel .clr-accordion-header:not(.clr-stepper-header) {
+    .clr-accordion-panel
+      + .clr-accordion-panel
+      > div[class*='clr-accordion-panel-']
+      > .clr-accordion-header:not(.clr-stepper-header) {
       border-top-left-radius: unset;
       border-top-right-radius: unset;
     }
