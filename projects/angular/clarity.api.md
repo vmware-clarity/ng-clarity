@@ -3176,6 +3176,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     _openChanged: EventEmitter<boolean>;
     // (undocumented)
+    scrollTop(): void;
+    // (undocumented)
     size: string;
     // (undocumented)
     skipAnimation: boolean;
