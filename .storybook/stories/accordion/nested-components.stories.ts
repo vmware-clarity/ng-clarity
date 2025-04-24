@@ -26,6 +26,14 @@ const nestedComponents = [
   },
   {
     type: AccordionStorybookComponent,
+    options: { panelCount: 1, openIndices: [false], clrAccordionPanelDisabled: true },
+  },
+  {
+    type: AccordionStorybookComponent,
+    options: { panelCount: 1, openIndices: [true], clrAccordionPanelDisabled: true },
+  },
+  {
+    type: AccordionStorybookComponent,
     options: { panelCount: 3, openIndices: [true, false, false] },
   },
   { type: StandardAlertStorybookComponent, options: { alertCount: 1, componentDescription: `Standard Alerts` } },

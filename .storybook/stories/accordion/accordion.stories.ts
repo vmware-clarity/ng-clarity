@@ -37,6 +37,7 @@ export default {
     content: 'Hello World!',
     showDescriptions: false,
     alignmentTest: false,
+    clrAccordionPanelDisabled: false,
   },
   render: (args: AccordionStorybookComponent) => ({
     props: {
@@ -50,9 +51,15 @@ export default {
 
 export const Default: StoryObj = {};
 
-export const SinglePanelOpened: StoryObj = {
+export const FirstPanelOpened: StoryObj = {
   args: {
     openIndices: [true, false, false, false],
+  },
+};
+
+export const SecondPanelOpened: StoryObj = {
+  args: {
+    openIndices: [false, true, false, false],
   },
 };
 
@@ -76,9 +83,32 @@ export const AlignmentTest: StoryObj = {
   },
 };
 
-export const Nested: StoryObj = {
-  storyName: 'Visual Testing/Accordion/Nested',
+export const SinglePanelOpened: StoryObj = {
   args: {
-    showNestedAccordion: true,
+    panelCount: 1,
+    openIndices: [true],
+  },
+};
+
+export const SinglePanelClosed: StoryObj = {
+  args: {
+    panelCount: 1,
+    openIndices: [false],
+  },
+};
+
+export const SinglePanelOpenedDisabled: StoryObj = {
+  args: {
+    panelCount: 1,
+    openIndices: [false],
+    clrAccordionPanelDisabled: true,
+  },
+};
+
+export const SinglePanelClosedDisabled: StoryObj = {
+  args: {
+    panelCount: 1,
+    openIndices: [true],
+    clrAccordionPanelDisabled: true,
   },
 };

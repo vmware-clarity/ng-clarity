@@ -19,21 +19,16 @@ import { createArray } from 'helpers/common';
       <clr-accordion-panel
         *ngFor="let _ of createArray(panelCount); let i = index"
         [clrAccordionPanelOpen]="!!openIndices[i]"
+        [clrAccordionPanelDisabled]="clrAccordionPanelDisabled"
         [clrAccordionPanelHeadingEnabled]="clrAccordionPanelHeadingEnabled"
         [clrAccordionPanelHeadingLevel]="clrAccordionPanelHeadingLevel"
       >
         <clr-accordion-title>
-          {{ title }} {{ i + 1 }} {{ alignmentTest && i === 2 ? '(alignment test)' : '' }}
+          {{ title }} {{ i + 1 }}
+          {{ alignmentTest && ((panelCount > 1 && i === 2) || panelCount === 1) ? '(alignment test)' : '' }}
         </clr-accordion-title>
         <clr-accordion-description *ngIf="showDescriptions">Panel {{ i + 1 }} description.</clr-accordion-description>
-        <clr-accordion-content
-          >{{ content }} {{ i + 1 }}
-          <storybook-accordion
-            *ngIf="showNestedAccordion"
-            [panelCount]="panelCount"
-            [openIndices]="openIndices"
-          ></storybook-accordion>
-        </clr-accordion-content>
+        <clr-accordion-content>{{ content }} {{ i + 1 }} </clr-accordion-content>
       </clr-accordion-panel>
     </clr-accordion>
   `,
@@ -44,13 +39,12 @@ export class AccordionStorybookComponent {
   @Input() clrAccordionMultiPanel = false;
   @Input() clrAccordionPanelHeadingEnabled = false;
   @Input() clrAccordionPanelHeadingLevel = 1;
+  @Input() clrAccordionPanelDisabled = false;
   @Input() panelCount = 5;
   @Input() title = 'Title';
   @Input() content = 'Hello World!';
   @Input() showDescriptions = false;
   @Input() openIndices = [];
   @Input() alignmentTest = false;
-  @Input() showNestedAccordion = false;
-  @Input() openNestedAccordion = false;
   createArray = createArray;
 }
