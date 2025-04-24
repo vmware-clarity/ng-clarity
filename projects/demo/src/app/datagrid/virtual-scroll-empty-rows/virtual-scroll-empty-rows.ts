@@ -25,7 +25,7 @@ export class DatagridVirtualScrollEmptyRowsDemo {
   };
 
   _totalRows = 10000;
-  persistItems = false;
+  persistItems = true;
 
   dataRange: {
     total: number;
@@ -113,10 +113,8 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     if (this.state?.filters || this.state?.sort) {
       await this.refresh(this.state);
     } else {
-      this.dataRange = await this.getData($event);
+      await this.getData($event);
     }
-
-    this.cdr.detectChanges();
   }
 
   jumpTo(index: number) {
@@ -143,10 +141,12 @@ export class DatagridVirtualScrollEmptyRowsDemo {
   private async getData($event: ListRange) {
     const result = await this.inventory.fetch($event.start, $event.end - $event.start);
 
-    return {
+    this.dataRange = {
       total: result.length,
       data: result.users,
       skip: $event.start,
     };
+
+    this.cdr.detectChanges();
   }
 }

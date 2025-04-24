@@ -69,14 +69,16 @@
   </clr-dg-detail>
 
   <clr-dg-footer>
-    <div class="footer-counters">Rows {{userRange?.start + 1}} - {{userRange?.end}} of {{totalRows}}</div>
+    <div class="footer-counters">Rows {{userRange?.start + 1}} - {{userRange?.end}} of {{dataRange.total}}</div>
     <clr-dropdown>
       <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
         Snap Jump to
         <cds-icon shape="angle" direction="down"></cds-icon>
       </button>
       <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
-        <div *ngFor="let index of getIndexes(totalRows)" (click)="jumpTo(index)" clrDropdownItem>{{index + 1}}</div>
+        <div *ngFor="let index of getIndexes(dataRange.total)" (click)="jumpTo(index)" clrDropdownItem>
+          {{index + 1}}
+        </div>
       </clr-dropdown-menu>
     </clr-dropdown>
   </clr-dg-footer>
