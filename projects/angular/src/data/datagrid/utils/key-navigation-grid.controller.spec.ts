@@ -14,34 +14,25 @@ import { Selection } from '../providers/selection';
 
 @Component({
   template: `
-    <clr-datagrid [(clrDgSelected)]="selected">
+    <clr-datagrid class="datagrid-compact" [style.height.px]="185" [(clrDgSelected)]="selected">
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
       <clr-dg-column>Third</clr-dg-column>
 
       <clr-dg-row *ngFor="let item of items; index as i" [clrDgItem]="item">
-        <clr-dg-cell>{{ item.col1 }}</clr-dg-cell>
-        <clr-dg-cell>{{ item.col2 }}</clr-dg-cell>
-        <clr-dg-cell>{{ item.col3 }}</clr-dg-cell>
+        <clr-dg-cell>{{ i * 3 }}</clr-dg-cell>
+        <clr-dg-cell>{{ i * 3 + 1 }}</clr-dg-cell>
+        <clr-dg-cell>{{ i * 3 + 2 }}</clr-dg-cell>
 
         <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="showRowDetail">
-          <clr-dg-row-detail *clrIfExpanded="autoExpand && (i === 1 || i === 2)" [clrDgReplace]="replaceCells">
+          <clr-dg-row-detail *clrIfExpanded="expandedRowIndexes.includes(i)" [clrDgReplace]="replaceCells">
             <ng-template [ngIf]="columns">
-              <clr-dg-cell>{{ item.col1 }} replaced</clr-dg-cell>
-              <clr-dg-cell>{{ item.col2 }} replaced</clr-dg-cell>
-              <clr-dg-cell>{{ item.col3 }} replaced</clr-dg-cell>
+              <clr-dg-cell>{{ i * 3 }} replaced</clr-dg-cell>
+              <clr-dg-cell>{{ i * 3 + 1 }} replaced</clr-dg-cell>
+              <clr-dg-cell>{{ i * 3 + 2 }} replaced</clr-dg-cell>
             </ng-template>
 
-            <ng-template [ngIf]="!columns">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed
-              quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget,
-              pellentesque sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean
-              sagittis nibh lacus, in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor.
-              Vestibulum vulputate sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere ipsum
-              tincidunt velit pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet
-              metus finibus hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit
-              diam.
-            </ng-template>
+            <ng-template [ngIf]="!columns"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. </ng-template>
           </clr-dg-row-detail>
         </ng-container>
       </clr-dg-row>
@@ -50,33 +41,13 @@ import { Selection } from '../providers/selection';
 })
 class TestComponent {
   showRowDetail = false;
-  autoExpand = false;
   columns = true;
   replaceCells = false;
   selected: any[];
 
-  items = [
-    {
-      col1: 'row1-col1',
-      col2: 'row1-col2',
-      col3: 'row1-col3',
-    },
-    {
-      col1: 'row2-col1',
-      col2: 'row2-col2',
-      col3: 'row2-col3',
-    },
-    {
-      col1: 'row3-col1',
-      col2: 'row3-col2',
-      col3: 'row3-col3',
-    },
-    {
-      col1: 'row4-col1',
-      col2: 'row4-col2',
-      col3: 'row4-col3',
-    },
-  ];
+  expandedRowIndexes: number[] = [];
+
+  items = Array(4);
 }
 
 export default function (): void {
@@ -447,7 +418,7 @@ export default function (): void {
       beforeEach(function () {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
-        context.testComponent.autoExpand = true;
+        context.testComponent.expandedRowIndexes = [1, 2];
         context.testComponent.showRowDetail = true;
         context.detectChanges();
 
@@ -620,6 +591,55 @@ export default function (): void {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
         expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
       });
+
+      it('Moves focus on Ctrl-Home and Ctrl-End between expanded rows', function () {
+        context.testComponent.expandedRowIndexes = [0, 3];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+
+        // Default
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[30]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[0]);
+
+        // from expanded main row to expanded last row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[30]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[0]);
+
+        // from expanded sub row to expanded last row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[10]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[30]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[0]);
+      });
     });
 
     describe('Expandable datagrid with expanded replace column row and actions', function () {
@@ -630,7 +650,7 @@ export default function (): void {
       beforeEach(function () {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
-        context.testComponent.autoExpand = true;
+        context.testComponent.expandedRowIndexes = [1, 2];
         context.testComponent.showRowDetail = true;
         context.testComponent.replaceCells = true;
         context.detectChanges();
@@ -724,6 +744,48 @@ export default function (): void {
         expect(document.activeElement).toBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
       });
 
+      it('Moves focus across sticky cells with actions and expanded replaced rows', function () {
+        // check cell flow: start at index
+        // 0 -> 5 -> 10 -> 11 -> 19 -> 18 -> 26 -> 27 -> 19 -> 18 -> 10 -> 11 -> 6
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[19].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(document.activeElement).toBe(cells[18].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[26].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[27].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[19].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(document.activeElement).toBe(cells[18].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+      });
+
       it('Moves focus on Home and End with action and expand replaced cells', function () {
         // cell flow: start at index
         // 0 -> 5 -> 10 -> 17 -> 10
@@ -741,6 +803,36 @@ export default function (): void {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
         expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
       });
+
+      it('Moves focus on Ctrl-Home and Ctrl-End between expanded replaced column rows', function () {
+        context.testComponent.expandedRowIndexes = [0, 3];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+
+        // Default
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[30]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[0]);
+
+        // from expanded replaced row to expanded last row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[10]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[30]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[0]);
+      });
     });
 
     describe('Expandable datagrid with expanded detail row and actions', function () {
@@ -751,7 +843,7 @@ export default function (): void {
       beforeEach(function () {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
-        context.testComponent.autoExpand = true;
+        context.testComponent.expandedRowIndexes = [1, 2];
         context.testComponent.showRowDetail = true;
         context.testComponent.columns = false;
         context.detectChanges();
@@ -862,6 +954,48 @@ export default function (): void {
         expect(document.activeElement).toBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
       });
 
+      it('Moves focus across sticky cells with actions and expanded detail rows', function () {
+        // check cell flow: start at index
+        // 0 -> 5 -> 10 -> 11 -> 17 -> 16 -> 22 -> 23 -> 17 -> 16 -> 10 -> 11 -> 6
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[17].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(document.activeElement).toBe(cells[16].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[22].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[23].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[17].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(document.activeElement).toBe(cells[16].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+      });
+
       it('Moves focus on Home and End with action and expanded detail row', function () {
         // cell flow: start at index
         // 0 -> 5 -> 10 -> 14 -> 15 -> 10
@@ -882,6 +1016,55 @@ export default function (): void {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
         expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
       });
+
+      it('Moves focus on Ctrl-Home and Ctrl-End between expanded detail rows', function () {
+        context.testComponent.expandedRowIndexes = [0, 3];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+
+        // Default
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[26]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[0]);
+
+        // from expanded main row to expanded last row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[26]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[0]);
+
+        // from expanded sub row to expanded last row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[10]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[26]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[0]);
+      });
     });
 
     describe('Expandable datagrid with expanded replaced detail row and actions', function () {
@@ -893,7 +1076,7 @@ export default function (): void {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.testComponent.columns = false;
-        context.testComponent.autoExpand = true;
+        context.testComponent.expandedRowIndexes = [1, 2];
         context.testComponent.replaceCells = true;
         context.testComponent.showRowDetail = true;
         context.detectChanges();
@@ -980,6 +1163,48 @@ export default function (): void {
         expect(document.activeElement).toBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
       });
 
+      it('Moves focus across sticky cells with actions and expanded replaced detail rows', function () {
+        // check cell flow: start at index
+        // 0 -> 5 -> 10 -> 11 -> 17 -> 16 -> 22 -> 23 -> 17 -> 16 -> 10 -> 11 -> 6
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[17].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(document.activeElement).toBe(cells[16].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[22].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[23].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[17].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(document.activeElement).toBe(cells[16].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+      });
+
       it('Moves focus on Home and End with action and expanded replaced detail row', function () {
         // cell flow: start at index
         // 0 -> 5 -> 10 -> 15 -> 10
@@ -996,6 +1221,895 @@ export default function (): void {
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
         expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
+      });
+
+      it('Moves focus on Ctrl-Home and Ctrl-End between expanded replaced detail rows', function () {
+        context.testComponent.expandedRowIndexes = [0, 3];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+
+        // Default
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[26]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[0]);
+
+        // from expanded replaced row to expanded last row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[10]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[26]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
+        expect(document.activeElement).toBe(cells[0]);
+      });
+    });
+
+    describe('Extended PageUp and PageDown key navigation datagrid with expanded rows and actions', function () {
+      let context: TestContext<ClrDatagrid<number>, TestComponent>;
+      let grid: HTMLElement;
+      let cells: NodeListOf<HTMLElement>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, TestComponent, [Selection]);
+        context.testComponent.items = Array(10);
+        context.testComponent.selected = [];
+        context.testComponent.showRowDetail = true;
+        context.detectChanges();
+
+        grid = context.clarityElement.querySelector('[role=grid]');
+        expect(grid).toBeDefined();
+      });
+
+      //  Legend: 0h -> Index: 0, Type: header/check/expand/data
+      //  the matrix looks very close to regular not expanded expandable grid, but the underlying algorithm is different
+      //  data matrix 10*3 data, 5 headers, 10 check, 10 expand.
+
+      // | 0h| 1h| 2h| 3h| 4h| -> row header
+      // | 5c| 6e| 7d| 8d| 9d| -> row 0
+      // |10c|11e|12d|13d|14d| -> row 1
+      // |15c|16e|17d|18d|19d| -> row 2
+      // |20c|21e|22d|23d|24d| -> row 3
+      // |25c|26e|27d|28d|29d| -> row 4
+      // |       |30d|31d|32d|
+      // |33c|34e|35d|36d|37d| -> row 5
+      // |       |38d|39d|40d|
+      // |41c|42e|43d|44d|45d| -> row 6
+      //      .........
+      // |59c|60e|61d|62d|63d| -> row 9
+
+      // Covers key navigation over data cells
+      // PageUp and PageDown from NOT expanded row to expanded column row
+      // PageUp and PageDown from expanded column row to NOT expanded row
+      it('Moves focus across data cells with actions and expanded column rows', function () {
+        context.testComponent.expandedRowIndexes = [4, 5, 6];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(64);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        // check cell flow: start at index
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 36 -> 13 -> 39 -> 62 -> 39 -> 36 -> 62 -> 39 -> 18
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[8]);
+
+        // PageDown: from not expanded row to expanded main row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[36]);
+
+        // PageUp: from expanded main row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[13]);
+
+        // PageDown: from not expanded row to expanded sub row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[39]);
+
+        // PageDown: from expanded sub row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[62]);
+
+        // PageUp: from not expanded row to expanded sub row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[39]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[36]);
+
+        // PageDown: from expanded main row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[62]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[39]);
+
+        // PageUp: from expanded sub row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[18]);
+      });
+
+      // Covers key navigation over action cells
+      // PageUp and PageDown from NOT expanded row to expanded column row
+      // PageUp and PageDown from expanded column row to NOT expanded row
+      it('Moves focus across action cells with actions and expanded column rows', function () {
+        context.testComponent.expandedRowIndexes = [4, 5, 6];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(64);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        // check cell flow: start at index
+        // 0 -> 5 -> 33 -> 10 -> 33 -> 59 -> 33 -> 59 -> 54 -> 33
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        // PageDown: from not expanded row to expanded main row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[33].querySelector('[type=checkbox]'));
+
+        // PageUp: from expanded main row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
+
+        // PageDown: from not expanded row to expanded sub row (goes to main row)
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[33].querySelector('[type=checkbox]'));
+
+        // PageDown: from expanded main row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[59].querySelector('[type=checkbox]'));
+
+        // PageUp: from not expanded row to expanded sub row (goes to main row)
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[33].querySelector('[type=checkbox]'));
+
+        // PageDown: from expanded main row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[59].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[54].querySelector('[type=checkbox]'));
+
+        // PageUp: from not expanded row to expanded main row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[33].querySelector('[type=checkbox]'));
+      });
+
+      // | 0h| 1h| 2h| 3h| 4h| -> row header
+      // | 5c| 6e| 7d| 8d| 9d| -> row 0
+      // |       |10d|11d|12d|
+      // |13c|14e|15d|16d|17d| -> row 1
+      //      .........
+      // |28c|29e|30d|31d|32d| -> row 4
+      // |       |33d|34d|35d|
+      // |37c|37e|38d|39d|40d| -> row 5
+      // |       |41d|42d|43d|
+      //      .........
+      // |59c|60e|61d|62d|63d| -> row 9
+      // |       |64d|65d|66d|
+
+      // Covers key navigation over data cells
+      // PageDown from expanded main to sub column row
+      // PageUp from expanded sub to sub column row
+      // PageDown from expanded sub to main column row
+      // PageUp from expanded main to main column row
+      it('Moves focus across data cells with actions between expanded column rows', function () {
+        context.testComponent.expandedRowIndexes = [0, 4, 5, 9];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(67);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        // check cell flow: start at index
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 34 -> 11 -> 39 -> 65 -> 62 -> 39
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[8]);
+
+        // PageDown: from expanded main row to expanded sub row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[34]);
+
+        // PageUp: from expanded sub row to expanded sub row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[11]);
+
+        // PageDown: from expanded sub row to expanded main row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[39]);
+
+        // PageDown: from expanded sub row to expanded sub row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[65]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[62]);
+
+        // PageUp: from expanded main row to expanded main row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[39]);
+      });
+
+      // | 0h| 1h| 2h| 3h| 4h| -> row header
+      // | 5c| 6e| 7d| 8d| 9d| -> row 0
+      // |       |10d|11d|12d|
+      // |13c|14e|15d|16d|17d| -> row 1
+      // |       |18d|19d|20d|
+      // |21c|22e|23d|24d|25d| -> row 2
+      // |       |26d|27d|28d|
+      //      .........
+      // |39c|40e|41d|42d|43d| -> row 5
+      // |       |44d|45d|45d|
+      //      .........
+
+      // Covers key navigation over data cells
+      // PageDown from expanded main to main column row
+      // PageUp from expanded main to sub column row
+      // PageDown from expanded sub to sub column row
+      // PageUp from expanded sub to main column row
+      it('Moves focus across data cells with actions between expanded column rows for Page up', function () {
+        context.testComponent.expandedRowIndexes = [0, 1, 2, 5];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(67);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        // check cell flow: start at index
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 11 -> 16 -> 42 -> 19 -> 45 -> 24
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[8]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[11]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[16]);
+
+        // PageDown: from expanded main row to expanded main row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[42]);
+
+        // PageUp: from expanded main row to expanded sub row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[19]);
+
+        // PageDown: from expanded sub row to expanded sub row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[45]);
+
+        // PageUp: from expanded sub row to expanded main row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[24]);
+      });
+
+      // | 0h| 1h| 2h| 3h| 4h| -> row header
+      // | 5c| 6e| 7d| 8d| 9d| -> row 0
+      // |10c|11e|12d|13d|14d| -> row 1
+      //      .........
+      // |25c|26e|27d|28d|29d| -> row 4 (data cells are replaced and hidden)
+      // |       |30d|31d|32d|
+      // |33c|34e|35d|36d|37d| -> row 5 (data cells are replaced and hidden)
+      // |       |38d|39d|40d|
+      //      .........
+      // |51c|52e|53d|54d|55d| -> row 8
+      // |56c|67e|58d|59d|60d| -> row 9
+
+      // Covers key navigation over data cells
+      // PageDown from NOT expanded to replaced column row (x2 because replaced row can be targeted)
+      // PageUp from NOT expanded to replaced column row (x2 because replaced row can be targeted)
+      // PageDown from replaced column row to NOT expanded row
+      // PageUp from replaced column row to NOT expanded row
+      it('Moves focus across data cells with actions between NOT expanded and replaced column rows', function () {
+        context.testComponent.replaceCells = true;
+        context.testComponent.expandedRowIndexes = [4, 5];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(61);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        // check cell flow: start at index
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 39 -> 18 -> 13 -> 39 -> 59 -> 54 -> 49 -> 39 -> 59 -> 54 -> 31
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[8]);
+
+        // PageDown: from NOT expanded row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[39]);
+
+        // PageUp: from replaced row to NOT expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[18]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[13]);
+
+        // PageDown: from NOT expanded row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[39]);
+
+        // PageDown: from replaced row to NOT expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[59]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[54]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[49]);
+
+        // PageUp: from NOT expanded row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[31]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[59]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[54]);
+
+        // PageUp: from NOT expanded row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[31]);
+      });
+
+      // | 0h| 1h| 2h| 3h| 4h| -> row header
+      // | 5c| 6e| 7d| 8d| 9d| -> row 0
+      // |10c|11e|12d|13d|14d| -> row 1 (data cells are replaced and hidden)
+      // |       |15d|16d|17d|
+      // |18c|19e|20d|21d|22d| -> row 2 (data cells are replaced and hidden)
+      // |       |23d|24d|25d|
+      //      .........
+      // |36c|37e|38d|39d|40d| -> row 5 (data cells are replaced and hidden)
+      // |       |41d|42d|43d|
+      // |44c|45e|46d|47d|48d| -> row 6 (data cells are replaced and hidden)
+      // |       |49d|50d|51d|
+      //      .........
+
+      // PageDown from replaced column row to replaced column row
+      // PageUp from replaced column row to replaced column row
+      it('Moves focus across data cells with actions between replaced and replaced column rows', function () {
+        context.testComponent.replaceCells = true;
+        context.testComponent.expandedRowIndexes = [1, 2, 5, 6];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(67);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        // check cell flow: start at index
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 16 -> 42 -> 24 -> 50
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[8]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[16]);
+
+        // PageDown: from replaced row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[42]);
+
+        // PageUp: from replaced row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[24]);
+
+        // PageDown: from replaced row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[50]);
+      });
+
+      // | 0h| 1h| 2h| 3h| 4h| -> row header
+      // | 5c| 6e| 7d| 8d| 9d| -> row 0
+      // |10c|11e|12d|13d|14d| -> row 1
+      // |15c|16e|17d|18d|19d| -> row 2
+      // |20c|21e|22d|23d|24d| -> row 3
+      // |25c|26e|27d|28d|29d| -> row 4
+      // |       |----30d----|
+      // |31c|32e|33d|34d|35d| -> row 5
+      // |       |----36d----|
+      // |37c|38e|39d|40d|41d| -> row 6
+      // |       |----42d----|
+      //      .........
+      // |53c|54e|55d|56d|57d| -> row 9
+
+      // Covers key navigation over data cells
+      // PageUp and PageDown from NOT expanded row to expanded detail row
+      // PageUp and PageDown from expanded detail row to NOT expanded row
+      it('Moves focus across data cells with actions and expanded detail rows', function () {
+        context.testComponent.columns = false;
+        context.testComponent.expandedRowIndexes = [4, 5, 6];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(58);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        // check cell flow: start at index
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 34 -> 13 -> 36 -> 56 -> 36 -> 34 -> 56 -> 36 -> 18
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[8]);
+
+        // PageDown: from not expanded row to expanded main row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[34]);
+
+        // PageUp: from expanded main row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[13]);
+
+        // PageDown: from not expanded row to expanded sub row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[36]);
+
+        // PageDown: from expanded sub row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[55]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[56]);
+
+        // PageUp: from not expanded row to expanded sub row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[36]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[33]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[34]);
+
+        // PageDown: from expanded main row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[56]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[36]);
+
+        // PageUp: from expanded sub row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[17]);
+      });
+
+      // Covers key navigation over action cells
+      // PageUp and PageDown from NOT expanded row to expanded detail row
+      // PageUp and PageDown from expanded detail row to NOT expanded row
+      it('Moves focus across action cells with actions and expanded detail rows', function () {
+        context.testComponent.columns = false;
+        context.testComponent.expandedRowIndexes = [4, 5, 6];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(58);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        // check cell flow: start at index
+        // 0 -> 5 -> 31 -> 10 -> 31 -> 53 -> 31 -> 53 -> 48 -> 31
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        // PageDown: from not expanded row to expanded main row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[31].querySelector('[type=checkbox]'));
+
+        // PageUp: from expanded main row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[10].querySelector('[type=checkbox]'));
+
+        // PageDown: from not expanded row to expanded sub row (goes to main row)
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[31].querySelector('[type=checkbox]'));
+
+        // PageDown: from expanded main row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[53].querySelector('[type=checkbox]'));
+
+        // PageUp: from not expanded row to expanded sub row (goes to main row)
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[31].querySelector('[type=checkbox]'));
+
+        // PageDown: from expanded main row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[53].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[48].querySelector('[type=checkbox]'));
+
+        // PageUp: from not expanded row to expanded main row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[31].querySelector('[type=checkbox]'));
+      });
+
+      // | 0h| 1h| 2h| 3h| 4h| -> row header
+      // | 5c| 6e| 7d| 8d| 9d| -> row 0
+      // |       |----10d----|
+      // |11c|12e|13d|14d|15d| -> row 1
+      //      .........
+      // |26c|27e|28d|29d|30d| -> row 4
+      // |       |----31d----|
+      // |32c|33e|34d|35d|36d| -> row 5
+      // |       |----37d----|
+      //      .........
+      // |53c|54e|55d|56d|57d| -> row 9
+      // |       |----58d----|
+
+      // Covers key navigation over data cells
+      // PageDown from expanded main to expanded detail row
+      // PageUp from expanded detail to expanded detail row
+      // PageDown from expanded detail to expanded main row
+      // PageUp from expanded main to expanded main row
+      it('Moves focus across data cells with actions between expanded details and main rows', function () {
+        context.testComponent.columns = false;
+        context.testComponent.expandedRowIndexes = [0, 4, 5, 9];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(59);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        // check cell flow: start at index
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 31 -> 10 -> 34 -> 58 -> 55 -> 56 -> 35
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[8]);
+
+        // PageDown: from expanded main row to expanded detail row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[31]);
+
+        // PageUp: from expanded detail row to expanded detail row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[10]);
+
+        // PageDown: from expanded detail row to expanded main row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[34]);
+
+        // PageDown: from expanded main row to expanded detail row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[58]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[55]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[56]);
+
+        // PageUp: from expanded main row to expanded main row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[35]);
+      });
+
+      // | 0h| 1h| 2h| 3h| 4h| -> row header
+      // | 5c| 6e| 7d| 8d| 9d| -> row 0
+      // |       |----10d----|
+      // |11c|12e|13d|14d|15d| -> row 1
+      // |       |----16d----|
+      // |17c|18e|19d|20d|21d| -> row 2
+      // |       |----22d----|
+      //      .........
+      // |33c|34e|35d|36d|37d| -> row 5
+      // |       |----38d----|
+      //      .........
+
+      // Covers key navigation over data cells
+      // PageDown from expanded main to main column row
+      // PageUp from expanded main to sub column row
+      // PageDown from expanded sub to sub column row
+      // PageUp from expanded sub to main column row
+      it('Moves focus across data cells with actions between expanded details and details rows', function () {
+        context.testComponent.columns = false;
+        context.testComponent.expandedRowIndexes = [0, 1, 2, 5];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(59);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        // check cell flow: start at index
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 10 -> 13 -> 14 -> 36 -> 16 -> 38 -> 19
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[8]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[10]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[13]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[14]);
+
+        // PageDown: from expanded main row to expanded main row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[36]);
+
+        // PageUp: from expanded main row to expanded details row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[16]);
+
+        // PageDown: from expanded details row to expanded details row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[38]);
+
+        // PageUp: from expanded details row to expanded main row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[19]);
+      });
+
+      // | 0h| 1h| 2h| 3h| 4h| -> row header
+      // | 5c| 6e| 7d| 8d| 9d| -> row 0
+      // |10c|11e|12d|13d|14d| -> row 1
+      //      .........
+      // |25c|26e|27d|28d|29d| -> row 4 (data cells are replaced and hidden)
+      // |       |----30d----|
+      // |31c|32e|33d|34d|35d| -> row 5 (data cells are replaced and hidden)
+      // |       |----36d----|
+      //      .........
+      // |47c|48e|49d|50d|51d| -> row 8
+      // |52c|53e|54d|55d|56d| -> row 9
+
+      // Covers key navigation over data cells
+      // PageDown from NOT expanded to replaced column row (x2 because replaced row can be targeted)
+      // PageUp from NOT expanded to replaced column row (x2 because replaced row can be targeted)
+      // PageDown from replaced column row to NOT expanded row
+      // PageUp from replaced column row to NOT expanded row
+      it('Moves focus across data cells with actions between NOT expanded and replaced details rows', function () {
+        context.testComponent.replaceCells = true;
+        context.testComponent.columns = false;
+        context.testComponent.expandedRowIndexes = [4, 5];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(57);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        // check cell flow: start at index
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 36 -> 17 -> 12 -> 13 -> 36 -> 54 -> 55 -> 50 -> 45 -> 36 -> 54 -> 55 -> 50 -> 30
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[8]);
+
+        // PageDown: from NOT expanded row to replaced details row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[36]);
+
+        // PageUp: from replaced details row to NOT expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[17]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[12]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[13]);
+
+        // PageDown: from NOT expanded row to replaced details row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[36]);
+
+        // PageDown: from replaced details row to NOT expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[54]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[55]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[50]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[45]);
+
+        // PageUp: from NOT expanded row to replaced details row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[30]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[54]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[55]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expect(document.activeElement).toBe(cells[50]);
+
+        // PageUp: from NOT expanded row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[30]);
+      });
+
+      // | 0h| 1h| 2h| 3h| 4h| -> row header
+      // | 5c| 6e| 7d| 8d| 9d| -> row 0
+      // |10c|11e|12d|13d|14d| -> row 1 (data cells are replaced and hidden)
+      // |       |----15d----|
+      // |16c|17e|18d|19d|20d| -> row 2 (data cells are replaced and hidden)
+      // |       |----21d----|
+      //      .........
+      // |32c|33e|34d|35d|36d| -> row 5 (data cells are replaced and hidden)
+      // |       |----37d----|
+      // |38c|39e|40d|41d|42d| -> row 6 (data cells are replaced and hidden)
+      // |       |----43d----|
+      //      .........
+
+      // PageDown from replaced column row to replaced column row
+      // PageUp from replaced column row to replaced column row
+      it('Moves focus across data cells with actions between replaced details and replaced details rows', function () {
+        context.testComponent.replaceCells = true;
+        context.testComponent.columns = false;
+        context.testComponent.expandedRowIndexes = [1, 2, 5, 6];
+        context.detectChanges();
+
+        cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(59);
+
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+
+        // check cell flow: start at index
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 15 -> 37 -> 21 -> 43
+        // end
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5].querySelector('[type=checkbox]'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[7]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(document.activeElement).toBe(cells[8]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(document.activeElement).toBe(cells[15]);
+
+        // PageDown: from replaced row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[37]);
+
+        // PageUp: from replaced row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expect(document.activeElement).toBe(cells[21]);
+
+        // PageDown: from replaced row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expect(document.activeElement).toBe(cells[43]);
       });
     });
   });
