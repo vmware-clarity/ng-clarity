@@ -199,6 +199,10 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
   @Input('clrVirtualDataRange')
   set dataRange(range: { total: number; skip: number; data: T[] }) {
+    if (!range) {
+      return;
+    }
+
     if (this.items.smart) {
       this.items.smartenDown();
     }
