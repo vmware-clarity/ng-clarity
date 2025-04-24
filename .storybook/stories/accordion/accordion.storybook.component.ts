@@ -18,7 +18,7 @@ import { createArray } from 'helpers/common';
     <clr-accordion [clrAccordionMultiPanel]="clrAccordionMultiPanel">
       <clr-accordion-panel
         *ngFor="let _ of createArray(panelCount); let i = index"
-        [clrAccordionPanelOpen]="openIndices[i]"
+        [clrAccordionPanelOpen]="!!openIndices[i]"
         [clrAccordionPanelHeadingEnabled]="clrAccordionPanelHeadingEnabled"
         [clrAccordionPanelHeadingLevel]="clrAccordionPanelHeadingLevel"
       >
