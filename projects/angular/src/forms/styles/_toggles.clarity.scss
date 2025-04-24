@@ -62,10 +62,10 @@
         display: inline-block;
         content: '';
         border-radius: tokens.$cds-alias-object-border-radius-300;
-        border: tokens.$cds-alias-object-border-width-400 solid toggle-variables.$clr-toggle-handle-border-color;
         background-color: toggle-variables.$clr-toggle-handle-bg-color;
-        left: 0;
-        right: calc(-1 * toggle-variables.$clr-toggle-switch-base-width);
+        right: unset;
+        left: calc(2 * toggle-variables.$clr-toggle-dot-spacing);
+        top: $mark-half-size;
 
         @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
         @include clr-toggle-transition-styles;
@@ -96,13 +96,12 @@
         transition-property: border-color, background-color;
 
         &::before {
-          @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
-          border-width: tokens.$cds-alias-object-border-width-200;
-          border-color: toggle-variables.$clr-toggle-handle-border-color-on;
+          @include mixins.equilateral(toggle-variables.$clr-toggle-checked-dot-diameter);
           @include clr-toggle-transition-styles;
           transition-property: right, left;
-          left: calc(toggle-variables.$clr-toggle-switch-base-width - toggle-variables.$clr-toggle-dot-diameter);
-          right: 0;
+          right: toggle-variables.$clr-toggle-dot-spacing;
+          left: unset;
+          top: toggle-variables.$clr-toggle-dot-spacing;
         }
 
         &::after {
