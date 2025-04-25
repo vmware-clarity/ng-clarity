@@ -40,8 +40,8 @@
             <cds-icon shape="window-close"></cds-icon>
           </button>
         </div>
-        <div class="modal-body-wrapper">
-          <ng-content #body select=".modal-body"></ng-content>
+        <div #body class="modal-body-wrapper">
+          <ng-content select=".modal-body"></ng-content>
         </div>
         <ng-content select=".modal-footer"></ng-content>
       </div>
