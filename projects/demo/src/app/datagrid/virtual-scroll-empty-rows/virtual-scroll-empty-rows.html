@@ -25,6 +25,7 @@
   #datagrid
   [(clrDgSelected)]="selectedUsers"
   (clrDgRefresh)="refresh($event)"
+  [clrDgItemsTrackBy]="trackItemById"
   class="datagrid-compact"
   style="height: 480px"
 >

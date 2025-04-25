@@ -7,7 +7,7 @@
 
 import { ListRange } from '@angular/cdk/collections';
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { ClrDatagrid, ClrDatagridStateInterface } from '@clr/angular';
+import { ClrDatagrid, ClrDatagridItemsTrackByFunction, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -73,6 +73,8 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     this._selectedUsers = users;
     // this.cdr.detectChanges();
   }
+
+  trackItemById: ClrDatagridItemsTrackByFunction<User> = item => item?.id;
 
   async refresh(state: ClrDatagridStateInterface<User>) {
     console.log('refresh', state);

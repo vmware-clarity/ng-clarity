@@ -7,7 +7,7 @@
 
 import { ListRange } from '@angular/cdk/collections';
 import { AfterViewChecked, ApplicationRef, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ClrDatagridSortOrder } from '@clr/angular';
+import { ClrDatagridItemsTrackByFunction, ClrDatagridSortOrder } from '@clr/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Column, DynamicData, Row } from '../inventory/dynamic-data';
@@ -65,6 +65,8 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
       return retValue;
     };
   }
+
+  trackItemById: ClrDatagridItemsTrackByFunction<User> = item => item?.id;
 
   ngAfterViewChecked(): void {
     this.cdr.detectChanges();
