@@ -512,7 +512,7 @@
   }
 
   .wizard-in-page {
-    // extra specificity is needed here to overcome the following default style without using !important:
+    // extra specificity is needed here to override the following default style without using !important:
     // .main-container .content-container .content-area > :first-child { margin-top: 0px; }
     &#{&}#{&}.wizard-in-page--fill-content-area {
       display: block;
