@@ -100,7 +100,7 @@ export const SinglePanelClosed: StoryObj = {
 export const SinglePanelOpenedDisabled: StoryObj = {
   args: {
     panelCount: 1,
-    openIndices: [false],
+    openIndices: [true],
     clrAccordionPanelDisabled: true,
   },
 };
@@ -108,7 +108,7 @@ export const SinglePanelOpenedDisabled: StoryObj = {
 export const SinglePanelClosedDisabled: StoryObj = {
   args: {
     panelCount: 1,
-    openIndices: [true],
+    openIndices: [false],
     clrAccordionPanelDisabled: true,
   },
 };
