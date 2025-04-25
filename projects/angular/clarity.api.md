@@ -5085,6 +5085,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     headerActionService: HeaderActionService;
     inPage: boolean;
+    inPageFillContentArea: boolean;
     // (undocumented)
     get isFirst(): boolean;
     // (undocumented)
@@ -5139,7 +5140,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     protected wizardTitle: ClrWizardTitle;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": "clrWizardStepnavAriaLabel"; "size": "clrWizardSize"; "inPage": "clrWizardInPage"; "closable": "clrWizardClosable"; "_stopModalAnimations": "clrWizardPreventModalAnimation"; "forceForward": "clrWizardForceForwardNavigation"; "clrWizardOpen": "clrWizardOpen"; "stopNext": "clrWizardPreventDefaultNext"; "stopCancel": "clrWizardPreventDefaultCancel"; "stopNavigation": "clrWizardPreventNavigation"; "disableStepnav": "clrWizardDisableStepnav"; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": "clrWizardStepnavAriaLabel"; "size": "clrWizardSize"; "inPage": "clrWizardInPage"; "inPageFillContentArea": "clrWizardInPageFillContentArea"; "closable": "clrWizardClosable"; "_stopModalAnimations": "clrWizardPreventModalAnimation"; "forceForward": "clrWizardForceForwardNavigation"; "clrWizardOpen": "clrWizardOpen"; "stopNext": "clrWizardPreventDefaultNext"; "stopCancel": "clrWizardPreventDefaultCancel"; "stopNavigation": "clrWizardPreventNavigation"; "disableStepnav": "clrWizardDisableStepnav"; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
 }

@@ -67,6 +67,7 @@ export default {
     clrWizardForceForwardNavigation: false,
     clrWizardPreventDefaultNext: false,
     clrWizardPreventDefaultCancel: false,
+    clrWizardInPageFillContentArea: false,
     clrWizardStepnavAriaLabel: commonStringsDefault.wizardStepnavAriaLabel,
     // outputs
     clrWizardCurrentPageChanged: action('clrWizardCurrentPageChanged'),
@@ -119,6 +120,7 @@ const InPageWizardTemplate: StoryFn = args => ({
         <div class="content-area">
           <clr-wizard
             [clrWizardInPage]="true"
+            [clrWizardInPageFillContentArea]="clrWizardInPageFillContentArea"
             [clrWizardClosable]="false"
             [clrWizardDisableStepnav]="clrWizardDisableStepnav"
             [clrWizardPreventNavigation]="clrWizardPreventNavigation"
@@ -154,4 +156,11 @@ const InPageWizardTemplate: StoryFn = args => ({
 
 export const InPageWizard: StoryObj = {
   render: InPageWizardTemplate,
+};
+
+export const InPageWizardFillContentArea: StoryObj = {
+  render: InPageWizardTemplate,
+  args: {
+    clrWizardInPageFillContentArea: true,
+  },
 };

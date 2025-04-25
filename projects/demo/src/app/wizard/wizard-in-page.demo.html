@@ -5,7 +5,13 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<clr-wizard #wizard [clrWizardInPage]="true" (clrWizardOnCancel)="cancel()" (clrWizardOnFinish)="submit()">
+<clr-wizard
+  #wizard
+  [clrWizardInPage]="true"
+  [clrWizardInPageFillContentArea]="true"
+  (clrWizardOnCancel)="cancel()"
+  (clrWizardOnFinish)="submit()"
+>
   <clr-wizard-title>In-Page Wizard</clr-wizard-title>
 
   <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>

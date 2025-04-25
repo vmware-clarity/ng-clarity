@@ -48,6 +48,7 @@ import { ClrWizardTitle } from './wizard-title';
     '[class.wizard-xl]': "size == 'xl'",
     '[class.lastPage]': 'navService.currentPageIsLast',
     '[class.clr-wizard--in-page]': 'inPage',
+    '[class.clr-wizard--in-page-fill-content-area]': 'inPageFillContentArea',
   },
 })
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
@@ -65,6 +66,12 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * Enable "in page" wizard. Set using `[clrWizardInPage]` input.
    */
   @Input('clrWizardInPage') inPage = false;
+
+  /**
+   * Make an "in page" wizard fill the `.content-area`. Set using `[clrWizardInPageFillContentArea]` input.
+   * If you can't use this option, you will likely need to provide custom CSS to set the wizard's height and margins.
+   */
+  @Input('clrWizardInPageFillContentArea') inPageFillContentArea = false;
 
   /**
    * Tells the modal part of the wizard whether it should have a close "X"

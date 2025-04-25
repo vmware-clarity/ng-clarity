@@ -512,11 +512,15 @@
   }
 
   .clr-wizard--in-page {
-    display: block;
-    height: calc(100% + #{variables.$clr-content-area-padding-top} + #{variables.$clr-content-area-padding-bottom});
+    // extra specificity is needed here to overcome the following default style without using !important:
+    // .main-container .content-container .content-area > :first-child { margin-top: 0px; }
+    &#{&}#{&}.clr-wizard--in-page-fill-content-area {
+      display: block;
+      height: calc(100% + #{variables.$clr-content-area-padding-top} + #{variables.$clr-content-area-padding-bottom});
 
-    // offset content area padding
-    margin: -#{variables.$clr-content-area-padding-top} -#{variables.$clr-content-area-padding-right} -#{variables.$clr-content-area-padding-bottom} -#{variables.$clr-content-area-padding-left};
+      // offset content area padding
+      margin: -#{variables.$clr-content-area-padding-top} -#{variables.$clr-content-area-padding-right} -#{variables.$clr-content-area-padding-bottom} -#{variables.$clr-content-area-padding-left};
+    }
 
     .clr-wizard-footer-buttons-wrapper {
       justify-content: flex-start;
