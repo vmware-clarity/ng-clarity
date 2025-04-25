@@ -17,7 +17,7 @@ import { createArray } from 'helpers/common';
     <ng-template #paginatedTemplate>
       <clr-alerts>
         <clr-alert
-          *ngFor="let alert of ALERT_TYPES"
+          *ngFor="let alert of alertTypes"
           [clrAlertAppLevel]="true"
           [clrAlertClosable]="clrAlertClosable"
           [clrAlertIcon]="clrAlertIcon"
@@ -33,7 +33,7 @@ import { createArray } from 'helpers/common';
     </ng-template>
     <ng-template #defaultTemplate>
       <clr-alert
-        *ngFor="let alert of ALERT_TYPES"
+        *ngFor="let alert of alertTypes"
         [clrAlertAppLevel]="true"
         [clrAlertClosable]="clrAlertClosable"
         [clrAlertIcon]="clrAlertIcon"
@@ -75,7 +75,7 @@ export class AppLevelAlertStorybookComponent {
   createArray = createArray;
 
   // The alert types can be provided via args or defaulted here.
-  @Input() ALERT_TYPES: string[] = ['info', 'warning', 'danger', 'success', 'neutral'];
+  @Input() alertTypes: string[] = ['info', 'warning', 'danger', 'success', 'neutral'];
 
   @Output() clrAlertClosedChange: EventEmitter<boolean> = new EventEmitter();
 }

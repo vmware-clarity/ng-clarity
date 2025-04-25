@@ -67,6 +67,13 @@ export default {
   }),
 };
 
+export const SingleAlert: StoryObj = {
+  args: {
+    alertTypes: ['info'],
+    alertCount: 1,
+  },
+};
+
 export const Alert: StoryObj = {};
 
 export const DifferentIcon: StoryObj = {

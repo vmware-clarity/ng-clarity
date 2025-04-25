@@ -60,6 +60,8 @@ export default {
     clrAlertAppLevel: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    clrAlertClosable: false,
+    clrAlertLightweight: false,
     clrAlertClosedChange: action('clrAlertClosedChange'),
   },
   render: (args: StandardAlertStorybookComponent) => ({
@@ -70,6 +72,13 @@ export default {
       <storybook-standard-alert ${argsToTemplate(args)}></storybook-standard-alert>
     `,
   }),
+};
+
+export const SingleAlert: StoryObj = {
+  args: {
+    alertCount: 1,
+    alertTypes: ['info'],
+  },
 };
 
 export const Alert: StoryObj = {};
@@ -118,7 +127,7 @@ export const WithOpenActionsDropdown: StoryObj = {
   args: {
     alertCount: 1,
     showActions: true,
-    ALERT_TYPES: ['info'],
+    alertTypes: ['info'],
   },
 };
 
@@ -134,7 +143,7 @@ export const WithLongContentAndOpenActionsDropdown: StoryObj = {
       non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     `,
     showActions: true,
-    ALERT_TYPES: ['info'],
+    alertTypes: ['info'],
   },
 };
 

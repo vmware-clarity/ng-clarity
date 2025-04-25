@@ -17,7 +17,7 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
   standalone: true,
   template: `
     <section *ngIf="componentDescription" [innerHTML]="componentDescription"></section>
-    <div *ngFor="let alert of ALERT_TYPES" style="margin-top: 5px">
+    <div *ngFor="let alert of alertTypes" style="margin-top: 5px">
       <clr-alert
         [clrAlertClosable]="clrAlertClosable"
         [clrAlertIcon]="clrAlertIcon"
@@ -58,6 +58,6 @@ export class StandardAlertStorybookComponent {
   @Input() alertCount = 3;
   @Input() showActions = false;
   @Input() content = 'Hello World!';
-  ALERT_TYPES = ALERT_TYPES;
+  @Input() alertTypes = ALERT_TYPES;
   createArray = createArray;
 }
