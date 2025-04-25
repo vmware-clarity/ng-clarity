@@ -46,9 +46,9 @@ import { ClrWizardTitle } from './wizard-title';
     '[class.wizard-md]': "size == 'md'",
     '[class.wizard-lg]': "size == 'lg'",
     '[class.wizard-xl]': "size == 'xl'",
+    '[class.wizard-in-page]': 'inPage',
+    '[class.wizard-in-page--fill-content-area]': 'inPageFillContentArea',
     '[class.lastPage]': 'navService.currentPageIsLast',
-    '[class.clr-wizard--in-page]': 'inPage',
-    '[class.clr-wizard--in-page-fill-content-area]': 'inPageFillContentArea',
   },
 })
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
