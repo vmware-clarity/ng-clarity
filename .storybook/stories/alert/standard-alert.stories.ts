@@ -98,7 +98,7 @@ export const SmallLightweight: StoryObj = {
 
 export const Closable: StoryObj = {
   args: {
-    clrAlertClosable: { value: true, table: { disable: true } },
+    clrAlertClosable: true,
   },
 };
 
