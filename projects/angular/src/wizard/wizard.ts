@@ -46,7 +46,6 @@ import { ClrWizardTitle } from './wizard-title';
     '[class.wizard-md]': "size == 'md'",
     '[class.wizard-lg]': "size == 'lg'",
     '[class.wizard-xl]': "size == 'xl'",
-    '[class.lastPage]': 'navService.currentPageIsLast',
   },
 })
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
