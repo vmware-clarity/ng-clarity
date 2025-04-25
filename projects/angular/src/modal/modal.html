@@ -23,7 +23,7 @@
   >
     <div class="clr-sr-only">{{commonStrings.keys.modalContentStart}}</div>
     <!-- This wizard is tightly coupled to the modal styles, so changes here could require changes in the wizard. -->
-    <div *ngIf="!modalContentTemplate" class="modal-content-wrapper">
+    <div *ngIf="!modalContentTemplate; else modalContentTemplate" class="modal-content-wrapper">
       <div class="modal-content">
         <div class="modal-header--accessible">
           <ng-content select=".leading-button"></ng-content>
@@ -46,7 +46,6 @@
         <ng-content select=".modal-footer"></ng-content>
       </div>
     </div>
-    <ng-container *ngIf="modalContentTemplate" [ngTemplateOutlet]="modalContentTemplate"></ng-container>
     <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   </div>
 </div>
