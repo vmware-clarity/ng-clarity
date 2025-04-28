@@ -17,7 +17,11 @@ import { createArray } from 'helpers/common';
   imports: [CommonModule, ClrButtonGroupModule, ClrLoadingModule],
   template: `
     <!-- Default Template -->
-    <div *ngIf="templateMode !== 'showcase'" style="margin-top: 20px; text-align: center">
+    <div
+      *ngIf="templateMode !== 'showcase'"
+      style="text-align: center"
+      [ngStyle]="{ 'margin-top': clrMenuPosition.includes('top') ? '200px' : '20px' }"
+    >
       <ng-container
         *ngTemplateOutlet="buttonGroupTemplate; context: { buttonType: this.buttonType, buttonStyle: this.buttonStyle }"
       ></ng-container>
@@ -25,7 +29,11 @@ import { createArray } from 'helpers/common';
 
     <!-- Showcase Template -->
     <div *ngIf="templateMode === 'showcase'">
-      <div *ngFor="let btnStyle of BUTTON_STYLES" style="margin-top: 20px; text-align: center">
+      <div
+        *ngFor="let btnStyle of BUTTON_STYLES"
+        style="text-align: center"
+        [ngStyle]="{ 'margin-top': clrMenuPosition.includes('top') ? '200px' : '20px' }"
+      >
         <div *ngFor="let btnType of BUTTON_TYPES" style="margin-top: 10px">
           <ng-container
             *ngTemplateOutlet="buttonGroupTemplate; context: { buttonType: btnType, buttonStyle: btnStyle }"
