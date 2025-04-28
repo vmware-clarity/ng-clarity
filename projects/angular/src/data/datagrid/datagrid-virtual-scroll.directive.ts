@@ -39,7 +39,6 @@ import {
   OnDestroy,
   Output,
   Renderer2,
-  SkipSelf,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
@@ -101,7 +100,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   constructor(
     private readonly changeDetectorRef: ChangeDetectorRef,
     private iterableDiffers: IterableDiffers,
-    @SkipSelf() private items: Items<T>,
+    private items: Items<T>,
     private readonly ngZone: NgZone,
     private readonly renderer2: Renderer2,
     private readonly templateRef: TemplateRef<CdkVirtualForOfContext<T>>,
