@@ -5,32 +5,22 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { StoryFn } from '@storybook/angular';
+import { moduleMetadata, StoryObj } from '@storybook/angular';
 
-const modifierClasses = ['', 'badge-info', 'badge-success', 'badge-warning', 'badge-danger'];
+import { BadgeStoryBookComponent } from './badge.storybook.component';
 
 export default {
   title: 'Badge/Badge',
-  argTypes: {
-    // story helpers
-    modifierClasses: {
-      description: `Class can be none, \`badge-info\`, \`badge-success\`, \`badge-warning\`, or \`badge-danger\``,
-      table: false,
-      control: false,
-    },
-  },
+  component: BadgeStoryBookComponent,
+  decorators: [
+    moduleMetadata({
+      declarations: [BadgeStoryBookComponent],
+    }),
+  ],
+  argTypes: {},
   args: {
-    // story helpers
     context: '42',
-    modifierClasses,
   },
 };
-export const Initial: StoryFn = args => ({
-  template: `
-    <div style="margin-top: 5px" *ngFor="let status of modifierClasses">
-      <span class="badge" [ngClass]="status">{{ context }}</span>
-      <a href="#" class="badge" [ngClass]="status">{{ context }}</a>
-    </div>
-  `,
-  props: args,
-});
+
+export const Initial: StoryObj = {};
