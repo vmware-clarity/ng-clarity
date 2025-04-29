@@ -6,15 +6,16 @@
  */
 
 import { ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
+import { HeaderStorybookComponent } from './header.storybook.component';
 
 export default {
   title: 'Header/Header',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule],
+      imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule, HeaderStorybookComponent],
     }),
   ],
   component: ClrHeader,
@@ -28,50 +29,16 @@ export default {
     // story helpers
   },
   args: {},
+  render: (args: HeaderStorybookComponent) => ({
+    props: {
+      ...args,
+    },
+    template: `
+      <storybook-header ${argsToTemplate(args)}></storybook-header>
+    `,
+  }),
 };
 
-const HeaderTemplate: StoryFn = args => ({
-  template: `
-    <clr-main-container>
-      <clr-header [role]="role">
-        <div class="branding">
-          <a href="javascript://" class="nav-link">
-            <cds-icon shape="vm-bug"></cds-icon>
-            <span class="title">Project Clarity</span>
-          </a>
-        </div>
-        <div class="header-nav" [clr-nav-level]="1">
-          <a href="javascript://" class="nav-link nav-text">Home</a>
-          <a href="javascript://" class="nav-link nav-text">About</a>
-          <a href="javascript://" class="nav-link nav-text">Services</a>
-        </div>
-        <div class="header-actions">
-          <a href="javascript://" class="nav-link">
-            <cds-icon shape="cog"></cds-icon>
-          </a>
-        </div>
-      </clr-header>
-      <nav class="subnav" [clr-nav-level]="2">
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link active" href="javascript://" aria-current="page">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="javascript://">Management</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="javascript://">Cloud</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="javascript://">Tenants</a>
-          </li>
-        </ul>
-      </nav>
-    </clr-main-container>
-  `,
-  props: args,
-});
+export const Default: StoryObj = {};
 
-export const Header: StoryObj = {
-  render: HeaderTemplate,
-};
+export const Collapsed: StoryObj = {};
