@@ -1439,14 +1439,21 @@
     // Hide parts of the display table not used for calculation.
     .datagrid,
     .datagrid-footer,
-    .datagrid-row-master,
+    .datagrid-row-scrollable,
     .datagrid-row-clickable {
       display: none;
+    }
+
+    .datagrid-row-master,
+    .datagrid-row-flex,
+    .datagrid-row-sticky {
+      display: contents;
     }
 
     .datagrid-calculation-table {
       display: table;
       table-layout: auto;
+      width: 100%;
 
       .datagrid-calculation-header {
         display: table-header-group;
@@ -1493,10 +1500,6 @@
     }
 
     .datagrid-placeholder-container {
-      display: none;
-    }
-
-    .datagrid-fixed-column {
       display: none;
     }
   }
