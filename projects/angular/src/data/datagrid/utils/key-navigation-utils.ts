@@ -94,9 +94,7 @@ export class KeyNavigationUtils {
   }
 
   isSingleCellExpandedRow(index: number) {
-    const row = this.isDetailsRow(index) ? this.rows[index] : this.rows[index].querySelector('.datagrid-row-detail');
-
-    return row?.querySelectorAll(this.config.keyGridCells).length === 1;
+    return this.rows[index]?.querySelectorAll(this.config.keyGridCells).length === 1;
   }
 
   actionCellCount(index: number) {
