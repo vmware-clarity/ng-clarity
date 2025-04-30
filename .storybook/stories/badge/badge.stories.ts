@@ -24,3 +24,10 @@ export default {
 };
 
 export const Initial: StoryObj = {};
+
+export const SingleBadge: StoryObj = {
+  args: {
+    modifierClasses: ['badge-info'],
+    showLinkBadge: false,
+  },
+};

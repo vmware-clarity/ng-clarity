@@ -10,13 +10,14 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'storybook-badge',
   template: `
-    <div style="margin-top: 5px" *ngFor="let status of modifierClasses">
+    <ng-container *ngFor="let status of modifierClasses">
       <span class="badge" [ngClass]="status">{{ context }}</span>
-      <a href="#" class="badge" [ngClass]="status">{{ context }}</a>
-    </div>
+      <a *ngIf="showLinkBadge" href="#" class="badge" [ngClass]="status">{{ context }}</a>
+    </ng-container>
   `,
 })
 export class BadgeStoryBookComponent {
   @Input() context = '42';
+  @Input() showLinkBadge = true;
   modifierClasses: string[] = ['', 'badge-info', 'badge-success', 'badge-warning', 'badge-danger', 'badge-purple'];
 }
