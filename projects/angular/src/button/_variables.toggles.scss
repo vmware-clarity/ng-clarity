@@ -15,9 +15,7 @@ $clr-toggle-switch-base-width: #{tokens.$cds-global-space-10} !default;
 
 // @deprecated in v17 in favor of clr-toggle-dot-diameter
 $clr-toggle-switch-height: #{$clr-toggle-switch-base-height} !default;
-$clr-toggle-checked-dot-diameter: #{tokens.$cds-global-space-6} !default;
-$clr-toggle-dot-diameter: #{tokens.$cds-global-space-5} !default;
-$clr-toggle-dot-spacing: #{tokens.$cds-global-space-2} !default;
+$clr-toggle-dot-diameter: #{$clr-toggle-switch-height} !default;
 
 // @deprecated in v17 in favor of $clr-toggle-switch-base-spacing
 $clr-toggle-switch-base-left-spacing: #{tokens.$cds-global-space-5} !default;
