@@ -51,7 +51,7 @@ for (const { storyId, component } of stories) {
         fullPage,
         animations: 'disabled',
         caret: 'hide',
-        threshold: 0.01,
+        threshold: 0,
       });
     });
   }
