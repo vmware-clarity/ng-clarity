@@ -40,12 +40,12 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
   @Input('clrSidePanelStaticBackdrop') staticBackdrop = false;
   @Input('clrSidePanelPreventClose') preventClose = false;
   @Output('clrSidePanelAlternateClose') altClose = new EventEmitter<boolean>(false);
-  @ViewChild(ClrModal) private modal: ClrModal;
 
   private _pinnable = false;
   private _pinned = false;
   private originalStopClose: boolean;
   private _position = 'right';
+  private _modal: ClrModal;
 
   private _size = 'md';
 
@@ -67,8 +67,7 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     if (this._size !== value) {
       this._size = value;
       if (this.clrSidePanelPinnable && this.pinned) {
-        this.displayOverlapping();
-        this.displaySideBySide();
+        this.updateModalState();
       }
     }
   }
@@ -89,6 +88,7 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  @Input('clrSidePanelPinned')
   get pinned(): boolean {
     return this._pinned;
   }
@@ -96,13 +96,8 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
   set pinned(pinned: boolean) {
     if (this.clrSidePanelPinnable) {
       this._pinned = pinned;
-      if (pinned) {
-        this.originalStopClose = this.modal.stopClose;
-        this.modal.stopClose = true;
-        this.displaySideBySide();
-      } else {
-        this.modal.stopClose = this.originalStopClose;
-        this.displayOverlapping();
+      if (this.modal) {
+        this.updateModalState();
       }
     }
   }
@@ -125,6 +120,17 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
 
   set clrSidePanelPinnable(pinnable: boolean) {
     this._pinnable = pinnable;
+  }
+
+  @ViewChild(ClrModal)
+  private get modal(): ClrModal {
+    return this._modal;
+  }
+
+  private set modal(modal: ClrModal) {
+    this._modal = modal;
+    this.originalStopClose = this.modal.stopClose;
+    this.updateModalState();
   }
 
   private get hostElement(): HTMLElement {
@@ -181,6 +187,19 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
       !this.configuration.backdrop
     ) {
       this.modal.close();
+    }
+  }
+
+  private updateModalState() {
+    if (!this.modal) {
+      return;
+    }
+    this.displayOverlapping();
+    if (this.pinned) {
+      this.modal.stopClose = true;
+      this.displaySideBySide();
+    } else {
+      this.modal.stopClose = this.originalStopClose;
     }
   }
 

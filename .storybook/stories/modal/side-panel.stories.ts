@@ -43,6 +43,7 @@ export default {
     clrSidePanelLabelledById: '',
     clrSidePanelSize: null,
     clrSidePanelPinnable: false,
+    clrSidePanelPinned: false,
     clrSidePanelPosition: 'right',
     clrSidePanelSkipAnimation: false,
     // outputs
@@ -64,6 +65,7 @@ const SidePanelTemplate: StoryFn = args => ({
           <clr-side-panel
             [clrSidePanelBackdrop]="clrSidePanelBackdrop"
             [clrSidePanelPinnable]="clrSidePanelPinnable"
+            [clrSidePanelPinned]="clrSidePanelPinned"
             [clrSidePanelStaticBackdrop]="clrSidePanelStaticBackdrop"
             [clrSidePanelCloseButtonAriaLabel]="clrSidePanelCloseButtonAriaLabel"
             [clrSidePanelLabelledById]="clrSidePanelLabelledById"
@@ -155,15 +157,13 @@ export const SidePanelExtraLarge: StoryObj = {
 
 export const SidePanelBottomSmall: StoryObj = {
   render: SidePanelTemplate,
-  play: ({ canvasElement }) => {
-    removeFocusOutline({ canvasElement });
-    (canvasElement.querySelector('button.pinnable') as HTMLElement).click();
-  },
+  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'sm',
     clrSidePanelStaticBackdrop: true,
     clrSidePanelPinnable: true,
+    clrSidePanelPinned: true,
     clrSidePanelBackdrop: false,
     clrSidePanelPosition: 'bottom',
     title: 'Small Side Panel',
@@ -173,15 +173,13 @@ export const SidePanelBottomSmall: StoryObj = {
 
 export const SidePanelBottomMedium: StoryObj = {
   render: SidePanelTemplate,
-  play: ({ canvasElement }) => {
-    removeFocusOutline({ canvasElement });
-    (canvasElement.querySelector('button.pinnable') as HTMLElement).click();
-  },
+  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
     clrSidePanelStaticBackdrop: true,
     clrSidePanelPinnable: true,
+    clrSidePanelPinned: true,
     clrSidePanelBackdrop: false,
     clrSidePanelPosition: 'bottom',
     title: 'Medium Side Panel',
@@ -191,15 +189,13 @@ export const SidePanelBottomMedium: StoryObj = {
 
 export const SidePanelBottomLarge: StoryObj = {
   render: SidePanelTemplate,
-  play: ({ canvasElement }) => {
-    removeFocusOutline({ canvasElement });
-    (canvasElement.querySelector('button.pinnable') as HTMLElement).click();
-  },
+  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'lg',
     clrSidePanelStaticBackdrop: true,
     clrSidePanelPinnable: true,
+    clrSidePanelPinned: true,
     clrSidePanelBackdrop: false,
     clrSidePanelPosition: 'bottom',
     title: 'Large Side Panel',
@@ -209,15 +205,13 @@ export const SidePanelBottomLarge: StoryObj = {
 
 export const SidePanelBottomExtraLarge: StoryObj = {
   render: SidePanelTemplate,
-  play: ({ canvasElement }) => {
-    removeFocusOutline({ canvasElement });
-    (canvasElement.querySelector('button.pinnable') as HTMLElement).click();
-  },
+  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'xl',
     clrSidePanelStaticBackdrop: true,
     clrSidePanelPinnable: true,
+    clrSidePanelPinned: true,
     clrSidePanelBackdrop: false,
     clrSidePanelPosition: 'bottom',
     title: 'Extra-Large Side Panel',

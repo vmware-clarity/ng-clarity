@@ -4060,7 +4060,7 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     // (undocumented)
     togglePinned(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "_open": "clrSidePanelOpen"; "closeButtonAriaLabel": "clrSidePanelCloseButtonAriaLabel"; "skipAnimation": "clrSidePanelSkipAnimation"; "labelledById": "clrSidePanelLabelledById"; "staticBackdrop": "clrSidePanelStaticBackdrop"; "preventClose": "clrSidePanelPreventClose"; "size": "clrSidePanelSize"; "position": "clrSidePanelPosition"; "clrSidePanelBackdrop": "clrSidePanelBackdrop"; "clrSidePanelPinnable": "clrSidePanelPinnable"; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "_open": "clrSidePanelOpen"; "closeButtonAriaLabel": "clrSidePanelCloseButtonAriaLabel"; "skipAnimation": "clrSidePanelSkipAnimation"; "labelledById": "clrSidePanelLabelledById"; "staticBackdrop": "clrSidePanelStaticBackdrop"; "preventClose": "clrSidePanelPreventClose"; "size": "clrSidePanelSize"; "position": "clrSidePanelPosition"; "pinned": "clrSidePanelPinned"; "clrSidePanelBackdrop": "clrSidePanelBackdrop"; "clrSidePanelPinnable": "clrSidePanelPinnable"; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanel, never>;
 }
