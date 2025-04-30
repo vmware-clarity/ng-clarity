@@ -28,8 +28,9 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
       >
         <clr-alert-item *ngFor="let _ of createArray(alertCount); let i = index">
           <span class="alert-text">{{ content }} {{ i + 1 }}</span>
-          <div *ngIf="showActions" class="alert-actions">
-            <clr-dropdown>
+          <span *ngIf="showBadge" class="badge badge-info">1</span>
+          <div class="alert-actions">
+            <clr-dropdown *ngIf="showActions">
               <button clrDropdownTrigger>
                 Actions
                 <cds-icon shape="angle" direction="down"></cds-icon>
@@ -40,7 +41,8 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
                 <button clrDropdownItem>Reboot</button>
               </clr-dropdown-menu>
             </clr-dropdown>
-            <a class="alert-action" href="javascript://">Ignore</a>
+            <a *ngIf="showAction" class="alert-action" href="javascript://">Ignore</a>
+            <button *ngIf="showActionsButton" class="btn alert-action btn-sm">Fix</button>
           </div>
         </clr-alert-item>
       </clr-alert>
@@ -56,7 +58,10 @@ export class StandardAlertStorybookComponent {
   @Input() clrAlertSizeSmall = false;
   @Input() clrCloseButtonAriaLabel = commonStringsDefault.alertCloseButtonAriaLabel;
   @Input() alertCount = 3;
+  @Input() showAction = false;
   @Input() showActions = false;
+  @Input() showActionsButton = false;
+  @Input() showBadge = false;
   @Input() content = 'Hello World!';
   @Input() alertTypes = ALERT_TYPES;
   createArray = createArray;
