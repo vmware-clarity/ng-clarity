@@ -22,10 +22,8 @@
     [attr.aria-labelledby]="labelledBy || modalId"
   >
     <div class="clr-sr-only">{{commonStrings.keys.modalContentStart}}</div>
-    <div class="modal-content-wrapper">
-      <!-- only used in wizards -->
-      <ng-content select=".modal-nav"></ng-content>
-
+    <!-- This wizard is tightly coupled to the modal styles, so changes here could require changes in the wizard. -->
+    <div *ngIf="!modalContentTemplate; else modalContentTemplate" class="modal-content-wrapper">
       <div class="modal-content">
         <div class="modal-header--accessible">
           <ng-content select=".leading-button"></ng-content>
