@@ -10,7 +10,7 @@ import { ClrWizardTitle } from './wizard-title';
 import * as i0 from "@angular/core";
 export declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     private platformId;
-    private commonStrings;
+    commonStrings: ClrCommonStringsService;
     navService: WizardNavigationService;
     pageCollection: PageCollectionService;
     buttonService: ButtonHubService;
@@ -24,6 +24,15 @@ export declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
      * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
      */
     size: string;
+    /**
+     * Enable "in page" wizard. Set using `[clrWizardInPage]` input.
+     */
+    inPage: boolean;
+    /**
+     * Make an "in page" wizard fill the `.content-area`. Set using `[clrWizardInPageFillContentArea]` input.
+     * If you can't use this option, you will likely need to provide custom CSS to set the wizard's height and margins.
+     */
+    inPageFillContentArea: boolean;
     /**
      * Tells the modal part of the wizard whether it should have a close "X"
      * in the top right corner. Set using `[clrWizardClosable]` input.
@@ -78,6 +87,7 @@ export declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     _open: boolean;
     wizardId: string;
     protected wizardTitle: ClrWizardTitle;
+    private readonly bodyElementRef;
     private _forceForward;
     private _stopNext;
     private _stopCancel;
@@ -242,5 +252,5 @@ export declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     private initializeButtons;
     private emitWizardFinished;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": "clrWizardStepnavAriaLabel"; "size": "clrWizardSize"; "closable": "clrWizardClosable"; "_stopModalAnimations": "clrWizardPreventModalAnimation"; "forceForward": "clrWizardForceForwardNavigation"; "clrWizardOpen": "clrWizardOpen"; "stopNext": "clrWizardPreventDefaultNext"; "stopCancel": "clrWizardPreventDefaultCancel"; "stopNavigation": "clrWizardPreventNavigation"; "disableStepnav": "clrWizardDisableStepnav"; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": "clrWizardStepnavAriaLabel"; "size": "clrWizardSize"; "inPage": "clrWizardInPage"; "inPageFillContentArea": "clrWizardInPageFillContentArea"; "closable": "clrWizardClosable"; "_stopModalAnimations": "clrWizardPreventModalAnimation"; "forceForward": "clrWizardForceForwardNavigation"; "clrWizardOpen": "clrWizardOpen"; "stopNext": "clrWizardPreventDefaultNext"; "stopCancel": "clrWizardPreventDefaultCancel"; "stopNavigation": "clrWizardPreventNavigation"; "disableStepnav": "clrWizardDisableStepnav"; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
 }
