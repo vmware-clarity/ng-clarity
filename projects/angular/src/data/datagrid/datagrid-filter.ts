@@ -7,6 +7,7 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -110,7 +111,8 @@ export class ClrDatagridFilter<T = any>
     private smartToggleService: ClrPopoverToggleService,
     @Inject(PLATFORM_ID) private platformId: any,
     private elementRef: ElementRef<HTMLElement>,
-    @Optional() private keyNavigation: KeyNavigationGridController
+    @Optional() private keyNavigation: KeyNavigationGridController,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
     super(_filters);
     this.subs.push(
@@ -177,5 +179,6 @@ export class ClrDatagridFilter<T = any>
     this.toggleButtonAriaLabel = this.commonStrings.parse(this.commonStrings.keys.datagridFilterAriaLabel, {
       COLUMN: columnTitle || '',
     });
+    this.changeDetectorRef.detectChanges();
   }
 }
