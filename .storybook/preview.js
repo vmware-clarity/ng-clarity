@@ -18,6 +18,7 @@ import AutoDocsTemplate from './stories/auto-docs.mdx';
 
 const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
+const clrDensityAttribute = 'clr-density';
 
 loadIcons();
 addDocs(docs);
@@ -93,6 +94,9 @@ export const globalTypes = {
       items: [
         { value: THEMES.CORE_LIGHT, title: 'Light Theme' },
         { value: THEMES.CORE_DARK, title: 'Dark Theme' },
+        { value: THEMES.DENSITY_REGULAR, title: 'Density Regular' },
+        { value: THEMES.DENSITY_COMPACT, title: 'Density Compact' },
+        { value: THEMES.DENSITY_ULTRA_COMPACT, title: 'Density Ultra Compact ' },
       ],
     },
   },
@@ -100,6 +104,9 @@ export const globalTypes = {
 
 const themeDecorator = (story, { globals }) => {
   const { theme } = globals;
+  if ([THEMES.DENSITY_REGULAR, THEMES.DENSITY_COMPACT, THEMES.DENSITY_ULTRA_COMPACT].includes(theme)) {
+    document.body.setAttribute(clrDensityAttribute, theme);
+  }
   document.body.setAttribute(cdsThemeAttribute, theme);
 
   return story();
