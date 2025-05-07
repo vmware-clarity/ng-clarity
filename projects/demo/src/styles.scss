@@ -12,6 +12,7 @@
 @import './app/_utils/clarity-variables';
 @import '../../angular/src/utils/variables/variables';
 @import '../../ui/src/temp-overrides.scss'; // @TODO remove in v18
+@import '../../ui/src/clr-density.scss'; // @TODO remove in v18
 
 :root {
   --clr-test-header-text-color: magenta;
