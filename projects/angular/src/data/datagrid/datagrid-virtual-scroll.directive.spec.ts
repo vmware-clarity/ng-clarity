@@ -21,6 +21,7 @@ import { ClarityModule } from '../../clr-angular.module';
 import { Keys } from '../../utils/enums/keys.enum';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
+import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
 
 export interface Column {
   index: number;
@@ -78,13 +79,7 @@ export interface Cells {
 class FullTest implements OnInit {
   @ViewChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<any>;
   _totalRows = 1000;
-  dataRange:
-    | {
-        total: number;
-        skip: number;
-        data: Row[];
-      }
-    | undefined;
+  dataRange: ClrDatagridVirtualScrollRangeInterface<Row> | undefined;
 
   persistItems = true;
   rows: Observable<Row[]>;

@@ -45,6 +45,7 @@ import {
 import { Subscription } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
+import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
 import { ColumnsService } from './providers/columns.service';
 import { Items } from './providers/items';
 
@@ -197,7 +198,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   @Input('clrVirtualDataRange')
-  set dataRange(range: { total: number; skip: number; data: T[] }) {
+  set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>) {
     if (!range) {
       return;
     }

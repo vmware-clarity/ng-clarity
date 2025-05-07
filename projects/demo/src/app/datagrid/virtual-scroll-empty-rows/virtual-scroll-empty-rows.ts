@@ -7,7 +7,12 @@
 
 import { ListRange } from '@angular/cdk/collections';
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { ClrDatagrid, ClrDatagridItemsTrackByFunction, ClrDatagridStateInterface } from '@clr/angular';
+import {
+  ClrDatagrid,
+  ClrDatagridItemsTrackByFunction,
+  ClrDatagridStateInterface,
+  ClrDatagridVirtualScrollRangeInterface,
+} from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -27,10 +32,10 @@ export class DatagridVirtualScrollEmptyRowsDemo {
   _totalRows = 10000;
   persistItems = true;
 
-  dataRange: {
-    total: number;
-    skip: number;
-    data: User[];
+  dataRange: ClrDatagridVirtualScrollRangeInterface<User> = {
+    total: this.totalRows,
+    skip: 0,
+    data: [],
   };
 
   _selectedUsers: User[] = [];
@@ -41,12 +46,6 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     inventory.size = this.totalRows;
     inventory.latency = 500;
     inventory.reset();
-
-    this.dataRange = {
-      total: this.totalRows,
-      skip: 0,
-      data: [],
-    };
   }
 
   get totalRows() {

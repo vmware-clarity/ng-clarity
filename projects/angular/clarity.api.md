@@ -2004,6 +2004,16 @@ export interface ClrDatagridStringFilterInterface<T> {
 }
 
 // @public (undocumented)
+export interface ClrDatagridVirtualScrollRangeInterface<T> {
+    // (undocumented)
+    data: T[];
+    // (undocumented)
+    skip: number;
+    // (undocumented)
+    total: number;
+}
+
+// @public (undocumented)
 export class ClrDatalist implements AfterContentInit {
     // Warning: (ae-forgotten-export) The symbol "DatalistIdService" needs to be exported by the entry point index.d.ts
     constructor(datalistIdService: DatalistIdService);
@@ -5875,11 +5885,7 @@ export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     get cdkVirtualForTrackBy(): CdkVirtualForInputs<T>['cdkVirtualForTrackBy'];
     set cdkVirtualForTrackBy(value: CdkVirtualForInputs<T>['cdkVirtualForTrackBy']);
     // (undocumented)
-    set dataRange(range: {
-        total: number;
-        skip: number;
-        data: T[];
-    });
+    set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>);
     // Warning: (ae-forgotten-export) The symbol "CdkFixedSizeVirtualScrollInputs" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
