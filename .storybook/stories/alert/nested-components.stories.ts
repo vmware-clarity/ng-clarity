@@ -14,12 +14,22 @@ import { BadgeStoryBookComponent } from '../badge/badge.storybook.component';
 import { LabelStoryBookComponent } from '../label/label.storybook.component';
 import { StandardAlertStorybookComponent } from './standard-alert.storybook.component';
 
+const innerComponents = [
+  { type: BadgeStoryBookComponent, options: { badgeTypes: [''] } },
+  { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-info'] } },
+  { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-success'], showLinkBadge: false } },
+  { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-danger'], showLinkBadge: false } },
+  { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-danger'], clickable: true } },
+  { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-success'], closeIcon: true } },
+];
 const nestedComponents = [
   {
     type: StandardAlertStorybookComponent,
     options: {
-      alertCount: 1,
-      alertTypes: ['info'],
+      alertCount: 2,
+      alertTypes: ['success'],
+      showActions: true,
+      components: [innerComponents[0]],
     },
   },
   {
@@ -27,7 +37,8 @@ const nestedComponents = [
     options: {
       alertCount: 1,
       alertTypes: ['info'],
-      components: [{ type: BadgeStoryBookComponent, options: { badgeTypes: [''] } }],
+      showAction: true,
+      components: [innerComponents[0]],
     },
   },
   {
@@ -36,26 +47,34 @@ const nestedComponents = [
       alertCount: 1,
       alertTypes: ['warning'],
       clrAlertClosable: true,
-      components: [
-        { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-info'], showLinkBadge: false } },
-        { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-danger'], clickable: true } },
-        { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-success'], closeIcon: true } },
-      ],
+      components: innerComponents,
     },
   },
   {
     type: StandardAlertStorybookComponent,
     options: {
       content:
-        'Standard alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text',
+        'Standard alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text ' +
+        'Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text, ' +
+        'Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text',
       alertCount: 1,
       alertTypes: ['danger'],
       clrAlertClosable: true,
-      components: [
-        { type: BadgeStoryBookComponent, options: { badgeTypes: [''] } },
-        { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-danger'], clickable: true } },
-        { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-success'], closeIcon: true } },
-      ],
+      components: innerComponents,
+    },
+  },
+  {
+    type: StandardAlertStorybookComponent,
+    options: {
+      content:
+        'Standard alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text ' +
+        'Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text, ' +
+        'Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text',
+      alertCount: 1,
+      showActions: true,
+      alertTypes: ['info'],
+      clrAlertClosable: true,
+      components: innerComponents,
     },
   },
 ];
