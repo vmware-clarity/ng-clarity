@@ -922,7 +922,7 @@
       }
 
       .datagrid-expandable-caret-icon {
-        margin: 0;
+        margin: mixins.baselinePx(-3) 0 0;
       }
 
       &.datagrid-cell {
