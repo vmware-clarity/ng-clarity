@@ -136,7 +136,7 @@ const nestedComponents = [
 ];
 
 export default {
-  title: 'Accordion/Accordion/Nesting Components',
+  title: 'Accordion/Nesting Components',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrAccordionModule, RenderComponentStorybook],
