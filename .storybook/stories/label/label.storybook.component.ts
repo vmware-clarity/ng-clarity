@@ -7,6 +7,9 @@
 
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { ClrIconModule } from '@clr/angular';
+
+import { RenderComponentStorybook } from '../../helpers/render-component';
 
 @Component({
   selector: 'storybook-label',
@@ -14,21 +17,21 @@ import { Component, Input } from '@angular/core';
     <ng-container *ngIf="clickable">
       <a href="javascript://" class="label clickable" *ngFor="let type of labelColorTypes" [class]="type">
         <span class="text">{{ content }}</span>
-        <span *ngIf="badgeContent" class="badge">{{ badgeContent }}</span>
+        <ng-container #components></ng-container>
       </a>
     </ng-container>
     <ng-container *ngIf="!clickable">
       <span class="label" *ngFor="let type of labelColorTypes" [class]="type">
         <span class="text">{{ content }}</span>
-        <span *ngIf="badgeContent" class="badge">{{ badgeContent }}</span>
+        <ng-container #components></ng-container>
         <cds-icon *ngIf="closeIcon" shape="close"></cds-icon>
       </span>
     </ng-container>
   `,
   standalone: true,
-  imports: [NgFor, NgIf],
+  imports: [NgFor, NgIf, ClrIconModule],
 })
-export class LabelStoryBookComponent {
+export class LabelStoryBookComponent extends RenderComponentStorybook {
   @Input() badgeContent = '';
   @Input() content = 'Hello World!';
   @Input() clickable = false;

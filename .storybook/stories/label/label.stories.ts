@@ -61,25 +61,3 @@ export const StatusLabelClickableWithClose: StoryObj = {
     closeIcon: true,
   },
 };
-
-export const NestedBadge: StoryObj = {
-  args: {
-    badgeContent: 1,
-  },
-};
-
-export const NestedBadgeClosable: StoryObj = {
-  args: {
-    labelColorTypes: LABEL_COLOR_TYPES,
-    closeIcon: true,
-    badgeContent: 1,
-  },
-};
-
-export const NestedBadgeClickable: StoryObj = {
-  args: {
-    labelColorTypes: LABEL_STATUS_TYPES,
-    clickable: true,
-    badgeContent: 1,
-  },
-};
