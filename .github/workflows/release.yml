@@ -35,4 +35,4 @@ jobs:
         timeout-minutes: 5
         env:
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-        run: npx netlify-cli deploy --site storybook-clarity-design $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod")
+        run: npx netlify-cli deploy --site ${{secrets.NETLIFY_SITE_NAME}} $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod")
