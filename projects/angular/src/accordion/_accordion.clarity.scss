@@ -233,18 +233,36 @@
       box-shadow: none;
     }
 
-    .clr-accordion-panel:first-child
-      > div[class*='clr-accordion-panel-']
-      > .clr-accordion-header:not(.clr-stepper-header) {
-      border-top-left-radius: accordion-variables.$clr-accordion-border-radius;
-      border-top-right-radius: accordion-variables.$clr-accordion-border-radius;
-    }
+    //Add borders to panel
+    .clr-accordion-panel .clr-accordion-header:not(.clr-stepper-header) {
+      border-radius: accordion-variables.$clr-accordion-border-radius;
 
-    .clr-accordion-panel:last-child .clr-accordion-header:not(.clr-stepper-header) {
-      &,
+      // add borders to content
       & + .clr-accordion-content-region > .clr-accordion-content {
         border-bottom-left-radius: accordion-variables.$clr-accordion-border-radius;
         border-bottom-right-radius: accordion-variables.$clr-accordion-border-radius;
+      }
+    }
+
+    // Remove borders from Middle panel
+    .clr-accordion-panel
+      + .clr-accordion-panel
+      > div[class*='clr-accordion-panel-']
+      > .clr-accordion-header:not(.clr-stepper-header) {
+      border-top-left-radius: unset;
+      border-top-right-radius: unset;
+    }
+
+    // if not last panel - note: last-child not quite working on classes
+    .clr-accordion-panel:not(:last-child)
+      > div[class*='clr-accordion-panel-']
+      > .clr-accordion-header:not(.clr-stepper-header) {
+      &,
+      & + .clr-accordion-content-region > .clr-accordion-content {
+        // if not last content element
+        border-bottom: none;
+        border-bottom-left-radius: unset;
+        border-bottom-right-radius: unset;
       }
     }
 
