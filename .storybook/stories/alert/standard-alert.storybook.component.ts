@@ -30,7 +30,6 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
         <clr-alert-item *ngFor="let _ of createArray(alertCount); let i = index">
           <span class="alert-text">{{ content }} {{ i + 1 }}</span>
           <ng-container #components></ng-container>
-          <span *ngIf="showBadge" class="badge badge-info">1</span>
           <div class="alert-actions" *ngIf="showActions || showAction">
             <clr-dropdown *ngIf="showActions">
               <button clrDropdownTrigger>
@@ -63,7 +62,6 @@ export class StandardAlertStorybookComponent extends RenderComponentStorybook {
   @Input() showAction = false;
   @Input() showActions = false;
   @Input() showActionsButton = false;
-  @Input() showBadge = false;
   @Input() content = 'Hello World!';
   @Input() alertTypes = ALERT_TYPES;
   createArray = createArray;
