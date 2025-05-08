@@ -179,6 +179,7 @@
   (clrDgRefresh)="refresh($event)"
   [clrDgLoading]="loading"
   [clrDgPreserveSelection]="preserveFilteringServerTrackBy"
+  [clrDgItemsTrackBy]="trackItemById"
 >
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'" [(clrFilterValue)]="nameFilterServerTrackBy">Name</clr-dg-column>

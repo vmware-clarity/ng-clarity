@@ -46,7 +46,8 @@ import { ClrWizardTitle } from './wizard-title';
     '[class.wizard-md]': "size == 'md'",
     '[class.wizard-lg]': "size == 'lg'",
     '[class.wizard-xl]': "size == 'xl'",
-    '[class.lastPage]': 'navService.currentPageIsLast',
+    '[class.wizard-in-page]': 'inPage',
+    '[class.wizard-in-page--fill-content-area]': 'inPage && inPageFillContentArea',
   },
 })
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
@@ -59,6 +60,17 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
    */
   @Input('clrWizardSize') size = 'xl';
+
+  /**
+   * Enable "in page" wizard. Set using `[clrWizardInPage]` input.
+   */
+  @Input('clrWizardInPage') inPage = false;
+
+  /**
+   * Make an "in page" wizard fill the `.content-area`. Set using `[clrWizardInPageFillContentArea]` input.
+   * If you can't use this option, you will likely need to provide custom CSS to set the wizard's height and margins.
+   */
+  @Input('clrWizardInPageFillContentArea') inPageFillContentArea = false;
 
   /**
    * Tells the modal part of the wizard whether it should have a close "X"
@@ -125,6 +137,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   wizardId = uniqueIdFactory();
 
   @ContentChild(ClrWizardTitle) protected wizardTitle: ClrWizardTitle;
+  @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
 
   private _forceForward = false;
   private _stopNext = false;
@@ -138,7 +151,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
-    private commonStrings: ClrCommonStringsService,
+    public commonStrings: ClrCommonStringsService,
     public navService: WizardNavigationService,
     public pageCollection: PageCollectionService,
     public buttonService: ButtonHubService,
@@ -273,6 +286,11 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   ngAfterContentInit(): void {
     this.pageCollection.pages = this.pages;
     this.headerActionService.wizardHeaderActions = this.headerActions;
+
+    if (this.inPage) {
+      this.open();
+    }
+
     this.initializeButtons();
   }
 
@@ -493,7 +511,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
       this.currentPageChanged.emit();
 
       // scroll to top of page in case there is long page content
-      this.modal?.scrollTop();
+      this.bodyElementRef?.nativeElement.scrollTo(0, 0);
     });
   }
 

@@ -6,7 +6,7 @@
  */
 
 type ScreenshotOptionsT = {
-  [key: string]: { fullPageScreenshot: boolean };
+  [key: string]: { fullPageScreenshot?: boolean; viewport?: { width: number; height: number } };
 };
 
 /**
@@ -29,6 +29,9 @@ export const ScreenshotOptions: ScreenshotOptionsT = {
   },
   'headers-static--header-static': {
     fullPageScreenshot: true,
+  },
+  'header--collapsed': {
+    viewport: { width: 500, height: 300 },
   },
   'modal--open-small-modal': {
     fullPageScreenshot: true,
