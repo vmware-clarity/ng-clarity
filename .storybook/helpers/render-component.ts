@@ -7,13 +7,15 @@
 
 import { Component, Input, Type, ViewChild, ViewContainerRef } from '@angular/core';
 
+export type StorybookRenderComponent = Array<{ type: Type<unknown>; options: any }>;
+
 @Component({
   selector: 'storybook-render-component',
   template: ` <ng-container #components></ng-container> `,
   standalone: true,
 })
 export class RenderComponentStorybook {
-  @Input() components: Array<{ type: Type<unknown>; options: any }> = [];
+  @Input() components: StorybookRenderComponent = [];
 
   @ViewChild('components', { read: ViewContainerRef }) _components: ViewContainerRef;
 

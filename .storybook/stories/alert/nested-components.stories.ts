@@ -14,8 +14,11 @@ import { BadgeStoryBookComponent } from '../badge/badge.storybook.component';
 import { LabelStoryBookComponent } from '../label/label.storybook.component';
 
 const nestedComponents = [
-  { type: BadgeStoryBookComponent, options: { modifierClasses: ['badge-info'], showLinkBadge: false } },
-  { type: LabelStoryBookComponent, options: { modifierClasses: ['badge-info'], showLinkBadge: false } },
+  { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-info'], showLinkBadge: false } },
+  { type: LabelStoryBookComponent, options: { labelColorTypes: ['badge-info'], closeIcon: false } },
+  { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-success'], closeIcon: true } },
+  { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-warning'], clickable: true } },
+  { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-success'], showLinkBadge: true } },
 ];
 
 export default {
