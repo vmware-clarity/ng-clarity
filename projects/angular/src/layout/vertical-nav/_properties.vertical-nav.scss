@@ -52,7 +52,7 @@
     --clr-vertical-nav-toggle-button-size: #{tokens.$cds-global-space-10};
     --clr-vertical-nav-trigger-divider-border-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-400);
     --clr-vertical-nav-trigger-divider-border-width: var(--clr-global-borderwidth);
-    --clr-vertical-nav-trigger-collapsed-margin: mixins.baselinePx(3);
+    --clr-vertical-nav-trigger-collapsed-margin: #{mixins.baselinePx(3)};
 
     // Vertical Nav - Header
     --clr-vertical-nav-header-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
