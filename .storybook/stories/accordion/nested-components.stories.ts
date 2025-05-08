@@ -132,7 +132,7 @@ const nestedComponents = [
 //   'side-panel', 'stack-view', 'stepper', 'spinner', 'table', 'textarea', 'toggle', 'tooltip', 'timeline',
 
 export default {
-  title: 'Accordion/Accordion/Nesting Components',
+  title: 'Accordion/Nesting Components',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrAccordionModule, RenderComponentStorybook],
