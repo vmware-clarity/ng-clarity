@@ -12,13 +12,52 @@ import { RenderComponentStorybook } from 'helpers/render-component';
 import { CommonModules } from '../../helpers/common';
 import { BadgeStoryBookComponent } from '../badge/badge.storybook.component';
 import { LabelStoryBookComponent } from '../label/label.storybook.component';
+import { StandardAlertStorybookComponent } from './standard-alert.storybook.component';
 
 const nestedComponents = [
-  { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-info'], showLinkBadge: false } },
-  { type: LabelStoryBookComponent, options: { labelColorTypes: ['badge-info'], closeIcon: false } },
-  { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-success'], closeIcon: true } },
-  { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-warning'], clickable: true } },
-  { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-success'], showLinkBadge: true } },
+  {
+    type: StandardAlertStorybookComponent,
+    options: {
+      alertCount: 1,
+      alertTypes: ['info'],
+    },
+  },
+  {
+    type: StandardAlertStorybookComponent,
+    options: {
+      alertCount: 1,
+      alertTypes: ['info'],
+      components: [{ type: BadgeStoryBookComponent, options: { badgeTypes: [''] } }],
+    },
+  },
+  {
+    type: StandardAlertStorybookComponent,
+    options: {
+      alertCount: 1,
+      alertTypes: ['warning'],
+      clrAlertClosable: true,
+      components: [
+        { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-info'], showLinkBadge: false } },
+        { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-danger'], clickable: true } },
+        { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-success'], closeIcon: true } },
+      ],
+    },
+  },
+  {
+    type: StandardAlertStorybookComponent,
+    options: {
+      content:
+        'Standard alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text',
+      alertCount: 1,
+      alertTypes: ['danger'],
+      clrAlertClosable: true,
+      components: [
+        { type: BadgeStoryBookComponent, options: { badgeTypes: [''] } },
+        { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-danger'], clickable: true } },
+        { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-success'], closeIcon: true } },
+      ],
+    },
+  },
 ];
 
 export default {
@@ -40,34 +79,7 @@ export default {
       ...args,
     },
     template: `
-      <ng-container *ngFor="let closable of [true, false]">
-        <clr-alert [clrAlertClosable]="closable">
-          <clr-alert-item>
-            <span class="alert-text">
-              This is alert.
-              <storybook-render-component ${argsToTemplate(args)}></storybook-render-component>
-            </span>
-          </clr-alert-item>
-        </clr-alert>
-        <clr-alert [clrAlertClosable]="closable">
-          <clr-alert-item>
-            <span class="alert-text">
-              Standard alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text,
-              Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text,
-              Standard Alert long text, Standard Alert long text, Standard Alert long text, Standard Alert long text
-              <storybook-render-component ${argsToTemplate(args)}></storybook-render-component>
-            </span>
-          </clr-alert-item>
-        </clr-alert>
-      </ng-container>
-      <clr-alert [clrAlertLightweight]="true" [clrAlertType]="'warning'">
-        <clr-alert-item>
-          <span class="alert-text">
-            Lightweight warning alert text
-            <storybook-render-component ${argsToTemplate(args)}></storybook-render-component>
-          </span>
-        </clr-alert-item>
-      </clr-alert>
+      <storybook-render-component ${argsToTemplate(args)}></storybook-render-component>
     `,
   }),
 };

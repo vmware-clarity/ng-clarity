@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { moduleMetadata, StoryObj } from '@storybook/angular';
+import { StoryObj } from '@storybook/angular';
 
 import { LabelStoryBookComponent } from './label.storybook.component';
 
@@ -15,11 +15,7 @@ const LABEL_STATUS_TYPES = ['label-info', 'label-success', 'label-warning', 'lab
 export default {
   title: 'Label/Label',
   component: LabelStoryBookComponent,
-  decorators: [
-    moduleMetadata({
-      declarations: [LabelStoryBookComponent],
-    }),
-  ],
+  decorators: [],
   argTypes: {},
   args: {
     modifierClasses: [''],

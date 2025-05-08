@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
@@ -24,6 +25,8 @@ import { Component, Input } from '@angular/core';
       </span>
     </ng-container>
   `,
+  standalone: true,
+  imports: [NgFor, NgIf],
 })
 export class LabelStoryBookComponent {
   @Input() badgeContent = '';
