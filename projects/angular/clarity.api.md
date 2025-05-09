@@ -4010,7 +4010,7 @@ export enum ClrSide {
 }
 
 // @public (undocumented)
-export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
+export class ClrSidePanel implements OnInit, OnDestroy {
     constructor(element: ElementRef<HTMLElement>, configuration: ClrModalConfigurationService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     altClose: EventEmitter<boolean>;
@@ -4027,11 +4027,9 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    labelledById: string;
+    handleModalOpen(open: boolean): void;
     // (undocumented)
-    ngOnChanges(changes: {
-        [propName: string]: SimpleChange;
-    }): void;
+    labelledById: string;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)

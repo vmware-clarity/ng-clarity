@@ -12,11 +12,9 @@ import {
   HostBinding,
   HostListener,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
-  SimpleChange,
   ViewChild,
 } from '@angular/core';
 
@@ -31,7 +29,7 @@ import { ClrModalConfigurationService } from './modal-configuration.service';
     '[class.side-panel]': 'true',
   },
 })
-export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
+export class ClrSidePanel implements OnInit, OnDestroy {
   @Input('clrSidePanelOpen') _open = false;
   @Output('clrSidePanelOpenChange') openChange = new EventEmitter<boolean>(false);
   @Input('clrSidePanelCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
@@ -149,22 +147,17 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
-    if (changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
-      if (changes._open.currentValue) {
-        if (this.clrSidePanelPinnable && this.pinned) {
-          this.displaySideBySide();
-        }
-      } else {
-        if (this.clrSidePanelPinnable && this.pinned) {
-          this.displayOverlapping();
-        }
-      }
-    }
+  ngOnDestroy(): void {
+    this.cleanupMargins();
   }
 
-  ngOnDestroy(): void {
-    this.displayOverlapping();
+  handleModalOpen(open: boolean) {
+    if (open) {
+      this.updateModalState();
+    } else {
+      this.cleanupMargins();
+    }
+    this.openChange.emit(open);
   }
 
   open() {
@@ -194,24 +187,27 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     if (!this.modal) {
       return;
     }
-    this.displayOverlapping();
     if (this.pinned) {
       this.modal.stopClose = true;
-      this.displaySideBySide();
+      this.sideBySideMargins();
     } else {
       this.modal.stopClose = this.originalStopClose;
+      this.cleanupMargins();
     }
   }
 
-  private displaySideBySide() {
-    this.hostElement.classList.add(`clr-side-panel-pinned-${this.position}-${this.size}`);
+  private cleanupMargins() {
+    [this.hostElement, document.body].forEach(host => {
+      host.classList.forEach(className => {
+        if (className.startsWith('clr-side-panel-pinned-')) {
+          host.classList.remove(className);
+        }
+      });
+    });
   }
 
-  private displayOverlapping() {
-    this.hostElement.classList.forEach(className => {
-      if (className.startsWith('clr-side-panel-pinned-')) {
-        this.hostElement.classList.remove(className);
-      }
-    });
+  private sideBySideMargins() {
+    this.cleanupMargins();
+    this.hostElement.classList.add(`clr-side-panel-pinned-${this.position}-${this.size}`);
   }
 }
