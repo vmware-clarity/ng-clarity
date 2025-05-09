@@ -620,6 +620,7 @@
 
       .datagrid-action-toggle {
         @include mixins.clr-no-styles-button();
+        @include mixins.equilateral(tokens.$cds-global-space-7);
 
         cds-icon,
         clr-icon {
