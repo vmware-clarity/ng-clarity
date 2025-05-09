@@ -18,6 +18,7 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
       <a href="javascript://" class="label clickable" *ngFor="let type of labelColorTypes" [class]="type">
         <span class="text">{{ content }}</span>
         <ng-container #components></ng-container>
+        <cds-icon *ngIf="closeIcon" shape="close"></cds-icon>
       </a>
     </ng-container>
     <ng-container *ngIf="!clickable">
