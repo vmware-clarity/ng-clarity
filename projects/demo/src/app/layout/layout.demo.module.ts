@@ -14,6 +14,7 @@ import { LayoutAllDemo } from './layout-all';
 import { LayoutNoSubnavDemo } from './layout-no-subnav';
 import { LayoutNoVerticalNavDemo } from './layout-no-vertical-nav';
 import { LayoutOnlyHeaderDemo } from './layout-only-header';
+import { LayoutSizeDemo } from './layout-size';
 import { LayoutSubnavPrimaryDemo } from './layout-subnav-primary';
 import { LayoutVerticalNavPrimaryDemo } from './layout-vertical-nav-primary';
 import { LayoutDemo } from './layout.demo';
@@ -30,6 +31,7 @@ import { ROUTING } from './layout.demo.routing';
     LayoutSubnavPrimaryDemo,
     LayoutVerticalNavPrimaryDemo,
     LayoutAdditionalSectionsDemo,
+    LayoutSizeDemo,
   ],
   exports: [
     LayoutDemo,
@@ -40,6 +42,7 @@ import { ROUTING } from './layout.demo.routing';
     LayoutSubnavPrimaryDemo,
     LayoutVerticalNavPrimaryDemo,
     LayoutAdditionalSectionsDemo,
+    LayoutSizeDemo,
   ],
 })
 export class LayoutDemoModule {}

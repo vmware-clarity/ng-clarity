@@ -18,6 +18,7 @@ import { Component } from '@angular/core';
       <li><a [routerLink]="['./layout-subnav-primary']">Layout - Subnav as Primary Navigation</a></li>
       <li><a [routerLink]="['./layout-vertical-nav-primary']">Layout - Vertical Nav as Primary Navigation</a></li>
       <li><a [routerLink]="['./layout-additional-sections']">Layout - Additional Sections</a></li>
+      <li><a [routerLink]="['./layout-size']">Layout - Size</a></li>
     </ul>
     <router-outlet></router-outlet>
   `,

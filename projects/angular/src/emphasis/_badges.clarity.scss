@@ -39,11 +39,11 @@
     justify-content: center;
     min-width: #{tokens.$cds-global-space-7};
     background-color: badges-variables.$clr-badge-background-color;
-    height: #{tokens.$cds-global-space-7};
+    height: var(--clr-base-row-height-xs);
     border-radius: calc(2 * #{tokens.$cds-alias-object-border-radius-100});
     @include mixins.generate-typography-token('CAPTION-SM-10');
 
-    padding: #{tokens.$cds-global-space-2} #{tokens.$cds-global-space-3};
+    padding: 0 var(--clr-base-layout-space-2xs);
     margin-right: #{tokens.$cds-global-space-4};
     white-space: nowrap;
     text-align: center;
