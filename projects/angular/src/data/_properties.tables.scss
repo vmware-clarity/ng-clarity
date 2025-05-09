@@ -51,7 +51,7 @@
     --clr-table-topcellpadding: #{tokens.$cds-global-space-6};
     --clr-table-fontsize: #{tokens.$cds-alias-typography-secondary-font-size};
     // @deprecated in v17 not used for line height calculation, but for vertical padding calculation only
-    --clr-table-lineheight: mixins.baselinePx(14);
+    --clr-table-lineheight: #{mixins.baselinePx(14)};
     --clr-table-cellpadding: #{tokens.$cds-global-space-6};
 
     --clr-table-compact-row-height: #{tokens.$cds-global-space-9};

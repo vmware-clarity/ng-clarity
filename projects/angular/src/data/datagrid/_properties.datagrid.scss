@@ -87,6 +87,6 @@
     --clr-datagrid-icon-size: #{tokens.$cds-global-space-7};
     --clr-datagrid-action-arrow-size: #{tokens.$cds-global-space-4};
     --clr-datagrid-compact-outline-offset: calc(-1 * tokens.$cds-global-space-3);
-    --clr-datagrid-horizontal-padding: mixins.baselinePx(9);
+    --clr-datagrid-horizontal-padding: #{mixins.baselinePx(9)};
   }
 }
