@@ -9,6 +9,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ClrAlertModule, ClrDropdownModule, commonStringsDefault } from '@clr/angular';
 import { createArray } from 'helpers/common';
+import { RenderComponentStorybook } from 'helpers/render-component';
 
 import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';
 
@@ -28,6 +29,7 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
       >
         <clr-alert-item *ngFor="let _ of createArray(alertCount); let i = index">
           <span class="alert-text">{{ content }} {{ i + 1 }}</span>
+          <ng-container #components></ng-container>
           <div *ngIf="showActions" class="alert-actions">
             <clr-dropdown>
               <button clrDropdownTrigger>
@@ -48,7 +50,7 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
   `,
   imports: [NgFor, NgIf, ClrAlertModule, ClrDropdownModule],
 })
-export class StandardAlertStorybookComponent {
+export class StandardAlertStorybookComponent extends RenderComponentStorybook {
   @Input() componentDescription = null;
   @Input() clrAlertClosable = false;
   @Input() clrAlertIcon;

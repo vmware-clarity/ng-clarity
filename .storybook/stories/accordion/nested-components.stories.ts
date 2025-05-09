@@ -109,6 +109,14 @@ const nestedComponents = [
     type: StandardAlertStorybookComponent,
     options: { alertCount: 1, clrAlertLightweight: true, alertTypes: ['danger'], showActions: true },
   },
+  {
+    type: StandardAlertStorybookComponent,
+    options: {
+      alertCount: 1,
+      alertTypes: ['info'],
+      components: [{ type: BadgeStoryBookComponent, options: { badgeTypes: [''] } }],
+    },
+  },
   { type: BadgeStoryBookComponent },
   { type: BadgeStoryBookComponent, options: { context: 'VM' } },
   { type: ButtonStorybookComponent, options: { buttonStyle: 'solid' } },
