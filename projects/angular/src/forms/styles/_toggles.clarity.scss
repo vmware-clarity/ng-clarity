@@ -76,7 +76,8 @@
       &::after {
         position: absolute;
         content: '';
-        display: none;
+        visibility: hidden;
+        @include clr-toggle-transition-styles;
         right: tokens.$cds-global-space-3;
         height: calc(#{$mark-half-size} + #{tokens.$cds-global-space-1});
         width: forms-variables.$clr-forms-checkbox-mark-size;
@@ -106,7 +107,7 @@
         }
 
         &::after {
-          display: inline-block;
+          visibility: visible;
         }
       }
 
