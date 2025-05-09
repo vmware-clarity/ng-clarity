@@ -51,19 +51,12 @@ export class DefaultKeyNavigationStrategy implements KeyNavigationGridStrategyIn
     const isActionCell = this.utils.isActionCell(currentCellCoords);
     nextCellCoords.y = currentCellCoords.y + 1;
 
-    if (
-      this.utils.isSingleCellExpandedRow(nextCellCoords.y) &&
-      !isActionCell &&
-      this.utils.isRowReplaced(nextCellCoords.y)
-    ) {
-      nextCellCoords.x = 0;
-      nextCellCoords.y = nextCellCoords.y + 1;
-      return nextCellCoords;
-    }
-
     if (!isActionCell && this.utils.isRowReplaced(nextCellCoords.y)) {
       nextCellCoords.y = nextCellCoords.y + 1;
-      nextCellCoords.x = nextCellCoords.x - this.utils.actionCellCount(currentCellCoords.y);
+
+      nextCellCoords.x = this.utils.isSingleCellExpandedRow(nextCellCoords.y)
+        ? 0
+        : nextCellCoords.x - this.utils.actionCellCount(currentCellCoords.y);
     }
 
     return nextCellCoords;
