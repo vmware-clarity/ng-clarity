@@ -5,67 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrSidePanel, ClrSidePanelModule, commonStringsDefault } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { StoryFn } from '@storybook/angular';
 
-import { CommonModules, removeFocusOutline } from '../../helpers/common';
-
-export default {
-  title: 'Modal/Side Panel',
-  decorators: [
-    moduleMetadata({
-      imports: [...CommonModules, ClrSidePanelModule],
-    }),
-  ],
-  component: ClrSidePanel,
-  argTypes: {
-    // inputs
-    clrSidePanelSize: {
-      options: [null, 'sm', 'md', 'lg', 'xl', 'full-screen'],
-      control: 'radio',
-    },
-    clrSidePanelPosition: {
-      options: ['right', 'bottom'],
-      control: 'radio',
-    },
-    // outputs
-    clrSidePanelOpenChange: { control: { disable: true } },
-    clrSidePanelAltClose: { control: { disable: true } },
-    // methods
-    fadeDone: { control: { disable: true }, table: { disable: true } },
-    open: { control: { disable: true }, table: { disable: true } },
-    close: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // inputs
-    clrSidePanelCloseButtonAriaLabel: commonStringsDefault.close,
-    clrSidePanelLabelledById: '',
-    clrSidePanelSize: null,
-    clrSidePanelPinnable: false,
-    clrSidePanelPinned: false,
-    clrSidePanelPosition: 'right',
-    clrSidePanelSkipAnimation: false,
-    // outputs
-    clrSidePanelOpenChange: action('clrSidePanelOpenChange'),
-    clrSidePanelAltClose: action('clrSidePanelAltClose'),
-    // story helpers
-    title: 'Side Panel Title',
-    body: 'Hello World!',
-  },
-};
+import * as stories from './side-panel.internal';
 
 const SidePanelTemplate: StoryFn = args => ({
   template: `
     <!-- The clrModalHost is needed, because the following containers are not direct children of the body -->
-    <div class="main-container" clrModalHost>
+    <div class="main-container">
       <div class="content-container">
         <div class="content-area">
           <button type="button" class="btn btn-primary" (click)="clrSidePanelOpen = true">Open Side Panel</button>
           <clr-side-panel
-            [clrSidePanelBackdrop]="clrSidePanelBackdrop"
             [clrSidePanelPinnable]="clrSidePanelPinnable"
             [clrSidePanelPinned]="clrSidePanelPinned"
+            [clrSidePanelBackdrop]="clrSidePanelBackdrop"
             [clrSidePanelStaticBackdrop]="clrSidePanelStaticBackdrop"
             [clrSidePanelCloseButtonAriaLabel]="clrSidePanelCloseButtonAriaLabel"
             [clrSidePanelLabelledById]="clrSidePanelLabelledById"
@@ -103,187 +57,28 @@ const SidePanelTemplate: StoryFn = args => ({
   props: args,
 });
 
-export const SidePanel: StoryObj = {
-  render: SidePanelTemplate,
+export default {
+  title: 'Modal/Side Panel',
+  decorators: stories.config.decorators,
+  component: stories.config.component,
+  argTypes: stories.config.argTypes,
+  args: stories.config.args,
 };
 
-export const SidePanelSmall: StoryObj = {
-  render: SidePanelTemplate,
-  play: removeFocusOutline,
-  args: {
-    clrSidePanelOpen: true,
-    clrSidePanelSize: 'sm',
-    clrSidePanelStaticBackdrop: true,
-    title: 'Small Side Panel',
-    body: 'This is a small side panel.',
-  },
-};
-
-export const SidePanelMedium: StoryObj = {
-  render: SidePanelTemplate,
-  play: removeFocusOutline,
-  args: {
-    clrSidePanelOpen: true,
-    clrSidePanelSize: 'md',
-    clrSidePanelStaticBackdrop: true,
-    title: 'Medium Side Panel',
-    body: 'This is a medium side panel.',
-  },
-};
-
-export const SidePanelLarge: StoryObj = {
-  render: SidePanelTemplate,
-  play: removeFocusOutline,
-  args: {
-    clrSidePanelOpen: true,
-    clrSidePanelSize: 'lg',
-    clrSidePanelStaticBackdrop: true,
-    title: 'Large Side Panel',
-    body: 'This is a large side panel.',
-  },
-};
-
-export const SidePanelExtraLarge: StoryObj = {
-  render: SidePanelTemplate,
-  play: removeFocusOutline,
-  args: {
-    clrSidePanelOpen: true,
-    clrSidePanelSize: 'xl',
-    clrSidePanelStaticBackdrop: true,
-    title: 'Extra-Large Side Panel',
-    body: 'This is a extra-large side panel.',
-  },
-};
-
-export const SidePanelBottomSmall: StoryObj = {
-  render: SidePanelTemplate,
-  play: removeFocusOutline,
-  args: {
-    clrSidePanelOpen: true,
-    clrSidePanelSize: 'sm',
-    clrSidePanelStaticBackdrop: true,
-    clrSidePanelPinnable: true,
-    clrSidePanelPinned: true,
-    clrSidePanelBackdrop: false,
-    clrSidePanelPosition: 'bottom',
-    title: 'Small Side Panel',
-    body: 'This is a small side panel.',
-  },
-};
-
-export const SidePanelBottomMedium: StoryObj = {
-  render: SidePanelTemplate,
-  play: removeFocusOutline,
-  args: {
-    clrSidePanelOpen: true,
-    clrSidePanelSize: 'md',
-    clrSidePanelStaticBackdrop: true,
-    clrSidePanelPinnable: true,
-    clrSidePanelPinned: true,
-    clrSidePanelBackdrop: false,
-    clrSidePanelPosition: 'bottom',
-    title: 'Medium Side Panel',
-    body: 'This is a medium side panel.',
-  },
-};
-
-export const SidePanelBottomLarge: StoryObj = {
-  render: SidePanelTemplate,
-  play: removeFocusOutline,
-  args: {
-    clrSidePanelOpen: true,
-    clrSidePanelSize: 'lg',
-    clrSidePanelStaticBackdrop: true,
-    clrSidePanelPinnable: true,
-    clrSidePanelPinned: true,
-    clrSidePanelBackdrop: false,
-    clrSidePanelPosition: 'bottom',
-    title: 'Large Side Panel',
-    body: 'This is a large side panel.',
-  },
-};
-
-export const SidePanelBottomExtraLarge: StoryObj = {
-  render: SidePanelTemplate,
-  play: removeFocusOutline,
-  args: {
-    clrSidePanelOpen: true,
-    clrSidePanelSize: 'xl',
-    clrSidePanelStaticBackdrop: true,
-    clrSidePanelPinnable: true,
-    clrSidePanelPinned: true,
-    clrSidePanelBackdrop: false,
-    clrSidePanelPosition: 'bottom',
-    title: 'Extra-Large Side Panel',
-    body: 'This is a extra-large side panel.',
-  },
-};
-
-export const SidePanelWithoutBackdrop: StoryObj = {
-  render: SidePanelTemplate,
-  play: removeFocusOutline,
-  args: {
-    clrSidePanelOpen: true,
-    clrSidePanelSize: 'md',
-    clrSidePanelBackdrop: false,
-    title: 'Side Panel without backdrop',
-    body: 'This is a medium side panel without backdrop.',
-  },
-};
-
-export const SidePanelAlternateClose: StoryObj = {
-  render: SidePanelTemplate,
-  play: removeFocusOutline,
-  args: {
-    clrSidePanelOpen: true,
-    clrSidePanelSize: 'md',
-    clrSidePanelPreventClose: true,
-    clrSidePanelAltClose: function () {
-      if (confirm('Do you really want to close the side panel?')) {
-        this.clrSidePanelOpen = false;
-      }
-    },
-    title: 'Side Panel with alternate close',
-    body: 'This is a medium side panel without backdrop.',
-  },
-};
-
-export const SidePanelPinnable: StoryObj = {
-  render: SidePanelTemplate,
-  play: removeFocusOutline,
-  args: {
-    clrSidePanelOpen: true,
-    clrSidePanelSize: 'md',
-    clrSidePanelBackdrop: false,
-    clrSidePanelPinnable: true,
-    title: 'Pinnable Side Panel',
-    body: 'This is a medium pinnable side panel without backdrop.',
-  },
-};
-
-export const SidePanelFullScreen: StoryObj = {
-  render: SidePanelTemplate,
-  play: removeFocusOutline,
-  args: {
-    clrSidePanelOpen: true,
-    clrSidePanelSize: 'full-screen',
-    clrSidePanelStaticBackdrop: true,
-    title: 'Full-Screen Side Panel',
-    body: 'This is a full-screen side panel.',
-    showLongPageContent: false,
-  },
-};
-
-export const SidePanelBottomFullScreen: StoryObj = {
-  render: SidePanelTemplate,
-  play: removeFocusOutline,
-  args: {
-    clrSidePanelOpen: true,
-    clrSidePanelSize: 'full-screen',
-    clrSidePanelStaticBackdrop: true,
-    clrSidePanelPosition: 'bottom',
-    title: 'Full-Screen Side Panel',
-    body: 'This is a full-screen side panel.',
-    showLongPageContent: false,
-  },
-};
+export const SidePanel = stories.render(stories.SidePanel, SidePanelTemplate);
+export const SidePanelSmall = stories.render(stories.SidePanelSmall, SidePanelTemplate);
+export const SidePanelMedium = stories.render(stories.SidePanelMedium, SidePanelTemplate);
+export const SidePanelLarge = stories.render(stories.SidePanelLarge, SidePanelTemplate);
+export const SidePanelExtraLarge = stories.render(stories.SidePanelExtraLarge, SidePanelTemplate);
+export const SidePanelBottomSmall = stories.render(stories.SidePanelBottomSmall, SidePanelTemplate);
+export const SidePanelBottomMedium = stories.render(stories.SidePanelBottomMedium, SidePanelTemplate);
+export const SidePanelBottomLarge = stories.render(stories.SidePanelBottomLarge, SidePanelTemplate);
+export const SidePanelBottomExtraLarge = stories.render(stories.SidePanelBottomExtraLarge, SidePanelTemplate);
+export const SidePanelWithBackdrop = stories.render(stories.SidePanelWithBackdrop, SidePanelTemplate);
+export const SidePanelAlternateClose = stories.render(stories.SidePanelAlternateClose, SidePanelTemplate);
+export const SidePanelPinnable = stories.render(stories.SidePanelPinnable, SidePanelTemplate);
+export const SidePanelPinned = stories.render(stories.SidePanelPinned, SidePanelTemplate);
+export const SidePanelBottomPinnable = stories.render(stories.SidePanelBottomPinnable, SidePanelTemplate);
+export const SidePanelBottomPinned = stories.render(stories.SidePanelBottomPinned, SidePanelTemplate);
+export const SidePanelFullScreen = stories.render(stories.SidePanelFullScreen, SidePanelTemplate);
+export const SidePanelBottomFullScreen = stories.render(stories.SidePanelBottomFullScreen, SidePanelTemplate);
