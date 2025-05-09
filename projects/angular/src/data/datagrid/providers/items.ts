@@ -119,6 +119,12 @@ export class Items<T = any> {
     }
   }
 
+  smartenDown() {
+    this._smart = false;
+
+    this.destroy();
+  }
+
   smartenUp() {
     this._smart = true;
     /*

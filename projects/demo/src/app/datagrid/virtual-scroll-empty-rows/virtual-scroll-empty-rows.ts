@@ -7,7 +7,12 @@
 
 import { ListRange } from '@angular/cdk/collections';
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { ClrDatagrid, ClrDatagridStateInterface } from '@clr/angular';
+import {
+  ClrDatagrid,
+  ClrDatagridItemsTrackByFunction,
+  ClrDatagridStateInterface,
+  ClrDatagridVirtualScrollRangeInterface,
+} from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -19,29 +24,28 @@ import { User } from '../inventory/user';
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridVirtualScrollEmptyRowsDemo {
-  userRange: ListRange;
-  _totalRows = 10000;
-  persistItems = false;
+  userRange: ListRange = {
+    start: 0,
+    end: 100,
+  };
 
-  dataRange: {
-    total: number;
-    skip: number;
-    data: User[];
+  _totalRows = 10000;
+  persistItems = true;
+
+  dataRange: ClrDatagridVirtualScrollRangeInterface<User> = {
+    total: this.totalRows,
+    skip: 0,
+    data: [],
   };
 
   _selectedUsers: User[] = [];
   @ViewChild('datagrid') datagrid: ClrDatagrid;
+  state: ClrDatagridStateInterface<User>;
 
   constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
     inventory.size = this.totalRows;
     inventory.latency = 500;
     inventory.reset();
-
-    this.dataRange = {
-      total: this.totalRows,
-      skip: 0,
-      data: [],
-    };
   }
 
   get totalRows() {
@@ -53,7 +57,8 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     this.inventory.size = totalRows;
     this.inventory.generatedCount = 0;
     this.inventory.reset();
-    this.renderUserRangeChange(this.userRange).then(() => {
+    this.renderUserRangeChange(this.userRange).then(x => {
+      console.log(x);
       // this.cdr.detectChanges();
     });
   }
@@ -68,8 +73,34 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     // this.cdr.detectChanges();
   }
 
-  refresh(state: ClrDatagridStateInterface) {
+  trackItemById: ClrDatagridItemsTrackByFunction<User> = item => item?.id;
+
+  async refresh(state: ClrDatagridStateInterface<User>) {
     console.log('refresh', state);
+    this.state = state;
+    const filters: { [prop: string]: any[] } = {};
+
+    if (state.filters) {
+      for (const filter of state.filters) {
+        const { property, value } = filter;
+        filters[property] = [value];
+      }
+    }
+
+    const start = this.userRange.start;
+
+    const result = await this.inventory
+      .filter(filters)
+      .sort(state.sort as { by: string; reverse: boolean })
+      .fetch(start, this.userRange.end - start);
+
+    this.dataRange = {
+      total: result.length,
+      data: result.users,
+      skip: start,
+    };
+
+    this.cdr.detectChanges();
   }
 
   async renderUserRangeChange($event: ListRange) {
@@ -80,9 +111,11 @@ export class DatagridVirtualScrollEmptyRowsDemo {
       end: $event.end,
     };
 
-    this.dataRange = await this.getData($event);
-
-    this.cdr.detectChanges();
+    if (this.state?.filters || this.state?.sort) {
+      await this.refresh(this.state);
+    } else {
+      await this.getData($event);
+    }
   }
 
   jumpTo(index: number) {
@@ -109,10 +142,12 @@ export class DatagridVirtualScrollEmptyRowsDemo {
   private async getData($event: ListRange) {
     const result = await this.inventory.fetch($event.start, $event.end - $event.start);
 
-    return {
+    this.dataRange = {
       total: result.length,
       data: result.users,
       skip: $event.start,
     };
+
+    this.cdr.detectChanges();
   }
 }
