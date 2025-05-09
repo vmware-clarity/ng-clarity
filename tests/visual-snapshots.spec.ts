@@ -41,6 +41,10 @@ for (const { storyId, component } of stories) {
         globals: `theme:${theme}`,
         viewMode: 'story',
       });
+      const viewport = getPageViewPort(component, storyName);
+      if (viewport) {
+        page.setViewportSize(viewport);
+      }
 
       await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
@@ -59,6 +63,10 @@ for (const { storyId, component } of stories) {
 
 const takeFullPageScreenshot = (component, storyName) => {
   return ScreenshotOptions[component]?.fullPageScreenshot || ScreenshotOptions[storyName]?.fullPageScreenshot;
+};
+
+const getPageViewPort = (component, storyName) => {
+  return ScreenshotOptions[component]?.viewport || ScreenshotOptions[storyName]?.viewport;
 };
 
 const unusedScreenshotsFilePath = path.join('.', 'tests', 'snapshots', `used-screenshot-paths-${matrixKey}.txt`);
