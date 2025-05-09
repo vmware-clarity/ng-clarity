@@ -19,7 +19,7 @@
   background: alert-variables.getAlertColor($alertType, bg-color);
   color: alert-variables.getAlertColor($alertType, color);
 
-  & .alert-items .alert-item a:not(.dropdown-item) {
+  & .alert-items .alert-item a:not(.dropdown-item):not(.badge) {
     color: alert-variables.getAlertColor($alertType, color);
 
     cds-icon,
