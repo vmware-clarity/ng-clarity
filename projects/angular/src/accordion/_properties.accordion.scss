@@ -18,7 +18,7 @@
 
     // @TODO (v18) remove in favor of `clr-accordion-header-open-background-color`
     --clr-accordion-active-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
-    --clr-accordion-content-background-color: #{tokens.$cds-alias-object-app-background};
+    --clr-accordion-content-background-color: #{tokens.$cds-alias-object-container-background};
     --clr-accordion-content-color: #{tokens.$cds-alias-typography-color-450};
     --clr-accordion-content-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
 
