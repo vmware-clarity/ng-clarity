@@ -16,6 +16,7 @@ import { WizardCustomButtonsDemo } from './wizard-custom-buttons.demo';
 import { WizardForceForwardDemo } from './wizard-force-forward.demo';
 import { WizardFormValidation } from './wizard-form-validation.demo';
 import { WizardHeaderActionsDemo } from './wizard-header-actions.demo';
+import { WizardInPageDemo } from './wizard-in-page.demo';
 import { WizardInlineDemo } from './wizard-inline.demo';
 import { WizardJumpToDemo } from './wizard-jump-to.demo';
 import { WizardNotClosableDemo } from './wizard-not-closable.demo';
@@ -48,6 +49,7 @@ const ROUTES: Routes = [
       { path: 'step-error', component: WizardStepErrorDemo },
     ],
   },
+  { path: 'in-page', component: WizardInPageDemo },
 ];
 
 export const ROUTING: ModuleWithProviders<RouterModule> = RouterModule.forChild(ROUTES);
