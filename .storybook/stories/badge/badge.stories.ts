@@ -5,18 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { moduleMetadata, StoryObj } from '@storybook/angular';
+import { StoryObj } from '@storybook/angular';
 
 import { BadgeStoryBookComponent } from './badge.storybook.component';
 
 export default {
   title: 'Badge/Badge',
   component: BadgeStoryBookComponent,
-  decorators: [
-    moduleMetadata({
-      declarations: [BadgeStoryBookComponent],
-    }),
-  ],
+  decorators: [],
   argTypes: {},
   args: {
     context: '42',
@@ -24,3 +20,11 @@ export default {
 };
 
 export const Initial: StoryObj = {};
+
+export const SingleBadge: StoryObj = {
+  args: {
+    modifierClasses: ['badge-info'],
+    showLinkBadge: false,
+    badgeTypes: ['info'],
+  },
+};
