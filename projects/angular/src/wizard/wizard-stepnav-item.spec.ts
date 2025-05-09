@@ -304,11 +304,6 @@ export default function (): void {
           expect(myStepnavItem.querySelector('button.clr-wizard-stepnav-link').hasAttribute('disabled')).toBeTruthy();
         });
 
-        it('should have clr-nav-link and nav-item classes', () => {
-          expect(myStepnavItem.classList.contains('nav-item')).toBe(true, 'stepnav item has .nav-item class');
-          expect(myStepnavItem.classList.contains('clr-nav-link')).toBe(true, 'stepnav item has .clr-nav-link class');
-        });
-
         it('aria-current should be false if page is not current', () => {
           expect(myStepnavItem.hasAttribute('aria-current')).toBeTruthy('stepnav item has aria-current attr');
           expect(myStepnavItem.getAttribute('aria-current')).toBe(
@@ -483,6 +478,16 @@ export default function (): void {
           expect(myStepnavItem.classList.contains('error')).toBe(
             false,
             'stepnav item does not have .error class when page has error and page is not completed'
+          );
+        });
+
+        it('should have .not-started class if page is not started', () => {
+          fakeOutPage.completed = false;
+          fakeOutPage.hasError = false;
+          fixture.detectChanges();
+          expect(myStepnavItem.classList.contains('not-started')).toBe(
+            true,
+            'stepnav item should have .not-started class when page is not started'
           );
         });
 

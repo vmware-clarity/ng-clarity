@@ -13,12 +13,12 @@ import { PageCollectionService } from './providers/page-collection.service';
   selector: 'clr-wizard-stepnav',
   template: `
     <nav [attr.aria-label]="label">
-      <ol class="clr-wizard-stepnav-list">
+      <ol class="clr-timeline clr-timeline-vertical clr-wizard-stepnav-list">
         <li
           *ngFor="let page of pageService.pages; let i = index"
           clr-wizard-stepnav-item
           [page]="page"
-          class="clr-wizard-stepnav-item"
+          class="clr-timeline-step clr-wizard-stepnav-item"
         >
           {{ i + 1 }}
         </li>
