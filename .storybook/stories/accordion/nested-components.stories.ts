@@ -109,6 +109,14 @@ const nestedComponents = [
     type: StandardAlertStorybookComponent,
     options: { alertCount: 1, clrAlertLightweight: true, alertTypes: ['danger'], showActions: true },
   },
+  {
+    type: StandardAlertStorybookComponent,
+    options: {
+      alertCount: 1,
+      alertTypes: ['info'],
+      components: [{ type: BadgeStoryBookComponent, options: { badgeTypes: [''] } }],
+    },
+  },
   { type: BadgeStoryBookComponent },
   { type: BadgeStoryBookComponent, options: { context: 'VM' } },
   { type: ButtonStorybookComponent, options: { buttonStyle: 'solid' } },
@@ -126,6 +134,10 @@ const nestedComponents = [
   { type: CardStorybookComponent },
   { type: CheckboxToggleStorybookComponent, options: { containerLabel: 'Options', optionCount: 3 } },
 ];
+
+//   'combobox', 'datagrid', 'datalist', 'date-picker', 'dropdown', 'file-picker', 'icon', 'input','tree-view'
+//   'label', list, 'modal','password','progress-bar', 'radio', 'range', 'select',  'signpost', 'wizard'
+//   'side-panel', 'stack-view', 'stepper', 'spinner', 'table', 'textarea', 'toggle', 'tooltip', 'timeline',
 
 export default {
   title: 'Accordion/Nesting Components',

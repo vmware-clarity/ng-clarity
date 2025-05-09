@@ -54,6 +54,7 @@ export default {
     // story helpers
     alertCount: 3,
     content: 'Hello World!',
+    showAction: true,
     showActions: false,
     paginated: false,
   },
@@ -71,6 +72,7 @@ export const SingleAlert: StoryObj = {
   args: {
     alertTypes: ['info'],
     alertCount: 1,
+    showAction: false,
   },
 };
 
@@ -102,14 +104,6 @@ const paginatedArgTypes = {
 };
 
 export const Paginated: StoryObj = {
-  render: (args: AppLevelAlertStorybookComponent) => ({
-    props: {
-      ...args,
-    },
-    template: `
-      <storybook-app-level-alert ${argsToTemplate(args)}></storybook-app-level-alert>
-    `,
-  }),
   argTypes: paginatedArgTypes,
   args: {
     paginated: true,

@@ -49,7 +49,7 @@ import { createArray } from 'helpers/common';
     <ng-template #alertItemContent let-index="index">
       <span class="alert-text">
         {{ content }} {{ index + 1 }}
-        <a href="javascript://">
+        <a *ngIf="showAction" href="javascript://">
           <cds-icon shape="user"></cds-icon>
           Reset to green
         </a>
@@ -70,6 +70,7 @@ export class AppLevelAlertStorybookComponent {
   @Input() clrAlertClosable = false;
   @Input() alertCount = 3;
   @Input() content = 'Hello World!';
+  @Input() showAction = false;
   @Input() showActions = false;
   @Input() paginated = false;
   createArray = createArray;
