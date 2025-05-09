@@ -6323,11 +6323,11 @@ button.close {
   color: var(--clr-alert-info-font-color);
   border: var(--cds-alias-object-border-width-100) solid var(--clr-alert-info-border-color);
 }
-.alert .alert-items .alert-item a {
+.alert .alert-items .alert-item a:not(.badge) {
   color: var(--clr-alert-info-font-color);
 }
-.alert .alert-items .alert-item a cds-icon,
-.alert .alert-items .alert-item a clr-icon {
+.alert .alert-items .alert-item a:not(.badge) cds-icon,
+.alert .alert-items .alert-item a:not(.badge) clr-icon {
   fill: var(--clr-alert-info-font-color);
 }
 .alert .alert-icon {
@@ -6383,11 +6383,11 @@ button.close {
   color: var(--clr-alert-info-font-color);
   border: var(--cds-alias-object-border-width-100) solid var(--clr-alert-info-border-color);
 }
-.alert.alert-info .alert-items .alert-item a {
+.alert.alert-info .alert-items .alert-item a:not(.badge) {
   color: var(--clr-alert-info-font-color);
 }
-.alert.alert-info .alert-items .alert-item a cds-icon,
-.alert.alert-info .alert-items .alert-item a clr-icon {
+.alert.alert-info .alert-items .alert-item a:not(.badge) cds-icon,
+.alert.alert-info .alert-items .alert-item a:not(.badge) clr-icon {
   fill: var(--clr-alert-info-font-color);
 }
 .alert.alert-info .alert-icon {
@@ -6443,11 +6443,11 @@ button.close {
   color: var(--clr-alert-success-font-color);
   border: var(--cds-alias-object-border-width-100) solid var(--clr-alert-success-border-color);
 }
-.alert.alert-success .alert-items .alert-item a {
+.alert.alert-success .alert-items .alert-item a:not(.badge) {
   color: var(--clr-alert-success-font-color);
 }
-.alert.alert-success .alert-items .alert-item a cds-icon,
-.alert.alert-success .alert-items .alert-item a clr-icon {
+.alert.alert-success .alert-items .alert-item a:not(.badge) cds-icon,
+.alert.alert-success .alert-items .alert-item a:not(.badge) clr-icon {
   fill: var(--clr-alert-success-font-color);
 }
 .alert.alert-success .alert-icon {
@@ -6503,11 +6503,11 @@ button.close {
   color: var(--clr-alert-warning-font-color);
   border: var(--cds-alias-object-border-width-100) solid var(--clr-alert-warning-border-color);
 }
-.alert.alert-warning .alert-items .alert-item a {
+.alert.alert-warning .alert-items .alert-item a:not(.badge) {
   color: var(--clr-alert-warning-font-color);
 }
-.alert.alert-warning .alert-items .alert-item a cds-icon,
-.alert.alert-warning .alert-items .alert-item a clr-icon {
+.alert.alert-warning .alert-items .alert-item a:not(.badge) cds-icon,
+.alert.alert-warning .alert-items .alert-item a:not(.badge) clr-icon {
   fill: var(--clr-alert-warning-font-color);
 }
 .alert.alert-warning .alert-icon {
@@ -6563,11 +6563,11 @@ button.close {
   color: var(--clr-alert-danger-font-color);
   border: var(--cds-alias-object-border-width-100) solid var(--clr-alert-danger-border-color);
 }
-.alert.alert-danger .alert-items .alert-item a {
+.alert.alert-danger .alert-items .alert-item a:not(.badge) {
   color: var(--clr-alert-danger-font-color);
 }
-.alert.alert-danger .alert-items .alert-item a cds-icon,
-.alert.alert-danger .alert-items .alert-item a clr-icon {
+.alert.alert-danger .alert-items .alert-item a:not(.badge) cds-icon,
+.alert.alert-danger .alert-items .alert-item a:not(.badge) clr-icon {
   fill: var(--clr-alert-danger-font-color);
 }
 .alert.alert-danger .alert-icon {
@@ -6623,11 +6623,11 @@ button.close {
   color: var(--clr-alert-neutral-font-color);
   border: var(--cds-alias-object-border-width-100) solid var(--clr-alert-neutral-border-color);
 }
-.alert.alert-neutral .alert-items .alert-item a {
+.alert.alert-neutral .alert-items .alert-item a:not(.badge) {
   color: var(--clr-alert-neutral-font-color);
 }
-.alert.alert-neutral .alert-items .alert-item a cds-icon,
-.alert.alert-neutral .alert-items .alert-item a clr-icon {
+.alert.alert-neutral .alert-items .alert-item a:not(.badge) cds-icon,
+.alert.alert-neutral .alert-items .alert-item a:not(.badge) clr-icon {
   fill: var(--clr-alert-neutral-font-color);
 }
 .alert .alert-item > span,
@@ -6768,11 +6768,11 @@ button.close {
   color: var(--clr-app-alert-info-font-color);
   border: var(--cds-alias-object-border-width-100) solid var(--clr-app-alert-info-border-color);
 }
-.alert-app-level .alert-items .alert-item a {
+.alert-app-level .alert-items .alert-item a:not(.badge) {
   color: var(--clr-app-alert-info-font-color);
 }
-.alert-app-level .alert-items .alert-item a cds-icon,
-.alert-app-level .alert-items .alert-item a clr-icon {
+.alert-app-level .alert-items .alert-item a:not(.badge) cds-icon,
+.alert-app-level .alert-items .alert-item a:not(.badge) clr-icon {
   fill: var(--clr-app-alert-info-font-color);
 }
 .alert-app-level .alert-icon {
@@ -6831,11 +6831,11 @@ button.close {
   color: var(--clr-app-alert-info-font-color);
   border: var(--cds-alias-object-border-width-100) solid var(--clr-app-alert-info-border-color);
 }
-.alert-app-level.alert-info .alert-items .alert-item a {
+.alert-app-level.alert-info .alert-items .alert-item a:not(.badge) {
   color: var(--clr-app-alert-info-font-color);
 }
-.alert-app-level.alert-info .alert-items .alert-item a cds-icon,
-.alert-app-level.alert-info .alert-items .alert-item a clr-icon {
+.alert-app-level.alert-info .alert-items .alert-item a:not(.badge) cds-icon,
+.alert-app-level.alert-info .alert-items .alert-item a:not(.badge) clr-icon {
   fill: var(--clr-app-alert-info-font-color);
 }
 .alert-app-level.alert-info .alert-icon {
@@ -6891,11 +6891,11 @@ button.close {
   color: var(--clr-app-alert-danger-font-color);
   border: var(--cds-alias-object-border-width-100) solid var(--clr-app-alert-danger-border-color);
 }
-.alert-app-level.alert-danger .alert-items .alert-item a {
+.alert-app-level.alert-danger .alert-items .alert-item a:not(.badge) {
   color: var(--clr-app-alert-danger-font-color);
 }
-.alert-app-level.alert-danger .alert-items .alert-item a cds-icon,
-.alert-app-level.alert-danger .alert-items .alert-item a clr-icon {
+.alert-app-level.alert-danger .alert-items .alert-item a:not(.badge) cds-icon,
+.alert-app-level.alert-danger .alert-items .alert-item a:not(.badge) clr-icon {
   fill: var(--clr-app-alert-danger-font-color);
 }
 .alert-app-level.alert-danger .alert-icon {
@@ -6951,11 +6951,11 @@ button.close {
   color: var(--clr-app-alert-neutral-font-color);
   border: var(--cds-alias-object-border-width-100) solid var(--clr-app-alert-neutral-border-color);
 }
-.alert-app-level.alert-neutral .alert-items .alert-item a {
+.alert-app-level.alert-neutral .alert-items .alert-item a:not(.badge) {
   color: var(--clr-app-alert-neutral-font-color);
 }
-.alert-app-level.alert-neutral .alert-items .alert-item a cds-icon,
-.alert-app-level.alert-neutral .alert-items .alert-item a clr-icon {
+.alert-app-level.alert-neutral .alert-items .alert-item a:not(.badge) cds-icon,
+.alert-app-level.alert-neutral .alert-items .alert-item a:not(.badge) clr-icon {
   fill: var(--clr-app-alert-neutral-font-color);
 }
 .alert-app-level.alert-neutral .alert-actions .dropdown .dropdown-toggle {
@@ -7008,11 +7008,11 @@ button.close {
   color: var(--clr-app-alert-warning-font-color);
   border: var(--cds-alias-object-border-width-100) solid var(--clr-app-alert-warning-border-color);
 }
-.alert-app-level.alert-warning .alert-items .alert-item a {
+.alert-app-level.alert-warning .alert-items .alert-item a:not(.badge) {
   color: var(--clr-app-alert-warning-font-color);
 }
-.alert-app-level.alert-warning .alert-items .alert-item a cds-icon,
-.alert-app-level.alert-warning .alert-items .alert-item a clr-icon {
+.alert-app-level.alert-warning .alert-items .alert-item a:not(.badge) cds-icon,
+.alert-app-level.alert-warning .alert-items .alert-item a:not(.badge) clr-icon {
   fill: var(--clr-app-alert-warning-font-color);
 }
 .alert-app-level.alert-warning .alert-icon {
@@ -7068,11 +7068,11 @@ button.close {
   color: var(--clr-app-alert-success-font-color);
   border: var(--cds-alias-object-border-width-100) solid var(--clr-app-alert-success-border-color);
 }
-.alert-app-level.alert-success .alert-items .alert-item a {
+.alert-app-level.alert-success .alert-items .alert-item a:not(.badge) {
   color: var(--clr-app-alert-success-font-color);
 }
-.alert-app-level.alert-success .alert-items .alert-item a cds-icon,
-.alert-app-level.alert-success .alert-items .alert-item a clr-icon {
+.alert-app-level.alert-success .alert-items .alert-item a:not(.badge) cds-icon,
+.alert-app-level.alert-success .alert-items .alert-item a:not(.badge) clr-icon {
   fill: var(--clr-app-alert-success-font-color);
 }
 .alert-app-level.alert-success .alert-icon {
