@@ -16,47 +16,71 @@ export default {
   title: 'Label/Label',
   component: LabelStoryBookComponent,
   decorators: [],
-  argTypes: {},
+  argTypes: {
+    labelTypes: { control: { disable: true }, table: { disable: true } },
+  },
   args: {
-    modifierClasses: [''],
-    labelColorTypes: [''],
+    labelType: null,
+    labelTypes: [''],
     // story helpers
     clickable: false,
     closeIcon: false,
   },
 };
 
-export const Initial: StoryObj = {};
+export const Initial: StoryObj = {
+  argTypes: {
+    labelType: { control: 'select', options: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES] },
+  },
+  args: {
+    labelType: '',
+  },
+};
 
 export const ColorLabel: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+  },
   args: {
-    labelColorTypes: LABEL_COLOR_TYPES,
+    labelTypes: LABEL_COLOR_TYPES,
   },
 };
 
 export const StatusLabel: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+  },
   args: {
-    labelColorTypes: LABEL_STATUS_TYPES,
+    labelTypes: LABEL_STATUS_TYPES,
   },
 };
 
 export const StatusLabelClickable: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+  },
   args: {
-    labelColorTypes: LABEL_STATUS_TYPES,
+    labelTypes: LABEL_STATUS_TYPES,
     clickable: true,
   },
 };
 
 export const ColorLabelClosable: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+  },
   args: {
-    labelColorTypes: LABEL_COLOR_TYPES,
+    labelTypes: LABEL_COLOR_TYPES,
     closeIcon: true,
   },
 };
 
 export const StatusLabelClickableWithClose: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+  },
   args: {
-    labelColorTypes: LABEL_STATUS_TYPES,
+    labelTypes: LABEL_STATUS_TYPES,
     clickable: true,
     closeIcon: true,
   },
