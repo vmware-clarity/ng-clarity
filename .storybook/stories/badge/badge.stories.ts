@@ -13,7 +13,9 @@ export default {
   title: 'Badge/Badge',
   component: BadgeStoryBookComponent,
   decorators: [],
-  argTypes: {},
+  argTypes: {
+    badgeTypes: { control: { disable: true }, table: { disable: true }, type: 'array' },
+  },
   args: {
     context: '42',
   },
@@ -23,8 +25,7 @@ export const Initial: StoryObj = {};
 
 export const SingleBadge: StoryObj = {
   args: {
-    modifierClasses: ['badge-info'],
     showLinkBadge: false,
-    badgeTypes: ['info'],
+    badgeTypes: ['badge-info'],
   },
 };
