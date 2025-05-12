@@ -11,7 +11,6 @@ import * as stories from './side-panel.internal';
 
 const SidePanelTemplate: StoryFn = args => ({
   template: `
-    <!-- The clrModalHost is needed, because the following containers are not direct children of the body -->
     <div class="main-container">
       <div class="content-container">
         <div class="content-area">
