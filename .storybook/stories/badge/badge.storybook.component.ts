@@ -5,18 +5,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'storybook-badge',
   template: `
-    <div style="margin-top: 5px" *ngFor="let status of modifierClasses">
+    <ng-container *ngFor="let status of badgeType ? [badgeType] : badgeTypes">
       <span class="badge" [ngClass]="status">{{ context }}</span>
-      <a href="#" class="badge" [ngClass]="status">{{ context }}</a>
-    </div>
+      <a *ngIf="showLinkBadge" href="#" class="badge" [ngClass]="status">{{ context }}</a>
+    </ng-container>
   `,
+  standalone: true,
+  imports: [NgIf, NgFor, NgClass],
 })
 export class BadgeStoryBookComponent {
   @Input() context = '42';
-  modifierClasses: string[] = ['', 'badge-info', 'badge-success', 'badge-warning', 'badge-danger', 'badge-purple'];
+  @Input() showLinkBadge = true;
+  @Input() badgeTypes: string[] = [''];
+  @Input() badgeType = '';
 }
