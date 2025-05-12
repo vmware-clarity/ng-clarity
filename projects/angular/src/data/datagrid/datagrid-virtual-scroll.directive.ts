@@ -75,7 +75,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
 
-  private readonly datagridElementRef: ElementRef<HTMLElement>;
+  private datagridElementRef: ElementRef<HTMLElement>;
 
   private gridRoleElement: HTMLElement | null | undefined;
   private readonly virtualScrollStrategy: FixedSizeVirtualScrollStrategy;
@@ -109,22 +109,14 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     private readonly directionality: Directionality,
     private readonly scrollDispatcher: ScrollDispatcher,
     private readonly viewportRuler: ViewportRuler,
-    private readonly datagrid: ClrDatagrid,
     private columnsService: ColumnsService,
     private readonly injector: EnvironmentInjector
   ) {
+    console.log(`constructor virtual scroll`);
     items.smartenUp();
-    datagrid.detailService.preventFocusScroll = true;
-
-    this.datagridElementRef = datagrid.el;
 
     // default
     this.cdkVirtualForTemplateCacheSize = 20;
-
-    this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
-      attributeFilter: ['class'],
-      attributeOldValue: true,
-    });
 
     this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(
       this._cdkFixedSizeVirtualScrollInputs.itemSize,
@@ -220,6 +212,25 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this._totalItems = value;
   }
 
+  prepareDatagrid(datagrid: ClrDatagrid<T>) {
+    datagrid.detailService.preventFocusScroll = true;
+
+    this.datagridElementRef = datagrid.el;
+
+    this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
+      attributeFilter: ['class'],
+      attributeOldValue: true,
+    });
+
+    this.subscriptions.push(
+      datagrid.refresh.subscribe(datagridState => {
+        if (datagridState.filters) {
+          this.scrollToIndex(0);
+        }
+      })
+    );
+  }
+
   ngAfterViewInit() {
     this.injector.runInContext(() => {
       this.virtualScrollViewport = this.createVirtualScrollViewportForDatagrid(
@@ -263,11 +274,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       }),
       this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
         this.renderedRangeChange.emit(renderedRange);
-      }),
-      this.datagrid.refresh.subscribe(datagridState => {
-        if (datagridState.filters) {
-          this.scrollToIndex(0);
-        }
       }),
       this.columnsService.columnsStateChange.subscribe(() => {
         this.viewRepeater.detach();
