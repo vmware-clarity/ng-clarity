@@ -20422,6 +20422,10 @@ class Items {
             this._pageSub.unsubscribe();
         }
     }
+    smartenDown() {
+        this._smart = false;
+        this.destroy();
+    }
     smartenUp() {
         this._smart = true;
         /*
@@ -21770,6 +21774,12 @@ class ClrDatagridVirtualScrollDirective {
         this.updateFixedSizeVirtualScrollInputs();
     }
     set dataRange(range) {
+        if (!range) {
+            return;
+        }
+        if (this.items.smart) {
+            this.items.smartenDown();
+        }
         this.totalItems = range.total;
         this.updateDataRange(range.skip, range.data);
     }
@@ -21777,11 +21787,7 @@ class ClrDatagridVirtualScrollDirective {
         return this._totalItems;
     }
     set totalItems(value) {
-        if (this._totalItems === value) {
-            return;
-        }
         this._totalItems = value;
-        this.populatePlaceholderData();
     }
     ngAfterViewInit() {
         this.injector.runInContext(() => {
@@ -21792,7 +21798,9 @@ class ClrDatagridVirtualScrollDirective {
         this.gridRoleElement = this.datagridElementRef.nativeElement.querySelector('[role="grid"]');
         this.updateCdkVirtualForInputs();
         this.subscriptions.push(this.items.change.subscribe(newItems => {
-            this.cdkVirtualFor.cdkVirtualForOf = newItems;
+            if (this.items.smart) {
+                this.cdkVirtualFor.cdkVirtualForOf = newItems;
+            }
         }), this.cdkVirtualFor.dataStream.subscribe(data => {
             this.updateAriaRowCount(data.length);
         }), this.virtualScrollViewport.scrolledIndexChange.subscribe(index => {
@@ -21828,16 +21836,13 @@ class ClrDatagridVirtualScrollDirective {
     scrollToIndex(index, behavior = 'auto') {
         this.virtualScrollViewport?.scrollToIndex(index, behavior);
     }
-    populatePlaceholderData() {
-        this.cdkVirtualForOf = Array(this.totalItems);
-    }
     updateDataRange(skip, data) {
-        if (!this.persistItems) {
-            this.populatePlaceholderData();
+        let items = this.cdkVirtualForOf;
+        if (!this.persistItems || !items || items?.length !== this.totalItems) {
+            items = Array(this.totalItems);
         }
-        const items = this.items.all;
         items.splice(skip, data.length, ...data);
-        this.items.all = items;
+        this.cdkVirtualForOf = Array.from(items);
     }
     updateCdkVirtualForInputs() {
         if (this.cdkVirtualFor) {
@@ -21896,7 +21901,7 @@ class ClrDatagridVirtualScrollDirective {
         return virtualScrollViewport;
     }
 }
-ClrDatagridVirtualScrollDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridVirtualScrollDirective, deps: [{ token: i0.ChangeDetectorRef }, { token: i0.IterableDiffers }, { token: Items, skipSelf: true }, { token: i0.NgZone }, { token: i0.Renderer2 }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: i1$3.Directionality }, { token: i3$1.ScrollDispatcher }, { token: i3$1.ViewportRuler }, { token: ClrDatagrid }, { token: ColumnsService }, { token: i0.EnvironmentInjector }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDatagridVirtualScrollDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridVirtualScrollDirective, deps: [{ token: i0.ChangeDetectorRef }, { token: i0.IterableDiffers }, { token: Items }, { token: i0.NgZone }, { token: i0.Renderer2 }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: i1$3.Directionality }, { token: i3$1.ScrollDispatcher }, { token: i3$1.ViewportRuler }, { token: ClrDatagrid }, { token: ColumnsService }, { token: i0.EnvironmentInjector }], target: i0.ɵɵFactoryTarget.Directive });
 ClrDatagridVirtualScrollDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridVirtualScrollDirective, selector: "[clrVirtualScroll],[ClrVirtualScroll]", inputs: { persistItems: ["clrVirtualPersistItems", "persistItems"], cdkVirtualForOf: ["clrVirtualRowsOf", "cdkVirtualForOf"], cdkVirtualForTrackBy: ["clrVirtualRowsTrackBy", "cdkVirtualForTrackBy"], cdkVirtualForTemplate: ["clrVirtualRowsTemplate", "cdkVirtualForTemplate"], cdkVirtualForTemplateCacheSize: ["clrVirtualRowsTemplateCacheSize", "cdkVirtualForTemplateCacheSize"], itemSize: ["clrVirtualRowsItemSize", "itemSize"], minBufferPx: ["clrVirtualRowsMinBufferPx", "minBufferPx"], maxBufferPx: ["clrVirtualRowsMaxBufferPx", "maxBufferPx"], dataRange: ["clrVirtualDataRange", "dataRange"] }, outputs: { renderedRangeChange: "renderedRangeChange" }, providers: [Items], ngImport: i0 });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridVirtualScrollDirective, decorators: [{
             type: Directive,
@@ -21904,9 +21909,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
                     selector: '[clrVirtualScroll],[ClrVirtualScroll]',
                     providers: [Items],
                 }]
-        }], ctorParameters: function () { return [{ type: i0.ChangeDetectorRef }, { type: i0.IterableDiffers }, { type: Items, decorators: [{
-                    type: SkipSelf
-                }] }, { type: i0.NgZone }, { type: i0.Renderer2 }, { type: i0.TemplateRef }, { type: i0.ViewContainerRef }, { type: i1$3.Directionality }, { type: i3$1.ScrollDispatcher }, { type: i3$1.ViewportRuler }, { type: ClrDatagrid }, { type: ColumnsService }, { type: i0.EnvironmentInjector }]; }, propDecorators: { renderedRangeChange: [{
+        }], ctorParameters: function () { return [{ type: i0.ChangeDetectorRef }, { type: i0.IterableDiffers }, { type: Items }, { type: i0.NgZone }, { type: i0.Renderer2 }, { type: i0.TemplateRef }, { type: i0.ViewContainerRef }, { type: i1$3.Directionality }, { type: i3$1.ScrollDispatcher }, { type: i3$1.ViewportRuler }, { type: ClrDatagrid }, { type: ColumnsService }, { type: i0.EnvironmentInjector }]; }, propDecorators: { renderedRangeChange: [{
                 type: Output
             }], persistItems: [{
                 type: Input,
@@ -30500,6 +30503,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
                     ],
                 }]
         }] });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
