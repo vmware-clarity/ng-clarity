@@ -17705,16 +17705,11 @@ class DefaultKeyNavigationStrategy {
         }
         const isActionCell = this.utils.isActionCell(currentCellCoords);
         nextCellCoords.y = currentCellCoords.y + 1;
-        if (this.utils.isSingleCellExpandedRow(nextCellCoords.y) &&
-            !isActionCell &&
-            this.utils.isRowReplaced(nextCellCoords.y)) {
-            nextCellCoords.x = 0;
-            nextCellCoords.y = nextCellCoords.y + 1;
-            return nextCellCoords;
-        }
         if (!isActionCell && this.utils.isRowReplaced(nextCellCoords.y)) {
             nextCellCoords.y = nextCellCoords.y + 1;
-            nextCellCoords.x = nextCellCoords.x - this.utils.actionCellCount(currentCellCoords.y);
+            nextCellCoords.x = this.utils.isSingleCellExpandedRow(nextCellCoords.y)
+                ? 0
+                : nextCellCoords.x - this.utils.actionCellCount(currentCellCoords.y);
         }
         return nextCellCoords;
     }
@@ -17985,6 +17980,9 @@ class ExpandedColumnsRowKeyNavigationStrategy extends ExpandedRowKeyNavigationSt
             return nextCellCoords;
         }
         nextCellCoords.y = currentCellCoords.y - 1;
+        if (this.utils.isSingleCellExpandedRow(nextCellCoords.y)) {
+            return super.keyUp(currentCellCoords);
+        }
         const isActionCell = this.utils.isActionCell(currentCellCoords);
         if (isActionCell && this.utils.isDetailsRow(nextCellCoords.y)) {
             nextCellCoords.y = nextCellCoords.y - 1;
@@ -18011,6 +18009,9 @@ class ExpandedColumnsRowKeyNavigationStrategy extends ExpandedRowKeyNavigationSt
             return nextCellCoords;
         }
         nextCellCoords.y = currentCellCoords.y + 1;
+        if (this.utils.isSingleCellExpandedRow(nextCellCoords.y)) {
+            return super.keyDown(currentCellCoords);
+        }
         if (!this.utils.isActionCell(currentCellCoords)) {
             if (this.utils.isRowReplaced(nextCellCoords.y)) {
                 nextCellCoords.y = nextCellCoords.y < numOfRows ? nextCellCoords.y + 1 : nextCellCoords.y - 1;
@@ -18043,6 +18044,9 @@ class ExpandedColumnsRowKeyNavigationStrategy extends ExpandedRowKeyNavigationSt
         const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
         const itemsPerPage = this.utils.itemsPerPage;
         nextCellCoords.y = currentCellCoords.y - itemsPerPage > 0 ? currentCellCoords.y - itemsPerPage + 1 : 1;
+        if (this.utils.isSingleCellExpandedRow(nextCellCoords.y)) {
+            return super.keyPageUp(currentCellCoords);
+        }
         if (!this.utils.isActionCell(currentCellCoords)) {
             if (this.utils.isRowReplaced(nextCellCoords.y)) {
                 if (!this.utils.isDetailsRow(nextCellCoords.y)) {
@@ -18067,6 +18071,9 @@ class ExpandedColumnsRowKeyNavigationStrategy extends ExpandedRowKeyNavigationSt
         const numOfRows = this.utils.rows ? this.utils.rows.length - 1 : 0;
         const itemsPerPage = this.utils.itemsPerPage;
         nextCellCoords.y = currentCellCoords.y + itemsPerPage >= numOfRows ? numOfRows : currentCellCoords.y + itemsPerPage;
+        if (this.utils.isSingleCellExpandedRow(nextCellCoords.y)) {
+            return super.keyPageDown(currentCellCoords);
+        }
         if (!this.utils.isActionCell(currentCellCoords)) {
             if (this.utils.isRowReplaced(nextCellCoords.y) && !this.utils.isDetailsRow(nextCellCoords.y)) {
                 if (nextCellCoords.y < numOfRows) {
@@ -18162,8 +18169,7 @@ class KeyNavigationUtils {
         return !!this.rows[index].closest('clr-dg-row.datagrid-row-replaced');
     }
     isSingleCellExpandedRow(index) {
-        const row = this.isDetailsRow(index) ? this.rows[index] : this.rows[index].querySelector('.datagrid-row-detail');
-        return row?.querySelectorAll(this.config.keyGridCells).length === 1;
+        return this.rows[index]?.querySelectorAll(this.config.keyGridCells).length === 1;
     }
     actionCellCount(index) {
         return this.actionCellsAsArray(index).length;
