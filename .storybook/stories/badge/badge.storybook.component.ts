@@ -11,7 +11,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'storybook-badge',
   template: `
-    <ng-container *ngFor="let status of badgeTypes">
+    <ng-container *ngFor="let status of badgeType ? [badgeType] : badgeTypes">
       <span class="badge" [ngClass]="status">{{ context }}</span>
       <a *ngIf="showLinkBadge" href="#" class="badge" [ngClass]="status">{{ context }}</a>
     </ng-container>
@@ -22,5 +22,6 @@ import { Component, Input } from '@angular/core';
 export class BadgeStoryBookComponent {
   @Input() context = '42';
   @Input() showLinkBadge = true;
-  @Input() badgeTypes: string[] = ['', 'badge-info', 'badge-success', 'badge-warning', 'badge-danger', 'badge-purple'];
+  @Input() badgeTypes: string[] = [''];
+  @Input() badgeType = '';
 }
