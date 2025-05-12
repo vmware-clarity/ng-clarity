@@ -131,7 +131,6 @@ const DatagridDetailsTemplate: StoryFn = args => ({
       </clr-dg-column>
 
       <ng-template
-        *ngIf="data.elements"
         clrVirtualScroll
         let-element
         let-index="index"
