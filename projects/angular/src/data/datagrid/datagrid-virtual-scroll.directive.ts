@@ -112,7 +112,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     private columnsService: ColumnsService,
     private readonly injector: EnvironmentInjector
   ) {
-    console.log(`constructor virtual scroll`);
     items.smartenUp();
 
     // default

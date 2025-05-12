@@ -6,7 +6,7 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { AfterViewChecked, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ClrDatagridItemsTrackByFunction, ClrDatagridStateInterface } from '@clr/angular';
 import { Observable } from 'rxjs';
 
@@ -20,7 +20,7 @@ import { ColorFilter } from '../utils/color-filter';
   templateUrl: './virtual-scroll-server-side.html',
   styleUrls: ['../datagrid.demo.scss'],
 })
-export class DatagridVirtualScrollServerSideDemo implements AfterViewChecked {
+export class DatagridVirtualScrollServerSideDemo implements OnInit {
   users: Observable<User[]>;
   currentPageSize = 100;
   _inventory = null;
@@ -38,7 +38,7 @@ export class DatagridVirtualScrollServerSideDemo implements AfterViewChecked {
 
   trackItemById: ClrDatagridItemsTrackByFunction<User> = item => item?.id;
 
-  ngAfterViewChecked(): void {
+  ngOnInit(): void {
     this.users.subscribe(users => {
       // this.selected.push(users[0], users[7]);
       console.log(users[users.length - 1]);

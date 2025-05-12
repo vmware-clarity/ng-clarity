@@ -162,8 +162,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
     this.selectAllId = 'clr-dg-select-all-' + datagridId;
     detailService.id = datagridId;
-    console.log(`constructor datagrid`);
-    console.log(typeof this.virtualScroll);
   }
 
   /**
@@ -246,9 +244,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
     }
 
-    console.log(`ngAfterContentInit datagrid`);
-    console.log(typeof this.virtualScroll);
-
     this.virtualScroll?.prepareDatagrid(this);
 
     const rowItemsChanges = this.rows.changes.pipe(
@@ -301,8 +296,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   ngAfterViewInit() {
     this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
     this.updateDetailState();
-
-    console.log(`ngAfterViewInit datagrid`);
 
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
     this.refresh.emit(this.stateProvider.state);

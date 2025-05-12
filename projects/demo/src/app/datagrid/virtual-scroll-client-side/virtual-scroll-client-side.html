@@ -48,7 +48,6 @@
   </clr-dg-column>
 
   <ng-template
-    *ngIf="data.rows"
     clrVirtualScroll
     let-row
     [clrVirtualRowsOf]="data.rows"
@@ -140,7 +139,6 @@
   <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column>
 
   <ng-template
-    *ngIf="data.users"
     clrVirtualScroll
     let-user
     [clrVirtualRowsOf]="data.users"
