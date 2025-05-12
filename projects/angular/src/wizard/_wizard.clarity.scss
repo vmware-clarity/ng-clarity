@@ -14,6 +14,7 @@
 @use 'sass:meta';
 @use '../modal/variables.modal' as modal-variables;
 @use '../utils/mixins';
+@use '../utils/variables/variables.global';
 @use 'variables.wizard' as wizard-variables;
 
 @use '@cds/core/tokens/tokens.scss';
@@ -507,6 +508,22 @@
 
     .clr-wizard-stepnav {
       padding-top: tokens.$cds-global-space-9;
+    }
+  }
+
+  .wizard-in-page {
+    // extra specificity is needed here to override the following default style without using !important:
+    // .main-container .content-container .content-area > :first-child { margin-top: 0px; }
+    @at-root .main-container .content-container .content-area &.wizard-in-page--fill-content-area {
+      display: block;
+      height: calc(100% + #{variables.$clr-content-area-padding-top} + #{variables.$clr-content-area-padding-bottom});
+
+      // offset content area padding
+      margin: -#{variables.$clr-content-area-padding-top} -#{variables.$clr-content-area-padding-right} -#{variables.$clr-content-area-padding-bottom} -#{variables.$clr-content-area-padding-left};
+    }
+
+    .clr-wizard-footer-buttons-wrapper {
+      justify-content: flex-start;
     }
   }
 
