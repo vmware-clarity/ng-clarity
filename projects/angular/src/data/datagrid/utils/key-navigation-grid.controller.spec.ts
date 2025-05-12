@@ -52,7 +52,7 @@ class TestComponent {
 
 export default function (): void {
   describe('Key navigation controller', function () {
-    function compareActiveElementToElement(element: HTMLElement): void {
+    function compareToActiveElement(element: HTMLElement): void {
       expect(document.activeElement).toBe(element);
     }
 
@@ -85,23 +85,23 @@ export default function (): void {
         // cell flow: start at index 0 -> 3 -> 4 -> 5 -> 8 -> 7 -> 4 end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[3]);
+        compareToActiveElement(cells[3]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[4]);
+        compareToActiveElement(cells[4]);
 
         // second time, to avoid cycling over cells with radios
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[5]);
+        compareToActiveElement(cells[5]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[4]);
+        compareToActiveElement(cells[4]);
       });
 
       it('Moves focus with PageDown and PageUp no action cells', function () {
@@ -109,30 +109,30 @@ export default function (): void {
 
         // focus at bottom datagrid cell
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[12]);
+        compareToActiveElement(cells[12]);
 
         // focus at top datagrid cell
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[3]);
+        compareToActiveElement(cells[3]);
       });
 
       it('Moves focus on Home and End no action cells', function () {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[3]);
+        compareToActiveElement(cells[3]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End }));
-        compareActiveElementToElement(cells[5]);
+        compareToActiveElement(cells[5]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
-        compareActiveElementToElement(cells[3]);
+        compareToActiveElement(cells[3]);
       });
 
       it('Moves focus on Ctrl-Home and Ctrl-End no action cells', function () {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        compareActiveElementToElement(cells[14]);
+        compareToActiveElement(cells[14]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        compareActiveElementToElement(cells[0]);
+        compareToActiveElement(cells[0]);
       });
 
       it('Moves focus to a clicked element', function () {
@@ -175,31 +175,31 @@ export default function (): void {
         // check cell flow: start at index 0 -> 5 -> 6 -> 7 -> 8 -> 13 -> 12 -> 7 -> 6 -> 5 end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[4].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[4].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[5]);
+        compareToActiveElement(cells[5]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6]);
+        compareToActiveElement(cells[6]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[11]);
+        compareToActiveElement(cells[11]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[10]);
+        compareToActiveElement(cells[10]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[6]);
+        compareToActiveElement(cells[6]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[5]);
+        compareToActiveElement(cells[5]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[4].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[4].querySelector('[type=checkbox]'));
       });
 
       it('Moves focus with PageDown and PageUp with action cells', function () {
@@ -207,32 +207,32 @@ export default function (): void {
 
         // focus at bottom datagrid cell
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[16].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[16].querySelector('[type=checkbox]'));
 
         // focus at top datagrid cell
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[4].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[4].querySelector('[type=checkbox]'));
       });
 
       it('Moves focus on Home and End with action cells', function () {
         // cell flow: start at index 0 (check) -> 4 (check) -> 7 (check) -> 4 (check) end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[4].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[4].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
-        compareActiveElementToElement(cells[4].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[4].querySelector('[type=checkbox]'));
       });
 
       it('Moves focus on Ctrl-Home and Ctrl-End with action cells', function () {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        compareActiveElementToElement(cells[19]);
+        compareToActiveElement(cells[19]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        compareActiveElementToElement(cells[0]);
+        compareToActiveElement(cells[0]);
       });
     });
 
@@ -267,26 +267,26 @@ export default function (): void {
         // check cell flow: start at index 0 -> 4 -> 5 -> 6 -> 10 -> 9 -> 5 -> 4 end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[4].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[4].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[5]);
+        compareToActiveElement(cells[5]);
 
         // second time, to avoid cycling over cells with radios
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6]);
+        compareToActiveElement(cells[6]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10]);
+        compareToActiveElement(cells[10]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[9]);
+        compareToActiveElement(cells[9]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[5]);
+        compareToActiveElement(cells[5]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[4].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[4].querySelector('button.datagrid-expandable-caret-button'));
       });
 
       it('Moves focus with PageDown and PageUp with expand no action cells', function () {
@@ -294,30 +294,30 @@ export default function (): void {
 
         // focus at bottom datagrid cell
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[16].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[16].querySelector('button.datagrid-expandable-caret-button'));
 
         // focus at top datagrid cell
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[4].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[4].querySelector('button.datagrid-expandable-caret-button'));
       });
 
       it('Moves focus on Home and End with expand no action cells', function () {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[4].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[4].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
-        compareActiveElementToElement(cells[4].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[4].querySelector('button.datagrid-expandable-caret-button'));
       });
 
       it('Moves focus on Ctrl-Home and Ctrl-End with expand no action cells', function () {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        compareActiveElementToElement(cells[19]);
+        compareToActiveElement(cells[19]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        compareActiveElementToElement(cells[0]);
+        compareToActiveElement(cells[0]);
       });
     });
 
@@ -353,31 +353,31 @@ export default function (): void {
         // check cell flow: start at index 0 -> 5 -> 6 -> 7 -> 8 -> 13 -> 12 -> 7 -> 6 -> 5 end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[13]);
+        compareToActiveElement(cells[13]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[12]);
+        compareToActiveElement(cells[12]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
       });
 
       it('Moves focus across sticky cells with actions and expand cells', function () {
@@ -386,19 +386,19 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[15].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[15].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[16].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[16].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
       });
 
       it('Moves focus with PageDown and PageUp with action and expand cells', function () {
@@ -406,32 +406,32 @@ export default function (): void {
 
         // focus at bottom datagrid cell
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[20].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[20].querySelector('[type=checkbox]'));
 
         // focus at top datagrid cell
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
       });
 
       it('Moves focus on Home and End with action and expand cells', function () {
         // cell flow: start at index 0 (check) -> 4 (check) -> 7 (check) -> 4 (check) end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End }));
-        compareActiveElementToElement(cells[9]);
+        compareToActiveElement(cells[9]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
       });
 
       it('Moves focus on Ctrl-Home and Ctrl-End with and expand action cells', function () {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        compareActiveElementToElement(cells[24]);
+        compareToActiveElement(cells[24]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        compareActiveElementToElement(cells[0]);
+        compareToActiveElement(cells[0]);
       });
     });
 
@@ -473,49 +473,49 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[12]);
+        compareToActiveElement(cells[12]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[13]);
+        compareToActiveElement(cells[13]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[16]);
+        compareToActiveElement(cells[16]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[21]);
+        compareToActiveElement(cells[21]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[24]);
+        compareToActiveElement(cells[24]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[29]);
+        compareToActiveElement(cells[29]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[24]);
+        compareToActiveElement(cells[24]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[23]);
+        compareToActiveElement(cells[23]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[20]);
+        compareToActiveElement(cells[20]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[15]);
+        compareToActiveElement(cells[15]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[12]);
+        compareToActiveElement(cells[12]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
       });
 
       it('Moves focus across sticky cells with actions and expanded rows', function () {
@@ -524,40 +524,40 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[19].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[19].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[18].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[18].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[26].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[26].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[27].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[27].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[19].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[19].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[18].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[18].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
       });
 
       it('Moves focus between sticky and data cells with actions and expanded rows', function () {
@@ -566,28 +566,28 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[12]);
+        compareToActiveElement(cells[12]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[12]);
+        compareToActiveElement(cells[12]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[15]);
+        compareToActiveElement(cells[15]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
       });
 
       it('Moves focus on Home and End with action and expand cells', function () {
@@ -596,25 +596,25 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End }));
-        compareActiveElementToElement(cells[14]);
+        compareToActiveElement(cells[14]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End }));
-        compareActiveElementToElement(cells[14]);
+        compareToActiveElement(cells[14]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[17]);
+        compareToActiveElement(cells[17]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
       });
 
       it('Moves focus on Ctrl-Home and Ctrl-End between expanded rows', function () {
@@ -625,45 +625,45 @@ export default function (): void {
 
         // Default
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        compareActiveElementToElement(cells[30]);
+        compareToActiveElement(cells[30]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        compareActiveElementToElement(cells[0]);
+        compareToActiveElement(cells[0]);
 
         // from expanded main row to expanded last row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        compareActiveElementToElement(cells[30]);
+        compareToActiveElement(cells[30]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        compareActiveElementToElement(cells[0]);
+        compareToActiveElement(cells[0]);
 
         // from expanded sub row to expanded last row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10]);
+        compareToActiveElement(cells[10]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        compareActiveElementToElement(cells[30]);
+        compareToActiveElement(cells[30]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        compareActiveElementToElement(cells[0]);
+        compareToActiveElement(cells[0]);
       });
     });
 
@@ -708,44 +708,44 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         // single Arrow Down will skip the replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[15]);
+        compareToActiveElement(cells[15]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[16]);
+        compareToActiveElement(cells[16]);
 
         // single Arrow Down will skip the replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[24]);
+        compareToActiveElement(cells[24]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[29]);
+        compareToActiveElement(cells[29]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[28]);
+        compareToActiveElement(cells[28]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[23]);
+        compareToActiveElement(cells[23]);
 
         // single Arrow Up will skip the replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[15]);
+        compareToActiveElement(cells[15]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[16]);
+        compareToActiveElement(cells[16]);
 
         // single Arrow Up will skip the replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
       });
 
       it('Moves focus between sticky and data cells with actions and expanded replaced rows', function () {
@@ -754,19 +754,19 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[15]);
+        compareToActiveElement(cells[15]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
       });
 
       it('Moves focus across sticky cells with actions and expanded replaced rows', function () {
@@ -775,40 +775,40 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[19].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[19].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[18].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[18].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[26].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[26].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[27].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[27].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[19].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[19].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[18].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[18].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
       });
 
       it('Moves focus on Home and End with action and expand replaced cells', function () {
@@ -817,16 +817,16 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End }));
-        compareActiveElementToElement(cells[17]);
+        compareToActiveElement(cells[17]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
       });
 
       it('Moves focus on Ctrl-Home and Ctrl-End between expanded replaced column rows', function () {
@@ -837,26 +837,26 @@ export default function (): void {
 
         // Default
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        compareActiveElementToElement(cells[30]);
+        compareToActiveElement(cells[30]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        compareActiveElementToElement(cells[0]);
+        compareToActiveElement(cells[0]);
 
         // from expanded replaced row to expanded last row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[10]);
+        compareToActiveElement(cells[10]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        compareActiveElementToElement(cells[30]);
+        compareToActiveElement(cells[30]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        compareActiveElementToElement(cells[0]);
+        compareToActiveElement(cells[0]);
       });
     });
 
@@ -901,58 +901,58 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[12]);
+        compareToActiveElement(cells[12]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[13]);
+        compareToActiveElement(cells[13]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[3]);
+        compareToActiveElement(cells[3]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[13]);
+        compareToActiveElement(cells[13]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[15]);
+        compareToActiveElement(cells[15]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[18]);
+        compareToActiveElement(cells[18]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[21]);
+        compareToActiveElement(cells[21]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[24]);
+        compareToActiveElement(cells[24]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[25]);
+        compareToActiveElement(cells[25]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[21]);
+        compareToActiveElement(cells[21]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[18]);
+        compareToActiveElement(cells[18]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[19]);
+        compareToActiveElement(cells[19]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[15]);
+        compareToActiveElement(cells[15]);
       });
 
       it('Moves focus between sticky and data cells with actions and expanded detail rows', function () {
@@ -961,22 +961,22 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[12]);
+        compareToActiveElement(cells[12]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[15]);
+        compareToActiveElement(cells[15]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
       });
 
       it('Moves focus across sticky cells with actions and expanded detail rows', function () {
@@ -985,40 +985,40 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[17].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[17].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[16].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[16].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[22].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[22].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[23].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[23].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[17].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[17].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[16].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[16].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
       });
 
       it('Moves focus on Home and End with action and expanded detail row', function () {
@@ -1027,19 +1027,19 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End }));
-        compareActiveElementToElement(cells[14]);
+        compareToActiveElement(cells[14]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[15]);
+        compareToActiveElement(cells[15]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
       });
 
       it('Moves focus on Ctrl-Home and Ctrl-End between expanded detail rows', function () {
@@ -1050,45 +1050,45 @@ export default function (): void {
 
         // Default
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        compareActiveElementToElement(cells[26]);
+        compareToActiveElement(cells[26]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        compareActiveElementToElement(cells[0]);
+        compareToActiveElement(cells[0]);
 
         // from expanded main row to expanded last row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        compareActiveElementToElement(cells[26]);
+        compareToActiveElement(cells[26]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        compareActiveElementToElement(cells[0]);
+        compareToActiveElement(cells[0]);
 
         // from expanded sub row to expanded last row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10]);
+        compareToActiveElement(cells[10]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        compareActiveElementToElement(cells[26]);
+        compareToActiveElement(cells[26]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        compareActiveElementToElement(cells[0]);
+        compareToActiveElement(cells[0]);
       });
     });
 
@@ -1134,37 +1134,37 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[15]);
+        compareToActiveElement(cells[15]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[21]);
+        compareToActiveElement(cells[21]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[24]);
+        compareToActiveElement(cells[24]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[25]);
+        compareToActiveElement(cells[25]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[21]);
+        compareToActiveElement(cells[21]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[15]);
+        compareToActiveElement(cells[15]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
       });
 
       it('Moves focus between sticky and data cells with actions and expanded replaced detail rows', function () {
@@ -1173,19 +1173,19 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[15]);
+        compareToActiveElement(cells[15]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
       });
 
       it('Moves focus across sticky cells with actions and expanded replaced detail rows', function () {
@@ -1194,40 +1194,40 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[17].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[17].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[16].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[16].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[22].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[22].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[23].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[23].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[17].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[17].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        compareActiveElementToElement(cells[16].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[16].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[11].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
       });
 
       it('Moves focus on Home and End with action and expanded replaced detail row', function () {
@@ -1236,16 +1236,16 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End }));
-        compareActiveElementToElement(cells[15]);
+        compareToActiveElement(cells[15]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
       });
 
       it('Moves focus on Ctrl-Home and Ctrl-End between expanded replaced detail rows', function () {
@@ -1256,26 +1256,26 @@ export default function (): void {
 
         // Default
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        compareActiveElementToElement(cells[26]);
+        compareToActiveElement(cells[26]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        compareActiveElementToElement(cells[0]);
+        compareToActiveElement(cells[0]);
 
         // from expanded replaced row to expanded last row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[10]);
+        compareToActiveElement(cells[10]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
-        compareActiveElementToElement(cells[26]);
+        compareToActiveElement(cells[26]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home, ctrlKey: true }));
-        compareActiveElementToElement(cells[0]);
+        compareToActiveElement(cells[0]);
       });
     });
 
@@ -1330,50 +1330,50 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         // PageDown: from not expanded row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[36]);
+        compareToActiveElement(cells[36]);
 
         // PageUp: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[13]);
+        compareToActiveElement(cells[13]);
 
         // PageDown: from not expanded row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[39]);
+        compareToActiveElement(cells[39]);
 
         // PageDown: from expanded sub row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[62]);
+        compareToActiveElement(cells[62]);
 
         // PageUp: from not expanded row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[39]);
+        compareToActiveElement(cells[39]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[36]);
+        compareToActiveElement(cells[36]);
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[62]);
+        compareToActiveElement(cells[62]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[39]);
+        compareToActiveElement(cells[39]);
 
         // PageUp: from expanded sub row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[18]);
+        compareToActiveElement(cells[18]);
       });
 
       // Covers key navigation over action cells
@@ -1394,38 +1394,38 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         // PageDown: from not expanded row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[33].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[33].querySelector('[type=checkbox]'));
 
         // PageUp: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         // PageDown: from not expanded row to expanded sub row (goes to main row)
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[33].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[33].querySelector('[type=checkbox]'));
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[59].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[59].querySelector('[type=checkbox]'));
 
         // PageUp: from not expanded row to expanded sub row (goes to main row)
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[33].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[33].querySelector('[type=checkbox]'));
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[59].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[59].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[54].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[54].querySelector('[type=checkbox]'));
 
         // PageUp: from not expanded row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[33].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[33].querySelector('[type=checkbox]'));
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -1461,39 +1461,39 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         // PageDown: from expanded main row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[34]);
+        compareToActiveElement(cells[34]);
 
         // PageUp: from expanded sub row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[11]);
+        compareToActiveElement(cells[11]);
 
         // PageDown: from expanded sub row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[39]);
+        compareToActiveElement(cells[39]);
 
         // PageDown: from expanded sub row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[65]);
+        compareToActiveElement(cells[65]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[62]);
+        compareToActiveElement(cells[62]);
 
         // PageUp: from expanded main row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[39]);
+        compareToActiveElement(cells[39]);
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -1528,38 +1528,38 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[11]);
+        compareToActiveElement(cells[11]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[16]);
+        compareToActiveElement(cells[16]);
 
         // PageDown: from expanded main row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[42]);
+        compareToActiveElement(cells[42]);
 
         // PageUp: from expanded main row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[19]);
+        compareToActiveElement(cells[19]);
 
         // PageDown: from expanded sub row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[45]);
+        compareToActiveElement(cells[45]);
 
         // PageUp: from expanded sub row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[24]);
+        compareToActiveElement(cells[24]);
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -1595,55 +1595,55 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         // PageDown: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[39]);
+        compareToActiveElement(cells[39]);
 
         // PageUp: from replaced row to NOT expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[18]);
+        compareToActiveElement(cells[18]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[13]);
+        compareToActiveElement(cells[13]);
 
         // PageDown: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[39]);
+        compareToActiveElement(cells[39]);
 
         // PageDown: from replaced row to NOT expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[59]);
+        compareToActiveElement(cells[59]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[54]);
+        compareToActiveElement(cells[54]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[49]);
+        compareToActiveElement(cells[49]);
 
         // PageUp: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[31]);
+        compareToActiveElement(cells[31]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[59]);
+        compareToActiveElement(cells[59]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[54]);
+        compareToActiveElement(cells[54]);
 
         // PageUp: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[31]);
+        compareToActiveElement(cells[31]);
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -1677,31 +1677,31 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[16]);
+        compareToActiveElement(cells[16]);
 
         // PageDown: from replaced row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[42]);
+        compareToActiveElement(cells[42]);
 
         // PageUp: from replaced row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[24]);
+        compareToActiveElement(cells[24]);
 
         // PageDown: from replaced row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[50]);
+        compareToActiveElement(cells[50]);
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -1737,56 +1737,56 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         // PageDown: from not expanded row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[34]);
+        compareToActiveElement(cells[34]);
 
         // PageUp: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[13]);
+        compareToActiveElement(cells[13]);
 
         // PageDown: from not expanded row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[36]);
+        compareToActiveElement(cells[36]);
 
         // PageDown: from expanded sub row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[55]);
+        compareToActiveElement(cells[55]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[56]);
+        compareToActiveElement(cells[56]);
 
         // PageUp: from not expanded row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[36]);
+        compareToActiveElement(cells[36]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[33]);
+        compareToActiveElement(cells[33]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[34]);
+        compareToActiveElement(cells[34]);
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[56]);
+        compareToActiveElement(cells[56]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[36]);
+        compareToActiveElement(cells[36]);
 
         // PageUp: from expanded sub row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[17]);
+        compareToActiveElement(cells[17]);
       });
 
       // Covers key navigation over action cells
@@ -1808,38 +1808,38 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         // PageDown: from not expanded row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[31].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[31].querySelector('[type=checkbox]'));
 
         // PageUp: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[10].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[10].querySelector('[type=checkbox]'));
 
         // PageDown: from not expanded row to expanded sub row (goes to main row)
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[31].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[31].querySelector('[type=checkbox]'));
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[53].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[53].querySelector('[type=checkbox]'));
 
         // PageUp: from not expanded row to expanded sub row (goes to main row)
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[31].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[31].querySelector('[type=checkbox]'));
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[53].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[53].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[48].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[48].querySelector('[type=checkbox]'));
 
         // PageUp: from not expanded row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[31].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[31].querySelector('[type=checkbox]'));
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -1876,42 +1876,42 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         // PageDown: from expanded main row to expanded detail row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[31]);
+        compareToActiveElement(cells[31]);
 
         // PageUp: from expanded detail row to expanded detail row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[10]);
+        compareToActiveElement(cells[10]);
 
         // PageDown: from expanded detail row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[34]);
+        compareToActiveElement(cells[34]);
 
         // PageDown: from expanded main row to expanded detail row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[58]);
+        compareToActiveElement(cells[58]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[55]);
+        compareToActiveElement(cells[55]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[56]);
+        compareToActiveElement(cells[56]);
 
         // PageUp: from expanded main row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[35]);
+        compareToActiveElement(cells[35]);
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -1947,41 +1947,41 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[10]);
+        compareToActiveElement(cells[10]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[13]);
+        compareToActiveElement(cells[13]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[14]);
+        compareToActiveElement(cells[14]);
 
         // PageDown: from expanded main row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[36]);
+        compareToActiveElement(cells[36]);
 
         // PageUp: from expanded main row to expanded details row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[16]);
+        compareToActiveElement(cells[16]);
 
         // PageDown: from expanded details row to expanded details row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[38]);
+        compareToActiveElement(cells[38]);
 
         // PageUp: from expanded details row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[19]);
+        compareToActiveElement(cells[19]);
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -2018,64 +2018,64 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         // PageDown: from NOT expanded row to replaced details row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[36]);
+        compareToActiveElement(cells[36]);
 
         // PageUp: from replaced details row to NOT expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[17]);
+        compareToActiveElement(cells[17]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[12]);
+        compareToActiveElement(cells[12]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[13]);
+        compareToActiveElement(cells[13]);
 
         // PageDown: from NOT expanded row to replaced details row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[36]);
+        compareToActiveElement(cells[36]);
 
         // PageDown: from replaced details row to NOT expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[54]);
+        compareToActiveElement(cells[54]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[55]);
+        compareToActiveElement(cells[55]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[50]);
+        compareToActiveElement(cells[50]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[45]);
+        compareToActiveElement(cells[45]);
 
         // PageUp: from NOT expanded row to replaced details row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[30]);
+        compareToActiveElement(cells[30]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[54]);
+        compareToActiveElement(cells[54]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[55]);
+        compareToActiveElement(cells[55]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        compareActiveElementToElement(cells[50]);
+        compareToActiveElement(cells[50]);
 
         // PageUp: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[30]);
+        compareToActiveElement(cells[30]);
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -2110,31 +2110,31 @@ export default function (): void {
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[5].querySelector('[type=checkbox]'));
+        compareToActiveElement(cells[5].querySelector('[type=checkbox]'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
+        compareToActiveElement(cells[6].querySelector('button.datagrid-expandable-caret-button'));
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[7]);
+        compareToActiveElement(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        compareActiveElementToElement(cells[8]);
+        compareToActiveElement(cells[8]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        compareActiveElementToElement(cells[15]);
+        compareToActiveElement(cells[15]);
 
         // PageDown: from replaced row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[37]);
+        compareToActiveElement(cells[37]);
 
         // PageUp: from replaced row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        compareActiveElementToElement(cells[21]);
+        compareToActiveElement(cells[21]);
 
         // PageDown: from replaced row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        compareActiveElementToElement(cells[43]);
+        compareToActiveElement(cells[43]);
       });
     });
   });
