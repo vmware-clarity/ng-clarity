@@ -135,7 +135,7 @@ export default {
     }),
   ],
   argTypes: {
-    // story helpers
+    components: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // story helpers
