@@ -6,6 +6,7 @@
  */
 
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -19,6 +20,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -33,6 +35,7 @@ import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-fil
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
+import { ColumnNameService } from './providers/column-name.service';
 import { CustomFilter } from './providers/custom-filter';
 import { DetailService } from './providers/detail.service';
 import { FiltersProvider } from './providers/filters';
@@ -43,9 +46,10 @@ import { WrappedColumn } from './wrapped-column';
 
 @Component({
   selector: 'clr-dg-column',
+  providers: [ColumnNameService],
   template: `
     <div class="datagrid-column-flex">
-      <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button">
+      <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button" #titleContainer>
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
         <cds-icon
           *ngIf="sortDirection"
@@ -77,7 +81,7 @@ import { WrappedColumn } from './wrapped-column';
         <ng-content></ng-content>
       </ng-template>
 
-      <span class="datagrid-column-title" *ngIf="!sortable">
+      <span class="datagrid-column-title" *ngIf="!sortable" #titleContainer>
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
       </span>
 
@@ -94,7 +98,7 @@ import { WrappedColumn } from './wrapped-column';
 })
 export class ClrDatagridColumn<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>
-  implements OnDestroy, OnInit, OnChanges
+  implements OnDestroy, OnInit, OnChanges, AfterViewInit
 {
   @Input('clrFilterStringPlaceholder') filterStringPlaceholder: string;
   @Input('clrFilterNumberMaxPlaceholder') filterNumberMaxPlaceholder: string;
@@ -102,6 +106,8 @@ export class ClrDatagridColumn<T = any>
 
   @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
+
+  @ViewChild('titleContainer', { read: ElementRef }) titleContainer: ElementRef<HTMLElement>;
 
   /**
    * A custom filter for this column that can be provided in the projected content
@@ -153,7 +159,8 @@ export class ClrDatagridColumn<T = any>
     filters: FiltersProvider<T>,
     private vcr: ViewContainerRef,
     private detailService: DetailService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private columnNameService: ColumnNameService
   ) {
     super(filters);
     this.subscriptions.push(this.listenForSortingChanges());
@@ -343,6 +350,11 @@ export class ClrDatagridColumn<T = any>
   override ngOnDestroy() {
     super.ngOnDestroy();
     this.subscriptions.forEach(s => s.unsubscribe());
+  }
+
+  ngAfterViewInit() {
+    const columnTitle = this.titleContainer?.nativeElement.textContent.trim().toLowerCase();
+    this.columnNameService.name = columnTitle;
   }
 
   /**
