@@ -26,16 +26,12 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
         *ngFor="let type of labelType ? [labelType] : labelTypes"
         [class]="type"
       >
-        <ng-container
-          *ngTemplateOutlet="labelContent; context: { content: this.content, closeIcon: this.closeIcon }"
-        ></ng-container>
+        <ng-container *ngTemplateOutlet="labelContent"></ng-container>
       </a>
     </ng-container>
     <ng-container *ngIf="!clickable">
       <span class="label" *ngFor="let type of labelType ? [labelType] : labelTypes" [class]="type">
-        <ng-container
-          *ngTemplateOutlet="labelContent; context: { content: this.content, closeIcon: this.closeIcon }"
-        ></ng-container>
+        <ng-container *ngTemplateOutlet="labelContent"></ng-container>
       </span>
     </ng-container>
   `,
