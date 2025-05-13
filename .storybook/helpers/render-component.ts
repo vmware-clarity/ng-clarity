@@ -6,7 +6,6 @@
  */
 
 import { AfterViewInit, Component, Input, Type, ViewChild, ViewContainerRef } from '@angular/core';
-
 export type StorybookRenderComponent = Array<{ type: Type<unknown>; options: any }>;
 
 @Component({
