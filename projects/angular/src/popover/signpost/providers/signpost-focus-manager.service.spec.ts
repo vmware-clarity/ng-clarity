@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../../utils/testing/helpers.spec';
 import { SignpostFocusManager } from './signpost-focus-manager.service';
 
 export default function (): void {
@@ -24,9 +25,9 @@ export default function (): void {
       const button = document.createElement('button');
       document.body.appendChild(button);
       signpostFocusManager.triggerEl = button;
-      expect(document.activeElement).not.toBe(button);
+      expectActiveElementNotToBe(button);
       signpostFocusManager.focusTrigger();
-      expect(document.activeElement).toBe(button);
+      expectActiveElementToBe(button);
     });
   });
 }

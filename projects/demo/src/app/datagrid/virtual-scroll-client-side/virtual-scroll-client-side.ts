@@ -154,4 +154,8 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
 
     return result;
   }
+
+  toggleSelectAllRows(selectAllChecked: boolean) {
+    this.selectedRows = selectAllChecked ? [...this.allRows.value] : [];
+  }
 }
