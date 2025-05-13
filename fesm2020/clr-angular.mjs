@@ -21687,7 +21687,7 @@ const defaultCdkFixedSizeVirtualScrollInputs = {
     maxBufferPx: 400,
 };
 class ClrDatagridVirtualScrollDirective {
-    constructor(changeDetectorRef, iterableDiffers, items, ngZone, renderer2, templateRef, viewContainerRef, directionality, scrollDispatcher, viewportRuler, columnsService, injector) {
+    constructor(changeDetectorRef, iterableDiffers, items, ngZone, renderer2, templateRef, viewContainerRef, directionality, scrollDispatcher, viewportRuler, datagrid, columnsService, injector) {
         this.changeDetectorRef = changeDetectorRef;
         this.iterableDiffers = iterableDiffers;
         this.items = items;
@@ -21698,6 +21698,7 @@ class ClrDatagridVirtualScrollDirective {
         this.directionality = directionality;
         this.scrollDispatcher = scrollDispatcher;
         this.viewportRuler = viewportRuler;
+        this.datagrid = datagrid;
         this.columnsService = columnsService;
         this.injector = injector;
         this.renderedRangeChange = new EventEmitter();
@@ -21718,8 +21719,14 @@ class ClrDatagridVirtualScrollDirective {
             cdkVirtualForTrackBy: index => index,
         };
         items.smartenUp();
+        datagrid.detailService.preventFocusScroll = true;
+        this.datagridElementRef = datagrid.el;
         // default
         this.cdkVirtualForTemplateCacheSize = 20;
+        this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
+            attributeFilter: ['class'],
+            attributeOldValue: true,
+        });
         this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(this._cdkFixedSizeVirtualScrollInputs.itemSize, this._cdkFixedSizeVirtualScrollInputs.minBufferPx, this._cdkFixedSizeVirtualScrollInputs.maxBufferPx);
     }
     get cdkVirtualForOf() {
@@ -21788,19 +21795,6 @@ class ClrDatagridVirtualScrollDirective {
     set totalItems(value) {
         this._totalItems = value;
     }
-    prepareDatagrid(datagrid) {
-        datagrid.detailService.preventFocusScroll = true;
-        this.datagridElementRef = datagrid.el;
-        this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
-            attributeFilter: ['class'],
-            attributeOldValue: true,
-        });
-        this.subscriptions.push(datagrid.refresh.subscribe(datagridState => {
-            if (datagridState.filters) {
-                this.scrollToIndex(0);
-            }
-        }));
-    }
     ngAfterViewInit() {
         this.injector.runInContext(() => {
             this.virtualScrollViewport = this.createVirtualScrollViewportForDatagrid(this.changeDetectorRef, this.ngZone, this.renderer2, this.directionality, this.scrollDispatcher, this.viewportRuler, this.datagridElementRef, this.virtualScrollStrategy);
@@ -21819,6 +21813,10 @@ class ClrDatagridVirtualScrollDirective {
             this.topIndex = index;
         }), this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
             this.renderedRangeChange.emit(renderedRange);
+        }), this.datagrid.refresh.subscribe(datagridState => {
+            if (datagridState.filters) {
+                this.scrollToIndex(0);
+            }
         }), this.columnsService.columnsStateChange.subscribe(() => {
             this.viewRepeater.detach();
         }));
@@ -21909,7 +21907,7 @@ class ClrDatagridVirtualScrollDirective {
         return virtualScrollViewport;
     }
 }
-ClrDatagridVirtualScrollDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridVirtualScrollDirective, deps: [{ token: i0.ChangeDetectorRef }, { token: i0.IterableDiffers }, { token: Items }, { token: i0.NgZone }, { token: i0.Renderer2 }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: i1$3.Directionality }, { token: i3$1.ScrollDispatcher }, { token: i3$1.ViewportRuler }, { token: ColumnsService }, { token: i0.EnvironmentInjector }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDatagridVirtualScrollDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridVirtualScrollDirective, deps: [{ token: i0.ChangeDetectorRef }, { token: i0.IterableDiffers }, { token: Items }, { token: i0.NgZone }, { token: i0.Renderer2 }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: i1$3.Directionality }, { token: i3$1.ScrollDispatcher }, { token: i3$1.ViewportRuler }, { token: forwardRef(() => ClrDatagrid) }, { token: ColumnsService }, { token: i0.EnvironmentInjector }], target: i0.ɵɵFactoryTarget.Directive });
 ClrDatagridVirtualScrollDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridVirtualScrollDirective, selector: "[clrVirtualScroll],[ClrVirtualScroll]", inputs: { persistItems: ["clrVirtualPersistItems", "persistItems"], cdkVirtualForOf: ["clrVirtualRowsOf", "cdkVirtualForOf"], cdkVirtualForTrackBy: ["clrVirtualRowsTrackBy", "cdkVirtualForTrackBy"], cdkVirtualForTemplate: ["clrVirtualRowsTemplate", "cdkVirtualForTemplate"], cdkVirtualForTemplateCacheSize: ["clrVirtualRowsTemplateCacheSize", "cdkVirtualForTemplateCacheSize"], itemSize: ["clrVirtualRowsItemSize", "itemSize"], minBufferPx: ["clrVirtualRowsMinBufferPx", "minBufferPx"], maxBufferPx: ["clrVirtualRowsMaxBufferPx", "maxBufferPx"], dataRange: ["clrVirtualDataRange", "dataRange"] }, outputs: { renderedRangeChange: "renderedRangeChange" }, providers: [Items], ngImport: i0 });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridVirtualScrollDirective, decorators: [{
             type: Directive,
@@ -21917,7 +21915,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
                     selector: '[clrVirtualScroll],[ClrVirtualScroll]',
                     providers: [Items],
                 }]
-        }], ctorParameters: function () { return [{ type: i0.ChangeDetectorRef }, { type: i0.IterableDiffers }, { type: Items }, { type: i0.NgZone }, { type: i0.Renderer2 }, { type: i0.TemplateRef }, { type: i0.ViewContainerRef }, { type: i1$3.Directionality }, { type: i3$1.ScrollDispatcher }, { type: i3$1.ViewportRuler }, { type: ColumnsService }, { type: i0.EnvironmentInjector }]; }, propDecorators: { renderedRangeChange: [{
+        }], ctorParameters: function () { return [{ type: i0.ChangeDetectorRef }, { type: i0.IterableDiffers }, { type: Items }, { type: i0.NgZone }, { type: i0.Renderer2 }, { type: i0.TemplateRef }, { type: i0.ViewContainerRef }, { type: i1$3.Directionality }, { type: i3$1.ScrollDispatcher }, { type: i3$1.ViewportRuler }, { type: ClrDatagrid, decorators: [{
+                    type: Inject,
+                    args: [forwardRef(() => ClrDatagrid)]
+                }] }, { type: ColumnsService }, { type: i0.EnvironmentInjector }]; }, propDecorators: { renderedRangeChange: [{
                 type: Output
             }], persistItems: [{
                 type: Input,
@@ -22233,7 +22234,6 @@ class ClrDatagrid {
         if (!this.items.smart) {
             this.items.all = this.rows.map((row) => row.item);
         }
-        this.virtualScroll?.prepareDatagrid(this);
         const rowItemsChanges = this.rows.changes.pipe(switchMap$1((rows) => merge(
         // immediate update
         of(rows.map(row => row.item)), 

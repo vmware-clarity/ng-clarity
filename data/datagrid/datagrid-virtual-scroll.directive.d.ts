@@ -21,12 +21,13 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
     private readonly directionality;
     private readonly scrollDispatcher;
     private readonly viewportRuler;
+    private readonly datagrid;
     private columnsService;
     private readonly injector;
     renderedRangeChange: EventEmitter<ListRange>;
     persistItems: boolean;
     private _cdkFixedSizeVirtualScrollInputs;
-    private datagridElementRef;
+    private readonly datagridElementRef;
     private gridRoleElement;
     private readonly virtualScrollStrategy;
     private virtualScrollViewport;
@@ -37,7 +38,7 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
     private viewRepeater;
     private cdkVirtualForInputs;
     private _totalItems;
-    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, columnsService: ColumnsService, injector: EnvironmentInjector);
+    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
     get cdkVirtualForOf(): CdkVirtualForInputs<T>['cdkVirtualForOf'];
     set cdkVirtualForOf(value: CdkVirtualForInputs<T>['cdkVirtualForOf']);
     get cdkVirtualForTrackBy(): CdkVirtualForInputs<T>['cdkVirtualForTrackBy'];
@@ -55,7 +56,6 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
     set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>);
     get totalItems(): number;
     private set totalItems(value);
-    prepareDatagrid(datagrid: ClrDatagrid<T>): void;
     ngAfterViewInit(): void;
     ngDoCheck(): void;
     ngOnDestroy(): void;
