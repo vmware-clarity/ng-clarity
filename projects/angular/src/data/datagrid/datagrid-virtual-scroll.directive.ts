@@ -31,6 +31,8 @@ import {
   EmbeddedViewRef,
   EnvironmentInjector,
   EventEmitter,
+  forwardRef,
+  Inject,
   inject,
   Injector,
   Input,
@@ -109,7 +111,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     private readonly directionality: Directionality,
     private readonly scrollDispatcher: ScrollDispatcher,
     private readonly viewportRuler: ViewportRuler,
-    private readonly datagrid: ClrDatagrid,
+    @Inject(forwardRef(() => ClrDatagrid)) private readonly datagrid: ClrDatagrid,
     private columnsService: ColumnsService,
     private readonly injector: EnvironmentInjector
   ) {
