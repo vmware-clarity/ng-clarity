@@ -8,6 +8,7 @@
 import { ApplicationRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { expectActiveElementToBe } from '../../testing/helpers.spec';
 import { ClrFocusOnViewInit } from './focus-on-view-init';
 import { ClrFocusOnViewInitModule } from './focus-on-view-init.module';
 import { FOCUS_ON_VIEW_INIT } from './focus-on-view-init.provider';
@@ -83,10 +84,10 @@ describe('ClrFocusOnViewInit', () => {
 
     it('sets focus on the directive element on view initialization', () => {
       component.buttonElRef.nativeElement.focus();
-      expect(document.activeElement).toBe(component.buttonElRef.nativeElement);
+      expectActiveElementToBe(component.buttonElRef.nativeElement);
       component.displayNoExistingTabindex = true;
       fixture.detectChanges();
-      expect(document.activeElement).toBe(component.focusOnItElRef.nativeElement);
+      expectActiveElementToBe(component.focusOnItElRef.nativeElement);
     });
 
     it('should remove tabindex on focusout event and should not run change detection', () => {
@@ -111,10 +112,10 @@ describe('ClrFocusOnViewInit', () => {
 
     it('should not set focus on the directive element if disabled', () => {
       component.buttonElRef.nativeElement.focus();
-      expect(document.activeElement).toBe(component.buttonElRef.nativeElement);
+      expectActiveElementToBe(component.buttonElRef.nativeElement);
       component.displayDisabled = true;
       fixture.detectChanges();
-      expect(document.activeElement).toBe(component.buttonElRef.nativeElement);
+      expectActiveElementToBe(component.buttonElRef.nativeElement);
     });
   });
 
@@ -135,10 +136,10 @@ describe('ClrFocusOnViewInit', () => {
       fixture.detectChanges();
 
       component.buttonElRef.nativeElement.focus();
-      expect(document.activeElement).toBe(component.buttonElRef.nativeElement);
+      expectActiveElementToBe(component.buttonElRef.nativeElement);
       component.display = true;
       fixture.detectChanges();
-      expect(document.activeElement).toBe(component.focusOnItElRef.nativeElement);
+      expectActiveElementToBe(component.focusOnItElRef.nativeElement);
     });
 
     it('should not focus on the directive element when value false is injected', () => {
@@ -148,10 +149,10 @@ describe('ClrFocusOnViewInit', () => {
       fixture.detectChanges();
 
       component.buttonElRef.nativeElement.focus();
-      expect(document.activeElement).toBe(component.buttonElRef.nativeElement);
+      expectActiveElementToBe(component.buttonElRef.nativeElement);
       component.display = true;
       fixture.detectChanges();
-      expect(document.activeElement).toBe(component.buttonElRef.nativeElement);
+      expectActiveElementToBe(component.buttonElRef.nativeElement);
     });
   });
 });

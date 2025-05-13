@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { Keys } from '../../../utils/enums/keys.enum';
+import { expectActiveElementNotToBe } from '../../testing/helpers.spec';
 import { ClrKeyFocusItem } from './key-focus-item';
 import { ClrKeyFocusModule } from './key-focus.module';
 import { ClrRovingTabindex } from './roving-tabindex';
@@ -193,7 +194,7 @@ describe('RovingTabindex directive', () => {
       clarityDirective.moveTo(2);
       expect(savedFirst).not.toBe(document.activeElement);
       savedFirst.dispatchEvent(new KeyboardEvent('click'));
-      expect(document.activeElement).not.toBe(savedFirst);
+      expectActiveElementNotToBe(savedFirst);
     });
   });
 

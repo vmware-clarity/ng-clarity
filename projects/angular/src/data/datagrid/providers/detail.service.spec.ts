@@ -8,6 +8,7 @@
 import { Subscription } from 'rxjs';
 
 import { ModalStackService } from '../../../modal/modal-stack.service';
+import { expectActiveElementToBe } from '../../../utils/testing/helpers.spec';
 import { DetailService } from './detail.service';
 
 // Prevent ModalStackService from adding event handlers.
@@ -42,7 +43,7 @@ export default function (): void {
       provider.open('value', button);
       expect(provider.isOpen);
       provider.close();
-      expect(document.activeElement).toBe(button);
+      expectActiveElementToBe(button);
       expect(button.focus).toHaveBeenCalled();
       document.body.removeChild(button);
     });
