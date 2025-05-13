@@ -50,6 +50,7 @@ export interface Cells {
       </clr-dg-column>
 
       <ng-template
+        *ngIf="data.rows"
         clrVirtualScroll
         let-row
         [clrVirtualRowsOf]="data.rows"

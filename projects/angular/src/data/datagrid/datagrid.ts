@@ -244,8 +244,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
     }
 
-    this.virtualScroll?.prepareDatagrid(this);
-
     const rowItemsChanges = this.rows.changes.pipe(
       switchMap((rows: ClrDatagridRow<T>[]) =>
         merge(
