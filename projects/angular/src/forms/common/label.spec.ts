@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrSignpostModule, ClrSignpostTrigger } from '../../popover';
+import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrInput } from '../input/input';
 import { ClrInputContainer } from '../input/input-container';
 import { ClrLabel } from './label';
@@ -284,7 +285,7 @@ export default function (): void {
       label.click();
       fixture.detectChanges();
       const input = fixture.nativeElement.querySelector('input');
-      expect(document.activeElement).toBe(input);
+      expectActiveElementToBe(input);
     });
   });
 }

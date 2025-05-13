@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@ang
 import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
+import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { ClrDatagrid } from './datagrid';
@@ -702,17 +703,17 @@ export default function (): void {
         });
 
         it('focuses the datagrid on page change', function () {
-          expect(document.activeElement).not.toBe(context.clarityDirective.datagridTable.nativeElement);
+          expectActiveElementNotToBe(context.clarityDirective.datagridTable.nativeElement);
           context.getClarityProvider(Page).current = 2;
-          expect(document.activeElement).toBe(context.clarityDirective.datagridTable.nativeElement);
+          expectActiveElementToBe(context.clarityDirective.datagridTable.nativeElement);
         });
 
         it('does not focus the datagrid on page change when disabled', function () {
           context.testComponent.disableFocus = true;
           context.detectChanges();
-          expect(document.activeElement).not.toBe(context.clarityDirective.datagridTable.nativeElement);
+          expectActiveElementNotToBe(context.clarityDirective.datagridTable.nativeElement);
           context.getClarityProvider(Page).current = 2;
-          expect(document.activeElement).not.toBe(context.clarityDirective.datagridTable.nativeElement);
+          expectActiveElementNotToBe(context.clarityDirective.datagridTable.nativeElement);
         });
       });
     });

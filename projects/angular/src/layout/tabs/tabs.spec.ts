@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { addHelpers, TestContext } from '../../data/datagrid/helpers.spec';
 import { IfActiveService } from '../../utils/conditional/if-active.service';
 import { ClrKeyFocus } from '../../utils/focus/key-focus/key-focus';
+import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';
 import { ClrTab } from './tab';
@@ -275,7 +276,7 @@ describe('Tabs', () => {
       tabLinkDEs[activeTabIndex].injector.get(ClrTabLink).activate();
       context.detectChanges();
       keyFocus.moveTo(2);
-      expect(document.activeElement).toBe(tabLinkEls[2]);
+      expectActiveElementToBe(tabLinkEls[2]);
       expect(keyFocus.current).toBe(2);
       dummyButton.focus();
       expect(keyFocus.current).toBe(activeTabIndex);
@@ -294,7 +295,7 @@ describe('Tabs', () => {
       context.clarityElement.querySelector('.dropdown-toggle').click();
       context.detectChanges();
       expect(context.clarityElement.querySelector('.dropdown-menu')).not.toBeNull();
-      expect(document.activeElement).toBe(tabLinkEls[3]);
+      expectActiveElementToBe(tabLinkEls[3]);
     });
 
     it('focuses last visible tab link when overflow is closed', () => {
@@ -303,7 +304,7 @@ describe('Tabs', () => {
       expect(context.clarityElement.querySelector('.dropdown-menu')).not.toBeNull();
       context.clarityElement.querySelector('.dropdown-toggle').click();
       context.detectChanges();
-      expect(document.activeElement).toBe(tabLinkEls[2]);
+      expectActiveElementToBe(tabLinkEls[2]);
     });
 
     it('puts overflow trigger in tab sequence if it contains active tab link', () => {
