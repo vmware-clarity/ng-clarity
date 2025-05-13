@@ -1,0 +1,49 @@
+{
+  "name": "@clr/angular",
+  "description": "Angular components for Clarity",
+  "homepage": "https://clarity.design",
+  "keywords": [
+    "ng-add",
+    "clarity",
+    "angular",
+    "components"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vmware-clarity/ng-clarity.git"
+  },
+  "author": "Clarity Design System",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vmware-clarity/ng-clarity/issues"
+  },
+  "peerDependencies": {
+    "@angular/cdk": "15 || 16 || 17 || 18 || 19",
+    "@angular/common": "15 || 16 || 17 || 18 || 19",
+    "@angular/core": "15 || 16 || 17 || 18 || 19",
+    "@cds/core": ">= 6.9.2"
+  },
+  "module": "fesm2015/clr-angular.mjs",
+  "es2020": "fesm2020/clr-angular.mjs",
+  "esm2020": "esm2020/clr-angular.mjs",
+  "fesm2020": "fesm2020/clr-angular.mjs",
+  "fesm2015": "fesm2015/clr-angular.mjs",
+  "typings": "index.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./index.d.ts",
+      "esm2020": "./esm2020/clr-angular.mjs",
+      "es2020": "./fesm2020/clr-angular.mjs",
+      "es2015": "./fesm2015/clr-angular.mjs",
+      "node": "./fesm2015/clr-angular.mjs",
+      "default": "./fesm2020/clr-angular.mjs"
+    }
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

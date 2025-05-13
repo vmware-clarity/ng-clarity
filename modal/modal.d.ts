@@ -1,0 +1,43 @@
+import { AnimationEvent } from '@angular/animations';
+import { ElementRef, EventEmitter, OnChanges, OnDestroy, SimpleChange, TemplateRef } from '@angular/core';
+import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
+import { ScrollingService } from '../utils/scrolling/scrolling-service';
+import { ClrModalConfigurationService } from './modal-configuration.service';
+import { ModalStackService } from './modal-stack.service';
+import * as i0 from "@angular/core";
+export declare class ClrModal implements OnChanges, OnDestroy {
+    private _scrollingService;
+    commonStrings: ClrCommonStringsService;
+    private modalStackService;
+    private configuration;
+    modalId: string;
+    title: ElementRef<HTMLElement>;
+    _open: boolean;
+    _openChanged: EventEmitter<boolean>;
+    closable: boolean;
+    closeButtonAriaLabel: string;
+    size: string;
+    staticBackdrop: boolean;
+    skipAnimation: boolean;
+    stopClose: boolean;
+    altClose: EventEmitter<boolean>;
+    labelledBy: string;
+    bypassScrollService: boolean;
+    protected readonly modalContentTemplate: TemplateRef<any>;
+    private readonly bodyElementRef;
+    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
+    get fadeMove(): string;
+    set fadeMove(move: string);
+    get backdrop(): boolean;
+    ngOnChanges(changes: {
+        [propName: string]: SimpleChange;
+    }): void;
+    ngOnDestroy(): void;
+    open(): void;
+    backdropClick(): void;
+    close(): void;
+    fadeDone(e: AnimationEvent): void;
+    scrollTop(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": "clrModalOpen"; "closable": "clrModalClosable"; "closeButtonAriaLabel": "clrModalCloseButtonAriaLabel"; "size": "clrModalSize"; "staticBackdrop": "clrModalStaticBackdrop"; "skipAnimation": "clrModalSkipAnimation"; "stopClose": "clrModalPreventClose"; "labelledBy": "clrModalLabelledById"; "bypassScrollService": "clrModalOverrideScrollService"; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
+}
