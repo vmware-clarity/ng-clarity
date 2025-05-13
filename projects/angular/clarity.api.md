@@ -1395,10 +1395,11 @@ export class ClrDatagridCell implements OnInit {
 // Warning: (ae-forgotten-export) The symbol "DatagridFilterRegistrar" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements OnDestroy, OnInit, OnChanges {
+export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements OnDestroy, OnInit, OnChanges, AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "Sort" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "FiltersProvider" needs to be exported by the entry point index.d.ts
-    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef);
+    // Warning: (ae-forgotten-export) The symbol "ColumnNameService" needs to be exported by the entry point index.d.ts
+    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, columnNameService: ColumnNameService);
     // (undocumented)
     get ariaSort(): "none" | "ascending" | "descending";
     // (undocumented)
@@ -1420,6 +1421,8 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     filterValueChange: EventEmitter<any>;
     // (undocumented)
     get isHidden(): boolean;
+    // (undocumented)
+    ngAfterViewInit(): void;
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
@@ -1443,6 +1446,8 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     set sortOrder(value: ClrDatagridSortOrder);
     // (undocumented)
     sortOrderChange: EventEmitter<ClrDatagridSortOrder>;
+    // (undocumented)
+    titleContainer: ElementRef<HTMLElement>;
     // (undocumented)
     set updateFilterValue(newValue: string | [number, number]);
     // (undocumented)
@@ -1595,8 +1600,8 @@ export class ClrDatagridDetailHeader implements AfterViewInit {
 // Warning: (ae-forgotten-export) The symbol "CustomFilter" needs to be exported by the entry point index.d.ts
 //
 // @public
-export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, OnChanges, OnDestroy {
-    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, smartToggleService: ClrPopoverToggleService, platformId: any, elementRef: ElementRef<HTMLElement>, keyNavigation: KeyNavigationGridController, changeDetectorRef: ChangeDetectorRef);
+export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, OnInit, OnDestroy {
+    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, smartToggleService: ClrPopoverToggleService, platformId: any, keyNavigation: KeyNavigationGridController, changeDetectorRef: ChangeDetectorRef, columnNameService: ColumnNameService);
     get active(): boolean;
     // (undocumented)
     anchor: ElementRef<HTMLButtonElement>;
@@ -1609,9 +1614,9 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter<T, ClrDatagridFilterInterface<T>>);
     // (undocumented)
-    ngOnChanges(): void;
-    // (undocumented)
     ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
     // (undocumented)
     get open(): boolean;
     set open(open: boolean);
@@ -1626,7 +1631,7 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": "clrDgFilterOpen"; "customFilter": "clrDgFilter"; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, [null, null, null, null, null, { optional: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, [null, null, null, null, { optional: true; }, null, null]>;
 }
 
 // @public (undocumented)
