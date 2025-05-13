@@ -1035,20 +1035,20 @@ export default function (): void {
       });
 
       describe('Select all', function () {
-        let selectAllCheckBox: HTMLInputElement;
+        let selectAllCheckbox: HTMLInputElement;
 
         beforeEach(function () {
-          selectAllCheckBox = document.getElementById(context.clarityDirective.selectAllId) as HTMLInputElement;
+          selectAllCheckbox = document.getElementById(context.clarityDirective.selectAllId) as HTMLInputElement;
         });
 
         describe('default select all', function () {
           it('selects all rows', function () {
-            selectAllCheckBox.click();
+            selectAllCheckbox.click();
             expect(selection.current).toEqual([1, 2, 3, 4, 5, 6, 7]);
           });
 
           it('does not emit custom select all event', function () {
-            selectAllCheckBox.click();
+            selectAllCheckbox.click();
 
             expect(context.testComponent.clrDgCustomSelectAllEventSpy).not.toHaveBeenCalled();
           });
@@ -1061,8 +1061,8 @@ export default function (): void {
           });
 
           it('emits the custom select all event', function () {
-            selectAllCheckBox.click();
-            selectAllCheckBox.click();
+            selectAllCheckbox.click();
+            selectAllCheckbox.click();
 
             expect(context.testComponent.clrDgCustomSelectAllEventSpy).toHaveBeenCalledTimes(2);
             expect(context.testComponent.clrDgCustomSelectAllEventSpy.calls.first().args).toEqual([true]);
@@ -1070,7 +1070,7 @@ export default function (): void {
           });
 
           it('does not modify the selection', function () {
-            selectAllCheckBox.click();
+            selectAllCheckbox.click();
 
             expect(selection.current).toEqual([]);
           });
