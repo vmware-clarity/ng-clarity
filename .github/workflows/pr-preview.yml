@@ -46,4 +46,4 @@ jobs:
         timeout-minutes: 5
         env:
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-        run: npx netlify-cli deploy --site storybook-clarity-design --alias ${{steps.get-pr-event.outputs.pullRequestNumber}}
+        run: npx netlify-cli deploy --no-build --site ${{secrets.NETLIFY_SITE_NAME}} --alias ${{steps.get-pr-event.outputs.pullRequestNumber}}
