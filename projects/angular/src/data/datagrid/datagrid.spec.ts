@@ -132,7 +132,11 @@ class MultiSelectionTest {
 
 @Component({
   template: `
-    <clr-datagrid [(clrDgSelected)]="selected">
+    <clr-datagrid
+      [clrDgCustomSelectAllEnabled]="clrDgCustomSelectAllEnabled"
+      [(clrDgSelected)]="selected"
+      (clrDgCustomSelectAll)="clrDgCustomSelectAllEventSpy($event)"
+    >
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
@@ -146,6 +150,9 @@ class MultiSelectionTest {
 class MultiSelectionSimpleTest {
   items: any[] = [1, 2, 3, 4, 5, 6, 7];
   selected: any[] = [];
+  @Input() clrDgCustomSelectAllEnabled = false;
+
+  readonly clrDgCustomSelectAllEventSpy = jasmine.createSpy('clrDgCustomSelectAll');
 }
 
 @Component({
@@ -1025,6 +1032,49 @@ export default function (): void {
       beforeEach(function () {
         context = this.create(ClrDatagrid, MultiSelectionSimpleTest, [Selection]);
         selection = context.getClarityProvider(Selection) as Selection<number>;
+      });
+
+      describe('Select all', function () {
+        let selectAllCheckBox: HTMLInputElement;
+
+        beforeEach(function () {
+          selectAllCheckBox = document.getElementById(context.clarityDirective.selectAllId) as HTMLInputElement;
+        });
+
+        describe('default select all', function () {
+          it('selects all rows', function () {
+            selectAllCheckBox.click();
+            expect(selection.current).toEqual([1, 2, 3, 4, 5, 6, 7]);
+          });
+
+          it('does not emit custom select all event', function () {
+            selectAllCheckBox.click();
+
+            expect(context.testComponent.clrDgCustomSelectAllEventSpy).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('custom select all', function () {
+          beforeEach(function () {
+            context.testComponent.clrDgCustomSelectAllEnabled = true;
+            context.detectChanges();
+          });
+
+          it('emits the custom select all event', function () {
+            selectAllCheckBox.click();
+            selectAllCheckBox.click();
+
+            expect(context.testComponent.clrDgCustomSelectAllEventSpy).toHaveBeenCalledTimes(2);
+            expect(context.testComponent.clrDgCustomSelectAllEventSpy.calls.first().args).toEqual([true]);
+            expect(context.testComponent.clrDgCustomSelectAllEventSpy.calls.mostRecent().args).toEqual([false]);
+          });
+
+          it('does not modify the selection', function () {
+            selectAllCheckBox.click();
+
+            expect(selection.current).toEqual([]);
+          });
+        });
       });
 
       describe('Range selection', function () {
