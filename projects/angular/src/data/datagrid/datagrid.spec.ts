@@ -1036,15 +1036,34 @@ export default function (): void {
 
       describe('Select all', function () {
         let selectAllCheckbox: HTMLInputElement;
+        let itemCheckboxes: HTMLInputElement[];
 
         beforeEach(function () {
-          selectAllCheckbox = document.getElementById(context.clarityDirective.selectAllId) as HTMLInputElement;
+          [selectAllCheckbox, ...itemCheckboxes] = context.clarityElement.querySelectorAll('input[type=checkbox]');
         });
 
         describe('default select all', function () {
-          it('selects all rows', function () {
+          it('selects all rows (empty selection)', function () {
             selectAllCheckbox.click();
             expect(selection.current).toEqual([1, 2, 3, 4, 5, 6, 7]);
+          });
+
+          it('selects all rows (partial selection)', function () {
+            itemCheckboxes[0].click();
+            itemCheckboxes[1].click();
+            selectAllCheckbox.click();
+
+            expect(selection.current).toEqual([1, 2, 3, 4, 5, 6, 7]);
+          });
+
+          it('deselects all rows', function () {
+            for (const itemCheckbox of itemCheckboxes) {
+              itemCheckbox.click();
+            }
+
+            selectAllCheckbox.click();
+
+            expect(selection.current).toEqual([]);
           });
 
           it('does not emit custom select all event', function () {
