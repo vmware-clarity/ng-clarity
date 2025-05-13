@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ModalStackService } from 'projects/angular/src/modal/modal-stack.service';
 import { Subscription } from 'rxjs';
 
+import { ModalStackService } from '../../../modal/modal-stack.service';
 import { DetailService } from './detail.service';
 
 // Prevent ModalStackService from adding event handlers.
