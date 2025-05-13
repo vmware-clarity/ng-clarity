@@ -15,6 +15,7 @@ import { ClrPopoverToggleService } from '../../../../utils/popover/providers/pop
 import { animationFrameTick } from '../../../../utils/testing/helpers.spec';
 import { TestContext } from '../../helpers.spec';
 import { ClrDatagridNumericFilterInterface } from '../../interfaces/numeric-filter.interface';
+import { ColumnNameService } from '../../providers/column-name.service';
 import { CustomFilter } from '../../providers/custom-filter';
 import { FiltersProvider } from '../../providers/filters';
 import { Page } from '../../providers/page';
@@ -22,7 +23,7 @@ import { StateDebouncer } from '../../providers/state-debouncer.provider';
 import { DatagridNumericFilter } from './datagrid-numeric-filter';
 import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
 
-const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverToggleService];
+const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverToggleService, ColumnNameService];
 
 export default function (): void {
   describe('DatagridNumericFilter accessibility', function () {
