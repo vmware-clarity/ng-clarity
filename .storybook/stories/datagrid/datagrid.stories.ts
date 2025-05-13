@@ -32,7 +32,6 @@ export default {
     resize: { control: { disable: true } },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
-    toggleEvenRows: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // inputs
