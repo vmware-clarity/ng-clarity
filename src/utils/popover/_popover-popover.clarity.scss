@@ -1,0 +1,15 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use '../mixins';
+@use '../variables/variables.global';
+@include mixins.exports('smart-popover.clarity') {
+  .clr-popover-content {
+    position: fixed;
+    z-index: map.get(variables.$clr-layers, smart-popover);
+  }
+}

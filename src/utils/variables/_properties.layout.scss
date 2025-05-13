@@ -1,0 +1,18 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../mixins';
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('layout.properties') {
+  :root [cds-theme] {
+    --clr-grid-gutter-width: #{tokens.$cds-global-space-9};
+    --clr-grid-container-padding: calc(var(--clr-grid-gutter-width) * 0.5);
+    --clr-grid-column-padding: calc(var(--clr-grid-gutter-width) * 0.5);
+    --clr-grid-row-margin: calc(var(--clr-grid-gutter-width) * -0.5);
+  }
+}

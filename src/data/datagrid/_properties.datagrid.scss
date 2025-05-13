@@ -1,0 +1,92 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use 'variables.datagrid' as datagrid-variables;
+@use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
+@use '../variables.tables' as tables-variables;
+@use '../../forms/styles/variables.forms' as forms-variables;
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('datagrid.properties') {
+  :root [cds-theme] {
+    --clr-datagrid-font-color: #{tokens.$cds-alias-typography-color-500};
+    --clr-datagrid-default-border-color: #{tokens.$cds-alias-object-border-color};
+    --clr-datagrid-icon-color: #{tokens.$cds-alias-object-interaction-color};
+    --clr-datagrid-row-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
+    --clr-datagrid-row-active-color: #{tokens.$cds-alias-object-interaction-background-active};
+    /* unused, remove in v18 */
+    --clr-datagrid-row-hover-font-color: #{tokens.$cds-alias-typography-color-500};
+    --clr-datagrid-action-toggle-color: #{tokens.$cds-alias-object-interaction-color-active};
+    --clr-datagrid-pagination-btn-color: #{tokens.$cds-alias-object-interaction-color};
+    --clr-datagrid-pagination-btn-disabled-color: #{tokens.$cds-alias-status-disabled};
+    --clr-datagrid-pagination-input-border-color: #{tokens.$cds-alias-object-border-color};
+    --clr-datagrid-pagination-input-border-focus-color: #{forms-variables.$clr-forms-focused-color};
+    --clr-datagrid-popover-bg-color: #{tokens.$cds-alias-object-container-background};
+    --clr-datagrid-popover-border-color: #{tokens.$cds-alias-object-border-color};
+    --clr-datagrid-popover-font-color: #{tokens.$cds-alias-typography-color-400};
+    /* unused, remove in v18 */
+    --clr-datagrid-action-popover-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
+    --clr-datagrid-row-selected: #{tokens.$cds-alias-typography-color-500};
+    --clr-datagrid-row-selected-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
+    --clr-datagrid-row-selected-active-background-color: var(--cds-alias-object-interaction-background-selected-active);
+    --clr-datagrid-row-selected-hover-background-color: var(--cds-alias-object-interaction-background-selected-hover);
+
+    --clr-datagrid-column-switch-header-font-color: #{tokens.$cds-alias-object-interaction-color};
+    --clr-datagrid-column-switch-header-font-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
+    --clr-datagrid-column-switch-header-font-hover-active: #{tokens.$cds-alias-object-interaction-color-active};
+
+    --clr-datagrid-detail-caret-icon-open-bg-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+    --clr-datagrid-detail-caret-icon-open-icon-color: #{tokens.$cds-alias-object-interaction-background};
+
+    --clr-datagrid-placeholder-color: #{tokens.$cds-alias-typography-color-200};
+
+    --clr-datagrid-loading-background: var(--cds-alias-object-container-backdrop-background);
+
+    --clr-datagrid-column-toggle-gap: #{tokens.$cds-global-space-3};
+    --clr-datagrid-column-toggle-padding: 0 #{tokens.$cds-global-space-5};
+    --clr-datagrid-column-toggle-border-color: #{tokens.$cds-alias-object-interaction-border-color};
+    --clr-datagrid-column-toggle-fill-color: #{tokens.$cds-alias-object-opacity-0};
+    --clr-datagrid-column-toggle-text-color: #{tokens.$cds-alias-typography-color-400};
+    --clr-datagrid-column-toggle-disabled-color: var(--clr-btn-default-disabled-color);
+
+    --clr-datagrid-column-toggle-border-hover-color: #{tokens.$cds-alias-object-interaction-color-active};
+    --clr-datagrid-column-toggle-fill-hover-color: #{tokens.$cds-alias-object-interaction-background};
+    --clr-datagrid-column-toggle-text-hover-color: #{tokens.$cds-alias-typography-color-500};
+
+    --clr-datagrid-column-toggle-border-active-color: #{tokens.$cds-alias-object-interaction-border-color};
+    --clr-datagrid-column-toggle-fill-active-color: #{tokens.$cds-alias-object-opacity-0};
+    --clr-datagrid-column-toggle-text-active-color: #{tokens.$cds-alias-typography-color-400};
+
+    --clr-datagrid-detail-pane-content-padding: #{tokens.$cds-global-space-7};
+    --clr-datagrid-detail-pane-close-icon-size: #{tokens.$cds-global-space-9};
+    --clr-datagrid-detail-body-text-color: #{tokens.$cds-alias-typography-color-400};
+    --clr-datagrid-detail-header-title-color: #{tokens.$cds-alias-typography-color-400};
+    --clr-datagrid-detail-pane-bg-color: #{tokens.$cds-alias-object-container-background};
+    --clr-datagrid-detail-pane-border-color: #{tokens.$cds-alias-object-border-color};
+
+    --clr-datagrid-placeholder-font-size: #{tokens.$cds-alias-typography-section-font-size};
+    --clr-datagrid-placeholder-font-weight: #{tokens.$cds-alias-typography-section-font-weight};
+    --clr-datagrid-placeholder-line-height: #{tokens.$cds-alias-typography-section-line-height};
+    --clr-datagrid-placeholder-letter-spacing: #{tokens.$cds-alias-typography-section-letter-spacing};
+    --clr-datagrid-placeholder-background-color: #{tokens.$cds-alias-object-container-background};
+    --clr-datagrid-popovers-box-shadow: #{tokens.$cds-alias-object-shadow-100};
+    --clr-datagrid-column-separator-height: calc(100% - #{tokens.$cds-global-space-5});
+    --clr-datagrid-column-separator-width: #{tokens.$cds-global-space-1};
+    --clr-datagrid-column-resize-handler-color: #{tokens.$cds-alias-object-interaction-border-color};
+    --clr-datagrid-filter-toggle-size: #{tokens.$cds-global-space-7};
+
+    --clr-datagrid-footer-pagination-gap: #{tokens.$cds-global-space-6};
+    --clr-datagrid-fixed-column-size: #{tokens.$cds-global-space-12};
+
+    --clr-datagrid-column-separator-expandby: #{tokens.$cds-global-space-6};
+    --clr-datagrid-icon-size: #{tokens.$cds-global-space-7};
+    --clr-datagrid-action-arrow-size: #{tokens.$cds-global-space-4};
+    --clr-datagrid-compact-outline-offset: calc(-1 * tokens.$cds-global-space-3);
+    --clr-datagrid-horizontal-padding: mixins.baselinePx(9);
+  }
+}

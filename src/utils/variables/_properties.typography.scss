@@ -1,0 +1,156 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../mixins';
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('typography.properties') {
+  :root [cds-theme] {
+    // Temporal internal use only. Should be removed once CDS token based family is available.
+    --clr-metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
+
+    --clr-body-font: var(--clr-metropolis-font-family); // #{tokens.$cds-alias-typography-font-family};
+    --clr-font: var(--clr-body-font);
+    --clr-display-font: var(--clr-metropolis-font-family); //#{tokens.$cds-alias-typography-header-font-family};
+
+    --clr-font-weight-light: #{tokens.$cds-alias-typography-font-weight-light};
+    --clr-font-weight-regular: #{tokens.$cds-alias-typography-font-weight-regular};
+    --clr-font-weight-semibold: #{tokens.$cds-alias-typography-font-weight-semibold};
+    --clr-font-weight-bold: #{tokens.$cds-alias-typography-font-weight-bold};
+    --clr-font-weight-extrabold: #{tokens.$cds-alias-typography-font-weight-extrabold};
+
+    // Header styles
+    //H1 - login_productName
+    //'DISPLAY-40'
+    --clr-h1-color: #{tokens.$cds-alias-typography-color-300};
+    --clr-h1-font-size: #{tokens.$cds-alias-typography-display-font-size};
+    --clr-h1-font-weight: #{tokens.$cds-alias-typography-display-font-weight};
+    --clr-h1-font-family: var(--clr-display-font);
+    --clr-h1-line-height: #{tokens.$cds-alias-typography-display-line-height};
+    --clr-h1-letter-spacing: #{tokens.$cds-alias-typography-display-letter-spacing};
+
+    //H2 - login_trademark, page_mainHeading
+    //'HEADLINE-32'
+    --clr-h2-color: #{tokens.$cds-alias-typography-color-300};
+    --clr-h2-font-size: #{tokens.$cds-alias-typography-headline-font-size};
+    --clr-h2-font-weight: #{tokens.$cds-alias-typography-headline-font-weight};
+    --clr-h2-font-family: var(--clr-display-font);
+    --clr-h2-line-height: #{tokens.$cds-alias-typography-headline-line-height};
+    --clr-h2-letter-spacing: #{tokens.$cds-alias-typography-headline-letter-spacing};
+
+    //H3 - login_subtitle, modal_header, page_secondaryHeading
+    //'TITLE-24-EXP'
+    --clr-h3-color: #{tokens.$cds-alias-typography-color-300};
+    --clr-h3-font-size: #{tokens.$cds-alias-typography-title-font-size};
+    --clr-h3-font-weight: #{tokens.$cds-alias-typography-title-font-weight};
+    --clr-h3-font-family: var(--clr-display-font);
+    --clr-h3-line-height: #{tokens.$cds-alias-typography-title-line-height};
+    --clr-h3-letter-spacing: #{tokens.$cds-alias-typography-title-letter-spacing};
+
+    //H4 - card titles, page_tertiaryHeading
+    //'SECTION-20-STD'
+    --clr-h4-color: #{tokens.$cds-alias-typography-color-300};
+    --clr-h4-font-size: #{tokens.$cds-alias-typography-section-font-size};
+    --clr-h4-font-weight: #{tokens.$cds-alias-typography-section-font-weight};
+    --clr-h4-font-family: var(--clr-display-font);
+    --clr-h4-line-height: #{tokens.$cds-alias-typography-section-line-height};
+    --clr-h4-letter-spacing: #{tokens.$cds-alias-typography-section-letter-spacing};
+
+    //H5 - dgrid placeholder, datagrid_column_toggle_title, form_block_label, nav_title, page_introParagraph, page_sectionHeader
+    //'SUBSECTION-16-EXP'
+    --clr-h5-color: #{tokens.$cds-alias-typography-color-300};
+    --clr-h5-font-size: #{tokens.$cds-alias-typography-subsection-font-size};
+    --clr-h5-font-weight: #{tokens.$cds-alias-typography-subsection-font-weight};
+    --clr-h5-font-family: var(--clr-display-font);
+    --clr-h5-line-height: #{tokens.$cds-alias-typography-subsection-line-height};
+    --clr-h5-letter-spacing: #{tokens.$cds-alias-typography-subsection-letter-spacing};
+
+    //H6 - Heading
+    //'MESSAGE-16-EXP'
+    --clr-h6-color: #{tokens.$cds-alias-typography-color-300};
+    --clr-h6-font-size: #{tokens.$cds-alias-typography-message-font-size};
+    --clr-h6-font-weight: #{tokens.$cds-alias-typography-message-font-weight};
+    --clr-h6-font-family: var(--clr-display-font);
+    --clr-h6-line-height: #{tokens.$cds-alias-typography-message-line-height};
+    --clr-h6-letter-spacing: #{tokens.$cds-alias-typography-message-letter-spacing};
+
+    // Non-header text styles
+    //P0 - Intro text
+    //'BODY-14-RG-STD'
+    --clr-p0-color: #{tokens.$cds-alias-typography-color-450};
+    --clr-p0-font-size: #{tokens.$cds-alias-typography-body-font-size};
+    --clr-p0-font-weight: #{tokens.$cds-alias-typography-body-font-weight};
+    --clr-p0-line-height: #{tokens.$cds-alias-typography-body-line-height};
+    --clr-p0-letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing};
+
+    //P1 - card text, dropdown_text, page_bodyText, tab_text, toc_text
+    //'BODY-14-RG-STD'
+    --clr-p1-color: #{tokens.$cds-alias-typography-color-450};
+    --clr-p1-font-size: #{tokens.$cds-alias-typography-body-font-size};
+    --clr-p1-font-weight: #{tokens.$cds-alias-typography-body-font-weight};
+    --clr-p1-line-height: #{tokens.$cds-alias-typography-body-line-height};
+    --clr-p1-letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing};
+
+    //P2 - form_label, stackview_header
+    //'SECONDARY-13-MD-EXP'
+    --clr-p2-color: #{tokens.$cds-alias-typography-color-450};
+    --clr-p2-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
+    --clr-p2-font-weight: #{tokens.$cds-alias-typography-font-weight-medium};
+    --clr-p2-line-height: #{tokens.$cds-global-space-9}; //1.8462em
+    --clr-p2-letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing};
+
+    //P3 - alerts, form_group_fields, stackview_text, table_text, tooltip_text
+    //'SECONDARY-13-RG-EXP'
+    --clr-p3-color: #{tokens.$cds-alias-typography-color-450};
+    --clr-p3-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
+    --clr-p3-font-weight: #{tokens.$cds-alias-typography-secondary-font-weight};
+    --clr-p3-line-height: #{tokens.$cds-global-space-9}; //1.8462em
+    --clr-p3-letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing};
+
+    //P4 - small alerts, dropdown_header, vertical_nav_header
+    //'SECONDARY-13-SB-STD'
+    --clr-p4-color: #{tokens.$cds-alias-typography-color-450};
+    --clr-p4-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
+    --clr-p4-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
+    --clr-p4-line-height: #{mixins.baselinePx(20)}; //1.5385em
+    --clr-p4-letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing};
+
+    //P5
+    //'SECONDARY-13-RG-EXP'
+    --clr-p5-color: #{tokens.$cds-alias-typography-color-450};
+    --clr-p5-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
+    --clr-p5-font-weight: #{tokens.$cds-alias-typography-secondary-font-weight};
+    --clr-p5-line-height: #{tokens.$cds-global-space-9}; //1.8462em
+    --clr-p5-letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing};
+
+    //P6 - card link btns, form_subtext, table_header
+    //'CAPTION-LG-11'
+    --clr-p6-color: #{tokens.$cds-alias-typography-color-450};
+    --clr-p6-font-size: #{tokens.$cds-alias-typography-caption-font-size};
+    --clr-p6-font-weight: #{tokens.$cds-alias-typography-caption-font-weight};
+    --clr-p6-line-height: #{tokens.$cds-alias-typography-caption-line-height};
+    --clr-p6-letter-spacing: #{tokens.$cds-alias-typography-caption-letter-spacing};
+
+    //P7 - label_text
+    //'CAPTION-SM-10'
+    --clr-p7-color: #{tokens.$cds-alias-typography-color-450};
+    --clr-p7-font-size: #{tokens.$cds-alias-typography-smallcaption-font-size};
+    --clr-p7-font-weight: #{tokens.$cds-alias-typography-smallcaption-font-weight};
+    --clr-p7-line-height: #{tokens.$cds-alias-typography-smallcaption-line-height};
+    --clr-p7-letter-spacing: #{tokens.$cds-alias-typography-smallcaption-letter-spacing};
+
+    //P8
+    //'CAPTION-SM-10'
+    --clr-p8-color: #{tokens.$cds-alias-typography-color-450};
+    --clr-p8-font-size: #{tokens.$cds-alias-typography-smallcaption-font-size};
+    --clr-p8-font-weight: #{tokens.$cds-alias-typography-smallcaption-font-weight};
+    --clr-p8-line-height: #{tokens.$cds-alias-typography-smallcaption-line-height};
+    --clr-p8-letter-spacing: #{tokens.$cds-alias-typography-smallcaption-letter-spacing};
+
+    // List item li
+    --clr-list-item-color: #{tokens.$cds-alias-typography-color-400};
+  }
+}

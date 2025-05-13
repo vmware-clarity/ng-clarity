@@ -1,0 +1,251 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../utils/variables/variables';
+
+// Usage: ./_labels.clarity.scss
+$clr-label-borderwidth: var(--clr-label-border-width) !default;
+
+// COLOR
+// Usage:
+// - ./_labels.clarity.scss
+$clr-label-font-color-light: var(--clr-label-font-color-light) !default;
+$clr-label-font-color-dark: var(--clr-label-font-color-dark) !default;
+$clr-label-default-border-color: var(--clr-label-default-border-color) !default;
+
+// TYPOGRAPHIC STYLES
+// Usage: ./_labels.clarity.scss
+$clr-label-bg-hover-color: var(--clr-label-bg-hover-color) !default;
+
+$clr-label-gray-bg-color: var(--clr-label-gray-bg-color) !default;
+$clr-label-gray-border-color: var(--clr-label-gray-border-color) !default;
+$clr-label-gray-color: var(--clr-label-gray-color) !default;
+
+$clr-label-purple-bg-color: var(--clr-label-purple-bg-color) !default;
+$clr-label-purple-border-color: var(--clr-label-purple-border-color) !default;
+$clr-label-purple-color: var(--clr-label-purple-color) !default;
+
+$clr-label-blue-bg-color: var(--clr-label-blue-bg-color) !default;
+$clr-label-blue-border-color: var(--clr-label-blue-border-color) !default;
+$clr-label-blue-color: var(--clr-label-blue-color) !default;
+
+$clr-label-orange-bg-color: var(--clr-label-orange-bg-color) !default;
+$clr-label-orange-border-color: var(--clr-label-orange-border-color) !default;
+$clr-label-orange-color: var(--clr-label-orange-color) !default;
+
+$clr-label-light-blue-bg-color: var(--clr-label-light-blue-bg-color) !default;
+$clr-label-light-blue-border-color: var(--clr-label-light-blue-border-color) !default;
+$clr-label-light-blue-color: var(--clr-label-light-blue-color) !default;
+
+$clr-label-info-bg-color: var(--clr-label-info-bg-color) !default;
+$clr-label-info-font-color: var(--clr-label-info-font-color) !default;
+$clr-label-info-border-color: var(--clr-label-info-border-color) !default;
+
+$clr-label-success-bg-color: var(--clr-label-success-bg-color) !default;
+$clr-label-success-font-color: var(--clr-label-success-font-color) !default;
+$clr-label-success-border-color: var(--clr-label-success-border-color) !default;
+
+$clr-label-warning-bg-color: var(--clr-label-warning-bg-color) !default;
+$clr-label-warning-font-color: var(--clr-label-warning-font-color) !default;
+$clr-label-warning-border-color: var(--clr-label-warning-border-color) !default;
+
+$clr-label-danger-bg-color: var(--clr-label-danger-bg-color) !default;
+$clr-label-danger-font-color: var(--clr-label-danger-font-color) !default;
+$clr-label-danger-border-color: var(--clr-label-danger-border-color) !default;
+
+// ACTION COLORS
+$clr-label-hover-color: var(--clr-label-hover-color) !default;
+$clr-label-active-color: var(--clr-label-active-color) !default;
+$clr-label-bg-active-color: var(--clr-label-bg-active-color) !default;
+$clr-label-box-shadow: var(--clr-label-box-shadow) !default;
+$clr-label-bg-disabled-color: var(--clr-label-bg-disabled-color) !default;
+$clr-label-disabled-color: var(--clr-label-disabled-color) !default;
+$clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !default;
+
+@function getLabelColor($type: gray, $property: color) {
+  @if $type == gray {
+    @return lookupGrayLabelColor($property);
+  }
+
+  @if $type == purple {
+    @return lookupPurpleLabelColor($property);
+  }
+
+  @if $type == blue {
+    @return lookupBlueLabelColor($property);
+  }
+
+  @if $type == orange {
+    @return lookupOrangeLabelColor($property);
+  }
+
+  @if $type == light-blue {
+    @return lookupLightBlueLabelColor($property);
+  }
+
+  @if $type == success {
+    @return lookupSuccessLabelColor($property);
+  }
+
+  @if $type == warning {
+    @return lookupWarningLabelColor($property);
+  }
+
+  @if $type == danger {
+    @return lookupDangerLabelColor($property);
+  }
+
+  @if $type == info {
+    @return lookupInfoLabelColor($property);
+  }
+
+  @return null;
+}
+
+@function lookupGrayLabelColor($property: color) {
+  @if $property == color {
+    @return $clr-label-gray-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-label-gray-bg-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-label-gray-border-color;
+  }
+
+  @return null;
+}
+
+@function lookupPurpleLabelColor($property: color) {
+  @if $property == color {
+    @return $clr-label-purple-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-label-purple-bg-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-label-purple-border-color;
+  }
+
+  @return null;
+}
+
+@function lookupBlueLabelColor($property: color) {
+  @if $property == color {
+    @return $clr-label-blue-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-label-blue-bg-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-label-blue-border-color;
+  }
+
+  @return null;
+}
+
+@function lookupOrangeLabelColor($property: color) {
+  @if $property == color {
+    @return $clr-label-orange-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-label-orange-bg-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-label-orange-border-color;
+  }
+
+  @return null;
+}
+
+@function lookupLightBlueLabelColor($property: color) {
+  @if $property == color {
+    @return $clr-label-light-blue-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-label-light-blue-bg-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-label-light-blue-border-color;
+  }
+
+  @return null;
+}
+
+@function lookupInfoLabelColor($property: color) {
+  @if $property == color {
+    @return $clr-label-info-font-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-label-info-bg-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-label-info-border-color;
+  }
+
+  @return null;
+}
+
+@function lookupSuccessLabelColor($property: color) {
+  @if $property == color {
+    @return $clr-label-success-font-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-label-success-bg-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-label-success-border-color;
+  }
+
+  @return null;
+}
+
+@function lookupWarningLabelColor($property: color) {
+  @if $property == color {
+    @return $clr-label-warning-font-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-label-warning-bg-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-label-warning-border-color;
+  }
+
+  @return null;
+}
+
+@function lookupDangerLabelColor($property: color) {
+  @if $property == color {
+    @return $clr-label-danger-font-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-label-danger-bg-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-label-danger-border-color;
+  }
+
+  @return null;
+}

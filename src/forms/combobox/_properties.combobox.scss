@@ -1,0 +1,39 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('combobox.properties') {
+  :root [cds-theme] {
+    --clr-combobox-border-color: #{tokens.$cds-alias-object-border-color};
+    --clr-combobox-input-background-color: #{tokens.$cds-alias-object-container-background-tint};
+    --clr-combobox-pill-background-color: #{tokens.$cds-alias-object-interaction-background};
+    --clr-combobox-pill-border-color: #{tokens.$cds-alias-object-border-color};
+    --clr-combobox-pill-font-color: #{tokens.$cds-alias-typography-color-500};
+    --clr-combobox-filter-highlight: #{tokens.$cds-alias-object-interaction-background-highlight};
+    --clr-combobox-min-width: #{mixins.baselinePx(168)}; // 7rem
+    --clr-combobox-multi-min-width: #{mixins.baselinePx(360)}; // 15rem
+    --clr-combobox-min-height: #{tokens.$cds-global-space-9};
+    --clr-combobox-font-size: #{tokens.$cds-global-typography-secondary-font-size};
+    --clr-combobox-font-weight: #{tokens.$cds-global-typography-secondary-font-weight};
+    --clr-combobox-text-color: #{tokens.$cds-alias-typography-color-400};
+    --clr-combobox-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-combobox-padding-left: #{tokens.$cds-global-space-5};
+    --clr-combobox-trigger-padding-left: #{tokens.$cds-global-space-5};
+    --clr-combobox-trigger-padding-right: #{tokens.$cds-global-space-5};
+    --clr-combobox-trigger-gap: #{tokens.$cds-global-space-6};
+    --clr-combobox-trigger-font-color: #{tokens.$cds-alias-object-interaction-color};
+    --clr-combobox-hover-background-color: #{tokens.$cds-alias-object-interaction-background-hover};
+    --clr-combobox-active-background-color: #{tokens.$cds-alias-object-interaction-background-active};
+    --clr-combobox-pill-padding: 0 #{tokens.$cds-global-space-3};
+    --clr-combobox-pill-margin: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-3} 0 0;
+    --clr-combobox-pill-height: #{tokens.$cds-global-space-7}; //16px
+    --clr-combobox-pill-remove-icon-color: #{tokens.$cds-alias-object-interaction-color};
+    --clr-combobox-caret-icon-size: #{tokens.$cds-global-space-7};
+    --clr-combobox-pill-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+  }
+}

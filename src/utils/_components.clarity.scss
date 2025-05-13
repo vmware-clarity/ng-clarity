@@ -1,0 +1,154 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+// Clarity Internal Dependencies
+@forward '../utils/normalize'; // TODO: upgrade to latest normalize, once updated clr-ui can import core as is.
+
+@forward '../utils/mixins';
+@forward '../utils/variables/variables';
+@forward '../utils/variables/properties';
+
+// Layout/Grid
+@forward '../layout/grid/grid';
+
+@forward '../typography/typography';
+
+// Component variables
+@forward '../utils/variables.clarity';
+
+//Reboot
+@forward '../utils/reboot.clarity'; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
+@forward '../utils/a11y';
+
+//Icons & Images
+@forward '../image/icons.clarity'; // depends on variables.clarity
+@forward '../image/images.clarity'; // depends on variables.clarity, mixins.clarity, icons.clarity
+
+//Popover
+@forward '../popover/common/popover.clarity';
+
+// Smart Popover
+@forward 'popover/popover-popover.clarity';
+
+//Buttons
+@forward '../button/buttons.clarity'; // depends on variables.clarity, mixins.clarity, color.clarity
+@forward '../button/button-group/button-group.clarity'; // depends on variables.clarity, mixins.clarity
+@forward '../utils/close.clarity'; //depends on variables.clarity, mixins.clarity
+
+//Alerts
+//depends on variables.clarity, mixins.clarity, color.clarity, icons.clarity, buttons.clarity
+@forward '../emphasis/alert/alert.clarity';
+
+//Cards
+//depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, list-group.clarity, buttons.clarity
+@forward '../layout/card.clarity';
+
+//Dropdowns
+//depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, layers.clarity
+@forward '../popover/dropdown/dropdown.clarity';
+
+//Login
+//depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, icons.clarity
+@forward '../layout/login.clarity';
+
+//Layout
+//depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
+@forward '../layout/main-container/layout.clarity';
+
+//Modal
+//depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
+@forward '../modal/modal.clarity';
+
+//Nav
+@forward '../layout/nav/header.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
+@forward '../layout/nav/links.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity
+@forward '../layout/nav/nav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
+@forward '../layout/nav/subnav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
+@forward '../layout/vertical-nav/vertical-nav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity
+@forward '../layout/nav/responsive-nav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
+
+//Badges
+// depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, typography.clarity
+@forward '../emphasis/badges.clarity';
+
+//Labels
+// depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, typography.clarity, badges.clarity
+@forward '../emphasis/labels.clarity';
+
+//Progress Bars
+//depends on variables.clarity, helpers.clarity, color.clarity, cards.clarity
+@forward '../progress/progress-bars/progress-bars.clarity';
+
+//Spinners
+//depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, icons.clarity
+@forward '../progress/spinner/spinner.clarity';
+
+//Tables
+//depends on variables.clarity, mixins.clarity, helpers.clarity, typography.clarity
+@forward '../data/tables.clarity';
+
+//Tooltips
+// depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, layers.clarity
+@forward '../popover/tooltip/tooltips.clarity';
+
+//Forms
+@forward '../forms/styles/mixins.forms';
+@forward '../forms/styles/properties.forms';
+@forward '../forms/styles/containers.clarity';
+@forward '../forms/styles/form.clarity';
+@forward '../forms/styles/checkbox.clarity';
+@forward '../forms/styles/file.clarity';
+@forward '../forms/styles/file-input.clarity';
+@forward '../forms/styles/input.clarity';
+@forward '../forms/styles/input-group.clarity';
+@forward '../forms/styles/radio.clarity';
+@forward '../forms/styles/select.clarity';
+@forward '../forms/styles/textarea.clarity';
+@forward '../forms/styles/toggles.clarity'; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
+@forward '../forms/styles/range.clarity';
+@forward '../forms/styles/datalist.clarity';
+@forward '../forms/styles/password.clarity';
+@forward '../forms/styles/number-input.clarity';
+@forward '../forms/datepicker/datepicker.clarity';
+@forward '../forms/combobox/combobox.clarity';
+
+//Stack View
+//depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, forms.clarity
+@forward '../data/stack-view/stack-view.clarity';
+
+//Tree View
+//depends on variables.clarity, mixins.clarity, helpers.clarity, forms.clarity
+@forward '../data/tree-view/tree-view.clarity';
+
+//Datagrid
+//depends on variables.clarity, mixins.clarity, helpers.clarity, layers, icons.clarity, tables.clarity, forms.clarity
+@forward '../data/datagrid/datagrid.clarity';
+
+//Animations
+// no dependencies on other clarity scss
+@forward '../utils/animations/animations.clarity';
+
+//Tabs
+@forward '../layout/tabs/tabs.clarity'; // no dependencies on other clarity scss
+
+//Wizards
+// depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
+@forward '../wizard/wizard.clarity';
+
+// Signposts
+@forward '../popover/signpost/signposts.clarity';
+
+// Accordion
+@forward '../accordion/accordion.clarity';
+
+// Stepper
+@forward '../accordion/stepper/stepper.clarity';
+
+// Timeline
+@forward '../timeline/timeline.clarity';
+
+// Breadcrumbs
+@forward '../layout/breadcrumbs/breadcrumbs.clarity';
