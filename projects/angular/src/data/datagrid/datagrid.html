@@ -22,7 +22,7 @@
                     *ngIf="selection.selectionType === SELECTION_TYPE.Multi"
                     (keydown.space)="toggleAllSelected($event)"
                   >
-                    <div *ngIf="!hasVirtualScroller || customSelectAllEnabled" class="clr-checkbox-wrapper">
+                    <div *ngIf="!virtualScroll || customSelectAllEnabled" class="clr-checkbox-wrapper">
                       <!-- We need to move focus and space-key handling to the parent because of keyboard arrow key navigation,
                            which is not able to transfer focus directly on the input when focused with the tab key -->
                       <input

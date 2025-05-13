@@ -7,7 +7,7 @@
 
 import { provideRouter } from '@angular/router';
 import { action } from '@storybook/addon-actions';
-import { applicationConfig, moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { applicationConfig, moduleMetadata, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
 import { ClrBreadcrumbs, ClrBreadcrumbsModule } from '../../../projects/angular/src/layout/breadcrumbs';
@@ -26,10 +26,17 @@ const menuItemsCollapsed = [
   { label: 'Current Page', routerLink: '/current' },
 ];
 
-class TestComponent {}
+const menuItemsHref = [
+  { label: 'Home', href: '#' },
+  { label: 'Parent Page', href: '#' },
+  { label: 'Child Page', href: '#' },
+];
+
+class MockComponent {}
 
 export default {
   title: 'Breadcrumbs/Breadcrumbs',
+  component: ClrBreadcrumbs,
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrBreadcrumbsModule],
@@ -37,11 +44,11 @@ export default {
     applicationConfig({
       providers: [
         provideRouter([
-          { path: 'home', component: TestComponent },
-          { path: 'parent', component: TestComponent },
-          { path: 'child', component: TestComponent },
-          { path: 'grandchild', component: TestComponent },
-          { path: 'current', component: TestComponent },
+          { path: 'home', component: MockComponent },
+          { path: 'parent', component: MockComponent },
+          { path: 'child', component: MockComponent },
+          { path: 'grandchild', component: MockComponent },
+          { path: 'current', component: MockComponent },
           {
             path: '**',
             redirectTo: 'home',
@@ -51,7 +58,6 @@ export default {
       ],
     }),
   ],
-  component: ClrBreadcrumbs,
   argTypes: {
     //outputs
     clrBreadcrumbItemClick: { control: { disable: true } },
@@ -59,36 +65,25 @@ export default {
     expand: { control: { disable: true }, table: { disable: true } },
     handleItemClick: { control: { disable: true }, table: { disable: true } },
     // story helpers
-    items: { control: { disable: true } },
-    menuItemsCollapsed: { control: { disable: true }, table: { disable: true } },
-    menuItems: { control: 'object' },
+    items: { control: 'object' },
   },
   args: {
     // story helpers
-    menuItems,
-    menuItemsCollapsed,
+    items: menuItems,
     clrBreadcrumbItemClick: action('clrBreadcrumItemClick'),
   },
 };
 
-const BreadcrumbInitialTemplate: StoryFn = args => ({
-  template: `
-    <clr-breadcrumbs [items]="menuItems"></clr-breadcrumbs>
-  `,
-  props: args,
-});
+export const BreadcrumbWithRouter: StoryObj = {};
 
-const BreadcrumbCollapsedTemplate: StoryFn = args => ({
-  template: `
-    <clr-breadcrumbs [items]="menuItemsCollapsed"></clr-breadcrumbs>
-  `,
-  props: args,
-});
-
-export const Initial: StoryObj = {
-  render: BreadcrumbInitialTemplate,
+export const BreadcrumbWithHref: StoryObj = {
+  args: {
+    items: menuItemsHref,
+  },
 };
 
 export const Collapsed: StoryObj = {
-  render: BreadcrumbCollapsedTemplate,
+  args: {
+    items: menuItemsCollapsed,
+  },
 };

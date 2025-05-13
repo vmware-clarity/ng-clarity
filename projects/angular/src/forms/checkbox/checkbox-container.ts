@@ -47,7 +47,7 @@ import { ClrCheckbox } from './checkbox';
   `,
   host: {
     '[class.clr-form-control]': 'true',
-    '[class.clr-form-control-disabled]': 'control?.disabled',
+    '[class.clr-form-control-disabled]': 'allCheckboxesDisabled',
     '[class.clr-row]': 'addGrid()',
     '[attr.role]': 'role',
   },
@@ -85,6 +85,13 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     } else {
       this.inline = !!value;
     }
+  }
+
+  protected get allCheckboxesDisabled() {
+    return (
+      this.control?.disabled &&
+      (!this.additionalControls?.length || this.additionalControls.every(control => control.disabled))
+    );
   }
 
   override ngAfterContentInit() {

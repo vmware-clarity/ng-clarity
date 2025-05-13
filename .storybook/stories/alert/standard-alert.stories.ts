@@ -5,19 +5,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrAlert, ClrAlertModule, ClrDropdownModule, commonStringsDefault } from '@clr/angular';
+import { ClrAlert, ClrAlertModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
+import { argsToTemplate, moduleMetadata, StoryContext, StoryObj } from '@storybook/angular';
 
-import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';
 import { CommonModules, removeFocusOutline } from '../../helpers/common';
+import { StandardAlertStorybookComponent } from './standard-alert.storybook.component';
 
 export default {
   title: 'Alert/Standard Alerts',
   component: ClrAlert,
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrAlertModule, ClrDropdownModule],
+      imports: [...CommonModules, ClrAlertModule, StandardAlertStorybookComponent],
     }),
   ],
   argTypes: {
@@ -60,73 +60,36 @@ export default {
     clrAlertAppLevel: { control: { disable: true }, table: { disable: true } },
   },
   args: {
-    // inputs
-    clrAlertIcon: 'Default',
-    clrAlertLightweight: false,
-    clrCloseButtonAriaLabel: commonStringsDefault.alertCloseButtonAriaLabel,
     clrAlertClosable: false,
-    clrAlertSizeSmall: false,
-    // outputs
+    clrAlertLightweight: false,
     clrAlertClosedChange: action('clrAlertClosedChange'),
-    // story helpers
-    createArray: n => new Array(n),
-    itemCount: 3,
-    content: 'Hello World!',
-    showActions: false,
-    ALERT_TYPES,
+  },
+  render: (args: StandardAlertStorybookComponent) => ({
+    props: {
+      ...args,
+    },
+    template: `
+      <storybook-standard-alert ${argsToTemplate(args)}></storybook-standard-alert>
+    `,
+  }),
+};
+
+export const SingleAlert: StoryObj = {
+  args: {
+    alertCount: 1,
+    alertTypes: ['info'],
   },
 };
 
-const template = `
-  <div *ngFor="let alert of ALERT_TYPES" style="margin-top: 5px">
-    <clr-alert
-      [clrAlertClosable]="clrAlertClosable"
-      [clrAlertIcon]="clrAlertIcon"
-      [clrAlertLightweight]="clrAlertLightweight"
-      [clrAlertSizeSmall]="clrAlertSizeSmall"
-      [clrAlertType]="alert"
-      [clrCloseButtonAriaLabel]="clrCloseButtonAriaLabel"
-      (clrAlertClosedChange)="clrAlertClosedChange($event)"
-    >
-      <clr-alert-item *ngFor="let _ of createArray(itemCount); let i = index">
-        <span class="alert-text">{{ content }} {{ i + 1 }}</span>
-        <div *ngIf="showActions" class="alert-actions">
-          <clr-dropdown>
-            <button clrDropdownTrigger>
-              Actions
-              <cds-icon shape="angle" direction="down"></cds-icon>
-            </button>
-            <clr-dropdown-menu clrPosition="bottom-right">
-              <button clrDropdownItem>Shutdown</button>
-              <button clrDropdownItem>Delete</button>
-              <button clrDropdownItem>Reboot</button>
-            </clr-dropdown-menu>
-          </clr-dropdown>
-          <a class="alert-action" href="javascript://">Ignore</a>
-        </div>
-      </clr-alert-item>
-    </clr-alert>
-  </div>
-`;
-
-const AlertTemplate: StoryFn = args => ({
-  template,
-  props: args,
-});
-
-export const Alert: StoryObj = {
-  render: AlertTemplate,
-};
+export const Alert: StoryObj = {};
 
 export const Small: StoryObj = {
-  render: AlertTemplate,
   args: {
     clrAlertSizeSmall: true,
   },
 };
 
 export const SmallLightweight: StoryObj = {
-  render: AlertTemplate,
   args: {
     clrAlertSizeSmall: true,
     clrAlertLightweight: true,
@@ -134,14 +97,12 @@ export const SmallLightweight: StoryObj = {
 };
 
 export const Closable: StoryObj = {
-  render: AlertTemplate,
   args: {
-    clrAlertClosable: { value: true, table: { disable: true } },
+    clrAlertClosable: true,
   },
 };
 
 export const Lightweight: StoryObj = {
-  render: AlertTemplate,
   args: {
     clrAlertLightweight: true,
     clrCloseButtonAriaLabel: { table: { disable: true } },
@@ -150,34 +111,30 @@ export const Lightweight: StoryObj = {
 };
 
 export const DifferentIcon: StoryObj = {
-  render: AlertTemplate,
   args: {
     clrAlertIcon: 'settings',
   },
 };
 
 export const WithActions: StoryObj = {
-  render: AlertTemplate,
   args: {
     showActions: true,
   },
 };
 
 export const WithOpenActionsDropdown: StoryObj = {
-  render: AlertTemplate,
   play: openDropdown,
   args: {
-    itemCount: 1,
+    alertCount: 1,
     showActions: true,
-    ALERT_TYPES: ['info'],
+    alertTypes: ['info'],
   },
 };
 
 export const WithLongContentAndOpenActionsDropdown: StoryObj = {
-  render: AlertTemplate,
   play: openDropdown,
   args: {
-    itemCount: 1,
+    alertCount: 1,
     content: `
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
       labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -186,7 +143,7 @@ export const WithLongContentAndOpenActionsDropdown: StoryObj = {
       non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     `,
     showActions: true,
-    ALERT_TYPES: ['info'],
+    alertTypes: ['info'],
   },
 };
 

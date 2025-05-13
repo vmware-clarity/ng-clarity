@@ -45,3 +45,14 @@
     })
     export class AppModule {    }
     ```
+
+## Using Features Before Release
+
+You can install unreleased builds of the `@clr/ui` and `@clr/angular` packages by installing our preview build branches.
+These branches are automatically built after each commit to the `main` branch, so you can use features before we release
+to npm.
+
+```bash
+npm install @clr/ui@github:vmware-clarity/ng-clarity.git#preview-build/main/clr-ui --force
+npm install @clr/angular@github:vmware-clarity/ng-clarity.git#preview-build/main/clr-angular --force
+```

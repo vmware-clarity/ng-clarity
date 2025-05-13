@@ -8,6 +8,9 @@
 
 :root {
   [cds-theme] {
+    // font family override
+    --cds-global-typography-font-family: var(--clr-metropolis-font-family);
+
     --cds-alias-utility-gray: #{tokens.$cds-global-color-construction-600};
 
     --cds-alias-object-container-backdrop-background: hsla(0, 0%, 100%, 0.6);
@@ -16,6 +19,17 @@
     --cds-alias-object-interaction-background-selected: #{tokens.$cds-global-color-blue-75};
     --cds-alias-object-interaction-background-selected-hover: #{tokens.$cds-global-color-construction-100};
     --cds-alias-object-interaction-background-selected-active: #{tokens.$cds-global-color-construction-200};
+
+    // skeleton loading tokens
+    --cds-global-animation-skeleton-duration: 4s;
+    --cds-global-animation-easing-in-out: cubic-bezier(0.42, 0.01, 0.58, 1); // ease-in-out;
+    --cds-alias-object-skeleton-loading-gradient: linear-gradient(
+      90deg,
+      #{tokens.$cds-alias-object-interaction-background} 0%,
+      #{tokens.$cds-global-color-construction-200} 35%,
+      #{tokens.$cds-global-color-construction-300} 65%,
+      #{tokens.$cds-alias-object-interaction-background} 100%
+    );
 
     // object focus tokens
     // set style to auto to accommodate a11y with default browser double outline
@@ -58,6 +72,15 @@
     --cds-alias-object-interaction-background-selected: #{tokens.$cds-global-color-blue-900};
     --cds-alias-object-interaction-background-selected-active: #{tokens.$cds-global-color-construction-600};
     --cds-alias-object-interaction-background-selected-hover: #{tokens.$cds-global-color-construction-700};
+
+    // skeleton loading gradient
+    --cds-alias-object-skeleton-loading-gradient: linear-gradient(
+      90deg,
+      #{tokens.$cds-alias-object-interaction-background} 0%,
+      #{tokens.$cds-global-color-construction-500} 35%,
+      #{tokens.$cds-global-color-construction-400} 65%,
+      #{tokens.$cds-alias-object-interaction-background} 100%
+    );
 
     // status interaction tokens
     --cds-alias-object-interaction-info-selected: #{tokens.$cds-global-color-blue-500};

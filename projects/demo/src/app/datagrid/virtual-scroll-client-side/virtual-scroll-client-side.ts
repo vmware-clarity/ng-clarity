@@ -7,7 +7,7 @@
 
 import { ListRange } from '@angular/cdk/collections';
 import { AfterViewChecked, ApplicationRef, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ClrDatagridSortOrder } from '@clr/angular';
+import { ClrDatagridItemsTrackByFunction, ClrDatagridSortOrder } from '@clr/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Column, DynamicData, Row } from '../inventory/dynamic-data';
@@ -27,6 +27,8 @@ class ChangeDetectionPerfRecord {
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {
+  range: ListRange;
+  userRange: ListRange;
   totalRows = 10000;
   totalCols = 5;
   cols: Column[];
@@ -63,6 +65,8 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
       return retValue;
     };
   }
+
+  trackItemById: ClrDatagridItemsTrackByFunction<User> = item => item?.id;
 
   ngAfterViewChecked(): void {
     this.cdr.detectChanges();
@@ -128,8 +132,27 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
   }
 
   renderRangeChange($event: ListRange) {
+    this.range = $event;
     console.log($event);
     // this.loadMore($event);
+  }
+
+  renderUserRangeChange($event: ListRange) {
+    this.userRange = $event;
+    console.log($event);
+    // this.loadMore($event);
+  }
+
+  getIndexes(rows: any[]) {
+    const result = [];
+
+    for (let i = 0; i < rows.length; i++) {
+      if (i % 1000 === 0) {
+        result.push(i);
+      }
+    }
+
+    return result;
   }
 
   toggleSelectAllRows(selectAllChecked: boolean) {

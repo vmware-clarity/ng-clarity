@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, Inject, InjectionToken, OnDestroy, OnInit } from '@angular/core';
+import { Component, ContentChild, forwardRef, Inject, InjectionToken, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { ClrLabel } from '../common/label';
 import { ControlIdService } from '../common/providers/control-id.service';
+import { ClrCheckbox } from './checkbox';
 
 export const IS_TOGGLE = new InjectionToken<BehaviorSubject<boolean>>('IS_TOGGLE');
 export function isToggleFactory() {
@@ -26,12 +27,14 @@ export const IS_TOGGLE_PROVIDER = { provide: IS_TOGGLE, useFactory: isToggleFact
   `,
   host: {
     '[class.clr-checkbox-wrapper]': '!toggle',
+    '[class.clr-checkbox-wrapper-disabled]': 'checkbox?.controlDisabled',
     '[class.clr-toggle-wrapper]': 'toggle',
   },
   providers: [ControlIdService, IS_TOGGLE_PROVIDER],
 })
 export class ClrCheckboxWrapper implements OnInit, OnDestroy {
   @ContentChild(ClrLabel, { static: true }) label: ClrLabel;
+  @ContentChild(forwardRef(() => ClrCheckbox), { static: true }) checkbox: ClrCheckbox;
   toggle = false;
   private subscriptions: Subscription[] = [];
 

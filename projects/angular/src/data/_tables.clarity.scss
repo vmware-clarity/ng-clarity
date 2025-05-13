@@ -46,6 +46,7 @@
     }
 
     #{$td} {
+      min-height: tokens.$cds-global-space-10;
       @include mixins.generate-typography-token(
         'SECONDARY-14-RG-CPT',
         (
@@ -111,6 +112,7 @@
   #{$table}-compact {
     #{$th},
     #{$td} {
+      min-height: table-variables.$clr-table-compact-row-height;
       padding: table-variables.$clr-table-cell-compact-padding;
     }
   }

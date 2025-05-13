@@ -176,10 +176,6 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     }
   }
 
-  get treeNodeContentTextOnly() {
-    return this.treeNodeLinkList.length === 0;
-  }
-
   get treeNodeLink() {
     return this.treeNodeLinkList && this.treeNodeLinkList.first;
   }

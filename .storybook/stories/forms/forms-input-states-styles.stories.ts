@@ -142,11 +142,6 @@ const FormInputTemplate: StoryFn = args => ({
         </div>
       </div>
 
-      <clr-date-container [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
-        <label>Datepicker</label>
-        <input type="date" autocomplete="off" clrDate [ngModel]="demo" name="demo" [disabled]="isDisabled" />
-      </clr-date-container>
-
       <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
         <label class="clr-control-label">Basic radio</label>
         <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">

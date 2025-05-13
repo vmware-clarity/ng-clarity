@@ -87,7 +87,7 @@ $clr-forms-checkbox-disabled-mark-color: var(--clr-forms-checkbox-disabled-mark-
 $clr-forms-checkbox-label-height: calc(#{$clr-forms-baseline} * 4);
 $clr-forms-checkbox-top: calc(calc(#{$clr-forms-checkbox-label-height} - #{$clr-forms-checkbox-height}) * 0.5) !default;
 
-$clr-forms-checkbox-size: #{tokens.$cds-global-space-7};
+$clr-forms-checkbox-size: #{tokens.$cds-global-space-9};
 $clr-forms-checkbox-padding-left: calc(#{$clr-forms-checkbox-height} + #{tokens.$cds-global-space-5});
 $clr-forms-checkbox-mark-size: calc(#{$clr-forms-checkbox-height} * 0.5);
 $clr-forms-checkbox-mark-border-size: calc(#{$clr-forms-checkbox-height} * 0.125);

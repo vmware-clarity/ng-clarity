@@ -159,6 +159,7 @@
       <ng-template *ngIf="replaced && !expand.loading" [ngTemplateOutlet]="detail"></ng-template>
       <ng-template *ngIf="!replaced && !expand.loading" [ngTemplateOutlet]="detail"></ng-template>
     </div>
+    <clr-dg-cell class="skeleton-loading" *ngIf="skeletonLoading"></clr-dg-cell>
   </div>
 </ng-template>
 

@@ -45,7 +45,7 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
   private _pinned = false;
   private originalStopClose: boolean;
 
-  private _size: string;
+  private _size = 'md';
 
   constructor(
     private element: ElementRef<HTMLElement>,
@@ -59,6 +59,9 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
   }
 
   set size(value: string) {
+    if (!value) {
+      value = 'md';
+    }
     if (this._size !== value) {
       this._size = value;
       if (this.clrSidePanelPinnable && this.pinned) {

@@ -5,17 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrLoading, ClrLoadingButtonModule, ClrLoadingState } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { ClrLoading, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
+import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
+import { ButtonStorybookComponent } from './button.storybook.component';
 
 export default {
   title: 'Button/Button Loading States',
   component: ClrLoading,
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrLoadingButtonModule],
+      imports: [...CommonModules, ClrLoadingModule, ClrLoadingButtonModule, ButtonStorybookComponent],
     }),
   ],
   argTypes: {
@@ -33,33 +34,20 @@ export default {
     validateState: ClrLoadingState.DEFAULT,
     submitState: ClrLoadingState.DEFAULT,
   },
+  render: (args: ButtonStorybookComponent) => ({
+    props: {
+      ...args,
+    },
+    template: `
+      <storybook-button templateMode="loading" ${argsToTemplate(args)}></storybook-button>
+    `,
+  }),
 };
 
-const ButtonLoadingStatesTemplate: StoryFn = args => ({
-  template: `
-    <h6>{{ stateName }}</h6>
-    <button [clrLoading]="validateState" class="btn btn-sm btn-primary">
-      <cds-icon shape="home"></cds-icon>
-      Validate
-    </button>
-    <button [clrLoading]="validateState" class="btn btn-primary">Validate</button>
-    <button [clrLoading]="submitState" type="submit" class="btn btn-success-outline">
-      <cds-icon shape="home"></cds-icon>
-      Submit
-    </button>
-  `,
-  props: args,
-});
-
-export const ButtonLoadingStates: StoryObj = {
-  render: ButtonLoadingStatesTemplate,
-};
+export const ButtonLoadingStates: StoryObj = {};
 
 export const Loading: StoryObj = {
-  render: ButtonLoadingStatesTemplate,
-
   args: {
-    ...ButtonLoadingStatesTemplate.args,
     stateName: 'Loading buttons',
     validateState: ClrLoadingState.LOADING,
     submitState: ClrLoadingState.LOADING,

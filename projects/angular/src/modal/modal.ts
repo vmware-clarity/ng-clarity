@@ -8,6 +8,7 @@
 import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
 import {
   Component,
+  ContentChild,
   ElementRef,
   EventEmitter,
   HostBinding,
@@ -16,6 +17,7 @@ import {
   OnDestroy,
   Output,
   SimpleChange,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
 
@@ -66,7 +68,7 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @Input('clrModalClosable') closable = true;
   @Input('clrModalCloseButtonAriaLabel') closeButtonAriaLabel = this.commonStrings.keys.close;
-  @Input('clrModalSize') size: string;
+  @Input('clrModalSize') size = 'md';
   @Input('clrModalStaticBackdrop') staticBackdrop = true;
   @Input('clrModalSkipAnimation') skipAnimation = false;
 
@@ -77,6 +79,9 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   // presently this is only used by inline wizards
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
+
+  // Provide raw modal content. This is used by the wizard so that the same template can be rendered with and without a modal.
+  @ContentChild('clrInternalModalContentTemplate') protected readonly modalContentTemplate: TemplateRef<any>;
 
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
 

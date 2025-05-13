@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
+import { ClrCheckboxModule, ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules, removeFocusOutline } from '../../helpers/common';
 
@@ -15,7 +15,7 @@ export default {
   title: 'Modal/Modal',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrModalModule],
+      imports: [...CommonModules, ClrModalModule, ClrCheckboxModule],
     }),
   ],
   component: ClrModal,
@@ -49,6 +49,7 @@ export default {
     body: 'Hello World!',
     showLongPageContent: true,
     showLongModalContent: false,
+    showToggle: false,
   },
   parameters: {
     docs: {
@@ -85,6 +86,10 @@ const ModalTemplate: StoryFn = args => ({
       <h3 class="modal-title">{{ title }}</h3>
       <div class="modal-body">
         {{ body }}
+        <clr-toggle-wrapper *ngIf="showToggle">
+          <input type="checkbox" clrToggle />
+          <label>Focus on Toggle should not cut outline</label>
+        </clr-toggle-wrapper>
         <div *ngIf="showLongModalContent" cds-layout="m-t:md">
           This list is provided to demonstrate scrolling capability within the modal.
           <ul>
@@ -164,3 +169,17 @@ export const OpenFullScreenModal: StoryObj = {
     showLongPageContent: false,
   },
 };
+
+export const NestedFocusedFormElements: StoryObj = {
+  render: ModalTemplate,
+  play: focusToggle,
+  args: {
+    showToggle: true,
+    clrModalOpen: true,
+  },
+};
+
+function focusToggle({ canvasElement }: StoryContext) {
+  // force keyboard focus outline over input checkbox
+  canvasElement.querySelector<HTMLElement>('input[type=checkbox]')?.focus();
+}

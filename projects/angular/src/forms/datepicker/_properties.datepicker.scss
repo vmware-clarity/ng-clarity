@@ -10,7 +10,7 @@
 @include mixins.exports('datepicker.properties') {
   :root [cds-theme] {
     --clr-calendar-background-color: #{tokens.$cds-alias-object-container-background};
-    --clr-calendar-border-color: #{tokens.$cds-alias-object-border-color-shade};
+    --clr-calendar-border-color: #{tokens.$cds-alias-object-border-color};
 
     --clr-calendar-option-text-color: #{tokens.$cds-alias-object-interaction-color};
     --clr-calendar-active-option-border-color: #{tokens.$cds-alias-object-interaction-background-highlight};

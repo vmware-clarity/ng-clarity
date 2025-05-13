@@ -6,10 +6,10 @@
  */
 
 import { ClrCheckboxContainer, ClrCheckboxModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 
-import { getSelectors } from '../../helpers/checkbox-toggle.helpers';
 import { CommonModules } from '../../helpers/common';
+import { CheckboxToggleStorybookComponent } from './checkbox-toggle.storybook.component';
 
 enum CheckboxType {
   Checkbox = 'checkbox',
@@ -20,7 +20,7 @@ export default {
   title: 'Checkbox or Toggle/Checkbox or Toggle Container',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrCheckboxModule],
+      imports: [...CommonModules, ClrCheckboxModule, CheckboxToggleStorybookComponent],
     }),
   ],
   component: ClrCheckboxContainer,
@@ -38,100 +38,84 @@ export default {
     clrInline: false,
     // story helpers
     type: CheckboxType.Checkbox,
-    label: 'Options',
+    containerLabel: 'Options',
     createArray: n => new Array(n),
     optionCount: 4,
+    disabledIndexes: [],
   },
-};
-
-const CheckboxToggleContainerTemplate: StoryFn = args => {
-  const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
-  return {
+  render: (args: CheckboxToggleStorybookComponent) => ({
+    props: {
+      ...args,
+    },
     template: `
-      <${containerSelector} [clrInline]="clrInline">
-        <label>{{ label }}</label>
-        <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
-          <input type="checkbox" ${directive} />
-          <label>Option {{ i + 1 }}</label>
-        </${wrapperSelector}>
-      </${containerSelector}>
+      <storybook-checkbox-toggle ${argsToTemplate(args)}></storybook-checkbox-toggle>
     `,
-    props: args,
-  };
+  }),
 };
 
-const CheckBoxAllTemplate: StoryFn = args => {
-  const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
-  return {
-    template: `
-      <div style="padding: 20px">
-        <span cds-text="subsection">Default</span>
-        <${containerSelector} [clrInline]="false">
-          <label>{{ label }}</label>
-          <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
-            <input type="checkbox" ${directive} />
-            <label>Option {{ i + 1 }}</label>
-          </${wrapperSelector}>
-        </${containerSelector}>
-      </div>
-
-      <div style="padding: 20px">
-        <span cds-text="subsection">Inline</span>
-        <${containerSelector} [clrInline]="true">
-          <label>{{ label }}</label>
-          <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
-            <input type="checkbox" ${directive} />
-            <label>Option {{ i + 1 }}</label>
-          </${wrapperSelector}>
-        </${containerSelector}>
-      </div>
-
-      <div style="padding: 20px">
-        <span cds-text="subsection">Helper Text</span>
-        <${containerSelector} [clrInline]="false">
-          <label>{{ label }}</label>
-          <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
-            <input type="checkbox" ${directive} />
-            <label>Option {{ i + 1 }}</label>
-          </${wrapperSelector}>
-          <clr-control-helper>Helper text</clr-control-helper>
-          <clr-control-error>This field is required!</clr-control-error>
-        </${containerSelector}>
-      </div>
-
-      <div *ngIf="type === 'toggle'" style="padding: 20px">
-        <span cds-text="subsection">Right Aligned</span>
-        <${containerSelector} [clrInline]="false" class="clr-toggle-right">
-          <label>{{ label }}</label>
-          <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
-            <input type="checkbox" ${directive} />
-            <label>Option {{ i + 1 }}</label>
-          </${wrapperSelector}>
-        </${containerSelector}>
-      </div>
-    `,
-    props: args,
-  };
-};
-
-export const CheckboxOrToggleContainer: StoryObj = {
-  render: CheckboxToggleContainerTemplate,
-};
-
-export const ShowcaseCheckboxContainer: StoryObj = {
-  render: CheckBoxAllTemplate,
-  args: { type: CheckboxType.Checkbox },
-  parameters: {
-    actions: { disable: true },
-    controls: { disable: true },
+export const CheckboxContainer: StoryObj = {
+  args: {
+    type: CheckboxType.Checkbox,
   },
 };
 
-export const ShowcaseToggleContainer: StoryObj = {
-  render: CheckBoxAllTemplate,
-  args: { type: CheckboxType.Toggle },
-  parameters: {
-    actions: { disable: true },
-    controls: { disable: true },
+export const CheckboxContainerHelperText: StoryObj = {
+  args: {
+    type: CheckboxType.Checkbox,
+    showHelperText: true,
   },
+};
+
+export const ToggleContainer: StoryObj = {
+  args: {
+    type: CheckboxType.Toggle,
+  },
+};
+
+export const CheckboxContainerDisabled: StoryObj = {
+  args: {
+    type: CheckboxType.Checkbox,
+    disabledIndexes: [0, 1, 2, 3],
+  },
+};
+
+export const ToggleContainerDisabled: StoryObj = {
+  args: {
+    type: CheckboxType.Toggle,
+    disabledIndexes: [0, 1, 2, 3],
+  },
+};
+
+export const CheckboxContainerPartiallyDisabled: StoryObj = {
+  args: {
+    type: CheckboxType.Checkbox,
+    disabledIndexes: [0, 2],
+  },
+};
+
+export const ToggleContainerPartiallyDisabled: StoryObj = {
+  args: {
+    type: CheckboxType.Toggle,
+    disabledIndexes: [0, 2],
+  },
+};
+
+export const CheckboxContainerInline: StoryObj = {
+  args: { type: CheckboxType.Checkbox, clrInline: true },
+};
+
+export const CheckboxContainerInlineHelperText: StoryObj = {
+  args: { type: CheckboxType.Checkbox, clrInline: true, showHelperText: true },
+};
+
+export const ToggleContainerInline: StoryObj = {
+  args: { type: CheckboxType.Toggle, clrInline: true },
+};
+
+export const ToggleContainerRightAligned: StoryObj = {
+  args: { type: CheckboxType.Toggle, rightAligned: true },
+};
+
+export const ToggleContainerRightAlignedHelperText: StoryObj = {
+  args: { type: CheckboxType.Toggle, rightAligned: true, showHelperText: true },
 };

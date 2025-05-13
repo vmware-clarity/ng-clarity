@@ -33,16 +33,13 @@
 }
 
 @mixin generate-calendar-focus-style() {
-  &:hover {
-    background: datepicker-variables.$clr-calendar-btn-hover-focus-color;
-  }
-
   &.in-range {
     background: datepicker-variables.$clr-calendar-in-range-cell-background-color;
+    border-radius: 0;
+  }
 
-    &:not(.is-today) {
-      border-radius: 0;
-    }
+  &:hover {
+    background: datepicker-variables.$clr-calendar-btn-hover-focus-color;
   }
 
   &:focus {
@@ -50,6 +47,7 @@
     // using cds-alias-object-interaction-outline token will be better when focus state get implemented
     outline: tokens.$cds-global-color-blue-700 solid 2px;
     outline-offset: calc(-1 * tokens.$cds-global-space-2);
+    background: tokens.$cds-alias-object-interaction-background-hover;
   }
 
   &:active {
@@ -118,8 +116,10 @@
     z-index: map.get(variables.$clr-layers, dropdown-menu);
 
     .datepicker-view-manager {
-      width: calc(datepicker-variables.$clr-calendar-width - calc(1 * datepicker-variables.$clr-calendar-padding));
-      padding-left: datepicker-variables.$clr-calendar-padding;
+      display: flex;
+      flex-direction: column;
+      row-gap: tokens.$cds-global-space-5;
+      width: calc(7 * datepicker-variables.$clr-calendar-click-target);
     }
 
     &.has-range-option {
@@ -131,8 +131,10 @@
 
     &.has-action-buttons {
       height: calc(
-        datepicker-variables.$clr-calendar-height + datepicker-variables.$clr-calendar-action-buttons-height
+        datepicker-variables.$clr-calendar-height + datepicker-variables.$clr-calendar-action-buttons-height +
+          tokens.$cds-global-space-5
       );
+      row-gap: tokens.$cds-global-space-5;
     }
 
     .datepicker-actions {
@@ -160,6 +162,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: calc(7 * datepicker-variables.$clr-calendar-click-target);
   }
 
   .calendar-switchers,
@@ -178,13 +181,13 @@
   .calendar-table {
     // clr-calendar have dispaly: inline, preventing flex from having an effect.
     flex: 1 1 auto;
-
+    border-spacing: 0 datepicker-variables.$clr-calendar-button-gap;
     //Dimensions
     width: 100%;
   }
 
-  .calendar-cell,
-  .calendar-table .calendar-cell {
+  td.calendar-cell,
+  td.calendar-table .calendar-cell {
     //Dimensions
     @include mixins.min-equilateral(datepicker-variables.$clr-calendar-click-target);
     padding: 0;
@@ -286,17 +289,12 @@
 
   .monthpicker,
   .yearpicker,
-  .years {
+  .daypicker {
     display: flex;
-    flex-direction: column;
     flex-wrap: wrap;
-
-    //Other props
-    overflow: hidden;
-  }
-
-  .yearpicker {
-    gap: tokens.$cds-global-space-6;
+    row-gap: tokens.$cds-global-space-5;
+    height: calc(calc(9 * tokens.$cds-global-space-10) + calc(3 * tokens.$cds-global-space-5));
+    width: calc(7 * datepicker-variables.$clr-calendar-click-target);
   }
 
   .years {
@@ -321,6 +319,13 @@
         background: none;
       }
     }
+  }
+
+  .months,
+  .years {
+    row-gap: datepicker-variables.$clr-calendar-button-gap;
+    flex-wrap: wrap;
+    display: flex;
   }
 
   .month {
