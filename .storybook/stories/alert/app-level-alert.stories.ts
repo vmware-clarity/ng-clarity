@@ -47,7 +47,7 @@ export default {
   },
   args: {
     // inputs
-    clrAlertIcon: 'Default',
+    clrAlertIcon: null,
     clrCloseButtonAriaLabel: commonStringsDefault.alertCloseButtonAriaLabel,
     clrAlertClosable: false,
     // outputs

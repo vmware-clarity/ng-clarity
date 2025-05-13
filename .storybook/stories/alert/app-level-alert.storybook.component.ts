@@ -7,8 +7,10 @@
 
 import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ClrAlertModule } from '@clr/angular';
+import { ClrAlertModule, ClrIconModule } from '@clr/angular';
 import { createArray } from 'helpers/common';
+
+import { RenderComponentStorybook } from '../../helpers/render-component';
 
 @Component({
   selector: 'storybook-app-level-alert',
@@ -49,6 +51,7 @@ import { createArray } from 'helpers/common';
     <ng-template #alertItemContent let-index="index">
       <span class="alert-text">
         {{ content }} {{ index + 1 }}
+        <ng-container #components></ng-container>
         <a *ngIf="showAction" href="javascript://">
           <cds-icon shape="user"></cds-icon>
           Reset to green
@@ -61,11 +64,11 @@ import { createArray } from 'helpers/common';
     </ng-template>
   `,
   standalone: true,
-  imports: [ClrAlertModule, NgFor, NgIf, NgTemplateOutlet],
+  imports: [ClrAlertModule, ClrIconModule, NgFor, NgIf, NgTemplateOutlet],
 })
-export class AppLevelAlertStorybookComponent {
+export class AppLevelAlertStorybookComponent extends RenderComponentStorybook {
   // Story inputs matching the original story args
-  @Input() clrAlertIcon = 'Default';
+  @Input() clrAlertIcon = null;
   @Input() clrCloseButtonAriaLabel = 'Close alert';
   @Input() clrAlertClosable = false;
   @Input() alertCount = 3;

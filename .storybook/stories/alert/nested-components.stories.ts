@@ -12,6 +12,7 @@ import { RenderComponentStorybook } from 'helpers/render-component';
 import { CommonModules } from '../../helpers/common';
 import { BadgeStoryBookComponent } from '../badge/badge.storybook.component';
 import { LabelStoryBookComponent } from '../label/label.storybook.component';
+import { AppLevelAlertStorybookComponent } from './app-level-alert.storybook.component';
 import { StandardAlertStorybookComponent } from './standard-alert.storybook.component';
 
 const innerComponents = [
@@ -19,10 +20,56 @@ const innerComponents = [
   { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-info'] } },
   { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-success'], showLinkBadge: false } },
   { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-danger'], showLinkBadge: false } },
-  { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-danger'], clickable: true } },
-  { type: LabelStoryBookComponent, options: { labelColorTypes: ['label-success'], closeIcon: true } },
+  {
+    type: LabelStoryBookComponent,
+    options: { labelTypes: ['label-info', 'label-success', 'label-warning', 'label-danger'], clickable: true },
+  },
+  {
+    type: LabelStoryBookComponent,
+    options: { labelTypes: ['label-info', 'label-success', 'label-warning', 'label-danger'] },
+  },
 ];
 const nestedComponents = [
+  {
+    type: AppLevelAlertStorybookComponent,
+    options: {
+      alertTypes: ['danger'],
+      alertCount: 1,
+      showAction: true,
+      clrAlertClosable: true,
+      components: innerComponents,
+    },
+  },
+  {
+    type: AppLevelAlertStorybookComponent,
+    options: {
+      alertTypes: ['success'],
+      alertCount: 1,
+      showAction: true,
+      clrAlertClosable: true,
+      components: innerComponents,
+    },
+  },
+  {
+    type: AppLevelAlertStorybookComponent,
+    options: {
+      alertTypes: ['info'],
+      alertCount: 1,
+      showAction: true,
+      clrAlertClosable: true,
+      components: innerComponents,
+    },
+  },
+  {
+    type: AppLevelAlertStorybookComponent,
+    options: {
+      alertTypes: ['warning'],
+      alertCount: 1,
+      showAction: true,
+      clrAlertClosable: true,
+      components: innerComponents,
+    },
+  },
   {
     type: StandardAlertStorybookComponent,
     options: {
@@ -87,7 +134,7 @@ export default {
     }),
   ],
   argTypes: {
-    // story helpers
+    components: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // story helpers

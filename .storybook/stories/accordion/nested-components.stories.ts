@@ -135,10 +135,6 @@ const nestedComponents = [
   { type: CheckboxToggleStorybookComponent, options: { containerLabel: 'Options', optionCount: 3 } },
 ];
 
-//   'combobox', 'datagrid', 'datalist', 'date-picker', 'dropdown', 'file-picker', 'icon', 'input','tree-view'
-//   'label', list, 'modal','password','progress-bar', 'radio', 'range', 'select',  'signpost', 'wizard'
-//   'side-panel', 'stack-view', 'stepper', 'spinner', 'table', 'textarea', 'toggle', 'tooltip', 'timeline',
-
 export default {
   title: 'Accordion/Nesting Components',
   decorators: [
@@ -147,7 +143,7 @@ export default {
     }),
   ],
   argTypes: {
-    // story helpers
+    components: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // story helpers
