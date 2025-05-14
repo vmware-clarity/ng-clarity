@@ -12,6 +12,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '../utils/cdk/cdk-trap-focus.module';
+import { expectActiveElementToBe } from '../utils/testing/helpers.spec';
 import { ClrModal } from './modal';
 import { ClrModalModule } from './modal.module';
 
@@ -182,7 +183,7 @@ describe('Modal', () => {
   }));
 
   it('focuses on the title when opened', fakeAsync(() => {
-    expect(document.activeElement).toBe(fixture.nativeElement.querySelector('.modal-title-wrapper'));
+    expectActiveElementToBe(fixture.nativeElement.querySelector('.modal-title-wrapper'));
   }));
 
   it('supports a clrModalSize option', fakeAsync(() => {
@@ -270,14 +271,14 @@ describe('Modal', () => {
     // Just make sure we have the "x" to close the modal,
     // because this is different from the clrModalClosable option.
     expect(compiled.querySelector('.close')).not.toBeNull();
-    expect(document.activeElement).toBe(titleWrapperElement);
+    expectActiveElementToBe(titleWrapperElement);
 
     focusStealButton.focus();
-    expect(document.activeElement).toBe(focusStealButton);
+    expectActiveElementToBe(focusStealButton);
 
     backdrop.click();
     flushAndExpectOpen(fixture, true);
-    expect(document.activeElement).toBe(titleWrapperElement);
+    expectActiveElementToBe(titleWrapperElement);
   }));
 
   it('traps user focus', () => {

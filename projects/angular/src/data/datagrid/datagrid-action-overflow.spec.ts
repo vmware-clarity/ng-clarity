@@ -9,6 +9,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 
 import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
 import { TestContext } from './helpers.spec';
 import { RowActionService } from './providers/row-action-service';
@@ -107,7 +108,7 @@ export default function (): void {
       context.detectChanges();
       await context.fixture.whenStable();
       const firstButton: HTMLButtonElement = context.testComponent.actionItem.nativeElement;
-      expect(document.activeElement).toBe(firstButton);
+      expectActiveElementToBe(firstButton);
     });
   });
 }

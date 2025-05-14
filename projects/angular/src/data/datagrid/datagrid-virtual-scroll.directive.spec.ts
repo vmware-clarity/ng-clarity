@@ -19,6 +19,7 @@ import { animationFrameScheduler, BehaviorSubject, Observable } from 'rxjs';
 
 import { ClarityModule } from '../../clr-angular.module';
 import { Keys } from '../../utils/enums/keys.enum';
+import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
@@ -292,25 +293,25 @@ export default function (): void {
         sleep(10);
         fixture.detectChanges();
 
-        expect(document.activeElement).toBe(headerCheckboxCell);
+        expectActiveElementToBe(headerCheckboxCell);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         // active checkbox input with ID clr-dg-row-cb364
-        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[22]);
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[22]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb383
-        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[41]);
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[41]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb360
-        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[19]);
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[19]);
 
         flush();
         flushMicrotasks();

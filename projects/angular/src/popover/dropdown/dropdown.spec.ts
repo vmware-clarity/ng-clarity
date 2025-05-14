@@ -15,6 +15,7 @@ import { ClrModalModule } from '../../modal/modal.module';
 import { FocusService } from '../../utils/focus/focus.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownItem } from './dropdown-item';
 import { ClrDropdownTrigger } from './dropdown-trigger';
@@ -228,13 +229,13 @@ export default function (): void {
       fixture.detectChanges();
 
       const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
-      expect(document.activeElement).toBe(dropdownItem);
+      expectActiveElementToBe(dropdownItem);
 
       dropdownItem.click();
       tick();
       fixture.detectChanges();
 
-      expect(document.activeElement).toBe(dropdownToggle);
+      expectActiveElementToBe(dropdownToggle);
     }));
 
     it('does not put focus back on the trigger when a dropdown item is clicked if [clrCloseMenuOnItemClick] is false', fakeAsync(() => {
@@ -249,13 +250,13 @@ export default function (): void {
       fixture.detectChanges();
 
       const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
-      expect(document.activeElement).toBe(dropdownItem);
+      expectActiveElementToBe(dropdownItem);
 
       dropdownItem.click();
       tick();
       fixture.detectChanges();
 
-      expect(document.activeElement).toBe(dropdownItem);
+      expectActiveElementToBe(dropdownItem);
     }));
 
     it('declares a FocusService provider', () => {
@@ -293,21 +294,19 @@ export default function (): void {
       await clickButton(fixture.componentInstance.dropdownTriggerButtonElementRef);
 
       // The dropdown item button should be focused.
-      expect(document.activeElement).toBe(fixture.componentInstance.dropdownItemButtonElementRef.nativeElement);
+      expectActiveElementToBe(fixture.componentInstance.dropdownItemButtonElementRef.nativeElement);
 
       // Click the dropdown item button.
       await clickButton(fixture.componentInstance.dropdownItemButtonElementRef);
 
       // The modal title should be focused.
-      expect(document.activeElement).toBe(
-        fixture.componentInstance.elementRef.nativeElement.querySelector('.modal-title-wrapper')
-      );
+      expectActiveElementToBe(fixture.componentInstance.elementRef.nativeElement.querySelector('.modal-title-wrapper'));
 
       // Click the close modal button.
       await clickButton(fixture.componentInstance.modalCloseButtonElementRef);
 
       // Focus should be returned to the dropdown trigger. (This expectation tests behavior implemented in the dropdown AND modal components.)
-      expect(document.activeElement).toBe(fixture.componentInstance.dropdownTriggerButtonElementRef.nativeElement);
+      expectActiveElementToBe(fixture.componentInstance.dropdownTriggerButtonElementRef.nativeElement);
     });
 
     async function clickButton(buttonElementRef: ElementRef<HTMLButtonElement>) {
