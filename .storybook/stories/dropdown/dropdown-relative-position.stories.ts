@@ -23,7 +23,7 @@ export default {
 const DropdownRelativePositionTemplate: StoryFn = args => ({
   template: `
     <div class="content-area" style="position: relative">
-      <div style="margin-top: 800px"></div>
+      <div style="margin-top: 400px"></div>
       <clr-dropdown>
         <button class="btn btn-outline-primary" clrDropdownTrigger>
           Dropdown
