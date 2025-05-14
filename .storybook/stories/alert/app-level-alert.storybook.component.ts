@@ -51,7 +51,7 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
     <ng-template #alertItemContent let-index="index">
       <span class="alert-text">
         {{ content }} {{ index + 1 }}
-        <ng-container #components></ng-container>
+        <ng-container #renderContainer></ng-container>
         <a *ngIf="showAction" href="javascript://">
           <cds-icon shape="user"></cds-icon>
           Reset to green

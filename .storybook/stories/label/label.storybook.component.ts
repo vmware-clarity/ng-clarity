@@ -16,7 +16,7 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
   template: `
     <ng-template #labelContent>
       <span class="text">{{ content }}</span>
-      <ng-container #components></ng-container>
+      <ng-container #renderContainer></ng-container>
       <cds-icon *ngIf="closeIcon" shape="close"></cds-icon>
     </ng-template>
     <ng-container *ngIf="clickable">

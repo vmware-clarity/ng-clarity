@@ -30,7 +30,7 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
         <clr-alert-item *ngFor="let _ of createArray(alertCount); let i = index">
           <span class="alert-text">
             {{ content }} {{ i + 1 }}
-            <ng-container #components></ng-container>
+            <ng-container #renderContainer></ng-container>
           </span>
           <div class="alert-actions" *ngIf="showActions || showAction">
             <clr-dropdown *ngIf="showActions">
