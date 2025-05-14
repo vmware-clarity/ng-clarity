@@ -49,7 +49,7 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    gap: tokens.$cds-global-space-3;
+    gap: tokens.$cds-global-space-5;
     padding: tokens.$cds-global-space-3 tokens.$cds-global-space-5;
     border: label-variables.$clr-label-borderwidth solid label-variables.$clr-label-default-border-color;
     border-radius: tokens.$cds-alias-object-border-radius-200;
@@ -59,24 +59,23 @@
     color: label-variables.$clr-label-font-color-light;
     text-decoration: none;
 
-    > .badge,
-    > cds-icon {
+    &:has(> .badge),
+    &:has(> cds-icon) {
+      padding-right: tokens.$cds-global-space-3;
+    }
+
+    .badge,
+    cds-icon {
       margin: 0;
       text-decoration: none;
     }
 
-    cds-icon {
-      margin-left: tokens.$cds-global-space-3;
+    &:has(.badge) {
+      gap: tokens.$cds-global-space-3;
     }
 
-    .badge + cds-icon {
-      margin-left: 0;
-    }
-
-    // constrain to cds-icon (close) and badge class, so combobox pills should not be affected
-    & > cds-icon:last-child,
-    & > span:last-child.badge {
-      margin-right: calc(-1 * #{tokens.$cds-global-space-3});
+    &.clickable:not(:has(.text)) {
+      text-decoration: underline;
     }
 
     &.clickable > .text {
@@ -117,6 +116,10 @@
     @include generateStatusLabelStyles(success);
     @include generateStatusLabelStyles(warning);
     @include generateStatusLabelStyles(danger);
+
+    & > .badge {
+      margin: 0;
+    }
 
     &.disabled,
     &:disabled {

@@ -9,7 +9,12 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
+import {
+  expectActiveElementNotToBe,
+  expectActiveElementToBe,
+  spec,
+  TestContext,
+} from '../../utils/testing/helpers.spec';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpost } from './signpost';
 import { ClrSignpostModule } from './signpost.module';
@@ -85,7 +90,7 @@ export default function (): void {
         this.toggleService.open = false;
         this.detectChanges();
         expect(signpostToggle).not.toBeNull();
-        expect(document.activeElement).not.toBe(signpostToggle);
+        expectActiveElementNotToBe(signpostToggle);
       });
 
       it('should not get focus back on trigger if signpost gets closed with outside click on another interactive element', fakeAsync(function (
@@ -102,7 +107,7 @@ export default function (): void {
         this.detectChanges();
 
         expect(this.hostElement.querySelector('.signpost-content')).toBeNull();
-        expect(document.activeElement).toBe(this.hostComponent.outsideClickBtn.nativeElement);
+        expectActiveElementToBe(this.hostComponent.outsideClickBtn.nativeElement);
       }));
 
       it('should get focus back on trigger if signpost gets closed with outside click on non-interactive element', fakeAsync(function (
@@ -117,7 +122,7 @@ export default function (): void {
         this.detectChanges();
 
         expect(this.hostElement.querySelector('.signpost-content')).toBeNull();
-        expect(document.activeElement).toBe(this.hostElement.querySelector('.signpost-action'));
+        expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
       }));
 
       it('should get focus back on trigger if signpost gets closed while focused element inside content', function (this: Context) {
@@ -130,7 +135,7 @@ export default function (): void {
         this.toggleService.open = false;
         this.detectChanges();
 
-        expect(document.activeElement).toBe(this.hostElement.querySelector('.signpost-action'));
+        expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
       });
 
       it('should get focus back on trigger if signpost gets closed with ESC key', function (this: Context) {
@@ -144,7 +149,7 @@ export default function (): void {
         this.detectChanges();
 
         expect(this.hostElement.querySelector('.signpost-content')).toBeNull();
-        expect(document.activeElement).toBe(this.hostElement.querySelector('.signpost-action'));
+        expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
       });
     });
 

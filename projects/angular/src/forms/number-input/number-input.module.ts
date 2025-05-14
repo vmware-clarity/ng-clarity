@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '@cds/core/icon';
+import { checkCircleIcon, ClarityIcons, exclamationCircleIcon, minusIcon, plusIcon } from '@cds/core/icon';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrCommonFormsModule } from '../common/common.module';
@@ -22,6 +22,6 @@ import { ClrNumberInputContainer } from './number-input-container';
 })
 export class ClrNumberInputModule {
   constructor() {
-    ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+    ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, minusIcon, plusIcon);
   }
 }

@@ -39,6 +39,9 @@
   #dynamicRowsDatagrid
   [(clrDgSelected)]="selectedRows"
   *ngIf="{ rows: rows | async }; let data"
+  [clrDgItemsTrackBy]="trackItemById"
+  [clrDgCustomSelectAllEnabled]="true"
+  (clrDgCustomSelectAll)="toggleSelectAllRows($event)"
   style="height: 32rem"
   class="datagrid-compact"
 >
@@ -68,7 +71,7 @@
   </ng-template>
 
   <clr-dg-footer>
-    <div class="footer-counters">Rows {{range?.start + 1}} - {{range?.end}} of {{data.rows.length}}</div>
+    <div class="footer-counters">Rendered rows {{range?.start + 1}} - {{range?.end}} of {{data.rows.length}}</div>
     <clr-dropdown>
       <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
         Smooth Jump to
@@ -84,6 +87,31 @@
         </div>
       </clr-dropdown-menu>
     </clr-dropdown>
+
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="dynamicRowsDatagrid.virtualScroll.scrollToIndex(0, 'smooth')"
+    >
+      <cds-icon shape="step-forward-2" direction="left"></cds-icon>
+    </button>
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="dynamicRowsDatagrid.virtualScroll.scrollUp(19, 'smooth')"
+    >
+      <cds-icon shape="angle" direction="up"></cds-icon>
+    </button>
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="dynamicRowsDatagrid.virtualScroll.scrollDown(19, 'smooth')"
+    >
+      <cds-icon shape="angle" direction="down"></cds-icon>
+    </button>
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="dynamicRowsDatagrid.virtualScroll.scrollToIndex(data.rows.length, 'smooth')"
+    >
+      <cds-icon shape="step-forward-2" direction="right"></cds-icon>
+    </button>
   </clr-dg-footer>
 </clr-datagrid>
 
@@ -103,6 +131,7 @@
   #usersDatagrid
   *ngIf="{ users: users | async }; let data"
   [(clrDgSelected)]="selectedUsers"
+  [clrDgItemsTrackBy]="trackItemById"
   class="datagrid-compact"
   style="height: 30rem"
 >
@@ -161,5 +190,30 @@
         </div>
       </clr-dropdown-menu>
     </clr-dropdown>
+
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="usersDatagrid.virtualScroll.scrollToIndex(0, 'auto')"
+    >
+      <cds-icon shape="step-forward-2" direction="left"></cds-icon>
+    </button>
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="usersDatagrid.virtualScroll.scrollUp(19, 'auto')"
+    >
+      <cds-icon shape="angle" direction="up"></cds-icon>
+    </button>
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="usersDatagrid.virtualScroll.scrollDown(19, 'auto')"
+    >
+      <cds-icon shape="angle" direction="down"></cds-icon>
+    </button>
+    <button
+      class="btn btn-sm btn-link-neutral footer-button"
+      (click)="usersDatagrid.virtualScroll.scrollToIndex(data.users.length, 'auto')"
+    >
+      <cds-icon shape="step-forward-2" direction="right"></cds-icon>
+    </button>
   </clr-dg-footer>
 </clr-datagrid>

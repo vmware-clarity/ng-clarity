@@ -38,7 +38,7 @@ export default {
     // methods
     dataChanged: { control: { disable: true } },
     resize: { control: { disable: true } },
-    scrollToIndexBehaviour: { control: 'radio', options: ['auto', 'smooth'] },
+    scrollToIndexBehavior: { control: 'radio', options: ['auto', 'smooth'] },
     // story helpers
     behaviorElements: { control: { disable: true }, table: { disable: true } },
     setExpanded: { control: { disable: true }, table: { disable: true } },
@@ -52,6 +52,8 @@ export default {
     clrLoadingMoreItems: false,
     clrDgPreserveSelection: false,
     clrDgRowSelection: false,
+    clrDgCustomSelectAllEnabled: false,
+    clrDgSkeletonLoading: false,
     clrDgSingleActionableAriaLabel: commonStringsDefault.singleActionableAriaLabel,
     clrDgSingleSelectionAriaLabel: commonStringsDefault.singleSelectionAriaLabel,
     // outputs
@@ -60,14 +62,20 @@ export default {
     clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     clrRenderRangeChange: action('clrRenderRangeChange'),
     clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
+    clrDgCustomSelectAll(this: { selectedRows: number[] }, selectAllChecked: boolean) {
+      action('clrDgCustomSelectAll').apply(this, [selectAllChecked]);
+      this.selectedRows = selectAllChecked ? behaviorElements.value.map((element, i) => i).filter(i => i % 2) : [];
+    },
     // story helpers
     behaviorElements,
-    scrollToIndexBehaviour: 'smooth',
+    scrollToIndexBehavior: 'smooth',
     singleSelectable: false,
     multiSelectable: false,
     actionOverflow: false,
     compact: false,
     hidableColumns: false,
+    scrollOffset: 16,
+    showFooterNavButtons: false,
     height: 480,
     selectedRows: [],
     setExpanded,
@@ -85,6 +93,15 @@ const DatagridDetailsTemplate: StoryFn = args => ({
           background-color: var(--cds-alias-status-info);
         }
       }
+      .footer-nav-buttons {
+        display: inline-block;
+        margin-left: var(--cds-global-space-5);
+      }
+      .footer-button {
+        min-width: var(--cds-global-space-9);
+        margin: 0 0 0 var(--cds-global-space-5);
+        padding: 0;
+      }
     </style>
     <clr-datagrid
       #datagrid
@@ -98,11 +115,13 @@ const DatagridDetailsTemplate: StoryFn = args => ({
       [clrDgLoading]="clrDgLoading"
       [clrDgPreserveSelection]="clrDgPreserveSelection"
       [clrDgRowSelection]="clrDgRowSelection"
+      [clrDgCustomSelectAllEnabled]="clrDgCustomSelectAllEnabled"
       [clrDgSingleActionableAriaLabel]="clrDgSingleActionableAriaLabel"
       [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
       (clrDgRefresh)="clrDgRefresh($event)"
       (clrDgSelectedChange)="clrDgSelectedChange($event)"
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
+      (clrDgCustomSelectAll)="clrDgCustomSelectAll($event)"
       [clrLoadingMoreItems]="clrLoadingMoreItems"
     >
       <clr-dg-column [style.width.px]="250">
@@ -127,7 +146,11 @@ const DatagridDetailsTemplate: StoryFn = args => ({
         [clrVirtualRowsTemplateCacheSize]="400"
         (renderedRangeChange)="clrRenderRangeChange($event)"
       >
-        <clr-dg-row [clrDgItem]="element" [clrDgSelected]="selectedRows.includes(index)">
+        <clr-dg-row
+          [clrDgItem]="element"
+          [clrDgSelected]="selectedRows.includes(index)"
+          [clrDgSkeletonLoading]="clrDgSkeletonLoading && index === 0"
+        >
           <clr-dg-action-overflow
             *ngIf="actionOverflow"
             [clrDgActionOverflowOpen]="clrDgActionOverflowOpen && index === 0"
@@ -155,18 +178,45 @@ const DatagridDetailsTemplate: StoryFn = args => ({
 
       <clr-dg-footer>
         {{ data.elements?.length }}
-        <clr-dropdown>
-          <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
-            Jump to
+        <div *ngIf="showFooterNavButtons" class="footer-nav-buttons">
+          <clr-dropdown>
+            <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
+              Jump to
+              <cds-icon shape="angle" direction="down"></cds-icon>
+            </button>
+            <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
+              <div (click)="datagrid.virtualScroll.scrollToIndex(20, scrollToIndexBehavior)" clrDropdownItem>20</div>
+              <div (click)="datagrid.virtualScroll.scrollToIndex(60, scrollToIndexBehavior)" clrDropdownItem>60</div>
+              <div (click)="datagrid.virtualScroll.scrollToIndex(80, scrollToIndexBehavior)" clrDropdownItem>80</div>
+              <div (click)="datagrid.virtualScroll.scrollToIndex(100, scrollToIndexBehavior)" clrDropdownItem>100</div>
+            </clr-dropdown-menu>
+          </clr-dropdown>
+
+          <button
+            class="btn btn-sm btn-link-neutral footer-button"
+            (click)="datagrid.virtualScroll.scrollToIndex(0, scrollToIndexBehavior)"
+          >
+            <cds-icon shape="step-forward-2" direction="left"></cds-icon>
+          </button>
+          <button
+            class="btn btn-sm btn-link-neutral footer-button"
+            (click)="datagrid.virtualScroll.scrollUp(scrollOffset, scrollToIndexBehavior)"
+          >
+            <cds-icon shape="angle" direction="up"></cds-icon>
+          </button>
+          <button
+            class="btn btn-sm btn-link-neutral footer-button"
+            (click)="datagrid.virtualScroll.scrollDown(scrollOffset, scrollToIndexBehavior)"
+          >
             <cds-icon shape="angle" direction="down"></cds-icon>
           </button>
-          <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
-            <div (click)="datagrid.virtualScroll.scrollToIndex(20, scrollToIndexBehaviour)" clrDropdownItem>20</div>
-            <div (click)="datagrid.virtualScroll.scrollToIndex(60, scrollToIndexBehaviour)" clrDropdownItem>60</div>
-            <div (click)="datagrid.virtualScroll.scrollToIndex(80, scrollToIndexBehaviour)" clrDropdownItem>80</div>
-            <div (click)="datagrid.virtualScroll.scrollToIndex(100, scrollToIndexBehaviour)" clrDropdownItem>100</div>
-          </clr-dropdown-menu>
-        </clr-dropdown>
+          <button
+            class="btn btn-sm btn-link-neutral footer-button"
+            (click)="datagrid.virtualScroll.scrollToIndex(data.elements?.length, scrollToIndexBehavior)"
+          >
+            <cds-icon shape="step-forward-2" direction="right"></cds-icon>
+          </button>
+        </div>
       </clr-dg-footer>
     </clr-datagrid>
     {{ details }}
@@ -180,6 +230,13 @@ function setExpanded($event, element) {
 
 export const Datagrid: StoryObj = {
   render: DatagridDetailsTemplate,
+};
+
+export const SkeletonLoading: StoryObj = {
+  render: DatagridDetailsTemplate,
+  args: {
+    clrDgSkeletonLoading: true,
+  },
 };
 
 export const Full: StoryObj = {
@@ -198,5 +255,24 @@ export const FullCompact: StoryObj = {
     compact: true,
     hidableColumns: true,
     multiSelectable: true,
+  },
+};
+
+export const CompactSkeletonLoading: StoryObj = {
+  render: DatagridDetailsTemplate,
+  args: {
+    clrDgSkeletonLoading: true,
+    compact: true,
+  },
+};
+
+export const FullCompactWithButtonNavigationPattern: StoryObj = {
+  render: DatagridDetailsTemplate,
+  args: {
+    actionOverflow: true,
+    compact: true,
+    hidableColumns: true,
+    multiSelectable: true,
+    showFooterNavButtons: true,
   },
 };

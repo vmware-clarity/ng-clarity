@@ -249,7 +249,6 @@ describe('ClrAccordionPanel', () => {
 
       expect(headerButton.getAttribute('id')).toBeTruthy();
       expect(headerButton.getAttribute('aria-expanded')).toBe('false');
-      expect(headerButton.getAttribute('aria-controls')).toBe(panelRegion.getAttribute('id'));
       expect(headerButton.getAttribute('disabled')).toBe(null);
 
       headerButton.click();
@@ -257,6 +256,7 @@ describe('ClrAccordionPanel', () => {
 
       expect(headerButton.getAttribute('aria-expanded')).toBe('true');
       expect(panelRegion.getAttribute('aria-hidden')).toBe('false');
+      expect(headerButton.getAttribute('aria-controls')).toBe(panelRegion.getAttribute('id'));
     });
 
     it('should set proper disable attribute when disabled programmatically', () => {

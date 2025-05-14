@@ -12,6 +12,18 @@
 <clr-modal [(clrModalOpen)]="basic">
   <h3 class="modal-title">I have a nice title</h3>
   <div class="modal-body">
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio />
+      <label>Radio</label>
+    </clr-radio-wrapper>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox />
+      <label>Checkbox</label>
+    </clr-checkbox-wrapper>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle />
+      <label>Toggle</label>
+    </clr-toggle-wrapper>
     <p>But not much to say...</p>
     <form clrForm #form="ngForm" (ngSubmit)="onSubmit(model)">
       <clr-input-container>

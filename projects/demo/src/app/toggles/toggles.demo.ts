@@ -15,6 +15,7 @@ export class TogglesDemo {
   @ViewChildren(ClrForm) forms: QueryList<ClrForm>;
 
   disabled = true;
+  switch = true;
   vertical = {
     default: {
       one: false,

@@ -5,17 +5,43 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export const baseComponentTemplates = {
-  accordion: `
+const baseComponentTemplates = {
+  accordion: {
+    description: `Nested Accordion component`,
+    samples: `
 <clr-accordion>
   <clr-accordion-panel [clrAccordionPanelOpen]="true">
-    <clr-accordion-title>Nested Title</clr-accordion-title>
-    <clr-accordion-content>Nested content</clr-accordion-content>
+    <clr-accordion-title>A11Y Rule: Short title</clr-accordion-title>
+    <clr-accordion-content>
+    A11Y Rules: <br />
+    The Accordion header should include only a title and brief info (if needed). Clickable elements are not allowed.<br />
+    Keep the Accordion Description short without any clickable elements or components.<br />
+    Withing the Accordion Body you can nest components.<br />
+    Accordions can be nested up to 2 levels</clr-accordion-content>
+  </clr-accordion-panel>
+  <clr-accordion-panel>
+    <clr-accordion-title>Title</clr-accordion-title>
+    <clr-accordion-content>Content</clr-accordion-content>
+  </clr-accordion-panel>
+  <clr-accordion-panel>
+    <clr-accordion-title>Title</clr-accordion-title>
+    <clr-accordion-description>Description</clr-accordion-description>
+    <clr-accordion-content>Content</clr-accordion-content>
   </clr-accordion-panel>
 </clr-accordion>`,
-  alert: `<clr-alert><clr-alert-item><span class="alert-text">Alert text</span></clr-alert-item></clr-alert>`,
+  },
+  alert: {
+    description: `Nested standard alert`,
+    samples: `<clr-alert><clr-alert-item><span class="alert-text">Standard Alert text</span></clr-alert-item></clr-alert>`,
+  },
   badge: `<span class="badge badge-info">2</span>`,
-  button: `<button class="btn">Default</button>`,
+  button: {
+    description: `You can nest all type of buttons`,
+    samples: `
+  <button class="btn">Default</button>
+  <button class="btn btn-primary">Solid Button</button>
+  <button class="btn outline">Outline Buttons</button>`,
+  },
   'button-group': `
 <clr-button-group>
   <clr-button><cds-icon shape="home"></cds-icon>Button 1</clr-button>
@@ -424,3 +450,14 @@ export const baseComponentTemplates = {
   </clr-wizard-page>
 </clr-wizard>`,
 };
+
+export function renderNestedComponent(nestedComponentNames: string[]): string {
+  return nestedComponentNames
+    .map(name => {
+      if (baseComponentTemplates[name]?.description) {
+        return `<div><h5>${baseComponentTemplates[name].description}</h5>${baseComponentTemplates[name].samples}</div>`;
+      }
+      return `<div><h5>${name}</h5>${baseComponentTemplates[name]}</div>`;
+    })
+    .join('<hr/>');
+}

@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 
 import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
 import { Keys } from '../../utils/enums/keys.enum';
+import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrDatagridColumnSeparator } from './datagrid-column-separator';
 import { ColumnResizerService } from './providers/column-resizer.service';
 import { TableSizeService } from './providers/table-size.service';
@@ -128,11 +129,11 @@ export default function (): void {
     });
 
     it('focuses column handle after arrow key up events', function () {
-      expect(document.activeElement).not.toBe(columnHandleEl);
+      expectActiveElementNotToBe(columnHandleEl);
       columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
       expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
       columnHandleEl.dispatchEvent(new KeyboardEvent('keyup', { key: Keys.ArrowRight }));
-      expect(document.activeElement).toBe(columnHandleEl);
+      expectActiveElementToBe(columnHandleEl);
     });
   });
 }
