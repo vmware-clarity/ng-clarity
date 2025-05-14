@@ -29,7 +29,7 @@ export class BasicFocusableItem implements FocusableItem {
     if (isPlatformBrowser(this.platformId)) {
       this.renderer.setAttribute(this.el.nativeElement, 'tabindex', '0');
       this.el.nativeElement.focus();
-      this.el.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+      this.el.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
     }
   }
   blur() {
