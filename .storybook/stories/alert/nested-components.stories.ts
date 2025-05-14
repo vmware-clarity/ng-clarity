@@ -15,19 +15,15 @@ import { LabelStoryBookComponent } from '../label/label.storybook.component';
 import { AppLevelAlertStorybookComponent } from './app-level-alert.storybook.component';
 import { StandardAlertStorybookComponent } from './standard-alert.storybook.component';
 
+const LABEL_TYPES = ['label-info', 'label-success', 'label-warning', 'label-danger'];
+const BADGE_TYPES = ['badge-info', 'badge-success', 'badge-warning', 'badge-danger'];
 const innerComponents = [
-  { type: BadgeStoryBookComponent, options: { badgeTypes: [''] } },
-  { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-info'] } },
-  { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-success'], showLinkBadge: false } },
-  { type: BadgeStoryBookComponent, options: { badgeTypes: ['badge-danger'], showLinkBadge: false } },
-  {
-    type: LabelStoryBookComponent,
-    options: { labelTypes: ['label-info', 'label-success', 'label-warning', 'label-danger'], clickable: true },
-  },
-  {
-    type: LabelStoryBookComponent,
-    options: { labelTypes: ['label-info', 'label-success', 'label-warning', 'label-danger'] },
-  },
+  { type: BadgeStoryBookComponent, options: { badgeTypes: [BADGE_TYPES[0]] } },
+  { type: BadgeStoryBookComponent, options: { badgeTypes: [BADGE_TYPES[1]] } },
+  { type: BadgeStoryBookComponent, options: { badgeTypes: [BADGE_TYPES[2]], showLinkBadge: false } },
+  { type: BadgeStoryBookComponent, options: { badgeTypes: [BADGE_TYPES[3]], showLinkBadge: false } },
+  { type: LabelStoryBookComponent, options: { labelTypes: LABEL_TYPES, clickable: true } },
+  { type: LabelStoryBookComponent, options: { labelTypes: [LABEL_TYPES[0]] } },
 ];
 const nestedComponents = [
   {
@@ -35,8 +31,6 @@ const nestedComponents = [
     options: {
       alertTypes: ['danger'],
       alertCount: 1,
-      showAction: true,
-      clrAlertClosable: true,
       components: innerComponents,
     },
   },
@@ -45,7 +39,7 @@ const nestedComponents = [
     options: {
       alertTypes: ['success'],
       alertCount: 1,
-      showAction: true,
+      showActions: true,
       clrAlertClosable: true,
       components: innerComponents,
     },

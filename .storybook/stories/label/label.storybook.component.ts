@@ -20,17 +20,12 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
       <cds-icon *ngIf="closeIcon" shape="close"></cds-icon>
     </ng-template>
     <ng-container *ngIf="clickable">
-      <a
-        href="javascript://"
-        class="label clickable"
-        *ngFor="let type of labelType ? [labelType] : labelTypes"
-        [class]="type"
-      >
+      <a href="javascript://" class="label clickable" *ngFor="let type of labelList" [class]="type">
         <ng-container *ngTemplateOutlet="labelContent"></ng-container>
       </a>
     </ng-container>
     <ng-container *ngIf="!clickable">
-      <span class="label" *ngFor="let type of labelType ? [labelType] : labelTypes" [class]="type">
+      <span class="label" *ngFor="let type of labelList" [class]="type">
         <ng-container *ngTemplateOutlet="labelContent"></ng-container>
       </span>
     </ng-container>
@@ -44,4 +39,8 @@ export class LabelStoryBookComponent extends RenderComponentStorybook {
   @Input() closeIcon = false;
   @Input() labelTypes = [''];
   @Input() labelType = '';
+
+  get labelList() {
+    return this.labelType ? [this.labelType] : this.labelTypes;
+  }
 }
