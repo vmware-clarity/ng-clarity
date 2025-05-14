@@ -26,6 +26,10 @@
         text-decoration: none;
         text-align: center;
         line-height: tokens.$cds-global-space-9;
+
+        &:visited {
+          color: breadcrumb-variables.$clr-breadcrumb-visited-color;
+        }
       }
 
       &:not(:last-child):after {

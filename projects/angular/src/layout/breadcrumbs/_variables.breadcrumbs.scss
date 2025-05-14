@@ -6,6 +6,7 @@
  */
 
 @use '../../utils/variables/variables';
-
-$clr-breadcrumb-active-color: var(--cds-alias-typography-color-400);
+//$cds-alias-object-interaction-color
+$clr-breadcrumb-active-color: var(--cds-alias-typography-link-color-hover);
+$clr-breadcrumb-visited-color: var(--cds-alias-typography-link-color);
 $clr-breadcrumb-item-space: var(--clr-breadcrumb-item-space);
