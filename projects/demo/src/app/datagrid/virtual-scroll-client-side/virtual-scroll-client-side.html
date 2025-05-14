@@ -40,6 +40,8 @@
   [(clrDgSelected)]="selectedRows"
   *ngIf="{ rows: rows | async }; let data"
   [clrDgItemsTrackBy]="trackItemById"
+  [clrDgCustomSelectAllEnabled]="true"
+  (clrDgCustomSelectAll)="toggleSelectAllRows($event)"
   style="height: 32rem"
   class="datagrid-compact"
 >

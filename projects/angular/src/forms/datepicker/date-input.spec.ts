@@ -15,6 +15,7 @@ import { ClrFormsModule } from '../../forms/forms.module';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
@@ -119,11 +120,11 @@ export default function () {
 
         it('should refocus input after selecting a date for a11y', async () => {
           const input: HTMLInputElement = context.testElement.querySelector('input');
-          expect(document.activeElement).not.toBe(input);
+          expectActiveElementNotToBe(input);
           dateNavigationService.notifySelectedDayChanged(new DayModel(2019, 1, 1));
           context.detectChanges();
           await context.fixture.whenStable();
-          expect(document.activeElement).toBe(input);
+          expectActiveElementToBe(input);
         });
 
         it('should allow a date be re-selected if date was previously selected and the erased from the input by the user', () => {
