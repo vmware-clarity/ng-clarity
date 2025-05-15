@@ -14,6 +14,7 @@ import {
   Inject,
   Input,
   OnDestroy,
+  OnInit,
   Optional,
   Output,
   PLATFORM_ID,
@@ -84,7 +85,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
 })
 export class ClrDatagridFilter<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>
-  implements CustomFilter, OnDestroy
+  implements CustomFilter, OnInit, OnDestroy
 {
   @Output('clrDgFilterOpenChange') openChange = new EventEmitter<boolean>(false);
 
@@ -121,15 +122,6 @@ export class ClrDatagridFilter<T = any>
         this.ariaExpanded = change;
       })
     );
-
-    this.subs.push(
-      columnNameService.change.subscribe(name => {
-        this.toggleButtonAriaLabel = commonStrings.parse(commonStrings.keys.datagridFilterAriaLabel, {
-          COLUMN: name,
-        });
-        changeDetectorRef.detectChanges();
-      })
-    );
   }
 
   @Input('clrDgFilterOpen')
@@ -162,6 +154,17 @@ export class ClrDatagridFilter<T = any>
    */
   get active() {
     return !!this.filter && this.filter.isActive();
+  }
+
+  ngOnInit() {
+    this.subs.push(
+      this.columnNameService.change.subscribe(name => {
+        this.toggleButtonAriaLabel = this.commonStrings.parse(this.commonStrings.keys.datagridFilterAriaLabel, {
+          COLUMN: name,
+        });
+        this.changeDetectorRef.detectChanges();
+      })
+    );
   }
 
   override ngOnDestroy(): void {
