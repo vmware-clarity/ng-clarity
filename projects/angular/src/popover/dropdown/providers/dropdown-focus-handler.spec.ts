@@ -16,6 +16,7 @@ import { FocusableItem } from '../../../utils/focus/focusable-item/focusable-ite
 import { MockFocusableItem } from '../../../utils/focus/focusable-item/focusable-item.mock';
 import { Linkers } from '../../../utils/focus/focusable-item/linkers';
 import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
+import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../../utils/testing/helpers.spec';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './dropdown-focus-handler.service';
 
 @Component({
@@ -99,11 +100,11 @@ export default function (): void {
 
       it('proxies focus() and blur() to the trigger', function (this: TestContext) {
         this.focusHandler.trigger = this.trigger;
-        expect(document.activeElement).not.toBe(this.trigger);
+        expectActiveElementNotToBe(this.trigger);
         this.focusHandler.focus();
-        expect(document.activeElement).toBe(this.trigger);
+        expectActiveElementToBe(this.trigger);
         this.focusHandler.blur();
-        expect(document.activeElement).not.toBe(this.trigger);
+        expectActiveElementNotToBe(this.trigger);
       });
 
       it('clicks on the trigger when activated', function (this: TestContext) {
@@ -153,10 +154,10 @@ export default function (): void {
       it('puts focus back on the trigger when the dropdown becomes closed', function (this: TestContext) {
         this.focusHandler.trigger = this.trigger;
         this.focusHandler.container = this.container;
-        expect(document.activeElement).not.toBe(this.trigger);
+        expectActiveElementNotToBe(this.trigger);
         this.toggleService.open = true;
         this.toggleService.open = false;
-        expect(document.activeElement).toBe(this.trigger);
+        expectActiveElementToBe(this.trigger);
       });
 
       it('does not prevent moving focus to a different part of the page', fakeAsync(function (this: TestContext) {
@@ -165,7 +166,7 @@ export default function (): void {
         this.toggleService.open = true;
         tick();
         this.outside.focus();
-        expect(document.activeElement).toBe(this.outside);
+        expectActiveElementToBe(this.outside);
       }));
 
       it('links received children vertically', function (this: TestContext) {
@@ -255,9 +256,9 @@ export default function (): void {
       it('calls native elements focus() and blur when focused and blurred', function (this: TestContext) {
         this.focusHandler.trigger = this.trigger;
         this.focusHandler.focus();
-        expect(document.activeElement).toBe(this.trigger);
+        expectActiveElementToBe(this.trigger);
         this.focusHandler.blur();
-        expect(document.activeElement).not.toBe(this.trigger);
+        expectActiveElementNotToBe(this.trigger);
       });
 
       it('does not register the container to the FocusService', function (this: TestContext) {
@@ -271,7 +272,7 @@ export default function (): void {
         this.toggleService.open = true;
         // This specific focusing action is asynchronous so we have to tick
         tick();
-        expect(document.activeElement).not.toBe(this.container);
+        expectActiveElementNotToBe(this.container);
       }));
 
       it('does not focus on the trigger when the dropdown becomes closed', function (this: TestContext) {
@@ -279,7 +280,7 @@ export default function (): void {
         this.focusHandler.container = this.container;
         this.toggleService.open = true;
         this.toggleService.open = false;
-        expect(document.activeElement).not.toBe(this.trigger);
+        expectActiveElementNotToBe(this.trigger);
       });
 
       it('points right to the first child', function (this: TestContext) {

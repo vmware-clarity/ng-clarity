@@ -875,10 +875,6 @@
       padding: tables-variables.$clr-table-cell-compact-padding;
     }
 
-    .datagrid-header {
-      min-height: tokens.$cds-global-space-9;
-    }
-
     .datagrid-column .datagrid-column-separator {
       &::after {
         height: calc(100% - (0.5 * #{datagrid-variables.$clr-datagrid-column-separator-expandby}));
