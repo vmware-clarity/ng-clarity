@@ -21,6 +21,7 @@ import {
   Output,
   QueryList,
   Renderer2,
+  TemplateRef,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -136,6 +137,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
   @ViewChild('displayedRows', { read: ViewContainerRef }) _displayedRows: ViewContainerRef;
   @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
+  @ViewChild('fixedColumnTemplate') _fixedColumnTemplate: TemplateRef<any>;
 
   selectAllId: string;
 
@@ -355,6 +357,16 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         } else {
           // Set state, style for the datagrid to CALCULATE and insert row & columns into containers
           this.renderer.addClass(this.el.nativeElement, 'datagrid-calculate-mode');
+          // Inserts a fixed column if any of these conditions are true.
+          [
+            this.rowActionService.hasActionableRow,
+            this.selection.selectionType !== this.SELECTION_TYPE.None,
+            this.expandableRows.hasExpandableRow || this.detailService.enabled,
+          ].forEach(condition => {
+            if (condition) {
+              this._projectedCalculationColumns.insert(this._fixedColumnTemplate.createEmbeddedView(null));
+            }
+          });
           this.columns.forEach(column => {
             this._projectedCalculationColumns.insert(column._view);
           });

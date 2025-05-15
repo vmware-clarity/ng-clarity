@@ -110,17 +110,11 @@
 
 <div class="datagrid-calculation-table">
   <div class="datagrid-calculation-header">
-    <ng-container *ngTemplateOutlet="stickyCalculationsColumns"></ng-container>
     <ng-container #projectedCalculationColumns></ng-container>
   </div>
   <ng-container #calculationRows></ng-container>
 </div>
 
-<ng-template #stickyCalculationsColumns>
-  <div class="datagrid-column datagrid-fixed-column" *ngIf="selection.selectionType"></div>
-  <div class="datagrid-column datagrid-fixed-column" *ngIf="rowActionService.hasActionableRow"></div>
-  <div
-    class="datagrid-column datagrid-fixed-column"
-    *ngIf="expandableRows.hasExpandableRow || detailService.enabled"
-  ></div>
+<ng-template #fixedColumnTemplate>
+  <div class="datagrid-column datagrid-fixed-column"></div>
 </ng-template>

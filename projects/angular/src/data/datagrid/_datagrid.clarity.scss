@@ -1460,7 +1460,9 @@
 
         .datagrid-column {
           display: table-cell;
-          min-width: tokens.$cds-global-space-15;
+          &:not(.datagrid-fixed-column) {
+            min-width: tokens.$cds-global-space-15;
+          }
         }
 
         .datagrid-column {
