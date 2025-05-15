@@ -69,7 +69,7 @@
 
         @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
         @include clr-toggle-transition-styles;
-        transition-property: right, left;
+        transition-property: right, left, border;
       }
 
       //Toggle Switch
@@ -78,12 +78,15 @@
         content: '';
         visibility: hidden;
         @include clr-toggle-transition-styles;
-        right: tokens.$cds-global-space-3;
+        transition-property: visibility, right, left, border;
+        left: #{tokens.$cds-global-space-3};
+        right: 0;
         height: calc(#{$mark-half-size} + #{tokens.$cds-global-space-1});
         width: forms-variables.$clr-forms-checkbox-mark-size;
-        border-left: forms-variables.$clr-forms-checkbox-mark-border-size solid toggle-variables.$clr-toggle-bg-color-on;
+        border-left: forms-variables.$clr-forms-checkbox-mark-border-size solid
+          toggle-variables.$clr-toggle-bg-color-off;
         border-bottom: forms-variables.$clr-forms-checkbox-mark-border-size solid
-          toggle-variables.$clr-toggle-bg-color-on;
+          toggle-variables.$clr-toggle-bg-color-off;
         transform: translate(0, $mark-half-size) rotate(-45deg);
       }
 
@@ -97,17 +100,17 @@
         transition-property: border-color, background-color;
 
         &::before {
-          @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
           border-width: tokens.$cds-alias-object-border-width-200;
           border-color: toggle-variables.$clr-toggle-handle-border-color-on;
-          @include clr-toggle-transition-styles;
-          transition-property: right, left;
           left: calc(toggle-variables.$clr-toggle-switch-base-width - toggle-variables.$clr-toggle-dot-diameter);
           right: 0;
         }
 
         &::after {
           visibility: visible;
+          left: mixins.baselinePx(20);
+          right: 0;
+          border-color: toggle-variables.$clr-toggle-bg-color-on;
         }
       }
 
