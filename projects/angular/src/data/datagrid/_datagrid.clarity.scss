@@ -427,8 +427,91 @@
         }
       }
 
+      .datagrid-filter-toggle {
+        @include mixins.clr-no-styles-button();
+        cursor: pointer;
+        float: right;
+        vertical-align: middle;
+        @include mixins.min-equilateral(datagrid-variables.$clr-datagrid-filter-toggle-size);
+        margin-left: tokens.$cds-global-space-4;
+        background-repeat: no-repeat;
+        background-size: contain;
+
+        cds-icon,
+        clr-icon {
+          color: tokens.$cds-alias-object-interaction-color;
+        }
+
+        &:hover {
+          cds-icon,
+          clr-icon {
+            color: tokens.$cds-alias-object-interaction-color-hover;
+          }
+        }
+
+        &.datagrid-filter-open {
+          cds-icon,
+          clr-icon {
+            color: tokens.$cds-alias-object-interaction-color-active;
+          }
+        }
+
+        &.datagrid-filtered {
+          cds-icon,
+          clr-icon {
+            color: tokens.$cds-alias-object-interaction-color-selected;
+          }
+        }
+      }
+
       &.datagrid-fixed-width {
         flex: 0 0 auto;
+      }
+
+      .datagrid-column-flex {
+        display: flex;
+        flex: 1 1 auto;
+      }
+
+      .datagrid-column-title {
+        @include mixins.clr-no-styles-button();
+        color: tables-variables.$clr-table-font-color;
+        text-align: left;
+        flex: 1 1 auto;
+        align-items: center;
+        align-self: center;
+        display: flex;
+
+        .signpost .signpost-action.btn {
+          height: inherit;
+          line-height: inherit;
+        }
+
+        // Override checkbox labels only when they are in a column. This allows them to be vertically centered.
+        .clr-checkbox-wrapper .clr-control-label {
+          margin-top: calc(-1 * mixins.baselinePx(10));
+        }
+      }
+
+      button.datagrid-column-title {
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+
+        .sort-icon {
+          color: tokens.$cds-alias-object-interaction-color;
+          margin-left: auto; // pushes icon to rhs b/c of parents display: flex
+          @include mixins.equilateral(datagrid-variables.$clr-datagrid-icon-size);
+          vertical-align: middle;
+
+          &:hover {
+            color: tokens.$cds-alias-object-interaction-color-hover;
+          }
+          &:active {
+            color: tokens.$cds-alias-object-interaction-color-active;
+          }
+        }
       }
 
       .datagrid-column-separator {
@@ -636,89 +719,6 @@
             background-color: datagrid-variables.$clr-datagrid-column-resize-handler-color;
           }
         }
-      }
-    }
-  }
-
-  .datagrid-filter-toggle {
-    @include mixins.clr-no-styles-button();
-    cursor: pointer;
-    float: right;
-    vertical-align: middle;
-    @include mixins.min-equilateral(datagrid-variables.$clr-datagrid-filter-toggle-size);
-    margin-left: tokens.$cds-global-space-4;
-    background-repeat: no-repeat;
-    background-size: contain;
-
-    cds-icon,
-    clr-icon {
-      color: tokens.$cds-alias-object-interaction-color;
-    }
-
-    &:hover {
-      cds-icon,
-      clr-icon {
-        color: tokens.$cds-alias-object-interaction-color-hover;
-      }
-    }
-
-    &.datagrid-filter-open {
-      cds-icon,
-      clr-icon {
-        color: tokens.$cds-alias-object-interaction-color-active;
-      }
-    }
-
-    &.datagrid-filtered {
-      cds-icon,
-      clr-icon {
-        color: tokens.$cds-alias-object-interaction-color-selected;
-      }
-    }
-  }
-
-  .datagrid-column-flex {
-    display: flex;
-    flex: 1 1 auto;
-  }
-
-  .datagrid-column-title {
-    @include mixins.clr-no-styles-button();
-    color: tables-variables.$clr-table-font-color;
-    text-align: left;
-    flex: 1 1 auto;
-    align-items: center;
-    align-self: center;
-    display: flex;
-
-    .signpost .signpost-action.btn {
-      height: inherit;
-      line-height: inherit;
-    }
-
-    // Override checkbox labels only when they are in a column. This allows them to be vertically centered.
-    .clr-checkbox-wrapper .clr-control-label {
-      margin-top: calc(-1 * mixins.baselinePx(10));
-    }
-  }
-
-  button.datagrid-column-title {
-    &:hover {
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    .sort-icon {
-      color: tokens.$cds-alias-object-interaction-color;
-      margin-left: auto; // pushes icon to rhs b/c of parents display: flex
-      @include mixins.equilateral(datagrid-variables.$clr-datagrid-icon-size);
-      vertical-align: middle;
-
-      &:hover {
-        color: tokens.$cds-alias-object-interaction-color-hover;
-      }
-      &:active {
-        color: tokens.$cds-alias-object-interaction-color-active;
       }
     }
   }
@@ -1431,7 +1431,7 @@
   /**
    * When in calculate mode
    * - Hide the display elements for datagrid
-   * - Switch display mode for elements with projected content to calculate sizes.
+   * - Switch display mode for elements with projected content to calcualte sizes.
    */
   .datagrid-host.datagrid-calculate-mode {
     display: block;
@@ -1439,30 +1439,21 @@
     // Hide parts of the display table not used for calculation.
     .datagrid,
     .datagrid-footer,
-    .datagrid-row-scrollable,
+    .datagrid-row-master,
     .datagrid-row-clickable {
       display: none;
-    }
-
-    .datagrid-row-master,
-    .datagrid-row-flex,
-    .datagrid-row-sticky {
-      display: contents;
     }
 
     .datagrid-calculation-table {
       display: table;
       table-layout: auto;
-      width: 100%;
 
       .datagrid-calculation-header {
         display: table-header-group;
 
         .datagrid-column {
           display: table-cell;
-          &:not(.datagrid-fixed-column) {
-            min-width: tokens.$cds-global-space-15;
-          }
+          min-width: tokens.$cds-global-space-15;
         }
 
         .datagrid-column {
@@ -1502,6 +1493,10 @@
     }
 
     .datagrid-placeholder-container {
+      display: none;
+    }
+
+    .datagrid-fixed-column {
       display: none;
     }
   }
