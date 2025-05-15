@@ -24,18 +24,12 @@ import { ClrWizardPage } from './wizard-page';
     >
       <div class="clr-wizard-stepnav-link-icon">
         <cds-icon
-          *ngIf="hasError"
+          *ngIf="icon; let icon"
           [id]="stepIconId"
-          shape="error-standard"
           role="img"
-          [attr.aria-label]="commonStrings.keys.wizardStepError"
-        ></cds-icon>
-        <cds-icon
-          *ngIf="!hasError && isComplete"
-          [id]="stepIconId"
-          shape="success-standard"
-          role="img"
-          [attr.aria-label]="commonStrings.keys.wizardStepSuccess"
+          class="clr-wizard-stepnav-link-icon"
+          [attr.shape]="icon.shape"
+          [attr.aria-label]="icon.label"
         ></cds-icon>
       </div>
 
@@ -125,6 +119,27 @@ export class ClrWizardStepnavItem {
     const allIds = this.isComplete ? [this.stepIconId, ...textIds] : textIds;
 
     return allIds.join(' ');
+  }
+
+  protected get icon(): { shape: string; label: string } | null {
+    if (this.isCurrent) {
+      return {
+        shape: 'dot-circle',
+        label: this.commonStrings.keys.wizardStepCurrent || this.commonStrings.keys.timelineStepCurrent,
+      };
+    } else if (this.hasError) {
+      return {
+        shape: 'error-standard',
+        label: this.commonStrings.keys.wizardStepError || this.commonStrings.keys.timelineStepError,
+      };
+    } else if (this.isComplete) {
+      return {
+        shape: 'success-standard',
+        label: this.commonStrings.keys.wizardStepSuccess || this.commonStrings.keys.timelineStepSuccess,
+      };
+    } else {
+      return null;
+    }
   }
 
   click(): void {
