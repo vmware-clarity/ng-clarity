@@ -261,16 +261,16 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
         }
         if (viewChange === DatagridDisplayMode.CALCULATE) {
           this.displayCells = false;
-          [
+          // Inserts a fixed cell if any of these conditions are true.
+          const fixedCellConditions = [
             this.selection.selectionType !== this.SELECTION_TYPE.None,
             this.rowActionService.hasActionableRow,
             this.globalExpandable.hasExpandableRow,
             this.detailService.enabled,
-          ].forEach(condition => {
-            if (condition) {
-              this._calculatedCells.insert(this._fixedCellTemplate.createEmbeddedView(null));
-            }
-          });
+          ];
+          fixedCellConditions
+            .filter(Boolean)
+            .forEach(() => this._calculatedCells.insert(this._fixedCellTemplate.createEmbeddedView(null)));
           this.dgCells.forEach(cell => {
             if (!cell._view.destroyed) {
               this._calculatedCells.insert(cell._view);

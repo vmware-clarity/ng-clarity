@@ -358,15 +358,16 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           // Set state, style for the datagrid to CALCULATE and insert row & columns into containers
           this.renderer.addClass(this.el.nativeElement, 'datagrid-calculate-mode');
           // Inserts a fixed column if any of these conditions are true.
-          [
+          const fixedColumnConditions = [
             this.rowActionService.hasActionableRow,
             this.selection.selectionType !== this.SELECTION_TYPE.None,
             this.expandableRows.hasExpandableRow || this.detailService.enabled,
-          ].forEach(condition => {
-            if (condition) {
-              this._projectedCalculationColumns.insert(this._fixedColumnTemplate.createEmbeddedView(null));
-            }
-          });
+          ];
+          fixedColumnConditions
+            .filter(Boolean)
+            .forEach(() =>
+              this._projectedCalculationColumns.insert(this._fixedColumnTemplate.createEmbeddedView(null))
+            );
           this.columns.forEach(column => {
             this._projectedCalculationColumns.insert(column._view);
           });
