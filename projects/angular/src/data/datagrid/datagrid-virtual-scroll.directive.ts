@@ -31,6 +31,8 @@ import {
   EmbeddedViewRef,
   EnvironmentInjector,
   EventEmitter,
+  forwardRef,
+  Inject,
   inject,
   Injector,
   Input,
@@ -39,13 +41,13 @@ import {
   OnDestroy,
   Output,
   Renderer2,
-  SkipSelf,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
+import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
 import { ColumnsService } from './providers/columns.service';
 import { Items } from './providers/items';
 
@@ -101,7 +103,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   constructor(
     private readonly changeDetectorRef: ChangeDetectorRef,
     private iterableDiffers: IterableDiffers,
-    @SkipSelf() private items: Items<T>,
+    private items: Items<T>,
     private readonly ngZone: NgZone,
     private readonly renderer2: Renderer2,
     private readonly templateRef: TemplateRef<CdkVirtualForOfContext<T>>,
@@ -109,7 +111,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     private readonly directionality: Directionality,
     private readonly scrollDispatcher: ScrollDispatcher,
     private readonly viewportRuler: ViewportRuler,
-    private readonly datagrid: ClrDatagrid,
+    @Inject(forwardRef(() => ClrDatagrid)) private readonly datagrid: ClrDatagrid,
     private columnsService: ColumnsService,
     private readonly injector: EnvironmentInjector
   ) {
@@ -198,7 +200,15 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   @Input('clrVirtualDataRange')
-  set dataRange(range: { total: number; skip: number; data: T[] }) {
+  set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>) {
+    if (!range) {
+      return;
+    }
+
+    if (this.items.smart) {
+      this.items.smartenDown();
+    }
+
     this.totalItems = range.total;
 
     this.updateDataRange(range.skip, range.data);
@@ -209,13 +219,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   private set totalItems(value: number) {
-    if (this._totalItems === value) {
-      return;
-    }
-
     this._totalItems = value;
-
-    this.populatePlaceholderData();
   }
 
   ngAfterViewInit() {
@@ -249,7 +253,9 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
     this.subscriptions.push(
       this.items.change.subscribe(newItems => {
-        this.cdkVirtualFor.cdkVirtualForOf = newItems;
+        if (this.items.smart) {
+          this.cdkVirtualFor.cdkVirtualForOf = newItems;
+        }
       }),
       this.cdkVirtualFor.dataStream.subscribe(data => {
         this.updateAriaRowCount(data.length);
@@ -297,20 +303,16 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.virtualScrollViewport?.scrollToIndex(index, behavior);
   }
 
-  private populatePlaceholderData() {
-    this.cdkVirtualForOf = Array(this.totalItems);
-  }
-
   private updateDataRange(skip: number, data: T[]) {
-    if (!this.persistItems) {
-      this.populatePlaceholderData();
-    }
+    let items = this.cdkVirtualForOf as T[];
 
-    const items = this.items.all;
+    if (!this.persistItems || !items || items?.length !== this.totalItems) {
+      items = Array(this.totalItems);
+    }
 
     items.splice(skip, data.length, ...data);
 
-    this.items.all = items;
+    this.cdkVirtualForOf = Array.from(items);
   }
 
   private updateCdkVirtualForInputs() {
