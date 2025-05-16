@@ -19,7 +19,7 @@
   background: alert-variables.getAlertColor($alertType, bg-color);
   color: alert-variables.getAlertColor($alertType, color);
 
-  & .alert-items .alert-item a:not(.dropdown-item):not(.badge) {
+  & .alert-items .alert-item a:not(.dropdown-item, .badge, .label) {
     color: alert-variables.getAlertColor($alertType, color);
 
     cds-icon,
@@ -178,13 +178,10 @@
     }
 
     .alert-item {
+      > span,
+      .alert-text,
       .alert-actions {
         padding: tokens.$cds-global-space-2 0;
-      }
-
-      //prevent extra space in nesting component
-      .label {
-        margin-bottom: 0;
       }
 
       .clr-icon {
