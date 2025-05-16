@@ -51,6 +51,7 @@ let nbRow = 0;
     '[class.datagrid-row]': 'true',
     '[class.datagrid-row-skeleton]': 'skeletonLoading',
     '[class.datagrid-selected]': 'selected',
+    '[class.datagrid-row-clickable]': 'selection.rowSelectionMode',
     '[attr.aria-owns]': 'id',
     role: 'rowgroup',
   },
@@ -98,6 +99,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   @ViewChild('scrollableCells', { read: ViewContainerRef }) _scrollableCells: ViewContainerRef;
   @ViewChild('calculatedCells', { read: ViewContainerRef }) _calculatedCells: ViewContainerRef;
   @ViewChild('fixedCellTemplate') _fixedCellTemplate: TemplateRef<any>;
+  @ViewChild('rowMaster') rowMaster: ElementRef;
 
   private _item: T;
   private _selected = false;
@@ -106,6 +108,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   private _rowSelectionLabel = '';
   private wrappedInjector: Injector;
   private subscriptions: Subscription[] = [];
+  private _unlistenFuncs: (() => void)[] = [];
 
   // By default, every item is selectable; it becomes not selectable only if it's explicitly set to false
   private _selectable: boolean | string = true;
@@ -118,7 +121,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     public detailService: DetailService,
     private displayMode: DisplayModeService,
     private vcr: ViewContainerRef,
-    renderer: Renderer2,
+    private renderer: Renderer2,
     el: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     private items: Items,
@@ -289,10 +292,25 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
         this.expandAnimationTrigger = !this.expandAnimationTrigger;
       })
     );
+    if (this.selection.rowSelectionMode) {
+      this._unlistenFuncs.push(
+        this.renderer.listen(this.rowMaster.nativeElement, 'mousedown', event => {
+          if (this.selection.rowSelectionMode) {
+            this.clearRanges(event);
+          }
+        }),
+        this.renderer.listen(this.rowMaster.nativeElement, 'click', event => {
+          if (this.selection.rowSelectionMode) {
+            this.selectRow(!this.selected, event);
+          }
+        })
+      );
+    }
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this._unlistenFuncs.forEach(unlisten => unlisten());
   }
 
   toggle(selected = !this.selected) {

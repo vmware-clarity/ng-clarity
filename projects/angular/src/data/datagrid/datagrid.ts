@@ -23,6 +23,7 @@ import {
   Renderer2,
   TemplateRef,
   ViewChild,
+  ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
@@ -138,6 +139,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChild('displayedRows', { read: ViewContainerRef }) _displayedRows: ViewContainerRef;
   @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
   @ViewChild('fixedColumnTemplate') _fixedColumnTemplate: TemplateRef<any>;
+  @ViewChildren('stickyHeader', { emitDistinctChangesOnly: true }) stickyHeaders: QueryList<ElementRef>;
 
   selectAllId: string;
 
@@ -308,10 +310,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   ngAfterViewInit() {
     this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
     this.updateDetailState();
-
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
     this.refresh.emit(this.stateProvider.state);
     this._subscriptions.push(
+      this.stickyHeaders.changes.subscribe(() => this.resize()),
       this.stateProvider.change.subscribe(state => this.refresh.emit(state)),
       this.selection.change.subscribe(s => {
         if (this.selection.selectionType === SelectionType.Single) {

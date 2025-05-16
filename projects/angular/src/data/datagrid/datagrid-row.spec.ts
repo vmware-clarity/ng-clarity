@@ -8,6 +8,7 @@
 import { AnimationBuilder } from '@angular/animations';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LoadingListener } from '../../utils/loading/loading-listener';
 import { ClrDatagrid } from './datagrid';
@@ -193,7 +194,7 @@ export default function (): void {
 
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrDatagridModule],
+          imports: [ClrDatagridModule, BrowserAnimationsModule],
           declarations: [NgForDatagridWithTrackBy],
           providers: [AnimationBuilder],
         });
@@ -334,7 +335,7 @@ export default function (): void {
         // Enabling the rowSelectionMode
         selectionProvider.rowSelectionMode = true;
         context.detectChanges();
-        row.children[0].click();
+        row.click();
         context.detectChanges();
         expect(selectionProvider.currentSingle).toEqual(context.testComponent.item);
       });
@@ -354,11 +355,11 @@ export default function (): void {
         // Enabling the rowSelectionMode
         selectionProvider.rowSelectionMode = true;
         context.detectChanges();
-        row.children[0].click();
+        row.click();
         context.detectChanges();
         expect(selectionProvider.current).toEqual([context.testComponent.item]);
 
-        row.children[0].click();
+        row.click();
         context.detectChanges();
         expect(selectionProvider.current).toEqual([]);
       });
