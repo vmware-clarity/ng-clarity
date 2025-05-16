@@ -296,6 +296,11 @@ export interface ClrCommonStrings {
   wizardStep: string;
 
   /**
+   * Wizard: Screen-reader text for current step.
+   */
+  wizardStepCurrent: string;
+
+  /**
    * Wizard: Screen-reader text for completed step.
    */
   wizardStepSuccess: string;
