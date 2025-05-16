@@ -1284,6 +1284,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     //
     // (undocumented)
     expandableRows: ExpandableRowsCount;
+    // (undocumented)
+    _fixedColumnTemplate: TemplateRef<any>;
     // Warning: (ae-forgotten-export) The symbol "Items" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -1335,6 +1337,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     set singleSelected(value: T);
     // (undocumented)
     singleSelectedChanged: EventEmitter<T>;
+    // (undocumented)
+    stickyHeaders: QueryList<ElementRef>;
     // (undocumented)
     toggleAllSelected($event: any): void;
     // (undocumented)
@@ -1883,6 +1887,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     set expanded(value: boolean | string);
     // (undocumented)
     expandedChange: EventEmitter<boolean>;
+    // (undocumented)
+    _fixedCellTemplate: TemplateRef<any>;
     // (undocumented)
     globalExpandable: ExpandableRowsCount;
     // (undocumented)

@@ -19,6 +19,7 @@ import {
   Output,
   QueryList,
   Renderer2,
+  TemplateRef,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -96,6 +97,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   @ViewChild('stickyCells', { read: ViewContainerRef }) _stickyCells: ViewContainerRef;
   @ViewChild('scrollableCells', { read: ViewContainerRef }) _scrollableCells: ViewContainerRef;
   @ViewChild('calculatedCells', { read: ViewContainerRef }) _calculatedCells: ViewContainerRef;
+  @ViewChild('fixedCellTemplate') _fixedCellTemplate: TemplateRef<any>;
 
   private _item: T;
   private _selected = false;
@@ -259,6 +261,16 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
         }
         if (viewChange === DatagridDisplayMode.CALCULATE) {
           this.displayCells = false;
+          // Inserts a fixed cell if any of these conditions are true.
+          const fixedCellConditions = [
+            this.selection.selectionType !== this.SELECTION_TYPE.None,
+            this.rowActionService.hasActionableRow,
+            this.globalExpandable.hasExpandableRow,
+            this.detailService.enabled,
+          ];
+          fixedCellConditions
+            .filter(Boolean)
+            .forEach(() => this._calculatedCells.insert(this._fixedCellTemplate.createEmbeddedView(null)));
           this.dgCells.forEach(cell => {
             if (!cell._view.destroyed) {
               this._calculatedCells.insert(cell._view);
