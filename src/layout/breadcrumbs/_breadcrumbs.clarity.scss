@@ -8,6 +8,7 @@
 @use 'sass:meta';
 @use '../../utils/mixins';
 @use 'variables.breadcrumbs' as breadcrumb-variables;
+@use '../nav/variables.nav' as nav-variables;
 @use '@cds/core/tokens/tokens.scss';
 @include meta.load-css('properties.breadcrumbs');
 
@@ -26,6 +27,14 @@
         text-decoration: none;
         text-align: center;
         line-height: tokens.$cds-global-space-9;
+
+        &:visited {
+          color: nav-variables.$clr-link-color;
+
+          &:hover {
+            color: nav-variables.$clr-link-hover-color;
+          }
+        }
       }
 
       &:not(:last-child):after {
