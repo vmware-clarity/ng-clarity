@@ -40,6 +40,7 @@
       &:not(:last-child):after {
         content: '/';
         margin: 0 breadcrumb-variables.$clr-breadcrumb-item-space;
+        color: breadcrumb-variables.$clr-breadcrumb-active-color;
       }
     }
 
