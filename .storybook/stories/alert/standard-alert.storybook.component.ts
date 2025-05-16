@@ -9,6 +9,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ClrAlertModule, ClrDropdownModule, commonStringsDefault } from '@clr/angular';
 import { createArray } from 'helpers/common';
+import { RenderComponentStorybook } from 'helpers/render-component';
 
 import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';
 
@@ -27,9 +28,12 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
         [clrCloseButtonAriaLabel]="clrCloseButtonAriaLabel"
       >
         <clr-alert-item *ngFor="let _ of createArray(alertCount); let i = index">
-          <span class="alert-text">{{ content }} {{ i + 1 }}</span>
-          <div *ngIf="showActions" class="alert-actions">
-            <clr-dropdown>
+          <span class="alert-text">
+            {{ content }} {{ i + 1 }}
+            <ng-container #renderContainer></ng-container>
+          </span>
+          <div class="alert-actions" *ngIf="showActions || showAction">
+            <clr-dropdown *ngIf="showActions">
               <button clrDropdownTrigger>
                 Actions
                 <cds-icon shape="angle" direction="down"></cds-icon>
@@ -40,7 +44,8 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
                 <button clrDropdownItem>Reboot</button>
               </clr-dropdown-menu>
             </clr-dropdown>
-            <a class="alert-action" href="javascript://">Ignore</a>
+            <a *ngIf="showAction" class="alert-action" href="javascript://">Ignore</a>
+            <button *ngIf="showActionsButton" class="btn alert-action btn-sm">Fix</button>
           </div>
         </clr-alert-item>
       </clr-alert>
@@ -48,7 +53,7 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
   `,
   imports: [NgFor, NgIf, ClrAlertModule, ClrDropdownModule],
 })
-export class StandardAlertStorybookComponent {
+export class StandardAlertStorybookComponent extends RenderComponentStorybook {
   @Input() componentDescription = null;
   @Input() clrAlertClosable = false;
   @Input() clrAlertIcon;
@@ -56,7 +61,9 @@ export class StandardAlertStorybookComponent {
   @Input() clrAlertSizeSmall = false;
   @Input() clrCloseButtonAriaLabel = commonStringsDefault.alertCloseButtonAriaLabel;
   @Input() alertCount = 3;
+  @Input() showAction = false;
   @Input() showActions = false;
+  @Input() showActionsButton = false;
   @Input() content = 'Hello World!';
   @Input() alertTypes = ALERT_TYPES;
   createArray = createArray;
