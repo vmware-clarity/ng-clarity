@@ -1338,6 +1338,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     singleSelectedChanged: EventEmitter<T>;
     // (undocumented)
+    stickyHeaders: QueryList<ElementRef>;
+    // (undocumented)
     toggleAllSelected($event: any): void;
     // (undocumented)
     set trackBy(value: ClrDatagridItemsTrackByFunction<T>);
