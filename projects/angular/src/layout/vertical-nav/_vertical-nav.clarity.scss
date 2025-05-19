@@ -268,6 +268,7 @@
       //Dims
       padding: vertical-nav-variables.$clr-vertical-nav-header-padding;
       height: vertical-nav-variables.$clr-vertical-nav-item-height;
+      @include mixins.overflow-ellipsis();
 
       //Others
       @include mixins.generate-typography-token(
