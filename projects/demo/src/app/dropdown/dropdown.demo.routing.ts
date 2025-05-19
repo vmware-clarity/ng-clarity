@@ -11,6 +11,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DropdownAngularCloseItemFalseDemo } from './dropdown-angular-close-item-false';
 import { DropdownAngularNestedDemo } from './dropdown-angular-nested';
 import { DropdownAngularPositioningDemo } from './dropdown-angular-positioning';
+import { DropdownAngularShadowRootDemo } from './dropdown-angular-shadow-root';
 import { DropdownHeaderDemo } from './dropdown-header';
 import { DropdownStaticButtonLinkToggleDemo } from './dropdown-static-buttonlink-toggle';
 import { DropdownStaticDefaultDemo } from './dropdown-static-default';
@@ -29,6 +30,7 @@ const ROUTES: Routes = [
       { path: 'icon-toggle', component: DropdownStaticIconToggleDemo },
       { path: 'buttonlink-toggle', component: DropdownStaticButtonLinkToggleDemo },
       { path: 'angular-positioning', component: DropdownAngularPositioningDemo },
+      { path: 'angular-shadow-root', component: DropdownAngularShadowRootDemo },
       { path: 'angular-nested', component: DropdownAngularNestedDemo },
       { path: 'multi-click', component: DropdownAngularCloseItemFalseDemo },
       { path: 'dropdown-header', component: DropdownHeaderDemo },
