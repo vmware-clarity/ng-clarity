@@ -78,9 +78,8 @@
         content: '';
         visibility: hidden;
         @include clr-toggle-transition-styles;
-        transition-property: visibility, right, left, border;
+        transition-property: visibility, left, border;
         left: #{tokens.$cds-global-space-3};
-        right: 0;
         height: calc(#{$mark-half-size} + #{tokens.$cds-global-space-1});
         width: forms-variables.$clr-forms-checkbox-mark-size;
         border-left: forms-variables.$clr-forms-checkbox-mark-border-size solid
@@ -109,7 +108,6 @@
         &::after {
           visibility: visible;
           left: mixins.baselinePx(20);
-          right: 0;
           border-color: toggle-variables.$clr-toggle-bg-color-on;
         }
       }
