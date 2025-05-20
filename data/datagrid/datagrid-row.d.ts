@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, ElementRef, EventEmitter, QueryList, Renderer2, ViewContainerRef } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ElementRef, EventEmitter, QueryList, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { ClrExpandableAnimationDirective } from '../../utils/animations/expandable-animation/expandable-animation.directive';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -53,6 +53,7 @@ export declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterV
     _stickyCells: ViewContainerRef;
     _scrollableCells: ViewContainerRef;
     _calculatedCells: ViewContainerRef;
+    _fixedCellTemplate: TemplateRef<any>;
     private _item;
     private _selected;
     private _detailOpenLabel;

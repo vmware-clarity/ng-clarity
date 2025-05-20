@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, ElementRef, EventEmitter, NgZone, OnDestroy, QueryList, Renderer2, ViewContainerRef } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ElementRef, EventEmitter, NgZone, OnDestroy, QueryList, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridItems } from './datagrid-items';
@@ -79,6 +79,8 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
     _projectedCalculationColumns: ViewContainerRef;
     _displayedRows: ViewContainerRef;
     _calculationRows: ViewContainerRef;
+    _fixedColumnTemplate: TemplateRef<any>;
+    stickyHeaders: QueryList<ElementRef>;
     selectAllId: string;
     SELECTION_TYPE: typeof SelectionType;
     private selectAllCheckbox;
