@@ -1,6 +1,6 @@
 <clr-modal
   [clrModalOpen]="_open"
-  (clrModalOpenChange)="openChange.emit($event)"
+  (clrModalOpenChange)="handleModalOpen($event)"
   [clrModalCloseButtonAriaLabel]="closeButtonAriaLabel"
   [clrModalSize]="size"
   [clrModalSkipAnimation]="skipAnimation"
