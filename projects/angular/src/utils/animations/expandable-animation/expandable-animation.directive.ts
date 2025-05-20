@@ -5,10 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, AnimationBuilder, AnimationPlayer, style } from '@angular/animations';
+import { AnimationBuilder, AnimationPlayer, useAnimation } from '@angular/animations';
 import { Directive, ElementRef, Input, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
 
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
+import { defaultExpandAnimation } from '../constants';
+import { BaseExpandableAnimation } from './base-expandable-animation';
 
 @Directive({
   selector: '[clrExpandableAnimation]',
@@ -17,19 +19,19 @@ import { DomAdapter } from '../../dom-adapter/dom-adapter';
     '[class.clr-expandable-animation]': 'true',
   },
 })
-export class ClrExpandableAnimationDirective implements OnChanges, OnDestroy {
+export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
   @Input('clrExpandableAnimation') expanded = false;
-
-  startHeight = 0;
 
   private player: AnimationPlayer;
 
   constructor(
-    private element: ElementRef<HTMLElement>,
-    private domAdapter: DomAdapter,
-    private renderer: Renderer2,
+    element: ElementRef<HTMLElement>,
+    domAdapter: DomAdapter,
+    renderer: Renderer2,
     private builder: AnimationBuilder
-  ) {}
+  ) {
+    super(element, domAdapter, renderer);
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['expanded'] && !changes['expanded'].firstChange) {
@@ -41,41 +43,19 @@ export class ClrExpandableAnimationDirective implements OnChanges, OnDestroy {
     this.player?.destroy();
   }
 
-  /** Can be called manually by parent to reset baseline height */
-  updateStartHeight() {
-    this.startHeight = this.domAdapter.computedHeight(this.element.nativeElement) || 0;
-  }
-
   playAnimation() {
     if (this.player) {
       this.player.destroy();
     }
 
     this.player = this.builder
-      .build([style({ height: `${this.startHeight}px` }), animate(`200ms ease-in-out`, style({ height: '*' }))])
+      .build([useAnimation(defaultExpandAnimation, { params: { startHeight: this.startHeight } })])
       .create(this.element.nativeElement);
 
-    this.player.onStart(() => {
-      this.renderer.setStyle(this.element.nativeElement, 'overflow', 'hidden');
-    });
+    this.player.onStart(() => this.initAnimationEffects());
 
-    this.player.onDone(() => {
-      this.renderer.removeStyle(this.element.nativeElement, 'overflow');
-      // A "safe" auto-update of the height ensuring basic OOTB user experience .
-      // Prone to small jumps in initial animation height if data was changed in the meantime, window was resized, etc.
-      // For optimal behavior call manually updateStartHeight() from the parent component before initiating the update.
-      this.updateStartHeight();
-      this.cancelAnimation();
-    });
+    this.player.onDone(() => this.cleanupAnimationEffects(true));
 
     this.player.play();
-  }
-
-  private cancelAnimation() {
-    this.element.nativeElement.getAnimations().forEach(animation => {
-      if (animation.playState === 'finished') {
-        animation.cancel(); // clears animation-style set on the element
-      }
-    });
   }
 }

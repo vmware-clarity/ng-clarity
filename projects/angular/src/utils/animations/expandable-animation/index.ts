@@ -11,5 +11,6 @@ import { ClrExpandableAnimation } from './expandable-animation';
 import { ClrExpandableAnimationDirective } from './expandable-animation.directive';
 
 export * from './expandable-animation';
+export * from './base-expandable-animation';
 
 export const EXPANDABLE_ANIMATION_DIRECTIVES: Type<any>[] = [ClrExpandableAnimation, ClrExpandableAnimationDirective];

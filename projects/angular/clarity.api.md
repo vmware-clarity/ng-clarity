@@ -70,6 +70,27 @@ import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 
 // @public (undocumented)
+export class BaseExpandableAnimation {
+    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
+    // (undocumented)
+    cleanupAnimationEffects(cancelAnimations?: boolean): void;
+    // Warning: (ae-forgotten-export) The symbol "DomAdapter" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    protected domAdapter: DomAdapter;
+    // (undocumented)
+    protected element: ElementRef<HTMLElement>;
+    // (undocumented)
+    initAnimationEffects(): void;
+    // (undocumented)
+    protected renderer: Renderer2;
+    // (undocumented)
+    startHeight: number;
+    // (undocumented)
+    updateStartHeight(): void;
+}
+
+// @public (undocumented)
 export interface BreadcrumbItem {
     // (undocumented)
     href?: string;
@@ -2481,8 +2502,7 @@ export class ClrEndDateInputValidator implements Validator {
 }
 
 // @public (undocumented)
-export class ClrExpandableAnimation {
-    // Warning: (ae-forgotten-export) The symbol "DomAdapter" needs to be exported by the entry point index.d.ts
+export class ClrExpandableAnimation extends BaseExpandableAnimation {
     constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
     // (undocumented)
     animationDone(event: AnimationEvent_2): void;
@@ -2497,10 +2517,6 @@ export class ClrExpandableAnimation {
             startHeight: number;
         };
     };
-    // (undocumented)
-    startHeight: number;
-    // (undocumented)
-    updateStartHeight(): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": "clrExpandTrigger"; }, {}, never, ["*"], false, never>;
     // (undocumented)
