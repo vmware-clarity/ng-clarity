@@ -5167,7 +5167,7 @@ class Popover {
         this._scroll = new Subject();
         const anchor = e;
         let current = e;
-        while (current && current !== document) {
+        while (current && current !== document && current.nodeType === Node.ELEMENT_NODE) {
             if (this.scrolls(current)) {
                 current.addEventListener('scroll', this.boundOnScrollListener);
                 this.scrollableElements.push(current);
