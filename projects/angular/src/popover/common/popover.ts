@@ -254,7 +254,7 @@ export class Popover {
     this.removeScrollEventListeners();
   }
 
-  private isPositioned(container: any) {
+  private isPositioned(container: Element) {
     const position = getComputedStyle(container).position;
     return position === POSITION_RELATIVE || position === POSITION_ABSOLUTE || position === POSITION_FIXED;
   }
@@ -267,7 +267,7 @@ export class Popover {
     this._scroll = new Subject<void>();
     const anchor: any = e;
     let current: any = e;
-    while (current && current !== document) {
+    while (current && current !== document && current.nodeType === Node.ELEMENT_NODE) {
       if (this.scrolls(current)) {
         current.addEventListener('scroll', this.boundOnScrollListener);
         this.scrollableElements.push(current);
@@ -290,7 +290,7 @@ export class Popover {
     }
   }
 
-  private scrolls(container: any): boolean {
+  private scrolls(container: Element): boolean {
     const computedStyles = getComputedStyle(container);
     return (
       computedStyles.overflowX === OVERFLOW_SCROLL ||
