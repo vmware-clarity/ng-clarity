@@ -8,6 +8,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { expectActiveElementToBe } from '../../testing/helpers.spec';
 import { ClrKeyFocusItem } from './key-focus-item';
 import { ClrKeyFocusModule } from './key-focus.module';
 
@@ -34,6 +35,6 @@ describe('Typescript API', () => {
 
   it('should focus host element', () => {
     component.button.focus();
-    expect(document.activeElement).toBe(fixture.nativeElement.querySelector('button'));
+    expectActiveElementToBe(fixture.nativeElement.querySelector('button'));
   });
 });

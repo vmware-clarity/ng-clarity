@@ -12,7 +12,7 @@ import { ClrIconModule } from '../../icon/icon.module';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
+import { expectActiveElementToBe, spec, TestContext } from '../../utils/testing/helpers.spec';
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { ClrSelectedState } from './models/selected-state.enum';
@@ -392,19 +392,19 @@ export default function (): void {
 
       it('focuses on node content container', function (this: Context) {
         this.clarityDirective.focusTreeNode();
-        expect(document.activeElement).toBe(contentContainer);
+        expectActiveElementToBe(contentContainer);
       });
 
       it('focuses node content container if caret button is focused', function (this: Context) {
         const caretButton: HTMLElement = this.clarityElement.querySelector('.clr-treenode-caret');
         caretButton.focus();
-        expect(document.activeElement).toBe(contentContainer);
+        expectActiveElementToBe(contentContainer);
       });
 
       it('focuses node content container if checkbox is focused', function (this: Context) {
         const checkbox: HTMLElement = this.clarityElement.querySelector('.clr-checkbox');
         checkbox.focus();
-        expect(document.activeElement).toBe(contentContainer);
+        expectActiveElementToBe(contentContainer);
       });
 
       it('assigns tabindex of -1 to content container by default', function (this: Context) {
@@ -416,7 +416,7 @@ export default function (): void {
         this.getProvider<TreeFocusManagerService<void>>(TreeFocusManagerService).focusNode(
           this.clarityDirective._model
         );
-        expect(document.activeElement).toBe(contentContainer);
+        expectActiveElementToBe(contentContainer);
       });
 
       it('assigns tabindex of 0 to content container if focus is requested', function (this: Context) {

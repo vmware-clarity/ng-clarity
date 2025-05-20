@@ -11,6 +11,11 @@
 @use '@cds/core/tokens/tokens.scss';
 @use '../tabs/tabs.clarity' as tabs;
 
+@mixin vertical-nav-divider($position: 'border-top') {
+  #{$position}: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-width solid
+    vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color;
+}
+
 @mixin vertical-nav-link-colors() {
   color: vertical-nav-variables.$clr-vertical-nav-item-color;
 
@@ -62,10 +67,7 @@
     transition: width 0.2s ease-in-out;
 
     .nav-divider {
-      //Dims
-      border-width: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-width;
-      border-style: solid;
-      border-color: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color;
+      @include vertical-nav-divider();
     }
 
     .nav-content {
@@ -73,8 +75,6 @@
       display: flex;
       flex-direction: column;
       flex: 1 1 auto;
-      gap: tokens.$cds-global-space-5;
-      padding-top: tokens.$cds-global-space-8;
 
       //Others
       overflow-y: auto;
@@ -182,7 +182,6 @@
       //Dims
       height: vertical-nav-variables.$clr-vertical-nav-item-height;
       padding: tokens.$cds-global-space-5 tokens.$cds-global-space-7;
-      margin-bottom: tokens.$cds-global-space-3;
 
       cds-icon {
         margin-right: 0;
@@ -231,10 +230,7 @@
 
     .nav-trigger + .nav-content {
       //Dims
-      border-top-width: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-width;
-      border-top-style: solid;
-      border-top-color: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color;
-      padding-top: tokens.$cds-global-space-5;
+      @include vertical-nav-divider();
     }
 
     .nav-group-text,
@@ -271,6 +267,7 @@
     .nav-header {
       //Dims
       padding: vertical-nav-variables.$clr-vertical-nav-header-padding;
+      min-height: vertical-nav-variables.$clr-vertical-nav-item-height;
 
       //Others
       @include mixins.generate-typography-token(
@@ -484,11 +481,8 @@
 
       .nav-trigger + .nav-content {
         //Dims
-        border-bottom-width: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-width;
-        border-bottom-style: solid;
-        border-bottom-color: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color;
-        border-top: none;
-        padding-top: tokens.$cds-global-space-8;
+        border-top: 0;
+        @include vertical-nav-divider('border-bottom');
       }
     }
   }

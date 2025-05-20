@@ -5,32 +5,50 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { StoryFn } from '@storybook/angular';
+import { StoryObj } from '@storybook/angular';
 
-const modifierClasses = ['', 'badge-info', 'badge-success', 'badge-warning', 'badge-danger'];
+import { BadgeStoryBookComponent } from './badge.storybook.component';
+
+const BADGE_COLOR_TYPES = [
+  'badge-gray',
+  'badge-purple',
+  'badge-blue',
+  'badge-orange',
+  'badge-light-blue',
+  'badge-1',
+  'badge-2',
+  'badge-3',
+  'badge-4',
+  'badge-5',
+];
+const BADGE_STATUS_TYPES = ['', 'badge-info', 'badge-success', 'badge-warning', 'badge-danger'];
 
 export default {
   title: 'Badge/Badge',
+  component: BadgeStoryBookComponent,
+  decorators: [],
   argTypes: {
-    // story helpers
-    modifierClasses: {
-      description: `Class can be none, \`badge-info\`, \`badge-success\`, \`badge-warning\`, or \`badge-danger\``,
-      table: false,
-      control: false,
-    },
+    badgeTypes: { control: { disable: true }, table: { disable: true } },
   },
   args: {
-    // story helpers
     context: '42',
-    modifierClasses,
+    badgeType: null,
+    badgeTypes: [...BADGE_STATUS_TYPES, ...BADGE_COLOR_TYPES],
   },
 };
-export const Initial: StoryFn = args => ({
-  template: `
-    <div style="margin-top: 5px" *ngFor="let status of modifierClasses">
-      <span class="badge" [ngClass]="status">{{ context }}</span>
-      <a href="#" class="badge" [ngClass]="status">{{ context }}</a>
-    </div>
-  `,
-  props: args,
-});
+
+export const Initial: StoryObj = {
+  argTypes: {
+    badgeType: { control: { disable: true }, table: { disable: true } },
+  },
+};
+
+export const SingleBadge: StoryObj = {
+  argTypes: {
+    badgeType: { control: 'select', options: [...BADGE_STATUS_TYPES, ...BADGE_COLOR_TYPES] },
+  },
+  args: {
+    showLinkBadge: false,
+    badgeType: 'badge-info',
+  },
+};

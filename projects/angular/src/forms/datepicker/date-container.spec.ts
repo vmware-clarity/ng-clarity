@@ -15,6 +15,7 @@ import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
@@ -99,7 +100,7 @@ export default function () {
         context.detectChanges();
         actionButton.click();
         context.detectChanges();
-        expect(document.activeElement).toBe(actionButton);
+        expectActiveElementToBe(actionButton);
       });
 
       it('should not call focus when date-picker is not visible', () => {

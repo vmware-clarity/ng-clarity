@@ -14,6 +14,7 @@
 @use 'sass:meta';
 @use '../modal/variables.modal' as modal-variables;
 @use '../utils/mixins';
+@use '../utils/variables/variables.global';
 @use 'variables.wizard' as wizard-variables;
 
 @use '@cds/core/tokens/tokens.scss';
@@ -35,7 +36,7 @@
     .modal-content {
       border-radius: 0 wizard-variables.$clr-wizard-border-radius wizard-variables.$clr-wizard-border-radius 0;
       box-shadow: none;
-      padding: wizard-variables.$clr-wizard-default-space;
+      padding: 0;
       flex: 2 2 auto;
       width: 66%;
       height: initial;
@@ -43,13 +44,12 @@
       display: flex;
       align-items: flex-start;
       flex-direction: column;
-      gap: wizard-variables.$clr-wizard-default-space;
     }
 
     .modal-header--accessible {
       flex: 0 0 auto;
       width: 100%;
-      padding: 0;
+      padding: wizard-variables.$clr-wizard-default-space wizard-variables.$clr-wizard-default-space 0;
     }
 
     .modal-title {
@@ -63,6 +63,7 @@
       flex: 1 1 auto;
       color: wizard-variables.$clr-wizard-main-text-color;
       width: 100%;
+      padding: wizard-variables.$clr-wizard-default-space;
     }
 
     .modal-footer {
@@ -72,7 +73,7 @@
       height: wizard-variables.$clr-wizard-footer-height;
       min-height: wizard-variables.$clr-wizard-footer-height;
       max-height: wizard-variables.$clr-wizard-footer-height;
-      padding: 0;
+      padding: 0 wizard-variables.$clr-wizard-default-space wizard-variables.$clr-wizard-default-space;
     }
 
     .clr-wizard-btn {
@@ -507,6 +508,22 @@
 
     .clr-wizard-stepnav {
       padding-top: tokens.$cds-global-space-9;
+    }
+  }
+
+  .wizard-in-page {
+    // extra specificity is needed here to override the following default style without using !important:
+    // .main-container .content-container .content-area > :first-child { margin-top: 0px; }
+    @at-root .main-container .content-container .content-area &.wizard-in-page--fill-content-area {
+      display: block;
+      height: calc(100% + #{variables.$clr-content-area-padding-top} + #{variables.$clr-content-area-padding-bottom});
+
+      // offset content area padding
+      margin: -#{variables.$clr-content-area-padding-top} -#{variables.$clr-content-area-padding-right} -#{variables.$clr-content-area-padding-bottom} -#{variables.$clr-content-area-padding-left};
+    }
+
+    .clr-wizard-footer-buttons-wrapper {
+      justify-content: flex-start;
     }
   }
 
