@@ -1474,10 +1474,6 @@
       .datagrid-row {
         display: table-row;
 
-        clr-expandable-animation {
-          display: none;
-        }
-
         .datagrid-cell {
           // This is a hack b/c styles were not applied out of the box when moving columns into the
           // calculation container element
