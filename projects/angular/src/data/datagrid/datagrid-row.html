@@ -1,7 +1,3 @@
-<!--
-  We need to wrap the #rowContent in label element if we are in rowSelectionMode.
-  Clicking of that wrapper label will equate to clicking on the whole row, which triggers the checkbox to toggle.
--->
 <div
   role="row"
   [id]="id"
@@ -9,6 +5,7 @@
   [clrExpandableAnimation]="expandAnimationTrigger"
   (mousedown)="clearRanges($event)"
   (click)="selectRow(!selected, $event)"
+  [class.datagrid-row-clickable]="selection.rowSelectionMode"
   [class.datagrid-row-detail-open]="detailService.isRowOpen(item)"
 >
   <div class="datagrid-row-sticky">

@@ -30,7 +30,7 @@ export class BaseExpandableAnimation {
     this.renderer.removeStyle(this.element.nativeElement, 'overflow');
 
     // A "safe" auto-update of the height ensuring basic OOTB user experience .
-    // Prone to small jumps in initial animation height if data was changed in the meantime, window was resized, etc.
+    // Prone to small jumps in initial animation height if data was changed in the meantime, the window was resized, etc.
     // For optimal behavior call manually updateStartHeight() from the parent component before initiating the update.
     this.updateStartHeight();
     if (cancelAnimations) {
