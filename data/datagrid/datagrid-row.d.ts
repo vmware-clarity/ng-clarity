@@ -1,6 +1,6 @@
 import { AfterContentInit, AfterViewInit, ElementRef, EventEmitter, QueryList, Renderer2, ViewContainerRef } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
-import { ClrExpandableAnimation } from '../../utils/animations/expandable-animation/expandable-animation';
+import { ClrExpandableAnimationDirective } from '../../utils/animations/expandable-animation/expandable-animation.directive';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
@@ -48,7 +48,7 @@ export declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterV
      *
      */
     dgCells: QueryList<ClrDatagridCell>;
-    expandAnimation: ClrExpandableAnimation;
+    expandAnimation: ClrExpandableAnimationDirective;
     detailButton: ElementRef<HTMLButtonElement>;
     _stickyCells: ViewContainerRef;
     _scrollableCells: ViewContainerRef;
@@ -102,5 +102,5 @@ export declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterV
     protected selectRow(selected: boolean, $event: any): void;
     private rangeSelect;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRow<any>, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "detailDisabled": "clrDgDetailDisabled"; "detailHidden": "clrDgDetailHidden"; "skeletonLoading": "clrDgSkeletonLoading"; "item": "clrDgItem"; "clrDgSelectable": "clrDgSelectable"; "selected": "clrDgSelected"; "expanded": "clrDgExpanded"; "clrDgDetailOpenLabel": "clrDgDetailOpenLabel"; "clrDgDetailCloseLabel": "clrDgDetailCloseLabel"; "clrDgRowSelectionLabel": "clrDgRowSelectionLabel"; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-row-detail", "clr-dg-action-overflow", "clr-dg-cell"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "detailDisabled": "clrDgDetailDisabled"; "detailHidden": "clrDgDetailHidden"; "skeletonLoading": "clrDgSkeletonLoading"; "item": "clrDgItem"; "clrDgSelectable": "clrDgSelectable"; "selected": "clrDgSelected"; "expanded": "clrDgExpanded"; "clrDgDetailOpenLabel": "clrDgDetailOpenLabel"; "clrDgDetailCloseLabel": "clrDgDetailCloseLabel"; "clrDgRowSelectionLabel": "clrDgRowSelectionLabel"; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-action-overflow", "clr-dg-cell", "clr-dg-row-detail"], false, never>;
 }
