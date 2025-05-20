@@ -75,8 +75,6 @@
       display: flex;
       flex-direction: column;
       flex: 1 1 auto;
-      gap: tokens.$cds-global-space-5;
-      padding-top: tokens.$cds-global-space-8;
 
       //Others
       overflow-y: auto;
@@ -184,7 +182,6 @@
       //Dims
       height: vertical-nav-variables.$clr-vertical-nav-item-height;
       padding: tokens.$cds-global-space-5 tokens.$cds-global-space-7;
-      margin-bottom: tokens.$cds-global-space-3;
 
       cds-icon {
         margin-right: 0;
@@ -234,7 +231,6 @@
     .nav-trigger + .nav-content {
       //Dims
       @include vertical-nav-divider();
-      padding-top: tokens.$cds-global-space-5;
     }
 
     .nav-group-text,
@@ -271,6 +267,7 @@
     .nav-header {
       //Dims
       padding: vertical-nav-variables.$clr-vertical-nav-header-padding;
+      min-height: vertical-nav-variables.$clr-vertical-nav-item-height;
 
       //Others
       @include mixins.generate-typography-token(
@@ -486,7 +483,6 @@
         //Dims
         border-top: 0;
         @include vertical-nav-divider('border-bottom');
-        padding-top: tokens.$cds-global-space-8;
       }
     }
   }
