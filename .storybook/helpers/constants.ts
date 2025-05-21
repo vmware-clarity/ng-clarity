@@ -8,7 +8,10 @@
 export const THEMES = {
   CORE_LIGHT: '',
   CORE_DARK: 'dark',
-  DENSITY_REGULAR: 'regular',
-  DENSITY_COMPACT: 'compact',
-  DENSITY_ULTRA_COMPACT: 'ultra-compact',
+};
+
+export const DENSITY = {
+  REGULAR: 'regular',
+  COMPACT: 'compact',
+  ULTRA_COMPACT: 'ultra-compact',
 };
