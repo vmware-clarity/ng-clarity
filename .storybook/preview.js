@@ -13,7 +13,7 @@ import { applicationConfig } from '@storybook/angular';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import docs from '../documentation.json';
-import { THEMES } from './helpers/constants';
+import { DENSITY, THEMES } from './helpers/constants';
 import AutoDocsTemplate from './stories/auto-docs.mdx';
 
 const privateModifier = 121;
@@ -100,20 +100,40 @@ export const globalTypes = {
       ],
     },
   },
+  density: {
+    name: 'Density',
+    description: 'Available Clarity density models',
+    defaultValue: '',
+    toolbar: {
+      icon: 'graphbar',
+      showName: true,
+      items: [
+        { value: DENSITY.REGULAR, title: 'Regular' },
+        { value: DENSITY.COMPACT, title: 'Compact' },
+        { value: DENSITY.ULTRA_COMPACT, title: 'Ultra Compact ' },
+      ],
+    },
+  },
 };
 
 const themeDecorator = (story, { globals }) => {
   const { theme } = globals;
-  if ([THEMES.DENSITY_REGULAR, THEMES.DENSITY_COMPACT, THEMES.DENSITY_ULTRA_COMPACT].includes(theme)) {
-    document.body.setAttribute(clrDensityAttribute, theme);
-  }
+
   document.body.setAttribute(cdsThemeAttribute, theme);
+
+  return story();
+};
+const densityDecorator = (story, { globals }) => {
+  const { density } = globals;
+
+  document.body.setAttribute(clrDensityAttribute, density);
 
   return story();
 };
 
 export const decorators = [
   themeDecorator,
+  densityDecorator,
   applicationConfig({
     providers: [provideAnimations()],
   }),
