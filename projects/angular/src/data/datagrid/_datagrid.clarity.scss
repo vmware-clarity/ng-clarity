@@ -100,6 +100,7 @@
     overflow: auto;
     flex: 1 1 auto;
     margin-top: tokens.$cds-global-space-6;
+    display: flex;
 
     &.cdk-virtual-scrollable .datagrid-rows {
       flex-grow: 0;
@@ -286,6 +287,7 @@
     flex: 1 1 auto;
     display: flex;
     flex-flow: column nowrap;
+    width: 100%;
 
     &.is-replaced {
       flex-direction: row;
@@ -306,6 +308,7 @@
     flex: 1 1 auto;
     display: flex;
     flex-flow: row nowrap;
+    width: 100%;
 
     .datagrid-row-detail {
       display: flex;
@@ -348,6 +351,7 @@
     }
 
     .datagrid-row {
+      display: flex;
       @include clr-datagrid-header-bg;
 
       border-top: none;
@@ -378,12 +382,14 @@
     display: flex;
     flex: 1 1 auto;
     min-height: 100%;
+    width: 100%;
   }
 
   .datagrid-table {
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
+    width: 100%;
 
     .datagrid-rows {
       display: flex;
@@ -1471,10 +1477,6 @@
 
       .datagrid-row {
         display: table-row;
-
-        clr-expandable-animation {
-          display: none;
-        }
 
         .datagrid-cell {
           // This is a hack b/c styles were not applied out of the box when moving columns into the
