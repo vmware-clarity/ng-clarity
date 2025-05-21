@@ -114,13 +114,12 @@
   }
 
   .datagrid-expandable-caret {
-    padding: tokens.$cds-global-space-2 datagrid-variables.$clr-datagrid-horizontal-padding tokens.$cds-global-space-3;
     text-align: center;
 
     .datagrid-expandable-caret-button {
       @include mixins.clr-no-styles-button();
       cursor: pointer;
-      @include mixins.equilateral(tokens.$cds-global-space-10);
+      @include mixins.equilateral(tokens.$cds-global-space-9);
     }
 
     .datagrid-expandable-caret-icon {
@@ -613,8 +612,7 @@
       }
 
       &.datagrid-expandable-caret {
-        padding: tokens.$cds-global-space-2 datagrid-variables.$clr-datagrid-horizontal-padding
-          tokens.$cds-global-space-3;
+        padding: tokens.$cds-global-space-3 0;
         text-align: center;
       }
 
@@ -937,7 +935,7 @@
       }
 
       &.datagrid-column {
-        padding-top: calc(tables-variables.$clr-table-compact-vertical-padding + tokens.$cds-global-space-1);
+        padding-top: tables-variables.$clr-table-compact-vertical-padding;
         padding-bottom: tables-variables.$clr-table-compact-vertical-padding;
       }
     }
