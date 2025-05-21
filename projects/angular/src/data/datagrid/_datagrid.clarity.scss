@@ -78,8 +78,9 @@
   cursor: pointer;
   width: 100%;
   height: $height;
-  padding: calc(($height - tokens.$cds-global-space-7) / 2)
-    calc((datagrid-variables.$clr-datagrid-fixed-column-size - tokens.$cds-global-space-7) / 2);
+  // Calculates how much padding to set on top and bottom by dividing the height by the icon size
+  padding: calc(($height - datagrid-variables.$clr-datagrid-icon-size) / 2)
+    calc((datagrid-variables.$clr-datagrid-fixed-column-size - datagrid-variables.$clr-datagrid-icon-size) / 2);
   display: inline-flex;
 }
 
