@@ -78,8 +78,8 @@
   cursor: pointer;
   width: 100%;
   height: $height;
-  padding-inline: calc((datagrid-variables.$clr-datagrid-fixed-column-size - tokens.$cds-global-space-7) / 2);
-  padding-block: calc(($height - tokens.$cds-global-space-7) / 2);
+  padding: calc(($height - tokens.$cds-global-space-7) / 2)
+    calc((datagrid-variables.$clr-datagrid-fixed-column-size - tokens.$cds-global-space-7) / 2);
   display: inline-flex;
 }
 
@@ -620,7 +620,7 @@
       }
 
       &.datagrid-expandable-caret {
-        padding: tokens.$cds-global-space-3 0;
+        padding: 0;
         text-align: center;
       }
 
