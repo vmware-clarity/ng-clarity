@@ -631,9 +631,13 @@
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
 
+      clr-dg-action-overflow {
+        display: contents;
+      }
+
       .datagrid-action-toggle {
         @include mixins.clr-no-styles-button();
-        @include mixins.equilateral(tokens.$cds-global-space-7);
+        @include datagrid-action-button-styles();
 
         cds-icon,
         clr-icon {
@@ -909,7 +913,7 @@
       }
     }
 
-    .datagrid-cell:not(.datagrid-detail-caret):not(.datagrid-expandable-caret) {
+    .datagrid-cell:not(.datagrid-detail-caret):not(.datagrid-expandable-caret):not(.datagrid-row-actions) {
       clr-icon {
         margin-top: calc((-1 * tokens.$cds-global-space-3) - tokens.$cds-global-space-1);
         margin-bottom: calc(-1 * tokens.$cds-global-space-3);
@@ -946,6 +950,15 @@
       &.datagrid-column {
         padding-top: tables-variables.$clr-table-compact-vertical-padding;
         padding-bottom: tables-variables.$clr-table-compact-vertical-padding;
+      }
+    }
+
+    .datagrid-row-actions {
+      &.datagrid-cell {
+        padding: 0;
+      }
+      .datagrid-action-toggle {
+        @include datagrid-action-button-styles(tables-variables.$clr-table-compact-row-height);
       }
     }
 
