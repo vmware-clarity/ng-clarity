@@ -78,12 +78,9 @@ $clr-datagrid-filter-toggle-size: var(--clr-datagrid-filter-toggle-size) !defaul
 $clr-datagrid-footer-pagination-gap: var(--clr-datagrid-footer-pagination-gap) !default;
 $clr-datagrid-fixed-column-size: var(--clr-datagrid-fixed-column-size) !default;
 
-$clr-datagrid-compact-outline-offset: var(--clr-datagrid-compact-outline-offset);
+$clr-datagrid-cell-outline-offset: var(--clr-datagrid-cell-outline-offset);
 $clr-datagrid-pagination-btn-disabled-opacity: 1 !default; // Leaving for backwards compatibility
 $clr-datagrid-column-separator-expandby: var(--clr-datagrid-column-separator-expandby) !default;
 
 $clr-datagrid-icon-size: var(--clr-datagrid-icon-size) !default;
 $clr-datagrid-action-arrow-size: var(--clr-datagrid-action-arrow-size) !default;
-// @deprecated in v17 in favor of $clr-datagrid-horizontal-padding
-$horizontalPadding: var(--clr-datagrid-horizontal-padding); // Leaving for backwards compatibility
-$clr-datagrid-horizontal-padding: $horizontalPadding;

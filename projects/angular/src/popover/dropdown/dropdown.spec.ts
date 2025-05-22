@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -315,6 +315,33 @@ export default function (): void {
       await fixture.whenStable();
     }
   });
+
+  describe('Dropdown in shadow DOM', () => {
+    let fixture: ComponentFixture<TestShadowDomComponent>;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({ imports: [ClrDropdownModule], declarations: [TestShadowDomComponent] });
+
+      fixture = TestBed.createComponent(TestShadowDomComponent);
+      fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      fixture.destroy();
+    });
+
+    it('API toggles the menu when clicked on the trigger', () => {
+      expect(fixture.componentInstance.dropdownInstance.toggleService.open).toBeFalse();
+
+      // click the dropdown toggle to open the menu
+      fixture.componentInstance.dropdownTriggerInstance.onDropdownTriggerClick(new MouseEvent('click'));
+      expect(fixture.componentInstance.dropdownInstance.toggleService.open).toBeTrue();
+
+      // click the dropdown toggle again to close the menu
+      fixture.componentInstance.dropdownTriggerInstance.onDropdownTriggerClick(new MouseEvent('click'));
+      expect(fixture.componentInstance.dropdownInstance.toggleService.open).toBeFalse();
+    });
+  });
 }
 
 @Component({
@@ -355,6 +382,35 @@ class TestComponent {
   customClickHandler() {
     this.customClickHandlerDone = true;
   }
+}
+
+@Component({
+  template: `
+    <clr-dropdown [clrCloseMenuOnItemClick]="menuClosable">
+      <button class="btn btn-primary" type="button" clrDropdownTrigger>
+        Dropdown
+        <cds-icon shape="angle" direction="down"></cds-icon>
+      </button>
+      <clr-dropdown-menu *clrIfOpen>
+        <label class="dropdown-header">Header</label>
+        <a href="javascript://" clrDropdownItem>Item</a>
+        <a href="javascript://" clrDisabled="true" clrDropdownItem>Disabled Item</a>
+        <clr-dropdown>
+          <button clrDropdownTrigger class="nested">Nested</button>
+          <clr-dropdown-menu *clrIfOpen>
+            <a href="javascript://" clrDropdownItem class="nested-item">Foo</a>
+          </clr-dropdown-menu>
+        </clr-dropdown>
+      </clr-dropdown-menu>
+    </clr-dropdown>
+  `,
+  encapsulation: ViewEncapsulation.ShadowDom,
+})
+class TestShadowDomComponent {
+  @ViewChild(ClrDropdown) dropdownInstance: ClrDropdown;
+  @ViewChild(ClrDropdownTrigger) dropdownTriggerInstance: ClrDropdownTrigger;
+
+  menuClosable = true;
 }
 
 @Component({
