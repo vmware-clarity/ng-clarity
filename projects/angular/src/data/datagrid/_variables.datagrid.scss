@@ -84,6 +84,3 @@ $clr-datagrid-column-separator-expandby: var(--clr-datagrid-column-separator-exp
 
 $clr-datagrid-icon-size: var(--clr-datagrid-icon-size) !default;
 $clr-datagrid-action-arrow-size: var(--clr-datagrid-action-arrow-size) !default;
-// @deprecated in v17 in favor of $clr-datagrid-horizontal-padding
-$horizontalPadding: var(--clr-datagrid-horizontal-padding); // Leaving for backwards compatibility
-$clr-datagrid-horizontal-padding: $horizontalPadding;
