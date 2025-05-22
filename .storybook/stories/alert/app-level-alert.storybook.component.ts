@@ -7,7 +7,7 @@
 
 import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ClrAlertModule, ClrIconModule } from '@clr/angular';
+import { ClrAlertModule, ClrDropdownModule, ClrIconModule } from '@clr/angular';
 import { createArray } from 'helpers/common';
 
 import { RenderComponentStorybook } from '../../helpers/render-component';
@@ -60,11 +60,22 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
       <div *ngIf="showActions" class="alert-actions">
         <button class="btn alert-action">Fix</button>
         <button class="btn alert-action">Ignore</button>
+        <clr-dropdown>
+          <button clrDropdownTrigger>
+            Actions
+            <cds-icon shape="angle" direction="down"></cds-icon>
+          </button>
+          <clr-dropdown-menu clrPosition="bottom-right">
+            <button clrDropdownItem>Shutdown</button>
+            <button clrDropdownItem>Delete</button>
+            <button clrDropdownItem>Reboot</button>
+          </clr-dropdown-menu>
+        </clr-dropdown>
       </div>
     </ng-template>
   `,
   standalone: true,
-  imports: [ClrAlertModule, ClrIconModule, NgFor, NgIf, NgTemplateOutlet],
+  imports: [ClrAlertModule, ClrIconModule, NgFor, NgIf, NgTemplateOutlet, ClrDropdownModule],
 })
 export class AppLevelAlertStorybookComponent extends RenderComponentStorybook {
   // Story inputs matching the original story args
