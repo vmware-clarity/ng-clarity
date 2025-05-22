@@ -21,6 +21,10 @@ export declare class ClrWizardStepnavItem {
     protected get stepNumberId(): string;
     protected get stepTitleId(): string;
     protected get labelledby(): string;
+    protected get icon(): {
+        shape: string;
+        label: string;
+    } | null;
     click(): void;
     private pageGuard;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnavItem, never>;

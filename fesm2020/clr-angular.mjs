@@ -376,6 +376,7 @@ const commonStringsDefault = {
     datagridExpandableRowsHelperText: `Screen reader table commands may not work for viewing expanded content, please use your screen reader's browse mode to read the content exposed by this button`,
     // Wizard
     wizardStep: 'Step',
+    wizardStepCurrent: 'Current',
     wizardStepSuccess: 'Completed',
     wizardStepError: 'Error',
     wizardStepnavAriaLabel: 'Wizard steps',
@@ -29657,6 +29658,29 @@ class ClrWizardStepnavItem {
         const allIds = this.isComplete ? [this.stepIconId, ...textIds] : textIds;
         return allIds.join(' ');
     }
+    get icon() {
+        if (this.isCurrent) {
+            return {
+                shape: 'dot-circle',
+                label: this.commonStrings.keys.wizardStepCurrent || this.commonStrings.keys.timelineStepCurrent,
+            };
+        }
+        else if (this.hasError) {
+            return {
+                shape: 'error-standard',
+                label: this.commonStrings.keys.wizardStepError || this.commonStrings.keys.timelineStepError,
+            };
+        }
+        else if (this.isComplete) {
+            return {
+                shape: 'success-standard',
+                label: this.commonStrings.keys.wizardStepSuccess || this.commonStrings.keys.timelineStepSuccess,
+            };
+        }
+        else {
+            return null;
+        }
+    }
     click() {
         this.pageGuard();
         // if we click on our own stepnav or a disabled stepnav, we don't want to do anything
@@ -29682,18 +29706,12 @@ ClrWizardStepnavItem.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", v
     >
       <div class="clr-wizard-stepnav-link-icon">
         <cds-icon
-          *ngIf="hasError"
+          *ngIf="icon; let icon"
           [id]="stepIconId"
-          shape="error-standard"
           role="img"
-          [attr.aria-label]="commonStrings.keys.wizardStepError"
-        ></cds-icon>
-        <cds-icon
-          *ngIf="!hasError && isComplete"
-          [id]="stepIconId"
-          shape="success-standard"
-          role="img"
-          [attr.aria-label]="commonStrings.keys.wizardStepSuccess"
+          class="clr-wizard-stepnav-link-icon"
+          [attr.shape]="icon.shape"
+          [attr.aria-label]="icon.label"
         ></cds-icon>
       </div>
 
@@ -29720,18 +29738,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
     >
       <div class="clr-wizard-stepnav-link-icon">
         <cds-icon
-          *ngIf="hasError"
+          *ngIf="icon; let icon"
           [id]="stepIconId"
-          shape="error-standard"
           role="img"
-          [attr.aria-label]="commonStrings.keys.wizardStepError"
-        ></cds-icon>
-        <cds-icon
-          *ngIf="!hasError && isComplete"
-          [id]="stepIconId"
-          shape="success-standard"
-          role="img"
-          [attr.aria-label]="commonStrings.keys.wizardStepSuccess"
+          class="clr-wizard-stepnav-link-icon"
+          [attr.shape]="icon.shape"
+          [attr.aria-label]="icon.label"
         ></cds-icon>
       </div>
 
