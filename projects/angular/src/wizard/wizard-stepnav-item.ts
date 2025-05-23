@@ -6,7 +6,7 @@
  */
 
 import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
-import { startWith, Subscription, tap } from 'rxjs';
+import { debounceTime, startWith, Subscription, tap } from 'rxjs';
 
 import { ClrCommonStringsService } from '../utils';
 import { PageCollectionService } from './providers/page-collection.service';
@@ -70,7 +70,7 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
     public navService: WizardNavigationService,
     public pageCollection: PageCollectionService,
     public commonStrings: ClrCommonStringsService,
-    private readonly elementRef: ElementRef<HTMLElement>
+    readonly elementRef: ElementRef<HTMLElement>
   ) {}
 
   get id(): string {
@@ -184,6 +184,7 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
 
     return this.navService.currentPageChanged.pipe(
       startWith(this.navService.currentPage),
+      debounceTime(1), // For some reason, this is needed for the initial horizontal scroll to work.
       tap(currentPage => {
         if (!this.skipNextScroll && currentPage === this.page) {
           this.elementRef.nativeElement.scrollIntoView({ behavior: scrollBehavior, block: 'center', inline: 'center' });

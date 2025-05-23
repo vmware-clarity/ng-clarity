@@ -28,11 +28,14 @@
 <!-- This template is tightly coupled to the modal styles. -->
 <ng-template #wizardTemplate>
   <div class="modal-content-wrapper">
-    <div class="modal-nav clr-wizard-stepnav-wrapper" role="region">
-      <div class="clr-wizard-title" [id]="wizardId" role="heading" [attr.aria-level]="wizardTitle.headingLevel || 1">
-        <ng-content select="clr-wizard-title"></ng-content>
-      </div>
-      <clr-wizard-stepnav [label]="stepnavAriaLabel"></clr-wizard-stepnav>
+    <div *ngIf="stepnavLayout === 'horizontal'" class="clr-wizard-title-wrapper">
+      <ng-container *ngTemplateOutlet="wizardTitleTemplate"></ng-container>
+      <ng-container *ngTemplateOutlet="wizardActionsTemplate"></ng-container>
+    </div>
+
+    <div class="clr-wizard-stepnav-wrapper" role="region">
+      <ng-container *ngIf="stepnavLayout === 'vertical'; then wizardTitleTemplate"></ng-container>
+      <clr-wizard-stepnav [label]="stepnavAriaLabel" [stepnavLayout]="stepnavLayout"></clr-wizard-stepnav>
     </div>
 
     <div class="modal-content">
@@ -48,23 +51,7 @@
             </span>
           </div>
         </div>
-        <div class="modal-header-actions-wrapper" *ngIf="headerActionService.displayHeaderActionsWrapper">
-          <div *ngIf="headerActionService.showWizardHeaderActions">
-            <ng-content select="clr-wizard-header-action"></ng-content>
-          </div>
-          <div *ngIf="headerActionService.currentPageHasHeaderActions">
-            <ng-template [ngTemplateOutlet]="navService.currentPage.headerActions"></ng-template>
-          </div>
-        </div>
-        <button
-          *ngIf="closable && !inPage"
-          type="button"
-          class="close"
-          [attr.aria-label]="commonStrings.keys.close"
-          (click)="modalCancel()"
-        >
-          <cds-icon shape="window-close"></cds-icon>
-        </button>
+        <ng-container *ngIf="stepnavLayout === 'vertical'; then wizardActionsTemplate"></ng-container>
       </div>
       <div #body class="modal-body-wrapper">
         <div class="modal-body">
@@ -91,4 +78,30 @@
       </div>
     </div>
   </div>
+</ng-template>
+
+<ng-template #wizardTitleTemplate>
+  <div class="clr-wizard-title" [id]="wizardId" role="heading" [attr.aria-level]="wizardTitle.headingLevel || 1">
+    <ng-content select="clr-wizard-title"></ng-content>
+  </div>
+</ng-template>
+
+<ng-template #wizardActionsTemplate>
+  <div class="modal-header-actions-wrapper" *ngIf="headerActionService.displayHeaderActionsWrapper">
+    <div *ngIf="headerActionService.showWizardHeaderActions">
+      <ng-content select="clr-wizard-header-action"></ng-content>
+    </div>
+    <div *ngIf="headerActionService.currentPageHasHeaderActions">
+      <ng-template [ngTemplateOutlet]="navService.currentPage.headerActions"></ng-template>
+    </div>
+  </div>
+  <button
+    *ngIf="closable && !inPage"
+    type="button"
+    class="close"
+    [attr.aria-label]="commonStrings.keys.close"
+    (click)="modalCancel()"
+  >
+    <cds-icon shape="window-close"></cds-icon>
+  </button>
 </ng-template>

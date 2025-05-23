@@ -10,6 +10,7 @@ import { NgModule } from '@angular/core';
 import { ClarityIcons, errorStandardIcon, successStandardIcon } from '@cds/core/icon';
 
 import { ClrAlertModule } from '../emphasis/alert/alert.module';
+import { ClrFileInputModule } from '../forms/file-input/file-input.module';
 import { ClrModalModule } from '../modal/modal.module';
 import { ClrWizard } from './wizard';
 import { ClrWizardButton } from './wizard-button';
@@ -38,7 +39,7 @@ export const CLR_WIZARD_DIRECTIVES: any[] = [
 ];
 
 @NgModule({
-  imports: [CommonModule, ClrModalModule, ClrAlertModule],
+  imports: [CommonModule, ClrModalModule, ClrAlertModule, ClrFileInputModule],
   declarations: [CLR_WIZARD_DIRECTIVES],
   exports: [CLR_WIZARD_DIRECTIVES],
 })
