@@ -46,15 +46,14 @@
             <span tabindex="-1" #pageTitle class="modal-title-text">
               <ng-template [ngTemplateOutlet]="navService.currentPageTitle"></ng-template>
             </span>
-
-            <div class="modal-header-actions-wrapper" *ngIf="headerActionService.displayHeaderActionsWrapper">
-              <div *ngIf="headerActionService.showWizardHeaderActions">
-                <ng-content select="clr-wizard-header-action"></ng-content>
-              </div>
-              <div *ngIf="headerActionService.currentPageHasHeaderActions">
-                <ng-template [ngTemplateOutlet]="navService.currentPage.headerActions"></ng-template>
-              </div>
-            </div>
+          </div>
+        </div>
+        <div class="modal-header-actions-wrapper" *ngIf="headerActionService.displayHeaderActionsWrapper">
+          <div *ngIf="headerActionService.showWizardHeaderActions">
+            <ng-content select="clr-wizard-header-action"></ng-content>
+          </div>
+          <div *ngIf="headerActionService.currentPageHasHeaderActions">
+            <ng-template [ngTemplateOutlet]="navService.currentPage.headerActions"></ng-template>
           </div>
         </div>
         <button
