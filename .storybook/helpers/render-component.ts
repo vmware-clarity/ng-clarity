@@ -6,20 +6,24 @@
  */
 
 import { AfterViewInit, Component, Input, Type, ViewChild, ViewContainerRef } from '@angular/core';
+export type StorybookRenderComponent = Array<{ type: Type<unknown>; options: any }>;
 
 @Component({
   selector: 'storybook-render-component',
   standalone: true,
-  template: `<ng-container #container></ng-container>`,
+  template: `<ng-container #renderContainer></ng-container>`,
 })
 export class RenderComponentStorybook implements AfterViewInit {
   @Input() components: Array<{ type: Type<unknown>; options?: any }> = [];
 
-  @ViewChild('container', { read: ViewContainerRef, static: true }) private _container!: ViewContainerRef;
+  @ViewChild('renderContainer', { read: ViewContainerRef }) private _renderContainer!: ViewContainerRef;
 
   ngAfterViewInit(): void {
+    if (!this._renderContainer) {
+      return;
+    }
     this.components.forEach(component => {
-      const componentRef = this._container.createComponent<any>(component.type);
+      const componentRef = this._renderContainer.createComponent<any>(component.type);
 
       if (component.options) {
         Object.assign(componentRef.instance, component.options);

@@ -183,7 +183,7 @@
 
       // special margin left based on --clr-forms-icon-size
       // to align subtexts when error/success icon is missing.
-      margin-left: forms-variables.$clr-forms-icon-size;
+      margin-left: calc(#{tokens.$cds-global-space-3} + #{forms-variables.$clr-forms-icon-size});
     }
 
     .clr-error,
@@ -193,7 +193,7 @@
 
         &.error,
         &.success {
-          margin-left: tokens.$cds-global-space-4;
+          margin-left: tokens.$cds-global-space-3;
         }
       }
 

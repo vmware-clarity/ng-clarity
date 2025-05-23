@@ -12,6 +12,7 @@ import { ClarityModule } from '@clr/angular';
 import { DropdownAngularCloseItemFalseDemo } from './dropdown-angular-close-item-false';
 import { DropdownAngularNestedDemo } from './dropdown-angular-nested';
 import { DropdownAngularPositioningDemo } from './dropdown-angular-positioning';
+import { DropdownAngularShadowRootDemo } from './dropdown-angular-shadow-root';
 import { DropdownHeaderDemo } from './dropdown-header';
 import { DropdownStaticButtonLinkToggleDemo } from './dropdown-static-buttonlink-toggle';
 import { DropdownStaticDefaultDemo } from './dropdown-static-default';
@@ -29,6 +30,7 @@ import { ROUTING } from './dropdown.demo.routing';
     DropdownStaticIconToggleDemo,
     DropdownStaticButtonLinkToggleDemo,
     DropdownAngularPositioningDemo,
+    DropdownAngularShadowRootDemo,
     DropdownAngularNestedDemo,
     DropdownAngularCloseItemFalseDemo,
     DropdownHeaderDemo,
@@ -40,6 +42,7 @@ import { ROUTING } from './dropdown.demo.routing';
     DropdownStaticIconToggleDemo,
     DropdownStaticButtonLinkToggleDemo,
     DropdownAngularPositioningDemo,
+    DropdownAngularShadowRootDemo,
     DropdownAngularNestedDemo,
     DropdownAngularCloseItemFalseDemo,
     DropdownHeaderDemo,

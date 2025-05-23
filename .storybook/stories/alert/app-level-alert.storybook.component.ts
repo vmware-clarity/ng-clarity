@@ -7,8 +7,10 @@
 
 import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ClrAlertModule } from '@clr/angular';
+import { ClrAlertModule, ClrDropdownModule, ClrIconModule } from '@clr/angular';
 import { createArray } from 'helpers/common';
+
+import { RenderComponentStorybook } from '../../helpers/render-component';
 
 @Component({
   selector: 'storybook-app-level-alert',
@@ -49,7 +51,8 @@ import { createArray } from 'helpers/common';
     <ng-template #alertItemContent let-index="index">
       <span class="alert-text">
         {{ content }} {{ index + 1 }}
-        <a href="javascript://">
+        <ng-container #renderContainer></ng-container>
+        <a *ngIf="showAction" href="javascript://">
           <cds-icon shape="user"></cds-icon>
           Reset to green
         </a>
@@ -57,19 +60,31 @@ import { createArray } from 'helpers/common';
       <div *ngIf="showActions" class="alert-actions">
         <button class="btn alert-action">Fix</button>
         <button class="btn alert-action">Ignore</button>
+        <clr-dropdown>
+          <button clrDropdownTrigger>
+            Actions
+            <cds-icon shape="angle" direction="down"></cds-icon>
+          </button>
+          <clr-dropdown-menu clrPosition="bottom-right">
+            <button clrDropdownItem>Shutdown</button>
+            <button clrDropdownItem>Delete</button>
+            <button clrDropdownItem>Reboot</button>
+          </clr-dropdown-menu>
+        </clr-dropdown>
       </div>
     </ng-template>
   `,
   standalone: true,
-  imports: [ClrAlertModule, NgFor, NgIf, NgTemplateOutlet],
+  imports: [ClrAlertModule, ClrIconModule, NgFor, NgIf, NgTemplateOutlet, ClrDropdownModule],
 })
-export class AppLevelAlertStorybookComponent {
+export class AppLevelAlertStorybookComponent extends RenderComponentStorybook {
   // Story inputs matching the original story args
-  @Input() clrAlertIcon = 'Default';
+  @Input() clrAlertIcon = null;
   @Input() clrCloseButtonAriaLabel = 'Close alert';
   @Input() clrAlertClosable = false;
   @Input() alertCount = 3;
   @Input() content = 'Hello World!';
+  @Input() showAction = false;
   @Input() showActions = false;
   @Input() paginated = false;
   createArray = createArray;
