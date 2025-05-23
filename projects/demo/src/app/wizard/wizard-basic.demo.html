@@ -5,21 +5,38 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<clr-toggle-container>
-  <label>Options</label>
-  <clr-toggle-wrapper>
-    <label>Full Screen</label>
-    <input clrToggle type="checkbox" [(ngModel)]="fullScreen" name="full-screen" />
-  </clr-toggle-wrapper>
-  <clr-toggle-wrapper>
-    <label>Scrolling Steps</label>
-    <input clrToggle type="checkbox" [(ngModel)]="scrollingSteps" name="scrolling-steps" />
-  </clr-toggle-wrapper>
-</clr-toggle-container>
+<ng-template #optionsForm>
+  <clr-toggle-container>
+    <label>Options</label>
+    <clr-toggle-wrapper>
+      <label>Full Screen</label>
+      <input clrToggle type="checkbox" [(ngModel)]="fullScreen" name="full-screen" />
+    </clr-toggle-wrapper>
+    <clr-toggle-wrapper>
+      <label>Scrolling Steps</label>
+      <input clrToggle type="checkbox" [(ngModel)]="scrollingSteps" name="scrolling-steps" />
+    </clr-toggle-wrapper>
+    <clr-toggle-wrapper>
+      <label>Long Titles</label>
+      <input clrToggle type="checkbox" [(ngModel)]="longTitles" name="longTitles" />
+    </clr-toggle-wrapper>
+    <clr-toggle-wrapper>
+      <label>Horizontal</label>
+      <input clrToggle type="checkbox" [(ngModel)]="horizontal" name="horizontal" />
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
+</ng-template>
+
+<ng-container *ngTemplateOutlet="optionsForm"></ng-container>
 
 <button class="btn btn-primary" (click)="wizard.open()">Open Wizard</button>
 
-<clr-wizard #wizard [clrWizardSize]="fullScreen ? 'full-screen' : 'xl'" [(clrWizardOpen)]="open">
+<clr-wizard
+  #wizard
+  [clrWizardSize]="fullScreen ? 'full-screen' : 'xl'"
+  [clrWizardStepnavLayout]="horizontal ? 'horizontal' : 'vertical'"
+  [(clrWizardOpen)]="open"
+>
   <clr-wizard-title>Wizard Title</clr-wizard-title>
 
   <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
@@ -33,6 +50,7 @@
     <ng-template clrPageNavTitle>Step {{pageNumber}}</ng-template>
     <!-- optional -->
     <p>Content for step {{pageNumber}}</p>
+    <ng-container *ngTemplateOutlet="optionsForm"></ng-container>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
       amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum

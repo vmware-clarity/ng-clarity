@@ -211,6 +211,7 @@
       letter-spacing: modal-variables.$clr-modal-title-letter-spacing;
     }
 
+    @at-root .clr-wizard.wizard-horizontal .clr-wizard-title-wrapper .close, // the close button is located differently in horizontal wizards
     .close,
     .pinnable {
       font-size: initial;
@@ -318,11 +319,6 @@
     left: 0;
     background-color: modal-variables.$clr-modal-backdrop-color;
     z-index: map.get(variables.$clr-layers, modal-bg);
-  }
-
-  // modal-nav is only used in wizards
-  .modal .modal-nav {
-    display: none;
   }
 
   // full-screen modals
