@@ -54,7 +54,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   private subscription: Subscription;
   private documentESCListener: VoidFunction | null = null;
 
-  protected constructor(injector: Injector, @SkipSelf() protected parentHost: ElementRef<HTMLElement>) {
+  constructor(injector: Injector, @SkipSelf() protected parentHost: ElementRef<HTMLElement>) {
     this.el = injector.get(ElementRef);
     this.toggleService = injector.get(ClrPopoverToggleService);
     this.renderer = injector.get(Renderer2);
@@ -136,6 +136,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   }
 
   private closeOnOutsideClickCallback = event => {
+    // The anchor element containing the click event origin means, the click wasn't triggered outside.
     if (event.target.shadowRoot) {
       const containsNode = event.composedPath().some((element: HTMLElement) => element === this.anchorElem);
 
