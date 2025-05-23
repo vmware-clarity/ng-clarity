@@ -50,10 +50,10 @@
     justify-content: center;
     align-items: center;
     gap: tokens.$cds-global-space-5;
-    padding: 0 var(--clr-base-layout-space-2xs);
+    padding: tokens.$cds-global-space-3 tokens.$cds-global-space-5;
     border: label-variables.$clr-label-borderwidth solid label-variables.$clr-label-default-border-color;
-    border-radius: var(--clr-base-border-radius-l);
-    height: var(--clr-base-row-height-s);
+    border-radius: tokens.$cds-alias-object-border-radius-200;
+    height: tokens.$cds-global-space-9;
     margin: 0 tokens.$cds-global-space-4 tokens.$cds-global-space-1 0;
     white-space: nowrap;
     color: label-variables.$clr-label-font-color-light;
@@ -68,10 +68,6 @@
     cds-icon {
       margin: 0;
       text-decoration: none;
-    }
-
-    cds-icon {
-      @include mixins.min-equilateral(var(--clr-base-icon-size-s));
     }
 
     &:has(.badge) {

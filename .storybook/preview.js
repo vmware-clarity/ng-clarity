@@ -94,9 +94,6 @@ export const globalTypes = {
       items: [
         { value: THEMES.CORE_LIGHT, title: 'Light Theme' },
         { value: THEMES.CORE_DARK, title: 'Dark Theme' },
-        { value: THEMES.DENSITY_REGULAR, title: 'Density Regular' },
-        { value: THEMES.DENSITY_COMPACT, title: 'Density Compact' },
-        { value: THEMES.DENSITY_ULTRA_COMPACT, title: 'Density Ultra Compact ' },
       ],
     },
   },
@@ -108,9 +105,9 @@ export const globalTypes = {
       icon: 'graphbar',
       showName: true,
       items: [
+        { value: DENSITY.NONE, title: 'None' },
         { value: DENSITY.REGULAR, title: 'Regular' },
         { value: DENSITY.COMPACT, title: 'Compact' },
-        { value: DENSITY.ULTRA_COMPACT, title: 'Ultra Compact ' },
       ],
     },
   },
@@ -125,8 +122,11 @@ const themeDecorator = (story, { globals }) => {
 };
 const densityDecorator = (story, { globals }) => {
   const { density } = globals;
-
-  document.body.setAttribute(clrDensityAttribute, density);
+  if (density === DENSITY.NONE) {
+    document.body.removeAttribute(clrDensityAttribute);
+  } else {
+    document.body.setAttribute(clrDensityAttribute, density);
+  }
 
   return story();
 };
