@@ -6,12 +6,12 @@
  */
 
 export const THEMES = {
-  CORE_LIGHT: '',
-  CORE_DARK: 'dark',
+  LIGHT: '',
+  DARK: 'dark',
 };
 
 export const DENSITY = {
-  NONE: 'none',
+  NONE: 'default',
   REGULAR: 'regular',
   COMPACT: 'compact',
 };

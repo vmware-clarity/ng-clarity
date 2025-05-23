@@ -92,8 +92,8 @@ export const globalTypes = {
       icon: 'paintbrush',
       showName: true,
       items: [
-        { value: THEMES.CORE_LIGHT, title: 'Light Theme' },
-        { value: THEMES.CORE_DARK, title: 'Dark Theme' },
+        { value: THEMES.LIGHT, title: 'Light Theme' },
+        { value: THEMES.DARK, title: 'Dark Theme' },
       ],
     },
   },
