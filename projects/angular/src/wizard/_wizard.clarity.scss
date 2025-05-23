@@ -217,7 +217,6 @@
 
       &.complete {
         border-color: wizard-variables.$clr-wizard-stepnav-item-border-color--active;
-        transition: border-color 0.2s ease-in;
 
         .clr-wizard-stepnav-link-icon cds-icon {
           --color: #{wizard-variables.$clr-wizard-stepnav-link-complete-icon-color};
@@ -226,7 +225,6 @@
 
       &.error {
         border-color: wizard-variables.$clr-wizard-stepnav-item-error-border-color;
-        transition: border-color 0.2s ease-in;
 
         .clr-wizard-stepnav-link-icon cds-icon {
           --color: #{wizard-variables.$clr-wizard-stepnav-link-error-icon-color};
