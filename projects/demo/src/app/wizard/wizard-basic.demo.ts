@@ -16,4 +16,5 @@ export class WizardBasicDemo {
   @ViewChild('wizard') wizard: ClrWizard;
   open = false;
   fullScreen = false;
+  scrollingSteps = false;
 }
