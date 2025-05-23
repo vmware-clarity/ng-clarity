@@ -29609,10 +29609,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrWizardStepnavItem {
-    constructor(navService, pageCollection, commonStrings) {
+    constructor(navService, pageCollection, commonStrings, elementRef) {
         this.navService = navService;
         this.pageCollection = pageCollection;
         this.commonStrings = commonStrings;
+        this.elementRef = elementRef;
     }
     get id() {
         this.pageGuard();
@@ -29681,6 +29682,12 @@ class ClrWizardStepnavItem {
             return null;
         }
     }
+    ngOnInit() {
+        this.subscription = this.ensureCurrentStepIsScrolledIntoView().subscribe();
+    }
+    ngOnDestroy() {
+        this.subscription?.unsubscribe();
+    }
     click() {
         this.pageGuard();
         // if we click on our own stepnav or a disabled stepnav, we don't want to do anything
@@ -29694,8 +29701,18 @@ class ClrWizardStepnavItem {
             throw new Error('Wizard stepnav item is not associated with a wizard page.');
         }
     }
+    ensureCurrentStepIsScrolledIntoView() {
+        const stepnavItemElement = this.elementRef.nativeElement;
+        const stepnavWrapperElement = stepnavItemElement.closest('.clr-wizard-stepnav-wrapper');
+        return this.navService.currentPageChanged.pipe(tap$1(currentPage => {
+            if (currentPage === this.page &&
+                !elementIsScrolledIntoView({ container: stepnavWrapperElement, element: stepnavItemElement })) {
+                stepnavItemElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }));
+    }
 }
-ClrWizardStepnavItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardStepnavItem, deps: [{ token: WizardNavigationService }, { token: PageCollectionService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrWizardStepnavItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardStepnavItem, deps: [{ token: WizardNavigationService }, { token: PageCollectionService }, { token: ClrCommonStringsService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component });
 ClrWizardStepnavItem.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrWizardStepnavItem, selector: "[clr-wizard-stepnav-item]", inputs: { page: "page" }, host: { properties: { "id": "id", "attr.aria-current": "stepAriaCurrent", "attr.aria-controls": "page.id", "class.clr-nav-link": "true", "class.nav-item": "true", "class.active": "isCurrent", "class.disabled": "isDisabled", "class.no-click": "!canNavigate", "class.complete": "isComplete", "class.error": "hasError" } }, ngImport: i0, template: `
     <button
       type="button"
@@ -29769,10 +29786,17 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
                         '[class.error]': 'hasError',
                     },
                 }]
-        }], ctorParameters: function () { return [{ type: WizardNavigationService }, { type: PageCollectionService }, { type: ClrCommonStringsService }]; }, propDecorators: { page: [{
+        }], ctorParameters: function () { return [{ type: WizardNavigationService }, { type: PageCollectionService }, { type: ClrCommonStringsService }, { type: i0.ElementRef }]; }, propDecorators: { page: [{
                 type: Input,
                 args: ['page']
             }] } });
+function elementIsScrolledIntoView({ container, element }) {
+    const elementTop = element.offsetTop;
+    const elementBottom = elementTop + element.clientHeight;
+    const containerTop = container.scrollTop;
+    const containerBottom = containerTop + container.clientHeight;
+    return elementTop >= containerTop && elementBottom <= containerBottom;
+}
 
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.

@@ -1,14 +1,17 @@
+import { ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { ClrCommonStringsService } from '../utils';
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { ClrWizardPage } from './wizard-page';
 import * as i0 from "@angular/core";
-export declare class ClrWizardStepnavItem {
+export declare class ClrWizardStepnavItem implements OnInit, OnDestroy {
     navService: WizardNavigationService;
     pageCollection: PageCollectionService;
     commonStrings: ClrCommonStringsService;
+    private readonly elementRef;
     page: ClrWizardPage;
-    constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, commonStrings: ClrCommonStringsService);
+    private subscription;
+    constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, commonStrings: ClrCommonStringsService, elementRef: ElementRef<HTMLElement>);
     get id(): string;
     get stepAriaCurrent(): string;
     get isDisabled(): boolean;
@@ -25,8 +28,11 @@ export declare class ClrWizardStepnavItem {
         shape: string;
         label: string;
     } | null;
+    ngOnInit(): void;
+    ngOnDestroy(): void;
     click(): void;
     private pageGuard;
+    private ensureCurrentStepIsScrolledIntoView;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnavItem, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnavItem, "[clr-wizard-stepnav-item]", never, { "page": "page"; }, {}, never, ["*"], false, never>;
 }
