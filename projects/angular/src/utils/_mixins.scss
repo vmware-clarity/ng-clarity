@@ -357,9 +357,9 @@ $typography-tokens: (
   ),
   'CAPTION-LG-11': (
     // P6, Small Headers
-    font-size: var(--clr-base-typography-font-size-caption),
+    font-size: #{tokens.$cds-alias-typography-caption-font-size},
     font-weight: #{tokens.$cds-alias-typography-caption-font-weight},
-    line-height: var(--clr-base-typography-line-height-16),
+    line-height: #{tokens.$cds-alias-typography-caption-line-height},
     letter-spacing: #{tokens.$cds-alias-typography-caption-letter-spacing},
   ),
   'TableHeaders-11-SB-CPT': (
@@ -370,9 +370,9 @@ $typography-tokens: (
   ),
   'CAPTION-SM-10': (
     // P7, P8, Badges, Tag and Labels
-    font-size: var(--clr-base-typography-font-size-caption-small),
+    font-size: #{tokens.$cds-alias-typography-smallcaption-font-size},
     font-weight: #{tokens.$cds-alias-typography-smallcaption-font-weight},
-    line-height: var(--clr-base-typography-line-height-12),
+    line-height: #{tokens.$cds-alias-typography-smallcaption-line-height},
     letter-spacing: #{tokens.$cds-alias-typography-smallcaption-letter-spacing},
   ),
   'LINK-13': (

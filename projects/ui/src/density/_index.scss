@@ -4,14 +4,5 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
-export const THEMES = {
-  CORE_LIGHT: '',
-  CORE_DARK: 'dark',
-};
-
-export const DENSITY = {
-  NONE: 'none',
-  REGULAR: 'regular',
-  COMPACT: 'compact',
-};
+@forward './variables.density';
+@forward './properties.density';
