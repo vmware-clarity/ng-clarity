@@ -5,21 +5,38 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<clr-toggle-container>
-  <label>Options</label>
-  <clr-toggle-wrapper>
-    <label>Full Screen</label>
-    <input clrToggle type="checkbox" [(ngModel)]="fullScreen" name="full-screen" />
-  </clr-toggle-wrapper>
-  <clr-toggle-wrapper>
-    <label>Scrolling Steps</label>
-    <input clrToggle type="checkbox" [(ngModel)]="scrollingSteps" name="scrolling-steps" />
-  </clr-toggle-wrapper>
-</clr-toggle-container>
+<ng-template #optionsForm>
+  <clr-toggle-container>
+    <label>Options</label>
+    <clr-toggle-wrapper>
+      <label>Full Screen</label>
+      <input clrToggle type="checkbox" [(ngModel)]="fullScreen" name="full-screen" />
+    </clr-toggle-wrapper>
+    <clr-toggle-wrapper>
+      <label>Scrolling Steps</label>
+      <input clrToggle type="checkbox" [(ngModel)]="scrollingSteps" name="scrolling-steps" />
+    </clr-toggle-wrapper>
+    <clr-toggle-wrapper>
+      <label>Long Titles</label>
+      <input clrToggle type="checkbox" [(ngModel)]="longTitles" name="longTitles" />
+    </clr-toggle-wrapper>
+    <clr-toggle-wrapper>
+      <label>Horizontal</label>
+      <input clrToggle type="checkbox" [(ngModel)]="horizontal" name="horizontal" />
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
+</ng-template>
+
+<ng-container *ngTemplateOutlet="optionsForm"></ng-container>
 
 <button class="btn btn-primary" (click)="wizard.open()">Open Wizard</button>
 
-<clr-wizard #wizard [clrWizardSize]="fullScreen ? 'full-screen' : 'xl'" [(clrWizardOpen)]="open">
+<clr-wizard
+  #wizard
+  [clrWizardSize]="fullScreen ? 'full-screen' : 'xl'"
+  [clrWizardStepnavLayout]="horizontal ? 'horizontal' : 'vertical'"
+  [(clrWizardOpen)]="open"
+>
   <clr-wizard-title>Wizard Title</clr-wizard-title>
 
   <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
@@ -33,6 +50,7 @@
     <ng-template clrPageNavTitle>Step 1</ng-template>
     <!-- optional -->
     <p class="content-for-page-1">Content for step 1</p>
+    <ng-container *ngTemplateOutlet="optionsForm"></ng-container>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
       amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
@@ -203,9 +221,33 @@
     </p>
   </clr-wizard-page>
 
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Title for page 3</ng-template>
+    <ng-template clrPageNavTitle>
+      Step 3
+      <ng-container *ngIf="longTitles">
+        really really long step title lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua
+      </ng-container>
+    </ng-template>
+    <p>Content for step 3</p>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Title for page 4</ng-template>
+    <ng-template clrPageNavTitle>
+      Step 4
+      <ng-container *ngIf="longTitles">
+        really really long step title lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua
+      </ng-container>
+    </ng-template>
+    <p>Content for step 4</p>
+  </clr-wizard-page>
+
   <ng-container *ngIf="scrollingSteps">
     <clr-wizard-page
-      *ngFor="let number of [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]"
+      *ngFor="let number of [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]"
     >
       <ng-template clrPageTitle>Title for page {{number}}</ng-template>
       <ng-template clrPageNavTitle>Step {{number}}</ng-template>

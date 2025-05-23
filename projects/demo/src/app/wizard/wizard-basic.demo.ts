@@ -14,7 +14,9 @@ import { ClrWizard } from '@clr/angular';
 })
 export class WizardBasicDemo {
   @ViewChild('wizard') wizard: ClrWizard;
-  open = false;
+  open = true; // ***** change to false before merging *****
+  horizontal = true; // ***** change to false before merging *****
+  longTitles = false;
   fullScreen = false;
-  scrollingSteps = false;
+  scrollingSteps = true; // ***** change to false before merging *****
 }
