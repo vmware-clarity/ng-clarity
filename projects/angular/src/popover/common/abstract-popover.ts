@@ -44,6 +44,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   protected ngZone: NgZone;
   protected ref: ChangeDetectorRef;
   protected anchorElem: any;
+  protected parentNode: any;
   protected anchorPoint: Point;
   protected popoverPoint: Point;
   protected popoverOptions: PopoverOptions = {};
@@ -62,6 +63,8 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
     this.ref = injector.get(ChangeDetectorRef);
     // Default anchor is the parent host
     this.anchorElem = parentHost.nativeElement;
+
+    this.findParentNode();
 
     this.popoverInstance = new Popover(this.el.nativeElement);
     this.subscription = this.toggleService.openChange.pipe(startWith(this.toggleService.open)).subscribe(open => {
@@ -145,19 +148,28 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
 
   private attachOutsideClickListener() {
     if (this.closeOnOutsideClick && this.toggleService.open) {
-      if (document && document.addEventListener) {
+      if (this.parentNode && this.parentNode.addEventListener) {
         // To listen outside click, the listener should catch the event during the capturing phase.
         // We have to do this ugly document check as Renderer2.listen doesn't allow passive/useCapture listen.
-        document.addEventListener('click', this.closeOnOutsideClickCallback, true);
+        this.parentNode.addEventListener('click', this.closeOnOutsideClickCallback, true);
       }
     }
   }
 
   private detachOutsideClickListener() {
     if (this.closeOnOutsideClick) {
-      if (document && document.removeEventListener) {
-        document.removeEventListener('click', this.closeOnOutsideClickCallback, true);
+      if (this.parentNode && this.parentNode.removeEventListener) {
+        this.parentNode.removeEventListener('click', this.closeOnOutsideClickCallback, true);
       }
     }
+  }
+
+  private findParentNode() {
+    let parentNode = this.anchorElem;
+    while (parentNode && parentNode.nodeType === Node.ELEMENT_NODE) {
+      parentNode = parentNode.parentNode;
+    }
+
+    this.parentNode = parentNode ? parentNode : document;
   }
 }
