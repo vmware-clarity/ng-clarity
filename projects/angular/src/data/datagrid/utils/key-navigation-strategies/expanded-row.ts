@@ -6,14 +6,9 @@
  */
 
 import { CellCoordinates } from '../key-navigation-grid.controller';
-import { KeyNavigationUtils } from '../key-navigation-utils';
 import { DefaultKeyNavigationStrategy } from './default';
 
 export class ExpandedRowKeyNavigationStrategy extends DefaultKeyNavigationStrategy {
-  constructor(utils: KeyNavigationUtils) {
-    super(utils);
-  }
-
   override keyUp(currentCellCoords: CellCoordinates) {
     const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
 
