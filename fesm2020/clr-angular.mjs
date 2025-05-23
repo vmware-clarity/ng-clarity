@@ -5289,7 +5289,13 @@ class AbstractPopover {
         this.documentESCListener = null;
         this.closeOnOutsideClickCallback = event => {
             // The anchor element containing the click event origin means, the click wasn't triggered outside.
-            if (this.anchorElem.contains(event.target)) {
+            if (event.target.shadowRoot) {
+                const containsNode = event.composedPath().some((element) => element === this.anchorElem);
+                if (containsNode) {
+                    return;
+                }
+            }
+            else if (this.anchorElem.contains(event.target)) {
                 return;
             }
             this.toggleService.open = false;
