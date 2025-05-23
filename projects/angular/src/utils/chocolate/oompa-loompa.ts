@@ -16,7 +16,7 @@ export abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
   private subscription: Subscription;
 
   // FIXME: Request Injector once we move to Angular 4.2+, it'll allow easier refactors
-  constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka) {
+  protected constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka) {
     this.subscription = willyWonka.chocolate.subscribe(() => {
       if (this.latestFlavor !== this.flavor) {
         willyWonka.disableChocolateCheck = true;
