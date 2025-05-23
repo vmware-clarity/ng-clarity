@@ -7,21 +7,24 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
+import { ClrIconModule, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
 import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from 'helpers/button-class.helper';
 import { createArray } from 'helpers/common';
+
+import { RenderComponentStorybook } from '../../helpers/render-component';
 
 @Component({
   selector: 'storybook-button',
   standalone: true,
-  imports: [CommonModule, ClrLoadingButtonModule, ClrLoadingModule],
+  imports: [CommonModule, ClrIconModule, ClrLoadingButtonModule, ClrLoadingModule],
   template: `
     <ng-container [ngSwitch]="templateMode">
       <!-- Default Button Template -->
       <ng-container *ngSwitchCase="'default'">
-        <button class="btn" [ngClass]="getButtonClass({ buttonType, buttonStyle })" [disabled]="disabled">
+        <button class="btn" [ngClass]="getButtonClass({ buttonType, buttonStyle, btnSmallSize })" [disabled]="disabled">
           <cds-icon *ngIf="iconShape" [attr.shape]="iconShape"></cds-icon>
           {{ content }}
+          <ng-container #renderContainer></ng-container>
         </button>
       </ng-container>
 
@@ -30,7 +33,7 @@ import { createArray } from 'helpers/common';
         <a
           href="javascript://"
           class="btn"
-          [ngClass]="getButtonClass({ buttonType, buttonStyle })"
+          [ngClass]="getButtonClass({ buttonType, buttonStyle, btnSmallSize })"
           [disabled]="disabled"
         >
           <cds-icon *ngIf="iconShape" [attr.shape]="iconShape"></cds-icon>
@@ -145,7 +148,7 @@ import { createArray } from 'helpers/common';
     </ng-container>
   `,
 })
-export class ButtonStorybookComponent {
+export class ButtonStorybookComponent extends RenderComponentStorybook {
   BUTTON_STYLES = BUTTON_STYLES;
   BUTTON_TYPES = BUTTON_TYPES;
   getButtonClass = getButtonClass;
@@ -157,6 +160,7 @@ export class ButtonStorybookComponent {
   // Common inputs
   @Input() disabled = false;
   @Input() content = 'Hello World!';
+  @Input() btnSmallSize = false;
   @Input() iconShape = '';
   @Input() buttonType = 'primary';
   @Input() buttonStyle = 'outline';
