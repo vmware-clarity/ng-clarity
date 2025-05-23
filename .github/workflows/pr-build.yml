@@ -65,7 +65,7 @@ jobs:
 
   pr-visual-regression-test:
     name: PR Visual Regression Test
-    timeout-minutes: 30
+    timeout-minutes: 40
     # This job intentionally does not use the `ubuntu-latest` image.
     # An updated image could generate different snapshots, so we should explicitly update the image version.
     runs-on: ubuntu-24.04

@@ -35,6 +35,10 @@
       border-radius: forms-variables.$clr-forms-range-border-radius;
       border-style: none;
     }
+    .clr-validate-icon {
+      position: relative;
+      top: tokens.$cds-global-space-5;
+    }
   }
 
   .clr-range {
