@@ -50,13 +50,9 @@
     --clr-table-bottomcellpadding: calc(var(--clr-table-cellpadding) - #{tokens.$cds-global-space-1});
     --clr-table-topcellpadding: #{tokens.$cds-global-space-6};
     --clr-table-fontsize: #{tokens.$cds-alias-typography-secondary-font-size};
-    // @deprecated in v17 not used for line height calculation, but for vertical padding calculation only
-    --clr-table-lineheight: mixins.baselinePx(14);
     --clr-table-cellpadding: #{tokens.$cds-global-space-6};
 
     --clr-table-compact-row-height: #{tokens.$cds-global-space-9};
-    --clr-table-compact-vertical-padding: calc(
-      (var(--clr-table-compact-row-height) - var(--clr-table-lineheight)) * 0.5
-    );
+    --clr-table-compact-vertical-padding: 0;
   }
 }

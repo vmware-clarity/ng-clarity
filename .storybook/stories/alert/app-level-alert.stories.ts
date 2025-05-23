@@ -47,13 +47,14 @@ export default {
   },
   args: {
     // inputs
-    clrAlertIcon: 'Default',
+    clrAlertIcon: null,
     clrCloseButtonAriaLabel: commonStringsDefault.alertCloseButtonAriaLabel,
     clrAlertClosable: false,
     // outputs
     // story helpers
     alertCount: 3,
     content: 'Hello World!',
+    showAction: true,
     showActions: false,
     paginated: false,
   },
@@ -71,6 +72,7 @@ export const SingleAlert: StoryObj = {
   args: {
     alertTypes: ['info'],
     alertCount: 1,
+    showAction: false,
   },
 };
 
@@ -102,14 +104,6 @@ const paginatedArgTypes = {
 };
 
 export const Paginated: StoryObj = {
-  render: (args: AppLevelAlertStorybookComponent) => ({
-    props: {
-      ...args,
-    },
-    template: `
-      <storybook-app-level-alert ${argsToTemplate(args)}></storybook-app-level-alert>
-    `,
-  }),
   argTypes: paginatedArgTypes,
   args: {
     paginated: true,

@@ -5,7 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription, tap } from 'rxjs';
 
 import { ClrCommonStringsService } from '../utils';
 import { PageCollectionService } from './providers/page-collection.service';
@@ -24,18 +25,12 @@ import { ClrWizardPage } from './wizard-page';
     >
       <div class="clr-wizard-stepnav-link-icon">
         <cds-icon
-          *ngIf="hasError"
+          *ngIf="icon; let icon"
           [id]="stepIconId"
-          shape="error-standard"
           role="img"
-          [attr.aria-label]="commonStrings.keys.wizardStepError"
-        ></cds-icon>
-        <cds-icon
-          *ngIf="!hasError && isComplete"
-          [id]="stepIconId"
-          shape="success-standard"
-          role="img"
-          [attr.aria-label]="commonStrings.keys.wizardStepSuccess"
+          class="clr-wizard-stepnav-link-icon"
+          [attr.shape]="icon.shape"
+          [attr.aria-label]="icon.label"
         ></cds-icon>
       </div>
 
@@ -61,13 +56,16 @@ import { ClrWizardPage } from './wizard-page';
     '[class.error]': 'hasError',
   },
 })
-export class ClrWizardStepnavItem {
+export class ClrWizardStepnavItem implements OnInit, OnDestroy {
   @Input('page') page: ClrWizardPage;
+
+  private subscription: Subscription;
 
   constructor(
     public navService: WizardNavigationService,
     public pageCollection: PageCollectionService,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    private readonly elementRef: ElementRef<HTMLElement>
   ) {}
 
   get id(): string {
@@ -127,6 +125,35 @@ export class ClrWizardStepnavItem {
     return allIds.join(' ');
   }
 
+  protected get icon(): { shape: string; label: string } | null {
+    if (this.isCurrent) {
+      return {
+        shape: 'dot-circle',
+        label: this.commonStrings.keys.wizardStepCurrent || this.commonStrings.keys.timelineStepCurrent,
+      };
+    } else if (this.hasError) {
+      return {
+        shape: 'error-standard',
+        label: this.commonStrings.keys.wizardStepError || this.commonStrings.keys.timelineStepError,
+      };
+    } else if (this.isComplete) {
+      return {
+        shape: 'success-standard',
+        label: this.commonStrings.keys.wizardStepSuccess || this.commonStrings.keys.timelineStepSuccess,
+      };
+    } else {
+      return null;
+    }
+  }
+
+  ngOnInit() {
+    this.subscription = this.ensureCurrentStepIsScrolledIntoView().subscribe();
+  }
+
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
+  }
+
   click(): void {
     this.pageGuard();
 
@@ -143,4 +170,30 @@ export class ClrWizardStepnavItem {
       throw new Error('Wizard stepnav item is not associated with a wizard page.');
     }
   }
+
+  private ensureCurrentStepIsScrolledIntoView() {
+    const stepnavItemElement = this.elementRef.nativeElement;
+    const stepnavWrapperElement = stepnavItemElement.closest<HTMLDivElement>('.clr-wizard-stepnav-wrapper');
+
+    return this.navService.currentPageChanged.pipe(
+      tap(currentPage => {
+        if (
+          currentPage === this.page &&
+          !elementIsScrolledIntoView({ container: stepnavWrapperElement, element: stepnavItemElement })
+        ) {
+          stepnavItemElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      })
+    );
+  }
+}
+
+function elementIsScrolledIntoView({ container, element }: { container: HTMLElement; element: HTMLElement }) {
+  const elementTop = element.offsetTop;
+  const elementBottom = elementTop + element.clientHeight;
+
+  const containerTop = container.scrollTop;
+  const containerBottom = containerTop + container.clientHeight;
+
+  return elementTop >= containerTop && elementBottom <= containerBottom;
 }

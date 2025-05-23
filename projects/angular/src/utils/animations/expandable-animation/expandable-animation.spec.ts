@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
+import { ClrExpandableAnimationDirective } from './expandable-animation.directive';
 import { ClrExpandableAnimationModule } from './expandable-animation.module';
 
 import { ClrExpandableAnimation } from './index';
@@ -27,29 +28,48 @@ class TestComponent {
   expanded = false;
   data = ['one'];
 }
+@Component({
+  template: `
+    <div [clrExpandableAnimation]="expanded">
+      <div *ngFor="let item of data">{{ item }}</div>
+    </div>
+  `,
+})
+class TestComponentDirective {
+  @ViewChild(ClrExpandableAnimationDirective, { static: true }) expandable: ClrExpandableAnimationDirective;
+  expanded = false;
+  data = ['one'];
+}
 
 let fixture: ComponentFixture<any>;
-let component: TestComponent;
+let componentInstance: TestComponent;
 
 let directiveDebugElement: DebugElement;
-let clarityDirective: ClrExpandableAnimation;
+let clarityDirective: ClrExpandableAnimationDirective;
 let clarityElement: HTMLElement;
 
-describe('Expandable animation', () => {
+describe('Expandable animation component', () => {
+  expandableAnimationSpec(TestComponent, ClrExpandableAnimation);
+});
+describe('Expandable animation directive', () => {
+  expandableAnimationSpec(TestComponentDirective, ClrExpandableAnimationDirective);
+});
+
+function expandableAnimationSpec(testComponent, component) {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrExpandableAnimationModule, NoopAnimationsModule],
-      declarations: [TestComponent],
+      declarations: [testComponent],
       providers: [DomAdapter],
     });
-    fixture = TestBed.createComponent(TestComponent);
+    fixture = TestBed.createComponent(testComponent);
     fixture.detectChanges();
 
-    component = fixture.componentInstance;
+    componentInstance = fixture.componentInstance;
 
-    directiveDebugElement = fixture.debugElement.query(By.directive(ClrExpandableAnimation));
+    directiveDebugElement = fixture.debugElement.query(By.directive(component));
     clarityElement = directiveDebugElement.nativeElement;
-    clarityDirective = directiveDebugElement.injector.get(ClrExpandableAnimation);
+    clarityDirective = directiveDebugElement.injector.get(component);
   });
 
   describe('Model', () => {
@@ -64,15 +84,15 @@ describe('Expandable animation', () => {
     it('updates startHeight property on expand and collapse', fakeAsync(() => {
       clarityDirective.updateStartHeight();
       const collapsedHeight = clarityDirective.startHeight;
-      component.data.push('two');
-      component.expanded = true;
+      componentInstance.data.push('two');
+      componentInstance.expanded = true;
       fixture.detectChanges();
       expect(clarityDirective.startHeight).toEqual(collapsedHeight);
       tick();
       expect(clarityDirective.startHeight).toEqual(collapsedHeight * 2);
       const expandedHeight = clarityDirective.startHeight;
-      component.data.pop();
-      component.expanded = false;
+      componentInstance.data.pop();
+      componentInstance.expanded = false;
       fixture.detectChanges();
       expect(clarityDirective.startHeight).toEqual(expandedHeight);
       tick();
@@ -84,14 +104,14 @@ describe('Expandable animation', () => {
     it('updates element height on expand and collapse', fakeAsync(() => {
       const collapsedHeight = clarityElement.clientHeight;
       expect(collapsedHeight).toBeGreaterThan(0);
-      component.data.push('two');
+      componentInstance.data.push('two');
       fixture.detectChanges();
       tick();
       expect(clarityElement.clientHeight).toEqual(collapsedHeight * 2);
-      component.data.pop();
+      componentInstance.data.pop();
       fixture.detectChanges();
       tick();
       expect(clarityElement.clientHeight).toEqual(collapsedHeight);
     }));
   });
-});
+}
