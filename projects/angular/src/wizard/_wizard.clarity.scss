@@ -250,7 +250,7 @@
       margin: 0;
       padding: tokens.$cds-global-space-5;
       height: auto;
-      min-height: tokens.$cds-global-space-12;
+      min-height: tokens.$cds-global-space-11;
       max-width: inherit;
 
       @include mixins.generate-typography-token('BODY-14-MD-STD');
