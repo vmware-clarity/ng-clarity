@@ -3258,8 +3258,6 @@ export class ClrModalConfigurationService {
 // @public (undocumented)
 export class ClrModalHostComponent {
     // (undocumented)
-    scrollable: boolean;
-    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrModalHostComponent, "[clrModalHost]", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalHostComponent, never>;

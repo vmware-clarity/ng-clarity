@@ -11,17 +11,9 @@ import { Component } from '@angular/core';
   selector: '[clrModalHost]',
   host: { '[class.clr-modal-host]': 'true' },
   template: `
-    <div *ngIf="scrollable" class="clr-modal-host-scrollable">
-      <ng-container *ngTemplateOutlet="modalContent"></ng-container>
-    </div>
-
-    <ng-container *ngIf="!scrollable" [ngTemplateOutlet]="modalContent"></ng-container>
-
-    <ng-template #modalContent>
+    <div class="clr-modal-host-scrollable">
       <ng-content></ng-content>
-    </ng-template>
+    </div>
   `,
 })
-export class ClrModalHostComponent {
-  scrollable = true;
-}
+export class ClrModalHostComponent {}
