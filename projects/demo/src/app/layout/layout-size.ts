@@ -19,7 +19,7 @@ import { Component } from '@angular/core';
           margin-bottom: var(--cds-global-space-7);
         }
       }
-      div[class~='clr-col-3'] {
+      .density-container {
         height: 100%;
         border: 1px solid var(--cds-alias-object-border-color);
         background: var(--cds-alias-object-container-background-shade);
@@ -27,4 +27,18 @@ import { Component } from '@angular/core';
     `,
   ],
 })
-export class LayoutSizeDemo {}
+export class LayoutSizeDemo {
+  densities = [
+    { name: 'Current', type: null },
+    { name: 'Regular', type: 'regular' },
+    { name: 'Compact', type: 'compact' },
+  ];
+
+  alerts = [
+    { text: 'Message 1', type: 'info', isAppLevel: false },
+    { text: 'Message 2', type: 'danger', isAppLevel: false },
+    { text: 'Message 3', type: 'warning', isAppLevel: false },
+    { text: 'Message 4', type: 'success', isAppLevel: false },
+    { text: 'Message 5', type: 'neutral', isAppLevel: false },
+  ];
+}
