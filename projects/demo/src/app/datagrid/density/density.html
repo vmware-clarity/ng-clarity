@@ -29,11 +29,11 @@
 
   <clr-checkbox-container>
     <clr-checkbox-wrapper>
-      <input type="checkbox" clrCheckbox name="replace" [(ngModel)]="compact" />
+      <input type="checkbox" clrCheckbox name="compact" [(ngModel)]="compact" />
       <label>Compact</label>
     </clr-checkbox-wrapper>
     <clr-checkbox-wrapper>
-      <input type="checkbox" clrCheckbox name="replace" [(ngModel)]="overflowEllipsis" />
+      <input type="checkbox" clrCheckbox name="overflow" [(ngModel)]="overflowEllipsis" />
       <label>Overflow ellipsis</label>
     </clr-checkbox-wrapper>
     <clr-checkbox-wrapper>
@@ -49,8 +49,12 @@
       <label>Selectable</label>
     </clr-checkbox-wrapper>
     <clr-checkbox-wrapper>
-      <input type="checkbox" clrCheckbox name="remove-row-detail" [(ngModel)]="removeRowDetail" />
-      <label>Remove Row Detail</label>
+      <input type="checkbox" clrCheckbox name="remove-row-detail" [(ngModel)]="showRowDetail" />
+      <label>Show Row Detail</label>
+    </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="actions" [(ngModel)]="actions" />
+      <label>Show Actions</label>
     </clr-checkbox-wrapper>
     <clr-checkbox-wrapper>
       <input type="checkbox" clrCheckbox name="show-anchor" [(ngModel)]="showAnchor" />
@@ -73,7 +77,7 @@
   <clr-dg-column>Long Text Dynamic Width</clr-dg-column>
   <clr-dg-column [style.width.px]="400">Long Text Static Width 400px</clr-dg-column>
   <clr-dg-row *ngFor="let user of users; let i = index;">
-    <clr-dg-action-overflow>
+    <clr-dg-action-overflow *ngIf="actions">
       <button class="action-item">Edit</button>
       <button class="action-item">Delete</button>
     </clr-dg-action-overflow>
