@@ -1,0 +1,8 @@
+{
+  "name": "@clr/highcharts-configs",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@cds/core": ">= 6.15.0"
+  },
+  "sideEffects": false
+}

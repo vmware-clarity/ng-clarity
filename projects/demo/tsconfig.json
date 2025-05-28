@@ -5,7 +5,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@clr/angular": ["./../angular/src/index.ts"]
+      "@clr/angular": ["./../angular/src/index.ts"],
+      "@clr/highcharts-configs": ["./../../dist/highcharts-configs"]
     }
   },
   "exclude": ["dist", "node_modules"]
