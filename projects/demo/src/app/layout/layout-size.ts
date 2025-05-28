@@ -13,18 +13,31 @@ import { Component } from '@angular/core';
   styles: [
     `
       .clr-row {
-        height: 100%;
         padding: var(--cds-global-space-6);
         h3 {
           margin-bottom: var(--cds-global-space-7);
         }
       }
-      div[class~='clr-col-3'] {
-        height: 100%;
+      .density-container {
+        padding-bottom: var(--cds-global-space-5);
         border: 1px solid var(--cds-alias-object-border-color);
         background: var(--cds-alias-object-container-background-shade);
       }
     `,
   ],
 })
-export class LayoutSizeDemo {}
+export class LayoutSizeDemo {
+  densities = [
+    { name: 'Current', type: null },
+    { name: 'Regular', type: 'regular' },
+    { name: 'Compact', type: 'compact' },
+  ];
+
+  alerts = [
+    { text: 'Message 1', type: 'info', isAppLevel: false },
+    { text: 'Message 2', type: 'danger', isAppLevel: false },
+    { text: 'Message 3', type: 'warning', isAppLevel: false },
+    { text: 'Message 4', type: 'success', isAppLevel: false },
+    { text: 'Message 5', type: 'neutral', isAppLevel: false },
+  ];
+}
