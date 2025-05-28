@@ -13,7 +13,7 @@ const SidePanelTemplate: StoryFn = args => ({
   template: `
     <div class="main-container">
       <div class="content-container">
-        <div class="content-area">
+        <div class="content-area" clrModalHost>
           <button type="button" class="btn btn-primary" (click)="clrSidePanelOpen = true">Open Side Panel</button>
           <clr-side-panel
             [clrSidePanelPinnable]="clrSidePanelPinnable"
