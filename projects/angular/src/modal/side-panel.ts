@@ -148,14 +148,14 @@ export class ClrSidePanel implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.cleanupMargins();
+    this.cleanupPinnedClasses();
   }
 
   handleModalOpen(open: boolean) {
     if (open) {
       this.updateModalState();
     } else {
-      this.cleanupMargins();
+      this.cleanupPinnedClasses();
     }
     this.openChange.emit(open);
   }
@@ -189,14 +189,14 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     }
     if (this.pinned) {
       this.modal.stopClose = true;
-      this.sideBySideMargins();
+      this.updatePinnedClasses();
     } else {
       this.modal.stopClose = this.originalStopClose;
-      this.cleanupMargins();
+      this.cleanupPinnedClasses();
     }
   }
 
-  private cleanupMargins() {
+  private cleanupPinnedClasses() {
     [this.hostElement, document.body].forEach(host => {
       host.classList.forEach(className => {
         if (className.startsWith('clr-side-panel-pinned-')) {
@@ -206,8 +206,8 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     });
   }
 
-  private sideBySideMargins() {
-    this.cleanupMargins();
+  private updatePinnedClasses() {
+    this.cleanupPinnedClasses();
     this.hostElement.classList.add(`clr-side-panel-pinned-${this.position}-${this.size}`);
   }
 }
