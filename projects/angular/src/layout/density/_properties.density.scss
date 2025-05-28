@@ -6,7 +6,7 @@
  */
 
 @use '@cds/core/tokens/tokens.scss';
-@use '../../../angular/src/utils/mixins';
+@use '../../utils/mixins';
 
 :root {
   --clr-base-typography-font-size-caption-small: #{mixins.baselinePx(10)};
