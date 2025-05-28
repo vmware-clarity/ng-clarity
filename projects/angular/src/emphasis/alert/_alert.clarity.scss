@@ -119,7 +119,7 @@
     flex: 1 1 auto;
     display: flex;
     flex-wrap: nowrap;
-    gap: density.$clr-base-horizontal-offset-m; //tokens.$cds-global-space-5;
+    gap: density.$clr-base-horizontal-offset-m;
     min-height: density.$clr-base-row-height-s;
   }
 
@@ -240,7 +240,7 @@
       order: 100;
       flex: 0 0 tokens.$cds-global-space-9;
       @include mixins.equilateral(tokens.$cds-global-space-9);
-      margin: tokens.$cds-global-space-5 0;
+      margin: density.$clr-base-vertical-offset-m 0;
 
       cds-icon,
       clr-icon {
@@ -249,12 +249,12 @@
     }
 
     .alert-spinner.spinner-inline {
-      @include mixins.min-equilateral(tokens.$cds-global-space-9);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-l);
       margin: 0;
 
       &::before,
       &::after {
-        @include mixins.min-equilateral(tokens.$cds-global-space-9);
+        @include mixins.min-equilateral(density.$clr-base-icon-size-l);
       }
     }
 
@@ -278,7 +278,13 @@
           > span,
           .alert-actions,
           .alert-text {
-            @include mixins.generate-typography-token('BODY-14-RG-STD');
+            @include mixins.generate-typography-token(
+              'BODY-14-RG-STD',
+              (
+                font-size: density.$clr-base-typography-font-size-default,
+                line-height: density.$clr-base-typography-line-height-20,
+              )
+            );
           }
         }
       }
@@ -374,7 +380,7 @@
 
   .alert-sm {
     .alert-items .alert-item {
-      min-height: tokens.$cds-global-space-7;
+      min-height: density.$clr-base-row-height-xs;
     }
 
     .alert-icon-wrapper {
@@ -390,7 +396,13 @@
     .alert-item > span,
     .alert-item .alert-text,
     .alert-item .alert-actions {
-      @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+      @include mixins.generate-typography-token(
+        'SECONDARY-13-RG-CPT',
+        (
+          font-size: density.$clr-base-typography-font-size-inline,
+          line-height: density.$clr-base-typography-line-height-16,
+        )
+      );
       padding: 0;
     }
 
@@ -399,11 +411,11 @@
     }
 
     .alert-spinner.spinner-inline {
-      @include mixins.min-equilateral(tokens.$cds-global-space-7);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-l);
 
       &::before,
       &::after {
-        @include mixins.min-equilateral(tokens.$cds-global-space-7);
+        @include mixins.min-equilateral(density.$clr-base-icon-size-l);
       }
     }
 
@@ -420,7 +432,13 @@
           > span,
           .alert-actions,
           .alert-text {
-            @include mixins.generate-typography-token('CAPTION-LG-11');
+            @include mixins.generate-typography-token(
+              'CAPTION-LG-11',
+              (
+                font-size: density.$clr-base-typography-font-size-caption,
+                line-height: density.$clr-base-typography-line-height-16,
+              )
+            );
           }
 
           .alert-icon-wrapper {
