@@ -9,6 +9,7 @@
 @use 'sass:selector';
 @use 'variables/variables';
 @use '@cds/core/tokens/tokens.scss';
+@use '../layout/density/variables.density' as density;
 
 //Credit: Zurb Foundation for Apps https://github.com/zurb/foundation-apps/blob/master/scss/helpers/_functions.scss
 //Keep track of modules that have been imported, so we don't import more than once
@@ -362,10 +363,10 @@ $typography-tokens: (
     line-height: #{tokens.$cds-alias-typography-caption-line-height},
     letter-spacing: #{tokens.$cds-alias-typography-caption-letter-spacing},
   ),
-  'TableHeaders-11-SB-CPT': (
-    font-size: #{tokens.$cds-alias-typography-caption-font-size},
+  'ColumnHeader-11-SB-CPT': (
+    font-size: #{density.$clr-base-typography-font-size-caption},
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
-    line-height: #{tokens.$cds-alias-typography-caption-line-height},
+    line-height: #{density.$clr-base-typography-line-height-16},
     letter-spacing: #{tokens.$cds-alias-typography-caption-letter-spacing},
   ),
   'CAPTION-SM-10': (

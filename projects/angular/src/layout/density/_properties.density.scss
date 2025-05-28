@@ -26,8 +26,8 @@
 
   --clr-base-border-radius-xs: #{tokens.$cds-global-space-2};
   --clr-base-border-radius-s: #{tokens.$cds-global-space-3};
-  --clr-base-border-radius-m: #{tokens.$cds-global-space-5};
-  --clr-base-border-radius-l: #{tokens.$cds-global-space-6};
+  --clr-base-border-radius-m: #{tokens.$cds-global-space-3};
+  --clr-base-border-radius-l: #{tokens.$cds-global-space-4};
   --clr-base-border-radius-xl: #{tokens.$cds-global-space-7};
 
   --clr-base-vertical-offset-s: #{tokens.$cds-global-space-4};
@@ -165,10 +165,10 @@
     --clr-base-typography-line-height-32: #{mixins.baselinePx(28)};
 
     --clr-base-border-radius-xs: #{tokens.$cds-global-space-2};
-    --clr-base-border-radius-s: #{tokens.$cds-global-space-3};
-    --clr-base-border-radius-m: #{tokens.$cds-global-space-5};
-    --clr-base-border-radius-l: #{tokens.$cds-global-space-6};
-    --clr-base-border-radius-xl: #{tokens.$cds-global-space-7};
+    --clr-base-border-radius-s: #{tokens.$cds-global-space-2};
+    --clr-base-border-radius-m: #{tokens.$cds-global-space-3};
+    --clr-base-border-radius-l: #{tokens.$cds-global-space-5};
+    --clr-base-border-radius-xl: #{mixins.baselinePx(10)};
 
     --clr-base-vertical-offset-s: #{tokens.$cds-global-space-2};
     --clr-base-vertical-offset-m: #{mixins.baselinePx(3)};
@@ -236,10 +236,10 @@
   //   --clr-base-typography-line-height-32: #{mixins.baselinePx(20)};
 
   //   --clr-base-border-radius-xs: #{tokens.$cds-global-space-2};
-  //   --clr-base-border-radius-s: #{tokens.$cds-global-space-3};
-  //   --clr-base-border-radius-m: #{tokens.$cds-global-space-5};
-  //   --clr-base-border-radius-l: #{tokens.$cds-global-space-6};
-  //   --clr-base-border-radius-xl: #{tokens.$cds-global-space-7};
+  //   --clr-base-border-radius-s: #{tokens.$cds-global-space-2};
+  //   --clr-base-border-radius-m: #{tokens.$cds-global-space-3};
+  //   --clr-base-border-radius-l: #{tokens.$cds-global-space-5};
+  //   --clr-base-border-radius-xl: #{mixins.baselinePx(10)};
 
   //   --clr-base-vertical-offset-s: #{tokens.$cds-global-space-2};
   //   --clr-base-vertical-offset-m: #{tokens.$cds-global-space-2};
