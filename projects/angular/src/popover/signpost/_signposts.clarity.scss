@@ -375,7 +375,7 @@
     border-radius: signpost-variables.$clr-signpost-border-radius;
 
     .signpost-title {
-      @include mixins.generate-typography-token('TableHeaders-11-SB-CPT');
+      @include mixins.generate-typography-token('ColumnHeader-11-SB-CPT');
       margin-right: auto;
     }
   }
