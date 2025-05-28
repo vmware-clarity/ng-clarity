@@ -39,7 +39,7 @@ for (const { storyId, component } of stories) {
         const storyParams = new URLSearchParams({
           id: storyId,
           args: 'highlight:false',
-          globals: `theme:${theme}`,
+          globals: `theme:${theme};density:${density}`,
           viewMode: 'story',
         });
         const viewport = getPageViewPort(component, storyName);
