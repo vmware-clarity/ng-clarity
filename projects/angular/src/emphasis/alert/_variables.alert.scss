@@ -19,7 +19,7 @@ $clr-icon-margin-right: #{tokens.$cds-global-space-4} !default;
 $clr-icon-dimension-sm: #{tokens.$cds-global-space-7} !default;
 $clr-alert-icon-dimension-sm: #{tokens.$cds-global-space-8} !default;
 $clr-alert-top-margin: #{tokens.$cds-global-space-4} !default;
-$clr-alert-min-height: #{tokens.$cds-global-space-11} !default;
+$clr-alert-min-height: #{density.$clr-base-row-height-m} !default;
 $clr-alert-item-min-height: $clr-alert-icon-dimension-sm !default;
 $clr-alert-borderwidth: #{tokens.$cds-alias-object-border-width-100} !default;
 $clr-alert-borderradius: var(--clr-alert-borderradius) !default;

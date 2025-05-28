@@ -360,13 +360,13 @@
 
     .alert-items {
       align-items: center;
-      padding: tokens.$cds-global-space-4;
+      min-height: density.$clr-base-row-height-m;
+      padding: 0;
     }
 
     .alert-item {
       justify-content: center;
       align-items: center;
-      min-height: tokens.$cds-global-space-9;
 
       .alert-actions {
         padding: 0;
@@ -374,7 +374,7 @@
     }
 
     .close {
-      margin: var(--cds-global-space-4) 0;
+      margin: density.$clr-base-vertical-offset-s 0;
     }
   }
 
@@ -546,7 +546,7 @@
     height: 100%;
     align-items: center;
     text-align: center;
-    padding: 0 tokens.$cds-global-space-9;
+    padding: 0 density.$clr-base-horizontal-offset-xl;
 
     > * {
       display: inline-flex;
