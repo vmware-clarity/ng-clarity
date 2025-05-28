@@ -34,6 +34,13 @@
   --clr-base-vertical-offset-m: #{tokens.$cds-global-space-5};
   --clr-base-vertical-offset-xl: #{tokens.$cds-global-space-9};
 
+  --clr-base-vertical-offset-multi-row-s: #{mixins.baselinePx(6)};
+  --clr-base-vertical-offset-multi-row-m: #{mixins.baselinePx(10)};
+  --clr-base-vertical-offset-multi-row-inline-s: #{tokens.$cds-global-space-3};
+  --clr-base-vertical-offset-multi-row-inline-m: #{tokens.$cds-global-space-5};
+  --clr-base-vertical-offset-multi-row-outline-s: #{tokens.$cds-global-space-5};
+  --clr-base-vertical-offset-multi-row-outline-m: #{tokens.$cds-global-space-6};
+
   --clr-base-horizontal-offset-m: #{tokens.$cds-global-space-5};
   --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-6};
   --clr-base-horizontal-offset-xl: #{tokens.$cds-global-space-9};
@@ -95,6 +102,13 @@
     --clr-base-vertical-offset-s: #{tokens.$cds-global-space-3};
     --clr-base-vertical-offset-m: #{tokens.$cds-global-space-4};
     --clr-base-vertical-offset-xl: #{tokens.$cds-global-space-9};
+
+    --clr-base-vertical-offset-multi-row-s: #{tokens.$cds-global-space-3};
+    --clr-base-vertical-offset-multi-row-m: #{tokens.$cds-global-space-5};
+    --clr-base-vertical-offset-multi-row-inline-s: #{tokens.$cds-global-space-3};
+    --clr-base-vertical-offset-multi-row-inline-m: #{tokens.$cds-global-space-5};
+    --clr-base-vertical-offset-multi-row-outline-s: #{mixins.baselinePx(6)};
+    --clr-base-vertical-offset-multi-row-outline-m: #{mixins.baselinePx(10)};
 
     --clr-base-horizontal-offset-m: #{tokens.$cds-global-space-5};
     --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-6};
@@ -160,6 +174,13 @@
     --clr-base-vertical-offset-m: #{mixins.baselinePx(3)};
     --clr-base-vertical-offset-xl: #{mixins.baselinePx(20)};
 
+    --clr-base-vertical-offset-multi-row-s: #{tokens.$cds-global-space-2};
+    --clr-base-vertical-offset-multi-row-m: #{tokens.$cds-global-space-3};
+    --clr-base-vertical-offset-multi-row-inline-s: #{tokens.$cds-global-space-2};
+    --clr-base-vertical-offset-multi-row-inline-m: #{tokens.$cds-global-space-3};
+    --clr-base-vertical-offset-multi-row-outline-s: #{tokens.$cds-global-space-3};
+    --clr-base-vertical-offset-multi-row-outline-m: #{mixins.baselinePx(6)};
+
     --clr-base-horizontal-offset-m: #{tokens.$cds-global-space-4};
     --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-6};
     --clr-base-horizontal-offset-xl: #{mixins.baselinePx(20)};
@@ -223,6 +244,13 @@
   //   --clr-base-vertical-offset-s: #{tokens.$cds-global-space-2};
   //   --clr-base-vertical-offset-m: #{tokens.$cds-global-space-2};
   //   --clr-base-vertical-offset-xl: #{tokens.$cds-global-space-7};
+
+  //   --clr-base-vertical-offset-multi-row-s: #{tokens.$cds-global-space-2};
+  //   --clr-base-vertical-offset-multi-row-m: #{tokens.$cds-global-space-3};
+  //   --clr-base-vertical-offset-multi-row-inline-s: #{tokens.$cds-global-space-2};
+  //   --clr-base-vertical-offset-multi-row-inline-m: #{tokens.$cds-global-space-3};
+  //   --clr-base-vertical-offset-multi-row-outline-s: #{tokens.$cds-global-space-3};
+  //   --clr-base-vertical-offset-multi-row-outline-m: #{mixins.baselinePx(6)};
 
   //   --clr-base-horizontal-offset-m: #{tokens.$cds-global-space-3};
   //   --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-5};
