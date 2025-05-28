@@ -13,14 +13,13 @@ import { Component } from '@angular/core';
   styles: [
     `
       .clr-row {
-        height: 100%;
         padding: var(--cds-global-space-6);
         h3 {
           margin-bottom: var(--cds-global-space-7);
         }
       }
       .density-container {
-        height: 100%;
+        padding-bottom: var(--cds-global-space-5);
         border: 1px solid var(--cds-alias-object-border-color);
         background: var(--cds-alias-object-container-background-shade);
       }

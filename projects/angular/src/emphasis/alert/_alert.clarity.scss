@@ -11,6 +11,8 @@
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use 'variables.alert' as alert-variables;
 @use '../../button/buttons.clarity';
+@use '../../layout/density' as density;
+
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.alert');
@@ -105,27 +107,27 @@
   $alertTypes: info, warning, danger, success, neutral;
 
   .alert-icon {
-    @include mixins.min-equilateral(tokens.$cds-global-space-9);
+    @include mixins.min-equilateral(density.$clr-base-icon-size-l);
   }
 
   .alert-icon-wrapper {
     display: inline-flex;
-    flex: 0 0 tokens.$cds-global-space-9;
+    flex: 0 0 density.$clr-base-icon-size-l;
   }
 
   .alert-item {
     flex: 1 1 auto;
     display: flex;
     flex-wrap: nowrap;
-    gap: tokens.$cds-global-space-5;
-    min-height: alert-variables.$clr-alert-item-min-height;
+    gap: density.$clr-base-horizontal-offset-m; //tokens.$cds-global-space-5;
+    min-height: density.$clr-base-row-height-s;
   }
 
   .alert-items {
     flex: 1 1 auto;
     flex-flow: column nowrap;
-    padding: tokens.$cds-global-space-5 0;
-    gap: tokens.$cds-global-space-5;
+    padding: density.$clr-base-vertical-offset-m 0;
+    gap: density.$clr-base-vertical-offset-m;
     display: flex;
   }
 
@@ -141,6 +143,7 @@
       'SECONDARY-13-RG-STD',
       (
         font-size: alert-variables.$clr-alert-font-size,
+        line-height: density.$clr-base-typography-line-height-16,
         letter-spacing: alert-variables.$clr-alert-letter-spacing,
       )
     );
@@ -149,8 +152,8 @@
     flex-direction: row;
     width: auto;
     border-radius: alert-variables.$clr-alert-borderradius;
-    padding: 0 tokens.$cds-global-space-5;
-    gap: tokens.$cds-global-space-6;
+    padding: 0 density.$clr-base-horizontal-offset-l;
+    gap: density.$clr-base-horizontal-offset-m;
 
     // To be deleted with refactoring task
     margin-top: alert-variables.$clr-alert-top-margin;
