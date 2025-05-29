@@ -5166,6 +5166,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     reset(): void;
     size: string;
     stepnavAriaLabel: string;
+    stepnavLayout: 'vertical' | 'horizontal';
     get stopCancel(): boolean;
     set stopCancel(value: boolean);
     // (undocumented)
@@ -5182,7 +5183,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     protected wizardTitle: ClrWizardTitle;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": "clrWizardStepnavAriaLabel"; "size": "clrWizardSize"; "inPage": "clrWizardInPage"; "inPageFillContentArea": "clrWizardInPageFillContentArea"; "closable": "clrWizardClosable"; "_stopModalAnimations": "clrWizardPreventModalAnimation"; "forceForward": "clrWizardForceForwardNavigation"; "clrWizardOpen": "clrWizardOpen"; "stopNext": "clrWizardPreventDefaultNext"; "stopCancel": "clrWizardPreventDefaultCancel"; "stopNavigation": "clrWizardPreventNavigation"; "disableStepnav": "clrWizardDisableStepnav"; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": "clrWizardStepnavAriaLabel"; "stepnavLayout": "clrWizardStepnavLayout"; "size": "clrWizardSize"; "inPage": "clrWizardInPage"; "inPageFillContentArea": "clrWizardInPageFillContentArea"; "closable": "clrWizardClosable"; "_stopModalAnimations": "clrWizardPreventModalAnimation"; "forceForward": "clrWizardForceForwardNavigation"; "clrWizardOpen": "clrWizardOpen"; "stopNext": "clrWizardPreventDefaultNext"; "stopCancel": "clrWizardPreventDefaultCancel"; "stopNavigation": "clrWizardPreventNavigation"; "disableStepnav": "clrWizardDisableStepnav"; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["*", "clr-wizard-button", "clr-wizard-title", "clr-wizard-header-action"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
 }
@@ -5268,7 +5269,7 @@ export class ClrWizardModule {
     // Warning: (ae-forgotten-export) The symbol "i11_5" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof i1_48.ClrWizard, typeof i2_37.ClrWizardPage, typeof i3_27.ClrWizardStepnav, typeof i4_17.ClrWizardStepnavItem, typeof i5_15.ClrWizardButton, typeof i6_11.ClrWizardHeaderAction, typeof i7_9.ClrWizardTitle, typeof i8_8.ClrWizardPageTitle, typeof i9_7.ClrWizardPageNavTitle, typeof i10_6.ClrWizardPageButtons, typeof i11_5.ClrWizardPageHeaderActions], [typeof i6.CommonModule, typeof i4_13.ClrModalModule, typeof i1_2.ClrAlertModule], [typeof i1_48.ClrWizard, typeof i2_37.ClrWizardPage, typeof i3_27.ClrWizardStepnav, typeof i4_17.ClrWizardStepnavItem, typeof i5_15.ClrWizardButton, typeof i6_11.ClrWizardHeaderAction, typeof i7_9.ClrWizardTitle, typeof i8_8.ClrWizardPageTitle, typeof i9_7.ClrWizardPageNavTitle, typeof i10_6.ClrWizardPageButtons, typeof i11_5.ClrWizardPageHeaderActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof i1_48.ClrWizard, typeof i2_37.ClrWizardPage, typeof i3_27.ClrWizardStepnav, typeof i4_17.ClrWizardStepnavItem, typeof i5_15.ClrWizardButton, typeof i6_11.ClrWizardHeaderAction, typeof i7_9.ClrWizardTitle, typeof i8_8.ClrWizardPageTitle, typeof i9_7.ClrWizardPageNavTitle, typeof i10_6.ClrWizardPageButtons, typeof i11_5.ClrWizardPageHeaderActions], [typeof i6.CommonModule, typeof i4_13.ClrModalModule, typeof i1_2.ClrAlertModule, typeof i6_7.ClrFileInputModule], [typeof i1_48.ClrWizard, typeof i2_37.ClrWizardPage, typeof i3_27.ClrWizardStepnav, typeof i4_17.ClrWizardStepnavItem, typeof i5_15.ClrWizardButton, typeof i6_11.ClrWizardHeaderAction, typeof i7_9.ClrWizardTitle, typeof i8_8.ClrWizardPageTitle, typeof i9_7.ClrWizardPageNavTitle, typeof i10_6.ClrWizardPageButtons, typeof i11_5.ClrWizardPageHeaderActions]>;
 }
 
 // @public
@@ -5378,27 +5379,47 @@ export class ClrWizardPageTitle {
 }
 
 // @public (undocumented)
-export class ClrWizardStepnav {
-    constructor(pageService: PageCollectionService);
+export class ClrWizardStepnav implements AfterViewInit, OnChanges, OnDestroy {
+    constructor(pageService: PageCollectionService, elementRef: ElementRef<HTMLElement>);
     // (undocumented)
     label: string;
     // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnChanges(changes: SimpleChanges): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
     pageService: PageCollectionService;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": "label"; }, {}, never, never, false, never>;
+    protected scrollLeft(): void;
+    // (undocumented)
+    protected scrollRight(): void;
+    // (undocumented)
+    protected showScrollLeftButton: boolean;
+    // (undocumented)
+    protected showScrollRightButton: boolean;
+    // (undocumented)
+    stepnavLayout: 'vertical' | 'horizontal';
+    // (undocumented)
+    protected updateScrollButtons(): void;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": "label"; "stepnavLayout": "stepnavLayout"; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnav, never>;
 }
 
 // @public (undocumented)
-export class ClrWizardStepnavItem {
-    constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, commonStrings: ClrCommonStringsService);
+export class ClrWizardStepnavItem implements OnInit, OnDestroy {
+    constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, commonStrings: ClrCommonStringsService, elementRef: ElementRef<HTMLElement>);
     // (undocumented)
     get canNavigate(): boolean;
     // (undocumented)
     click(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
+    // (undocumented)
+    readonly elementRef: ElementRef<HTMLElement>;
     // (undocumented)
     get hasError(): boolean;
     // (undocumented)
@@ -5418,6 +5439,10 @@ export class ClrWizardStepnavItem {
     protected get labelledby(): string;
     // (undocumented)
     navService: WizardNavigationService;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
     // (undocumented)
     page: ClrWizardPage;
     // (undocumented)

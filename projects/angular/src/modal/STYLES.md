@@ -36,4 +36,3 @@
 | modal-body-wrapper  | Body wrapper                                       |
 | modal-footer        | Footer wrapper                                     |
 | modal-backdrop      | Backdrop class                                     |
-| modal-nav           | Modal nav class used only in wizards               |
