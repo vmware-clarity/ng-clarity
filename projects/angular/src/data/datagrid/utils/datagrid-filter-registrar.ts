@@ -17,7 +17,7 @@ export abstract class DatagridFilterRegistrar<T, F extends ClrDatagridFilterInte
    */
   registered: any;
 
-  constructor(private filters: FiltersProvider<T>) {}
+  protected constructor(private filters: FiltersProvider<T>) {}
 
   get filter(): F {
     return this.registered && this.registered.filter;

@@ -54,7 +54,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   private subscription: Subscription;
   private documentESCListener: VoidFunction | null = null;
 
-  constructor(injector: Injector, @SkipSelf() protected parentHost: ElementRef<HTMLElement>) {
+  protected constructor(injector: Injector, @SkipSelf() protected parentHost: ElementRef<HTMLElement>) {
     this.el = injector.get(ElementRef);
     this.toggleService = injector.get(ClrPopoverToggleService);
     this.renderer = injector.get(Renderer2);
