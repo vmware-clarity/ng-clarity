@@ -10,7 +10,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { Story } from './helpers/story.interface';
-import { ScreenshotOptions } from './screenshot-options';
+import { screenshotOptions } from './screenshot-options';
 
 const browser = process.env['CLARITY_VRT_BROWSER'];
 const theme = process.env['CLARITY_VRT_THEME'];
@@ -39,6 +39,7 @@ for (const { storyId, component } of stories) {
       globals: `theme:${theme};density:${density}`,
       viewMode: 'story',
     });
+
     const viewport = getPageViewPort(component, storyName);
     if (viewport) {
       page.setViewportSize(viewport);
@@ -58,13 +59,13 @@ for (const { storyId, component } of stories) {
   });
 }
 
-const takeFullPageScreenshot = (component, storyName) => {
-  return ScreenshotOptions[component]?.fullPageScreenshot || ScreenshotOptions[storyName]?.fullPageScreenshot;
-};
+function takeFullPageScreenshot(component: string, storyName: string) {
+  return screenshotOptions[component]?.fullPageScreenshot || screenshotOptions[storyName]?.fullPageScreenshot;
+}
 
-const getPageViewPort = (component, storyName) => {
-  return ScreenshotOptions[component]?.viewport || ScreenshotOptions[storyName]?.viewport;
-};
+function getPageViewPort(component: string, storyName: string) {
+  return screenshotOptions[component]?.viewport || screenshotOptions[storyName]?.viewport;
+}
 
 const unusedScreenshotsFilePath = path.join('.', 'tests', 'snapshots', `used-screenshot-paths-${matrixKey}.txt`);
 fs.writeFileSync(unusedScreenshotsFilePath, usedScreenshotPaths.join('\n'));
