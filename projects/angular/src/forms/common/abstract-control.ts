@@ -24,7 +24,7 @@ export abstract class ClrAbstractControl {
    */
   controlIdSuffix = 'abstract';
 
-  constructor(
+  protected constructor(
     @Optional() protected controlIdService: ControlIdService,
     @Optional() protected containerIdService: ContainerIdService
   ) {}
