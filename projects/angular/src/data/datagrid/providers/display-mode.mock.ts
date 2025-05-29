@@ -8,15 +8,10 @@
 import { Injectable } from '@angular/core';
 
 import { DatagridDisplayMode } from '../enums/display-mode.enum';
-import { DatagridRenderOrganizer } from '../render/render-organizer';
 import { DisplayModeService } from './display-mode.service';
 
 @Injectable()
 export class MockDisplayModeService extends DisplayModeService {
-  constructor(renderOrganizer: DatagridRenderOrganizer) {
-    super(renderOrganizer);
-  }
-
   updateView(mode: DatagridDisplayMode) {
     this._view.next(mode);
   }
