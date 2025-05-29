@@ -71,5 +71,5 @@ const getPageViewPort = (component, storyName) => {
   return ScreenshotOptions[component]?.viewport || ScreenshotOptions[storyName]?.viewport;
 };
 
-const unusedScreenshotsFilePath = path.join('.', 'tests', 'snapshots', `used-screenshot-paths-${matrixKey}.txt`);
-fs.writeFileSync(unusedScreenshotsFilePath, usedScreenshotPaths.join('\n'));
+const usedScreenshotsFilePath = path.join('.', 'tests', 'snapshots', `used-screenshot-paths-${matrixKey}.txt`);
+fs.writeFileSync(usedScreenshotsFilePath, usedScreenshotPaths.join('\n'));
