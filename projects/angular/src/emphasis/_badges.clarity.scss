@@ -41,10 +41,10 @@
     min-width: #{tokens.$cds-global-space-7};
     background-color: badges-variables.$clr-badge-background-color;
     height: density.$clr-base-row-height-xs;
-    border-radius: calc(2 * #{tokens.$cds-alias-object-border-radius-100});
+    border-radius: density.$clr-base-border-radius-xl;
     @include mixins.generate-typography-token('CAPTION-SM-10');
 
-    padding: 0 density.$clr-base-layout-space-2xs;
+    padding: 0 density.$clr-base-horizontal-offset-xs;
     margin-right: #{tokens.$cds-global-space-4};
     white-space: nowrap;
     text-align: center;

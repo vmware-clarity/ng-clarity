@@ -51,9 +51,9 @@
     justify-content: center;
     align-items: center;
     gap: density.$clr-base-gap-xs;
-    padding: 0 density.$clr-base-layout-space-xs;
+    padding: 0 calc(density.$clr-base-horizontal-offset-xs * 2);
     border: label-variables.$clr-label-borderwidth solid label-variables.$clr-label-default-border-color;
-    border-radius: density.$clr-base-border-radius-l;
+    border-radius: density.$clr-base-border-radius-xl;
     height: density.$clr-base-row-height-s;
     margin: 0 tokens.$cds-global-space-4 tokens.$cds-global-space-1 0;
     white-space: nowrap;
@@ -63,12 +63,12 @@
     // Set lower padding size if there is a badge or icon in the start / end of a label.
     &:has(> .badge:first-child),
     &:has(> cds-icon:first-child) {
-      padding-left: density.$clr-base-layout-space-2xs;
+      padding-left: density.$clr-base-horizontal-offset-xs;
     }
 
     &:has(> .badge:last-child),
     &:has(> cds-icon:last-child) {
-      padding-right: density.$clr-base-layout-space-2xs;
+      padding-right: density.$clr-base-horizontal-offset-xs;
     }
 
     .badge,
