@@ -1,8 +1,6 @@
 import { CellCoordinates } from '../key-navigation-grid.controller';
-import { KeyNavigationUtils } from '../key-navigation-utils';
 import { DefaultKeyNavigationStrategy } from './default';
 export declare class ExpandedRowKeyNavigationStrategy extends DefaultKeyNavigationStrategy {
-    constructor(utils: KeyNavigationUtils);
     keyUp(currentCellCoords: CellCoordinates): CellCoordinates;
     keyDown(currentCellCoords: CellCoordinates): CellCoordinates;
     keyLeft(currentCellCoords: CellCoordinates): CellCoordinates;

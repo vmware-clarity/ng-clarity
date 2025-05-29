@@ -1,5 +1,6 @@
 import { ElementRef, Renderer2 } from '@angular/core';
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
+import * as i0 from "@angular/core";
 export declare class BaseExpandableAnimation {
     protected element: ElementRef<HTMLElement>;
     protected domAdapter: DomAdapter;
@@ -10,4 +11,6 @@ export declare class BaseExpandableAnimation {
     initAnimationEffects(): void;
     cleanupAnimationEffects(cancelAnimations?: boolean): void;
     private cancelElementAnimations;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BaseExpandableAnimation, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<BaseExpandableAnimation, never, never, {}, {}, never, never, false, never>;
 }

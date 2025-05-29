@@ -3142,6 +3142,11 @@ class BaseExpandableAnimation {
         });
     }
 }
+BaseExpandableAnimation.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: BaseExpandableAnimation, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive });
+BaseExpandableAnimation.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: BaseExpandableAnimation, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: BaseExpandableAnimation, decorators: [{
+            type: Directive
+        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: DomAdapter }, { type: i0.Renderer2 }]; } });
 
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
@@ -3150,8 +3155,8 @@ class BaseExpandableAnimation {
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrExpandableAnimation extends BaseExpandableAnimation {
-    constructor(element, domAdapter, renderer) {
-        super(element, domAdapter, renderer);
+    constructor() {
+        super(...arguments);
         this.clrExpandTrigger = false;
     }
     get expandAnimation() {
@@ -3168,12 +3173,12 @@ class ClrExpandableAnimation extends BaseExpandableAnimation {
         }
     }
 }
-ClrExpandableAnimation.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrExpandableAnimation, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Component });
+ClrExpandableAnimation.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrExpandableAnimation, deps: null, target: i0.ɵɵFactoryTarget.Component });
 ClrExpandableAnimation.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrExpandableAnimation, selector: "clr-expandable-animation", inputs: { clrExpandTrigger: "clrExpandTrigger" }, host: { listeners: { "@expandAnimation.start": "animationStart($event)", "@expandAnimation.done": "animationDone($event)" }, properties: { "@expandAnimation": "this.expandAnimation" } }, providers: [DomAdapter], usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, styles: [":host{display:block}\n"], animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])] });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrExpandableAnimation, decorators: [{
             type: Component,
             args: [{ selector: 'clr-expandable-animation', template: `<ng-content></ng-content>`, animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])], providers: [DomAdapter], styles: [":host{display:block}\n"] }]
-        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: DomAdapter }, { type: i0.Renderer2 }]; }, propDecorators: { clrExpandTrigger: [{
+        }], propDecorators: { clrExpandTrigger: [{
                 type: Input
             }], expandAnimation: [{
                 type: HostBinding,
@@ -17879,9 +17884,6 @@ class DefaultKeyNavigationStrategy {
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ExpandedRowKeyNavigationStrategy extends DefaultKeyNavigationStrategy {
-    constructor(utils) {
-        super(utils);
-    }
     keyUp(currentCellCoords) {
         const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
         if (currentCellCoords.y === 0) {
@@ -18046,9 +18048,6 @@ class ExpandedRowKeyNavigationStrategy extends DefaultKeyNavigationStrategy {
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ExpandedColumnsRowKeyNavigationStrategy extends ExpandedRowKeyNavigationStrategy {
-    constructor(utils) {
-        super(utils);
-    }
     keyUp(currentCellCoords) {
         const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
         if (currentCellCoords.y === 0) {
