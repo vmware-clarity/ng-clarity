@@ -10,7 +10,7 @@ export declare abstract class AbstractIfState {
     protected displayedContent: boolean;
     protected control: NgControl;
     protected additionalControls: NgControl[];
-    constructor(ifControlStateService: IfControlStateService, ngControlService: NgControlService);
+    protected constructor(ifControlStateService: IfControlStateService, ngControlService: NgControlService);
     ngOnDestroy(): void;
     protected handleState(_state: CONTROL_STATE): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<AbstractIfState, [{ optional: true; }, { optional: true; }]>;

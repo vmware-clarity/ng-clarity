@@ -8,7 +8,7 @@ export declare abstract class DatagridFilterRegistrar<T, F extends ClrDatagridFi
      * @NOTEe Type `any` is set here to be able to pass templateStrictMode
      */
     registered: any;
-    constructor(filters: FiltersProvider<T>);
+    protected constructor(filters: FiltersProvider<T>);
     get filter(): F;
     ngOnDestroy(): void;
     setFilter(filter: F | RegisteredFilter<T, F>): void;

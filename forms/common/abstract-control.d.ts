@@ -11,7 +11,7 @@ export declare abstract class ClrAbstractControl {
      * Hold the suffix for the ID
      */
     controlIdSuffix: string;
-    constructor(controlIdService: ControlIdService, containerIdService: ContainerIdService);
+    protected constructor(controlIdService: ControlIdService, containerIdService: ContainerIdService);
     get id(): string;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAbstractControl, [{ optional: true; }, { optional: true; }]>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractControl, never, never, {}, {}, never, never, false, never>;

@@ -20,7 +20,7 @@ export declare abstract class AbstractPopover implements AfterViewChecked, OnDes
     private popoverInstance;
     private subscription;
     private documentESCListener;
-    constructor(injector: Injector, parentHost: ElementRef<HTMLElement>);
+    protected constructor(injector: Injector, parentHost: ElementRef<HTMLElement>);
     ngAfterViewChecked(): void;
     ngOnDestroy(): void;
     protected anchor(): void;

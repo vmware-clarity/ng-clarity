@@ -4,7 +4,7 @@ import * as i0 from "@angular/core";
 export declare abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
     private latestFlavor;
     private subscription;
-    constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka);
+    protected constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka);
     abstract get flavor(): any;
     ngAfterContentChecked(): void;
     ngOnDestroy(): void;
