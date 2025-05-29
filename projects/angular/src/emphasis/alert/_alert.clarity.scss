@@ -127,7 +127,7 @@
     flex: 1 1 auto;
     flex-flow: column nowrap;
     padding: density.$clr-base-vertical-offset-m 0;
-    gap: density.$clr-base-vertical-offset-m;
+    gap: density.$clr-base-gap-s;
     display: flex;
   }
 
@@ -184,7 +184,7 @@
       > span,
       .alert-text,
       .alert-actions {
-        padding: tokens.$cds-global-space-2 0;
+        padding: density.$clr-base-vertical-offset-multi-row-inline-s 0;
       }
 
       .clr-icon {
@@ -379,18 +379,23 @@
   }
 
   .alert-sm {
-    .alert-items .alert-item {
-      min-height: density.$clr-base-row-height-xs;
+    .alert-items {
+      padding: density.$clr-base-vertical-offset-s 0;
+      gap: 0;
+
+      .alert-item {
+        min-height: density.$clr-base-row-height-xs;
+      }
     }
 
     .alert-icon-wrapper {
       display: flex;
-      flex-basis: tokens.$cds-global-space-7;
-      height: tokens.$cds-global-space-7;
+      flex-basis: density.$clr-base-icon-size-s;
+      padding: density.$clr-base-vertical-offset-multi-row-inline-s 0;
     }
 
     .alert-icon {
-      @include mixins.min-equilateral(tokens.$cds-global-space-7);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
     }
 
     .alert-item > span,
@@ -407,7 +412,7 @@
     }
 
     .close {
-      margin: tokens.$cds-global-space-3 0;
+      margin: density.$clr-base-vertical-offset-s 0;
     }
 
     .alert-spinner.spinner-inline {
@@ -427,7 +432,7 @@
         gap: tokens.$cds-global-space-3;
 
         .alert-item {
-          padding: tokens.$cds-global-space-3 0;
+          padding: density.$clr-base-layout-space-xs 0;
 
           > span,
           .alert-actions,
