@@ -67,5 +67,5 @@ function getPageViewPort(component: string, storyName: string) {
   return screenshotOptions[component]?.viewport || screenshotOptions[storyName]?.viewport;
 }
 
-const unusedScreenshotsFilePath = path.join('.', 'tests', 'snapshots', `used-screenshot-paths-${matrixKey}.txt`);
-fs.writeFileSync(unusedScreenshotsFilePath, usedScreenshotPaths.join('\n'));
+const usedScreenshotsFilePath = path.join('.', 'tests', 'snapshots', `used-screenshot-paths-${matrixKey}.txt`);
+fs.writeFileSync(usedScreenshotsFilePath, usedScreenshotPaths.join('\n'));
