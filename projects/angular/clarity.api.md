@@ -88,6 +88,10 @@ export class BaseExpandableAnimation {
     startHeight: number;
     // (undocumented)
     updateStartHeight(): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<BaseExpandableAnimation, never, never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<BaseExpandableAnimation, never>;
 }
 
 // @public (undocumented)
@@ -2510,7 +2514,6 @@ export class ClrEndDateInputValidator implements Validator {
 
 // @public (undocumented)
 export class ClrExpandableAnimation extends BaseExpandableAnimation {
-    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
     // (undocumented)
     animationDone(event: AnimationEvent_2): void;
     // (undocumented)
