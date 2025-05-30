@@ -1498,7 +1498,6 @@
           // calculation container element
           display: table-cell;
           min-width: tokens.$cds-global-space-15;
-          @include mixins.generate-typography-token('BODY-14-RG-CPT');
           padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
             tables-variables.$clr-table-bottomcellpadding;
           vertical-align: top;
