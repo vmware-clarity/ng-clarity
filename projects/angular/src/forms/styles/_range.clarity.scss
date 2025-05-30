@@ -19,8 +19,8 @@
     position: relative;
     display: flex;
     justify-content: flex-start;
-    align-items: flex-end;
-    height: forms-variables.$clr-forms-range-thumb-height;
+    align-items: center;
+    height: forms-variables.$clr-forms-input-wrapper-height;
     white-space: nowrap;
 
     .fill-input {
@@ -34,10 +34,6 @@
       background-color: forms-variables.$clr-forms-range-progress-fill-color;
       border-radius: forms-variables.$clr-forms-range-border-radius;
       border-style: none;
-    }
-    .clr-validate-icon {
-      position: relative;
-      top: tokens.$cds-global-space-5;
     }
   }
 

@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-type ScreenshotOptionsT = {
-  [key: string]: { fullPageScreenshot?: boolean; viewport?: { width: number; height: number } };
+type ScreenshotOptions = {
+  [componentOrStoryName: string]: { fullPageScreenshot?: boolean; viewport?: { width: number; height: number } };
 };
 
 /**
@@ -23,7 +23,7 @@ type ScreenshotOptionsT = {
  *
  * If a component name is used, all stories under that component name will use the options specified.
  */
-export const ScreenshotOptions: ScreenshotOptionsT = {
+export const screenshotOptions: ScreenshotOptions = {
   dropdown: {
     fullPageScreenshot: true,
   },
