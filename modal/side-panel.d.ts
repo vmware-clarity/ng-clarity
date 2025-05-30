@@ -1,8 +1,8 @@
-import { ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
+import { ElementRef, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { ClrCommonStringsService } from '../utils';
 import { ClrModalConfigurationService } from './modal-configuration.service';
 import * as i0 from "@angular/core";
-export declare class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
+export declare class ClrSidePanel implements OnInit, OnDestroy {
     private element;
     private configuration;
     commonStrings: ClrCommonStringsService;
@@ -14,32 +14,37 @@ export declare class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     staticBackdrop: boolean;
     preventClose: boolean;
     altClose: EventEmitter<boolean>;
-    private modal;
     private _pinnable;
     private _pinned;
     private originalStopClose;
+    private _position;
+    private _modal;
     private _size;
     constructor(element: ElementRef<HTMLElement>, configuration: ClrModalConfigurationService, commonStrings: ClrCommonStringsService);
     get size(): string;
     set size(value: string);
+    get position(): string;
+    set position(position: string);
     get pinned(): boolean;
     set pinned(pinned: boolean);
     get clrSidePanelBackdrop(): boolean;
     set clrSidePanelBackdrop(backdrop: boolean);
     get clrSidePanelPinnable(): boolean;
     set clrSidePanelPinnable(pinnable: boolean);
+    private get modal();
+    private set modal(value);
     private get hostElement();
+    private get bottomPositionCssClass();
     ngOnInit(): void;
-    ngOnChanges(changes: {
-        [propName: string]: SimpleChange;
-    }): void;
     ngOnDestroy(): void;
+    handleModalOpen(open: boolean): void;
     open(): void;
     close(): void;
     togglePinned(): void;
     private documentClick;
-    private displaySideBySide;
-    private displayOverlapping;
+    private updateModalState;
+    private cleanupPinnedClasses;
+    private updatePinnedClasses;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanel, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "_open": "clrSidePanelOpen"; "closeButtonAriaLabel": "clrSidePanelCloseButtonAriaLabel"; "skipAnimation": "clrSidePanelSkipAnimation"; "labelledById": "clrSidePanelLabelledById"; "staticBackdrop": "clrSidePanelStaticBackdrop"; "preventClose": "clrSidePanelPreventClose"; "size": "clrSidePanelSize"; "clrSidePanelBackdrop": "clrSidePanelBackdrop"; "clrSidePanelPinnable": "clrSidePanelPinnable"; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "_open": "clrSidePanelOpen"; "closeButtonAriaLabel": "clrSidePanelCloseButtonAriaLabel"; "skipAnimation": "clrSidePanelSkipAnimation"; "labelledById": "clrSidePanelLabelledById"; "staticBackdrop": "clrSidePanelStaticBackdrop"; "preventClose": "clrSidePanelPreventClose"; "size": "clrSidePanelSize"; "position": "clrSidePanelPosition"; "pinned": "clrSidePanelPinned"; "clrSidePanelBackdrop": "clrSidePanelBackdrop"; "clrSidePanelPinnable": "clrSidePanelPinnable"; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
 }
