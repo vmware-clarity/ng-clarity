@@ -3259,11 +3259,11 @@ export class ClrModalConfigurationService {
 }
 
 // @public (undocumented)
-export class ClrModalHostDirective {
+export class ClrModalHostComponent {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrModalHostDirective, "[clrModalHost]", never, {}, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModalHostComponent, "[clrModalHost]", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalHostDirective, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalHostComponent, never>;
 }
 
 // @public (undocumented)
@@ -3278,7 +3278,7 @@ export class ClrModalModule {
     // Warning: (ae-forgotten-export) The symbol "i3_20" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof i1_35.ClrModal, typeof i2_27.ClrModalBody, typeof i3_20.ClrModalHostDirective], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i3_2.ClrIconModule], [typeof i1_35.ClrModal, typeof i2_27.ClrModalBody, typeof i3_20.ClrModalHostDirective, typeof i3_2.ClrIconModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof i1_35.ClrModal, typeof i2_27.ClrModalBody, typeof i3_20.ClrModalHostComponent], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i3_2.ClrIconModule], [typeof i1_35.ClrModal, typeof i2_27.ClrModalBody, typeof i3_20.ClrModalHostComponent, typeof i3_2.ClrIconModule]>;
 }
 
 // @public (undocumented)
@@ -4011,7 +4011,7 @@ export enum ClrSide {
 }
 
 // @public (undocumented)
-export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
+export class ClrSidePanel implements OnInit, OnDestroy {
     constructor(element: ElementRef<HTMLElement>, configuration: ClrModalConfigurationService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     altClose: EventEmitter<boolean>;
@@ -4028,11 +4028,9 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    labelledById: string;
+    handleModalOpen(open: boolean): void;
     // (undocumented)
-    ngOnChanges(changes: {
-        [propName: string]: SimpleChange;
-    }): void;
+    labelledById: string;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -4047,6 +4045,9 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     get pinned(): boolean;
     set pinned(pinned: boolean);
     // (undocumented)
+    get position(): string;
+    set position(position: string);
+    // (undocumented)
     preventClose: boolean;
     // (undocumented)
     get size(): string;
@@ -4058,7 +4059,7 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     // (undocumented)
     togglePinned(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "_open": "clrSidePanelOpen"; "closeButtonAriaLabel": "clrSidePanelCloseButtonAriaLabel"; "skipAnimation": "clrSidePanelSkipAnimation"; "labelledById": "clrSidePanelLabelledById"; "staticBackdrop": "clrSidePanelStaticBackdrop"; "preventClose": "clrSidePanelPreventClose"; "size": "clrSidePanelSize"; "clrSidePanelBackdrop": "clrSidePanelBackdrop"; "clrSidePanelPinnable": "clrSidePanelPinnable"; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "_open": "clrSidePanelOpen"; "closeButtonAriaLabel": "clrSidePanelCloseButtonAriaLabel"; "skipAnimation": "clrSidePanelSkipAnimation"; "labelledById": "clrSidePanelLabelledById"; "staticBackdrop": "clrSidePanelStaticBackdrop"; "preventClose": "clrSidePanelPreventClose"; "size": "clrSidePanelSize"; "position": "clrSidePanelPosition"; "pinned": "clrSidePanelPinned"; "clrSidePanelBackdrop": "clrSidePanelBackdrop"; "clrSidePanelPinnable": "clrSidePanelPinnable"; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanel, never>;
 }
