@@ -139,18 +139,19 @@
       flex-direction: column;
       order: -1;
       overflow: hidden;
-      overflow-y: auto;
       border-right: var(--clr-global-borderwidth) solid wizard-variables.$clr-wizard-stepnav-border-color;
       background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
       border-radius: wizard-variables.$clr-wizard-border-radius 0 0 wizard-variables.$clr-wizard-border-radius;
     }
 
     .clr-wizard-stepnav {
-      padding: 0 0 wizard-variables.$clr-wizard-default-space wizard-variables.$clr-wizard-default-space;
+      padding-left: wizard-variables.$clr-wizard-default-space;
+      margin-bottom: wizard-variables.$clr-wizard-default-space;
       display: block;
       color: wizard-variables.$clr-wizard-stepnav-text;
       width: 100%;
       flex: 1 1 auto;
+      overflow-y: auto;
     }
 
     .clr-wizard-stepnav-list {
