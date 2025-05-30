@@ -13,14 +13,14 @@
     // Spacing
     --clr-btn-vertical-margin: #{tokens.$cds-global-space-4};
     --clr-btn-horizontal-margin: #{tokens.$cds-global-space-6};
-    --clr-btn-horizontal-padding: #{tokens.$cds-global-space-6};
+    --clr-btn-horizontal-padding: #{density.$clr-base-horizontal-offset-l};
     --clr-btn-vertical-padding: 0;
-    --clr-btn-padding: var(--clr-btn-vertical-padding) #{density.$clr-base-horizontal-offset-l};
+    --clr-btn-padding: var(--clr-btn-vertical-padding) var(--clr-btn-horizontal-padding);
     --clr-btn-gap: #{density.$clr-base-gap-s};
 
     // Sizing
     --clr-btn-height: #{tokens.$cds-global-space-11}; // this is standard height
-    --clr-btn-height-sm: #{tokens.$cds-global-space-9}; // this is btn-sm (small) height
+    --clr-btn-height-sm: #{density.$clr-base-row-height-s}; // this is btn-sm (small) height
 
     // Borders
     --clr-btn-border-radius: #{density.$clr-base-border-radius-s};
@@ -28,8 +28,8 @@
 
     // Standard button appearance - overrideable but not advertised!
     --clr-btn-appearance-standard-height: var(--clr-btn-height-sm);
-    --clr-btn-appearance-standard-padding: 0 #{tokens.$cds-global-space-6};
-    --clr-btn-appearance-standard-icon-size: #{tokens.$cds-global-space-7};
+    --clr-btn-appearance-standard-padding: var(--clr-btn-padding);
+    --clr-btn-appearance-standard-icon-size: #{density.$clr-base-icon-size-s};
 
     // form-style button appearance styles - overrideable but not advertised!
     --clr-btn-appearance-form-height: #{density.$clr-base-row-height-m};
