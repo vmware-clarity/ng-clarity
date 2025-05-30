@@ -52,6 +52,7 @@ export default {
     clrLoadingMoreItems: false,
     clrDgPreserveSelection: false,
     clrDgRowSelection: false,
+    clrDgCustomSelectAllEnabled: false,
     clrDgSkeletonLoading: false,
     clrDgSingleActionableAriaLabel: commonStringsDefault.singleActionableAriaLabel,
     clrDgSingleSelectionAriaLabel: commonStringsDefault.singleSelectionAriaLabel,
@@ -61,6 +62,10 @@ export default {
     clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     clrRenderRangeChange: action('clrRenderRangeChange'),
     clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
+    clrDgCustomSelectAll(this: { selectedRows: number[] }, selectAllChecked: boolean) {
+      action('clrDgCustomSelectAll').apply(this, [selectAllChecked]);
+      this.selectedRows = selectAllChecked ? behaviorElements.value.map((element, i) => i).filter(i => i % 2) : [];
+    },
     // story helpers
     behaviorElements,
     scrollToIndexBehavior: 'smooth',
@@ -110,11 +115,13 @@ const DatagridDetailsTemplate: StoryFn = args => ({
       [clrDgLoading]="clrDgLoading"
       [clrDgPreserveSelection]="clrDgPreserveSelection"
       [clrDgRowSelection]="clrDgRowSelection"
+      [clrDgCustomSelectAllEnabled]="clrDgCustomSelectAllEnabled"
       [clrDgSingleActionableAriaLabel]="clrDgSingleActionableAriaLabel"
       [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
       (clrDgRefresh)="clrDgRefresh($event)"
       (clrDgSelectedChange)="clrDgSelectedChange($event)"
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
+      (clrDgCustomSelectAll)="clrDgCustomSelectAll($event)"
       [clrLoadingMoreItems]="clrLoadingMoreItems"
     >
       <clr-dg-column [style.width.px]="250">

@@ -65,15 +65,19 @@ jobs:
 
   pr-visual-regression-test:
     name: PR Visual Regression Test
-    timeout-minutes: 30
+    timeout-minutes: 40
     # This job intentionally does not use the `ubuntu-latest` image.
     # An updated image could generate different snapshots, so we should explicitly update the image version.
     runs-on: ubuntu-24.04
     strategy:
       matrix:
         browser: ['chromium', 'firefox']
+        theme: ['light', 'dark']
+        density: ['default', 'regular', 'compact']
     env:
       CLARITY_VRT_BROWSER: ${{matrix.browser}}
+      CLARITY_VRT_THEME: ${{matrix.theme}}
+      CLARITY_VRT_DENSITY: ${{matrix.density}}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -95,9 +99,9 @@ jobs:
         id: diff
         run: |
           git add .
-          git diff --cached --binary > visual-snapshot-changes-${{matrix.browser}}.diff
+          git diff --cached --binary > visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff
       - name: Upload Changes
         uses: actions/upload-artifact@v4
         with:
-          name: visual-snapshot-changes-${{matrix.browser}}.diff
-          path: visual-snapshot-changes-${{matrix.browser}}.diff
+          name: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff
+          path: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff

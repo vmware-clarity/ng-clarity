@@ -74,6 +74,19 @@
   }
 }
 
+@mixin datagrid-action-button-styles($height: tokens.$cds-global-space-10) {
+  // Calculates how much padding to set on top/bottom and left/right by dividing the height by the icon size
+  $verticalPadding: calc(($height - datagrid-variables.$clr-datagrid-icon-size) / 2);
+  $horizontalPadding: calc(
+    (datagrid-variables.$clr-datagrid-fixed-column-size - datagrid-variables.$clr-datagrid-icon-size) / 2
+  );
+  cursor: pointer;
+  width: 100%;
+  height: $height;
+  padding: $verticalPadding $horizontalPadding;
+  display: inline-flex;
+}
+
 @include meta.load-css('properties.datagrid');
 
 @include mixins.exports('datagrid.clarity') {
@@ -100,6 +113,7 @@
     overflow: auto;
     flex: 1 1 auto;
     margin-top: tokens.$cds-global-space-6;
+    display: flex;
 
     &.cdk-virtual-scrollable .datagrid-rows {
       flex-grow: 0;
@@ -113,13 +127,11 @@
   }
 
   .datagrid-expandable-caret {
-    padding: tokens.$cds-global-space-2 datagrid-variables.$clr-datagrid-horizontal-padding tokens.$cds-global-space-3;
     text-align: center;
 
     .datagrid-expandable-caret-button {
       @include mixins.clr-no-styles-button();
-      cursor: pointer;
-      @include mixins.equilateral(tokens.$cds-global-space-10);
+      @include datagrid-action-button-styles();
     }
 
     .datagrid-expandable-caret-icon {
@@ -287,6 +299,7 @@
     flex: 1 1 auto;
     display: flex;
     flex-flow: column nowrap;
+    width: 100%;
 
     &.is-replaced {
       flex-direction: row;
@@ -307,6 +320,7 @@
     flex: 1 1 auto;
     display: flex;
     flex-flow: row nowrap;
+    width: 100%;
 
     .datagrid-row-detail {
       display: flex;
@@ -349,6 +363,7 @@
     }
 
     .datagrid-row {
+      display: flex;
       @include clr-datagrid-header-bg;
 
       border-top: none;
@@ -379,12 +394,14 @@
     display: flex;
     flex: 1 1 auto;
     min-height: 100%;
+    width: 100%;
   }
 
   .datagrid-table {
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
+    width: 100%;
 
     .datagrid-rows {
       display: flex;
@@ -408,7 +425,7 @@
       &:focus {
         outline: tokens.$cds-alias-object-interaction-outline;
         outline-color: -webkit-focus-ring-color;
-        outline-offset: calc(-1 * tokens.$cds-global-space-2);
+        outline-offset: datagrid-variables.$clr-datagrid-cell-outline-offset;
       }
 
       clr-dg-filter,
@@ -602,13 +619,20 @@
         min-width: datagrid-variables.$clr-datagrid-fixed-column-size;
       }
 
+      &.datagrid-row-actions,
+      &.datagrid-expandable-caret,
+      &.datagrid-detail-caret {
+        padding: 0;
+        button {
+          outline-offset: datagrid-variables.$clr-datagrid-cell-outline-offset;
+        }
+      }
+
       &.datagrid-row-actions {
         background: none;
       }
 
       &.datagrid-expandable-caret {
-        padding: tokens.$cds-global-space-2 datagrid-variables.$clr-datagrid-horizontal-padding
-          tokens.$cds-global-space-3;
         text-align: center;
       }
 
@@ -618,8 +642,13 @@
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
 
+      clr-dg-action-overflow {
+        display: contents;
+      }
+
       .datagrid-action-toggle {
         @include mixins.clr-no-styles-button();
+        @include datagrid-action-button-styles();
 
         cds-icon,
         clr-icon {
@@ -874,10 +903,6 @@
       padding: tables-variables.$clr-table-cell-compact-padding;
     }
 
-    .datagrid-header {
-      min-height: tokens.$cds-global-space-9;
-    }
-
     .datagrid-column .datagrid-column-separator {
       &::after {
         height: calc(100% - (0.5 * #{datagrid-variables.$clr-datagrid-column-separator-expandby}));
@@ -890,11 +915,11 @@
       }
     }
 
-    .datagrid-detail-caret.datagrid-cell {
-      padding: 0;
+    .datagrid-detail-caret .datagrid-detail-caret-button {
+      @include datagrid-action-button-styles(tables-variables.$clr-table-compact-row-height);
     }
 
-    .datagrid-cell {
+    .datagrid-cell:not(.datagrid-detail-caret, .datagrid-expandable-caret, .datagrid-row-actions) {
       clr-icon {
         margin-top: calc((-1 * tokens.$cds-global-space-3) - tokens.$cds-global-space-1);
         margin-bottom: calc(-1 * tokens.$cds-global-space-3);
@@ -920,22 +945,22 @@
       }
 
       .datagrid-expandable-caret-button {
-        @include mixins.clr-no-styles-button();
-        @include mixins.equilateral(tokens.$cds-global-space-9);
-        outline-offset: datagrid-variables.$clr-datagrid-compact-outline-offset;
+        @include datagrid-action-button-styles(tables-variables.$clr-table-compact-row-height);
       }
 
       .datagrid-expandable-caret-icon {
         margin: 0;
       }
 
-      &.datagrid-cell {
-        padding: 0;
-      }
-
       &.datagrid-column {
-        padding-top: calc(tables-variables.$clr-table-compact-vertical-padding + tokens.$cds-global-space-1);
+        padding-top: tables-variables.$clr-table-compact-vertical-padding;
         padding-bottom: tables-variables.$clr-table-compact-vertical-padding;
+      }
+    }
+
+    .datagrid-row-actions {
+      .datagrid-action-toggle {
+        @include datagrid-action-button-styles(tables-variables.$clr-table-compact-row-height);
       }
     }
 
@@ -953,10 +978,6 @@
 
       .pagination {
         line-height: tokens.$cds-global-space-9;
-      }
-
-      .column-switch-wrapper .column-toggle--action {
-        outline-offset: datagrid-variables.$clr-datagrid-compact-outline-offset;
       }
 
       .clr-form-control-disabled .datagrid-footer-select.clr-checkbox-wrapper input[type='checkbox']:checked + label {
@@ -1240,14 +1261,9 @@
     display: flex;
     justify-content: center;
 
-    &.datagrid-cell {
-      padding: tokens.$cds-global-space-3 0;
-    }
-
     .datagrid-detail-caret-button {
       @include mixins.clr-no-styles-button();
-      cursor: pointer;
-      @include mixins.equilateral(tokens.$cds-global-space-9);
+      @include datagrid-action-button-styles();
 
       &:disabled cds-icon.datagrid-detail-caret-icon {
         --color: #{tokens.$cds-alias-object-interaction-color-disabled};
@@ -1476,10 +1492,6 @@
 
       .datagrid-row {
         display: table-row;
-
-        clr-expandable-animation {
-          display: none;
-        }
 
         .datagrid-cell {
           // This is a hack b/c styles were not applied out of the box when moving columns into the

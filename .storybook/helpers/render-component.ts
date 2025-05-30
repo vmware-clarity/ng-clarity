@@ -5,23 +5,36 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, Input, Type, ViewChild, ViewContainerRef } from '@angular/core';
+export type StorybookRenderComponent = Array<{ type: Type<unknown>; options: any }>;
 
 @Component({
   selector: 'storybook-render-component',
-  template: ` <ng-container #components></ng-container> `,
   standalone: true,
+  template: `<ng-container #renderContainer></ng-container>`,
 })
-export class RenderComponentStorybook {
-  @Input() components: Array<{ type: Type<unknown>; options: any }> = [];
+export class RenderComponentStorybook implements AfterViewInit {
+  @Input() components: Array<{ type: Type<unknown>; options?: any }> = [];
 
-  @ViewChild('components', { read: ViewContainerRef }) _components: ViewContainerRef;
+  @ViewChild('renderContainer', { read: ViewContainerRef }) private _renderContainer!: ViewContainerRef;
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
+    if (!this._renderContainer) {
+      return;
+    }
     this.components.forEach(component => {
-      const componentRef = this._components.createComponent(component.type);
-      Object.assign(componentRef.instance, component.options);
+      const componentRef = this._renderContainer.createComponent<any>(component.type);
+
+      if (component.options) {
+        Object.assign(componentRef.instance, component.options);
+      }
       componentRef.changeDetectorRef.detectChanges();
+
+      const hostEl = componentRef.location.nativeElement as HTMLElement;
+      const parent = hostEl.parentNode;
+
+      Array.from(hostEl.childNodes).forEach(child => parent.insertBefore(child, hostEl));
+      parent.removeChild(hostEl);
     });
   }
 }

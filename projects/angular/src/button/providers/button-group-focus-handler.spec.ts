@@ -11,6 +11,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrPopoverToggleService } from '../../utils';
 import { Keys } from '../../utils/enums/keys.enum';
 import { FocusService } from '../../utils/focus/focus.service';
+import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrButtonGroupModule } from '../button-group';
 import { ClrButtonGroup } from '../button-group/button-group';
 import { BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, ButtonGroupFocusHandler } from './button-group-focus-handler.service';
@@ -95,14 +96,14 @@ export default function (): void {
       it('first child is focused after open', function (this: TestContext) {
         this.focusHandler.initialize({ menu: this.menu, menuToggle: this.menuToggle });
         const firstChild = this.menu.children[0];
-        expect(document.activeElement).toBe(firstChild);
+        expectActiveElementToBe(firstChild);
       });
 
       it('last child is focused after open', function (this: TestContext) {
         this.focusHandler.initialFocus = InitialFocus.LAST_ITEM;
         this.focusHandler.initialize({ menu: this.menu, menuToggle: this.menuToggle });
         const lastChild = this.menu.children[this.menu.children.length - 1];
-        expect(document.activeElement).toBe(lastChild);
+        expectActiveElementToBe(lastChild);
       });
 
       it('focus last button in the menu on key down events', function (this: TestContext) {
@@ -110,13 +111,13 @@ export default function (): void {
         this.menu.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         this.menu.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         const lastChild = this.menu.children[this.menu.children.length - 1];
-        expect(document.activeElement).toBe(lastChild);
+        expectActiveElementToBe(lastChild);
       });
 
       it('does not prevent moving focus to a different part of the page', function (this: TestContext) {
         this.focusHandler.initialize({ menu: this.menu, menuToggle: this.menuToggle });
         this.outside.focus();
-        expect(document.activeElement).toBe(this.outside);
+        expectActiveElementToBe(this.outside);
       });
     });
   });

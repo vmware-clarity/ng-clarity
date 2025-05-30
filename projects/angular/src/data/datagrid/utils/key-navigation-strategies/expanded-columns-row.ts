@@ -6,14 +6,9 @@
  */
 
 import { CellCoordinates } from '../key-navigation-grid.controller';
-import { KeyNavigationUtils } from '../key-navigation-utils';
 import { ExpandedRowKeyNavigationStrategy } from './expanded-row';
 
 export class ExpandedColumnsRowKeyNavigationStrategy extends ExpandedRowKeyNavigationStrategy {
-  constructor(utils: KeyNavigationUtils) {
-    super(utils);
-  }
-
   override keyUp(currentCellCoords: CellCoordinates) {
     const nextCellCoords = this.utils.createNextCellCoords(currentCellCoords);
 
@@ -22,6 +17,10 @@ export class ExpandedColumnsRowKeyNavigationStrategy extends ExpandedRowKeyNavig
     }
 
     nextCellCoords.y = currentCellCoords.y - 1;
+
+    if (this.utils.isSingleCellExpandedRow(nextCellCoords.y)) {
+      return super.keyUp(currentCellCoords);
+    }
 
     const isActionCell = this.utils.isActionCell(currentCellCoords);
 
@@ -53,6 +52,10 @@ export class ExpandedColumnsRowKeyNavigationStrategy extends ExpandedRowKeyNavig
     }
 
     nextCellCoords.y = currentCellCoords.y + 1;
+
+    if (this.utils.isSingleCellExpandedRow(nextCellCoords.y)) {
+      return super.keyDown(currentCellCoords);
+    }
 
     if (!this.utils.isActionCell(currentCellCoords)) {
       if (this.utils.isRowReplaced(nextCellCoords.y)) {
@@ -91,6 +94,10 @@ export class ExpandedColumnsRowKeyNavigationStrategy extends ExpandedRowKeyNavig
 
     nextCellCoords.y = currentCellCoords.y - itemsPerPage > 0 ? currentCellCoords.y - itemsPerPage + 1 : 1;
 
+    if (this.utils.isSingleCellExpandedRow(nextCellCoords.y)) {
+      return super.keyPageUp(currentCellCoords);
+    }
+
     if (!this.utils.isActionCell(currentCellCoords)) {
       if (this.utils.isRowReplaced(nextCellCoords.y)) {
         if (!this.utils.isDetailsRow(nextCellCoords.y)) {
@@ -116,6 +123,10 @@ export class ExpandedColumnsRowKeyNavigationStrategy extends ExpandedRowKeyNavig
     const itemsPerPage = this.utils.itemsPerPage;
 
     nextCellCoords.y = currentCellCoords.y + itemsPerPage >= numOfRows ? numOfRows : currentCellCoords.y + itemsPerPage;
+
+    if (this.utils.isSingleCellExpandedRow(nextCellCoords.y)) {
+      return super.keyPageDown(currentCellCoords);
+    }
 
     if (!this.utils.isActionCell(currentCellCoords)) {
       if (this.utils.isRowReplaced(nextCellCoords.y) && !this.utils.isDetailsRow(nextCellCoords.y)) {

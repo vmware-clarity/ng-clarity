@@ -21,7 +21,9 @@ import {
   Output,
   QueryList,
   Renderer2,
+  TemplateRef,
   ViewChild,
+  ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
@@ -97,6 +99,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @Output('clrDgRefresh') refresh = new EventEmitter<ClrDatagridStateInterface<T>>(false);
 
   /**
+   * The application can provide custom select all logic.
+   */
+  @Input('clrDgCustomSelectAllEnabled') customSelectAllEnabled = false;
+  @Output('clrDgCustomSelectAll') customSelectAll = new EventEmitter<boolean>();
+
+  /**
    * Expose virtual scroll directive for applications to access its public methods
    */
   @ContentChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<any>;
@@ -130,11 +138,15 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
   @ViewChild('displayedRows', { read: ViewContainerRef }) _displayedRows: ViewContainerRef;
   @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
+  @ViewChild('fixedColumnTemplate') _fixedColumnTemplate: TemplateRef<any>;
+  @ViewChildren('stickyHeader', { emitDistinctChangesOnly: true }) stickyHeaders: QueryList<ElementRef>;
 
   selectAllId: string;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
+
+  @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
 
   /**
    * Subscriptions to all the services and queries changes
@@ -230,13 +242,17 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   get allSelected() {
     return this.selection.isAllSelected();
   }
-  set allSelected(_value: boolean) {
-    /**
-     * This is a setter but we ignore the value.
-     * It's strange, but it lets us have an indeterminate state where only
-     * some of the items are selected.
-     */
-    this.selection.toggleAll();
+  set allSelected(value: boolean) {
+    if (this.customSelectAllEnabled) {
+      this.customSelectAll.emit(value);
+    } else {
+      /**
+       * This is a setter but we ignore the value.
+       * It's strange, but it lets us have an indeterminate state where only
+       * some of the items are selected.
+       */
+      this.selection.toggleAll();
+    }
   }
 
   ngAfterContentInit() {
@@ -294,10 +310,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   ngAfterViewInit() {
     this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
     this.updateDetailState();
-
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
     this.refresh.emit(this.stateProvider.state);
     this._subscriptions.push(
+      this.stickyHeaders.changes.subscribe(() => this.resize()),
       this.stateProvider.change.subscribe(state => this.refresh.emit(state)),
       this.selection.change.subscribe(s => {
         if (this.selection.selectionType === SelectionType.Single) {
@@ -343,6 +359,17 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         } else {
           // Set state, style for the datagrid to CALCULATE and insert row & columns into containers
           this.renderer.addClass(this.el.nativeElement, 'datagrid-calculate-mode');
+          // Inserts a fixed column if any of these conditions are true.
+          const fixedColumnConditions = [
+            this.rowActionService.hasActionableRow,
+            this.selection.selectionType !== this.SELECTION_TYPE.None,
+            this.expandableRows.hasExpandableRow || this.detailService.enabled,
+          ];
+          fixedColumnConditions
+            .filter(Boolean)
+            .forEach(() =>
+              this._projectedCalculationColumns.insert(this._fixedColumnTemplate.createEmbeddedView(null))
+            );
           this.columns.forEach(column => {
             this._projectedCalculationColumns.insert(column._view);
           });
@@ -377,12 +404,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   toggleAllSelected($event: any) {
     $event.preventDefault();
-
-    if (this.virtualScroll) {
-      return;
-    }
-
-    this.allSelected = !this.allSelected;
+    this.selectAllCheckbox?.nativeElement.click();
   }
 
   resize(): void {

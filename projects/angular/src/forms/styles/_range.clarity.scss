@@ -19,8 +19,8 @@
     position: relative;
     display: flex;
     justify-content: flex-start;
-    align-items: flex-end;
-    height: forms-variables.$clr-forms-range-thumb-height;
+    align-items: center;
+    height: forms-variables.$clr-forms-input-wrapper-height;
     white-space: nowrap;
 
     .fill-input {
