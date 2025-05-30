@@ -54,7 +54,7 @@
     padding: 0 calc(density.$clr-base-horizontal-offset-xs * 2);
     border: label-variables.$clr-label-borderwidth solid label-variables.$clr-label-default-border-color;
     border-radius: density.$clr-base-border-radius-xl;
-    height: density.$clr-base-row-height-s;
+    min-height: density.$clr-base-row-height-s;
     margin: 0 tokens.$cds-global-space-4 tokens.$cds-global-space-1 0;
     white-space: nowrap;
     color: label-variables.$clr-label-font-color-light;
