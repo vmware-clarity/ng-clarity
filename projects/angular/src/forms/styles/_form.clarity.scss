@@ -7,6 +7,7 @@
 @use '../../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
 @use 'variables.forms' as forms-variables;
+@use '../../layout/density' as density;
 
 @include mixins.exports('forms.wrappers') {
   .clr-form {
@@ -79,7 +80,7 @@
       fill: forms-variables.$clr-forms-invalid-color;
 
       font-size: tokens.$cds-alias-typography-font-size-3;
-      margin-left: forms-variables.$clr-forms-baseline;
+      margin-left: density.$clr-base-layout-space-2xs;
     }
   }
 }
