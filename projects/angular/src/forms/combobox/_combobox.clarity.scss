@@ -115,7 +115,7 @@
 
     .label-combobox-pill {
       @include mixins.generate-typography-token('CAPTION-LG-11');
-      height: combobox-variables.$clr-combobox-pill-height;
+      min-height: combobox-variables.$clr-combobox-pill-height;
       margin: combobox-variables.$clr-combobox-pill-margin;
       background-color: combobox-variables.$clr-combobox-pill-background-color;
       border-width: tokens.$cds-global-space-1;
