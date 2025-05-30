@@ -8,6 +8,7 @@
 @use 'sass:map';
 @use 'sass:selector';
 @use 'variables/variables';
+@use '../layout/density/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 //Credit: Zurb Foundation for Apps https://github.com/zurb/foundation-apps/blob/master/scss/helpers/_functions.scss
@@ -395,8 +396,8 @@ $typography-tokens: (
   'BUTTON-12': (
     // Buttons
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
-    font-size: #{tokens.$cds-alias-typography-font-size-2},
-    line-height: #{tokens.$cds-global-space-7},
+    font-size: #{density.$clr-base-typography-font-size-button},
+    line-height: #{density.$clr-base-typography-line-height-16},
     // better token not found
     letter-spacing: #{tokens.$cds-global-space-1},
     // better token not found

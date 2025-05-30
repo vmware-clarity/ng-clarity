@@ -37,6 +37,9 @@
       padding: 0 tokens.$cds-global-space-2 !important;
       min-width: unset;
       border: 0;
+      cds-icon {
+        @include mixins.equilateral(tokens.$cds-global-space-9);
+      }
     }
 
     .clr-file-input-browse-button-text {

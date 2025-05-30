@@ -6,6 +6,7 @@
  */
 @use '../../utils/mixins';
 @use '../variables.buttons' as buttons-variables;
+@use '../../layout/density/' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @mixin square-off-btngroup-btns($dir: left) {
@@ -148,6 +149,8 @@
 
     .dropdown-toggle {
       display: block;
+      padding: 0 density.$clr-base-horizontal-offset-xl;
+      min-width: unset;
     }
 
     .dropdown-menu {
