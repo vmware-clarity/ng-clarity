@@ -42,6 +42,7 @@
       flex: 1 1 auto;
     }
 
+    // Toggle Switch background
     input[type='checkbox'] {
       position: relative;
       @extend %custom-checkbox;
@@ -51,12 +52,13 @@
       border-radius: tokens.$cds-alias-object-border-radius-200; // Style outline radius properly
       background-color: toggle-variables.$clr-toggle-bg-color-off;
       @include clr-toggle-transition-styles;
-      transition-property: border-color, background-color;
+      transition-property: background-color;
 
       &:not(:disabled) {
         cursor: pointer;
       }
 
+      // Toggle Switch dot
       &::before {
         position: absolute;
         display: inline-block;
@@ -65,21 +67,20 @@
         border: tokens.$cds-alias-object-border-width-400 solid toggle-variables.$clr-toggle-handle-border-color;
         background-color: toggle-variables.$clr-toggle-handle-bg-color;
         left: 0;
-        right: calc(-1 * toggle-variables.$clr-toggle-switch-base-width);
 
         @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
         @include clr-toggle-transition-styles;
-        transition-property: right, left, border;
+        transition-property: left, border-width, border-color;
       }
 
-      //Toggle Switch
+      // Toggle Switch check
       &::after {
         position: absolute;
         content: '';
         visibility: hidden;
         @include clr-toggle-transition-styles;
-        transition-property: visibility, left, border;
         left: #{tokens.$cds-global-space-3};
+        transition-property: visibility, left, border-color;
         height: calc(#{$mark-half-size} + #{tokens.$cds-global-space-1});
         width: forms-variables.$clr-forms-checkbox-mark-size;
         border-left: forms-variables.$clr-forms-checkbox-mark-border-size solid
@@ -94,15 +95,12 @@
       }
 
       &:checked {
-        border-color: toggle-variables.$clr-toggle-bg-color-on;
         background-color: toggle-variables.$clr-toggle-bg-color-on;
-        transition-property: border-color, background-color;
 
         &::before {
           border-width: tokens.$cds-alias-object-border-width-200;
           border-color: toggle-variables.$clr-toggle-handle-border-color-on;
           left: calc(toggle-variables.$clr-toggle-switch-base-width - toggle-variables.$clr-toggle-dot-diameter);
-          right: 0;
         }
 
         &::after {
