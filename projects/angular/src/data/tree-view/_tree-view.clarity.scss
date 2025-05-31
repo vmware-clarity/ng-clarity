@@ -12,6 +12,20 @@
 @include meta.load-css('properties.tree-view');
 
 @include mixins.exports('tree-view.clarity') {
+  .example-viewport {
+    height: 150px;
+    width: 400px;
+  }
+
+  .example-item {
+    height: 25px;
+  }
+
+  .cdk-virtual-scroll-content-wrapper {
+    width: 100%;
+    position: block;
+  }
+
   .clr-tree-node {
     //Display
     display: block;
@@ -54,7 +68,11 @@
     //Display
     display: flex;
     align-items: center;
-
+    // position: sticky;
+    // top: 0px;
+    overflow-x: hidden !important;
+    background-color: white;
+    z-index: 1;
     @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
 
     & > .clr-treenode-checkbox.clr-checkbox-wrapper {

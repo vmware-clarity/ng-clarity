@@ -38,6 +38,7 @@ import { LoadingListener } from '../../utils/loading/loading-listener';
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { ClrSelectedState } from './models/selected-state.enum';
 import { TreeNodeModel } from './models/tree-node.model';
+import { RecursiveChildren } from './recursive-children';
 import { TREE_FEATURES_PROVIDER, TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNodeLink } from './tree-node-link';
@@ -63,6 +64,7 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
   host: {
     '[class.clr-tree-node]': 'true',
     '[class.disabled]': 'this._model.disabled',
+    '[style.position]': 'relative',
   },
 })
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
@@ -253,6 +255,10 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       containerEl.focus();
       containerEl.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     }
+  }
+
+  rotateDeg(children: RecursiveChildren<T>) {
+    return this.expanded && children.scrollTop > 0 ? 'rotate(135deg)' : null;
   }
 
   broadcastFocusOnContainer() {

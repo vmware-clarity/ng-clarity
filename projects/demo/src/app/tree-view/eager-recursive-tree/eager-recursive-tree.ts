@@ -26,7 +26,79 @@ export class EagerRecursiveTreeDemo {
   singleRoot: TreeNode = {
     name: 'A',
     children: [
-      { name: 'AA', children: [{ name: 'AAA' }, { name: 'AAB' }, { name: 'AAC' }] },
+      {
+        name: 'AA',
+        children: [
+          { name: 'AAA' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAC' },
+        ],
+      },
+      { name: 'AB' },
+      { name: 'AB' },
+      { name: 'AB' },
+      { name: 'AB' },
+      { name: 'AB' },
+      { name: 'AB' },
+      {
+        name: 'ЮЯ',
+        children: [
+          { name: 'AAA' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAB' },
+          { name: 'AAC' },
+        ],
+      },
+      { name: 'AB' },
+      { name: 'AB' },
+      { name: 'AB' },
+      { name: 'AB' },
+      { name: 'AB' },
       { name: 'AB' },
       { name: 'AC', children: [{ name: 'ACA' }, { name: 'ACB' }] },
     ],
@@ -38,7 +110,47 @@ export class EagerRecursiveTreeDemo {
       children: [
         { name: 'AA', children: [{ name: 'AAA' }, { name: 'AAB' }, { name: 'AAC' }] },
         { name: 'AB' },
-        { name: 'AC', children: [{ name: 'ACA' }, { name: 'ACB' }] },
+        { name: 'AB' },
+        { name: 'AB' },
+        { name: 'AB' },
+        { name: 'AB' },
+        { name: 'AB' },
+        { name: 'AB' },
+        { name: 'AB' },
+        { name: 'AB' },
+        { name: 'AB' },
+        { name: 'AB' },
+        { name: 'AB' },
+        { name: 'AB' },
+        { name: 'AB' },
+        {
+          name: 'AC',
+          children: [
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACA' },
+            { name: 'ACB' },
+          ],
+        },
       ],
     },
     {
@@ -53,6 +165,21 @@ export class EagerRecursiveTreeDemo {
 
   singleRootSelected: SelectedMap = this.buildDefaultSelected(this.singleRoot);
   multiRootSelected: SelectedMap = this.buildDefaultSelected(this.multiRoot);
+
+  constructor() {
+    this.singleRoot.children = [];
+    for (let i = 0; i < 10000; i++) {
+      this.singleRoot.children.push({ name: 'Hidalgo ' + i, children: [...this.getSanchos(i)] });
+    }
+  }
+
+  getSanchos(i: number): TreeNode[] {
+    const result = [];
+    for (let j = 0; j < 1000; j++) {
+      result.push({ name: 'Sancho ' + i + ' ' + j });
+    }
+    return result;
+  }
 
   synchronousChildren = (node: TreeNode) => node.children;
 

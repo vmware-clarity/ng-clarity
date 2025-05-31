@@ -31,6 +31,7 @@
       class="clr-treenode-caret-icon"
       shape="angle"
       [attr.direction]="expandService.expanded ? 'down' : 'right'"
+      [style.transform]="rotateDeg(recursiveChildren)"
     ></cds-icon>
   </button>
   <div class="clr-treenode-spinner-container" *ngIf="expandService.loading || isModelLoading">
@@ -71,5 +72,5 @@
 >
   <ng-content select="clr-tree-node"></ng-content>
   <ng-content select="[clrIfExpanded]"></ng-content>
-  <clr-recursive-children [parent]="_model"></clr-recursive-children>
+  <clr-recursive-children [parent]="_model" #recursiveChildren></clr-recursive-children>
 </div>
