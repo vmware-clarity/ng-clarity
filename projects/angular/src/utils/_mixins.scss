@@ -399,7 +399,7 @@ $typography-tokens: (
     font-size: #{density.$clr-base-typography-font-size-caption},
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
     line-height: #{density.$clr-base-typography-line-height-16},
-    letter-spacing: #{tokens.$cds-global-space-1},
+    letter-spacing: #{baselinePx(0.2)},
     text-transform: uppercase,
   ),
 );
