@@ -27,12 +27,12 @@
   <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
   <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
 
-  <clr-wizard-page>
-    <ng-template clrPageTitle>Title for page 1</ng-template>
+  <clr-wizard-page *ngFor="let pageNumber of pageNumbers">
+    <ng-template clrPageTitle>Title for page {{pageNumber}}</ng-template>
     <!-- mandatory -->
-    <ng-template clrPageNavTitle>Step 1</ng-template>
+    <ng-template clrPageNavTitle>Step {{pageNumber}}</ng-template>
     <!-- optional -->
-    <p class="content-for-page-1">Content for step 1</p>
+    <p class="content-for-page-1">Content for step {{pageNumber}}</p>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
       amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
@@ -114,102 +114,4 @@
       et orci hendrerit, consequat purus non, imperdiet ipsum.
     </p>
   </clr-wizard-page>
-
-  <clr-wizard-page>
-    <ng-template clrPageTitle>Title for page 2</ng-template>
-    <!-- mandatory -->
-    <ng-template clrPageNavTitle>Step 2</ng-template>
-    <!-- optional -->
-    <p class="content-for-page-2">Content for step 2</p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
-      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
-      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
-      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
-      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
-      et orci hendrerit, consequat purus non, imperdiet ipsum.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
-      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
-      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
-      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
-      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
-      et orci hendrerit, consequat purus non, imperdiet ipsum.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
-      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
-      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
-      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
-      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
-      et orci hendrerit, consequat purus non, imperdiet ipsum.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
-      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
-      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
-      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
-      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
-      et orci hendrerit, consequat purus non, imperdiet ipsum.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
-      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
-      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
-      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
-      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
-      et orci hendrerit, consequat purus non, imperdiet ipsum.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
-      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
-      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
-      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
-      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
-      et orci hendrerit, consequat purus non, imperdiet ipsum.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
-      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
-      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
-      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
-      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
-      et orci hendrerit, consequat purus non, imperdiet ipsum.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
-      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
-      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
-      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
-      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
-      et orci hendrerit, consequat purus non, imperdiet ipsum.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
-      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
-      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
-      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
-      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
-      et orci hendrerit, consequat purus non, imperdiet ipsum.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
-      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
-      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
-      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
-      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
-      et orci hendrerit, consequat purus non, imperdiet ipsum.
-    </p>
-  </clr-wizard-page>
-
-  <ng-container *ngIf="scrollingSteps">
-    <clr-wizard-page
-      *ngFor="let number of [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]"
-    >
-      <ng-template clrPageTitle>Title for page {{number}}</ng-template>
-      <ng-template clrPageNavTitle>Step {{number}}</ng-template>
-      <p>Content for step {{number}}</p>
-    </clr-wizard-page>
-  </ng-container>
 </clr-wizard>
