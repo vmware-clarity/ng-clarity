@@ -6,7 +6,7 @@
  */
 
 import { AnimationEvent, transition, trigger, useAnimation } from '@angular/animations';
-import { Component, ElementRef, HostBinding, HostListener, Input, Renderer2 } from '@angular/core';
+import { Component, HostBinding, HostListener, Input } from '@angular/core';
 
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
 import { defaultExpandAnimation } from '../constants';
@@ -27,10 +27,6 @@ import { BaseExpandableAnimation } from './base-expandable-animation';
 })
 export class ClrExpandableAnimation extends BaseExpandableAnimation {
   @Input() clrExpandTrigger = false;
-
-  constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2) {
-    super(element, domAdapter, renderer);
-  }
 
   @HostBinding('@expandAnimation')
   get expandAnimation() {

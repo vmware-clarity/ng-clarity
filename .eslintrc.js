@@ -56,6 +56,7 @@ module.exports = {
             argsIgnorePattern: '^_',
           },
         ],
+        '@typescript-eslint/no-useless-constructor': 'error',
         '@typescript-eslint/no-var-requires': 'error',
         '@typescript-eslint/parameter-properties': ['error', { prefer: 'parameter-property' }],
         curly: 'error',
