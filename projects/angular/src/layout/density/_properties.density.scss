@@ -197,7 +197,7 @@
     --clr-base-border-stroke: #{tokens.$cds-global-space-1};
 
     --clr-base-border-radius-xs: #{tokens.$cds-global-space-2};
-    --clr-base-border-radius-s: #{tokens.$cds-global-space-3};
+    --clr-base-border-radius-s: #{tokens.$cds-global-space-2};
     --clr-base-border-radius-m: #{tokens.$cds-global-space-5};
     --clr-base-border-radius-l: #{tokens.$cds-global-space-6};
     --clr-base-border-radius-xl: #{mixins.baselinePx(10)};
@@ -222,7 +222,7 @@
     --clr-base-horizontal-offset-xs: #{tokens.$cds-global-space-2};
     --clr-base-horizontal-offset-s: #{tokens.$cds-global-space-2};
     --clr-base-horizontal-offset-m: #{tokens.$cds-global-space-4};
-    --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-6};
+    --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-5};
     --clr-base-horizontal-offset-xl: #{mixins.baselinePx(20)};
 
     --clr-base-row-height-xs: #{tokens.$cds-global-space-7};
@@ -283,7 +283,7 @@
   //   --clr-base-border-stroke: #{tokens.$cds-global-space-1};
 
   //   --clr-base-border-radius-xs: #{tokens.$cds-global-space-2};
-  //   --clr-base-border-radius-s: #{tokens.$cds-global-space-3};
+  //   --clr-base-border-radius-s: #{tokens.$cds-global-space-2};
   //   --clr-base-border-radius-m: #{tokens.$cds-global-space-5};
   //   --clr-base-border-radius-l: #{tokens.$cds-global-space-6};
   //   --clr-base-border-radius-xl: #{mixins.baselinePx(10)};
@@ -308,7 +308,7 @@
   //   --clr-base-horizontal-offset-xs: #{tokens.$cds-global-space-2};
   //   --clr-base-horizontal-offset-s: #{tokens.$cds-global-space-2};
   //   --clr-base-horizontal-offset-m: #{tokens.$cds-global-space-3};
-  //   --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-5};
+  //   --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-4};
   //   --clr-base-horizontal-offset-xl: #{tokens.$cds-global-space-7};
 
   //   --clr-base-row-height-xs: #{tokens.$cds-global-space-6};
