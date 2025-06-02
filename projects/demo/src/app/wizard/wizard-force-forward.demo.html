@@ -18,6 +18,6 @@
   <clr-wizard-page *ngFor="let page of [1, 2, 3, 4]">
     <ng-template clrPageTitle>Title for page {{ page }}</ng-template>
     <p>Content for page {{ page }}.</p>
-    <p class="content-for-page-1" *ngIf="page === 1">Ohai!</p>
+    <p *ngIf="page === 1">Ohai!</p>
   </clr-wizard-page>
 </clr-wizard>
