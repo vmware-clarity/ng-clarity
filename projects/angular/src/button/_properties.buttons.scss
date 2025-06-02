@@ -19,7 +19,7 @@
     --clr-btn-gap: #{density.$clr-base-gap-s};
 
     // Sizing
-    --clr-btn-height: #{tokens.$cds-global-space-11}; // this is standard height
+    --clr-btn-height: #{density.$clr-base-row-height-m}; // this is standard height
     --clr-btn-height-sm: #{density.$clr-base-row-height-s}; // this is btn-sm (small) height
 
     // Borders
@@ -32,7 +32,7 @@
     --clr-btn-appearance-standard-icon-size: #{density.$clr-base-icon-size-s};
 
     // form-style button appearance styles - overrideable but not advertised!
-    --clr-btn-appearance-form-height: #{density.$clr-base-row-height-m};
+    --clr-btn-appearance-form-height: var(--clr-btn-height);
     --clr-btn-appearance-form-padding: var(--clr-btn-padding);
 
     --clr-btn-group-focus-outline: #{tokens.$cds-alias-object-interaction-outline};
