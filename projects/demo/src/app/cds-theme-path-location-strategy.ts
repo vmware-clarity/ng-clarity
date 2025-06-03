@@ -9,7 +9,7 @@ import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy, PlatformLocation
 import { Inject, Injectable, Optional, Provider } from '@angular/core';
 import { UrlSerializer } from '@angular/router';
 
-import { cdsThemeAttribute, getCdsThemeFromDom } from './cds-theme-select.component';
+import { cdsThemeAttribute, clrDensityAttribute, getAttributeFromDom } from './cds-theme-select.component';
 
 /**
  * This path location strategy adds the current theme to the query string so that
@@ -29,10 +29,16 @@ export class CdsThemePathLocationStrategy extends PathLocationStrategy {
     const url = super.prepareExternalUrl(internal);
     const urlTree = this.urlSerializer.parse(url);
 
-    const currentTheme = getCdsThemeFromDom();
+    const currentTheme = getAttributeFromDom(cdsThemeAttribute);
 
     if (currentTheme) {
       urlTree.queryParams = { ...urlTree.queryParams, [cdsThemeAttribute]: currentTheme };
+    }
+
+    const currentDensity = getAttributeFromDom(clrDensityAttribute);
+
+    if (currentDensity) {
+      urlTree.queryParams = { ...urlTree.queryParams, [clrDensityAttribute]: currentDensity };
     }
 
     return urlTree.toString();
