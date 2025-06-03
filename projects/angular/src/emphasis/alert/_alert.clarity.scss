@@ -120,7 +120,7 @@
     display: flex;
     flex-wrap: nowrap;
     gap: density.$clr-base-horizontal-offset-m;
-    min-height: density.$clr-base-row-height-s;
+    min-height: alert-variables.$clr-alert-item-min-height;
   }
 
   .alert-items {
@@ -367,6 +367,7 @@
     .alert-item {
       justify-content: center;
       align-items: center;
+      padding: density.$clr-base-vertical-offset-s 0;
 
       .alert-actions {
         padding: 0;
