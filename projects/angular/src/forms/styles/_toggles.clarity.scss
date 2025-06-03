@@ -33,7 +33,6 @@
     margin-right: tokens.$cds-global-space-6;
     height: toggle-variables.$clr-toggle-height;
     justify-content: start;
-    gap: tokens.$cds-global-space-5;
 
     label {
       display: inline-block;
@@ -172,7 +171,8 @@
     .clr-control-label {
       display: block;
       @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
-      padding: density.$clr-base-vertical-offset-xs 0;
+      padding: density.$clr-base-vertical-offset-xs 0 density.$clr-base-vertical-offset-xs
+        density.$clr-base-horizontal-offset-l;
       margin-top: 0;
     }
   }
@@ -188,8 +188,12 @@
     .clr-toggle-wrapper {
       flex-flow: row-reverse;
     }
-    label {
+
+    label,
+    .clr-control-label {
       display: inline-block;
+      padding-left: 0;
+      padding-right: density.$clr-base-horizontal-offset-l;
     }
   }
 }
