@@ -163,9 +163,10 @@
           @include mixins.equilateral(density.$clr-base-icon-size-xs);
           transform: rotate(-90deg);
           position: absolute;
+          right: density.$clr-base-horizontal-offset-xs;
           // The original token that needs to be used for the size of this icon is "clr-base-icon-size-s" but as we don't have it as a real icon
           // here we need to use lower size and add additional space to simulate the padding that is part of the SVGs.
-          right: calc(density.$clr-base-icon-size-s - density.$clr-base-icon-size-xs);
+          margin: calc(var(--clr-base-icon-size-s) - var(--clr-base-icon-size-xs));
         }
 
         &.active:after {
