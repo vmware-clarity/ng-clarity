@@ -113,6 +113,7 @@
   .alert-icon-wrapper {
     display: inline-flex;
     flex: 0 0 density.$clr-base-icon-size-l;
+    padding: density.$clr-base-vertical-offset-2xs 0;
   }
 
   .alert-item {
@@ -143,7 +144,6 @@
       'SECONDARY-13-RG-STD',
       (
         font-size: alert-variables.$clr-alert-font-size,
-        line-height: density.$clr-base-typography-line-height-16,
         letter-spacing: alert-variables.$clr-alert-letter-spacing,
       )
     );
@@ -278,13 +278,7 @@
           > span,
           .alert-actions,
           .alert-text {
-            @include mixins.generate-typography-token(
-              'BODY-14-RG-STD',
-              (
-                font-size: density.$clr-base-typography-font-size-default,
-                line-height: density.$clr-base-typography-line-height-20,
-              )
-            );
+            @include mixins.generate-typography-token('BODY-14-RG-STD');
           }
         }
       }
@@ -361,13 +355,12 @@
     .alert-items {
       align-items: center;
       min-height: density.$clr-base-row-height-m;
-      padding: 0;
+      padding: density.$clr-base-vertical-offset-s 0;
     }
 
     .alert-item {
       justify-content: center;
       align-items: center;
-      padding: density.$clr-base-vertical-offset-s 0;
 
       .alert-actions {
         padding: 0;
@@ -390,9 +383,7 @@
     }
 
     .alert-icon-wrapper {
-      display: flex;
       flex-basis: density.$clr-base-icon-size-s;
-      padding: density.$clr-base-vertical-offset-multi-row-inline-s 0;
     }
 
     .alert-icon {
@@ -402,13 +393,7 @@
     .alert-item > span,
     .alert-item .alert-text,
     .alert-item .alert-actions {
-      @include mixins.generate-typography-token(
-        'SECONDARY-13-RG-CPT',
-        (
-          font-size: density.$clr-base-typography-font-size-inline,
-          line-height: density.$clr-base-typography-line-height-16,
-        )
-      );
+      @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
       padding: 0;
     }
 
@@ -440,13 +425,7 @@
           > span,
           .alert-actions,
           .alert-text {
-            @include mixins.generate-typography-token(
-              'CAPTION-LG-11',
-              (
-                font-size: density.$clr-base-typography-font-size-caption,
-                line-height: density.$clr-base-typography-line-height-16,
-              )
-            );
+            @include mixins.generate-typography-token('CAPTION-LG-11');
           }
 
           .alert-icon-wrapper {
