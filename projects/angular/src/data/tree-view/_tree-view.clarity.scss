@@ -6,6 +6,7 @@
  */
 @use 'sass:meta';
 @use '../../utils/mixins';
+@use '../../layout/density' as density;
 @use 'variables.tree-view' as tree-view-variables;
 @use '@cds/core/tokens/tokens.scss';
 
@@ -55,20 +56,19 @@
     display: flex;
     align-items: center;
 
-    @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
-
     & > .clr-treenode-checkbox.clr-checkbox-wrapper {
       width: 100%;
-      padding: tree-view-variables.$clr-tree-checkbox-padding-top 0 0
-        tree-view-variables.$clr-tree-checkbox-padding-left;
+      padding: density.$clr-base-layout-space-xs;
+      gap: density.$clr-base-horizontal-offset-m;
 
       &:first-child {
-        margin-left: tree-view-variables.$clr-tree-node-touch-target;
+        margin-left: density.$clr-base-icon-size-2xl;
       }
 
       .clr-control-label {
         width: 100%;
-        padding: tokens.$cds-global-space-5 tokens.$cds-global-space-5 tokens.$cds-global-space-5 0;
+        min-height: initial;
+        padding: 0;
       }
     }
 
@@ -89,27 +89,25 @@
     flex: 1 1 auto;
     display: flex;
     align-items: center;
-    min-height: tokens.$cds-global-space-10;
+    gap: density.$clr-base-horizontal-offset-m;
+    @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
     color: tree-view-variables.$clr-tree-node-content-text-only-color;
     background-color: tree-view-variables.$clr-tree-node-content-bg-color;
 
     //Dimensions
     &:first-child {
-      margin-left: tree-view-variables.$clr-tree-node-touch-target;
+      margin-left: density.$clr-base-icon-size-2xl;
     }
 
-    &:not(:has(.clr-treenode-link)) {
-      padding-left: tokens.$cds-global-space-5;
-    }
+    padding: density.$clr-base-layout-space-xs;
 
     //Others
-    border-radius: tree-view-variables.$clr-tree-border-radius 0 0 tree-view-variables.$clr-tree-border-radius;
+    border-radius: density.$clr-base-border-radius-s;
 
     cds-icon,
     clr-icon {
-      @include mixins.min-equilateral(tree-view-variables.$clr-tree-caret-size);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       color: tree-view-variables.$clr-tree-node-content-text-only-color;
-      margin-right: tree-view-variables.$clr-tree-node-content-icon-margin-right;
       vertical-align: middle;
     }
   }
@@ -123,7 +121,7 @@
 
   .clr-treenode-content .clr-treenode-link,
   .clr-treenode-checkbox {
-    border-radius: tree-view-variables.$clr-tree-border-radius;
+    border-radius: density.$clr-base-border-radius-s;
     background-color: tree-view-variables.$clr-tree-node-content-bg-color;
 
     &:hover {
@@ -132,6 +130,15 @@
 
     &:active {
       background-color: tree-view-variables.$clr-tree-node-content-bg-active-color;
+    }
+  }
+
+  .clr-treenode-checkbox input[type='checkbox'] {
+    padding: 0;
+    @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+
+    &::before {
+      @include mixins.equilateral(density.$clr-base-icon-size-s);
     }
   }
 
@@ -177,12 +184,12 @@
 
   .clr-treenode-caret {
     //Display
-    flex: 0 0 tree-view-variables.$clr-tree-node-touch-target;
+    flex: 0 0 density.$clr-base-icon-size-2xl;
 
     //Dimensions
     margin: 0;
     padding: 0;
-    @include mixins.min-equilateral(tree-view-variables.$clr-tree-node-touch-target);
+    @include mixins.min-equilateral(density.$clr-base-icon-size-2xl);
 
     //Others
     background: none;
@@ -198,9 +205,9 @@
     }
   }
 
-  .clr-tree-node-caret-icon {
+  .clr-treenode-caret-icon {
     //Dimensions
-    @include mixins.equilateral(tree-view-variables.$clr-tree-caret-size);
+    @include mixins.equilateral(density.$clr-base-icon-size-s);
 
     //Others
     vertical-align: middle;
@@ -208,13 +215,13 @@
 
   .clr-treenode-spinner-container {
     //Dimensions
-    @include mixins.equilateral(tree-view-variables.$clr-tree-node-touch-target);
-    padding: calc((tree-view-variables.$clr-tree-node-touch-target - tree-view-variables.$clr-tree-spinner-size) * 0.5);
+    @include mixins.min-equilateral(density.$clr-base-icon-size-2xl);
+    padding: density.$clr-base-layout-space-xs;
   }
 
   .clr-treenode-spinner {
     //Dimensions
-    @include mixins.min-equilateral(tree-view-variables.$clr-tree-spinner-size);
+    @include mixins.min-equilateral(density.$clr-base-icon-size-s);
   }
 
   .clr-treenode-children {
@@ -231,7 +238,6 @@
     //Dimensions
     @include mixins.equilateral(100%);
     margin: 0;
-    padding: tree-view-variables.$clr-tree-node-content-padding;
 
     //Others
     border: 0;
