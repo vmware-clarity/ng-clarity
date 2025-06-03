@@ -383,7 +383,7 @@ $typography-tokens: (
     // Link Text, Link Text Inverse
     font-size: #{density.$clr-base-typography-font-size-default},
     font-weight: #{tokens.$cds-alias-typography-body-font-weight},
-    line-height: #{density.$clr-base-typography-line-height-24},
+    line-height: #{density.$clr-base-typography-line-height-20},
     letter-spacing: #{baselinePx(-0.1)},
   ),
   'BUTTON-12': (
