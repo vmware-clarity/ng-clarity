@@ -9,6 +9,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Params, Router } from '@angular/router';
 
 export const cdsThemeAttribute = 'cds-theme';
+export const clrDensityAttribute = 'clr-density';
 
 @Component({
   selector: 'app-cds-theme-select',
@@ -20,50 +21,70 @@ export const cdsThemeAttribute = 'cds-theme';
         <option value="dark">Dark</option>
       </select>
     </clr-select-container>
+    <clr-select-container>
+      <label>Clr Density</label>
+      <select
+        #clrDensitySelectElement
+        clrSelect
+        [value]="density"
+        (change)="applyDensity(clrDensitySelectElement.value)"
+      >
+        <option value="">None</option>
+        <option value="regular">Regular</option>
+        <option value="compact">Compact</option>
+      </select>
+    </clr-select-container>
   `,
 })
 export class CdsThemeSelectComponent implements OnInit, OnDestroy {
   theme = 'light';
+  density = '';
 
   constructor(private readonly router: Router) {}
 
   ngOnInit() {
-    this.applyTheme(getCdsThemeFromQueryString() || this.theme);
+    const queryParams = getQueryParams();
+    this.applyTheme(queryParams[cdsThemeAttribute] || this.theme);
+    this.applyDensity(queryParams[clrDensityAttribute] || this.density);
   }
 
   ngOnDestroy() {
     this.applyTheme(null);
+    this.applyDensity('');
   }
 
   applyTheme(theme: string) {
     this.theme = theme || '';
 
-    setThemeInDom(theme);
-    this.setThemeInQueryString(theme);
+    setAttributeInDom(theme, cdsThemeAttribute);
+    this.setAttributeInQueryString(theme, cdsThemeAttribute);
   }
 
-  private setThemeInQueryString(theme: string) {
+  applyDensity(density: string) {
+    this.density = density || '';
+
+    setAttributeInDom(density, clrDensityAttribute);
+    this.setAttributeInQueryString(density, clrDensityAttribute);
+  }
+
+  private setAttributeInQueryString(value: string, attribute: string) {
     this.router.navigate([window.location.pathname.replace(/^\/demo/, '')], {
-      queryParams: { ...getQueryParams(), [cdsThemeAttribute]: theme || null },
+      queryParams: { ...getQueryParams(), [attribute]: value || null },
       replaceUrl: true,
     });
   }
 }
 
-export function getCdsThemeFromDom() {
-  return document.body.getAttribute(cdsThemeAttribute);
+export function getAttributeFromDom(attribute: string) {
+  return document.body.getAttribute(attribute);
 }
 
-function setThemeInDom(theme: string) {
+function setAttributeInDom(theme: string, attribute: string) {
   if (theme) {
-    document.body.setAttribute(cdsThemeAttribute, theme);
+    document.body.setAttribute(attribute, theme);
   } else {
-    document.body.removeAttribute(cdsThemeAttribute);
+    document.body.removeAttribute(attribute);
   }
-}
-
-function getCdsThemeFromQueryString() {
-  return getQueryParams()[cdsThemeAttribute];
 }
 
 function getQueryParams() {
