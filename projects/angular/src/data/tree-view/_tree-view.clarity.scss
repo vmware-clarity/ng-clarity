@@ -6,7 +6,7 @@
  */
 @use 'sass:meta';
 @use '../../utils/mixins';
-@use '../../layout/density' as density;
+@use '../../layout/density';
 @use 'variables.tree-view' as tree-view-variables;
 @use '@cds/core/tokens/tokens.scss';
 
@@ -57,13 +57,11 @@
     display: flex;
     align-items: center;
 
-    @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
-
     & > .clr-treenode-checkbox.clr-checkbox-wrapper {
       width: 100%;
 
       &:first-child {
-        margin-left: tree-view-variables.$clr-tree-node-touch-target;
+        margin-left: density.$clr-base-icon-size-2xl;
       }
 
       .clr-control-label {
@@ -96,7 +94,7 @@
 
     //Dimensions
     &:first-child {
-      margin-left: tree-view-variables.$clr-tree-node-touch-target;
+      margin-left: density.$clr-base-icon-size-2xl;
     }
 
     padding: tree-view-variables.$clr-tree-node-content-padding;
@@ -106,7 +104,7 @@
 
     cds-icon,
     clr-icon {
-      @include mixins.min-equilateral(tree-view-variables.$clr-tree-caret-size);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       color: tree-view-variables.$clr-tree-node-content-text-only-color;
       vertical-align: middle;
     }
@@ -121,7 +119,7 @@
 
   .clr-treenode-content:has(.clr-treenode-link),
   .clr-treenode-checkbox {
-    border-radius: tree-view-variables.$clr-tree-border-radius;
+    border-radius: density.$clr-base-border-radius-s;
     background-color: tree-view-variables.$clr-tree-node-content-bg-color;
 
     &:hover {
@@ -194,12 +192,12 @@
 
   .clr-treenode-caret {
     //Display
-    flex: 0 0 tree-view-variables.$clr-tree-node-touch-target;
+    flex: 0 0 density.$clr-base-icon-size-2xl;
 
     //Dimensions
     margin: 0;
     padding: 0;
-    @include mixins.min-equilateral(tree-view-variables.$clr-tree-node-touch-target);
+    @include mixins.min-equilateral(density.$clr-base-icon-size-2xl);
 
     //Others
     background: none;
@@ -218,7 +216,7 @@
 
   .clr-treenode-caret-icon {
     //Dimensions
-    @include mixins.equilateral(tree-view-variables.$clr-tree-caret-size);
+    @include mixins.equilateral(density.$clr-base-icon-size-s);
 
     //Others
     vertical-align: middle;
@@ -232,7 +230,7 @@
 
   .clr-treenode-spinner {
     //Dimensions
-    @include mixins.min-equilateral(tree-view-variables.$clr-tree-spinner-size);
+    @include mixins.min-equilateral(density.$clr-base-icon-size-s);
   }
 
   .clr-treenode-children {
