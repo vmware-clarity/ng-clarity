@@ -29,16 +29,17 @@
   .clr-toggle-wrapper {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     margin-right: tokens.$cds-global-space-6;
-    height: toggle-variables.$clr-toggle-height;
+    min-height: toggle-variables.$clr-toggle-height;
     justify-content: start;
+    padding: density.$clr-base-vertical-offset-multi-row-inline-s 0;
 
     label {
       display: inline-block;
       position: relative;
       cursor: pointer;
-      height: toggle-variables.$clr-toggle-height;
+      min-height: toggle-variables.$clr-toggle-height;
       flex: 1 1 auto;
     }
 
@@ -171,8 +172,7 @@
     .clr-control-label {
       display: block;
       @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
-      padding: density.$clr-base-vertical-offset-xs 0 density.$clr-base-vertical-offset-xs
-        density.$clr-base-horizontal-offset-m;
+      padding-left: density.$clr-base-horizontal-offset-m;
       margin-top: 0;
     }
   }

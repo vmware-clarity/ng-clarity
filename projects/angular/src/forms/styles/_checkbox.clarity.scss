@@ -26,7 +26,7 @@
     @include forms-mixins.form-flatten-validate-text();
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 
     .clr-control-label {
       @include forms-mixins.checkbox-radio-label-styles(

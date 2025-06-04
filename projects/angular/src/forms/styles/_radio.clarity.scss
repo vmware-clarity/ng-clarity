@@ -22,7 +22,7 @@
     @include forms-mixins.form-flatten-validate-text();
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 
     //Hide the default radio
     input[type='radio'] {

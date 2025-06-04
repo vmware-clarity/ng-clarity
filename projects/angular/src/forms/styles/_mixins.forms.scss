@@ -113,7 +113,7 @@
   margin-top: 0;
   cursor: pointer;
   min-height: $min-height;
-  padding: density.$clr-base-vertical-offset-xs 0;
+  padding: density.$clr-base-vertical-offset-multi-row-inline-s 0;
   color: $color;
   @include mixins.generate-typography-token($typography);
 }
