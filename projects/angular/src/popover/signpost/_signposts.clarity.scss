@@ -382,7 +382,7 @@
 
   .signpost-wrap {
     gap: density.$clr-base-vertical-offset-m;
-    padding: density.$clr-base-layout-space-m density.$clr-base-layout-space-m;
+    padding: density.$clr-base-layout-space-m;
     border: tokens.$cds-alias-object-border-width-100 solid signpost-variables.$clr-signpost-content-border-color;
     border-radius: density.$clr-base-border-radius-s;
     background-color: signpost-variables.$clr-signpost-content-bg-color;
