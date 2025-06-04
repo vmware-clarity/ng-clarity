@@ -41,7 +41,6 @@
     input[type='checkbox'] {
       @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-checkbox-size);
       @extend %custom-checkbox;
-      border-radius: forms-variables.$clr-forms-checkbox-border-radius; // Style outline radius properly
       padding: density.$clr-base-vertical-offset-xs 0;
 
       &:not(:disabled) {
