@@ -8,6 +8,7 @@
 @use 'sass:map';
 @use 'sass:selector';
 @use 'variables/variables';
+@use '../layout/density/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 //Credit: Zurb Foundation for Apps https://github.com/zurb/foundation-apps/blob/master/scss/helpers/_functions.scss
@@ -213,203 +214,192 @@ $opp-directions: (
 $typography-tokens: (
   'DISPLAY-40': (
     // H1, Login Header
-    font-size: #{tokens.$cds-alias-typography-display-font-size},
+    font-size: #{density.$clr-base-typography-font-size-display},
     font-weight: #{tokens.$cds-alias-typography-display-font-weight},
-    line-height: #{tokens.$cds-alias-typography-display-line-height},
-    letter-spacing: #{tokens.$cds-alias-typography-display-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-44},
+    letter-spacing: #{baselinePx(-0.5)},
   ),
   'HEADLINE-32': (
     // H2, Page Header
-    font-size: #{tokens.$cds-alias-typography-headline-font-size},
+    font-size: #{density.$clr-base-typography-font-size-headline},
     font-weight: #{tokens.$cds-alias-typography-headline-font-weight},
-    line-height: #{tokens.$cds-alias-typography-headline-line-height},
-    letter-spacing: #{tokens.$cds-alias-typography-headline-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-36},
+    letter-spacing: #{baselinePx(-0.4)},
   ),
   'TITLE-24-EXP': (
     // H3, Modal, Wizard Heading
-    font-size: #{tokens.$cds-alias-typography-title-font-size},
+    font-size: #{density.$clr-base-typography-font-size-heading},
     font-weight: #{tokens.$cds-alias-typography-title-font-weight},
-    line-height: #{tokens.$cds-alias-typography-title-line-height},
-    letter-spacing: #{tokens.$cds-alias-typography-title-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-32},
+    letter-spacing: #{baselinePx(-0.2)},
   ),
   'SECTION-20-STD': (
     // H4, Card, Signpost Heading, Wizard Sidenav Title
-    font-size: #{tokens.$cds-alias-typography-section-font-size},
+    font-size: #{density.$clr-base-typography-font-size-section},
     font-weight: #{tokens.$cds-alias-typography-section-font-weight},
-    line-height: #{tokens.$cds-alias-typography-section-line-height},
-    letter-spacing: #{tokens.$cds-alias-typography-section-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.2)},
   ),
   'SECTION-12-SB-CPT': (
-    font-size: #{tokens.$cds-alias-typography-font-size-2},
+    font-size: #{density.$clr-base-typography-font-size-button},
     font-weight: #{tokens.$cds-global-typography-font-weight-semibold},
-    line-height: 1.333333em,
-    // #{tokens.$cds-global-space-7} // 16px
-    letter-spacing: -0.00833333em,
-    //#{baselinePx(-0.1)} // -0.1px
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(-0.2)},
   ),
   'SUBSECTION-16-EXP': (
     // H5, Stack View Heading
-    font-size: #{tokens.$cds-alias-typography-subsection-font-size},
+    font-size: #{density.$clr-base-typography-font-size-sub-section},
     font-weight: #{tokens.$cds-alias-typography-subsection-font-weight},
-    line-height: #{tokens.$cds-alias-typography-subsection-line-height},
-    letter-spacing: #{tokens.$cds-alias-typography-subsection-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.2)},
   ),
   'MESSAGE-16-EXP': (
     // H6, Heading
-    font-size: #{tokens.$cds-alias-typography-message-font-size},
+    font-size: #{density.$clr-base-typography-font-size-sub-section},
     font-weight: #{tokens.$cds-alias-typography-message-font-weight},
-    line-height: #{tokens.$cds-alias-typography-message-line-height},
-    letter-spacing: #{tokens.$cds-alias-typography-message-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.2)},
   ),
   'BODY-14-SB-STD': (
     // Not used yet
-    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-size: #{density.$clr-base-typography-font-size-default},
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
-    line-height: #{tokens.$cds-alias-typography-body-line-height},
-    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-20},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'BODY-14-MD-STD': (
     // Wizard sidenav link
-    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-size: #{density.$clr-base-typography-font-size-default},
     font-weight: #{tokens.$cds-alias-typography-font-weight-medium},
-    line-height: #{tokens.$cds-alias-typography-body-line-height},
-    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-20},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'BODY-14-RG-STD': (
     // P0, P1, Body text
-    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-size: #{density.$clr-base-typography-font-size-default},
     font-weight: #{tokens.$cds-alias-typography-body-font-weight},
-    line-height: #{tokens.$cds-alias-typography-body-line-height},
-    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-20},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'BODY-14-RG-CPT': (
-    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-size: #{density.$clr-base-typography-font-size-default},
     font-weight: #{tokens.$cds-alias-typography-body-font-weight},
-    line-height: #{tokens.$cds-global-space-7},
-    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'BODY-14-RG-EXP': (
-    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-size: #{density.$clr-base-typography-font-size-default},
     font-weight: #{tokens.$cds-alias-typography-body-font-weight},
-    line-height: #{tokens.$cds-global-space-9},
-    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'BODY-14-SB-EXP': (
-    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-size: #{density.$clr-base-typography-font-size-default},
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
-    line-height: #{tokens.$cds-global-space-9},
-    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'SECONDARY-14-RG-CPT': (
-    font-size: #{tokens.$cds-global-typography-font-size-4},
+    font-size: #{density.$clr-base-typography-font-size-default},
     font-weight: #{tokens.$cds-global-typography-secondary-font-weight},
-    line-height: #{tokens.$cds-global-space-7},
-    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'SECONDARY-13-MD-EXP': (
     // P2, Section Header
-    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-size: #{density.$clr-base-typography-font-size-inline},
     font-weight: #{tokens.$cds-alias-typography-font-weight-medium},
-    line-height: #{tokens.$cds-global-space-9},
-    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'SECONDARY-13-RG-CPT': (
     // Checkbox and radio labels, Spinner
-    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-size: #{density.$clr-base-typography-font-size-inline},
     font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
-    line-height: #{tokens.$cds-alias-typography-secondary-line-height},
-    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'SECONDARY-13-RG-EXP': (
     // P3, Form Labels and Column Headers
     // P5, Table footer and chart data
-    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-size: #{density.$clr-base-typography-font-size-inline},
     font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
-    line-height: #{tokens.$cds-global-space-9},
-    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'SECONDARY-13-RG-STD': (
-    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-size: #{density.$clr-base-typography-font-size-inline},
     font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
-    line-height: #{baselinePx(20)},
-    // suitable token not found
-    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-20},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'SECONDARY-13-SB-STD': (
     // P4, Form Labels and Column Headers
-    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-size: #{density.$clr-base-typography-font-size-inline},
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
-    line-height: #{baselinePx(20)},
-    // suitable token not found
-    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-20},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'SECONDARY-13-MD-CPT': (
-    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-size: #{density.$clr-base-typography-font-size-inline},
     font-weight: #{tokens.$cds-alias-typography-font-weight-medium},
-    line-height: #{tokens.$cds-alias-typography-secondary-line-height},
-    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'SECONDARY-13-SB-CPT': (
-    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-size: #{density.$clr-base-typography-font-size-inline},
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
-    line-height: #{tokens.$cds-alias-typography-secondary-line-height},
-    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'CAPTION-LG-11': (
     // P6, Small Headers
-    font-size: var(--clr-base-typography-font-size-caption),
+    font-size: #{density.$clr-base-typography-font-size-caption},
     font-weight: #{tokens.$cds-alias-typography-caption-font-weight},
-    line-height: var(--clr-base-typography-line-height-16),
-    letter-spacing: #{tokens.$cds-alias-typography-caption-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(0.2)},
   ),
   'TableHeaders-11-SB-CPT': (
-    font-size: #{tokens.$cds-alias-typography-caption-font-size},
+    font-size: #{density.$clr-base-typography-font-size-caption},
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
-    line-height: #{tokens.$cds-alias-typography-caption-line-height},
-    letter-spacing: #{tokens.$cds-alias-typography-caption-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(0.2)},
   ),
   'CAPTION-SM-10': (
     // P7, P8, Badges, Tag and Labels
-    font-size: var(--clr-base-typography-font-size-caption-small),
+    font-size: #{density.$clr-base-typography-font-size-caption-small},
     font-weight: #{tokens.$cds-alias-typography-smallcaption-font-weight},
-    line-height: var(--clr-base-typography-line-height-12),
-    letter-spacing: #{tokens.$cds-alias-typography-smallcaption-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-12},
+    letter-spacing: #{baselinePx(0.5)},
   ),
   'LINK-13': (
     // Link Text, Link Text Inverse
+    font-size: #{density.$clr-base-typography-font-size-inline},
     font-weight: #{tokens.$cds-alias-typography-font-weight-regular},
-    font-size: #{tokens.$cds-alias-typography-font-size-3},
-    line-height: #{tokens.$cds-global-space-7},
-    // better token not found
+    line-height: #{density.$clr-base-typography-line-height-16},
     letter-spacing: #{baselinePx(-0.1)},
-    // suitable token not found
   ),
   'LINK-14': (
     // Link Text, Link Text Inverse
+    font-size: #{density.$clr-base-typography-font-size-default},
     font-weight: #{tokens.$cds-alias-typography-body-font-weight},
-    font-size: #{tokens.$cds-alias-typography-body-font-size},
-    line-height: #{tokens.$cds-global-space-9},
-    // 1.7142857em
-    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+    line-height: #{density.$clr-base-typography-line-height-20},
+    letter-spacing: #{baselinePx(-0.1)},
   ),
   'BUTTON-12': (
     // Buttons
+    font-size: #{density.$clr-base-typography-font-size-button},
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
-    font-size: #{tokens.$cds-alias-typography-font-size-2},
-    line-height: #{tokens.$cds-global-space-7},
-    // better token not found
+    line-height: #{density.$clr-base-typography-line-height-16},
     letter-spacing: #{tokens.$cds-global-space-1},
-    // better token not found
     text-transform: uppercase,
   ),
   'BUTTON-11-SMALL': (
     // Small Buttons
+    font-size: #{density.$clr-base-typography-font-size-caption},
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
-    font-size: #{tokens.$cds-alias-typography-font-size-1},
-    line-height: #{tokens.$cds-global-space-7},
-    // better token not found
+    line-height: #{density.$clr-base-typography-line-height-16},
     letter-spacing: #{baselinePx(0.2)},
-    // suitable token not found
     text-transform: uppercase,
   ),
 );

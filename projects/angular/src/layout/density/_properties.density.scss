@@ -17,12 +17,16 @@
   --clr-base-typography-font-size-sub-section: #{tokens.$cds-global-space-7};
   --clr-base-typography-font-size-section: #{mixins.baselinePx(20)};
   --clr-base-typography-font-size-heading: #{tokens.$cds-global-space-9};
+  --clr-base-typography-font-size-headline: #{tokens.$cds-global-space-10};
+  --clr-base-typography-font-size-display: #{mixins.baselinePx(40)};
 
   --clr-base-typography-line-height-12: #{tokens.$cds-global-space-6};
   --clr-base-typography-line-height-16: #{tokens.$cds-global-space-7};
   --clr-base-typography-line-height-20: #{mixins.baselinePx(20)};
   --clr-base-typography-line-height-24: #{tokens.$cds-global-space-9};
   --clr-base-typography-line-height-32: #{tokens.$cds-global-space-10};
+  --clr-base-typography-line-height-36: #{tokens.$cds-global-space-11};
+  --clr-base-typography-line-height-44: #{mixins.baselinePx(44)};
 
   --clr-base-border-stroke: #{tokens.$cds-global-space-2};
 
@@ -101,12 +105,16 @@
     --clr-base-typography-font-size-sub-section: #{tokens.$cds-global-space-7};
     --clr-base-typography-font-size-section: #{mixins.baselinePx(20)};
     --clr-base-typography-font-size-heading: #{tokens.$cds-global-space-9};
+    --clr-base-typography-font-size-headline: #{tokens.$cds-global-space-10};
+    --clr-base-typography-font-size-display: #{mixins.baselinePx(40)};
 
     --clr-base-typography-line-height-12: #{tokens.$cds-global-space-6};
     --clr-base-typography-line-height-16: #{tokens.$cds-global-space-7};
     --clr-base-typography-line-height-20: #{mixins.baselinePx(20)};
     --clr-base-typography-line-height-24: #{tokens.$cds-global-space-9};
     --clr-base-typography-line-height-32: #{tokens.$cds-global-space-10};
+    --clr-base-typography-line-height-36: #{tokens.$cds-global-space-11};
+    --clr-base-typography-line-height-44: #{mixins.baselinePx(44)};
 
     --clr-base-border-stroke: #{tokens.$cds-global-space-2};
 
@@ -187,17 +195,21 @@
     --clr-base-typography-font-size-sub-section: #{tokens.$cds-global-space-7};
     --clr-base-typography-font-size-section: #{mixins.baselinePx(20)};
     --clr-base-typography-font-size-heading: #{tokens.$cds-global-space-9};
+    --clr-base-typography-font-size-headline: #{mixins.baselinePx(28)};
+    --clr-base-typography-font-size-display: #{tokens.$cds-global-space-11};
 
     --clr-base-typography-line-height-12: #{tokens.$cds-global-space-7};
     --clr-base-typography-line-height-16: #{tokens.$cds-global-space-7};
     --clr-base-typography-line-height-20: #{tokens.$cds-global-space-8};
     --clr-base-typography-line-height-24: #{mixins.baselinePx(22)};
     --clr-base-typography-line-height-32: #{mixins.baselinePx(28)};
+    --clr-base-typography-line-height-36: #{tokens.$cds-global-space-10};
+    --clr-base-typography-line-height-44: #{tokens.$cds-global-space-10};
 
     --clr-base-border-stroke: #{tokens.$cds-global-space-1};
 
     --clr-base-border-radius-xs: #{tokens.$cds-global-space-2};
-    --clr-base-border-radius-s: #{tokens.$cds-global-space-3};
+    --clr-base-border-radius-s: #{tokens.$cds-global-space-2};
     --clr-base-border-radius-m: #{tokens.$cds-global-space-5};
     --clr-base-border-radius-l: #{tokens.$cds-global-space-6};
     --clr-base-border-radius-xl: #{mixins.baselinePx(10)};
@@ -222,7 +234,7 @@
     --clr-base-horizontal-offset-xs: #{tokens.$cds-global-space-2};
     --clr-base-horizontal-offset-s: #{tokens.$cds-global-space-2};
     --clr-base-horizontal-offset-m: #{tokens.$cds-global-space-4};
-    --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-6};
+    --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-5};
     --clr-base-horizontal-offset-xl: #{mixins.baselinePx(20)};
 
     --clr-base-row-height-xs: #{tokens.$cds-global-space-7};
@@ -273,17 +285,21 @@
   //   --clr-base-typography-font-size-sub-section: #{mixins.baselinePx(14)};
   //   --clr-base-typography-font-size-section: #{tokens.$cds-global-space-8};
   //   --clr-base-typography-font-size-heading: #{mixins.baselinePx(22)};
+  //   --clr-base-typography-font-size-headline: #{tokens.$cds-global-space-9};
+  //   --clr-base-typography-font-size-display: #{tokens.$cds-global-space-11};
 
   //   --clr-base-typography-line-height-12: #{mixins.baselinePx(11)};
   //   --clr-base-typography-line-height-16: #{tokens.$cds-global-space-6};
   //   --clr-base-typography-line-height-20: #{tokens.$cds-global-space-7};
   //   --clr-base-typography-line-height-24: #{mixins.baselinePx(20)};
   //   --clr-base-typography-line-height-32: #{mixins.baselinePx(20)};
+  //   --clr-base-typography-line-height-36: #{tokens.$cds-global-space-10};
+  //   --clr-base-typography-line-height-44: #{tokens.$cds-global-space-10};
 
   //   --clr-base-border-stroke: #{tokens.$cds-global-space-1};
 
   //   --clr-base-border-radius-xs: #{tokens.$cds-global-space-2};
-  //   --clr-base-border-radius-s: #{tokens.$cds-global-space-3};
+  //   --clr-base-border-radius-s: #{tokens.$cds-global-space-2};
   //   --clr-base-border-radius-m: #{tokens.$cds-global-space-5};
   //   --clr-base-border-radius-l: #{tokens.$cds-global-space-6};
   //   --clr-base-border-radius-xl: #{mixins.baselinePx(10)};
@@ -308,7 +324,7 @@
   //   --clr-base-horizontal-offset-xs: #{tokens.$cds-global-space-2};
   //   --clr-base-horizontal-offset-s: #{tokens.$cds-global-space-2};
   //   --clr-base-horizontal-offset-m: #{tokens.$cds-global-space-3};
-  //   --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-5};
+  //   --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-4};
   //   --clr-base-horizontal-offset-xl: #{tokens.$cds-global-space-7};
 
   //   --clr-base-row-height-xs: #{tokens.$cds-global-space-6};
