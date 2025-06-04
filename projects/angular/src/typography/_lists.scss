@@ -7,6 +7,7 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use '@cds/core/tokens/tokens.scss';
+@use '../layout/density' as density;
 
 @include mixins.exports('lists.clarity') {
   %kill-list-styles {
@@ -21,7 +22,12 @@
 
   li {
     color: variables.$clr-list-item-color;
-    @include mixins.generate-typography-token('BODY-14-RG-STD');
+    @include mixins.generate-typography-token(
+      'BODY-14-RG-STD',
+      (
+        line-height: density.$clr-base-typography-line-height-20,
+      )
+    );
   }
 
   ul:not([cds-list]),
