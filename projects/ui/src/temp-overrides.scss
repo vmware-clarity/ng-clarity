@@ -13,6 +13,9 @@
 
     --cds-alias-utility-gray: #{tokens.$cds-global-color-construction-600};
 
+    --cds-alias-typography-link-color: #{tokens.$cds-global-color-blue-800};
+    --cds-alias-typography-link-color-hover: #{tokens.$cds-global-color-blue-900};
+
     --cds-alias-object-container-backdrop-background: hsla(0, 0%, 100%, 0.6);
     --cds-alias-object-interaction-background-hover: #{tokens.$cds-global-color-construction-50};
     --cds-alias-object-interaction-background-active: #{tokens.$cds-global-color-construction-100};
@@ -61,6 +64,10 @@
 
   [cds-theme~='dark'] {
     --cds-alias-utility-gray: #{tokens.$cds-global-color-construction-300};
+
+    // no change to the original dark tokens, but needed for correcting the override
+    --cds-alias-typography-link-color: #{tokens.$cds-global-color-blue-400};
+    --cds-alias-typography-link-color-hover: #{tokens.$cds-global-color-blue-200};
 
     --cds-alias-status-warning-dark: #{tokens.$cds-global-color-ochre-600};
     --cds-alias-status-warning-tint: #{tokens.$cds-global-color-ochre-900};
