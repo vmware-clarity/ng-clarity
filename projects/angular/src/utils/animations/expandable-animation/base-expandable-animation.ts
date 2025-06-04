@@ -5,10 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ElementRef, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Renderer2 } from '@angular/core';
 
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
 
+@Directive()
 export class BaseExpandableAnimation {
   startHeight = 0;
 
