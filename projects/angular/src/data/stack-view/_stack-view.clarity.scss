@@ -24,7 +24,7 @@
       display: block;
       flex: 1 1 auto;
       margin: 0;
-      padding: tokens.$cds-global-space-5 0;
+      padding: density.$clr-base-vertical-offset-m 0;
       color: stack-view-variables.$clr-stack-view-title-color;
 
       @include mixins.generate-typography-token('SUBSECTION-16-EXP');
@@ -36,7 +36,7 @@
 
       .stack-action {
         min-width: tokens.$cds-global-space-11;
-        font-size: density.$clr-base-typography-font-size-button;
+        margin: 0;
       }
     }
   }
