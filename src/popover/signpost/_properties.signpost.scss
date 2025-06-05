@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
+@use '../../layout/density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('signpost.properties') {
@@ -20,7 +21,7 @@
 
     --clr-signpost-border-radius: #{tokens.$cds-alias-object-border-radius-100};
 
-    --clr-signpost-pointer-size: #{tokens.$cds-global-space-6};
+    --clr-signpost-pointer-size: #{density.$clr-base-layout-space-s};
     --clr-signpost-pointer-border: var(--clr-signpost-pointer-size) solid var(--clr-signpost-content-border-color);
     --clr-signpost-pointer-invisible-border: var(--clr-signpost-pointer-size) solid transparent;
     --clr-signpost-pointer-pseudo-border: var(--clr-signpost-pointer-size) solid var(--clr-signpost-content-bg-color);
