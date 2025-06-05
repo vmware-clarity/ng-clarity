@@ -34,6 +34,7 @@
       .clr-treenode-content,
       .clr-treenode-checkbox input[type='checkbox'] + .clr-control-label {
         color: var(--clr-tree-node-content-disabled-color);
+
         cds-icon,
         clr-icon {
           fill: var(--clr-tree-node-caret-disabled-color);
@@ -60,8 +61,6 @@
 
     & > .clr-treenode-checkbox.clr-checkbox-wrapper {
       width: 100%;
-      padding: density.$clr-base-layout-space-xs;
-      gap: density.$clr-base-horizontal-offset-m;
 
       &:first-child {
         margin-left: density.$clr-base-icon-size-2xl;
@@ -69,8 +68,7 @@
 
       .clr-control-label {
         width: 100%;
-        min-height: initial;
-        padding: 0;
+        padding: density.$clr-base-layout-space-xs density.$clr-base-layout-space-xs density.$clr-base-layout-space-xs 0;
       }
     }
 
@@ -120,7 +118,7 @@
     background-color: tree-view-variables.$clr-tree-node-content-bg-selected-color;
   }
 
-  .clr-treenode-content .clr-treenode-link,
+  .clr-treenode-content:has(.clr-treenode-link),
   .clr-treenode-checkbox {
     border-radius: density.$clr-base-border-radius-s;
     background-color: tree-view-variables.$clr-tree-node-content-bg-color;
@@ -135,12 +133,25 @@
   }
 
   .clr-treenode-checkbox input[type='checkbox'] {
-    padding: 0;
-    @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+    margin-left: density.$clr-base-horizontal-offset-m;
 
-    &::before {
-      @include mixins.equilateral(density.$clr-base-icon-size-s);
-    }
+    // padding: 0;
+    // @include mixins.min-equilateral(density.$clr-base-icon-size-2xl);
+    // padding-top: density.$clr-base-vertical-offset-m;
+    // padding-left: density.$clr-base-horizontal-offset-m;
+
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+
+    // &::after {
+    //   left: unset;
+    //   transform: translate(0, -1.5px) rotate(-45deg);
+    // }
+    // &:indeterminate:after {
+    //   // left: unset;
+    //   transform: translate(0, -1.5px);
+    // }
   }
 
   .clr-treenode-content .clr-treenode-link,
@@ -168,6 +179,18 @@
       clr-icon {
         color: tree-view-variables.$clr-tree-node-content-active-color;
       }
+    }
+
+    // Add touch area to label that covers the checkbox, so we don't need to resize the
+    // checkbox itself, which leads to undesired side effects.
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform: translateX(-100%);
+      width: density.$clr-base-icon-size-2xl;
+      height: density.$clr-base-icon-size-2xl;
     }
   }
 
@@ -201,6 +224,7 @@
     &:hover {
       color: tree-view-variables.$clr-tree-node-caret-hover-color;
     }
+
     &:active {
       color: tree-view-variables.$clr-tree-node-caret-active-color;
     }
