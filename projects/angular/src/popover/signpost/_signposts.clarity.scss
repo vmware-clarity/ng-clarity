@@ -368,7 +368,7 @@
   .signpost-content-header {
     display: flex;
     justify-content: flex-end;
-    gap: density.$clr-base-layout-space-2xs;
+    gap: density.$clr-base-gap-xs;
     width: 100%;
     background-color: inherit;
     top: 0;
@@ -381,7 +381,7 @@
   }
 
   .signpost-wrap {
-    gap: density.$clr-base-vertical-offset-m;
+    gap: density.$clr-base-gap-s;
     padding: density.$clr-base-layout-space-m;
     border: tokens.$cds-alias-object-border-width-100 solid signpost-variables.$clr-signpost-content-border-color;
     border-radius: density.$clr-base-border-radius-s;
