@@ -401,7 +401,6 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
-    width: 100%;
 
     .datagrid-rows {
       display: flex;
@@ -1454,6 +1453,7 @@
    */
   .datagrid-host.datagrid-calculate-mode {
     display: block;
+    overflow-x: auto;
 
     // Hide parts of the display table not used for calculation.
     .datagrid,
