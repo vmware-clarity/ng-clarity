@@ -29,7 +29,7 @@ export const clrDensityAttribute = 'clr-density';
         [value]="density"
         (change)="applyDensity(clrDensitySelectElement.value)"
       >
-        <option value="default">None</option>
+        <option value="">None</option>
         <option value="regular">Regular</option>
         <option value="compact">Compact</option>
       </select>
@@ -38,7 +38,7 @@ export const clrDensityAttribute = 'clr-density';
 })
 export class CdsThemeSelectComponent implements OnInit, OnDestroy {
   theme = 'light';
-  density = 'default';
+  density = '';
 
   constructor(private readonly router: Router) {}
 
@@ -50,50 +50,40 @@ export class CdsThemeSelectComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.applyTheme(null);
-    this.applyDensity(null);
+    this.applyDensity('');
   }
 
   applyTheme(theme: string) {
     this.theme = theme || '';
 
-    setThemeInDom(theme);
-    this.updateQueryParams(cdsThemeAttribute, theme);
+    setAttributeInDom(theme, cdsThemeAttribute);
+    this.setAttributeInQueryString(theme, cdsThemeAttribute);
   }
 
   applyDensity(density: string) {
     this.density = density || '';
 
-    setDensityInDom(density);
-    this.updateQueryParams(clrDensityAttribute, density);
+    setAttributeInDom(density, clrDensityAttribute);
+    this.setAttributeInQueryString(density, clrDensityAttribute);
   }
 
-  private updateQueryParams(attribute, value) {
+  private setAttributeInQueryString(value: string, attribute: string) {
     this.router.navigate([window.location.pathname.replace(/^\/demo/, '')], {
-      queryParams: {
-        ...getQueryParams(),
-        [attribute]: value || null,
-      },
+      queryParams: { ...getQueryParams(), [attribute]: value || null },
       replaceUrl: true,
     });
   }
 }
 
-export function getCdsThemeFromDom() {
-  return document.body.getAttribute(cdsThemeAttribute);
+export function getAttributeFromDom(attribute: string) {
+  return document.body.getAttribute(attribute);
 }
 
-function setThemeInDom(theme: string) {
+function setAttributeInDom(theme: string, attribute: string) {
   if (theme) {
-    document.body.setAttribute(cdsThemeAttribute, theme);
+    document.body.setAttribute(attribute, theme);
   } else {
-    document.body.removeAttribute(cdsThemeAttribute);
-  }
-}
-function setDensityInDom(density: string) {
-  if (density) {
-    document.body.setAttribute(clrDensityAttribute, density);
-  } else {
-    document.body.removeAttribute(clrDensityAttribute);
+    document.body.removeAttribute(attribute);
   }
 }
 
