@@ -88,9 +88,7 @@
     }
 
     .stack-block-label {
-      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l
-        density.$clr-base-vertical-offset-m
-        calc(density.$clr-base-icon-size-s + density.$clr-base-gap-s + density.$clr-base-horizontal-offset-l);
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
       color: stack-view-variables.$clr-stack-view-row-color;
       background-color: stack-view-variables.$clr-stack-view-row-bg-color;
 
@@ -116,6 +114,7 @@
     }
 
     .stack-block-caret {
+      visibility: hidden;
       @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       --color: #{stack-view-variables.$clr-stack-view-stack-block-caret-color};
       margin-right: density.$clr-base-horizontal-offset-m;
@@ -153,7 +152,6 @@
 
     .stack-block-expandable {
       > .stack-block-label {
-        padding-left: density.$clr-base-horizontal-offset-l;
         color: stack-view-variables.$clr-stack-view-expandable-row-color;
         background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-color;
         cursor: pointer;
@@ -166,6 +164,9 @@
           background-image: icons.generateCaretIcon(accordion-variables.$clr-accordion-text-color);
           transform: rotate(-90deg);
           margin-right: density.$clr-base-layout-space-xs;
+        }
+        .stack-block-caret {
+          visibility: visible;
         }
       }
 
