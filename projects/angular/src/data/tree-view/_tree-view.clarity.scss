@@ -168,9 +168,8 @@
     &::before {
       content: '';
       position: absolute;
-      left: 0;
+      left: calc(-1 * tree-view-variables.$clr-tree-node-touch-target);
       top: 0;
-      transform: translateX(-100%);
       @include mixins.equilateral(tree-view-variables.$clr-tree-node-touch-target);
     }
   }
