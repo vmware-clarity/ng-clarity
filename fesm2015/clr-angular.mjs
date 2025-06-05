@@ -25026,7 +25026,7 @@ ClrStackBlock.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version:
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="getStackChildrenId()"
     >
-      <cds-icon shape="angle" class="stack-block-caret" *ngIf="expandable" [attr.direction]="caretDirection"></cds-icon>
+      <cds-icon shape="angle" class="stack-block-caret" [attr.direction]="caretDirection"></cds-icon>
       <span class="clr-sr-only" *ngIf="getChangedValue">{{ commonStrings.keys.stackViewChanged }}</span>
       <div class="stack-view-key">
         <!-- This structure changed to fix #3567 and the a11y request was to move away from dl's -->
@@ -25069,7 +25069,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="getStackChildrenId()"
     >
-      <cds-icon shape="angle" class="stack-block-caret" *ngIf="expandable" [attr.direction]="caretDirection"></cds-icon>
+      <cds-icon shape="angle" class="stack-block-caret" [attr.direction]="caretDirection"></cds-icon>
       <span class="clr-sr-only" *ngIf="getChangedValue">{{ commonStrings.keys.stackViewChanged }}</span>
       <div class="stack-view-key">
         <!-- This structure changed to fix #3567 and the a11y request was to move away from dl's -->
