@@ -1453,7 +1453,7 @@
    */
   .datagrid-host.datagrid-calculate-mode {
     display: block;
-    overflow-x: auto;
+    overflow-y: auto;
 
     // Hide parts of the display table not used for calculation.
     .datagrid,
