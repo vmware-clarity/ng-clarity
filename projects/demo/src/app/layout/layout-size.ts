@@ -14,9 +14,6 @@ import { Component } from '@angular/core';
     `
       .clr-row {
         padding: var(--cds-global-space-6);
-        h3 {
-          margin-bottom: var(--cds-global-space-7);
-        }
       }
       .density-container {
         padding-bottom: var(--cds-global-space-5);
