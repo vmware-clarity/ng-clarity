@@ -41,7 +41,7 @@ const StackViewTemplate: StoryFn = args => ({
     <clr-stack-view>
       <clr-stack-header>
         Stack View With Editing in a Modal
-        <button class="stack-action btn btn-sm btn-link" (click)="editModal = true" type="button">Edit</button>
+        <button class="stack-action btn btn-link" (click)="editModal = true" type="button">Edit</button>
       </clr-stack-header>
 
       <clr-stack-block *ngFor="let _ of createArray(blockCount); let i = index" [clrSbExpanded]="!!openIndices[i]">
