@@ -40,7 +40,7 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="getStackChildrenId()"
     >
-      <cds-icon shape="angle" class="stack-block-caret" *ngIf="expandable" [attr.direction]="caretDirection"></cds-icon>
+      <cds-icon shape="angle" class="stack-block-caret" [attr.direction]="caretDirection"></cds-icon>
       <span class="clr-sr-only" *ngIf="getChangedValue">{{ commonStrings.keys.stackViewChanged }}</span>
       <div class="stack-view-key">
         <!-- This structure changed to fix #3567 and the a11y request was to move away from dl's -->

@@ -11,6 +11,7 @@
 @use '../../utils/mixins';
 @use 'variables.stack-view' as stack-view-variables;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../layout/density/' as density;
 
 @include meta.load-css('properties.stack-view');
 
@@ -23,7 +24,7 @@
       display: block;
       flex: 1 1 auto;
       margin: 0;
-      padding: tokens.$cds-global-space-5 0;
+      padding: density.$clr-base-vertical-offset-m 0;
       color: stack-view-variables.$clr-stack-view-title-color;
 
       @include mixins.generate-typography-token('SUBSECTION-16-EXP');
@@ -35,6 +36,7 @@
 
       .stack-action {
         min-width: tokens.$cds-global-space-11;
+        margin: 0;
       }
     }
   }
@@ -86,20 +88,11 @@
     }
 
     .stack-block-label {
-      padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6 tokens.$cds-global-space-5
-        tokens.$cds-global-space-11;
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
       color: stack-view-variables.$clr-stack-view-row-color;
       background-color: stack-view-variables.$clr-stack-view-row-bg-color;
 
-      @include mixins.generate-typography-token(
-        'SECONDARY-13-RG-STD',
-        (
-          font-size: stack-view-variables.$clr-stack-view-row-font-size,
-          font-weight: stack-view-variables.$clr-stack-view-row-font-weight,
-          line-height: stack-view-variables.$clr-stack-view-row-line-height,
-          letter-spacing: stack-view-variables.$clr-stack-view-row-letter-spacing,
-        )
-      );
+      @include mixins.generate-typography-token('BODY-14-RG-STD');
 
       flex: 1 1 auto;
       display: flex;
@@ -117,13 +110,14 @@
     .stack-view-key {
       flex: 0 1 40%;
       max-width: 40%;
-      margin-right: var(--cds-global-space-7);
+      margin-right: density.$clr-base-layout-space-m;
     }
 
     .stack-block-caret {
-      @include mixins.min-equilateral(tokens.$cds-global-space-7);
+      visibility: hidden;
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       --color: #{stack-view-variables.$clr-stack-view-stack-block-caret-color};
-      margin-right: var(--cds-global-space-5);
+      margin-right: density.$clr-base-horizontal-offset-m;
     }
 
     .stack-block-content {
@@ -158,7 +152,6 @@
 
     .stack-block-expandable {
       > .stack-block-label {
-        padding-left: tokens.$cds-global-space-6;
         color: stack-view-variables.$clr-stack-view-expandable-row-color;
         background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-color;
         cursor: pointer;
@@ -170,7 +163,10 @@
           @include images.icon-background-styles();
           background-image: icons.generateCaretIcon(accordion-variables.$clr-accordion-text-color);
           transform: rotate(-90deg);
-          margin-right: var(--cds-global-space-5);
+          margin-right: density.$clr-base-layout-space-xs;
+        }
+        .stack-block-caret {
+          visibility: visible;
         }
       }
 
@@ -251,7 +247,7 @@
     .stack-children {
       .stack-block-label {
         .stack-view-key {
-          padding-left: tokens.$cds-global-space-6;
+          padding-left: density.$clr-base-horizontal-offset-l;
         }
 
         &::before {
