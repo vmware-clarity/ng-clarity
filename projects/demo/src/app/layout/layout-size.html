@@ -162,5 +162,26 @@
         </a>
       </div>
     </div>
+
+    <div>
+      <h4>Forms</h4>
+      <h5>Textarea</h5>
+      <form clrForm clrLayout="vertical">
+        <clr-textarea-container>
+          <label>Label</label>
+          <textarea clrTextarea name="description" required></textarea>
+          <clr-control-helper>Please provide a description.</clr-control-helper>
+          <clr-control-error>You must provide a description!</clr-control-error>
+        </clr-textarea-container>
+      </form>
+      <form clrForm clrLayout="horizontal">
+        <clr-textarea-container>
+          <label>Label</label>
+          <textarea clrTextarea name="description" required></textarea>
+          <clr-control-helper>Please provide a description.</clr-control-helper>
+          <clr-control-error *clrIfError="'required'">You must provide a description!</clr-control-error>
+        </clr-textarea-container>
+      </form>
+    </div>
   </div>
 </div>
