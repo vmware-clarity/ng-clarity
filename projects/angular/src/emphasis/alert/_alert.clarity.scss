@@ -140,13 +140,7 @@
   }
 
   .alert {
-    @include mixins.generate-typography-token(
-      'SECONDARY-13-RG-STD',
-      (
-        font-size: alert-variables.$clr-alert-font-size,
-        letter-spacing: alert-variables.$clr-alert-letter-spacing,
-      )
-    );
+    @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
@@ -204,6 +198,8 @@
     .alert-actions {
       flex: 0 0 auto;
       white-space: nowrap;
+      display: flex;
+      align-self: center;
 
       > {
         .alert-action,
@@ -241,6 +237,8 @@
       flex: 0 0 density.$clr-base-icon-size-l;
       @include mixins.equilateral(density.$clr-base-icon-size-l);
       margin: density.$clr-base-vertical-offset-m 0;
+      display: flex;
+      align-self: baseline;
 
       cds-icon,
       clr-icon {
@@ -362,6 +360,8 @@
       justify-content: center;
       align-items: center;
 
+      > span,
+      .alert-text,
       .alert-actions {
         padding: 0;
       }
