@@ -6,6 +6,7 @@
  */
 @use '../../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
+@use '../../layout/density/' as density;
 
 @include mixins.exports('datepicker.properties') {
   :root [cds-theme] {
@@ -37,10 +38,10 @@
     // Dimensions
 
     // Typography
-    --clr-calendar-weekday-font-size: #{tokens.$cds-global-typography-font-size-3};
+    --clr-calendar-weekday-font-size: #{density.$clr-base-typography-font-size-inline};
     --clr-calendar-today-date-cell-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
 
-    --clr-calendar-picker-btn-font-size: #{tokens.$cds-global-typography-font-size-6};
+    --clr-calendar-picker-btn-font-size: #{density.$clr-base-typography-font-size-section};
     --clr-calendar-picker-btn-font-weight: #{tokens.$cds-global-typography-font-weight-medium};
   }
 }
