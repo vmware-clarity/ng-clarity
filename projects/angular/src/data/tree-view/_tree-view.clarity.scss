@@ -60,6 +60,7 @@
 
     & > .clr-treenode-checkbox.clr-checkbox-wrapper {
       width: 100%;
+      padding-left: tree-view-variables.$clr-tree-node-content-padding;
 
       &:first-child {
         margin-left: tree-view-variables.$clr-tree-node-touch-target;
@@ -133,7 +134,8 @@
   }
 
   .clr-treenode-checkbox input[type='checkbox'] {
-    margin-left: tree-view-variables.$clr-tree-node-content-gap;
+    padding: var(--clr-base-layout-space-xs) 0;
+    min-height: tree-view-variables.$clr-tree-node-touch-target;
   }
 
   .clr-treenode-content .clr-treenode-link,
