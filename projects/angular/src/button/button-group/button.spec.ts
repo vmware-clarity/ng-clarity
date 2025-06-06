@@ -268,17 +268,15 @@ export default function (): void {
       });
 
       it('shows the spinner when clrLoading is set to true', () => {
-        expect(buttons[0].children.length).toBe(1);
-        expect(buttons[1].children.length).toBe(0);
-        expect(buttons[2].children.length).toBe(0);
-
-        expect(buttons[0].children[0].classList.contains('spinner')).toBe(true);
+        expect(buttons[0].querySelector('span.spinner')).toBeTruthy();
+        expect(buttons[1].querySelector('span.spinner')).toBe(null);
+        expect(buttons[2].querySelector('span.spinner')).toBe(null);
 
         componentInstance.load = false;
         fixture.detectChanges();
 
         const newButtons: HTMLButtonElement[] = debugEl.nativeElement.querySelectorAll('button');
-        expect(newButtons[0].children.length).toBe(0);
+        expect(newButtons[0].querySelector('span.spinner')).toBe(null);
       });
     });
 

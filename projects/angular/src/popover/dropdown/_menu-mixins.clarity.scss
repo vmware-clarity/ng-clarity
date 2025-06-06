@@ -8,6 +8,7 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
 @use 'variables.dropdown' as dropdown-variables;
+@use '../../layout/density/' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @mixin generate-dropdown-menu() {
@@ -27,12 +28,12 @@
   border-width: tokens.$cds-alias-object-border-width-100;
   border-style: solid;
   border-color: dropdown-variables.$clr-dropdown-border-color;
-  border-radius: tokens.$cds-alias-object-border-radius-100;
+  border-radius: density.$clr-base-border-radius-s;
 
   box-shadow: tokens.$cds-alias-object-shadow-200;
 
   margin-top: tokens.$cds-global-space-2;
-  padding: tokens.$cds-global-space-6 0;
+  padding: density.$clr-base-vertical-offset-l density.$clr-base-layout-space-4xs;
   visibility: hidden;
   z-index: map.get(variables.$clr-layers, dropdown-menu);
 }
@@ -50,9 +51,9 @@
   border: 0;
   cursor: pointer;
   display: flex;
-  gap: tokens.$cds-global-space-3;
+  gap: density.$clr-base-gap-xs;
   align-items: center;
-  height: auto;
+  height: density.$clr-base-row-height-s;
   margin: 0;
   width: 100%;
   text-transform: none;
@@ -102,9 +103,9 @@
 }
 
 @mixin generate-dropdown-item-height() {
-  padding: 0 tokens.$cds-global-space-7;
+  padding: 0 density.$clr-base-horizontal-offset-xl 0 density.$clr-base-horizontal-offset-l;
 
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
-    padding: tokens.$cds-global-space-4 tokens.$cds-global-space-9;
+    padding: density.$clr-base-horizontal-offset-s density.$clr-base-horizontal-offset-xl;
   }
 }
