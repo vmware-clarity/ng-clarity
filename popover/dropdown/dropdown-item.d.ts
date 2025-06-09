@@ -1,3 +1,4 @@
+import { ElementRef, Renderer2 } from '@angular/core';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { ClrDropdown } from './dropdown';
 import { RootDropdownService } from './providers/dropdown.service';
@@ -6,7 +7,9 @@ export declare class ClrDropdownItem {
     private dropdown;
     private _dropdownService;
     private focusableItem;
-    constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem);
+    private el;
+    private renderer;
+    constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem, el: ElementRef, renderer: Renderer2);
     get disabled(): boolean | string;
     set disabled(value: boolean | string);
     /**
@@ -14,6 +17,7 @@ export declare class ClrDropdownItem {
      */
     get dropdownItemId(): string;
     set dropdownItemId(value: string);
+    ngAfterViewInit(): void;
     private onDropdownItemClick;
     private onSpaceKeydown;
     private onEnterKeydown;

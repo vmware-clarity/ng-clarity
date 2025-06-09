@@ -2637,10 +2637,18 @@ ClrButton.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15
         [attr.id]="id"
       >
         <span class="spinner spinner-inline" *ngIf="loading"></span>
-        <ng-content></ng-content>
+        <ng-container *ngIf="inMenu; then inMenuTemplate; else defaultTemplate"></ng-container>
       </button>
     </ng-template>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }] });
+    <ng-template #defaultTemplate>
+      <ng-content></ng-content>
+    </ng-template>
+    <ng-template #inMenuTemplate>
+      <span class="dropdown-item-content">
+        <ng-container [ngTemplateOutlet]="defaultTemplate"></ng-container>
+      </span>
+    </ng-template>
+  `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }] });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrButton, decorators: [{
             type: Component,
             args: [{
@@ -2657,8 +2665,16 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
         [attr.id]="id"
       >
         <span class="spinner spinner-inline" *ngIf="loading"></span>
-        <ng-content></ng-content>
+        <ng-container *ngIf="inMenu; then inMenuTemplate; else defaultTemplate"></ng-container>
       </button>
+    </ng-template>
+    <ng-template #defaultTemplate>
+      <ng-content></ng-content>
+    </ng-template>
+    <ng-template #inMenuTemplate>
+      <span class="dropdown-item-content">
+        <ng-container [ngTemplateOutlet]="defaultTemplate"></ng-container>
+      </span>
     </ng-template>
   `,
                     providers: [{ provide: LoadingListener, useExisting: ClrButton }],
@@ -5539,9 +5555,33 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+function wrapHostContentInsideSpan(hostElement, renderer, wrapperClass) {
+    if (!hostElement || !renderer) {
+        return;
+    }
+    const wrapper = renderer.createElement('span');
+    if (wrapperClass) {
+        renderer.addClass(wrapper, wrapperClass);
+    }
+    // Move all existing children into the wrapper
+    // We must loop while there are child nodes and re-append them to wrapper.
+    while (hostElement.firstChild) {
+        renderer.appendChild(wrapper, hostElement.firstChild);
+    }
+    renderer.appendChild(hostElement, wrapper);
+}
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 class ClrDropdownTrigger {
-    constructor(dropdown, toggleService, el, focusHandler) {
+    constructor(dropdown, toggleService, el, focusHandler, renderer) {
         this.toggleService = toggleService;
+        this.el = el;
+        this.renderer = renderer;
         this.isRootLevelToggle = true;
         // if the containing dropdown has a parent, then this is not the root level one
         if (dropdown.parent) {
@@ -5555,8 +5595,13 @@ class ClrDropdownTrigger {
     onDropdownTriggerClick(event) {
         this.toggleService.toggleWithEvent(event);
     }
+    ngAfterViewInit() {
+        if (!this.isRootLevelToggle) {
+            wrapHostContentInsideSpan(this.el.nativeElement, this.renderer, 'dropdown-item-content');
+        }
+    }
 }
-ClrDropdownTrigger.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownTrigger, deps: [{ token: ClrDropdown }, { token: ClrPopoverToggleService }, { token: i0.ElementRef }, { token: DropdownFocusHandler }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDropdownTrigger.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownTrigger, deps: [{ token: ClrDropdown }, { token: ClrPopoverToggleService }, { token: i0.ElementRef }, { token: DropdownFocusHandler }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive });
 ClrDropdownTrigger.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDropdownTrigger, selector: "[clrDropdownTrigger],[clrDropdownToggle]", host: { listeners: { "click": "onDropdownTriggerClick($event)" }, properties: { "class.dropdown-toggle": "isRootLevelToggle", "class.dropdown-item": "!isRootLevelToggle", "class.expandable": "!isRootLevelToggle", "class.active": "active", "attr.aria-haspopup": "\"menu\"", "attr.aria-expanded": "active" } }, ngImport: i0 });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownTrigger, decorators: [{
             type: Directive,
@@ -5572,7 +5617,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
                         '[attr.aria-expanded]': 'active',
                     },
                 }]
-        }], ctorParameters: function () { return [{ type: ClrDropdown }, { type: ClrPopoverToggleService }, { type: i0.ElementRef }, { type: DropdownFocusHandler }]; }, propDecorators: { onDropdownTriggerClick: [{
+        }], ctorParameters: function () { return [{ type: ClrDropdown }, { type: ClrPopoverToggleService }, { type: i0.ElementRef }, { type: DropdownFocusHandler }, { type: i0.Renderer2 }]; }, propDecorators: { onDropdownTriggerClick: [{
                 type: HostListener,
                 args: ['click', ['$event']]
             }] } });
@@ -5636,10 +5681,12 @@ const BASIC_FOCUSABLE_ITEM_PROVIDER = [
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrDropdownItem {
-    constructor(dropdown, _dropdownService, focusableItem) {
+    constructor(dropdown, _dropdownService, focusableItem, el, renderer) {
         this.dropdown = dropdown;
         this._dropdownService = _dropdownService;
         this.focusableItem = focusableItem;
+        this.el = el;
+        this.renderer = renderer;
     }
     get disabled() {
         return this.focusableItem.disabled;
@@ -5656,6 +5703,9 @@ class ClrDropdownItem {
     }
     set dropdownItemId(value) {
         this.focusableItem.id = value;
+    }
+    ngAfterViewInit() {
+        wrapHostContentInsideSpan(this.el.nativeElement, this.renderer, 'dropdown-item-content');
     }
     onDropdownItemClick() {
         // Move focus back to the root dropdown trigger.
@@ -5694,7 +5744,7 @@ class ClrDropdownItem {
         return rootDropdown;
     }
 }
-ClrDropdownItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownItem, deps: [{ token: ClrDropdown }, { token: RootDropdownService }, { token: FocusableItem }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDropdownItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownItem, deps: [{ token: ClrDropdown }, { token: RootDropdownService }, { token: FocusableItem }, { token: i0.ElementRef }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive });
 ClrDropdownItem.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDropdownItem, selector: "[clrDropdownItem]", inputs: { disabled: ["clrDisabled", "disabled"], dropdownItemId: ["id", "dropdownItemId"] }, host: { listeners: { "click": "onDropdownItemClick()", "keydown.space": "onSpaceKeydown($event)", "keydown.enter": "onEnterKeydown($event)" }, properties: { "class.disabled": "disabled", "class.dropdown-item": "true", "attr.role": "\"menuitem\"", "attr.aria-disabled": "disabled", "attr.id": "dropdownItemId" } }, providers: [BASIC_FOCUSABLE_ITEM_PROVIDER], ngImport: i0 });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownItem, decorators: [{
             type: Directive,
@@ -5709,7 +5759,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
                     },
                     providers: [BASIC_FOCUSABLE_ITEM_PROVIDER],
                 }]
-        }], ctorParameters: function () { return [{ type: ClrDropdown }, { type: RootDropdownService }, { type: FocusableItem }]; }, propDecorators: { disabled: [{
+        }], ctorParameters: function () { return [{ type: ClrDropdown }, { type: RootDropdownService }, { type: FocusableItem }, { type: i0.ElementRef }, { type: i0.Renderer2 }]; }, propDecorators: { disabled: [{
                 type: Input,
                 args: ['clrDisabled']
             }], dropdownItemId: [{
