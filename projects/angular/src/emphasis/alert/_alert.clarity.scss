@@ -127,7 +127,6 @@
   .alert-items {
     flex: 1 1 auto;
     flex-flow: column nowrap;
-    padding: density.$clr-base-vertical-offset-m 0;
     gap: density.$clr-base-gap-s;
     display: flex;
   }
@@ -146,7 +145,7 @@
     flex-direction: row;
     width: auto;
     border-radius: alert-variables.$clr-alert-borderradius;
-    padding: 0 density.$clr-base-horizontal-offset-l;
+    padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
     gap: density.$clr-base-horizontal-offset-m;
 
     // To be deleted with refactoring task
@@ -237,7 +236,6 @@
       order: 100;
       flex: 0 0 density.$clr-base-icon-size-l;
       @include mixins.equilateral(density.$clr-base-icon-size-l);
-      margin: density.$clr-base-vertical-offset-m 0;
       display: flex;
       align-self: baseline;
 
@@ -268,19 +266,20 @@
     &.alert-lightweight {
       background: none;
       border: none;
-      .alert-items {
-        padding: 0;
-        .alert-item {
-          min-height: 0;
-          margin: 0;
+      padding-top: 0;
+      padding-bottom: 0;
 
-          > span,
-          .alert-actions,
-          .alert-text {
-            @include mixins.generate-typography-token('BODY-14-RG-STD');
-          }
+      .alert-items .alert-item {
+        min-height: 0;
+        margin: 0;
+
+        > span,
+        .alert-actions,
+        .alert-text {
+          @include mixins.generate-typography-token('BODY-14-RG-STD');
         }
       }
+
       .close {
         display: none;
       }
@@ -302,7 +301,7 @@
     border: none;
     border-radius: 0;
     overflow-y: auto;
-    padding: 0 density.$clr-base-horizontal-offset-m;
+    padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-m;
 
     @include generateAlertType(app-info);
 
@@ -355,7 +354,6 @@
     .alert-items {
       align-items: center;
       min-height: density.$clr-base-row-height-m;
-      padding: density.$clr-base-vertical-offset-s 0;
     }
 
     .alert-item {
@@ -369,15 +367,13 @@
         padding: 0;
       }
     }
-
-    .close {
-      margin: density.$clr-base-vertical-offset-s 0;
-    }
   }
 
   .alert-sm {
+    padding-top: density.$clr-base-vertical-offset-xs;
+    padding-bottom: density.$clr-base-vertical-offset-xs;
+
     .alert-items {
-      padding: density.$clr-base-vertical-offset-xs 0;
       gap: 0;
 
       .alert-item {
@@ -399,10 +395,6 @@
     .alert-item .alert-actions {
       @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
       padding: 0;
-    }
-
-    .close {
-      margin: density.$clr-base-vertical-offset-xs 0;
     }
 
     .alert-spinner.spinner-inline {
