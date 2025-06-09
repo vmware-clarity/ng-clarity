@@ -74,12 +74,7 @@
 
   .clr-control-container {
     display: inline-block;
-    @include mixins.generate-typography-token(
-      'SECONDARY-13-RG-EXP',
-      (
-        line-height: density.$clr-base-typography-line-height-16,
-      )
-    );
+    @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
   }
 
   .clr-control-inline {
