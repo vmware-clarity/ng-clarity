@@ -8,6 +8,7 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
 @use 'variables.tables' as table-variables;
+@use '../layout/density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 // Mixin for basic table styles to be able to reuse them on non-table elements.
@@ -34,10 +35,6 @@
 
       &.left {
         text-align: left;
-
-        &:first-child {
-          padding-left: tokens.$cds-global-space-7;
-        }
       }
 
       &.right {
@@ -46,13 +43,13 @@
     }
 
     #{$td} {
-      min-height: tokens.$cds-global-space-10;
+      min-height: density.$clr-base-dg-row-height;
       @include mixins.generate-typography-token('BODY-14-RG-CPT');
     }
 
     #{$th} {
-      color: table-variables.$clr-thead-color;
       @include mixins.generate-typography-token('ColumnHeader-11-SB-CPT');
+      color: table-variables.$clr-thead-color;
       background-color: table-variables.$clr-thead-bgcolor;
       vertical-align: middle;
       border-bottom-style: solid;
@@ -137,11 +134,11 @@
       border-color: table-variables.$clr-table-border-color;
 
       &:first-child {
+        @include mixins.generate-typography-token('ColumnHeader-11-SB-CPT');
         border-right-style: solid;
         border-right-width: table-variables.$clr-table-borderwidth;
         border-right-color: table-variables.$clr-table-border-color;
         background-color: table-variables.$clr-thead-bgcolor;
-        font-weight: tokens.$cds-global-typography-font-weight-semibold;
       }
     }
 
@@ -200,7 +197,6 @@
 
     td {
       border-top: 0 none;
-      padding-top: tokens.$cds-global-space-5;
 
       &:first-child {
         border-right: 0 none;
@@ -218,10 +214,6 @@
     td {
       //  Very specific use of !important to avoid specificity inflation.
       border-radius: 0 !important;
-
-      &:first-child {
-        padding-left: tokens.$cds-global-space-7;
-      }
     }
   }
 }

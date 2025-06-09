@@ -15,8 +15,8 @@
     --clr-table-borderwidth: #{tokens.$cds-alias-object-border-width-100};
     --clr-table-border-radius: #{density.$clr-base-border-radius-s};
     --clr-table-cornercellradius: #{density.$clr-base-border-radius-s};
-    --clr-table-cell-padding: #{density.$clr-base-vertical-offset-m} #{density.$clr-base-layout-space-m};
-    --clr-table-cell-compact-padding: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-7};
+    --clr-table-cell-padding: #{density.$clr-base-vertical-offset-multi-row-inline-m} #{density.$clr-base-horizontal-offset-xl};
+    --clr-table-cell-compact-padding: #{density.$clr-base-vertical-offset-multi-row-inline-s} #{density.$clr-base-horizontal-offset-xl};
     --clr-table-noborder-borderwidth: #{tokens.$cds-global-space-0};
 
     // Theme variables
