@@ -9,7 +9,7 @@
   <clr-stack-view>
     <clr-stack-header>
       Lazily loaded children
-      <button class="stack-action btn btn-sm btn-link" (click)="resetChildren()" type="button">Reset</button>
+      <button class="stack-action btn btn-link" (click)="resetChildren()" type="button">Reset</button>
     </clr-stack-header>
 
     <clr-stack-block #lazyBlock [clrSbExpandable]="true" (clrSbExpandedChange)="fetchChildren()">
