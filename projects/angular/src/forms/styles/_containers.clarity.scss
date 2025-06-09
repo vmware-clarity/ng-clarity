@@ -107,7 +107,7 @@
   }
 
   .clr-validate-icon {
-    @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+    @include mixins.min-equilateral(forms-variables.$clr-forms-icon-size);
     color: forms-variables.$clr-forms-invalid-color;
     fill: forms-variables.$clr-forms-invalid-color;
     display: none;
