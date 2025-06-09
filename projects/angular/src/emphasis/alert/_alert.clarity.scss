@@ -302,6 +302,7 @@
     border: none;
     border-radius: 0;
     overflow-y: auto;
+    padding: 0 density.$clr-base-horizontal-offset-m;
 
     @include generateAlertType(app-info);
 
@@ -364,6 +365,7 @@
       > span,
       .alert-text,
       .alert-actions {
+        @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
         padding: 0;
       }
     }
