@@ -28,14 +28,9 @@
     border: tokens.$cds-alias-object-border-width-100 solid forms-variables.$clr-forms-border-color;
     background: forms-variables.$clr-forms-textarea-background-color;
     color: forms-variables.$clr-forms-text-color;
-    border-radius: density.$clr-base-border-radius-s;
+    border-radius: forms-variables.$clr-forms-textarea-border-radius;
     padding: density.$clr-base-layout-space-m;
-    @include mixins.generate-typography-token(
-      'SECONDARY-13-RG-STD',
-      (
-        line-height: density.$clr-base-typography-line-height-20,
-      )
-    );
+    @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
 
     &:focus {
       // TODO(CDE-863) - Remove outline mixin and convert this component to just use border-color to avoid the white
