@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
 
 import { BASIC_FOCUSABLE_ITEM_PROVIDER } from '../../utils/focus/focusable-item/basic-focusable-item.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { ClrDropdown } from './dropdown';
 import { RootDropdownService } from './providers/dropdown.service';
+import { wrapHostContentInsideSpan } from './utils/content-wrapping';
 
 @Directive({
   selector: '[clrDropdownItem]',
@@ -27,7 +28,9 @@ export class ClrDropdownItem {
   constructor(
     private dropdown: ClrDropdown,
     private _dropdownService: RootDropdownService,
-    private focusableItem: FocusableItem
+    private focusableItem: FocusableItem,
+    private el: ElementRef,
+    private renderer: Renderer2
   ) {}
 
   @Input('clrDisabled')
@@ -48,6 +51,10 @@ export class ClrDropdownItem {
   }
   set dropdownItemId(value: string) {
     this.focusableItem.id = value;
+  }
+
+  ngAfterViewInit() {
+    wrapHostContentInsideSpan(this.el.nativeElement, this.renderer, 'dropdown-item-content');
   }
 
   @HostListener('click')
