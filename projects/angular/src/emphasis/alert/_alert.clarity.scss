@@ -120,7 +120,7 @@
     flex: 1 1 auto;
     display: flex;
     flex-wrap: nowrap;
-    gap: density.$clr-base-horizontal-offset-m;
+    gap: density.$clr-base-gap-s;
     min-height: alert-variables.$clr-alert-item-min-height;
   }
 
@@ -353,7 +353,6 @@
 
     .alert-items {
       align-items: center;
-      min-height: density.$clr-base-row-height-m;
     }
 
     .alert-item {
@@ -398,11 +397,11 @@
     }
 
     .alert-spinner.spinner-inline {
-      @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
 
       &::before,
       &::after {
-        @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       }
     }
 
@@ -414,9 +413,9 @@
         gap: density.$clr-base-gap-xs;
 
         .alert-item {
-          padding: density.$clr-base-layout-space-0 0;
           align-items: center;
           min-height: density.$clr-base-row-height-s;
+          gap: density.$clr-base-gap-xs;
 
           > span,
           .alert-actions,
