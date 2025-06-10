@@ -11,6 +11,7 @@
 // Usage: ../modal/_modal.clarity.scss
 $clr-modal-default-space: density.$clr-base-horizontal-offset-xl !default;
 $clr-modal-default-gap: density.$clr-base-vertical-offset-xl !default;
+$clr-modal-footer-gap: density.$clr-base-horizontal-offset-m !default;
 $clr-modal-border-radius: var(--clr-modal-border-radius) !default;
 $clr-modal-icon-size: density.$clr-base-icon-size-l !default;
 

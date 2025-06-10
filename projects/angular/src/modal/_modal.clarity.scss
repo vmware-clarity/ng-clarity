@@ -290,7 +290,7 @@
   .side-panel-footer {
     display: flex;
     justify-content: flex-end;
-    gap: tokens.$cds-global-space-5;
+    gap: modal-variables.$clr-modal-footer-gap;
 
     .btn {
       //switched right margin to left because footer is right aligned
