@@ -7,22 +7,17 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
 @use 'variables.tables' as table-variables;
+@use '../layout/density/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('table.properties') {
   :root [cds-theme] {
     --clr-table-borderwidth: #{tokens.$cds-alias-object-border-width-100};
-    --clr-table-border-radius: #{tokens.$cds-alias-object-border-radius-100};
-    --clr-table-cornercellradius: #{tokens.$cds-alias-object-border-radius-100};
-    --clr-table-cell-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7};
-    --clr-table-cell-compact-padding: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-7};
+    --clr-table-border-radius: #{density.$clr-base-border-radius-s};
+    --clr-table-cornercellradius: #{density.$clr-base-border-radius-s};
+    --clr-table-cell-padding: #{density.$clr-base-vertical-offset-multi-row-inline-m} #{density.$clr-base-horizontal-offset-xl};
+    --clr-table-cell-compact-padding: #{density.$clr-base-vertical-offset-multi-row-inline-s} #{density.$clr-base-horizontal-offset-xl};
     --clr-table-noborder-borderwidth: #{tokens.$cds-global-space-0};
-    --clr-table-data-cell-font-size: #{tokens.$cds-global-typography-font-size-4};
-    --clr-table-data-cell-line-height: #{tokens.$cds-global-space-7};
-    --clr-table-data-cell-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
-    --clr-table-header-cell-font-size: #{tokens.$cds-global-typography-font-size-1};
-    --clr-table-header-cell-line-height: #{tokens.$cds-global-space-7};
-    --clr-table-header-cell-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
 
     // Theme variables
     // Usage: ./data/_tables.clarity.scss
