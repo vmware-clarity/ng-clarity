@@ -74,7 +74,7 @@
       min-height: wizard-variables.$clr-wizard-footer-height;
       max-height: wizard-variables.$clr-wizard-footer-height;
       padding: wizard-variables.$clr-wizard-footer-vertical-space wizard-variables.$clr-wizard-default-space;
-      border-top: var(--clr-global-borderwidth) solid wizard-variables.$clr-wizard-stepnav-border-color;
+      border-top: variables.$clr-global-borderwidth solid wizard-variables.$clr-wizard-stepnav-border-color;
     }
 
     .clr-wizard-btn {
