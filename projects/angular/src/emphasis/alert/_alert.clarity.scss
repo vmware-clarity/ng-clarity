@@ -501,6 +501,8 @@
 
     min-height: alert-variables.$clr-alert-min-height;
     flex: 1 0 var(--clr-app-alert-pager-width);
+    display: flex;
+    justify-content: center;
   }
 
   .alerts-pager-button {
@@ -509,7 +511,8 @@
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    height: var(--clr-btn-appearance-standard-height);
+    justify-content: center;
+    @include mixins.equilateral(density.$clr-base-icon-size-l);
 
     cds-icon,
     clr-icon {
@@ -529,12 +532,18 @@
     height: 100%;
     align-items: center;
     text-align: center;
-    padding: 0 density.$clr-base-horizontal-offset-xl;
+    gap: density.$clr-base-gap-s;
+    justify-content: space-between;
+    padding: 0 density.$clr-base-horizontal-offset-l;
+
+    > .alerts-pager-text {
+      @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
+    }
 
     > * {
       display: inline-flex;
       justify-content: center;
-      flex: 1 1 auto;
+      flex: 0 1 auto;
     }
   }
 }
