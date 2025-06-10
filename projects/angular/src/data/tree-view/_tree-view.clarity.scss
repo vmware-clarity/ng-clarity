@@ -6,7 +6,6 @@
  */
 @use 'sass:meta';
 @use '../../utils/mixins';
-@use '../../layout/density';
 @use 'variables.tree-view' as tree-view-variables;
 @use '@cds/core/tokens/tokens.scss';
 
@@ -55,7 +54,7 @@
   .clr-tree-node-content-container {
     //Display
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 
     @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
 
@@ -138,12 +137,8 @@
   }
 
   .clr-treenode-checkbox input[type='checkbox'] {
-    padding: density.$clr-base-layout-space-xs 0;
-    min-height: tree-view-variables.$clr-tree-node-touch-target;
-    width: density.$clr-base-icon-size-s;
-    min-width: density.$clr-base-icon-size-s;
-    margin-left: density.$clr-base-horizontal-offset-m;
-    margin-right: density.$clr-base-gap-s;
+    padding: tree-view-variables.$clr-tree-node-icon-padding;
+    margin-left: tree-view-variables.$clr-tree-node-content-gap;
   }
 
   .clr-treenode-content .clr-treenode-link,
@@ -182,7 +177,8 @@
       position: absolute;
       left: calc(-1 * tree-view-variables.$clr-tree-node-touch-target);
       top: 0;
-      @include mixins.equilateral(tree-view-variables.$clr-tree-node-touch-target);
+      height: 100%;
+      width: tree-view-variables.$clr-tree-node-touch-target;
     }
   }
 
