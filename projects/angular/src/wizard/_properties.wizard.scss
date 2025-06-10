@@ -15,6 +15,7 @@
     //--clr-wizard-stepnav-link-line-height: #{mixins.baselinePx(20)}; // keep
 
     --clr-wizard-default-space: #{tokens.$cds-global-space-9};
+    --clr-wizard-footer-vertical-space: #{tokens.$cds-global-space-7};
 
     --clr-wizard-main-bgcolor: #{tokens.$cds-alias-object-overlay-background};
     --clr-wizard-main-text-color: #{tokens.$cds-alias-typography-color-400};
