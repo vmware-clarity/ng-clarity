@@ -1700,6 +1700,7 @@ All other table classes like `table, thead, tbody, th, td` are not specific to C
 | --clr-wizard-stepnav-selected-border-color     | Wizard navigation border color of current not completed step                              |
 | --clr-wizard-stepnav-active-bgcolor            | _Deprecated in v18_ Wizard navigation background color for the currently selected element |
 | --clr-wizard-stepnav-selected-bgcolor          | Wizard navigation background color for the currently selected element                     |
+| --clr-wizard-stepnav-selected-error-bgcolor    | Wizard navigation background color for the currently selected element if error            |
 | --clr-wizard-stepnav-selected-hover-bgcolor    | Wizard navigation background color for the currently hovered selected element             |
 | --clr-wizard-stepnav-selected-active-bgcolor   | Wizard navigation background color for the currently active selected element              |
 | --clr-wizard-header-action-color               | Wizard header actions color                                                               |
