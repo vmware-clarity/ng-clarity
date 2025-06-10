@@ -140,7 +140,7 @@
       order: -1;
       overflow: hidden;
       overflow-y: auto;
-      border-right: var(--clr-global-borderwidth) solid wizard-variables.$clr-wizard-stepnav-border-color;
+      border-right: variables.$clr-global-borderwidth solid wizard-variables.$clr-wizard-stepnav-border-color;
       background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
       border-radius: wizard-variables.$clr-wizard-border-radius 0 0 wizard-variables.$clr-wizard-border-radius;
     }
