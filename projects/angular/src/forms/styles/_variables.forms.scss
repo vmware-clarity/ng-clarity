@@ -10,7 +10,7 @@
 
 // Structure
 $clr-forms-baseline: var(--clr-forms-baseline);
-$clr-forms-icon-size: density.$clr-base-icon-size-l;
+$clr-forms-icon-size: var(--clr-forms-icon-size);
 $clr-form-disabled-background-color: var(--clr-form-disabled-background-color) !default;
 
 // Generic
