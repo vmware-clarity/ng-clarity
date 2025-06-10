@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+@use '../layout/density';
 @use '@cds/core/tokens/tokens.scss';
 
 // Usage: ../button/_toggles.clarity.scss
 // Toggle
-$clr-toggle-height: #{tokens.$cds-global-space-9} !default;
+$clr-toggle-height: #{density.$clr-base-row-height-s} !default;
 $clr-toggle-switch-base-height: #{tokens.$cds-global-space-7} !default;
 $clr-toggle-switch-base-width: #{tokens.$cds-global-space-10} !default;
 
