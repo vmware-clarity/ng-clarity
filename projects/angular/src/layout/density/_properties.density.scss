@@ -32,8 +32,8 @@
 
   --clr-base-border-radius-xs: #{tokens.$cds-global-space-2};
   --clr-base-border-radius-s: #{tokens.$cds-global-space-3};
-  --clr-base-border-radius-m: #{tokens.$cds-global-space-5};
-  --clr-base-border-radius-l: #{tokens.$cds-global-space-6};
+  --clr-base-border-radius-m: #{tokens.$cds-global-space-3};
+  --clr-base-border-radius-l: #{tokens.$cds-global-space-4};
   --clr-base-border-radius-xl: #{tokens.$cds-global-space-7};
 
   --clr-base-offset-0: #{tokens.$cds-global-space-0};
@@ -214,8 +214,8 @@
 
     --clr-base-border-radius-xs: #{tokens.$cds-global-space-2};
     --clr-base-border-radius-s: #{tokens.$cds-global-space-2};
-    --clr-base-border-radius-m: #{tokens.$cds-global-space-5};
-    --clr-base-border-radius-l: #{tokens.$cds-global-space-6};
+    --clr-base-border-radius-m: #{tokens.$cds-global-space-3};
+    --clr-base-border-radius-l: #{tokens.$cds-global-space-5};
     --clr-base-border-radius-xl: #{mixins.baselinePx(10)};
 
     --clr-base-offset-0: #{tokens.$cds-global-space-0};
@@ -306,8 +306,8 @@
 
   //   --clr-base-border-radius-xs: #{tokens.$cds-global-space-2};
   //   --clr-base-border-radius-s: #{tokens.$cds-global-space-2};
-  //   --clr-base-border-radius-m: #{tokens.$cds-global-space-5};
-  //   --clr-base-border-radius-l: #{tokens.$cds-global-space-6};
+  //   --clr-base-border-radius-m: #{tokens.$cds-global-space-3};
+  //   --clr-base-border-radius-l: #{tokens.$cds-global-space-5};
   //   --clr-base-border-radius-xl: #{mixins.baselinePx(10)};
 
   //   --clr-base-offset-0: #{tokens.$cds-global-space-0};
