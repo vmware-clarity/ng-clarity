@@ -9,6 +9,7 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.signpost' as signpost-variables;
+@use '../../layout/density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.signpost');
@@ -31,7 +32,7 @@
 
       cds-icon,
       clr-icon {
-        @include mixins.equilateral(tokens.$cds-global-space-9);
+        @include mixins.equilateral(density.$clr-base-icon-tooltip);
         color: signpost-variables.$clr-signpost-action-color;
       }
 
@@ -51,11 +52,11 @@
     .signpost-content-header button {
       line-height: 0;
 
-      @include mixins.min-equilateral(tokens.$cds-global-space-7);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
 
       cds-icon,
       clr-icon {
-        @include mixins.min-equilateral(tokens.$cds-global-space-7);
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       }
     }
   }
@@ -367,23 +368,23 @@
   .signpost-content-header {
     display: flex;
     justify-content: flex-end;
-    gap: tokens.$cds-global-space-3;
+    gap: density.$clr-base-gap-xs;
     width: 100%;
     background-color: inherit;
     top: 0;
     border-radius: signpost-variables.$clr-signpost-border-radius;
 
     .signpost-title {
-      @include mixins.generate-typography-token('TableHeaders-11-SB-CPT');
+      @include mixins.generate-typography-token('ColumnHeader-11-SB-CPT');
       margin-right: auto;
     }
   }
 
   .signpost-wrap {
-    gap: tokens.$cds-global-space-5;
-    padding: tokens.$cds-global-space-7 tokens.$cds-global-space-7 mixins.baselinePx(15);
+    gap: density.$clr-base-gap-s;
+    padding: density.$clr-base-layout-space-m;
     border: tokens.$cds-alias-object-border-width-100 solid signpost-variables.$clr-signpost-content-border-color;
-    border-radius: signpost-variables.$clr-signpost-border-radius;
+    border-radius: density.$clr-base-border-radius-s;
     background-color: signpost-variables.$clr-signpost-content-bg-color;
     z-index: map.get(variables.$clr-layers, tooltips);
     position: relative;
