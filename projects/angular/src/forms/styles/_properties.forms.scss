@@ -14,7 +14,7 @@
 
     // Legacy CLR form base line (6px). Baked deeply in all form calculations.
     // Don't change it unless you know exactly what you are doing.
-    --clr-forms-baseline: #{density.$clr-base-gap-xs};
+    --clr-forms-baseline: #{tokens.$cds-global-space-4};
 
     --clr-forms-icon-size: #{density.$clr-base-icon-size-l};
     --clr-form-disabled-background-color: #{tokens.$cds-alias-object-interaction-background};
