@@ -6,6 +6,7 @@
  */
 
 @use '@cds/core/tokens/tokens.scss';
+@use '../../layout/density';
 
 // Structure
 $clr-forms-baseline: var(--clr-forms-baseline);
@@ -42,7 +43,6 @@ $clr-forms-input-group-icon-disabled-color: var(--clr-forms-input-group-icon-dis
 
 // Typographic - obsolete should be removed ATM
 $clr-forms-label-font-weight: var(--clr-forms-label-font-weight) !default;
-$clr-forms-field-font-size: var(--clr-p2-font-size) !default;
 
 // Textarea
 $clr-forms-textarea-background-color: var(--clr-forms-textarea-background-color) !default;
@@ -84,10 +84,10 @@ $clr-forms-checkbox-disabled-border-color: var(--clr-forms-checkbox-disabled-bor
 $clr-forms-checkbox-disabled-indeterminate-color: var(--clr-forms-checkbox-disabled-indeterminate-color) !default;
 $clr-forms-checkbox-disabled-mark-color: var(--clr-forms-checkbox-disabled-mark-color) !default;
 
-$clr-forms-checkbox-label-height: calc(#{$clr-forms-baseline} * 4);
+$clr-forms-checkbox-label-height: #{density.$clr-base-row-height-s};
 $clr-forms-checkbox-top: calc(calc(#{$clr-forms-checkbox-label-height} - #{$clr-forms-checkbox-height}) * 0.5) !default;
 
-$clr-forms-checkbox-size: #{tokens.$cds-global-space-9};
+$clr-forms-checkbox-size: #{density.$clr-base-icon-size-l};
 $clr-forms-checkbox-padding-left: calc(#{$clr-forms-checkbox-height} + #{tokens.$cds-global-space-5});
 $clr-forms-checkbox-mark-size: calc(#{$clr-forms-checkbox-height} * 0.5);
 $clr-forms-checkbox-mark-border-size: calc(#{$clr-forms-checkbox-height} * 0.125);

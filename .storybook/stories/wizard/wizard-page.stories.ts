@@ -139,3 +139,21 @@ export const WizardPageStatusIndicators: StoryObj = {
     clrWizardPageHasError: true,
   },
 };
+
+export const WizardPageStatusIndicatorsWithCurrentStepError: StoryObj = {
+  render: WizardPageTemplate,
+  play({ canvasElement }) {
+    removeFocusOutline({ canvasElement });
+
+    // navigate to the last page
+    const nextButtonElement = canvasElement.querySelector<HTMLButtonElement>('clr-wizard-button[type="next"] button');
+    nextButtonElement.click();
+    nextButtonElement.click();
+
+    // navigate back to the error step
+    canvasElement.querySelector<HTMLButtonElement>('clr-wizard-button[type="previous"] button').click();
+  },
+  args: {
+    clrWizardPageHasError: true,
+  },
+};

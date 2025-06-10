@@ -13,12 +13,16 @@ $clr-base-typography-font-size-default: var(--clr-base-typography-font-size-defa
 $clr-base-typography-font-size-sub-section: var(--clr-base-typography-font-size-sub-section);
 $clr-base-typography-font-size-section: var(--clr-base-typography-font-size-section);
 $clr-base-typography-font-size-heading: var(--clr-base-typography-font-size-heading);
+$clr-base-typography-font-size-headline: var(--clr-base-typography-font-size-headline);
+$clr-base-typography-font-size-display: var(--clr-base-typography-font-size-display);
 
 $clr-base-typography-line-height-12: var(--clr-base-typography-line-height-12);
 $clr-base-typography-line-height-16: var(--clr-base-typography-line-height-16);
 $clr-base-typography-line-height-20: var(--clr-base-typography-line-height-20);
 $clr-base-typography-line-height-24: var(--clr-base-typography-line-height-24);
 $clr-base-typography-line-height-32: var(--clr-base-typography-line-height-32);
+$clr-base-typography-line-height-36: var(--clr-base-typography-line-height-36);
+$clr-base-typography-line-height-44: var(--clr-base-typography-line-height-44);
 
 $clr-base-border-stroke: var(--clr-base-border-stroke);
 
@@ -36,6 +40,7 @@ $clr-base-vertical-offset-s: var(--clr-base-vertical-offset-s);
 $clr-base-vertical-offset-m: var(--clr-base-vertical-offset-m);
 $clr-base-vertical-offset-l: var(--clr-base-vertical-offset-l);
 $clr-base-vertical-offset-xl: var(--clr-base-vertical-offset-xl);
+$clr-base-vertical-offset-2xl: var(--clr-base-vertical-offset-2xl);
 
 $clr-base-vertical-offset-multi-row-s: var(--clr-base-vertical-offset-multi-row-s);
 $clr-base-vertical-offset-multi-row-m: var(--clr-base-vertical-offset-multi-row-m);
@@ -50,6 +55,7 @@ $clr-base-horizontal-offset-s: var(--clr-base-horizontal-offset-s);
 $clr-base-horizontal-offset-m: var(--clr-base-horizontal-offset-m);
 $clr-base-horizontal-offset-l: var(--clr-base-horizontal-offset-l);
 $clr-base-horizontal-offset-xl: var(--clr-base-horizontal-offset-xl);
+$clr-base-horizontal-offset-2xl: var(--clr-base-horizontal-offset-2xl);
 
 $clr-base-row-height-xs: var(--clr-base-row-height-xs);
 $clr-base-row-height-s: var(--clr-base-row-height-s);

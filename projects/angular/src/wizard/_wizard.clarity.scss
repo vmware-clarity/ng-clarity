@@ -73,7 +73,8 @@
       height: wizard-variables.$clr-wizard-footer-height;
       min-height: wizard-variables.$clr-wizard-footer-height;
       max-height: wizard-variables.$clr-wizard-footer-height;
-      padding: 0 wizard-variables.$clr-wizard-default-space wizard-variables.$clr-wizard-default-space;
+      padding: wizard-variables.$clr-wizard-footer-vertical-space wizard-variables.$clr-wizard-default-space;
+      border-top: variables.$clr-global-borderwidth solid wizard-variables.$clr-wizard-stepnav-border-color;
     }
 
     .clr-wizard-btn {
@@ -139,7 +140,7 @@
       flex-direction: column;
       order: -1;
       overflow: hidden;
-      border-right: var(--clr-global-borderwidth) solid wizard-variables.$clr-wizard-stepnav-border-color;
+      border-right: variables.$clr-global-borderwidth solid wizard-variables.$clr-wizard-stepnav-border-color;
       background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
       border-radius: wizard-variables.$clr-wizard-border-radius 0 0 wizard-variables.$clr-wizard-border-radius;
     }
@@ -227,6 +228,10 @@
       &.error {
         border-color: wizard-variables.$clr-wizard-stepnav-item-error-border-color;
         transition: border-color 0.2s ease-in;
+
+        &.active:not(:active):not(:hover) {
+          background-color: wizard-variables.$clr-wizard-stepnav-selected-error-bgcolor;
+        }
 
         .clr-wizard-stepnav-link-icon cds-icon {
           --color: #{wizard-variables.$clr-wizard-stepnav-link-error-icon-color};
