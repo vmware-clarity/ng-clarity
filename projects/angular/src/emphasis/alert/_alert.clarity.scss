@@ -517,6 +517,7 @@
     cds-icon,
     clr-icon {
       color: var(--clr-app-alert-pager-text-color);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
 
       @each $alertType in $alertTypes {
         .alert-#{$alertType} & {
@@ -538,6 +539,7 @@
 
     > .alerts-pager-text {
       @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
+      min-width: mixins.baselinePx(40);
     }
 
     > * {
