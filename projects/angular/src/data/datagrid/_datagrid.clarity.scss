@@ -17,6 +17,7 @@
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use '../variables.tables' as tables-variables;
 @use 'variables.datagrid' as datagrid-variables;
+@use '../../layout/density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @mixin clr-datagrid-header-bg {
@@ -30,13 +31,13 @@
 @mixin datagrid-action-overflow-appearance {
   position: absolute;
   background: datagrid-variables.$clr-datagrid-popover-bg-color;
-  padding: tokens.$cds-global-space-5;
+  padding: density.$clr-base-horizontal-offset-m;
   margin-left: tokens.$cds-global-space-4;
   border-style: solid;
   border-width: tokens.$cds-alias-object-border-width-100;
   border-color: datagrid-variables.$clr-datagrid-popover-border-color;
   @include clr-datagrid-popover-shadows;
-  border-radius: tokens.$cds-alias-object-border-radius-100;
+  border-radius: density.$clr-base-border-radius-s;
   font-weight: normal;
   white-space: nowrap;
 
@@ -71,10 +72,11 @@
 
   .action-item {
     @include menu-mixins.generate-dropdown-item();
+    @include menu-mixins.generate-dropdown-item-height();
   }
 }
 
-@mixin datagrid-action-button-styles($height: tokens.$cds-global-space-10) {
+@mixin datagrid-action-button-styles($height: tables-variables.$clr-table-row-height) {
   // Calculates how much padding to set on top/bottom and left/right by dividing the height by the icon size
   $verticalPadding: calc(($height - datagrid-variables.$clr-datagrid-icon-size) / 2);
   $horizontalPadding: calc(
@@ -143,7 +145,7 @@
     }
 
     .spinner {
-      margin-top: tokens.$cds-global-space-4;
+      margin-top: density.$clr-base-vertical-offset-m;
     }
 
     &.datagrid-column {
@@ -230,11 +232,15 @@
     }
 
     .datagrid-select {
-      min-width: calc(
-        tokens.$cds-global-space-5 - tables-variables.$clr-table-borderwidth
-      ); // This fixed an issue that made the cell too wide.
-      align-items: center;
-      padding: tokens.$cds-global-space-3 tokens.$cds-global-space-7;
+      input {
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+        padding: 0;
+      }
+
+      .clr-checkbox-wrapper,
+      .clr-radio-wrapper {
+        @include mixins.max-equilateral(density.$clr-base-icon-size-s);
+      }
 
       &,
       input {
@@ -250,12 +256,12 @@
     }
 
     .datagrid-signpost-trigger .signpost {
-      margin: calc(-1 * tokens.$cds-global-space-5) 0;
-      height: tokens.$cds-global-space-9;
+      margin: calc(-1 * density.$clr-base-vertical-offset-multi-row-inline-m) 0;
+      height: tables-variables.$clr-table-row-height;
 
       .signpost-trigger {
         height: inherit;
-        line-height: tokens.$cds-global-space-9;
+        line-height: tables-variables.$clr-table-row-height;
       }
     }
 
@@ -266,9 +272,9 @@
 
       .datagrid-cell {
         display: flex;
-        padding: tokens.$cds-global-space-9;
+        padding: density.$clr-base-horizontal-offset-2xl;
         align-items: center;
-        gap: tokens.$cds-global-space-6;
+        gap: density.$clr-base-gap-m;
         justify-content: center;
       }
     }
@@ -437,7 +443,7 @@
       }
 
       .datagrid-numeric-filter-input {
-        width: tokens.$cds-global-space-14;
+        width: density.$clr-base-layout-space-5xl;
         .clr-form-control {
           margin-top: 0;
         }
@@ -584,11 +590,11 @@
 
       .datagrid-signpost-trigger .signpost {
         margin: calc(-1 * tokens.$cds-global-space-5) 0;
-        height: tokens.$cds-global-space-9;
+        height: tables-variables.$clr-table-row-height;
 
         .signpost-trigger {
           height: inherit;
-          line-height: tokens.$cds-global-space-9;
+          line-height: tables-variables.$clr-table-row-height;
         }
       }
 
@@ -665,8 +671,8 @@
 
       // align toggle input to row hight
       .clr-toggle-wrapper {
-        margin-top: calc(-1 * tokens.$cds-global-space-6);
-        padding-top: tokens.$cds-global-space-5;
+        padding: 0;
+        min-height: auto;
       }
     }
 
@@ -710,22 +716,14 @@
         flex-flow: column nowrap;
         align-items: center;
         justify-content: flex-start;
-        gap: tokens.$cds-global-space-9;
-        padding: tokens.$cds-global-space-9;
-        @include mixins.generate-typography-token(
-          'SECTION-20-STD',
-          (
-            font-size: datagrid-variables.$clr-datagrid-placeholder-font-size,
-            font-weight: datagrid-variables.$clr-datagrid-placeholder-font-weight,
-            line-height: datagrid-variables.$clr-datagrid-placeholder-line-height,
-            letter-spacing: datagrid-variables.$clr-datagrid-placeholder-letter-spacing,
-          )
-        );
+        gap: density.$clr-base-gap-m;
+        padding: density.$clr-base-horizontal-offset-2xl;
+        @include mixins.generate-typography-token('BODY-14-SB-STD');
         color: datagrid-variables.$clr-datagrid-placeholder-color;
       }
 
       .datagrid-placeholder-image {
-        @include mixins.equilateral(tokens.$cds-global-space-13);
+        @include mixins.equilateral(density.$clr-base-layout-space-2xl);
         background-repeat: no-repeat;
         background-size: contain;
         background-position: center;
@@ -777,14 +775,15 @@
   }
 
   .datagrid-footer {
+    @include mixins.generate-typography-token('CAPTION-LG-11');
     flex: 0 0 auto;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: stretch;
-    padding: tokens.$cds-global-space-5 tokens.$cds-global-space-7;
+    min-height: density.$clr-base-row-height-l;
+    padding: 0 density.$clr-base-horizontal-offset-xl;
     // Account for borders
-    @include mixins.generate-typography-token('CAPTION-LG-11');
     background-color: tables-variables.$clr-thead-bgcolor;
     border-style: solid;
     border-color: tables-variables.$clr-table-footer-border-top-color;
@@ -793,6 +792,7 @@
     border-radius: 0;
     border-bottom-right-radius: tokens.$cds-alias-object-border-radius-100;
     border-bottom-left-radius: tokens.$cds-alias-object-border-radius-100;
+    gap: density.$clr-base-gap-m;
 
     .pagination {
       display: flex;
@@ -807,21 +807,29 @@
         white-space: nowrap;
         text-align: right;
 
+        clr-dg-page-size {
+          display: flex;
+          align-items: center;
+          gap: density.$clr-base-gap-m;
+        }
+
+        .clr-select-wrapper {
+          &::after {
+            top: unset;
+            bottom: calc(density.$clr-base-vertical-offset-xl / 2);
+          }
+        }
+
         .clr-page-size-select {
-          @include mixins.generate-typography-token('CAPTION-SM-10');
-          margin-left: tokens.$cds-global-space-6;
-          height: tokens.$cds-global-space-9;
+          @include mixins.generate-typography-token('CAPTION-LG-11');
+          height: auto;
+          min-height: density.$clr-base-row-height-s;
           vertical-align: middle;
         }
       }
 
       &-description {
         white-space: nowrap;
-      }
-
-      &-list {
-        display: flex;
-        align-items: center;
       }
     }
 
@@ -878,8 +886,6 @@
   .clr-form-control-disabled .datagrid-footer-select.clr-checkbox-wrapper input[type='checkbox']:checked + label {
     cursor: default;
 
-    margin-right: tokens.$cds-global-space-5;
-
     &::before {
       background-color: forms-variables.$clr-forms-label-disabled-color;
     }
@@ -905,12 +911,6 @@
     .datagrid-column .datagrid-column-separator {
       &::after {
         height: calc(100% - (0.5 * #{datagrid-variables.$clr-datagrid-column-separator-expandby}));
-      }
-    }
-
-    .datagrid-row {
-      .datagrid-select {
-        padding: 0 tokens.$cds-global-space-7;
       }
     }
 
@@ -940,7 +940,7 @@
       text-align: center;
 
       .spinner {
-        margin-top: tokens.$cds-global-space-3;
+        margin-top: density.$clr-base-vertical-offset-m;
       }
 
       .datagrid-expandable-caret-button {
@@ -966,17 +966,25 @@
     .datagrid-signpost-trigger .signpost .signpost-trigger {
       cds-icon:not([shape='info-circle'], [shape='exclamation-triangle'], [shape='exclamation-circle'], [shape='check-circle'], [shape='info'], [shape='error']),
       clr-icon:not([shape='info-circle'], [shape='exclamation-triangle'], [shape='exclamation-circle'], [shape='check-circle'], [shape='info'], [shape='error']) {
-        @include mixins.equilateral(tokens.$cds-global-space-9);
+        @include mixins.equilateral(tables-variables.$clr-table-compact-row-height);
       }
     }
 
     .datagrid-footer {
-      padding: 0 tokens.$cds-global-space-7;
       min-height: tables-variables.$clr-table-compact-row-height;
-      line-height: tokens.$cds-global-space-9 - tokens.$cds-global-space-1;
+      line-height: tables-variables.$clr-table-compact-row-height - tokens.$cds-global-space-1;
 
       .pagination {
-        line-height: tokens.$cds-global-space-9;
+        line-height: tables-variables.$clr-table-compact-row-height;
+
+        .clr-select-wrapper {
+          &::after {
+            bottom: calc(density.$clr-base-vertical-offset-l / 2);
+          }
+        }
+        .clr-page-size-select {
+          min-height: density.$clr-base-row-height-xs;
+        }
       }
 
       .clr-form-control-disabled .datagrid-footer-select.clr-checkbox-wrapper input[type='checkbox']:checked + label {
@@ -1002,18 +1010,20 @@
     flex-flow: row nowrap;
     justify-content: center;
     align-items: stretch;
+    gap: density.$clr-base-gap-m;
 
     .pagination-current {
-      @include mixins.generate-typography-token('CAPTION-SM-10');
+      @include mixins.generate-typography-token('CAPTION-LG-11');
       background: none;
       background-color: forms-variables.$clr-forms-textarea-background-color;
       border-color: datagrid-variables.$clr-datagrid-pagination-input-border-color;
       border-width: tokens.$cds-alias-object-border-width-100;
       border-style: solid;
       border-radius: tokens.$cds-alias-object-border-radius-100;
-      min-width: tokens.$cds-global-space-9;
+      @include mixins.min-equilateral(density.$clr-base-layout-space-l);
       text-align: center;
       transition: none !important;
+      padding: density.$clr-base-vertical-offset-xs 0;
 
       &:focus,
       &.clr-focus {
@@ -1023,11 +1033,11 @@
       }
     }
 
-    > * {
-      padding: 0 tokens.$cds-global-space-2;
+    .pagination-pages {
+      display: flex;
+      align-items: center;
+      gap: density.$clr-base-gap-xs;
     }
-
-    $clr-pagination-extra-margin: tokens.$cds-global-space-6;
 
     .pagination-first,
     .pagination-last,
@@ -1046,16 +1056,6 @@
       color: tokens.$cds-alias-status-disabled;
       cursor: not-allowed;
       opacity: datagrid-variables.$clr-datagrid-pagination-btn-disabled-opacity;
-    }
-
-    .pagination-first,
-    .pagination-previous {
-      margin-right: tokens.$cds-global-space-6;
-    }
-
-    .pagination-last,
-    .pagination-next {
-      margin-left: tokens.$cds-global-space-6;
     }
 
     button {
@@ -1222,7 +1222,7 @@
 
   .datagrid-detail-body {
     flex: 1 1 auto;
-    padding: tokens.$cds-global-space-7 0;
+    padding: density.$clr-base-horizontal-offset-xl 0;
     color: datagrid-variables.$clr-datagrid-detail-body-text-color;
   }
 
@@ -1280,7 +1280,7 @@
     }
 
     .spinner {
-      margin-top: tokens.$cds-global-space-4;
+      margin-top: density.$clr-base-vertical-offset-m;
     }
 
     &.datagrid-column {
@@ -1323,7 +1323,7 @@
    */
   .column-switch {
     border-radius: tokens.$cds-alias-object-border-radius-100;
-    padding: tokens.$cds-global-space-8;
+    padding: density.$clr-base-horizontal-offset-xl;
     background-color: datagrid-variables.$clr-datagrid-popover-bg-color;
     border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
@@ -1353,7 +1353,7 @@
       }
 
       button {
-        min-width: tokens.$cds-global-space-8;
+        min-width: density.$clr-base-icon-size-s;
         margin: 0;
         padding: 0;
 
@@ -1374,12 +1374,12 @@
       max-height: mixins.baselinePx(300);
       overflow-y: auto;
       min-height: calc(
-        tokens.$cds-global-space-9 + tokens.$cds-alias-object-border-width-100
+        tables-variables.$clr-table-row-height + tokens.$cds-alias-object-border-width-100
       ); // prevents scrollbars in IE.
 
       li {
-        line-height: tokens.$cds-global-space-9;
-        padding-left: tokens.$cds-global-space-2;
+        line-height: tables-variables.$clr-table-row-height;
+        padding-left: density.$clr-base-horizontal-offset-xs;
       }
     }
 
@@ -1402,7 +1402,7 @@
     border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
     border-color: datagrid-variables.$clr-datagrid-popover-border-color;
-    padding: tokens.$cds-global-space-8;
+    padding: density.$clr-base-vertical-offset-xl;
     @include clr-datagrid-popover-shadows;
     border-radius: tokens.$cds-alias-object-border-radius-100;
     font-weight: normal;
@@ -1423,10 +1423,10 @@
 
     .datagrid-numeric-filter-form {
       display: flex;
-      gap: tokens.$cds-global-space-6;
+      gap: density.$clr-base-gap-m;
 
       input.datagrid-numeric-filter-input {
-        width: tokens.$cds-global-space-15;
+        width: density.$clr-base-layout-space-5xl;
       }
     }
 
