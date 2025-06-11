@@ -5396,8 +5396,8 @@ export class ClrWizardStepnav {
 }
 
 // @public (undocumented)
-export class ClrWizardStepnavItem {
-    constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, commonStrings: ClrCommonStringsService);
+export class ClrWizardStepnavItem implements OnInit, OnDestroy {
+    constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, commonStrings: ClrCommonStringsService, elementRef: ElementRef<HTMLElement>);
     // (undocumented)
     get canNavigate(): boolean;
     // (undocumented)
@@ -5423,6 +5423,10 @@ export class ClrWizardStepnavItem {
     protected get labelledby(): string;
     // (undocumented)
     navService: WizardNavigationService;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
     // (undocumented)
     page: ClrWizardPage;
     // (undocumented)
