@@ -8,6 +8,7 @@
 @use '../utils/variables/variables' as typography-variables;
 @use '@cds/core/tokens/tokens.scss';
 @use 'variables.accordion' as accordion-variables;
+@use '../layout/density/' as density;
 
 @include mixins.exports('accordion.properties') {
   :root [cds-theme] {
@@ -35,7 +36,7 @@
     --clr-accordion-complete-color: #{tokens.$cds-alias-status-success};
 
     --clr-accordion-border-color: #{tokens.$cds-alias-object-border-color};
-    --clr-accordion-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-accordion-border-radius: #{density.$clr-base-border-radius-s};
 
     --clr-accordion-border-left-color-complete: #{tokens.$cds-alias-status-success};
     --clr-accordion-border-left-color-error: #{tokens.$cds-alias-status-danger};
@@ -43,6 +44,6 @@
     --clr-accordion-header-left-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-status-neutral-tint};
     --clr-accordion-header-left-current-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-object-interaction-background-highlight};
 
-    --clr-accordion-step-title-min-width: #{tokens.$cds-global-space-13};
+    --clr-accordion-step-title-min-width: #{density.$clr-base-layout-space-4xl};
   }
 }
