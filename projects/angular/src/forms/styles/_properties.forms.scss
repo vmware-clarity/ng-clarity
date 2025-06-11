@@ -40,11 +40,11 @@
     --clr-forms-label-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
 
     // Input
-    --clr-forms-input-padding: 0 calc(4 * var(--clr-forms-baseline) / 3);
-    --clr-forms-input-wrapper-height: calc(4 * var(--clr-forms-baseline));
+    --clr-forms-input-padding: 0 #{density.$clr-base-horizontal-offset-m};
+    --clr-forms-input-wrapper-height: #{density.$clr-base-row-height-s};
 
     // Input group
-    --clr-forms-input-group-icon-action-size: #{tokens.$cds-global-space-7};
+    --clr-forms-input-group-icon-action-size: #{density.$clr-base-icon-size-s};
     --clr-forms-input-group-icon-disabled-color: #{tokens.$cds-alias-status-disabled};
 
     // Checkbox
@@ -110,6 +110,6 @@
     // Datalist
     --clr-forms-datalist-caret-color: #{tokens.$cds-alias-status-neutral};
     --clr-forms-datalist-caret-disabled-color: #{tokens.$cds-alias-status-disabled};
-    --clr-forms-datalist-caret-icon-size: #{tokens.$cds-global-space-7};
+    --clr-forms-datalist-caret-icon-size: #{density.$clr-base-icon-size-s};
   }
 }
