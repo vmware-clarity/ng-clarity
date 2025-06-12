@@ -69,6 +69,17 @@
         width: 100%;
         padding: tree-view-variables.$clr-tree-node-content-padding;
         padding-left: 0;
+
+        // Add touch area to label that covers the checkbox, so we don't need to resize the
+        // checkbox itself, which leads to undesired side effects.
+        &::before {
+          content: '';
+          position: absolute;
+          left: calc(-1 * tree-view-variables.$clr-tree-node-touch-target);
+          top: 0;
+          height: 100%;
+          width: tree-view-variables.$clr-tree-node-touch-target;
+        }
       }
     }
 
@@ -137,8 +148,10 @@
   }
 
   .clr-treenode-checkbox input[type='checkbox'] {
+    min-width: tree-view-variables.$clr-tree-checkbox-size;
+    width: tree-view-variables.$clr-tree-checkbox-size;
     padding: tree-view-variables.$clr-tree-node-icon-padding;
-    margin-left: tree-view-variables.$clr-tree-node-content-gap;
+    margin: 0 tree-view-variables.$clr-tree-node-content-gap;
   }
 
   .clr-treenode-content .clr-treenode-link,
@@ -168,17 +181,6 @@
       clr-icon {
         color: tree-view-variables.$clr-tree-node-content-active-color;
       }
-    }
-
-    // Add touch area to label that covers the checkbox, so we don't need to resize the
-    // checkbox itself, which leads to undesired side effects.
-    &::before {
-      content: '';
-      position: absolute;
-      left: calc(-1 * tree-view-variables.$clr-tree-node-touch-target);
-      top: 0;
-      height: 100%;
-      width: tree-view-variables.$clr-tree-node-touch-target;
     }
   }
 
@@ -246,7 +248,8 @@
 
   .clr-treenode-link {
     //Display
-    display: inline-block;
+    display: inline-flex;
+    gap: tree-view-variables.$clr-tree-node-content-gap;
 
     //Dimensions
     @include mixins.equilateral(100%);
