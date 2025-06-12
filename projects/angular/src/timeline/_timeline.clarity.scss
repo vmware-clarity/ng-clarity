@@ -90,7 +90,6 @@
   .clr-timeline-step-body {
     display: flex;
     flex-direction: column;
-    gap: timeline-variables.$clr-timeline-step-internal-spacing;
     cds-icon,
     clr-icon {
       @include mixins.equilateral(timeline-variables.$clr-timeline-default-icon-size);
@@ -107,6 +106,7 @@
 
   .clr-timeline-step-title {
     color: timeline-variables.$clr-timeline-step-title-color;
+    margin-bottom: timeline-variables.$clr-timeline-step-internal-spacing;
 
     @include mixins.generate-typography-token(
       'SECONDARY-13-SB-CPT',
@@ -154,14 +154,11 @@
 
         transform: translate(
           calc(
-            -0.5 * (
-                (timeline-variables.$clr-timeline-step-internal-spacing * 2) +
-                  timeline-variables.$clr-timeline-icon-size + timeline-variables.$clr-timeline-line-thickness
-              ) - timeline-variables.$clr-timeline-step-internal-spacing
+            -0.5 * (timeline-variables.$clr-timeline-icon-size + timeline-variables.$clr-timeline-line-thickness) - timeline-variables.$clr-timeline-step-internal-spacing
           ),
           calc(
-            (timeline-variables.$clr-timeline-icon-size - density.$clr-base-horizontal-offset-l) -
-              timeline-variables.$clr-timeline-line-thickness
+            timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-line-thickness -
+              timeline-variables.$clr-timeline-step-internal-spacing
           )
         );
       }
@@ -173,16 +170,14 @@
       word-break: break-word;
       width: mixins.baselinePx(60);
       min-width: mixins.baselinePx(60);
-      margin: timeline-variables.$clr-timeline-step-internal-spacing
-        timeline-variables.$clr-timeline-step-internal-spacing 0 0;
+      margin: timeline-variables.$clr-timeline-step-internal-spacing 0 0 0;
     }
 
     .clr-timeline-step-body {
       display: flex;
       flex-direction: column;
       min-width: mixins.baselinePx(178);
-      margin-left: timeline-variables.$clr-timeline-step-internal-spacing;
-      padding-top: density.$clr-base-horizontal-offset-l;
+      padding-top: timeline-variables.$clr-timeline-step-internal-spacing;
     }
   }
 }
