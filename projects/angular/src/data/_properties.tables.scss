@@ -47,7 +47,8 @@
     --clr-table-fontsize: #{tokens.$cds-alias-typography-secondary-font-size};
     --clr-table-cellpadding: #{tokens.$cds-global-space-6};
 
-    --clr-table-compact-row-height: #{tokens.$cds-global-space-9};
+    --clr-table-row-height: #{density.$clr-base-dg-row-height};
+    --clr-table-compact-row-height: #{density.$clr-base-dg-compact-row-height};
     --clr-table-compact-vertical-padding: 0;
   }
 }
