@@ -26,7 +26,6 @@
 | --clr-datagrid-column-switch-header-font-hover-color | Font color for column switch button icons on hover.                                     |
 | --clr-datagrid-detail-caret-icon-open-bg-color       | Background color for opened detail caret button.                                        |
 | --clr-datagrid-detail-caret-icon-open-icon-color     | Color of opened detail caret icon.                                                      |
-| --clr-datagrid-placeholder-color                     | Font color for empty datagrid placeholder.                                              |
 | --clr-datagrid-loading-background                    | Background color for the loading state of the datagrid.                                 |
 | --clr-datagrid-column-toggle-border-color            | Border color for column toggle buttons.                                                 |
 | --clr-datagrid-column-toggle-fill-color              | Background color for column toggle buttons.                                             |
@@ -45,6 +44,7 @@
 | --clr-datagrid-detail-header-title-color             | Font color for detail header title                                                      |
 | --clr-datagrid-detail-pane-bg-color                  | Background color for detail panel                                                       |
 | --clr-datagrid-detail-pane-border-color              | Border color for detail panel                                                           |
+| --clr-datagrid-placeholder-color                     | Deprecated in v17 and will be removed in v18.Font color for empty datagrid placeholder. |
 | --clr-datagrid-placeholder-font-size                 | Deprecated in v17 and will be removed in v18. Font size for empty datagrid placeholder. |
 | --clr-datagrid-placeholder-font-weight               | Deprecated in v17 and will be removed in v18. Font weight for placeholder               |
 | --clr-datagrid-placeholder-line-height               | Deprecated in v17 and will be removed in v18. Line height for placeholder               |
