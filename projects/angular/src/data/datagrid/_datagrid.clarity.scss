@@ -128,32 +128,6 @@
     white-space: nowrap;
   }
 
-  .datagrid-expandable-caret {
-    text-align: center;
-
-    .datagrid-expandable-caret-button {
-      @include mixins.clr-no-styles-button();
-      @include datagrid-action-button-styles();
-    }
-
-    .datagrid-expandable-caret-icon {
-      color: datagrid-variables.$clr-datagrid-icon-color;
-
-      svg {
-        transition: transform 0.2s ease-in-out;
-      }
-    }
-
-    .spinner {
-      margin-top: density.$clr-base-vertical-offset-m;
-    }
-
-    &.datagrid-column {
-      padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-        tables-variables.$clr-table-bottomcellpadding;
-    }
-  }
-
   .datagrid-header,
   .datagrid-body,
   .datagrid-row,
@@ -604,6 +578,10 @@
         max-width: datagrid-variables.$clr-datagrid-fixed-column-size;
         min-width: datagrid-variables.$clr-datagrid-fixed-column-size;
       }
+
+      &.datagrid-select {
+        align-items: center;
+      }
     }
 
     .datagrid-cell {
@@ -718,7 +696,15 @@
         justify-content: flex-start;
         gap: density.$clr-base-gap-m;
         padding: density.$clr-base-horizontal-offset-2xl;
-        @include mixins.generate-typography-token('BODY-14-SB-STD');
+        @include mixins.generate-typography-token(
+          'BODY-14-SB-STD',
+          (
+            font-size: datagrid-variables.$clr-datagrid-placeholder-font-size,
+            font-weight: datagrid-variables.$clr-datagrid-placeholder-font-weight,
+            line-height: datagrid-variables.$clr-datagrid-placeholder-line-height,
+            letter-spacing: datagrid-variables.$clr-datagrid-placeholder-letter-spacing,
+          )
+        );
         color: datagrid-variables.$clr-datagrid-placeholder-color;
       }
 
@@ -781,6 +767,7 @@
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: stretch;
+    gap: density.$clr-base-gap-m;
     min-height: density.$clr-base-row-height-l;
     padding: 0 density.$clr-base-horizontal-offset-xl;
     // Account for borders
@@ -792,7 +779,6 @@
     border-radius: 0;
     border-bottom-right-radius: tokens.$cds-alias-object-border-radius-100;
     border-bottom-left-radius: tokens.$cds-alias-object-border-radius-100;
-    gap: density.$clr-base-gap-m;
 
     .pagination {
       display: flex;
@@ -914,8 +900,13 @@
       }
     }
 
-    .datagrid-detail-caret .datagrid-detail-caret-button {
-      @include datagrid-action-button-styles(tables-variables.$clr-table-compact-row-height);
+    .datagrid-detail-caret {
+      .datagrid-detail-caret-button {
+        @include datagrid-action-button-styles(tables-variables.$clr-table-compact-row-height);
+      }
+      .spinner {
+        margin-top: datagrid-variables.$clr-datagrid-compact-expandable-row-spinner-margin;
+      }
     }
 
     .datagrid-cell:not(.datagrid-detail-caret, .datagrid-expandable-caret, .datagrid-row-actions) {
@@ -940,7 +931,7 @@
       text-align: center;
 
       .spinner {
-        margin-top: density.$clr-base-vertical-offset-m;
+        margin-top: datagrid-variables.$clr-datagrid-compact-expandable-row-spinner-margin;
       }
 
       .datagrid-expandable-caret-button {
@@ -1010,7 +1001,7 @@
     flex-flow: row nowrap;
     justify-content: center;
     align-items: stretch;
-    gap: density.$clr-base-gap-m;
+    gap: density.$clr-base-gap-s;
 
     .pagination-current {
       @include mixins.generate-typography-token('CAPTION-LG-11');
@@ -1060,6 +1051,8 @@
 
     button {
       @include mixins.clr-no-styles-button();
+      @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+      justify-content: center;
       color: datagrid-variables.$clr-datagrid-pagination-btn-color;
       // FIXME: this should be in the general reboot
       cursor: pointer;
@@ -1256,6 +1249,33 @@
     }
   }
 
+  .datagrid-expandable-caret {
+    display: flex;
+    justify-content: center;
+
+    .datagrid-expandable-caret-button {
+      @include mixins.clr-no-styles-button();
+      @include datagrid-action-button-styles();
+    }
+
+    .datagrid-expandable-caret-icon {
+      color: datagrid-variables.$clr-datagrid-icon-color;
+
+      svg {
+        transition: transform 0.2s ease-in-out;
+      }
+    }
+
+    .spinner {
+      margin-top: datagrid-variables.$clr-datagrid-expandable-row-spinner-margin;
+    }
+
+    &.datagrid-column {
+      padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
+        tables-variables.$clr-table-bottomcellpadding;
+    }
+  }
+
   .datagrid-detail-caret {
     display: flex;
     justify-content: center;
@@ -1280,7 +1300,7 @@
     }
 
     .spinner {
-      margin-top: density.$clr-base-vertical-offset-m;
+      margin-top: datagrid-variables.$clr-datagrid-expandable-row-spinner-margin;
     }
 
     &.datagrid-column {
@@ -1378,7 +1398,7 @@
       ); // prevents scrollbars in IE.
 
       li {
-        line-height: tables-variables.$clr-table-row-height;
+        line-height: unset;
         padding-left: density.$clr-base-horizontal-offset-xs;
       }
     }

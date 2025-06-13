@@ -2,58 +2,58 @@
 
 ## CSS Properties
 
-| Property Name                                        | Description                                                                  |
-| ---------------------------------------------------- | ---------------------------------------------------------------------------- |
-| --clr-datagrid-font-color                            | Not used.                                                                    |
-| --clr-datagrid-default-border-color                  | Default border color for datagrid detail pane.                               |
-| --clr-datagrid-icon-color                            | Default color for expandable, detail caret icons and action toggle icon.     |
-| --clr-datagrid-row-hover-color                       | Background color for datagrid row on hover and active action items.          |
-| --clr-datagrid-row-hover-font-color                  | Font color for active action items. (unused, remove in v18)                  |
-| --clr-datagrid-action-toggle-color                   | Datagrid action toggle icon color when active.                               |
-| --clr-datagrid-pagination-btn-color                  | Color for pagination buttons.                                                |
-| --clr-datagrid-pagination-btn-disabled-color         | Color for disabled pagination buttons.                                       |
-| --clr-datagrid-pagination-btn-disabled-opacity       | Opacity for disabled pagination buttons.                                     |
-| --clr-datagrid-pagination-input-border-color         | Border color for the pagination input field.                                 |
-| --clr-datagrid-pagination-input-border-focus-color   | Border color for the pagination input field when focused.                    |
-| --clr-datagrid-popover-bg-color                      | Background color for popovers within the datagrid.                           |
-| --clr-datagrid-popover-border-color                  | Border color for popovers within the datagrid.                               |
-| --clr-datagrid-action-popover-hover-color            | Background color of action items on hover and focus. (unused, remove in v18) |
-| --clr-datagrid-row-selected                          | Font color for selected rows.                                                |
-| --clr-datagrid-row-selected-background-color         | Background color for selected rows.                                          |
-| --clr-datagrid-row-selected-active-background-color  | Background color for active on selected rows.                                |
-| --clr-datagrid-row-selected-hover-background-color   | Background color for hover on selected rows.                                 |
-| --clr-datagrid-column-switch-header-font-color       | Font color for column switch header button icons.                            |
-| --clr-datagrid-column-switch-header-font-hover-color | Font color for column switch button icons on hover.                          |
-| --clr-datagrid-detail-caret-icon-open-bg-color       | Background color for opened detail caret button.                             |
-| --clr-datagrid-detail-caret-icon-open-icon-color     | Color of opened detail caret icon.                                           |
-| --clr-datagrid-placeholder-color                     | Font color for empty datagrid placeholder.                                   |
-| --clr-datagrid-placeholder-font-size                 | Font size for empty datagrid placeholder.                                    |
-| --clr-datagrid-loading-background                    | Background color for the loading state of the datagrid.                      |
-| --clr-datagrid-column-toggle-border-color            | Border color for column toggle buttons.                                      |
-| --clr-datagrid-column-toggle-fill-color              | Background color for column toggle buttons.                                  |
-| --clr-datagrid-column-toggle-text-color              | Text color for column toggle buttons.                                        |
-| --clr-datagrid-column-toggle-border-hover-color      | Border color for column toggle buttons when hovered.                         |
-| --clr-datagrid-column-toggle-fill-hover-color        | Background color for column toggle buttons when hovered.                     |
-| --clr-datagrid-column-toggle-text-hover-color        | Text color for column toggle buttons when hovered.                           |
-| --clr-datagrid-column-toggle-border-active-color     | Border color for active column toggle buttons.                               |
-| --clr-datagrid-column-toggle-fill-active-color       | Background color for active column toggle buttons.                           |
-| --clr-datagrid-column-toggle-text-active-color       | Text color for active column toggle buttons.                                 |
-| --clr-datagrid-popovers-box-shadow-color             | Not used.                                                                    |
-| --clr-datagrid-popover-font-color                    | Font color for popovers.                                                     |
-| --clr-datagrid-detail-pane-content-padding           | Padding for detail panel content                                             |
-| --clr-datagrid-detail-pane-close-icon-size           | Width and Height for detail close icon                                       |
-| --clr-datagrid-detail-body-text-color                | Font color for detail body                                                   |
-| --clr-datagrid-detail-header-title-color             | Font color for detail header title                                           |
-| --clr-datagrid-detail-pane-bg-color                  | Background color for detail panel                                            |
-| --clr-datagrid-detail-pane-border-color              | Border color for detail panel                                                |
-| --clr-datagrid-placeholder-font-weight               | Font weight for placeholder                                                  |
-| --clr-datagrid-placeholder-line-height               | Line height for placeholder                                                  |
-| --clr-datagrid-placeholder-letter-spacing            | Letter spacing for placeholder                                               |
-| --clr-datagrid-placeholder-background-color          | Background color for placeholder                                             |
-| --clr-datagrid-column-separator-height               | Height for column separator                                                  |
-| --clr-datagrid-filter-toggle-size                    | Width and Height for filter toggle button                                    |
-| --clr-datagrid-row-active-color                      | Background color for active state on rows                                    |
-| --clr-datagrid-fixed-column-size                     | Size for fixed columns inside datagrid                                       |
+| Property Name                                        | Description                                                                             |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| --clr-datagrid-font-color                            | Not used.                                                                               |
+| --clr-datagrid-default-border-color                  | Default border color for datagrid detail pane.                                          |
+| --clr-datagrid-icon-color                            | Default color for expandable, detail caret icons and action toggle icon.                |
+| --clr-datagrid-row-hover-color                       | Background color for datagrid row on hover and active action items.                     |
+| --clr-datagrid-row-hover-font-color                  | Font color for active action items. (unused, remove in v18)                             |
+| --clr-datagrid-action-toggle-color                   | Datagrid action toggle icon color when active.                                          |
+| --clr-datagrid-pagination-btn-color                  | Color for pagination buttons.                                                           |
+| --clr-datagrid-pagination-btn-disabled-color         | Color for disabled pagination buttons.                                                  |
+| --clr-datagrid-pagination-btn-disabled-opacity       | Opacity for disabled pagination buttons.                                                |
+| --clr-datagrid-pagination-input-border-color         | Border color for the pagination input field.                                            |
+| --clr-datagrid-pagination-input-border-focus-color   | Border color for the pagination input field when focused.                               |
+| --clr-datagrid-popover-bg-color                      | Background color for popovers within the datagrid.                                      |
+| --clr-datagrid-popover-border-color                  | Border color for popovers within the datagrid.                                          |
+| --clr-datagrid-action-popover-hover-color            | Background color of action items on hover and focus. (unused, remove in v18)            |
+| --clr-datagrid-row-selected                          | Font color for selected rows.                                                           |
+| --clr-datagrid-row-selected-background-color         | Background color for selected rows.                                                     |
+| --clr-datagrid-row-selected-active-background-color  | Background color for active on selected rows.                                           |
+| --clr-datagrid-row-selected-hover-background-color   | Background color for hover on selected rows.                                            |
+| --clr-datagrid-column-switch-header-font-color       | Font color for column switch header button icons.                                       |
+| --clr-datagrid-column-switch-header-font-hover-color | Font color for column switch button icons on hover.                                     |
+| --clr-datagrid-detail-caret-icon-open-bg-color       | Background color for opened detail caret button.                                        |
+| --clr-datagrid-detail-caret-icon-open-icon-color     | Color of opened detail caret icon.                                                      |
+| --clr-datagrid-placeholder-color                     | Font color for empty datagrid placeholder.                                              |
+| --clr-datagrid-loading-background                    | Background color for the loading state of the datagrid.                                 |
+| --clr-datagrid-column-toggle-border-color            | Border color for column toggle buttons.                                                 |
+| --clr-datagrid-column-toggle-fill-color              | Background color for column toggle buttons.                                             |
+| --clr-datagrid-column-toggle-text-color              | Text color for column toggle buttons.                                                   |
+| --clr-datagrid-column-toggle-border-hover-color      | Border color for column toggle buttons when hovered.                                    |
+| --clr-datagrid-column-toggle-fill-hover-color        | Background color for column toggle buttons when hovered.                                |
+| --clr-datagrid-column-toggle-text-hover-color        | Text color for column toggle buttons when hovered.                                      |
+| --clr-datagrid-column-toggle-border-active-color     | Border color for active column toggle buttons.                                          |
+| --clr-datagrid-column-toggle-fill-active-color       | Background color for active column toggle buttons.                                      |
+| --clr-datagrid-column-toggle-text-active-color       | Text color for active column toggle buttons.                                            |
+| --clr-datagrid-popovers-box-shadow-color             | Not used.                                                                               |
+| --clr-datagrid-popover-font-color                    | Font color for popovers.                                                                |
+| --clr-datagrid-detail-pane-content-padding           | Padding for detail panel content                                                        |
+| --clr-datagrid-detail-pane-close-icon-size           | Width and Height for detail close icon                                                  |
+| --clr-datagrid-detail-body-text-color                | Font color for detail body                                                              |
+| --clr-datagrid-detail-header-title-color             | Font color for detail header title                                                      |
+| --clr-datagrid-detail-pane-bg-color                  | Background color for detail panel                                                       |
+| --clr-datagrid-detail-pane-border-color              | Border color for detail panel                                                           |
+| --clr-datagrid-placeholder-font-size                 | Deprecated in v17 and will be removed in v18. Font size for empty datagrid placeholder. |
+| --clr-datagrid-placeholder-font-weight               | Deprecated in v17 and will be removed in v18. Font weight for placeholder               |
+| --clr-datagrid-placeholder-line-height               | Deprecated in v17 and will be removed in v18. Line height for placeholder               |
+| --clr-datagrid-placeholder-letter-spacing            | Deprecated in v17 and will be removed in v18. Letter spacing for placeholder            |
+| --clr-datagrid-placeholder-background-color          | Background color for placeholder                                                        |
+| --clr-datagrid-column-separator-height               | Height for column separator                                                             |
+| --clr-datagrid-filter-toggle-size                    | Width and Height for filter toggle button                                               |
+| --clr-datagrid-row-active-color                      | Background color for active state on rows                                               |
+| --clr-datagrid-fixed-column-size                     | Size for fixed columns inside datagrid                                                  |
 
 ## CSS Classes
 
