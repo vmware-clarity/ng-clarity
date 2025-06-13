@@ -113,7 +113,6 @@
   .alert-icon-wrapper {
     display: inline-flex;
     flex: 0 0 density.$clr-base-icon-size-l;
-    padding: 0;
   }
 
   .alert-item {
@@ -234,8 +233,6 @@
       order: 100;
       flex: 0 0 density.$clr-base-icon-size-l;
       @include mixins.equilateral(density.$clr-base-icon-size-l);
-      display: flex;
-      align-self: baseline;
 
       cds-icon,
       clr-icon {
@@ -427,8 +424,8 @@
           }
 
           .alert-icon-wrapper {
-            flex-basis: tokens.$cds-global-space-7;
-            height: tokens.$cds-global-space-7;
+            flex-basis: density.$clr-base-icon-size-s;
+            height: density.$clr-base-icon-size-s;
             padding: 0;
           }
         }
