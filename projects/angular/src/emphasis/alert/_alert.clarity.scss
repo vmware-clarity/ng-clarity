@@ -393,7 +393,6 @@
     .alert-item .alert-text,
     .alert-item .alert-actions {
       @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
-      padding: 0;
     }
 
     .alert-spinner.spinner-inline {
