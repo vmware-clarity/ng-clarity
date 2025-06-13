@@ -21,12 +21,7 @@
     select {
       @include forms-mixins.custom-inputs(tokens.$cds-global-space-9);
       @include forms-mixins.form-fields-appearance();
-      @include mixins.generate-typography-token(
-        'SECONDARY-13-RG-EXP',
-        (
-          font-size: forms-variables.$clr-forms-field-font-size,
-        )
-      );
+      @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
 
       &:not([multiple]) {
         @include forms-mixins.input-border-bottom-animation();

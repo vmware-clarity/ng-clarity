@@ -13,6 +13,7 @@
 @use 'variables.dropdown' as dropdown-variables;
 @use '@cds/core/tokens/tokens.scss';
 @use '../../layout/tabs/tabs.clarity' as tabs;
+@use '../../layout/density/' as density;
 
 @include meta.load-css('properties.dropdown');
 
@@ -112,12 +113,12 @@
         )
       );
 
-      padding: 0 tokens.$cds-global-space-7;
+      padding: 0 density.$clr-base-horizontal-offset-l;
       margin: 0;
 
       & ~ .dropdown-item,
       & ~ .dropdown > .dropdown-item {
-        padding-left: tokens.$cds-global-space-10;
+        padding-left: density.$clr-base-horizontal-offset-2xl;
       }
 
       @extend %dropdown-content;
@@ -148,8 +149,7 @@
       }
 
       &.expandable {
-        padding-right: tokens.$cds-global-space-5;
-
+        padding-right: density.$clr-base-horizontal-offset-xs;
         &:after {
           content: '';
           -webkit-mask: icons.generateCaretIcon("'none'");
@@ -159,9 +159,9 @@
           -webkit-mask-size: cover;
           mask-size: cover;
           background-color: dropdown-variables.$clr-dropdown-item-color;
-          @include mixins.equilateral(tokens.$cds-global-space-6);
+          @include mixins.equilateral(density.$clr-base-icon-size-xs);
           transform: rotate(-90deg);
-          margin-left: auto;
+          flex: 0 0 auto;
         }
 
         &.active:after {
@@ -185,6 +185,10 @@
       }
       &:focus {
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
+      }
+      &-content {
+        @extend %dropdown-content;
+        flex: 1 1 auto;
       }
     }
 

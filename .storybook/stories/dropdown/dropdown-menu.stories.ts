@@ -26,12 +26,16 @@ export default {
     release: { control: { disable: true }, table: { disable: true } },
     // story helpers
     createArray: { control: { disable: true }, table: { disable: true } },
+    menuHeader: { control: { type: 'text' } },
+    menuItemText: { control: { type: 'text' } },
     menuCount: { control: { type: 'number', min: 1, max: 100 } },
     actionCount: { control: { type: 'number', min: 1, max: 100 } },
     CLR_MENU_POSITIONS: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
   args: {
     // inputs
+    menuHeader: 'Menus',
+    menuItemText: 'Menu',
     clrPosition: 'top-left',
     // story helpers
     createArray: n => new Array(n),
@@ -50,11 +54,11 @@ const DropdownMenuTemplate: StoryFn = args => ({
           <cds-icon shape="angle" direction="down"></cds-icon>
         </button>
         <clr-dropdown-menu [clrPosition]="clrPosition" *clrIfOpen="true">
-          <label class="dropdown-header" aria-hidden="true">Menus</label>
+          <label class="dropdown-header" aria-hidden="true">{{ menuHeader }}</label>
           <clr-dropdown *ngFor="let _ of createArray(menuCount); let menuIndex = index">
-            <button clrDropdownTrigger>Menu {{ menuIndex + 1 }}</button>
+            <button clrDropdownTrigger>{{ menuItemText }} {{ menuIndex + 1 }}</button>
             <clr-dropdown-menu>
-              <label class="dropdown-header" aria-hidden="true">Menu {{ menuIndex + 1 }} Actions</label>
+              <label class="dropdown-header" aria-hidden="true">{{ menuItemText }} {{ menuIndex + 1 }} Actions</label>
               <div
                 *ngFor="let _ of createArray(actionCount); let actionIndex = index"
                 [attr.aria-label]="'Action' + (actionIndex + 1)"
@@ -84,11 +88,11 @@ const DropdownMenuAllTemplate: StoryFn = args => ({
             <cds-icon shape="angle" direction="down"></cds-icon>
           </button>
           <clr-dropdown-menu [clrPosition]="position" *clrIfOpen="true">
-            <label class="dropdown-header" aria-hidden="true">Menus</label>
+            <label class="dropdown-header" aria-hidden="true">{{ menuHeader }}</label>
             <clr-dropdown *ngFor="let _ of createArray(menuCount); let menuIndex = index">
-              <button clrDropdownTrigger>Menu {{ menuIndex + 1 }}</button>
+              <button clrDropdownTrigger>{{ menuItemText }} {{ menuIndex + 1 }}</button>
               <clr-dropdown-menu>
-                <label class="dropdown-header" aria-hidden="true">Menu {{ menuIndex + 1 }} Actions</label>
+                <label class="dropdown-header" aria-hidden="true">{{ menuItemText }} {{ menuIndex + 1 }} Actions</label>
                 <div
                   *ngFor="let _ of createArray(actionCount); let actionIndex = index"
                   [attr.aria-label]="'Action' + (actionIndex + 1)"
@@ -108,6 +112,12 @@ const DropdownMenuAllTemplate: StoryFn = args => ({
 
 export const DropdownMenu: StoryObj = {
   render: DropdownMenuTemplate,
+};
+export const LongItemText: StoryObj = {
+  render: DropdownMenuTemplate,
+  args: {
+    menuItemText: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
+  },
 };
 
 export const Showcase: StoryObj = {

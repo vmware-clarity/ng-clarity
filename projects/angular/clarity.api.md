@@ -2406,12 +2406,14 @@ export class ClrDropdown implements OnDestroy {
 // @public (undocumented)
 export class ClrDropdownItem {
     // Warning: (ae-forgotten-export) The symbol "FocusableItem" needs to be exported by the entry point index.d.ts
-    constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem);
+    constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem, el: ElementRef, renderer: Renderer2);
     // (undocumented)
     get disabled(): boolean | string;
     set disabled(value: boolean | string);
     get dropdownItemId(): string;
     set dropdownItemId(value: string);
+    // (undocumented)
+    ngAfterViewInit(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": "clrDisabled"; "dropdownItemId": "id"; }, {}, never, never, false, never>;
     // (undocumented)
@@ -2454,11 +2456,13 @@ export class ClrDropdownModule {
 
 // @public (undocumented)
 export class ClrDropdownTrigger {
-    constructor(dropdown: ClrDropdown, toggleService: ClrPopoverToggleService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler);
+    constructor(dropdown: ClrDropdown, toggleService: ClrPopoverToggleService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler, renderer: Renderer2);
     // (undocumented)
     get active(): boolean;
     // (undocumented)
     isRootLevelToggle: boolean;
+    // (undocumented)
+    ngAfterViewInit(): void;
     // (undocumented)
     onDropdownTriggerClick(event: any): void;
     // (undocumented)
@@ -5392,8 +5396,8 @@ export class ClrWizardStepnav {
 }
 
 // @public (undocumented)
-export class ClrWizardStepnavItem {
-    constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, commonStrings: ClrCommonStringsService);
+export class ClrWizardStepnavItem implements OnInit, OnDestroy {
+    constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, commonStrings: ClrCommonStringsService, elementRef: ElementRef<HTMLElement>);
     // (undocumented)
     get canNavigate(): boolean;
     // (undocumented)
@@ -5419,6 +5423,10 @@ export class ClrWizardStepnavItem {
     protected get labelledby(): string;
     // (undocumented)
     navService: WizardNavigationService;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
     // (undocumented)
     page: ClrWizardPage;
     // (undocumented)
