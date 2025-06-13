@@ -43,7 +43,7 @@
     }
 
     #{$td} {
-      min-height: density.$clr-base-dg-row-height;
+      min-height: table-variables.$clr-table-row-height;
       @include mixins.generate-typography-token('BODY-14-RG-CPT');
     }
 
