@@ -198,8 +198,6 @@
       flex: 0 0 auto;
       white-space: nowrap;
       display: flex;
-      align-self: center;
-      align-items: center;
 
       > {
         .alert-action,
@@ -270,12 +268,12 @@
       padding-bottom: 0;
 
       .alert-items .alert-item {
-        min-height: 0;
         margin: 0;
 
         > span,
         .alert-actions,
         .alert-text {
+          padding: 0;
           @include mixins.generate-typography-token('BODY-14-RG-STD');
         }
       }
@@ -302,6 +300,11 @@
     border-radius: 0;
     overflow-y: auto;
     padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-m;
+
+    .alert-actions {
+      align-self: center;
+      align-items: center;
+    }
 
     @include generateAlertType(app-info);
 
