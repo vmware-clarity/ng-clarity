@@ -94,7 +94,7 @@
     --clr-forms-select-disabled-border-color: #{tokens.$cds-alias-object-interaction-color-disabled};
     --clr-forms-select-caret-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
     --clr-forms-select-caret-color: #{tokens.$cds-alias-object-interaction-color};
-    --clr-forms-select-caret-size: #{mixins.baselinePx(10)};
+    --clr-forms-select-caret-size: #{density.$clr-base-icon-size-xs};
     --clr-forms-select-option-color: #{tokens.$cds-alias-typography-color-400};
     --clr-forms-select-option-background-color: #{tokens.$cds-alias-object-interaction-background};
     --clr-forms-select-multiple-background-color: #{tokens.$cds-alias-object-container-background};

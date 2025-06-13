@@ -17,6 +17,7 @@
     position: relative;
     max-width: 100%;
     max-height: forms-variables.$clr-forms-input-wrapper-height;
+    padding-right: density.$clr-base-horizontal-offset-xs;
 
     &.clr-focus {
       width: auto;
