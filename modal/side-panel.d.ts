@@ -6,12 +6,12 @@ export declare class ClrSidePanel implements OnInit, OnDestroy {
     private element;
     private configuration;
     commonStrings: ClrCommonStringsService;
-    _open: boolean;
     openChange: EventEmitter<boolean>;
     closeButtonAriaLabel: string | undefined;
     skipAnimation: boolean;
     labelledById: string;
     staticBackdrop: boolean;
+    closable: boolean;
     preventClose: boolean;
     altClose: EventEmitter<boolean>;
     private _pinnable;
@@ -19,8 +19,11 @@ export declare class ClrSidePanel implements OnInit, OnDestroy {
     private originalStopClose;
     private _position;
     private _modal;
+    private __open;
     private _size;
     constructor(element: ElementRef<HTMLElement>, configuration: ClrModalConfigurationService, commonStrings: ClrCommonStringsService);
+    get _open(): boolean;
+    set _open(open: boolean);
     get size(): string;
     set size(value: string);
     get position(): string;
@@ -46,5 +49,5 @@ export declare class ClrSidePanel implements OnInit, OnDestroy {
     private cleanupPinnedClasses;
     private updatePinnedClasses;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanel, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "_open": "clrSidePanelOpen"; "closeButtonAriaLabel": "clrSidePanelCloseButtonAriaLabel"; "skipAnimation": "clrSidePanelSkipAnimation"; "labelledById": "clrSidePanelLabelledById"; "staticBackdrop": "clrSidePanelStaticBackdrop"; "preventClose": "clrSidePanelPreventClose"; "size": "clrSidePanelSize"; "position": "clrSidePanelPosition"; "pinned": "clrSidePanelPinned"; "clrSidePanelBackdrop": "clrSidePanelBackdrop"; "clrSidePanelPinnable": "clrSidePanelPinnable"; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "closeButtonAriaLabel": "clrSidePanelCloseButtonAriaLabel"; "skipAnimation": "clrSidePanelSkipAnimation"; "labelledById": "clrSidePanelLabelledById"; "staticBackdrop": "clrSidePanelStaticBackdrop"; "closable": "clrSidePanelClosable"; "preventClose": "clrSidePanelPreventClose"; "_open": "clrSidePanelOpen"; "size": "clrSidePanelSize"; "position": "clrSidePanelPosition"; "pinned": "clrSidePanelPinned"; "clrSidePanelBackdrop": "clrSidePanelBackdrop"; "clrSidePanelPinnable": "clrSidePanelPinnable"; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
 }

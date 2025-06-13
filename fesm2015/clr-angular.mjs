@@ -27384,16 +27384,28 @@ class ClrSidePanel {
         this.element = element;
         this.configuration = configuration;
         this.commonStrings = commonStrings;
-        this._open = false;
         this.openChange = new EventEmitter(false);
         this.skipAnimation = false;
         this.staticBackdrop = false;
+        this.closable = true;
         this.preventClose = false;
         this.altClose = new EventEmitter(false);
         this._pinnable = false;
         this._pinned = false;
         this._position = 'right';
+        this.__open = false;
         this._size = 'md';
+    }
+    get _open() {
+        return this.__open;
+    }
+    set _open(open) {
+        if (open !== this.__open) {
+            this.__open = open;
+            if (this.pinned) {
+                this.updateModalState();
+            }
+        }
     }
     get size() {
         return this._size;
@@ -27404,7 +27416,7 @@ class ClrSidePanel {
         }
         if (this._size !== value) {
             this._size = value;
-            if (this.clrSidePanelPinnable && this.pinned) {
+            if (this.pinned) {
                 this.updateModalState();
             }
         }
@@ -27427,11 +27439,9 @@ class ClrSidePanel {
         return this._pinned;
     }
     set pinned(pinned) {
-        if (this.clrSidePanelPinnable) {
-            this._pinned = pinned;
-            if (this.modal) {
-                this.updateModalState();
-            }
+        this._pinned = pinned;
+        if (this.modal) {
+            this.updateModalState();
         }
     }
     get clrSidePanelBackdrop() {
@@ -27524,16 +27534,13 @@ class ClrSidePanel {
     }
 }
 ClrSidePanel.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSidePanel, deps: [{ token: i0.ElementRef }, { token: ClrModalConfigurationService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrSidePanel.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrSidePanel, selector: "clr-side-panel", inputs: { _open: ["clrSidePanelOpen", "_open"], closeButtonAriaLabel: ["clrSidePanelCloseButtonAriaLabel", "closeButtonAriaLabel"], skipAnimation: ["clrSidePanelSkipAnimation", "skipAnimation"], labelledById: ["clrSidePanelLabelledById", "labelledById"], staticBackdrop: ["clrSidePanelStaticBackdrop", "staticBackdrop"], preventClose: ["clrSidePanelPreventClose", "preventClose"], size: ["clrSidePanelSize", "size"], position: ["clrSidePanelPosition", "position"], pinned: ["clrSidePanelPinned", "pinned"], clrSidePanelBackdrop: "clrSidePanelBackdrop", clrSidePanelPinnable: "clrSidePanelPinnable" }, outputs: { openChange: "clrSidePanelOpenChange", altClose: "clrSidePanelAlternateClose" }, host: { listeners: { "document:pointerup": "documentClick($event)" }, properties: { "class.side-panel": "true", "class.side-panel-bottom": "this.bottomPositionCssClass" } }, viewQueries: [{ propertyName: "modal", first: true, predicate: ClrModal, descendants: true }], ngImport: i0, template: "<clr-modal\n  [clrModalOpen]=\"_open\"\n  (clrModalOpenChange)=\"handleModalOpen($event)\"\n  [clrModalCloseButtonAriaLabel]=\"closeButtonAriaLabel\"\n  [clrModalSize]=\"size\"\n  [clrModalSkipAnimation]=\"skipAnimation\"\n  [clrModalStaticBackdrop]=\"staticBackdrop\"\n  [clrModalLabelledById]=\"labelledById\"\n  [clrModalPreventClose]=\"preventClose\"\n  (clrModalAlternateClose)=\"altClose.emit($event)\"\n  [clrModalOverrideScrollService]=\"true\"\n>\n  <button\n    type=\"button\"\n    [attr.aria-label]=\"commonStrings.keys.sidePanelPin\"\n    class=\"leading-button pinnable\"\n    *ngIf=\"clrSidePanelPinnable\"\n    (click)=\"togglePinned()\"\n  >\n    <cds-icon [attr.shape]=\"pinned ? 'unpin' : 'pin'\"></cds-icon>\n  </button>\n  <div class=\"modal-title\"><ng-content select=\".side-panel-title\"></ng-content></div>\n  <div class=\"modal-body\"><ng-content select=\".side-panel-body\"></ng-content></div>\n  <div class=\"modal-footer\"><ng-content select=\".side-panel-footer\"></ng-content></div>\n</clr-modal>\n", dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: ClrModal, selector: "clr-modal", inputs: ["clrModalOpen", "clrModalClosable", "clrModalCloseButtonAriaLabel", "clrModalSize", "clrModalStaticBackdrop", "clrModalSkipAnimation", "clrModalPreventClose", "clrModalLabelledById", "clrModalOverrideScrollService"], outputs: ["clrModalOpenChange", "clrModalAlternateClose"] }, { kind: "directive", type: ClrModalBody, selector: ".modal-body" }] });
+ClrSidePanel.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrSidePanel, selector: "clr-side-panel", inputs: { closeButtonAriaLabel: ["clrSidePanelCloseButtonAriaLabel", "closeButtonAriaLabel"], skipAnimation: ["clrSidePanelSkipAnimation", "skipAnimation"], labelledById: ["clrSidePanelLabelledById", "labelledById"], staticBackdrop: ["clrSidePanelStaticBackdrop", "staticBackdrop"], closable: ["clrSidePanelClosable", "closable"], preventClose: ["clrSidePanelPreventClose", "preventClose"], _open: ["clrSidePanelOpen", "_open"], size: ["clrSidePanelSize", "size"], position: ["clrSidePanelPosition", "position"], pinned: ["clrSidePanelPinned", "pinned"], clrSidePanelBackdrop: "clrSidePanelBackdrop", clrSidePanelPinnable: "clrSidePanelPinnable" }, outputs: { openChange: "clrSidePanelOpenChange", altClose: "clrSidePanelAlternateClose" }, host: { listeners: { "document:pointerup": "documentClick($event)" }, properties: { "class.side-panel": "true", "class.side-panel-bottom": "this.bottomPositionCssClass" } }, viewQueries: [{ propertyName: "modal", first: true, predicate: ClrModal, descendants: true }], ngImport: i0, template: "<clr-modal\n  [clrModalOpen]=\"_open\"\n  (clrModalOpenChange)=\"handleModalOpen($event)\"\n  [clrModalCloseButtonAriaLabel]=\"closeButtonAriaLabel\"\n  [clrModalSize]=\"size\"\n  [clrModalSkipAnimation]=\"skipAnimation\"\n  [clrModalStaticBackdrop]=\"staticBackdrop\"\n  [clrModalLabelledById]=\"labelledById\"\n  [clrModalPreventClose]=\"preventClose\"\n  [clrModalClosable]=\"closable\"\n  (clrModalAlternateClose)=\"altClose.emit($event)\"\n  [clrModalOverrideScrollService]=\"true\"\n>\n  <button\n    type=\"button\"\n    [attr.aria-label]=\"commonStrings.keys.sidePanelPin\"\n    class=\"leading-button pinnable\"\n    *ngIf=\"clrSidePanelPinnable\"\n    (click)=\"togglePinned()\"\n  >\n    <cds-icon [attr.shape]=\"pinned ? 'unpin' : 'pin'\"></cds-icon>\n  </button>\n  <div class=\"modal-title\"><ng-content select=\".side-panel-title\"></ng-content></div>\n  <div class=\"modal-body\"><ng-content select=\".side-panel-body\"></ng-content></div>\n  <div class=\"modal-footer\"><ng-content select=\".side-panel-footer\"></ng-content></div>\n</clr-modal>\n", dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: ClrModal, selector: "clr-modal", inputs: ["clrModalOpen", "clrModalClosable", "clrModalCloseButtonAriaLabel", "clrModalSize", "clrModalStaticBackdrop", "clrModalSkipAnimation", "clrModalPreventClose", "clrModalLabelledById", "clrModalOverrideScrollService"], outputs: ["clrModalOpenChange", "clrModalAlternateClose"] }, { kind: "directive", type: ClrModalBody, selector: ".modal-body" }] });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSidePanel, decorators: [{
             type: Component,
             args: [{ selector: 'clr-side-panel', host: {
                         '[class.side-panel]': 'true',
-                    }, template: "<clr-modal\n  [clrModalOpen]=\"_open\"\n  (clrModalOpenChange)=\"handleModalOpen($event)\"\n  [clrModalCloseButtonAriaLabel]=\"closeButtonAriaLabel\"\n  [clrModalSize]=\"size\"\n  [clrModalSkipAnimation]=\"skipAnimation\"\n  [clrModalStaticBackdrop]=\"staticBackdrop\"\n  [clrModalLabelledById]=\"labelledById\"\n  [clrModalPreventClose]=\"preventClose\"\n  (clrModalAlternateClose)=\"altClose.emit($event)\"\n  [clrModalOverrideScrollService]=\"true\"\n>\n  <button\n    type=\"button\"\n    [attr.aria-label]=\"commonStrings.keys.sidePanelPin\"\n    class=\"leading-button pinnable\"\n    *ngIf=\"clrSidePanelPinnable\"\n    (click)=\"togglePinned()\"\n  >\n    <cds-icon [attr.shape]=\"pinned ? 'unpin' : 'pin'\"></cds-icon>\n  </button>\n  <div class=\"modal-title\"><ng-content select=\".side-panel-title\"></ng-content></div>\n  <div class=\"modal-body\"><ng-content select=\".side-panel-body\"></ng-content></div>\n  <div class=\"modal-footer\"><ng-content select=\".side-panel-footer\"></ng-content></div>\n</clr-modal>\n" }]
-        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: ClrModalConfigurationService }, { type: ClrCommonStringsService }]; }, propDecorators: { _open: [{
-                type: Input,
-                args: ['clrSidePanelOpen']
-            }], openChange: [{
+                    }, template: "<clr-modal\n  [clrModalOpen]=\"_open\"\n  (clrModalOpenChange)=\"handleModalOpen($event)\"\n  [clrModalCloseButtonAriaLabel]=\"closeButtonAriaLabel\"\n  [clrModalSize]=\"size\"\n  [clrModalSkipAnimation]=\"skipAnimation\"\n  [clrModalStaticBackdrop]=\"staticBackdrop\"\n  [clrModalLabelledById]=\"labelledById\"\n  [clrModalPreventClose]=\"preventClose\"\n  [clrModalClosable]=\"closable\"\n  (clrModalAlternateClose)=\"altClose.emit($event)\"\n  [clrModalOverrideScrollService]=\"true\"\n>\n  <button\n    type=\"button\"\n    [attr.aria-label]=\"commonStrings.keys.sidePanelPin\"\n    class=\"leading-button pinnable\"\n    *ngIf=\"clrSidePanelPinnable\"\n    (click)=\"togglePinned()\"\n  >\n    <cds-icon [attr.shape]=\"pinned ? 'unpin' : 'pin'\"></cds-icon>\n  </button>\n  <div class=\"modal-title\"><ng-content select=\".side-panel-title\"></ng-content></div>\n  <div class=\"modal-body\"><ng-content select=\".side-panel-body\"></ng-content></div>\n  <div class=\"modal-footer\"><ng-content select=\".side-panel-footer\"></ng-content></div>\n</clr-modal>\n" }]
+        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: ClrModalConfigurationService }, { type: ClrCommonStringsService }]; }, propDecorators: { openChange: [{
                 type: Output,
                 args: ['clrSidePanelOpenChange']
             }], closeButtonAriaLabel: [{
@@ -27548,12 +27555,18 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
             }], staticBackdrop: [{
                 type: Input,
                 args: ['clrSidePanelStaticBackdrop']
+            }], closable: [{
+                type: Input,
+                args: ['clrSidePanelClosable']
             }], preventClose: [{
                 type: Input,
                 args: ['clrSidePanelPreventClose']
             }], altClose: [{
                 type: Output,
                 args: ['clrSidePanelAlternateClose']
+            }], _open: [{
+                type: Input,
+                args: ['clrSidePanelOpen']
             }], size: [{
                 type: Input,
                 args: ['clrSidePanelSize']
