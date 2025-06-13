@@ -23,7 +23,6 @@
     flex-direction: column;
     width: 100%;
     min-width: mixins.baselinePx(175);
-    margin-left: tokens.$cds-global-space-5;
     gap: timeline-variables.$clr-timeline-step-internal-spacing;
 
     cds-icon,
@@ -64,12 +63,10 @@
       content: '';
       background: timeline-variables.$clr-timeline-line-color;
       height: timeline-variables.$clr-timeline-line-thickness;
-      width: calc(
-        100% - timeline-variables.$clr-timeline-icon-size + timeline-variables.$clr-timeline-step-internal-spacing
-      );
+      width: calc(100% - timeline-variables.$clr-timeline-icon-size);
 
       transform: translate(
-        calc(timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-line-thickness),
+        timeline-variables.$clr-timeline-icon-size,
         calc(
           -0.5 * ((timeline-variables.$clr-timeline-step-internal-spacing * 2) +
                 timeline-variables.$clr-timeline-line-thickness + timeline-variables.$clr-timeline-icon-size)
@@ -106,7 +103,7 @@
 
   .clr-timeline-step-title {
     color: timeline-variables.$clr-timeline-step-title-color;
-    margin-bottom: timeline-variables.$clr-timeline-step-internal-spacing;
+    margin-bottom: density.$clr-base-gap-xs;
 
     @include mixins.generate-typography-token(
       'SECONDARY-13-SB-CPT',
@@ -123,7 +120,7 @@
 
     button {
       display: block;
-      margin-top: timeline-variables.$clr-timeline-step-internal-spacing;
+      margin-top: density.$clr-base-gap-s;
     }
     img {
       width: 100%;
@@ -149,7 +146,7 @@
         position: absolute;
         width: timeline-variables.$clr-timeline-line-thickness;
         height: calc(
-          100% - (0.5 * timeline-variables.$clr-timeline-icon-size + timeline-variables.$clr-timeline-line-thickness)
+          100% - (timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-step-internal-spacing)
         );
 
         transform: translate(
@@ -157,8 +154,7 @@
             -0.5 * (timeline-variables.$clr-timeline-icon-size + timeline-variables.$clr-timeline-line-thickness) - timeline-variables.$clr-timeline-step-internal-spacing
           ),
           calc(
-            timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-line-thickness -
-              timeline-variables.$clr-timeline-step-internal-spacing
+            (-1 * timeline-variables.$clr-timeline-step-internal-spacing) + timeline-variables.$clr-timeline-icon-size
           )
         );
       }
