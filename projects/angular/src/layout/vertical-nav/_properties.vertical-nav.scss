@@ -8,6 +8,7 @@
 @use '../../utils/variables/variables.global';
 @use './variables.vertical-nav' as vertical-nav-variables;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../layout/density' as density;
 
 @include mixins.exports('vertical-nav.properties') {
   :root [cds-theme] {
@@ -15,7 +16,7 @@
     --clr-vertical-nav-divider-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-700);
 
     // Vertical Nav - Icons
-    --clr-vertical-nav-icon-size: #{tokens.$cds-global-space-7};
+    --clr-vertical-nav-icon-size: #{density.$clr-base-icon-size-s};
     --clr-vertical-nav-icon-active-color: #{tokens.$cds-alias-object-interaction-color};
     --clr-vertical-nav-icon-right-margin: #{tokens.$cds-global-space-4};
     --clr-vertical-nav-collapsed-caret-size: #{tokens.$cds-global-space-10};
@@ -23,11 +24,11 @@
     // Vertical Nav - Align
     --clr-vertical-nav-item-color: #{tokens.$cds-alias-object-interaction-color}; // var(--clr-color-neutral-700);
     --clr-vertical-nav-item-active-color: #{tokens.$cds-alias-object-interaction-color-active}; // var(--clr-color-neutral-700);
-    --clr-vertical-nav-item-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-5}
-      #{tokens.$cds-global-space-7};
-    --clr-vertical-nav-item-child-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6} #{tokens.$cds-global-space-5}
-      #{tokens.$cds-global-space-10};
-    --clr-vertical-nav-item-height: #{tokens.$cds-global-space-11};
+    --clr-vertical-nav-item-padding: #{density.$clr-base-layout-space-xs} #{density.$clr-base-layout-space-xs} #{density.$clr-base-layout-space-xs}
+      #{density.$clr-base-layout-space-m};
+    --clr-vertical-nav-item-child-padding: #{density.$clr-base-layout-space-xs} #{density.$clr-base-layout-space-s} #{density.$clr-base-layout-space-xs}
+      #{density.$clr-base-layout-space-2xl};
+    --clr-vertical-nav-item-height: #{density.$clr-base-layout-space-xl};
     --clr-vertical-nav-min-width: #{tokens.$cds-global-space-12};
     --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
 
@@ -49,12 +50,12 @@
     --clr-vertical-nav-toggle-icon-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
     --clr-vertical-nav-toggle-icon-active-color: #{tokens.$cds-alias-object-interaction-color-active};
     --clr-vertical-nav-toggle-icon-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
-    --clr-vertical-nav-toggle-button-size: #{tokens.$cds-global-space-11};
+    --clr-vertical-nav-toggle-button-size: #{density.$clr-base-row-height-m};
     --clr-vertical-nav-trigger-divider-border-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-400);
-    --clr-vertical-nav-trigger-divider-border-width: #{variables.$clr-global-borderwidth};
+    --clr-vertical-nav-trigger-divider-border-width: #{density.$clr-base-layout-space-4xs};
 
     // Vertical Nav - Header
     --clr-vertical-nav-header-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
-    --clr-vertical-nav-header-padding: #{mixins.baselinePx(10)} #{tokens.$cds-global-space-7};
+    --clr-vertical-nav-header-padding: #{mixins.baselinePx(10)} #{density.$clr-base-layout-space-m};
   }
 }
