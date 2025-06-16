@@ -5,12 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/variables/variables';
+@use '../../layout/density' as density;
 @use '@cds/core/tokens/tokens.scss';
-
-// TYPOGRAPHIC STYLES
-// Usage: ./_alert.clarity.scss
-$clr-alert-font-size: #{tokens.$cds-alias-typography-font-size-3} !default;
-$clr-alert-letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing} !default;
+@use '../../utils/mixins';
 
 // Dimensions & Layout
 // Usage: ./_alert.clarity.scss
@@ -18,8 +15,8 @@ $clr-icon-margin-right: #{tokens.$cds-global-space-4} !default;
 $clr-icon-dimension-sm: #{tokens.$cds-global-space-7} !default;
 $clr-alert-icon-dimension-sm: #{tokens.$cds-global-space-8} !default;
 $clr-alert-top-margin: #{tokens.$cds-global-space-4} !default;
-$clr-alert-min-height: #{tokens.$cds-global-space-11} !default;
-$clr-alert-item-min-height: $clr-alert-icon-dimension-sm !default;
+$clr-alert-min-height: #{density.$clr-base-row-height-m} !default;
+$clr-alert-item-min-height: #{density.$clr-base-row-height-s} !default;
 $clr-alert-borderwidth: #{tokens.$cds-alias-object-border-width-100} !default;
 $clr-alert-borderradius: var(--clr-alert-borderradius) !default;
 
