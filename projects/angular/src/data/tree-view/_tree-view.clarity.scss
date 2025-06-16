@@ -151,7 +151,9 @@
     min-width: tree-view-variables.$clr-tree-checkbox-size;
     width: tree-view-variables.$clr-tree-checkbox-size;
     padding: tree-view-variables.$clr-tree-node-icon-padding;
-    margin: 0 tree-view-variables.$clr-tree-node-horizontal-offset;
+    margin-left: tree-view-variables.$clr-tree-node-horizontal-offset;
+    // Using margin instead of gap due to checkbox implementation specifics.
+    margin-right: tree-view-variables.$clr-tree-node-content-gap;
   }
 
   .clr-treenode-content .clr-treenode-link,
