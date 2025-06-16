@@ -75,10 +75,8 @@
       position: absolute;
       content: '';
       @include mixins.equilateral(forms-variables.$clr-forms-select-caret-size);
-      top: density.$clr-base-vertical-offset-xs;
+      top: calc((100% - forms-variables.$clr-forms-select-caret-size) / 2);
       right: density.$clr-base-horizontal-offset-s;
-      margin: density.$clr-base-vertical-offset-xs 0;
-      //padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-s;
       // Using mask instead of background-image so we can use the CSS properties
       // and support both light / dark themes.
       -webkit-mask: icons.generateCaretIcon();

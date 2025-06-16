@@ -801,8 +801,7 @@
 
         .clr-select-wrapper {
           &::after {
-            top: unset;
-            bottom: calc(density.$clr-base-vertical-offset-xl / 2);
+            top: calc((100% - forms-variables.$clr-forms-select-caret-size) / 2 - 1px);
           }
         }
 
@@ -968,11 +967,6 @@
       .pagination {
         line-height: tables-variables.$clr-table-compact-row-height;
 
-        .clr-select-wrapper {
-          &::after {
-            bottom: calc(density.$clr-base-vertical-offset-l / 2);
-          }
-        }
         .clr-page-size-select {
           min-height: density.$clr-base-row-height-xs;
         }
