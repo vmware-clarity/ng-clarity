@@ -6,10 +6,14 @@
  */
 @use 'sass:color';
 @use '@cds/core/tokens/tokens.scss';
+@use '../layout/density';
 
 // Usage: ../modal/_modal.clarity.scss
-$clr-modal-default-space: tokens.$cds-global-space-9 !default;
+$clr-modal-default-space: density.$clr-base-horizontal-offset-2xl !default;
+$clr-modal-default-gap: density.$clr-base-vertical-offset-2xl !default;
+$clr-modal-footer-gap: density.$clr-base-gap-s !default;
 $clr-modal-border-radius: var(--clr-modal-border-radius) !default;
+$clr-modal-icon-size: density.$clr-base-icon-size-l !default;
 
 $clr-modal-close-color: var(--clr-modal-close-color) !default;
 $clr-modal-bg-color: var(--clr-modal-bg-color) !default;

@@ -54,22 +54,24 @@ import { Page } from './providers/page';
           <span class="clr-sr-only">{{ commonStrings.keys.previousPage }}</span>
           <cds-icon shape="angle" direction="left"></cds-icon>
         </button>
-        <input
-          *ngIf="!disableCurrentPageInput; else readOnly"
-          #currentPageInput
-          type="text"
-          class="pagination-current clr-input"
-          [size]="page.last.toString().length"
-          [value]="page.current"
-          (keydown.enter)="updateCurrentPage($event)"
-          (blur)="verifyCurrentPage($event)"
-          [attr.aria-label]="commonStrings.keys.currentPage"
-        />
-        <ng-template #readOnly>
-          <span>{{ page.current }}</span>
-        </ng-template>
+        <div class="pagination-pages">
+          <input
+            *ngIf="!disableCurrentPageInput; else readOnly"
+            #currentPageInput
+            type="text"
+            class="pagination-current clr-input"
+            [size]="page.last.toString().length"
+            [value]="page.current"
+            (keydown.enter)="updateCurrentPage($event)"
+            (blur)="verifyCurrentPage($event)"
+            [attr.aria-label]="commonStrings.keys.currentPage"
+          />
+          <ng-template #readOnly>
+            <span>{{ page.current }}</span>
+          </ng-template>
 
-        &nbsp;/&nbsp;<span [attr.aria-label]="commonStrings.keys.totalPages">{{ page.last }}</span>
+          &nbsp;/&nbsp;<span [attr.aria-label]="commonStrings.keys.totalPages">{{ page.last }}</span>
+        </div>
         <button
           type="button"
           class="pagination-next"
