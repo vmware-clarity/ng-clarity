@@ -151,7 +151,7 @@
     min-width: tree-view-variables.$clr-tree-checkbox-size;
     width: tree-view-variables.$clr-tree-checkbox-size;
     padding: tree-view-variables.$clr-tree-node-icon-padding;
-    margin: 0 tree-view-variables.$clr-tree-node-content-gap;
+    margin: 0 tree-view-variables.$clr-tree-node-horizontal-offset;
   }
 
   .clr-treenode-content .clr-treenode-link,

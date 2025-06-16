@@ -17,7 +17,8 @@ $clr-tree-spinner-size: #{density.$clr-base-icon-size-s} !default;
 $clr-tree-node-touch-target: #{density.$clr-base-icon-size-2xl} !default;
 $clr-tree-node-children-margin: $clr-tree-node-touch-target !default;
 
-$clr-tree-node-content-gap: #{density.$clr-base-horizontal-offset-m} !default;
+$clr-tree-node-content-gap: #{density.$clr-base-gap-s} !default;
+$clr-tree-node-horizontal-offset: #{density.$clr-base-horizontal-offset-m} !default;
 $clr-tree-node-content-padding: #{density.$clr-base-layout-space-xs} #{density.$clr-base-horizontal-offset-m} !default;
 $clr-tree-node-icon-padding: density.$clr-base-layout-space-xs 0 !default;
 
