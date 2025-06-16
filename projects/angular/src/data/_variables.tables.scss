@@ -34,6 +34,7 @@ $clr-table-topcellpadding: var(--clr-table-topcellpadding) !default;
 $clr-table-fontsize: var(--clr-table-fontsize) !default;
 $clr-table-cellpadding: var(--clr-table-cellpadding) !default;
 
+$clr-table-row-height: var(--clr-table-row-height) !default;
 // @deprecated in v17 in favor of $clr-table-compact-row-height
 $clr-table--compact-rowHeight: var(--clr-table-compact-row-height) !default; // Leaving for backwards compatibility
 $clr-table-compact-row-height: $clr-table--compact-rowHeight;

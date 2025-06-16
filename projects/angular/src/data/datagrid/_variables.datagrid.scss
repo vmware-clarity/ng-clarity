@@ -6,6 +6,7 @@
  */
 @use '../../utils/variables/variables';
 @use '../variables.tables' as tables-variables;
+@use '../../progress/spinner/variables.spinner' as spinner-variables;
 
 // Usage: ../data/datagrid/_datagrid.clarity.scss
 $clr-datagrid-font-color: var(--clr-datagrid-font-color) !default;
@@ -84,3 +85,9 @@ $clr-datagrid-column-separator-expandby: var(--clr-datagrid-column-separator-exp
 
 $clr-datagrid-icon-size: var(--clr-datagrid-icon-size) !default;
 $clr-datagrid-action-arrow-size: var(--clr-datagrid-action-arrow-size) !default;
+$clr-datagrid-expandable-row-spinner-margin: calc(
+  (tables-variables.$clr-table-row-height - spinner-variables.$clr-spinner-small-size) / 2
+);
+$clr-datagrid-compact-expandable-row-spinner-margin: calc(
+  (tables-variables.$clr-table-compact-row-height - spinner-variables.$clr-spinner-small-size) / 2
+);
