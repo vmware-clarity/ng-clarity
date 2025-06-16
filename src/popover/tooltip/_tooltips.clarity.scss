@@ -11,12 +11,13 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.tooltip' as tooltip-variables;
+@use '../../layout/density' as density;
 
 @mixin common-tooltip-styles {
   margin: 0; //Resetting any margin that might be applied to span/div elements inside forms
   width: mixins.baselinePx(240);
   border-radius: tooltip-variables.$clr-tooltip-border-radius;
-  padding: tokens.$cds-global-space-6;
+  padding: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-l;
 
   color: tooltip-variables.$clr-tooltip-color;
   background-color: tooltip-variables.$clr-tooltip-background-color;
