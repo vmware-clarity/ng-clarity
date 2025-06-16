@@ -17,7 +17,7 @@
   margin: 0; //Resetting any margin that might be applied to span/div elements inside forms
   width: mixins.baselinePx(240);
   border-radius: tooltip-variables.$clr-tooltip-border-radius;
-  padding: density.$clr-base-layout-space-s density.$clr-base-horizontal-offset-l;
+  padding: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-l;
 
   color: tooltip-variables.$clr-tooltip-color;
   background-color: tooltip-variables.$clr-tooltip-background-color;
