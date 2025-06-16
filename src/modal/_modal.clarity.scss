@@ -244,7 +244,7 @@
       cursor: pointer;
       background: transparent;
       border: 0;
-      margin-right: tokens.$cds-global-space-6;
+      margin-right: modal-variables.$clr-modal-horizontal-gap;
       appearance: none;
       -webkit-appearance: none;
     }
@@ -290,7 +290,7 @@
   .side-panel-footer {
     display: flex;
     justify-content: flex-end;
-    gap: modal-variables.$clr-modal-footer-gap;
+    gap: modal-variables.$clr-modal-horizontal-gap;
 
     .btn {
       //switched right margin to left because footer is right aligned
