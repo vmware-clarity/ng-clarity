@@ -67,6 +67,7 @@
   --clr-base-row-height-l: #{mixins.baselinePx(40)};
   --clr-base-row-height-20: #{mixins.baselinePx(20)};
   --clr-base-dg-row-height: #{tokens.$cds-global-space-10};
+  --clr-base-dg-compact-row-height: #{tokens.$cds-global-space-9};
 
   --clr-base-gap-xs: #{tokens.$cds-global-space-3};
   --clr-base-gap-s: #{tokens.$cds-global-space-5};
@@ -162,6 +163,7 @@
 
     --clr-base-row-height-20: #{mixins.baselinePx(20)};
     --clr-base-dg-row-height: #{tokens.$cds-global-space-10};
+    --clr-base-dg-compact-row-height: #{tokens.$cds-global-space-9};
 
     --clr-base-icon-size-xs: #{tokens.$cds-global-space-6};
     --clr-base-icon-size-s: #{tokens.$cds-global-space-7};
@@ -205,7 +207,7 @@
     --clr-base-typography-line-height-12: #{tokens.$cds-global-space-7};
     --clr-base-typography-line-height-16: #{tokens.$cds-global-space-7};
     --clr-base-typography-line-height-20: #{tokens.$cds-global-space-8};
-    --clr-base-typography-line-height-24: #{mixins.baselinePx(22)};
+    --clr-base-typography-line-height-24: #{mixins.baselinePx(20)};
     --clr-base-typography-line-height-32: #{mixins.baselinePx(28)};
     --clr-base-typography-line-height-36: #{tokens.$cds-global-space-10};
     --clr-base-typography-line-height-44: #{tokens.$cds-global-space-10};
@@ -250,10 +252,11 @@
 
     --clr-base-gap-xs: #{tokens.$cds-global-space-2};
     --clr-base-gap-s: #{tokens.$cds-global-space-4};
-    --clr-base-gap-m: #{tokens.$cds-global-space-6};
+    --clr-base-gap-m: #{mixins.baselinePx(10)};
 
     --clr-base-row-height-20: #{tokens.$cds-global-space-7};
     --clr-base-dg-row-height: #{tokens.$cds-global-space-9};
+    --clr-base-dg-compact-row-height: #{mixins.baselinePx(20)};
 
     --clr-base-icon-size-xs: #{tokens.$cds-global-space-6};
     --clr-base-icon-size-s: #{tokens.$cds-global-space-7};
@@ -346,6 +349,7 @@
 
   //   --clr-base-row-height-20: #{tokens.$cds-global-space-7};
   //   --clr-base-dg-row-height: #{mixins.baselinePx(20)};
+  //   --clr-base-dg-compact-row-height: #{mixins.baselinePx(20)};
 
   //   --clr-base-icon-size-xs: #{tokens.$cds-global-space-6};
   //   --clr-base-icon-size-s: #{tokens.$cds-global-space-6};
