@@ -54,3 +54,11 @@ export const TreeViewHasIcon: StoryObj = {
     hasIcon: true,
   },
 };
+
+export const TreeViewAsLinkHasIcon: StoryObj = {
+  render: TreeViewTemplate,
+  args: {
+    asLink: true,
+    hasIcon: true,
+  },
+};
