@@ -635,7 +635,7 @@ textarea {
   --clr-base-typography-line-height-12: var(--cds-global-space-7);
   --clr-base-typography-line-height-16: var(--cds-global-space-7);
   --clr-base-typography-line-height-20: var(--cds-global-space-8);
-  --clr-base-typography-line-height-24: calc(22 * (1rem / var(--cds-global-base)));
+  --clr-base-typography-line-height-24: calc(20 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-32: calc(28 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-36: var(--cds-global-space-10);
   --clr-base-typography-line-height-44: var(--cds-global-space-10);
@@ -3737,7 +3737,7 @@ table {
   --clr-base-typography-line-height-12: var(--cds-global-space-7);
   --clr-base-typography-line-height-16: var(--cds-global-space-7);
   --clr-base-typography-line-height-20: var(--cds-global-space-8);
-  --clr-base-typography-line-height-24: calc(22 * (1rem / var(--cds-global-base)));
+  --clr-base-typography-line-height-24: calc(20 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-32: calc(28 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-36: var(--cds-global-space-10);
   --clr-base-typography-line-height-44: var(--cds-global-space-10);
@@ -6944,7 +6944,7 @@ button.close {
   --clr-base-typography-line-height-12: var(--cds-global-space-7);
   --clr-base-typography-line-height-16: var(--cds-global-space-7);
   --clr-base-typography-line-height-20: var(--cds-global-space-8);
-  --clr-base-typography-line-height-24: calc(22 * (1rem / var(--cds-global-base)));
+  --clr-base-typography-line-height-24: calc(20 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-32: calc(28 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-36: var(--cds-global-space-10);
   --clr-base-typography-line-height-44: var(--cds-global-space-10);
@@ -9773,7 +9773,7 @@ _:-ms-fullscreen .tab-content,
   --clr-base-typography-line-height-12: var(--cds-global-space-7);
   --clr-base-typography-line-height-16: var(--cds-global-space-7);
   --clr-base-typography-line-height-20: var(--cds-global-space-8);
-  --clr-base-typography-line-height-24: calc(22 * (1rem / var(--cds-global-base)));
+  --clr-base-typography-line-height-24: calc(20 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-32: calc(28 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-36: var(--cds-global-space-10);
   --clr-base-typography-line-height-44: var(--cds-global-space-10);
@@ -10371,7 +10371,7 @@ body[cds-layout=no-scrolling] .main-container .content-container .content-area {
   --clr-base-typography-line-height-12: var(--cds-global-space-7);
   --clr-base-typography-line-height-16: var(--cds-global-space-7);
   --clr-base-typography-line-height-20: var(--cds-global-space-8);
-  --clr-base-typography-line-height-24: calc(22 * (1rem / var(--cds-global-base)));
+  --clr-base-typography-line-height-24: calc(20 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-32: calc(28 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-36: var(--cds-global-space-10);
   --clr-base-typography-line-height-44: var(--cds-global-space-10);
@@ -14320,7 +14320,7 @@ _:-ms-input-placeholder .progress-block > label,
   --clr-base-typography-line-height-12: var(--cds-global-space-7);
   --clr-base-typography-line-height-16: var(--cds-global-space-7);
   --clr-base-typography-line-height-20: var(--cds-global-space-8);
-  --clr-base-typography-line-height-24: calc(22 * (1rem / var(--cds-global-base)));
+  --clr-base-typography-line-height-24: calc(20 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-32: calc(28 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-36: var(--cds-global-space-10);
   --clr-base-typography-line-height-44: var(--cds-global-space-10);
@@ -17719,7 +17719,7 @@ td.calendar-table .calendar-cell {
   --clr-base-typography-line-height-12: var(--cds-global-space-7);
   --clr-base-typography-line-height-16: var(--cds-global-space-7);
   --clr-base-typography-line-height-20: var(--cds-global-space-8);
-  --clr-base-typography-line-height-24: calc(22 * (1rem / var(--cds-global-base)));
+  --clr-base-typography-line-height-24: calc(20 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-32: calc(28 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-36: var(--cds-global-space-10);
   --clr-base-typography-line-height-44: var(--cds-global-space-10);
@@ -18313,7 +18313,7 @@ td.calendar-table .calendar-cell {
   --clr-base-typography-line-height-12: var(--cds-global-space-7);
   --clr-base-typography-line-height-16: var(--cds-global-space-7);
   --clr-base-typography-line-height-20: var(--cds-global-space-8);
-  --clr-base-typography-line-height-24: calc(22 * (1rem / var(--cds-global-base)));
+  --clr-base-typography-line-height-24: calc(20 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-32: calc(28 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-36: var(--cds-global-space-10);
   --clr-base-typography-line-height-44: var(--cds-global-space-10);
@@ -20732,7 +20732,7 @@ button.datagrid-detail-caret .datagrid-detail-caret-button {
   --clr-base-typography-line-height-12: var(--cds-global-space-7);
   --clr-base-typography-line-height-16: var(--cds-global-space-7);
   --clr-base-typography-line-height-20: var(--cds-global-space-8);
-  --clr-base-typography-line-height-24: calc(22 * (1rem / var(--cds-global-base)));
+  --clr-base-typography-line-height-24: calc(20 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-32: calc(28 * (1rem / var(--cds-global-base)));
   --clr-base-typography-line-height-36: var(--cds-global-space-10);
   --clr-base-typography-line-height-44: var(--cds-global-space-10);
