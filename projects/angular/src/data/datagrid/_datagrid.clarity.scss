@@ -799,12 +799,6 @@
           gap: density.$clr-base-gap-m;
         }
 
-        .clr-select-wrapper {
-          &::after {
-            top: calc((100% - forms-variables.$clr-forms-select-caret-size) / 2 - 1px);
-          }
-        }
-
         .clr-page-size-select {
           @include mixins.generate-typography-token('CAPTION-LG-11');
           height: auto;
