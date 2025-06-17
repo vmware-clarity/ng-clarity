@@ -118,7 +118,7 @@
 
       & ~ .dropdown-item,
       & ~ .dropdown > .dropdown-item {
-        padding-left: density.$clr-base-horizontal-offset-xl;
+        padding-left: density.$clr-base-horizontal-offset-2xl;
       }
 
       @extend %dropdown-content;

@@ -4020,6 +4020,8 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     // (undocumented)
     altClose: EventEmitter<boolean>;
     // (undocumented)
+    closable: boolean;
+    // (undocumented)
     close(): void;
     // (undocumented)
     closeButtonAriaLabel: string | undefined;
@@ -4042,7 +4044,8 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     // (undocumented)
     open(): void;
     // (undocumented)
-    _open: boolean;
+    get _open(): boolean;
+    set _open(open: boolean);
     // (undocumented)
     openChange: EventEmitter<boolean>;
     // (undocumented)
@@ -4063,7 +4066,7 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     // (undocumented)
     togglePinned(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "_open": "clrSidePanelOpen"; "closeButtonAriaLabel": "clrSidePanelCloseButtonAriaLabel"; "skipAnimation": "clrSidePanelSkipAnimation"; "labelledById": "clrSidePanelLabelledById"; "staticBackdrop": "clrSidePanelStaticBackdrop"; "preventClose": "clrSidePanelPreventClose"; "size": "clrSidePanelSize"; "position": "clrSidePanelPosition"; "pinned": "clrSidePanelPinned"; "clrSidePanelBackdrop": "clrSidePanelBackdrop"; "clrSidePanelPinnable": "clrSidePanelPinnable"; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "closeButtonAriaLabel": "clrSidePanelCloseButtonAriaLabel"; "skipAnimation": "clrSidePanelSkipAnimation"; "labelledById": "clrSidePanelLabelledById"; "staticBackdrop": "clrSidePanelStaticBackdrop"; "closable": "clrSidePanelClosable"; "preventClose": "clrSidePanelPreventClose"; "_open": "clrSidePanelOpen"; "size": "clrSidePanelSize"; "position": "clrSidePanelPosition"; "pinned": "clrSidePanelPinned"; "clrSidePanelBackdrop": "clrSidePanelBackdrop"; "clrSidePanelPinnable": "clrSidePanelPinnable"; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanel, never>;
 }
@@ -5396,8 +5399,8 @@ export class ClrWizardStepnav {
 }
 
 // @public (undocumented)
-export class ClrWizardStepnavItem {
-    constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, commonStrings: ClrCommonStringsService);
+export class ClrWizardStepnavItem implements OnInit, OnDestroy {
+    constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, commonStrings: ClrCommonStringsService, elementRef: ElementRef<HTMLElement>);
     // (undocumented)
     get canNavigate(): boolean;
     // (undocumented)
@@ -5423,6 +5426,10 @@ export class ClrWizardStepnavItem {
     protected get labelledby(): string;
     // (undocumented)
     navService: WizardNavigationService;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
     // (undocumented)
     page: ClrWizardPage;
     // (undocumented)

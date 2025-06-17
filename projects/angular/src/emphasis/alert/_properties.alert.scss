@@ -6,12 +6,13 @@
  */
 @use '../../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
+@use '../../layout/density' as density;
 
 @include mixins.exports('alert.properties') {
   :root [cds-theme] {
     /* Dimensions & Layout */
     // Usage: ./_alert.clarity.scss
-    --clr-alert-borderradius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-alert-borderradius: #{density.$clr-base-border-radius-s};
     --clr-app-alert-pager-width: #{mixins.baselinePx(144)};
 
     /* Alert Color Properties */
