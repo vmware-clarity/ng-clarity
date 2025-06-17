@@ -30,12 +30,12 @@ import { ClrModalConfigurationService } from './modal-configuration.service';
   },
 })
 export class ClrSidePanel implements OnInit, OnDestroy {
-  @Input('clrSidePanelOpen') _open = false;
   @Output('clrSidePanelOpenChange') openChange = new EventEmitter<boolean>(false);
   @Input('clrSidePanelCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
   @Input('clrSidePanelSkipAnimation') skipAnimation = false;
   @Input('clrSidePanelLabelledById') labelledById: string;
   @Input('clrSidePanelStaticBackdrop') staticBackdrop = false;
+  @Input('clrSidePanelClosable') closable = true;
   @Input('clrSidePanelPreventClose') preventClose = false;
   @Output('clrSidePanelAlternateClose') altClose = new EventEmitter<boolean>(false);
 
@@ -44,6 +44,7 @@ export class ClrSidePanel implements OnInit, OnDestroy {
   private originalStopClose: boolean;
   private _position = 'right';
   private _modal: ClrModal;
+  private __open = false;
 
   private _size = 'md';
 
@@ -52,6 +53,19 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     private configuration: ClrModalConfigurationService,
     public commonStrings: ClrCommonStringsService
   ) {}
+
+  @Input('clrSidePanelOpen')
+  get _open(): boolean {
+    return this.__open;
+  }
+  set _open(open: boolean) {
+    if (open !== this.__open) {
+      this.__open = open;
+      if (this.pinned) {
+        this.updateModalState();
+      }
+    }
+  }
 
   @Input('clrSidePanelSize')
   get size(): string {
@@ -64,7 +78,7 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     }
     if (this._size !== value) {
       this._size = value;
-      if (this.clrSidePanelPinnable && this.pinned) {
+      if (this.pinned) {
         this.updateModalState();
       }
     }
@@ -92,11 +106,9 @@ export class ClrSidePanel implements OnInit, OnDestroy {
   }
 
   set pinned(pinned: boolean) {
-    if (this.clrSidePanelPinnable) {
-      this._pinned = pinned;
-      if (this.modal) {
-        this.updateModalState();
-      }
+    this._pinned = pinned;
+    if (this.modal) {
+      this.updateModalState();
     }
   }
 

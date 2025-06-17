@@ -103,9 +103,9 @@
 }
 
 @mixin generate-dropdown-item-height() {
-  padding: 0 density.$clr-base-horizontal-offset-xl 0 density.$clr-base-horizontal-offset-l;
+  padding: 0 density.$clr-base-horizontal-offset-2xl 0 density.$clr-base-horizontal-offset-l;
 
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
-    padding: density.$clr-base-horizontal-offset-s density.$clr-base-horizontal-offset-xl;
+    padding: density.$clr-base-horizontal-offset-s density.$clr-base-horizontal-offset-2xl;
   }
 }

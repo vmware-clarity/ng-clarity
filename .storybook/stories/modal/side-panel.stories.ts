@@ -27,6 +27,7 @@ const SidePanelTemplate: StoryFn = args => ({
             [clrSidePanelPosition]="clrSidePanelPosition"
             [clrSidePanelSkipAnimation]="clrSidePanelSkipAnimation"
             (clrSidePanelOpenChange)="clrSidePanelOpen = $event; clrSidePanelOpenChange($event)"
+            [clrSidePanelClosable]="clrSidePanelClosable"
             [clrSidePanelPreventClose]="clrSidePanelPreventClose"
             (clrSidePanelAlternateClose)="clrSidePanelAltClose($event)"
             #sidePanel
