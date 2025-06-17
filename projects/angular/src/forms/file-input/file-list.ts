@@ -34,7 +34,7 @@ import {
       >
         <div class="clr-file-label-and-status-icon">
           <span class="label clr-file-label">
-            {{ file.name }}
+            <span class="text">{{ file.name }}</span>
             <button
               class="btn btn-sm btn-link-neutral btn-icon clr-file-clear-button"
               [attr.aria-label]="getClearFileLabel(file.name)"
