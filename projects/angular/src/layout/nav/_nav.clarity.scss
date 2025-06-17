@@ -25,6 +25,7 @@
 
     .nav-item {
       display: inline-block;
+      padding: density.$clr-base-layout-space-xs;
 
       &.active > .nav-link {
         color: tabs-variables.$clr-nav-link-active-color;
