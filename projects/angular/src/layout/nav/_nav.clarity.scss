@@ -21,7 +21,7 @@
     width: 100%;
     white-space: nowrap;
     box-shadow: subnav-variables.$clr-nav-shadow;
-    gap: density.$clr-base-layout-space-l;
+    gap: density.$clr-base-gap-xs;
 
     .nav-item {
       display: inline-block;
@@ -36,8 +36,6 @@
       position: relative;
       color: tabs-variables.$clr-nav-link-color;
       @include mixins.generate-typography-token('BODY-14-RG-STD');
-      //padding: tokens.$cds-global-space-5 tokens.$cds-global-space-3;
-      //padding: density.$clr-base-layout-space-xs density.$clr-base-layout-space-2xs;
       display: inline-block;
 
       //Clarity Buttons as .nav-links in .nav
@@ -46,6 +44,9 @@
         //-1px to account for the border of the button
         margin: 0 0 calc(-1 * #{tokens.$cds-global-space-1});
         border-radius: 0;
+        display: flex;
+        padding: density.$clr-base-layout-space-xs;
+        height: density.$clr-base-layout-space-xl;
       }
 
       &.dropdown-toggle {
