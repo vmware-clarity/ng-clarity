@@ -41,14 +41,13 @@
   position: relative;
   padding: $clr_baselineRem_3;
   z-index: map-get($clr-layers, sidepanel-bg) - 1;
+  transform: unset;
+  inset: 0;
 }
 
 .modal-backdrop.static {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   z-index: map-get($clr-layers, sidepanel-bg) - 2;
 }
 
