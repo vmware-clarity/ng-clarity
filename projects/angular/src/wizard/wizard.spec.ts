@@ -390,7 +390,7 @@ export default function (): void {
             expect(val).toBe(context.hostComponent.lazyLoadContent, 'projects as expected');
 
             context.hostComponent.doLazyLoad();
-            tick();
+            tick(1);
             context.detectChanges();
 
             val = context.hostElement.querySelector('.clr-wizard-page.active').textContent.trim();
