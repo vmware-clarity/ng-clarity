@@ -215,7 +215,7 @@
 
         //Dims
         width: vertical-nav-variables.$clr-vertical-nav-icon-size;
-        margin: density.$clr-base-layout-space-xs; //TODO: Check with UX
+        margin: density.$clr-base-layout-space-xs;
         align-self: center;
 
         //Others
@@ -346,7 +346,7 @@
       }
 
       .nav-group-children .nav-link {
-        padding: vertical-nav-variables.$clr-vertical-nav-item-child-padding; //TODO: CHECK WITH UX
+        padding: vertical-nav-variables.$clr-vertical-nav-item-child-padding;
       }
     }
 
