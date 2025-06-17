@@ -26,8 +26,10 @@
     --clr-vertical-nav-item-active-color: #{tokens.$cds-alias-object-interaction-color-active}; // var(--clr-color-neutral-700);
     --clr-vertical-nav-item-padding: #{density.$clr-base-layout-space-xs} #{density.$clr-base-layout-space-xs} #{density.$clr-base-layout-space-xs}
       #{density.$clr-base-layout-space-m};
-    --clr-vertical-nav-item-child-padding: #{density.$clr-base-layout-space-xs} #{density.$clr-base-layout-space-s} #{density.$clr-base-layout-space-xs}
-      #{density.$clr-base-layout-space-2xl};
+    --clr-vertical-nav-item-child-padding: #{density.$clr-base-layout-space-xs} calc(
+        #{density.$clr-base-gap-xs} + #{density.$clr-base-layout-space-xs}
+      ) #{density.$clr-base-layout-space-xs}
+      calc(#{vertical-nav-variables.$clr-vertical-nav-icon-size} + #{density.$clr-base-horizontal-offset-xl});
     --clr-vertical-nav-item-height: #{density.$clr-base-layout-space-xl};
     --clr-vertical-nav-min-width: #{tokens.$cds-global-space-12};
     --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
