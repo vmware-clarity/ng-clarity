@@ -18,20 +18,20 @@
     // Vertical Nav - Icons
     --clr-vertical-nav-icon-size: #{density.$clr-base-icon-size-s};
     --clr-vertical-nav-icon-active-color: #{tokens.$cds-alias-object-interaction-color};
-    --clr-vertical-nav-icon-right-margin: #{tokens.$cds-global-space-4};
-    --clr-vertical-nav-collapsed-caret-size: #{tokens.$cds-global-space-10};
+    --clr-vertical-nav-icon-right-margin: #{density.$clr-base-horizontal-offset-s};
+    --clr-vertical-nav-collapsed-caret-size: #{density.$clr-base-icon-size-2xl};
 
     // Vertical Nav - Align
     --clr-vertical-nav-item-color: #{tokens.$cds-alias-object-interaction-color}; // var(--clr-color-neutral-700);
     --clr-vertical-nav-item-active-color: #{tokens.$cds-alias-object-interaction-color-active}; // var(--clr-color-neutral-700);
-    --clr-vertical-nav-item-padding: #{density.$clr-base-layout-space-xs} #{density.$clr-base-layout-space-xs} #{density.$clr-base-layout-space-xs}
-      #{density.$clr-base-layout-space-m};
+    --clr-vertical-nav-item-padding: #{density.$clr-base-layout-space-xs} #{density.$clr-base-horizontal-offset-m} #{density.$clr-base-layout-space-xs}
+      #{density.$clr-base-horizontal-offset-xl};
     --clr-vertical-nav-item-child-padding: #{density.$clr-base-layout-space-xs} calc(
-        #{density.$clr-base-gap-xs} + #{density.$clr-base-layout-space-xs}
+        #{density.$clr-base-gap-xs} + #{density.$clr-base-horizontal-offset-m}
       ) #{density.$clr-base-layout-space-xs}
       calc(#{vertical-nav-variables.$clr-vertical-nav-icon-size} + #{density.$clr-base-horizontal-offset-xl});
     --clr-vertical-nav-item-height: #{density.$clr-base-layout-space-xl};
-    --clr-vertical-nav-min-width: #{tokens.$cds-global-space-12};
+    --clr-vertical-nav-min-width: #{density.$clr-base-layout-space-3xl};
     --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
 
     // Selected background colors
@@ -58,6 +58,6 @@
 
     // Vertical Nav - Header
     --clr-vertical-nav-header-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
-    --clr-vertical-nav-header-padding: #{mixins.baselinePx(10)} #{density.$clr-base-layout-space-m};
+    --clr-vertical-nav-header-padding: #{mixins.baselinePx(10)} #{density.$clr-base-horizontal-offset-xl};
   }
 }
