@@ -799,13 +799,6 @@
           gap: density.$clr-base-gap-m;
         }
 
-        .clr-select-wrapper {
-          &::after {
-            top: unset;
-            bottom: calc(density.$clr-base-vertical-offset-xl / 2);
-          }
-        }
-
         .clr-page-size-select {
           @include mixins.generate-typography-token('CAPTION-LG-11');
           height: auto;
@@ -968,11 +961,6 @@
       .pagination {
         line-height: tables-variables.$clr-table-compact-row-height;
 
-        .clr-select-wrapper {
-          &::after {
-            bottom: calc(density.$clr-base-vertical-offset-l / 2);
-          }
-        }
         .clr-page-size-select {
           min-height: density.$clr-base-row-height-xs;
         }
