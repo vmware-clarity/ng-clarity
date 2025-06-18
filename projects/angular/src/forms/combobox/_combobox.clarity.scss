@@ -57,7 +57,7 @@
 
     display: flex;
     flex-wrap: wrap;
-    gap: density.$clr-base-vertical-offset-2xs;
+    gap: density.$clr-base-horizontal-offset-2xs;
 
     //Dimensions
     padding: 0 caret-gap() 0 combobox-variables.$clr-combobox-trigger-left-padding;
