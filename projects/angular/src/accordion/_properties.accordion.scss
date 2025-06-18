@@ -8,7 +8,7 @@
 @use '../utils/variables/variables' as typography-variables;
 @use '@cds/core/tokens/tokens.scss';
 @use 'variables.accordion' as accordion-variables;
-@use '../layout/density/' as density;
+@use '../layout/density' as density;
 
 @include mixins.exports('accordion.properties') {
   :root [cds-theme] {
