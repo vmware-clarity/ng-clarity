@@ -11,6 +11,7 @@
 @use '../styles/variables.forms' as forms-variables;
 @use 'variables.combobox' as combobox-variables;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../layout/density';
 @include meta.load-css('properties.combobox');
 
 @function caret-gap() {
@@ -53,6 +54,10 @@
 
   .clr-combobox-wrapper {
     position: relative;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: density.$clr-base-vertical-offset-2xs;
 
     //Dimensions
     padding: 0 caret-gap() 0 combobox-variables.$clr-combobox-trigger-left-padding;
