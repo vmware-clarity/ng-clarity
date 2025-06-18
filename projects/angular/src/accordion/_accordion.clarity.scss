@@ -9,7 +9,7 @@
 @use '../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
 @use 'variables.accordion' as accordion-variables;
-@use '../layout/density/' as density;
+@use '../layout/density' as density;
 @include meta.load-css('properties.accordion');
 
 @include mixins.exports('accordion.clarity') {
@@ -81,7 +81,7 @@
     text-align: left;
     cursor: pointer;
     color: inherit;
-    gap: density.$clr-base-horizontal-offset-m;
+    gap: density.$clr-base-gap-s;
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
       flex-flow: row;
     }
@@ -99,7 +99,7 @@
 
   .clr-accordion-status {
     width: density.$clr-base-layout-space-xl;
-    display: inline-block;
+    display: inline-flex;
     vertical-align: top;
   }
 
@@ -283,7 +283,12 @@
           density.$clr-base-horizontal-offset-l + density.$clr-base-icon-size-s + density.$clr-base-horizontal-offset-m
         );
       color: accordion-variables.$clr-accordion-content-color;
-      @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
+      @include mixins.generate-typography-token(
+        'SECONDARY-13-RG-STD',
+        (
+          font-size: accordion-variables.$clr-accordion-content-font-size,
+        )
+      );
     }
 
     .clr-accordion-panel-disabled .clr-accordion-inner-content {
@@ -296,8 +301,7 @@
 
       cds-icon,
       clr-icon {
-        @include mixins.equilateral(density.$clr-base-icon-size-s);
-        min-width: density.$clr-base-icon-size-s;
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       }
     }
   }
