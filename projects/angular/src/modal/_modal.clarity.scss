@@ -91,6 +91,8 @@
 
   .side-panel {
     .modal {
+      transform: unset;
+      inset: 0;
       left: initial;
       padding: 0;
 
