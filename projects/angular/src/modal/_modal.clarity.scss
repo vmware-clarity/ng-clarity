@@ -86,7 +86,7 @@
     }
 
     .modal-body {
-      padding: modal-variables.$clr-modal-default-space;
+      padding: modal-variables.$clr-modal-default-gap modal-variables.$clr-modal-default-space;
     }
   }
 
@@ -221,7 +221,7 @@
         fill: modal-variables.$clr-modal-close-color;
 
         // per measurement, this results in an icon that is 24x24...
-        @include mixins.equilateral(modal-variables.$clr-modal-default-space);
+        @include mixins.equilateral(modal-variables.$clr-modal-icon-size);
       }
 
       &:hover {
@@ -244,7 +244,7 @@
       cursor: pointer;
       background: transparent;
       border: 0;
-      margin-right: tokens.$cds-global-space-6;
+      margin-right: modal-variables.$clr-modal-horizontal-gap;
       appearance: none;
       -webkit-appearance: none;
     }
@@ -290,7 +290,7 @@
   .side-panel-footer {
     display: flex;
     justify-content: flex-end;
-    gap: tokens.$cds-global-space-5;
+    gap: modal-variables.$clr-modal-horizontal-gap;
 
     .btn {
       //switched right margin to left because footer is right aligned
