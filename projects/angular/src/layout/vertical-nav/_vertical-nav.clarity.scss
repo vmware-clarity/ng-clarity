@@ -60,7 +60,7 @@
 
     //Dims
     width: mixins.baselinePx(240);
-    min-width: tokens.$cds-global-space-12;
+    min-width: density.$clr-base-layout-space-3xl;
 
     //Others
     background-color: vertical-nav-variables.$clr-vertical-nav-bg-color;
@@ -110,12 +110,12 @@
 
       .nav-icon {
         //Dims
-        margin-left: tokens.$cds-global-space-7;
+        margin-left: density.$clr-base-horizontal-offset-xl;
       }
 
       .nav-text {
         //Dims
-        padding-left: tokens.$cds-global-space-6;
+        padding-left: density.$clr-base-horizontal-offset-l;
       }
 
       .nav-icon + .nav-text {
@@ -182,7 +182,7 @@
 
       //Dims
       height: vertical-nav-variables.$clr-vertical-nav-item-height;
-      padding: density.$clr-base-vertical-offset-m density.$clr-base-layout-space-m;
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-xl;
 
       cds-icon {
         margin-right: 0;
@@ -215,7 +215,7 @@
 
         //Dims
         width: vertical-nav-variables.$clr-vertical-nav-icon-size;
-        margin: density.$clr-base-layout-space-xs;
+        margin: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
         align-self: center;
 
         //Others
@@ -402,7 +402,8 @@
 
       .nav-icon {
         //Dims
-        margin: tokens.$cds-global-space-5 0 tokens.$cds-global-space-5 tokens.$cds-global-space-7;
+        margin: density.$clr-base-vertical-offset-m 0 density.$clr-base-vertical-offset-m
+          density.$clr-base-horizontal-offset-xl;
       }
 
       .nav-group-content {
@@ -440,13 +441,13 @@
         clr-icon.nav-group-trigger-icon {
           //Dims
           height: vertical-nav-variables.$clr-vertical-nav-item-height;
-          width: tokens.$cds-global-space-7;
+          width: density.$clr-base-icon-size-s;
           margin-left: mixins.baselinePx(3);
           margin-right: 0;
         }
 
         cds-icon.nav-group-trigger-icon {
-          width: tokens.$cds-global-space-7;
+          width: density.$clr-base-icon-size-s;
           margin: 0;
         }
       }
