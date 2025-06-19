@@ -42,6 +42,8 @@ const ModalStaticTemplate: StoryFn = args => ({
 
       .modal.static {
         position: relative;
+        transform: unset;
+        inset: 0;
       }
 
       .modal:not(.modal-full-screen).static {
