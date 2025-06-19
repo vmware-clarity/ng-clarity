@@ -35,7 +35,7 @@
 
   .clr-control-label {
     display: inline-block;
-    margin-right: calc(2 * #{forms-variables.$clr-forms-baseline});
+    margin-right: density.$clr-base-gap-m;
     width: auto;
   }
 }

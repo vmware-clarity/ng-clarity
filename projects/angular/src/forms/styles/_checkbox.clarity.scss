@@ -171,7 +171,6 @@
   .clr-form-compact .clr-checkbox-wrapper {
     @include forms-mixins.form-flatten-compact-adjustments();
     @include forms-mixins.form-inline-input();
-    min-height: calc(#{forms-variables.$clr-forms-baseline} * 4);
 
     .clr-control-label {
       margin-top: 0;
