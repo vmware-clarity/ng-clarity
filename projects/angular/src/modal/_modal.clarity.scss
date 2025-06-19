@@ -330,6 +330,7 @@
   .modal.modal-full-screen {
     padding: modal-variables.$clr-modal-default-space;
     height: 100%;
+    width: 100%;
 
     .modal-dialog {
       display: flex;
