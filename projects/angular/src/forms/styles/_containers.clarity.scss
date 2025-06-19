@@ -64,7 +64,8 @@
   .clr-control-label {
     display: block;
     color: forms-variables.$clr-forms-label-color;
-    padding: density.$clr-base-vertical-offset-xs 0;
+    padding-top: density.$clr-base-vertical-offset-xs;
+    padding-bottom: density.$clr-base-vertical-offset-xs;
 
     @include mixins.generate-typography-token(
       'SECONDARY-13-SB-CPT',
@@ -75,9 +76,6 @@
   }
 
   .clr-control-container {
-    display: inline-flex;
-    gap: density.$clr-base-gap-xs;
-    flex-direction: column;
     @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
   }
 
@@ -89,6 +87,7 @@
     display: block;
     @include mixins.generate-typography-token('CAPTION-LG-11');
     color: forms-variables.$clr-forms-subtext-color;
+    margin-top: density.$clr-base-gap-xs;
 
     &.error {
       color: forms-variables.$clr-forms-invalid-text-color;
@@ -137,6 +136,10 @@
       width: auto;
     }
 
+    .clr-control-label {
+      margin-top: density.$clr-base-gap-xs;
+    }
+
     .clr-form-control {
       display: flex;
       flex-direction: row;
@@ -179,6 +182,7 @@
       display: inline-block;
       align-self: flex-start;
       padding: density.$clr-base-vertical-offset-xs 0;
+      margin-top: 0;
 
       // special margin left based on --clr-forms-icon-size
       // to align subtexts when error/success icon is missing.
@@ -188,11 +192,11 @@
     .clr-error,
     .clr-success {
       .clr-subtext {
-        margin-left: 0;
+        margin-left: density.$clr-base-gap-xs;
 
         &.error,
         &.success {
-          margin-left: tokens.$cds-global-space-3;
+          margin-left: density.$clr-base-gap-xs;
         }
       }
 
@@ -204,7 +208,6 @@
 
     .clr-subtext-wrapper {
       flex-basis: auto;
-      display: inline-block;
     }
   }
 }
