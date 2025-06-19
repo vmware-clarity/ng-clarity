@@ -129,10 +129,11 @@ export const MultiSelection: StoryObj = {
   },
 };
 
-export const MultiSelection_Preselected: StoryObj = {
+export const MultiSelection_MultiLine: StoryObj = {
   render: ComboboxTemplate,
   args: {
     clrMulti: true,
+    multiModel: elements.map(element => element.symbol), // all elements
   },
 };
 
