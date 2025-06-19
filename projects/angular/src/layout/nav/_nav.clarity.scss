@@ -14,7 +14,6 @@
 @include mixins.exports('nav.clarity') {
   .nav {
     display: flex; //For the elements inside the nav
-    height: density.$clr-base-layout-space-xl;
     list-style-type: none;
     align-items: center;
     margin: 0;
