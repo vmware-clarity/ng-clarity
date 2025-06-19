@@ -16,7 +16,7 @@
   [class.disabled]="control?.disabled? true: null"
 >
   <span
-    *ngIf="multiSelect && optionSelectionService.selectionModel.model"
+    *ngIf="multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0"
     role="grid"
     clrRovingTabindex
     [clrRovingTabindexDisabled]="control?.disabled"
