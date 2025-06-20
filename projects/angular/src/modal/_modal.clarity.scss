@@ -312,10 +312,10 @@
 
   .modal-backdrop {
     position: fixed;
-    top: 0;
+    top: -100vh;
     bottom: 0;
     right: 0;
-    left: 0;
+    left: -100vh;
     background-color: modal-variables.$clr-modal-backdrop-color;
     z-index: map.get(variables.$clr-layers, modal-bg);
   }
