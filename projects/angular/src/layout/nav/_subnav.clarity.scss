@@ -27,6 +27,7 @@
     justify-content: space-between; //nav to the first and aside to the very right
     align-items: center;
     background-color: subnav-variables.$clr-subnav-bgColor;
+    height: subnav-variables.$clr-subnav-height;
 
     .nav {
       flex: 1 1 auto;
