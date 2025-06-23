@@ -120,7 +120,7 @@
     max-width: mixins.baselinePx(650);
 
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-      margin-left: density.$clr-base-layout-space-2xl;
+      margin-left: density.$clr-base-horizontal-offset-l;
     }
   }
 
