@@ -53,16 +53,17 @@
   }
 
   .clr-combobox-wrapper {
+    $clr-combobox-border-width: tokens.$cds-alias-object-border-width-100;
     position: relative;
-
-    display: flex;
     flex-wrap: wrap;
     gap: density.$clr-base-gap-xs;
 
     //Dimensions
-    padding: 0 caret-gap() 0 combobox-variables.$clr-combobox-trigger-left-padding;
+    padding-top: calc(density.$clr-base-vertical-offset-xs - $clr-combobox-border-width);
+    padding-bottom: calc(density.$clr-base-vertical-offset-xs - $clr-combobox-border-width);
+    padding-left: density.$clr-base-horizontal-offset-m;
+    padding-right: calc(combobox-variables.$clr-combobox-caret-icon-size + 2 * density.$clr-base-horizontal-offset-m);
 
-    min-height: combobox-variables.$clr-combobox-min-height;
     min-width: combobox-variables.$clr-combobox-min-width;
     .clr-input {
       padding: 0;
@@ -74,11 +75,16 @@
     }
     font-size: combobox-variables.$clr-combobox-font-size;
     font-weight: combobox-variables.$clr-combobox-font-weight;
-    line-height: mixins.baselinePx(20);
+    line-height: density.$clr-base-typography-line-height-16;
+
+    .clr-combobox-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: density.$clr-base-gap-xs;
+    }
 
     &.multi {
       min-width: calc(min(combobox-variables.$clr-combobox-multi-min-width, 100%));
-      padding-bottom: mixins.baselinePx(3);
     }
 
     //Mixins
@@ -87,7 +93,7 @@
     // override the above mixin for combobox-specific styles
     background-color: combobox-variables.$clr-combobox-input-background-color;
 
-    border-width: tokens.$cds-alias-object-border-width-100;
+    border-width: $clr-combobox-border-width;
     border-style: solid;
     border-color: combobox-variables.$clr-combobox-border-color;
 
@@ -121,16 +127,19 @@
     .label-combobox-pill {
       @include mixins.generate-typography-token('CAPTION-LG-11');
       min-height: combobox-variables.$clr-combobox-pill-height;
+      height: combobox-variables.$clr-combobox-pill-height;
       margin: combobox-variables.$clr-combobox-pill-margin;
+      margin: 0;
       background-color: combobox-variables.$clr-combobox-pill-background-color;
-      border-width: tokens.$cds-global-space-1;
+      border-width: $clr-combobox-border-width;
       border-style: solid;
       align-items: center;
 
       border-radius: combobox-variables.$clr-combobox-pill-border-radius;
       border-color: combobox-variables.$clr-combobox-pill-border-color;
 
-      padding: combobox-variables.$clr-combobox-pill-padding;
+      padding: 0 density.$clr-base-horizontal-offset-s;
+      gap: density.$clr-base-gap-xs;
 
       .clr-combobox-pill-content {
         font-size: tokens.$cds-alias-typography-caption-font-size;
@@ -153,6 +162,8 @@
     .clr-combobox-input-wrapper {
       border: none;
       background: none;
+      height: density.$clr-base-typography-line-height-16;
+      line-height: density.$clr-base-typography-line-height-16;
     }
 
     &:not(.disabled):hover,
@@ -175,6 +186,8 @@
 
     margin: auto;
     position: absolute;
+    display: flex;
+    align-items: center;
     top: 0;
     bottom: 0;
     right: 0;
@@ -190,7 +203,7 @@
     clr-icon[shape='angle'] {
       color: combobox-variables.$clr-combobox-trigger-font-color;
 
-      @include mixins.min-equilateral(combobox-variables.$clr-combobox-caret-icon-size);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
     }
   }
 
@@ -236,6 +249,11 @@
     .clr-combobox-remove-btn,
     .clr-combobox-trigger {
       cursor: not-allowed;
+    }
+
+    .label-combobox-pill .clr-combobox-pill-content,
+    .clr-combobox-remove-btn > cds-icon {
+      color: var(--cds-alias-typography-disabled);
     }
   }
 

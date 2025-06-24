@@ -28,6 +28,7 @@
 | --clr-combobox-trigger-font-color      | Combobox trigger/caret font color                                      |
 | --clr-combobox-hover-background-color  | Background color when hovered or focused                               |
 | --clr-combobox-active-background-color | Background color of the element selected by keyboard                   |
+| --clr-combobox-pills                   | Combobox multiselect pills container                                   |
 | --clr-combobox-pill-padding            | Combobox multiselect pills padding                                     |
 | --clr-combobox-pill-margin             | Margin for the combobox multiselection pill element                    |
 | --clr-combobox-pill-height             | Height of the combobox pill element                                    |
