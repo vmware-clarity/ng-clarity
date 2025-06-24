@@ -76,7 +76,7 @@
     flex: 1 1 0;
     width: 100%;
     border: 0;
-    padding: #{density.$clr-base-vertical-offset-m} #{density.$clr-base-horizontal-offset-l};
+    padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
     background: transparent;
     text-align: left;
     cursor: pointer;
@@ -269,7 +269,7 @@
 
     .clr-accordion-header-button {
       align-items: center;
-      padding: #{density.$clr-base-vertical-offset-m} #{density.$clr-base-horizontal-offset-l};
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
     }
 
     .clr-accordion-content {
