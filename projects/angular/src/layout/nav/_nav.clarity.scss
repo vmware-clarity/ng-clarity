@@ -37,7 +37,8 @@
       color: tabs-variables.$clr-nav-link-color;
       @include mixins.generate-typography-token('BODY-14-RG-STD');
       padding: density.$clr-base-layout-space-xs;
-      display: inline-block;
+      display: flex;
+      height: density.$clr-base-layout-space-xl;
 
       //Clarity Buttons as .nav-links in .nav
       &.btn {
