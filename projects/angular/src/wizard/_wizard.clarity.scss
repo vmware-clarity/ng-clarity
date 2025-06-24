@@ -97,9 +97,9 @@
     }
 
     .modal-header-actions-wrapper {
-      height: density.$clr-base-icon-size-l;
-      padding-left: tokens.$cds-global-space-6;
-      padding-right: tokens.$cds-global-space-3;
+      height: density.$clr-base-row-height-s;
+      padding-left: density.$clr-base-horizontal-offset-l;
+      padding-right: density.$clr-base-horizontal-offset-xs;
     }
 
     .clr-wizard-header-action-wrapper {
