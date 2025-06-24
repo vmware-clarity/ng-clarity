@@ -341,7 +341,12 @@
       .nav-content > .nav-link,
       .nav-group .nav-group-text,
       .nav-group .nav-group-trigger {
-        font-weight: vertical-nav-variables.$clr-vertical-nav-item-top-level-font-weight;
+        @include mixins.generate-typography-token(
+          'SUBSECTION-16-SB',
+          (
+            font-weight: vertical-nav-variables.$clr-vertical-nav-item-top-level-font-weight,
+          )
+        );
       }
 
       .nav-group-children .nav-link {
