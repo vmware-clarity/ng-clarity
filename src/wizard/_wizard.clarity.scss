@@ -16,6 +16,7 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
 @use 'variables.wizard' as wizard-variables;
+@use '../layout/density';
 
 @use '@cds/core/tokens/tokens.scss';
 
@@ -49,7 +50,8 @@
     .modal-header--accessible {
       flex: 0 0 auto;
       width: 100%;
-      padding: wizard-variables.$clr-wizard-default-space wizard-variables.$clr-wizard-default-space 0;
+      gap: density.$clr-base-gap-s;
+      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space 0;
     }
 
     .modal-title {
@@ -63,7 +65,7 @@
       flex: 1 1 auto;
       color: wizard-variables.$clr-wizard-main-text-color;
       width: 100%;
-      padding: wizard-variables.$clr-wizard-default-space;
+      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space;
     }
 
     .modal-footer {
@@ -73,7 +75,7 @@
       height: wizard-variables.$clr-wizard-footer-height;
       min-height: wizard-variables.$clr-wizard-footer-height;
       max-height: wizard-variables.$clr-wizard-footer-height;
-      padding: wizard-variables.$clr-wizard-footer-vertical-space wizard-variables.$clr-wizard-default-space;
+      padding: wizard-variables.$clr-wizard-footer-vertical-space wizard-variables.$clr-wizard-horizontal-space;
       border-top: variables.$clr-global-borderwidth solid wizard-variables.$clr-wizard-stepnav-border-color;
     }
 
@@ -95,9 +97,9 @@
     }
 
     .modal-header-actions-wrapper {
-      height: wizard-variables.$clr-wizard-default-space;
-      padding-left: tokens.$cds-global-space-6;
-      padding-right: tokens.$cds-global-space-3;
+      height: density.$clr-base-row-height-s;
+      padding-left: density.$clr-base-horizontal-offset-l;
+      padding-right: density.$clr-base-horizontal-offset-xs;
     }
 
     .clr-wizard-header-action-wrapper {
@@ -105,13 +107,12 @@
     }
 
     .clr-wizard-header-action {
-      @include mixins.equilateral(wizard-variables.$clr-wizard-default-space);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-l);
       border: 0;
       padding: 0;
       margin: 0;
-      min-width: wizard-variables.$clr-wizard-default-space;
-      line-height: wizard-variables.$clr-wizard-default-space;
-      font-size: wizard-variables.$clr-wizard-default-space;
+      line-height: density.$clr-base-icon-size-l;
+      font-size: density.$clr-base-icon-size-l;
       color: wizard-variables.$clr-wizard-header-action-color;
       transition: color linear 0.2s;
 
@@ -127,7 +128,7 @@
 
       cds-icon,
       clr-icon {
-        @include mixins.equilateral(wizard-variables.$clr-wizard-default-space);
+        @include mixins.equilateral(density.$clr-base-icon-size-l);
       }
     }
 
@@ -146,7 +147,7 @@
     }
 
     .clr-wizard-stepnav {
-      padding-left: wizard-variables.$clr-wizard-default-space;
+      padding-left: wizard-variables.$clr-wizard-horizontal-space;
       display: block;
       color: wizard-variables.$clr-wizard-stepnav-text;
       width: 100%;
@@ -252,9 +253,9 @@
       text-align: left;
       text-transform: none;
       margin: 0;
-      padding: tokens.$cds-global-space-5;
+      gap: density.$clr-base-gap-s;
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
       height: auto;
-      min-height: tokens.$cds-global-space-11;
       max-width: inherit;
 
       @include mixins.generate-typography-token('BODY-14-MD-STD');
@@ -265,7 +266,11 @@
 
       .clr-wizard-stepnav-link-icon,
       .clr-wizard-stepnav-link-page-number {
-        width: tokens.$cds-global-space-7;
+        min-width: density.$clr-base-icon-size-s;
+      }
+
+      .clr-wizard-stepnav-link-page-number {
+        text-align: center;
       }
     }
 
@@ -273,7 +278,7 @@
       margin-top: 0;
       flex: 0 0 auto;
       color: wizard-variables.$clr-wizard-title-text;
-      padding: wizard-variables.$clr-wizard-default-space;
+      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space;
       @include mixins.generate-typography-token('SECTION-20-STD');
     }
 
@@ -303,7 +308,7 @@
       flex-direction: row;
       flex-wrap: nowrap;
       justify-content: flex-end;
-      gap: tokens.$cds-global-space-7;
+      gap: density.$clr-base-gap-l;
     }
 
     .clr-wizard-btn-wrapper {

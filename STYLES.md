@@ -1685,7 +1685,6 @@ All other table classes like `table, thead, tbody, th, td` are not specific to C
 
 | CSS Custom Property                            | Description                                                                               |
 | ---------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| --clr-wizard-default-space                     | Default spacing                                                                           |
 | --clr-wizard-footer-vertical-space             | Vertical spacing for footer buttons                                                       |
 | --clr-wizard-main-bgcolor                      | Wizard background color                                                                   |
 | --clr-wizard-stepnav-bgcolor                   | Wizard navigation background color                                                        |
