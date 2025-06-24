@@ -308,7 +308,7 @@
       flex-direction: row;
       flex-wrap: nowrap;
       justify-content: flex-end;
-      gap: tokens.$cds-global-space-7;
+      gap: density.$clr-base-gap-l;
     }
 
     .clr-wizard-btn-wrapper {
