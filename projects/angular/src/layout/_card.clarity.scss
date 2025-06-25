@@ -99,7 +99,7 @@
 
     .list-group-item {
       @include mixins.generate-typography-token('BODY-14-RG-STD');
-      padding: density.$clr-base-layout-space-m;
+      padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
       background-color: card-variables.$clr-card-bg-color;
       border-bottom: card-variables.$clr-card-border-width solid card-variables.$clr-card-border-color;
     }
@@ -117,7 +117,7 @@
   }
 
   .card-block {
-    padding: density.$clr-base-horizontal-offset-xl;
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
   }
 
   .card-footer {
@@ -129,8 +129,13 @@
 
   h3.card-header,
   .card-header {
-    @include mixins.generate-typography-token('SECTION-20-STD');
-    padding: density.$clr-base-layout-space-m;
+    @include mixins.generate-typography-token(
+      'SECTION-20-STD',
+      (
+        line-height: density.$clr-base-typography-line-height-20,
+      )
+    );
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
     color: card-variables.$clr-card-header-title-color;
   }
 
@@ -266,7 +271,7 @@
 
       .card-media-description {
         margin-left: 0;
-        margin-top: density.$clr-base-horizontal-offset-xl;
+        margin-top: density.$clr-base-vertical-offset-xl;
       }
     }
   }
