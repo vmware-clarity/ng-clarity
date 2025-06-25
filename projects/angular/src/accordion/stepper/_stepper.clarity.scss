@@ -8,17 +8,17 @@
 @use '../../utils/a11y';
 @use '../../utils/mixins';
 @use '../variables.accordion' as accordion-variables;
-@use '../../layout/density/' as density;
+@use '../../layout/density' as density;
 @include meta.load-css('../properties.accordion');
 
 @include mixins.exports('stepper.clarity') {
   .clr-stepper-forms {
     .clr-stepper-header > .clr-accordion-header-button {
       align-items: center;
-      gap: density.$clr-base-horizontal-offset-xl;
+      gap: density.$clr-base-horizontal-offset-2xl;
       min-height: density.$clr-base-dg-row-height;
-      padding: #{density.$clr-base-layout-space-m} #{density.$clr-base-layout-space-m} #{density.$clr-base-layout-space-m}
-        #{density.$clr-base-horizontal-offset-xl};
+      padding: #{density.$clr-base-vertical-offset-xl} #{density.$clr-base-horizontal-offset-xl} #{density.$clr-base-vertical-offset-xl}
+        #{density.$clr-base-horizontal-offset-2xl};
 
       > .clr-step-status {
         min-width: density.$clr-base-layout-space-3xl;
@@ -102,12 +102,12 @@
     }
 
     .clr-step-button {
-      margin-top: density.$clr-base-horizontal-offset-xl;
+      margin-top: density.$clr-base-vertical-offset-2xl;
       margin-right: density.$clr-base-horizontal-offset-l;
     }
   }
 
   clr-stepper-panel .clr-accordion-inner-content {
-    padding: #{density.$clr-base-vertical-offset-xl} #{density.$clr-base-layout-space-xl};
+    padding: #{density.$clr-base-vertical-offset-2xl} #{density.$clr-base-layout-space-xl};
   }
 }
