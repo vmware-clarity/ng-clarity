@@ -307,7 +307,7 @@
 
       .card {
         display: inline-block; //For some weird reason stops the cards from getting cut off between 2 columns
-        margin: density.$clr-base-vertical-offset-s;
+        margin: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-s;
       }
 
       .clickable {
