@@ -14,15 +14,6 @@
 @use '../../layout/density';
 @include meta.load-css('properties.combobox');
 
-@function caret-gap() {
-  // ATM Rework the DOM to remove absolute positioning from the icon.
-  // May also remove function then.
-  $clr-caret-icon-size: tokens.$cds-global-space-6;
-  @return calc(
-    #{combobox-variables.$clr-combobox-trigger-gap} + #{$clr-caret-icon-size} + #{combobox-variables.$clr-combobox-trigger-padding-right}
-  );
-}
-
 @include mixins.exports('combobox.clarity') {
   // needed for the proper calculation of popover offset that we do to keep label always visible
   .clr-combobox-form-control {
@@ -53,14 +44,13 @@
   }
 
   .clr-combobox-wrapper {
-    $clr-combobox-border-width: tokens.$cds-alias-object-border-width-100;
     position: relative;
     flex-wrap: wrap;
     gap: density.$clr-base-gap-xs;
 
     //Dimensions
-    padding-top: calc(density.$clr-base-vertical-offset-xs - $clr-combobox-border-width);
-    padding-bottom: calc(density.$clr-base-vertical-offset-xs - $clr-combobox-border-width);
+    padding-top: calc(density.$clr-base-vertical-offset-xs - tokens.$cds-alias-object-border-width-100);
+    padding-bottom: calc(density.$clr-base-vertical-offset-xs - tokens.$cds-alias-object-border-width-100);
     padding-left: density.$clr-base-horizontal-offset-m;
     padding-right: calc(combobox-variables.$clr-combobox-caret-icon-size + 2 * density.$clr-base-horizontal-offset-m);
 
@@ -75,7 +65,6 @@
     }
     font-size: combobox-variables.$clr-combobox-font-size;
     font-weight: combobox-variables.$clr-combobox-font-weight;
-    line-height: density.$clr-base-typography-line-height-16;
 
     .clr-combobox-pills {
       display: flex;
@@ -93,7 +82,7 @@
     // override the above mixin for combobox-specific styles
     background-color: combobox-variables.$clr-combobox-input-background-color;
 
-    border-width: $clr-combobox-border-width;
+    border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
     border-color: combobox-variables.$clr-combobox-border-color;
 
@@ -131,14 +120,14 @@
       margin: combobox-variables.$clr-combobox-pill-margin;
       margin: 0;
       background-color: combobox-variables.$clr-combobox-pill-background-color;
-      border-width: $clr-combobox-border-width;
+      border-width: tokens.$cds-alias-object-border-width-100;
       border-style: solid;
       align-items: center;
 
       border-radius: combobox-variables.$clr-combobox-pill-border-radius;
       border-color: combobox-variables.$clr-combobox-pill-border-color;
 
-      padding: 0 density.$clr-base-horizontal-offset-s;
+      padding: combobox-variables.$clr-combobox-pill-padding;
       gap: density.$clr-base-gap-xs;
 
       .clr-combobox-pill-content {
@@ -162,7 +151,7 @@
     .clr-combobox-input-wrapper {
       border: none;
       background: none;
-      height: density.$clr-base-typography-line-height-16;
+      height: density.$clr-base-row-height-xs;
       line-height: density.$clr-base-typography-line-height-16;
     }
 
@@ -203,7 +192,7 @@
     clr-icon[shape='angle'] {
       color: combobox-variables.$clr-combobox-trigger-font-color;
 
-      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+      @include mixins.min-equilateral(combobox-variables.$clr-combobox-caret-icon-size);
     }
   }
 
@@ -253,7 +242,7 @@
 
     .label-combobox-pill .clr-combobox-pill-content,
     .clr-combobox-remove-btn > cds-icon {
-      color: var(--cds-alias-typography-disabled);
+      color: tokens.$cds-alias-typography-disabled;
     }
   }
 
