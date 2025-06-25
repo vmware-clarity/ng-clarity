@@ -9,6 +9,7 @@
 @use '../../utils/mixins' as utils-mixins;
 @use '../../layout/variables.card' as card-variables;
 @use 'variables.progress-bars' as progress-bars-variables;
+@use '../../layout/density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.progress-bars');
@@ -39,11 +40,11 @@
     background-color: transparent;
     border-radius: 0;
     font-size: inherit;
-    height: tokens.$cds-global-space-6;
+    height: density.$clr-base-layout-space-s;
     margin: 0;
     overflow: hidden;
-    max-height: tokens.$cds-global-space-6;
-    min-height: tokens.$cds-global-space-3;
+    max-height: density.$clr-base-layout-space-s;
+    min-height: density.$clr-base-layout-space-2xs;
     display: block;
     width: 100%;
   }
@@ -67,7 +68,7 @@
         @include utils-mixins.clr-appearance-normal();
 
         color: progress-bars-variables.$clr-progress-bg-color; // why us this using bg color
-        min-width: tokens.$cds-global-space-12;
+        min-width: density.$clr-base-layout-space-3xl;
         background-color: transparent;
         background-image: none;
       }
@@ -115,7 +116,7 @@
       // font-sizes. if we used rems we would have to have many, many different
       // sizes of labels.
       position: relative;
-      padding-right: tokens.$cds-global-space-11;
+      padding-right: density.$clr-base-gap-xl;
       color: progress-bars-variables.$clr-progress-label-color;
 
       // We have to use this span hack because browsers (Firefox, Safari, and IE) do
@@ -133,19 +134,19 @@
         @include utils-mixins.generate-typography-token(
           'CAPTION-LG-11',
           (
-            line-height: tokens.$cds-global-space-6,
+            line-height: density.$clr-base-typography-line-height-12,
           )
         );
       }
     }
 
     &.compact:not(.labeled) {
-      height: tokens.$cds-global-space-3;
+      height: density.$clr-base-layout-space-2xs;
     }
 
     &.compact.labeled > .progress-meter {
-      height: tokens.$cds-global-space-3;
-      top: tokens.$cds-global-space-3;
+      height: density.$clr-base-layout-space-2xs;
+      top: density.$clr-base-vertical-offset-xs;
     }
   }
 
@@ -502,7 +503,7 @@
     }
 
     &.labeled > .progress-meter {
-      right: tokens.$cds-global-space-11;
+      right: density.$clr-base-layout-space-xl;
     }
 
     /* warning, success, and danger distinctions for progress bars are deprecated in 3.0 */
@@ -519,7 +520,7 @@
   // Inside Cards
   .card-block,
   .card-footer {
-    $clr-progressInCard-height: tokens.$cds-global-space-3;
+    $clr-progressInCard-height: density.$clr-base-layout-space-2xs;
     .progress,
     .progress-static {
       height: $clr-progressInCard-height;
@@ -527,7 +528,7 @@
       left: 0;
 
       // by default, positioned at the topmost of its card-block container
-      margin: calc(-1 * tokens.$cds-global-space-5) 0 0;
+      margin: calc(-1 * density.$clr-base-vertical-offset-m) 0 0;
 
       &.top {
         // places progress bar at the top of a card
@@ -535,8 +536,8 @@
         top: 0;
 
         // ATM During card shim removal. Set proper tokens.
-        border-top-left-radius: var(--clr-card-border-radius, tokens.$cds-alias-object-border-radius-100);
-        border-top-right-radius: var(--clr-card-border-radius, tokens.$cds-alias-object-border-radius-100);
+        border-top-left-radius: var(--clr-card-border-radius, density.$clr-base-border-radius-s);
+        border-top-right-radius: var(--clr-card-border-radius, density.$clr-base-border-radius-s);
       }
     }
 
@@ -559,7 +560,7 @@
 
     & > * {
       flex: 0 0 auto;
-      padding-right: tokens.$cds-global-space-6;
+      padding-right: density.$clr-base-horizontal-offset-l;
 
       &:last-child {
         padding-right: 0;
@@ -598,9 +599,9 @@
     }
   }
 
-  $clr-progress-in-card-height: tokens.$cds-global-space-6;
+  $clr-progress-in-card-height: density.$clr-base-layout-space-s;
   .card-block .progress-block {
-    margin-bottom: tokens.$cds-global-space-7;
+    margin-bottom: density.$clr-base-vertical-offset-xl;
     padding: 0;
 
     &:last-child {
