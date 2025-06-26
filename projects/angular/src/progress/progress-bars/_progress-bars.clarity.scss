@@ -503,7 +503,7 @@
     }
 
     &.labeled > .progress-meter {
-      right: density.$clr-base-layout-space-xl;
+      right: density.$clr-base-gap-xl;
     }
 
     /* warning, success, and danger distinctions for progress bars are deprecated in 3.0 */
