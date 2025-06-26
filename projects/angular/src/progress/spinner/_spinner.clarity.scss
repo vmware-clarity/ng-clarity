@@ -9,7 +9,8 @@
 @use '../../utils/mixins';
 @use 'variables.spinner' as spinner-variables;
 @use '../../button/variables.buttons' as button-variables;
-@use '@cds/core/tokens/tokens.scss';
+@use '../../layout/density' as density;
+
 @include meta.load-css('properties.spinner');
 
 @mixin spinner-size-before-after($spinner-size, $stroke-width-size) {
@@ -124,7 +125,7 @@
       margin-right: 0;
 
       @include spinner-size-before-after(
-        tokens.$cds-global-space-7,
+        density.$clr-base-icon-size-s,
         spinner-variables.$clr-spinner-inside-button-stroke-width
       );
     }
@@ -132,7 +133,7 @@
 
   .btn-icon:not(.btn-sm) {
     .spinner {
-      @include mixins.min-equilateral(tokens.$cds-global-space-7);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
     }
   }
 
@@ -140,7 +141,7 @@
   .clr-treenode-spinner-container {
     .spinner {
       @include spinner-size-before-after(
-        tokens.$cds-global-space-7,
+        density.$clr-base-icon-size-s,
         spinner-variables.$clr-spinner-inside-treeview-stroke-width
       );
     }
