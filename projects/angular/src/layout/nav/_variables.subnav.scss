@@ -14,7 +14,7 @@ $clr-subnav-bgColor: var(--clr-subnav-bg-color) !default;
 
 // Usage: ../layout/nav/_subnav.clarity.scss
 // Usage: ../layout/nav/_nav.clarity.scss
-$clr-subnav-height: density.$clr-base-layout-space-xl !default;
+$clr-subnav-height: density.$clr-base-row-height-m !default;
 
 // Usage: ../layout/nav/_subnav.clarity.scss
 $clr-nav-shadow: 0 calc(-1 * tokens.$cds-alias-object-border-width-100) 0 var(--clr-nav-box-shadow-color) inset !default;
