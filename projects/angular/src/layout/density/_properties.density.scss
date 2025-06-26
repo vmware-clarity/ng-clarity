@@ -216,10 +216,10 @@
     --clr-base-typography-font-size-caption-small: #{mixins.baselinePx(10)};
     --clr-base-typography-font-size-caption: #{mixins.baselinePx(11)};
     --clr-base-typography-font-size-button: #{tokens.$cds-global-space-6};
-    --clr-base-typography-font-size-inline: #{mixins.baselinePx(13)};
-    --clr-base-typography-font-size-default: #{mixins.baselinePx(14)};
-    --clr-base-typography-font-size-sub-section: #{tokens.$cds-global-space-7};
-    --clr-base-typography-font-size-section: #{mixins.baselinePx(20)};
+    --clr-base-typography-font-size-inline: #{tokens.$cds-global-space-6};
+    --clr-base-typography-font-size-default: #{mixins.baselinePx(13)};
+    --clr-base-typography-font-size-sub-section: #{mixins.baselinePx(14)};
+    --clr-base-typography-font-size-section: #{tokens.$cds-global-space-7};
     --clr-base-typography-font-size-heading: #{tokens.$cds-global-space-9};
     --clr-base-typography-font-size-headline: #{mixins.baselinePx(28)};
     --clr-base-typography-font-size-display: #{tokens.$cds-global-space-11};
