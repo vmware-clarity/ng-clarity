@@ -104,6 +104,12 @@ export const PredefinedDateRanges: StoryObj = {
     ],
   },
 };
+export const PredefinedDateRangesOpen: StoryObj = {
+  ...PredefinedDateRanges,
+  play({ canvasElement }) {
+    (canvasElement.querySelector('button.clr-smart-open-close') as HTMLElement)?.click();
+  },
+};
 
 function addDays(date = new Date(), days: number) {
   return new Date(date.getTime() + 86400000 * days);
