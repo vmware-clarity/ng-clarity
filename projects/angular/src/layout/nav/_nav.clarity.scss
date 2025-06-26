@@ -14,7 +14,7 @@
 @include mixins.exports('nav.clarity') {
   .nav {
     display: flex; //For the elements inside the nav
-    height: density.$clr-base-layout-space-xl;
+    height: subnav-variables.$clr-subnav-height;
     list-style-type: none;
     align-items: center;
     margin: 0;
@@ -36,9 +36,8 @@
       position: relative;
       color: tabs-variables.$clr-nav-link-color;
       @include mixins.generate-typography-token('BODY-14-RG-STD');
-      padding: density.$clr-base-vertical-offset-xs;
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
       display: flex;
-      height: density.$clr-base-layout-space-xl;
 
       //Clarity Buttons as .nav-links in .nav
       &.btn {
@@ -46,9 +45,6 @@
         //-1px to account for the border of the button
         margin: 0 0 calc(-1 * #{tokens.$cds-global-space-1});
         border-radius: 0;
-        display: flex;
-        padding: density.$clr-base-vertical-offset-xs;
-        height: density.$clr-base-layout-space-xl;
       }
 
       &.dropdown-toggle {
