@@ -99,7 +99,15 @@
   --clr-base-layout-space-5xl: #{mixins.baselinePx(112)};
 
   --clr-base-icon-tooltip: #{tokens.$cds-global-space-9};
-  --clr-base-spinner-72: #{tokens.$cds-global-space-14};
+
+  --clr-base-spinner-18: #{tokens.$cds-global-space-8}; // small
+  --clr-base-spinner-64: #{tokens.$cds-global-space-13}; // medium
+  --clr-base-spinner-72: #{tokens.$cds-global-space-14}; // default
+
+  // density spinner strokes are only available in code since they are impossible to be applied in figma
+  --clr-base-spinner-stroke-s: #{tokens.$cds-alias-object-border-width-200};
+  --clr-base-spinner-stroke-m: #{tokens.$cds-alias-object-border-width-400};
+  --clr-base-spinner-stroke-l: #{tokens.$cds-global-space-4}; // default
 
   [clr-density='regular'] {
     --clr-base-typography-font-size-caption-small: #{mixins.baselinePx(10)};
@@ -193,7 +201,15 @@
     --clr-base-layout-space-5xl: #{tokens.$cds-global-space-15};
 
     --clr-base-icon-tooltip: var(--clr-base-icon-size-s);
-    --clr-base-spinner-72: var(--clr-base-layout-space-4xl);
+
+    --clr-base-spinner-18: var(--clr-base-icon-size-s); // small
+    --clr-base-spinner-64: #{mixins.baselinePx(56)}; // medium
+    --clr-base-spinner-72: var(--clr-base-layout-space-4xl); // default
+
+    // density spinner strokes are only available in code since they are impossible to be applied in figma
+    --clr-base-spinner-stroke-s: #{tokens.$cds-alias-object-border-width-200};
+    --clr-base-spinner-stroke-m: #{tokens.$cds-alias-object-border-width-400};
+    --clr-base-spinner-stroke-l: #{tokens.$cds-global-space-4}; // default
   }
 
   [clr-density='compact'] {
@@ -288,7 +304,15 @@
     --clr-base-layout-space-5xl: #{mixins.baselinePx(80)};
 
     --clr-base-icon-tooltip: var(--clr-base-icon-size-s);
-    --clr-base-spinner-72: var(--clr-base-layout-space-4xl);
+
+    --clr-base-spinner-18: var(--clr-base-icon-size-s); // small
+    --clr-base-spinner-64: #{tokens.$cds-global-space-12}; // medium
+    --clr-base-spinner-72: var(--clr-base-layout-space-4xl); // default
+
+    // density spinner strokes are only available in code since they are impossible to be applied in figma
+    --clr-base-spinner-stroke-s: #{tokens.$cds-alias-object-border-width-200};
+    --clr-base-spinner-stroke-m: #{tokens.$cds-alias-object-border-width-300};
+    --clr-base-spinner-stroke-l: #{tokens.$cds-alias-object-border-width-400}; // default
   }
   // NOT SUPPORTED AT THE MOMENT
   // [clr-density='ultra-compact'] {
@@ -383,6 +407,9 @@
   //   --clr-base-layout-space-5xl: #{tokens.$cds-global-space-13};
 
   //   --clr-base-icon-tooltip: var(--clr-base-icon-size-xs);
+
+  //   --clr-base-spinner-18: var(--clr-base-icon-size-s);
+  //   --clr-base-spinner-64: #{mixins.baselinePx(40)};
   //   --clr-base-spinner-72: var(--clr-base-layout-space-4xl);
   // }
 }
