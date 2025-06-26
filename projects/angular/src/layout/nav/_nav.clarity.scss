@@ -21,7 +21,7 @@
     width: 100%;
     white-space: nowrap;
     box-shadow: subnav-variables.$clr-nav-shadow;
-    gap: density.$clr-base-gap-xs;
+    gap: density.$clr-base-gap-l;
 
     .nav-item {
       display: inline-block;
