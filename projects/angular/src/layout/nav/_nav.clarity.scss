@@ -36,7 +36,7 @@
       position: relative;
       color: tabs-variables.$clr-nav-link-color;
       @include mixins.generate-typography-token('BODY-14-RG-STD');
-      padding: density.$clr-base-layout-space-xs;
+      padding: density.$clr-base-vertical-offset-xs;
       display: flex;
       height: density.$clr-base-layout-space-xl;
 
@@ -47,7 +47,7 @@
         margin: 0 0 calc(-1 * #{tokens.$cds-global-space-1});
         border-radius: 0;
         display: flex;
-        padding: density.$clr-base-layout-space-xs;
+        padding: density.$clr-base-vertical-offset-xs;
         height: density.$clr-base-layout-space-xl;
       }
 
