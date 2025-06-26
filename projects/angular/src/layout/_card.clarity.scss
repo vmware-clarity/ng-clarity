@@ -31,7 +31,7 @@
 
   %card-space-between {
     margin-top: 0;
-    margin-bottom: density.$clr-base-vertical-offset-xl;
+    margin-bottom: density.$clr-base-gap-m;
 
     &:last-child {
       margin-bottom: 0;
@@ -56,7 +56,7 @@
     @extend %card-border-appearance;
 
     .alert {
-      margin: 0 0 density.$clr-base-vertical-offset-m 0;
+      @extend %card-space-between;;
     }
 
     .btn-link {
@@ -129,12 +129,7 @@
 
   h3.card-header,
   .card-header {
-    @include mixins.generate-typography-token(
-      'SECTION-20-STD',
-      (
-        line-height: density.$clr-base-typography-line-height-20,
-      )
-    );
+    @include mixins.generate-typography-token('SECTION-20-STD');
     padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
     color: card-variables.$clr-card-header-title-color;
   }
