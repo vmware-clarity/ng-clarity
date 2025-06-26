@@ -100,9 +100,9 @@
 
   --clr-base-icon-tooltip: #{tokens.$cds-global-space-9};
 
-  --clr-base-spinner-18: #{tokens.$cds-global-space-8}; // small
-  --clr-base-spinner-64: #{tokens.$cds-global-space-13}; // medium
-  --clr-base-spinner-72: #{tokens.$cds-global-space-14}; // default
+  --clr-base-spinner-s: #{tokens.$cds-global-space-8};
+  --clr-base-spinner-m: var(--clr-base-icon-size-3xl);
+  --clr-base-spinner-l: #{tokens.$cds-global-space-14}; // default
 
   // density spinner strokes are only available in code since they are impossible to be applied in figma
   --clr-base-spinner-stroke-s: #{tokens.$cds-alias-object-border-width-200};
@@ -202,9 +202,9 @@
 
     --clr-base-icon-tooltip: var(--clr-base-icon-size-s);
 
-    --clr-base-spinner-18: var(--clr-base-icon-size-s); // small
-    --clr-base-spinner-64: #{mixins.baselinePx(56)}; // medium
-    --clr-base-spinner-72: var(--clr-base-layout-space-4xl); // default
+    --clr-base-spinner-s: var(--clr-base-icon-size-s);
+    --clr-base-spinner-m: var(--clr-base-icon-size-3xl);
+    --clr-base-spinner-l: var(--clr-base-layout-space-4xl); // default
 
     // density spinner strokes are only available in code since they are impossible to be applied in figma
     --clr-base-spinner-stroke-s: #{tokens.$cds-alias-object-border-width-200};
@@ -305,9 +305,9 @@
 
     --clr-base-icon-tooltip: var(--clr-base-icon-size-s);
 
-    --clr-base-spinner-18: var(--clr-base-icon-size-s); // small
-    --clr-base-spinner-64: #{tokens.$cds-global-space-12}; // medium
-    --clr-base-spinner-72: var(--clr-base-layout-space-4xl); // default
+    --clr-base-spinner-s: var(--clr-base-icon-size-s);
+    --clr-base-spinner-m: var(--clr-base-icon-size-3xl);
+    --clr-base-spinner-l: var(--clr-base-layout-space-4xl); // default
 
     // density spinner strokes are only available in code since they are impossible to be applied in figma
     --clr-base-spinner-stroke-s: #{tokens.$cds-alias-object-border-width-200};
@@ -408,8 +408,8 @@
 
   //   --clr-base-icon-tooltip: var(--clr-base-icon-size-xs);
 
-  //   --clr-base-spinner-18: var(--clr-base-icon-size-s);
-  //   --clr-base-spinner-64: #{mixins.baselinePx(40)};
-  //   --clr-base-spinner-72: var(--clr-base-layout-space-4xl);
+  //   --clr-base-spinner-s: var(--clr-base-icon-size-s);
+  //   --clr-base-spinner-m: var(--clr-base-icon-size-3xl);
+  //   --clr-base-spinner-l: var(--clr-base-layout-space-4xl); // default
   // }
 }

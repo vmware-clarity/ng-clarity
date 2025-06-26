@@ -10,12 +10,12 @@
 
 @include mixins.exports('spinner.properties') {
   :root [cds-theme] {
-    --clr-spinner-default-size: #{density.$clr-base-spinner-72};
-    --clr-spinner-medium-size: #{density.$clr-base-spinner-64};
-    --clr-spinner-small-size: #{density.$clr-base-spinner-18};
+    --clr-spinner-default-size: #{density.$clr-base-spinner-l};
+    --clr-spinner-medium-size: #{density.$clr-base-spinner-m};
+    --clr-spinner-small-size: #{density.$clr-base-spinner-s};
 
-    --clr-spinner-inside-button-stroke-width: #{tokens.$cds-alias-object-border-width-100};
-    --clr-spinner-inside-treeview-stroke-width: #{tokens.$cds-alias-object-border-width-100};
+    --clr-spinner-inside-button-stroke-width: #{tokens.$cds-alias-object-border-width-200};
+    --clr-spinner-inside-treeview-stroke-width: #{tokens.$cds-alias-object-border-width-200};
 
     --clr-spinner-default-stroke-width: #{density.$clr-base-spinner-stroke-l};
     --clr-spinner-medium-stroke-width: #{density.$clr-base-spinner-stroke-m};
