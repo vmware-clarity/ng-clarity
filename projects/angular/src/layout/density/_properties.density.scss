@@ -101,7 +101,7 @@
   --clr-base-icon-tooltip: #{tokens.$cds-global-space-9};
 
   --clr-base-spinner-s: #{tokens.$cds-global-space-8};
-  --clr-base-spinner-m: var(--clr-base-icon-size-3xl);
+  --clr-base-spinner-m: #{tokens.$cds-global-space-11};
   --clr-base-spinner-l: #{tokens.$cds-global-space-14}; // default
 
   // density spinner strokes are only available in code since they are impossible to be applied in figma
@@ -203,7 +203,7 @@
     --clr-base-icon-tooltip: var(--clr-base-icon-size-s);
 
     --clr-base-spinner-s: var(--clr-base-icon-size-s);
-    --clr-base-spinner-m: var(--clr-base-icon-size-3xl);
+    --clr-base-spinner-m: #{tokens.$cds-global-space-10};
     --clr-base-spinner-l: var(--clr-base-layout-space-4xl); // default
 
     // density spinner strokes are only available in code since they are impossible to be applied in figma
@@ -306,7 +306,7 @@
     --clr-base-icon-tooltip: var(--clr-base-icon-size-s);
 
     --clr-base-spinner-s: var(--clr-base-icon-size-s);
-    --clr-base-spinner-m: var(--clr-base-icon-size-3xl);
+    --clr-base-spinner-m: #{mixins.baselinePx(28)};
     --clr-base-spinner-l: var(--clr-base-layout-space-4xl); // default
 
     // density spinner strokes are only available in code since they are impossible to be applied in figma
@@ -409,7 +409,7 @@
   //   --clr-base-icon-tooltip: var(--clr-base-icon-size-xs);
 
   //   --clr-base-spinner-s: var(--clr-base-icon-size-s);
-  //   --clr-base-spinner-m: var(--clr-base-icon-size-3xl);
+  //   --clr-base-spinner-m: #{tokens.$cds-global-space-7};
   //   --clr-base-spinner-l: var(--clr-base-layout-space-4xl); // default
   // }
 }
