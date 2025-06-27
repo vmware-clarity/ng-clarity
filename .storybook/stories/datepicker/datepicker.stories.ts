@@ -44,11 +44,7 @@ export default {
     // outputs
     clrDateChange: action('clrDateChange'),
     // story helpers
-    getDateObject: date => date && new Date(date),
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
-  },
-  play({ canvasElement }) {
-    (canvasElement.querySelector('button.clr-smart-open-close') as HTMLElement)?.click();
   },
 };
 
@@ -60,7 +56,7 @@ const DatePickerTemplate: StoryFn = args => ({
         #date
         type="date"
         [id]="id"
-        [clrDate]="getDateObject(clrDate)"
+        [(clrDate)]="clrDate"
         [min]="getDateString(min)"
         [max]="getDateString(max)"
         [disabled]="disabled"
@@ -109,20 +105,5 @@ export const ActionButtons: StoryObj = {
   render: DatePickerTemplate,
   args: {
     showActionButtons: true,
-  },
-};
-
-export const MonthView: StoryObj = {
-  render: DatePickerTemplate,
-  play({ canvasElement }) {
-    (canvasElement.querySelector('button.clr-smart-open-close') as HTMLElement)?.click();
-    (canvasElement.parentElement.querySelector('button.monthpicker-trigger') as HTMLElement)?.click();
-  },
-};
-export const YearView: StoryObj = {
-  render: DatePickerTemplate,
-  play({ canvasElement }) {
-    (canvasElement.querySelector('button.clr-smart-open-close') as HTMLElement)?.click();
-    (canvasElement.parentElement.querySelector('button.yearpicker-trigger') as HTMLElement)?.click();
   },
 };
