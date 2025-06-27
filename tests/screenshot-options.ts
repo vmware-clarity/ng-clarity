@@ -30,6 +30,12 @@ export const screenshotOptions: ScreenshotOptions = {
   'headers-static--header-static': {
     fullPageScreenshot: true,
   },
+  'combobox--loading': {
+    fullPageScreenshot: true,
+  },
+  'combobox--no-results': {
+    fullPageScreenshot: true,
+  },
   'header--collapsed': {
     viewport: { width: 500, height: 300 },
   },

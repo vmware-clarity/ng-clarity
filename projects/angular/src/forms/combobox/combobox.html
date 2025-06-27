@@ -23,6 +23,7 @@
     clrDirection="both"
     [attr.aria-label]="getSelectionAriaLabel()"
     [attr.aria-disabled]="control?.disabled? true: null"
+    class="clr-combobox-pills"
   >
     <span *ngFor="let item of multiSelectModel; let i = index" class="label label-combobox-pill" role="row">
       <span role="gridcell">
