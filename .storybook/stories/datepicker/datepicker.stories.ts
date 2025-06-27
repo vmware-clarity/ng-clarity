@@ -47,6 +47,9 @@ export default {
     getDateObject: date => date && new Date(date),
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
   },
+  play({ canvasElement }) {
+    (canvasElement.querySelector('button.clr-smart-open-close') as HTMLElement)?.click();
+  },
 };
 
 const DatePickerTemplate: StoryFn = args => ({
@@ -106,5 +109,20 @@ export const ActionButtons: StoryObj = {
   render: DatePickerTemplate,
   args: {
     showActionButtons: true,
+  },
+};
+
+export const MonthView: StoryObj = {
+  render: DatePickerTemplate,
+  play({ canvasElement }) {
+    (canvasElement.querySelector('button.clr-smart-open-close') as HTMLElement)?.click();
+    (canvasElement.parentElement.querySelector('button.monthpicker-trigger') as HTMLElement)?.click();
+  },
+};
+export const YearView: StoryObj = {
+  render: DatePickerTemplate,
+  play({ canvasElement }) {
+    (canvasElement.querySelector('button.clr-smart-open-close') as HTMLElement)?.click();
+    (canvasElement.parentElement.querySelector('button.yearpicker-trigger') as HTMLElement)?.click();
   },
 };
