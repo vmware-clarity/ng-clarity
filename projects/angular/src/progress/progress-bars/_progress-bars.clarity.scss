@@ -40,10 +40,10 @@
     background-color: transparent;
     border-radius: 0;
     font-size: inherit;
-    height: density.$clr-base-layout-space-s;
+    height: density.$clr-base-progress-bar-height;
     margin: 0;
     overflow: hidden;
-    max-height: density.$clr-base-layout-space-s;
+    max-height: density.$clr-base-progress-bar-height;
     min-height: density.$clr-base-layout-space-2xs;
     display: block;
     width: 100%;
@@ -116,7 +116,7 @@
       // font-sizes. if we used rems we would have to have many, many different
       // sizes of labels.
       position: relative;
-      padding-right: density.$clr-base-gap-xl;
+      padding-right: tokens.$cds-global-space-11;
       color: progress-bars-variables.$clr-progress-label-color;
 
       // We have to use this span hack because browsers (Firefox, Safari, and IE) do
@@ -134,7 +134,7 @@
         @include utils-mixins.generate-typography-token(
           'CAPTION-LG-11',
           (
-            line-height: density.$clr-base-typography-line-height-12,
+            line-height: tokens.$cds-global-space-6,
           )
         );
       }
