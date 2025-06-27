@@ -78,18 +78,18 @@
       box-shadow: none;
       flex-direction: column;
       align-items: stretch;
-      margin-right: density.$clr-base-vertical-offset-2xl;
+      margin-right: density.$clr-base-horizontal-offset-2xl;
       overflow: auto;
       flex-shrink: 0;
       padding: density.$clr-base-vertical-offset-xs density.$clr-base-horizontal-offset-xs;
       width: mixins.baselinePx(240);
       min-width: tokens.$cds-global-space-12;
-
-      gap: tokens.$cds-global-space-5;
+      gap: density.$clr-base-gap-s;
 
       .nav-link {
         text-align: left;
-        padding: 0 density.$clr-base-vertical-offset-l;
+        padding-left: density.$clr-base-horizontal-offset-l;
+        justify-content: start;
         border: none;
         flex-shrink: 0;
         margin-top: 0;
@@ -97,8 +97,7 @@
         width: 100%;
 
         &.btn {
-          margin-bottom: density.$clr-base-horizontal-offset-2xs;
-          justify-content: start;
+          margin-bottom: density.$clr-base-offset-0;
         }
 
         &.active,
