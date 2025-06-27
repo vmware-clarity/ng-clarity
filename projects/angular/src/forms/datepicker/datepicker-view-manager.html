@@ -21,14 +21,14 @@
     </ng-container>
   </clr-vertical-nav>
 
-  <div class="datepicker-view-manager">
-    <ng-container *ngTemplateOutlet="calendarView"></ng-container>
-  </div>
+  <ng-container *ngTemplateOutlet="calendarView"></ng-container>
 </ng-container>
 
 <ng-template #calendarView>
-  <clr-monthpicker *ngIf="isMonthView"></clr-monthpicker>
-  <clr-yearpicker *ngIf="isYearView"></clr-yearpicker>
-  <clr-daypicker *ngIf="isDayView"></clr-daypicker>
-  <clr-datepicker-actions *ngIf="hasActionButtons"></clr-datepicker-actions>
+  <div class="datepicker-view-manager">
+    <clr-monthpicker *ngIf="isMonthView"></clr-monthpicker>
+    <clr-yearpicker *ngIf="isYearView"></clr-yearpicker>
+    <clr-daypicker *ngIf="isDayView"></clr-daypicker>
+    <clr-datepicker-actions *ngIf="hasActionButtons"></clr-datepicker-actions>
+  </div>
 </ng-template>

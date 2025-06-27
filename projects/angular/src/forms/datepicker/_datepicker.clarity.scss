@@ -11,6 +11,7 @@
 @use 'variables.datepicker' as datepicker-variables;
 @use '@cds/core/tokens/tokens.scss';
 @use '../../button/variables.buttons' as button-variables;
+@use '../../layout/density/' as density;
 
 @include meta.load-css('properties.datepicker');
 
@@ -26,7 +27,7 @@
   //Other Props
   color: inherit;
   border: none;
-  border-radius: tokens.$cds-alias-object-border-radius-100;
+  border-radius: density.$clr-base-border-radius-s;
 
   background: none;
   cursor: pointer;
@@ -104,8 +105,8 @@
 
     //Dimensions
     margin-top: datepicker-variables.$clr-calendar-margin-top;
-    padding: datepicker-variables.$clr-calendar-padding;
-    width: datepicker-variables.$clr-calendar-width;
+    padding: datepicker-variables.$clr-calendar-vertical-padding datepicker-variables.$clr-calendar-horizontal-padding;
+    gap: density.$clr-base-gap-m;
     height: datepicker-variables.$clr-calendar-height;
 
     //Other Props
@@ -118,32 +119,25 @@
     .datepicker-view-manager {
       display: flex;
       flex-direction: column;
-      row-gap: tokens.$cds-global-space-5;
-      width: calc(7 * datepicker-variables.$clr-calendar-click-target);
-    }
-
-    &.has-range-option {
-      width: calc(
-        datepicker-variables.$clr-calendar-width + datepicker-variables.$clr-calendar-options-width +
-          datepicker-variables.$clr-calendar-padding + calc(2 * tokens.$cds-alias-object-border-width-100)
-      );
+      place-content: space-between;
+      row-gap: density.$clr-base-gap-s;
+      min-width: datepicker-variables.$clr-calendar-width;
     }
 
     &.has-action-buttons {
       height: calc(
         datepicker-variables.$clr-calendar-height + datepicker-variables.$clr-calendar-action-buttons-height +
-          tokens.$cds-global-space-5
+          density.$clr-base-gap-s
       );
-      row-gap: tokens.$cds-global-space-5;
+      row-gap: density.$clr-base-gap-s;
     }
 
     .datepicker-actions {
-      min-width: 100%;
       height: datepicker-variables.$clr-calendar-action-buttons-height;
       display: flex;
       border-top: tokens.$cds-global-space-1 solid tokens.$cds-alias-object-container-border-color;
       justify-content: end;
-      padding-top: tokens.$cds-global-space-7;
+      padding-top: density.$clr-base-vertical-offset-xl;
       gap: button-variables.$clr-btn-horizontal-margin;
 
       button {
@@ -162,7 +156,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: calc(7 * datepicker-variables.$clr-calendar-click-target);
   }
 
   .calendar-switchers,
@@ -211,6 +204,7 @@
         font-size: datepicker-variables.$clr-calendar-weekday-font-size,
       )
     );
+    padding: 0 density.$clr-base-horizontal-offset-m;
   }
 
   .calendar-btn {
@@ -261,25 +255,21 @@
 
     cds-icon,
     clr-icon {
-      @include mixins.equilateral(tokens.$cds-global-space-8);
+      @include mixins.equilateral(density.$clr-base-icon-size-s);
     }
   }
 
   .monthpicker-trigger,
   .yearpicker-trigger {
     //Dimensions
-    width: tokens.$cds-global-space-13;
+    min-width: datepicker-variables.$clr-calendar-btn-picker-trigger-width;
+    width: auto;
+    padding: 0 density.$clr-base-horizontal-offset-m;
 
     //Other Props
     color: datepicker-variables.$clr-calendar-btn-picker-trigger-color;
     text-align: center;
     @include mixins.overflow-ellipsis();
-
-    &.year-range {
-      width: unset;
-      align-content: center;
-      padding: tokens.$cds-global-space-5;
-    }
   }
 
   .monthpicker,
@@ -292,9 +282,8 @@
   .daypicker {
     display: flex;
     flex-wrap: wrap;
-    row-gap: tokens.$cds-global-space-5;
-    height: calc(calc(9 * tokens.$cds-global-space-10) + calc(3 * tokens.$cds-global-space-5));
-    width: calc(7 * datepicker-variables.$clr-calendar-click-target);
+    flex-direction: column;
+    row-gap: density.$clr-base-gap-s;
   }
 
   .years {
@@ -309,7 +298,7 @@
     @include generate-current-date-style();
     @include generate-selected-date-style();
 
-    height: datepicker-variables.$clr-calendar-year-cell-height;
+    height: datepicker-variables.$clr-calendar-cell-height;
     width: datepicker-variables.$clr-month-year-btn-width;
 
     &.is-disabled {
@@ -326,15 +315,17 @@
     row-gap: datepicker-variables.$clr-calendar-button-gap;
     flex-wrap: wrap;
     display: flex;
+    place-content: space-between;
+    width: datepicker-variables.$clr-calendar-width;
   }
 
   .month {
     text-align: center;
-    height: datepicker-variables.$clr-calendar-month-cell-height;
     @include mixins.overflow-ellipsis();
   }
 
   .year {
     text-align: center;
+    height: datepicker-variables.$clr-calendar-year-cell-height;
   }
 }
