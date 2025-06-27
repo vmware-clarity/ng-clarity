@@ -30,10 +30,10 @@ export const screenshotOptions: ScreenshotOptions = {
   'headers-static--header-static': {
     fullPageScreenshot: true,
   },
-  'combobox-combobox--loading': {
+  'combobox--loading': {
     fullPageScreenshot: true,
   },
-  'combobox-combobox--no-results': {
+  'combobox--no-results': {
     fullPageScreenshot: true,
   },
   'header--collapsed': {
