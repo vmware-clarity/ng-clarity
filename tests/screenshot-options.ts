@@ -60,4 +60,28 @@ export const screenshotOptions: ScreenshotOptions = {
   wizard: {
     fullPageScreenshot: true,
   },
+  'datepicker--datepicker': {
+    fullPageScreenshot: true,
+  },
+  'datepicker--default-date': {
+    fullPageScreenshot: true,
+  },
+  'datepicker--min-date': {
+    fullPageScreenshot: true,
+  },
+  'datepicker--max-date': {
+    fullPageScreenshot: true,
+  },
+  'datepicker--action-buttons': {
+    fullPageScreenshot: true,
+  },
+  'datepicker--month-view': {
+    fullPageScreenshot: true,
+  },
+  'datepicker--year-view': {
+    fullPageScreenshot: true,
+  },
+  'daterangepicker--predefined-date-ranges-open': {
+    fullPageScreenshot: true,
+  },
 };
