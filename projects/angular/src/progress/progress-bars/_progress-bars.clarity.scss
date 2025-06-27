@@ -503,7 +503,7 @@
     }
 
     &.labeled > .progress-meter {
-      right: density.$clr-base-gap-xl;
+      right: tokens.$cds-global-space-11;
     }
 
     /* warning, success, and danger distinctions for progress bars are deprecated in 3.0 */
@@ -528,7 +528,7 @@
       left: 0;
 
       // by default, positioned at the topmost of its card-block container
-      margin: calc(-1 * density.$clr-base-vertical-offset-m) 0 0;
+      margin: calc(-1 * tokens.$cds-global-space-5) 0 0;
 
       &.top {
         // places progress bar at the top of a card
