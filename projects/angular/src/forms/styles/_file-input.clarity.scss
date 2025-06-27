@@ -18,7 +18,6 @@
   .clr-file-input-wrapper {
     display: flex;
     position: relative;
-    margin-top: tokens.$cds-global-space-3;
     gap: density.$clr-base-gap-xs;
 
     .clr-file-input {
@@ -62,8 +61,8 @@
   .clr-file-list {
     display: flex;
     flex-direction: column;
-    gap: density.$clr-base-vertical-offset-m;
-    margin-top: density.$clr-base-vertical-offset-m;
+    gap: density.$clr-base-gap-s;
+    margin-top: density.$clr-base-gap-s;
 
     .clr-file-list-item {
       max-width: mixins.baselinePx(500);
@@ -77,6 +76,7 @@
     .clr-file-label {
       white-space: wrap;
       padding-right: density.$clr-base-horizontal-offset-xs;
+      margin-bottom: 0;
 
       .text {
         padding: density.$clr-base-vertical-offset-xs 0;
@@ -100,9 +100,10 @@
       flex-wrap: wrap;
       align-items: center;
       column-gap: tokens.$cds-global-space-3;
+      max-width: unset;
 
       .clr-subtext {
-        margin: 0 !important;
+        margin: 0;
       }
     }
 
