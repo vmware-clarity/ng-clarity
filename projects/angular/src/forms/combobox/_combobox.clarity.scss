@@ -51,7 +51,7 @@
     //Dimensions
     padding-top: calc(density.$clr-base-vertical-offset-xs - tokens.$cds-alias-object-border-width-100);
     padding-bottom: calc(density.$clr-base-vertical-offset-xs - tokens.$cds-alias-object-border-width-100);
-    padding-left: density.$clr-base-horizontal-offset-m;
+    padding-left: combobox-variables.$clr-combobox-trigger-left-padding;
     padding-right: calc(combobox-variables.$clr-combobox-caret-icon-size + 2 * density.$clr-base-horizontal-offset-m);
 
     min-width: combobox-variables.$clr-combobox-min-width;
@@ -117,7 +117,6 @@
       @include mixins.generate-typography-token('CAPTION-LG-11');
       min-height: combobox-variables.$clr-combobox-pill-height;
       height: combobox-variables.$clr-combobox-pill-height;
-      margin: combobox-variables.$clr-combobox-pill-margin;
       margin: 0;
       background-color: combobox-variables.$clr-combobox-pill-background-color;
       border-width: tokens.$cds-alias-object-border-width-100;
@@ -131,8 +130,6 @@
       gap: density.$clr-base-gap-xs;
 
       .clr-combobox-pill-content {
-        font-size: tokens.$cds-alias-typography-caption-font-size;
-        font-weight: tokens.$cds-alias-typography-caption-font-weight;
         color: combobox-variables.$clr-combobox-pill-font-color;
         padding: 0;
       }
@@ -206,15 +203,21 @@
     visibility: visible;
 
     .clr-combobox-options-loading {
-      padding: mixins.baselinePx(3) tokens.$cds-global-space-1;
+      padding: 0 density.$clr-base-horizontal-offset-m;
+      display: flex;
+      gap: density.$clr-base-gap-s;
 
-      .clr-combobox-options-loading-text {
-        padding-left: tokens.$cds-global-space-4;
+      .spinner.spinner-inline {
+        margin-right: 0;
+      }
+
+      .clr-combobox-options-text {
+        word-break: break-word;
       }
     }
 
     .clr-combobox-options-empty-text {
-      padding-left: tokens.$cds-global-space-6;
+      padding: 0 density.$clr-base-horizontal-offset-l;
     }
   }
 
