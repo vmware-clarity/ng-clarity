@@ -30,7 +30,7 @@
     position: relative;
     display: flex;
     align-items: flex-start;
-    margin-right: tokens.$cds-global-space-6;
+    margin-right: density.$clr-base-gap-m;
     min-height: toggle-variables.$clr-toggle-height;
     justify-content: start;
     padding: density.$clr-base-vertical-offset-multi-row-inline-s 0;
@@ -171,7 +171,7 @@
     .clr-control-label {
       display: block;
       @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
-      padding-left: density.$clr-base-horizontal-offset-m;
+      padding: 0 0 0 density.$clr-base-horizontal-offset-m;
       margin-top: 0;
     }
   }
