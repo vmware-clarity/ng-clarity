@@ -12,7 +12,7 @@
 
 @include mixins.exports('forms.containers') {
   .clr-form-control {
-    margin-top: calc(4 * #{forms-variables.$clr-forms-baseline});
+    margin-top: density.$clr-base-vertical-offset-2xl;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -64,6 +64,9 @@
   .clr-control-label {
     display: block;
     color: forms-variables.$clr-forms-label-color;
+    padding-top: density.$clr-base-vertical-offset-xs;
+    padding-bottom: density.$clr-base-vertical-offset-xs;
+
     @include mixins.generate-typography-token(
       'SECONDARY-13-SB-CPT',
       (
@@ -73,7 +76,6 @@
   }
 
   .clr-control-container {
-    display: inline-block;
     @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
   }
 
@@ -99,6 +101,7 @@
   .clr-subtext-wrapper {
     flex-basis: 100%;
     display: flex;
+    align-items: center;
   }
 
   .clr-validate-icon {
@@ -158,10 +161,6 @@
       min-width: auto;
     }
 
-    .clr-control-label {
-      margin-top: density.$clr-base-gap-xs;
-    }
-
     .clr-form-control {
       display: flex;
       flex-direction: row;
@@ -171,25 +170,25 @@
     .clr-control-container {
       display: flex;
       flex-wrap: wrap;
+      flex-direction: row;
+      align-items: center;
     }
 
     .clr-subtext {
       display: inline-block;
+      align-self: flex-start;
+      padding: density.$clr-base-vertical-offset-xs 0;
+      margin-top: 0;
 
       // special margin left based on --clr-forms-icon-size
       // to align subtexts when error/success icon is missing.
-      margin-left: calc(#{tokens.$cds-global-space-3} + #{forms-variables.$clr-forms-icon-size});
+      margin-left: forms-variables.$clr-forms-icon-size;
     }
 
     .clr-error,
     .clr-success {
       .clr-subtext {
-        margin-left: tokens.$cds-global-space-3;
-
-        &.error,
-        &.success {
-          margin-left: tokens.$cds-global-space-3;
-        }
+        margin-left: density.$clr-base-gap-xs;
       }
 
       // Center the validation icon
@@ -200,7 +199,6 @@
 
     .clr-subtext-wrapper {
       flex-basis: auto;
-      display: inline-block;
     }
   }
 }

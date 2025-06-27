@@ -44,7 +44,6 @@ export default {
     // outputs
     clrDateChange: action('clrDateChange'),
     // story helpers
-    getDateObject: date => date && new Date(date),
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
   },
 };
@@ -57,7 +56,7 @@ const DatePickerTemplate: StoryFn = args => ({
         #date
         type="date"
         [id]="id"
-        [clrDate]="getDateObject(clrDate)"
+        [(clrDate)]="clrDate"
         [min]="getDateString(min)"
         [max]="getDateString(max)"
         [disabled]="disabled"

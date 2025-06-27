@@ -81,6 +81,14 @@ const DateRangePickerTemplate: StoryFn = args => ({
   props: { ...args },
 });
 
+const predefinedDateRanges = [
+  { label: 'Today', value: [new Date(), new Date()] },
+  { label: 'Last 7 Days', value: [addDays(new Date(), -7), addDays(new Date(), -1)] },
+  { label: 'Last 14 Days', value: [addDays(new Date(), -14), addDays(new Date(), -1)] },
+  { label: 'Last 30 Days', value: [addDays(new Date(), -30), addDays(new Date(), -1)] },
+  { label: 'Last 90 Days', value: [addDays(new Date(), -90), addDays(new Date(), -1)] },
+];
+
 export const DateRangePicker: StoryObj = {
   render: DateRangePickerTemplate,
 };
@@ -95,13 +103,7 @@ export const Disabled: StoryObj = {
 export const PredefinedDateRanges: StoryObj = {
   render: DateRangePickerTemplate,
   args: {
-    predefinedDateRanges: [
-      { label: 'Today', value: [new Date(), new Date()] },
-      { label: 'Last 7 Days', value: [addDays(new Date(), -7), addDays(new Date(), -1)] },
-      { label: 'Last 14 Days', value: [addDays(new Date(), -14), addDays(new Date(), -1)] },
-      { label: 'Last 30 Days', value: [addDays(new Date(), -30), addDays(new Date(), -1)] },
-      { label: 'Last 90 Days', value: [addDays(new Date(), -90), addDays(new Date(), -1)] },
-    ],
+    predefinedDateRanges,
   },
 };
 
