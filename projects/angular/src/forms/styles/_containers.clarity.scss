@@ -189,11 +189,6 @@
     .clr-success {
       .clr-subtext {
         margin-left: density.$clr-base-gap-xs;
-
-        &.error,
-        &.success {
-          margin-left: density.$clr-base-gap-xs;
-        }
       }
 
       // Center the validation icon
