@@ -53,8 +53,9 @@ export default function () {
 
     it('shows the daypicker when dayView is set to true', () => {
       expect(context.clarityDirective.isDayView).toBe(true);
-      expect(context.clarityElement.children.length).toBe(1);
-      expect(context.clarityElement.children[0].tagName).toBe('CLR-DAYPICKER');
+      hostElement = context.clarityElement.querySelector('.datepicker-view-manager');
+      expect(hostElement.children.length).toBe(1);
+      expect(hostElement.children[0].tagName).toBe('CLR-DAYPICKER');
     });
 
     it('shows the monthpicker when monthView is set to true', () => {
@@ -62,8 +63,9 @@ export default function () {
       context.detectChanges();
 
       expect(context.clarityDirective.isMonthView).toBe(true);
-      expect(context.clarityElement.children.length).toBe(1);
-      expect(context.clarityElement.children[0].tagName).toBe('CLR-MONTHPICKER');
+      hostElement = context.clarityElement.querySelector('.datepicker-view-manager');
+      expect(hostElement.children.length).toBe(1);
+      expect(hostElement.children[0].tagName).toBe('CLR-MONTHPICKER');
     });
 
     it('shows the yearpicker when monthView is set to true', () => {
@@ -71,8 +73,9 @@ export default function () {
       context.detectChanges();
 
       expect(context.clarityDirective.isYearView).toBe(true);
-      expect(context.clarityElement.children.length).toBe(1);
-      expect(context.clarityElement.children[0].tagName).toBe('CLR-YEARPICKER');
+      hostElement = context.clarityElement.querySelector('.datepicker-view-manager');
+      expect(hostElement.children.length).toBe(1);
+      expect(hostElement.children[0].tagName).toBe('CLR-YEARPICKER');
     });
 
     it('has the .datepicker class added to the host', () => {

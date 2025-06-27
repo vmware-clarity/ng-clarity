@@ -47,7 +47,6 @@ export default {
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     // story helpers
     getDateString: { control: { disable: true }, table: { disable: true } },
-    getDateObject: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // Datepicker args
@@ -66,7 +65,6 @@ export default {
     clrEndDateChange: action('clrEndDateChange'),
     // story helpers
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
-    getDateObject: date => date && new Date(date),
   },
   play({ canvasElement }) {
     (canvasElement.querySelector('button.clr-smart-open-close') as HTMLElement)?.click();
@@ -108,7 +106,7 @@ const DateRangePickerTemplate: StoryFn = args => ({
         name="startDate"
         type="date"
         [disabled]="disabled"
-        [clrStartDate]="getDateObject(clrStartDate)"
+        [(clrStartDate)]="clrStartDate"
         (clrStartDateChange)="clrStartDateChange($event)"
       />
       <input
@@ -117,7 +115,7 @@ const DateRangePickerTemplate: StoryFn = args => ({
         name="endDate"
         type="date"
         [disabled]="disabled"
-        [clrEndDate]="getDateObject(clrEndDate)"
+        [(clrEndDate)]="clrEndDate"
         (clrEndDateChange)="clrEndDateChange($event)"
       />
     </clr-date-range-container>
