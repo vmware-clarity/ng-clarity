@@ -56,7 +56,7 @@ $clr-calendar-width: calc(3 * #{$clr-calendar-click-target} + (2 * #{$clr-calend
 
 //(8 = 6 date rows + 1 row for day heading + 1 row for calendar switches and month/year pickers) + 2 * 16px padding + 2px for border + 6 * 4px vertical gap for buttons
 $clr-calendar-height: calc(
-  (8 * #{$clr-calendar-cell-height}) + (2 * #{$clr-calendar-horizontal-padding}) +
+  (8 * #{$clr-calendar-cell-height}) + (2 * #{$clr-calendar-vertical-padding}) +
     (2 * #{tokens.$cds-alias-object-border-width-100}) + (7 * $clr-calendar-button-gap)
 );
 
