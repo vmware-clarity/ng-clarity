@@ -16,7 +16,7 @@
 @include meta.load-css('properties.datepicker');
 
 @mixin generate-calendar-button(
-  $height: datepicker-variables.$clr-calendar-click-target,
+  $height: datepicker-variables.$clr-calendar-btn-size,
   $padding: datepicker-variables.$clr-calendar-btn-padding
 ) {
   //Dimensions
@@ -181,7 +181,7 @@
   td.calendar-cell,
   td.calendar-table .calendar-cell {
     //Dimensions
-    @include mixins.min-equilateral(datepicker-variables.$clr-calendar-click-target);
+    @include mixins.min-equilateral(datepicker-variables.$clr-calendar-btn-size);
     padding: 0;
 
     //Other Props
@@ -193,7 +193,7 @@
   }
 
   .weekdays {
-    flex: 0 0 datepicker-variables.$clr-calendar-click-target;
+    flex: 0 0 datepicker-variables.$clr-calendar-btn-size;
   }
 
   .weekday {
@@ -297,7 +297,7 @@
     @include generate-current-date-style();
     @include generate-selected-date-style();
 
-    height: datepicker-variables.$clr-calendar-cell-height;
+    height: datepicker-variables.$clr-calendar-header-btn-height;
     width: datepicker-variables.$clr-month-year-btn-width;
 
     &.is-disabled {
