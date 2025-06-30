@@ -104,10 +104,14 @@
     .clr-step-button {
       margin-top: density.$clr-base-gap-l;
       margin-right: density.$clr-base-horizontal-offset-l;
+      margin-bottom: 0;
     }
   }
 
   clr-stepper-panel .clr-accordion-inner-content {
     padding: #{density.$clr-base-vertical-offset-2xl} #{density.$clr-base-layout-space-xl};
+    clr-step-content > :first-child {
+      margin-top: 0;
+    }
   }
 }
