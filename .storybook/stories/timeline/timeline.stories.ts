@@ -38,27 +38,42 @@ const TimelineTempate: StoryFn = args => ({
       <clr-timeline-step [clrState]="ClrTimelineStepState.SUCCESS">
         <clr-timeline-step-header>1:00 pm</clr-timeline-step-header>
         <clr-timeline-step-title>Success</clr-timeline-step-title>
-        <clr-timeline-step-description>This is step was successful.</clr-timeline-step-description>
+        <clr-timeline-step-description>
+          This is step was successful.
+          <button class="btn btn-sm">Action</button>
+        </clr-timeline-step-description>
       </clr-timeline-step>
       <clr-timeline-step [clrState]="ClrTimelineStepState.ERROR">
         <clr-timeline-step-header>2:00 pm</clr-timeline-step-header>
         <clr-timeline-step-title>Error</clr-timeline-step-title>
-        <clr-timeline-step-description>There was an error on this step.</clr-timeline-step-description>
+        <clr-timeline-step-description>
+          There was an error on this step.
+          <button class="btn btn-sm">Action</button>
+        </clr-timeline-step-description>
       </clr-timeline-step>
       <clr-timeline-step [clrState]="ClrTimelineStepState.PROCESSING">
         <clr-timeline-step-header>3:00 pm</clr-timeline-step-header>
         <clr-timeline-step-title>Processing</clr-timeline-step-title>
-        <clr-timeline-step-description>This step is being processed.</clr-timeline-step-description>
+        <clr-timeline-step-description>
+          This step is being processed.
+          <button class="btn btn-sm">Action</button>
+        </clr-timeline-step-description>
       </clr-timeline-step>
       <clr-timeline-step [clrState]="ClrTimelineStepState.CURRENT">
         <clr-timeline-step-header>4:00 pm</clr-timeline-step-header>
         <clr-timeline-step-title>Current</clr-timeline-step-title>
-        <clr-timeline-step-description>This is the current step.</clr-timeline-step-description>
+        <clr-timeline-step-description>
+          This is the current step.
+          <button class="btn btn-sm">Action</button>
+        </clr-timeline-step-description>
       </clr-timeline-step>
       <clr-timeline-step [clrState]="ClrTimelineStepState.NOT_STARTED">
         <clr-timeline-step-header>5:00 pm</clr-timeline-step-header>
         <clr-timeline-step-title>Not Started</clr-timeline-step-title>
-        <clr-timeline-step-description>This step has not been started.</clr-timeline-step-description>
+        <clr-timeline-step-description>
+          This step has not been started.
+          <button class="btn btn-sm">Action</button>
+        </clr-timeline-step-description>
       </clr-timeline-step>
     </clr-timeline>
   `,
