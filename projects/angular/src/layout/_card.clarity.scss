@@ -9,6 +9,7 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use 'variables.card' as card-variables;
+@use '../layout/density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.card');
@@ -30,7 +31,7 @@
 
   %card-space-between {
     margin-top: 0;
-    margin-bottom: tokens.$cds-global-space-7;
+    margin-bottom: density.$clr-base-gap-m;
 
     &:last-child {
       margin-bottom: 0;
@@ -51,11 +52,11 @@
     display: block;
     background-color: card-variables.$clr-card-bg-color;
     width: 100%;
-    margin-top: tokens.$cds-global-space-9;
+    margin-top: density.$clr-base-vertical-offset-2xl;
     @extend %card-border-appearance;
 
     .alert {
-      margin: 0 0 tokens.$cds-global-space-5 0;
+      @extend %card-space-between;
     }
 
     .btn-link {
@@ -87,7 +88,7 @@
     //Clarity Lists
     & > .list,
     & > .list-unstyled {
-      padding: tokens.$cds-global-space-6 tokens.$cds-global-space-8;
+      padding: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-xl;
     }
 
     .list-group {
@@ -98,7 +99,7 @@
 
     .list-group-item {
       @include mixins.generate-typography-token('BODY-14-RG-STD');
-      padding: tokens.$cds-global-space-7;
+      padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
       background-color: card-variables.$clr-card-bg-color;
       border-bottom: card-variables.$clr-card-border-width solid card-variables.$clr-card-border-color;
     }
@@ -110,26 +111,26 @@
     @include mixins.fixForMsEdge() {
       .dropdown > .dropdown-toggle::after {
         display: inline-block;
-        margin-top: calc(-1 * tokens.$cds-global-space-6);
+        margin-top: calc(-1 * density.$clr-base-vertical-offset-l);
       }
     }
   }
 
   .card-block {
-    padding: tokens.$cds-global-space-7;
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
   }
 
   .card-footer {
     display: flex;
     flex-direction: row;
-    gap: tokens.$cds-global-space-5;
-    padding: tokens.$cds-global-space-5 tokens.$cds-global-space-7;
+    gap: density.$clr-base-gap-s;
+    padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-xl;
   }
 
   h3.card-header,
   .card-header {
     @include mixins.generate-typography-token('SECTION-20-STD');
-    padding: tokens.$cds-global-space-7;
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
     color: card-variables.$clr-card-header-title-color;
   }
 
@@ -219,8 +220,8 @@
   .card-block {
     .card-divider {
       @extend %card-space-between;
-      margin-left: calc(-1 * tokens.$cds-global-space-8);
-      margin-right: calc(-1 * tokens.$cds-global-space-8);
+      margin-left: calc(-1 * density.$clr-base-horizontal-offset-xl);
+      margin-right: calc(-1 * density.$clr-base-horizontal-offset-xl);
       width: auto;
     }
   }
@@ -240,7 +241,7 @@
     .card-media-image {
       display: inline-block; //to make sure IE11 respects the max-height and max-width
       flex: 0 0 auto;
-      @include mixins.max-equilateral(tokens.$cds-global-space-13);
+      @include mixins.max-equilateral(density.$clr-base-icon-size-4xl);
     }
 
     .card-media-description {
@@ -248,7 +249,7 @@
       display: flex;
       flex-direction: column;
       color: card-variables.$clr-card-text-color;
-      margin-left: tokens.$cds-global-space-7;
+      margin-left: density.$clr-base-horizontal-offset-xl;
     }
 
     .card-media-title {
@@ -265,7 +266,7 @@
 
       .card-media-description {
         margin-left: 0;
-        margin-top: tokens.$cds-global-space-7;
+        margin-top: density.$clr-base-vertical-offset-xl;
       }
     }
   }
@@ -283,7 +284,7 @@
   @media screen and (min-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     .card-columns {
       column-count: 3;
-      column-gap: tokens.$cds-global-space-6;
+      column-gap: density.$clr-base-gap-m;
       break-inside: avoid;
       column-fill: balance;
 
@@ -301,7 +302,7 @@
 
       .card {
         display: inline-block; //For some weird reason stops the cards from getting cut off between 2 columns
-        margin: tokens.$cds-global-space-4;
+        margin: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-s;
       }
 
       .clickable {

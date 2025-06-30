@@ -6,6 +6,7 @@
  */
 @use '../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
+@use '../layout/density/' as density;
 
 @include mixins.exports('timeline.properties') {
   :root [cds-theme] {
@@ -22,7 +23,8 @@
 
     // body (title)
     --clr-timeline-step-title-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
+    --clr-timeline-icon-size: #{density.$clr-base-icon-size-3xl};
 
-    --clr-timeline-step-internal-spacing: #{tokens.$cds-global-space-6}; // internal property cannot be exposed
+    --clr-timeline-step-internal-spacing: #{density.$clr-base-vertical-offset-l}; // internal property cannot be exposed
   }
 }

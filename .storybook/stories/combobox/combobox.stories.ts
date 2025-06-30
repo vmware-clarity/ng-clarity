@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrCombobox, ClrComboboxModule } from '@clr/angular';
+import { ClrCombobox, ClrComboboxModule, ClrLoadingModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
@@ -16,7 +16,7 @@ export default {
   title: 'Combobox/Combobox',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrComboboxModule],
+      imports: [...CommonModules, ClrComboboxModule, ClrLoadingModule],
     }),
   ],
   component: ClrCombobox,
@@ -62,6 +62,7 @@ export default {
     controlDisabled: false,
     controlRequired: false,
     controlHelper: false,
+    clrLoading: false,
     updateOn: 'change',
     elements,
     singleModel: 'Am',
@@ -83,6 +84,7 @@ const ComboboxTemplate: StoryFn = args => ({
         (clrInputChange)="clrInputChange($event)"
         (clrOpenChange)="clrOpenChange($event)"
         (clrSelectionChange)="clrSelectionChange($event)"
+        [clrLoading]="clrLoading"
         [disabled]="controlDisabled"
         name="combo"
         [required]="controlRequired"
@@ -161,5 +163,25 @@ export const MultiSelectionRequired: StoryObj = {
     clrMulti: true,
     controlHelper: true,
     controlRequired: true,
+  },
+};
+
+export const Loading: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    clrLoading: true,
+    elements: [],
+  },
+  play({ canvasElement }) {
+    (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();
+  },
+};
+
+export const NoResults: StoryObj = {
+  render: ComboboxTemplate,
+  play({ canvasElement }) {
+    (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();
+    (canvasElement.querySelector('.clr-combobox-input') as HTMLInputElement).value = 'Lapis philosophorum';
+    canvasElement.querySelector('.clr-combobox-input').dispatchEvent(new Event('input', { bubbles: true }));
   },
 };

@@ -7,6 +7,7 @@
 @use 'sass:meta';
 @use '../utils/mixins';
 @use 'variables.timeline' as timeline-variables;
+@use '../layout/density/' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.timeline');
@@ -22,7 +23,7 @@
     flex-direction: column;
     width: 100%;
     min-width: mixins.baselinePx(175);
-    margin-left: tokens.$cds-global-space-5;
+    gap: timeline-variables.$clr-timeline-step-internal-spacing;
 
     cds-icon,
     clr-icon {
@@ -51,11 +52,10 @@
 
     clr-spinner.spinner {
       margin: tokens.$cds-global-space-2;
-
       &,
       &::after,
       &::before {
-        @include mixins.min-equilateral(tokens.$cds-global-space-10);
+        @include mixins.min-equilateral(timeline-variables.$clr-timeline-spinner-size);
       }
     }
 
@@ -64,13 +64,14 @@
       content: '';
       background: timeline-variables.$clr-timeline-line-color;
       height: timeline-variables.$clr-timeline-line-thickness;
-      width: calc(
-        100% - timeline-variables.$clr-timeline-icon-size + timeline-variables.$clr-timeline-step-internal-spacing
-      );
+      width: calc(100% - timeline-variables.$clr-timeline-icon-size);
 
       transform: translate(
-        calc(timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-line-thickness),
-        calc(-0.5 * (timeline-variables.$clr-timeline-line-thickness + timeline-variables.$clr-timeline-icon-size))
+        timeline-variables.$clr-timeline-icon-size,
+        calc(
+          -0.5 * ((timeline-variables.$clr-timeline-step-internal-spacing * 2) +
+                timeline-variables.$clr-timeline-line-thickness + timeline-variables.$clr-timeline-icon-size)
+        )
       );
     }
   }
@@ -79,7 +80,6 @@
   // Hence forcing them in one-line by using "nowrap".
   .clr-timeline-step-header {
     white-space: nowrap;
-    margin-bottom: timeline-variables.$clr-timeline-step-internal-spacing;
     color: timeline-variables.$clr-timeline-step-header-color;
 
     @include mixins.generate-typography-token('SECONDARY-13-MD-CPT');
@@ -103,8 +103,8 @@
   }
 
   .clr-timeline-step-title {
-    margin: timeline-variables.$clr-timeline-step-internal-spacing 0;
     color: timeline-variables.$clr-timeline-step-title-color;
+    margin-bottom: density.$clr-base-gap-xs;
 
     @include mixins.generate-typography-token(
       'SECONDARY-13-SB-CPT',
@@ -121,7 +121,7 @@
 
     button {
       display: block;
-      margin-top: timeline-variables.$clr-timeline-step-internal-spacing;
+      margin-top: density.$clr-base-gap-s;
     }
     img {
       width: 100%;
@@ -147,14 +147,16 @@
         position: absolute;
         width: timeline-variables.$clr-timeline-line-thickness;
         height: calc(
-          100% - (0.5 * timeline-variables.$clr-timeline-icon-size + timeline-variables.$clr-timeline-line-thickness)
+          100% - (timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-step-internal-spacing)
         );
 
         transform: translate(
           calc(
             -0.5 * (timeline-variables.$clr-timeline-icon-size + timeline-variables.$clr-timeline-line-thickness) - timeline-variables.$clr-timeline-step-internal-spacing
           ),
-          calc(timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-line-thickness)
+          calc(
+            (-1 * timeline-variables.$clr-timeline-step-internal-spacing) + timeline-variables.$clr-timeline-icon-size
+          )
         );
       }
     }
@@ -165,15 +167,14 @@
       word-break: break-word;
       width: mixins.baselinePx(60);
       min-width: mixins.baselinePx(60);
-      margin: timeline-variables.$clr-timeline-step-internal-spacing
-        timeline-variables.$clr-timeline-step-internal-spacing 0 0;
+      margin: timeline-variables.$clr-timeline-step-internal-spacing 0 0 0;
     }
 
     .clr-timeline-step-body {
       display: flex;
       flex-direction: column;
       min-width: mixins.baselinePx(178);
-      margin-left: timeline-variables.$clr-timeline-step-internal-spacing;
+      padding-top: timeline-variables.$clr-timeline-step-internal-spacing;
     }
   }
 }
