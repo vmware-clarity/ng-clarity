@@ -19,6 +19,7 @@ $clr-timeline-error-step-color: var(--clr-timeline-error-step-color) !default;
 
 // overall
 $clr-timeline-icon-size: var(--clr-timeline-icon-size);
+$clr-timeline-spinner-size: calc($clr-timeline-icon-size - tokens.$cds-global-space-3);
 $clr-timeline-default-icon-size: #{tokens.$cds-global-space-7};
 $clr-timeline-line-thickness: #{tokens.$cds-alias-object-border-width-200};
 $clr-timeline-step-internal-spacing: var(--clr-timeline-step-internal-spacing);

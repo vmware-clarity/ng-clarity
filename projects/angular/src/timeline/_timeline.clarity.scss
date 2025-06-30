@@ -51,10 +51,11 @@
     }
 
     clr-spinner.spinner {
+      margin: tokens.$cds-global-space-2;
       &,
       &::after,
       &::before {
-        @include mixins.min-equilateral(timeline-variables.$clr-timeline-icon-size);
+        @include mixins.min-equilateral(timeline-variables.$clr-timeline-spinner-size);
       }
     }
 
