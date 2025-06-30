@@ -276,7 +276,7 @@
     --clr-base-gap-s: #{tokens.$cds-global-space-4};
     --clr-base-gap-m: #{mixins.baselinePx(10)};
     --clr-base-gap-l: #{tokens.$cds-global-space-6};
-    --clr-base-gap-xl: #{tokens.$cds-global-space-8};
+    --clr-base-gap-xl: #{mixins.baselinePx(20)};
     --clr-base-gap-2xl: #{tokens.$cds-global-space-9};
 
     --clr-base-row-height-20: #{tokens.$cds-global-space-7};
@@ -381,7 +381,7 @@
   //   --clr-base-gap-m: #{tokens.$cds-global-space-5};
   //   --clr-base-gap-l: #{mixins.baselinePx(10)};
   //   --clr-base-gap-xl: #{tokens.$cds-global-space-7};
-  //   --clr-base-gap-2xl: #{tokens.$cds-global-space-8};
+  //   --clr-base-gap-2xl: #{mixins.baselinePx(20)};
 
   //   --clr-base-row-height-20: #{tokens.$cds-global-space-7};
   //   --clr-base-dg-row-height: #{mixins.baselinePx(20)};
