@@ -15,7 +15,7 @@
   .clr-stepper-forms {
     .clr-stepper-header > .clr-accordion-header-button {
       align-items: center;
-      gap: density.$clr-base-gap-xl;
+      gap: density.$clr-base-gap-l;
       min-height: density.$clr-base-dg-row-height;
       padding: #{density.$clr-base-vertical-offset-xl} #{density.$clr-base-horizontal-offset-xl} #{density.$clr-base-vertical-offset-xl}
         #{density.$clr-base-horizontal-offset-2xl};
@@ -66,7 +66,7 @@
 
       > .clr-accordion-description,
       > .clr-step-description {
-        margin-left: density.$clr-base-horizontal-offset-xl;
+        margin-left: 0;
         @include mixins.generate-typography-token('BODY-14-RG-EXP');
       }
 
@@ -102,7 +102,7 @@
     }
 
     .clr-step-button {
-      margin-top: density.$clr-base-vertical-offset-2xl;
+      margin-top: density.$clr-base-gap-l;
       margin-right: density.$clr-base-horizontal-offset-l;
     }
   }
