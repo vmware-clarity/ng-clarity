@@ -15,7 +15,7 @@
   .clr-stepper-forms {
     .clr-stepper-header > .clr-accordion-header-button {
       align-items: center;
-      gap: density.$clr-base-horizontal-offset-2xl;
+      gap: density.$clr-base-gap-xl;
       min-height: density.$clr-base-dg-row-height;
       padding: #{density.$clr-base-vertical-offset-xl} #{density.$clr-base-horizontal-offset-xl} #{density.$clr-base-vertical-offset-xl}
         #{density.$clr-base-horizontal-offset-2xl};
