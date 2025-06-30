@@ -48,6 +48,5 @@
     </div>
     <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   </div>
+  <div [@fade] *ngIf="backdrop" class="modal-backdrop" aria-hidden="true" (click)="backdropClick()"></div>
 </div>
-
-<div [@fade] *ngIf="backdrop" class="modal-backdrop" aria-hidden="true" (click)="backdropClick()"></div>
