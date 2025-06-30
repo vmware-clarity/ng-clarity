@@ -33,7 +33,6 @@ $clr-calendar-btn-picker-trigger-width: #{density.$clr-base-layout-space-4xl} !d
 
 $clr-calendar-btn-padding: density.$clr-base-horizontal-offset-s;
 
-$clr-calendar-year-cell-height: #{density.$clr-base-layout-space-3xl};
 $clr-calendar-cell-height: #{density.$clr-base-row-height-l};
 $clr-calendar-month-cell-padding: #{density.$clr-base-horizontal-offset-l};
 
@@ -48,16 +47,17 @@ $clr-calendar-active-focus-cell-background-color: var(--clr-calendar-active-focu
 $clr-calendar-active-cell-color: var(--clr-calendar-active-cell-color) !default;
 
 $clr-calendar-weekday-font-size: var(--clr-calendar-weekday-font-size);
+$clr-calendar-weekday-height: density.$clr-base-typography-line-height-16;
 
 $clr-switcher-width: calc($clr-calendar-click-target * 3);
 
 // (3 navigation buttons + 2 month / year trigger buttons)
 $clr-calendar-width: calc(3 * #{$clr-calendar-click-target} + (2 * #{$clr-calendar-btn-picker-trigger-width}));
 
-//(8 = 6 date rows + 1 row for day heading + 1 row for calendar switches and month/year pickers) + 2 * 16px padding + 2px for border + 6 * 4px vertical gap for buttons
+//(7 = 6 date rows + 1 row for calendar switches and month/year pickers) + 1 row for day heading + 2 * 16px padding + 2px for border + 6 * 4px vertical gap for buttons
 $clr-calendar-height: calc(
-  (8 * #{$clr-calendar-cell-height}) + (2 * #{$clr-calendar-vertical-padding}) +
-    (2 * #{tokens.$cds-alias-object-border-width-100}) + (7 * $clr-calendar-button-gap)
+  (7 * #{$clr-calendar-cell-height}) + $clr-calendar-weekday-height + (2 * #{$clr-calendar-vertical-padding}) +
+    (2 * #{tokens.$cds-alias-object-border-width-100}) + density.$clr-base-gap-s
 );
 
 $clr-monthpicker-min-height: calc(6 * #{$clr-calendar-cell-height});

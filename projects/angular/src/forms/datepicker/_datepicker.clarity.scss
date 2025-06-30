@@ -120,7 +120,6 @@
       display: flex;
       flex-direction: column;
       place-content: space-between;
-      row-gap: density.$clr-base-gap-s;
       min-width: datepicker-variables.$clr-calendar-width;
     }
 
@@ -326,6 +325,5 @@
 
   .year {
     text-align: center;
-    height: datepicker-variables.$clr-calendar-year-cell-height;
   }
 }
