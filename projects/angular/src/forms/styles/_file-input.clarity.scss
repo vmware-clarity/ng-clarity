@@ -75,10 +75,8 @@
       white-space: wrap;
       padding-right: density.$clr-base-horizontal-offset-xs;
       margin-bottom: 0;
-
-      .text {
-        padding: density.$clr-base-vertical-offset-xs 0;
-      }
+      margin-right: density.$clr-base-gap-xs;
+      border-radius: density.$clr-base-border-radius-l;
     }
 
     .clr-file-clear-button {
