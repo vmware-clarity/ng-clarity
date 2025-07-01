@@ -112,6 +112,8 @@
 
   --clr-base-header-height: #{mixins.baselinePx(60)};
 
+  --clr-base-progress-bar-height: #{tokens.$cds-global-space-6};
+
   [clr-density='regular'] {
     --clr-base-typography-font-size-caption-small: #{mixins.baselinePx(10)};
     --clr-base-typography-font-size-caption: #{mixins.baselinePx(11)};
@@ -216,6 +218,8 @@
     --clr-base-spinner-stroke-l: #{tokens.$cds-global-space-4}; // default
 
     --clr-base-header-height: #{mixins.baselinePx(56)};
+
+    --clr-base-progress-bar-height: #{tokens.$cds-global-space-6};
   }
 
   [clr-density='compact'] {
@@ -322,6 +326,8 @@
     --clr-base-spinner-stroke-l: #{tokens.$cds-alias-object-border-width-400}; // default
 
     --clr-base-header-height: #{tokens.$cds-global-space-12};
+
+    --clr-base-progress-bar-height: #{mixins.baselinePx(10)};
   }
   // NOT SUPPORTED AT THE MOMENT
   // [clr-density='ultra-compact'] {
@@ -423,5 +429,7 @@
   //   --clr-base-spinner-l: var(--clr-base-layout-space-4xl); // default
 
   //   --clr-base-header-height: #{tokens.$cds-global-space-10};
+
+  //   --clr-base-progress-bar-height: #{tokens.$cds-global-space-5};
   // }
 }
