@@ -14,18 +14,20 @@
       >
         <span class="clr-step-status">
           <cds-icon shape="angle" direction="right" class="clr-accordion-angle clr-step-angle"></cds-icon>
-          <cds-icon
-            status="danger"
-            *ngIf="panel.status === AccordionStatus.Error"
-            shape="exclamation-circle"
-            class="clr-step-error-icon"
-          ></cds-icon>
-          <cds-icon
-            status="success"
-            *ngIf="panel.status === AccordionStatus.Complete"
-            shape="check-circle"
-            class="clr-step-complete-icon"
-          ></cds-icon>
+          <span class="clr-step-status-icon">
+            <cds-icon
+              status="danger"
+              *ngIf="panel.status === AccordionStatus.Error"
+              shape="exclamation-circle"
+              class="clr-step-error-icon"
+            ></cds-icon>
+            <cds-icon
+              status="success"
+              *ngIf="panel.status === AccordionStatus.Complete"
+              shape="check-circle"
+              class="clr-step-complete-icon"
+            ></cds-icon>
+          </span>
         </span>
         <span class="clr-step-title-wrapper">
           <span class="clr-step-number">{{panelNumber}}.</span>

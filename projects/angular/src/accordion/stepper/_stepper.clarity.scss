@@ -21,24 +21,26 @@
         #{density.$clr-base-horizontal-offset-2xl};
 
       > .clr-step-status {
-        min-width: density.$clr-base-layout-space-3xl;
-        width: density.$clr-base-layout-space-3xl;
         display: inline-flex;
         gap: density.$clr-base-gap-m;
         align-items: center;
 
-        > .clr-step-error-icon,
-        > .clr-step-complete-icon {
+        > .clr-step-status-icon {
           @include mixins.min-equilateral(density.$clr-base-icon-size-l);
-          padding: 0;
-        }
 
-        > .clr-step-error-icon {
-          color: accordion-variables.$clr-accordion-error-color;
-        }
+          > .clr-step-error-icon,
+          > .clr-step-complete-icon {
+            @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+            padding: 0;
+          }
 
-        > .clr-step-complete-icon {
-          color: accordion-variables.$clr-accordion-complete-color;
+          > .clr-step-error-icon {
+            color: accordion-variables.$clr-accordion-error-color;
+          }
+
+          > .clr-step-complete-icon {
+            color: accordion-variables.$clr-accordion-complete-color;
+          }
         }
       }
 
