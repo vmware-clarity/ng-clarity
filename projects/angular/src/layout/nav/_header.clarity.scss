@@ -9,18 +9,29 @@
 @use '../../image/icons.clarity';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
+@use '../../layout/density';
 @use '../main-container/variables.header' as header-variables;
 @use '@cds/core/tokens/tokens.scss';
 
+@mixin header-nav-link($horizontal-padding: density.$clr-base-horizontal-offset-xl) {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  gap: density.$clr-base-gap-s;
+  height: 100%;
+  padding: density.$clr-base-vertical-offset-m $horizontal-padding;
+
+  &:focus {
+    outline-offset: header-variables.$clr-header-outline-offset; // So that the outline styles aren't hidden because of the browser
+  }
+}
+
 @mixin header-section-divider() {
   display: inline-block;
-  position: absolute;
   content: '';
   background-color: header-variables.$clr-header-divider-color;
-  height: tokens.$cds-global-space-11;
+  height: density.$clr-base-icon-size-3xl;
   width: tokens.$cds-alias-object-border-width-100;
-  top: tokens.$cds-global-space-6;
-  left: 0;
 }
 
 @mixin header-nav-appearance() {
@@ -75,19 +86,11 @@
     display: flex;
     flex: 0 0 auto;
     min-width: mixins.baselinePx(204);
-    padding: 0 tokens.$cds-global-space-7;
+    padding: 0 density.$clr-base-horizontal-offset-xl;
 
     & > a,
     & > .nav-link {
-      display: inline-flex;
-      align-items: center;
-      text-decoration: none;
-      gap: tokens.$cds-global-space-5;
-      padding: tokens.$cds-global-space-5;
-
-      &:focus {
-        outline-offset: header-variables.$clr-header-outline-offset; // So that the outline styles aren't hidden because of the browser
-      }
+      @include header-nav-link(density.$clr-base-horizontal-offset-m);
     }
 
     .clr-icon,
@@ -125,13 +128,11 @@
     }
 
     .nav-link {
-      display: inline-flex;
-      align-items: center;
+      @include header-nav-link();
+      @include header-nav-appearance();
+
       position: relative;
       text-align: center;
-      padding: tokens.$cds-global-space-8 tokens.$cds-global-space-7;
-      text-decoration: none;
-      @include header-nav-appearance();
 
       cds-icon,
       clr-icon {
@@ -139,7 +140,7 @@
       }
 
       &.nav-icon-text {
-        gap: tokens.$cds-global-space-4;
+        gap: density.$clr-base-gap-s;
         cds-icon,
         clr-icon {
           transform: none;
@@ -195,18 +196,17 @@
 
     & > *:not(.dropdown):before,
     & > .dropdown > .dropdown-toggle:before {
+      position: absolute;
+      left: 0;
       @include header-section-divider();
     }
 
     // Reduce nesting from 5 to 3 at the most
     & > .dropdown {
       & > .dropdown-toggle {
-        gap: tokens.$cds-global-space-5;
         position: relative;
-        padding: tokens.$cds-global-space-8 tokens.$cds-global-space-7;
-        outline-offset: header-variables.$clr-header-outline-offset;
-        align-items: center;
         @include header-nav-appearance();
+        @include header-nav-link();
       }
 
       .dropdown-toggle.nav-icon {
@@ -244,7 +244,6 @@
 
     &::before {
       @include header-section-divider();
-      left: auto;
     }
 
     & > .nav-icon {
@@ -283,7 +282,7 @@
       border: none;
       background: none;
       color: header-variables.$clr-header-search-input-font-color;
-      border-radius: tokens.$cds-alias-object-border-radius-100;
+      border-radius: density.$clr-base-border-radius-s;
       height: tokens.$cds-global-space-11;
 
       padding: 0 0 0 calc(header-variables.$clr-header-search-icon-size + 2 * header-variables.$clr-header-search-gap);
