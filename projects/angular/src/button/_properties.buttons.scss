@@ -11,7 +11,7 @@
 @include mixins.exports('button.properties') {
   :root [cds-theme] {
     // Spacing
-    --clr-btn-vertical-margin: #{density.$clr-base-vertical-offset-m};
+    --clr-btn-vertical-margin: #{density.$clr-base-vertical-offset-s};
     --clr-btn-horizontal-margin: #{density.$clr-base-horizontal-offset-l};
     --clr-btn-horizontal-padding: #{density.$clr-base-horizontal-offset-l};
     --clr-btn-vertical-padding: 0;
