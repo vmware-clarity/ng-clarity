@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '@cds/core/tokens/tokens.scss';
+@use '../../angular/src/layout/density/variables.density' as density;
 
 :root {
   [cds-theme] {
@@ -60,6 +61,27 @@
     --cds-alias-object-container-background-inverse: #{tokens.$cds-global-color-construction-600};
     --cds-alias-object-container-background-inverse-tint: #{tokens.$cds-global-color-construction-800};
     --cds-alias-object-container-background-inverse-shade: #{tokens.$cds-global-color-construction-500};
+
+    // Density layout spacing overrides
+    --δ1: #{density.$clr-base-layout-space-3xs};
+    --δ2: #{density.$clr-base-layout-space-2xs};
+    --δ3: #{density.$clr-base-layout-space-xs};
+    --δ4: #{density.$clr-base-layout-space-s};
+    --δ5: #{density.$clr-base-layout-space-m};
+    --δ6: #{density.$clr-base-layout-space-l};
+    --δ7: #{density.$clr-base-layout-space-xl};
+    --δ8: #{density.$clr-base-layout-space-2xl};
+    --δ9: #{density.$clr-base-layout-space-3xl};
+
+    --cds-global-layout-space-xxxs: var(--δ1);
+    --cds-global-layout-space-xxs: var(--δ2);
+    --cds-global-layout-space-xs: var(--δ3);
+    --cds-global-layout-space-sm: var(--δ4);
+    --cds-global-layout-space-md: var(--δ5);
+    --cds-global-layout-space-lg: var(--δ6);
+    --cds-global-layout-space-xl: var(--δ7);
+    --cds-global-layout-space-xxl: var(--δ8);
+    --cds-global-layout-space-xxxl: var(--δ9);
   }
 
   [cds-theme~='dark'] {
