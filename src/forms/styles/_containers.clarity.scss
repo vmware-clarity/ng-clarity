@@ -130,7 +130,6 @@
     .clr-form-control > .clr-form-control.clr-form-control-multi .clr-control-label {
       width: calc(32 * #{forms-variables.$clr-forms-baseline});
       flex-shrink: 0;
-      margin-top: density.$clr-base-gap-xs;
     }
     &.clr-row .clr-control-label {
       width: auto;
