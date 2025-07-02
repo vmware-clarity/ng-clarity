@@ -6,7 +6,7 @@
  */
 @use '../../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
-@use '../../layout/density/' as density;
+@use '../../layout/density' as density;
 
 @include mixins.exports('datepicker.properties') {
   :root [cds-theme] {

@@ -11,7 +11,7 @@
 @use 'variables.datepicker' as datepicker-variables;
 @use '@cds/core/tokens/tokens.scss';
 @use '../../button/variables.buttons' as button-variables;
-@use '../../layout/density/' as density;
+@use '../../layout/density' as density;
 
 @include meta.load-css('properties.datepicker');
 
@@ -128,7 +128,6 @@
         datepicker-variables.$clr-calendar-height + datepicker-variables.$clr-calendar-action-buttons-height +
           density.$clr-base-gap-s
       );
-      row-gap: density.$clr-base-gap-s;
     }
 
     .datepicker-actions {
@@ -137,7 +136,7 @@
       border-top: tokens.$cds-global-space-1 solid tokens.$cds-alias-object-container-border-color;
       justify-content: end;
       padding-top: density.$clr-base-vertical-offset-xl;
-      gap: button-variables.$clr-btn-horizontal-margin;
+      gap: density.$clr-base-horizontal-offset-m;
 
       button {
         margin: 0;
@@ -262,8 +261,8 @@
   .yearpicker-trigger {
     //Dimensions
     min-width: datepicker-variables.$clr-calendar-btn-picker-trigger-width;
-    width: auto;
-    padding: 0 density.$clr-base-horizontal-offset-m;
+    width: datepicker-variables.$clr-calendar-btn-picker-trigger-width;
+    padding: 0 density.$clr-base-horizontal-offset-s;
 
     //Other Props
     color: datepicker-variables.$clr-calendar-btn-picker-trigger-color;
