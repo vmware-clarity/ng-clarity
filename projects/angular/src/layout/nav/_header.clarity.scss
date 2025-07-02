@@ -32,6 +32,9 @@
   background-color: header-variables.$clr-header-divider-color;
   height: density.$clr-base-icon-size-3xl;
   width: tokens.$cds-alias-object-border-width-100;
+  position: absolute;
+  left: 0;
+  top: calc((header-variables.$clr-header-height - density.$clr-base-icon-size-3xl) / 2);
 }
 
 @mixin header-nav-appearance() {

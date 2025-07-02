@@ -205,8 +205,8 @@
         @include mixins.equilateral(header-variables.$clr-header-height);
 
         // Such a STUPID hack it will be better to use CDS-ICON `bars` for `hamburger` and `ellipsis-vertical` for `dots`
-        // 4px to vertically align the trigger lines. display flex was not working on all browsers.
-        padding: 0 0 tokens.$cds-global-space-3 0;
+        // 2px to vertically align the trigger lines. display flex was not working on all browsers.
+        padding: 0 0 tokens.$cds-global-space-2 0;
 
         text-align: center;
         white-space: nowrap;
@@ -299,10 +299,7 @@
         position: relative;
 
         &::after {
-          position: absolute;
-          content: '';
           @include header.header-section-divider();
-          left: 0;
         }
       }
 
