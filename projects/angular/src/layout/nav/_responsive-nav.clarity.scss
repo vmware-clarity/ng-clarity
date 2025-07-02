@@ -432,7 +432,7 @@
         .subnav.clr-nav-level-1,
         .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
-          padding-top: calc(header-variables.$clr-header-height + tokens.$cds-global-space-9);
+          padding-top: calc(header-variables.$clr-header-height + density.$clr-base-gap-xl);
           transform: translateX(0);
           transition: responsive-nav-variables.$clr-sliding-panel-animation;
         }
@@ -450,7 +450,7 @@
         .header-nav.clr-nav-level-2,
         .subnav.clr-nav-level-2,
         .sub-nav.clr-nav-level-2 {
-          padding-top: tokens.$cds-global-space-9;
+          padding-top: density.$clr-base-vertical-offset-2xl;
         }
 
         .clr-nav-close {
