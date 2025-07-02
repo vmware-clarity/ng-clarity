@@ -12,7 +12,7 @@
   :root [cds-theme] {
     // Spacing
     --clr-btn-vertical-margin: #{density.$clr-base-vertical-offset-s};
-    --clr-btn-horizontal-margin: #{density.$clr-base-horizontal-offset-l};
+    --clr-btn-horizontal-margin: #{density.$clr-base-gap-m};
     --clr-btn-horizontal-padding: #{density.$clr-base-horizontal-offset-l};
     --clr-btn-vertical-padding: 0;
     --clr-btn-padding: var(--clr-btn-vertical-padding) var(--clr-btn-horizontal-padding);
