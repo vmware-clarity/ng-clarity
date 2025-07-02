@@ -204,7 +204,7 @@
         cursor: pointer;
         @include mixins.equilateral(header-variables.$clr-header-height);
 
-        // Such a STUPID hack it will be better to use CDS-ICON `bars` for `hamburger` and `ellipsis-vertical` for `dots`
+        // TODO: replace `hamburger` and `dots` to use CDS-ICON `bars` and `ellipsis-vertical` respectively.
         // 2px to vertically align the trigger lines. display flex was not working on all browsers.
         padding: 0 0 tokens.$cds-global-space-2 0;
 
