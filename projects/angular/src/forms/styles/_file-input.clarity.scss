@@ -60,10 +60,13 @@
     display: flex;
     flex-direction: column;
     gap: density.$clr-base-gap-s;
-    margin-top: density.$clr-base-gap-s;
 
     .clr-file-list-item {
       max-width: mixins.baselinePx(500);
+
+      &:first-of-type {
+        margin-top: density.$clr-base-gap-s;
+      }
     }
 
     .clr-file-label-and-status-icon {
