@@ -29,7 +29,7 @@ $clr-calendar-btn-active-color-bg: var(--clr-calendar-btn-active-color-bg) !defa
 $clr-calendar-btn-hover-focus-color-text: var(--clr-calendar-btn-hover-focus-color-text) !default;
 $clr-calendar-btn-active-color: var(--clr-calendar-btn-active-color) !default;
 $clr-calendar-btn-picker-trigger-color: var(--clr-calendar-btn-picker-trigger-color) !default;
-$clr-calendar-btn-picker-trigger-width: #{density.$clr-base-layout-space-4xl} !default;
+$clr-calendar-btn-picker-trigger-width: calc(2 * #{density.$clr-base-layout-space-2xl}) !default;
 
 $clr-calendar-btn-padding: density.$clr-base-horizontal-offset-s;
 
