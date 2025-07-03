@@ -100,7 +100,7 @@
 
 @include mixins.exports('responsive-nav.clarity') {
   .clr-nav-close {
-    margin: tokens.$cds-global-space-7;
+    margin: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-l;
     background: none;
     border: none;
     color: var(--color);
@@ -351,6 +351,7 @@
             .nav-link {
               flex: 0 0 auto;
               height: unset;
+              width: 100%;
 
               .nav-icon,
               .fa {
