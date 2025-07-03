@@ -45,7 +45,7 @@
     @include mixins.generate-typography-token('CAPTION-SM-10');
 
     padding: 0 density.$clr-base-horizontal-offset-xs;
-    margin-right: #{tokens.$cds-global-space-4};
+    margin-right: density.$clr-base-horizontal-offset-s;
     white-space: nowrap;
     text-align: center;
     color: badges-variables.$clr-badge-color;
