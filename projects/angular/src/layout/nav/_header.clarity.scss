@@ -214,7 +214,7 @@
       .dropdown-toggle.nav-icon {
         cds-icon:not([shape^='angle']),
         clr-icon:not([shape^='angle']) {
-          @include mixins.equilateral(tokens.$cds-global-space-9);
+          @include mixins.equilateral(header-variables.$clr-header-clarity-icons-size);
         }
       }
 
