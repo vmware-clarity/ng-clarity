@@ -5,5 +5,5 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 body.sb-main-padded.sb-main-padded {
-  padding: var(--cds-global-layout-space-lg);
+  padding: 24px;
 }
