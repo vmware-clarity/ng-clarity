@@ -6,11 +6,12 @@
  */
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
+@use '../../layout/density';
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('header.properties') {
   :root [cds-theme] {
-    --clr-header-height: #{mixins.baselinePx(60)};
+    --clr-header-height: #{density.$clr-base-header-height};
     --clr-header-divider-color: #{tokens.$cds-global-color-construction-600};
     --clr-header-bg-color: #{tokens.$cds-global-color-cool-gray-1000};
     --clr-header-2-bg-color: #{tokens.$cds-global-color-construction-800};
@@ -22,11 +23,11 @@
     --clr-header-font-color: #{tokens.$cds-global-color-construction-100};
     --clr-header-font-color-hover: #{tokens.$cds-global-color-construction-50};
     --clr-header-title-font-weight: #{tokens.$cds-global-typography-subsection-font-weight};
-    --clr-header-title-font-family: #{variables.$clr-font}; //#{tokens.$cds-global-typography-header-font-family};
-    --clr-header-search-icon-size: #{tokens.$cds-global-space-9};
-    --clr-header-search-margin-left: #{tokens.$cds-global-space-5};
-    --clr-header-search-margin-right: #{tokens.$cds-global-space-7};
-    --clr-header-search-gap: #{tokens.$cds-global-space-5};
+    --clr-header-title-font-family: #{variables.$clr-font};
+    --clr-header-search-icon-size: #{density.$clr-base-icon-size-l};
+    --clr-header-search-margin-left: #{density.$clr-base-horizontal-offset-m};
+    --clr-header-search-margin-right: #{density.$clr-base-horizontal-offset-l};
+    --clr-header-search-gap: #{density.$clr-base-gap-s};
     --clr-header-search-input-font-color: #{tokens.$cds-global-color-white};
     --clr-header-search-placeholder-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
     --clr-header-search-placeholder-text-color: #{tokens.$cds-global-color-construction-400};
