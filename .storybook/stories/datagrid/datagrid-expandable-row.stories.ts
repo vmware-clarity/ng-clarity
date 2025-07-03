@@ -163,7 +163,7 @@ const ExpandableRowsTemplate: StoryFn = args => ({
                   quam, pellentesque aliquet suscipit eget, pellentesque sed arcu. Vivamus in dui lectus.
                 </clr-tooltip-content>
               </clr-tooltip>
-              {{ element.name }} {{ clrDgReplace ? '(Row Replaced)': '' }}
+              {{ element.name }} {{ clrDgReplace ? '(Row Replaced)' : '' }}
             </clr-dg-cell>
             <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
             <clr-dg-cell>{{ element.number }}</clr-dg-cell>
