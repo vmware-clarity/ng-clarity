@@ -200,8 +200,6 @@
 
     & > *:not(.dropdown):before,
     & > .dropdown > .dropdown-toggle:before {
-      position: absolute;
-      left: 0;
       @include header-section-divider();
     }
 
