@@ -110,7 +110,7 @@
     padding: 0;
     border: tokens.$cds-alias-object-border-width-100 solid forms-variables.$clr-forms-select-multiple-border-color;
     background: forms-variables.$clr-forms-select-multiple-background-color;
-    border-radius: tokens.$cds-alias-object-border-radius-100;
+    border-radius: density.$clr-base-border-radius-s;
     height: auto;
     min-width: mixins.baselinePx(120);
 
@@ -119,8 +119,11 @@
       background: forms-variables.$clr-forms-select-multiple-background-color;
       border-color: forms-variables.$clr-forms-select-multiple-border-color;
     }
+
     option {
-      padding: calc(#{forms-variables.$clr-forms-baseline} * 0.5) forms-variables.$clr-forms-baseline;
+      @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+      padding: density.$clr-base-vertical-offset-xs density.$clr-base-horizontal-offset-2xl
+        density.$clr-base-vertical-offset-xs density.$clr-base-horizontal-offset-l;
       color: forms-variables.$clr-forms-select-multiple-option-color;
 
       &:checked {

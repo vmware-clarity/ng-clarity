@@ -12,7 +12,7 @@
 @include mixins.exports('forms.wrappers') {
   .clr-form {
     $widthSize: calc(100% - #{forms-variables.$clr-forms-icon-size});
-    padding: forms-variables.$clr-forms-baseline;
+    padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-s;
 
     &-full-width {
       .clr-form-control {
@@ -70,7 +70,7 @@
   }
 
   .clr-form-group {
-    padding: forms-variables.$clr-forms-baseline;
+    padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-s;
   }
 
   .clr-required-mark::after {

@@ -45,7 +45,7 @@
   max-width: 100%;
 
   & ~ .clr-subtext {
-    margin-left: forms-variables.$clr-forms-baseline;
+    margin-left: density.$clr-base-horizontal-offset-xs;
   }
 }
 

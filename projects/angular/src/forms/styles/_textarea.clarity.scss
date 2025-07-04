@@ -65,6 +65,10 @@
     max-width: calc(100% - forms-variables.$clr-forms-baseline);
   }
 
+  .clr-form-horizontal .clr-textarea-wrapper {
+    margin-top: 0;
+  }
+
   .clr-form-compact .clr-textarea-wrapper {
     margin-top: 0;
 
