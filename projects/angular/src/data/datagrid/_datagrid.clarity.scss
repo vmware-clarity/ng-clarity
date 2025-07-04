@@ -1396,7 +1396,7 @@
 
       // Increase specificity
       &.list-unstyled {
-        padding: density.$clr-base-horizontal-offset-m density.$clr-base-horizontal-offset-xl;
+        padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-xl;
       }
 
       li {
