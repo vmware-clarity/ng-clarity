@@ -1163,7 +1163,7 @@
       position: absolute;
       border: tokens.$cds-global-space-5 solid transparent;
       border-right-color: tables-variables.$clr-table-border-color;
-      top: datagrid-variables.$clr-datagrid-detail-caret-position;
+      top: tables-variables.$clr-table-cell-vertical-padding;
       right: 0;
     }
 
@@ -1173,8 +1173,8 @@
       position: absolute;
       border: tokens.$cds-global-space-5 solid transparent;
       border-right-color: datagrid-variables.$clr-datagrid-popover-bg-color;
-      top: calc(#{datagrid-variables.$clr-datagrid-detail-caret-position} + 1px);
-      right: calc(-1 * tokens.$cds-global-space-1);
+      top: tables-variables.$clr-table-cell-vertical-padding;
+      right: calc(-1 * tokens.$cds-global-space-2);
     }
   }
 
