@@ -36,7 +36,7 @@
 
         cds-icon,
         clr-icon {
-          fill: var(--clr-tree-node-caret-disabled-color);
+          --color: var(--clr-tree-node-caret-disabled-color);
         }
       }
 
@@ -45,7 +45,7 @@
 
         cds-icon,
         clr-icon {
-          fill: var(--clr-tree-node-caret-disabled-color);
+          --color: var(--clr-tree-node-caret-disabled-color);
         }
       }
     }

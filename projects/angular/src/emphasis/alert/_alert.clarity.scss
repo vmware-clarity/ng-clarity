@@ -76,7 +76,7 @@
 
     cds-icon,
     clr-icon {
-      fill: alert-variables.getAlertColor($alertType, close-icon);
+      --color: alert-variables.getAlertColor($alertType, close-icon);
     }
 
     &:focus,
@@ -86,7 +86,7 @@
 
       cds-icon,
       clr-icon {
-        fill: alert-variables.getAlertColor($alertType, close-icon-hover);
+        --color: alert-variables.getAlertColor($alertType, close-icon-hover);
       }
     }
   }
