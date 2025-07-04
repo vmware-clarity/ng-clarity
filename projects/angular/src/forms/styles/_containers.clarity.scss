@@ -66,6 +66,7 @@
     color: forms-variables.$clr-forms-label-color;
     padding-top: density.$clr-base-vertical-offset-xs;
     padding-bottom: density.$clr-base-vertical-offset-xs;
+    word-wrap: break-word;
 
     @include mixins.generate-typography-token(
       'SECONDARY-13-SB-CPT',
