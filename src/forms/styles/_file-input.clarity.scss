@@ -9,7 +9,7 @@
 
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
-@use '../../layout/density' as density;
+@use '../../utils/variables/variables.density' as density;
 @use 'variables.forms' as forms-variables;
 
 @include mixins.exports('forms.file-input') {

@@ -6,7 +6,7 @@
  */
 @use 'sass:math';
 @use 'variables.color';
-@use '../../layout/density/variables.density' as density;
+@use '../../utils/variables/variables.density' as density;
 
 /* stylelint-disable-next-line meowtec/no-px */
 $clr-baseline-px: 24px; // DEPRECATED in 3.0: no longer used in Clarity SASS
