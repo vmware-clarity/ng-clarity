@@ -8,7 +8,7 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
 @use 'variables.tables' as table-variables;
-@use '../layout/density' as density;
+@use '../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 // Mixin for basic table styles to be able to reuse them on non-table elements.
