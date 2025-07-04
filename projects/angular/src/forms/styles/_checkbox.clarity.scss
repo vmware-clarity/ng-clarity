@@ -7,7 +7,7 @@
 @use '../../emphasis/alert/variables.alert' as alert-variables;
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
-@use '../../layout/density';
+@use '../../layout/density/variables.density' as density;
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
 

@@ -11,7 +11,7 @@
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use 'variables.alert' as alert-variables;
 @use '../../button/buttons.clarity';
-@use '../../layout/density' as density;
+@use '../../layout/density/variables.density' as density;
 
 @use '@cds/core/tokens/tokens.scss';
 

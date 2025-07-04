@@ -10,7 +10,7 @@
 @use 'variables.vertical-nav' as vertical-nav-variables;
 @use '@cds/core/tokens/tokens.scss';
 @use '../tabs/tabs.clarity' as tabs;
-@use '../../layout/density' as density;
+@use '../../layout/density/variables.density' as density;
 
 @mixin vertical-nav-divider($position: 'border-top') {
   #{$position}: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-width solid

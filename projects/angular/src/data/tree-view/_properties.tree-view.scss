@@ -7,7 +7,7 @@
 @use '../../utils/mixins';
 @use 'variables.tree-view' as tree-view-variables;
 @use '@cds/core/tokens/tokens.scss';
-@use '../../layout/density' as density;
+@use '../../layout/density/variables.density' as density;
 
 @include mixins.exports('tree.properties') {
   :root [cds-theme] {

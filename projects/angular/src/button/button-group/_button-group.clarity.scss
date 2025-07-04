@@ -6,7 +6,7 @@
  */
 @use '../../utils/mixins';
 @use '../variables.buttons' as buttons-variables;
-@use '../../layout/density/' as density;
+@use '../../layout/density/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @mixin square-off-btngroup-btns($dir: left) {

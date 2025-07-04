@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../mixins';
-@use '../../layout/density' as density;
+@use '../../layout/density/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('typography.properties') {

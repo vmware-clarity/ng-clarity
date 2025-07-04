@@ -7,7 +7,7 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use '@cds/core/tokens/tokens.scss';
-@use '../layout/density';
+@use '../layout/density/variables.density' as density;
 
 $clr-wizard-vertical-space: density.$clr-base-vertical-offset-2xl !default;
 $clr-wizard-horizontal-space: density.$clr-base-horizontal-offset-2xl !default;
