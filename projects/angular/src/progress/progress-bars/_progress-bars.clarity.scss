@@ -9,7 +9,7 @@
 @use '../../utils/mixins' as utils-mixins;
 @use '../../layout/variables.card' as card-variables;
 @use 'variables.progress-bars' as progress-bars-variables;
-@use '../../layout/density' as density;
+@use '../../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.progress-bars');

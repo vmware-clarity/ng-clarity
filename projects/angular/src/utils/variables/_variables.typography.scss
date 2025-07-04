@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../../layout/density/variables.density' as density;
+@use '../../utils/variables/variables.density' as density;
 
 // Usage: ../typography/_typography.clarity.scss
 $clr-fontSkipBase64: false !default;

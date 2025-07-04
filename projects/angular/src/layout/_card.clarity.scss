@@ -9,7 +9,7 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use 'variables.card' as card-variables;
-@use '../layout/density' as density;
+@use '../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.card');
