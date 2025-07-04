@@ -988,7 +988,7 @@
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
-    align-items: stretch;
+    align-items: center;
     gap: density.$clr-base-gap-s;
 
     .pagination-current {
@@ -1163,7 +1163,7 @@
       position: absolute;
       border: tokens.$cds-global-space-5 solid transparent;
       border-right-color: tables-variables.$clr-table-border-color;
-      top: mixins.baselinePx(10);
+      top: tables-variables.$clr-table-cell-vertical-padding;
       right: 0;
     }
 
@@ -1173,8 +1173,8 @@
       position: absolute;
       border: tokens.$cds-global-space-5 solid transparent;
       border-right-color: datagrid-variables.$clr-datagrid-popover-bg-color;
-      top: mixins.baselinePx(11);
-      right: calc(-1 * tokens.$cds-global-space-1);
+      top: tables-variables.$clr-table-cell-vertical-padding;
+      right: calc(-1 * tokens.$cds-global-space-2);
     }
   }
 
@@ -1213,21 +1213,26 @@
     margin-top: 0;
     display: flex;
     flex-direction: row;
+    gap: density.$clr-base-gap-m;
 
     .datagrid-detail-header-title {
       flex: 1 1 auto;
       color: datagrid-variables.$clr-datagrid-detail-header-title-color;
+      overflow-wrap: anywhere;
     }
 
     .datagrid-detail-pane-close {
-      flex: 1 1 tokens.$cds-global-space-11;
+      flex: 1 1 datagrid-variables.$clr-datagrid-detail-pane-close-icon-size;
       display: flex;
       justify-content: flex-end;
 
       .btn.btn-link {
+        align-items: start;
         min-width: auto;
+        height: auto;
         margin: 0;
-        padding-right: 0;
+        padding: 0;
+        border: 0;
 
         cds-icon {
           @include mixins.min-equilateral(datagrid-variables.$clr-datagrid-detail-pane-close-icon-size);
@@ -1331,7 +1336,6 @@
    */
   .column-switch {
     border-radius: tokens.$cds-alias-object-border-radius-100;
-    padding: density.$clr-base-horizontal-offset-xl;
     background-color: datagrid-variables.$clr-datagrid-popover-bg-color;
     border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
@@ -1346,6 +1350,8 @@
       display: flex;
       justify-content: space-between;
       @include mixins.generate-typography-token('SUBSECTION-16-EXP');
+      padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl 0
+        density.$clr-base-horizontal-offset-xl;
 
       // From accessibility perspective we let use of header tags inside the switch header,
       // but want not to be affected from the global header styles so this is a workaround.
@@ -1378,12 +1384,20 @@
       }
     }
 
-    .switch-content {
+    ul.switch-content {
+      display: flex;
+      flex-direction: column;
+      gap: density.$clr-base-gap-xs;
       max-height: mixins.baselinePx(300);
       overflow-y: auto;
       min-height: calc(
         tables-variables.$clr-table-row-height + tokens.$cds-alias-object-border-width-100
       ); // prevents scrollbars in IE.
+
+      // Increase specificity
+      &.list-unstyled {
+        padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-xl;
+      }
 
       li {
         line-height: unset;
@@ -1392,6 +1406,8 @@
     }
 
     .switch-footer {
+      padding: 0 density.$clr-base-horizontal-offset-xl density.$clr-base-vertical-offset-xl
+        density.$clr-base-horizontal-offset-xl;
       .btn {
         margin: 0;
         padding: 0;
