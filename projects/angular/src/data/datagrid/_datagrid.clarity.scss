@@ -1218,10 +1218,11 @@
     .datagrid-detail-header-title {
       flex: 1 1 auto;
       color: datagrid-variables.$clr-datagrid-detail-header-title-color;
+      overflow-wrap: anywhere;
     }
 
     .datagrid-detail-pane-close {
-      flex: 1 1 tokens.$cds-global-space-11;
+      flex: 1 1 datagrid-variables.$clr-datagrid-detail-pane-close-icon-size;
       display: flex;
       justify-content: flex-end;
 
