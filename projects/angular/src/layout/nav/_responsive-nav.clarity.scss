@@ -17,7 +17,7 @@
 @use '../tabs/tabs.clarity' as tabs;
 @use 'variables.subnav' as nav-variables;
 @use '@cds/core/tokens/tokens.scss';
-@use '../../layout/density/variables.density' as density;
+@use '../../utils/variables/variables.density' as density;
 
 @mixin sliding-nav-positioning($top: 0, $right: auto, $bottom: 0, $left: 0) {
   display: flex;

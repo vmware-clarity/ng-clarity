@@ -11,7 +11,7 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.tooltip' as tooltip-variables;
-@use '../../layout/density/variables.density' as density;
+@use '../../utils/variables/variables.density' as density;
 
 @mixin common-tooltip-styles {
   margin: 0; //Resetting any margin that might be applied to span/div elements inside forms

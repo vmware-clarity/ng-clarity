@@ -9,7 +9,7 @@
 @use 'variables.subnav' as subnav-variables;
 @use '../tabs/tabs.clarity' as tabs;
 @use '@cds/core/tokens/tokens.scss';
-@use '../../layout/density/variables.density' as density;
+@use '../../utils/variables/variables.density' as density;
 
 @include mixins.exports('nav.clarity') {
   .nav {

@@ -8,7 +8,7 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use './variables.modal' as modal-variables;
-@use '../layout/density/variables.density' as density;
+@use '../utils/variables/variables.density' as density;
 
 @use '@cds/core/tokens/tokens.scss';
 

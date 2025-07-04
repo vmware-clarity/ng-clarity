@@ -9,7 +9,7 @@
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
 @use '@cds/core/tokens/tokens.scss' as tokens;
-@use '../../layout/density/variables.density' as density;
+@use '../../utils/variables/variables.density' as density;
 @use 'sass:selector';
 
 @include mixins.exports('forms.number-input') {

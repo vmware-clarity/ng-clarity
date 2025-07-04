@@ -6,7 +6,7 @@
  */
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
-@use '../layout/density/variables.density' as density;
+@use '../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('table.properties') {

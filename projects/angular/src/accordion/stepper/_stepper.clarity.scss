@@ -8,7 +8,7 @@
 @use '../../utils/a11y';
 @use '../../utils/mixins';
 @use '../variables.accordion' as accordion-variables;
-@use '../../layout/density/variables.density' as density;
+@use '../../utils/variables/variables.density' as density;
 @include meta.load-css('../properties.accordion');
 
 @include mixins.exports('stepper.clarity') {
