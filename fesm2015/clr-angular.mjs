@@ -23316,7 +23316,7 @@ ClrDatagridDetailHeader.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0"
     <div class="datagrid-detail-pane-close">
       <button
         type="button"
-        class="btn btn-link"
+        class="btn btn-icon btn-link"
         (click)="detailService.close()"
         [attr.aria-label]="commonStrings.keys.close"
       >
@@ -23338,7 +23338,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
     <div class="datagrid-detail-pane-close">
       <button
         type="button"
-        class="btn btn-link"
+        class="btn btn-icon btn-link"
         (click)="detailService.close()"
         [attr.aria-label]="commonStrings.keys.close"
       >
