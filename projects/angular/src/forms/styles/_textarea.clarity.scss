@@ -15,7 +15,6 @@
   .clr-textarea-wrapper {
     white-space: nowrap;
     display: flex;
-    margin-top: density.$clr-base-gap-s;
     .clr-validate-icon {
       margin-left: 0;
     }
@@ -65,15 +64,7 @@
     max-width: calc(100% - forms-variables.$clr-forms-baseline);
   }
 
-  .clr-form-horizontal .clr-textarea-wrapper {
-    margin-top: 0;
-  }
-
-  .clr-form-compact .clr-textarea-wrapper {
-    margin-top: 0;
-
-    .clr-textarea {
-      @include forms-mixins.form-flatten-compact-adjustments();
-    }
+  .clr-form-compact .clr-textarea-wrapper .clr-textarea {
+    @include forms-mixins.form-flatten-compact-adjustments();
   }
 }
