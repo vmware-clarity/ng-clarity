@@ -17,7 +17,7 @@
 
 @mixin generate-calendar-button(
   $height: datepicker-variables.$clr-calendar-btn-size,
-  $padding: datepicker-variables.$clr-calendar-btn-padding
+  $padding: datepicker-variables.$clr-calendar-btn-horizontal-padding
 ) {
   //Dimensions
   @include mixins.min-equilateral($height);
@@ -294,7 +294,7 @@
 
   .month,
   .year {
-    @include generate-calendar-button($padding: datepicker-variables.$clr-calendar-month-cell-padding);
+    @include generate-calendar-button($padding: datepicker-variables.$clr-calendar-month-cell-horizontal-padding);
     @include generate-calendar-hover-active-color-style();
     @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
     @include generate-current-date-style();

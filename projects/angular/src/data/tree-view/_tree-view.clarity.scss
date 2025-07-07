@@ -8,6 +8,7 @@
 @use '../../utils/mixins';
 @use 'variables.tree-view' as tree-view-variables;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
 
 @include meta.load-css('properties.tree-view');
 
@@ -75,10 +76,10 @@
         &::before {
           content: '';
           position: absolute;
-          left: calc(-1 * tree-view-variables.$clr-tree-node-touch-target);
+          left: calc(-1 * tree-view-variables.$clr-tree-node-checkbox-input-size);
           top: 0;
           height: 100%;
-          width: tree-view-variables.$clr-tree-node-touch-target;
+          width: tree-view-variables.$clr-tree-node-checkbox-input-size;
         }
       }
     }
@@ -148,12 +149,11 @@
   }
 
   .clr-treenode-checkbox input[type='checkbox'] {
-    min-width: tree-view-variables.$clr-tree-checkbox-size;
-    width: tree-view-variables.$clr-tree-checkbox-size;
-    padding: tree-view-variables.$clr-tree-node-icon-padding;
-    margin-left: tree-view-variables.$clr-tree-node-horizontal-offset;
+    @include mixins.min-equilateral(tree-view-variables.$clr-tree-checkbox-size);
+    padding: 0;
     // Using margin instead of gap due to checkbox implementation specifics.
-    margin-right: tree-view-variables.$clr-tree-node-content-gap;
+    margin: density.$clr-base-vertical-offset-multi-row-inline-m tree-view-variables.$clr-tree-node-content-gap
+      density.$clr-base-vertical-offset-multi-row-inline-m tree-view-variables.$clr-tree-node-horizontal-offset;
   }
 
   .clr-treenode-content .clr-treenode-link,
