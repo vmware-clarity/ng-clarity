@@ -31,7 +31,7 @@
 @mixin datagrid-action-overflow-appearance {
   position: absolute;
   background: datagrid-variables.$clr-datagrid-popover-bg-color;
-  padding: density.$clr-base-horizontal-offset-m;
+  padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
   margin-left: tokens.$cds-global-space-4;
   border-style: solid;
   border-width: tokens.$cds-alias-object-border-width-100;
@@ -246,7 +246,7 @@
 
       .datagrid-cell {
         display: flex;
-        padding: density.$clr-base-horizontal-offset-2xl;
+        padding: density.$clr-base-vertical-offset-2xl density.$clr-base-horizontal-offset-2xl;
         align-items: center;
         gap: density.$clr-base-gap-m;
         justify-content: center;
@@ -695,7 +695,7 @@
         align-items: center;
         justify-content: flex-start;
         gap: density.$clr-base-gap-m;
-        padding: density.$clr-base-horizontal-offset-2xl;
+        padding: density.$clr-base-vertical-offset-2xl density.$clr-base-horizontal-offset-2xl;
         @include mixins.generate-typography-token(
           'BODY-14-SB-STD',
           (
@@ -1203,7 +1203,7 @@
 
   .datagrid-detail-body {
     flex: 1 1 auto;
-    padding: density.$clr-base-horizontal-offset-xl 0;
+    padding: density.$clr-base-vertical-offset-xl 0;
     color: datagrid-variables.$clr-datagrid-detail-body-text-color;
   }
 
