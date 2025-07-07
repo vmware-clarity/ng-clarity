@@ -14,13 +14,16 @@ $clr-tree-border-radius: var(--clr-tree-border-radius) !default;
 $clr-tree-caret-size: #{density.$clr-base-icon-size-s} !default;
 $clr-tree-checkbox-size: #{density.$clr-base-icon-size-s} !default;
 $clr-tree-spinner-size: #{density.$clr-base-icon-size-s} !default;
-$clr-tree-node-touch-target: #{density.$clr-base-icon-size-2xl} !default;
+$clr-tree-node-touch-target: #{density.$clr-base-tree-node-height} !default;
 $clr-tree-node-children-margin: $clr-tree-node-touch-target !default;
 
 $clr-tree-node-content-gap: #{density.$clr-base-gap-s} !default;
 $clr-tree-node-horizontal-offset: #{density.$clr-base-horizontal-offset-m} !default;
-$clr-tree-node-content-padding: #{density.$clr-base-vertical-offset-m} #{density.$clr-base-horizontal-offset-m} !default;
-$clr-tree-node-icon-padding: density.$clr-base-vertical-offset-m 0 !default;
+$clr-tree-node-content-padding: #{density.$clr-base-vertical-offset-multi-row-inline-m} #{density.$clr-base-horizontal-offset-m} !default;
+$clr-tree-node-icon-padding: #{density.$clr-base-vertical-offset-m} 0 !default;
+$clr-tree-node-checkbox-input-size: calc(
+  #{$clr-tree-checkbox-size} + #{$clr-tree-node-content-gap} + #{$clr-tree-node-horizontal-offset}
+) !default;
 
 // @deprecated  in v17 in favor of clr-tree-node-content-bg-hover-color
 $clr-tree-link-hover-color: var(--clr-tree-node-content-bg-hover-color) !default;
