@@ -45,7 +45,6 @@ import { CommonModules } from '../../helpers/common';
         color: var(--cds-global-color-gray-0);
         font-size: var(--cds-global-typography-body-font-size);
         min-width: 50px;
-        min-width: 50px;
         min-height: 50px;
       }
     `,
