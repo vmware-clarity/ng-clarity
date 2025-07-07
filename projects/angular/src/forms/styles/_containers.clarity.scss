@@ -155,6 +155,7 @@
       width: calc(32 * #{forms-variables.$clr-forms-baseline});
       min-width: calc(32 * #{forms-variables.$clr-forms-baseline});
     }
+
     .clr-form-control.clr-row > .clr-control-label {
       width: auto;
       min-width: auto;
@@ -163,7 +164,7 @@
     .clr-form-control {
       display: flex;
       flex-direction: row;
-      margin-top: calc(2 * #{forms-variables.$clr-forms-baseline});
+      margin-top: density.$clr-base-vertical-offset-l;
     }
 
     .clr-control-container {
