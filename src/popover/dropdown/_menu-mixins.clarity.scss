@@ -106,6 +106,6 @@
   padding: 0 density.$clr-base-horizontal-offset-2xl 0 density.$clr-base-horizontal-offset-l;
 
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
-    padding: density.$clr-base-horizontal-offset-s density.$clr-base-horizontal-offset-2xl;
+    padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-2xl;
   }
 }

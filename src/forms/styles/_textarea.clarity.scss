@@ -29,7 +29,7 @@
     background: forms-variables.$clr-forms-textarea-background-color;
     color: forms-variables.$clr-forms-text-color;
     border-radius: forms-variables.$clr-forms-textarea-border-radius;
-    padding: density.$clr-base-horizontal-offset-xl;
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
     @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
 
     &:focus {
