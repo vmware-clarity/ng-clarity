@@ -63,7 +63,7 @@
     --clr-datagrid-column-toggle-fill-active-color: #{tokens.$cds-alias-object-opacity-0};
     --clr-datagrid-column-toggle-text-active-color: #{tokens.$cds-alias-typography-color-400};
 
-    --clr-datagrid-detail-pane-content-padding: #{density.$clr-base-horizontal-offset-xl};
+    --clr-datagrid-detail-pane-content-padding: #{density.$clr-base-vertical-offset-xl} #{density.$clr-base-horizontal-offset-xl};
     --clr-datagrid-detail-pane-close-icon-size: #{density.$clr-base-icon-size-l};
     --clr-datagrid-detail-body-text-color: #{tokens.$cds-alias-typography-color-400};
     --clr-datagrid-detail-header-title-color: #{tokens.$cds-alias-typography-color-400};

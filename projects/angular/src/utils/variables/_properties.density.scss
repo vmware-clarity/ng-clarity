@@ -112,6 +112,7 @@
     --clr-base-spinner-stroke-l: #{tokens.$cds-global-space-4}; // default
 
     --clr-base-header-height: #{mixins.baselinePx(60)};
+    --clr-base-tree-node-height: #{tokens.$cds-global-space-10};
 
     --clr-base-progress-bar-height: #{tokens.$cds-global-space-6};
 
@@ -219,6 +220,7 @@
       --clr-base-spinner-stroke-l: #{tokens.$cds-global-space-4}; // default
 
       --clr-base-header-height: #{mixins.baselinePx(56)};
+      --clr-base-tree-node-height: #{tokens.$cds-global-space-10};
 
       --clr-base-progress-bar-height: #{tokens.$cds-global-space-6};
     }
@@ -327,6 +329,7 @@
       --clr-base-spinner-stroke-l: #{tokens.$cds-alias-object-border-width-400}; // default
 
       --clr-base-header-height: #{tokens.$cds-global-space-12};
+      --clr-base-tree-node-height: #{tokens.$cds-global-space-9};
 
       --clr-base-progress-bar-height: #{mixins.baselinePx(10)};
     }
