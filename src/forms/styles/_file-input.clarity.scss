@@ -18,6 +18,10 @@
     position: relative;
     gap: density.$clr-base-gap-xs;
 
+    .clr-control-label {
+      padding: 0;
+    }
+
     .clr-file-input {
       @include mixins.equilateral(0);
       opacity: 0;
