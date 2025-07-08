@@ -9,6 +9,7 @@
 @use '../../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 @use '../../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
 
 // Usage: ../data/datagrid/_datagrid.clarity.scss
 $clr-datagrid-margin-top: density.$clr-base-vertical-offset-l;
