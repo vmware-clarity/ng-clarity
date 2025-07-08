@@ -16,7 +16,7 @@
 @include mixins.exports('button-group.clarity') {
   .btn-group {
     display: inline-flex;
-    margin-right: density.$clr-base-horizontal-offset-l;
+    margin-right: buttons-variables.$clr-btn-horizontal-margin;
 
     clr-dropdown {
       .dropdown-toggle {
