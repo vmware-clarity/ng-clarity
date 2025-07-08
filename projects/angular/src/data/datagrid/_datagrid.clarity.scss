@@ -76,12 +76,14 @@
   }
 }
 
-@mixin datagrid-action-button-styles($height: tables-variables.$clr-table-row-height) {
+@mixin datagrid-action-button-styles(
+  $height: tables-variables.$clr-table-row-height,
+  $columnSize: datagrid-variables.$clr-datagrid-fixed-column-size,
+  $iconSize: datagrid-variables.$clr-datagrid-icon-size
+) {
   // Calculates how much padding to set on top/bottom and left/right by dividing the height by the icon size
-  $verticalPadding: calc(($height - datagrid-variables.$clr-datagrid-icon-size) / 2);
-  $horizontalPadding: calc(
-    (datagrid-variables.$clr-datagrid-fixed-column-size - datagrid-variables.$clr-datagrid-icon-size) / 2
-  );
+  $verticalPadding: calc(($height - $iconSize) / 2);
+  $horizontalPadding: calc(($columnSize - $iconSize) / 2);
   cursor: pointer;
   width: 100%;
   height: $height;
@@ -882,7 +884,58 @@
     z-index: map.get(variables.$clr-layers, datagrid-host); // Keeps the spinner above the datagrid header.
   }
 
+  // @deprecated in favor of compact mode in density theme
   .datagrid-compact {
+    .datagrid {
+      margin-top: tokens.$cds-global-space-5;
+    }
+
+    .datagrid-action-bar {
+      $action-bar-offset: mixins.baselinePx(20);
+      margin-top: $action-bar-offset;
+      & ~ .datagrid-spinner {
+        height: calc(100% - #{$action-bar-offset});
+        top: $action-bar-offset;
+      }
+    }
+
+    .datagrid-detail-pane {
+      margin-top: tokens.$cds-global-space-5;
+      &-content {
+        padding: tokens.$cds-global-space-7;
+        .datagrid-detail-header {
+          font-size: tokens.$cds-global-space-7;
+          line-height: mixins.baselinePx(20);
+          .datagrid-detail-pane-close button cds-icon {
+            @include mixins.min-equilateral(mixins.baselinePx(20));
+          }
+        }
+        .datagrid-detail-body {
+          padding: tokens.$cds-global-space-6 0;
+        }
+      }
+    }
+
+    .datagrid-column {
+      &.datagrid-select,
+      &.datagrid-expandable-caret,
+      &.datagrid-row-actions {
+        max-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
+        min-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
+      }
+    }
+
+    .datagrid-cell.datagrid-fixed-column {
+      flex: 0 0 datagrid-variables.$clr-datagrid-compact-fixed-column-size;
+      max-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
+      min-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
+    }
+
+    .datagrid-row .datagrid-row-detail .datagrid-cell.datagrid-container {
+      font-size: mixins.baselinePx(13);
+      line-height: tokens.$cds-global-space-8;
+    }
+
     .datagrid-row-replaced .datagrid-row-detail .datagrid-cell {
       padding: tables-variables.$clr-table-cell-compact-padding;
     }
@@ -895,7 +948,11 @@
 
     .datagrid-detail-caret {
       .datagrid-detail-caret-button {
-        @include datagrid-action-button-styles(tables-variables.$clr-table-compact-row-height);
+        @include datagrid-action-button-styles(
+          tables-variables.$clr-table-compact-row-height,
+          datagrid-variables.$clr-datagrid-compact-fixed-column-size,
+          tokens.$cds-global-space-7
+        );
       }
       .spinner {
         margin-top: datagrid-variables.$clr-datagrid-compact-expandable-row-spinner-margin;
@@ -928,7 +985,11 @@
       }
 
       .datagrid-expandable-caret-button {
-        @include datagrid-action-button-styles(tables-variables.$clr-table-compact-row-height);
+        @include datagrid-action-button-styles(
+          tables-variables.$clr-table-compact-row-height,
+          datagrid-variables.$clr-datagrid-compact-fixed-column-size,
+          tokens.$cds-global-space-7
+        );
       }
 
       .datagrid-expandable-caret-icon {
@@ -943,7 +1004,11 @@
 
     .datagrid-row-actions {
       .datagrid-action-toggle {
-        @include datagrid-action-button-styles(tables-variables.$clr-table-compact-row-height);
+        @include datagrid-action-button-styles(
+          tables-variables.$clr-table-compact-row-height,
+          datagrid-variables.$clr-datagrid-compact-fixed-column-size,
+          tokens.$cds-global-space-7
+        );
       }
     }
 
@@ -957,17 +1022,73 @@
     .datagrid-footer {
       min-height: tables-variables.$clr-table-compact-row-height;
       line-height: tables-variables.$clr-table-compact-row-height - tokens.$cds-global-space-1;
+      padding: 0 tokens.$cds-global-space-6;
 
       .pagination {
         line-height: tables-variables.$clr-table-compact-row-height;
+        gap: mixins.baselinePx(10);
 
-        .clr-page-size-select {
-          min-height: density.$clr-base-row-height-xs;
+        clr-dg-page-size {
+          gap: mixins.baselinePx(10);
+        }
+
+        .clr-select-wrapper {
+          max-height: tokens.$cds-global-space-9;
+          &::after {
+            --clr-forms-select-caret-size: #{tokens.$cds-global-space-6};
+            right: tokens.$cds-global-space-2;
+          }
+          .clr-page-size-select {
+            min-height: tokens.$cds-global-space-7;
+            padding: 0 mixins.baselinePx(20) 0 tokens.$cds-global-space-2;
+          }
         }
       }
 
       .clr-form-control-disabled .datagrid-footer-select.clr-checkbox-wrapper input[type='checkbox']:checked + label {
         top: 0;
+      }
+
+      .column-switch-wrapper .column-toggle--action {
+        border-radius: tokens.$cds-global-space-2;
+        padding: 0 tokens.$cds-global-space-4;
+        height: mixins.baselinePx(20);
+      }
+    }
+
+    .pagination-list {
+      gap: tokens.$cds-global-space-4;
+
+      .pagination-current {
+        // @include mixins.generate-typography-token('CAPTION-LG-11');
+        padding: tokens.$cds-global-space-2 0;
+      }
+
+      .pagination-pages {
+        gap: tokens.$cds-global-space-2;
+      }
+
+      .pagination-current,
+      button {
+        @include mixins.min-equilateral(mixins.baselinePx(20));
+      }
+    }
+
+    .datagrid-action-overflow .action-item {
+      font-size: tokens.$cds-global-space-6;
+      line-height: mixins.baselinePx(20);
+      gap: tokens.$cds-global-space-2;
+      height: mixins.baselinePx(20);
+      padding: 0 mixins.baselinePx(20) 0 tokens.$cds-global-space-5;
+    }
+
+    .datagrid-placeholder.datagrid-empty {
+      font-size: mixins.baselinePx(13);
+      line-height: tokens.$cds-global-space-8;
+      padding: mixins.baselinePx(20);
+      gap: mixins.baselinePx(10);
+      .datagrid-placeholder-image {
+        @include mixins.equilateral(tokens.$cds-global-space-10);
       }
     }
   }

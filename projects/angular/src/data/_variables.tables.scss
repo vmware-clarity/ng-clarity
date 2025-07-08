@@ -44,3 +44,4 @@ $clr-table--compact-verticalPadding: var(
   --clr-table-compact-vertical-padding
 ) !default; // Leaving for backwards compatibility
 $clr-table-compact-vertical-padding: $clr-table--compact-verticalPadding;
+$clr-table-compact-horizontal-padding: var(--clr-table-compact-horizontal-padding);

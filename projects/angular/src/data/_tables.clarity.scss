@@ -99,11 +99,18 @@
     }
   }
 
+  // @deprecated in favor of compact mode in density theme
   #{$table}-compact {
+    --clr-table-margin: #{mixins.baselinePx(20)} 0 0 0;
+    --clr-table-cell-vertical-padding: #{table-variables.$clr-table-compact-vertical-padding};
     #{$th},
     #{$td} {
       min-height: table-variables.$clr-table-compact-row-height;
       padding: table-variables.$clr-table-cell-compact-padding;
+    }
+    #{$td} {
+      font-size: mixins.baselinePx(13);
+      line-height: tokens.$cds-global-space-7;
     }
   }
 }
