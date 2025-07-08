@@ -148,8 +148,6 @@
     .clr-combobox-input-wrapper {
       border: none;
       background: none;
-      height: density.$clr-base-row-height-xs;
-      line-height: density.$clr-base-typography-line-height-16;
     }
 
     &:not(.disabled):hover,
