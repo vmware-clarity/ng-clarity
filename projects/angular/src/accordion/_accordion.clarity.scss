@@ -146,7 +146,7 @@
   }
 
   .clr-accordion-inner-content {
-    padding: density.$clr-base-horizontal-offset-xl;
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
 
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
       padding: tokens.$cds-global-space-8 mixins.baselinePx(54);

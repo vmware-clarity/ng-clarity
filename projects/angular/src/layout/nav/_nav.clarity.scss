@@ -48,7 +48,7 @@
       }
 
       &.dropdown-toggle {
-        padding: 0 density.$clr-base-vertical-offset-m;
+        padding: 0 density.$clr-base-horizontal-offset-m;
         cds-icon {
           color: tabs-variables.$clr-nav-link-color;
         }
