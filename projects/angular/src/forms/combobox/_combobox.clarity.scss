@@ -51,8 +51,11 @@
     //Dimensions
     padding-top: calc(density.$clr-base-vertical-offset-xs - tokens.$cds-alias-object-border-width-100);
     padding-bottom: calc(density.$clr-base-vertical-offset-xs - tokens.$cds-alias-object-border-width-100);
-    padding-left: combobox-variables.$clr-combobox-trigger-left-padding;
-    padding-right: calc(combobox-variables.$clr-combobox-caret-icon-size + 2 * density.$clr-base-horizontal-offset-m);
+    padding-left: combobox-variables.$clr-combobox-trigger-padding-left;
+    padding-right: calc(
+      combobox-variables.$clr-combobox-caret-icon-size + combobox-variables.$clr-combobox-trigger-padding-left +
+        combobox-variables.$clr-combobox-trigger-padding-right
+    );
 
     min-width: combobox-variables.$clr-combobox-min-width;
     .clr-input {
@@ -102,6 +105,8 @@
       background: none;
       border-bottom: none;
       vertical-align: middle;
+      height: density.$clr-base-row-height-xs;
+      line-height: density.$clr-base-typography-line-height-16;
     }
 
     .clr-combobox-remove-btn {
@@ -145,11 +150,6 @@
       }
     }
 
-    .clr-combobox-input-wrapper {
-      border: none;
-      background: none;
-    }
-
     &:not(.disabled):hover,
     &:focus-within {
       background-color: combobox-variables.$clr-combobox-hover-background-color;
@@ -165,7 +165,7 @@
       }
     }
     //Dimensions
-    padding-left: combobox-variables.$clr-combobox-trigger-left-padding;
+    padding-left: combobox-variables.$clr-combobox-trigger-padding-left;
     padding-right: combobox-variables.$clr-combobox-trigger-padding-right;
 
     margin: auto;

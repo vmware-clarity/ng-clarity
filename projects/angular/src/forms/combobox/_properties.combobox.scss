@@ -18,15 +18,12 @@
     --clr-combobox-filter-highlight: #{tokens.$cds-alias-object-interaction-background-highlight};
     --clr-combobox-min-width: #{mixins.baselinePx(168)}; // 7rem
     --clr-combobox-multi-min-width: #{mixins.baselinePx(360)}; // 15rem
-    --clr-combobox-min-height: #{tokens.$cds-global-space-9};
-    --clr-combobox-font-size: #{tokens.$cds-global-typography-secondary-font-size};
+    --clr-combobox-font-size: #{density.$clr-base-typography-font-size-inline};
     --clr-combobox-font-weight: #{tokens.$cds-global-typography-secondary-font-weight};
     --clr-combobox-text-color: #{tokens.$cds-alias-typography-color-400};
     --clr-combobox-border-radius: #{density.$clr-base-border-radius-s};
-    --clr-combobox-padding-left: #{tokens.$cds-global-space-5};
     --clr-combobox-trigger-padding-left: #{density.$clr-base-horizontal-offset-m};
-    --clr-combobox-trigger-padding-right: #{tokens.$cds-global-space-5};
-    --clr-combobox-trigger-gap: #{tokens.$cds-global-space-6};
+    --clr-combobox-trigger-padding-right: #{density.$clr-base-horizontal-offset-m};
     --clr-combobox-trigger-font-color: #{tokens.$cds-alias-object-interaction-color};
     --clr-combobox-hover-background-color: #{tokens.$cds-alias-object-interaction-background-hover};
     --clr-combobox-active-background-color: #{tokens.$cds-alias-object-interaction-background-active};
