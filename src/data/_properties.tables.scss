@@ -37,12 +37,11 @@
     // Usage: ./data/_tables.clarity.scss
     // Usage: ./data/datagrid/_datagrid.clarity.scss
     --clr-table-font-color: #{tokens.$cds-alias-typography-color-400}; // var(--clr-color-neutral-700);
-    --clr-table-margin: #{tokens.$cds-global-space-9} 0 0 0;
+    --clr-table-margin: #{density.$clr-base-vertical-offset-2xl} 0 0 0;
 
     // Table header styles
     --clr-thead-color: #{tokens.$cds-alias-typography-color-400}; // #{$clr-thead-color};
 
-    --clr-table-smallpadding: #{tokens.$cds-global-space-4};
     --clr-table-bottomcellpadding: calc(var(--clr-table-cellpadding) - #{tokens.$cds-global-space-1});
     --clr-table-topcellpadding: #{tokens.$cds-global-space-6};
     --clr-table-fontsize: #{tokens.$cds-alias-typography-secondary-font-size};
