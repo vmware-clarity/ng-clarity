@@ -8,6 +8,7 @@
 import {
   Directive,
   ElementRef,
+  HostBinding,
   HostListener,
   Injector,
   Optional,
@@ -43,10 +44,15 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     renderer: Renderer2,
     viewContainerRef: ViewContainerRef,
     readonly elementRef: ElementRef<HTMLInputElement>,
-    @Self() @Optional() control: NgControl,
+    @Self() @Optional() private readonly control: NgControl,
     private readonly commonStrings: ClrCommonStringsService
   ) {
     super(viewContainerRef, ClrFileInputContainer, injector, control, renderer, elementRef);
+  }
+
+  @HostBinding('disabled')
+  protected get disabled() {
+    return this.control && this.control.disabled;
   }
 
   @HostListener('change')
