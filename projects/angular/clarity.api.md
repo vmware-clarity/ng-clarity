@@ -2565,6 +2565,8 @@ export class ClrFileInfo {
 export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
     // (undocumented)
+    protected get disabled(): boolean;
+    // (undocumented)
     readonly elementRef: ElementRef<HTMLInputElement>;
     // (undocumented)
     selection: ClrFileInputSelection;
