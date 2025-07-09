@@ -4,7 +4,6 @@
 
 | CSS Custom Property                    | Description                                                            |
 | -------------------------------------- | ---------------------------------------------------------------------- |
-| --clr-combobox-font-size               | Combobox font size                                                     |
 | --clr-combobox-border-color            | Combobox border color                                                  |
 | --clr-combobox-border-radius           | Combobox corners radius                                                |
 | --clr-combobox-input-background-color  | Combobox input background color                                        |
@@ -16,6 +15,7 @@
 | --clr-combobox-min-height              | Minimal height of the combobox                                         |
 | --clr-combobox-min-width               | Minimal width of the combobox                                          |
 | --clr-combobox-multi-min-width         | Minimal width of the multi-select combobox                             |
+| --clr-combobox-font-size               | Combobox input font size                                               |
 | --clr-combobox-font-weight             | Combobox input font weight                                             |
 | --clr-combobox-text-color              | Text color for the combobox input                                      |
 | --clr-combobox-trigger-padding-left    | Combobox trigger/caret left padding                                    |
