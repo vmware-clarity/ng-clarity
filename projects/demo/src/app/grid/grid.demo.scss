@@ -17,8 +17,8 @@
     align-items: center;
     height: clarity-variables.$clr_baselineRem_1_5;
     border-radius: clarity-variables.$clr-global-borderradius;
-    background: hsl(195, 13%, 88%);
-    margin: clarity-variables.$clr_baselineRem_0_25 0;
+    background: tokens.$cds-alias-object-container-background-shade;
+    margin: clarity-variables.$clr-base-vertical-offset-m 0;
 
     &.clr-example-enable-borders {
       border: clarity-variables.$clr-global-borderwidth solid $border-color;
@@ -27,8 +27,8 @@
 
   .clr-example-row {
     background: $border-color;
-    height: clarity-variables.$clr_baselineRem_108px;
-    margin: clarity-variables.$clr_baselineRem_0_25 0;
+    height: clarity-variables.$clr-base-row-height-l;
+    margin: clarity-variables.$clr-base-vertical-offset-m 0;
   }
 
   &.container-example {
