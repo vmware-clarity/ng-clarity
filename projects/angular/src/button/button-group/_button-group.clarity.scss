@@ -7,7 +7,6 @@
 @use '../../utils/mixins';
 @use '../variables.buttons' as buttons-variables;
 @use '../../utils/variables/variables.density' as density;
-@use '@cds/core/tokens/tokens.scss';
 
 @mixin square-off-btngroup-btns($dir: left) {
   border-top-#{$dir}-radius: 0;
@@ -17,7 +16,7 @@
 @include mixins.exports('button-group.clarity') {
   .btn-group {
     display: inline-flex;
-    margin-right: tokens.$cds-global-space-6;
+    margin-right: buttons-variables.$clr-btn-horizontal-margin;
 
     clr-dropdown {
       .dropdown-toggle {
