@@ -13,6 +13,7 @@
  */
 :root [cds-theme] {
   --cds-global-typography-font-family: var(--clr-metropolis-font-family);
+  --cds-global-typography-header-font-family: var(--clr-metropolis-font-family);
   --cds-alias-utility-gray: var(--cds-global-color-construction-600);
   --cds-alias-typography-link-color: var(--cds-global-color-blue-800);
   --cds-alias-typography-link-color-hover: var(--cds-global-color-blue-900);
@@ -66,6 +67,28 @@
   --cds-global-layout-space-xl: var(--δ7);
   --cds-global-layout-space-xxl: var(--δ8);
   --cds-global-layout-space-xxxl: var(--δ9);
+  --cds-global-typography-body-font-size: var(--clr-base-typography-font-size-default);
+  --cds-global-typography-body-line-height: var(--clr-base-typography-line-height-20);
+  --cds-global-typography-display-font-size: var(--clr-base-typography-font-size-display);
+  --cds-global-typography-display-line-height: var(--clr-base-typography-line-height-44);
+  --cds-global-typography-heading-font-size: var(--clr-base-typography-font-size-heading);
+  --cds-global-typography-heading-line-height: var(--clr-base-typography-line-height-32);
+  --cds-global-typography-headline-font-size: var(--clr-base-typography-font-size-headline);
+  --cds-global-typography-headline-line-height: var(--clr-base-typography-line-height-36);
+  --cds-global-typography-title-font-size: var(--clr-base-typography-font-size-heading);
+  --cds-global-typography-title-line-height: var(--clr-base-typography-line-height-32);
+  --cds-global-typography-section-font-size: var(--clr-base-typography-font-size-section);
+  --cds-global-typography-section-line-height: var(--clr-base-typography-line-height-24);
+  --cds-global-typography-subsection-font-size: var(--clr-base-typography-font-size-sub-section);
+  --cds-global-typography-subsection-line-height: var(--clr-base-typography-line-height-24);
+  --cds-global-typography-message-font-size: var(--clr-base-typography-font-size-sub-section);
+  --cds-global-typography-message-line-height: var(--clr-base-typography-line-height-24);
+  --cds-global-typography-secondary-font-size: var(--clr-base-typography-font-size-inline);
+  --cds-global-typography-secondary-line-height: var(--clr-base-typography-line-height-16);
+  --cds-global-typography-caption-font-size: var(--clr-base-typography-font-size-caption);
+  --cds-global-typography-caption-line-height: var(--clr-base-typography-line-height-16);
+  --cds-global-typography-smallcaption-font-size: var(--clr-base-typography-font-size-caption-small);
+  --cds-global-typography-smallcaption-line-height: var(--clr-base-typography-line-height-12);
 }
 :root [cds-theme~=dark] {
   --cds-alias-utility-gray: var(--cds-global-color-construction-300);
