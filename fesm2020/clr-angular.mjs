@@ -15659,7 +15659,7 @@ class ClrFileInputContainer extends ClrAbstractContainer {
         return this.fileInput.elementRef.nativeElement.multiple;
     }
     get disabled() {
-        return this.fileInput.elementRef.nativeElement.disabled;
+        return this.fileInput.elementRef.nativeElement.disabled || (this.control && this.control.disabled);
     }
     get browseButtonText() {
         const selectionButtonLabel = this.fileList ? undefined : this.fileInput?.selection?.buttonLabel;
@@ -15881,8 +15881,12 @@ class ClrFileInput extends WrappedFormControl {
     constructor(injector, renderer, viewContainerRef, elementRef, control, commonStrings) {
         super(viewContainerRef, ClrFileInputContainer, injector, control, renderer, elementRef);
         this.elementRef = elementRef;
+        this.control = control;
         this.commonStrings = commonStrings;
         this.selection = undefined;
+    }
+    get disabled() {
+        return this.control && this.control.disabled;
     }
     handleChange() {
         this.updateSelection();
@@ -15915,7 +15919,7 @@ class ClrFileInput extends WrappedFormControl {
     }
 }
 ClrFileInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInput, deps: [{ token: i0.Injector }, { token: i0.Renderer2 }, { token: i0.ViewContainerRef }, { token: i0.ElementRef }, { token: i1.NgControl, optional: true, self: true }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrFileInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrFileInput, selector: "input[type=\"file\"][clrFileInput]", host: { attributes: { "tabindex": "-1", "aria-hidden": "true" }, listeners: { "change": "handleChange()" }, properties: { "class.clr-file-input": "true" } }, usesInheritance: true, ngImport: i0 });
+ClrFileInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrFileInput, selector: "input[type=\"file\"][clrFileInput]", host: { attributes: { "tabindex": "-1", "aria-hidden": "true" }, listeners: { "change": "handleChange()" }, properties: { "class.clr-file-input": "true", "disabled": "this.disabled" } }, usesInheritance: true, ngImport: i0 });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInput, decorators: [{
             type: Directive,
             args: [{
@@ -15930,7 +15934,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
                     type: Self
                 }, {
                     type: Optional
-                }] }, { type: ClrCommonStringsService }]; }, propDecorators: { handleChange: [{
+                }] }, { type: ClrCommonStringsService }]; }, propDecorators: { disabled: [{
+                type: HostBinding,
+                args: ['disabled']
+            }], handleChange: [{
                 type: HostListener,
                 args: ['change']
             }] } });

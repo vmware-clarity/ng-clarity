@@ -11,9 +11,11 @@ export interface ClrFileInputSelection {
 }
 export declare class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     readonly elementRef: ElementRef<HTMLInputElement>;
+    private readonly control;
     private readonly commonStrings;
     selection: ClrFileInputSelection;
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
+    protected get disabled(): boolean;
     private handleChange;
     private updateSelection;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInput, [null, null, null, null, { optional: true; self: true; }, null]>;
