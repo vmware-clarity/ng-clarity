@@ -366,11 +366,11 @@ $typography-tokens: (
     letter-spacing: #{baselinePx(0.2)},
   ),
   'CAPTION-LG-11-CPT': (
-    // P6, Small Headers
+    // Badges, Tag and Labels
     font-size: #{density.$clr-base-typography-font-size-caption},
     font-weight: #{tokens.$cds-alias-typography-caption-font-weight},
     line-height: #{density.$clr-base-typography-line-height-12},
-    letter-spacing: #{baselinePx(-0.2)},
+    letter-spacing: #{baselinePx(0.2)},
   ),
   'ColumnHeader-11-SB-CPT': (
     font-size: #{density.$clr-base-typography-font-size-caption},
@@ -379,7 +379,7 @@ $typography-tokens: (
     letter-spacing: #{baselinePx(0.2)},
   ),
   'CAPTION-SM-10': (
-    // P7, P8, Badges, Tag and Labels
+    // P7, P8
     font-size: #{density.$clr-base-typography-font-size-caption-small},
     font-weight: #{tokens.$cds-alias-typography-smallcaption-font-weight},
     line-height: #{density.$clr-base-typography-line-height-12},

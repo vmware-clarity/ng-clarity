@@ -761,7 +761,7 @@
   }
 
   .datagrid-footer {
-    @include mixins.generate-typography-token('CAPTION-LG-11');
+    @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
     flex: 0 0 auto;
     display: flex;
     flex-flow: row nowrap;
@@ -800,7 +800,7 @@
         }
 
         .clr-page-size-select {
-          @include mixins.generate-typography-token('CAPTION-LG-11');
+          @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
           height: auto;
           min-height: density.$clr-base-row-height-s;
           vertical-align: middle;
@@ -992,7 +992,7 @@
     gap: density.$clr-base-gap-s;
 
     .pagination-current {
-      @include mixins.generate-typography-token('CAPTION-LG-11');
+      @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
       background: none;
       background-color: forms-variables.$clr-forms-textarea-background-color;
       border-color: datagrid-variables.$clr-datagrid-pagination-input-border-color;

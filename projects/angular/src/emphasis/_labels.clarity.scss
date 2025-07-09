@@ -46,7 +46,7 @@
   .label,
   a.label {
     //default
-    @include mixins.generate-typography-token('CAPTION-LG-11');
+    @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
     display: inline-flex;
     justify-content: center;
     align-items: center;
