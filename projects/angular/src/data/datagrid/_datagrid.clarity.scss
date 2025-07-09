@@ -319,13 +319,15 @@
   }
 
   .datagrid-action-bar {
-    margin-top: density.$clr-base-vertical-offset-2xl;
+    $action-bar-offset: density.$clr-base-vertical-offset-2xl;
+
+    margin-top: $action-bar-offset;
 
     // This changes the height and position of the datagrid-spinner when there is an action-bar
     // Allows us to cover the action-bar with the spinner backgdrop and prevent user interactions.
     & ~ .datagrid-spinner {
-      height: calc(100% - #{tokens.$cds-global-space-9});
-      top: tokens.$cds-global-space-9; // Account for the margin above the datagrid-action-bar
+      height: calc(100% - #{$action-bar-offset});
+      top: $action-bar-offset; // Account for the margin above the datagrid-action-bar
     }
   }
 
@@ -1177,13 +1179,13 @@
   }
 
   .datagrid-detail-pane {
-    margin-top: tokens.$cds-global-space-6;
+    margin-top: density.$clr-base-vertical-offset-l;
     border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
     border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
     border-left: none;
-    border-top-right-radius: tokens.$cds-alias-object-border-radius-100;
-    border-bottom-right-radius: tokens.$cds-alias-object-border-radius-100;
+    border-top-right-radius: density.$clr-base-border-radius-s;
+    border-bottom-right-radius: density.$clr-base-border-radius-s;
     background: datagrid-variables.$clr-datagrid-detail-pane-bg-color;
     overflow: hidden;
     display: block;
