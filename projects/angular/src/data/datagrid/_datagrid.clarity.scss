@@ -1508,7 +1508,7 @@
           padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
             tables-variables.$clr-table-bottomcellpadding;
           vertical-align: top;
-          @include mixins.generate-typography-token('CAPTION-LG-11');
+          @include mixins.generate-typography-token('CAPTION-LG-11-STD');
           margin-top: tokens.$cds-global-space-9;
           margin-bottom: 0;
         }

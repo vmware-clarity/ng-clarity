@@ -128,7 +128,7 @@
     --clr-p5-letter-spacing: #{mixins.baselinePx(-0.1)};
 
     //P6 - card link btns, form_subtext, table_header
-    //'CAPTION-LG-11'
+    //'CAPTION-LG-11-STD'
     --clr-p6-color: #{tokens.$cds-alias-typography-color-450};
     --clr-p6-font-size: #{density.$clr-base-typography-font-size-caption};
     --clr-p6-font-weight: #{tokens.$cds-alias-typography-caption-font-weight};

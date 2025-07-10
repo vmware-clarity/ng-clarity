@@ -85,7 +85,7 @@
 
   .clr-subtext {
     display: block;
-    @include mixins.generate-typography-token('CAPTION-LG-11');
+    @include mixins.generate-typography-token('CAPTION-LG-11-STD');
     color: forms-variables.$clr-forms-subtext-color;
     margin-top: density.$clr-base-gap-xs;
 
