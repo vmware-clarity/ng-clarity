@@ -11,6 +11,45 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/* stylelint-disable-next-line meowtec/no-px */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/* stylelint-disable */
+/* stylelint-enable */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 :root [cds-theme] {
   --cds-global-typography-font-family: var(--clr-metropolis-font-family);
   --cds-global-typography-header-font-family: var(--clr-metropolis-font-family);
@@ -120,6 +159,62 @@
   --cds-alias-object-container-background-inverse: var(--cds-global-color-construction-200);
   --cds-alias-object-container-background-inverse-tint: var(--cds-global-color-construction-100);
   --cds-alias-object-container-background-inverse-shade: var(--cds-global-color-construction-300);
+}
+
+cds-icon[size*=xs] {
+  height: var(--clr-base-icon-size-xs);
+  width: var(--clr-base-icon-size-xs);
+  min-height: var(--clr-base-icon-size-xs);
+  min-width: var(--clr-base-icon-size-xs);
+}
+
+cds-icon[size*=sm] {
+  height: var(--clr-base-icon-size-s);
+  width: var(--clr-base-icon-size-s);
+  min-height: var(--clr-base-icon-size-s);
+  min-width: var(--clr-base-icon-size-s);
+}
+
+cds-icon[size*=md] {
+  height: var(--clr-base-icon-size-m);
+  width: var(--clr-base-icon-size-m);
+  min-height: var(--clr-base-icon-size-m);
+  min-width: var(--clr-base-icon-size-m);
+}
+
+cds-icon[size*=lg] {
+  height: var(--clr-base-icon-size-l);
+  width: var(--clr-base-icon-size-l);
+  min-height: var(--clr-base-icon-size-l);
+  min-width: var(--clr-base-icon-size-l);
+}
+
+cds-icon[size*=xl] {
+  height: var(--clr-base-icon-size-xl);
+  width: var(--clr-base-icon-size-xl);
+  min-height: var(--clr-base-icon-size-xl);
+  min-width: var(--clr-base-icon-size-xl);
+}
+
+cds-icon[size*=xxl] {
+  height: var(--clr-base-icon-size-2xl);
+  width: var(--clr-base-icon-size-2xl);
+  min-height: var(--clr-base-icon-size-2xl);
+  min-width: var(--clr-base-icon-size-2xl);
+}
+
+cds-icon[size*="3xl"] {
+  height: var(--clr-base-icon-size-3xl);
+  width: var(--clr-base-icon-size-3xl);
+  min-height: var(--clr-base-icon-size-3xl);
+  min-width: var(--clr-base-icon-size-3xl);
+}
+
+cds-icon[size*="4xl"] {
+  height: var(--clr-base-icon-size-4xl);
+  width: var(--clr-base-icon-size-4xl);
+  min-height: var(--clr-base-icon-size-4xl);
+  min-width: var(--clr-base-icon-size-4xl);
 }
 
 /*# sourceMappingURL=temp-overrides.css.map */
