@@ -1,4 +1,22 @@
 <clr-main-container>
+  <clr-alerts>
+    <clr-alert [clrAlertType]="'info'" [clrAlertAppLevel]="true">
+      <clr-alert-item>
+        <span class="alert-text">This is the first app level alert.</span>
+        <div class="alert-actions">
+          <button class="btn alert-action">Fix</button>
+        </div>
+      </clr-alert-item>
+    </clr-alert>
+    <clr-alert [clrAlertType]="'danger'" [clrAlertAppLevel]="true">
+      <clr-alert-item>
+        <span class="alert-text">This is a second app level alert.</span>
+        <div class="alert-actions">
+          <button class="btn alert-action">Fix</button>
+        </div>
+      </clr-alert-item>
+    </clr-alert>
+  </clr-alerts>
   <clr-header class="header">
     <div class="branding">
       <a href="..." class="nav-link">
