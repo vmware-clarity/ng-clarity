@@ -117,7 +117,7 @@
   .clr-timeline-step-description {
     color: timeline-variables.$clr-timeline-step-description-color;
 
-    @include mixins.generate-typography-token('CAPTION-LG-11');
+    @include mixins.generate-typography-token('CAPTION-LG-11-STD');
 
     button {
       display: block;
