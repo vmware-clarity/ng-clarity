@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '@cds/core/tokens/tokens.scss';
+@use '../../angular/src/utils/mixins';
 @use '../../angular/src/utils/variables/variables.density' as density;
 
 :root {
@@ -153,4 +154,36 @@
     --cds-alias-object-container-background-inverse-tint: #{tokens.$cds-global-color-construction-100};
     --cds-alias-object-container-background-inverse-shade: #{tokens.$cds-global-color-construction-300};
   }
+}
+
+cds-icon[size*='xs'] {
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-xs});
+}
+
+cds-icon[size*='sm'] {
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-s});
+}
+
+cds-icon[size*='md'] {
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-m});
+}
+
+cds-icon[size*='lg'] {
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-l});
+}
+
+cds-icon[size*='xl'] {
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-xl});
+}
+
+cds-icon[size*='xxl'] {
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-2xl});
+}
+
+cds-icon[size*='3xl'] {
+  @include mixins.min-equilateral(density.$clr-base-icon-size-3xl);
+}
+
+cds-icon[size*='4xl'] {
+  @include mixins.min-equilateral(density.$clr-base-icon-size-4xl);
 }
