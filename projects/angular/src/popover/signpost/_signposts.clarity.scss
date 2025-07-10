@@ -32,7 +32,7 @@
 
       cds-icon,
       clr-icon {
-        @include mixins.equilateral(density.$clr-base-icon-tooltip);
+        @include mixins.equilateral(density.$clr-base-icon-size-l);
         color: signpost-variables.$clr-signpost-action-color;
       }
 
@@ -382,9 +382,9 @@
 
   .signpost-wrap {
     gap: density.$clr-base-gap-s;
-    padding: density.$clr-base-layout-space-m;
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
     border: tokens.$cds-alias-object-border-width-100 solid signpost-variables.$clr-signpost-content-border-color;
-    border-radius: density.$clr-base-border-radius-s;
+    border-radius: signpost-variables.$clr-signpost-border-radius;
     background-color: signpost-variables.$clr-signpost-content-bg-color;
     z-index: map.get(variables.$clr-layers, tooltips);
     position: relative;
@@ -393,12 +393,11 @@
   }
 
   .signpost-content-body {
-    padding-bottom: tokens.$cds-global-space-1;
     color: signpost-variables.$clr-signpost-content-color;
     text-align: left;
     max-height: mixins.baselinePx(450);
     overflow-y: auto;
 
-    @include mixins.generate-typography-token('BODY-14-RG-CPT');
+    @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
   }
 }
