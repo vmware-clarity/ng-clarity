@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
 
 @include mixins.exports('breadcrumbs.properties') {
   :root [cds-theme] {
-    --clr-breadcrumb-item-space: #{tokens.$cds-global-space-5};
+    --clr-breadcrumb-item-space: #{density.$clr-base-gap-s};
   }
 }
