@@ -97,7 +97,7 @@ export const OpenedLongContent = {
     canvasElement.querySelector('button').click();
   },
   args: {
-    content: 'Hello World! '.repeat(150),
+    content: 'Hello World! '.repeat(170),
   },
 };
 
