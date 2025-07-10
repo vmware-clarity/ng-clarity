@@ -65,6 +65,7 @@
     --clr-base-row-height-xs: #{tokens.$cds-global-space-7};
     --clr-base-row-height-s: #{tokens.$cds-global-space-9};
     --clr-base-row-height-m: #{tokens.$cds-global-space-11};
+    --clr-base-row-height-lm: #{tokens.$cds-global-space-11};
     --clr-base-row-height-l: #{mixins.baselinePx(40)};
     --clr-base-row-height-20: #{mixins.baselinePx(20)};
     --clr-base-dg-row-height: #{tokens.$cds-global-space-10};
@@ -172,6 +173,7 @@
       --clr-base-row-height-xs: #{tokens.$cds-global-space-7};
       --clr-base-row-height-s: #{tokens.$cds-global-space-9};
       --clr-base-row-height-m: #{tokens.$cds-global-space-10};
+      --clr-base-row-height-lm: #{tokens.$cds-global-space-11};
       --clr-base-row-height-l: #{tokens.$cds-global-space-11};
 
       --clr-base-gap-xs: #{tokens.$cds-global-space-3};
@@ -281,6 +283,7 @@
       --clr-base-row-height-xs: #{tokens.$cds-global-space-7};
       --clr-base-row-height-s: #{mixins.baselinePx(20)};
       --clr-base-row-height-m: #{tokens.$cds-global-space-9};
+      --clr-base-row-height-lm: #{mixins.baselinePx(28)};
       --clr-base-row-height-l: #{mixins.baselinePx(28)};
 
       --clr-base-gap-xs: #{tokens.$cds-global-space-2};
@@ -390,6 +393,7 @@
     //   --clr-base-row-height-xs: #{tokens.$cds-global-space-6};
     //   --clr-base-row-height-s: #{tokens.$cds-global-space-7};
     //   --clr-base-row-height-m: #{mixins.baselinePx(20)};
+    //   --clr-base-row-height-lm: #{tokens.$cds-global-space-9};
     //   --clr-base-row-height-l: #{tokens.$cds-global-space-9};
 
     //   --clr-base-gap-xs: #{tokens.$cds-global-space-2};
