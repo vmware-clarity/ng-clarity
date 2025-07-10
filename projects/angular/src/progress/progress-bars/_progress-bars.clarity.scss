@@ -131,12 +131,7 @@
         right: 0;
         top: 0;
         margin-top: 0;
-        @include utils-mixins.generate-typography-token(
-          'CAPTION-LG-11',
-          (
-            line-height: tokens.$cds-global-space-6,
-          )
-        );
+        @include utils-mixins.generate-typography-token('CAPTION-LG-11-CPT');
       }
     }
 
@@ -589,7 +584,7 @@
         margin-right: 0;
         color: progress-bars-variables.$clr-progress-label-color;
 
-        @include utils-mixins.generate-typography-token('CAPTION-LG-11');
+        @include utils-mixins.generate-typography-token('CAPTION-LG-11-CPT');
 
         & > [class*='clr-col-'] {
           padding-left: 0;
