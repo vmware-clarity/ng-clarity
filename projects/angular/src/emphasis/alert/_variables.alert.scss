@@ -11,11 +11,11 @@
 
 // Dimensions & Layout
 // Usage: ./_alert.clarity.scss
-$clr-icon-margin-right: #{tokens.$cds-global-space-4} !default;
-$clr-icon-dimension-sm: #{tokens.$cds-global-space-7} !default;
-$clr-alert-icon-dimension-sm: #{tokens.$cds-global-space-8} !default;
+$clr-icon-margin-right: #{density.$clr-base-horizontal-offset-s} !default;
+$clr-icon-dimension-sm: #{density.$clr-base-icon-size-s} !default;
+$clr-alert-icon-dimension-sm: #{density.$clr-base-icon-size-l} !default;
 $clr-alert-top-margin: #{density.$clr-base-vertical-offset-s} !default;
-$clr-alert-min-height: #{density.$clr-base-row-height-m} !default;
+$clr-alert-min-height: #{density.$clr-base-app-level-alert-row-height} !default;
 $clr-alert-item-min-height: #{density.$clr-base-row-height-s} !default;
 $clr-alert-borderwidth: #{tokens.$cds-alias-object-border-width-100} !default;
 $clr-alert-borderradius: var(--clr-alert-borderradius) !default;
