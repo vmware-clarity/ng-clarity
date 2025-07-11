@@ -4,11 +4,12 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '../../utils/variables/variables';
 @use '../variables.tables' as tables-variables;
 @use '../../progress/spinner/variables.spinner' as spinner-variables;
+@use '../../utils/variables/variables.density' as density;
 
 // Usage: ../data/datagrid/_datagrid.clarity.scss
+$clr-datagrid-margin-top: density.$clr-base-vertical-offset-l;
 $clr-datagrid-font-color: var(--clr-datagrid-font-color) !default;
 $clr-datagrid-default-border-color: var(--clr-datagrid-default-border-color) !default;
 $clr-datagrid-icon-color: var(--clr-datagrid-icon-color) !default;
