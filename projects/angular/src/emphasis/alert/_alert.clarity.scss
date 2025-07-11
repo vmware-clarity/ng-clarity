@@ -296,6 +296,7 @@
     border: none;
     border-radius: 0;
     overflow-y: auto;
+    min-height: alert-variables.$clr-alert-min-height;
     padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-m;
 
     .alert-actions {
