@@ -78,7 +78,7 @@ export class SignpostDemo {
       description: 'Right middle',
       position: 'right-middle',
       id: 'rightMiddleTrigger',
-      content: 'Lorem Ipsum versions of Lorem Ipsum '.repeat(35),
+      content: 'Lorem Ipsum versions of Lorem Ipsum '.repeat(40),
     },
     {
       useCustomTrigger: false,

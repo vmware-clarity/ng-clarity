@@ -19,7 +19,7 @@
     --clr-signpost-action-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
     --clr-signpost-action-active-color: #{tokens.$cds-alias-object-interaction-color-active};
 
-    --clr-signpost-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-signpost-border-radius: #{density.$clr-base-border-radius-s};
 
     --clr-signpost-pointer-size: #{density.$clr-base-layout-space-s};
     --clr-signpost-pointer-border: var(--clr-signpost-pointer-size) solid var(--clr-signpost-content-border-color);
