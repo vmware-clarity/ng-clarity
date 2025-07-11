@@ -26,10 +26,9 @@
     --clr-vertical-nav-item-active-color: #{tokens.$cds-alias-object-interaction-color-active}; // var(--clr-color-neutral-700);
     --clr-vertical-nav-item-padding: #{density.$clr-base-vertical-offset-m} #{density.$clr-base-horizontal-offset-m} #{density.$clr-base-vertical-offset-m}
       #{density.$clr-base-horizontal-offset-xl};
-    --clr-vertical-nav-item-child-padding: #{density.$clr-base-vertical-offset-m} calc(
-        #{density.$clr-base-gap-xs} + #{density.$clr-base-horizontal-offset-m}
-      ) #{density.$clr-base-vertical-offset-m}
-      calc(#{vertical-nav-variables.$clr-vertical-nav-icon-size} + #{density.$clr-base-horizontal-offset-xl});
+    --clr-vertical-nav-item-child-padding: #{density.$clr-base-vertical-offset-m} #{density.$clr-base-horizontal-offset-m}
+      #{density.$clr-base-vertical-offset-m} calc(#{vertical-nav-variables.$clr-vertical-nav-icon-size} + #{density.$clr-base-horizontal-offset-xl} +
+          #{density.$clr-base-gap-xs});
     --clr-vertical-nav-item-height: #{density.$clr-base-row-height-m};
     --clr-vertical-nav-min-width: #{density.$clr-base-layout-space-3xl};
     --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
