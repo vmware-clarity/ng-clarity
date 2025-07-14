@@ -75,7 +75,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: calc(modal-variables.$clr-modal-default-space * 2);
+    padding: calc(modal-variables.$clr-modal-vertical-space * 2) calc(modal-variables.$clr-modal-horizontal-space * 2);
     max-width: 100%;
 
     .alert + .modal-header {
@@ -83,11 +83,11 @@
     }
 
     @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
-      padding: calc(modal-variables.$clr-modal-default-space / 2);
+      padding: calc(modal-variables.$clr-modal-vertical-space / 2) calc(modal-variables.$clr-modal-horizontal-space / 2);
     }
 
     .modal-body {
-      padding: modal-variables.$clr-modal-default-gap modal-variables.$clr-modal-default-space;
+      padding: modal-variables.$clr-modal-vertical-gap modal-variables.$clr-modal-horizontal-space;
     }
   }
 
@@ -180,10 +180,10 @@
 
   .modal-header {
     border-bottom: none;
-    padding: density.$clr-base-vertical-offset-2xl density.$clr-base-horizontal-offset-2xl 0;
+    padding: modal-variables.$clr-modal-vertical-space modal-variables.$clr-modal-horizontal-space 0;
 
     & + .modal-footer {
-      padding-top: modal-variables.$clr-modal-default-space;
+      padding-top: modal-variables.$clr-modal-vertical-gap;
     }
 
     // TODO: This class is used only in the clr-modal template.
@@ -284,7 +284,7 @@
   }
 
   .modal-footer {
-    padding: 0 modal-variables.$clr-modal-default-space modal-variables.$clr-modal-default-space;
+    padding: 0 modal-variables.$clr-modal-horizontal-space modal-variables.$clr-modal-vertical-space;
   }
 
   .modal-footer,
@@ -328,7 +328,7 @@
 
   // full-screen modals
   .modal.modal-full-screen {
-    padding: modal-variables.$clr-modal-default-space;
+    padding: modal-variables.$clr-modal-vertical-space modal-variables.$clr-modal-horizontal-space;
     height: 100%;
 
     .modal-dialog {
