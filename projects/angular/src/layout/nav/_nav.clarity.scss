@@ -88,7 +88,7 @@
 
       // When using clrTabLink directive, DOM has both .nav-link and .nav-item in the same elem
       &.nav-item {
-        margin-right: tokens.$cds-global-space-9;
+        margin-right: density.$clr-base-horizontal-offset-2xl;
       }
     }
   }

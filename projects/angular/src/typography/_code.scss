@@ -6,11 +6,12 @@
  */
 @use '../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
+@use '../utils/variables/variables.density' as density;
 
 @include mixins.exports('code.clarity') {
   //Styles for Clarity Code Snippets
   pre {
-    margin: tokens.$cds-global-space-6 0;
+    margin: density.$clr-base-vertical-offset-l 0;
   }
 
   pre {

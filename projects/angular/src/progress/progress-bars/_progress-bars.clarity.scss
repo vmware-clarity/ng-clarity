@@ -523,7 +523,7 @@
       left: 0;
 
       // by default, positioned at the topmost of its card-block container
-      margin: calc(-1 * tokens.$cds-global-space-5) 0 0;
+      margin: calc(-1 * density.$clr-base-vertical-offset-l) 0 0;
 
       &.top {
         // places progress bar at the top of a card

@@ -1372,11 +1372,6 @@
     .spinner {
       margin-top: datagrid-variables.$clr-datagrid-expandable-row-spinner-margin;
     }
-
-    &.datagrid-column {
-      padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-        tables-variables.$clr-table-bottomcellpadding;
-    }
   }
 
   .datagrid-detail-caret {
@@ -1404,11 +1399,6 @@
 
     .spinner {
       margin-top: datagrid-variables.$clr-datagrid-expandable-row-spinner-margin;
-    }
-
-    &.datagrid-column {
-      padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-        tables-variables.$clr-table-bottomcellpadding;
     }
   }
 
@@ -1615,12 +1605,9 @@
           border-color: tables-variables.$clr-tablerow-bordercolor;
           border-width: tables-variables.$clr-table-borderwidth;
           border-style: solid;
-          padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-            tables-variables.$clr-table-bottomcellpadding;
+          padding: tables-variables.$clr-table-cell-padding;
           vertical-align: top;
           @include mixins.generate-typography-token('CAPTION-LG-11-STD');
-          margin-top: tokens.$cds-global-space-9;
-          margin-bottom: 0;
         }
       }
 
@@ -1633,8 +1620,7 @@
           display: table-cell;
           min-width: tokens.$cds-global-space-15;
           @include mixins.generate-typography-token('BODY-14-RG-CPT');
-          padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-            tables-variables.$clr-table-bottomcellpadding;
+          padding: tables-variables.$clr-table-cell-padding;
           vertical-align: top;
         }
       }

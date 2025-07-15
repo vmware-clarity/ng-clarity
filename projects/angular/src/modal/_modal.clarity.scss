@@ -79,7 +79,7 @@
     max-width: 100%;
 
     .alert + .modal-header {
-      margin-top: tokens.$cds-global-space-6;
+      margin-top: density.$clr-base-vertical-offset-l;
     }
 
     @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {

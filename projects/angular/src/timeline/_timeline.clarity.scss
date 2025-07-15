@@ -51,7 +51,7 @@
     }
 
     clr-spinner.spinner {
-      margin: tokens.$cds-global-space-2;
+      margin: density.$clr-base-vertical-offset-2xs;
       &,
       &::after,
       &::before {
@@ -125,7 +125,7 @@
     }
     img {
       width: 100%;
-      margin-top: tokens.$cds-global-space-5;
+      margin-top: density.$clr-base-vertical-offset-m;
     }
   }
 
