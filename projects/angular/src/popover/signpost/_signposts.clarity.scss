@@ -32,7 +32,7 @@
 
       cds-icon,
       clr-icon {
-        @include mixins.equilateral(density.$clr-base-icon-tooltip);
+        @include mixins.equilateral(density.$clr-base-icon-size-l);
         color: signpost-variables.$clr-signpost-action-color;
       }
 
@@ -381,10 +381,14 @@
   }
 
   .signpost-wrap {
+    // bottom padding difference split between `wrap` and `content-body` because of #1503 (CDE-2225)
+    // Wrap have (offset-xl - 1px), Body have 1px;
+    $wrap-bottom-padding: calc(density.$clr-base-vertical-offset-xl - tokens.$cds-global-space-1);
+
     gap: density.$clr-base-gap-s;
-    padding: density.$clr-base-layout-space-m;
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl $wrap-bottom-padding;
     border: tokens.$cds-alias-object-border-width-100 solid signpost-variables.$clr-signpost-content-border-color;
-    border-radius: density.$clr-base-border-radius-s;
+    border-radius: signpost-variables.$clr-signpost-border-radius;
     background-color: signpost-variables.$clr-signpost-content-bg-color;
     z-index: map.get(variables.$clr-layers, tooltips);
     position: relative;
