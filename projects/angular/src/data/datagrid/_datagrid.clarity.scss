@@ -78,12 +78,12 @@
 
 @mixin datagrid-action-button-styles(
   $height: tables-variables.$clr-table-row-height,
-  $columnSize: datagrid-variables.$clr-datagrid-fixed-column-size,
+  $columnWidth: datagrid-variables.$clr-datagrid-fixed-column-size,
   $iconSize: datagrid-variables.$clr-datagrid-icon-size
 ) {
   // Calculates how much padding to set on top/bottom and left/right by dividing the height by the icon size
   $verticalPadding: calc(($height - $iconSize) / 2);
-  $horizontalPadding: calc(($columnSize - $iconSize) / 2);
+  $horizontalPadding: calc(($columnWidth - $iconSize) / 2);
   cursor: pointer;
   width: 100%;
   height: $height;
@@ -884,7 +884,7 @@
     z-index: map.get(variables.$clr-layers, datagrid-host); // Keeps the spinner above the datagrid header.
   }
 
-  // @deprecated in favor of compact mode in density theme
+  // @deprecated CSS rule `.datagrid-compact { ... }` in favor of compact mode in density theme
   .datagrid-compact {
     .datagrid {
       margin-top: tokens.$cds-global-space-5;
@@ -902,8 +902,9 @@
     .datagrid-detail-pane {
       margin-top: tokens.$cds-global-space-5;
       &-content {
-        padding: tokens.$cds-global-space-7;
+        padding: tokens.$cds-global-space-6;
         .datagrid-detail-header {
+          gap: mixins.baselinePx(10);
           font-size: tokens.$cds-global-space-7;
           line-height: mixins.baselinePx(20);
           .datagrid-detail-pane-close button cds-icon {
@@ -1020,26 +1021,24 @@
     }
 
     .datagrid-footer {
-      min-height: tables-variables.$clr-table-compact-row-height;
-      line-height: tables-variables.$clr-table-compact-row-height - tokens.$cds-global-space-1;
+      min-height: mixins.baselinePx(28);
+      line-height: tokens.$cds-global-space-7;
       padding: 0 tokens.$cds-global-space-6;
 
       .pagination {
-        line-height: tables-variables.$clr-table-compact-row-height;
-        gap: mixins.baselinePx(10);
-
+        &,
         clr-dg-page-size {
           gap: mixins.baselinePx(10);
         }
 
         .clr-select-wrapper {
-          max-height: tokens.$cds-global-space-9;
+          max-height: mixins.baselinePx(20);
           &::after {
             --clr-forms-select-caret-size: #{tokens.$cds-global-space-6};
             right: tokens.$cds-global-space-2;
           }
           .clr-page-size-select {
-            min-height: tokens.$cds-global-space-7;
+            min-height: mixins.baselinePx(20);
             padding: 0 mixins.baselinePx(20) 0 tokens.$cds-global-space-2;
           }
         }

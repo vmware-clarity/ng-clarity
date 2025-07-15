@@ -97,4 +97,6 @@ $clr-datagrid-expandable-row-spinner-margin: calc(
 $clr-datagrid-compact-expandable-row-spinner-margin: calc(
   (tables-variables.$clr-table-compact-row-height - #{tokens.$cds-global-space-7}) / 2
 );
-$clr-datagrid-compact-fixed-column-size: calc(#{tokens.$cds-global-space-7} + (#{tokens.$cds-global-space-6} * 2));
+$clr-datagrid-compact-fixed-column-size: calc(
+  #{tokens.$cds-global-space-7} + (#{tables-variables.$clr-table-compact-horizontal-padding} * 2)
+);

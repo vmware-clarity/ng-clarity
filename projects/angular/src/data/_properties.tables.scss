@@ -47,7 +47,7 @@
     --clr-table-cellpadding: #{tokens.$cds-global-space-6};
 
     --clr-table-row-height: #{density.$clr-base-dg-row-height};
-    // @deprecated in favor of compact mode in density theme
+    // @deprecated ALL compact properties in favor of compact mode in density theme
     --clr-table-compact-row-height: #{tokens.$cds-global-space-9};
     --clr-table-cell-compact-padding: var(--clr-table-compact-vertical-padding)
       var(--clr-table-compact-horizontal-padding);

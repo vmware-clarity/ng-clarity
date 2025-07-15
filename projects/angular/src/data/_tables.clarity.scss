@@ -99,7 +99,7 @@
     }
   }
 
-  // @deprecated in favor of compact mode in density theme
+  // @deprecated CSS rule #{$table}-compact in favor of compact mode in density theme
   #{$table}-compact {
     --clr-table-margin: #{mixins.baselinePx(20)} 0 0 0;
     --clr-table-cell-vertical-padding: #{table-variables.$clr-table-compact-vertical-padding};
