@@ -46,12 +46,12 @@
   .label,
   a.label {
     //default
-    @include mixins.generate-typography-token('CAPTION-LG-11');
+    @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
     display: inline-flex;
     justify-content: center;
     align-items: center;
     gap: density.$clr-base-gap-xs;
-    padding: 0 calc(density.$clr-base-horizontal-offset-xs * 2);
+    padding: density.$clr-base-vertical-offset-2xs calc(density.$clr-base-horizontal-offset-xs * 2);
     border: label-variables.$clr-label-borderwidth solid label-variables.$clr-label-default-border-color;
     border-radius: density.$clr-base-border-radius-xl;
     min-height: density.$clr-base-row-height-s;

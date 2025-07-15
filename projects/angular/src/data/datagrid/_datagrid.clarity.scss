@@ -114,7 +114,7 @@
     -ms-overflow-style: -ms-autohiding-scrollbar;
     overflow: auto;
     flex: 1 1 auto;
-    margin-top: density.$clr-base-vertical-offset-l;
+    margin-top: datagrid-variables.$clr-datagrid-margin-top;
 
     &.cdk-virtual-scrollable .datagrid-rows {
       flex-grow: 0;
@@ -325,7 +325,7 @@
 
     // This changes the height and position of the datagrid-spinner when there is an action-bar
     // Allows us to cover the action-bar with the spinner backgdrop and prevent user interactions.
-    & ~ .datagrid-spinner {
+    & ~ .datagrid-outer-wrapper .datagrid-spinner {
       height: calc(100% - #{$action-bar-offset});
       top: $action-bar-offset; // Account for the margin above the datagrid-action-bar
     }
@@ -429,7 +429,7 @@
         float: right;
         vertical-align: middle;
         @include mixins.min-equilateral(datagrid-variables.$clr-datagrid-filter-toggle-size);
-        margin-left: tokens.$cds-global-space-4;
+        margin-left: density.$clr-base-horizontal-offset-s;
         background-repeat: no-repeat;
         background-size: contain;
 
@@ -761,7 +761,7 @@
   }
 
   .datagrid-footer {
-    @include mixins.generate-typography-token('CAPTION-LG-11');
+    @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
     flex: 0 0 auto;
     display: flex;
     flex-flow: row nowrap;
@@ -800,7 +800,7 @@
         }
 
         .clr-page-size-select {
-          @include mixins.generate-typography-token('CAPTION-LG-11');
+          @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
           height: auto;
           min-height: density.$clr-base-row-height-s;
           vertical-align: middle;
@@ -876,8 +876,8 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    top: tokens.$cds-global-space-6;
-    height: calc(100% - #{tokens.$cds-global-space-6}); // Account for the margin above the datagrid-action-bar
+    top: datagrid-variables.$clr-datagrid-margin-top;
+    height: calc(100% - datagrid-variables.$clr-datagrid-margin-top);
     background-color: datagrid-variables.$clr-datagrid-loading-background;
     z-index: map.get(variables.$clr-layers, datagrid-host); // Keeps the spinner above the datagrid header.
   }
@@ -992,7 +992,7 @@
     gap: density.$clr-base-gap-s;
 
     .pagination-current {
-      @include mixins.generate-typography-token('CAPTION-LG-11');
+      @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
       background: none;
       background-color: forms-variables.$clr-forms-textarea-background-color;
       border-color: datagrid-variables.$clr-datagrid-pagination-input-border-color;
@@ -1508,7 +1508,7 @@
           padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
             tables-variables.$clr-table-bottomcellpadding;
           vertical-align: top;
-          @include mixins.generate-typography-token('CAPTION-LG-11');
+          @include mixins.generate-typography-token('CAPTION-LG-11-STD');
           margin-top: tokens.$cds-global-space-9;
           margin-bottom: 0;
         }

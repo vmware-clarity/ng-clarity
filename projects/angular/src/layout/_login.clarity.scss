@@ -63,7 +63,7 @@
         gap: login-variables.$clr-login-footer-gap;
         a,
         .copyright {
-          @include mixins.generate-typography-token('CAPTION-LG-11');
+          @include mixins.generate-typography-token('CAPTION-LG-11-STD');
           color: login-variables.$clr-login-copyright-color;
         }
       }
