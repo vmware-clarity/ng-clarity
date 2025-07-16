@@ -102,7 +102,7 @@
     clr-icon {
       flex-grow: 0;
       flex-shrink: 0;
-      @include mixins.equilateral(var(--clr-base-icon-size-3xl));
+      @include mixins.equilateral(tokens.$cds-global-space-11);
     }
 
     .title {
