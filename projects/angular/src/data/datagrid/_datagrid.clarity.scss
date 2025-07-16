@@ -961,21 +961,7 @@
     }
 
     .datagrid-cell:not(.datagrid-detail-caret, .datagrid-expandable-caret, .datagrid-row-actions) {
-      clr-icon {
-        margin-top: calc((-1 * tokens.$cds-global-space-3) - tokens.$cds-global-space-1);
-        margin-bottom: calc(-1 * tokens.$cds-global-space-3);
-        transform: translateY(calc(-1 * tokens.$cds-global-space-1));
-      }
-
-      cds-icon {
-        margin-top: calc((-1 * tokens.$cds-global-space-3) - tokens.$cds-global-space-1);
-        margin-bottom: calc(-1 * tokens.$cds-global-space-3);
-      }
-
-      .badge {
-        margin-top: calc(-1 * tokens.$cds-global-space-3);
-        margin-bottom: calc(-1 * tokens.$cds-global-space-1);
-      }
+      @include mixins.cell-children-aligment();
     }
 
     .datagrid-expandable-caret {
