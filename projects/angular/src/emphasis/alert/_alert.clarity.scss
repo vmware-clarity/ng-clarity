@@ -242,14 +242,6 @@
       }
     }
 
-    .close ~ .alert-item > .alert-actions {
-      padding-right: tokens.$cds-global-space-6;
-
-      & > .alert-action:last-child {
-        margin-right: tokens.$cds-global-space-6;
-      }
-    }
-
     &.alert-lightweight {
       background: none;
       border: none;

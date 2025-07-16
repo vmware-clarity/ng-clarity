@@ -145,7 +145,7 @@
     &.clr-error,
     &.clr-success {
       & > .clr-subtext-wrapper .clr-validate-icon {
-        margin-left: calc(-1 * #{tokens.$cds-global-space-3});
+        margin-left: calc(-1 * #{density.$clr-base-horizontal-offset-xs});
       }
     }
   }
