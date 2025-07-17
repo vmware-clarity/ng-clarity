@@ -16,7 +16,7 @@
 
   pre {
     border: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-container-border-color;
-    border-radius: tokens.$cds-alias-object-border-radius-100;
+    border-radius: density.$clr-base-border-radius-s;
   }
 
   pre code {

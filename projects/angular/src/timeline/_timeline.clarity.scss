@@ -51,7 +51,7 @@
     }
 
     clr-spinner.spinner {
-      margin: density.$clr-base-vertical-offset-2xs;
+      margin: tokens.$cds-global-space-2; // Simulates the padding in CDS-ICONs
       &,
       &::after,
       &::before {
