@@ -78,10 +78,6 @@
     padding: calc(modal-variables.$clr-modal-vertical-space * 2) calc(modal-variables.$clr-modal-horizontal-space * 2);
     max-width: 100%;
 
-    .alert + .modal-header {
-      margin-top: density.$clr-base-vertical-offset-l;
-    }
-
     @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
       padding: calc(modal-variables.$clr-modal-vertical-space / 2) calc(modal-variables.$clr-modal-horizontal-space / 2);
     }
