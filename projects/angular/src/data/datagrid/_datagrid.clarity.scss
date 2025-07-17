@@ -1058,7 +1058,7 @@
 
       .pagination-current,
       button {
-        border-radius: mixins.baselinePx(3);
+        border-radius: tokens.$cds-global-space-2;
         @include mixins.min-equilateral(mixins.baselinePx(20));
       }
     }
@@ -1108,7 +1108,7 @@
       border-color: datagrid-variables.$clr-datagrid-pagination-input-border-color;
       border-width: tokens.$cds-alias-object-border-width-100;
       border-style: solid;
-      border-radius: tokens.$cds-alias-object-border-radius-100;
+      border-radius: density.$clr-base-border-radius-s;
       @include mixins.min-equilateral(density.$clr-base-layout-space-l);
       text-align: center;
       transition: none !important;
