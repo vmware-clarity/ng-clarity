@@ -907,8 +907,11 @@
           gap: mixins.baselinePx(10);
           font-size: tokens.$cds-global-space-7;
           line-height: mixins.baselinePx(20);
-          .datagrid-detail-pane-close button cds-icon {
-            @include mixins.min-equilateral(mixins.baselinePx(20));
+          .datagrid-detail-pane-close {
+            flex-basis: mixins.baselinePx(20);
+            button cds-icon {
+              @include mixins.min-equilateral(mixins.baselinePx(20));
+            }
           }
         }
         .datagrid-detail-body {
@@ -1055,6 +1058,7 @@
 
       .pagination-current,
       button {
+        border-radius: mixins.baselinePx(3);
         @include mixins.min-equilateral(mixins.baselinePx(20));
       }
     }
