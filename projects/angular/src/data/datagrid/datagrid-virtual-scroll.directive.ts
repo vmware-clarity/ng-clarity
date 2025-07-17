@@ -85,14 +85,14 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   private cdkVirtualFor: CdkVirtualForOf<T>;
   private subscriptions: Subscription[] = [];
   private topIndex = 0;
-  private mutationChanges: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
-    mutations.forEach((mutation: MutationRecord) => {
-      // it is possible this to be called twice because the old class is removed and the new added
-      if ((mutation.target as HTMLElement).classList.contains('datagrid-compact') && this.itemSize > 24) {
-        this.itemSize = 24;
-      }
-    });
-  });
+  // private mutationChanges: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
+  //   mutations.forEach((mutation: MutationRecord) => {
+  //     // it is possible this to be called twice because the old class is removed and the new added
+  //     if ((mutation.target as HTMLElement).classList.contains('datagrid-compact') && this.itemSize > 24) {
+  //       this.itemSize = 24;
+  //     }
+  //   });
+  // });
 
   private viewRepeater = new _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>();
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
@@ -123,10 +123,10 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     // default
     this.cdkVirtualForTemplateCacheSize = 20;
 
-    this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
-      attributeFilter: ['class'],
-      attributeOldValue: true,
-    });
+    // this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
+    //   attributeFilter: ['class'],
+    //   attributeOldValue: true,
+    // });
 
     this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(
       this._cdkFixedSizeVirtualScrollInputs.itemSize,
@@ -285,7 +285,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   ngOnDestroy() {
     this.cdkVirtualFor?.ngOnDestroy();
     this.virtualScrollViewport?.ngOnDestroy();
-    this.mutationChanges?.disconnect();
+    // this.mutationChanges?.disconnect();
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });

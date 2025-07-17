@@ -296,7 +296,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           const active = this.keyNavigation.getActiveCell();
           if (active) {
             this.zone.runOutsideAngular(() => {
-              setTimeout(() => this.keyNavigation.setActiveCell(active));
+              this.keyNavigation.setActiveCell(active);
             });
           }
         }
