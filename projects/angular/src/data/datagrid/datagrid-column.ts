@@ -19,6 +19,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -45,7 +46,7 @@ import { WrappedColumn } from './wrapped-column';
   selector: 'clr-dg-column',
   template: `
     <div class="datagrid-column-flex">
-      <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button">
+      <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button" #titleContainer>
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
         <cds-icon
           *ngIf="sortDirection"
@@ -77,7 +78,7 @@ import { WrappedColumn } from './wrapped-column';
         <ng-content></ng-content>
       </ng-template>
 
-      <span class="datagrid-column-title" *ngIf="!sortable">
+      <span class="datagrid-column-title" *ngIf="!sortable" #titleContainer>
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
       </span>
 
@@ -102,6 +103,8 @@ export class ClrDatagridColumn<T = any>
 
   @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
+
+  @ViewChild('titleContainer', { read: ElementRef }) titleContainer: ElementRef<HTMLElement>;
 
   /**
    * A custom filter for this column that can be provided in the projected content
