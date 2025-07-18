@@ -35,6 +35,12 @@
     justify-content: start;
     padding: density.$clr-base-vertical-offset-multi-row-inline-s 0;
 
+    & + .clr-checkbox-wrapper,
+    & + .clr-radio-wrapper,
+    & + .clr-toggle-wrapper {
+      margin-top: density.$clr-base-check-radio-toggle-gap;
+    }
+
     label {
       display: inline-block;
       position: relative;

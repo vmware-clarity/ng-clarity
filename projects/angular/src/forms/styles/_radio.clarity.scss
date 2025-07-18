@@ -24,6 +24,12 @@
     display: flex;
     align-items: flex-start;
 
+    & + .clr-checkbox-wrapper,
+    & + .clr-radio-wrapper,
+    & + .clr-toggle-wrapper {
+      padding-top: density.$clr-base-check-radio-toggle-gap;
+    }
+
     //Hide the default radio
     input[type='radio'] {
       @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-radio-size);

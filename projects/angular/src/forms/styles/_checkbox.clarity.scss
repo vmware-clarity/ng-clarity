@@ -28,6 +28,12 @@
     display: flex;
     align-items: flex-start;
 
+    & + .clr-checkbox-wrapper,
+    & + .clr-radio-wrapper,
+    & + .clr-toggle-wrapper {
+      padding-top: density.$clr-base-check-radio-toggle-gap;
+    }
+
     .clr-control-label {
       @include forms-mixins.checkbox-radio-label-styles(
         forms-variables.$clr-forms-checkbox-label-height,
