@@ -71,16 +71,4 @@
     @include generateStatusBadgeStyles(danger);
     @include generateStatusBadgeStyles(warning);
   }
-
-  @include mixins.fixForIE10AndUp {
-    .badge {
-      padding: #{tokens.$cds-global-space-2} #{mixins.baselinePx(3)} 0;
-    }
-  }
-
-  @include mixins.fixForMsEdge {
-    .badge {
-      padding: #{tokens.$cds-global-space-2} #{mixins.baselinePx(3)} 0;
-    }
-  }
 }

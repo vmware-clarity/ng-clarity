@@ -49,7 +49,7 @@
 
     // Checkbox
     --clr-forms-checkbox-height: #{tokens.$cds-global-space-7};
-    --clr-forms-checkbox-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-forms-checkbox-border-radius: #{density.$clr-base-border-radius-s};
 
     --clr-forms-checkbox-label-color: var(--clr-forms-label-color);
     --clr-forms-checkbox-background-color: #{tokens.$cds-alias-object-interaction-background-highlight};
@@ -105,7 +105,7 @@
     // Textarea
     --clr-forms-textarea-background-color: #{tokens.$cds-alias-object-container-background};
     --clr-forms-textarea-disabled-background: #{tokens.$cds-alias-object-container-background};
-    --clr-forms-textarea-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-forms-textarea-border-radius: #{density.$clr-base-border-radius-s};
 
     // Datalist
     --clr-forms-datalist-caret-color: #{tokens.$cds-alias-status-neutral};

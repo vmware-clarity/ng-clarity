@@ -28,6 +28,6 @@
 
     --clr-spinner-border-radius: #{tokens.$cds-alias-object-border-radius-300};
 
-    --clr-spinner-margin-right: #{tokens.$cds-global-space-6};
+    --clr-spinner-margin-right: #{density.$clr-base-horizontal-offset-l};
   }
 }

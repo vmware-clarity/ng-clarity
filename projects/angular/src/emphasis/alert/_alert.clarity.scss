@@ -197,15 +197,7 @@
       flex: 0 0 auto;
       white-space: nowrap;
       display: flex;
-
-      > {
-        .alert-action,
-        .dropdown {
-          &:not(:last-child) {
-            margin-right: tokens.$cds-global-space-5;
-          }
-        }
-      }
+      gap: density.$clr-base-gap-s;
 
       .dropdown-item {
         color: dropdown-variables.$clr-dropdown-text-color;
@@ -247,14 +239,6 @@
       &::before,
       &::after {
         @include mixins.min-equilateral(density.$clr-base-icon-size-l);
-      }
-    }
-
-    .close ~ .alert-item > .alert-actions {
-      padding-right: tokens.$cds-global-space-6;
-
-      & > .alert-action:last-child {
-        margin-right: tokens.$cds-global-space-6;
       }
     }
 
@@ -458,7 +442,7 @@
 
     .alert-app-level {
       .alert-actions {
-        margin-left: tokens.$cds-global-space-12;
+        margin-left: density.$clr-base-horizontal-offset-2xl;
       }
     }
   }
