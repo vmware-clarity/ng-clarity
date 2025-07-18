@@ -58,7 +58,7 @@
       height: toggle-variables.$clr-toggle-switch-base-height;
       width: toggle-variables.$clr-toggle-switch-base-width;
       flex: 0 0 auto;
-      border-radius: tokens.$cds-alias-object-border-radius-200; // Style outline radius properly
+      border-radius: density.$clr-base-border-radius-xl; // Style outline radius properly
       background-color: toggle-variables.$clr-toggle-bg-color-off;
       @include clr-toggle-transition-styles;
       transition-property: background-color;

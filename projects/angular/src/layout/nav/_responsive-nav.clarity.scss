@@ -312,7 +312,7 @@
 
         .header-hamburger-trigger + .branding {
           padding-left: 0;
-          margin-left: calc(-1 * tokens.$cds-global-space-5);
+          margin-left: calc(-1 * density.$clr-base-horizontal-offset-m);
 
           //TODO: deprecate .clr-icon, .logo
           .clr-icon,
@@ -395,7 +395,7 @@
             width: responsive-nav-variables.$clr-sliding-panel-width;
             max-width: responsive-nav-variables.$clr-sliding-panel-width;
             z-index: responsive-nav-variables.$clr-sliding-panel-z-index + 1;
-            padding-left: tokens.$cds-global-space-9;
+            padding-left: density.$clr-base-horizontal-offset-2xl;
 
             & > .nav-link {
               overflow: hidden;

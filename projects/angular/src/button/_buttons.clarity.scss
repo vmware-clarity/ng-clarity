@@ -473,7 +473,7 @@
     label {
       @include btn-appearance();
 
-      padding: 0 tokens.$cds-global-space-6;
+      padding: 0 density.$clr-base-horizontal-offset-l;
     }
 
     &.disabled label,

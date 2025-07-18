@@ -129,28 +129,15 @@
     border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
     border-bottom: 0;
     overflow: hidden;
-    padding: tokens.$cds-global-space-8;
     display: none;
 
     .clr-form {
       padding: 0;
     }
-
-    &.ng-trigger {
-      padding: 0; // inner element/padding to prevent extra height in ng animation
-    }
-
-    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-      padding: tokens.$cds-global-space-8 mixins.baselinePx(54);
-    }
   }
 
   .clr-accordion-inner-content {
     padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
-
-    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-      padding: tokens.$cds-global-space-8 mixins.baselinePx(54);
-    }
   }
 
   .clr-accordion-angle {
@@ -270,10 +257,6 @@
     .clr-accordion-header-button {
       align-items: center;
       padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
-    }
-
-    .clr-accordion-content {
-      padding: 0;
     }
 
     .clr-accordion-inner-content {
