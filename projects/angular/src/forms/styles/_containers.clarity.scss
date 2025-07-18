@@ -81,6 +81,15 @@
 
   .clr-control-inline {
     @include forms-mixins.form-inline-input(true);
+
+    .clr-checkbox-wrapper,
+    .clr-radio-wrapper {
+      padding-top: 0;
+    }
+
+    .clr-toggle-wrapper {
+      margin-top: 0;
+    }
   }
 
   .clr-subtext {

@@ -25,9 +25,12 @@
     align-items: flex-start;
 
     & + .clr-checkbox-wrapper,
-    & + .clr-radio-wrapper,
-    & + .clr-toggle-wrapper {
+    & + .clr-radio-wrapper {
       padding-top: density.$clr-base-check-radio-toggle-gap;
+    }
+
+    & + .clr-toggle-wrapper {
+      margin-top: density.$clr-base-check-radio-toggle-gap;
     }
 
     //Hide the default radio
@@ -104,6 +107,8 @@
   }
 
   .clr-form-compact .clr-radio-wrapper {
+    padding-top: 0;
+
     @include forms-mixins.form-flatten-compact-adjustments();
     @include forms-mixins.form-inline-input();
 

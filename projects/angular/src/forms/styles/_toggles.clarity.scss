@@ -36,7 +36,10 @@
     padding: density.$clr-base-vertical-offset-multi-row-inline-s 0;
 
     & + .clr-checkbox-wrapper,
-    & + .clr-radio-wrapper,
+    & + .clr-radio-wrapper {
+      padding-top: density.$clr-base-check-radio-toggle-gap;
+    }
+
     & + .clr-toggle-wrapper {
       margin-top: density.$clr-base-check-radio-toggle-gap;
     }
@@ -186,6 +189,10 @@
   .clr-control-inline .clr-toggle-wrapper .clr-control-label {
     display: inline-block;
     margin-right: 0;
+  }
+
+  .clr-form-compact .clr-toggle-wrapper {
+    margin-top: 0;
   }
 
   // This sets the option to move the toggles to the right of the label
