@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
+@use '../../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('stack-view.properties') {
@@ -12,7 +13,7 @@
     // Usage: ../stack-view/_stack-view.clarity.scss
     // Border dimensions
     --clr-stack-view-border-width: #{tokens.$cds-alias-object-border-width-100};
-    --clr-stack-view-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-stack-view-border-radius: #{density.$clr-base-border-radius-s};
 
     // Border colors
     --clr-stack-view-border-color: #{tokens.$cds-alias-object-border-color};

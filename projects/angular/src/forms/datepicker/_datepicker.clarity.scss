@@ -112,7 +112,7 @@
     //Other Props
     background: datepicker-variables.$clr-calendar-background-color;
     border: tokens.$cds-alias-object-border-width-100 solid datepicker-variables.$clr-calendar-border-color;
-    border-radius: tokens.$cds-alias-object-border-radius-100;
+    border-radius: density.$clr-base-border-radius-s;
     box-shadow: tokens.$cds-alias-object-shadow-100;
     z-index: map.get(variables.$clr-layers, dropdown-menu);
 
@@ -146,7 +146,7 @@
 
   .clr-date-range-picker-nav {
     width: datepicker-variables.$clr-calendar-options-width;
-    border-radius: tokens.$cds-alias-object-border-radius-100;
+    border-radius: density.$clr-base-border-radius-s;
     height: 100%;
   }
 

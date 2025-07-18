@@ -775,8 +775,8 @@
     border-width: tokens.$cds-alias-object-border-width-100;
     border-top: none;
     border-radius: 0;
-    border-bottom-right-radius: tokens.$cds-alias-object-border-radius-100;
-    border-bottom-left-radius: tokens.$cds-alias-object-border-radius-100;
+    border-bottom-right-radius: tables-variables.$clr-table-border-radius;
+    border-bottom-left-radius: tables-variables.$clr-table-border-radius;
 
     .pagination {
       display: flex;
@@ -1383,7 +1383,7 @@
       }
 
       &.is-open .datagrid-detail-caret-icon {
-        border-radius: tokens.$cds-alias-object-border-radius-100;
+        border-radius: density.$clr-base-border-radius-s;
         background-color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-bg-color;
         color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-icon-color;
       }
@@ -1409,7 +1409,7 @@
     .datagrid-detail-pane {
       border-left: tokens.$cds-alias-object-border-width-100 solid;
       border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
-      border-radius: tokens.$cds-alias-object-border-radius-100;
+      border-radius: density.$clr-base-border-radius-s;
       width: 100%;
     }
   }
@@ -1423,7 +1423,7 @@
     .datagrid-detail-pane {
       border-left: tokens.$cds-alias-object-border-width-100 solid;
       border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
-      border-radius: tokens.$cds-alias-object-border-radius-100;
+      border-radius: density.$clr-base-border-radius-s;
     }
   }
 
@@ -1431,7 +1431,7 @@
    * Smart popover contents
    */
   .column-switch {
-    border-radius: tokens.$cds-alias-object-border-radius-100;
+    border-radius: density.$clr-base-border-radius-s;
     background-color: datagrid-variables.$clr-datagrid-popover-bg-color;
     border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
@@ -1524,7 +1524,7 @@
     border-color: datagrid-variables.$clr-datagrid-popover-border-color;
     padding: density.$clr-base-vertical-offset-xl;
     @include clr-datagrid-popover-shadows;
-    border-radius: tokens.$cds-alias-object-border-radius-100;
+    border-radius: density.$clr-base-border-radius-s;
     font-weight: normal;
 
     .datagrid-filter-close-wrapper {
