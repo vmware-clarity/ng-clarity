@@ -339,6 +339,10 @@
       --clr-base-tree-node-height: #{tokens.$cds-global-space-9};
 
       --clr-base-progress-bar-height: #{mixins.baselinePx(10)};
+
+      .datagrid .datagrid-cell:not(.datagrid-detail-caret, .datagrid-expandable-caret, .datagrid-row-actions) {
+        @include mixins.cell-children-aligment();
+      }
     }
     // NOT SUPPORTED AT THE MOMENT
     // [clr-density='ultra-compact'] {

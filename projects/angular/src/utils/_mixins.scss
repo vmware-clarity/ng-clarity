@@ -458,3 +458,21 @@ $typography-tokens: (
     @include setValue($key, $fallbacks, $value);
   }
 }
+
+@mixin cell-children-aligment() {
+  clr-icon {
+    margin-top: calc((-1 * tokens.$cds-global-space-3) - tokens.$cds-global-space-1);
+    margin-bottom: calc(-1 * tokens.$cds-global-space-3);
+    transform: translateY(calc(-1 * tokens.$cds-global-space-1));
+  }
+
+  cds-icon {
+    margin-top: calc((-1 * tokens.$cds-global-space-3) - tokens.$cds-global-space-1);
+    margin-bottom: calc(-1 * tokens.$cds-global-space-3);
+  }
+
+  .badge {
+    margin-top: calc(-1 * tokens.$cds-global-space-3);
+    margin-bottom: calc(-1 * tokens.$cds-global-space-1);
+  }
+}
