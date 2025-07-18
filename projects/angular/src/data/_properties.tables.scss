@@ -17,7 +17,6 @@
     --clr-table-cell-padding: var(--clr-table-cell-vertical-padding) var(--clr-table-cell-horizontal-padding);
     --clr-table-cell-horizontal-padding: #{density.$clr-base-horizontal-offset-xl};
     --clr-table-cell-vertical-padding: #{density.$clr-base-vertical-offset-multi-row-inline-m};
-    --clr-table-cell-compact-padding: #{density.$clr-base-vertical-offset-multi-row-inline-s} #{density.$clr-base-horizontal-offset-xl};
     --clr-table-noborder-borderwidth: #{tokens.$cds-global-space-0};
 
     // Theme variables
@@ -48,7 +47,11 @@
     --clr-table-cellpadding: #{tokens.$cds-global-space-6};
 
     --clr-table-row-height: #{density.$clr-base-dg-row-height};
-    --clr-table-compact-row-height: #{density.$clr-base-dg-compact-row-height};
-    --clr-table-compact-vertical-padding: 0;
+    // @deprecated ALL compact properties in favor of compact mode in density theme
+    --clr-table-compact-row-height: #{tokens.$cds-global-space-9};
+    --clr-table-cell-compact-padding: var(--clr-table-compact-vertical-padding)
+      var(--clr-table-compact-horizontal-padding);
+    --clr-table-compact-vertical-padding: #{tokens.$cds-global-space-3};
+    --clr-table-compact-horizontal-padding: #{tokens.$cds-global-space-6};
   }
 }

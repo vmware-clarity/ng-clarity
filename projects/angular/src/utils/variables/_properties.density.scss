@@ -46,6 +46,7 @@
     --clr-base-vertical-offset-l: #{tokens.$cds-global-space-6};
     --clr-base-vertical-offset-xl: #{tokens.$cds-global-space-7};
     --clr-base-vertical-offset-2xl: #{tokens.$cds-global-space-9};
+    --clr-base-vertical-offset-3xl: #{tokens.$cds-global-space-13}; // Temp token used for login only
 
     --clr-base-vertical-offset-multi-row-s: #{tokens.$cds-global-space-4};
     --clr-base-vertical-offset-multi-row-m: #{mixins.baselinePx(10)};
@@ -61,6 +62,7 @@
     --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-6};
     --clr-base-horizontal-offset-xl: #{tokens.$cds-global-space-7};
     --clr-base-horizontal-offset-2xl: #{tokens.$cds-global-space-9};
+    --clr-base-horizontal-offset-3xl: #{tokens.$cds-global-space-13}; // Temp token used for login only
 
     --clr-base-row-height-xs: #{tokens.$cds-global-space-7};
     --clr-base-row-height-s: #{tokens.$cds-global-space-9};
@@ -154,6 +156,7 @@
       --clr-base-vertical-offset-l: #{tokens.$cds-global-space-6};
       --clr-base-vertical-offset-xl: #{tokens.$cds-global-space-7};
       --clr-base-vertical-offset-2xl: #{tokens.$cds-global-space-9};
+      --clr-base-vertical-offset-3xl: #{tokens.$cds-global-space-12};
 
       --clr-base-vertical-offset-multi-row-s: #{tokens.$cds-global-space-3};
       --clr-base-vertical-offset-multi-row-m: #{tokens.$cds-global-space-5};
@@ -169,6 +172,7 @@
       --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-6};
       --clr-base-horizontal-offset-xl: #{tokens.$cds-global-space-7};
       --clr-base-horizontal-offset-2xl: #{tokens.$cds-global-space-9};
+      --clr-base-horizontal-offset-3xl: #{tokens.$cds-global-space-12};
 
       --clr-base-row-height-xs: #{tokens.$cds-global-space-7};
       --clr-base-row-height-s: #{tokens.$cds-global-space-9};
@@ -263,6 +267,7 @@
       --clr-base-vertical-offset-l: #{tokens.$cds-global-space-5};
       --clr-base-vertical-offset-xl: #{tokens.$cds-global-space-6};
       --clr-base-vertical-offset-2xl: #{mixins.baselinePx(20)};
+      --clr-base-vertical-offset-3xl: #{tokens.$cds-global-space-11};
 
       --clr-base-vertical-offset-multi-row-s: #{tokens.$cds-global-space-2};
       --clr-base-vertical-offset-multi-row-m: #{tokens.$cds-global-space-3};
@@ -278,6 +283,7 @@
       --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-5};
       --clr-base-horizontal-offset-xl: #{tokens.$cds-global-space-6};
       --clr-base-horizontal-offset-2xl: #{mixins.baselinePx(20)};
+      --clr-base-horizontal-offset-3xl: #{tokens.$cds-global-space-11};
 
       --clr-base-row-height-xs: #{tokens.$cds-global-space-7};
       --clr-base-row-height-s: #{mixins.baselinePx(20)};
@@ -333,6 +339,10 @@
       --clr-base-tree-node-height: #{tokens.$cds-global-space-9};
 
       --clr-base-progress-bar-height: #{mixins.baselinePx(10)};
+
+      .datagrid .datagrid-cell:not(.datagrid-detail-caret, .datagrid-expandable-caret, .datagrid-row-actions) {
+        @include mixins.cell-children-aligment();
+      }
     }
     // NOT SUPPORTED AT THE MOMENT
     // [clr-density='ultra-compact'] {
