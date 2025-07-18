@@ -755,10 +755,6 @@
           display: none;
         }
       }
-
-      .datagrid-expandable-caret {
-        padding-top: tokens.$cds-global-space-2;
-      }
     }
   }
 
@@ -779,8 +775,8 @@
     border-width: tokens.$cds-alias-object-border-width-100;
     border-top: none;
     border-radius: 0;
-    border-bottom-right-radius: tokens.$cds-alias-object-border-radius-100;
-    border-bottom-left-radius: tokens.$cds-alias-object-border-radius-100;
+    border-bottom-right-radius: tables-variables.$clr-table-border-radius;
+    border-bottom-left-radius: tables-variables.$clr-table-border-radius;
 
     .pagination {
       display: flex;
@@ -1372,11 +1368,6 @@
     .spinner {
       margin-top: datagrid-variables.$clr-datagrid-expandable-row-spinner-margin;
     }
-
-    &.datagrid-column {
-      padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-        tables-variables.$clr-table-bottomcellpadding;
-    }
   }
 
   .datagrid-detail-caret {
@@ -1392,7 +1383,7 @@
       }
 
       &.is-open .datagrid-detail-caret-icon {
-        border-radius: tokens.$cds-alias-object-border-radius-100;
+        border-radius: density.$clr-base-border-radius-s;
         background-color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-bg-color;
         color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-icon-color;
       }
@@ -1404,11 +1395,6 @@
 
     .spinner {
       margin-top: datagrid-variables.$clr-datagrid-expandable-row-spinner-margin;
-    }
-
-    &.datagrid-column {
-      padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-        tables-variables.$clr-table-bottomcellpadding;
     }
   }
 
@@ -1423,7 +1409,7 @@
     .datagrid-detail-pane {
       border-left: tokens.$cds-alias-object-border-width-100 solid;
       border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
-      border-radius: tokens.$cds-alias-object-border-radius-100;
+      border-radius: density.$clr-base-border-radius-s;
       width: 100%;
     }
   }
@@ -1437,7 +1423,7 @@
     .datagrid-detail-pane {
       border-left: tokens.$cds-alias-object-border-width-100 solid;
       border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
-      border-radius: tokens.$cds-alias-object-border-radius-100;
+      border-radius: density.$clr-base-border-radius-s;
     }
   }
 
@@ -1445,7 +1431,7 @@
    * Smart popover contents
    */
   .column-switch {
-    border-radius: tokens.$cds-alias-object-border-radius-100;
+    border-radius: density.$clr-base-border-radius-s;
     background-color: datagrid-variables.$clr-datagrid-popover-bg-color;
     border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
@@ -1538,7 +1524,7 @@
     border-color: datagrid-variables.$clr-datagrid-popover-border-color;
     padding: density.$clr-base-vertical-offset-xl;
     @include clr-datagrid-popover-shadows;
-    border-radius: tokens.$cds-alias-object-border-radius-100;
+    border-radius: density.$clr-base-border-radius-s;
     font-weight: normal;
 
     .datagrid-filter-close-wrapper {
@@ -1615,12 +1601,9 @@
           border-color: tables-variables.$clr-tablerow-bordercolor;
           border-width: tables-variables.$clr-table-borderwidth;
           border-style: solid;
-          padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-            tables-variables.$clr-table-bottomcellpadding;
+          padding: tables-variables.$clr-table-cell-padding;
           vertical-align: top;
           @include mixins.generate-typography-token('CAPTION-LG-11-STD');
-          margin-top: tokens.$cds-global-space-9;
-          margin-bottom: 0;
         }
       }
 
@@ -1633,8 +1616,7 @@
           display: table-cell;
           min-width: tokens.$cds-global-space-15;
           @include mixins.generate-typography-token('BODY-14-RG-CPT');
-          padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-            tables-variables.$clr-table-bottomcellpadding;
+          padding: tables-variables.$clr-table-cell-padding;
           vertical-align: top;
         }
       }

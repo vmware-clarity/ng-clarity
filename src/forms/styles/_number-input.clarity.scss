@@ -31,7 +31,7 @@
       &-separator {
         background: tokens.$cds-alias-object-border-color;
         width: tokens.$cds-alias-object-border-width-100;
-        height: tokens.$cds-global-space-7;
+        height: density.$clr-base-row-height-xs;
       }
     }
 

@@ -1705,7 +1705,6 @@ All other table classes like `table, thead, tbody, th, td` are not specific to C
 | --clr-wizard-box-shadow                        | Wizard highlight indication                                                               |
 | --clr-wizard-stepnav-link-font-size            | Wizard navigation item font size                                                          |
 | --clr-wizard-stepnav-link-line-height          | Wizard navigation item line height                                                        |
-| --clr-wizard-stepnav-link-padding              | Wizard navigation item button padding                                                     |
 | --clr-wizard-stepnav-link-error-icon-color     | Wizard navigation item button error icon color                                            |
 | --clr-wizard-stepnav-item-error-border-color   | Wizard navigation item error border color                                                 |
 | --clr-wizard-stepnav-link-complete-icon-color  | Wizard navigation item button complete icon color                                         |

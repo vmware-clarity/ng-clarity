@@ -41,7 +41,6 @@
     --clr-wizard-stepnav-link-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover};
     // @TODO v18 rename to --clr-wizard-stepnav-active-bgcolor
     --clr-wizard-stepnav-link-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
-    --clr-wizard-stepnav-link-padding: calc(#{tokens.$cds-global-space-5} - #{tokens.$cds-global-space-1});
     --clr-wizard-stepnav-item-error-border-color: #{tokens.$cds-alias-status-danger};
 
     --clr-wizard-title-text: #{tokens.$cds-alias-typography-color-400};

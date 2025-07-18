@@ -60,7 +60,7 @@
     min-width: combobox-variables.$clr-combobox-min-width;
     .clr-input {
       padding: 0;
-      max-height: tokens.$cds-global-space-7;
+      max-height: density.$clr-base-row-height-xs;
 
       &:not(:disabled) {
         color: combobox-variables.$clr-combobox-text-color;
