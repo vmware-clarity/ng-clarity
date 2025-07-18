@@ -13,7 +13,6 @@ $clr-table-cornercellradius: var(--clr-table-cornercellradius) !default;
 $clr-table-cell-padding: var(--clr-table-cell-padding) !default;
 $clr-table-cell-horizontal-padding: var(--clr-table-cell-horizontal-padding) !default;
 $clr-table-cell-vertical-padding: var(--clr-table-cell-vertical-padding) !default;
-$clr-table-cell-compact-padding: var(--clr-table-cell-compact-padding) !default;
 $clr-table-noborder-borderwidth: var(--clr-table-noborder-borderwidth) !default;
 
 $clr-table-bgcolor: var(--clr-table-bgcolor) !default;
@@ -36,6 +35,8 @@ $clr-table-fontsize: var(--clr-table-fontsize) !default;
 $clr-table-cellpadding: var(--clr-table-cellpadding) !default;
 
 $clr-table-row-height: var(--clr-table-row-height) !default;
+// @deprecated ALL compact properties in favor of compact mode in density theme
+$clr-table-cell-compact-padding: var(--clr-table-cell-compact-padding) !default;
 // @deprecated in v17 in favor of $clr-table-compact-row-height
 $clr-table--compact-rowHeight: var(--clr-table-compact-row-height) !default; // Leaving for backwards compatibility
 $clr-table-compact-row-height: $clr-table--compact-rowHeight;
@@ -44,3 +45,4 @@ $clr-table--compact-verticalPadding: var(
   --clr-table-compact-vertical-padding
 ) !default; // Leaving for backwards compatibility
 $clr-table-compact-vertical-padding: $clr-table--compact-verticalPadding;
+$clr-table-compact-horizontal-padding: var(--clr-table-compact-horizontal-padding);
