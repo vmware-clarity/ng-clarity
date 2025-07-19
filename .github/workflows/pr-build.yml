@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        angular: ['Angular v15', 'Angular v16', 'Angular v17', 'Angular v18', 'Angular v19']
+        angular: ['Angular v15', 'Angular v16', 'Angular v17', 'Angular v18', 'Angular v19', 'Angular v20']
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -22,21 +22,25 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - name: Update to Angular v16
-        if: ${{matrix.angular == 'Angular v16' || matrix.angular == 'Angular v17' || matrix.angular == 'Angular v18' || matrix.angular == 'Angular v19'}}
+        if: ${{matrix.angular == 'Angular v16' || matrix.angular == 'Angular v17' || matrix.angular == 'Angular v18' || matrix.angular == 'Angular v19' || matrix.angular == 'Angular v20'}}
         run: |
           npx ng update @angular/core@16 @angular/common@16 @angular/cli@16 @angular/cdk@16 --force
       - name: Update to Angular v17
-        if: ${{matrix.angular == 'Angular v17' || matrix.angular == 'Angular v18' || matrix.angular == 'Angular v19'}}
+        if: ${{matrix.angular == 'Angular v17' || matrix.angular == 'Angular v18' || matrix.angular == 'Angular v19' || matrix.angular == 'Angular v20'}}
         run: |
           npx ng update @angular/core@17 @angular/common@17 @angular/cli@17 @angular/cdk@17 --allow-dirty --force
       - name: Update to Angular v18
-        if: ${{matrix.angular == 'Angular v18' || matrix.angular == 'Angular v19'}}
+        if: ${{matrix.angular == 'Angular v18' || matrix.angular == 'Angular v19' || matrix.angular == 'Angular v20'}}
         run: |
           npx ng update @angular/core@18 @angular/common@18 @angular/cli@18 @angular/cdk@18 --allow-dirty --force
       - name: Update to Angular v19
-        if: ${{matrix.angular == 'Angular v19'}}
+        if: ${{matrix.angular == 'Angular v19' || matrix.angular == 'Angular v20'}}
         run: |
           npx ng update @angular/core@19 @angular/common@19 @angular/cli@19 @angular/cdk@19 --allow-dirty --force
+      - name: Update to Angular v20
+        if: ${{matrix.angular == 'Angular v20'}}
+        run: |
+          npx ng update @angular/core@20 @angular/common@20 @angular/cli@20 @angular/cdk@20 --allow-dirty --force
       - name: Disable Storybook Build
         if: ${{matrix.angular != 'Angular v15'}}
         run: node ./scripts/clear-npm-script.js _build:storybook
