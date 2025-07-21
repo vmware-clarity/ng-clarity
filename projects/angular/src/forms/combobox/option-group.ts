@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -14,6 +15,7 @@ import { ClrOptionItems } from './option-items.directive';
   host: {
     '[attr.role]': '"group"',
     '[attr.aria-labelledby]': 'labelId',
+    '[class.clr-combobox-option-group]': 'true',
   },
   template: `
     <span [id]="labelId" class="clr-option-group-label" role="presentation">{{ label }}</span>
