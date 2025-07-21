@@ -3,8 +3,8 @@
   "private": true,
   "engines": {
     "yarn": "please-use-npm",
-    "node": ">=18.0.0",
-    "npm": ">=8.19.0"
+    "node": ">=20.19.0",
+    "npm": ">=10.8.2"
   },
   "scripts": {
     "build": "npm-run-all _build:angular _build:ui _build:storybook _build:demo",
