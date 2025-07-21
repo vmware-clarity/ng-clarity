@@ -102,25 +102,11 @@
     @include menu-mixins.generate-dropdown-menu();
 
     .dropdown-header {
-      color: dropdown-variables.$clr-dropdown-header-color;
-
-      // Typography
-      @include mixins.generate-typography-token(
-        'SECONDARY-13-MD-EXP',
-        (
-          font-weight: dropdown-variables.$clr-dropdown-header-font-weight,
-        )
-      );
-
-      padding: 0 density.$clr-base-horizontal-offset-l;
-      margin: 0;
-
+      @include menu-mixins.generate-dropdown-header();
       & ~ .dropdown-item,
       & ~ .dropdown > .dropdown-item {
         padding-left: density.$clr-base-horizontal-offset-2xl;
       }
-
-      @extend %dropdown-content;
     }
 
     .btn,

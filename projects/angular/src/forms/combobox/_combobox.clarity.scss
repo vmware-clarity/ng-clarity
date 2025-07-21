@@ -215,15 +215,8 @@
     }
 
     .clr-combobox-option-group {
-      color: dropdown-variables.$clr-dropdown-header-color;
-
       .clr-option-group-label {
-        display: block;
-        padding: 0 density.$clr-base-horizontal-offset-l;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        @include mixins.generate-typography-token('SECONDARY-13-MD-EXP');
+        @include menu-mixins.generate-dropdown-header();
       }
 
       & > .clr-combobox-option {
