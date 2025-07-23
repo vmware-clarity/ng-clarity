@@ -15,7 +15,7 @@ import { ClrOptionItems } from './option-items.directive';
   host: {
     '[attr.role]': '"group"',
     '[attr.aria-labelledby]': 'labelId',
-    '[class.clr-combobox-option-group]': 'true',
+    '[style.display]': 'clrOptionItems.hasResults ? undefined : "none"',
   },
   template: `
     <span [id]="labelId" class="clr-option-group-label" role="presentation">{{ label }}</span>

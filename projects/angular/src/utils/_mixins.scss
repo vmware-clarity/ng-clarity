@@ -53,10 +53,14 @@ $clr-outline-spread: variables.$clr_baselineRem_2px;
   text-decoration: none;
 }
 
-@mixin overflow-ellipsis() {
+@mixin overflow-ellipsis($leftAlignment: false) {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  @if $leftAlignment == true {
+    text-align: left;
+    justify-content: start;
+  }
 }
 
 @mixin off-screen-styles() {

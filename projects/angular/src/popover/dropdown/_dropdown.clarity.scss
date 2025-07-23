@@ -17,13 +17,6 @@
 
 @include meta.load-css('properties.dropdown');
 
-%dropdown-content {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
-  justify-content: start;
-}
-
 @include mixins.exports('dropdown.clarity') {
   .dropdown {
     position: relative;
@@ -125,8 +118,7 @@
     .btn-link,
     .dropdown-item {
       @include menu-mixins.generate-dropdown-item();
-
-      @extend %dropdown-content;
+      @include mixins.overflow-ellipsis(true);
 
       &.active {
         position: relative;
@@ -172,7 +164,7 @@
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
       &-content {
-        @extend %dropdown-content;
+        @include mixins.overflow-ellipsis(true);
         flex: 1 1 auto;
       }
     }

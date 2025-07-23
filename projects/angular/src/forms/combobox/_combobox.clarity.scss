@@ -214,7 +214,7 @@
       padding: 0 density.$clr-base-horizontal-offset-l;
     }
 
-    .clr-combobox-option-group {
+    clr-option-group {
       .clr-option-group-label {
         @include menu-mixins.generate-dropdown-header();
       }
