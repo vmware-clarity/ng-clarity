@@ -219,6 +219,10 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   private set totalItems(value: number) {
+    if (this._totalItems + 1 === value) {
+      value = value + 1;
+    }
+
     this._totalItems = value;
   }
 
