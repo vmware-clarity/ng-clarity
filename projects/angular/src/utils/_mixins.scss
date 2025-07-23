@@ -53,13 +53,13 @@ $clr-outline-spread: variables.$clr_baselineRem_2px;
   text-decoration: none;
 }
 
-@mixin overflow-ellipsis($leftAlignment: false) {
+@mixin overflow-ellipsis($leftAlignment: false, $justifyContent: 'start') {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   @if $leftAlignment == true {
     text-align: left;
-    justify-content: start;
+    justify-content: #{$justifyContent};
   }
 }
 
