@@ -19,6 +19,7 @@ export declare class ClrOptionItems<T> implements DoCheck, OnDestroy {
     set rawItems(items: T[]);
     set trackBy(value: TrackByFunction<T>);
     set field(field: string);
+    get hasResults(): number;
     ngDoCheck(): void;
     ngOnDestroy(): void;
     private updateItems;
