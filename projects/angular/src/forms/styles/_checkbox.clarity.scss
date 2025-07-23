@@ -28,14 +28,7 @@
     display: flex;
     align-items: flex-start;
 
-    & + .clr-checkbox-wrapper,
-    & + .clr-radio-wrapper {
-      padding-top: density.$clr-base-check-radio-toggle-gap;
-    }
-
-    & + .clr-toggle-wrapper {
-      margin-top: density.$clr-base-check-radio-toggle-gap;
-    }
+    @include forms-mixins.checkbox-radio-toggle-control-group-gap();
 
     .clr-control-label {
       @include forms-mixins.checkbox-radio-label-styles(

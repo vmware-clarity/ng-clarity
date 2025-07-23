@@ -119,7 +119,7 @@
 
     --clr-base-progress-bar-height: #{tokens.$cds-global-space-6};
 
-    --clr-base-check-radio-toggle-gap: #{tokens.$cds-global-space-0};
+    --clr-base-control-group-gap: #{tokens.$cds-global-space-0};
 
     [clr-density='regular'] {
       --clr-base-typography-font-size-caption-small: #{mixins.baselinePx(10)};
@@ -231,7 +231,7 @@
 
       --clr-base-progress-bar-height: #{tokens.$cds-global-space-6};
 
-      --clr-base-check-radio-toggle-gap: #{tokens.$cds-global-space-0};
+      --clr-base-control-group-gap: #{tokens.$cds-global-space-0};
     }
 
     [clr-density='compact'] {
@@ -344,7 +344,7 @@
 
       --clr-base-progress-bar-height: #{mixins.baselinePx(10)};
 
-      --clr-base-check-radio-toggle-gap: #{tokens.$cds-global-space-2};
+      --clr-base-control-group-gap: #{tokens.$cds-global-space-2};
 
       .datagrid .datagrid-cell:not(.datagrid-detail-caret, .datagrid-expandable-caret, .datagrid-row-actions) {
         @include mixins.cell-children-aligment();
