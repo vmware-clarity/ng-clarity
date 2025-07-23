@@ -7,10 +7,21 @@
 
 <h2>Virtual scroll empty rows</h2>
 
-<form clrForm>
+<form clrForm class="clr-form-compact">
   <clr-number-input-container>
     <label>Total Rows</label>
     <input clrNumberInput type="number" name="rows" [(ngModel)]="totalRows" />
+    <clr-control-helper
+      >Total Virtual scroll heigth in PX (RowHeight * TotalRows): {{totalRows * virtualScrollRowHeight}}
+    </clr-control-helper>
+  </clr-number-input-container>
+  <clr-number-input-container>
+    <label>Datagrid height in PX</label>
+    <input clrNumberInput type="number" name="datagridHeight" [(ngModel)]="datagridHeight" />
+  </clr-number-input-container>
+  <clr-number-input-container>
+    <label>ROW height in PX</label>
+    <input clrNumberInput type="number" name="virtualScrollRowHeight" [(ngModel)]="virtualScrollRowHeight" />
   </clr-number-input-container>
   <clr-toggle-container>
     <label>Persist Items</label>
@@ -26,8 +37,7 @@
   [(clrDgSelected)]="selectedUsers"
   (clrDgRefresh)="refresh($event)"
   [clrDgItemsTrackBy]="trackItemById"
-  class="datagrid-compact"
-  style="height: 480px"
+  [style.height.px]="datagridHeight"
 >
   <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
@@ -41,7 +51,7 @@
     let-index="index"
     [clrVirtualDataRange]="dataRange"
     [clrVirtualPersistItems]="persistItems"
-    [clrVirtualRowsItemSize]="24"
+    [clrVirtualRowsItemSize]="virtualScrollRowHeight"
     [clrVirtualRowsMinBufferPx]="200"
     [clrVirtualRowsMaxBufferPx]="400"
     [clrVirtualRowsTemplateCacheSize]="400"
@@ -59,15 +69,20 @@
       <clr-dg-cell>
         <span class="color-square" [style.backgroundColor]="user?.color"></span>
       </clr-dg-cell>
+      <ng-container ngProjectAs="clr-dg-row-detail">
+        <clr-dg-row-detail [clrIfExpanded]="user?.expanded" (clrIfExpandedChange)="setExpanded($event, user)">
+          {{user | json}}
+        </clr-dg-row-detail>
+      </ng-container>
     </clr-dg-row>
   </ng-template>
 
-  <clr-dg-detail *clrIfDetail="let detail">
-    <clr-dg-detail-header> {{detail.name}} </clr-dg-detail-header>
-    <clr-dg-detail-body>
-      <pre>{{detail | json}}</pre>
-    </clr-dg-detail-body>
-  </clr-dg-detail>
+  <!--  <clr-dg-detail *clrIfDetail="let detail">-->
+  <!--    <clr-dg-detail-header> {{detail.name}} </clr-dg-detail-header>-->
+  <!--    <clr-dg-detail-body>-->
+  <!--      <pre>{{detail | json}}</pre>-->
+  <!--    </clr-dg-detail-body>-->
+  <!--  </clr-dg-detail>-->
 
   <clr-dg-footer>
     <div class="footer-counters">Rows {{userRange?.start + 1}} - {{userRange?.end}} of {{dataRange.total}}</div>

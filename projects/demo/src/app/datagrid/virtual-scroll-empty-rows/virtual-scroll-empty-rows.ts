@@ -24,13 +24,12 @@ import { User } from '../inventory/user';
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridVirtualScrollEmptyRowsDemo {
-  userRange: ListRange = {
-    start: 0,
-    end: 100,
-  };
+  userRange: ListRange | undefined;
 
-  _totalRows = 10000;
+  _totalRows = 1000;
   persistItems = true;
+  datagridHeight = 340;
+  virtualScrollRowHeight = 26;
 
   dataRange: ClrDatagridVirtualScrollRangeInterface<User> = {
     total: this.totalRows,
@@ -57,6 +56,7 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     this.inventory.size = totalRows;
     this.inventory.generatedCount = 0;
     this.inventory.reset();
+    this.userRange.end++;
     this.renderUserRangeChange(this.userRange).then(x => {
       console.log(x);
       // this.cdr.detectChanges();
@@ -77,6 +77,11 @@ export class DatagridVirtualScrollEmptyRowsDemo {
 
   async refresh(state: ClrDatagridStateInterface<User>) {
     console.log('refresh', state);
+    if (!this.userRange) {
+      console.log('no user range', this.userRange);
+      return;
+    }
+
     this.state = state;
     const filters: { [prop: string]: any[] } = {};
 
@@ -137,6 +142,12 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     }
 
     return result;
+  }
+
+  setExpanded($event, user: User) {
+    if (user) {
+      user.expanded = $event;
+    }
   }
 
   private async getData($event: ListRange) {
