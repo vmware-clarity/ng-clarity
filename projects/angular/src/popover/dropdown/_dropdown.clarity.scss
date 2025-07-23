@@ -17,13 +17,6 @@
 
 @include meta.load-css('properties.dropdown');
 
-%dropdown-content {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
-  justify-content: start;
-}
-
 @include mixins.exports('dropdown.clarity') {
   .dropdown {
     position: relative;
@@ -102,25 +95,11 @@
     @include menu-mixins.generate-dropdown-menu();
 
     .dropdown-header {
-      color: dropdown-variables.$clr-dropdown-header-color;
-
-      // Typography
-      @include mixins.generate-typography-token(
-        'SECONDARY-13-MD-EXP',
-        (
-          font-weight: dropdown-variables.$clr-dropdown-header-font-weight,
-        )
-      );
-
-      padding: 0 density.$clr-base-horizontal-offset-l;
-      margin: 0;
-
+      @include menu-mixins.generate-dropdown-header();
       & ~ .dropdown-item,
       & ~ .dropdown > .dropdown-item {
         padding-left: density.$clr-base-horizontal-offset-2xl;
       }
-
-      @extend %dropdown-content;
     }
 
     .btn,
@@ -139,8 +118,7 @@
     .btn-link,
     .dropdown-item {
       @include menu-mixins.generate-dropdown-item();
-
-      @extend %dropdown-content;
+      @include mixins.overflow-ellipsis(true, 'space-between');
 
       &.active {
         position: relative;
@@ -186,7 +164,7 @@
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
       &-content {
-        @extend %dropdown-content;
+        @include mixins.overflow-ellipsis(true);
         flex: 1 1 auto;
       }
     }
