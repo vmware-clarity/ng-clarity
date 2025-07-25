@@ -28,6 +28,8 @@
     display: flex;
     align-items: flex-start;
 
+    @include forms-mixins.checkbox-radio-toggle-control-group-gap();
+
     .clr-control-label {
       @include forms-mixins.checkbox-radio-label-styles(
         forms-variables.$clr-forms-checkbox-label-height,
@@ -169,6 +171,8 @@
   }
 
   .clr-form-compact .clr-checkbox-wrapper {
+    padding-top: 0;
+
     @include forms-mixins.form-flatten-compact-adjustments();
     @include forms-mixins.form-inline-input();
 

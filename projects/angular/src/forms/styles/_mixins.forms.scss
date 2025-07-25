@@ -96,6 +96,17 @@
   cursor: not-allowed;
 }
 
+@mixin checkbox-radio-toggle-control-group-gap() {
+  & + .clr-checkbox-wrapper,
+  & + .clr-radio-wrapper {
+    padding-top: density.$clr-base-control-group-gap;
+  }
+
+  & + .clr-toggle-wrapper {
+    margin-top: density.$clr-base-control-group-gap;
+  }
+}
+
 @mixin checkbox-radio-input-styles($size) {
   position: relative;
   //NOTE: Even though the input is invisible, we assign it a height
