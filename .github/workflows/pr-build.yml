@@ -11,14 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        runtime: [
-          {node: 18, angular: 'Angular v15'},
-          {node: 18, angular: 'Angular v16'},
-          {node: 18, angular: 'Angular v17'},
-          {node: 18, angular: 'Angular v18'},
-          {node: 18, angular: 'Angular v19'},
-          {node: 20, angular: 'Angular v20'},
-        ]
+        runtime:
+          [
+            { node: 18, angular: 'Angular v15' },
+            { node: 18, angular: 'Angular v16' },
+            { node: 18, angular: 'Angular v17' },
+            { node: 18, angular: 'Angular v18' },
+            { node: 18, angular: 'Angular v19' },
+            { node: 20, angular: 'Angular v20' },
+          ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
