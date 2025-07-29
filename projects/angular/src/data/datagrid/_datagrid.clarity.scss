@@ -91,15 +91,19 @@
   display: inline-flex;
 }
 
-@mixin datagrid-column-separator($position: right, $selector: 'before') {
+@mixin datagrid-column-separator($position: right, $selector: 'after', $alignTop: true) {
   &#{':' + $selector} {
     content: '';
     width: datagrid-variables.$clr-datagrid-column-separator-width;
     height: datagrid-variables.$clr-datagrid-column-separator-height;
     position: absolute;
     #{$position}: 0;
-    align-self: center;
     background-color: tables-variables.$clr-table-border-color;
+    @if $alignTop == true {
+      top: tokens.$cds-global-space-3;
+    } @else {
+      align-self: center;
+    }
   }
 }
 
@@ -303,12 +307,12 @@
       > div.datagrid-column {
         min-width: tokens.$cds-global-space-7;
         padding: 0;
-        @include datagrid-column-separator('left');
+        @include datagrid-column-separator('left', 'before');
       }
     }
 
     .datagrid-cell:last-child {
-      @include datagrid-column-separator('right', 'after');
+      @include datagrid-column-separator();
     }
   }
 
@@ -580,7 +584,7 @@
         order: 100;
         margin-left: auto;
         height: 100%;
-        @include datagrid-column-separator('right', 'after');
+        @include datagrid-column-separator($alignTop: false);
 
         .datagrid-column-handle {
           @include mixins.clr-no-styles-button();

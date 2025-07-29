@@ -296,22 +296,22 @@ export default function (): void {
         expectActiveElementToBe(headerCheckboxCell);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        // active checkbox input with ID clr-dg-row-cb364
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[22]);
+        // active checkbox input with ID clr-dg-row-cb365
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[23]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
-        // active checkbox input with ID clr-dg-row-cb383
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[41]);
+        // active checkbox input with ID clr-dg-row-cb382
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[40]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
-        // active checkbox input with ID clr-dg-row-cb360
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[19]);
+        // active checkbox input with ID clr-dg-row-cb358
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[17]);
 
         flush();
         flushMicrotasks();
