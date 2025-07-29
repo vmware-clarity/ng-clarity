@@ -144,6 +144,10 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     );
   }
 
+  get totalContentHeight() {
+    return this.virtualScrollViewport?._totalContentHeight;
+  }
+
   @Input('clrVirtualRowsOf')
   get cdkVirtualForOf() {
     return this.cdkVirtualForInputs.cdkVirtualForOf;
@@ -371,21 +375,12 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     datagridElementRef: ElementRef<HTMLElement>,
     virtualScrollStrategy: FixedSizeVirtualScrollStrategy
   ) {
-    const datagridDivElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid');
-    const datagridTableElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-table');
+    const datagridContentElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-content');
     const datagridRowsElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-rows');
-    const datagridDivElementRef: ElementRef<HTMLElement> = { nativeElement: datagridDivElement };
-
-    let topOffset = 0;
-    let totalContentSize = 0;
-
-    function updateDatagridElementStyles() {
-      datagridRowsElement.style.transform = `translateY(${topOffset}px)`;
-      datagridRowsElement.style.height = `${totalContentSize - topOffset}px`;
-    }
 
     const virtualScrollViewport = createCdkVirtualScrollViewport(
-      datagridDivElementRef,
+      new ElementRef(datagridContentElement),
+      new ElementRef(datagridRowsElement),
       changeDetectorRef,
       ngZone,
       renderer2,
@@ -396,29 +391,13 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       null as any as CdkVirtualScrollableElement
     );
 
-    virtualScrollViewport._contentWrapper = {
-      nativeElement: {
-        style: {
-          set transform(value: any) {
-            topOffset = value === undefined ? 0 : +/translateY\(([0-9]+)px\)/.exec(value)?.[1];
-            updateDatagridElementStyles();
-          },
-        },
-      },
-    } as ElementRef<HTMLElement>;
-
-    virtualScrollViewport.setTotalContentSize = (value: number) => {
-      totalContentSize = value;
-      datagridTableElement.style.height = `${totalContentSize}px`;
-      updateDatagridElementStyles();
-    };
-
     return virtualScrollViewport;
   }
 }
 
 function createCdkVirtualScrollViewport(
   datagridDivElementRef: ElementRef<HTMLElement>,
+  contentWrapper: ElementRef<HTMLElement>,
   changeDetectorRef: ChangeDetectorRef,
   ngZone: NgZone,
   renderer2: Renderer2,
@@ -428,8 +407,9 @@ function createCdkVirtualScrollViewport(
   viewportRuler: ViewportRuler,
   scrollable: CdkVirtualScrollable
 ) {
+  let viewPort: CdkVirtualScrollViewport;
   if (+ANGULAR_VERSION.major < 19) {
-    return new CdkVirtualScrollViewport(
+    viewPort = new CdkVirtualScrollViewport(
       datagridDivElementRef,
       changeDetectorRef,
       ngZone,
@@ -456,8 +436,10 @@ function createCdkVirtualScrollViewport(
       ],
     });
 
-    return virtualScrollViewportInjector.get(CdkVirtualScrollViewport);
+    viewPort = virtualScrollViewportInjector.get(CdkVirtualScrollViewport);
   }
+  viewPort._contentWrapper = contentWrapper;
+  return viewPort;
 }
 
 function createCdkVirtualForOfDirective<T>(

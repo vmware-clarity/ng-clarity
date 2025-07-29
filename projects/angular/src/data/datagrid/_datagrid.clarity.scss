@@ -91,6 +91,18 @@
   display: inline-flex;
 }
 
+@mixin datagrid-column-separator($position: right, $selector: 'before') {
+  &#{':' + $selector} {
+    content: '';
+    width: datagrid-variables.$clr-datagrid-column-separator-width;
+    height: datagrid-variables.$clr-datagrid-column-separator-height;
+    position: absolute;
+    #{$position}: 0;
+    align-self: center;
+    background-color: tables-variables.$clr-table-border-color;
+  }
+}
+
 @include meta.load-css('properties.datagrid');
 
 @include mixins.exports('datagrid.clarity') {
@@ -107,6 +119,29 @@
     display: flex;
     flex-flow: column nowrap;
     position: relative;
+
+    &.datagrid-virtual-scroll {
+      .datagrid {
+        display: flex;
+      }
+      .datagrid-table-wrapper,
+      .datagrid-table {
+        overflow: auto;
+      }
+
+      .datagrid-header {
+        position: static;
+        display: flex;
+        flex: 0 0 auto;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: none;
+        .datagrid-row {
+          display: flex;
+          flex: 1 1 auto;
+        }
+      }
+    }
   }
 
   .datagrid {
@@ -263,16 +298,17 @@
     left: 0;
     z-index: map.get(variables.$clr-layers, datagrid-row-sticky);
 
-    .datagrid-cell:last-child {
-      &:after {
-        content: '';
-        width: datagrid-variables.$clr-datagrid-column-separator-width;
-        height: datagrid-variables.$clr-datagrid-column-separator-height;
-        position: absolute;
-        right: 0;
-        top: tokens.$cds-global-space-3;
-        background-color: tables-variables.$clr-table-border-color;
+    &-scroll {
+      right: 0;
+      > div.datagrid-column {
+        min-width: tokens.$cds-global-space-7;
+        padding: 0;
+        @include datagrid-column-separator('left');
       }
+    }
+
+    .datagrid-cell:last-child {
+      @include datagrid-column-separator('right', 'after');
     }
   }
 
@@ -383,6 +419,30 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
+
+    .datagrid-content {
+      display: contents;
+      &-virtual {
+        position: relative;
+        display: block;
+        flex: 1 1 100%;
+        overflow: auto;
+        will-change: scroll-position;
+        contain: strict;
+        transform: translateZ(0);
+        &-spacer {
+          flex: 0 0 auto;
+          transform-origin: 0 0;
+        }
+        .datagrid-rows {
+          position: absolute;
+          top: 0;
+          left: 0;
+          contain: content;
+          min-width: 100%;
+        }
+      }
+    }
 
     .datagrid-rows {
       display: flex;
@@ -520,15 +580,7 @@
         order: 100;
         margin-left: auto;
         height: 100%;
-
-        &::after {
-          content: '';
-          position: absolute;
-          height: datagrid-variables.$clr-datagrid-column-separator-height;
-          width: datagrid-variables.$clr-datagrid-column-separator-width;
-          right: 0;
-          background-color: tables-variables.$clr-table-border-color;
-        }
+        @include datagrid-column-separator('right', 'after');
 
         .datagrid-column-handle {
           @include mixins.clr-no-styles-button();
