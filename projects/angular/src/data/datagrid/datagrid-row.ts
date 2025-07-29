@@ -338,10 +338,10 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     if (!this.selection.rowSelectionMode || $event.target.tagName === 'LABEL') {
       return;
     }
-    if (this.selection.selectionType === this.SELECTION_TYPE.Single) {
+    if (this._selectable && this.selection.selectionType === this.SELECTION_TYPE.Single) {
       this.selection.currentSingle = this.item;
     } else {
-      this.toggle(selected);
+      this._selectable && this.toggle(selected);
     }
   }
 
