@@ -21938,7 +21938,7 @@ class ClrDatagridVirtualScrollDirective {
         this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(this._cdkFixedSizeVirtualScrollInputs.itemSize, this._cdkFixedSizeVirtualScrollInputs.minBufferPx, this._cdkFixedSizeVirtualScrollInputs.maxBufferPx);
     }
     get totalContentHeight() {
-        return this.virtualScrollViewport?._totalContentHeight;
+        return this.virtualScrollViewport?._totalContentHeight || '';
     }
     get cdkVirtualForOf() {
         return this.cdkVirtualForInputs.cdkVirtualForOf;

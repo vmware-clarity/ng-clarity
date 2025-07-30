@@ -22126,7 +22126,7 @@ class ClrDatagridVirtualScrollDirective {
     }
     get totalContentHeight() {
         var _a;
-        return (_a = this.virtualScrollViewport) === null || _a === void 0 ? void 0 : _a._totalContentHeight;
+        return ((_a = this.virtualScrollViewport) === null || _a === void 0 ? void 0 : _a._totalContentHeight) || '';
     }
     get cdkVirtualForOf() {
         return this.cdkVirtualForInputs.cdkVirtualForOf;
