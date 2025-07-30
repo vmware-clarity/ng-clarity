@@ -103,6 +103,23 @@
   }
 }
 
+@mixin generate-dropdown-header() {
+  display: block;
+  color: dropdown-variables.$clr-dropdown-header-color;
+  @include mixins.overflow-ellipsis(true);
+
+  // Typography
+  @include mixins.generate-typography-token(
+    'SECONDARY-13-MD-EXP',
+    (
+      font-weight: dropdown-variables.$clr-dropdown-header-font-weight,
+    )
+  );
+
+  padding: 0 density.$clr-base-horizontal-offset-l;
+  margin: 0;
+}
+
 @mixin generate-dropdown-item-height() {
   padding: 0 density.$clr-base-horizontal-offset-2xl 0 density.$clr-base-horizontal-offset-l;
 
