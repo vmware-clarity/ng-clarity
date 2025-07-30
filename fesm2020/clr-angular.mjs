@@ -21908,6 +21908,7 @@ class ClrDatagridVirtualScrollDirective {
         this._cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
         this.subscriptions = [];
         this.topIndex = 0;
+        // @deprecated remove the mutation observer when `datagrid-compact` class is deleted
         this.mutationChanges = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 // it is possible this to be called twice because the old class is removed and the new added
@@ -21925,6 +21926,11 @@ class ClrDatagridVirtualScrollDirective {
         this.datagridElementRef = datagrid.el;
         // default
         this.cdkVirtualForTemplateCacheSize = 20;
+        const rowHeightToken = window.getComputedStyle(document.body).getPropertyValue('--clr-table-row-height');
+        const rowHeightValue = +/calc\(([0-9]+) \* calc\(\(1rem \/ 20\) \* 1\)\)/.exec(rowHeightToken)?.[1];
+        if (rowHeightValue && this.itemSize > rowHeightValue) {
+            this.itemSize = rowHeightValue;
+        }
         this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
             attributeFilter: ['class'],
             attributeOldValue: true,
