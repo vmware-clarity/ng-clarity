@@ -39,6 +39,7 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
     private cdkVirtualForInputs;
     private _totalItems;
     constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
+    get totalContentHeight(): string;
     get cdkVirtualForOf(): CdkVirtualForInputs<T>['cdkVirtualForOf'];
     set cdkVirtualForOf(value: CdkVirtualForInputs<T>['cdkVirtualForOf']);
     get cdkVirtualForTrackBy(): CdkVirtualForInputs<T>['cdkVirtualForTrackBy'];

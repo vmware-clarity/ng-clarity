@@ -74,6 +74,8 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
     rows: QueryList<ClrDatagridRow<T>>;
     datagrid: ElementRef<HTMLElement>;
     datagridTable: ElementRef<HTMLElement>;
+    datagridHeader: ElementRef<HTMLElement>;
+    contentWrapper: ElementRef<HTMLElement>;
     scrollableColumns: ViewContainerRef;
     _projectedDisplayColumns: ViewContainerRef;
     _projectedCalculationColumns: ViewContainerRef;
