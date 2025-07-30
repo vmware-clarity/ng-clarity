@@ -11,7 +11,7 @@
     <div class="datagrid" #datagrid [attr.aria-hidden]="detailService.isOpen ? true : null">
       <div class="datagrid-table-wrapper">
         <div role="grid" class="datagrid-table" tabindex="-1" #datagridTable>
-          <div role="rowgroup" class="datagrid-header">
+          <div role="rowgroup" class="datagrid-header" #datagridHeader>
             <div role="row" class="datagrid-row">
               <div class="datagrid-row-master datagrid-row-flex">
                 <div class="datagrid-row-sticky">
@@ -76,30 +76,40 @@
                 <div class="datagrid-row-scrollable">
                   <ng-container #projectedDisplayColumns></ng-container>
                 </div>
+                <div *ngIf="virtualScroll" class="datagrid-row-sticky datagrid-row-sticky-scroll">
+                  <div class="datagrid-column"></div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div role="presentation" class="datagrid-rows">
-            <clr-dg-row class="datagrid-row-loading" *ngIf="loadingMoreItems">
-              <clr-dg-cell>
-                <clr-spinner clrMedium></clr-spinner>
-                <span>{{ commonStrings.keys.loading }}</span>
-              </clr-dg-cell>
-            </clr-dg-row>
+          <div class="datagrid-content" [class.datagrid-content-virtual]="virtualScroll" #contentWrapper>
+            <div role="presentation" class="datagrid-rows">
+              <clr-dg-row class="datagrid-row-loading" *ngIf="loadingMoreItems">
+                <clr-dg-cell>
+                  <clr-spinner clrMedium></clr-spinner>
+                  <span>{{ commonStrings.keys.loading }}</span>
+                </clr-dg-cell>
+              </clr-dg-row>
 
-            <ng-container #displayedRows></ng-container>
+              <ng-container #displayedRows></ng-container>
 
-            <clr-dg-row class="datagrid-row-loading" *ngIf="loadingMoreItems">
-              <clr-dg-cell>
-                <clr-spinner clrMedium></clr-spinner>
-                <span>{{ commonStrings.keys.loading }}</span>
-              </clr-dg-cell>
-            </clr-dg-row>
+              <clr-dg-row class="datagrid-row-loading" *ngIf="loadingMoreItems">
+                <clr-dg-cell>
+                  <clr-spinner clrMedium></clr-spinner>
+                  <span>{{ commonStrings.keys.loading }}</span>
+                </clr-dg-cell>
+              </clr-dg-row>
 
-            <!-- Custom placeholder overrides the default empty one -->
-            <ng-content select="clr-dg-placeholder"></ng-content>
-            <clr-dg-placeholder *ngIf="!placeholder"></clr-dg-placeholder>
+              <!-- Custom placeholder overrides the default empty one -->
+              <ng-content select="clr-dg-placeholder"></ng-content>
+              <clr-dg-placeholder *ngIf="!placeholder"></clr-dg-placeholder>
+            </div>
+            <div
+              *ngIf="virtualScroll"
+              class="datagrid-content-virtual-spacer"
+              [style.height]="virtualScroll?.totalContentHeight"
+            ></div>
           </div>
         </div>
       </div>
