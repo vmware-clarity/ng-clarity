@@ -21690,7 +21690,7 @@ class ClrDatagridRow {
     selectRow(selected = !this.selected, $event) {
         // The label also captures clicks that bubble up to the row event listener, causing
         // this handler to run twice. This exits early to prevent toggling the checkbox twice.
-        if (!this.selection.rowSelectionMode || $event.target.tagName === 'LABEL') {
+        if (!this.selection.rowSelectionMode || $event.target.tagName === 'LABEL' || !this._selectable) {
             return;
         }
         if (this.selection.selectionType === this.SELECTION_TYPE.Single) {
