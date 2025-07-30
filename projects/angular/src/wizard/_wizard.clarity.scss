@@ -156,7 +156,8 @@
     }
 
     .clr-wizard-stepnav-list {
-      display: block;
+      display: flex;
+      flex-direction: column;
       box-shadow: none;
       counter-reset: a;
       white-space: nowrap;
@@ -164,14 +165,13 @@
       list-style-type: none;
       margin: 0;
       width: 100%;
+      gap: tokens.$cds-global-space-1;
     }
 
     .clr-wizard-stepnav-item {
       display: block;
       border-left: wizard-variables.$clr-wizard-stepnav-border-size solid
         wizard-variables.$clr-wizard-stepnav-item-border-color;
-
-      margin-bottom: tokens.$cds-global-space-1;
       color: wizard-variables.$clr-wizard-stepnav-text;
       background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
 
@@ -516,7 +516,7 @@
     }
 
     .clr-wizard-stepnav {
-      padding-top: tokens.$cds-global-space-9;
+      padding-top: density.$clr-base-vertical-offset-2xl;
     }
   }
 

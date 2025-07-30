@@ -19,6 +19,7 @@ import { ClrCommonFormsModule } from '../common/common.module';
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';
 import { ClrOption } from './option';
+import { ClrOptionGroup } from './option-group';
 import { ClrOptionItems } from './option-items.directive';
 import { ClrOptionSelected } from './option-selected.directive';
 import { ClrOptions } from './options';
@@ -34,13 +35,22 @@ import { ClrOptions } from './options';
     ClrPopoverModuleNext,
     ClrSpinnerModule,
   ],
-  declarations: [ClrCombobox, ClrComboboxContainer, ClrOptions, ClrOption, ClrOptionSelected, ClrOptionItems],
+  declarations: [
+    ClrCombobox,
+    ClrComboboxContainer,
+    ClrOptions,
+    ClrOption,
+    ClrOptionGroup,
+    ClrOptionSelected,
+    ClrOptionItems,
+  ],
   exports: [
     ClrCommonFormsModule,
     ClrCombobox,
     ClrComboboxContainer,
     ClrOptions,
     ClrOption,
+    ClrOptionGroup,
     ClrOptionSelected,
     ClrConditionalModule,
     ClrOptionItems,

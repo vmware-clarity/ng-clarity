@@ -41,10 +41,7 @@
     // Table header styles
     --clr-thead-color: #{tokens.$cds-alias-typography-color-400}; // #{$clr-thead-color};
 
-    --clr-table-bottomcellpadding: calc(var(--clr-table-cellpadding) - #{tokens.$cds-global-space-1});
-    --clr-table-topcellpadding: #{tokens.$cds-global-space-6};
     --clr-table-fontsize: #{tokens.$cds-alias-typography-secondary-font-size};
-    --clr-table-cellpadding: #{tokens.$cds-global-space-6};
 
     --clr-table-row-height: #{density.$clr-base-dg-row-height};
     // @deprecated ALL compact properties in favor of compact mode in density theme

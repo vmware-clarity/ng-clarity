@@ -5,21 +5,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrCombobox, ClrComboboxModule, ClrLoadingModule } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 import { elements } from '../../helpers/elements.data';
+import { StorybookComboboxComponent } from './combobox.storybook.component';
 
 export default {
   title: 'Combobox/Combobox',
+  component: StorybookComboboxComponent,
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrComboboxModule, ClrLoadingModule],
+      imports: [CommonModules, StorybookComboboxComponent],
     }),
   ],
-  component: ClrCombobox,
   argTypes: {
     // outputs
     clrInputChange: { control: { disable: true } },
@@ -43,104 +42,70 @@ export default {
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
     // story helpers
+    useGroups: { control: 'boolean' },
     elements: { control: { disable: true }, table: { disable: true } },
+    optionGroups: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: elements.length } },
     updateOn: { control: 'radio', options: ['change', 'blur', 'submit'] },
   },
   args: {
-    // inputs
     clrMulti: false,
     placeholder: 'Placeholder text',
     id: '',
-    // outputs
-    clrInputChange: action('clrInputChange'),
-    clrOpenChange: action('clrOpenChange'),
-    clrSelectionChange: action('clrSelectionChange'),
-    // story helpers
-    optionCount: elements.length,
-    content: 'Option',
+    label: 'Combobox',
+    clrLoading: false,
     controlDisabled: false,
     controlRequired: false,
     controlHelper: false,
-    clrLoading: false,
-    updateOn: 'change',
-    elements,
+    helperText: 'Helper text',
+    useGroups: false,
+    elements: elements,
     singleModel: 'Am',
     multiModel: ['Am', 'As', 'Ba'],
-    label: 'Combobox',
   },
 };
 
-const ComboboxTemplate: StoryFn = args => ({
-  template: `
-    <clr-combobox-container>
-      <label>{{ label }}</label>
-      <clr-combobox
-        [id]="id"
-        [clrMulti]="clrMulti"
-        [ngModel]="clrMulti ? multiModel : singleModel"
-        [ngModelOptions]="{ updateOn: updateOn }"
-        [placeholder]="placeholder"
-        (clrInputChange)="clrInputChange($event)"
-        (clrOpenChange)="clrOpenChange($event)"
-        (clrSelectionChange)="clrSelectionChange($event)"
-        [clrLoading]="clrLoading"
-        [disabled]="controlDisabled"
-        name="combo"
-        [required]="controlRequired"
-      >
-        <ng-container *clrOptionSelected="let selected">
-          {{ selected }}
-        </ng-container>
-        <clr-options>
-          <clr-option *clrOptionItems="let element of elements; let i = index" [clrValue]="element.symbol">
-            {{ element.name }}
-          </clr-option>
-        </clr-options>
-      </clr-combobox>
-      <clr-control-helper *ngIf="controlHelper">Helper text</clr-control-helper>
-      <clr-control-error *ngIf="controlRequired">There was an error</clr-control-error>
-    </clr-combobox-container>
-  `,
-  props: { ...args },
-});
-
-export const SingleSelection: StoryObj = {
-  render: ComboboxTemplate,
-};
+export const SingleSelection: StoryObj = {};
 
 export const SingleSelection_Preselected: StoryObj = {
-  render: ComboboxTemplate,
   args: {
     singleModel: 'Ba',
+  },
+};
+
+export const SingleSelectionWithGroups: StoryObj = {
+  args: {
+    useGroups: true,
   },
 };
 
 export const SingleSelectionDisabled: StoryObj = {
-  render: ComboboxTemplate,
   args: {
-    singleModel: 'Ba',
     controlDisabled: true,
   },
 };
 
 export const MultiSelection: StoryObj = {
-  render: ComboboxTemplate,
   args: {
     clrMulti: true,
   },
 };
 
 export const MultiSelection_MultiLine: StoryObj = {
-  render: ComboboxTemplate,
   args: {
     clrMulti: true,
     multiModel: elements.map(element => element.symbol), // all elements
   },
 };
 
+export const MultiSelectionWithGroups: StoryObj = {
+  args: {
+    clrMulti: true,
+    useGroups: true,
+  },
+};
+
 export const MultiSelectionDisabled: StoryObj = {
-  render: ComboboxTemplate,
   args: {
     clrMulti: true,
     controlDisabled: true,
@@ -148,7 +113,6 @@ export const MultiSelectionDisabled: StoryObj = {
 };
 
 export const SingleSelectionRequired: StoryObj = {
-  render: ComboboxTemplate,
   args: {
     singleModel: '',
     controlHelper: true,
@@ -157,7 +121,6 @@ export const SingleSelectionRequired: StoryObj = {
 };
 
 export const MultiSelectionRequired: StoryObj = {
-  render: ComboboxTemplate,
   args: {
     multiModel: [],
     clrMulti: true,
@@ -167,7 +130,6 @@ export const MultiSelectionRequired: StoryObj = {
 };
 
 export const Loading: StoryObj = {
-  render: ComboboxTemplate,
   args: {
     clrLoading: true,
     elements: [],
@@ -178,7 +140,6 @@ export const Loading: StoryObj = {
 };
 
 export const NoResults: StoryObj = {
-  render: ComboboxTemplate,
   play({ canvasElement }) {
     (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();
     (canvasElement.querySelector('.clr-combobox-input') as HTMLInputElement).value = 'Lapis philosophorum';

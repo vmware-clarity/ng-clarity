@@ -81,6 +81,15 @@
 
   .clr-control-inline {
     @include forms-mixins.form-inline-input(true);
+
+    .clr-checkbox-wrapper,
+    .clr-radio-wrapper {
+      padding-top: 0;
+    }
+
+    .clr-toggle-wrapper {
+      margin-top: 0;
+    }
   }
 
   .clr-subtext {
@@ -101,7 +110,7 @@
   .clr-subtext-wrapper {
     flex-basis: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
   }
 
   .clr-validate-icon {
@@ -145,7 +154,7 @@
     &.clr-error,
     &.clr-success {
       & > .clr-subtext-wrapper .clr-validate-icon {
-        margin-left: calc(-1 * #{tokens.$cds-global-space-3});
+        margin-left: calc(-1 * #{density.$clr-base-horizontal-offset-xs});
       }
     }
   }

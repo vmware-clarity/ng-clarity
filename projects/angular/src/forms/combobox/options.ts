@@ -89,7 +89,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     }
   }
 
-  @ContentChildren(ClrOption)
+  @ContentChildren(ClrOption, { descendants: true })
   get items(): QueryList<ClrOption<T>> {
     return this._items;
   }

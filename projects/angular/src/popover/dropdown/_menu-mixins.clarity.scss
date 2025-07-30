@@ -32,7 +32,7 @@
 
   box-shadow: tokens.$cds-alias-object-shadow-200;
 
-  margin-top: tokens.$cds-global-space-2;
+  margin-top: density.$clr-base-vertical-offset-2xs;
   padding: density.$clr-base-vertical-offset-l density.$clr-base-layout-space-4xs;
   visibility: hidden;
   z-index: map.get(variables.$clr-layers, dropdown-menu);
@@ -57,6 +57,7 @@
   margin: 0;
   width: 100%;
   text-transform: none;
+  justify-content: space-between;
 
   &.active {
     color: dropdown-variables.$clr-dropdown-item-selected-color;
@@ -100,6 +101,23 @@
       box-shadow: none;
     }
   }
+}
+
+@mixin generate-dropdown-header() {
+  display: block;
+  color: dropdown-variables.$clr-dropdown-header-color;
+  @include mixins.overflow-ellipsis(true);
+
+  // Typography
+  @include mixins.generate-typography-token(
+    'SECONDARY-13-MD-EXP',
+    (
+      font-weight: dropdown-variables.$clr-dropdown-header-font-weight,
+    )
+  );
+
+  padding: 0 density.$clr-base-horizontal-offset-l;
+  margin: 0;
 }
 
 @mixin generate-dropdown-item-height() {
