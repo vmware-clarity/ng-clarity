@@ -430,7 +430,8 @@
         position: relative;
         display: block;
         flex: 1 1 100%;
-        overflow: auto;
+        overflow-x: auto;
+        overflow-y: scroll;
         will-change: scroll-position;
         contain: strict;
         transform: translateZ(0);
