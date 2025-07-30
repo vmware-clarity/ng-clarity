@@ -1293,11 +1293,15 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
+    contentWrapper: ElementRef<HTMLElement>;
+    // (undocumented)
     customSelectAll: EventEmitter<boolean>;
     customSelectAllEnabled: boolean;
     dataChanged(): void;
     // (undocumented)
     datagrid: ElementRef<HTMLElement>;
+    // (undocumented)
+    datagridHeader: ElementRef<HTMLElement>;
     // (undocumented)
     datagridTable: ElementRef<HTMLElement>;
     // Warning: (ae-forgotten-export) The symbol "DetailService" needs to be exported by the entry point index.d.ts
@@ -5987,6 +5991,8 @@ export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     scrollToIndex(index: number, behavior?: ScrollBehavior): void;
     // (undocumented)
     scrollUp(offset: number, behavior?: ScrollBehavior): void;
+    // (undocumented)
+    get totalContentHeight(): string;
     // (undocumented)
     get totalItems(): number;
     // (undocumented)

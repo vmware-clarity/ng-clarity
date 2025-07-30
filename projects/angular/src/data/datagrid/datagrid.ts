@@ -78,6 +78,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
   host: {
     '[class.datagrid-host]': 'true',
     '[class.datagrid-detail-open]': 'detailService.isOpen',
+    '[class.datagrid-virtual-scroll]': '!!virtualScroll',
   },
 })
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
@@ -129,10 +130,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * by querying the projected content. This is needed to keep track of the models currently
    * displayed, typically for selection.
    */
-  @ContentChildren(ClrDatagridRow) rows: QueryList<ClrDatagridRow<T>>;
+  @ContentChildren(ClrDatagridRow, { emitDistinctChangesOnly: false }) rows: QueryList<ClrDatagridRow<T>>;
 
   @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef<HTMLElement>;
   @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef<HTMLElement>;
+  @ViewChild('datagridHeader', { read: ElementRef }) datagridHeader: ElementRef<HTMLElement>;
+  @ViewChild('contentWrapper', { read: ElementRef }) contentWrapper: ElementRef<HTMLElement>;
   @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
   @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
   @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
@@ -396,6 +399,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         })
       );
     });
+    if (this.virtualScroll) {
+      this._subscriptions.push(
+        fromEvent(this.contentWrapper.nativeElement, 'scroll').subscribe(() => {
+          this.datagridHeader.nativeElement.scrollLeft = this.contentWrapper.nativeElement.scrollLeft;
+        })
+      );
+    }
   }
 
   ngOnDestroy() {
