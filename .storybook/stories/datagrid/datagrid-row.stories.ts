@@ -30,6 +30,7 @@ const RowTemplate: StoryFn = args => ({
       ${args.height ? '[style.height.px]="height"' : ''}
       ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
       ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
+      ${args.rowSelectable ? '[clrDgRowSelection]="true"' : ''}
       [ngClass]="{ 'datagrid-compact': compact }"
     >
       <clr-dg-column [style.width.px]="250">
@@ -121,6 +122,7 @@ export default {
     elements,
     highlight: true,
     singleSelectable: false,
+    rowSelectable: false,
     multiSelectable: false,
     expandable: false,
     compact: false,
