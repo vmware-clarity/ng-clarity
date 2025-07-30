@@ -170,6 +170,7 @@ export default {
             Accordions can be nested up to 2 levels
             <br />
             <br />
+            <a href="#rr">test link</a>
             <storybook-render-component ${argsToTemplate(args)}></storybook-render-component>
           </clr-accordion-content>
         </clr-accordion-panel>

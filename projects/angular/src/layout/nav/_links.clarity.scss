@@ -26,7 +26,6 @@
           }
         }
         &:active {
-          color: nav-variables.$clr-link-active-color;
           cds-icon,
           clr-icon {
             color: nav-variables.$clr-link-active-color;
@@ -46,6 +45,9 @@
             color: nav-variables.$clr-link-visited-color-hover;
           }
         }
+      }
+      &:active {
+        color: nav-variables.$clr-link-active-color;
       }
     }
   }
