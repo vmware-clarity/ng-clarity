@@ -129,7 +129,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * by querying the projected content. This is needed to keep track of the models currently
    * displayed, typically for selection.
    */
-  @ContentChildren(ClrDatagridRow) rows: QueryList<ClrDatagridRow<T>>;
+  @ContentChildren(ClrDatagridRow, { emitDistinctChangesOnly: false }) rows: QueryList<ClrDatagridRow<T>>;
 
   @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef<HTMLElement>;
   @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef<HTMLElement>;
