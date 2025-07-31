@@ -25,12 +25,6 @@
             color: nav-variables.$clr-link-hover-color;
           }
         }
-        &:active {
-          cds-icon,
-          clr-icon {
-            color: nav-variables.$clr-link-active-color;
-          }
-        }
       }
       &:visited {
         color: nav-variables.$clr-link-visited-color;
@@ -48,6 +42,10 @@
       }
       &:active {
         color: nav-variables.$clr-link-active-color;
+        cds-icon,
+        clr-icon {
+          color: nav-variables.$clr-link-active-color;
+        }
       }
     }
   }
