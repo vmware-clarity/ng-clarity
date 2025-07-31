@@ -28,8 +28,9 @@ export class DatagridVirtualScrollEmptyRowsDemo {
 
   _totalRows = 1000;
   persistItems = true;
-  datagridHeight = 340;
-  virtualScrollRowHeight = 26;
+  overflowEllipsis = true;
+  datagridHeight = 700;
+  virtualScrollRowHeight = 24;
 
   dataRange: ClrDatagridVirtualScrollRangeInterface<User> = {
     total: this.totalRows,
@@ -40,11 +41,21 @@ export class DatagridVirtualScrollEmptyRowsDemo {
   _selectedUsers: User[] = [];
   @ViewChild('datagrid') datagrid: ClrDatagrid;
   state: ClrDatagridStateInterface<User>;
+  private _indexToJump: number;
 
   constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
     inventory.size = this.totalRows;
-    inventory.latency = 500;
+    inventory.latency = 200;
     inventory.reset();
+  }
+
+  get indexToJump(): number {
+    return this._indexToJump;
+  }
+
+  set indexToJump(value: number) {
+    this._indexToJump = value;
+    this.jumpTo(value);
   }
 
   get totalRows() {
@@ -56,7 +67,6 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     this.inventory.size = totalRows;
     this.inventory.generatedCount = 0;
     this.inventory.reset();
-    this.userRange.end++;
     this.renderUserRangeChange(this.userRange).then(x => {
       console.log(x);
       // this.cdr.detectChanges();
@@ -116,15 +126,24 @@ export class DatagridVirtualScrollEmptyRowsDemo {
       end: $event.end,
     };
 
+    const request = {
+      start: $event.start,
+      end: $event.end,
+    };
+
     if (this.state?.filters || this.state?.sort) {
       await this.refresh(this.state);
     } else {
-      await this.getData($event);
+      await this.getData(request);
     }
   }
 
+  async loadBatch(listRange: ListRange = { start: 200, end: 300 }) {
+    await this.getData(listRange);
+  }
+
   jumpTo(index: number) {
-    this.userRange = null;
+    // this.userRange = null;
     this.datagrid.virtualScroll.scrollToIndex(index, 'auto');
   }
 

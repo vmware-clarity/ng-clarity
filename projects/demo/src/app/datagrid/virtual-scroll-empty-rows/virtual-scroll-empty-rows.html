@@ -12,7 +12,7 @@
     <label>Total Rows</label>
     <input clrNumberInput type="number" name="rows" [(ngModel)]="totalRows" />
     <clr-control-helper
-      >Total Virtual scroll heigth in PX (RowHeight * TotalRows): {{totalRows * virtualScrollRowHeight}}
+      >Total Virtual scroll height in PX (RowHeight * TotalRows): {{totalRows * virtualScrollRowHeight}}
     </clr-control-helper>
   </clr-number-input-container>
   <clr-number-input-container>
@@ -24,13 +24,26 @@
     <input clrNumberInput type="number" name="virtualScrollRowHeight" [(ngModel)]="virtualScrollRowHeight" />
   </clr-number-input-container>
   <clr-toggle-container>
+    <label>Overflow Ellipsis</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle name="overflowEllipsis" [(ngModel)]="overflowEllipsis" />
+      <label>{{overflowEllipsis ? 'ON' : 'OFF' }}</label>
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
+  <clr-toggle-container>
     <label>Persist Items</label>
     <clr-toggle-wrapper>
       <input type="checkbox" clrToggle name="presistItems" [(ngModel)]="persistItems" />
       <label>{{persistItems ? 'ON' : 'OFF' }}</label>
     </clr-toggle-wrapper>
   </clr-toggle-container>
+  <clr-number-input-container>
+    <label>Jump To Index</label>
+    <input clrNumberInput type="number" name="indexToJump" [(ngModel)]="indexToJump" />
+  </clr-number-input-container>
 </form>
+
+<!--<button class="btn" (click)="loadBatch()">LoadBatch</button>-->
 
 <clr-datagrid
   #datagrid
@@ -38,6 +51,7 @@
   (clrDgRefresh)="refresh($event)"
   [clrDgItemsTrackBy]="trackItemById"
   [style.height.px]="datagridHeight"
+  [ngClass]="{ 'datagrid-overflow-ellipsis': overflowEllipsis }"
 >
   <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
@@ -59,9 +73,11 @@
     (renderedRangeChange)="renderUserRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="user" [clrDgSkeletonLoading]="!user">
-      <clr-dg-cell>{{user?.id}} index: {{index}}</clr-dg-cell>
-      <clr-dg-cell>{{user?.name}}</clr-dg-cell>
-      <clr-dg-cell>{{user?.creation | date}}</clr-dg-cell>
+      <clr-dg-cell
+        >{{user?.id}} index: {{index}} {{user?.id}} index: {{index}} {{user?.id}} index: {{index}}</clr-dg-cell
+      >
+      <clr-dg-cell>{{user?.name}} {{user?.name}} {{user?.name}} {{user?.name}}</clr-dg-cell>
+      <clr-dg-cell>{{user?.creation | date}} {{user?.creation | date}} {{user?.creation | date}}</clr-dg-cell>
       <clr-dg-cell>
         {{user?.pokemon?.name}}
         <span class="badge badge-5">#{{user?.pokemon?.number}}</span>

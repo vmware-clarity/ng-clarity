@@ -10,6 +10,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { Keys } from '../../../utils/enums/keys.enum';
+import { ClrDatagridVirtualScrollDirective } from '../datagrid-virtual-scroll.directive';
 import { KeyNavigationUtils } from './key-navigation-utils';
 
 const actionableItemSelectors = [
@@ -51,9 +52,10 @@ export interface CellCoordinates {
 @Injectable()
 export class KeyNavigationGridController implements OnDestroy {
   skipItemFocus = false;
+  virtualScroller: ClrDatagridVirtualScrollDirective<any>;
 
-  private keyNavUtils: KeyNavigationUtils;
-  private config: KeyNavigationGridConfig;
+  keyNavUtils: KeyNavigationUtils;
+  config: KeyNavigationGridConfig;
   private listenersAdded = false;
   private destroy$ = new Subject<void>();
   private _activeCell: HTMLElement = null;
@@ -97,7 +99,8 @@ export class KeyNavigationGridController implements OnDestroy {
       fromEvent(this.keyNavUtils.grid, 'wheel')
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          this.removeActiveCell();
+          // this.removeActiveCell();
+          // this.virtualScroller.keyNavItemCoords = null;
         });
 
       fromEvent(this.keyNavUtils.grid, 'focusout')
@@ -107,7 +110,8 @@ export class KeyNavigationGridController implements OnDestroy {
             return;
           }
 
-          this.removeActiveCell();
+          // this.removeActiveCell();
+          // this.virtualScroller.keyNavItemCoords = null;
         });
 
       fromEvent(this.keyNavUtils.grid, 'keydown')
@@ -132,6 +136,28 @@ export class KeyNavigationGridController implements OnDestroy {
           ) {
             const nextCellCoords = this.keyNavUtils.getNextItemCoordinate(e);
 
+            if (
+              this.virtualScroller &&
+              (e.key === Keys.ArrowUp || e.key === Keys.ArrowDown || e.key === Keys.PageUp || e.key === Keys.PageDown)
+            ) {
+              let ariaRowIndex = this.keyNavUtils.rows[nextCellCoords.y].getAttribute('aria-rowindex');
+
+              if (!ariaRowIndex) {
+                ariaRowIndex = this.keyNavUtils.rows[nextCellCoords.y - 1].getAttribute('aria-rowindex');
+              }
+
+              // aria-rowindex is always + 1. Check virtual scroller updateAriaRowIndexes method.
+              const rowIndex = Number(ariaRowIndex) - 1;
+
+              this.virtualScroller.keyNavItemCoords = { ariaRowIndex, cellIndex: nextCellCoords.x };
+
+              // const itemsPerPageCenterOffset = Math.floor(this.keyNavUtils.itemsPerPage(nextCellCoords.y) / 2);
+
+              // const scrollToMiddle = rowIndex - itemsPerPageCenterOffset < 0 ? 0 : rowIndex - itemsPerPageCenterOffset;
+
+              this.virtualScroller.scrollToIndex(rowIndex);
+            }
+
             const activeItem = this.keyNavUtils.rows
               ? (Array.from(this.keyNavUtils.getCellsForRow(nextCellCoords.y))[nextCellCoords.x] as HTMLElement)
               : null;
@@ -147,8 +173,9 @@ export class KeyNavigationGridController implements OnDestroy {
     this.listenersAdded = true;
   }
 
-  initializeKeyGrid(host: HTMLElement) {
+  initializeKeyGrid(host: HTMLElement, virtualScroller: ClrDatagridVirtualScrollDirective<any>) {
     this.keyNavUtils = new KeyNavigationUtils(host, this.config);
+    this.virtualScroller = virtualScroller;
     this.addListeners();
     this.resetKeyGrid();
   }
@@ -157,14 +184,6 @@ export class KeyNavigationGridController implements OnDestroy {
     this.keyNavUtils.cells?.forEach((i: HTMLElement) => i.setAttribute('tabindex', '-1'));
     const firstCell = this.keyNavUtils.cells ? this.keyNavUtils.cells[0] : null;
     firstCell?.setAttribute('tabindex', '0');
-  }
-
-  removeActiveCell() {
-    this._activeCell = null;
-  }
-
-  getActiveCell() {
-    return this._activeCell;
   }
 
   setActiveCell(activeCell: HTMLElement, { keepFocus } = { keepFocus: false }) {
@@ -177,19 +196,25 @@ export class KeyNavigationGridController implements OnDestroy {
     }
 
     activeCell.setAttribute('tabindex', '0');
-    this._activeCell = activeCell;
 
     if (!this.skipItemFocus && !keepFocus) {
-      let elementToFocus: HTMLElement;
-
-      if (activeCell.getAttribute('role') === 'columnheader') {
-        elementToFocus = activeCell;
-      } else {
-        const tabbableElements = getTabbableItems(activeCell);
-        elementToFocus = tabbableElements.length ? tabbableElements[0] : activeCell;
-      }
-
-      elementToFocus.focus();
+      // this.focusElement(activeCell, { preventScroll: false });
+      this.focusElement(activeCell);
     }
+  }
+
+  focusElement(activeCell: HTMLElement) {
+    // focusElement(activeCell: HTMLElement, options?: FocusOptions) {
+    let elementToFocus: HTMLElement;
+
+    if (activeCell.getAttribute('role') === 'columnheader') {
+      elementToFocus = activeCell;
+    } else {
+      const tabbableElements = getTabbableItems(activeCell);
+      elementToFocus = tabbableElements.length ? tabbableElements[0] : activeCell;
+    }
+
+    // elementToFocus.focus(options);
+    elementToFocus.focus({ preventScroll: true });
   }
 }

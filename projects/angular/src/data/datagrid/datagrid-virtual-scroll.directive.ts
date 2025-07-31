@@ -75,6 +75,9 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
   @Input('clrVirtualPersistItems') persistItems = true;
 
+  keyNavItemCoords: any;
+  // virtualScrollStrategy: FixedSizeVirtualScrollStrategy;
+
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
 
   private readonly datagridElementRef: ElementRef<HTMLElement>;
@@ -145,7 +148,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   get totalContentHeight() {
-    return this.virtualScrollViewport?._totalContentHeight;
+    return this.virtualScrollViewport?._totalContentHeight || 0;
   }
 
   @Input('clrVirtualRowsOf')
@@ -276,6 +279,9 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       this.virtualScrollViewport.scrolledIndexChange.subscribe(index => {
         this.topIndex = index;
       }),
+      this.virtualScrollViewport.scrollable.elementScrolled().subscribe(res => {
+        console.log('SCROLLED', res);
+      }),
       this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
         this.renderedRangeChange.emit(renderedRange);
       }),
@@ -313,10 +319,13 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   scrollToIndex(index: number, behavior: ScrollBehavior = 'auto') {
+    console.log('scrollToIndex', index, behavior);
     this.virtualScrollViewport?.scrollToIndex(index, behavior);
   }
 
   private updateDataRange(skip: number, data: T[]) {
+    console.log('updateDataRange');
+
     let items = this.cdkVirtualForOf as T[];
 
     if (!this.persistItems || !items || items?.length !== this.totalItems) {
@@ -326,6 +335,8 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     items.splice(skip, data.length, ...data);
 
     this.cdkVirtualForOf = Array.from(items);
+
+    this.datagrid.focusCoords(this.keyNavItemCoords);
   }
 
   private updateCdkVirtualForInputs() {
@@ -360,8 +371,11 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       const datagridRowElement = rootElements.find(rowElement => rowElement.tagName === 'CLR-DG-ROW');
       const rowRoleElement = datagridRowElement?.querySelector('[role="row"]');
 
-      // aria-rowindex should start with one, not zero, so we have to add one to the zero-based index
-      rowRoleElement?.setAttribute('aria-rowindex', (viewRef.context.index + 1).toString());
+      const newAriaRowIndex = (viewRef.context.index + 1).toString();
+      if (rowRoleElement?.getAttribute('aria-rowindex') !== newAriaRowIndex) {
+        // aria-rowindex should start with one, not zero, so we have to add one to the zero-based index
+        rowRoleElement?.setAttribute('aria-rowindex', newAriaRowIndex);
+      }
     }
   }
 
