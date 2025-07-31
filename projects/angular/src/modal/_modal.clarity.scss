@@ -192,16 +192,19 @@
       align-items: flex-start;
     }
 
-    // this is with higher specificity than .modal-title, .side-panel-title
+    .modal-title,
+    .side-panel-title {
+      color: modal-variables.$clr-modal-title-color;
+      margin: 0;
+    }
+
     .modal-title:not([cds-text]),
     .side-panel-title:not([cds-text]) {
-      color: modal-variables.$clr-modal-title-color;
       font-family: modal-variables.$clr-modal-title-font-family;
       font-size: modal-variables.$clr-modal-title-font-size;
       font-weight: modal-variables.$clr-modal-title-font-weight;
       line-height: modal-variables.$clr-modal-title-line-height;
       letter-spacing: modal-variables.$clr-modal-title-letter-spacing;
-      margin: 0;
     }
 
     .close,
