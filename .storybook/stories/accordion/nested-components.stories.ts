@@ -14,6 +14,7 @@ import { ButtonGroupStorybookComponent } from 'stories/button/button-group.story
 import { ButtonStorybookComponent } from 'stories/button/button.storybook.component';
 import { CardStorybookComponent } from 'stories/card/card.storybook.component';
 import { CheckboxToggleStorybookComponent } from 'stories/checkbox-toggle/checkbox-toggle.storybook.component';
+import { LinkStorybookComponent } from 'stories/link/link.storybook.component';
 
 import { CommonModules } from '../../helpers/common';
 import { AccordionStorybookComponent } from './accordion.storybook.component';
@@ -133,6 +134,7 @@ const nestedComponents = [
   { type: ButtonGroupStorybookComponent, options: { buttonStyle: 'flat', btnSmallSize: true, inMenuButtonCount: 0 } },
   { type: CardStorybookComponent },
   { type: CheckboxToggleStorybookComponent, options: { containerLabel: 'Options', optionCount: 3 } },
+  { type: LinkStorybookComponent },
 ];
 
 export default {
@@ -170,7 +172,6 @@ export default {
             Accordions can be nested up to 2 levels
             <br />
             <br />
-            <a href="#rr">test link</a>
             <storybook-render-component ${argsToTemplate(args)}></storybook-render-component>
           </clr-accordion-content>
         </clr-accordion-panel>
