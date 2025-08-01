@@ -129,7 +129,6 @@
     <ng-template *ngIf="replaced && !expand.loading" [ngTemplateOutlet]="detail"></ng-template>
     <ng-template *ngIf="!replaced && !expand.loading" [ngTemplateOutlet]="detail"></ng-template>
   </div>
-  <clr-dg-cell class="skeleton-loading" *ngIf="skeletonLoading"></clr-dg-cell>
 </div>
 <!--
     We need the "project into template" hacks because we need this in 2 different places
