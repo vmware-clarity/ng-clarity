@@ -23,6 +23,10 @@
     <label>ROW height in PX</label>
     <input clrNumberInput type="number" name="virtualScrollRowHeight" [(ngModel)]="virtualScrollRowHeight" />
   </clr-number-input-container>
+  <clr-number-input-container>
+    <label>Latency</label>
+    <input clrNumberInput type="number" name="latency" [(ngModel)]="latency" />
+  </clr-number-input-container>
   <clr-toggle-container>
     <label>Overflow Ellipsis</label>
     <clr-toggle-wrapper>
@@ -42,8 +46,6 @@
     <input clrNumberInput type="number" name="indexToJump" [(ngModel)]="indexToJump" />
   </clr-number-input-container>
 </form>
-
-<!--<button class="btn" (click)="loadBatch()">LoadBatch</button>-->
 
 <clr-datagrid
   #datagrid

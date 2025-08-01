@@ -42,11 +42,20 @@ export class DatagridVirtualScrollEmptyRowsDemo {
   @ViewChild('datagrid') datagrid: ClrDatagrid;
   state: ClrDatagridStateInterface<User>;
   private _indexToJump: number;
+  private _latency = 200;
 
   constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
     inventory.size = this.totalRows;
-    inventory.latency = 200;
+    inventory.latency = this._latency;
     inventory.reset();
+  }
+  get latency(): number {
+    return this._latency;
+  }
+
+  set latency(value: number) {
+    this._latency = value;
+    this.inventory.latency = this.latency;
   }
 
   get indexToJump(): number {
@@ -126,15 +135,10 @@ export class DatagridVirtualScrollEmptyRowsDemo {
       end: $event.end,
     };
 
-    const request = {
-      start: $event.start,
-      end: $event.end,
-    };
-
     if (this.state?.filters || this.state?.sort) {
       await this.refresh(this.state);
     } else {
-      await this.getData(request);
+      await this.getData($event);
     }
   }
 

@@ -295,20 +295,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         this.updateDetailState();
 
         // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
-        if (this.virtualScroll && this.virtualScroll.keyNavItemCoords && !this.virtualScroll.totalItems) {
-          // this.keyNavigation.focusElement(active, { preventScroll: true });
-          setTimeout(() => {
-            this.zone.runOutsideAngular(() => {
-              console.log('keyNavEvent');
-
-              this.focusCoords(this.virtualScroll.keyNavItemCoords);
-
-              // this.keyNavigation.focusElement(activeCell);
-              // this.keyNavigation.focusElement(activeCell, { preventScroll: false });
-
-              // this.virtualScroll.keyNavItemCoords = null;
-            });
-          }, 10);
+        if (this.virtualScroll && this.virtualScroll.keyNavItemCoords) {
+          this.zone.runOutsideAngular(() => {
+            this.focusCoords(this.virtualScroll.keyNavItemCoords);
+          });
         }
       })
     );
@@ -319,26 +309,19 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       return;
     }
     this.zone.runOutsideAngular(() => {
-      setTimeout(() => {
-        const row = Array.from(this.rows).find(row => {
-          return row.el.nativeElement.children[0].ariaRowIndex === coords.ariaRowIndex;
-        });
+      const row = Array.from(this.rows).find(row => {
+        return row.el.nativeElement.children[0].ariaRowIndex === coords.ariaRowIndex;
+      });
 
-        if (!row) {
-          return;
-        }
+      if (!row) {
+        return;
+      }
 
-        const activeCell = row.el.nativeElement.querySelectorAll(this.keyNavigation.config.keyGridCells)[
-          coords.cellIndex
-        ] as HTMLElement;
+      const activeCell = row.el.nativeElement.querySelectorAll(this.keyNavigation.config.keyGridCells)[
+        coords.cellIndex
+      ] as HTMLElement;
 
-        console.log('coords', coords);
-        console.log('cell', activeCell);
-
-        this.keyNavigation.setActiveCell(activeCell);
-
-        // this.virtualScroll.keyNavItemCoords = coords;
-      }, 10);
+      this.keyNavigation.setActiveCell(activeCell, { keepFocus: false }, { preventScroll: true });
     });
   }
 

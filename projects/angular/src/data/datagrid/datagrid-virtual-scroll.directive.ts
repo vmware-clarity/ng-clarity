@@ -279,9 +279,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       this.virtualScrollViewport.scrolledIndexChange.subscribe(index => {
         this.topIndex = index;
       }),
-      this.virtualScrollViewport.scrollable.elementScrolled().subscribe(res => {
-        console.log('SCROLLED', res);
-      }),
       this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
         this.renderedRangeChange.emit(renderedRange);
       }),
@@ -304,7 +301,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   ngOnDestroy() {
     this.cdkVirtualFor?.ngOnDestroy();
     this.virtualScrollViewport?.ngOnDestroy();
-    // this.mutationChanges?.disconnect();
+    this.mutationChanges?.disconnect();
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
@@ -319,13 +316,10 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   scrollToIndex(index: number, behavior: ScrollBehavior = 'auto') {
-    console.log('scrollToIndex', index, behavior);
     this.virtualScrollViewport?.scrollToIndex(index, behavior);
   }
 
   private updateDataRange(skip: number, data: T[]) {
-    console.log('updateDataRange');
-
     let items = this.cdkVirtualForOf as T[];
 
     if (!this.persistItems || !items || items?.length !== this.totalItems) {
@@ -335,8 +329,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     items.splice(skip, data.length, ...data);
 
     this.cdkVirtualForOf = Array.from(items);
-
-    this.datagrid.focusCoords(this.keyNavItemCoords);
   }
 
   private updateCdkVirtualForInputs() {
