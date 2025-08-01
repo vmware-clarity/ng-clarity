@@ -1372,6 +1372,7 @@
 
   .datagrid-detail-header {
     flex: 0 0 auto;
+    //TODO Fix figma font sizes in next GA 17+
     @include mixins.generate-typography-token('SECTION-20-STD');
     margin-top: 0;
     display: flex;
@@ -1382,9 +1383,7 @@
       flex: 1 1 auto;
       color: datagrid-variables.$clr-datagrid-detail-header-title-color;
       overflow-wrap: anywhere;
-      line-height: calc(
-        density.$clr-base-typography-line-height-24 + 2px
-      ); // outline header needs this to keep the shape correct
+      padding: #{tokens.$cds-global-space-1}; // outline header needs this to keep the shape correct
     }
 
     .datagrid-detail-pane-close {
