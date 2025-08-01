@@ -230,7 +230,7 @@
         }
         .datagrid-row-sticky,
         .datagrid-row-scrollable {
-          visibility: hidden;
+          opacity: 0;
         }
       }
     }
@@ -1001,9 +1001,21 @@
       min-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
     }
 
-    .datagrid-row .datagrid-row-detail .datagrid-cell.datagrid-container {
-      font-size: mixins.baselinePx(13);
-      line-height: tokens.$cds-global-space-8;
+    .datagrid-row {
+      .datagrid-row-detail .datagrid-cell.datagrid-container {
+        font-size: mixins.baselinePx(13);
+        line-height: tokens.$cds-global-space-8;
+      }
+      &.datagrid-row-skeleton {
+        .datagrid-row-master {
+          &:before {
+            top: tables-variables.$clr-table-compact-vertical-padding;
+            left: tables-variables.$clr-table-compact-horizontal-padding;
+            height: calc(100% - (2 * tables-variables.$clr-table-compact-vertical-padding));
+            width: calc(100% - (2 * tables-variables.$clr-table-compact-horizontal-padding));
+          }
+        }
+      }
     }
 
     .datagrid-row-replaced .datagrid-row-detail .datagrid-cell {
