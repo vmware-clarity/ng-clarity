@@ -35,6 +35,10 @@
           &:hover {
             color: nav-variables.$clr-link-hover-color;
           }
+
+          &:active {
+            color: nav-variables.$clr-link-active-color;
+          }
         }
       }
 

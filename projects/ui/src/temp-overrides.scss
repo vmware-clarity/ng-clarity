@@ -18,6 +18,9 @@
 
     --cds-alias-typography-link-color: #{tokens.$cds-global-color-blue-800};
     --cds-alias-typography-link-color-hover: #{tokens.$cds-global-color-blue-900};
+    --cds-alias-typography-link-color-visited: #{tokens.$cds-global-color-violet-700};
+    --cds-alias-typography-link-color-visited-hover: #{tokens.$cds-global-color-violet-1000};
+    --cds-alias-typography-link-color-active: #{tokens.$cds-global-color-red-700};
 
     --cds-alias-object-container-backdrop-background: hsla(0, 0%, 100%, 0.6);
     --cds-alias-object-interaction-background-hover: #{tokens.$cds-global-color-construction-50};
@@ -116,6 +119,9 @@
     // no change to the original dark tokens, but needed for correcting the override
     --cds-alias-typography-link-color: #{tokens.$cds-global-color-blue-400};
     --cds-alias-typography-link-color-hover: #{tokens.$cds-global-color-blue-200};
+    --cds-alias-typography-link-color-visited: #{tokens.$cds-global-color-violet-300};
+    --cds-alias-typography-link-color-visited-hover: #{tokens.$cds-global-color-violet-200};
+    --cds-alias-typography-link-color-active: #{tokens.$cds-global-color-red-600};
 
     --cds-alias-status-warning-dark: #{tokens.$cds-global-color-ochre-600};
     --cds-alias-status-warning-tint: #{tokens.$cds-global-color-ochre-900};
