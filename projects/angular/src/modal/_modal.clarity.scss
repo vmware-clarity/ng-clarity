@@ -199,12 +199,17 @@
 
       &:not([cds-text]) {
         //cds-text do not have color, margin
-        @include mixins.generate-typography-token('SECTION-20-STD'); //TODO remove API tokens overrides in GA 17+
-        font-family: modal-variables.$clr-modal-title-font-family;
-        font-size: modal-variables.$clr-modal-title-font-size;
-        font-weight: modal-variables.$clr-modal-title-font-weight;
-        line-height: modal-variables.$clr-modal-title-line-height;
-        letter-spacing: modal-variables.$clr-modal-title-letter-spacing;
+        //TODO remove API tokens overrides in GA 17+
+        @include mixins.generate-typography-token(
+          'SECTION-20-STD',
+          (
+            font-family: modal-variables.$clr-modal-title-font-family,
+            font-size: modal-variables.$clr-modal-title-font-size,
+            font-weight: modal-variables.$clr-modal-title-font-weight,
+            line-height: modal-variables.$clr-modal-title-line-height,
+            letter-spacing: modal-variables.$clr-modal-title-letter-spacing,
+          )
+        );
       }
     }
 
