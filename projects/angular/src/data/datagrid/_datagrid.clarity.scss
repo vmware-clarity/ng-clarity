@@ -1383,7 +1383,7 @@
       flex: 1 1 auto;
       color: datagrid-variables.$clr-datagrid-detail-header-title-color;
       overflow-wrap: anywhere;
-      padding: #{tokens.$cds-global-space-1}; // outline header needs this to keep the shape correct
+      padding: #{tokens.$cds-global-space-1} 0; // outline header needs this to keep the shape correct
     }
 
     .datagrid-detail-pane-close {
