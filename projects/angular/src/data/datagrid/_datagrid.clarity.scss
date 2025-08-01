@@ -19,6 +19,7 @@
 @use 'variables.datagrid' as datagrid-variables;
 @use '../../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../utils/animations/animations.clarity' as animations;
 
 @mixin clr-datagrid-header-bg {
   background-color: tables-variables.$clr-thead-bgcolor;
@@ -216,9 +217,21 @@
     &.datagrid-row-skeleton {
       background-color: unset;
 
-      .datagrid-row-scrollable,
-      .datagrid-row-sticky {
-        display: none;
+      .datagrid-row-master {
+        position: relative;
+        @include animations.skeleton-loading();
+        &:before {
+          position: absolute;
+          top: tables-variables.$clr-table-cell-vertical-padding;
+          left: tables-variables.$clr-table-cell-horizontal-padding;
+          height: calc(100% - (2 * tables-variables.$clr-table-cell-vertical-padding));
+          width: calc(100% - (2 * tables-variables.$clr-table-cell-horizontal-padding));
+          z-index: map.get(variables.$clr-layers, datagrid-row-skeleton);
+        }
+        .datagrid-row-sticky,
+        .datagrid-row-scrollable {
+          visibility: hidden;
+        }
       }
     }
 
