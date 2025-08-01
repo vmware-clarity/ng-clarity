@@ -1382,6 +1382,7 @@
       flex: 1 1 auto;
       color: datagrid-variables.$clr-datagrid-detail-header-title-color;
       overflow-wrap: anywhere;
+      line-height: calc(density.$clr-base-typography-line-height-24 + 2px);
     }
 
     .datagrid-detail-pane-close {
