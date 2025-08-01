@@ -76,7 +76,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   @Input('clrVirtualPersistItems') persistItems = true;
 
   keyNavItemCoords: any;
-  // virtualScrollStrategy: FixedSizeVirtualScrollStrategy;
 
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
 
