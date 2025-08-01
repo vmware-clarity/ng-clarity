@@ -7,11 +7,33 @@
 
 <h2>Virtual scroll empty rows</h2>
 
-<form clrForm>
+<form clrForm class="clr-form-compact">
   <clr-number-input-container>
     <label>Total Rows</label>
     <input clrNumberInput type="number" name="rows" [(ngModel)]="totalRows" />
+    <clr-control-helper
+      >Total Virtual scroll height in PX (RowHeight * TotalRows): {{totalRows * virtualScrollRowHeight}}
+    </clr-control-helper>
   </clr-number-input-container>
+  <clr-number-input-container>
+    <label>Datagrid height in PX</label>
+    <input clrNumberInput type="number" name="datagridHeight" [(ngModel)]="datagridHeight" />
+  </clr-number-input-container>
+  <clr-number-input-container>
+    <label>ROW height in PX</label>
+    <input clrNumberInput type="number" name="virtualScrollRowHeight" [(ngModel)]="virtualScrollRowHeight" />
+  </clr-number-input-container>
+  <clr-number-input-container>
+    <label>Latency</label>
+    <input clrNumberInput type="number" name="latency" [(ngModel)]="latency" />
+  </clr-number-input-container>
+  <clr-toggle-container>
+    <label>Overflow Ellipsis</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle name="overflowEllipsis" [(ngModel)]="overflowEllipsis" />
+      <label>{{overflowEllipsis ? 'ON' : 'OFF' }}</label>
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
   <clr-toggle-container>
     <label>Persist Items</label>
     <clr-toggle-wrapper>
@@ -19,6 +41,10 @@
       <label>{{persistItems ? 'ON' : 'OFF' }}</label>
     </clr-toggle-wrapper>
   </clr-toggle-container>
+  <clr-number-input-container>
+    <label>Jump To Index</label>
+    <input clrNumberInput type="number" name="indexToJump" [(ngModel)]="indexToJump" />
+  </clr-number-input-container>
 </form>
 
 <clr-datagrid
@@ -26,8 +52,8 @@
   [(clrDgSelected)]="selectedUsers"
   (clrDgRefresh)="refresh($event)"
   [clrDgItemsTrackBy]="trackItemById"
-  class="datagrid-compact"
-  style="height: 480px"
+  [style.height.px]="datagridHeight"
+  [ngClass]="{ 'datagrid-overflow-ellipsis': overflowEllipsis }"
 >
   <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
@@ -41,7 +67,7 @@
     let-index="index"
     [clrVirtualDataRange]="dataRange"
     [clrVirtualPersistItems]="persistItems"
-    [clrVirtualRowsItemSize]="24"
+    [clrVirtualRowsItemSize]="virtualScrollRowHeight"
     [clrVirtualRowsMinBufferPx]="200"
     [clrVirtualRowsMaxBufferPx]="400"
     [clrVirtualRowsTemplateCacheSize]="400"
@@ -49,9 +75,11 @@
     (renderedRangeChange)="renderUserRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="user" [clrDgSkeletonLoading]="!user">
-      <clr-dg-cell>{{user?.id}} index: {{index}}</clr-dg-cell>
-      <clr-dg-cell>{{user?.name}}</clr-dg-cell>
-      <clr-dg-cell>{{user?.creation | date}}</clr-dg-cell>
+      <clr-dg-cell
+        >{{user?.id}} index: {{index}} {{user?.id}} index: {{index}} {{user?.id}} index: {{index}}</clr-dg-cell
+      >
+      <clr-dg-cell>{{user?.name}} {{user?.name}} {{user?.name}} {{user?.name}}</clr-dg-cell>
+      <clr-dg-cell>{{user?.creation | date}} {{user?.creation | date}} {{user?.creation | date}}</clr-dg-cell>
       <clr-dg-cell>
         {{user?.pokemon?.name}}
         <span class="badge badge-5">#{{user?.pokemon?.number}}</span>
@@ -59,15 +87,20 @@
       <clr-dg-cell>
         <span class="color-square" [style.backgroundColor]="user?.color"></span>
       </clr-dg-cell>
+      <ng-container ngProjectAs="clr-dg-row-detail">
+        <clr-dg-row-detail [clrIfExpanded]="user?.expanded" (clrIfExpandedChange)="setExpanded($event, user)">
+          {{user | json}}
+        </clr-dg-row-detail>
+      </ng-container>
     </clr-dg-row>
   </ng-template>
 
-  <clr-dg-detail *clrIfDetail="let detail">
-    <clr-dg-detail-header> {{detail.name}} </clr-dg-detail-header>
-    <clr-dg-detail-body>
-      <pre>{{detail | json}}</pre>
-    </clr-dg-detail-body>
-  </clr-dg-detail>
+  <!--  <clr-dg-detail *clrIfDetail="let detail">-->
+  <!--    <clr-dg-detail-header> {{detail.name}} </clr-dg-detail-header>-->
+  <!--    <clr-dg-detail-body>-->
+  <!--      <pre>{{detail | json}}</pre>-->
+  <!--    </clr-dg-detail-body>-->
+  <!--  </clr-dg-detail>-->
 
   <clr-dg-footer>
     <div class="footer-counters">Rows {{userRange?.start + 1}} - {{userRange?.end}} of {{dataRange.total}}</div>

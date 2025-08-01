@@ -295,23 +295,41 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         this.updateDetailState();
 
         // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
-        if (this.virtualScroll) {
-          const active = this.keyNavigation.getActiveCell();
-          if (active) {
-            this.zone.runOutsideAngular(() => {
-              setTimeout(() => this.keyNavigation.setActiveCell(active));
-            });
-          }
+        if (this.virtualScroll && this.virtualScroll.keyNavItemCoords) {
+          this.zone.runOutsideAngular(() => {
+            this.focusCoords(this.virtualScroll.keyNavItemCoords);
+          });
         }
       })
     );
+  }
+
+  focusCoords(coords) {
+    if (!coords) {
+      return;
+    }
+    this.zone.runOutsideAngular(() => {
+      const row = Array.from(this.rows).find(row => {
+        return row.el.nativeElement.children[0].ariaRowIndex === coords.ariaRowIndex;
+      });
+
+      if (!row) {
+        return;
+      }
+
+      const activeCell = row.el.nativeElement.querySelectorAll(this.keyNavigation.config.keyGridCells)[
+        coords.cellIndex
+      ] as HTMLElement;
+
+      this.keyNavigation.setActiveCell(activeCell, { keepFocus: false }, { preventScroll: true });
+    });
   }
 
   /**
    * Our setup happens in the view of some of our components, so we wait for it to be done before starting
    */
   ngAfterViewInit() {
-    this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
+    this.keyNavigation.initializeKeyGrid(this.el.nativeElement, this.virtualScroll);
     this.updateDetailState();
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
     this.refresh.emit(this.stateProvider.state);

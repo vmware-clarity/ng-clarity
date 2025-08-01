@@ -7,9 +7,10 @@
 
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { Keys } from '../../../utils/enums/keys.enum';
+import { ClrDatagridVirtualScrollDirective } from '../datagrid-virtual-scroll.directive';
 import { KeyNavigationUtils } from './key-navigation-utils';
 
 const actionableItemSelectors = [
@@ -51,9 +52,10 @@ export interface CellCoordinates {
 @Injectable()
 export class KeyNavigationGridController implements OnDestroy {
   skipItemFocus = false;
+  virtualScroller: ClrDatagridVirtualScrollDirective<any>;
 
-  private keyNavUtils: KeyNavigationUtils;
-  private config: KeyNavigationGridConfig;
+  keyNavUtils: KeyNavigationUtils;
+  config: KeyNavigationGridConfig;
   private listenersAdded = false;
   private destroy$ = new Subject<void>();
   private _activeCell: HTMLElement = null;
@@ -97,17 +99,7 @@ export class KeyNavigationGridController implements OnDestroy {
       fromEvent(this.keyNavUtils.grid, 'wheel')
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          this.removeActiveCell();
-        });
-
-      fromEvent(this.keyNavUtils.grid, 'focusout')
-        .pipe(debounceTime(0), takeUntil(this.destroy$))
-        .subscribe(() => {
-          if (this.keyNavUtils.grid.contains(document.activeElement)) {
-            return;
-          }
-
-          this.removeActiveCell();
+          this.virtualScroller.keyNavItemCoords = null;
         });
 
       fromEvent(this.keyNavUtils.grid, 'keydown')
@@ -132,12 +124,31 @@ export class KeyNavigationGridController implements OnDestroy {
           ) {
             const nextCellCoords = this.keyNavUtils.getNextItemCoordinate(e);
 
+            if (
+              this.virtualScroller &&
+              nextCellCoords.y > 0 &&
+              (e.key === Keys.ArrowUp || e.key === Keys.ArrowDown || e.key === Keys.PageUp || e.key === Keys.PageDown)
+            ) {
+              let ariaRowIndex = this.keyNavUtils.rows[nextCellCoords.y].getAttribute('aria-rowindex');
+
+              if (!ariaRowIndex) {
+                ariaRowIndex = this.keyNavUtils.rows[nextCellCoords.y - 1].getAttribute('aria-rowindex');
+              }
+
+              // aria-rowindex is always + 1. Check virtual scroller updateAriaRowIndexes method.
+              const rowIndex = Number(ariaRowIndex) - 1;
+
+              this.virtualScroller.keyNavItemCoords = { ariaRowIndex, cellIndex: nextCellCoords.x };
+
+              this.virtualScroller.scrollToIndex(rowIndex);
+            }
+
             const activeItem = this.keyNavUtils.rows
               ? (Array.from(this.keyNavUtils.getCellsForRow(nextCellCoords.y))[nextCellCoords.x] as HTMLElement)
               : null;
 
             if (activeItem) {
-              this.setActiveCell(activeItem);
+              this.setActiveCell(activeItem, { keepFocus: false }, { preventScroll: !!this.virtualScroller });
             }
 
             e.preventDefault();
@@ -147,8 +158,9 @@ export class KeyNavigationGridController implements OnDestroy {
     this.listenersAdded = true;
   }
 
-  initializeKeyGrid(host: HTMLElement) {
+  initializeKeyGrid(host: HTMLElement, virtualScroller: ClrDatagridVirtualScrollDirective<any>) {
     this.keyNavUtils = new KeyNavigationUtils(host, this.config);
+    this.virtualScroller = virtualScroller;
     this.addListeners();
     this.resetKeyGrid();
   }
@@ -159,15 +171,11 @@ export class KeyNavigationGridController implements OnDestroy {
     firstCell?.setAttribute('tabindex', '0');
   }
 
-  removeActiveCell() {
-    this._activeCell = null;
-  }
-
-  getActiveCell() {
-    return this._activeCell;
-  }
-
-  setActiveCell(activeCell: HTMLElement, { keepFocus } = { keepFocus: false }) {
+  setActiveCell(
+    activeCell: HTMLElement,
+    { keepFocus } = { keepFocus: false },
+    options: FocusOptions = { preventScroll: false }
+  ) {
     const prior = this.keyNavUtils.cells
       ? Array.from(this.keyNavUtils.cells).find(c => c.getAttribute('tabindex') === '0')
       : null;
@@ -177,19 +185,22 @@ export class KeyNavigationGridController implements OnDestroy {
     }
 
     activeCell.setAttribute('tabindex', '0');
-    this._activeCell = activeCell;
 
     if (!this.skipItemFocus && !keepFocus) {
-      let elementToFocus: HTMLElement;
-
-      if (activeCell.getAttribute('role') === 'columnheader') {
-        elementToFocus = activeCell;
-      } else {
-        const tabbableElements = getTabbableItems(activeCell);
-        elementToFocus = tabbableElements.length ? tabbableElements[0] : activeCell;
-      }
-
-      elementToFocus.focus();
+      this.focusElement(activeCell, options);
     }
+  }
+
+  focusElement(activeCell: HTMLElement, options: FocusOptions) {
+    let elementToFocus: HTMLElement;
+
+    if (activeCell.getAttribute('role') === 'columnheader') {
+      elementToFocus = activeCell;
+    } else {
+      const tabbableElements = getTabbableItems(activeCell);
+      elementToFocus = tabbableElements.length ? tabbableElements[0] : activeCell;
+    }
+
+    elementToFocus.focus(options);
   }
 }
