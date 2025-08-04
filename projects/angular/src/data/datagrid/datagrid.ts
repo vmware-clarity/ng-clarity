@@ -290,7 +290,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           return;
         }
 
-        if (cellCoords.ariaRowIndex === this.virtualScroll.keyNavItemCoords.ariaRowIndex) {
+        if (cellCoords.ariaRowIndex === this.virtualScroll?.keyNavItemCoords?.ariaRowIndex) {
           this.virtualScroll.keyNavItemCoords = cellCoords;
           return;
         }

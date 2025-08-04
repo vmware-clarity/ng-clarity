@@ -42,6 +42,10 @@ export class KeyNavigationUtils {
     return coordinates;
   }
 
+  get itemsPerPage() {
+    return Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
+  }
+
   setAriaRowIndexTo(cellCoords: CellCoordinates) {
     let ariaRowIndex = this.rows[cellCoords.y].getAttribute('aria-rowindex');
 
@@ -50,10 +54,6 @@ export class KeyNavigationUtils {
     }
 
     cellCoords.ariaRowIndex = ariaRowIndex;
-  }
-
-  itemsPerPage(rowIndex = 0) {
-    return Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[rowIndex].clientHeight) - 1 || 0;
   }
 
   getNextItemCoordinate(e: KeyboardEvent) {

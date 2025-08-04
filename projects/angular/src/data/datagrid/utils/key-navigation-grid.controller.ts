@@ -134,7 +134,6 @@ export class KeyNavigationGridController implements OnDestroy {
               this.nextCellCoordsEmitter.emit(nextCellCoords);
             }
 
-            console.log(nextCellCoords);
             const activeItem = this.keyNavUtils.rows
               ? (Array.from(this.keyNavUtils.getCellsForRow(nextCellCoords.y))[nextCellCoords.x] as HTMLElement)
               : null;
