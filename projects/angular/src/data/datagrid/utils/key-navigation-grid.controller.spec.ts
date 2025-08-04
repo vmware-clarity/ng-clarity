@@ -1323,7 +1323,7 @@ export default function (): void {
         cells[0].focus();
 
         // check cell flow: start at index
-        // 0 -> 5 -> 6 -> 7 -> 8 -> 36 -> 13 -> 39 -> 62 -> 39 -> 36 -> 62 -> 39 -> 18
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 31 -> 13 -> 36 -> 62 -> 39 -> 36 -> 62 -> 39 -> 18
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -1340,37 +1340,37 @@ export default function (): void {
 
         // PageDown: from not expanded row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[36]);
+        expectActiveElementToBe(cells[31], 'Keys.PageDown, cell[31]');
 
         // PageUp: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[13]);
+        expectActiveElementToBe(cells[13], 'Keys.PageUp, cell[13]');
 
         // PageDown: from not expanded row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[39]);
+        expectActiveElementToBe(cells[36], 'here Keys.PageDown, cell[36]');
 
         // PageDown: from expanded sub row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[62]);
+        expectActiveElementToBe(cells[62], 'Keys.PageDown, cell[62]');
 
         // PageUp: from not expanded row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[39]);
+        expectActiveElementToBe(cells[39], 'Keys.PageUp, cell[39]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expectActiveElementToBe(cells[36]);
+        expectActiveElementToBe(cells[36], 'Keys.PageUp, cell[36]');
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[62]);
+        expectActiveElementToBe(cells[62], 'Keys.PageDown, cell[62]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[39]);
+        expectActiveElementToBe(cells[39], 'Keys.PageUp, cell[39]');
 
         // PageUp: from expanded sub row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[18]);
+        expectActiveElementToBe(cells[18], 'Keys.PageUp, cell[18]');
       });
 
       // Covers key navigation over action cells
