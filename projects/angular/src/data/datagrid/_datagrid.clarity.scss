@@ -19,6 +19,7 @@
 @use 'variables.datagrid' as datagrid-variables;
 @use '../../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../utils/animations/animations.clarity' as animations;
 
 @mixin clr-datagrid-header-bg {
   background-color: tables-variables.$clr-thead-bgcolor;
@@ -216,9 +217,21 @@
     &.datagrid-row-skeleton {
       background-color: unset;
 
-      .datagrid-row-scrollable,
-      .datagrid-row-sticky {
-        display: none;
+      .datagrid-row-master {
+        position: relative;
+        @include animations.skeleton-loading();
+        &:before {
+          position: absolute;
+          top: tables-variables.$clr-table-cell-vertical-padding;
+          left: tables-variables.$clr-table-cell-horizontal-padding;
+          height: calc(100% - (2 * tables-variables.$clr-table-cell-vertical-padding));
+          width: calc(100% - (2 * tables-variables.$clr-table-cell-horizontal-padding));
+          z-index: map.get(variables.$clr-layers, datagrid-row-skeleton);
+        }
+        .datagrid-row-sticky,
+        .datagrid-row-scrollable {
+          opacity: 0;
+        }
       }
     }
 
@@ -988,9 +1001,21 @@
       min-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
     }
 
-    .datagrid-row .datagrid-row-detail .datagrid-cell.datagrid-container {
-      font-size: mixins.baselinePx(13);
-      line-height: tokens.$cds-global-space-8;
+    .datagrid-row {
+      .datagrid-row-detail .datagrid-cell.datagrid-container {
+        font-size: mixins.baselinePx(13);
+        line-height: tokens.$cds-global-space-8;
+      }
+      &.datagrid-row-skeleton {
+        .datagrid-row-master {
+          &:before {
+            top: tables-variables.$clr-table-compact-vertical-padding;
+            left: tables-variables.$clr-table-compact-horizontal-padding;
+            height: calc(100% - (2 * tables-variables.$clr-table-compact-vertical-padding));
+            width: calc(100% - (2 * tables-variables.$clr-table-compact-horizontal-padding));
+          }
+        }
+      }
     }
 
     .datagrid-row-replaced .datagrid-row-detail .datagrid-cell {
@@ -1372,6 +1397,7 @@
 
   .datagrid-detail-header {
     flex: 0 0 auto;
+    //TODO Fix figma font sizes in next GA 17+
     @include mixins.generate-typography-token('SECTION-20-STD');
     margin-top: 0;
     display: flex;
@@ -1382,6 +1408,7 @@
       flex: 1 1 auto;
       color: datagrid-variables.$clr-datagrid-detail-header-title-color;
       overflow-wrap: anywhere;
+      padding: #{tokens.$cds-global-space-1} 0; // outline header needs this to keep the shape correct
     }
 
     .datagrid-detail-pane-close {

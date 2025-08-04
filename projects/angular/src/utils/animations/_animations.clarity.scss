@@ -30,6 +30,20 @@ $clr-animation-easing: ease-in-out;
   }
 }
 
+@mixin skeleton-loading() {
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    border-radius: density.$clr-base-border-radius-s;
+    background: var(--cds-alias-object-skeleton-loading-gradient);
+    animation: var(--cds-global-animation-skeleton-duration) clr-skeleton-loading
+      var(--cds-global-animation-easing-in-out) infinite;
+    background-size: 200% 100%;
+  }
+}
+
 @include mixins.exports('animations.clarity') {
   .fade {
     opacity: 0;
@@ -54,15 +68,7 @@ $clr-animation-easing: ease-in-out;
     }
   }
 
-  .skeleton-loading:before {
-    content: '';
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    border-radius: density.$clr-base-border-radius-s;
-    background: var(--cds-alias-object-skeleton-loading-gradient);
-    animation: var(--cds-global-animation-skeleton-duration) clr-skeleton-loading
-      var(--cds-global-animation-easing-in-out) infinite;
-    background-size: 200% 100%;
+  .skeleton-loading {
+    @include skeleton-loading();
   }
 }

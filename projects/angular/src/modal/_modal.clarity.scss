@@ -196,15 +196,21 @@
     .side-panel-title {
       color: modal-variables.$clr-modal-title-color;
       margin: 0;
-    }
 
-    .modal-title:not([cds-text]),
-    .side-panel-title:not([cds-text]) {
-      font-family: modal-variables.$clr-modal-title-font-family;
-      font-size: modal-variables.$clr-modal-title-font-size;
-      font-weight: modal-variables.$clr-modal-title-font-weight;
-      line-height: modal-variables.$clr-modal-title-line-height;
-      letter-spacing: modal-variables.$clr-modal-title-letter-spacing;
+      &:not([cds-text]) {
+        //cds-text do not have color, margin
+        font-family: modal-variables.$clr-modal-title-font-family; //TODO remove line and PI tokens in GA 17+
+        //TODO remove API tokens overrides in GA 17+
+        @include mixins.generate-typography-token(
+          'SECTION-20-STD',
+          (
+            font-size: modal-variables.$clr-modal-title-font-size,
+            font-weight: modal-variables.$clr-modal-title-font-weight,
+            line-height: modal-variables.$clr-modal-title-line-height,
+            letter-spacing: modal-variables.$clr-modal-title-letter-spacing,
+          )
+        );
+      }
     }
 
     .close,
