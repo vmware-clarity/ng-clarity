@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewContainerRef } from '@angular/core';
+import { ClrCommonStringsService } from '../../utils';
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
@@ -14,11 +15,13 @@ export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<
     private vcr;
     private detailService;
     private changeDetectorRef;
+    private commonStrings;
     filterStringPlaceholder: string;
     filterNumberMaxPlaceholder: string;
     filterNumberMinPlaceholder: string;
     sortOrderChange: EventEmitter<ClrDatagridSortOrder>;
     filterValueChange: EventEmitter<any>;
+    titleContainer: ElementRef<HTMLElement>;
     /**
      * A custom filter for this column that can be provided in the projected content
      */
@@ -41,7 +44,7 @@ export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<
      */
     private subscriptions;
     private _showSeparator;
-    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef);
+    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService);
     get isHidden(): boolean;
     get showSeparator(): boolean;
     set showSeparator(value: boolean);
@@ -73,6 +76,7 @@ export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<
     set filterValue(newValue: any);
     get _view(): any;
     ngOnInit(): void;
+    ngAfterViewInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
     /**
@@ -80,6 +84,7 @@ export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<
      */
     sort(reverse?: boolean): void;
     private listenForDetailPaneChanges;
+    private setFilterToggleAriaLabel;
     private listenForSortingChanges;
     private setupDefaultFilter;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, never>;

@@ -18600,35 +18600,17 @@ class ClrDatagridFilter extends DatagridFilterRegistrar {
     get active() {
         return !!this.filter && this.filter.isActive();
     }
-    ngOnChanges() {
-        setTimeout(() => {
-            this.setToggleButtonAriaLabel();
-        });
-    }
     ngOnDestroy() {
         super.ngOnDestroy();
         this.subs.forEach(sub => sub.unsubscribe());
     }
-    /**
-     * This is not in a getter to prevent "expression has changed after it was checked" errors.
-     * And it's more performant this way since it only runs on change.
-     */
-    setToggleButtonAriaLabel() {
-        const columnElement = this.elementRef.nativeElement?.closest('clr-dg-column');
-        const columnTitleElement = columnElement?.querySelector('.datagrid-column-title');
-        const columnTitle = columnTitleElement?.textContent.trim().toLocaleLowerCase();
-        this.toggleButtonAriaLabel = this.commonStrings.parse(this.commonStrings.keys.datagridFilterAriaLabel, {
-            COLUMN: columnTitle || '',
-        });
-    }
 }
 ClrDatagridFilter.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridFilter, deps: [{ token: FiltersProvider }, { token: ClrCommonStringsService }, { token: ClrPopoverToggleService }, { token: PLATFORM_ID }, { token: i0.ElementRef }, { token: KeyNavigationGridController, optional: true }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridFilter.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridFilter, selector: "clr-dg-filter", inputs: { open: ["clrDgFilterOpen", "open"], customFilter: ["clrDgFilter", "customFilter"] }, outputs: { openChange: "clrDgFilterOpenChange" }, providers: [{ provide: CustomFilter, useExisting: ClrDatagridFilter }], viewQueries: [{ propertyName: "anchor", first: true, predicate: ["anchor"], descendants: true, read: ElementRef }], usesInheritance: true, usesOnChanges: true, ngImport: i0, template: `
+ClrDatagridFilter.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridFilter, selector: "clr-dg-filter", inputs: { open: ["clrDgFilterOpen", "open"], customFilter: ["clrDgFilter", "customFilter"] }, outputs: { openChange: "clrDgFilterOpenChange" }, providers: [{ provide: CustomFilter, useExisting: ClrDatagridFilter }], viewQueries: [{ propertyName: "anchor", first: true, predicate: ["anchor"], descendants: true, read: ElementRef }], usesInheritance: true, ngImport: i0, template: `
     <button
       class="datagrid-filter-toggle"
       type="button"
       #anchor
-      [attr.aria-label]="toggleButtonAriaLabel"
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="popoverId"
       clrPopoverAnchor
@@ -18671,7 +18653,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
       class="datagrid-filter-toggle"
       type="button"
       #anchor
-      [attr.aria-label]="toggleButtonAriaLabel"
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="popoverId"
       clrPopoverAnchor
@@ -20161,13 +20142,14 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrDatagridColumn extends DatagridFilterRegistrar {
-    constructor(el, _sort, filters, vcr, detailService, changeDetectorRef) {
+    constructor(el, _sort, filters, vcr, detailService, changeDetectorRef, commonStrings) {
         super(filters);
         this.el = el;
         this._sort = _sort;
         this.vcr = vcr;
         this.detailService = detailService;
         this.changeDetectorRef = changeDetectorRef;
+        this.commonStrings = commonStrings;
         this.sortOrderChange = new EventEmitter();
         this.filterValueChange = new EventEmitter();
         /**
@@ -20337,6 +20319,9 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
     ngOnInit() {
         this.wrappedInjector = new HostWrapper(WrappedColumn, this.vcr);
     }
+    ngAfterViewInit() {
+        this.setFilterToggleAriaLabel();
+    }
     ngOnChanges(changes) {
         if (changes.colType &&
             changes.colType.currentValue &&
@@ -20376,6 +20361,14 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
             }
         });
     }
+    setFilterToggleAriaLabel() {
+        const filterToggle = this.el.nativeElement.querySelector('.datagrid-filter-toggle');
+        if (filterToggle) {
+            filterToggle.ariaLabel = this.commonStrings.parse(this.commonStrings.keys.datagridFilterAriaLabel, {
+                COLUMN: this?.titleContainer?.nativeElement.textContent.trim().toLocaleLowerCase(),
+            });
+        }
+    }
     listenForSortingChanges() {
         return this._sort.change.subscribe(sort => {
             // Need to manually mark the component to be checked
@@ -20405,10 +20398,10 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
         }
     }
 }
-ClrDatagridColumn.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridColumn, deps: [{ token: i0.ElementRef }, { token: Sort }, { token: FiltersProvider }, { token: i0.ViewContainerRef }, { token: DetailService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridColumn.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridColumn, selector: "clr-dg-column", inputs: { filterStringPlaceholder: ["clrFilterStringPlaceholder", "filterStringPlaceholder"], filterNumberMaxPlaceholder: ["clrFilterNumberMaxPlaceholder", "filterNumberMaxPlaceholder"], filterNumberMinPlaceholder: ["clrFilterNumberMinPlaceholder", "filterNumberMinPlaceholder"], colType: ["clrDgColType", "colType"], field: ["clrDgField", "field"], sortBy: ["clrDgSortBy", "sortBy"], sortOrder: ["clrDgSortOrder", "sortOrder"], updateFilterValue: ["clrFilterValue", "updateFilterValue"] }, outputs: { sortOrderChange: "clrDgSortOrderChange", filterValueChange: "clrFilterValueChange" }, host: { attributes: { "role": "columnheader" }, properties: { "class.datagrid-column": "true", "attr.aria-sort": "ariaSort" } }, queries: [{ propertyName: "projectedFilter", first: true, predicate: CustomFilter, descendants: true }], usesInheritance: true, usesOnChanges: true, hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
+ClrDatagridColumn.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridColumn, deps: [{ token: i0.ElementRef }, { token: Sort }, { token: FiltersProvider }, { token: i0.ViewContainerRef }, { token: DetailService }, { token: i0.ChangeDetectorRef }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridColumn.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridColumn, selector: "clr-dg-column", inputs: { filterStringPlaceholder: ["clrFilterStringPlaceholder", "filterStringPlaceholder"], filterNumberMaxPlaceholder: ["clrFilterNumberMaxPlaceholder", "filterNumberMaxPlaceholder"], filterNumberMinPlaceholder: ["clrFilterNumberMinPlaceholder", "filterNumberMinPlaceholder"], colType: ["clrDgColType", "colType"], field: ["clrDgField", "field"], sortBy: ["clrDgSortBy", "sortBy"], sortOrder: ["clrDgSortOrder", "sortOrder"], updateFilterValue: ["clrFilterValue", "updateFilterValue"] }, outputs: { sortOrderChange: "clrDgSortOrderChange", filterValueChange: "clrFilterValueChange" }, host: { attributes: { "role": "columnheader" }, properties: { "class.datagrid-column": "true", "attr.aria-sort": "ariaSort" } }, queries: [{ propertyName: "projectedFilter", first: true, predicate: CustomFilter, descendants: true }], viewQueries: [{ propertyName: "titleContainer", first: true, predicate: ["titleContainer"], descendants: true, read: ElementRef }], usesInheritance: true, usesOnChanges: true, hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
     <div class="datagrid-column-flex">
-      <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button">
+      <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button" #titleContainer>
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
         <cds-icon
           *ngIf="sortDirection"
@@ -20440,7 +20433,7 @@ ClrDatagridColumn.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", vers
         <ng-content></ng-content>
       </ng-template>
 
-      <span class="datagrid-column-title" *ngIf="!sortable">
+      <span class="datagrid-column-title" *ngIf="!sortable" #titleContainer>
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
       </span>
 
@@ -20453,7 +20446,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
                     selector: 'clr-dg-column',
                     template: `
     <div class="datagrid-column-flex">
-      <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button">
+      <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button" #titleContainer>
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
         <cds-icon
           *ngIf="sortDirection"
@@ -20485,7 +20478,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
         <ng-content></ng-content>
       </ng-template>
 
-      <span class="datagrid-column-title" *ngIf="!sortable">
+      <span class="datagrid-column-title" *ngIf="!sortable" #titleContainer>
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
       </span>
 
@@ -20500,7 +20493,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
                     },
                     changeDetection: ChangeDetectionStrategy.OnPush,
                 }]
-        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: Sort }, { type: FiltersProvider }, { type: i0.ViewContainerRef }, { type: DetailService }, { type: i0.ChangeDetectorRef }]; }, propDecorators: { filterStringPlaceholder: [{
+        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: Sort }, { type: FiltersProvider }, { type: i0.ViewContainerRef }, { type: DetailService }, { type: i0.ChangeDetectorRef }, { type: ClrCommonStringsService }]; }, propDecorators: { filterStringPlaceholder: [{
                 type: Input,
                 args: ['clrFilterStringPlaceholder']
             }], filterNumberMaxPlaceholder: [{
@@ -20515,6 +20508,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
             }], filterValueChange: [{
                 type: Output,
                 args: ['clrFilterValueChange']
+            }], titleContainer: [{
+                type: ViewChild,
+                args: ['titleContainer', { read: ElementRef }]
             }], colType: [{
                 type: Input,
                 args: ['clrDgColType']

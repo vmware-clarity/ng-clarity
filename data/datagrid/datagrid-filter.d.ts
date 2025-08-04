@@ -1,4 +1,4 @@
-import { ElementRef, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
+import { ElementRef, EventEmitter, OnDestroy } from '@angular/core';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
@@ -13,7 +13,7 @@ import * as i0 from "@angular/core";
  * The reason this is not just an input on DatagridColumn is because we need the filter's template to be projected,
  * since it can be anything (not just a text input).
  */
-export declare class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, OnChanges, OnDestroy {
+export declare class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, OnDestroy {
     commonStrings: ClrCommonStringsService;
     private smartToggleService;
     private platformId;
@@ -22,7 +22,6 @@ export declare class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<
     openChange: EventEmitter<boolean>;
     ariaExpanded: boolean;
     popoverId: string;
-    toggleButtonAriaLabel: string;
     smartPosition: ClrPopoverPosition;
     anchor: ElementRef<HTMLButtonElement>;
     private _open;
@@ -35,13 +34,7 @@ export declare class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<
      * Indicates if the filter is currently active
      */
     get active(): boolean;
-    ngOnChanges(): void;
     ngOnDestroy(): void;
-    /**
-     * This is not in a getter to prevent "expression has changed after it was checked" errors.
-     * And it's more performant this way since it only runs on change.
-     */
-    private setToggleButtonAriaLabel;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, [null, null, null, null, null, { optional: true; }]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": "clrDgFilterOpen"; "customFilter": "clrDgFilter"; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"], false, never>;
 }
