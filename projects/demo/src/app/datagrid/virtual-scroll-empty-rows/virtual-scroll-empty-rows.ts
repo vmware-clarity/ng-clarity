@@ -42,7 +42,7 @@ export class DatagridVirtualScrollEmptyRowsDemo {
   @ViewChild('datagrid') datagrid: ClrDatagrid;
   state: ClrDatagridStateInterface<User>;
   private _indexToJump: number;
-  private _latency = 200;
+  private _latency = 500;
 
   constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
     inventory.size = this.totalRows;

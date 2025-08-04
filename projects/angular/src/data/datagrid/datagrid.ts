@@ -53,7 +53,7 @@ import { StateDebouncer } from './providers/state-debouncer.provider';
 import { StateProvider } from './providers/state.provider';
 import { TableSizeService } from './providers/table-size.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
-import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
+import { CellCoordinates, KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
 @Component({
   selector: 'clr-datagrid',
@@ -280,6 +280,28 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           this.items.all = all;
         }
       }),
+      this.keyNavigation.nextCellCoordsEmitter.subscribe(cellCoords => {
+        if (!this.virtualScroll) {
+          return;
+        }
+
+        if (!cellCoords?.ariaRowIndex) {
+          this.virtualScroll.keyNavItemCoords = null;
+          return;
+        }
+
+        if (cellCoords.ariaRowIndex === this.virtualScroll.keyNavItemCoords.ariaRowIndex) {
+          this.virtualScroll.keyNavItemCoords = cellCoords;
+          return;
+        }
+
+        // aria-rowindex is always + 1. Check virtual scroller updateAriaRowIndexes method.
+        const rowIndex = Number(cellCoords.ariaRowIndex) - 1;
+
+        this.virtualScroll.keyNavItemCoords = cellCoords;
+
+        this.virtualScroll.scrollToIndex(rowIndex);
+      }),
       this.rows.changes.subscribe(() => {
         // Remove any projected rows from the displayedRows container
         // Necessary with Ivy off. See https://github.com/vmware/clarity/issues/4692
@@ -304,10 +326,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     );
   }
 
-  focusCoords(coords) {
+  focusCoords(coords: CellCoordinates) {
     if (!coords) {
       return;
     }
+
     this.zone.runOutsideAngular(() => {
       const row = Array.from(this.rows).find(row => {
         return row.el.nativeElement.children[0].ariaRowIndex === coords.ariaRowIndex;
@@ -318,10 +341,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       }
 
       const activeCell = row.el.nativeElement.querySelectorAll(this.keyNavigation.config.keyGridCells)[
-        coords.cellIndex
+        coords.x
       ] as HTMLElement;
 
-      this.keyNavigation.setActiveCell(activeCell, { keepFocus: false }, { preventScroll: true });
+      this.keyNavigation.setActiveCell(activeCell);
+      this.keyNavigation.focusElement(activeCell, { preventScroll: true });
     });
   }
 
@@ -329,7 +353,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * Our setup happens in the view of some of our components, so we wait for it to be done before starting
    */
   ngAfterViewInit() {
-    this.keyNavigation.initializeKeyGrid(this.el.nativeElement, this.virtualScroll);
+    this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
+
+    // the virtual scroll will handle the scrolling
+    this.keyNavigation.preventScrollOnFocus = !!this.virtualScroll;
+
     this.updateDetailState();
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
     this.refresh.emit(this.stateProvider.state);

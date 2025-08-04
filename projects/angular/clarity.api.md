@@ -1318,6 +1318,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     expandableRows: ExpandableRowsCount;
     // (undocumented)
     _fixedColumnTemplate: TemplateRef<any>;
+    // Warning: (ae-forgotten-export) The symbol "CellCoordinates" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    focusCoords(coords: CellCoordinates): void;
     // Warning: (ae-forgotten-export) The symbol "Items" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -1904,6 +1908,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     dgCells: QueryList<ClrDatagridCell>;
     // (undocumented)
     displayCells: boolean;
+    // (undocumented)
+    el: ElementRef<HTMLElement>;
     // Warning: (ae-forgotten-export) The symbol "DatagridIfExpandService" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -5969,6 +5975,8 @@ export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     // (undocumented)
     get itemSize(): CdkFixedSizeVirtualScrollInputs['itemSize'];
     set itemSize(value: CdkFixedSizeVirtualScrollInputs['itemSize']);
+    // (undocumented)
+    keyNavItemCoords: CellCoordinates;
     // (undocumented)
     get maxBufferPx(): CdkFixedSizeVirtualScrollInputs['maxBufferPx'];
     set maxBufferPx(value: CdkFixedSizeVirtualScrollInputs['maxBufferPx']);

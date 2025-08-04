@@ -42,6 +42,16 @@ export class KeyNavigationUtils {
     return coordinates;
   }
 
+  setAriaRowIndexTo(cellCoords: CellCoordinates) {
+    let ariaRowIndex = this.rows[cellCoords.y].getAttribute('aria-rowindex');
+
+    if (!ariaRowIndex) {
+      ariaRowIndex = this.rows[cellCoords.y - 1].getAttribute('aria-rowindex');
+    }
+
+    cellCoords.ariaRowIndex = ariaRowIndex;
+  }
+
   itemsPerPage(rowIndex = 0) {
     return Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[rowIndex].clientHeight) - 1 || 0;
   }
