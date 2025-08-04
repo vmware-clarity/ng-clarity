@@ -27,7 +27,6 @@ import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from './providers/filters';
@@ -48,7 +47,6 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
       class="datagrid-filter-toggle"
       type="button"
       #anchor
-      [attr.aria-label]="toggleButtonAriaLabel"
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="popoverId"
       clrPopoverAnchor
@@ -109,8 +107,7 @@ export class ClrDatagridFilter<T = any>
     private smartToggleService: ClrPopoverToggleService,
     @Inject(PLATFORM_ID) private platformId: any,
     private elementRef: ElementRef<HTMLElement>,
-    @Optional() private keyNavigation: KeyNavigationGridController,
-    @Optional() private column: ClrDatagridColumn
+    @Optional() private keyNavigation: KeyNavigationGridController
   ) {
     super(_filters);
     this.subs.push(
@@ -151,12 +148,6 @@ export class ClrDatagridFilter<T = any>
    */
   get active() {
     return !!this.filter && this.filter.isActive();
-  }
-
-  get toggleButtonAriaLabel() {
-    return this.commonStrings.parse(this.commonStrings.keys.datagridFilterAriaLabel, {
-      COLUMN: this.column?.titleContainer?.nativeElement.textContent.trim().toLocaleLowerCase(),
-    });
   }
 
   override ngOnDestroy(): void {

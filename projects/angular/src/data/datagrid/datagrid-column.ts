@@ -24,6 +24,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ClrCommonStringsService } from '../../utils';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
@@ -156,7 +157,8 @@ export class ClrDatagridColumn<T = any>
     filters: FiltersProvider<T>,
     private vcr: ViewContainerRef,
     private detailService: DetailService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private commonStrings: ClrCommonStringsService
   ) {
     super(filters);
     this.subscriptions.push(this.listenForSortingChanges());
@@ -326,6 +328,10 @@ export class ClrDatagridColumn<T = any>
     this.wrappedInjector = new HostWrapper(WrappedColumn, this.vcr);
   }
 
+  ngAfterViewInit() {
+    this.setFilterToggleAriaLabel();
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (
       changes.colType &&
@@ -371,6 +377,15 @@ export class ClrDatagridColumn<T = any>
         this.showSeparator = !state;
       }
     });
+  }
+
+  private setFilterToggleAriaLabel() {
+    const filterToggle = this.el.nativeElement.querySelector('.datagrid-filter-toggle');
+    if (filterToggle) {
+      filterToggle.ariaLabel = this.commonStrings.parse(this.commonStrings.keys.datagridFilterAriaLabel, {
+        COLUMN: this?.titleContainer?.nativeElement.textContent.trim().toLocaleLowerCase(),
+      });
+    }
   }
 
   private listenForSortingChanges() {
