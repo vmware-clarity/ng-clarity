@@ -128,7 +128,10 @@ export class KeyNavigationGridController implements OnDestroy {
           ) {
             const nextCellCoords = this.keyNavUtils.getNextItemCoordinate(e);
 
-            if (nextCellCoords.y > 0) {
+            if (
+              nextCellCoords.y > 0 &&
+              (e.key === Keys.ArrowUp || e.key === Keys.ArrowDown || e.key === Keys.PageUp || e.key === Keys.PageDown)
+            ) {
               this.keyNavUtils.setAriaRowIndexTo(nextCellCoords);
 
               this.nextCellCoordsEmitter.emit(nextCellCoords);
