@@ -1430,8 +1430,8 @@ export default function (): void {
       // |       |10d|11d|12d|
       // |13c|14e|15d|16d|17d| -> row 1
       // |18c|19e|20d|21d|22d| -> row 2
-      // |23c|24e|25d|26d|27d| -> row 3
-      // |       |38d|29d|30d|
+      // |       |23d|24d|25d|
+      // |26c|27e|28d|29d|30d| -> row 3
       // |31c|32e|33d|34d|35d| -> row 4
       // |36c|37e|38d|39d|40d| -> row 5
       // |       |41d|42d|43d|
@@ -1445,7 +1445,7 @@ export default function (): void {
       // PageDown from expanded sub to main column row
       // PageUp from expanded main to main column row
       it('Moves focus across data cells with actions between expanded column rows', function () {
-        context.testComponent.expandedRowIndexes = [0, 3, 5, 9];
+        context.testComponent.expandedRowIndexes = [0, 2, 5, 9];
         context.detectChanges();
 
         cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
@@ -1455,7 +1455,7 @@ export default function (): void {
         cells[0].focus();
 
         // check cell flow: start at index
-        // 0 -> 5 -> 6 -> 7 -> 8 -> 29 -> 11 -> 39 -> 65 -> 62 -> 39
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 24 -> 11 -> 34 -> 65 -> 62 -> 39
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -1472,7 +1472,7 @@ export default function (): void {
 
         // PageDown: from expanded main row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[29], 'PageDown, cell[29]');
+        expectActiveElementToBe(cells[24], 'PageDown, cell[24]');
 
         // PageUp: from expanded sub row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
@@ -1480,9 +1480,10 @@ export default function (): void {
 
         // PageDown: from expanded sub row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[39], 'PageDown, cell[39]');
+        expectActiveElementToBe(cells[29], 'PageDown, cell[29]');
 
         // PageDown: from expanded sub row to expanded sub row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         expectActiveElementToBe(cells[65], 'PageDown, cell[65]');
 
@@ -1491,7 +1492,7 @@ export default function (): void {
 
         // PageUp: from expanded main row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[39], 'PageUp, cell[39]');
+        expectActiveElementToBe(cells[47], 'PageUp, cell[47]');
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
