@@ -145,6 +145,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChildren('stickyHeader', { emitDistinctChangesOnly: true }) stickyHeaders: QueryList<ElementRef>;
 
   selectAllId: string;
+  activeCellCoords: CellCoordinates;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
@@ -280,28 +281,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           this.items.all = all;
         }
       }),
-      this.keyNavigation.nextCellCoordsEmitter.subscribe(cellCoords => {
-        if (!this.virtualScroll) {
-          return;
-        }
-
-        if (!cellCoords?.ariaRowIndex) {
-          this.virtualScroll.keyNavItemCoords = null;
-          return;
-        }
-
-        if (cellCoords.ariaRowIndex === this.virtualScroll?.keyNavItemCoords?.ariaRowIndex) {
-          this.virtualScroll.keyNavItemCoords = cellCoords;
-          return;
-        }
-
-        // aria-rowindex is always + 1. Check virtual scroller updateAriaRowIndexes method.
-        const rowIndex = Number(cellCoords.ariaRowIndex) - 1;
-
-        this.virtualScroll.keyNavItemCoords = cellCoords;
-
-        this.virtualScroll.scrollToIndex(rowIndex);
-      }),
       this.rows.changes.subscribe(() => {
         // Remove any projected rows from the displayedRows container
         // Necessary with Ivy off. See https://github.com/vmware/clarity/issues/4692
@@ -317,36 +296,26 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         this.updateDetailState();
 
         // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
-        if (this.virtualScroll && this.virtualScroll.keyNavItemCoords) {
+        if (this.virtualScroll && this.activeCellCoords) {
           this.zone.runOutsideAngular(() => {
-            this.focusCoords(this.virtualScroll.keyNavItemCoords);
+            const row = Array.from(this.rows).find(row => {
+              return row.el.nativeElement.children[0].ariaRowIndex === this.activeCellCoords.ariaRowIndex;
+            });
+
+            if (!row) {
+              return;
+            }
+
+            const activeCell = row.el.nativeElement.querySelectorAll(this.keyNavigation.config.keyGridCells)[
+              this.activeCellCoords.x
+            ] as HTMLElement;
+
+            this.keyNavigation.setActiveCell(activeCell);
+            this.keyNavigation.focusElement(activeCell, { preventScroll: true });
           });
         }
       })
     );
-  }
-
-  focusCoords(coords: CellCoordinates) {
-    if (!coords) {
-      return;
-    }
-
-    this.zone.runOutsideAngular(() => {
-      const row = Array.from(this.rows).find(row => {
-        return row.el.nativeElement.children[0].ariaRowIndex === coords.ariaRowIndex;
-      });
-
-      if (!row) {
-        return;
-      }
-
-      const activeCell = row.el.nativeElement.querySelectorAll(this.keyNavigation.config.keyGridCells)[
-        coords.x
-      ] as HTMLElement;
-
-      this.keyNavigation.setActiveCell(activeCell);
-      this.keyNavigation.focusElement(activeCell, { preventScroll: true });
-    });
   }
 
   /**
@@ -449,6 +418,24 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this._subscriptions.push(
         fromEvent(this.contentWrapper.nativeElement, 'scroll').subscribe(() => {
           this.datagridHeader.nativeElement.scrollLeft = this.contentWrapper.nativeElement.scrollLeft;
+        }),
+        this.keyNavigation.nextCellCoordsEmitter.subscribe(cellCoords => {
+          if (!cellCoords?.ariaRowIndex) {
+            this.activeCellCoords = null;
+            return;
+          }
+
+          if (cellCoords.ariaRowIndex === this.activeCellCoords?.ariaRowIndex) {
+            this.activeCellCoords = cellCoords;
+            return;
+          }
+
+          this.activeCellCoords = cellCoords;
+
+          // aria-rowindex is always + 1. Check virtual scroller updateAriaRowIndexes method.
+          const rowIndex = Number(cellCoords.ariaRowIndex) - 1;
+
+          this.virtualScroll.scrollToIndex(rowIndex);
         })
       );
     }

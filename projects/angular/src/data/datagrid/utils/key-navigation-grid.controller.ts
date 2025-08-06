@@ -65,7 +65,6 @@ export class KeyNavigationGridController implements OnDestroy {
   private keyNavUtils: KeyNavigationUtils;
   private listenersAdded = false;
   private destroy$ = new Subject<void>();
-  private _activeCell: HTMLElement = null;
 
   constructor(private zone: NgZone) {}
 

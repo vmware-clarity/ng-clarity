@@ -1275,6 +1275,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // Warning: (ae-forgotten-export) The symbol "DisplayModeService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "Page" needs to be exported by the entry point index.d.ts
     constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
+    // Warning: (ae-forgotten-export) The symbol "CellCoordinates" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    activeCellCoords: CellCoordinates;
     get allSelected(): boolean;
     set allSelected(value: boolean);
     // (undocumented)
@@ -1318,10 +1322,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     expandableRows: ExpandableRowsCount;
     // (undocumented)
     _fixedColumnTemplate: TemplateRef<any>;
-    // Warning: (ae-forgotten-export) The symbol "CellCoordinates" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    focusCoords(coords: CellCoordinates): void;
     // Warning: (ae-forgotten-export) The symbol "Items" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -5975,8 +5975,6 @@ export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     // (undocumented)
     get itemSize(): CdkFixedSizeVirtualScrollInputs['itemSize'];
     set itemSize(value: CdkFixedSizeVirtualScrollInputs['itemSize']);
-    // (undocumented)
-    keyNavItemCoords: CellCoordinates;
     // (undocumented)
     get maxBufferPx(): CdkFixedSizeVirtualScrollInputs['maxBufferPx'];
     set maxBufferPx(value: CdkFixedSizeVirtualScrollInputs['maxBufferPx']);

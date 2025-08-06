@@ -50,7 +50,6 @@ import { ClrDatagrid } from './datagrid';
 import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
 import { ColumnsService } from './providers/columns.service';
 import { Items } from './providers/items';
-import { CellCoordinates } from './utils/key-navigation-grid.controller';
 
 type CdkVirtualForInputKey =
   | 'cdkVirtualForOf'
@@ -75,8 +74,6 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
   @Input('clrVirtualPersistItems') persistItems = true;
-
-  keyNavItemCoords: CellCoordinates;
 
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
 
