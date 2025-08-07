@@ -1275,6 +1275,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // Warning: (ae-forgotten-export) The symbol "DisplayModeService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "Page" needs to be exported by the entry point index.d.ts
     constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
+    // Warning: (ae-forgotten-export) The symbol "CellCoordinates" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    activeCellCoords: CellCoordinates;
     get allSelected(): boolean;
     set allSelected(value: boolean);
     // (undocumented)
@@ -1904,6 +1908,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     dgCells: QueryList<ClrDatagridCell>;
     // (undocumented)
     displayCells: boolean;
+    // (undocumented)
+    el: ElementRef<HTMLElement>;
     // Warning: (ae-forgotten-export) The symbol "DatagridIfExpandService" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -3392,6 +3398,8 @@ export class ClrNavLevel implements OnInit {
 export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> {
     constructor(focusService: FocusService_2, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
+    dispatchBlur(): void;
+    // (undocumented)
     protected el: ElementRef<HTMLInputElement>;
     // (undocumented)
     protected index: number;
@@ -3416,6 +3424,8 @@ export class ClrNumberInputContainer extends ClrAbstractContainer {
     constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FocusService_2, ifControlStateService: IfControlStateService);
     // (undocumented)
     focus: boolean;
+    // (undocumented)
+    focusOut(): void;
     // (undocumented)
     protected ifControlStateService: IfControlStateService;
     // (undocumented)

@@ -54,6 +54,16 @@ export class KeyNavigationUtils {
     return Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.averageRowHeight) - 1 || 0;
   }
 
+  setAriaRowIndexTo(cellCoords: CellCoordinates) {
+    let ariaRowIndex = this.rows[cellCoords.y].getAttribute('aria-rowindex');
+
+    if (!ariaRowIndex) {
+      ariaRowIndex = this.rows[cellCoords.y - 1].getAttribute('aria-rowindex');
+    }
+
+    cellCoords.ariaRowIndex = ariaRowIndex;
+  }
+
   getNextItemCoordinate(e: KeyboardEvent) {
     const currentCellCoords = this.currentCellCoordinates;
     const strategy = this.getNavStrategy(currentCellCoords);

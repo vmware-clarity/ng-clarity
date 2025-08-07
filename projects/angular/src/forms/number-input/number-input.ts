@@ -68,13 +68,22 @@ export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> 
 
   stepUp(): void {
     this.el.nativeElement.stepUp();
-    this.el.nativeElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+    this.dispatchStepChangeEvents();
     this.control.control.markAllAsTouched();
   }
 
   stepDown(): void {
     this.el.nativeElement.stepDown();
-    this.el.nativeElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+    this.dispatchStepChangeEvents();
     this.control.control.markAllAsTouched();
+  }
+
+  dispatchBlur() {
+    this.el.nativeElement.dispatchEvent(new Event('blur', { bubbles: true, cancelable: true }));
+  }
+
+  private dispatchStepChangeEvents() {
+    this.el.nativeElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+    this.el.nativeElement.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
   }
 }
