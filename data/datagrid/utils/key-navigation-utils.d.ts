@@ -7,6 +7,7 @@ export declare class KeyNavigationUtils {
     get rows(): NodeListOf<HTMLElement>;
     get cells(): NodeListOf<HTMLElement>;
     get currentCellCoordinates(): CellCoordinates;
+    get averageRowHeight(): number;
     get itemsPerPage(): number;
     setAriaRowIndexTo(cellCoords: CellCoordinates): void;
     getNextItemCoordinate(e: KeyboardEvent): CellCoordinates;
