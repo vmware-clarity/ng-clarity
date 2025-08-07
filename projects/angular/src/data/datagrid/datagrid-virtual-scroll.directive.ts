@@ -32,8 +32,8 @@ import {
   EnvironmentInjector,
   EventEmitter,
   forwardRef,
-  inject,
   Inject,
+  inject,
   Injector,
   Input,
   IterableDiffers,
@@ -74,8 +74,8 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
   @Input('clrVirtualPersistItems') persistItems = true;
-  updateItemsCheck = false;
 
+  private updateItemsCheck = false;
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
 
   private readonly datagridElementRef: ElementRef<HTMLElement>;
