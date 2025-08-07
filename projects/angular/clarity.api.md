@@ -3398,6 +3398,8 @@ export class ClrNavLevel implements OnInit {
 export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> {
     constructor(focusService: FocusService_2, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
+    dispatchBlur(): void;
+    // (undocumented)
     protected el: ElementRef<HTMLInputElement>;
     // (undocumented)
     protected index: number;
@@ -3422,6 +3424,8 @@ export class ClrNumberInputContainer extends ClrAbstractContainer {
     constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FocusService_2, ifControlStateService: IfControlStateService);
     // (undocumented)
     focus: boolean;
+    // (undocumented)
+    focusOut(): void;
     // (undocumented)
     protected ifControlStateService: IfControlStateService;
     // (undocumented)
