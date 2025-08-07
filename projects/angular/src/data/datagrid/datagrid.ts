@@ -53,7 +53,7 @@ import { StateDebouncer } from './providers/state-debouncer.provider';
 import { StateProvider } from './providers/state.provider';
 import { TableSizeService } from './providers/table-size.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
-import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
+import { CellCoordinates, KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
 @Component({
   selector: 'clr-datagrid',
@@ -145,6 +145,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChildren('stickyHeader', { emitDistinctChangesOnly: true }) stickyHeaders: QueryList<ElementRef>;
 
   selectAllId: string;
+  activeCellCoords: CellCoordinates;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
@@ -295,13 +296,23 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         this.updateDetailState();
 
         // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
-        if (this.virtualScroll) {
-          const active = this.keyNavigation.getActiveCell();
-          if (active) {
-            this.zone.runOutsideAngular(() => {
-              setTimeout(() => this.keyNavigation.setActiveCell(active));
+        if (this.virtualScroll && this.activeCellCoords) {
+          this.zone.runOutsideAngular(() => {
+            const row = Array.from(this.rows).find(row => {
+              return row.el.nativeElement.children[0].ariaRowIndex === this.activeCellCoords.ariaRowIndex;
             });
-          }
+
+            if (!row) {
+              return;
+            }
+
+            const activeCell = row.el.nativeElement.querySelectorAll(this.keyNavigation.config.keyGridCells)[
+              this.activeCellCoords.x
+            ] as HTMLElement;
+
+            this.keyNavigation.setActiveCell(activeCell);
+            this.keyNavigation.focusElement(activeCell, { preventScroll: true });
+          });
         }
       })
     );
@@ -312,6 +323,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   ngAfterViewInit() {
     this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
+
+    // the virtual scroll will handle the scrolling
+    this.keyNavigation.preventScrollOnFocus = !!this.virtualScroll;
+
     this.updateDetailState();
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
     this.refresh.emit(this.stateProvider.state);
@@ -403,6 +418,24 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this._subscriptions.push(
         fromEvent(this.contentWrapper.nativeElement, 'scroll').subscribe(() => {
           this.datagridHeader.nativeElement.scrollLeft = this.contentWrapper.nativeElement.scrollLeft;
+        }),
+        this.keyNavigation.nextCellCoordsEmitter.subscribe(cellCoords => {
+          if (!cellCoords?.ariaRowIndex) {
+            this.activeCellCoords = null;
+            return;
+          }
+
+          if (cellCoords.ariaRowIndex === this.activeCellCoords?.ariaRowIndex) {
+            this.activeCellCoords = cellCoords;
+            return;
+          }
+
+          this.activeCellCoords = cellCoords;
+
+          // aria-rowindex is always + 1. Check virtual scroller updateAriaRowIndexes method.
+          const rowIndex = Number(cellCoords.ariaRowIndex) - 1;
+
+          this.virtualScroll.scrollToIndex(rowIndex);
         })
       );
     }
