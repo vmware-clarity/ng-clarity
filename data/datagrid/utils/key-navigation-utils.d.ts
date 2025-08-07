@@ -8,6 +8,7 @@ export declare class KeyNavigationUtils {
     get cells(): NodeListOf<HTMLElement>;
     get currentCellCoordinates(): CellCoordinates;
     get itemsPerPage(): number;
+    setAriaRowIndexTo(cellCoords: CellCoordinates): void;
     getNextItemCoordinate(e: KeyboardEvent): CellCoordinates;
     getCellsForRow(index: number): NodeListOf<Element>;
     isExpandedRow(index: number): boolean;

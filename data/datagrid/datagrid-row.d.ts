@@ -20,6 +20,7 @@ export declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterV
     detailService: DetailService;
     private displayMode;
     private vcr;
+    el: ElementRef<HTMLElement>;
     commonStrings: ClrCommonStringsService;
     private items;
     private document;

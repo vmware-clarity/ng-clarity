@@ -16,7 +16,7 @@ import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
 import { StateProvider } from './providers/state.provider';
 import { DatagridRenderOrganizer } from './render/render-organizer';
-import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
+import { CellCoordinates, KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 import * as i0 from "@angular/core";
 export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
     private organizer;
@@ -84,6 +84,7 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
     _fixedColumnTemplate: TemplateRef<any>;
     stickyHeaders: QueryList<ElementRef>;
     selectAllId: string;
+    activeCellCoords: CellCoordinates;
     SELECTION_TYPE: typeof SelectionType;
     private selectAllCheckbox;
     /**
