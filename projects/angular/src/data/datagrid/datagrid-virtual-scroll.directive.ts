@@ -32,8 +32,8 @@ import {
   EnvironmentInjector,
   EventEmitter,
   forwardRef,
-  Inject,
   inject,
+  Inject,
   Injector,
   Input,
   IterableDiffers,
@@ -362,11 +362,15 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   private updateAriaRowIndexes() {
     for (let i = 0; i < this.viewContainerRef.length; i++) {
       const viewRef = this.viewContainerRef.get(i) as EmbeddedViewRef<CdkVirtualForOfContext<T>>;
-      const gridRow = this.datagrid.rows.get(i);
 
-      // aria-rowindex should start with one, not zero, so we have to add one to the zero-based index
-      if (gridRow && gridRow.ariaRowIndex !== viewRef.context.index + 1) {
-        gridRow.ariaRowIndex = viewRef.context.index + 1;
+      const rootElements: HTMLElement[] = viewRef.rootNodes;
+      const datagridRowElement = rootElements.find(rowElement => rowElement.tagName === 'CLR-DG-ROW');
+      const rowRoleElement = datagridRowElement?.querySelector('[role="row"]');
+
+      const newAriaRowIndex = (viewRef.context.index + 1).toString();
+      if (rowRoleElement?.getAttribute('aria-rowindex') !== newAriaRowIndex) {
+        // aria-rowindex should start with one, not zero, so we have to add one to the zero-based index
+        rowRoleElement?.setAttribute('aria-rowindex', newAriaRowIndex);
       }
     }
   }

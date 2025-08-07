@@ -7,7 +7,6 @@
   (click)="selectRow(!selected, $event)"
   [class.datagrid-row-clickable]="selection.rowSelectionMode"
   [class.datagrid-row-detail-open]="detailService.isRowOpen(item)"
-  [attr.aria-rowindex]="ariaRowIndex"
 >
   <div class="datagrid-row-sticky">
     <!-- Sticky elements here -->

@@ -74,7 +74,6 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   replaced: boolean;
   displayCells = false;
   expandAnimationTrigger = false;
-  ariaRowIndex: number | undefined;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
