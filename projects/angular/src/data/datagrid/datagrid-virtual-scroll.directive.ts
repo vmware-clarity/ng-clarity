@@ -362,13 +362,12 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   private updateAriaRowIndexes() {
     for (let i = 0; i < this.viewContainerRef.length; i++) {
       const viewRef = this.viewContainerRef.get(i) as EmbeddedViewRef<CdkVirtualForOfContext<T>>;
-
-      const rootElements: HTMLElement[] = viewRef.rootNodes;
-      const datagridRowElement = rootElements.find(rowElement => rowElement.tagName === 'CLR-DG-ROW');
-      const rowRoleElement = datagridRowElement?.querySelector('[role="row"]');
+      const gridRow = this.datagrid.rows.get(i);
 
       // aria-rowindex should start with one, not zero, so we have to add one to the zero-based index
-      rowRoleElement?.setAttribute('aria-rowindex', (viewRef.context.index + 1).toString());
+      if (gridRow && gridRow.ariaRowIndex !== viewRef.context.index + 1) {
+        gridRow.ariaRowIndex = viewRef.context.index + 1;
+      }
     }
   }
 
