@@ -297,21 +297,21 @@ export default function (): void {
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         // active checkbox input with ID clr-dg-row-cb365
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[23]);
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[14], 'PageDown, cells[14]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb382
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[40]);
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[29], 'PageDown, cells[29]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb358
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[17]);
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[15], 'PageUp, cells[15]');
 
         flush();
         flushMicrotasks();
