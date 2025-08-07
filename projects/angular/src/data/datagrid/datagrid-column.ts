@@ -19,10 +19,12 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ClrCommonStringsService } from '../../utils';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
@@ -45,7 +47,7 @@ import { WrappedColumn } from './wrapped-column';
   selector: 'clr-dg-column',
   template: `
     <div class="datagrid-column-flex">
-      <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button">
+      <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button" #titleContainer>
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
         <cds-icon
           *ngIf="sortDirection"
@@ -77,7 +79,7 @@ import { WrappedColumn } from './wrapped-column';
         <ng-content></ng-content>
       </ng-template>
 
-      <span class="datagrid-column-title" *ngIf="!sortable">
+      <span class="datagrid-column-title" *ngIf="!sortable" #titleContainer>
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
       </span>
 
@@ -102,6 +104,8 @@ export class ClrDatagridColumn<T = any>
 
   @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
+
+  @ViewChild('titleContainer', { read: ElementRef }) titleContainer: ElementRef<HTMLElement>;
 
   /**
    * A custom filter for this column that can be provided in the projected content
@@ -153,7 +157,8 @@ export class ClrDatagridColumn<T = any>
     filters: FiltersProvider<T>,
     private vcr: ViewContainerRef,
     private detailService: DetailService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private commonStrings: ClrCommonStringsService
   ) {
     super(filters);
     this.subscriptions.push(this.listenForSortingChanges());
@@ -323,6 +328,10 @@ export class ClrDatagridColumn<T = any>
     this.wrappedInjector = new HostWrapper(WrappedColumn, this.vcr);
   }
 
+  ngAfterViewInit() {
+    this.setFilterToggleAriaLabel();
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (
       changes.colType &&
@@ -368,6 +377,15 @@ export class ClrDatagridColumn<T = any>
         this.showSeparator = !state;
       }
     });
+  }
+
+  private setFilterToggleAriaLabel() {
+    const filterToggle = this.el.nativeElement.querySelector('.datagrid-filter-toggle');
+    if (filterToggle) {
+      filterToggle.ariaLabel = this.commonStrings.parse(this.commonStrings.keys.datagridFilterAriaLabel, {
+        COLUMN: this?.titleContainer?.nativeElement.textContent.trim().toLocaleLowerCase(),
+      });
+    }
   }
 
   private listenForSortingChanges() {

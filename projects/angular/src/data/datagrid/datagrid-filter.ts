@@ -12,7 +12,6 @@ import {
   EventEmitter,
   Inject,
   Input,
-  OnChanges,
   OnDestroy,
   Optional,
   Output,
@@ -48,7 +47,6 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
       class="datagrid-filter-toggle"
       type="button"
       #anchor
-      [attr.aria-label]="toggleButtonAriaLabel"
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="popoverId"
       clrPopoverAnchor
@@ -83,13 +81,12 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
 })
 export class ClrDatagridFilter<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>
-  implements CustomFilter, OnChanges, OnDestroy
+  implements CustomFilter, OnDestroy
 {
   @Output('clrDgFilterOpenChange') openChange = new EventEmitter<boolean>(false);
 
   ariaExpanded = false;
   popoverId = uniqueIdFactory();
-  toggleButtonAriaLabel: string;
 
   // Smart Popover
   smartPosition: ClrPopoverPosition = {
@@ -153,29 +150,8 @@ export class ClrDatagridFilter<T = any>
     return !!this.filter && this.filter.isActive();
   }
 
-  ngOnChanges() {
-    setTimeout(() => {
-      this.setToggleButtonAriaLabel();
-    });
-  }
-
   override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.subs.forEach(sub => sub.unsubscribe());
-  }
-
-  /**
-   * This is not in a getter to prevent "expression has changed after it was checked" errors.
-   * And it's more performant this way since it only runs on change.
-   */
-  private setToggleButtonAriaLabel() {
-    const columnElement = this.elementRef.nativeElement?.closest('clr-dg-column');
-    const columnTitleElement = columnElement?.querySelector('.datagrid-column-title');
-
-    const columnTitle = columnTitleElement?.textContent.trim().toLocaleLowerCase();
-
-    this.toggleButtonAriaLabel = this.commonStrings.parse(this.commonStrings.keys.datagridFilterAriaLabel, {
-      COLUMN: columnTitle || '',
-    });
   }
 }
