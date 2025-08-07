@@ -120,7 +120,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     private displayMode: DisplayModeService,
     private vcr: ViewContainerRef,
     renderer: Renderer2,
-    el: ElementRef<HTMLElement>,
+    public el: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     private items: Items,
     @Inject(DOCUMENT) private document: any
