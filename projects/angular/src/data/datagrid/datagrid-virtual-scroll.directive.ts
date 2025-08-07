@@ -74,6 +74,7 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
   @Input('clrVirtualPersistItems') persistItems = true;
+  updateItemsCheck = false;
 
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
 
@@ -269,6 +270,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         if (this.items.smart) {
           this.cdkVirtualFor.cdkVirtualForOf = newItems;
         }
+        this.updateItemsCheck = true;
       }),
       this.cdkVirtualFor.dataStream.subscribe(data => {
         this.updateAriaRowCount(data.length);
@@ -278,6 +280,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       }),
       this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
         this.renderedRangeChange.emit(renderedRange);
+        this.updateItemsCheck = true;
       }),
       this.datagrid.refresh.subscribe(datagridState => {
         if (datagridState.filters) {
@@ -292,7 +295,11 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
   ngDoCheck() {
     this.cdkVirtualFor?.ngDoCheck();
-    this.updateAriaRowIndexes();
+    if (this.updateItemsCheck) {
+      this.updateAriaRowIndexes();
+
+      this.updateItemsCheck = false;
+    }
   }
 
   ngOnDestroy() {
