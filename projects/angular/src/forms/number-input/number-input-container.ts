@@ -23,7 +23,7 @@ import { ClrNumberInput } from './number-input';
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-number-input-wrapper">
-        <div class="clr-input-group" [class.clr-focus]="focus">
+        <div class="clr-input-group" [class.clr-focus]="focus" (focusout)="focusOut()">
           <ng-content select="[clrNumberInput]"></ng-content>
           <div class="clr-input-group-actions">
             <button
@@ -88,5 +88,9 @@ export class ClrNumberInputContainer extends ClrAbstractContainer {
     super(ifControlStateService, layoutService, controlClassService, ngControlService);
 
     this.subscriptions.push(focusService.focusChange.subscribe(state => (this.focus = state)));
+  }
+
+  focusOut() {
+    this.input.dispatchBlur();
   }
 }

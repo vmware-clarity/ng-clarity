@@ -42,8 +42,16 @@ export class KeyNavigationUtils {
     return coordinates;
   }
 
+  get averageRowHeight() {
+    const heightSum = Array.from(this.rows.values()).reduce((sum, row) => {
+      return sum + row.clientHeight;
+    }, 0);
+
+    return Math.round(heightSum / this.rows.length);
+  }
+
   get itemsPerPage() {
-    return Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
+    return Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.averageRowHeight) - 1 || 0;
   }
 
   setAriaRowIndexTo(cellCoords: CellCoordinates) {

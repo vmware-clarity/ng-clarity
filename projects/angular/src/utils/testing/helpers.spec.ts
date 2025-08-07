@@ -181,10 +181,10 @@ export function animationFrameTick(fixture?: ComponentFixture<any>) {
  */
 // reportSlowSpecs();
 
-export function expectActiveElementToBe(element: Element): void {
-  expect(document.activeElement).toBe(element);
+export function expectActiveElementToBe(element: Element, failOutput = null): void {
+  expect(document.activeElement).toBe(element, failOutput);
 }
 
-export function expectActiveElementNotToBe(element: Element): void {
-  expect(document.activeElement).not.toBe(element);
+export function expectActiveElementNotToBe(element: Element, failOutput = null): void {
+  expect(document.activeElement).not.toBe(element, failOutput);
 }
