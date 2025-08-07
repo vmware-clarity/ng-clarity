@@ -360,8 +360,11 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       const datagridRowElement = rootElements.find(rowElement => rowElement.tagName === 'CLR-DG-ROW');
       const rowRoleElement = datagridRowElement?.querySelector('[role="row"]');
 
-      // aria-rowindex should start with one, not zero, so we have to add one to the zero-based index
-      rowRoleElement?.setAttribute('aria-rowindex', (viewRef.context.index + 1).toString());
+      const newAriaRowIndex = (viewRef.context.index + 1).toString();
+      if (rowRoleElement?.getAttribute('aria-rowindex') !== newAriaRowIndex) {
+        // aria-rowindex should start with one, not zero, so we have to add one to the zero-based index
+        rowRoleElement?.setAttribute('aria-rowindex', newAriaRowIndex);
+      }
     }
   }
 

@@ -24,13 +24,13 @@ import { User } from '../inventory/user';
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridVirtualScrollEmptyRowsDemo {
-  userRange: ListRange = {
-    start: 0,
-    end: 100,
-  };
+  userRange: ListRange | undefined;
 
-  _totalRows = 10000;
+  _totalRows = 1000;
   persistItems = true;
+  overflowEllipsis = true;
+  datagridHeight = 700;
+  virtualScrollRowHeight = 24;
 
   dataRange: ClrDatagridVirtualScrollRangeInterface<User> = {
     total: this.totalRows,
@@ -41,11 +41,30 @@ export class DatagridVirtualScrollEmptyRowsDemo {
   _selectedUsers: User[] = [];
   @ViewChild('datagrid') datagrid: ClrDatagrid;
   state: ClrDatagridStateInterface<User>;
+  private _indexToJump: number;
+  private _latency = 500;
 
   constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
     inventory.size = this.totalRows;
-    inventory.latency = 500;
+    inventory.latency = this._latency;
     inventory.reset();
+  }
+  get latency(): number {
+    return this._latency;
+  }
+
+  set latency(value: number) {
+    this._latency = value;
+    this.inventory.latency = this.latency;
+  }
+
+  get indexToJump(): number {
+    return this._indexToJump;
+  }
+
+  set indexToJump(value: number) {
+    this._indexToJump = value;
+    this.jumpTo(value);
   }
 
   get totalRows() {
@@ -77,6 +96,11 @@ export class DatagridVirtualScrollEmptyRowsDemo {
 
   async refresh(state: ClrDatagridStateInterface<User>) {
     console.log('refresh', state);
+    if (!this.userRange) {
+      console.log('no user range', this.userRange);
+      return;
+    }
+
     this.state = state;
     const filters: { [prop: string]: any[] } = {};
 
@@ -118,8 +142,12 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     }
   }
 
+  async loadBatch(listRange: ListRange = { start: 200, end: 300 }) {
+    await this.getData(listRange);
+  }
+
   jumpTo(index: number) {
-    this.userRange = null;
+    // this.userRange = null;
     this.datagrid.virtualScroll.scrollToIndex(index, 'auto');
   }
 
@@ -137,6 +165,12 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     }
 
     return result;
+  }
+
+  setExpanded($event, user: User) {
+    if (user) {
+      user.expanded = $event;
+    }
   }
 
   private async getData($event: ListRange) {

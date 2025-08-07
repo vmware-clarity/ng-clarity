@@ -84,6 +84,11 @@
           </div>
 
           <div class="datagrid-content" [class.datagrid-content-virtual]="virtualScroll" #contentWrapper>
+            <div
+              *ngIf="virtualScroll"
+              class="datagrid-content-virtual-spacer"
+              [style.height]="virtualScroll?.totalContentHeight"
+            ></div>
             <div role="presentation" class="datagrid-rows">
               <clr-dg-row class="datagrid-row-loading" *ngIf="loadingMoreItems">
                 <clr-dg-cell>
@@ -105,11 +110,6 @@
               <ng-content select="clr-dg-placeholder"></ng-content>
               <clr-dg-placeholder *ngIf="!placeholder"></clr-dg-placeholder>
             </div>
-            <div
-              *ngIf="virtualScroll"
-              class="datagrid-content-virtual-spacer"
-              [style.height]="virtualScroll?.totalContentHeight"
-            ></div>
           </div>
         </div>
       </div>
