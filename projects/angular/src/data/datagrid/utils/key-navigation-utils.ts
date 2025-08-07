@@ -43,8 +43,8 @@ export class KeyNavigationUtils {
   }
 
   get averageRowHeight() {
-    const heightSum = Array.from(this.rows.values()).reduce((initial, row) => {
-      return initial + row.clientHeight;
+    const heightSum = Array.from(this.rows.values()).reduce((sum, row) => {
+      return sum + row.clientHeight;
     }, 0);
 
     return Math.round(heightSum / this.rows.length);
