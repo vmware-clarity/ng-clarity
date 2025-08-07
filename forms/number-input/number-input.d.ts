@@ -15,6 +15,8 @@ export declare class ClrNumberInput extends WrappedFormControl<ClrNumberInputCon
     triggerValidation(): void;
     stepUp(): void;
     stepDown(): void;
+    dispatchBlur(): void;
+    private dispatchStepChangeEvents;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNumberInput, [{ optional: true; }, null, null, { optional: true; self: true; }, null, null]>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNumberInput, "input[type=\"number\"][clrNumberInput]", never, {}, {}, never, never, false, never>;
 }

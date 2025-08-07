@@ -16334,6 +16334,9 @@ class ClrNumberInputContainer extends ClrAbstractContainer {
         this.focus = false;
         this.subscriptions.push(focusService.focusChange.subscribe(state => (this.focus = state)));
     }
+    focusOut() {
+        this.input.dispatchBlur();
+    }
 }
 ClrNumberInputContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNumberInputContainer, deps: [{ token: ControlClassService }, { token: LayoutService, optional: true }, { token: NgControlService }, { token: FocusService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
 ClrNumberInputContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrNumberInputContainer, selector: "clr-number-input-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-form-control-readonly": "input.readonly", "class.clr-row": "addGrid()" } }, providers: [FocusService, IfControlStateService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "input", first: true, predicate: i0.forwardRef(function () { return ClrNumberInput; }), descendants: true }], usesInheritance: true, ngImport: i0, template: `
@@ -16341,7 +16344,7 @@ ClrNumberInputContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0"
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-number-input-wrapper">
-        <div class="clr-input-group" [class.clr-focus]="focus">
+        <div class="clr-input-group" [class.clr-focus]="focus" (focusout)="focusOut()">
           <ng-content select="[clrNumberInput]"></ng-content>
           <div class="clr-input-group-actions">
             <button
@@ -16392,7 +16395,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-number-input-wrapper">
-        <div class="clr-input-group" [class.clr-focus]="focus">
+        <div class="clr-input-group" [class.clr-focus]="focus" (focusout)="focusOut()">
           <ng-content select="[clrNumberInput]"></ng-content>
           <div class="clr-input-group-actions">
             <button
@@ -16486,13 +16489,20 @@ class ClrNumberInput extends WrappedFormControl {
     }
     stepUp() {
         this.el.nativeElement.stepUp();
-        this.el.nativeElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+        this.dispatchStepChangeEvents();
         this.control.control.markAllAsTouched();
     }
     stepDown() {
         this.el.nativeElement.stepDown();
-        this.el.nativeElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+        this.dispatchStepChangeEvents();
         this.control.control.markAllAsTouched();
+    }
+    dispatchBlur() {
+        this.el.nativeElement.dispatchEvent(new Event('blur', { bubbles: true, cancelable: true }));
+    }
+    dispatchStepChangeEvents() {
+        this.el.nativeElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+        this.el.nativeElement.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
     }
 }
 ClrNumberInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNumberInput, deps: [{ token: FocusService, optional: true }, { token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });

@@ -11,6 +11,7 @@ export declare class ClrNumberInputContainer extends ClrAbstractContainer {
     focus: boolean;
     protected readonly input: ClrNumberInput;
     constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FocusService, ifControlStateService: IfControlStateService);
+    focusOut(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNumberInputContainer, [null, { optional: true; }, null, null, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrNumberInputContainer, "clr-number-input-container", never, {}, {}, ["input"], ["label", "[clrNumberInput]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
 }
