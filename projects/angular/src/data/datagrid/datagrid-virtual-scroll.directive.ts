@@ -75,6 +75,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
   @Input('clrVirtualPersistItems') persistItems = true;
 
+  private shouldUpdateAriaRowIndexes = false;
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
 
   private readonly datagridElementRef: ElementRef<HTMLElement>;
@@ -269,6 +270,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         if (this.items.smart) {
           this.cdkVirtualFor.cdkVirtualForOf = newItems;
         }
+        this.shouldUpdateAriaRowIndexes = true;
       }),
       this.cdkVirtualFor.dataStream.subscribe(data => {
         this.updateAriaRowCount(data.length);
@@ -278,6 +280,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       }),
       this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
         this.renderedRangeChange.emit(renderedRange);
+        this.shouldUpdateAriaRowIndexes = true;
       }),
       this.datagrid.refresh.subscribe(datagridState => {
         if (datagridState.filters) {
@@ -292,7 +295,11 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
   ngDoCheck() {
     this.cdkVirtualFor?.ngDoCheck();
-    this.updateAriaRowIndexes();
+    if (this.shouldUpdateAriaRowIndexes) {
+      this.updateAriaRowIndexes();
+
+      this.shouldUpdateAriaRowIndexes = false;
+    }
   }
 
   ngOnDestroy() {
