@@ -22056,6 +22056,7 @@ class ClrDatagridVirtualScrollDirective {
         this.injector = injector;
         this.renderedRangeChange = new EventEmitter();
         this.persistItems = true;
+        this.shouldUpdateAriaRowIndexes = false;
         this._cdkFixedSizeVirtualScrollInputs = Object.assign({}, defaultCdkFixedSizeVirtualScrollInputs);
         this.subscriptions = [];
         this.topIndex = 0;
@@ -22171,12 +22172,14 @@ class ClrDatagridVirtualScrollDirective {
             if (this.items.smart) {
                 this.cdkVirtualFor.cdkVirtualForOf = newItems;
             }
+            this.shouldUpdateAriaRowIndexes = true;
         }), this.cdkVirtualFor.dataStream.subscribe(data => {
             this.updateAriaRowCount(data.length);
         }), this.virtualScrollViewport.scrolledIndexChange.subscribe(index => {
             this.topIndex = index;
         }), this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
             this.renderedRangeChange.emit(renderedRange);
+            this.shouldUpdateAriaRowIndexes = true;
         }), this.datagrid.refresh.subscribe(datagridState => {
             if (datagridState.filters) {
                 this.scrollToIndex(0);
@@ -22188,7 +22191,10 @@ class ClrDatagridVirtualScrollDirective {
     ngDoCheck() {
         var _a;
         (_a = this.cdkVirtualFor) === null || _a === void 0 ? void 0 : _a.ngDoCheck();
-        this.updateAriaRowIndexes();
+        if (this.shouldUpdateAriaRowIndexes) {
+            this.updateAriaRowIndexes();
+            this.shouldUpdateAriaRowIndexes = false;
+        }
     }
     ngOnDestroy() {
         var _a, _b, _c;

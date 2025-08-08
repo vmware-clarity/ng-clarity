@@ -26,6 +26,7 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
     private readonly injector;
     renderedRangeChange: EventEmitter<ListRange>;
     persistItems: boolean;
+    private shouldUpdateAriaRowIndexes;
     private _cdkFixedSizeVirtualScrollInputs;
     private readonly datagridElementRef;
     private gridRoleElement;
