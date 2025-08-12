@@ -8,7 +8,10 @@
 @use '../../utils/variables/variables.density' as density;
 
 @include mixins.exports('breadcrumbs.properties') {
-  :root [cds-theme] {
-    --clr-breadcrumb-item-space: #{density.$clr-base-gap-s};
+  :root {
+    &,
+    [clr-density] {
+      --clr-breadcrumb-item-space: #{density.$clr-base-gap-s};
+    }
   }
 }
