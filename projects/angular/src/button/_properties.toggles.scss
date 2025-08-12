@@ -10,7 +10,7 @@
 @include mixins.exports('toggle.properties') {
   :root {
     &,
-    & [cds-theme] {
+    [cds-theme] {
       // colors
       --clr-toggle-bg-color-off: #{tokens.$cds-alias-status-neutral};
       --clr-toggle-bg-color-on: #{tokens.$cds-alias-status-success};

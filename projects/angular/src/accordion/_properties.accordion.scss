@@ -11,14 +11,14 @@
 @include mixins.exports('accordion.properties') {
   :root {
     &,
-    & [clr-density] {
+    [clr-density] {
       --clr-accordion-border-radius: #{density.$clr-base-border-radius-s};
       --clr-accordion-step-title-min-width: #{density.$clr-base-layout-space-4xl};
       --clr-accordion-content-font-size: #{density.$clr-base-typography-font-size-inline};
     }
 
     &,
-    & [cds-theme] {
+    [cds-theme] {
       --clr-accordion-text-color: #{tokens.$cds-alias-object-interaction-color};
       --clr-accordion-text-color-hover: #{tokens.$cds-alias-object-interaction-color-hover};
       --clr-accordion-text-color-active: #{tokens.$cds-alias-object-interaction-color-active};

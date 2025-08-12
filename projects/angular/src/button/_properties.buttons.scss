@@ -13,7 +13,7 @@
     --clr-btn-group-focus-outline: #{tokens.$cds-alias-object-interaction-outline};
 
     &,
-    & [clr-density] {
+    [clr-density] {
       // Spacing
       --clr-btn-vertical-margin: #{density.$clr-base-vertical-offset-s};
       --clr-btn-horizontal-margin: #{density.$clr-base-gap-m};
@@ -41,7 +41,7 @@
     }
 
     &,
-    & [cds-theme] {
+    [cds-theme] {
       // Shared colors
       --clr-btn-transparent-bg-color: #{tokens.$cds-alias-object-opacity-0};
       --clr-btn-outline-bg-color: var(--clr-btn-transparent-bg-color);
