@@ -9,7 +9,8 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('button.properties') {
-  :root [cds-theme] {
+  :root,
+  :root [clr-density] {
     // Spacing
     --clr-btn-vertical-margin: #{density.$clr-base-vertical-offset-s};
     --clr-btn-horizontal-margin: #{density.$clr-base-gap-m};
@@ -34,7 +35,9 @@
     // form-style button appearance styles - overrideable but not advertised!
     --clr-btn-appearance-form-height: var(--clr-btn-height);
     --clr-btn-appearance-form-padding: var(--clr-btn-padding);
+  }
 
+  :root [cds-theme] {
     --clr-btn-group-focus-outline: #{tokens.$cds-alias-object-interaction-outline};
 
     // Shared colors
