@@ -1,0 +1,321 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'lists';
+@use 'code';
+@use '../utils/mixins';
+@use '../utils/variables/variables.typography';
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('typography.clarity') {
+  //Headings
+  h1:not([cds-text]) {
+    margin-top: variables.$clr-global-typography-margin-top;
+    margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+    @include mixins.generate-typography-header-token(
+      'DISPLAY-40',
+      (
+        color: variables.$clr-h1-color,
+        font-family: variables.$clr-h1-font-family,
+        font-weight: variables.$clr-h1-font-weight,
+        font-size: variables.$clr-h1-font-size,
+        line-height: variables.$clr-h1-line-height,
+        letter-spacing: variables.$clr-h1-letter-spacing,
+      )
+    );
+  }
+
+  h2:not([cds-text]) {
+    margin-top: variables.$clr-global-typography-margin-top;
+    margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+    @include mixins.generate-typography-header-token(
+      'HEADLINE-32',
+      (
+        color: variables.$clr-h2-color,
+        font-family: variables.$clr-h2-font-family,
+        font-weight: variables.$clr-h2-font-weight,
+        font-size: variables.$clr-h2-font-size,
+        line-height: variables.$clr-h2-line-height,
+        letter-spacing: variables.$clr-h2-letter-spacing,
+      )
+    );
+  }
+
+  h3:not([cds-text]) {
+    margin-top: variables.$clr-global-typography-margin-top;
+    margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+    @include mixins.generate-typography-header-token(
+      'TITLE-24-EXP',
+      (
+        color: variables.$clr-h3-color,
+        font-family: variables.$clr-h3-font-family,
+        font-weight: variables.$clr-h3-font-weight,
+        font-size: variables.$clr-h3-font-size,
+        line-height: variables.$clr-h3-line-height,
+        letter-spacing: variables.$clr-h3-letter-spacing,
+      )
+    );
+  }
+
+  h4:not([cds-text]) {
+    margin-top: variables.$clr-global-typography-margin-top;
+    margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+    @include mixins.generate-typography-header-token(
+      'SECTION-20-STD',
+      (
+        color: variables.$clr-h4-color,
+        font-family: variables.$clr-h4-font-family,
+        font-weight: variables.$clr-h4-font-weight,
+        font-size: variables.$clr-h4-font-size,
+        line-height: variables.$clr-h4-line-height,
+        letter-spacing: variables.$clr-h4-letter-spacing,
+      )
+    );
+  }
+
+  h5:not([cds-text]) {
+    margin-top: variables.$clr-global-typography-margin-top;
+    margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+    @include mixins.generate-typography-header-token(
+      'SUBSECTION-16-EXP',
+      (
+        color: variables.$clr-h5-color,
+        font-family: variables.$clr-h5-font-family,
+        font-weight: variables.$clr-h5-font-weight,
+        font-size: variables.$clr-h5-font-size,
+        line-height: variables.$clr-h5-line-height,
+        letter-spacing: variables.$clr-h5-letter-spacing,
+      )
+    );
+  }
+
+  h6:not([cds-text]) {
+    margin-top: variables.$clr-global-typography-margin-top;
+    margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+    @include mixins.generate-typography-header-token(
+      'MESSAGE-16-EXP',
+      (
+        color: variables.$clr-h6-color,
+        font-family: variables.$clr-h6-font-family,
+        font-weight: variables.$clr-h6-font-weight,
+        font-size: variables.$clr-h6-font-size,
+        line-height: variables.$clr-h6-line-height,
+        letter-spacing: variables.$clr-h6-letter-spacing,
+      )
+    );
+  }
+
+  //Body.
+  body:not([cds-text]) {
+    margin-top: 0 !important;
+    margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+    @include mixins.generate-typography-body-token(
+      'BODY-14-RG-STD',
+      (
+        color: variables.$clr-p1-color,
+        font-family: variables.$clr-body-font,
+        font-weight: variables.$clr-p1-font-weight,
+        font-size: variables.$clr-p1-font-size,
+        line-height: variables.$clr-p1-line-height,
+        letter-spacing: variables.$clr-p1-letter-spacing,
+      )
+    );
+  }
+
+  //Paragraph
+
+  // angular demos is injecting style selectors such as `p[_ngcontent-jfh-3]`
+  // that are overriding these styles. i'm using specificity below to try and force the issue.
+
+  body {
+    p:not([cds-text]) {
+      margin-top: variables.$clr-global-typography-margin-top;
+      margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'BODY-14-RG-STD',
+        (
+          color: variables.$clr-p1-color,
+          font-weight: variables.$clr-p1-font-weight,
+          font-size: variables.$clr-p1-font-size,
+          line-height: variables.$clr-p1-line-height,
+          letter-spacing: variables.$clr-p1-letter-spacing,
+        )
+      );
+    }
+
+    .p0:not([cds-text]),
+    p.p0:not([cds-text]) {
+      margin-top: variables.$clr-global-typography-margin-top;
+      margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'BODY-14-RG-STD',
+        (
+          color: variables.$clr-p0-color,
+          font-weight: variables.$clr-p0-font-weight,
+          font-size: variables.$clr-p0-font-size,
+          line-height: variables.$clr-p0-line-height,
+          letter-spacing: variables.$clr-p0-letter-spacing,
+        )
+      );
+    }
+
+    .p2:not([cds-text]),
+    p.p2:not([cds-text]) {
+      margin-top: variables.$clr-global-typography-margin-top;
+      margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'SECONDARY-13-MD-EXP',
+        (
+          color: variables.$clr-p2-color,
+          font-weight: variables.$clr-p2-font-weight,
+          font-size: variables.$clr-p2-font-size,
+          line-height: variables.$clr-p2-line-height,
+          letter-spacing: variables.$clr-p2-letter-spacing,
+        )
+      );
+    }
+
+    .p3:not([cds-text]),
+    p.p3:not([cds-text]) {
+      margin-top: variables.$clr-global-typography-margin-top;
+      margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'SECONDARY-13-RG-EXP',
+        (
+          color: variables.$clr-p3-color,
+          font-weight: variables.$clr-p3-font-weight,
+          font-size: variables.$clr-p3-font-size,
+          line-height: variables.$clr-p3-line-height,
+          letter-spacing: variables.$clr-p3-letter-spacing,
+        )
+      );
+    }
+
+    .p4:not([cds-text]),
+    p.p4:not([cds-text]) {
+      margin-top: variables.$clr-global-typography-margin-top;
+      margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'SECONDARY-13-SB-STD',
+        (
+          color: variables.$clr-p4-color,
+          font-weight: variables.$clr-p4-font-weight,
+          font-size: variables.$clr-p4-font-size,
+          line-height: variables.$clr-p4-line-height,
+          letter-spacing: variables.$clr-p4-letter-spacing,
+        )
+      );
+    }
+
+    .p5:not([cds-text]),
+    p.p5:not([cds-text]) {
+      margin-top: variables.$clr-global-typography-margin-top;
+      margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'SECONDARY-13-RG-EXP',
+        (
+          color: variables.$clr-p5-color,
+          font-weight: variables.$clr-p5-font-weight,
+          font-size: variables.$clr-p5-font-size,
+          line-height: variables.$clr-p5-line-height,
+          letter-spacing: variables.$clr-p5-letter-spacing,
+        )
+      );
+    }
+
+    .p6:not([cds-text]),
+    p.p6:not([cds-text]) {
+      margin-top: variables.$clr-global-typography-margin-top;
+      margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'CAPTION-LG-11-STD',
+        (
+          color: variables.$clr-p6-color,
+          font-weight: variables.$clr-p6-font-weight,
+          font-size: variables.$clr-p6-font-size,
+          line-height: variables.$clr-p6-line-height,
+          letter-spacing: variables.$clr-p6-letter-spacing,
+        )
+      );
+    }
+
+    .p7:not([cds-text]),
+    p.p7:not([cds-text]) {
+      margin-top: variables.$clr-global-typography-margin-top;
+      margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'CAPTION-SM-10',
+        (
+          color: variables.$clr-p7-color,
+          font-weight: variables.$clr-p7-font-weight,
+          font-size: variables.$clr-p7-font-size,
+          line-height: variables.$clr-p7-line-height,
+          letter-spacing: variables.$clr-p7-letter-spacing,
+        )
+      );
+    }
+
+    .p8:not([cds-text]),
+    p.p8:not([cds-text]) {
+      margin-top: variables.$clr-global-typography-margin-top;
+      margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'CAPTION-SM-10',
+        (
+          color: variables.$clr-p8-color,
+          font-weight: variables.$clr-p8-font-weight,
+          font-size: variables.$clr-p8-font-size,
+          line-height: variables.$clr-p8-line-height,
+          letter-spacing: variables.$clr-p8-letter-spacing,
+        )
+      );
+    }
+  }
+
+  .text-light {
+    font-weight: variables.$clr-font-weight-light;
+  }
+
+  .text-right {
+    text-align: right !important;
+  }
+
+  .text-center {
+    text-align: center !important;
+  }
+
+  .text-left {
+    text-align: left !important;
+  }
+
+  .text-justify {
+    text-align: justify !important;
+  }
+
+  //HTML
+  html:not([cds-text]) {
+    color: tokens.$cds-alias-typography-color-450;
+    font-family: variables.$clr-font;
+    // font-size should be deleted probably. Actual base comes from CDS reset file
+    font-size: calc((tokens.$cds-global-base / 16) * 100%);
+  }
+}

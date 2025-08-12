@@ -1,0 +1,20 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/variables/variables';
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+
+// Usage: ../layout/nav/_subnav.clarity.scss
+// TODO: would be nice to key text color in subnav off of the bgColor...
+$clr-subnav-bgColor: var(--clr-subnav-bg-color) !default;
+
+// Usage: ../layout/nav/_subnav.clarity.scss
+// Usage: ../layout/nav/_nav.clarity.scss
+$clr-subnav-height: density.$clr-base-row-height-m !default;
+
+// Usage: ../layout/nav/_subnav.clarity.scss
+$clr-nav-shadow: 0 calc(-1 * tokens.$cds-alias-object-border-width-100) 0 var(--clr-nav-box-shadow-color) inset !default;

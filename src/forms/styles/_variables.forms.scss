@@ -1,0 +1,133 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+
+// Structure
+$clr-forms-baseline: var(--clr-forms-baseline);
+$clr-forms-icon-size: var(--clr-forms-icon-size);
+$clr-form-disabled-background-color: var(--clr-form-disabled-background-color) !default;
+
+// Generic
+$clr-forms-label-color: var(--clr-forms-label-color) !default;
+$clr-forms-text-color: var(--clr-forms-text-color) !default;
+$clr-forms-invalid-color: var(--clr-forms-invalid-color) !default;
+$clr-forms-invalid-text-color: var(--clr-forms-invalid-text-color) !default;
+$clr-forms-valid-color: var(--clr-forms-valid-color) !default;
+$clr-forms-valid-text-color: var(--clr-forms-valid-text-color) !default;
+$clr-forms-subtext-color: var(--clr-forms-subtext-color) !default;
+$clr-forms-placeholder-color: var(--clr-forms-placeholder-color) !default;
+// Accessibility fox for vpat-7719; this aligns with core
+$clr-forms-border-color: var(--clr-forms-border-color) !default;
+$clr-forms-focused-color: var(--clr-forms-focused-color) !default;
+$clr-forms-icon-color: #{tokens.$cds-alias-object-interaction-color} !default;
+
+$clr-forms-subtext-disabled-color: var(--clr-forms-subtext-disabled-color) !default;
+$clr-forms-border-disabled-color: var(--clr-forms-border-disabled-color) !default;
+$clr-forms-text-disabled-color: var(--clr-forms-text-disabled-color) !default;
+$clr-forms-label-disabled-color: var(--clr-forms-label-disabled-color) !default;
+$clr-forms-placeholder-disabled-color: var(--clr-forms-placeholder-disabled-color) !default;
+
+// Input
+$clr-forms-input-padding: var(--clr-forms-input-padding);
+$clr-forms-input-wrapper-height: var(--clr-forms-input-wrapper-height);
+
+// Input group
+$clr-forms-input-group-icon-action-size: var(--clr-forms-input-group-icon-action-size);
+$clr-forms-input-group-icon-disabled-color: var(--clr-forms-input-group-icon-disabled-color);
+
+// Typographic - obsolete should be removed ATM
+$clr-forms-label-font-weight: var(--clr-forms-label-font-weight) !default;
+
+// Textarea
+$clr-forms-textarea-background-color: var(--clr-forms-textarea-background-color) !default;
+$clr-forms-textarea-disabled-background: var(--clr-forms-textarea-disabled-background);
+$clr-forms-textarea-border-radius: var(--clr-forms-textarea-border-radius);
+
+// Select
+$clr-forms-select-hover-border-color: var(--clr-forms-select-hover-border-color) !default;
+$clr-forms-select-hover-background: var(--clr-forms-select-hover-background) !default;
+$clr-forms-select-disabled-color: var(--clr-forms-select-disabled-color) !default;
+$clr-forms-select-disabled-border-color: var(--clr-forms-select-disabled-border-color) !default;
+$clr-forms-select-option-color: var(--clr-forms-select-option-color) !default;
+$clr-forms-select-option-background-color: var(--clr-forms-select-option-background-color) !default;
+$clr-forms-select-multiple-background-color: var(--clr-forms-select-multiple-background-color) !default;
+$clr-forms-select-multiple-border-color: var(--clr-forms-select-multiple-border-color) !default;
+$clr-forms-select-multiple-option-color: var(--clr-forms-select-multiple-option-color) !default;
+$clr-forms-select-multiple-selected-option-background-color: var(
+  --clr-forms-select-multiple-selected-option-background-color
+) !default;
+$clr-forms-select-caret-color: var(--clr-forms-select-caret-color) !default;
+$clr-forms-select-caret-hover-color: var(--clr-forms-select-caret-hover-color) !default;
+$clr-forms-select-caret-size: var(--clr-forms-select-caret-size) !default;
+
+// Checkbox
+$clr-forms-checkbox-height: var(--clr-forms-checkbox-height) !default;
+$clr-forms-checkbox-border-radius: var(--clr-forms-checkbox-border-radius) !default;
+
+$clr-forms-checkbox-label-color: $clr-forms-label-color !default;
+$clr-forms-checkbox-background-color: var(--clr-forms-checkbox-background-color) !default;
+$clr-forms-checkbox-indeterminate-border-color: var(--clr-forms-checkbox-indeterminate-border-color) !default;
+$clr-forms-checkbox-mark-color: var(--clr-forms-checkbox-mark-color) !default;
+
+$clr-forms-checkbox-disabled-label-color: $clr-forms-label-disabled-color !default;
+$clr-forms-checkbox-disabled-background-color: $clr-form-disabled-background-color !default;
+$clr-forms-checkbox-disabled-checked-background-color: var(
+  --clr-forms-checkbox-disabled-checked-background-color
+) !default;
+$clr-forms-checkbox-disabled-border-color: var(--clr-forms-checkbox-disabled-border-color) !default;
+$clr-forms-checkbox-disabled-indeterminate-color: var(--clr-forms-checkbox-disabled-indeterminate-color) !default;
+$clr-forms-checkbox-disabled-mark-color: var(--clr-forms-checkbox-disabled-mark-color) !default;
+
+$clr-forms-checkbox-label-height: #{density.$clr-base-row-height-s};
+$clr-forms-checkbox-top: calc(calc(#{$clr-forms-checkbox-label-height} - #{$clr-forms-checkbox-height}) * 0.5) !default;
+
+$clr-forms-checkbox-size: #{density.$clr-base-icon-size-l};
+$clr-forms-checkbox-padding-left: calc(#{$clr-forms-checkbox-height} + #{tokens.$cds-global-space-5});
+$clr-forms-checkbox-mark-size: calc(#{$clr-forms-checkbox-height} * 0.5);
+$clr-forms-checkbox-mark-border-size: calc(#{$clr-forms-checkbox-height} * 0.125);
+
+// Password
+$clr-forms-password-eye-icon-color: var(--clr-forms-password-eye-icon-color) !default;
+$clr-forms-password-disabled-eye-icon-color: var(--clr-forms-password-disabled-eye-icon-color) !default;
+
+// Radio
+$clr-forms-radio-label-color: var(--clr-forms-radio-label-color) !default;
+$clr-forms-radio-label-disabled-color: var(--clr-forms-radio-label-disabled-color);
+$clr-forms-radio-disabled-background-color: var(--clr-forms-radio-disabled-background-color) !default;
+$clr-forms-radio-disabled-mark-color: var(--clr-forms-radio-disabled-mark-color) !default;
+$clr-forms-radio-selected-shadow: var(--clr-forms-radio-selected-shadow) !default;
+$clr-forms-radio-checked-disabled-shadow: var(--clr-forms-radio-checked-disabled-shadow) !default;
+
+// to be deleted
+//$clr-forms-radio-disabled-shadow: inset 0 0 0 variables.$clr_baselineRem_0_5 variables.$clr-color-neutral-200 !default;
+//$clr-forms-radio-focused-shadow: 0 0 mixins.$clr-outline-blur mixins.$clr-outline-spread mixins.$clr-outline-color !default;
+
+$clr-forms-radio-size: $clr-forms-checkbox-size;
+$clr-forms-radio-label-height: $clr-forms-checkbox-label-height;
+$clr-forms-radio-height: $clr-forms-checkbox-height;
+$clr-forms-radio-padding-left: $clr-forms-checkbox-padding-left;
+$clr-forms-radio-top: $clr-forms-checkbox-top;
+
+// Range
+$clr-forms-range-progress-fill-color: var(--clr-forms-range-progress-fill-color) !default;
+$clr-forms-range-track-color: var(--clr-forms-range-track-color) !default;
+$clr-forms-range-border-color: var(--clr-forms-range-track-border-color) !default;
+$clr-forms-range-track-height: var(--clr-forms-range-track-height) !default;
+$clr-forms-range-thumb-height: var(--clr-forms-range-thumb-height) !default;
+$clr-forms-range-border-width: var(--clr-forms-range-track-border-width) !default;
+$clr-forms-range-border-radius: var(--clr-forms-range-track-border-radius) !default;
+
+$clr-forms-range-progress-fill-color-disabled: var(--clr-forms-range-progress-fill-color-disabled) !default;
+$clr-forms-range-track-color-disabled: var(--clr-forms-range-track-color-disabled) !default;
+$clr-forms-range-border-color-disabled: var(--clr-forms-range-track-border-color-disabled) !default;
+
+// Datalist
+$clr-forms-datalist-caret-color: var(--clr-forms-datalist-caret-color);
+$clr-forms-datalist-caret-disabled-color: var(--clr-forms-datalist-caret-disabled-color);
+$clr-forms-datalist-caret-icon-size: var(--clr-forms-datalist-caret-icon-size);

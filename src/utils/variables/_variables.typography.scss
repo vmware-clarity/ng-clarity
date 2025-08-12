@@ -1,0 +1,157 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../utils/variables/variables.density' as density;
+
+// Usage: ../typography/_typography.clarity.scss
+$clr-fontSkipBase64: false !default;
+
+// Temporal internal use only. Should be removed once CDS token based family is available.
+$clr-metropolis-font-family: var(--clr-metropolis-font-family);
+$clr-font: var(--clr-font) !default;
+$clr-body-font: $clr-font;
+$clr-altFont: $clr-font !default; //TODO: TBD. Alternative font for Clarity
+
+$clr-font-weight-light: var(--clr-font-weight-light) !default;
+$clr-font-weight-regular: var(--clr-font-weight-regular) !default;
+$clr-font-weight-semibold: var(--clr-font-weight-semibold) !default;
+$clr-font-weight-bold: var(--clr-font-weight-bold) !default;
+$clr-font-weight-extrabold: var(--clr-font-weight-extrabold) !default;
+
+$clr-global-typography-margin-top: #{density.$clr-base-vertical-offset-2xl} !default;
+$clr-global-typography-margin-bottom: 0 !default;
+
+// Header styles
+//H1 - login_productName
+//'DISPLAY-40'
+$clr-h1-color: var(--clr-h1-color) !default;
+$clr-h1-font-weight: var(--clr-h1-font-weight) !default;
+$clr-h1-font-family: var(--clr-h1-font-family) !default;
+$clr-h1-font-size: var(--clr-h1-font-size) !default;
+$clr-h1-letter-spacing: var(--clr-h1-letter-spacing) !default;
+$clr-h1-line-height: var(--clr-h1-line-height) !default;
+
+//H2 - login_trademark, page_mainHeading
+//'HEADLINE-32'
+$clr-h2-color: var(--clr-h2-color) !default;
+$clr-h2-font-weight: var(--clr-h2-font-weight) !default;
+$clr-h2-font-family: var(--clr-h2-font-family) !default;
+$clr-h2-font-size: var(--clr-h2-font-size) !default;
+$clr-h2-letter-spacing: var(--clr-h2-letter-spacing) !default;
+$clr-h2-line-height: var(--clr-h2-line-height) !default;
+
+//H3 - login_subtitle, modal_header, page_secondaryHeading
+//'TITLE-24-EXP'
+$clr-h3-color: var(--clr-h3-color) !default;
+$clr-h3-font-weight: var(--clr-h3-font-weight) !default;
+$clr-h3-font-family: var(--clr-h3-font-family) !default;
+$clr-h3-font-size: var(--clr-h3-font-size) !default;
+$clr-h3-letter-spacing: var(--clr-h3-letter-spacing) !default;
+$clr-h3-line-height: var(--clr-h3-line-height) !default;
+
+//H4 - card titles, page_tertiaryHeading
+//'SECTION-20-STD'
+$clr-h4-color: var(--clr-h4-color) !default;
+$clr-h4-font-weight: var(--clr-h4-font-weight) !default;
+$clr-h4-font-family: var(--clr-h4-font-family) !default;
+$clr-h4-font-size: var(--clr-h4-font-size) !default;
+$clr-h4-letter-spacing: var(--clr-h4-letter-spacing) !default;
+$clr-h4-line-height: var(--clr-h4-line-height) !default;
+
+//H5 - dgrid placeholder, datagrid_column_toggle_title, form_block_label, nav_title, page_introParagraph, page_sectionHeader
+//'SUBSECTION-16-EXP'
+$clr-h5-color: var(--clr-h5-color) !default;
+$clr-h5-font-weight: var(--clr-h5-font-weight) !default;
+$clr-h5-font-family: var(--clr-h5-font-family) !default;
+$clr-h5-font-size: var(--clr-h5-font-size) !default;
+$clr-h5-letter-spacing: var(--clr-h5-letter-spacing) !default;
+$clr-h5-line-height: var(--clr-h5-line-height) !default;
+
+//H6 - toc_header
+// 'MESSAGE-16-EXP'
+$clr-h6-color: var(--clr-h6-color) !default;
+$clr-h6-font-weight: var(--clr-h6-font-weight) !default;
+$clr-h6-font-family: var(--clr-h6-font-family) !default;
+$clr-h6-font-size: var(--clr-h6-font-size) !default;
+$clr-h6-letter-spacing: var(--clr-h6-letter-spacing) !default;
+$clr-h6-line-height: var(--clr-h6-line-height) !default;
+
+// Non-header text styles
+//P0 - Intro text
+//'BODY-14-RG-STD'
+$clr-p0-color: var(--clr-p0-color) !default;
+$clr-p0-font-weight: var(--clr-p0-font-weight) !default;
+$clr-p0-font-size: var(--clr-p0-font-size) !default;
+$clr-p0-letter-spacing: var(--clr-p0-letter-spacing) !default;
+$clr-p0-line-height: var(--clr-p0-line-height) !default;
+
+//P1 - card text, dropdown_text, page_bodyText, tab_text, toc_text
+//'BODY-14-RG-STD'
+$clr-p1-color: var(--clr-p1-color) !default;
+$clr-p1-font-weight: var(--clr-p1-font-weight) !default;
+$clr-p1-font-size: var(--clr-p1-font-size) !default;
+$clr-p1-letter-spacing: var(--clr-p1-letter-spacing) !default;
+$clr-p1-line-height: var(--clr-p1-line-height) !default;
+
+//P2 - form_label, stackview_header
+//'SECONDARY-13-MD-EXP'
+$clr-p2-color: var(--clr-p2-color) !default;
+$clr-p2-font-weight: var(--clr-p2-font-weight) !default;
+$clr-p2-font-size: var(--clr-p2-font-size) !default;
+$clr-p2-letter-spacing: var(--clr-p2-letter-spacing) !default;
+$clr-p2-line-height: var(--clr-p2-line-height) !default;
+
+//P3 - alerts, form_group_fields, stackview_text, table_text, tooltip_text
+//'SECONDARY-13-RG-EXP'
+$clr-p3-color: var(--clr-p3-color) !default;
+$clr-p3-font-weight: var(--clr-p3-font-weight) !default;
+$clr-p3-font-size: var(--clr-p3-font-size) !default;
+$clr-p3-letter-spacing: var(--clr-p3-letter-spacing) !default;
+$clr-p3-line-height: var(--clr-p3-line-height) !default;
+
+//P4 - small alerts, dropdown_header, vertical_nav_header
+//'SECONDARY-13-SB-STD'
+$clr-p4-color: var(--clr-p4-color) !default;
+$clr-p4-font-weight: var(--clr-p4-font-weight) !default;
+$clr-p4-font-size: var(--clr-p4-font-size) !default;
+$clr-p4-letter-spacing: var(--clr-p4-letter-spacing) !default;
+$clr-p4-line-height: var(--clr-p4-line-height) !default;
+
+//P5
+//'SECONDARY-13-RG-EXP'
+$clr-p5-color: var(--clr-p5-color) !default;
+$clr-p5-font-weight: var(--clr-p5-font-weight) !default;
+$clr-p5-font-size: var(--clr-p5-font-size) !default;
+$clr-p5-letter-spacing: var(--clr-p5-letter-spacing) !default;
+$clr-p5-line-height: var(--clr-p5-line-height) !default;
+
+//P6 - card link btns, form_subtext, table_header
+//'CAPTION-LG-11-STD'
+$clr-p6-color: var(--clr-p6-color) !default;
+$clr-p6-font-weight: var(--clr-p6-font-weight) !default;
+$clr-p6-font-size: var(--clr-p6-font-size) !default;
+$clr-p6-letter-spacing: var(--clr-p6-letter-spacing) !default;
+$clr-p6-line-height: var(--clr-p6-line-height) !default;
+
+//P7 - label_text
+//'CAPTION-SM-10'
+$clr-p7-color: var(--clr-p7-color) !default;
+$clr-p7-font-weight: var(--clr-p7-font-weight) !default;
+$clr-p7-font-size: var(--clr-p7-font-size) !default;
+$clr-p7-letter-spacing: var(--clr-p7-letter-spacing) !default;
+$clr-p7-line-height: var(--clr-p7-line-height) !default;
+
+//P8
+//'CAPTION-SM-10'
+$clr-p8-color: var(--clr-p8-color) !default;
+$clr-p8-font-weight: var(--clr-p8-font-weight) !default;
+$clr-p8-font-size: var(--clr-p8-font-size) !default;
+$clr-p8-letter-spacing: var(--clr-p8-letter-spacing) !default;
+$clr-p8-line-height: var(--clr-p8-line-height) !default;
+
+// Lists
+$clr-list-item-color: var(--clr-list-item-color) !default;

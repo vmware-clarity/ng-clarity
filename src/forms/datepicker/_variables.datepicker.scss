@@ -1,0 +1,75 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/mixins';
+@use '../../button/variables.buttons' as button-variables;
+@use '../../utils/variables/variables.density' as density;
+
+$clr-calendar-background-color: var(--clr-calendar-background-color) !default;
+$clr-calendar-border-color: var(--clr-calendar-border-color) !default;
+$clr-calendar-margin-top: #{tokens.$cds-global-space-4};
+$clr-calendar-vertical-padding: #{density.$clr-base-vertical-offset-xl};
+$clr-calendar-horizontal-padding: #{density.$clr-base-horizontal-offset-xl};
+$clr-calendar-button-gap: #{density.$clr-base-gap-xs};
+
+$clr-calendar-options-width: mixins.baselinePx(150);
+$clr-calendar-action-buttons-height: calc(
+  #{button-variables.$clr-btn-height} + #{density.$clr-base-vertical-offset-xl}
+); // Button Height + Padding set on .datepicker-actions class
+
+$clr-calendar-btn-size: #{density.$clr-base-row-height-m};
+$clr-calendar-btn-color: var(--clr-calendar-btn-color) !default;
+$clr-calendar-btn-hover-focus-color: var(--clr-calendar-btn-hover-focus-color) !default;
+$clr-calendar-btn-active-color-bg: var(--clr-calendar-btn-active-color-bg) !default;
+$clr-calendar-btn-hover-focus-color-text: var(--clr-calendar-btn-hover-focus-color-text) !default;
+$clr-calendar-btn-active-color: var(--clr-calendar-btn-active-color) !default;
+$clr-calendar-btn-picker-trigger-color: var(--clr-calendar-btn-picker-trigger-color) !default;
+$clr-calendar-btn-picker-trigger-width: calc(2 * #{density.$clr-base-layout-space-2xl}) !default;
+
+$clr-calendar-btn-horizontal-padding: #{density.$clr-base-horizontal-offset-s};
+
+$clr-calendar-header-btn-height: #{density.$clr-base-row-height-l};
+$clr-calendar-month-cell-horizontal-padding: #{density.$clr-base-horizontal-offset-l};
+
+$clr-calendar-picker-btn-font-size: var(--clr-calendar-picker-btn-font-size);
+$clr-calendar-picker-btn-font-weight: var(--clr-calendar-picker-btn-font-weight);
+
+$clr-calendar-today-date-cell-color: var(--clr-calendar-today-date-cell-color) !default;
+$clr-calendar-today-date-cell-font-weight: var(--clr-calendar-today-date-cell-font-weight);
+
+$clr-calendar-active-cell-background-color: var(--clr-calendar-active-cell-background-color) !default;
+$clr-calendar-active-focus-cell-background-color: var(--clr-calendar-active-focus-cell-background-color) !default;
+$clr-calendar-active-cell-color: var(--clr-calendar-active-cell-color) !default;
+
+$clr-calendar-weekday-font-size: var(--clr-calendar-weekday-font-size);
+$clr-calendar-weekday-height: density.$clr-base-typography-line-height-16;
+
+$clr-switcher-width: calc($clr-calendar-btn-size * 3);
+
+// (3 navigation buttons + 2 month / year trigger buttons)
+$clr-calendar-width: calc(3 * #{$clr-calendar-btn-size} + (2 * #{$clr-calendar-btn-picker-trigger-width}));
+
+//(7 = 6 date rows + 1 row for calendar switches and month/year pickers) + 1 row for day heading + 2 * 16px padding + 2px for border + 6 * 4px vertical gap for buttons
+$clr-calendar-height: calc(
+  (7 * #{$clr-calendar-header-btn-height}) + $clr-calendar-weekday-height + (2 * #{$clr-calendar-vertical-padding}) +
+    (2 * #{tokens.$cds-alias-object-border-width-100}) + density.$clr-base-gap-s
+);
+
+$clr-monthpicker-min-height: calc(6 * #{$clr-calendar-header-btn-height});
+$clr-month-year-btn-width: calc(
+  0.5 * #{$clr-calendar-width} - #{$clr-calendar-horizontal-padding} - #{tokens.$cds-alias-object-border-width-100}
+); // Calendar width - calendar padding - border
+$clr-calendar-today-date-cell-border-color: var(--clr-calendar-today-date-cell-border-color);
+
+$clr-calendar-option-text-color: var(--clr-calendar-option-text-color) !default;
+$clr-calendar-option-hover-background-color: var(--clr-calendar-btn-hover-color);
+$clr-calendar-options-background-color: var(--clr-vertical-nav-bg-color);
+$clr-calendar-active-option-border-color: var(--clr-calendar-active-option-border-color);
+$clr-calendar-in-range-cell-background-color: var(--clr-calendar-range-cell-background-color);
+$clr-calendar-options-active-text-color: var(--clr-vertical-nav-item-active-color);
+$clr-calendar-options-active-background-color: var(--clr-vertical-nav-selected-bg-color);

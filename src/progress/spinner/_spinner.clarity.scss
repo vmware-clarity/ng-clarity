@@ -1,0 +1,158 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../../image/icons.clarity';
+@use '../../utils/mixins';
+@use 'variables.spinner' as spinner-variables;
+@use '../../button/variables.buttons' as button-variables;
+@use '../../utils/variables/variables.density' as density;
+
+@include meta.load-css('properties.spinner');
+
+@mixin spinner-size-before-after($spinner-size, $stroke-width-size) {
+  &::before,
+  &::after {
+    @include mixins.min-equilateral($spinner-size);
+    border-width: $stroke-width-size;
+  }
+  @include mixins.min-equilateral($spinner-size);
+}
+
+@mixin spinner-color-before-after($fill-color, $tail-color) {
+  &::before {
+    border-color: $tail-color;
+  }
+  &::after {
+    border-color: $fill-color;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+  }
+}
+
+@include mixins.exports('spinner.clarity') {
+  .spinner {
+    // spinner-lg is the default
+    position: relative;
+    display: inline-block;
+    @include mixins.min-equilateral(spinner-variables.$clr-spinner-default-size);
+    @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+    animation: spin 1s linear infinite;
+    margin-right: 0;
+    padding: 0;
+    text-indent: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+
+    &::after {
+      content: '';
+      @include mixins.min-equilateral(spinner-variables.$clr-spinner-default-size);
+      position: absolute;
+      top: 0;
+      left: 0;
+      clip-path: ellipse(100% 53.5% at 0 0);
+      border: spinner-variables.$clr-spinner-default-stroke-width solid spinner-variables.$clr-spinner-fill-color;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+      border-radius: spinner-variables.$clr-spinner-border-radius;
+    }
+
+    &::before {
+      content: '';
+      @include mixins.min-equilateral(spinner-variables.$clr-spinner-default-size);
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: spinner-variables.$clr-spinner-default-stroke-width solid spinner-variables.$clr-spinner-fill-bg-color;
+      border-radius: spinner-variables.$clr-spinner-border-radius;
+    }
+
+    &.spinner-md {
+      @include spinner-size-before-after(
+        spinner-variables.$clr-spinner-medium-size,
+        spinner-variables.$clr-spinner-medium-stroke-width
+      );
+    }
+
+    &.spinner-inline,
+    &.spinner-sm {
+      @include spinner-size-before-after(
+        spinner-variables.$clr-spinner-small-size,
+        spinner-variables.$clr-spinner-small-stroke-width
+      );
+    }
+
+    &.spinner-inline {
+      vertical-align: text-bottom; //To align with text properly
+      margin-right: spinner-variables.$clr-spinner-margin-right;
+    }
+
+    &.spinner-inverse {
+      // TODO: get ux input on direction here
+      @include spinner-color-before-after(
+        spinner-variables.$clr-spinner-fill-inverse-color,
+        spinner-variables.$clr-spinner-fill-inverse-bg-color
+      );
+    }
+
+    &.spinner-neutral-0 {
+      // needed for loading banner alerts in core
+      @include spinner-color-before-after(spinner-variables.$clr-spinner-fill-color, rgba(transparent, 1));
+    }
+
+    &.spinner-check {
+      animation: none;
+      &::after,
+      &::before {
+        border: none;
+      }
+      // Using mask instead of background-image so we can use the CSS properties
+      // and support both light / dark themes.
+      -webkit-mask: icons.generateCheckIcon();
+      mask: icons.generateCheckIcon();
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      background-color: button-variables.$clr-btn-success-checked-color;
+    }
+  }
+
+  //Spinners inside of buttons
+  .btn {
+    .spinner {
+      margin-right: 0;
+
+      @include spinner-size-before-after(
+        density.$clr-base-icon-size-s,
+        spinner-variables.$clr-spinner-inside-button-stroke-width
+      );
+    }
+  }
+
+  .btn-icon:not(.btn-sm) {
+    .spinner {
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+    }
+  }
+
+  // Spinners inside treeview
+  .clr-treenode-spinner-container {
+    .spinner {
+      @include spinner-size-before-after(
+        density.$clr-base-icon-size-s,
+        spinner-variables.$clr-spinner-inside-treeview-stroke-width
+      );
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

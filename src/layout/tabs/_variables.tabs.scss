@@ -1,0 +1,17 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+// Usage: ../layout/nav/_nav.clarity.scss
+$clr-nav-box-shadow-color: var(--clr-nav-box-shadow-color) !default;
+$clr-nav-active-bg-color: var(--clr-nav-active-bg-color) !default;
+$clr-nav-selected-hover-background-color: var(--clr-nav-selected-hover-background-color) !default;
+$clr-nav-selected-active-background-color: var(--clr-nav-selected-active-background-color) !default;
+
+$clr-nav-link-color: var(--clr-nav-link-color) !default;
+$clr-nav-link-active-color: var(--clr-nav-link-active-color) !default;
+
+$clr-nav-selected-bg-color: var(--clr-nav-selected-bg-color) !default;
+$clr-nav-hover-bg-color: var(--clr-nav-hover-bg-color) !default;

@@ -1,0 +1,205 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../../button/variables.toggles' as toggle-variables;
+@use '../../utils/variables/variables.density' as density;
+@use 'variables.forms' as forms-variables;
+@use '../../utils/mixins';
+@use 'mixins.forms' as forms-mixins;
+@use '@cds/core/tokens/tokens.scss';
+
+@mixin clr-toggle-transition-styles() {
+  transition-duration: toggle-variables.$clr-toggle-transition-time;
+  transition-timing-function: toggle-variables.$clr-toggle-transition-animation;
+}
+
+@include meta.load-css('../../button/properties.toggles');
+
+@include mixins.exports('toggles.clarity') {
+  $mark-half-size: calc(#{forms-variables.$clr-forms-checkbox-mark-size} * 0.5);
+
+  //Remove the default checkbox appearance
+  %custom-checkbox {
+    @include mixins.clr-appearance-normal();
+  }
+
+  .clr-toggle-wrapper {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    margin-right: density.$clr-base-gap-m;
+    min-height: toggle-variables.$clr-toggle-height;
+    justify-content: start;
+    padding: density.$clr-base-vertical-offset-multi-row-inline-s 0;
+
+    @include forms-mixins.checkbox-radio-toggle-control-group-gap();
+
+    label {
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+      flex: 1 1 auto;
+    }
+
+    // Toggle Switch background
+    input[type='checkbox'] {
+      position: relative;
+      @extend %custom-checkbox;
+      height: toggle-variables.$clr-toggle-switch-base-height;
+      width: toggle-variables.$clr-toggle-switch-base-width;
+      flex: 0 0 auto;
+      border-radius: density.$clr-base-border-radius-xl; // Style outline radius properly
+      background-color: toggle-variables.$clr-toggle-bg-color-off;
+      @include clr-toggle-transition-styles;
+      transition-property: background-color;
+
+      &:not(:disabled) {
+        cursor: pointer;
+      }
+
+      // Toggle Switch dot
+      &::before {
+        position: absolute;
+        display: inline-block;
+        content: '';
+        border-radius: tokens.$cds-alias-object-border-radius-300;
+        border: tokens.$cds-alias-object-border-width-400 solid toggle-variables.$clr-toggle-handle-border-color;
+        background-color: toggle-variables.$clr-toggle-handle-bg-color;
+        left: 0;
+
+        @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
+        @include clr-toggle-transition-styles;
+        transition-property: left, border-width, border-color;
+      }
+
+      // Toggle Switch check
+      &::after {
+        position: absolute;
+        content: '';
+        visibility: hidden;
+        @include clr-toggle-transition-styles;
+        left: #{tokens.$cds-global-space-3};
+        transition-property: visibility, left, border-color;
+        height: calc(#{$mark-half-size} + #{tokens.$cds-global-space-1});
+        width: forms-variables.$clr-forms-checkbox-mark-size;
+        border-left: forms-variables.$clr-forms-checkbox-mark-border-size solid
+          toggle-variables.$clr-toggle-bg-color-off;
+        border-bottom: forms-variables.$clr-forms-checkbox-mark-border-size solid
+          toggle-variables.$clr-toggle-bg-color-off;
+        transform: translate(0, $mark-half-size) rotate(-45deg);
+      }
+
+      &:focus {
+        @include mixins.include-outline-style-form-fields(mixins.baselinePx(3));
+      }
+
+      &:checked {
+        background-color: toggle-variables.$clr-toggle-bg-color-on;
+
+        &::before {
+          border-width: tokens.$cds-alias-object-border-width-200;
+          border-color: toggle-variables.$clr-toggle-handle-border-color-on;
+          left: calc(toggle-variables.$clr-toggle-switch-base-width - toggle-variables.$clr-toggle-dot-diameter);
+        }
+
+        &::after {
+          visibility: visible;
+          left: mixins.baselinePx(20);
+          border-color: toggle-variables.$clr-toggle-bg-color-on;
+        }
+      }
+
+      &:disabled {
+        // toggle disabled/off bg color
+        background-color: toggle-variables.$clr-toggle-disabled-off-border-color;
+        // toggle disabled/off border color (excluding the handle circle)
+        border-color: toggle-variables.$clr-toggle-disabled-off-border-color;
+
+        + label {
+          cursor: not-allowed;
+        }
+
+        &:not(:checked) {
+          left: 0;
+        }
+
+        &::before {
+          // toggle handle color for disabled/off and inner part of handle disabled/on
+          background-color: toggle-variables.$clr-toggle-disabled-off-bg-color;
+          border-color: toggle-variables.$clr-toggle-disabled-off-handle-border-color;
+        }
+
+        &::after {
+          border-color: toggle-variables.$clr-toggle-disabled-off-border-color;
+        }
+      }
+
+      &:checked:disabled {
+        // toggle disabled/on border color
+        border-color: toggle-variables.$clr-toggle-disabled-on-border-color;
+        // toggle disabled/on bg color
+        background-color: toggle-variables.$clr-toggle-disabled-on-bg-color;
+
+        &::before {
+          // toggle disabled on handle circle border color
+          border-color: toggle-variables.$clr-toggle-disabled-on-handle-border-color;
+        }
+
+        &::after {
+          // toggle disabled on handle circle border color
+          border-color: toggle-variables.$clr-toggle-disabled-on-border-color;
+        }
+      }
+    }
+
+    &.disabled {
+      label {
+        cursor: not-allowed;
+      }
+
+      input[type='checkbox']:checked::before {
+        border-color: toggle-variables.$clr-toggle-disabled-on-border-color;
+        background-color: toggle-variables.$clr-toggle-disabled-on-bg-color;
+      }
+    }
+
+    &.right-label {
+      flex-flow: row-reverse;
+    }
+
+    .clr-control-label {
+      display: block;
+      @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+      padding: 0 0 0 density.$clr-base-horizontal-offset-m;
+      margin-top: 0;
+    }
+  }
+
+  // These are the inline styles overrides
+  .clr-control-inline .clr-toggle-wrapper .clr-control-label {
+    display: inline-block;
+    margin-right: 0;
+  }
+
+  .clr-form-compact .clr-toggle-wrapper {
+    margin-top: 0;
+  }
+
+  // This sets the option to move the toggles to the right of the label
+  .clr-toggle-right {
+    .clr-toggle-wrapper {
+      flex-flow: row-reverse;
+    }
+
+    label,
+    .clr-control-label {
+      display: inline-block;
+      padding-left: 0;
+      padding-right: density.$clr-base-horizontal-offset-m;
+    }
+  }
+}

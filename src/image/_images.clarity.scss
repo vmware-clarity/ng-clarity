@@ -1,0 +1,43 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../emphasis/alert/variables.alert' as alert-variables;
+@use '../utils/mixins';
+@use '../utils/variables/variables.color';
+@use 'icons.clarity';
+
+@mixin icon-background-styles() {
+  background-repeat: no-repeat;
+  background-size: contain;
+  vertical-align: middle;
+}
+
+@include mixins.exports('images.clarity') {
+  %icon-styles {
+    display: inline-block;
+    @include mixins.equilateral(alert-variables.$clr-icon-dimension-sm);
+    padding: 0;
+    @include icon-background-styles();
+  }
+
+  .alert-icon,
+  .clr-icon {
+    @extend %icon-styles;
+
+    &.clr-icon-warning,
+    &.icon-warning {
+      background-image: icons.generateWarningIcon();
+    }
+
+    &.clr-icon-warning-white {
+      background-image: icons.generateWarningIcon(variables.$clr-color-neutral-0);
+    }
+
+    &.clr-vmw-logo {
+      background-image: icons.generateVMWLogo();
+    }
+  }
+}

@@ -1,0 +1,50 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+// Usage: ./_vertical-nav.clarity.scss
+/* Vertical Nav */
+$clr-vertical-nav-divider-color: var(--clr-vertical-nav-divider-color) !default;
+
+// Vertical Nav - Icons
+$clr-vertical-nav-icon-size: var(--clr-vertical-nav-icon-size) !default;
+$clr-vertical-nav-icon-right-margin: var(--clr-vertical-nav-icon-right-margin) !default;
+$clr-vertical-nav-icon-active-color: var(--clr-vertical-nav-icon-active-color) !default;
+$clr-vertical-nav-collapsed-caret-size: var(--clr-vertical-nav-collapsed-caret-size) !default;
+
+// Vertical Nav - Align
+$clr-vertical-nav-item-color: var(--clr-vertical-nav-item-color) !default;
+$clr-vertical-nav-item-active-color: var(--clr-vertical-nav-item-active-color) !default;
+$clr-vertical-nav-bg-color: var(--clr-vertical-nav-bg-color) !default;
+$clr-vertical-nav-item-padding: var(--clr-vertical-nav-item-padding) !default;
+$clr-vertical-nav-item-child-padding: var(--clr-vertical-nav-item-child-padding) !default;
+$clr-vertical-nav-item-height: var(--clr-vertical-nav-item-height) !default;
+$clr-vertical-nav-min-width: var(--clr-vertical-nav-min-width) !default;
+$clr-vertical-nav-item-active-font-weight: var(--clr-vertical-nav-item-active-font-weight) !default;
+
+$clr-vertical-nav-selected-bg-color: var(--clr-vertical-nav-selected-bg-color) !default;
+$clr-vertical-nav-selected-hover-bg-color: var(
+  --clr-vertical-nav-selected-hover-bg-color
+); // var(--clr-color-neutral-0);
+$clr-vertical-nav-selected-active-bg-color: var(
+  --clr-vertical-nav-selected-active-bg-color
+); // var(--clr-color-neutral-0);
+$clr-vertical-nav-active-bg-color: var(--clr-vertical-nav-active-bg-color) !default;
+$clr-vertical-nav-active-color: var(--clr-vertical-nav-active-color) !default;
+$clr-vertical-nav-item-top-level-font-weight: var(--clr-vertical-nav-item-top-level-font-weight) !default;
+$clr-vertical-nav-hover-bg-color: var(--clr-vertical-nav-hover-bg-color) !default;
+
+// Vertical Nav - Trigger
+$clr-vertical-nav-toggle-icon-color: var(--clr-vertical-nav-toggle-icon-color) !default;
+$clr-vertical-nav-toggle-icon-hover-color: var(--clr-vertical-nav-toggle-icon-hover-color) !default;
+$clr-vertical-nav-toggle-icon-active-color: var(--clr-vertical-nav-toggle-icon-active-color) !default;
+$clr-vertical-nav-toggle-icon-disabled-color: var(--clr-vertical-nav-toggle-icon-disabled-color) !default;
+$clr-vertical-nav-toggle-button-size: var(--clr-vertical-nav-toggle-button-size) !default;
+$clr-vertical-nav-trigger-divider-border-color: var(--clr-vertical-nav-trigger-divider-border-color) !default;
+$clr-vertical-nav-trigger-divider-border-width: var(--clr-vertical-nav-trigger-divider-border-width) !default;
+
+// Vertical Nav - Header
+$clr-vertical-nav-header-font-weight: var(--clr-vertical-nav-header-font-weight) !default;
+$clr-vertical-nav-header-padding: var(--clr-vertical-nav-header-padding) !default;

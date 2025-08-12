@@ -1,0 +1,248 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use 'sass:meta';
+@use '@cds/core/tokens/tokens.scss';
+@use '../../button/variables.buttons' as button-variables;
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.tooltip' as tooltip-variables;
+@use '../../utils/variables/variables.density' as density;
+
+@mixin common-tooltip-styles {
+  margin: 0; //Resetting any margin that might be applied to span/div elements inside forms
+  width: mixins.baselinePx(240);
+  border-radius: tooltip-variables.$clr-tooltip-border-radius;
+  padding: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-l;
+
+  color: tooltip-variables.$clr-tooltip-color;
+  background-color: tooltip-variables.$clr-tooltip-background-color;
+
+  @include mixins.generate-typography-token(
+    'BODY-14-RG-CPT',
+    (
+      font-weight: tooltip-variables.$clr-tooltip-font-weight,
+    )
+  );
+}
+
+@mixin vertical-tooltip-generator($dirA: top, $dirB: right) {
+  $oppA: map.get(mixins.$opp-directions, $dirA);
+  $oppB: map.get(mixins.$opp-directions, $dirB);
+
+  @include common-tooltip-styles;
+
+  position: absolute;
+  #{$dirA}: auto;
+  #{$oppA}: 100%;
+  #{$oppB}: 50%;
+  #{$dirB}: auto;
+
+  border-#{$oppA}-#{$oppB}-radius: 0;
+  margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
+
+  &::before {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    #{$oppB}: 0;
+    #{$dirA}: auto;
+    #{$dirB}: auto;
+    #{$oppA}: calc(-1 * #{tooltip-variables.$clr-tooltip-arrow-height});
+
+    border-#{$oppB}: tooltip-variables.$clr-tooltip-arrow-height solid tooltip-variables.$clr-tooltip-background-color;
+    border-#{$dirA}: tooltip-variables.$clr-tooltip-arrow-width solid tooltip-variables.$clr-tooltip-background-color;
+    border-#{$oppA}: tooltip-variables.$clr-tooltip-arrow-width solid transparent;
+    border-#{$dirB}: tooltip-variables.$clr-tooltip-arrow-width solid transparent;
+  }
+}
+
+@mixin horizontal-tooltip-generator($dirA: right) {
+  $oppA: map.get(mixins.$opp-directions, $dirA);
+
+  position: absolute;
+  #{$dirA}: auto;
+  #{$oppA}: 100%;
+  top: 50%;
+  bottom: auto;
+
+  @include common-tooltip-styles;
+
+  border-top-#{$oppA}-radius: 0;
+  margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
+
+  &::before {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    bottom: auto;
+    #{$dirA}: auto;
+    #{$oppA}: calc(-1 * #{tooltip-variables.$clr-tooltip-arrow-width});
+
+    border-top: tooltip-variables.$clr-tooltip-arrow-height solid tooltip-variables.$clr-tooltip-background-color;
+    border-#{$dirA}: tooltip-variables.$clr-tooltip-arrow-width solid tooltip-variables.$clr-tooltip-background-color;
+    border-bottom: tooltip-variables.$clr-tooltip-arrow-height solid transparent;
+    border-#{$oppA}: tooltip-variables.$clr-tooltip-arrow-width solid transparent;
+  }
+}
+
+@include meta.load-css('properties.tooltip');
+
+@include mixins.exports('tooltips.clarity') {
+  .tooltip {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    overflow: visible;
+
+    & > .tooltip-content {
+      //Both visibility and opacity are needed. Opacity handles the transition.
+      //And visibility makes sure that the user cant select the text in the tooltip-content
+      //when hidden
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s linear;
+      white-space: normal;
+      z-index: map.get(variables.$clr-layers, tooltips);
+
+      // This allows a user to hover their mouse over the tooltip to stop it from hiding
+      &::after {
+        position: absolute;
+        top: -20px;
+        left: -20px;
+        right: -20px;
+        bottom: -20px;
+        content: '';
+        // make sure this is underneath the tooltip so that user can use their mouse to select text
+        z-index: -1;
+      }
+
+      // color overrides for components and HTML elements
+      li {
+        color: inherit;
+      }
+    }
+
+    &:hover > .tooltip-content,
+    &:focus > .tooltip-content {
+      visibility: visible;
+      opacity: 1;
+
+      //Have to do this for IE11. Cant use a :not selector
+      &:empty {
+        visibility: hidden;
+        opacity: 0;
+      }
+    }
+
+    &:focus {
+      outline: 0;
+    }
+
+    &:focus > :first-child {
+      outline-offset: tokens.$cds-alias-object-interaction-outline-offset;
+      outline: tokens.$cds-alias-object-interaction-outline;
+    }
+
+    //Tooltip directions
+    //Default Tooltip - Top Right
+    & > .tooltip-content,
+    &.tooltip-top-right > .tooltip-content,
+    .tooltip-content.tooltip-top-right {
+      @include vertical-tooltip-generator(top, right);
+    }
+
+    &.tooltip-top-left > .tooltip-content,
+    .tooltip-content.tooltip-top-left {
+      @include vertical-tooltip-generator(top, left);
+    }
+
+    &.tooltip-bottom-right > .tooltip-content,
+    .tooltip-content.tooltip-bottom-right {
+      @include vertical-tooltip-generator(bottom, right);
+    }
+
+    &.tooltip-bottom-left > .tooltip-content,
+    .tooltip-content.tooltip-bottom-left {
+      @include vertical-tooltip-generator(bottom, left);
+    }
+
+    &.tooltip-right > .tooltip-content,
+    .tooltip-content.tooltip-right {
+      @include horizontal-tooltip-generator(right);
+    }
+
+    &.tooltip-left > .tooltip-content,
+    .tooltip-content.tooltip-left {
+      @include horizontal-tooltip-generator(left);
+    }
+
+    //Tooltips Size
+    &.tooltip-xs > .tooltip-content,
+    .tooltip-content.tooltip-xs {
+      width: tokens.$cds-global-space-14;
+    }
+
+    &.tooltip-sm > .tooltip-content,
+    .tooltip-content.tooltip-sm {
+      width: mixins.baselinePx(120);
+    }
+
+    &.tooltip-md > .tooltip-content,
+    .tooltip-content.tooltip-md {
+      width: mixins.baselinePx(240);
+    }
+
+    &.tooltip-lg > .tooltip-content,
+    .tooltip-content.tooltip-lg {
+      width: mixins.baselinePx(360);
+    }
+  }
+
+  //Override tooltip margins values for different components.
+
+  //Buttons
+  .tooltip {
+    //Default is top right
+    & > .btn + .tooltip-content,
+    &.tooltip-top-right > .btn + .tooltip-content,
+    &.tooltip-top-left > .btn + .tooltip-content {
+      margin-bottom: calc(tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-vertical-margin);
+    }
+
+    &.tooltip-bottom-right > .btn + .tooltip-content,
+    &.tooltip-bottom-left > .btn + .tooltip-content {
+      margin-top: calc(tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-vertical-margin);
+    }
+
+    &.tooltip-right > .btn + .tooltip-content {
+      margin-left: calc(tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-horizontal-margin);
+    }
+  }
+
+  //Icons
+  .tooltip {
+    & > .clr-icon {
+      margin-right: 0;
+    }
+
+    & {
+      > svg {
+        pointer-events: none;
+      }
+    }
+  }
+
+  //Angular component with current structure focuses on the tooltip trigger
+  //whereas the static component host is focused on as its normally a link with an icon in it.
+  //Tooltip is due for a refactor but as of now this fix solves the immediate accessibility bug that
+  //the tooltip component faces.
+  .tooltip-trigger:focus + .tooltip-content {
+    visibility: visible;
+  }
+}
