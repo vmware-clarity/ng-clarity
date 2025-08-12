@@ -1,0 +1,32 @@
+import { AnimationEvent } from '@angular/animations';
+import { AfterContentInit, EventEmitter, OnDestroy } from '@angular/core';
+import { IfExpandService } from '../../utils/conditional/if-expanded.service';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
+import { VerticalNavGroupService } from './providers/vertical-nav-group.service';
+import { VerticalNavService } from './providers/vertical-nav.service';
+import * as i0 from "@angular/core";
+export declare class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
+    private _itemExpand;
+    private _navGroupRegistrationService;
+    private _navService;
+    commonStrings: ClrCommonStringsService;
+    expandedChange: EventEmitter<boolean>;
+    private wasExpanded;
+    private _subscriptions;
+    private _expandAnimationState;
+    constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService);
+    get expanded(): boolean;
+    set expanded(value: boolean);
+    set userExpandedInput(value: boolean | string);
+    get expandAnimationState(): string;
+    set expandAnimationState(value: string);
+    ngAfterContentInit(): void;
+    ngOnDestroy(): void;
+    expandGroup(): void;
+    collapseGroup(): void;
+    expandAnimationDone($event: AnimationEvent): void;
+    toggleExpand(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavGroup, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroup, "clr-vertical-nav-group", never, { "userExpandedInput": "clrVerticalNavGroupExpanded"; }, { "expandedChange": "clrVerticalNavGroupExpandedChange"; }, never, ["[clrVerticalNavLink]", "[clrVerticalNavIcon]", "*", "[clrIfExpanded], clr-vertical-nav-group-children"], false, never>;
+}

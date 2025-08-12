@@ -1,0 +1,35 @@
+import { ElementRef, Injector, OnInit, Renderer2 } from '@angular/core';
+import { ClrStandaloneCdkTrapFocus } from '../../utils/focus/focus-trap';
+import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
+import { ResponsiveNavCodes } from './responsive-nav-codes';
+import * as i0 from "@angular/core";
+import * as i1 from "../../utils/focus/focus-trap/standalone-cdk-trap-focus.directive";
+export declare class ClrNavLevel implements OnInit {
+    private cdkTrapFocus;
+    private responsiveNavService;
+    private elementRef;
+    private renderer;
+    _level: number;
+    closeButtonAriaLabel: string;
+    private _isOpen;
+    private _document;
+    private _subscription;
+    constructor(platformId: any, cdkTrapFocus: ClrStandaloneCdkTrapFocus, responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef<HTMLElement>, renderer: Renderer2, injector: Injector);
+    get level(): number;
+    get responsiveNavCodes(): ResponsiveNavCodes;
+    get isOpen(): boolean;
+    ngOnInit(): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    onResize(event: Event): void;
+    onMouseClick(target: any): void;
+    addNavClass(level: number): void;
+    open(): void;
+    close(): void;
+    protected hideNavigation(): void;
+    protected showNavigation(): void;
+    protected hideCloseButton(): void;
+    protected showCloseButton(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "_level": "clr-nav-level"; "closeButtonAriaLabel": "closeAriaLabel"; }, {}, never, never, false, [{ directive: typeof i1.ClrStandaloneCdkTrapFocus; inputs: {}; outputs: {}; }]>;
+}

@@ -1,0 +1,32 @@
+import { Observable } from 'rxjs';
+import { TreeNodeModel } from './models/tree-node.model';
+import * as i0 from "@angular/core";
+export declare class TreeFocusManagerService<T> {
+    rootNodeModels: TreeNodeModel<T>[];
+    private focusedNodeId;
+    private _focusRequest;
+    private _focusChange;
+    get focusRequest(): Observable<string>;
+    get focusChange(): Observable<string>;
+    focusNode(model: TreeNodeModel<T>): void;
+    broadcastFocusedNode(nodeId: string): void;
+    focusParent(model: TreeNodeModel<T>): void;
+    focusFirstVisibleNode(): void;
+    focusLastVisibleNode(): void;
+    focusNodeAbove(model: TreeNodeModel<T>): void;
+    focusNodeBelow(model: TreeNodeModel<T>): void;
+    focusNodeStartsWith(searchString: string, model: TreeNodeModel<T>): void;
+    private findSiblings;
+    private findLastVisibleInNode;
+    private findNextFocusable;
+    private findLastVisibleInTree;
+    private findNodeAbove;
+    private findNodeBelow;
+    private findDescendentNodeStartsWith;
+    private findSiblingNodeStartsWith;
+    private findRootNodeStartsWith;
+    private findNodeStartsWith;
+    private findClosestNodeStartsWith;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TreeFocusManagerService<any>, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<TreeFocusManagerService<any>>;
+}
