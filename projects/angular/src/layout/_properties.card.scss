@@ -5,8 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../utils/mixins';
-@use '../utils/variables/variables';
-@use './variables.card' as card-variables;
 @use '../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
