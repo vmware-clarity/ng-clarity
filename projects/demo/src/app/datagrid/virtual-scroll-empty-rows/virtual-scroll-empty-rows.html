@@ -35,6 +35,13 @@
     </clr-toggle-wrapper>
   </clr-toggle-container>
   <clr-toggle-container>
+    <label>Show Virtual Scroller</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle name="showVirtualScroller" [(ngModel)]="showVirtualScroller" />
+      <label>{{showVirtualScroller ? 'ON' : 'OFF' }}</label>
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
+  <clr-toggle-container>
     <label>Persist Items</label>
     <clr-toggle-wrapper>
       <input type="checkbox" clrToggle name="presistItems" [(ngModel)]="persistItems" />
@@ -62,6 +69,7 @@
   <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column>
 
   <ng-template
+    *ngIf="showVirtualScroller"
     clrVirtualScroll
     let-user
     let-index="index"

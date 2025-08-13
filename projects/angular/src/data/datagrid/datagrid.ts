@@ -156,6 +156,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * Subscriptions to all the services and queries changes
    */
   private _subscriptions: Subscription[] = [];
+  private _virtualScrollSubscriptions: Subscription[] = [];
 
   constructor(
     private organizer: DatagridRenderOrganizer,
@@ -259,6 +260,48 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     }
   }
 
+  ngAfterViewChecked() {
+    if (this.virtualScroll && this._virtualScrollSubscriptions.length === 0) {
+      // the virtual scroll will handle the scrolling
+      this.keyNavigation.preventScrollOnFocus = !!this.virtualScroll;
+      this._virtualScrollSubscriptions.push(
+        fromEvent(this.contentWrapper.nativeElement, 'scroll').subscribe(() => {
+          if (this.datagridHeader.nativeElement.scrollLeft !== this.contentWrapper.nativeElement.scrollLeft) {
+            this.datagridHeader.nativeElement.scrollLeft = this.contentWrapper.nativeElement.scrollLeft;
+          }
+        }),
+        fromEvent(this.datagridHeader.nativeElement, 'scroll').subscribe(() => {
+          if (this.datagridHeader.nativeElement.scrollLeft !== this.contentWrapper.nativeElement.scrollLeft) {
+            this.contentWrapper.nativeElement.scrollLeft = this.datagridHeader.nativeElement.scrollLeft;
+          }
+        }),
+        this.keyNavigation.nextCellCoordsEmitter.subscribe(cellCoords => {
+          if (!cellCoords?.ariaRowIndex) {
+            this.activeCellCoords = null;
+            return;
+          }
+
+          if (cellCoords.ariaRowIndex === this.activeCellCoords?.ariaRowIndex) {
+            this.activeCellCoords = cellCoords;
+            return;
+          }
+
+          this.activeCellCoords = cellCoords;
+
+          // aria-rowindex is always + 1. Check virtual scroller updateAriaRowIndexes method.
+          const rowIndex = Number(cellCoords.ariaRowIndex) - 1;
+
+          this.virtualScroll.scrollToIndex(rowIndex);
+        })
+      );
+    } else if (!this.virtualScroll && this._virtualScrollSubscriptions.length > 0) {
+      // the virtual scroll will handle the scrolling
+      this.keyNavigation.preventScrollOnFocus = !!this.virtualScroll;
+      this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+      this._virtualScrollSubscriptions = [];
+    }
+  }
+
   ngAfterContentInit() {
     if (!this.items.smart) {
       this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
@@ -323,9 +366,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   ngAfterViewInit() {
     this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
-
-    // the virtual scroll will handle the scrolling
-    this.keyNavigation.preventScrollOnFocus = !!this.virtualScroll;
 
     this.updateDetailState();
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
@@ -414,35 +454,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         })
       );
     });
-    if (this.virtualScroll) {
-      this._subscriptions.push(
-        fromEvent(this.contentWrapper.nativeElement, 'scroll').subscribe(() => {
-          this.datagridHeader.nativeElement.scrollLeft = this.contentWrapper.nativeElement.scrollLeft;
-        }),
-        this.keyNavigation.nextCellCoordsEmitter.subscribe(cellCoords => {
-          if (!cellCoords?.ariaRowIndex) {
-            this.activeCellCoords = null;
-            return;
-          }
-
-          if (cellCoords.ariaRowIndex === this.activeCellCoords?.ariaRowIndex) {
-            this.activeCellCoords = cellCoords;
-            return;
-          }
-
-          this.activeCellCoords = cellCoords;
-
-          // aria-rowindex is always + 1. Check virtual scroller updateAriaRowIndexes method.
-          const rowIndex = Number(cellCoords.ariaRowIndex) - 1;
-
-          this.virtualScroll.scrollToIndex(rowIndex);
-        })
-      );
-    }
   }
 
   ngOnDestroy() {
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
   toggleAllSelected($event: any) {
