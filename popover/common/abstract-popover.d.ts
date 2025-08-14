@@ -1,0 +1,35 @@
+import { AfterViewChecked, ChangeDetectorRef, ElementRef, Injector, NgZone, OnDestroy, Renderer2 } from '@angular/core';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { Point } from './popover';
+import { PopoverOptions } from './popover-options.interface';
+import * as i0 from "@angular/core";
+export declare abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
+    protected parentHost: ElementRef<HTMLElement>;
+    closeOnOutsideClick: boolean;
+    protected el: ElementRef<HTMLElement>;
+    protected toggleService: ClrPopoverToggleService;
+    protected renderer: Renderer2;
+    protected ngZone: NgZone;
+    protected ref: ChangeDetectorRef;
+    protected anchorElem: any;
+    protected anchorPoint: Point;
+    protected popoverPoint: Point;
+    protected popoverOptions: PopoverOptions;
+    protected ignoredElement: any;
+    private updateAnchor;
+    private popoverInstance;
+    private subscription;
+    private documentESCListener;
+    protected constructor(injector: Injector, parentHost: ElementRef<HTMLElement>);
+    ngAfterViewChecked(): void;
+    ngOnDestroy(): void;
+    protected anchor(): void;
+    protected release(): void;
+    private attachESCListener;
+    private detachESCListener;
+    private closeOnOutsideClickCallback;
+    private attachOutsideClickListener;
+    private detachOutsideClickListener;
+    static ɵfac: i0.ɵɵFactoryDeclaration<AbstractPopover, [null, { skipSelf: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<AbstractPopover, never, never, {}, {}, never, never, false, never>;
+}
