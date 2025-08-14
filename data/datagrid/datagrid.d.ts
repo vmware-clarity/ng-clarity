@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewChecked, AfterViewInit, ElementRef, EventEmitter, NgZone, OnDestroy, QueryList, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ElementRef, EventEmitter, NgZone, OnDestroy, QueryList, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridItems } from './datagrid-items';
@@ -18,7 +18,7 @@ import { StateProvider } from './providers/state.provider';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { CellCoordinates, KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 import * as i0 from "@angular/core";
-export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewChecked, AfterViewInit, OnDestroy {
+export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
     private organizer;
     items: Items<T>;
     expandableRows: ExpandableRowsCount;
@@ -53,7 +53,7 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
     /**
      * Expose virtual scroll directive for applications to access its public methods
      */
-    virtualScroll: ClrDatagridVirtualScrollDirective<any>;
+    _virtualScroll: QueryList<ClrDatagridVirtualScrollDirective<any>>;
     /**
      * We grab the smart iterator from projected content
      */
@@ -119,7 +119,7 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
      */
     get allSelected(): boolean;
     set allSelected(value: boolean);
-    ngAfterViewChecked(): void;
+    get virtualScroll(): ClrDatagridVirtualScrollDirective<any>;
     ngAfterContentInit(): void;
     /**
      * Our setup happens in the view of some of our components, so we wait for it to be done before starting
@@ -137,6 +137,7 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
      * Public method to re-trigger the computation of displayed items manually
      */
     dataChanged(): void;
+    private setupVirtualScroll;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagrid<any>, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": "clrLoadingMoreItems"; "clrDgSingleSelectionAriaLabel": "clrDgSingleSelectionAriaLabel"; "clrDgSingleActionableAriaLabel": "clrDgSingleActionableAriaLabel"; "clrDetailExpandableAriaLabel": "clrDetailExpandableAriaLabel"; "clrDgDisablePageFocus": "clrDgDisablePageFocus"; "customSelectAllEnabled": "clrDgCustomSelectAllEnabled"; "loading": "clrDgLoading"; "selected": "clrDgSelected"; "singleSelected": "clrDgSingleSelected"; "clrDgPreserveSelection": "clrDgPreserveSelection"; "rowSelectionMode": "clrDgRowSelection"; "trackBy": "clrDgItemsTrackBy"; }, { "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["virtualScroll", "iterator", "placeholder", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": "clrLoadingMoreItems"; "clrDgSingleSelectionAriaLabel": "clrDgSingleSelectionAriaLabel"; "clrDgSingleActionableAriaLabel": "clrDgSingleActionableAriaLabel"; "clrDetailExpandableAriaLabel": "clrDetailExpandableAriaLabel"; "clrDgDisablePageFocus": "clrDgDisablePageFocus"; "customSelectAllEnabled": "clrDgCustomSelectAllEnabled"; "loading": "clrDgLoading"; "selected": "clrDgSelected"; "singleSelected": "clrDgSingleSelected"; "clrDgPreserveSelection": "clrDgPreserveSelection"; "rowSelectionMode": "clrDgRowSelection"; "trackBy": "clrDgItemsTrackBy"; }, { "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
 }
