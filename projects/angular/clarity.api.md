@@ -1370,8 +1370,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     //
     // (undocumented)
     SELECTION_TYPE: typeof SelectionType;
-    // (undocumented)
-    setupVirtualScroll(): void;
     set singleSelected(value: T);
     // (undocumented)
     singleSelectedChanged: EventEmitter<T>;
