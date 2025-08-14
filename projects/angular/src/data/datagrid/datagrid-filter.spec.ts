@@ -208,9 +208,10 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
       <clr-dg-filter
         [clrDgFilter]="filter"
         [clrDgFilterOpen]="open"
-        (clrDgFilterOpenChange)="clrDgFilterOpenChangeFn($event)"
+        (clrDgFilterOpenChange)=" /// filter.register(tralala)     "
       >
         Filter content
+        <input [(ngModel)]="filter.data">
       </clr-dg-filter>
     </clr-dg-column>
   `,

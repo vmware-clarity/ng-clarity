@@ -100,7 +100,9 @@
 
 @mixin button-css-var($button-type: default, $style: null, $styleNickname: $style) {
   @if $style {
-    #{$style}: getSassButtonColor($button-type, $styleNickname);
+    & {
+      #{$style}: getSassButtonColor($button-type, $styleNickname);
+    }
   }
 }
 
