@@ -8,6 +8,7 @@
 import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
+  AfterViewChecked,
   AfterViewInit,
   Component,
   ContentChild,
@@ -81,7 +82,7 @@ import { CellCoordinates, KeyNavigationGridController } from './utils/key-naviga
     '[class.datagrid-virtual-scroll]': '!!virtualScroll',
   },
 })
-export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
+export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewChecked, AfterViewInit, OnDestroy {
   @Input('clrLoadingMoreItems') loadingMoreItems: boolean;
 
   @Input() clrDgSingleSelectionAriaLabel: string = this.commonStrings.keys.singleSelectionAriaLabel;

@@ -1269,7 +1269,7 @@ export class ClrControlSuccess extends ClrAbstractControl {
 }
 
 // @public (undocumented)
-export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
+export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewChecked, AfterViewInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "DatagridRenderOrganizer" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "StateProvider" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "DisplayModeService" needs to be exported by the entry point index.d.ts
@@ -1337,6 +1337,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     loadingMoreItems: boolean;
     // (undocumented)
     ngAfterContentInit(): void;
+    // (undocumented)
+    ngAfterViewChecked(): void;
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
