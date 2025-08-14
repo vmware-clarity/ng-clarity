@@ -4,11 +4,11 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "paths": {
-      "@clr/angular": ["./../projects/angular/src/index.ts"]
+     "@clr/angular": ["../projects/angular/src/index.ts"]
     },
     "types": ["node"]
   },
-  "exclude": ["../src/test.ts", "../src/**/*.spec.ts", "../projects/**/*.spec.ts"],
+  "exclude": ["../projects/**/*.spec.ts"],
   "include": ["./stories/**/*.stories.ts", "./stories/**/*.storybook.component.ts", "./helpers/**/*.ts"],
   "files": ["./typings.d.ts"]
 }
