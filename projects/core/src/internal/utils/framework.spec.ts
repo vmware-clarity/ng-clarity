@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { getAngularVersion, getReactVersion, getVueVersion, isStorybook, getAngularJSVersion } from './framework.js';
+import { getAngularJSVersion, getAngularVersion, getReactVersion, getVueVersion, isStorybook } from './framework.js';
 import '@cds/core/badge/register.js'; // trigger global setup
 
 describe('framework utils for logging and debugging', () => {

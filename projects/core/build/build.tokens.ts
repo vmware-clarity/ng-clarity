@@ -1,14 +1,16 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import * as ts from 'typescript';
-import * as fs from 'fs';
 import * as csso from 'csso';
-import { baseTheme } from './tokens';
+import * as fs from 'fs';
+import * as ts from 'typescript';
+
 import { Token } from './token-utils';
+import { baseTheme } from './tokens';
 
 const tokens: Token[] = Object.entries(flattenTokens(baseTheme)).map(token => token[1]);
 const experimental = `This token format is currently experimental and may change in the future`;

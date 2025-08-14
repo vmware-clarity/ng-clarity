@@ -1,1 +1,36 @@
-html{font-size:calc((var(--cds-global-base)/16)*100%);box-sizing:border-box!important}*,:after,:before{box-sizing:inherit!important}[cds-base-font="16"]{--cds-global-base:16}[cds-theme]{background:var(--cds-alias-object-app-background);color:var(--cds-global-typography-color-500)}[cds-control] ::-webkit-input-placeholder{color:var(--cds-global-typography-color-200)}[cds-control] ::-moz-placeholder{color:var(--cds-global-typography-color-200)}[cds-control][_disabled]{--cds-global-typography-color-200:var(--cds-alias-status-disabled)}html[cds-focus-trap]{overflow:hidden!important;width:100vw;height:100vh}
+/*
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+html {
+  font-size: calc((var(--cds-global-base) / 16) * 100%);
+  box-sizing: border-box !important;
+}
+*,
+:after,
+:before {
+  box-sizing: inherit !important;
+}
+[cds-base-font='16'] {
+  --cds-global-base: 16;
+}
+[cds-theme] {
+  background: var(--cds-alias-object-app-background);
+  color: var(--cds-global-typography-color-500);
+}
+[cds-control] ::-webkit-input-placeholder {
+  color: var(--cds-global-typography-color-200);
+}
+[cds-control] ::-moz-placeholder {
+  color: var(--cds-global-typography-color-200);
+}
+[cds-control][_disabled] {
+  --cds-global-typography-color-200: var(--cds-alias-status-disabled);
+}
+html[cds-focus-trap] {
+  overflow: hidden !important;
+  width: 100vw;
+  height: 100vh;
+}

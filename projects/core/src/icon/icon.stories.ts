@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -7,12 +8,12 @@
 import '@cds/core/icon/register.js';
 import '@cds/core/button/register.js';
 import { ClarityIcons } from '@cds/core/icon/icon.service.js';
+import { homeIcon } from '@cds/core/icon/shapes/home.js';
 import { imageIcon } from '@cds/core/icon/shapes/image.js';
 import { userIcon } from '@cds/core/icon/shapes/user.js';
+import { baseStyles, getElementStorybookArgs, property, spreadProps } from '@cds/core/internal';
 import { html, LitElement } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import { homeIcon } from '@cds/core/icon/shapes/home.js';
-import { baseStyles, spreadProps, getElementStorybookArgs, property } from '@cds/core/internal';
 
 // here for testing
 ClarityIcons.addIcons(userIcon, imageIcon, homeIcon);
@@ -630,11 +631,11 @@ ClarityIcons.addIcons([testNonequilateralIconName, testNonequilateralIcon]);
 
 @customElement('demo-non-equilateral')
 class NonEquilateralIcon extends LitElement {
+  @state() sizeToFit = false;
+
   static get styles() {
     return [baseStyles];
   }
-
-  @state() sizeToFit = false;
 
   toggleFitSizing() {
     this.sizeToFit = !this.sizeToFit;

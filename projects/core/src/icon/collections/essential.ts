@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClarityIcons } from '../icon.service.js';
 import { IconAlias, IconShapeTuple } from '../interfaces/icon.interfaces.js';
-
 import { accessibility1Icon, accessibility1IconName } from '../shapes/accessibility-1.js';
 import { accessibility2Icon, accessibility2IconName } from '../shapes/accessibility-2.js';
 import { addTextIcon, addTextIconName } from '../shapes/add-text.js';
@@ -61,14 +61,15 @@ import { fishIcon, fishIconName } from '../shapes/fish.js';
 import { flameIcon, flameIconName } from '../shapes/flame.js';
 import { formIcon, formIconName } from '../shapes/form.js';
 import { fuelIcon, fuelIconName } from '../shapes/fuel.js';
+import { gavelIcon, gavelIconName } from '../shapes/gavel.js';
 import { gridViewIcon, gridViewIconName } from '../shapes/grid-view.js';
 import { helpIcon, helpIconName } from '../shapes/help.js';
 import { historyIcon, historyIconName } from '../shapes/history.js';
 import { hourglassIcon, hourglassIconName } from '../shapes/hourglass.js';
 import { idBadgeIcon, idBadgeIconName } from '../shapes/id-badge.js';
 import { keyIcon, keyIconName } from '../shapes/key.js';
-import { launchpadIcon, launchpadIconName } from '../shapes/launchpad.js';
 import { landscapeIcon, landscapeIconName } from '../shapes/landscape.js';
+import { launchpadIcon, launchpadIconName } from '../shapes/launchpad.js';
 import { libraryIcon, libraryIconName } from '../shapes/library.js';
 import { lightbulbIcon, lightbulbIconName } from '../shapes/lightbulb.js';
 import { listIcon, listIconName } from '../shapes/list.js';
@@ -120,8 +121,8 @@ import { treeViewIcon, treeViewIconName } from '../shapes/tree-view.js';
 import { treeIcon, treeIconName } from '../shapes/tree.js';
 import { twoWayArrowsIcon, twoWayArrowsIconName } from '../shapes/two-way-arrows.js';
 import { undoIcon, undoIconName } from '../shapes/undo.js';
-import { unpinIcon, unpinIconName } from '../shapes/unpin.js';
 import { unlockIcon, unlockIconName } from '../shapes/unlock.js';
+import { unpinIcon, unpinIconName } from '../shapes/unpin.js';
 import { uploadIcon, uploadIconName } from '../shapes/upload.js';
 import { usersIcon, usersIconName } from '../shapes/users.js';
 import { viewCardsIcon, viewCardsIconName } from '../shapes/view-cards.js';
@@ -136,7 +137,6 @@ import { worldIcon, worldIconName } from '../shapes/world.js';
 import { wrenchIcon, wrenchIconName } from '../shapes/wrench.js';
 import { zoomInIcon, zoomInIconName } from '../shapes/zoom-in.js';
 import { zoomOutIcon, zoomOutIconName } from '../shapes/zoom-out.js';
-import { gavelIcon, gavelIconName } from '../shapes/gavel.js';
 
 export const essentialCollectionIcons: IconShapeTuple[] = [
   accessibility1Icon,
