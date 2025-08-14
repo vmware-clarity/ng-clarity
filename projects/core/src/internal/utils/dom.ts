@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -8,8 +9,8 @@ import includes from 'ramda/es/includes';
 import without from 'ramda/es/without';
 
 import { getCssPropertyValue } from './css.js';
-import { pluckPixelValue, transformSpacedStringToArray } from './string.js';
 import { isNumericString, isStringAndNotNilOrEmpty } from './identity.js';
+import { pluckPixelValue, transformSpacedStringToArray } from './string.js';
 
 /**
  * We are not going to be opinionated about the use of the disabled attribute here.

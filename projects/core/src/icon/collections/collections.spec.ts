@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -14,9 +15,7 @@ import { loadSocialIconSet } from '../collections/social.js';
 import { loadTechnologyIconSet } from '../collections/technology.js';
 import { loadTextEditIconSet } from '../collections/text-edit.js';
 import { loadTravelIconSet } from '../collections/travel.js';
-
 import { ClarityIcons } from '../icon.service.js';
-
 import { airplaneIconName } from '../shapes/airplane.js';
 import { applicationIconName } from '../shapes/application.js';
 import { arrowMiniIconName } from '../shapes/arrow-mini.js';

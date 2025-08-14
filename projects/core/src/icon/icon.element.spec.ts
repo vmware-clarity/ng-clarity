@@ -1,15 +1,17 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { html } from 'lit';
 import '@cds/core/icon/register.js';
 import { CdsIcon } from '@cds/core/icon/icon.element.js';
 import { ClarityIcons } from '@cds/core/icon/icon.service.js';
 import { GlobalStateService } from '@cds/core/internal';
 import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
+import { html } from 'lit';
+
 import { renderIcon } from './icon.renderer.js';
 
 const testIcon = renderIcon('test');

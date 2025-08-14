@@ -1,37 +1,39 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { LitElement, html } from 'lit';
 import { createTestElement, removeTestElement } from '@cds/core/test';
+import { html, LitElement } from 'lit';
+
+import { updateElementStyles } from './css.js';
 import {
   addAttributeValue,
   assignSlotNames,
+  coerceBooleanProperty,
   createFragment,
   getElementWidth,
   getElementWidthUnless,
+  getInputValueType,
   getShadowRootOrElse,
   getWindowDimensions,
   hasAttributeAndIsNotEmpty,
   HTMLAttributeTuple,
-  windowIsAboveMobileBreakpoint,
+  isFocusable,
   isHTMLElement,
+  isScrollable,
+  isVisible,
+  queryAllFocusable,
+  queryChildFromLightOrShadowDom,
   removeAttributes,
   removeAttributeValue,
   setAttributes,
-  isVisible,
   setOrRemoveAttribute,
   spanWrapper,
-  isFocusable,
-  queryChildFromLightOrShadowDom,
-  queryAllFocusable,
-  isScrollable,
-  coerceBooleanProperty,
-  getInputValueType,
+  windowIsAboveMobileBreakpoint,
 } from './dom.js';
-import { updateElementStyles } from './css.js';
 import { registerElementSafely } from './registration.js';
 
 /** @element test-dom-spec-element */

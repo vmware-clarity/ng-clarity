@@ -1,16 +1,18 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { PropertyValues, PropertyDeclaration } from 'lit';
+import { PropertyDeclaration, PropertyValues } from 'lit';
 import { property as _property } from 'lit/decorators/property.js';
-import { camelCaseToKebabCase, kebabCaseToPascalCase, capitalizeFirstLetter } from '../utils/string.js';
+
 import { LogService } from '../services/log.service.js';
+import { coerceBooleanProperty } from '../utils/dom.js';
 import { getAngularVersion, getReactVersion, getVueVersion } from '../utils/framework.js';
 import { isNilOrEmpty } from '../utils/identity.js';
-import { coerceBooleanProperty } from '../utils/dom.js';
+import { camelCaseToKebabCase, capitalizeFirstLetter, kebabCaseToPascalCase } from '../utils/string.js';
 
 export interface CustomPropertyConfig {
   type: unknown;

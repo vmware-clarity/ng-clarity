@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClarityIcons } from '../icon.service.js';
 import { IconAlias, IconShapeTuple } from '../interfaces/icon.interfaces.js';
-
 import { administratorIcon, administratorIconName } from '../shapes/administrator.js';
 import { animationIcon, animationIconName } from '../shapes/animation.js';
 import { applicationIcon, applicationIconName } from '../shapes/application.js';
@@ -43,6 +43,7 @@ import { dashboardIcon, dashboardIconName } from '../shapes/dashboard.js';
 import { dataClusterIcon, dataClusterIconName } from '../shapes/data-cluster.js';
 import { deployIcon, deployIconName } from '../shapes/deploy.js';
 import { devicesIcon, devicesIconName } from '../shapes/devices.js';
+import { digitalSignatureIcon, digitalSignatureIconName } from '../shapes/digital-signature.js';
 import { disconnectIcon, disconnectIconName } from '../shapes/disconnect.js';
 import { displayIcon, displayIconName } from '../shapes/display.js';
 import { downloadCloudIcon, downloadCloudIconName } from '../shapes/download-cloud.js';
@@ -51,6 +52,7 @@ import { fileShare2Icon, fileShare2IconName } from '../shapes/file-share-2.js';
 import { fileShareIcon, fileShareIconName } from '../shapes/file-share.js';
 import { flaskIcon, flaskIconName } from '../shapes/flask.js';
 import { floppyIcon, floppyIconName } from '../shapes/floppy.js';
+import { forkingIcon, forkingIconName } from '../shapes/forking.js';
 import { hardDiskIcon, hardDiskIconName } from '../shapes/hard-disk.js';
 import { hardDriveDisksIcon, hardDriveDisksIconName } from '../shapes/hard-drive-disks.js';
 import { hardDriveIcon, hardDriveIconName } from '../shapes/hard-drive.js';
@@ -60,6 +62,7 @@ import { hostIcon, hostIconName } from '../shapes/host.js';
 import { importIcon, importIconName } from '../shapes/import.js';
 import { inductorIcon, inductorIconName } from '../shapes/inductor.js';
 import { installIcon, installIconName } from '../shapes/install.js';
+import { internetOfThingsIcon, internetOfThingsIconName } from '../shapes/internet-of-things.js';
 import { keyboardIcon, keyboardIconName } from '../shapes/keyboard.js';
 import { layersIcon, layersIconName } from '../shapes/layers.js';
 import { linkIcon, linkIconName } from '../shapes/link.js';
@@ -100,20 +103,17 @@ import { storageIcon, storageIconName } from '../shapes/storage.js';
 import { tabletIcon, tabletIconName } from '../shapes/tablet.js';
 import { tapeDriveIcon, tapeDriveIconName } from '../shapes/tape-drive.js';
 import { terminalIcon, terminalIconName } from '../shapes/terminal.js';
+import { thinClientIcon, thinClientIconName } from '../shapes/thin-client.js';
 import { unarchiveIcon, unarchiveIconName } from '../shapes/unarchive.js';
 import { uninstallIcon, uninstallIconName } from '../shapes/uninstall.js';
 import { unlinkIcon, unlinkIconName } from '../shapes/unlink.js';
+import { updateIcon, updateIconName } from '../shapes/update.js';
 import { uploadCloudIcon, uploadCloudIconName } from '../shapes/upload-cloud.js';
 import { usbIcon, usbIconName } from '../shapes/usb.js';
 import { vmIcon, vmIconName } from '../shapes/vm.js';
 import { vmwAppIcon, vmwAppIconName } from '../shapes/vmw-app.js';
 import { wifiIcon, wifiIconName } from '../shapes/wifi.js';
 import { xlsFileIcon, xlsFileIconName } from '../shapes/xls-file.js';
-import { internetOfThingsIcon, internetOfThingsIconName } from '../shapes/internet-of-things.js';
-import { thinClientIcon, thinClientIconName } from '../shapes/thin-client.js';
-import { digitalSignatureIcon, digitalSignatureIconName } from '../shapes/digital-signature.js';
-import { updateIcon, updateIconName } from '../shapes/update.js';
-import { forkingIcon, forkingIconName } from '../shapes/forking.js';
 
 export const technologyCollectionIcons: IconShapeTuple[] = [
   administratorIcon,

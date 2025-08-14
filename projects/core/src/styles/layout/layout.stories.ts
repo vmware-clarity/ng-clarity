@@ -1,20 +1,21 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import '@cds/core/divider/register.js';
 import '@cds/core/card/register.js';
-import { html, css, LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import { baseStyles } from '@cds/core/internal';
+import { ClarityIcons } from '@cds/core/icon/icon.service.js';
 import { applicationsIcon } from '@cds/core/icon/shapes/applications.js';
 import { blocksGroupIcon } from '@cds/core/icon/shapes/blocks-group.js';
-import { bundleIcon } from '@cds/core/icon/shapes/bundle.js';
 import { buildingIcon } from '@cds/core/icon/shapes/building.js';
+import { bundleIcon } from '@cds/core/icon/shapes/bundle.js';
 import { cogIcon } from '@cds/core/icon/shapes/cog.js';
-import { ClarityIcons } from '@cds/core/icon/icon.service.js';
+import { baseStyles } from '@cds/core/internal';
+import { css, html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
 ClarityIcons.addIcons(applicationsIcon, blocksGroupIcon, bundleIcon, buildingIcon, cogIcon);
 

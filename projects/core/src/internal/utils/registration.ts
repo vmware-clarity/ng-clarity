@@ -1,15 +1,17 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import curryN from 'ramda/es/curryN';
+
+import { LogService } from '../services/log.service.js';
 import { isBrowser } from './environment.js';
 import { elementExists, existsInWindow } from './exists.js';
-import { CDSState, setupCDSGlobal } from './global.js';
 import { isStorybook } from './framework.js';
-import { LogService } from '../services/log.service.js';
+import { CDSState, setupCDSGlobal } from './global.js';
 
 const addElementToRegistry = curryN(
   3,
