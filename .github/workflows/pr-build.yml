@@ -87,6 +87,8 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Install Dependencies
         run: npm ci
+      - name: Build Core
+        run: npm run _build:core
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps ${{matrix.browser}}
       - name: Build Storybook
