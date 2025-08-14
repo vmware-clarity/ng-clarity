@@ -1,5 +1,6 @@
 {
   "name": "@clr/angular",
+  "version": "17.11.1",
   "description": "Angular components for Clarity",
   "homepage": "https://clarity.design",
   "keywords": [
