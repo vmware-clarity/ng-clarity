@@ -422,12 +422,10 @@ $typography-tokens: (
 );
 
 @mixin setValue($key, $map: (), $value) {
-  & {
-    @if (map.has-key($map, $key)) {
-      #{$key}: map.get($map, $key);
-    } @else {
-      #{$key}: $value;
-    }
+  @if (map.has-key($map, $key)) {
+    #{$key}: map.get($map, $key);
+  } @else {
+    #{$key}: $value;
   }
 }
 
