@@ -1,6 +1,7 @@
 {
   "name": "@clr/ui",
   "description": "CSS for Clarity",
+  "version": "17.11.1",
   "homepage": "https://clarity.design",
   "repository": {
     "type": "git",
