@@ -40,7 +40,7 @@ export const packageCheck = dir => {
 export const webComponentAnalyer = () => {
   return execute({
     commands: [
-      `cd src && cem analyze --config ${resolve('./custom-elements-manifest.config.mjs')}`, // https://github.com/open-wc/custom-elements-manifest/tree/master/packages/analyzer
+      `cd ./projects/core/src && cem analyze --config ${resolve('./projects/core/custom-elements-manifest.config.mjs')}`, // https://github.com/open-wc/custom-elements-manifest/tree/master/packages/analyzer
     ],
     hook: 'writeBundle',
   });

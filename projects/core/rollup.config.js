@@ -33,8 +33,6 @@ const config = {
     './projects/core/src/styles/theme.dark.scss',
     './projects/core/src/styles/theme.low-motion.scss',
     './projects/core/src/styles/theme.high-contrast.scss',
- //   './src/list/list.scss',
- //   './src/table/table.scss',
   ],
   package: {
     exports: [
