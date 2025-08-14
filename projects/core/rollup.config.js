@@ -91,7 +91,9 @@ export default [
         ],
       }),
       !prod ? esmCache(config.outDir) : [],
-      prod ? minifyHTML() : [],
+      // Should be minifyHTML(), but after rollup update beyond 3.2.2 it starts failing.
+      // see https://github.com/asyncLiz/rollup-plugin-minify-html-literals/issues/24
+      prod ? minifyHTML.default() : [],
       prod
         ? terser({ ecma: 2020, module: true, format: { comments: false }, compress: { passes: 2, unsafe: true } })
         : [],
