@@ -8,7 +8,6 @@
 import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
-  AfterViewChecked,
   AfterViewInit,
   Component,
   ContentChild,
@@ -82,7 +81,7 @@ import { CellCoordinates, KeyNavigationGridController } from './utils/key-naviga
     '[class.datagrid-virtual-scroll]': '!!virtualScroll',
   },
 })
-export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewChecked, AfterViewInit, OnDestroy {
+export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
   @Input('clrLoadingMoreItems') loadingMoreItems: boolean;
 
   @Input() clrDgSingleSelectionAriaLabel: string = this.commonStrings.keys.singleSelectionAriaLabel;
@@ -109,8 +108,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewChecked,
   /**
    * Expose virtual scroll directive for applications to access its public methods
    */
-  @ContentChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<any>;
-
+  @ContentChildren(ClrDatagridVirtualScrollDirective) _virtualScroll: QueryList<ClrDatagridVirtualScrollDirective<any>>;
   /**
    * We grab the smart iterator from projected content
    */
@@ -261,46 +259,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewChecked,
     }
   }
 
-  ngAfterViewChecked() {
-    if (this.virtualScroll && this._virtualScrollSubscriptions.length === 0) {
-      // the virtual scroll will handle the scrolling
-      this.keyNavigation.preventScrollOnFocus = !!this.virtualScroll;
-      this._virtualScrollSubscriptions.push(
-        fromEvent(this.contentWrapper.nativeElement, 'scroll').subscribe(() => {
-          if (this.datagridHeader.nativeElement.scrollLeft !== this.contentWrapper.nativeElement.scrollLeft) {
-            this.datagridHeader.nativeElement.scrollLeft = this.contentWrapper.nativeElement.scrollLeft;
-          }
-        }),
-        fromEvent(this.datagridHeader.nativeElement, 'scroll').subscribe(() => {
-          if (this.datagridHeader.nativeElement.scrollLeft !== this.contentWrapper.nativeElement.scrollLeft) {
-            this.contentWrapper.nativeElement.scrollLeft = this.datagridHeader.nativeElement.scrollLeft;
-          }
-        }),
-        this.keyNavigation.nextCellCoordsEmitter.subscribe(cellCoords => {
-          if (!cellCoords?.ariaRowIndex) {
-            this.activeCellCoords = null;
-            return;
-          }
-
-          if (cellCoords.ariaRowIndex === this.activeCellCoords?.ariaRowIndex) {
-            this.activeCellCoords = cellCoords;
-            return;
-          }
-
-          this.activeCellCoords = cellCoords;
-
-          // aria-rowindex is always + 1. Check virtual scroller updateAriaRowIndexes method.
-          const rowIndex = Number(cellCoords.ariaRowIndex) - 1;
-
-          this.virtualScroll.scrollToIndex(rowIndex);
-        })
-      );
-    } else if (!this.virtualScroll && this._virtualScrollSubscriptions.length > 0) {
-      // the virtual scroll will handle the scrolling
-      this.keyNavigation.preventScrollOnFocus = !!this.virtualScroll;
-      this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
-      this._virtualScrollSubscriptions = [];
-    }
+  get virtualScroll() {
+    return this._virtualScroll.get(0);
   }
 
   ngAfterContentInit() {
@@ -324,6 +284,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewChecked,
         if (!this.items.smart) {
           this.items.all = all;
         }
+      }),
+      this._virtualScroll.changes.subscribe(() => {
+        this.setupVirtualScroll();
       }),
       this.rows.changes.subscribe(() => {
         // Remove any projected rows from the displayedRows container
@@ -500,5 +463,48 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewChecked,
    */
   dataChanged() {
     this.items.refresh();
+  }
+
+  private setupVirtualScroll() {
+    const hasVirtualScroll = !!this.virtualScroll;
+
+    // the virtual scroll will handle the scrolling
+    this.keyNavigation.preventScrollOnFocus = hasVirtualScroll;
+
+    if (hasVirtualScroll && this._virtualScrollSubscriptions.length === 0) {
+      this._virtualScrollSubscriptions.push(
+        fromEvent(this.contentWrapper.nativeElement, 'scroll').subscribe(() => {
+          if (this.datagridHeader.nativeElement.scrollLeft !== this.contentWrapper.nativeElement.scrollLeft) {
+            this.datagridHeader.nativeElement.scrollLeft = this.contentWrapper.nativeElement.scrollLeft;
+          }
+        }),
+        fromEvent(this.datagridHeader.nativeElement, 'scroll').subscribe(() => {
+          if (this.datagridHeader.nativeElement.scrollLeft !== this.contentWrapper.nativeElement.scrollLeft) {
+            this.contentWrapper.nativeElement.scrollLeft = this.datagridHeader.nativeElement.scrollLeft;
+          }
+        }),
+        this.keyNavigation.nextCellCoordsEmitter.subscribe(cellCoords => {
+          if (!cellCoords?.ariaRowIndex) {
+            this.activeCellCoords = null;
+            return;
+          }
+
+          if (cellCoords.ariaRowIndex === this.activeCellCoords?.ariaRowIndex) {
+            this.activeCellCoords = cellCoords;
+            return;
+          }
+
+          this.activeCellCoords = cellCoords;
+
+          // aria-rowindex is always + 1. Check virtual scroller updateAriaRowIndexes method.
+          const rowIndex = Number(cellCoords.ariaRowIndex) - 1;
+
+          this.virtualScroll.scrollToIndex(rowIndex);
+        })
+      );
+    } else if (!hasVirtualScroll) {
+      this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+      this._virtualScrollSubscriptions = [];
+    }
   }
 }
