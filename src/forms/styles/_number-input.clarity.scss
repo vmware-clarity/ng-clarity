@@ -1,0 +1,55 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../utils/mixins';
+@use 'mixins.forms' as forms-mixins;
+@use 'variables.forms' as forms-variables;
+@use '@cds/core/tokens/tokens.scss' as tokens;
+@use '../../utils/variables/variables.density' as density;
+@use 'sass:selector';
+
+@include mixins.exports('forms.number-input') {
+  .clr-number-input-wrapper {
+    display: inline-block;
+    white-space: nowrap;
+    max-height: forms-variables.$clr-forms-input-wrapper-height;
+
+    .clr-number-input {
+      /* Chrome, Safari, Edge, Opera */
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      /* Firefox */
+      -moz-appearance: textfield;
+
+      &-separator {
+        background: tokens.$cds-alias-object-border-color;
+        width: tokens.$cds-alias-object-border-width-100;
+        height: density.$clr-base-row-height-xs;
+      }
+    }
+
+    .clr-input-group-icon-action {
+      height: calc(forms-variables.$clr-forms-input-wrapper-height - tokens.$cds-alias-object-border-width-300);
+      padding: 0 density.$clr-base-horizontal-offset-xs;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        background-color: tokens.$cds-alias-object-interaction-background-hover;
+      }
+      &:active {
+        background-color: tokens.$cds-alias-object-interaction-background-active;
+      }
+      &:disabled {
+        background-color: unset;
+      }
+    }
+  }
+}

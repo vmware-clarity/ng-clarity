@@ -1,0 +1,63 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+
+// Usage: ../data/tree-view/_tree-view.clarity.scss
+$clr-tree-border-radius: var(--clr-tree-border-radius) !default;
+
+$clr-tree-caret-size: #{density.$clr-base-icon-size-s} !default;
+$clr-tree-checkbox-size: #{density.$clr-base-icon-size-s} !default;
+$clr-tree-spinner-size: #{density.$clr-base-icon-size-s} !default;
+$clr-tree-node-touch-target: #{density.$clr-base-tree-node-height} !default;
+$clr-tree-node-children-margin: $clr-tree-node-touch-target !default;
+
+$clr-tree-node-content-gap: #{density.$clr-base-gap-s} !default;
+$clr-tree-node-horizontal-offset: #{density.$clr-base-horizontal-offset-m} !default;
+$clr-tree-node-content-padding: #{density.$clr-base-vertical-offset-multi-row-inline-m} #{density.$clr-base-horizontal-offset-m} !default;
+$clr-tree-node-icon-padding: #{density.$clr-base-vertical-offset-m} 0 !default;
+$clr-tree-node-checkbox-input-size: calc(
+  #{$clr-tree-checkbox-size} + #{$clr-tree-node-content-gap} + #{$clr-tree-node-horizontal-offset}
+) !default;
+
+// @deprecated  in v17 in favor of clr-tree-node-content-bg-hover-color
+$clr-tree-link-hover-color: var(--clr-tree-node-content-bg-hover-color) !default;
+// @deprecated  in v17 in favor of clr-tree-node-content-bg-selected-color
+$clr-tree-link-selection-color: var(--clr-tree-node-content-bg-selected-color) !default;
+// @deprecated in v17 in favor of clr-tree-node-content-color
+$clr-tree-link-text-color: var(--clr-tree-node-content-color) !default;
+// @deprecated in v17 in favor of $clr-tree-node-caret-hover-color
+$clr-tree-node-caret-link-hover-color: var(--clr-tree-node-caret-hover-color) !default;
+// @deprecated in v17 in favor of $clr-tree-node-caret-active-color
+$clr-tree-node-caret-link-active-color: var(--clr-tree-node-caret-active-color) !default;
+// @deprecated in v17 in favor of $clr-tree-node-caret-disabled-color
+$clr-tree-node-caret-link-disabled-color: var(--clr-tree-node-caret-disabled-color) !default;
+
+$clr-tree-node-caret-color: var(--clr-tree-node-caret-color) !default;
+$clr-tree-node-caret-hover-color: $clr-tree-node-caret-link-hover-color !default;
+$clr-tree-node-caret-active-color: $clr-tree-node-caret-link-active-color !default;
+$clr-tree-node-caret-disabled-color: $clr-tree-node-caret-link-disabled-color !default;
+
+$clr-tree-node-content-text-only-color: var(--clr-tree-node-content-text-only-color) !default;
+
+$clr-tree-node-content-color: $clr-tree-link-text-color !default;
+$clr-tree-node-content-bg-color: var(--clr-tree-node-content-bg-color) !default;
+
+$clr-tree-node-content-hover-color: var(--clr-tree-node-content-hover-color) !default;
+$clr-tree-node-content-bg-hover-color: $clr-tree-link-hover-color !default;
+
+$clr-tree-node-content-active-color: var(--clr-tree-node-content-active-color) !default;
+$clr-tree-node-content-bg-active-color: var(--clr-tree-node-content-bg-active-color) !default;
+
+$clr-tree-node-content-selected-color: var(--clr-tree-node-content-selected-color);
+$clr-tree-node-content-bg-selected-color: $clr-tree-link-selection-color !default;
+$clr-tree-node-content-bg-selected-hover-color: var(--clr-tree-node-content-bg-selected-hover-color) !default;
+$clr-tree-node-content-bg-selected-active-color: var(--clr-tree-node-content-bg-selected-active-color) !default;
+
+$clr-tree-node-content-disabled-color: var(--clr-tree-node-content-disabled-color) !default;
+$clr-tree-node-content-bg-disabled-color: var(--clr-tree-node-content-bg-disabled-color) !default;

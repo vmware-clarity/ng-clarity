@@ -1,0 +1,22 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@forward 'mixins/breakpoint';
+@forward 'mixins/grid';
+@forward 'mixins/grid-framework';
+@forward 'utilities/align';
+@forward 'utilities/clearfix';
+@forward 'utilities/display';
+@forward 'utilities/flex';
+@forward 'utilities/float';
+@forward 'utilities/visibility';
+@forward 'grid/grid';
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}

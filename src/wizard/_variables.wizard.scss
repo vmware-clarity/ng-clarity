@@ -1,0 +1,58 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../utils/mixins';
+@use '../utils/variables/variables';
+@use '@cds/core/tokens/tokens.scss';
+@use '../utils/variables/variables.density' as density;
+
+$clr-wizard-vertical-space: density.$clr-base-vertical-offset-2xl !default;
+$clr-wizard-horizontal-space: density.$clr-base-horizontal-offset-2xl !default;
+$clr-wizard-footer-vertical-space: var(--clr-wizard-footer-vertical-space) !default;
+
+$clr-wizard-main-bgcolor: var(--clr-wizard-main-bgcolor) !default;
+$clr-wizard-main-text-color: var(--clr-wizard-main-text-color) !default;
+
+$clr-wizard-stepnav-bgcolor: var(--clr-wizard-stepnav-bgcolor) !default;
+$clr-wizard-stepnav-text: var(--clr-wizard-stepnav-text) !default;
+$clr-wizard-stepnav-text-active: var(--clr-wizard-stepnav-text-active) !default;
+$clr-wizard-stepnav-text-hover: var(--clr-wizard-stepnav-text-hover) !default;
+$clr-wizard-stepnav-text--active: var(--clr-wizard-stepnav-text--active) !default;
+$clr-wizard-stepnav-text-disabled: var(--clr-wizard-stepnav-text-disabled) !default;
+$clr-wizard-stepnav-border-color: var(--clr-wizard-stepnav-border-color) !default;
+$clr-wizard-stepnav-border-size: var(--clr-wizard-stepnav-border-size) !default;
+$clr-wizard-stepnav-item-border-color: var(--clr-wizard-stepnav-item-border-color) !default;
+$clr-wizard-stepnav-item-border-color--active: var(--clr-wizard-stepnav-item-border-color--active) !default;
+$clr-wizard-stepnav-selected-border-color: var(--clr-wizard-stepnav-selected-border-color) !default;
+$clr-wizard-stepnav-active-bgcolor: var(--clr-wizard-stepnav-active-bgcolor) !default;
+$clr-wizard-stepnav-selected-bgcolor: var(--clr-wizard-stepnav-selected-bgcolor) !default;
+$clr-wizard-stepnav-selected-error-bgcolor: var(--clr-wizard-stepnav-selected-error-bgcolor) !default;
+$clr-wizard-stepnav-selected-hover-bgcolor: var(--clr-wizard-stepnav-selected-hover-bgcolor) !default;
+$clr-wizard-stepnav-selected-active-bgcolor: var(--clr-wizard-stepnav-selected-active-bgcolor) !default;
+$clr-wizard-stepnav-link-error-icon-color: var(--clr-wizard-stepnav-link-error-icon-color) !default;
+$clr-wizard-stepnav-link-complete-icon-color: var(--clr-wizard-stepnav-link-complete-icon-color) !default;
+$clr-wizard-stepnav-item-error-border-color: var(--clr-wizard-stepnav-item-error-border-color) !default;
+$clr-wizard-stepnav-link-hover-bg-color: var(--clr-wizard-stepnav-link-hover-bg-color) !default;
+$clr-wizard-stepnav-link-active-bg-color: var(--clr-wizard-stepnav-link-active-bg-color) !default;
+
+$clr-wizard-title-text: var(--clr-wizard-title-text) !default;
+$clr-wizard-footer-height: var(--clr-wizard-footer-height) !default;
+$clr-wizard-header-action-color: var(--clr-wizard-header-action-color) !default;
+$clr-wizard-header-action-color--hovered: var(--clr-wizard-header-action-color--hovered) !default;
+$clr-wizard-box-shadow: var(--clr-wizard-box-shadow) !default;
+$clr-wizard-border-radius: var(--clr-wizard-border-radius) !default;
+
+$clr-wizard-all-dialog-min-width: #{mixins.baselinePx(240)};
+$clr-wizard-all-dialog-min-height: #{mixins.baselinePx(420)};
+$clr-wizard-md-nav-min-width: #{mixins.baselinePx(216)};
+$clr-wizard-md-nav-max-width: #{mixins.baselinePx(240)};
+$clr-wizard-md-dialog-max-height: #{mixins.baselinePx(504)};
+$clr-wizard-lg-nav-min-width: $clr-wizard-all-dialog-min-width;
+$clr-wizard-lg-nav-max-width: #{mixins.baselinePx(288)};
+$clr-wizard-lg-dialog-max-height: #{mixins.baselinePx(720)};
+$clr-wizard-xl-nav-min-width: $clr-wizard-all-dialog-min-width;
+$clr-wizard-xl-nav-max-width: #{mixins.baselinePx(320)};
+$clr-wizard-xl-dialog-max-height: 75vh;

@@ -1,0 +1,35 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+@use '../utils/variables/variables.density' as density;
+
+@include mixins.exports('code.clarity') {
+  //Styles for Clarity Code Snippets
+  pre {
+    margin: density.$clr-base-vertical-offset-l 0;
+  }
+
+  pre {
+    border: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-container-border-color;
+    border-radius: density.$clr-base-border-radius-s;
+  }
+
+  pre code {
+    white-space: pre;
+  }
+
+  //Overriding bootstrap code styles
+  // @deprecated Bootstrap dependencies are deprecated since 1.0. Review and edit before 2.0 if needed.
+  code {
+    &.clr-code {
+      color: tokens.$cds-alias-utility-red;
+      padding: 0;
+      background: transparent;
+    }
+  }
+}

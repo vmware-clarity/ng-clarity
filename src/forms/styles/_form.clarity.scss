@@ -1,0 +1,83 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+@use 'variables.forms' as forms-variables;
+
+@include mixins.exports('forms.wrappers') {
+  .clr-form {
+    $widthSize: calc(100% - #{forms-variables.$clr-forms-icon-size});
+    padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-s;
+
+    &-full-width {
+      .clr-form-control {
+        .clr-control-container,
+        .clr-select-wrapper,
+        .clr-input-wrapper,
+        .clr-number-input-wrapper,
+        .clr-combobox {
+          width: $widthSize;
+        }
+
+        .clr-combobox-wrapper,
+        .clr-textarea-wrapper,
+        .clr-input-group,
+        input,
+        textarea,
+        select {
+          width: 100%;
+        }
+
+        .clr-combobox {
+          display: inline-flex;
+        }
+      }
+
+      &.clr-form-compact {
+        .clr-form-control {
+          .clr-input-wrapper,
+          .clr-number-input-wrapper,
+          .clr-select-wrapper,
+          .clr-multiselect-wrapper {
+            display: inline-flex;
+          }
+        }
+
+        .clr-control-container {
+          flex-wrap: nowrap;
+        }
+        .clr-subtext {
+          flex: 0 0 auto;
+        }
+      }
+
+      &:not(.clr-form-compact) .clr-form-control {
+        .clr-error .clr-select-wrapper::after,
+        .clr-success .clr-select-wrapper::after {
+          right: forms-variables.$clr-forms-baseline;
+        }
+        .clr-control-container:not(.clr-error):not(.clr-success) textarea {
+          width: $widthSize;
+        }
+      }
+    }
+  }
+
+  .clr-form-group {
+    padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-s;
+  }
+
+  .clr-required-mark::after {
+    content: '*';
+    color: forms-variables.$clr-forms-invalid-color;
+    fill: forms-variables.$clr-forms-invalid-color;
+
+    // using margin as gap
+    margin-left: density.$clr-base-gap-xs;
+  }
+}

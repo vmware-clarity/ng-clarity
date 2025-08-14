@@ -1,0 +1,41 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+// @deprecated in v17 in favor or $clr-header-bg-color
+$clr-header-bgColor: var(--clr-header-bg-color) !default;
+$clr-logo-width: tokens.$cds-global-space-11 !default;
+// @deprecated in v17 in favor or $clr-header-search-icon-size
+$clr-search-icon-width: var(--clr-header-search-icon-size) !default;
+$clr-header-outline-offset: calc(-1 * #{tokens.$cds-global-space-4}) !default;
+$clr-header-clarity-icons-size: #{density.$clr-base-icon-size-l} !default;
+
+$clr-header-height: var(--clr-header-height) !default;
+$clr-header-divider-color: var(--clr-header-divider-color) !default;
+$clr-header-bg-color: $clr-header-bgColor !default;
+$clr-header-2-bg-color: var(--clr-header-2-bg-color) !default;
+$clr-header-3-bg-color: var(--clr-header-3-bg-color) !default;
+$clr-header-4-bg-color: var(--clr-header-4-bg-color) !default;
+$clr-header-5-bg-color: var(--clr-header-5-bg-color) !default;
+$clr-header-6-bg-color: var(--clr-header-6-bg-color) !default;
+$clr-header-7-bg-color: var(--clr-header-7-bg-color) !default;
+$clr-header-8-bg-color: #0f171c !default; // dark theme only header added by external team to workaround lack of header-7 in dark theme
+$clr-header-font-color: var(--clr-header-font-color) !default;
+$clr-header-font-color-hover: var(--clr-header-font-color-hover) !default;
+$clr-header-title-color: $clr-header-font-color !default;
+$clr-header-title-font-weight: var(--clr-header-title-font-weight) !default;
+$clr-header-title-font-family: var(--clr-header-title-font-family) !default;
+$clr-header-search-icon-size: $clr-search-icon-width !default;
+$clr-header-search-margin-left: var(--clr-header-search-margin-left) !default;
+$clr-header-search-margin-right: var(--clr-header-search-margin-right) !default;
+$clr-header-search-gap: var(--clr-header-search-gap) !default;
+$clr-header-search-input-font-color: var(--clr-header-search-input-font-color) !default;
+$clr-header-search-placeholder-text-color: var(--clr-header-search-placeholder-text-color) !default;
+$clr-header-search-border-active: var(--clr-header-search-border-active) !default;
+$clr-header-search-border-hover: var(--clr-header-search-border-hover) !default;

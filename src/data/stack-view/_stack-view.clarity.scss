@@ -1,0 +1,259 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../../accordion/variables.accordion' as accordion-variables;
+@use '../../image/icons.clarity';
+@use '../../image/images.clarity';
+@use '../../utils/mixins';
+@use 'variables.stack-view' as stack-view-variables;
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+
+@include meta.load-css('properties.stack-view');
+
+@include mixins.exports('stack-view.clarity') {
+  .stack-header {
+    display: flex;
+    align-items: flex-end;
+
+    .stack-title {
+      display: block;
+      flex: 1 1 auto;
+      margin: 0;
+      padding: density.$clr-base-vertical-offset-m 0;
+      color: stack-view-variables.$clr-stack-view-title-color;
+
+      @include mixins.generate-typography-token('SUBSECTION-16-EXP');
+    }
+
+    .stack-actions {
+      display: block;
+      flex: 0 0 auto;
+
+      .stack-action {
+        min-width: tokens.$cds-global-space-11;
+        margin: 0;
+      }
+    }
+  }
+
+  .stack-view {
+    overflow-y: auto;
+    word-wrap: break-word;
+    margin-top: 0;
+    border: stack-view-variables.$clr-stack-view-border-width solid stack-view-variables.$clr-stack-view-border-color;
+    border-radius: stack-view-variables.$clr-stack-view-border-radius;
+
+    dd,
+    dt {
+      // One of the caveats of using definition lists here. Browsers automatically style them in unpredictable ways... :(
+      -webkit-margin-start: 0;
+      margin-inline-start: 0;
+      margin-left: 0;
+    }
+
+    .stack-block {
+      display: flex;
+      // Wrapping for nested stack-blocks
+      flex-flow: row wrap;
+      overflow-y: hidden;
+      border-bottom-width: stack-view-variables.$clr-stack-view-border-width;
+      border-bottom-style: solid;
+      border-bottom-color: stack-view-variables.$clr-stack-view-stack-block-border-bottom;
+    }
+
+    // We have to handle potential nested elements, typically for web components
+    > .stack-block:last-child,
+    > :last-child .stack-block:last-of-type {
+      // This way we keep a border-bottom on the last element if the stack view is higher
+      // than the total height of the  blocks it contains, but we do not have a
+      // weird 1px scroll when both heights match exactly.
+      border-bottom: none;
+    }
+
+    .stack-block-changed::before {
+      content: ' ';
+      position: absolute;
+      @include mixins.equilateral(0);
+      border-top: tokens.$cds-global-space-6 solid stack-view-variables.$clr-stack-block-changed-border-top-color;
+      border-right: tokens.$cds-global-space-6 solid transparent;
+    }
+
+    .stack-block-caret {
+      align-self: center;
+    }
+
+    .stack-block-label {
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
+      color: stack-view-variables.$clr-stack-view-row-color;
+      background-color: stack-view-variables.$clr-stack-view-row-bg-color;
+
+      @include mixins.generate-typography-token('BODY-14-RG-STD');
+
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+
+      &:focus {
+        outline-color: Highlight;
+        outline-color: -webkit-focus-ring-color;
+        outline-style: auto;
+        outline-width: tokens.$cds-global-space-1;
+        outline-offset: calc(-1 * tokens.$cds-global-space-1);
+      }
+    }
+
+    .stack-view-key {
+      flex: 0 1 40%;
+      max-width: 40%;
+      margin-right: density.$clr-base-layout-space-m;
+    }
+
+    .stack-block-caret {
+      visibility: hidden;
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+      --color: #{stack-view-variables.$clr-stack-view-stack-block-caret-color};
+      margin-right: density.$clr-base-horizontal-offset-m;
+    }
+
+    .stack-block-content {
+      flex: 1 1 auto;
+      width: 60%;
+      margin-bottom: 0;
+
+      @include mixins.clr-container;
+    }
+
+    .stack-children {
+      flex: 0 0 auto;
+      width: 100%;
+
+      .stack-block {
+        border-bottom-color: stack-view-variables.$clr-stack-view-stack-children-stack-block-border-bottom-color;
+      }
+
+      > .stack-block:last-child,
+      > :last-child .stack-block:last-of-type {
+        // This way we keep a border-bottom on the last element if the stack view is higher
+        // than the total height of the  blocks it contains, but we do not have a
+        // weird 1px scroll when both heights match exactly.
+        border-bottom: none;
+      }
+
+      .stack-block-label,
+      .stack-block-content {
+        background-color: stack-view-variables.$clr-stack-view-stack-children-stack-block-label-and-content-bg-color;
+      }
+    }
+
+    .stack-block-expandable {
+      > .stack-block-label {
+        color: stack-view-variables.$clr-stack-view-expandable-row-color;
+        background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-color;
+        cursor: pointer;
+
+        &::before {
+          display: inline-block;
+          content: '';
+          @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+          @include images.icon-background-styles();
+          background-image: icons.generateCaretIcon(accordion-variables.$clr-accordion-text-color);
+          transform: rotate(-90deg);
+          margin-right: density.$clr-base-layout-space-xs;
+        }
+        .stack-block-caret {
+          visibility: visible;
+        }
+      }
+
+      > .stack-block-label,
+      > .stack-block-content {
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      }
+
+      &:not(.stack-block-expanded) > .stack-block-label:hover {
+        color: stack-view-variables.$clr-stack-view-expandable-row-hover;
+        background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-hover;
+
+        .stack-block-caret {
+          fill: stack-view-variables.$clr-stack-view-expandable-row-hover;
+        }
+
+        &:active {
+          color: stack-view-variables.$clr-stack-view-expandable-row-active;
+          background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-active;
+
+          .stack-block-caret {
+            fill: stack-view-variables.$clr-stack-view-expandable-row-active;
+          }
+        }
+      }
+
+      &.stack-block-expanded > .stack-block-label {
+        border-bottom-width: stack-view-variables.$clr-stack-view-border-width;
+        border-bottom-style: solid;
+        border-bottom-color: stack-view-variables.$clr-stack-view-stack-block-border-bottom;
+        color: stack-view-variables.$clr-stack-view-expanded-row-color;
+        background-color: stack-view-variables.$clr-stack-view-expanded-row-bg-color;
+
+        &::before {
+          transform: rotate(0deg);
+        }
+
+        .stack-block-caret {
+          fill: stack-view-variables.$clr-stack-view-expanded-row-color;
+        }
+
+        &:hover {
+          color: stack-view-variables.$clr-stack-view-expandable-row-hover;
+          background-color: stack-view-variables.$clr-stack-view-expanded-hover-row-bg-color;
+
+          .stack-block-caret {
+            fill: stack-view-variables.$clr-stack-view-expandable-row-hover;
+          }
+
+          &:active {
+            color: stack-view-variables.$clr-stack-view-expandable-row-active;
+            background-color: stack-view-variables.$clr-stack-view-expanded-active-row-bg-color;
+
+            .stack-block-caret {
+              fill: stack-view-variables.$clr-stack-view-expandable-row-active;
+            }
+          }
+        }
+      }
+    }
+
+    /*
+      Styles specific to stack views used in a modal
+    */
+    .modal & {
+      margin-bottom: 0;
+    }
+
+    //Disable the generated icon without a breaking change for the stackview static markup
+    //Only targets the Angular component as of now. Static will require a breaking change.
+    clr-stack-block.stack-block-expandable {
+      .stack-block-label::before {
+        content: none;
+      }
+    }
+
+    .stack-children clr-stack-block,
+    .stack-children {
+      .stack-block-label {
+        .stack-view-key {
+          padding-left: density.$clr-base-horizontal-offset-l;
+        }
+
+        &::before {
+          display: none;
+        }
+      }
+    }
+  }
+}
