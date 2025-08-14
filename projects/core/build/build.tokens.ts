@@ -23,66 +23,10 @@ fs.mkdirSync('./dist/@cds/core/styles/tokens/generated', { recursive: true });
 buildCSSTokens('./dist/@cds/core/styles/module.tokens.css');
 buildJSONTokens('./dist/@cds/core/tokens/tokens.json');
 buildJSTokens('./dist/@cds/core/tokens/tokens.ts');
-buildAndroidXMLTokens('./dist/@cds/core/tokens/tokens.android.xml');
-buildIOSSwiftTokens('./dist/@cds/core/tokens/tokens.ios.swift');
 buildSassTokens('./dist/@cds/core/tokens/tokens.scss');
 
 // Internal API Tokens for custom elements with fallback values
 buildInternalSassTokens('./dist/@cds/core/styles/tokens/generated/_index.scss');
-
-function buildIOSSwiftTokens(path) {
-  const values = `${tokens
-    .map(t => {
-      let value = `"${t.value}"`;
-
-      if (isHSL(t.value)) {
-        const rgb = hslToRgb(t.value[0], t.value[1], t.value[2]);
-        value = `UIColor(red: ${rgb[0]}, green: ${rgb[1]}, blue: ${rgb[2]}, alpha: 1.0)`;
-      }
-
-      if (typeof t.value === 'number') {
-        value = `CGFloat(${t.value.toFixed(2)})`;
-      }
-
-      return `let ${t.name} = ${value};`;
-    })
-    .join('\n')}`;
-  fs.writeFileSync(path, `// ${experimental}\n${values}`);
-}
-
-function buildAndroidXMLTokens(path) {
-  const nodes = tokens
-    .map(t => {
-      const alias = t.alias ? ` alias="${t.alias.name}"` : '';
-      let token = `<property name="${t.name}"${alias}>${t.value}</property>`;
-
-      if (isHSL(t.value)) {
-        const rgb = hslToRgb(t.value[0], t.value[1], t.value[2]);
-        token = `<color name="${t.name}"${alias}>${rgbToHex(rgb[0], rgb[1], rgb[2])}</color>`;
-      }
-
-      if ((typeof t.value === 'number' && t.name.includes('Space')) || t.name.includes('Layout')) {
-        token = `<dimen name="${t.name}"${alias}>${t.value}dp</dimen>`;
-      }
-
-      if (typeof t.value === 'number' && t.name.includes('typography')) {
-        token = `<dimen name="${t.name}"${alias}>${t.value}sp</dimen>`;
-      }
-
-      return token;
-    })
-    .join('\n  ');
-
-  fs.writeFileSync(
-    path,
-    `
-<?xml version="1.0" encoding="utf-8"?>
-<!--${experimental}-->
-<resources>
-  ${nodes}
-</resources>`.trim()
-  );
-}
 
 function buildJSTokens(path) {
   fs.writeFileSync(
@@ -213,19 +157,4 @@ function camelCaseToKebab(val: string) {
 
 function isHSL(value: any) {
   return Array.isArray(value) && value.length === 3;
-}
-
-function hslToRgb(h: number, s: number, l: number) {
-  s = s / 100;
-  l = l / 100;
-  const a = s * Math.min(l, 1 - l);
-  const f = (n: any, k = (n + h / 30) % 12) => l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-  return [Math.round(f(0) * 255), Math.round(f(8) * 255), Math.round(f(4) * 255)];
-}
-
-function rgbToHex(red: number, green: number, blue: number) {
-  const r = red.toString(16);
-  const g = green.toString(16);
-  const b = blue.toString(16);
-  return `#${r.length === 1 ? '0' : ''}${r}${g.length === 1 ? '0' : ''}${g}${b.length === 1 ? '0' : ''}${b}`;
 }
