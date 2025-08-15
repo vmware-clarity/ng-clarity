@@ -250,8 +250,7 @@
 
   .clr-treenode-link {
     //Display
-    display: inline-flex;
-    gap: tree-view-variables.$clr-tree-node-content-gap;
+    display: inline-block;
 
     //Dimensions
     @include mixins.equilateral(100%);
