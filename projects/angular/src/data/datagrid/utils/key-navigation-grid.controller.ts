@@ -142,7 +142,9 @@ export class KeyNavigationGridController implements OnDestroy {
 
             if (activeItem) {
               this.setActiveCell(activeItem);
-              this.focusElement(activeItem, { preventScroll: this.preventScrollOnFocus });
+              this.focusElement(activeItem, {
+                preventScroll: this.preventScrollOnFocus && !!nextCellCoords.ariaRowIndex,
+              });
             }
 
             e.preventDefault();
