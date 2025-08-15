@@ -999,6 +999,14 @@
       flex: 0 0 datagrid-variables.$clr-datagrid-compact-fixed-column-size;
       max-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
       min-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
+
+      .clr-checkbox-wrapper,
+      .clr-radio-wrapper {
+        .clr-control-label {
+          min-height: mixins.baselinePx(20);
+          padding: tokens.$cds-global-space-2 0;
+        }
+      }
     }
 
     .datagrid-row {
