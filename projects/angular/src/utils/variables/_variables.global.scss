@@ -205,10 +205,10 @@ $clr_baselineRem_48: convertBaselineToBase20(1152); // 1152px
 $clr_baselineRem_52: convertBaselineToBase20(1248); // 1248px
 
 // App border radus
-$clr-global-borderradius: $clr_baselineRem_3px !default;
+$clr-global-borderradius: var(--clr-global-borderradius) !default;
 
 // App border width
-$clr-global-borderwidth: $clr_baselineRem_1px !default;
+$clr-global-borderwidth: var(--clr-global-borderwidth) !default;
 
 //13. Outline Offset
 $clr-outline-offset: -1 * $clr_baselineRem_5px;
