@@ -9,6 +9,7 @@
 @use '../../angular/src/utils/variables/variables.density' as density;
 
 :root {
+  &,
   [cds-theme] {
     // font family override
     --cds-global-typography-font-family: var(--clr-metropolis-font-family);
