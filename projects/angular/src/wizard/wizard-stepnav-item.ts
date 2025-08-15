@@ -5,7 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { startWith, Subscription, tap } from 'rxjs';
 
 import { ClrCommonStringsService } from '../utils';
 import { PageCollectionService } from './providers/page-collection.service';
@@ -24,18 +25,12 @@ import { ClrWizardPage } from './wizard-page';
     >
       <div class="clr-wizard-stepnav-link-icon">
         <cds-icon
-          *ngIf="hasError"
+          *ngIf="icon; let icon"
           [id]="stepIconId"
-          shape="error-standard"
           role="img"
-          [attr.aria-label]="commonStrings.keys.wizardStepError"
-        ></cds-icon>
-        <cds-icon
-          *ngIf="!hasError && isComplete"
-          [id]="stepIconId"
-          shape="success-standard"
-          role="img"
-          [attr.aria-label]="commonStrings.keys.wizardStepSuccess"
+          class="clr-wizard-stepnav-link-icon"
+          [attr.shape]="icon.shape"
+          [attr.aria-label]="icon.label"
         ></cds-icon>
       </div>
 
@@ -61,13 +56,21 @@ import { ClrWizardPage } from './wizard-page';
     '[class.error]': 'hasError',
   },
 })
-export class ClrWizardStepnavItem {
+export class ClrWizardStepnavItem implements OnInit, OnDestroy {
   @Input('page') page: ClrWizardPage;
+
+  private subscription: Subscription;
+
+  /**
+   * This is used to prevent the steps from scrolling as the user clicks on the steps.
+   */
+  private skipNextScroll = false;
 
   constructor(
     public navService: WizardNavigationService,
     public pageCollection: PageCollectionService,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    private readonly elementRef: ElementRef<HTMLElement>
   ) {}
 
   get id(): string {
@@ -127,6 +130,35 @@ export class ClrWizardStepnavItem {
     return allIds.join(' ');
   }
 
+  protected get icon(): { shape: string; label: string } | null {
+    if (this.isCurrent) {
+      return {
+        shape: 'dot-circle',
+        label: this.commonStrings.keys.wizardStepCurrent || this.commonStrings.keys.timelineStepCurrent,
+      };
+    } else if (this.hasError) {
+      return {
+        shape: 'error-standard',
+        label: this.commonStrings.keys.wizardStepError || this.commonStrings.keys.timelineStepError,
+      };
+    } else if (this.isComplete) {
+      return {
+        shape: 'success-standard',
+        label: this.commonStrings.keys.wizardStepSuccess || this.commonStrings.keys.timelineStepSuccess,
+      };
+    } else {
+      return null;
+    }
+  }
+
+  ngOnInit() {
+    this.subscription = this.ensureCurrentStepIsScrolledIntoView().subscribe();
+  }
+
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
+  }
+
   click(): void {
     this.pageGuard();
 
@@ -135,6 +167,7 @@ export class ClrWizardStepnavItem {
       return;
     }
 
+    this.skipNextScroll = true;
     this.navService.goTo(this.page);
   }
 
@@ -142,5 +175,23 @@ export class ClrWizardStepnavItem {
     if (!this.page) {
       throw new Error('Wizard stepnav item is not associated with a wizard page.');
     }
+  }
+
+  private ensureCurrentStepIsScrolledIntoView() {
+    // Don't use "smooth" scrolling when the wizard is first opened to avoid a delay in scrolling the current step into view.
+    // The current step when the wizard is opened might not be the first step. For example, the wizard can be closed and re-opened.
+    let scrollBehavior: ScrollBehavior = 'auto';
+
+    return this.navService.currentPageChanged.pipe(
+      startWith(this.navService.currentPage),
+      tap(currentPage => {
+        if (!this.skipNextScroll && currentPage === this.page) {
+          this.elementRef.nativeElement.scrollIntoView({ behavior: scrollBehavior, block: 'center', inline: 'center' });
+        }
+
+        scrollBehavior = 'smooth';
+        this.skipNextScroll = false;
+      })
+    );
   }
 }

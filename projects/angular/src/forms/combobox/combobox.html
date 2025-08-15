@@ -16,13 +16,14 @@
   [class.disabled]="control?.disabled? true: null"
 >
   <span
-    *ngIf="multiSelect && optionSelectionService.selectionModel.model"
+    *ngIf="multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0"
     role="grid"
     clrRovingTabindex
     [clrRovingTabindexDisabled]="control?.disabled"
     clrDirection="both"
     [attr.aria-label]="getSelectionAriaLabel()"
     [attr.aria-disabled]="control?.disabled? true: null"
+    class="clr-combobox-pills"
   >
     <span *ngFor="let item of multiSelectModel; let i = index" class="label label-combobox-pill" role="row">
       <span role="gridcell">
@@ -49,27 +50,25 @@
     </span>
   </span>
 
-  <span class="clr-combobox-input-wrapper">
-    <input
-      #textboxInput
-      type="text"
-      role="combobox"
-      [id]="inputId()"
-      class="clr-input clr-combobox-input"
-      [(ngModel)]="searchText"
-      (blur)="onBlur()"
-      (focus)="onFocus()"
-      [attr.aria-expanded]="openState"
-      [attr.aria-owns]="ariaOwns"
-      aria-haspopup="listbox"
-      aria-autocomplete="list"
-      autocomplete="off"
-      [attr.aria-invalid]="control?.invalid? true: null"
-      [disabled]="control?.disabled? true: null"
-      [attr.aria-activedescendant]="getActiveDescendant()"
-      [attr.placeholder]="placeholder"
-    />
-  </span>
+  <input
+    #textboxInput
+    type="text"
+    role="combobox"
+    [id]="inputId()"
+    class="clr-input clr-combobox-input"
+    [(ngModel)]="searchText"
+    (blur)="onBlur()"
+    (focus)="onFocus()"
+    [attr.aria-expanded]="openState"
+    [attr.aria-owns]="ariaOwns"
+    aria-haspopup="listbox"
+    aria-autocomplete="list"
+    autocomplete="off"
+    [attr.aria-invalid]="control?.invalid? true: null"
+    [disabled]="control?.disabled? true: null"
+    [attr.aria-activedescendant]="getActiveDescendant()"
+    [attr.placeholder]="placeholder"
+  />
 
   <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->
   <button

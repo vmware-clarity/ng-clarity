@@ -7,8 +7,11 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use '@cds/core/tokens/tokens.scss';
+@use '../utils/variables/variables.density' as density;
 
-$clr-wizard-default-space: var(--clr-wizard-default-space) !default;
+$clr-wizard-vertical-space: density.$clr-base-vertical-offset-2xl !default;
+$clr-wizard-horizontal-space: density.$clr-base-horizontal-offset-2xl !default;
+$clr-wizard-footer-vertical-space: var(--clr-wizard-footer-vertical-space) !default;
 
 $clr-wizard-main-bgcolor: var(--clr-wizard-main-bgcolor) !default;
 $clr-wizard-main-text-color: var(--clr-wizard-main-text-color) !default;
@@ -26,6 +29,7 @@ $clr-wizard-stepnav-item-border-color--active: var(--clr-wizard-stepnav-item-bor
 $clr-wizard-stepnav-selected-border-color: var(--clr-wizard-stepnav-selected-border-color) !default;
 $clr-wizard-stepnav-active-bgcolor: var(--clr-wizard-stepnav-active-bgcolor) !default;
 $clr-wizard-stepnav-selected-bgcolor: var(--clr-wizard-stepnav-selected-bgcolor) !default;
+$clr-wizard-stepnav-selected-error-bgcolor: var(--clr-wizard-stepnav-selected-error-bgcolor) !default;
 $clr-wizard-stepnav-selected-hover-bgcolor: var(--clr-wizard-stepnav-selected-hover-bgcolor) !default;
 $clr-wizard-stepnav-selected-active-bgcolor: var(--clr-wizard-stepnav-selected-active-bgcolor) !default;
 $clr-wizard-stepnav-link-error-icon-color: var(--clr-wizard-stepnav-link-error-icon-color) !default;

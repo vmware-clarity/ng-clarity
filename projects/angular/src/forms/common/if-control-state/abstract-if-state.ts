@@ -19,7 +19,7 @@ export abstract class AbstractIfState {
   protected control: NgControl;
   protected additionalControls: NgControl[];
 
-  constructor(
+  protected constructor(
     @Optional() protected ifControlStateService: IfControlStateService,
     @Optional() protected ngControlService: NgControlService
   ) {

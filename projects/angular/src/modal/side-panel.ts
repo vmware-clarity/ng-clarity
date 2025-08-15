@@ -9,13 +9,12 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostBinding,
   HostListener,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
-  SimpleChange,
   ViewChild,
 } from '@angular/core';
 
@@ -30,20 +29,22 @@ import { ClrModalConfigurationService } from './modal-configuration.service';
     '[class.side-panel]': 'true',
   },
 })
-export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
-  @Input('clrSidePanelOpen') _open = false;
+export class ClrSidePanel implements OnInit, OnDestroy {
   @Output('clrSidePanelOpenChange') openChange = new EventEmitter<boolean>(false);
   @Input('clrSidePanelCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
   @Input('clrSidePanelSkipAnimation') skipAnimation = false;
   @Input('clrSidePanelLabelledById') labelledById: string;
   @Input('clrSidePanelStaticBackdrop') staticBackdrop = false;
+  @Input('clrSidePanelClosable') closable = true;
   @Input('clrSidePanelPreventClose') preventClose = false;
   @Output('clrSidePanelAlternateClose') altClose = new EventEmitter<boolean>(false);
-  @ViewChild(ClrModal) private modal: ClrModal;
 
   private _pinnable = false;
   private _pinned = false;
   private originalStopClose: boolean;
+  private _position = 'right';
+  private _modal: ClrModal;
+  private __open = false;
 
   private _size = 'md';
 
@@ -52,6 +53,19 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     private configuration: ClrModalConfigurationService,
     public commonStrings: ClrCommonStringsService
   ) {}
+
+  @Input('clrSidePanelOpen')
+  get _open(): boolean {
+    return this.__open;
+  }
+  set _open(open: boolean) {
+    if (open !== this.__open) {
+      this.__open = open;
+      if (this.pinned) {
+        this.updateModalState();
+      }
+    }
+  }
 
   @Input('clrSidePanelSize')
   get size(): string {
@@ -64,28 +78,37 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     }
     if (this._size !== value) {
       this._size = value;
-      if (this.clrSidePanelPinnable && this.pinned) {
-        this.displayOverlapping();
-        this.displaySideBySide();
+      if (this.pinned) {
+        this.updateModalState();
       }
     }
   }
 
+  @Input('clrSidePanelPosition')
+  get position(): string {
+    return this._position;
+  }
+
+  set position(position: string) {
+    if (position && position !== this._position) {
+      this._position = position;
+      if (this._position === 'right') {
+        this.configuration.fadeMove = 'fadeLeft';
+      } else if (this._position === 'bottom') {
+        this.configuration.fadeMove = 'fadeUp';
+      }
+    }
+  }
+
+  @Input('clrSidePanelPinned')
   get pinned(): boolean {
     return this._pinned;
   }
 
   set pinned(pinned: boolean) {
-    if (this.clrSidePanelPinnable) {
-      this._pinned = pinned;
-      if (pinned) {
-        this.originalStopClose = this.modal.stopClose;
-        this.modal.stopClose = true;
-        this.displaySideBySide();
-      } else {
-        this.modal.stopClose = this.originalStopClose;
-        this.displayOverlapping();
-      }
+    this._pinned = pinned;
+    if (this.modal) {
+      this.updateModalState();
     }
   }
 
@@ -109,30 +132,44 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     this._pinnable = pinnable;
   }
 
+  @ViewChild(ClrModal)
+  private get modal(): ClrModal {
+    return this._modal;
+  }
+
+  private set modal(modal: ClrModal) {
+    this._modal = modal;
+    this.originalStopClose = this.modal.stopClose;
+    this.updateModalState();
+  }
+
   private get hostElement(): HTMLElement {
     return (this.element.nativeElement as HTMLElement).closest('.clr-modal-host') || document.body;
   }
 
-  ngOnInit(): void {
-    this.configuration.fadeMove = 'fadeLeft';
+  @HostBinding('class.side-panel-bottom')
+  private get bottomPositionCssClass() {
+    return this.position === 'bottom';
   }
 
-  ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
-    if (changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
-      if (changes._open.currentValue) {
-        if (this.clrSidePanelPinnable && this.pinned) {
-          this.displaySideBySide();
-        }
-      } else {
-        if (this.clrSidePanelPinnable && this.pinned) {
-          this.displayOverlapping();
-        }
-      }
+  ngOnInit(): void {
+    this.configuration.fadeMove = 'fadeLeft';
+    if (this.position === 'bottom') {
+      this.configuration.fadeMove = 'fadeUp';
     }
   }
 
   ngOnDestroy(): void {
-    this.displayOverlapping();
+    this.cleanupPinnedClasses();
+  }
+
+  handleModalOpen(open: boolean) {
+    if (open) {
+      this.updateModalState();
+    } else {
+      this.cleanupPinnedClasses();
+    }
+    this.openChange.emit(open);
   }
 
   open() {
@@ -158,15 +195,31 @@ export class ClrSidePanel implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private displaySideBySide() {
-    this.hostElement.classList.add('clr-side-panel-pinned-' + this.size);
+  private updateModalState() {
+    if (!this.modal) {
+      return;
+    }
+    if (this.pinned) {
+      this.modal.stopClose = true;
+      this.updatePinnedClasses();
+    } else {
+      this.modal.stopClose = this.originalStopClose;
+      this.cleanupPinnedClasses();
+    }
   }
 
-  private displayOverlapping() {
-    this.hostElement.classList.forEach(className => {
-      if (className.startsWith('clr-side-panel-pinned-')) {
-        this.hostElement.classList.remove(className);
-      }
+  private cleanupPinnedClasses() {
+    [this.hostElement, document.body].forEach(host => {
+      host.classList.forEach(className => {
+        if (className.startsWith('clr-side-panel-pinned-')) {
+          host.classList.remove(className);
+        }
+      });
     });
+  }
+
+  private updatePinnedClasses() {
+    this.cleanupPinnedClasses();
+    this.hostElement.classList.add(`clr-side-panel-pinned-${this.position}-${this.size}`);
   }
 }

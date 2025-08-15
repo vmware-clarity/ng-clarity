@@ -4,10 +4,13 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '../../utils/variables/variables';
 @use '../variables.tables' as tables-variables;
+@use '../../progress/spinner/variables.spinner' as spinner-variables;
+@use '../../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
 
 // Usage: ../data/datagrid/_datagrid.clarity.scss
+$clr-datagrid-margin-top: density.$clr-base-vertical-offset-l;
 $clr-datagrid-font-color: var(--clr-datagrid-font-color) !default;
 $clr-datagrid-default-border-color: var(--clr-datagrid-default-border-color) !default;
 $clr-datagrid-icon-color: var(--clr-datagrid-icon-color) !default;
@@ -43,7 +46,6 @@ $clr-datagrid-placeholder-color: var(--clr-datagrid-placeholder-color) !default;
 
 $clr-datagrid-loading-background: var(--clr-datagrid-loading-background) !default;
 
-$clr-datagrid-column-toggle-gap: var(--clr-datagrid-column-toggle-gap) !default;
 $clr-datagrid-column-toggle-padding: var(--clr-datagrid-column-toggle-padding) !default;
 $clr-datagrid-column-toggle-border-color: var(--clr-datagrid-column-toggle-border-color) !default;
 $clr-datagrid-column-toggle-fill-color: var(--clr-datagrid-column-toggle-fill-color) !default;
@@ -78,12 +80,20 @@ $clr-datagrid-filter-toggle-size: var(--clr-datagrid-filter-toggle-size) !defaul
 $clr-datagrid-footer-pagination-gap: var(--clr-datagrid-footer-pagination-gap) !default;
 $clr-datagrid-fixed-column-size: var(--clr-datagrid-fixed-column-size) !default;
 
-$clr-datagrid-compact-outline-offset: var(--clr-datagrid-compact-outline-offset);
+$clr-datagrid-cell-outline-offset: var(--clr-datagrid-cell-outline-offset);
 $clr-datagrid-pagination-btn-disabled-opacity: 1 !default; // Leaving for backwards compatibility
 $clr-datagrid-column-separator-expandby: var(--clr-datagrid-column-separator-expandby) !default;
 
 $clr-datagrid-icon-size: var(--clr-datagrid-icon-size) !default;
 $clr-datagrid-action-arrow-size: var(--clr-datagrid-action-arrow-size) !default;
-// @deprecated in v17 in favor of $clr-datagrid-horizontal-padding
-$horizontalPadding: var(--clr-datagrid-horizontal-padding); // Leaving for backwards compatibility
-$clr-datagrid-horizontal-padding: $horizontalPadding;
+$clr-datagrid-expandable-row-spinner-margin: calc(
+  (tables-variables.$clr-table-row-height - spinner-variables.$clr-spinner-small-size) / 2
+);
+// @deprecated in favor of compact mode in density theme
+// using the compact value of spinner-variables.$clr-spinner-small-size as cds-global-space-7
+$clr-datagrid-compact-expandable-row-spinner-margin: calc(
+  (tables-variables.$clr-table-compact-row-height - #{tokens.$cds-global-space-7}) / 2
+);
+$clr-datagrid-compact-fixed-column-size: calc(
+  #{tokens.$cds-global-space-7} + (#{tables-variables.$clr-table-compact-horizontal-padding} * 2)
+);

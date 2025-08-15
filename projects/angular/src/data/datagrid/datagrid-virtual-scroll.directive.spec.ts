@@ -19,8 +19,10 @@ import { animationFrameScheduler, BehaviorSubject, Observable } from 'rxjs';
 
 import { ClarityModule } from '../../clr-angular.module';
 import { Keys } from '../../utils/enums/keys.enum';
+import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
+import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
 
 export interface Column {
   index: number;
@@ -78,11 +80,7 @@ export interface Cells {
 class FullTest implements OnInit {
   @ViewChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<any>;
   _totalRows = 1000;
-  dataRange: {
-    total: number;
-    skip: number;
-    data: Row[];
-  };
+  dataRange: ClrDatagridVirtualScrollRangeInterface<Row> | undefined;
 
   persistItems = true;
   rows: Observable<Row[]>;
@@ -94,12 +92,6 @@ class FullTest implements OnInit {
   constructor(private cdr: ChangeDetectorRef) {
     this.rows = this.allRows.asObservable();
     this.cols = this.createColumns();
-
-    this.dataRange = {
-      total: this.totalRows,
-      skip: 0,
-      data: [],
-    };
   }
 
   get totalRows(): number {
@@ -110,8 +102,8 @@ class FullTest implements OnInit {
 
     this.dataRange = {
       total: this.totalRows,
-      skip: this.dataRange.skip,
-      data: this.dataRange.data,
+      skip: 0,
+      data: [],
     };
 
     this.cdr.detectChanges();
@@ -232,7 +224,7 @@ export default function (): void {
         instance.virtualScroll.cdkVirtualForTemplateCacheSize = 5000;
         expect(instance.virtualScroll.cdkVirtualForTemplateCacheSize).toBe(5000);
 
-        expect(instance.virtualScroll.totalItems).toBe(1000);
+        expect(instance.virtualScroll.totalItems).toBeUndefined();
         instance.totalRows = 5000;
         fixture.detectChanges();
         expect(instance.virtualScroll.totalItems).toBe(5000);
@@ -301,25 +293,25 @@ export default function (): void {
         sleep(10);
         fixture.detectChanges();
 
-        expect(document.activeElement).toBe(headerCheckboxCell);
+        expectActiveElementToBe(headerCheckboxCell);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        // active checkbox input with ID clr-dg-row-cb364
-        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[22]);
+        // active checkbox input with ID clr-dg-row-cb365
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[14], 'PageDown, cells[14]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
-        // active checkbox input with ID clr-dg-row-cb383
-        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[41]);
+        // active checkbox input with ID clr-dg-row-cb382
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[29], 'PageDown, cells[29]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
-        // active checkbox input with ID clr-dg-row-cb360
-        expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[19]);
+        // active checkbox input with ID clr-dg-row-cb358
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[15], 'PageUp, cells[15]');
 
         flush();
         flushMicrotasks();

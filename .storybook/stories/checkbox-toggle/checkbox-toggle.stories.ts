@@ -6,114 +6,73 @@
  */
 
 import { ClrCheckbox, ClrCheckboxModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
-import { getSelectors } from '../../helpers/checkbox-toggle.helpers';
-import { CommonModules } from '../../helpers/common';
-
-enum CheckboxType {
-  Checkbox = 'checkbox',
-  Toggle = 'toggle',
-}
+import { CheckboxToggleStorybookComponent, CheckboxType } from './checkbox-toggle.storybook.component';
 
 export default {
   title: 'Checkbox or Toggle/Checkbox or Toggle',
+  component: ClrCheckbox,
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrCheckboxModule],
+      imports: [...CommonModules, ClrCheckboxModule, CheckboxToggleStorybookComponent],
     }),
   ],
-  component: ClrCheckbox,
   argTypes: {
-    // methods
+    // The original story hid these methods.
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
-    // story helpers
     type: { control: 'inline-radio', options: CheckboxType },
+    templateMode: { control: { disable: true }, table: { disable: true } },
   },
   args: {
-    // inputs
     id: '',
-    // story helpers
     type: CheckboxType.Checkbox,
     label: 'Option',
     checked: false,
     disabled: false,
+    templateMode: 'single',
   },
-};
-
-const CheckBoxToggleTemplate: StoryFn = args => {
-  const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
-  return {
+  render: (args: CheckboxToggleStorybookComponent) => ({
+    props: {
+      ...args,
+    },
     template: `
-      <${containerSelector}>
-        <!-- The container is required in this story so that the disabled state works correctly. -->
-        <${wrapperSelector}>
-          <input type="checkbox" ${directive} [ngModel]="checked" [disabled]="disabled" />
-          <label>{{ label }}</label>
-        </${wrapperSelector}>
-      </${containerSelector}>
+      <storybook-checkbox-toggle templateMode="loading" ${argsToTemplate(args)}></storybook-checkbox-toggle>
     `,
-    props: args,
-  };
-};
-
-const CheckBoxTemplate: StoryFn = args => {
-  const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
-  return {
-    template: `
-      <div style="padding: 20px">
-        <span cds-text="subsection">Enabled</span>
-        <${containerSelector}>
-          <${wrapperSelector}>
-            <input type="checkbox" ${directive} value="option1" name="options" [ngModel]="checked" />
-            <label>Option 1</label>
-          </${wrapperSelector}>
-        </${containerSelector}>
-
-        <${containerSelector}>
-          <${wrapperSelector}>
-            <input type="checkbox" ${directive} value="option1" name="options" />
-            <label>Option 1</label>
-          </${wrapperSelector}>
-        </${containerSelector}>
-      </div>
-
-      <div style="padding: 20px">
-        <span cds-text="subsection">Disabled</span>
-        <${containerSelector}>
-          <${wrapperSelector}>
-            <input
-              type="checkbox"
-              ${directive}
-              value="option1"
-              name="options"
-              [ngModel]="checked"
-              [disabled]="disabled"
-            />
-            <label>Option 1</label>
-          </${wrapperSelector}>
-        </${containerSelector}>
-
-        <${containerSelector}>
-          <${wrapperSelector}>
-            <input type="checkbox" ${directive} value="option1" name="options" [disabled]="disabled" />
-            <label>Option 1</label>
-          </${wrapperSelector}>
-        </${containerSelector}>
-      </div>
-    `,
-    props: args,
-  };
+  }),
 };
 
 export const CheckboxOrToggle: StoryObj = {
-  render: CheckBoxToggleTemplate,
+  args: {
+    templateMode: 'single',
+  },
+};
+
+export const CheckboxLongLabel: StoryObj = {
+  args: {
+    type: CheckboxType.Checkbox,
+    templateMode: 'single',
+    label:
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+  },
+};
+
+export const ToggleLongLabel: StoryObj = {
+  args: {
+    type: CheckboxType.Toggle,
+    templateMode: 'single',
+    label:
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+  },
 };
 
 export const ShowcaseCheckbox: StoryObj = {
-  render: CheckBoxTemplate,
-  args: { checked: true, disabled: true, type: CheckboxType.Checkbox },
+  args: {
+    type: CheckboxType.Checkbox,
+    templateMode: 'showcase',
+  },
   parameters: {
     actions: { disable: true },
     controls: { disable: true },
@@ -121,8 +80,10 @@ export const ShowcaseCheckbox: StoryObj = {
 };
 
 export const ShowcaseToggleSwitch: StoryObj = {
-  render: CheckBoxTemplate,
-  args: { checked: true, disabled: true, type: CheckboxType.Toggle },
+  args: {
+    type: CheckboxType.Toggle,
+    templateMode: 'showcase',
+  },
   parameters: {
     actions: { disable: true },
     controls: { disable: true },

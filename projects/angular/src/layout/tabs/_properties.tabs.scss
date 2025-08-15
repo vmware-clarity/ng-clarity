@@ -8,15 +8,18 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('tab.properties') {
-  :root [cds-theme] {
-    --clr-nav-box-shadow-color: #{tokens.$cds-alias-object-border-color};
-    --clr-nav-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
-    --clr-nav-selected-bg-color: #{tokens.$cds-alias-object-opacity-0};
-    --clr-nav-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover};
-    --clr-nav-selected-hover-background-color: var(--cds-alias-object-interaction-background-selected-hover);
-    --clr-nav-selected-active-background-color: var(--cds-alias-object-interaction-background-selected-active);
+  :root {
+    &,
+    & [cds-theme] {
+      --clr-nav-box-shadow-color: #{tokens.$cds-alias-object-border-color};
+      --clr-nav-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
+      --clr-nav-selected-bg-color: #{tokens.$cds-alias-object-opacity-0};
+      --clr-nav-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-nav-selected-hover-background-color: var(--cds-alias-object-interaction-background-selected-hover);
+      --clr-nav-selected-active-background-color: var(--cds-alias-object-interaction-background-selected-active);
 
-    --clr-nav-link-color: #{tokens.$cds-alias-object-interaction-color};
-    --clr-nav-link-active-color: #{tokens.$cds-alias-object-interaction-color-active};
+      --clr-nav-link-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-nav-link-active-color: #{tokens.$cds-alias-object-interaction-color-active};
+    }
   }
 }

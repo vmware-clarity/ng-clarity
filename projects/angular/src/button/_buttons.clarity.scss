@@ -7,6 +7,7 @@
 @use 'sass:meta';
 @use '../utils/mixins';
 @use 'variables.buttons' as buttons-variables;
+@use '../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @function getSassButtonColor($type: default, $property: null) {
@@ -111,6 +112,7 @@
   cds-icon,
   clr-icon {
     @include button-css-var($button-type, color);
+    @include mixins.min-equilateral(density.$clr-base-icon-size-s);
   }
 
   &:hover {
@@ -221,7 +223,7 @@
   cursor: pointer;
 
   display: inline-flex;
-  gap: tokens.$cds-global-space-5;
+  gap: buttons-variables.$clr-btn-gap;
   align-items: center;
   place-content: center;
 
@@ -259,7 +261,7 @@
 
     .clr-loading-btn-content {
       display: flex;
-      gap: tokens.$cds-global-space-5;
+      gap: buttons-variables.$clr-btn-gap;
       align-items: center;
     }
   }
@@ -471,7 +473,7 @@
     label {
       @include btn-appearance();
 
-      padding: 0 tokens.$cds-global-space-6;
+      padding: 0 density.$clr-base-horizontal-offset-l;
     }
 
     &.disabled label,

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,6 +15,7 @@ import { ClrModalModule } from '../../modal/modal.module';
 import { FocusService } from '../../utils/focus/focus.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownItem } from './dropdown-item';
 import { ClrDropdownTrigger } from './dropdown-trigger';
@@ -228,13 +229,13 @@ export default function (): void {
       fixture.detectChanges();
 
       const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
-      expect(document.activeElement).toBe(dropdownItem);
+      expectActiveElementToBe(dropdownItem);
 
       dropdownItem.click();
       tick();
       fixture.detectChanges();
 
-      expect(document.activeElement).toBe(dropdownToggle);
+      expectActiveElementToBe(dropdownToggle);
     }));
 
     it('does not put focus back on the trigger when a dropdown item is clicked if [clrCloseMenuOnItemClick] is false', fakeAsync(() => {
@@ -249,13 +250,13 @@ export default function (): void {
       fixture.detectChanges();
 
       const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
-      expect(document.activeElement).toBe(dropdownItem);
+      expectActiveElementToBe(dropdownItem);
 
       dropdownItem.click();
       tick();
       fixture.detectChanges();
 
-      expect(document.activeElement).toBe(dropdownItem);
+      expectActiveElementToBe(dropdownItem);
     }));
 
     it('declares a FocusService provider', () => {
@@ -293,21 +294,19 @@ export default function (): void {
       await clickButton(fixture.componentInstance.dropdownTriggerButtonElementRef);
 
       // The dropdown item button should be focused.
-      expect(document.activeElement).toBe(fixture.componentInstance.dropdownItemButtonElementRef.nativeElement);
+      expectActiveElementToBe(fixture.componentInstance.dropdownItemButtonElementRef.nativeElement);
 
       // Click the dropdown item button.
       await clickButton(fixture.componentInstance.dropdownItemButtonElementRef);
 
       // The modal title should be focused.
-      expect(document.activeElement).toBe(
-        fixture.componentInstance.elementRef.nativeElement.querySelector('.modal-title-wrapper')
-      );
+      expectActiveElementToBe(fixture.componentInstance.elementRef.nativeElement.querySelector('.modal-title-wrapper'));
 
       // Click the close modal button.
       await clickButton(fixture.componentInstance.modalCloseButtonElementRef);
 
       // Focus should be returned to the dropdown trigger. (This expectation tests behavior implemented in the dropdown AND modal components.)
-      expect(document.activeElement).toBe(fixture.componentInstance.dropdownTriggerButtonElementRef.nativeElement);
+      expectActiveElementToBe(fixture.componentInstance.dropdownTriggerButtonElementRef.nativeElement);
     });
 
     async function clickButton(buttonElementRef: ElementRef<HTMLButtonElement>) {
@@ -315,6 +314,33 @@ export default function (): void {
       fixture.detectChanges();
       await fixture.whenStable();
     }
+  });
+
+  describe('Dropdown in shadow DOM', () => {
+    let fixture: ComponentFixture<TestShadowDomComponent>;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({ imports: [ClrDropdownModule], declarations: [TestShadowDomComponent] });
+
+      fixture = TestBed.createComponent(TestShadowDomComponent);
+      fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      fixture.destroy();
+    });
+
+    it('API toggles the menu when clicked on the trigger', () => {
+      expect(fixture.componentInstance.dropdownInstance.toggleService.open).toBeFalse();
+
+      // click the dropdown toggle to open the menu
+      fixture.componentInstance.dropdownTriggerInstance.onDropdownTriggerClick(new MouseEvent('click'));
+      expect(fixture.componentInstance.dropdownInstance.toggleService.open).toBeTrue();
+
+      // click the dropdown toggle again to close the menu
+      fixture.componentInstance.dropdownTriggerInstance.onDropdownTriggerClick(new MouseEvent('click'));
+      expect(fixture.componentInstance.dropdownInstance.toggleService.open).toBeFalse();
+    });
   });
 }
 
@@ -356,6 +382,35 @@ class TestComponent {
   customClickHandler() {
     this.customClickHandlerDone = true;
   }
+}
+
+@Component({
+  template: `
+    <clr-dropdown [clrCloseMenuOnItemClick]="menuClosable">
+      <button class="btn btn-primary" type="button" clrDropdownTrigger>
+        Dropdown
+        <cds-icon shape="angle" direction="down"></cds-icon>
+      </button>
+      <clr-dropdown-menu *clrIfOpen>
+        <label class="dropdown-header">Header</label>
+        <a href="javascript://" clrDropdownItem>Item</a>
+        <a href="javascript://" clrDisabled="true" clrDropdownItem>Disabled Item</a>
+        <clr-dropdown>
+          <button clrDropdownTrigger class="nested">Nested</button>
+          <clr-dropdown-menu *clrIfOpen>
+            <a href="javascript://" clrDropdownItem class="nested-item">Foo</a>
+          </clr-dropdown-menu>
+        </clr-dropdown>
+      </clr-dropdown-menu>
+    </clr-dropdown>
+  `,
+  encapsulation: ViewEncapsulation.ShadowDom,
+})
+class TestShadowDomComponent {
+  @ViewChild(ClrDropdown) dropdownInstance: ClrDropdown;
+  @ViewChild(ClrDropdownTrigger) dropdownTriggerInstance: ClrDropdownTrigger;
+
+  menuClosable = true;
 }
 
 @Component({

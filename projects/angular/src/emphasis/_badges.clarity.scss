@@ -7,6 +7,7 @@
 @use 'sass:meta';
 @use '../utils/mixins';
 @use 'variables.badges' as badges-variables;
+@use '../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 @include meta.load-css('properties.badges');
 
@@ -39,12 +40,12 @@
     justify-content: center;
     min-width: #{tokens.$cds-global-space-7};
     background-color: badges-variables.$clr-badge-background-color;
-    height: #{tokens.$cds-global-space-7};
-    border-radius: calc(2 * #{tokens.$cds-alias-object-border-radius-100});
+    height: density.$clr-base-row-height-xs;
+    border-radius: density.$clr-base-border-radius-xl;
     @include mixins.generate-typography-token('CAPTION-SM-10');
 
-    padding: #{tokens.$cds-global-space-2} #{tokens.$cds-global-space-3};
-    margin-right: #{tokens.$cds-global-space-4};
+    padding: 0 density.$clr-base-horizontal-offset-xs;
+    margin-right: density.$clr-base-horizontal-offset-s;
     white-space: nowrap;
     text-align: center;
     color: badges-variables.$clr-badge-color;
@@ -69,17 +70,5 @@
     @include generateStatusBadgeStyles(success);
     @include generateStatusBadgeStyles(danger);
     @include generateStatusBadgeStyles(warning);
-  }
-
-  @include mixins.fixForIE10AndUp {
-    .badge {
-      padding: #{tokens.$cds-global-space-2} #{mixins.baselinePx(3)} 0;
-    }
-  }
-
-  @include mixins.fixForMsEdge {
-    .badge {
-      padding: #{tokens.$cds-global-space-2} #{mixins.baselinePx(3)} 0;
-    }
   }
 }

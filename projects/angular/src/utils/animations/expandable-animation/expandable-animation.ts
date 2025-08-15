@@ -5,10 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, HostBinding, HostListener, Input, Renderer2 } from '@angular/core';
+import { AnimationEvent, transition, trigger, useAnimation } from '@angular/animations';
+import { Component, HostBinding, HostListener, Input } from '@angular/core';
 
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
+import { defaultExpandAnimation } from '../constants';
+import { BaseExpandableAnimation } from './base-expandable-animation';
 
 @Component({
   selector: 'clr-expandable-animation',
@@ -20,22 +22,11 @@ import { DomAdapter } from '../../dom-adapter/dom-adapter';
       }
     `,
   ],
-  animations: [
-    trigger('expandAnimation', [
-      transition('true <=> false', [
-        style({ height: '{{startHeight}}px' }),
-        animate('0.2s ease-in-out', style({ height: '*' })),
-      ]),
-    ]),
-  ],
+  animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])],
   providers: [DomAdapter],
 })
-export class ClrExpandableAnimation {
+export class ClrExpandableAnimation extends BaseExpandableAnimation {
   @Input() clrExpandTrigger = false;
-
-  startHeight = 0;
-
-  constructor(private element: ElementRef<HTMLElement>, private domAdapter: DomAdapter, private renderer: Renderer2) {}
 
   @HostBinding('@expandAnimation')
   get expandAnimation() {
@@ -45,22 +36,13 @@ export class ClrExpandableAnimation {
   @HostListener('@expandAnimation.start', ['$event'])
   animationStart(event: AnimationEvent) {
     if (event.fromState !== 'void') {
-      this.renderer.setStyle(this.element.nativeElement, 'overflow', 'hidden');
+      this.initAnimationEffects();
     }
   }
   @HostListener('@expandAnimation.done', ['$event'])
   animationDone(event: AnimationEvent) {
     if (event.fromState !== 'void') {
-      this.renderer.removeStyle(this.element.nativeElement, 'overflow');
-
-      // A "safe" auto-update of the height ensuring basic OOTB user experience .
-      // Prone to small jumps in initial animation height if data was changed in the meantime, window was resized, etc.
-      // For optimal behavior call manually updateStartHeight() from the parent component before initiating the update.
-      this.updateStartHeight();
+      this.cleanupAnimationEffects();
     }
-  }
-
-  updateStartHeight() {
-    this.startHeight = this.domAdapter.computedHeight(this.element.nativeElement) || 0;
   }
 }

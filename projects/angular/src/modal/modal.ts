@@ -8,6 +8,7 @@
 import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
 import {
   Component,
+  ContentChild,
   ElementRef,
   EventEmitter,
   HostBinding,
@@ -16,6 +17,7 @@ import {
   OnDestroy,
   Output,
   SimpleChange,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
 
@@ -50,6 +52,8 @@ import { ModalStackService } from './modal-stack.service';
       ]),
       transition('* => fadeLeft', [style({ opacity: 0, transform: 'translate(25%, 0)' }), animate('0.2s ease-in-out')]),
       transition('fadeLeft => *', [animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(25%, 0)' }))]),
+      transition('* => fadeUp', [style({ opacity: 0, transform: 'translate(0, 50%)' }), animate('0.2s ease-in-out')]),
+      transition('fadeUp => *', [animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(0, 50%)' }))]),
     ]),
     trigger('fade', [
       transition('void => *', [style({ opacity: 0 }), animate('0.2s ease-in-out', style({ opacity: 0.85 }))]),
@@ -77,6 +81,9 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   // presently this is only used by inline wizards
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
+
+  // Provide raw modal content. This is used by the wizard so that the same template can be rendered with and without a modal.
+  @ContentChild('clrInternalModalContentTemplate') protected readonly modalContentTemplate: TemplateRef<any>;
 
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
 

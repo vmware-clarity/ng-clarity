@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-type ScreenshotOptionsT = {
-  [key: string]: { fullPageScreenshot: boolean };
+type ScreenshotOptions = {
+  [componentOrStoryName: string]: { fullPageScreenshot?: boolean; viewport?: { width: number; height: number } };
 };
 
 /**
@@ -23,12 +23,21 @@ type ScreenshotOptionsT = {
  *
  * If a component name is used, all stories under that component name will use the options specified.
  */
-export const ScreenshotOptions: ScreenshotOptionsT = {
+export const screenshotOptions: ScreenshotOptions = {
   dropdown: {
     fullPageScreenshot: true,
   },
   'headers-static--header-static': {
     fullPageScreenshot: true,
+  },
+  'combobox--loading': {
+    fullPageScreenshot: true,
+  },
+  'combobox--no-results': {
+    fullPageScreenshot: true,
+  },
+  'header--collapsed': {
+    viewport: { width: 500, height: 300 },
   },
   'modal--open-small-modal': {
     fullPageScreenshot: true,
@@ -55,6 +64,30 @@ export const ScreenshotOptions: ScreenshotOptionsT = {
     fullPageScreenshot: true,
   },
   wizard: {
+    fullPageScreenshot: true,
+  },
+  'opened--datepicker': {
+    fullPageScreenshot: true,
+  },
+  'opened--default-date': {
+    fullPageScreenshot: true,
+  },
+  'opened--min-date': {
+    fullPageScreenshot: true,
+  },
+  'opened--max-date': {
+    fullPageScreenshot: true,
+  },
+  'opened--action-buttons': {
+    fullPageScreenshot: true,
+  },
+  'opened--month-view': {
+    fullPageScreenshot: true,
+  },
+  'opened--year-view': {
+    fullPageScreenshot: true,
+  },
+  'opened--predefined-date-ranges-open': {
     fullPageScreenshot: true,
   },
 };

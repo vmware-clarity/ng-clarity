@@ -245,7 +245,7 @@
       margin-bottom: variables.$clr-global-typography-margin-bottom;
 
       @include mixins.generate-typography-body-token(
-        'CAPTION-LG-11',
+        'CAPTION-LG-11-STD',
         (
           color: variables.$clr-p6-color,
           font-weight: variables.$clr-p6-font-weight,

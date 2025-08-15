@@ -180,3 +180,11 @@ export function animationFrameTick(fixture?: ComponentFixture<any>) {
  * would be nice to be able to pass karma/jasmine a flag to turn this off and on.
  */
 // reportSlowSpecs();
+
+export function expectActiveElementToBe(element: Element, failOutput = null): void {
+  expect(document.activeElement).toBe(element, failOutput);
+}
+
+export function expectActiveElementNotToBe(element: Element, failOutput = null): void {
+  expect(document.activeElement).not.toBe(element, failOutput);
+}

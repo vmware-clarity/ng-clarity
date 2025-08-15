@@ -1,12 +1,13 @@
 <clr-modal
   [clrModalOpen]="_open"
-  (clrModalOpenChange)="openChange.emit($event)"
+  (clrModalOpenChange)="handleModalOpen($event)"
   [clrModalCloseButtonAriaLabel]="closeButtonAriaLabel"
   [clrModalSize]="size"
   [clrModalSkipAnimation]="skipAnimation"
   [clrModalStaticBackdrop]="staticBackdrop"
   [clrModalLabelledById]="labelledById"
   [clrModalPreventClose]="preventClose"
+  [clrModalClosable]="closable"
   (clrModalAlternateClose)="altClose.emit($event)"
   [clrModalOverrideScrollService]="true"
 >

@@ -13,6 +13,7 @@ import { LayoutAllDemo } from './layout-all';
 import { LayoutNoSubnavDemo } from './layout-no-subnav';
 import { LayoutNoVerticalNavDemo } from './layout-no-vertical-nav';
 import { LayoutOnlyHeaderDemo } from './layout-only-header';
+import { LayoutSizeDemo } from './layout-size';
 import { LayoutSubnavPrimaryDemo } from './layout-subnav-primary';
 import { LayoutVerticalNavPrimaryDemo } from './layout-vertical-nav-primary';
 import { LayoutDemo } from './layout.demo';
@@ -30,6 +31,7 @@ const ROUTES: Routes = [
       { path: 'layout-subnav-primary', component: LayoutSubnavPrimaryDemo },
       { path: 'layout-vertical-nav-primary', component: LayoutVerticalNavPrimaryDemo },
       { path: 'layout-additional-sections', component: LayoutAdditionalSectionsDemo },
+      { path: 'layout-size', component: LayoutSizeDemo },
     ],
   },
 ];

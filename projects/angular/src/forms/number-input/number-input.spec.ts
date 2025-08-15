@@ -67,7 +67,7 @@ export default function (): void {
 
 function inputSpec(description, testContainer, testControl, testComponent) {
   describe('Input specific value change tests ' + description, () => {
-    let control, fixture;
+    let control, fixture, clarityDirective: ClrNumberInput;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -76,7 +76,12 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       });
       fixture = TestBed.createComponent(testComponent);
       control = fixture.debugElement.query(By.directive(testControl));
+      clarityDirective = control.injector.get(testControl);
       fixture.detectChanges();
+      spyOn(clarityDirective, 'stepUp').and.callThrough();
+      spyOn(clarityDirective, 'stepDown').and.callThrough();
+      spyOn(control.nativeElement, 'onblur').and.callThrough();
+      spyOn(control.nativeElement, 'onchange').and.callThrough();
     });
 
     it('should handle valueChanges calls', () => {
@@ -100,6 +105,40 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       control.nativeElement.dispatchEvent(new Event('blur'));
       fixture.detectChanges();
       expect(valueChanges).toBe(1);
+    });
+    it('should increase or decrease value on step buttons click', () => {
+      const inputGroup = control.nativeElement.closest('.clr-input-group');
+      const stepDownButton = inputGroup.querySelector('button:has(cds-icon[shape="minus"])');
+      const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
+      stepUpButton.click();
+      fixture.detectChanges();
+
+      expect(control.nativeElement.value).toBe('1');
+      expect(clarityDirective.stepUp).toHaveBeenCalled();
+
+      stepDownButton.click();
+      fixture.detectChanges();
+
+      expect(control.nativeElement.value).toBe('0');
+      expect(clarityDirective.stepDown).toHaveBeenCalled();
+    });
+
+    it('should trigger blur after clicking step buttons and focusing different element', () => {
+      const inputGroup = control.nativeElement.closest('.clr-input-group');
+      const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
+      stepUpButton.focus();
+      stepUpButton.blur();
+      fixture.detectChanges();
+
+      expect(control.nativeElement.onblur).toHaveBeenCalled();
+    });
+    it('should trigger change after clicking step buttons', () => {
+      const inputGroup = control.nativeElement.closest('.clr-input-group');
+      const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
+      stepUpButton.click();
+      fixture.detectChanges();
+
+      expect(control.nativeElement.onchange).toHaveBeenCalled();
     });
   });
 }

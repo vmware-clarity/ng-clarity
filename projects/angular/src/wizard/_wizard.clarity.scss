@@ -14,7 +14,9 @@
 @use 'sass:meta';
 @use '../modal/variables.modal' as modal-variables;
 @use '../utils/mixins';
+@use '../utils/variables/variables.global';
 @use 'variables.wizard' as wizard-variables;
+@use '../utils/variables/variables.density' as density;
 
 @use '@cds/core/tokens/tokens.scss';
 
@@ -35,7 +37,7 @@
     .modal-content {
       border-radius: 0 wizard-variables.$clr-wizard-border-radius wizard-variables.$clr-wizard-border-radius 0;
       box-shadow: none;
-      padding: wizard-variables.$clr-wizard-default-space;
+      padding: 0;
       flex: 2 2 auto;
       width: 66%;
       height: initial;
@@ -43,13 +45,13 @@
       display: flex;
       align-items: flex-start;
       flex-direction: column;
-      gap: wizard-variables.$clr-wizard-default-space;
     }
 
     .modal-header--accessible {
       flex: 0 0 auto;
       width: 100%;
-      padding: 0;
+      gap: density.$clr-base-gap-s;
+      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space 0;
     }
 
     .modal-title {
@@ -63,6 +65,7 @@
       flex: 1 1 auto;
       color: wizard-variables.$clr-wizard-main-text-color;
       width: 100%;
+      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space;
     }
 
     .modal-footer {
@@ -72,7 +75,8 @@
       height: wizard-variables.$clr-wizard-footer-height;
       min-height: wizard-variables.$clr-wizard-footer-height;
       max-height: wizard-variables.$clr-wizard-footer-height;
-      padding: 0;
+      padding: wizard-variables.$clr-wizard-footer-vertical-space wizard-variables.$clr-wizard-horizontal-space;
+      border-top: variables.$clr-global-borderwidth solid wizard-variables.$clr-wizard-stepnav-border-color;
     }
 
     .clr-wizard-btn {
@@ -93,10 +97,9 @@
     }
 
     .modal-header-actions-wrapper {
-      flex: 1 0 auto;
-      height: wizard-variables.$clr-wizard-default-space;
-      padding-left: tokens.$cds-global-space-6;
-      padding-right: tokens.$cds-global-space-3;
+      height: density.$clr-base-row-height-s;
+      padding-left: density.$clr-base-horizontal-offset-l;
+      padding-right: density.$clr-base-horizontal-offset-xs;
     }
 
     .clr-wizard-header-action-wrapper {
@@ -104,13 +107,12 @@
     }
 
     .clr-wizard-header-action {
-      @include mixins.equilateral(wizard-variables.$clr-wizard-default-space);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-l);
       border: 0;
       padding: 0;
       margin: 0;
-      min-width: wizard-variables.$clr-wizard-default-space;
-      line-height: wizard-variables.$clr-wizard-default-space;
-      font-size: wizard-variables.$clr-wizard-default-space;
+      line-height: density.$clr-base-icon-size-l;
+      font-size: density.$clr-base-icon-size-l;
       color: wizard-variables.$clr-wizard-header-action-color;
       transition: color linear 0.2s;
 
@@ -126,7 +128,7 @@
 
       cds-icon,
       clr-icon {
-        @include mixins.equilateral(wizard-variables.$clr-wizard-default-space);
+        @include mixins.equilateral(density.$clr-base-icon-size-l);
       }
     }
 
@@ -139,22 +141,23 @@
       flex-direction: column;
       order: -1;
       overflow: hidden;
-      overflow-y: auto;
-      border-right: var(--clr-global-borderwidth) solid wizard-variables.$clr-wizard-stepnav-border-color;
+      border-right: variables.$clr-global-borderwidth solid wizard-variables.$clr-wizard-stepnav-border-color;
       background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
       border-radius: wizard-variables.$clr-wizard-border-radius 0 0 wizard-variables.$clr-wizard-border-radius;
     }
 
     .clr-wizard-stepnav {
-      padding: 0 0 wizard-variables.$clr-wizard-default-space wizard-variables.$clr-wizard-default-space;
+      padding-left: wizard-variables.$clr-wizard-horizontal-space;
       display: block;
       color: wizard-variables.$clr-wizard-stepnav-text;
       width: 100%;
       flex: 1 1 auto;
+      overflow-y: auto;
     }
 
     .clr-wizard-stepnav-list {
-      display: block;
+      display: flex;
+      flex-direction: column;
       box-shadow: none;
       counter-reset: a;
       white-space: nowrap;
@@ -162,14 +165,13 @@
       list-style-type: none;
       margin: 0;
       width: 100%;
+      gap: tokens.$cds-global-space-1;
     }
 
     .clr-wizard-stepnav-item {
       display: block;
       border-left: wizard-variables.$clr-wizard-stepnav-border-size solid
         wizard-variables.$clr-wizard-stepnav-item-border-color;
-
-      margin-bottom: tokens.$cds-global-space-1;
       color: wizard-variables.$clr-wizard-stepnav-text;
       background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
 
@@ -228,6 +230,10 @@
         border-color: wizard-variables.$clr-wizard-stepnav-item-error-border-color;
         transition: border-color 0.2s ease-in;
 
+        &.active:not(:active):not(:hover) {
+          background-color: wizard-variables.$clr-wizard-stepnav-selected-error-bgcolor;
+        }
+
         .clr-wizard-stepnav-link-icon cds-icon {
           --color: #{wizard-variables.$clr-wizard-stepnav-link-error-icon-color};
         }
@@ -247,9 +253,9 @@
       text-align: left;
       text-transform: none;
       margin: 0;
-      padding: tokens.$cds-global-space-5;
+      gap: density.$clr-base-gap-s;
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
       height: auto;
-      min-height: tokens.$cds-global-space-12;
       max-width: inherit;
 
       @include mixins.generate-typography-token('BODY-14-MD-STD');
@@ -260,7 +266,11 @@
 
       .clr-wizard-stepnav-link-icon,
       .clr-wizard-stepnav-link-page-number {
-        width: tokens.$cds-global-space-7;
+        min-width: density.$clr-base-icon-size-s;
+      }
+
+      .clr-wizard-stepnav-link-page-number {
+        text-align: center;
       }
     }
 
@@ -268,7 +278,7 @@
       margin-top: 0;
       flex: 0 0 auto;
       color: wizard-variables.$clr-wizard-title-text;
-      padding: wizard-variables.$clr-wizard-default-space;
+      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space;
       @include mixins.generate-typography-token('SECTION-20-STD');
     }
 
@@ -298,7 +308,7 @@
       flex-direction: row;
       flex-wrap: nowrap;
       justify-content: flex-end;
-      gap: tokens.$cds-global-space-7;
+      gap: density.$clr-base-gap-l;
     }
 
     .clr-wizard-btn-wrapper {
@@ -506,7 +516,23 @@
     }
 
     .clr-wizard-stepnav {
-      padding-top: tokens.$cds-global-space-9;
+      padding-top: density.$clr-base-vertical-offset-2xl;
+    }
+  }
+
+  .wizard-in-page {
+    // extra specificity is needed here to override the following default style without using !important:
+    // .main-container .content-container .content-area > :first-child { margin-top: 0px; }
+    @at-root .main-container .content-container .content-area &.wizard-in-page--fill-content-area {
+      display: block;
+      height: calc(100% + #{variables.$clr-content-area-padding-top} + #{variables.$clr-content-area-padding-bottom});
+
+      // offset content area padding
+      margin: -#{variables.$clr-content-area-padding-top} -#{variables.$clr-content-area-padding-right} -#{variables.$clr-content-area-padding-bottom} -#{variables.$clr-content-area-padding-left};
+    }
+
+    .clr-wizard-footer-buttons-wrapper {
+      justify-content: flex-start;
     }
   }
 

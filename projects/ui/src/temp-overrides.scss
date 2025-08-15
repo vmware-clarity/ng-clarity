@@ -5,13 +5,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '@cds/core/tokens/tokens.scss';
+@use '../../angular/src/utils/mixins';
+@use '../../angular/src/utils/variables/variables.density' as density;
 
 :root {
+  &,
   [cds-theme] {
     // font family override
     --cds-global-typography-font-family: var(--clr-metropolis-font-family);
+    --cds-global-typography-header-font-family: var(--clr-metropolis-font-family);
 
     --cds-alias-utility-gray: #{tokens.$cds-global-color-construction-600};
+
+    --cds-alias-typography-link-color: #{tokens.$cds-global-color-blue-800};
+    --cds-alias-typography-link-color-hover: #{tokens.$cds-global-color-blue-900};
+    --cds-alias-typography-link-color-visited: #{tokens.$cds-global-color-violet-700};
+    --cds-alias-typography-link-color-visited-hover: #{tokens.$cds-global-color-violet-1000};
+    --cds-alias-typography-link-color-active: #{tokens.$cds-global-color-red-700};
 
     --cds-alias-object-container-backdrop-background: hsla(0, 0%, 100%, 0.6);
     --cds-alias-object-interaction-background-hover: #{tokens.$cds-global-color-construction-50};
@@ -57,10 +67,62 @@
     --cds-alias-object-container-background-inverse: #{tokens.$cds-global-color-construction-600};
     --cds-alias-object-container-background-inverse-tint: #{tokens.$cds-global-color-construction-800};
     --cds-alias-object-container-background-inverse-shade: #{tokens.$cds-global-color-construction-500};
+
+    // Density layout spacing overrides
+    --δ1: #{density.$clr-base-layout-space-3xs};
+    --δ2: #{density.$clr-base-layout-space-2xs};
+    --δ3: #{density.$clr-base-layout-space-xs};
+    --δ4: #{density.$clr-base-layout-space-s};
+    --δ5: #{density.$clr-base-layout-space-m};
+    --δ6: #{density.$clr-base-layout-space-l};
+    --δ7: #{density.$clr-base-layout-space-xl};
+    --δ8: #{density.$clr-base-layout-space-2xl};
+    --δ9: #{density.$clr-base-layout-space-3xl};
+
+    --cds-global-layout-space-xxxs: var(--δ1);
+    --cds-global-layout-space-xxs: var(--δ2);
+    --cds-global-layout-space-xs: var(--δ3);
+    --cds-global-layout-space-sm: var(--δ4);
+    --cds-global-layout-space-md: var(--δ5);
+    --cds-global-layout-space-lg: var(--δ6);
+    --cds-global-layout-space-xl: var(--δ7);
+    --cds-global-layout-space-xxl: var(--δ8);
+    --cds-global-layout-space-xxxl: var(--δ9);
+
+    // Density cds text spacing overrides
+    --cds-global-typography-body-font-size: #{density.$clr-base-typography-font-size-default};
+    --cds-global-typography-body-line-height: #{density.$clr-base-typography-line-height-20};
+    --cds-global-typography-display-font-size: #{density.$clr-base-typography-font-size-display};
+    --cds-global-typography-display-line-height: #{density.$clr-base-typography-line-height-44};
+    --cds-global-typography-heading-font-size: #{density.$clr-base-typography-font-size-heading};
+    --cds-global-typography-heading-line-height: #{density.$clr-base-typography-line-height-32};
+    --cds-global-typography-headline-font-size: #{density.$clr-base-typography-font-size-headline};
+    --cds-global-typography-headline-line-height: #{density.$clr-base-typography-line-height-36};
+    --cds-global-typography-title-font-size: #{density.$clr-base-typography-font-size-heading};
+    --cds-global-typography-title-line-height: #{density.$clr-base-typography-line-height-32};
+    --cds-global-typography-section-font-size: #{density.$clr-base-typography-font-size-section};
+    --cds-global-typography-section-line-height: #{density.$clr-base-typography-line-height-24};
+    --cds-global-typography-subsection-font-size: #{density.$clr-base-typography-font-size-sub-section};
+    --cds-global-typography-subsection-line-height: #{density.$clr-base-typography-line-height-24};
+    --cds-global-typography-message-font-size: #{density.$clr-base-typography-font-size-sub-section};
+    --cds-global-typography-message-line-height: #{density.$clr-base-typography-line-height-24};
+    --cds-global-typography-secondary-font-size: #{density.$clr-base-typography-font-size-inline};
+    --cds-global-typography-secondary-line-height: #{density.$clr-base-typography-line-height-16};
+    --cds-global-typography-caption-font-size: #{density.$clr-base-typography-font-size-caption};
+    --cds-global-typography-caption-line-height: #{density.$clr-base-typography-line-height-16};
+    --cds-global-typography-smallcaption-font-size: #{density.$clr-base-typography-font-size-caption-small};
+    --cds-global-typography-smallcaption-line-height: #{density.$clr-base-typography-line-height-12};
   }
 
   [cds-theme~='dark'] {
     --cds-alias-utility-gray: #{tokens.$cds-global-color-construction-300};
+
+    // no change to the original dark tokens, but needed for correcting the override
+    --cds-alias-typography-link-color: #{tokens.$cds-global-color-blue-400};
+    --cds-alias-typography-link-color-hover: #{tokens.$cds-global-color-blue-200};
+    --cds-alias-typography-link-color-visited: #{tokens.$cds-global-color-violet-300};
+    --cds-alias-typography-link-color-visited-hover: #{tokens.$cds-global-color-violet-200};
+    --cds-alias-typography-link-color-active: #{tokens.$cds-global-color-red-600};
 
     --cds-alias-status-warning-dark: #{tokens.$cds-global-color-ochre-600};
     --cds-alias-status-warning-tint: #{tokens.$cds-global-color-ochre-900};
@@ -99,4 +161,36 @@
     --cds-alias-object-container-background-inverse-tint: #{tokens.$cds-global-color-construction-100};
     --cds-alias-object-container-background-inverse-shade: #{tokens.$cds-global-color-construction-300};
   }
+}
+
+cds-icon[size*='xs'] {
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-xs});
+}
+
+cds-icon[size*='sm'] {
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-s});
+}
+
+cds-icon[size*='md'] {
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-m});
+}
+
+cds-icon[size*='lg'] {
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-l});
+}
+
+cds-icon[size*='xl'] {
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-xl});
+}
+
+cds-icon[size*='xxl'] {
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-2xl});
+}
+
+cds-icon[size*='3xl'] {
+  @include mixins.min-equilateral(density.$clr-base-icon-size-3xl);
+}
+
+cds-icon[size*='4xl'] {
+  @include mixins.min-equilateral(density.$clr-base-icon-size-4xl);
 }

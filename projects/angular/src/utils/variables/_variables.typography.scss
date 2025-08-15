@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
 
 // Usage: ../typography/_typography.clarity.scss
 $clr-fontSkipBase64: false !default;
@@ -22,7 +22,7 @@ $clr-font-weight-semibold: var(--clr-font-weight-semibold) !default;
 $clr-font-weight-bold: var(--clr-font-weight-bold) !default;
 $clr-font-weight-extrabold: var(--clr-font-weight-extrabold) !default;
 
-$clr-global-typography-margin-top: #{tokens.$cds-global-space-9} !default;
+$clr-global-typography-margin-top: #{density.$clr-base-vertical-offset-2xl} !default;
 $clr-global-typography-margin-bottom: 0 !default;
 
 // Header styles
@@ -130,7 +130,7 @@ $clr-p5-letter-spacing: var(--clr-p5-letter-spacing) !default;
 $clr-p5-line-height: var(--clr-p5-line-height) !default;
 
 //P6 - card link btns, form_subtext, table_header
-//'CAPTION-LG-11'
+//'CAPTION-LG-11-STD'
 $clr-p6-color: var(--clr-p6-color) !default;
 $clr-p6-font-weight: var(--clr-p6-font-weight) !default;
 $clr-p6-font-size: var(--clr-p6-font-size) !default;

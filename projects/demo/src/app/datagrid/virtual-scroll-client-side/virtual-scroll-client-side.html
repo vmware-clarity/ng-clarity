@@ -39,8 +39,10 @@
   #dynamicRowsDatagrid
   [(clrDgSelected)]="selectedRows"
   *ngIf="{ rows: rows | async }; let data"
+  [clrDgItemsTrackBy]="trackItemById"
+  [clrDgCustomSelectAllEnabled]="true"
+  (clrDgCustomSelectAll)="toggleSelectAllRows($event)"
   style="height: 32rem"
-  class="datagrid-compact"
 >
   <clr-dg-column *ngFor="let col of cols trackBy: colByIndex">
     <ng-container>{{col.name}}</ng-container>
@@ -128,6 +130,7 @@
   #usersDatagrid
   *ngIf="{ users: users | async }; let data"
   [(clrDgSelected)]="selectedUsers"
+  [clrDgItemsTrackBy]="trackItemById"
   class="datagrid-compact"
   style="height: 30rem"
 >

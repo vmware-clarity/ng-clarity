@@ -8,6 +8,7 @@
 @use '../../utils/mixins';
 @use 'variables.tabs' as tabs-variables;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
 @include meta.load-css('properties.tabs');
 
 // TODO: Fix this typo
@@ -47,15 +48,12 @@
     position: relative;
 
     .dropdown-menu {
-      padding: tokens.$cds-global-space-0;
+      padding: density.$clr-base-offset-0;
       box-shadow: tokens.$cds-alias-object-shadow-100;
       overflow: hidden;
     }
 
     .btn {
-      line-height: mixins.baselinePx(20);
-      font-size: tokens.$cds-alias-typography-font-size-4;
-      padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6;
       border-radius: tokens.$cds-global-space-0;
     }
   }
@@ -80,18 +78,18 @@
       box-shadow: none;
       flex-direction: column;
       align-items: stretch;
-      margin-right: tokens.$cds-global-space-9;
+      margin-right: density.$clr-base-horizontal-offset-2xl;
       overflow: auto;
       flex-shrink: 0;
-      padding: tokens.$cds-global-space-3;
+      padding: density.$clr-base-vertical-offset-xs density.$clr-base-horizontal-offset-xs;
       width: mixins.baselinePx(240);
       min-width: tokens.$cds-global-space-12;
-
-      gap: tokens.$cds-global-space-5;
+      gap: density.$clr-base-gap-s;
 
       .nav-link {
         text-align: left;
-        padding: 0 tokens.$cds-global-space-6;
+        padding-left: density.$clr-base-horizontal-offset-l;
+        justify-content: start;
         border: none;
         flex-shrink: 0;
         margin-top: 0;
@@ -99,7 +97,7 @@
         width: 100%;
 
         &.btn {
-          margin-bottom: tokens.$cds-global-space-1;
+          margin-bottom: density.$clr-base-offset-0;
         }
 
         &.active,
@@ -113,6 +111,11 @@
   .tabs-actions {
     display: inline-flex;
     width: 100%;
+    height: 100%;
+
+    button {
+      margin: 0;
+    }
 
     &[position~='left'] {
       justify-content: start;

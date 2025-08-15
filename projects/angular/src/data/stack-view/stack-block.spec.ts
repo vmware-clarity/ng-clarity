@@ -185,13 +185,17 @@ export default function (): void {
       fixture = TestBed.createComponent(DynamicBlock);
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector('.stack-block-caret')).not.toBeNull();
+      expect(
+        fixture.nativeElement.querySelector('.stack-block-expandable > .stack-block-label .stack-block-caret')
+      ).not.toBeNull();
 
       getBlockInstance(fixture).expandable = false;
 
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector('.stack-block-caret')).toBeNull();
+      expect(
+        fixture.nativeElement.querySelector('.stack-block-expandable > .stack-block-label .stack-block-caret')
+      ).toBeNull();
     });
 
     it('adds a unique id to the label', () => {

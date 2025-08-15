@@ -67,6 +67,11 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     this.optionService.displayField = field;
   }
 
+  get hasResults() {
+    // explicity return `undefined` instead of `false` if the answer is not known
+    return this.filteredItems ? this.filteredItems.length : undefined;
+  }
+
   ngDoCheck() {
     if (!this.differ) {
       this.differ = this.differs.find(this.filteredItems).create(this.iterableProxy.ngForTrackBy);
@@ -83,7 +88,6 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
-
   private updateItems() {
     if (!this._rawItems || this.filter === undefined || this.filter === null) {
       return;

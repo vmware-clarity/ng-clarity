@@ -7,6 +7,7 @@
 @use '../../emphasis/alert/variables.alert' as alert-variables;
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables.density' as density;
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
 
@@ -25,7 +26,9 @@
     @include forms-mixins.form-flatten-validate-text();
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+
+    @include forms-mixins.checkbox-radio-toggle-control-group-gap();
 
     .clr-control-label {
       @include forms-mixins.checkbox-radio-label-styles(
@@ -40,8 +43,7 @@
     input[type='checkbox'] {
       @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-checkbox-size);
       @extend %custom-checkbox;
-      border-radius: forms-variables.$clr-forms-checkbox-border-radius; // Style outline radius properly
-      padding: tokens.$cds-global-space-3 0;
+      padding: density.$clr-base-vertical-offset-xs 0;
 
       &:not(:disabled) {
         cursor: pointer;
@@ -169,9 +171,10 @@
   }
 
   .clr-form-compact .clr-checkbox-wrapper {
+    padding-top: 0;
+
     @include forms-mixins.form-flatten-compact-adjustments();
     @include forms-mixins.form-inline-input();
-    min-height: calc(#{forms-variables.$clr-forms-baseline} * 4);
 
     .clr-control-label {
       margin-top: 0;

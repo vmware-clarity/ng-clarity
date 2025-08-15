@@ -6,6 +6,7 @@
  */
 @use 'sass:math';
 @use 'variables.color';
+@use '../../utils/variables/variables.density' as density;
 
 /* stylelint-disable-next-line meowtec/no-px */
 $clr-baseline-px: 24px; // DEPRECATED in 3.0: no longer used in Clarity SASS
@@ -204,10 +205,10 @@ $clr_baselineRem_48: convertBaselineToBase20(1152); // 1152px
 $clr_baselineRem_52: convertBaselineToBase20(1248); // 1248px
 
 // App border radus
-$clr-global-borderradius: $clr_baselineRem_3px !default;
+$clr-global-borderradius: var(--clr-global-borderradius) !default;
 
 // App border width
-$clr-global-borderwidth: $clr_baselineRem_1px !default;
+$clr-global-borderwidth: var(--clr-global-borderwidth) !default;
 
 //13. Outline Offset
 $clr-outline-offset: -1 * $clr_baselineRem_5px;
@@ -229,10 +230,10 @@ $clr-global-error-color: variables.$clr-color-danger-800 !default;
 
 // TODO: Can any of this be grouped in a 'Layout' section?
 //5.Content Area Paddings
-$clr-content-area-padding-top: $clr_baselineRem_1 !default;
-$clr-content-area-padding-right: $clr_baselineRem_1 !default;
-$clr-content-area-padding-bottom: $clr_baselineRem_1 !default;
-$clr-content-area-padding-left: $clr_baselineRem_1 !default;
+$clr-content-area-padding-top: #{density.$clr-base-vertical-offset-2xl} !default;
+$clr-content-area-padding-right: #{density.$clr-base-horizontal-offset-2xl} !default;
+$clr-content-area-padding-bottom: #{density.$clr-base-vertical-offset-2xl} !default;
+$clr-content-area-padding-left: #{density.$clr-base-horizontal-offset-2xl} !default;
 
 // DEPRECATED?! No longer used anywhere...
 $clr-rem-1px: $clr_baselineRem_1px;
@@ -270,6 +271,7 @@ $clr-layers: (
   datalist-box: 2,
   datagrid-row: 500,
   datagrid-row-sticky: 500,
+  datagrid-row-skeleton: 501,
   datagrid-header: 501,
   datagrid-header-sticky: 502,
   datagrid-host: 590,

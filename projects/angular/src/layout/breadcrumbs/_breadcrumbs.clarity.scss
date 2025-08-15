@@ -8,7 +8,8 @@
 @use 'sass:meta';
 @use '../../utils/mixins';
 @use 'variables.breadcrumbs' as breadcrumb-variables;
-@use '@cds/core/tokens/tokens.scss';
+@use '../nav/variables.nav' as nav-variables;
+@use '../../utils/variables/variables.density' as density;
 @include meta.load-css('properties.breadcrumbs');
 
 @include mixins.exports('breadcrumbs.clarity') {
@@ -20,30 +21,38 @@
     .clr-breadcrumb-item {
       display: flex;
       align-items: center;
+      height: density.$clr-base-row-height-s;
+      color: breadcrumb-variables.$clr-breadcrumb-active-color;
       @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
 
       a {
         text-decoration: none;
         text-align: center;
-        line-height: tokens.$cds-global-space-9;
+
+        &:visited {
+          color: nav-variables.$clr-link-color;
+
+          &:hover {
+            color: nav-variables.$clr-link-hover-color;
+          }
+
+          &:active {
+            color: nav-variables.$clr-link-active-color;
+          }
+        }
       }
 
       &:not(:last-child):after {
         content: '/';
         margin: 0 breadcrumb-variables.$clr-breadcrumb-item-space;
-        color: breadcrumb-variables.$clr-breadcrumb-active-color;
       }
     }
 
-    .clr-breadcrumb-item:last-child {
-      color: breadcrumb-variables.$clr-breadcrumb-active-color;
-    }
-
     .clr-breadcrumb-expand {
+      @include mixins.min-equilateral(density.$clr-base-icon-size-l);
       margin: 0;
       padding: 0;
       gap: 0;
-      min-width: fit-content;
     }
   }
 }
