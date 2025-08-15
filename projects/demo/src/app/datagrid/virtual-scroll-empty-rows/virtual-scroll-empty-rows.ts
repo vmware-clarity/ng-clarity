@@ -25,6 +25,7 @@ import { User } from '../inventory/user';
 })
 export class DatagridVirtualScrollEmptyRowsDemo {
   userRange: ListRange | undefined;
+  showVirtualScroller = false;
 
   _totalRows = 1000;
   persistItems = true;
