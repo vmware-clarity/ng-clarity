@@ -13,27 +13,35 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('modal.properties') {
-  :root [cds-theme] {
-    --clr-modal-border-radius: #{density.$clr-base-border-radius-s};
-
-    // color
-    --clr-modal-close-color: var(--clr-close-color);
-    --clr-modal-bg-color: #{tokens.$cds-alias-object-container-background};
-    --clr-modal-content-box-shadow: #{tokens.$cds-alias-object-shadow-300};
-    --clr-modal-backdrop-color: #{tokens.$cds-alias-object-overlay-backdrop-background};
-
+  :root {
     // sizes
     --clr-modal-sm-width: #{mixins.baselinePx(288)};
     --clr-modal-md-width: #{mixins.baselinePx(576)};
     --clr-modal-lg-width: #{mixins.baselinePx(864)};
     --clr-modal-xl-width: #{mixins.baselinePx(1152)};
 
-    // title
-    --clr-modal-title-color: #{tokens.$cds-alias-typography-color-400};
-    --clr-modal-title-font-size: #{density.$clr-base-typography-font-size-section};
-    --clr-modal-title-font-family: #{variables.$clr-font}; // #{tokens.$cds-alias-typography-header-font-family};
+    --clr-modal-title-font-family: #{variables.$clr-font};
     --clr-modal-title-font-weight: #{tokens.$cds-alias-typography-section-font-weight};
-    --clr-modal-title-line-height: #{density.$clr-base-typography-line-height-24};
     --clr-modal-title-letter-spacing: #{mixins.baselinePx(-0.2)};
+
+    &,
+    & [clr-density] {
+      --clr-modal-border-radius: #{density.$clr-base-border-radius-s};
+
+      --clr-modal-title-font-size: #{density.$clr-base-typography-font-size-section};
+      --clr-modal-title-line-height: #{density.$clr-base-typography-line-height-24};
+    }
+
+    &,
+    & [cds-theme] {
+      // color
+      --clr-modal-close-color: var(--clr-close-color);
+      --clr-modal-bg-color: #{tokens.$cds-alias-object-container-background};
+      --clr-modal-content-box-shadow: #{tokens.$cds-alias-object-shadow-300};
+      --clr-modal-backdrop-color: #{tokens.$cds-alias-object-overlay-backdrop-background};
+
+      // title
+      --clr-modal-title-color: #{tokens.$cds-alias-typography-color-400};
+    }
   }
 }

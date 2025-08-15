@@ -50,6 +50,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+:root,
 :root [cds-theme] {
   --cds-global-typography-font-family: var(--clr-metropolis-font-family);
   --cds-global-typography-header-font-family: var(--clr-metropolis-font-family);

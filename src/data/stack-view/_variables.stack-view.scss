@@ -15,13 +15,6 @@ $clr-stack-view-stack-children-stack-block-border-bottom-color: var(
   --clr-stack-view-stack-children-stack-block-border-bottom-color
 ) !default;
 
-// @deprecared in v17 and will be removed in v18
-// All variables after this comment are in favor of their value in where are used
-$clr-stack-view-stack-block-label-font-size: var(--clr-stack-view-stack-block-label-font-size) !default;
-$clr-stack-view-stack-block-label-font-weight: var(--clr-stack-view-stack-block-label-font-weight) !default;
-$clr-stack-view-stack-block-label-line-height: var(--clr-stack-view-stack-block-label-line-height) !default;
-$clr-stack-view-stack-block-label-letter-spacing: var(--clr-stack-view-stack-block-label-letter-spacing) !default;
-
 // children of an expanded row
 // @deprecated in v17. in favor of using clr-stack-view-row-bg-color
 $clr-stack-view-stack-children-stack-block-label-and-content-bg-color: var(
@@ -64,8 +57,3 @@ $clr-stack-view-expandable-row-active: var(--clr-stack-view-expandable-row-activ
 $clr-stack-view-expandable-row-bg-active: var(--clr-stack-view-expandable-row-bg-active) !default;
 $clr-stack-view-expanded-row-color: $clr-stack-view-stack-block-expanded-text-color !default;
 $clr-stack-view-expanded-row-bg-color: $clr-stack-view-stack-block-expanded-bg-color !default;
-
-$clr-stack-view-row-font-size: $clr-stack-view-stack-block-label-font-size !default;
-$clr-stack-view-row-font-weight: $clr-stack-view-stack-block-label-font-weight !default;
-$clr-stack-view-row-line-height: $clr-stack-view-stack-block-label-line-height !default;
-$clr-stack-view-row-letter-spacing: $clr-stack-view-stack-block-label-letter-spacing !default;
