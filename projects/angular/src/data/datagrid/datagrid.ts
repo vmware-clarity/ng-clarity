@@ -259,7 +259,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     }
   }
 
-  get virtualScroll() {
+  get virtualScroll(): ClrDatagridVirtualScrollDirective<any> {
     return this._virtualScroll.get(0);
   }
 
@@ -286,7 +286,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         }
       }),
       this._virtualScroll.changes.subscribe(() => {
-        this.setupVirtualScroll();
+        this.toggleVirtualScrollSubscriptions();
       }),
       this.rows.changes.subscribe(() => {
         // Remove any projected rows from the displayedRows container
@@ -465,7 +465,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this.items.refresh();
   }
 
-  private setupVirtualScroll() {
+  private toggleVirtualScrollSubscriptions() {
     const hasVirtualScroll = !!this.virtualScroll;
 
     // the virtual scroll will handle the scrolling
