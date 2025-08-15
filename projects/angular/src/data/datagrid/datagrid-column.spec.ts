@@ -343,7 +343,9 @@ export default function (): void {
         const sortService = context.fixture.debugElement.query(By.directive(ClrDatagridColumn)).injector.get(Sort);
         sortService.clear();
         context.detectChanges();
-        expect(context.clarityElement.querySelector('.sort-icon')).toBeNull();
+
+        expect(arrowIcon.getAttribute('shape')).toBe('two-way-arrows');
+        expect(arrowIcon.getAttribute('direction')).toBe('left');
       });
 
       it('should add aria-hidden=true to sort-icon', function () {
@@ -473,11 +475,18 @@ export default function (): void {
         // activates column's sorting
         this.context.clarityDirective.sort();
         this.context.detectChanges();
-        expect(this.context.clarityElement.querySelector('.sort-icon')).not.toBeNull();
+
+        const sortIcon = this.context.clarityElement.querySelector('.sort-icon');
+        expect(sortIcon).not.toBeNull();
+        expect(sortIcon.getAttribute('shape')).toBe('arrow');
+        expect(sortIcon.getAttribute('direction')).toBe('up');
+
         // deactivate column's sorting by passing new test comparator
         this.context.getClarityProvider(Sort).toggle(new TestComparator());
         this.context.detectChanges();
-        expect(this.context.clarityElement.querySelector('.sort-icon')).toBeNull();
+
+        expect(sortIcon.getAttribute('shape')).toBe('two-way-arrows');
+        expect(sortIcon.getAttribute('direction')).toBe('left');
       });
     });
   });
