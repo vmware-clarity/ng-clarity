@@ -12,6 +12,33 @@ import { LinkStorybookComponent } from './link.storybook.component';
 export default {
   title: 'Link/Link',
   component: LinkStorybookComponent,
+  args: {
+    active: false,
+    hover: false,
+    visited: false,
+    visitedHover: false,
+  },
 };
 
 export const Link: StoryObj = {};
+
+export const LinkActive: StoryObj = {
+  args: {
+    active: true,
+  },
+};
+export const LinkHover: StoryObj = {
+  args: {
+    hover: true,
+  },
+};
+export const LinkVisited: StoryObj = {
+  args: {
+    visited: true,
+  },
+};
+export const LinkVisitedHover: StoryObj = {
+  args: {
+    visitedHover: true,
+  },
+};
