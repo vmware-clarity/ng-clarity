@@ -55,6 +55,7 @@ export { DatagridMainRenderer as ÇlrDatagridMainRenderer } from './render/main-
 export { DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer } from './render/header-renderer';
 export { DatagridCellRenderer as ÇlrDatagridCellRenderer } from './render/cell-renderer';
 export { DatagridRowRenderer as ÇlrDatagridRowRenderer } from './render/row-renderer';
+export { DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer } from './render/row-detail-renderer';
 export { ExpandableOompaLoompa as ÇlrExpandableOompaLoompa } from './chocolate/expandable-oompa-loompa';
 export { ActionableOompaLoompa as ÇlrActionableOompaLoompa } from './chocolate/actionable-oompa-loompa';
 export { DatagridWillyWonka as ÇlrDatagridWillyWonka } from './chocolate/datagrid-willy-wonka';

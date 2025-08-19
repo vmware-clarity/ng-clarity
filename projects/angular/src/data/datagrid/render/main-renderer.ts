@@ -26,7 +26,7 @@ import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { ClrDatagrid } from '../datagrid';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
-import { ColumnStateDiff } from '../interfaces/column-state.interface';
+import { ColumnState, ColumnStateDiff } from '../interfaces/column-state.interface';
 import { ColumnsService } from '../providers/columns.service';
 import { DetailService } from '../providers/detail.service';
 import { Items } from '../providers/items';
@@ -242,7 +242,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     });
   }
 
-  private columnStateChanged(state) {
+  private columnStateChanged(state: ColumnState) {
     // eslint-disable-next-line eqeqeq
     if (!this.headers || state.columnIndex == null) {
       return;
@@ -256,7 +256,9 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
             this.rows.forEach(row => {
               if (row?.cells.length === this.columnsService.columns.length) {
                 row.cells.get(columnIndex).setWidth(state);
-                row.expandableRow?.cells.get(columnIndex)?.setWidth(state);
+                row.expandableRows.forEach(expandableRow => {
+                  expandableRow.cells.get(columnIndex)?.setWidth(state);
+                });
               }
             });
             break;
@@ -265,7 +267,10 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
             this.rows.forEach(row => {
               if (row.cells && row.cells.length) {
                 row.cells.get(columnIndex).setHidden(state);
-                row.expandableRow?.cells.get(columnIndex)?.setHidden(state);
+
+                row.expandableRows.forEach(expandableRow => {
+                  expandableRow.cells.get(columnIndex)?.setHidden(state);
+                });
               }
             });
             this.updateColumnSeparatorsVisibility();
@@ -276,7 +281,9 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
               this.headers.get(columnIndex).setHidden(state);
               this.rows.forEach(row => {
                 row.setCellsState();
-                row.expandableRow?.setCellsState();
+                row.expandableRows.forEach(expandableRow => {
+                  expandableRow.setCellsState();
+                });
               });
             }
             break;

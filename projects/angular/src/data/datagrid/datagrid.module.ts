@@ -64,6 +64,7 @@ import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.dir
 import { DatagridCellRenderer } from './render/cell-renderer';
 import { DatagridHeaderRenderer } from './render/header-renderer';
 import { DatagridMainRenderer } from './render/main-renderer';
+import { DatagridRowDetailRenderer } from './render/row-detail-renderer';
 import { DatagridRowRenderer } from './render/row-renderer';
 import { WrappedCell } from './wrapped-cell';
 import { WrappedColumn } from './wrapped-column';
@@ -101,6 +102,7 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   DatagridCellRenderer,
   DatagridHeaderRenderer,
   DatagridMainRenderer,
+  DatagridRowDetailRenderer,
   DatagridRowRenderer,
 
   // Chocolate
