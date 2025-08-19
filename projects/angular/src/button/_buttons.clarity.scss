@@ -443,8 +443,8 @@
       transform: translate3d(0, calc(-1 * #{tokens.$cds-global-space-1}), 0);
     }
 
-    clr-icon:not([size]),
-    cds-icon {
+    clr-icon,
+    cds-icon:not([size]) {
       height: buttons-variables.$clr-btn-appearance-standard-icon-size;
       width: buttons-variables.$clr-btn-appearance-standard-icon-size;
     }
