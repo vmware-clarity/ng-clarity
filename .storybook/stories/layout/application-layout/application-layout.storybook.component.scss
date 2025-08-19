@@ -22,8 +22,11 @@ clr-vertical-nav {
   margin: var(--clr-base-vertical-offset-l) 0;
   > cds-icon {
     margin-right: var(--clr-base-horizontal-offset-m);
-    height: var(--clr-base-icon-size-l);
-    width: var(--clr-base-icon-size-l);
+
+    &:not([size]) {
+      height: var(--clr-base-icon-size-l);
+      width: var(--clr-base-icon-size-l);
+    }
   }
   h5 {
     margin: 0;

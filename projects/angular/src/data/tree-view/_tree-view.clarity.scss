@@ -121,7 +121,9 @@
 
     cds-icon,
     clr-icon {
-      @include mixins.min-equilateral(tree-view-variables.$clr-tree-caret-size);
+      &:not([size]) {
+        @include mixins.min-equilateral(tree-view-variables.$clr-tree-caret-size);
+      }
       color: tree-view-variables.$clr-tree-node-content-text-only-color;
       vertical-align: middle;
     }
