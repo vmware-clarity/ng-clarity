@@ -975,7 +975,7 @@
           line-height: mixins.baselinePx(20);
           .datagrid-detail-pane-close {
             flex-basis: mixins.baselinePx(20);
-            button cds-icon {
+            button cds-icon:not([size]) {
               @include mixins.min-equilateral(mixins.baselinePx(20));
             }
           }
@@ -1089,7 +1089,7 @@
     }
 
     .datagrid-signpost-trigger .signpost .signpost-trigger {
-      cds-icon:not([shape='info-circle'], [shape='exclamation-triangle'], [shape='exclamation-circle'], [shape='check-circle'], [shape='info'], [shape='error']),
+      cds-icon:not([size], [shape='info-circle'], [shape='exclamation-triangle'], [shape='exclamation-circle'], [shape='check-circle'], [shape='info'], [shape='error']),
       clr-icon:not([shape='info-circle'], [shape='exclamation-triangle'], [shape='exclamation-circle'], [shape='check-circle'], [shape='info'], [shape='error']) {
         @include mixins.equilateral(tables-variables.$clr-table-compact-row-height);
       }

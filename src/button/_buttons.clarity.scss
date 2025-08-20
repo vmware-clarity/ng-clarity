@@ -112,7 +112,10 @@
   cds-icon,
   clr-icon {
     @include button-css-var($button-type, color);
-    @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+
+    &:not([size]) {
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+    }
   }
 
   &:hover {
@@ -441,7 +444,7 @@
     }
 
     clr-icon,
-    cds-icon {
+    cds-icon:not([size]) {
       height: buttons-variables.$clr-btn-appearance-standard-icon-size;
       width: buttons-variables.$clr-btn-appearance-standard-icon-size;
     }

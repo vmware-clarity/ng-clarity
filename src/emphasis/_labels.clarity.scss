@@ -77,7 +77,7 @@
       text-decoration: none;
     }
 
-    cds-icon {
+    cds-icon:not([size]) {
       @include mixins.min-equilateral(density.$clr-base-icon-size-s);
     }
 
