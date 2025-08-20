@@ -62,7 +62,10 @@
       cds-icon,
       clr-icon {
         fill: forms-variables.$clr-forms-icon-color;
-        @include mixins.equilateral(var(--clr-forms-input-group-icon-action-size));
+
+        &:not([size]) {
+          @include mixins.equilateral(var(--clr-forms-input-group-icon-action-size));
+        }
       }
     }
   }

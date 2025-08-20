@@ -43,7 +43,10 @@
       cds-icon[shape^='angle'] {
         margin-top: unset;
         color: inherit;
-        @include mixins.equilateral(density.$clr-base-icon-size-s);
+
+        &:not([size]) {
+          @include mixins.equilateral(density.$clr-base-icon-size-s);
+        }
       }
 
       &.btn {

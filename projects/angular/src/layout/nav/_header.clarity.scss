@@ -102,7 +102,10 @@
     clr-icon {
       flex-grow: 0;
       flex-shrink: 0;
-      @include mixins.equilateral(tokens.$cds-global-space-11);
+
+      &:not([size]) {
+        @include mixins.equilateral(tokens.$cds-global-space-11);
+      }
     }
 
     .title {
@@ -138,7 +141,7 @@
       position: relative;
       text-align: center;
 
-      cds-icon,
+      cds-icon:not([size]),
       clr-icon {
         @include mixins.equilateral(header-variables.$clr-header-clarity-icons-size);
       }
@@ -212,7 +215,7 @@
       }
 
       .dropdown-toggle.nav-icon {
-        cds-icon:not([shape^='angle']),
+        cds-icon:not([size], [shape^='angle']),
         clr-icon:not([shape^='angle']) {
           @include mixins.equilateral(header-variables.$clr-header-clarity-icons-size);
         }

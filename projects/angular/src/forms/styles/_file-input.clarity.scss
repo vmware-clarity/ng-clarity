@@ -39,7 +39,7 @@
       padding: 0;
       min-width: unset;
       border: 0;
-      cds-icon {
+      cds-icon:not([size]) {
         @include mixins.equilateral(density.$clr-base-icon-size-l);
       }
     }
