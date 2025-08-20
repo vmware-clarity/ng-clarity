@@ -251,7 +251,7 @@
     @include generate-calendar-hover-active-color-style();
     color: datepicker-variables.$clr-calendar-btn-color;
 
-    cds-icon,
+    cds-icon:not([size]),
     clr-icon {
       @include mixins.equilateral(density.$clr-base-icon-size-s);
     }
