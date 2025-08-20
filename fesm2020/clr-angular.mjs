@@ -15800,7 +15800,7 @@ ClrFileInputContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", 
           [attr.aria-label]="fileInput?.selection?.clearFilesButtonLabel"
           (click)="clearSelectedFiles()"
         >
-          <cds-icon shape="times" status="neutral" size="md"></cds-icon>
+          <cds-icon shape="times" status="neutral"></cds-icon>
         </button>
         <cds-icon
           *ngIf="showInvalid"
@@ -15871,7 +15871,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
           [attr.aria-label]="fileInput?.selection?.clearFilesButtonLabel"
           (click)="clearSelectedFiles()"
         >
-          <cds-icon shape="times" status="neutral" size="md"></cds-icon>
+          <cds-icon shape="times" status="neutral"></cds-icon>
         </button>
         <cds-icon
           *ngIf="showInvalid"
