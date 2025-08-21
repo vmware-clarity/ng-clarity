@@ -183,7 +183,9 @@
     clr-icon[shape='angle'] {
       color: combobox-variables.$clr-combobox-trigger-font-color;
 
-      @include mixins.min-equilateral(combobox-variables.$clr-combobox-caret-icon-size);
+      &:not([size]) {
+        @include mixins.min-equilateral(combobox-variables.$clr-combobox-caret-icon-size);
+      }
     }
   }
 
