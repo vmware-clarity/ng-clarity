@@ -126,7 +126,7 @@
         color: wizard-variables.$clr-wizard-header-action-color--hovered;
       }
 
-      cds-icon,
+      cds-icon:not([size]),
       clr-icon {
         @include mixins.equilateral(density.$clr-base-icon-size-l);
       }

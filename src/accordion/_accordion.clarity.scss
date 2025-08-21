@@ -282,7 +282,7 @@
     .clr-accordion-status {
       width: auto;
 
-      cds-icon,
+      cds-icon:not([size]),
       clr-icon {
         @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       }
