@@ -402,6 +402,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       })
     );
 
+    if (this.virtualScroll) {
+      this.toggleVirtualScrollSubscriptions();
+    }
+
     // We need to preserve shift state, so it can be used on selection change, regardless of the input event
     // that triggered the change. This helps us to easily resolve the k/b only case together with the mouse selection case.
     this.zone.runOutsideAngular(() => {
