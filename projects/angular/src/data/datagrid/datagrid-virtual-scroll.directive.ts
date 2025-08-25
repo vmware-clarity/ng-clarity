@@ -41,6 +41,7 @@ import {
   OnDestroy,
   Output,
   Renderer2,
+  runInInjectionContext,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
@@ -237,7 +238,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   ngAfterViewInit() {
-    this.injector.runInContext(() => {
+    runInInjectionContext(this.injector, () => {
       this.virtualScrollViewport = this.createVirtualScrollViewportForDatagrid(
         this.changeDetectorRef,
         this.ngZone,
