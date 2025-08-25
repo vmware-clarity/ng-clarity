@@ -9,6 +9,6 @@
 
 .clr-example {
   .card {
-    max-width: $clr_baselineRem_600px;
+    max-width: var(--cds-global-layout-width-xs);
   }
 }

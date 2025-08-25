@@ -8,13 +8,13 @@
 @import '../_utils/clarity-variables';
 
 .clr-example {
-  height: $clr_baselineRem_590px;
+  height: var(--cds-global-layout-width-xs);
 
   .demo {
-    min-height: $clr_baselineRem_5;
+    min-height: calc(10 * var(--cds-global-space-6)); // 120px
   }
 }
 
 .tabs-vertical {
-  height: $clr_baselineRem_150px;
+  height: calc(10 * var(--cds-global-space-7)); // 160px
 }

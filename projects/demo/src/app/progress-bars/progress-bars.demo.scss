@@ -9,12 +9,12 @@
 
 .progress-bars-demo {
   .progbar-examples {
-    margin-bottom: $clr_baselineRem_1_5;
+    margin-bottom: var(--cds-global-space-11);
   }
 }
 
 .progbar-examples {
   .progress-block {
-    margin-top: $clr_baselineRem_1;
+    margin-top: var(--cds-global-space-9);
   }
 }

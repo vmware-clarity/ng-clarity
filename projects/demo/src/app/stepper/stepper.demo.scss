@@ -8,5 +8,5 @@
 @import '../_utils/clarity-variables';
 
 .clr-accordion {
-  max-width: $clr_baselineRem_1024px;
+  max-width: var(--cds-global-layout-width-md);
 }

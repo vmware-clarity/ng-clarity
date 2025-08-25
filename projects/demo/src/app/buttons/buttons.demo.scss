@@ -9,5 +9,5 @@
 
 .btn-example {
   background: hsl(0, 0%, 19%);
-  padding: $clr_baselineRem_1;
+  padding: var(--cds-global-space-9);
 }

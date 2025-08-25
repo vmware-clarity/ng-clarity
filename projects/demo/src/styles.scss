@@ -21,7 +21,7 @@
 }
 
 .clr-example {
-  margin-top: $clr_baselineRem_1;
+  margin-top: var(--cds-global-space-9);
 
   .main-container {
     height: auto;
@@ -33,13 +33,13 @@
   }
 
   &.squeeze {
-    padding: $clr_baselineRem_2;
+    padding: var(--cds-global-space-12);
   }
 }
 
 .modal.static {
   position: relative;
-  padding: $clr_baselineRem_3;
+  padding: var(--cds-global-space-14);
   z-index: map-get($clr-layers, sidepanel-bg) - 1;
 }
 
@@ -55,15 +55,15 @@
 .modal-icon {
   float: left;
   color: $clr-color-success-400;
-  font-size: $clr_baselineRem_3;
-  margin-right: $clr_baselineRem_0_5;
+  font-size: var(--cds-global-space-14);
+  margin-right: var(--cds-global-space-6);
 }
 
 .backdrop-example-container {
   position: relative;
-  padding: $clr_baselineRem_1;
+  padding: var(--cds-global-space-9);
 }
 
 .bump-down {
-  margin-top: $clr_baselineRem_1 !important;
+  margin-top: var(--cds-global-space-9) !important;
 }

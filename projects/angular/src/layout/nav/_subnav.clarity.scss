@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use 'sass:meta';
+@use '@cds/core/tokens/tokens.scss';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
 @use 'variables.subnav' as subnav-variables;
@@ -19,7 +20,7 @@
     box-shadow: subnav-variables.$clr-nav-shadow;
     @if variables.$clr-use-custom-properties == true {
       box-shadow: 0
-        (-1 * variables.$clr_baselineRem_1px)
+        calc(-1 * #{tokens.$cds-global-space-1})
         0
         var(--clr-nav-box-shadow-color, variables.$clr-color-neutral-400)
         inset;
@@ -31,7 +32,7 @@
 
     .nav {
       flex: 1 1 auto;
-      padding-left: variables.$clr_baselineRem_1;
+      padding-left: tokens.$cds-global-space-9;
     }
 
     .nav-item,
@@ -44,7 +45,7 @@
       display: flex;
       align-items: center;
       height: subnav-variables.$clr-subnav-height;
-      padding: 0 variables.$clr_baselineRem_1;
+      padding: 0 tokens.$cds-global-space-9;
 
       & > :last-child {
         margin-right: 0;

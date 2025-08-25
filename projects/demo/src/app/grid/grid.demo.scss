@@ -15,13 +15,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: clarity-variables.$clr_baselineRem_1_5;
-    border-radius: clarity-variables.$clr-global-borderradius;
+    height: var(--cds-global-space-11);
+    border-radius: var(--cds-alias-object-border-radius-100);
     background: tokens.$cds-alias-object-container-background-shade;
     margin: clarity-variables.$clr-base-vertical-offset-m 0;
 
     &.clr-example-enable-borders {
-      border: clarity-variables.$clr-global-borderwidth solid $border-color;
+      border: var(--cds-global-space-1) solid $border-color;
     }
   }
 

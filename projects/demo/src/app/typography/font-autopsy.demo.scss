@@ -4,14 +4,15 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../../../angular/src/utils/mixins';
 @import '../../../../angular/src/utils/variables/variables.color';
 @import '../../../../angular/src/utils/variables/variables.global';
 
-$full-lh-block-width: $clr_baselineRem_1_5;
-$ruler-highlight-width: $full-lh-block-width * 0.25;
+$full-lh-block-width: var(--cds-global-space-11);
+$ruler-highlight-width: calc($full-lh-block-width * 0.25);
 
 .glyph-rulers {
-  margin-top: $clr_baselineRem_1;
+  margin-top: var(--cds-global-space-9);
   position: relative;
   width: 100%;
   height: 1000px;
@@ -33,10 +34,10 @@ $ruler-highlight-width: $full-lh-block-width * 0.25;
   color: var(--clr-color-neutral-0, #{$clr-color-neutral-0});
   display: block;
   font-weight: bold;
-  font-size: $clr_baselineRem_1;
+  font-size: var(--cds-global-space-9);
   position: absolute;
   top: 50%;
-  left: -1 * ($clr_baselineRem_0_5 + $clr_baselineRem_1px);
+  left: calc(-1 * (var(--cds-global-space-6) + var(--cds-globa-space-1)));
   line-height: 1;
 }
 
@@ -57,17 +58,17 @@ $ruler-highlight-width: $full-lh-block-width * 0.25;
 
   &::after {
     content: 'RULER';
-    font-size: $clr_baselineRem_0_667;
+    font-size: var(--cds-global-space-7);
     color: var(--clr-color-neutral-1000, #{$clr-color-neutral-1000});
     position: absolute;
     display: block;
     line-height: 1;
     top: 50%;
-    margin-top: -1 * $clr_baselineRem_8px;
+    margin-top: calc(-1 * var(--cds-global-space-5));
     text-align: center;
     width: auto;
     transform: rotate(-90deg);
-    right: -1 * $clr_baselineRem_0_83;
+    right: calc(-1 * var(--cds-global-space-8));
   }
 
   &.top-gap {
@@ -89,7 +90,7 @@ $ruler-highlight-width: $full-lh-block-width * 0.25;
 
     &::after {
       content: 'ASCENDERS';
-      right: -1 * $clr_baselineRem_1_25;
+      right: calc(-1 * mixins.baselinePx(30));
     }
   }
 
@@ -113,7 +114,7 @@ $ruler-highlight-width: $full-lh-block-width * 0.25;
 
     &::after {
       content: 'DESCENDERS';
-      right: -1 * $clr_baselineRem_1_25;
+      right: calc(-1 * mixins.baselinePx(30));
     }
   }
 
@@ -129,7 +130,7 @@ $ruler-highlight-width: $full-lh-block-width * 0.25;
       right: auto;
       width: 100%;
       text-align: right;
-      padding-right: $clr_baselineRem_0_625;
+      padding-right: var(--cds-global-space-7);
     }
   }
 }
