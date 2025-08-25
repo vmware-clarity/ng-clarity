@@ -9,7 +9,7 @@
 
 .clr-example {
   &.demo-menu-height {
-    height: $clr_baselineRem_336px;
+    height: calc(10 * var(--cds-global-space-11)); //360px
   }
 
   &.dropdown-demo {

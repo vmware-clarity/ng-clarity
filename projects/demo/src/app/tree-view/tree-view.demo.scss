@@ -8,7 +8,7 @@
 @import '../_utils/clarity-variables';
 
 .example-margin-bottom {
-  margin-bottom: $clr_baselineRem_1;
+  margin-bottom: var(--cds-global-space-9);
 }
 
 .example-selected-nodes {
@@ -22,10 +22,10 @@
 }
 
 .example-display-json {
-  padding: $clr_baselineRem_0_5;
+  padding: var(--cds-global-space-6);
   margin: 0;
-  max-height: $clr_baselineRem_20;
-  height: $clr_baselineRem_20;
+  max-height: calc(10 * var(--cds-global-space-12)); // 480px
+  height: calc(10 * var(--cds-global-space-12)); // 480px
   overflow-y: auto;
   overflow-x: hidden;
 }

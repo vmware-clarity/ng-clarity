@@ -10,7 +10,7 @@
 .clr-example {
   header {
     &.space-below {
-      margin-bottom: $clr_baselineRem_1;
+      margin-bottom: var(--cds-global-space-9);
     }
   }
 }

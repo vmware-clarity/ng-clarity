@@ -135,7 +135,7 @@
   position: absolute;
   display: inline-block;
   @include mixins.equilateral($size);
-  border: variables.$clr-global-borderwidth solid $border-color;
+  border: tokens.$cds-global-space-1 solid $border-color;
 }
 
 @mixin custom-inputs($height) {

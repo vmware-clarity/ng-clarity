@@ -103,11 +103,6 @@ $clr-forms-radio-disabled-background-color: var(--clr-forms-radio-disabled-backg
 $clr-forms-radio-disabled-mark-color: var(--clr-forms-radio-disabled-mark-color) !default;
 $clr-forms-radio-selected-shadow: var(--clr-forms-radio-selected-shadow) !default;
 $clr-forms-radio-checked-disabled-shadow: var(--clr-forms-radio-checked-disabled-shadow) !default;
-
-// to be deleted
-//$clr-forms-radio-disabled-shadow: inset 0 0 0 variables.$clr_baselineRem_0_5 variables.$clr-color-neutral-200 !default;
-//$clr-forms-radio-focused-shadow: 0 0 mixins.$clr-outline-blur mixins.$clr-outline-spread mixins.$clr-outline-color !default;
-
 $clr-forms-radio-size: $clr-forms-checkbox-size;
 $clr-forms-radio-label-height: $clr-forms-checkbox-label-height;
 $clr-forms-radio-height: $clr-forms-checkbox-height;
