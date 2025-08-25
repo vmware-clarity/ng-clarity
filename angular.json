@@ -82,14 +82,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "clr-demo:build"
+            "buildTarget": "clr-demo:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "clr-demo:build:production"
+              "buildTarget": "clr-demo:build:production"
             },
             "dark": {
-              "browserTarget": "clr-demo:build:dark"
+              "buildTarget": "clr-demo:build:dark"
             }
           }
         }
