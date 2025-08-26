@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -35,6 +35,7 @@ import { clusterIcon, clusterIconName } from '../shapes/cluster.js';
 import { codeIcon, codeIconName } from '../shapes/code.js';
 import { computerIcon, computerIconName } from '../shapes/computer.js';
 import { connectIcon, connectIconName } from '../shapes/connect.js';
+import { containerGroupIcon, containerGroupIconName } from '../shapes/container-group.js';
 import { containerVolumeIcon, containerVolumeIconName } from '../shapes/container-volume.js';
 import { containerIcon, containerIconName } from '../shapes/container.js';
 import { controlLunIcon, controlLunIconName } from '../shapes/control-lun.js';
@@ -145,6 +146,7 @@ export const technologyCollectionIcons: IconShapeTuple[] = [
   computerIcon,
   connectIcon,
   containerIcon,
+  containerGroupIcon,
   containerVolumeIcon,
   controlLunIcon,
   cpuIcon,
@@ -284,6 +286,7 @@ declare module '@cds/core/internal' {
     [computerIconName]: string;
     [connectIconName]: string;
     [containerIconName]: string;
+    [containerGroupIconName]: string;
     [containerVolumeIconName]: string;
     [controlLunIconName]: string;
     [cpuIconName]: string;

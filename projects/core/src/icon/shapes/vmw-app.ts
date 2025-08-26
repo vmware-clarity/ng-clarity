@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -10,13 +10,13 @@ import { IconShapeTuple } from '../interfaces/icon.interfaces.js';
 
 const icon = {
   outline:
-    '<polygon points="28 22 30 22 30 30 22 30 22 28 20 28 20 32 32 32 32 20 28 20 28 22"/><polygon points="14 30 6 30 6 22 8 22 8 20 4 20 4 32 16 32 16 28 14 28 14 30"/><polygon points="8 14 6 14 6 6 14 6 14 8 16 8 16 4 4 4 4 16 8 16 8 14"/><polygon points="20 4 20 8 22 8 22 6 30 6 30 14 28 14 28 16 32 16 32 4 20 4"/><rect x="11" y="11" width="6" height="6"/><rect x="19" y="11" width="6" height="6"/><rect x="11" y="19" width="6" height="6"/><rect x="19" y="19" width="6" height="6"/>',
+    '<path d="M14 30H6V22H8V20H4V32H16V28H14V30ZM26 20H20V26H26V20ZM10 26H16V20H10V26ZM26 10H20V16H26V10ZM4 16H8V14H6V6H14V8H16V4H4V16ZM10 16H16V10H10V16ZM20 4V8H22V6H30V14H28V16H32V4H20ZM28 22H30V30H22V28H20V32H32V20H28V22Z"/>',
 
   outlineAlerted:
-    '<polygon points="28 22 30 22 30 30 22 30 22 28 20 28 20 32 32 32 32 20 28 20 28 22"/><polygon points="14 30 6 30 6 22 8 22 8 20 4 20 4 32 16 32 16 28 14 28 14 30"/><polygon points="8 14 6 14 6 6 14 6 14 8 16 8 16 4 4 4 4 16 8 16 8 14"/><rect x="11" y="11" width="6" height="6"/><rect x="11" y="19" width="6" height="6"/><rect x="19" y="19" width="6" height="6"/><path d="M25,15.4H22.23A3.69,3.69,0,0,1,19,13.56l0-.1V17h6Z"/><polygon points="22.45 4 20 4 20 8 20.14 8 22.45 4"/><rect x="28" y="15.4" width="4" height="0.6"/>',
+    '<path d="M26.9039 1.64621L21.2222 11.1159C20.9526 11.4984 20.9281 11.9949 21.1588 12.4005C21.3896 12.806 21.8363 13.0519 22.3148 13.0367H33.6881C34.1666 13.0519 34.6134 12.806 34.8441 12.4005C35.0748 11.9949 35.0503 11.4984 34.7808 11.1159L29.0991 1.64621C28.8711 1.26913 28.4532 1.03735 28.0015 1.03735C27.5497 1.03735 27.1319 1.26913 26.9039 1.64621Z"/><path d="M23.1594 4H20V8H20.7594L23.1594 4Z"/><path d="M28 15.0367H32V16H28V15.0367Z"/><path d="M20 14.1312C20.6254 14.7274 21.4696 15.0541 22.3395 15.0367H26V16H20V14.1312Z"/><path d="M6 22V30H14V28H16V32H4V20H8V22H6Z"/><path d="M20 20H26V26H20V20Z"/><path d="M16 26H10V20H16V26Z"/><path d="M8 16H4V4H16V8H14V6H6V14H8V16Z"/><path d="M16 16H10V10H16V16Z"/><path d="M30 22H28V20H32V32H20V28H22V30H30V22Z"/>',
 
   outlineBadged:
-    '<polygon points="28 22 30 22 30 30 22 30 22 28 20 28 20 32 32 32 32 20 28 20 28 22"/><polygon points="14 30 6 30 6 22 8 22 8 20 4 20 4 32 16 32 16 28 14 28 14 30"/><polygon points="8 14 6 14 6 6 14 6 14 8 16 8 16 4 4 4 4 16 8 16 8 14"/><rect x="11" y="11" width="6" height="6"/><rect x="11" y="19" width="6" height="6"/><rect x="19" y="19" width="6" height="6"/><path d="M22,6h.5a7.49,7.49,0,0,1,.28-2H20V8h2Z"/><path d="M30,13.5V14H28v2h4V13.22A7.49,7.49,0,0,1,30,13.5Z"/><path d="M25,11.58a7.53,7.53,0,0,1-.58-.58H19v6h6Z"/>',
+    '<path d="M30 11C32.7614 11 35 8.76142 35 6C35 3.23858 32.7614 1 30 1C27.2386 1 25 3.23858 25 6C25 8.76142 27.2386 11 30 11Z"/><path d="M32 12.7101C31.3663 12.8987 30.695 13 30 13V14H28V16H32V12.7101Z"/><path d="M24.2547 10C24.7288 10.6797 25.3203 11.2712 26 11.7453V16H20V10H24.2547Z"/><path d="M23 6C23 5.30503 23.1013 4.63371 23.2899 4H20V8H22V6H23Z"/><path d="M6 22V30H14V28H16V32H4V20H8V22H6Z"/><path d="M20 26V20H26V26H20Z"/><path d="M16 26H10V20H16V26Z"/><path d="M8 16H4V4H16V8H14V6H6V14H8V16Z"/><path d="M16 16H10V10H16V16Z"/><path d="M30 22H28V20H32V32H20V28H22V30H30V22Z"/>',
 };
 
 export const vmwAppIconName = 'vmw-app';

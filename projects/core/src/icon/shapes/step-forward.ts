@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -10,9 +10,9 @@ import { IconShapeTuple } from '../interfaces/icon.interfaces.js';
 
 const icon = {
   outline:
-    '<path d="M5,32.23a2,2,0,0,1-2-2V5.77A2,2,0,0,1,6.17,4.14L23.23,16.38a2,2,0,0,1,0,3.25h0L6.17,31.86A2,2,0,0,1,5,32.23ZM5,5.77V30.23L22.07,18Z"/><path d="M31,32H28a2,2,0,0,1-2-2V6a2,2,0,0,1,2-2h3a2,2,0,0,1,2,2V30A2,2,0,0,1,31,32ZM28,6V30h3V6Z"/>',
+    '<path d="M33 4H27C26.45 4 26 4.45 26 5V31C26 31.55 26.45 32 27 32H33C33.55 32 34 31.55 34 31V5C34 4.45 33.55 4 33 4ZM32 30H28V6H32V30ZM23.54 17.16L3.54 4.16C3.24 3.96 2.84 3.95 2.52 4.12C2.2 4.29 2 4.63 2 5V31C2 31.37 2.2 31.7 2.52 31.88C2.67 31.96 2.83 32 3 32C3.19 32 3.38 31.95 3.54 31.84L23.54 18.84C23.82 18.66 24 18.34 24 18C24 17.66 23.83 17.35 23.54 17.16ZM4 29.16V6.84L21.17 18L4 29.16Z"/>',
   solid:
-    '<path d="M5,31.9a2,2,0,0,1-2-2V5.44A2,2,0,0,1,6.12,3.81L23.18,16a2,2,0,0,1,0,3.25h0L6.12,31.52A2,2,0,0,1,5,31.9Z"/><rect x="25.95" y="3.67" width="7" height="28" rx="2" ry="2"/>',
+    '<path d="M33 4H27C26.45 4 26 4.45 26 5V31C26 31.55 26.45 32 27 32H33C33.55 32 34 31.55 34 31V5C34 4.45 33.55 4 33 4ZM23.54 17.16L3.54 4.16C3.24 3.96 2.84 3.95 2.52 4.12C2.2 4.29 2 4.63 2 5V31C2 31.37 2.2 31.7 2.52 31.88C2.67 31.96 2.83 32 3 32C3.19 32 3.38 31.95 3.54 31.84L23.54 18.84C23.82 18.66 24 18.34 24 18C24 17.66 23.83 17.35 23.54 17.16Z"/>',
 };
 
 export const stepForwardIconName = 'step-forward';

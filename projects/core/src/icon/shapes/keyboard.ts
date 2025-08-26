@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -10,9 +10,9 @@ import { IconShapeTuple } from '../interfaces/icon.interfaces.js';
 
 const icon = {
   outline:
-    '<path d="M32,8H4a2,2,0,0,0-2,2V26a2,2,0,0,0,2,2H32a2,2,0,0,0,2-2V10A2,2,0,0,0,32,8Zm0,18H4V10H32Z"/><rect x="7" y="13" width="2" height="2"/><rect x="11" y="13" width="2" height="2"/><rect x="15" y="13" width="2" height="2"/><rect x="19" y="13" width="2" height="2"/><rect x="23" y="13" width="2" height="2"/><rect x="27" y="13" width="2" height="2"/><rect x="7" y="17" width="2" height="2"/><rect x="11" y="17" width="2" height="2"/><rect  x="15" y="17" width="2" height="2"/><rect  x="19" y="17" width="2" height="2"/><rect  x="23" y="17" width="2" height="2"/><rect  x="27" y="17" width="2" height="2"/><rect  x="27" y="22" width="1.94" height="2"/><rect  x="7" y="22" width="2" height="2"/><rect  x="11.13" y="22" width="13.75" height="2"/>',
+    '<path fill-rule="evenodd" clip-rule="evenodd" d="M32 8H4C2.89543 8 2 8.89543 2 10V26C2 27.1046 2.89543 28 4 28H32C33.1046 28 34 27.1046 34 26V10C34 8.89543 33.1046 8 32 8ZM27 13H29V15H27V13ZM27 17H29V19H27V17ZM7 22H9V24H7V22ZM11.13 22H24.88V24H11.13V22ZM28.94 22H27V24H28.94V22ZM25 17H23V19H25V17ZM19 17H21V19H19V17ZM17 17H15V19H17V17ZM11 17H13V19H11V17ZM9 17H7V19H9V17ZM25 13H23V15H25V13ZM19 13H21V15H19V13ZM17 13H15V15H17V13ZM11 13H13V15H11V13ZM9 13H7V15H9V13ZM4 26H32V10H4V26Z"/>',
   solid:
-    '<path d="M32,8H4a2,2,0,0,0-2,2V26a2,2,0,0,0,2,2H32a2,2,0,0,0,2-2V10A2,2,0,0,0,32,8ZM19,13h2v2H19Zm0,4h2v2H19Zm-4-4h2v2H15Zm0,4h2v2H15Zm-4-4h2v2H11ZM9,24H7V22H9Zm0-5H7V17H9Zm0-4H7V13H9Zm2,2h2v2H11Zm13.88,7H11.13V22H24.88ZM25,19H23V17h2Zm0-4H23V13h2Zm3.94,9H27V22h1.94ZM29,19H27V17h2Zm0-4H27V13h2Z"/>',
+    '<path fill-rule="evenodd" clip-rule="evenodd" d="M4 8H32C33.1046 8 34 8.89543 34 10V26C34 27.1046 33.1046 28 32 28H4C2.89543 28 2 27.1046 2 26V10C2 8.89543 2.89543 8 4 8ZM21 13H19V15H21V13ZM19 17H21V19H19V17ZM17 13H15V15H17V13ZM15 17H17V19H15V17ZM13 13H11V15H13V13ZM9 24H7V22H9V24ZM7 19H9V17H7V19ZM9 15H7V13H9V15ZM13 17H11V19H13V17ZM24.88 24H11.13V22H24.88V24ZM23 19H25V17H23V19ZM25 15H23V13H25V15ZM27 24H28.94V22H27V24ZM29 19H27V17H29V19ZM27 15H29V13H27V15Z"/>',
 };
 
 export const keyboardIconName = 'keyboard';

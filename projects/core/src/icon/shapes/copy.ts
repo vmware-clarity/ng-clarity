@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -10,10 +10,10 @@ import { IconShapeTuple } from '../interfaces/icon.interfaces.js';
 
 const icon = {
   outline:
-    '<path d="M29.5,7h-19A1.5,1.5,0,0,0,9,8.5v24A1.5,1.5,0,0,0,10.5,34h19A1.5,1.5,0,0,0,31,32.5V8.5A1.5,1.5,0,0,0,29.5,7ZM29,32H11V9H29Z"/><path d="M26,3.5A1.5,1.5,0,0,0,24.5,2H5.5A1.5,1.5,0,0,0,4,3.5v24A1.5,1.5,0,0,0,5.5,29H6V4H26Z"/>',
+    '<path d="M26 4H28C28 2.9 27.1 2 26 2H6C4.9 2 4 2.9 4 4V28C4 29.1 4.9 30 6 30V4H26ZM30 6H10C8.9 6 8 6.9 8 8V32C8 33.1 8.9 34 10 34H30C31.1 34 32 33.1 32 32V8C32 6.9 31.1 6 30 6ZM10 32V8H30V32H10Z"/>',
 
   solid:
-    '<path d="M27,3.56A1.56,1.56,0,0,0,25.43,2H5.57A1.56,1.56,0,0,0,4,3.56V28.44A1.56,1.56,0,0,0,5.57,30h.52V4.07H27Z"/><rect x="8" y="6" width="23" height="28" rx="1.5" ry="1.5"/>',
+    '<path d="M31 6H9C8.45 6 8 6.45 8 7V33C8 33.55 8.45 34 9 34H31C31.55 34 32 33.55 32 33V7C32 6.45 31.55 6 31 6ZM26 4H28C28 2.9 27.1 2 26 2H6C4.9 2 4 2.9 4 4V28C4 29.1 4.9 30 6 30V4H26Z"/>',
 };
 
 export const copyIconName = 'copy';

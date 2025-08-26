@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -10,7 +10,7 @@ import { IconShapeTuple } from '../interfaces/icon.interfaces.js';
 
 const icon = {
   outline:
-    '<path d="M22.4,11.65a1.09,1.09,0,0,0,1.09,1.09H34.43V1.81a1.09,1.09,0,1,0-2.19,0V8.95a16.41,16.41,0,1,0,1.47,15.86,1.12,1.12,0,0,0-2.05-.9,14.18,14.18,0,1,1-1.05-13.36H23.5A1.09,1.09,0,0,0,22.4,11.65Z"/>',
+    '<path d="M22 13C22 13.55 22.45 14 23 14H34V3C34 2.45 33.55 2 33 2C32.45 2 32 2.45 32 3V10.25C29.21 5.23 23.86 2 18 2C9.18 2 2 9.18 2 18C2 26.82 9.18 34 18 34C24.82 34 30.9 29.67 33.13 23.22C33.31 22.7 33.03 22.13 32.51 21.95C31.99 21.77 31.42 22.05 31.24 22.57C29.29 28.21 23.97 32 18 32C10.28 32 4 25.72 4 18C4 10.28 10.28 4 18 4C23.42 4 28.35 7.17 30.65 12H23C22.45 12 22 12.45 22 13Z"/>',
 };
 
 export const refreshIconName = 'refresh';

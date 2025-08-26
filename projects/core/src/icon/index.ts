@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -292,6 +292,7 @@ export { codeIcon, codeIconName } from './shapes/code.js';
 export { computerIcon, computerIconName } from './shapes/computer.js';
 export { connectIcon, connectIconName } from './shapes/connect.js';
 export { containerIcon, containerIconName } from './shapes/container.js';
+export { containerGroupIcon, containerGroupIconName } from './shapes/container-group.js';
 export { containerVolumeIcon, containerVolumeIconName } from './shapes/container-volume.js';
 export { controlLunIcon, controlLunIconName } from './shapes/control-lun.js';
 export { cpuIcon, cpuIconName } from './shapes/cpu.js';

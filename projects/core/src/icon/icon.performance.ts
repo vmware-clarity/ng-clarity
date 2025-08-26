@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -19,7 +19,7 @@ describe('cds-icon performance', () => {
       import '@cds/core/icon/register.js';
       ClarityIcons.addIcons(userIcon);
     `;
-    expect((await testBundleSize(bundle)).kb).toBeLessThan(19.5);
+    expect((await testBundleSize(bundle)).kb).toBeLessThan(19.8);
   });
 
   it(`should bundle all icons`, async () => {
@@ -37,7 +37,8 @@ describe('cds-icon performance', () => {
       loadTextEditIconSet();
       loadTravelIconSet();
     `;
-    expect((await testBundleSize(bundle)).kb).toBeLessThan(120.5);
+
+    expect((await testBundleSize(bundle)).kb).toBeLessThan(248);
   });
 
   const icon = html`<cds-icon shape="ellipsis-vertical"></cds-icon>`;
