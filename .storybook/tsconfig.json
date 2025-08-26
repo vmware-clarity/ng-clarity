@@ -2,6 +2,7 @@
   "extends": "../projects/angular/tsconfig.lib.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
       "@clr/angular": ["./../projects/angular/src/index.ts"]

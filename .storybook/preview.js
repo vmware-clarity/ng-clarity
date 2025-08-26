@@ -170,3 +170,4 @@ function removeAngularLifeCycleMethods(docs) {
     declaration.methodsClass = declaration.methodsClass.filter(method => method.name.startsWith('ng') === false);
   });
 }
+export const tags = ['autodocs'];

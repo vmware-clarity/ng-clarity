@@ -7,8 +7,8 @@
 
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { ClrConditionalModule, ClrInputModule, ClrStepper, ClrStepperModule } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { action } from 'storybook/actions';
 
 import { CommonModules, removeFocusOutline } from '../../helpers/common';
 

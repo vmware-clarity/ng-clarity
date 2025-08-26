@@ -6,8 +6,8 @@
  */
 
 import { ClrCheckboxModule, ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
+import { action } from 'storybook/actions';
 
 import { CommonModules, removeFocusOutline } from '../../helpers/common';
 

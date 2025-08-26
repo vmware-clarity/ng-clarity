@@ -12,8 +12,8 @@ import {
   ClrWizardModule,
   commonStringsDefault,
 } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { action } from 'storybook/actions';
 
 export default {
   title: 'Wizard/Wizard (in-page)',

@@ -12,8 +12,8 @@ import {
   ClrDropdownModule,
   commonStringsDefault,
 } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { action } from 'storybook/actions';
 
 import { behaviorElements } from '../../helpers/elements.data';
 

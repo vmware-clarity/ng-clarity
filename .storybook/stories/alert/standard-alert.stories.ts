@@ -6,8 +6,8 @@
  */
 
 import { ClrAlert, ClrAlertModule } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
 import { argsToTemplate, moduleMetadata, StoryContext, StoryObj } from '@storybook/angular';
+import { action } from 'storybook/actions';
 
 import { CommonModules, removeFocusOutline } from '../../helpers/common';
 import { StandardAlertStorybookComponent } from './standard-alert.storybook.component';

@@ -4,7 +4,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "declaration": false,
-    "downlevelIteration": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
