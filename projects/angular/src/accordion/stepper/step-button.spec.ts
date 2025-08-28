@@ -23,6 +23,7 @@ import { ClrStepperModule } from './stepper.module';
       </clr-stepper-panel>
     </form>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrStepButton) button: ClrStepButton;
@@ -38,6 +39,7 @@ class TestComponent {
       </clr-stepper-panel>
     </form>
   `,
+  standalone: false,
 })
 class TestPreviousButtonComponent {
   @ViewChild(ClrStepButton) button: ClrStepButton;

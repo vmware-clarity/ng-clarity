@@ -115,6 +115,7 @@ export default function (): void {
     <clr-signpost-content [clrPosition]="position">Signpost content</clr-signpost-content>
   `,
   providers: [{ provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
+  standalone: false,
 })
 class SimpleTest {
   position = 'right-middle';

@@ -15,6 +15,7 @@ import { ResponsiveNavControlMessage } from '../nav/responsive-nav-control-messa
 @Directive({
   selector: 'clr-main-container',
   host: { '[class.main-container]': 'true' },
+  standalone: false,
 })
 export class ClrMainContainer implements OnDestroy, OnInit {
   private _subscription: Subscription;

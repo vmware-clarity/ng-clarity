@@ -13,6 +13,7 @@ import { VerticalNavCases } from '../vertical-nav-cases';
   selector: 'clr-vertical-nav-header-and-divider-demo',
   templateUrl: './vertical-nav-header-and-divider.demo.html',
   styleUrls: ['../vertical-nav.demo.scss'],
+  standalone: false,
 })
 export class VerticalNavHeaderAndDividerDemo {
   case: any;

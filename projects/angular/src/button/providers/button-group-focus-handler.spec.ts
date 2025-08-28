@@ -28,6 +28,7 @@ import { InitialFocus } from './button-group-focus.enum';
     </clr-button-group>
   `,
   providers: [BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FocusService, ClrPopoverToggleService],
+  standalone: false,
 })
 class BtnGroupViewContainer {
   @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;

@@ -17,6 +17,7 @@ import { PokemonFilter } from '../utils/pokemon-filter';
   providers: [Inventory],
   templateUrl: 'built-in-filters.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridBuiltInFiltersDemo {
   users: User[];

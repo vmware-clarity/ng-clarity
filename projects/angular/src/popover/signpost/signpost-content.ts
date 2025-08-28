@@ -55,6 +55,7 @@ const POSITIONS: string[] = [
     </div>
   `,
   host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
+  standalone: false,
 })
 export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
   @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;

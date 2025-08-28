@@ -14,11 +14,13 @@ import { ClrSelectContainer } from './select-container';
 
 @Component({
   template: `<select clrSelect></select>`,
+  standalone: false,
 })
 class StandaloneUseTest {}
 
 @Component({
   template: `<select clrSelect name="model" class="test-class" [(ngModel)]="model"></select>`,
+  standalone: false,
 })
 class TemplateDrivenTest {}
 
@@ -28,6 +30,7 @@ class TemplateDrivenTest {}
       <select clrSelect name="model" class="test-class" formControlName="model"></select>
     </div>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

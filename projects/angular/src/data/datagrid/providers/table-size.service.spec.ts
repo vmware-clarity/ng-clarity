@@ -29,6 +29,7 @@ import { TableSizeService } from './table-size.service';
     </div>
   `,
   providers: [TableSizeService],
+  standalone: false,
 })
 class TestComponent {
   height = 300;

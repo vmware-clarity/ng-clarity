@@ -17,11 +17,13 @@ import { ClrInputContainer } from './input-container';
 
 @Component({
   template: `<input type="text" clrInput />`,
+  standalone: false,
 })
 class StandaloneUseTest {}
 
 @Component({
   template: `<input clrInput name="model" class="test-class" [(ngModel)]="model" />`,
+  standalone: false,
 })
 class TemplateDrivenTest {}
 
@@ -31,6 +33,7 @@ class TemplateDrivenTest {}
       <input clrInput name="model" class="test-class" formControlName="model" />
     </div>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

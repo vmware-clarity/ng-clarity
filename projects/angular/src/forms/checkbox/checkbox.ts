@@ -23,6 +23,7 @@ import { ClrCheckboxWrapper, IS_TOGGLE } from './checkbox-wrapper';
   host: {
     '[attr.role]': 'toggle !== null ? "switch" : null',
   },
+  standalone: false,
 })
 export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
   constructor(

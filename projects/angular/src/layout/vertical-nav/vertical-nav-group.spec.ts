@@ -245,6 +245,7 @@ export default function (): void {
       </clr-vertical-nav-group-children>
     </clr-vertical-nav-group>
   `,
+  standalone: false,
 })
 class GroupInternalsTestComponent {
   @ViewChild('group') navGroup: ClrVerticalNavGroup;
@@ -261,6 +262,7 @@ class GroupInternalsTestComponent {
       </ng-template>
     </clr-vertical-nav-group>
   `,
+  standalone: false,
 })
 class IfExpandedTestComponent {
   @ViewChild('group') navGroup: ClrVerticalNavGroup;
@@ -279,6 +281,7 @@ class IfExpandedTestComponent {
       </clr-vertical-nav-group-children>
     </clr-vertical-nav-group>
   `,
+  standalone: false,
 })
 class TemplateAPITestComponent {
   @ViewChild('group') navGroup: ClrVerticalNavGroup;

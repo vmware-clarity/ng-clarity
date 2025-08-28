@@ -19,6 +19,7 @@ import { ClrAccordionModule } from './accordion.module';
       <clr-accordion-content>Hello world</clr-accordion-content>
     </clr-accordion>
   `,
+  standalone: false,
 })
 class TestComponent {}
 

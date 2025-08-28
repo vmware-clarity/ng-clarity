@@ -11,6 +11,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'clr-progress-bar-static-demo',
   styleUrls: ['progress-bars.demo.scss'],
   templateUrl: './progress-bar-static.html',
+  standalone: false,
 })
 export class ProgressBarStaticDemo implements OnInit {
   staticProgbarValue = 0;

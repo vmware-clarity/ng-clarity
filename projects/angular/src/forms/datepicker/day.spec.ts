@@ -246,6 +246,7 @@ export default function () {
 
 @Component({
   template: `<clr-day [clrDayView]="dayView"></clr-day>`,
+  standalone: false,
 })
 class TestComponent {
   isToday = false;

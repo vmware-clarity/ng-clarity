@@ -18,6 +18,7 @@ import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './provide
   template: `<button clrDropdownTrigger>Hello world</button>`,
   // These services are declared here because they need the renderer
   providers: [FocusService, DROPDOWN_FOCUS_HANDLER_PROVIDER],
+  standalone: false,
 })
 class SimpleTest {}
 

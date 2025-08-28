@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-alert-success-demo-angular',
   styleUrls: ['../alert.demo.scss'],
   templateUrl: './alert-angular-success.demo.html',
+  standalone: false,
 })
 export class AlertAngularSuccessDemo {}

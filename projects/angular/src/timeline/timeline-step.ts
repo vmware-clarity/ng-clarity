@@ -35,6 +35,7 @@ import { ClrTimelineStepTitle } from './timeline-step-title';
     </ng-template>
   `,
   host: { '[class.clr-timeline-step]': 'true', '[attr.role]': '"listitem"' },
+  standalone: false,
 })
 export class ClrTimelineStep {
   @Input('clrState') state: ClrTimelineStepState = ClrTimelineStepState.NOT_STARTED;

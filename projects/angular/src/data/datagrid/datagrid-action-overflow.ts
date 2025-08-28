@@ -55,6 +55,7 @@ let clrDgActionId = 0;
       <ng-content></ng-content>
     </div>
   `,
+  standalone: false,
 })
 export class ClrDatagridActionOverflow implements OnDestroy {
   @Input('clrDgActionOverflowButtonLabel') buttonLabel: string;

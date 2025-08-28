@@ -77,6 +77,7 @@ describe('Outside click', () => {
       <button>Button</button>
     </p>
   `,
+  standalone: false,
 })
 class FullTest {
   strict = false;

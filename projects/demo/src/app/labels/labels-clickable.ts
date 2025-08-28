@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-labels-clickable-demo',
   templateUrl: './labels-clickable.demo.html',
+  standalone: false,
 })
 export class LabelsClickableDemo {}

@@ -19,6 +19,7 @@ import { WrappedCell } from './wrapped-cell';
     '[class.datagrid-signpost-trigger]': 'signpost.length > 0',
     role: 'gridcell',
   },
+  standalone: false,
 })
 export class ClrDatagridCell implements OnInit {
   /*********

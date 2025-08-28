@@ -18,6 +18,7 @@ import { ControlIdService } from './providers/control-id.service';
     '[class.clr-subtext]': 'true',
     '[attr.id]': 'id',
   },
+  standalone: false,
 })
 export class ClrControlHelper extends ClrAbstractControl {
   override controlIdSuffix = CONTROL_SUFFIX.HELPER;

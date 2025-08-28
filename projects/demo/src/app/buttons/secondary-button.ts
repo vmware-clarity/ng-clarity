@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-buttons-demo-secondary-button',
   templateUrl: './secondary-button.html',
   styleUrls: ['./buttons.demo.scss'],
+  standalone: false,
 })
 export class SecondaryButtonDemo {}

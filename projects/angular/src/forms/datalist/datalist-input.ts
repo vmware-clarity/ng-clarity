@@ -29,6 +29,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
     '[class.clr-input]': 'true',
     '[attr.list]': 'listValue',
   },
+  standalone: false,
 })
 export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> implements AfterContentInit {
   listValue: string;

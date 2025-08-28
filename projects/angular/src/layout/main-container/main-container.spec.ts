@@ -16,6 +16,7 @@ import { ClrMainContainerModule } from './main-container.module';
 
 @Component({
   template: `<clr-main-container>Test</clr-main-container>`,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrMainContainer) mainContainerInstance: ClrMainContainer;

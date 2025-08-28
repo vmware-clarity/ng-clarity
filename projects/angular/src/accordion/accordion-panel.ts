@@ -40,6 +40,7 @@ import { panelAnimation } from './utils/animation';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: panelAnimation,
   providers: [IfExpandService],
+  standalone: false,
 })
 export class ClrAccordionPanel implements OnInit, OnChanges {
   @Input('clrAccordionPanelDisabled') @HostBinding('class.clr-accordion-panel-disabled') disabled = false;

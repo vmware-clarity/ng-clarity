@@ -78,6 +78,7 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
     '[attr.role]': '"heading"',
     '[attr.aria-level]': 'headingLevel',
   },
+  standalone: false,
 })
 export class ClrStackBlock implements OnInit {
   @Input('clrSbExpanded') @HostBinding('class.stack-block-expanded') expanded = false;

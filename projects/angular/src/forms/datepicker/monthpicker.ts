@@ -78,6 +78,7 @@ import { ViewManagerService } from './providers/view-manager.service';
     '[class.monthpicker]': 'true',
     role: 'application',
   },
+  standalone: false,
 })
 export class ClrMonthpicker implements AfterViewInit {
   /**

@@ -23,12 +23,14 @@ import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './dropdow
   selector: 'simple-host',
   template: '',
   providers: [ClrPopoverToggleService, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
+  standalone: false,
 })
 class SimpleHost {}
 
 @Component({
   template: '<simple-host></simple-host>',
   providers: [ClrPopoverToggleService, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
+  standalone: false,
 })
 class NestedHost {}
 

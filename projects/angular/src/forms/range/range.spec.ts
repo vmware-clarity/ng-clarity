@@ -14,11 +14,13 @@ import { ClrRangeContainer } from './range-container';
 
 @Component({
   template: `<input type="text" clrRange />`,
+  standalone: false,
 })
 class StandaloneUseTest {}
 
 @Component({
   template: `<input clrRange name="model" class="test-class" [(ngModel)]="model" />`,
+  standalone: false,
 })
 class TemplateDrivenTest {}
 
@@ -28,6 +30,7 @@ class TemplateDrivenTest {}
       <input clrRange name="model" class="test-class" formControlName="model" />
     </div>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

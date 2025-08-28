@@ -14,6 +14,7 @@ import { ClrSignpostModule } from './signpost.module';
 
 @Component({
   template: `<clr-signpost-title>Title</clr-signpost-title>`,
+  standalone: false,
 })
 class TestComponent {}
 

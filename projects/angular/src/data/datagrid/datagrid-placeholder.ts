@@ -18,6 +18,7 @@ import { Items } from './providers/items';
     </div>
   `,
   host: { '[class.datagrid-placeholder-container]': 'true' },
+  standalone: false,
 })
 export class ClrDatagridPlaceholder<T = any> {
   constructor(private items: Items<T>) {}

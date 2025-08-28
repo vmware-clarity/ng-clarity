@@ -80,6 +80,7 @@ import { CellCoordinates, KeyNavigationGridController } from './utils/key-naviga
     '[class.datagrid-detail-open]': 'detailService.isOpen',
     '[class.datagrid-virtual-scroll]': '!!virtualScroll',
   },
+  standalone: false,
 })
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
   @Input('clrLoadingMoreItems') loadingMoreItems: boolean;

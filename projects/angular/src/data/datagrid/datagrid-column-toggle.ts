@@ -80,6 +80,7 @@ import { ColumnsService } from './providers/columns.service';
   `,
   host: { '[class.column-switch-wrapper]': 'true', '[class.active]': 'openState' },
   hostDirectives: [ClrPopoverHostDirective],
+  standalone: false,
 })
 export class ClrDatagridColumnToggle implements OnDestroy {
   popoverId = uniqueIdFactory();

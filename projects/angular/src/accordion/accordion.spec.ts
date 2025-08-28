@@ -24,6 +24,7 @@ import { AccordionService } from './providers/accordion.service';
       <clr-accordion-panel [clrAccordionPanelOpen]="openThirdStep">panel 3</clr-accordion-panel>
     </clr-accordion>
   `,
+  standalone: false,
 })
 class TestComponent {
   multi = false;

@@ -86,6 +86,7 @@ export default function () {
 
 @Component({
   template: `<clr-datepicker-view-manager></clr-datepicker-view-manager>`,
+  standalone: false,
 })
 class TestComponent {
   constructor(dateNavigationService: DateNavigationService) {

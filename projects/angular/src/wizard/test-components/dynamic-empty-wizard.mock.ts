@@ -26,6 +26,7 @@ import { ClrWizard } from '../wizard';
       </ng-container>
     </clr-wizard>
   `,
+  standalone: false,
 })
 export class DynamicEmptyWizardTestComponent {
   @ViewChild('wizard', { static: true }) wizard: ClrWizard;

@@ -78,6 +78,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
       <ng-content></ng-content>
     </div>
   `,
+  standalone: false,
 })
 export class ClrDatagridFilter<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>

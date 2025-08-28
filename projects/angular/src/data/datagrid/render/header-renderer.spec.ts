@@ -33,6 +33,7 @@ import { MOCK_ORGANIZER_PROVIDER, MockDatagridRenderOrganizer } from './render-o
 
 @Component({
   template: `<clr-dg-column>Hello world</clr-dg-column>`,
+  standalone: false,
 })
 class SimpleTest {}
 
@@ -57,6 +58,7 @@ class SimpleTest {}
       </clr-datagrid>
     </div>
   `,
+  standalone: false,
 })
 class HeaderResizeTestComponent {
   items = [1, 2, 3];

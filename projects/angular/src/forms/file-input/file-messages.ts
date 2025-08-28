@@ -19,6 +19,7 @@ export const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT = new InjectionToken<ClrFileMess
   host: {
     '[class.clr-subtext]': 'true',
   },
+  standalone: false,
 })
 export class ClrFileInfo {}
 
@@ -31,6 +32,7 @@ export class ClrFileInfo {}
     '[class.clr-subtext]': 'true',
     '[class.success]': 'true',
   },
+  standalone: false,
 })
 export class ClrFileSuccess {
   protected readonly context: ClrFileMessagesTemplateContext = inject(CLR_FILE_MESSAGES_TEMPLATE_CONTEXT);
@@ -44,5 +46,6 @@ export class ClrFileSuccess {
     '[class.clr-subtext]': 'true',
     '[class.error]': 'true',
   },
+  standalone: false,
 })
 export class ClrFileError {}

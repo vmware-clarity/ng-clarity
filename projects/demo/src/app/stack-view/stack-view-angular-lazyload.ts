@@ -13,5 +13,6 @@ import { StackViewNgDemo } from './stack-view-ng-demo';
   selector: 'clr-stack-view-angular-lazyload-demo',
   templateUrl: './stack-view-angular-lazyload.html',
   styleUrls: ['./stack-view.demo.scss'],
+  standalone: false,
 })
 export class StackViewAngularLazyloadDemo extends StackViewNgDemo {}

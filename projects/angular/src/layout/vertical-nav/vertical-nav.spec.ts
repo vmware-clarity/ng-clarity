@@ -605,6 +605,7 @@ export default function (): void {
       </clr-vertical-nav>
     </div>
   `,
+  standalone: false,
 })
 class NoIconsNoNavGroupTestComponent {
   collapsible = false;
@@ -619,6 +620,7 @@ class NoIconsNoNavGroupTestComponent {
       </a>
     </clr-vertical-nav>
   `,
+  standalone: false,
 })
 class IconsButNoNavGroupTestComponent {}
 
@@ -632,6 +634,7 @@ class IconsButNoNavGroupTestComponent {}
       </clr-vertical-nav>
     </div>
   `,
+  standalone: false,
 })
 class OnlyNavGroupTestComponent {}
 
@@ -645,6 +648,7 @@ class OnlyNavGroupTestComponent {}
       </clr-vertical-nav-group>
     </clr-vertical-nav>
   `,
+  standalone: false,
 })
 class IconsAndNavGroupTestComponent {}
 
@@ -662,6 +666,7 @@ class IconsAndNavGroupTestComponent {}
       </a>
     </clr-vertical-nav>
   `,
+  standalone: false,
 })
 class ViewBasicsTestComponent {
   @ViewChild('nav') nav: ClrVerticalNav;
@@ -680,6 +685,7 @@ class ViewBasicsTestComponent {
       (clrVerticalNavCollapsedChange)="updateCollapsed($event)"
     ></clr-vertical-nav>
   `,
+  standalone: false,
 })
 class APITestComponent {
   collapsible = false;
@@ -705,6 +711,7 @@ class APITestComponent {
       </clr-vertical-nav>
     </div>
   `,
+  standalone: false,
 })
 class ResponsiveVerticalNavTestComponent {
   overflowMenu = false;

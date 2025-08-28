@@ -177,5 +177,6 @@ export default function () {
 
 @Component({
   template: `<clr-calendar></clr-calendar>`,
+  standalone: false,
 })
 class TestComponent {}

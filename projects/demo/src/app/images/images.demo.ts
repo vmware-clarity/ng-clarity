@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-images-demo',
   styleUrls: ['./images.demo.scss'],
   templateUrl: './images.demo.html',
+  standalone: false,
 })
 export class ImagesDemo {}

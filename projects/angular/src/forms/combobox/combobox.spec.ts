@@ -37,6 +37,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
       </clr-options>
     </clr-combobox>
   `,
+  standalone: false,
 })
 class TestComponent {
   multi: boolean;

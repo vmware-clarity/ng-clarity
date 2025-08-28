@@ -52,6 +52,7 @@ class MyPageCollectionMock extends PageCollectionMock {
       </ng-template>
     </clr-wizard-page>
   `,
+  standalone: false,
 })
 class TypescriptTestComponent {
   @ViewChildren(ClrWizardPage) wizardPageChildren: QueryList<ClrWizardPage>;
@@ -74,6 +75,7 @@ class TypescriptTestComponent {
       <ng-template clrPageTitle>Other template API tests</ng-template>
     </clr-wizard-page>
   `,
+  standalone: false,
 })
 class TemplateTestComponent {
   @ViewChild('nav') navigationTemplateTester: ClrWizardPage;
@@ -190,6 +192,7 @@ class TemplateTestComponent {
       </clr-wizard-page>
     </clr-wizard>
   `,
+  standalone: false,
 })
 class ViewTestComponent {
   @ViewChild('viewTestWizard') testWizard: ClrWizard;
@@ -232,6 +235,7 @@ class ViewTestComponent {
       <clr-wizard-page [id]="3 === page ? 'lastpage' : page">Content for page {{ page }}</clr-wizard-page>
     </ng-container>
   `,
+  standalone: false,
 })
 class IdTestComponent {
   @ViewChildren(ClrWizardPage) pages: QueryList<ClrWizardPage>;

@@ -20,6 +20,7 @@ import { ClrTooltipModule } from './tooltip.module';
       <clr-tooltip-content>Hello world</clr-tooltip-content>
     </clr-tooltip>
   `,
+  standalone: false,
 })
 class DefaultTest {}
 
@@ -29,6 +30,7 @@ class DefaultTest {}
       <clr-tooltip-content [id]="idValue">Hello world</clr-tooltip-content>
     </clr-tooltip>
   `,
+  standalone: false,
 })
 class IdTest {
   idValue;
@@ -40,6 +42,7 @@ class IdTest {
       <clr-tooltip-content [clrPosition]="position" [clrSize]="size">Hello world</clr-tooltip-content>
     </clr-tooltip>
   `,
+  standalone: false,
 })
 class SimpleTest {
   position: string;

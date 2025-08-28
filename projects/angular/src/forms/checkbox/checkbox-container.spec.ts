@@ -26,6 +26,7 @@ import { ClrCheckboxWrapper } from './checkbox-wrapper';
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-checkbox-container>
   `,
+  standalone: false,
 })
 class NoLabelTest {}
 
@@ -54,6 +55,7 @@ class NoLabelTest {}
       <clr-control-success>Valid</clr-control-success>
     </clr-checkbox-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenTest {
   inline = false;
@@ -80,6 +82,7 @@ class TemplateDrivenTest {
       </clr-checkbox-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   disabled = false;

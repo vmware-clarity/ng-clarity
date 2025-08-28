@@ -60,6 +60,7 @@ export default function (): void {
       </clr-signpost>
     </clr-dg-cell>
   `,
+  standalone: false,
 })
 class SimpleTest {
   signpostTest = false;

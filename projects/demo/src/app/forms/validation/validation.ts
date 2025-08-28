@@ -11,6 +11,7 @@ import { ClrForm } from '@clr/angular';
 
 @Component({
   templateUrl: './validation.html',
+  standalone: false,
 })
 export class FormsValidationDemo {
   @ViewChildren(ClrForm) forms: ClrForm[];

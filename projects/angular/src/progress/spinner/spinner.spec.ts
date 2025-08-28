@@ -23,21 +23,25 @@ const SPINNER_LARGE_SIZE = 'spinner-lg';
 
 @Component({
   template: `<clr-spinner clrSmall clrMedium clrInline>Loading ...</clr-spinner>`,
+  standalone: false,
 })
 class TestComponent {}
 
 @Component({
   template: `<clr-spinner clrSmall clrInverse>Loading ...</clr-spinner>`,
+  standalone: false,
 })
 class TestSmallComponent {}
 
 @Component({
   template: `<clr-spinner clrMedium>Loading ...</clr-spinner>`,
+  standalone: false,
 })
 class TestMediumComponent {}
 
 @Component({
   template: `<clr-spinner>Loading ...</clr-spinner>`,
+  standalone: false,
 })
 class TestLargeComponent {}
 

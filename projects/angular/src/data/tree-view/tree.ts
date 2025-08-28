@@ -36,6 +36,7 @@ import { ClrTreeNode } from './tree-node';
     tabindex: '0',
     '[attr.role]': '"tree"',
   },
+  standalone: false,
 })
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
   @ContentChildren(ClrTreeNode) private rootNodes: QueryList<ClrTreeNode<T>>;

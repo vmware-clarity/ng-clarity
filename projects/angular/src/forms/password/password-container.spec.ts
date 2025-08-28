@@ -29,6 +29,7 @@ import { ClrPasswordContainer } from './password-container';
       <clr-control-success>Valid</clr-control-success>
     </clr-password-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenTest {
   disabled = false;
@@ -43,6 +44,7 @@ class TemplateDrivenTest {
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-password-container>
   `,
+  standalone: false,
 })
 class NoLabelTest {}
 
@@ -58,6 +60,7 @@ class NoLabelTest {}
       </clr-password-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   disabled = false;

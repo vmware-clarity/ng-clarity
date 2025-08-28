@@ -64,6 +64,7 @@ import { ClrRadio } from './radio';
     '[attr.aria-labelledby]': 'ariaLabelledBy',
   },
   providers: [NgControlService, IfControlStateService, ControlClassService, ContainerIdService],
+  standalone: false,
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string;

@@ -80,6 +80,7 @@ export default function (): void {
       <clr-dg-cell *ngIf="showCell">World</clr-dg-cell>
     </clr-dg-row>
   `,
+  standalone: false,
 })
 class SimpleTest {
   showCell = true;

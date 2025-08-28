@@ -21,6 +21,7 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
       <clr-dropdown-menu *ngIf="menu" [clrPosition]="position">Hello world</clr-dropdown-menu>
     </clr-dropdown>
   `,
+  standalone: false,
 })
 class SimpleTest {
   position: string;

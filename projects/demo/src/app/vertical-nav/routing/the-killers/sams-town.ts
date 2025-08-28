@@ -19,5 +19,6 @@ import { Component } from '@angular/core';
       to where I am today". Sam's Town has sold over 4.5 million copies worldwide.
     </p>
   `,
+  standalone: false,
 })
 export class SamsTownDemo {}

@@ -12,6 +12,7 @@ import { ClrWizardPage } from '@clr/angular';
 @Component({
   selector: 'clr-wizard-jump-to',
   templateUrl: './wizard-jump-to.demo.html',
+  standalone: false,
 })
 export class WizardJumpToDemo {
   @ViewChild('wizard') wizard: ClrWizard;

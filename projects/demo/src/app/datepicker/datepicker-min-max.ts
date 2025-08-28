@@ -12,6 +12,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   selector: 'clr-datepicker-min-max-demo',
   templateUrl: './datepicker-min-max.html',
   styleUrls: ['./datepicker.demo.scss'],
+  standalone: false,
 })
 export class DatepickerMinMaxDemo {
   minDate = '2017-04-01';

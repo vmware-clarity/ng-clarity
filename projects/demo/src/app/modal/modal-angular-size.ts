@@ -17,6 +17,7 @@ export enum ModalSize {
 @Component({
   selector: 'clr-modal-angular-size-demo',
   templateUrl: './modal-angular-size.demo.html',
+  standalone: false,
 })
 export class ModalAngularSizeDemo {
   modalSize = ModalSize;

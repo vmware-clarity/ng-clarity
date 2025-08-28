@@ -21,6 +21,7 @@ import { OptionSelectionService } from './option-selection.service';
       <ul #listbox></ul>
     </form>
   `,
+  standalone: false,
 })
 class SimpleHost {
   @ViewChild('textInput') textInput: ElementRef<HTMLInputElement>;

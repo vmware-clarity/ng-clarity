@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-tabs-demo-static',
   templateUrl: './tabs-static.demo.html',
   styleUrls: ['./tabs.demo.scss'],
+  standalone: false,
 })
 export class TabsStaticDemo {}

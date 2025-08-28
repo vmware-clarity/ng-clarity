@@ -26,6 +26,7 @@ import { TreeFeaturesService } from './tree-features.service';
   host: {
     '[attr.role]': 'role', // Safari + VO needs direct relationship between treeitem and group; no element should exist between them
   },
+  standalone: false,
 })
 /**
  * Internal component, do not export!

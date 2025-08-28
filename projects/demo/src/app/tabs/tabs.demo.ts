@@ -11,5 +11,6 @@ import { Component, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   selector: 'clr-tabs-demo',
   templateUrl: './tabs.demo.html',
+  standalone: false,
 })
 export class TabsDemo {}

@@ -21,6 +21,7 @@ import { ClrPasswordContainer } from './password-container';
 
 @Component({
   template: `<input type="password" clrPassword />`,
+  standalone: false,
 })
 class InvalidUseTest {}
 
@@ -31,6 +32,7 @@ class InvalidUseTest {}
       <clr-control-success>Valid</clr-control-success>
     </clr-password-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenTest {}
 
@@ -43,6 +45,7 @@ class TemplateDrivenTest {}
       </clr-password-container>
     </div>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

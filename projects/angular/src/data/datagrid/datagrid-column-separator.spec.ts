@@ -22,6 +22,7 @@ import { DatagridRenderOrganizer } from './render/render-organizer';
   template: `<clr-dg-column-separator></clr-dg-column-separator>`,
   styles: [':host { position: position; width: 200px; height: 400px;}'],
   providers: [ColumnResizerService, MOCK_TABLE_SIZE_PROVIDER],
+  standalone: false,
 })
 class TestComponent {}
 

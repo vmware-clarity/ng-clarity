@@ -21,6 +21,7 @@ export interface ClrRecursiveForOfContext<T> {
 
 @Directive({
   selector: '[clrRecursiveFor][clrRecursiveForOf]',
+  standalone: false,
 })
 export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
   // TODO: accept NgIterable<T>

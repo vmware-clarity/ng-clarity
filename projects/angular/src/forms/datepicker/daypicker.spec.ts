@@ -208,5 +208,6 @@ export default function () {
 
 @Component({
   template: `<clr-daypicker></clr-daypicker>`,
+  standalone: false,
 })
 class TestComponent {}

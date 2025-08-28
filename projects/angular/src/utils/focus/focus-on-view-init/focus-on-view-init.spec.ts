@@ -28,6 +28,7 @@ const focusOnViewInitProvider = { provide: FOCUS_ON_VIEW_INIT, useValue: true };
       <h1 [clrFocusOnViewInit]="false">Title</h1>
     </div>
   `,
+  standalone: false,
 })
 class TestComponent {
   displayNoExistingTabindex = false;
@@ -47,6 +48,7 @@ class TestComponent {
     </div>
   `,
   providers: [focusOnViewInitProvider],
+  standalone: false,
 })
 class TestDisablingViaInjection {
   display = false;

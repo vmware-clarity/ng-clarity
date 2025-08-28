@@ -13,6 +13,7 @@ import { StepperWillyWonka } from './stepper-willy-wonka';
 
 @Directive({
   selector: 'clr-stepper-panel, [clrStepButton]',
+  standalone: false,
 })
 export class StepperOompaLoompa extends OompaLoompa {
   private expand: IfExpandService;

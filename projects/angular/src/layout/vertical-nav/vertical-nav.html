@@ -15,11 +15,7 @@
   (click)="toggleByButton()"
   *ngIf="collapsible"
 >
-  <cds-icon
-    shape="angle-double"
-    class="nav-trigger-icon"
-    [attr.direction]="(this.collapsed) ? 'right' : 'left'"
-  ></cds-icon>
+  <cds-icon shape="angle-double" class="nav-trigger-icon" [attr.direction]="(collapsed) ? 'right' : 'left'"></cds-icon>
 </button>
 <div [id]="contentId" class="nav-content">
   <ng-content></ng-content>

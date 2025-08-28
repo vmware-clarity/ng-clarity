@@ -24,6 +24,7 @@ export interface ClrFileMessagesTemplateContext {
 
 @Directive({
   selector: 'ng-template[clr-file-messages]',
+  standalone: false,
 })
 export class ClrFileMessagesTemplate {
   readonly templateRef: TemplateRef<ClrFileMessagesTemplateContext> = inject(TemplateRef);

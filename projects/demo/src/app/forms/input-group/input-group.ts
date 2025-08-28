@@ -10,6 +10,7 @@ import { ClrCommonStringsService } from '@clr/angular';
 
 @Component({
   templateUrl: './input-group.html',
+  standalone: false,
 })
 export class FormsInputGroupDemo {
   search = '';

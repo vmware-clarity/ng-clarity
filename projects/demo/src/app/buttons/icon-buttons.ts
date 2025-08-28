@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-icon-buttons-demo',
   templateUrl: './icon-buttons.html',
   styleUrls: ['./buttons.demo.scss'],
+  standalone: false,
 })
 export class IconButtonsDemo {}

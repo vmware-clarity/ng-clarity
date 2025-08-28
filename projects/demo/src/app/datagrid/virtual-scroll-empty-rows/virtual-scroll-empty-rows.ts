@@ -22,6 +22,7 @@ import { User } from '../inventory/user';
   providers: [Inventory],
   templateUrl: './virtual-scroll-empty-rows.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridVirtualScrollEmptyRowsDemo {
   userRange: ListRange | undefined;

@@ -21,6 +21,7 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
       <a href="javascript:void(0)">Level 1</a>
     </nav>
   `,
+  standalone: false,
 })
 class TestComponent {}
 

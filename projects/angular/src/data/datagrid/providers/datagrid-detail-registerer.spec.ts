@@ -58,5 +58,6 @@ export default function (): void {
       <clr-dg-footer>1 row</clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class FullTest {}

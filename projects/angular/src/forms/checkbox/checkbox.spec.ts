@@ -14,11 +14,13 @@ import { ClrCheckboxWrapper } from './checkbox-wrapper';
 
 @Component({
   template: `<input type="checkbox" clrCheckbox />`,
+  standalone: false,
 })
 class StandaloneUseTest {}
 
 @Component({
   template: `<input type="checkbox" clrCheckbox name="model" class="test-class" [(ngModel)]="model" />`,
+  standalone: false,
 })
 class TemplateDrivenTest {}
 
@@ -28,6 +30,7 @@ class TemplateDrivenTest {}
       <input type="checkbox" clrCheckbox name="model" class="test-class" formControlName="model" />
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

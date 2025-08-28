@@ -50,6 +50,7 @@ import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
       </clr-input-container>
     </clr-dg-filter>
   `,
+  standalone: false,
 })
 export class DatagridStringFilter<T = any>
   extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>>

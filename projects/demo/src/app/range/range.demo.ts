@@ -10,6 +10,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   templateUrl: './range.demo.html',
+  standalone: false,
 })
 export class RangeDemo {
   disabled = true;

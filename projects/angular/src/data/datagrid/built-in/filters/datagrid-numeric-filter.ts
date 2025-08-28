@@ -55,6 +55,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
       </div>
     </clr-dg-filter>
   `,
+  standalone: false,
 })
 export class DatagridNumericFilter<T = any>
   extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>>

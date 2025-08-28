@@ -21,6 +21,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
   host: {
     '[class.datepicker-actions]': 'true',
   },
+  standalone: false,
 })
 export class ClrDatepickerActions {
   constructor(

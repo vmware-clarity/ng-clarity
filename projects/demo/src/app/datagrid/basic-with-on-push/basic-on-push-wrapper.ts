@@ -33,6 +33,7 @@ import { User } from '../inventory/user';
       <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 export class DatagridBasicOnPushWrapperDemo {
   users: User[];

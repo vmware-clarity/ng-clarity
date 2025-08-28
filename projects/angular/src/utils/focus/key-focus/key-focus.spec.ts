@@ -29,6 +29,7 @@ import { ClrKeyFocusModule } from './key-focus.module';
       <button *ngIf="showLast" clrKeyFocusItem>Button 3</button>
     </div>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrKeyFocus, { static: true }) keyFocus: ClrKeyFocus;
@@ -48,6 +49,7 @@ class TestComponent {
       <button *ngIf="showLast">Button 3</button>
     </div>
   `,
+  standalone: false,
 })
 class DOMTestComponent {
   buttons: any;

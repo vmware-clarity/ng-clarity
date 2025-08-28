@@ -11,6 +11,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'clr-datalist-demo',
   templateUrl: './datalist.demo.html',
+  standalone: false,
 })
 export class DatalistDemo {
   disabled = true;

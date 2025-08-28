@@ -12,5 +12,6 @@ import { Component, ViewEncapsulation } from '@angular/core';
   templateUrl: './dropdown-angular-shadow-root.demo.html',
   styleUrls: ['./dropdown.demo.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
+  standalone: false,
 })
 export class DropdownAngularShadowRootDemo {}

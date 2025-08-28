@@ -12,6 +12,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   selector: 'clr-datepicker-in-reactive-forms-demo',
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './datepicker-in-reactive-forms.html',
+  standalone: false,
 })
 export class DatepickerInReactiveForms {
   dateForm = new FormGroup({ date: new FormControl('03/05/2018'), name: new FormControl('Jane') });

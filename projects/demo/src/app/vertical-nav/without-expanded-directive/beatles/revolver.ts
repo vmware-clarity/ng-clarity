@@ -20,5 +20,6 @@ import { Component } from '@angular/core';
       and content. In America, the album topped the Billboard Top LPs list for six weeks.
     </p>
   `,
+  standalone: false,
 })
 export class Revolver1Demo {}

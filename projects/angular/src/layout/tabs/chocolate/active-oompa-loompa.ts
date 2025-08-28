@@ -13,6 +13,7 @@ import { TabsWillyWonka } from './tabs-willy-wonka';
 
 @Directive({
   selector: '[clrTabLink], clr-tab-content',
+  standalone: false,
 })
 export class ActiveOompaLoompa extends OompaLoompa {
   private ifActive: IfActiveService;

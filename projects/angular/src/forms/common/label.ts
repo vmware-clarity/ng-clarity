@@ -26,6 +26,7 @@ import { NgControlService } from './providers/ng-control.service';
 
 @Directive({
   selector: 'label',
+  standalone: false,
 })
 export class ClrLabel implements OnInit, OnDestroy {
   @Input('id') idInput: string;

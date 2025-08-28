@@ -786,6 +786,7 @@ export default function () {
     />
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  standalone: false,
 })
 class TestComponent {
   date: Date;
@@ -801,6 +802,7 @@ class TestComponent {
     <input type="date" clrDate [(ngModel)]="dateValue" #picker="ngModel" />
     <button id="reset" (click)="picker.reset()">Reset</button>
   `,
+  standalone: false,
 })
 class TestComponentWithNgModel {
   dateValue: string;
@@ -810,6 +812,7 @@ class TestComponentWithNgModel {
 
 @Component({
   template: `<input type="date" [(clrDate)]="date" [disabled]="disabled" />`,
+  standalone: false,
 })
 class TestComponentWithClrDate {
   date: Date;
@@ -823,6 +826,7 @@ class TestComponentWithClrDate {
     </form>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  standalone: false,
 })
 class TestComponentWithReactiveForms {
   dateInput = '01/01/2015';
@@ -841,6 +845,7 @@ class TestComponentWithReactiveForms {
       <input type="date" clrDate (clrDateChange)="dateChanged($event)" [(ngModel)]="dateInput" name="date" />
     </form>
   `,
+  standalone: false,
 })
 class TestComponentWithTemplateDrivenForms {
   @ViewChild('templateForm') templateForm: NgForm;

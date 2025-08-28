@@ -59,6 +59,7 @@ let nbOptionsComponents = 0;
     '[attr.role]': '"listbox"',
     '[id]': 'optionsId',
   },
+  standalone: false,
 })
 export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
   @Input('id') optionsId: string;

@@ -19,6 +19,7 @@ import { ClrStackViewModule } from './stack-view.module';
       <a class="stack-action">Action</a>
     </clr-stack-header>
   `,
+  standalone: false,
 })
 class TestComponent {}
 

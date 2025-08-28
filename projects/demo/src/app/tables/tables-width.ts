@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-tables-width-demo',
   templateUrl: './tables-width.html',
+  standalone: false,
 })
 export class TablesWidthDemo {}

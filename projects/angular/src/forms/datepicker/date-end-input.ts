@@ -15,8 +15,10 @@ import { DatepickerFocusService } from './providers/datepicker-focus.service';
   selector: '[clrEndDate]',
   host: {
     '[class.clr-input]': 'true',
+    '[class.clr-date-end-input]': 'true',
   },
   providers: [DatepickerFocusService],
+  standalone: false,
 })
 export class ClrEndDateInput extends ClrDateInputBase {
   @Output('clrEndDateChange') override dateChange = new EventEmitter<Date>(false);
@@ -37,11 +39,8 @@ export class ClrEndDateInput extends ClrDateInputBase {
     return this.dateNavigationService.selectedEndDayChange;
   }
 
-  triggerControlInputValidation() {
-    if (this.datepickerHasFormControl()) {
-      this.control.control?.updateValueAndValidity({ emitEvent: false });
-      this.control.control?.setErrors(this.control.control.errors);
-    }
+  ngOnInit() {
+    this.subscriptions.push(this.dateIOService.maxDateChange.subscribe(() => this.triggerControlInputValidation()));
   }
 
   protected override updateDayModel(dayModel: DayModel) {

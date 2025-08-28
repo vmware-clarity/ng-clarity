@@ -124,6 +124,7 @@ export default function (): void {
 
 @Component({
   template: `<ng-template [(clrIfActive)]="activeState">Hello Template!</ng-template>`,
+  standalone: false,
 })
 class IfOpenTest {
   @ViewChild(ClrIfActive) directive: ClrIfActive;

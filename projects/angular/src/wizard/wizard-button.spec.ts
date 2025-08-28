@@ -29,6 +29,7 @@ import { ClrWizardModule } from './wizard.module';
       hello {{ projector }}
     </clr-wizard-button>
   `,
+  standalone: false,
 })
 class ViewTestComponent {
   show = true;
@@ -61,6 +62,7 @@ export default function (): void {
 
       @Component({
         template: `<clr-wizard-button></clr-wizard-button>`,
+        standalone: false,
       })
       class TestComponent {}
 

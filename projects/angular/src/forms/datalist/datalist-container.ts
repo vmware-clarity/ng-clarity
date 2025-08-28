@@ -61,6 +61,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
     DatalistIdService,
     IfControlStateService,
   ],
+  standalone: false,
 })
 export class ClrDatalistContainer extends ClrAbstractContainer {
   focus = false;

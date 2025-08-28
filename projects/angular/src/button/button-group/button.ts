@@ -40,6 +40,7 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
     </ng-template>
   `,
   providers: [{ provide: LoadingListener, useExisting: ClrButton }],
+  standalone: false,
 })
 export class ClrButton implements LoadingListener {
   @Output('click') _click = new EventEmitter<boolean>(false);

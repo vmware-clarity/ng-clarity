@@ -20,6 +20,7 @@ import { BreadcrumbItem } from './model/breadcrumbs.model';
     '[attr.aria-label]': 'commonStrings.keys.breadcrumbsLabel',
     '[attr.role]': '"navigation"',
   },
+  standalone: false,
 })
 export class ClrBreadcrumbs {
   isExpanded = false;

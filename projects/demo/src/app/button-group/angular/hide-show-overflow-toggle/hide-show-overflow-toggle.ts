@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-hide-show-overflow-menu-demo',
   templateUrl: './hide-show-overflow-toggle.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class HideShowOverflowToggleDemo {
   hide = false;

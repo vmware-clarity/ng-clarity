@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-icon-inverse-colors-demo',
   styleUrls: ['./iconography.demo.scss'],
   templateUrl: './icon-inverse-color.demo.html',
+  standalone: false,
 })
 export class IconInverseColorDemo {}

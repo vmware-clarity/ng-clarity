@@ -5,16 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  AfterViewInit,
-  Component,
-  ContentChild,
-  ElementRef,
-  Input,
-  Optional,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, Optional, Renderer2, ViewChild } from '@angular/core';
 import { startWith } from 'rxjs/operators';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -29,9 +20,6 @@ import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
-import { ClrEndDateInput } from './date-end-input';
-import { ClrDateInput } from './date-single-input';
-import { ClrStartDateInput } from './date-start-input';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -111,13 +99,10 @@ import { ViewManagerService } from './providers/view-manager.service';
     '[class.clr-form-control]': 'true',
     '[class.clr-row]': 'addGrid()',
   },
+  standalone: false,
 })
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
-
-  @ContentChild(ClrDateInput) private readonly clrDateInput: ClrDateInput;
-  @ContentChild(ClrStartDateInput) private readonly clrStartDateInput: ClrStartDateInput;
-  @ContentChild(ClrEndDateInput) private readonly clrEndDateInput: ClrEndDateInput;
 
   private toggleButton: ElementRef<HTMLButtonElement>;
 
@@ -186,8 +171,6 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   set min(dateString: string) {
     if (this.dateNavigationService.isRangePicker) {
       this.dateIOService.setMinDate(dateString);
-      this.clrStartDateInput?.triggerControlInputValidation();
-      this.clrEndDateInput?.triggerControlInputValidation();
     } else {
       console.error(
         'Error! The date container [min] input only works for date range pickers. Use the native `min` attribute/property for single-date inputs.'
@@ -199,8 +182,6 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   set max(dateString: string) {
     if (this.dateNavigationService.isRangePicker) {
       this.dateIOService.setMaxDate(dateString);
-      this.clrStartDateInput?.triggerControlInputValidation();
-      this.clrEndDateInput?.triggerControlInputValidation();
     } else {
       console.error(
         'Error! The date container [max] input only works for date range pickers. Use the native `max` attribute/property for single-date inputs.'
@@ -298,13 +279,14 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
 
   private dateRangeStructuralChecks() {
     if (this.dateNavigationService.isRangePicker) {
-      if (this.clrDateInput) {
+      const inputs: HTMLElement[] = Array.from(this.elem.nativeElement.querySelectorAll('input'));
+      if (inputs.some(input => input.classList.contains('clr-date-input'))) {
         console.error('Error! clr-date-range-container must contain clrStartDate and clrEndDate inputs');
       }
-      if (!this.clrStartDateInput) {
+      if (!inputs.some(input => input.classList.contains('clr-date-start-input'))) {
         console.error('Error! clr-date-range-container must contain clrStartDate input');
       }
-      if (!this.clrEndDateInput) {
+      if (!inputs.some(input => input.classList.contains('clr-date-end-input'))) {
         console.error('Error! clr-date-range-container must contain clrEndDate input');
       }
     }

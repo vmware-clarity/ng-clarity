@@ -11,6 +11,7 @@ import { ClrWizard } from '@clr/angular';
 @Component({
   selector: 'clr-wizard-inline',
   templateUrl: './wizard-inline.demo.html',
+  standalone: false,
 })
 export class WizardInlineDemo {
   @ViewChild('wizard') wizard: ClrWizard;

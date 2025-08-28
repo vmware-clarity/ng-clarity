@@ -26,6 +26,7 @@ import { normalizeKey, preventArrowKeyScroll } from './util';
 @Component({
   selector: '[clrKeyFocus]',
   template: '<ng-content></ng-content>',
+  standalone: false,
 })
 export class ClrKeyFocus {
   @Input('clrDirection') direction: ClrFocusDirection | string = ClrFocusDirection.VERTICAL;

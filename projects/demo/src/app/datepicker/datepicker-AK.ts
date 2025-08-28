@@ -16,5 +16,6 @@ import { Component, LOCALE_ID } from '@angular/core';
     </div>
   `,
   providers: [{ provide: LOCALE_ID, useValue: 'ak' }],
+  standalone: false,
 })
 export class DatepickerAKDemo {}

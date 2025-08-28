@@ -17,6 +17,7 @@ import { ClrNumberInputContainer } from './number-input-container';
 
 @Component({
   template: `<input clrNumberInput type="number" />`,
+  standalone: false,
 })
 class InvalidUseTest {}
 
@@ -26,6 +27,7 @@ class InvalidUseTest {}
       <input clrNumberInput type="number" name="model" class="test-class" [(ngModel)]="model" />
     </clr-number-input-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenTest {}
 
@@ -37,6 +39,7 @@ class TemplateDrivenTest {}
       </clr-number-input-container>
     </div>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

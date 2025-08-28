@@ -27,6 +27,7 @@ import { Page } from './providers/page';
       </clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class IntegrationTest {
   items = Array(100).fill(0);
@@ -38,6 +39,7 @@ class IntegrationTest {
  */
 @Directive({
   selector: '[instantiationCounter]',
+  standalone: false,
 })
 class InstantiationCounter {
   static total = 0;

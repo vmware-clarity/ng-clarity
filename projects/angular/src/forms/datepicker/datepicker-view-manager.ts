@@ -25,6 +25,7 @@ import { ViewManagerService } from './providers/view-manager.service';
     '[attr.aria-label]': 'commonStrings.keys.datepickerDialogLabel',
     role: 'dialog',
   },
+  standalone: false,
 })
 export class ClrDatepickerViewManager {
   constructor(

@@ -26,6 +26,7 @@ import { NO_OF_DAYS_IN_A_WEEK } from './utils/constants';
 @Component({
   selector: 'clr-calendar',
   templateUrl: './calendar.html',
+  standalone: false,
 })
 export class ClrCalendar implements OnDestroy {
   /**

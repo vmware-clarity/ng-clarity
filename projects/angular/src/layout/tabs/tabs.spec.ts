@@ -51,6 +51,7 @@ import { ClrTabs } from './tabs';
       </clr-tab>
     </clr-tabs>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrTabs) tabsInstance: ClrTabs;
@@ -72,6 +73,7 @@ class TestComponent {
       </clr-tab>
     </clr-tabs>
   `,
+  standalone: false,
 })
 class NgIfFirstTest {
   @ViewChild('first') firstTab: ClrTab;
@@ -90,6 +92,7 @@ class NgIfFirstTest {
       </clr-tab>
     </clr-tabs>
   `,
+  standalone: false,
 })
 class NgIfSecondTest {
   @ViewChild('first', { static: true }) firstTab: ClrTab;
@@ -119,6 +122,7 @@ class NgIfSecondTest {
       </clr-tab>
     </clr-tabs>
   `,
+  standalone: false,
 })
 class NestedTabsTest {
   @ViewChild(ClrTabs, { static: true }) tabsInstance: ClrTabs;
@@ -137,6 +141,7 @@ class NestedTabsTest {
       </clr-tab>
     </clr-tabs>
   `,
+  standalone: false,
 })
 class NoClrIfActiveTest {
   @ViewChild(ClrTabs, { static: true }) tabsInstance: ClrTabs;
@@ -155,6 +160,7 @@ class NoClrIfActiveTest {
       </clr-tabs>
     </div>
   `,
+  standalone: false,
 })
 class ScalingTestComponent {
   @ViewChild('content') content: ElementRef<HTMLElement>;

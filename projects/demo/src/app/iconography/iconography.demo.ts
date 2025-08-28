@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-iconography-demo',
   styleUrls: ['./iconography.demo.scss'],
   templateUrl: './iconography.demo.html',
+  standalone: false,
 })
 export class IconsDemo {}

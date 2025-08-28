@@ -32,6 +32,7 @@ function getChildren(node: TestNode) {
     <clr-recursive-children [parent]="parent" [children]="children"></clr-recursive-children>
     <ng-template #template let-node>{{ node.name }}</ng-template>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild('template') template: TemplateRef<ClrRecursiveForOfContext<TestNode>>;

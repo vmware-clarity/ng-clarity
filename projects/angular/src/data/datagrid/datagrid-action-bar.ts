@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-dg-action-bar',
   template: `<ng-content></ng-content>`,
   host: { '[class.datagrid-action-bar]': 'true' },
+  standalone: false,
 })
 export class ClrDatagridActionBar {}

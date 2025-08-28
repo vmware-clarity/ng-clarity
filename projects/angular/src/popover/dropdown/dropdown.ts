@@ -23,6 +23,7 @@ import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdow
   },
   providers: [ROOT_DROPDOWN_PROVIDER, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
   hostDirectives: [ClrPopoverHostDirective],
+  standalone: false,
 })
 export class ClrDropdown implements OnDestroy {
   @Input('clrCloseMenuOnItemClick') isMenuClosable = true;

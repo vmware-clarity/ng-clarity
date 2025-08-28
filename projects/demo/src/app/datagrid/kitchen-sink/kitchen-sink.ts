@@ -17,6 +17,7 @@ import { DatagridKitchenSinkData } from './kitchen-sink-data';
   selector: 'clr-datagrid-kitchen-sink-demo',
   templateUrl: './kitchen-sink.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridKitchenSinkDemo {
   nameFilter = '';

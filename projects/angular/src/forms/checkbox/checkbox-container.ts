@@ -52,6 +52,7 @@ import { ClrCheckbox } from './checkbox';
     '[attr.role]': 'role',
   },
   providers: [IfControlStateService, NgControlService, ControlClassService, ContainerIdService],
+  standalone: false,
 })
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string;

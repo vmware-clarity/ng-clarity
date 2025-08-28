@@ -56,6 +56,7 @@ import { DatagridRenderOrganizer } from './render/render-organizer';
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class FullTest {
   items = [1, 2, 3];
@@ -96,6 +97,7 @@ class FullTest {
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class NgForTest {
   items = [1, 2, 3];
@@ -105,6 +107,7 @@ class NgForTest {
 // The secret here is OnPush only updates on input changes, hence the wrapper.
 @Component({
   template: `<multi-select-test [items]="items" [selected]="selected"></multi-select-test>`,
+  standalone: false,
 })
 class OnPushTest {
   items = [1, 2, 3];
@@ -125,6 +128,7 @@ class OnPushTest {
     </clr-datagrid>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 class MultiSelectionTest {
   @Input() items: any[] = [];
@@ -147,6 +151,7 @@ class MultiSelectionTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class MultiSelectionSimpleTest {
   items: any[] = [1, 2, 3, 4, 5, 6, 7];
@@ -166,6 +171,7 @@ class MultiSelectionSimpleTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class MultiSelectionNgForTest {
   items: { value: number }[] = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }];
@@ -189,6 +195,7 @@ class MultiSelectionNgForTest {
       <clr-dg-footer (click)="selected = null">{{ selected }}</clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class SingleSelectionTest {
   items = [1, 2, 3];
@@ -213,6 +220,7 @@ class SingleSelectionTest {
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class ActionableRowTest {
   items = [1, 2, 3];
@@ -236,6 +244,7 @@ class ActionableRowTest {
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class ExpandableRowTest {
   items = [1, 2, 3];
@@ -256,6 +265,7 @@ class ExpandableRowTest {
       <clr-dg-footer></clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class ExpandedOnInitTest {
   expandable = true;
@@ -281,6 +291,7 @@ class ExpandedOnInitTest {
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class ChocolateClrDgItemsTest {
   items = [1, 2, 3];
@@ -308,6 +319,7 @@ class ChocolateClrDgItemsTest {
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class ChocolateNgForTest {
   items = [1, 2, 3];
@@ -331,6 +343,7 @@ class ChocolateNgForTest {
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class MixedExpandableRowTest {
   items = [1, 2, 3, 4];
@@ -392,6 +405,7 @@ class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class HiddenColumnTest {
   items = [1, 2, 3];
@@ -409,6 +423,7 @@ class HiddenColumnTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class ProjectionTest {
   items = [1, 2, 3];
@@ -443,6 +458,7 @@ class ProjectionTest {
       </ng-template>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class ExpandedCellsTest {
   items = [1, 2, 3];
@@ -470,6 +486,7 @@ class ExpandedCellsTest {
       </clr-tab>
     </clr-tabs>
   `,
+  standalone: false,
 })
 class TabsIntegrationTest {
   items = Array(10).fill(0);
@@ -485,6 +502,7 @@ class TabsIntegrationTest {
       <clr-dg-detail *clrIfDetail></clr-dg-detail>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class PanelTrackByTest {
   items = Array.from(Array(3), (v, i) => {
@@ -506,6 +524,7 @@ class PanelTrackByTest {
       </ng-template>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class PanelInitializeOpenedTest {
   items = Array.from(Array(3), (v, i) => {

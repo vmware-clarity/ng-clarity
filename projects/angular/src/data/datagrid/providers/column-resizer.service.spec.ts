@@ -16,6 +16,7 @@ import { ColumnResizerService } from './column-resizer.service';
   providers: [ColumnResizerService, DomAdapter, DatagridRenderOrganizer],
   template: `<div></div>`,
   styles: [':host { position: position; width: 200px; height: 400px;}'],
+  standalone: false,
 })
 class TestComponent {}
 

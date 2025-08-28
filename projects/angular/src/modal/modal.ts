@@ -60,6 +60,7 @@ import { ModalStackService } from './modal-stack.service';
       transition('* => void', [animate('0.2s ease-in-out', style({ opacity: 0 }))]),
     ]),
   ],
+  standalone: false,
 })
 export class ClrModal implements OnChanges, OnDestroy {
   modalId = uniqueIdFactory();

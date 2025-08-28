@@ -17,6 +17,7 @@ import { ClrCombobox } from './combobox';
       <clr-options class="test">Test</clr-options>
     </clr-combobox>
   `,
+  standalone: false,
 })
 class TestSelectWithMenu {}
 

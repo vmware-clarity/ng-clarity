@@ -25,6 +25,7 @@ import { ClrTabsModule } from './tabs.module';
       </clr-tab>
     </clr-tabs>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChildren(ClrTabAction, { read: ElementRef }) tabsActions: QueryList<ElementRef>;

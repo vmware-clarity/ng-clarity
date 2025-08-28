@@ -36,6 +36,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
     </button>
   `,
   host: { '[class.day]': 'true' },
+  standalone: false,
 })
 export class ClrDay {
   @Output('selectDay') onSelectDay = new EventEmitter<DayModel>();

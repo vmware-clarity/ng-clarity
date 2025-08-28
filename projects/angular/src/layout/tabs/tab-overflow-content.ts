@@ -13,5 +13,6 @@ import { Component } from '@angular/core';
   host: {
     '[class.dropdown-menu]': 'true',
   },
+  standalone: false,
 })
 export class ClrTabOverflowContent {}

@@ -46,6 +46,7 @@ import { Selection } from './providers/selection';
     '[attr.id]': 'expand.expandableId',
     role: 'row',
   },
+  standalone: false,
 })
 export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
   @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;

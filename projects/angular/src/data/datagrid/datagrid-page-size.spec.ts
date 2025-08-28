@@ -110,6 +110,7 @@ export default function (): void {
 
 @Component({
   template: `<clr-dg-page-size>Hello world</clr-dg-page-size>`,
+  standalone: false,
 })
 class SimpleTest {}
 
@@ -119,6 +120,7 @@ class SimpleTest {}
       Hello world
     </clr-dg-page-size>
   `,
+  standalone: false,
 })
 class FullTest {
   pageSizeOptions: number[];

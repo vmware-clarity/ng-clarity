@@ -20,6 +20,7 @@ import { MOCK_COLUMN_SERVICE_PROVIDER, MockColumnsService } from './providers/co
     <!--The above ng-template is required/used as a hideable column template-->
     <clr-dg-column-toggle></clr-dg-column-toggle>
   `,
+  standalone: false,
 })
 class ColumnToggleTest {
   private mockColumnsService: MockColumnsService;

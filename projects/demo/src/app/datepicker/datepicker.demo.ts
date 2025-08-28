@@ -29,5 +29,6 @@ registerLocaleData(localeHR);
   selector: 'clr-datepicker-demo',
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './datepicker.demo.html',
+  standalone: false,
 })
 export class DatepickerDemo {}

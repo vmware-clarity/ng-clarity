@@ -41,6 +41,7 @@ const KEYBOARD_RESIZE_LENGTH = 12;
   host: {
     '[class.datagrid-column-separator]': 'true',
   },
+  standalone: false,
 })
 export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
   columnSeparatorId = uniqueIdFactory();

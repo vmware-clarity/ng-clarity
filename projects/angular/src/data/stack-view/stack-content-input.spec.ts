@@ -17,6 +17,7 @@ import { ClrStackViewModule } from './stack-view.module';
       <input type="text" clrStackInput />
     </clr-stack-content>
   `,
+  standalone: false,
 })
 class TestComponent {}
 

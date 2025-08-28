@@ -167,6 +167,7 @@ export default function (): void {
 
 @Component({
   template: `<ng-container *clrDgHideableColumn>Why am I not inside a datagrid column?</ng-container>`,
+  standalone: false,
 })
 class HideableNotInsideColumnTest {}
 
@@ -180,6 +181,7 @@ class HideableNotInsideColumnTest {}
     </clr-dg-column>
     <clr-dg-column></clr-dg-column>
   `,
+  standalone: false,
 })
 class HideableSugaredTest {
   hideFirst: boolean;
@@ -195,6 +197,7 @@ class HideableSugaredTest {
       <ng-template clrDgHideableColumn [(clrDgHidden)]="hideSecond">Name</ng-template>
     </clr-dg-column>
   `,
+  standalone: false,
 })
 class HideableDesugeredTest {
   hideSecond: boolean;

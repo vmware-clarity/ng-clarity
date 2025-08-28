@@ -14,6 +14,7 @@ import { ClrSelectContainer } from './select-container';
 @Directive({
   selector: '[clrSelect]',
   host: { '[class.clr-select]': 'true' },
+  standalone: false,
 })
 export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
   protected override index = 1;

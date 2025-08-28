@@ -215,6 +215,7 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
     </clr-dg-column>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  standalone: false,
 })
 class FullTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;

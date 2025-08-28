@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-tooltips-text-demo',
   styleUrls: ['./tooltips.demo.scss'],
   templateUrl: './tooltips-text.html',
+  standalone: false,
 })
 export class TooltipsTextDemo {}

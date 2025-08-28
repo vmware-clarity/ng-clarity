@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-icon-size-demo',
   styleUrls: ['./iconography.demo.scss'],
   templateUrl: './icon-size.demo.html',
+  standalone: false,
 })
 export class IconSizeDemo {}

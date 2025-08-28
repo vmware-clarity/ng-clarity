@@ -14,11 +14,13 @@ import { ClrTextareaContainer } from './textarea-container';
 
 @Component({
   template: `<textarea clrTextarea></textarea>`,
+  standalone: false,
 })
 class StandaloneUseTest {}
 
 @Component({
   template: `<textarea clrTextarea name="model" class="test-class" [(ngModel)]="model"></textarea>`,
+  standalone: false,
 })
 class TemplateDrivenTest {}
 
@@ -28,6 +30,7 @@ class TemplateDrivenTest {}
       <textarea clrTextarea name="model" class="test-class" formControlName="model"></textarea>
     </div>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

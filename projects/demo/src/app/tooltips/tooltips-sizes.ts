@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-tooltips-sizes-demo',
   styleUrls: ['./tooltips.demo.scss'],
   templateUrl: './tooltips-sizes.html',
+  standalone: false,
 })
 export class TooltipsSizesDemo {}

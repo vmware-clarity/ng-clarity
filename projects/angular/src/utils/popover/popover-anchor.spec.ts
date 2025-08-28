@@ -16,6 +16,7 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
   selector: 'test-host',
   template: '<button #testAnchor clrPopoverAnchor>Smart Anchor</button>',
   providers: [ClrPopoverEventsService, ClrPopoverToggleService],
+  standalone: false,
 })
 class TestHost {
   @ViewChild('testAnchor', { read: ElementRef, static: true }) anchor: ElementRef<HTMLButtonElement>;

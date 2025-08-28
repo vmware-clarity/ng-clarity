@@ -21,6 +21,7 @@ import { ClrOptionItems } from './option-items.directive';
     <span [id]="labelId" class="clr-option-group-label" role="presentation">{{ label }}</span>
     <ng-content></ng-content>
   `,
+  standalone: false,
 })
 export class ClrOptionGroup<T> {
   @Input('clrOptionGroupLabel') label: string;

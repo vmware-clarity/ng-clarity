@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-tooltips-buttons-demo',
   styleUrls: ['./tooltips.demo.scss'],
   templateUrl: './tooltips-buttons.html',
+  standalone: false,
 })
 export class TooltipsButtonsDemo {}

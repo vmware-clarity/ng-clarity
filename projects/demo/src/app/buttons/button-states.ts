@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-buttons-demo-button-states',
   templateUrl: './button-states.html',
   styleUrls: ['./buttons.demo.scss'],
+  standalone: false,
 })
 export class ButtonStatesDemo {}

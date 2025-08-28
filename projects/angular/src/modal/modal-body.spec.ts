@@ -96,6 +96,7 @@ describe('ClrModalBody Directive', () => {
       </div>
     </div>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild('testLabel') testLabel: ElementRef<HTMLElement>;

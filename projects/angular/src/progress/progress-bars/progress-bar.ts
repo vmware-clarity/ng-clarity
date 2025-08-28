@@ -15,6 +15,7 @@ import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribut
     <progress [id]="id" [attr.max]="max" [attr.value]="value" [attr.data-displayval]="displayValue"></progress>
     <span *ngIf="displayStringValue()">{{ displayValue }}</span>
   `,
+  standalone: false,
 })
 export class ClrProgressBar {
   @Input('clrMax') max: number | string = 100;

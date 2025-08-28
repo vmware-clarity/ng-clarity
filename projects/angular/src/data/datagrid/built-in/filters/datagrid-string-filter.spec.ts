@@ -151,6 +151,7 @@ class TestFilter implements ClrDatagridStringFilterInterface<string> {
     <clr-dg-string-filter [clrDgStringFilter]="filter" [(clrFilterValue)]="filterValue"></clr-dg-string-filter>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  standalone: false,
 })
 class FullTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;
@@ -168,6 +169,7 @@ class FullTest {
     ></clr-dg-string-filter>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  standalone: false,
 })
 class AccessibilityTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;

@@ -19,5 +19,6 @@ import { Component } from '@angular/core';
       Told Me", "All These Things That I've Done" and "Smile Like You Mean It".
     </p>
   `,
+  standalone: false,
 })
 export class HotFussDemo {}

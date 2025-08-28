@@ -11,6 +11,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-number-input',
   templateUrl: './number-input.demo.component.html',
+  standalone: false,
 })
 export class NumberInputDemoComponent {
   form = new FormGroup({

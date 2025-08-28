@@ -12,6 +12,7 @@ import { DatagridRowRenderer } from './row-renderer';
 
 @Directive({
   selector: 'clr-dg-row-detail',
+  standalone: false,
 })
 export class DatagridRowDetailRenderer extends DatagridRowRenderer implements OnDestroy {
   constructor(private parentRow: DatagridRowRenderer, columnsService: ColumnsService) {

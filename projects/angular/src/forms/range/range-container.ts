@@ -49,6 +49,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
     '[class.clr-row]': 'addGrid()',
   },
   providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+  standalone: false,
 })
 export class ClrRangeContainer extends ClrAbstractContainer {
   private _hasProgress = false;

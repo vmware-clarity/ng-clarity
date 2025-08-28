@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-typography-text',
   styleUrls: ['./typography.demo.scss'],
   templateUrl: './typography-text.html',
+  standalone: false,
 })
 export class TypographyTextDemo {}

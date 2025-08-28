@@ -21,6 +21,7 @@ import { ClrTooltipModule } from './tooltip.module';
       </clr-tooltip-content>
     </clr-tooltip>
   `,
+  standalone: false,
 })
 class SimpleTest {}
 

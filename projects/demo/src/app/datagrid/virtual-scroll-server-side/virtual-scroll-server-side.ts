@@ -19,6 +19,7 @@ import { ColorFilter } from '../utils/color-filter';
   providers: [Inventory],
   templateUrl: './virtual-scroll-server-side.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridVirtualScrollServerSideDemo implements OnInit {
   users: Observable<User[]>;

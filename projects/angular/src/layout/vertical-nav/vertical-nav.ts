@@ -24,6 +24,7 @@ import { VerticalNavService } from './providers/vertical-nav.service';
     '[class.has-nav-groups]': 'hasNavGroups',
     '[class.has-icons]': 'hasIcons',
   },
+  standalone: false,
 })
 export class ClrVerticalNav implements OnDestroy {
   @Input('clrVerticalNavToggleLabel') toggleLabel: string;

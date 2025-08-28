@@ -16,6 +16,7 @@ import { ClrControlSuccess } from './success';
 
 @Component({
   template: `<clr-control-success>Test success message</clr-control-success>`,
+  standalone: false,
 })
 class SimpleTest {}
 

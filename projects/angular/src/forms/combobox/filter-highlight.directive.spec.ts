@@ -18,6 +18,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
       <div></div>
     </div>
   `,
+  standalone: false,
 })
 class TestComponent {}
 

@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-layout-only-header-demo',
   templateUrl: './layout-only-header.html',
   styleUrls: ['./layout.demo.scss'],
+  standalone: false,
 })
 export class LayoutOnlyHeaderDemo {}

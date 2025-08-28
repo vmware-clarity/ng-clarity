@@ -32,6 +32,7 @@ import { ClrWizard } from '../wizard';
       </clr-wizard-page>
     </clr-wizard>
   `,
+  standalone: false,
 })
 export class UnopenedWizardTestComponent {
   @ViewChild('wizard', { static: true }) wizard: ClrWizard;

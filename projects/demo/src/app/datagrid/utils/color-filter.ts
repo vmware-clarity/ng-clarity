@@ -23,6 +23,7 @@ import { COLORS } from '../inventory/values';
     ></span>
   `,
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class ColorFilter implements ClrDatagridFilterInterface<User> {
   allColors = COLORS;

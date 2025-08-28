@@ -16,6 +16,7 @@ import { ControlIdService } from './providers/control-id.service';
 
 @Component({
   template: `<clr-control-helper>Test helper</clr-control-helper>`,
+  standalone: false,
 })
 class SimpleTest {}
 

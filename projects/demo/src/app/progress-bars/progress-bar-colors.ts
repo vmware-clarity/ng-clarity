@@ -13,6 +13,7 @@ import { ProgBarExample } from './progbar-example';
   selector: 'clr-progress-bar-colors-demo',
   styleUrls: ['progress-bars.demo.scss'],
   templateUrl: './progress-bar-colors.html',
+  standalone: false,
 })
 export class ProgressBarColorsDemo {
   colorTypes: ProgBarExample[];

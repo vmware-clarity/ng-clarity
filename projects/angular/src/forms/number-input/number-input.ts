@@ -24,6 +24,7 @@ import { ClrNumberInputContainer } from './number-input-container';
 @Directive({
   selector: 'input[type="number"][clrNumberInput]',
   host: { '[class.clr-input]': 'true', '[class.clr-number-input]': 'true' },
+  standalone: false,
 })
 export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> {
   protected override index = 1;

@@ -15,6 +15,7 @@ import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribut
   host: {
     '[attr.aria-busy]': 'true',
   },
+  standalone: false,
 })
 export class ClrSpinner {
   private _inline: boolean;

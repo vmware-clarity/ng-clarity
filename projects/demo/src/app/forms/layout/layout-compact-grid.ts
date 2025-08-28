@@ -10,6 +10,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'layout-compact-grid-demo',
   templateUrl: './layout.html',
+  standalone: false,
 })
 export class FormsLayoutCompactGridDemo {
   layout = 'compact';

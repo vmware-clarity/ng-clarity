@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-card-demo',
   styleUrls: ['./card.demo.scss'],
   templateUrl: './card.demo.html',
+  standalone: false,
 })
 export class CardDemo {}

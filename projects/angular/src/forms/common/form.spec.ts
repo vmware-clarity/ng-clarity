@@ -26,6 +26,7 @@ import { MarkControlService } from './providers/mark-control.service';
       <button class="btn btn-primary" #submitBtn type="submit">Submit</button>
     </form>
   `,
+  standalone: false,
 })
 class SimpleTest {
   @ViewChild(ClrForm, { static: true }) form: ClrForm;

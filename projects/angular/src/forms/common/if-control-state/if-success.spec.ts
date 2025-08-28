@@ -21,12 +21,14 @@ const successMessage = 'SUCCESS_MESSAGE';
 
 @Component({
   template: `<div *clrIfSuccess></div>`,
+  standalone: false,
 })
 class InvalidUseTest {}
 
 @Component({
   template: `<clr-control-success *clrIfSuccess>${successMessage}</clr-control-success>`,
   providers: [IfControlStateService, NgControlService],
+  standalone: false,
 })
 class GeneralSuccessTest {}
 

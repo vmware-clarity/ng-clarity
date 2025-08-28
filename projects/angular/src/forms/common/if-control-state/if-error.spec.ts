@@ -23,12 +23,14 @@ const maxLengthMessage = 'MAX_LENGTH_MESSAGE';
 
 @Component({
   template: `<div *clrIfError></div>`,
+  standalone: false,
 })
 class InvalidUseTest {}
 
 @Component({
   template: `<clr-control-error *clrIfError>${errorMessage}</clr-control-error>`,
   providers: [IfControlStateService, NgControlService],
+  standalone: false,
 })
 class GeneralErrorTest {}
 
@@ -41,6 +43,7 @@ class GeneralErrorTest {}
     </clr-control-error>
   `,
   providers: [IfControlStateService, NgControlService],
+  standalone: false,
 })
 class SpecificErrorTest {}
 

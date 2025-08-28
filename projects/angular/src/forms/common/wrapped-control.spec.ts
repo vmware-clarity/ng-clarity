@@ -31,11 +31,13 @@ import { WrappedFormControl } from './wrapped-control';
   selector: 'test-wrapper',
   template: `<ng-content></ng-content>`,
   providers: [ControlIdService],
+  standalone: false,
 })
 class TestWrapper {}
 
 @Directive({
   selector: '[testControl]',
+  standalone: false,
 })
 class TestControl extends WrappedFormControl<TestWrapper> {
   constructor(vcr: ViewContainerRef) {
@@ -50,11 +52,13 @@ class TestControl extends WrappedFormControl<TestWrapper> {
     <div id="second"><ng-content></ng-content></div>
   `,
   providers: [ControlIdService],
+  standalone: false,
 })
 class TestWrapper2 {}
 
 @Directive({
   selector: '[testControl2]',
+  standalone: false,
 })
 class TestControl2 extends WrappedFormControl<TestWrapper2> {
   constructor(vcr: ViewContainerRef) {
@@ -66,11 +70,13 @@ class TestControl2 extends WrappedFormControl<TestWrapper2> {
   selector: 'test-wrapper3',
   template: `<div id="wrapper"><ng-content></ng-content></div>`,
   providers: [ControlIdService, NgControlService, IfControlStateService, ControlClassService],
+  standalone: false,
 })
 class TestWrapper3 extends ClrAbstractContainer {}
 
 @Directive({
   selector: '[testControl3]',
+  standalone: false,
 })
 class TestControl3 extends WrappedFormControl<TestWrapper3> {
   constructor(
@@ -88,6 +94,7 @@ class TestControl3 extends WrappedFormControl<TestWrapper3> {
   selector: 'form-wrapper',
   template: `<div id="form-wrapper"><ng-content></ng-content></div>`,
   providers: [MarkControlService, LayoutService],
+  standalone: false,
 })
 class FormWrapper {}
 
@@ -103,26 +110,31 @@ class WrappedFormControlTestModule {}
  */
 @Component({
   template: `<input testControl />`,
+  standalone: false,
 })
 class NoWrapperNoId {}
 
 @Component({
   template: `<input testControl id="hello" />`,
+  standalone: false,
 })
 class NoWrapperWithId {}
 
 @Component({
   template: `<test-wrapper><input testControl /></test-wrapper>`,
+  standalone: false,
 })
 class WithWrapperNoId {}
 
 @Component({
   template: `<test-wrapper><input testControl id="hello" /></test-wrapper>`,
+  standalone: false,
 })
 class WithWrapperWithId {}
 
 @Component({
   template: `<test-wrapper2><input testControl id="hello" /></test-wrapper2>`,
+  standalone: false,
 })
 class WithMultipleNgContent {}
 
@@ -134,6 +146,7 @@ class WithMultipleNgContent {}
       </test-wrapper3>
     </form-wrapper>
   `,
+  standalone: false,
 })
 class WithControl {
   model = '';
@@ -146,6 +159,7 @@ class WithControl {
       <test-wrapper3><input type="number" testControl3 [(ngModel)]="model" required id="control2" /></test-wrapper3>
     </form-wrapper>
   `,
+  standalone: false,
 })
 class WithNumberControl {
   model = '';
@@ -160,6 +174,7 @@ class WithNumberControl {
       </test-wrapper3>
     </form-wrapper>
   `,
+  standalone: false,
 })
 class WithControlAndHelper {
   model = '';
@@ -174,6 +189,7 @@ class WithControlAndHelper {
       </test-wrapper3>
     </form-wrapper>
   `,
+  standalone: false,
 })
 class WithControlAndError {
   model = '';
@@ -188,6 +204,7 @@ class WithControlAndError {
       </test-wrapper3>
     </form-wrapper>
   `,
+  standalone: false,
 })
 class WithControlAndSuccess {
   model = '';
@@ -203,6 +220,7 @@ class WithControlAndSuccess {
       </test-wrapper3>
     </form-wrapper>
   `,
+  standalone: false,
 })
 class WithDynamicFormControl {
   form = new FormGroup<any>({
@@ -224,6 +242,7 @@ class WithDynamicFormControl {
       </test-wrapper3>
     </form-wrapper>
   `,
+  standalone: false,
 })
 class WithDynamicNgControl {
   form = {};

@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-tables-noborder-demo',
   templateUrl: './tables-noborder.html',
+  standalone: false,
 })
 export class TablesNoborderDemo {}

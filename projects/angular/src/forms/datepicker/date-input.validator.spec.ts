@@ -18,6 +18,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
       <input type="date" clrDate min="2022-01-01" max="2022-12-31" [formControl]="formControl" />
     </clr-date-container>
   `,
+  standalone: false,
 })
 class TestComponent {
   readonly formControl = new FormControl();

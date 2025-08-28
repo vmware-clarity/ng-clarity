@@ -27,6 +27,7 @@ import { MultiAlertService } from './providers/multi-alert.service';
   selector: 'clr-alert',
   providers: [AlertIconAndTypesService],
   templateUrl: './alert.html',
+  standalone: false,
 })
 export class ClrAlert implements OnInit, OnDestroy {
   @Input('clrAlertSizeSmall') isSmall = false;

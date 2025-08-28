@@ -11,5 +11,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'clr-accordion-content, clr-step-content',
   template: `<ng-content></ng-content>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ClrAccordionContent {}

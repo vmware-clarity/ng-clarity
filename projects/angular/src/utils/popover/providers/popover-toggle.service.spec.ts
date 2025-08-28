@@ -18,6 +18,7 @@ import { ClrPopoverToggleService } from './popover-toggle.service';
   selector: 'test-host',
   template: '',
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
+  standalone: false,
 })
 class TestHost {}
 

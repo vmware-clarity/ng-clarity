@@ -33,6 +33,7 @@ import { AccordionService } from './providers/accordion.service';
       </clr-accordion-panel>
     </clr-accordion>
   `,
+  standalone: false,
 })
 class TestComponent {
   open = false;
@@ -64,6 +65,7 @@ class TestComponent {
       </clr-accordion-panel>
     </clr-accordion>
   `,
+  standalone: false,
 })
 class TestNestedAccordionComponent {}
 
@@ -77,6 +79,7 @@ class TestNestedAccordionComponent {}
       </clr-accordion-panel>
     </clr-accordion>
   `,
+  standalone: false,
 })
 class TestNoBindingComponent {
   change = state => {

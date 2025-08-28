@@ -131,6 +131,7 @@ export default function (): void {
       <clr-dg-detail-body>${content}</clr-dg-detail-body>
     </clr-dg-detail>
   `,
+  standalone: false,
 })
 class FullTest {
   ariaLabelledBy: string;

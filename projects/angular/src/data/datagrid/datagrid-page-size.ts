@@ -20,6 +20,7 @@ import { Page } from './providers/page';
       </select>
     </div>
   `,
+  standalone: false,
 })
 export class ClrDatagridPageSize {
   @Input('clrPageSizeOptions') pageSizeOptions: number[];

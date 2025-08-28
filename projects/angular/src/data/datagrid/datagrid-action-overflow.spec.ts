@@ -126,6 +126,7 @@ export default function (): void {
       </clr-dg-action-overflow>
     </div>
   `,
+  standalone: false,
 })
 class SimpleTest {
   open: boolean;

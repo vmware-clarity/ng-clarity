@@ -14,6 +14,7 @@ import { DatagridKitchenSinkData } from '../kitchen-sink/kitchen-sink-data';
   selector: 'clr-datagrid-density-demo',
   templateUrl: './density.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridDensityDemo {
   selected: User[];

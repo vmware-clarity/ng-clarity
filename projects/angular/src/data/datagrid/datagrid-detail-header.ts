@@ -30,6 +30,7 @@ import { DetailService } from './providers/detail.service';
       </button>
     </div>
   `,
+  standalone: false,
 })
 export class ClrDatagridDetailHeader implements AfterViewInit {
   @ViewChild('title') title: ElementRef<HTMLElement>;

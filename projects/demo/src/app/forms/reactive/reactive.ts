@@ -22,11 +22,13 @@ class BasicReactiveDemo {
 
 @Component({
   templateUrl: './reactive.html',
+  standalone: false,
 })
 export class FormsReactiveDemo extends BasicReactiveDemo {}
 
 @Component({
   templateUrl: './reactive.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormsReactiveOnPushDemo extends BasicReactiveDemo {}

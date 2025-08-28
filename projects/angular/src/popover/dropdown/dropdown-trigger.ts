@@ -23,6 +23,7 @@ import { wrapHostContentInsideSpan } from './utils/content-wrapping';
     '[attr.aria-haspopup]': '"menu"',
     '[attr.aria-expanded]': 'active',
   },
+  standalone: false,
 })
 export class ClrDropdownTrigger {
   isRootLevelToggle = true;

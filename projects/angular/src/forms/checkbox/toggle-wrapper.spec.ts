@@ -27,6 +27,7 @@ import { ClrCheckboxWrapper } from './checkbox-wrapper';
       <input type="checkbox" clrToggle name="model" [(ngModel)]="model" />
     </clr-toggle-wrapper>
   `,
+  standalone: false,
 })
 class FullTest {
   model = '';
@@ -38,6 +39,7 @@ class FullTest {
       <input type="checkbox" clrToggle name="model" [(ngModel)]="model" />
     </clr-toggle-wrapper>
   `,
+  standalone: false,
 })
 class NoLabelTest {
   model = '';
@@ -51,6 +53,7 @@ class NoLabelTest {
       </clr-toggle-wrapper>
     </clr-toggle-container>
   `,
+  standalone: false,
 })
 class ContainerTest {
   model = '';

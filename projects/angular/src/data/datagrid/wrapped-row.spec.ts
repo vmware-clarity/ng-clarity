@@ -12,6 +12,7 @@ import { WrappedRow } from './wrapped-row';
 
 @Component({
   template: `<dg-wrapped-row>Hello World!</dg-wrapped-row>`,
+  standalone: false,
 })
 class WrappedRowTest {
   @ViewChild(WrappedRow, { static: true }) wrapper: WrappedRow;

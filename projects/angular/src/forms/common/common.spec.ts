@@ -25,11 +25,13 @@ import { WrappedFormControl } from './wrapped-control';
     <label id="container-view-label-after"></label>
   `,
   providers: [ControlIdService],
+  standalone: false,
 })
 class GenericWrapper {}
 
 @Directive({
   selector: '[genericControl]',
+  standalone: false,
 })
 class GenericControl extends WrappedFormControl<GenericWrapper> {
   constructor(vcr: ViewContainerRef) {
@@ -49,11 +51,13 @@ class CommonFormsTestModule {}
  */
 @Component({
   template: `<input genericControl />`,
+  standalone: false,
 })
 class NoWrapperNoId {}
 
 @Component({
   template: `<input genericControl id="hello" />`,
+  standalone: false,
 })
 class NoWrapperWithId {}
 
@@ -65,6 +69,7 @@ class NoWrapperWithId {}
       <label id="test-view-label-after"></label>
     </generic-wrapper>
   `,
+  standalone: false,
 })
 class WithWrapperNoId {}
 
@@ -76,6 +81,7 @@ class WithWrapperNoId {}
       <label id="test-view-label-after"></label>
     </generic-wrapper>
   `,
+  standalone: false,
 })
 class WithWrapperWithId {}
 

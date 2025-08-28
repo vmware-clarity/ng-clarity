@@ -12,6 +12,7 @@ import { CLR_MENU_POSITIONS } from '@clr/angular';
   selector: 'clr-menu-directions-demo',
   templateUrl: './menu-directions.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class MenuDirectionsDemo {
   menuPosition: string = CLR_MENU_POSITIONS[0];

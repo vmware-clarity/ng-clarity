@@ -13,5 +13,6 @@ import { StackViewNgDemo } from './stack-view-ng-demo';
   selector: 'clr-stack-view-angular-basic-demo',
   templateUrl: './stack-view-angular-basic.html',
   styleUrls: ['./stack-view.demo.scss'],
+  standalone: false,
 })
 export class StackViewAngularBasicDemo extends StackViewNgDemo {}

@@ -14,6 +14,7 @@ import { User } from '../inventory/user';
   providers: [Inventory],
   templateUrl: 'detail.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridDetailDemo implements AfterViewInit {
   users: User[];

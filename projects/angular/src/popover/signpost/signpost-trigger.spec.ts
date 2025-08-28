@@ -95,6 +95,7 @@ export default function (): void {
       <cds-icon shape="info-circle"></cds-icon>
     </button>
   `,
+  standalone: false,
 })
 class TestTrigger {
   label = null;

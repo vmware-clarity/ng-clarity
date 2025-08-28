@@ -50,6 +50,7 @@ export default function (): void {
 
 @Component({
   template: `<div clrVerticalNavIcon #navIcon></div>`,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild('navIcon') navIcon: any;

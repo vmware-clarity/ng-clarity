@@ -24,5 +24,6 @@ import { Component } from '@angular/core';
     </ul>
     <router-outlet></router-outlet>
   `,
+  standalone: false,
 })
 export class TreeViewDemo {}

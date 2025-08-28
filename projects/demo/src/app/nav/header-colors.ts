@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-header-demo-colors',
   templateUrl: './header-colors.demo.html',
   styleUrls: ['./headers.demo.scss'],
+  standalone: false,
 })
 export class HeaderColorsDemo {}

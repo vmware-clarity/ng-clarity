@@ -11,6 +11,7 @@ import { ClarityIcons } from '@cds/core/icon';
 @Component({
   selector: 'clr-timeline-demo-static',
   templateUrl: './timeline-static.html',
+  standalone: false,
 })
 export class TimelineStaticDemo implements OnInit {
   ngOnInit() {

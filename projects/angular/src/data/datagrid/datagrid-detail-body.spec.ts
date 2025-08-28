@@ -35,5 +35,6 @@ export default function (): void {
 
 @Component({
   template: `<clr-dg-detail-body>${content}</clr-dg-detail-body>`,
+  standalone: false,
 })
 class FullTest {}

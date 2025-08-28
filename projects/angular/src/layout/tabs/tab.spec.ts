@@ -18,6 +18,7 @@ import { ClrTabsModule } from './tabs.module';
 @Component({
   selector: 'test-wrapper',
   template: `<ng-container #tabContentViewContainer></ng-container>`,
+  standalone: false,
 })
 class TestWrapper {
   constructor(private tabsService: TabsService) {}
@@ -37,6 +38,7 @@ class TestWrapper {
       </clr-tab>
     </test-wrapper>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrTab) tabInstance: ClrTab;

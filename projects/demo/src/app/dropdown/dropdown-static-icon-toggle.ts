@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-dropdown-static-icon-toggle-demo',
   styleUrls: ['./dropdown.demo.scss'],
   templateUrl: './dropdown-static-icon-toggle.demo.html',
+  standalone: false,
 })
 export class DropdownStaticIconToggleDemo {}

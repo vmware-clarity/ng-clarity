@@ -263,6 +263,7 @@ export default function (): void {
       <clr-signpost-content *clrIfOpen="openState">Signpost content</clr-signpost-content>
     </clr-signpost>
   `,
+  standalone: false,
 })
 class TestCustomTriggerSignpost {
   @ViewChild(ClrSignpost) signpost: ClrSignpost;
@@ -283,6 +284,7 @@ class TestCustomTriggerSignpost {
       </clr-signpost-content>
     </clr-signpost>
   `,
+  standalone: false,
 })
 class TestDefaultSignpost {
   @ViewChild(ClrSignpost) signpost: ClrSignpost;

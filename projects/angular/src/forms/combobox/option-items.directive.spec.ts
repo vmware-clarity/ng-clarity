@@ -22,6 +22,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     </ul>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  standalone: false,
 })
 class FullTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
@@ -36,6 +37,7 @@ class FullTest {
     </ul>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  standalone: false,
 })
 class TrackByIndexTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
@@ -50,6 +52,7 @@ class TrackByIndexTest {
     </ul>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  standalone: false,
 })
 class ObjectDataTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;

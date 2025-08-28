@@ -24,6 +24,7 @@ import Spy = jasmine.Spy;
       <clr-stack-content>Content</clr-stack-content>
     </clr-stack-block>
   `,
+  standalone: false,
 })
 class BasicBlock {
   @ViewChild(ClrStackBlock) blockInstance: ClrStackBlock;
@@ -45,6 +46,7 @@ class BasicBlock {
       </clr-stack-block>
     </clr-stack-block>
   `,
+  standalone: false,
 })
 class NestedBlocks {
   @ViewChild('main') blockInstance: ClrStackBlock;
@@ -57,6 +59,7 @@ class NestedBlocks {
       <clr-stack-content>Content</clr-stack-content>
     </clr-stack-block>
   `,
+  standalone: false,
 })
 class DynamicBlock {
   @ViewChild(ClrStackBlock) blockInstance: ClrStackBlock;
@@ -78,6 +81,7 @@ class DynamicBlock {
       </clr-stack-block>
     </clr-stack-block>
   `,
+  standalone: false,
 })
 class DynamicBlockWithInput {
   @ViewChild('main') blockInstance: ClrStackBlock;
@@ -110,6 +114,7 @@ class DynamicBlockWithInput {
       </clr-stack-block>
     </clr-stack-block>
   `,
+  standalone: false,
 })
 class BlocksWithIinteractiveElements {
   @ViewChild('main') blockInstance: ClrStackBlock;

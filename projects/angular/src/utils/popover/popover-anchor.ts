@@ -14,6 +14,7 @@ import { ClrPopoverEventsService } from './providers/popover-events.service';
   host: {
     '[class.clr-anchor]': 'true',
   },
+  standalone: false,
 })
 export class ClrPopoverAnchor {
   constructor(smartEventService: ClrPopoverEventsService, element: ElementRef<HTMLButtonElement>) {

@@ -25,6 +25,7 @@ import { ClrTreeViewModule } from './tree-view.module';
       <clr-tree-node *ngIf="hasChild">Child</clr-tree-node>
     </clr-tree>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrTree) tree: ClrTree<void>;
@@ -50,6 +51,7 @@ class TestComponent {
       </clr-tree-node>
     </clr-tree>
   `,
+  standalone: false,
 })
 class TreeTypeAhead {}
 

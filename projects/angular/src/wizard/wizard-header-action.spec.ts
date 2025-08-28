@@ -26,6 +26,7 @@ import { ClrWizardModule } from './wizard.module';
       (actionClicked)="click($event)"
     ></clr-wizard-header-action>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild('unset', { static: true }) plainDefaultHA: ClrWizardHeaderAction;

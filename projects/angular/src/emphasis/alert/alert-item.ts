@@ -25,6 +25,7 @@ import { AlertIconAndTypesService } from './providers/icon-and-types.service';
     <ng-content></ng-content>
   `,
   host: { class: 'alert-item' },
+  standalone: false,
 })
 export class ClrAlertItem {
   constructor(public iconService: AlertIconAndTypesService) {}

@@ -13,6 +13,7 @@ import { ClrFileListValidationErrors } from './file-input-validator-errors';
 @Directive({
   selector: 'input[type="file"][clrFileInput]',
   providers: [{ provide: NG_VALIDATORS, useExisting: ClrFileInputValidator, multi: true }],
+  standalone: false,
 })
 export class ClrFileInputValidator implements Validator {
   @Input('clrMinFileSize') minFileSize: number;

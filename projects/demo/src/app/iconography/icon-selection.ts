@@ -22,6 +22,7 @@ import {
   selector: 'clr-icon-selection-demo',
   styleUrls: ['./iconography.demo.scss'],
   templateUrl: './icon-selection.demo.html',
+  standalone: false,
 })
 export class IconSelectionDemo {
   options = 'none';

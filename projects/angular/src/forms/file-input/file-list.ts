@@ -65,6 +65,7 @@ import {
     '[attr.role]': '"list"',
     '[class.clr-file-list]': 'true',
   },
+  standalone: false,
 })
 export class ClrFileList {
   @ContentChild(ClrFileMessagesTemplate) protected readonly fileMessagesTemplate: ClrFileMessagesTemplate;

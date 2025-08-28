@@ -20,6 +20,7 @@ import { ClrTimelineModule } from './timeline.module';
 
 @Component({
   template: `<clr-timeline-step [clrState]="state"><clr-timeline-step></clr-timeline-step></clr-timeline-step>`,
+  standalone: false,
 })
 class TestTimelineStep {
   state: ClrTimelineStepState = ClrTimelineStepState.NOT_STARTED;
@@ -35,6 +36,7 @@ class TestTimelineStep {
       <clr-timeline-step-description>Description Content</clr-timeline-step-description>
     </clr-timeline-step>
   `,
+  standalone: false,
 })
 class TestTimelineStepContent {}
 

@@ -21,6 +21,7 @@ import { ControlIdService } from '../common/providers/control-id.service';
     '[class.clr-radio-wrapper]': 'true',
   },
   providers: [ControlIdService],
+  standalone: false,
 })
 export class ClrRadioWrapper implements OnInit {
   @ContentChild(ClrLabel, { static: true }) label: ClrLabel;

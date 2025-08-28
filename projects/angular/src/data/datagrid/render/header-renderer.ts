@@ -20,6 +20,7 @@ import { DatagridRenderOrganizer } from './render-organizer';
 @Directive({
   selector: 'clr-dg-column',
   providers: [ColumnResizerService, COLUMN_STATE_PROVIDER],
+  standalone: false,
 })
 export class DatagridHeaderRenderer implements OnDestroy {
   @Output('clrDgColumnResize') resizeEmitter = new EventEmitter<number>();

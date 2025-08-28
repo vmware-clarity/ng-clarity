@@ -176,6 +176,13 @@ export abstract class ClrDateInputBase
     }
   }
 
+  protected triggerControlInputValidation() {
+    if (this.datepickerHasFormControl()) {
+      this.control.control?.updateValueAndValidity({ emitEvent: false });
+      this.control.control?.setErrors(this.control.control.errors);
+    }
+  }
+
   private usingClarityDatepicker() {
     return this.datepickerEnabledService.isEnabled;
   }

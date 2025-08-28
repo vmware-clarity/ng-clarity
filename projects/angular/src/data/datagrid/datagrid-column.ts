@@ -93,6 +93,7 @@ import { WrappedColumn } from './wrapped-column';
     role: 'columnheader',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ClrDatagridColumn<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>

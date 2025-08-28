@@ -14,11 +14,13 @@ import { ClrRadioWrapper } from './radio-wrapper';
 
 @Component({
   template: `<input type="radio" clrRadio />`,
+  standalone: false,
 })
 class StandaloneUseTest {}
 
 @Component({
   template: `<input type="radio" clrRadio name="model" class="test-class" [(ngModel)]="model" />`,
+  standalone: false,
 })
 class TemplateDrivenTest {}
 
@@ -28,6 +30,7 @@ class TemplateDrivenTest {}
       <input type="radio" clrRadio name="model" class="test-class" formControlName="model" />
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

@@ -10,6 +10,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'layout-horizontal-demo',
   templateUrl: './layout.html',
+  standalone: false,
 })
 export class FormsLayoutHorizontalDemo {
   layout = 'horizontal';

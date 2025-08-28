@@ -9,5 +9,6 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './text.html',
+  standalone: false,
 })
 export class FormsTextDemo {}

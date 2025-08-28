@@ -28,6 +28,7 @@ interface TestComponent {
       <clr-control-error>Error message</clr-control-error>
     </clr-file-input-container>
   `,
+  standalone: false,
 })
 class NoLabelTest {
   model: string;
@@ -45,6 +46,7 @@ class NoLabelTest {
       </clr-file-input-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest implements TestComponent {
   disabled = false;
@@ -65,6 +67,7 @@ class ReactiveTest implements TestComponent {
       <clr-control-error>Error message</clr-control-error>
     </clr-file-input-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenTest implements TestComponent {
   disabled = false;

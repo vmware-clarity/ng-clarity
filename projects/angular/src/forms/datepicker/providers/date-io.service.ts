@@ -6,6 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { DateRange, DateRangeOption } from '../interfaces/date-range.interface';
 import { DayModel } from '../model/day.model';
@@ -35,6 +36,8 @@ export class DateIOService {
   };
 
   cldrLocaleDateFormat: string = DEFAULT_LOCALE_FORMAT;
+  minDateChange = new Subject<DayModel>();
+  maxDateChange = new Subject<DayModel>();
 
   private dateRangeOptions;
   private localeDisplayFormat: InputDateDisplayFormat = LITTLE_ENDIAN;
@@ -60,6 +63,7 @@ export class DateIOService {
       const [year, month, day] = date.split('-').map(n => parseInt(n, 10));
       this.disabledDates.minDate = new DayModel(year, month - 1, day);
     }
+    this.minDateChange.next(this.disabledDates.minDate);
   }
 
   setMaxDate(date: string): void {
@@ -72,6 +76,7 @@ export class DateIOService {
       const [year, month, day] = date.split('-').map(n => parseInt(n, 10));
       this.disabledDates.maxDate = new DayModel(year, month - 1, day);
     }
+    this.maxDateChange.next(this.disabledDates.maxDate);
   }
 
   setRangeOptions(rangeOptions: DateRangeOption[]) {

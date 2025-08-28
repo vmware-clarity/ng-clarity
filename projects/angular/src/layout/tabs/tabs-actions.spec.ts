@@ -14,6 +14,7 @@ import { ClrTabsModule } from './tabs.module';
 
 @Component({
   template: `<clr-tabs-actions>Hello world</clr-tabs-actions>`,
+  standalone: false,
 })
 class TestComponent {}
 

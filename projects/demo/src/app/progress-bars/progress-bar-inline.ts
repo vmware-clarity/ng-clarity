@@ -11,6 +11,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'clr-progress-bar-inline-demo',
   styleUrls: ['progress-bars.demo.scss'],
   templateUrl: './progress-bar-inline.html',
+  standalone: false,
 })
 export class ProgressBarInlineDemo implements OnInit {
   inlineProgress = 0;

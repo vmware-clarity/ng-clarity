@@ -66,6 +66,7 @@ const MIN_BUTTON_WIDTH = 42;
     ]),
   ],
   host: { '[attr.disabled]': "disabled? '' : null" },
+  standalone: false,
 })
 export class ClrLoadingButton implements LoadingListener {
   @Input('disabled') disabled: boolean;

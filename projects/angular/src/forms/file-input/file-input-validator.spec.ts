@@ -42,6 +42,7 @@ interface TestComponent {
       </clr-file-input-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest implements TestComponent {
   accept = '.txt,text/plain';
@@ -79,6 +80,7 @@ class ReactiveTest implements TestComponent {
       <clr-control-error *clrIfError="'maxFileSize'">File size too large</clr-control-error>
     </clr-file-input-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenTest implements TestComponent {
   files: FileList;

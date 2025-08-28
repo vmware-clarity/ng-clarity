@@ -28,6 +28,7 @@ import { ClrTreeViewModule } from './tree-view.module';
       <clr-tree-node *ngIf="withChild">Child</clr-tree-node>
     </clr-tree-node>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild('node') tree: ClrTreeNode<void>;
@@ -44,6 +45,7 @@ class TestComponent {
       <a href="href" class="clr-treenode-link" [class.active]="active">Hello world</a>
     </clr-tree-node>
   `,
+  standalone: false,
 })
 class LinkTestComponent {
   active: boolean | undefined;

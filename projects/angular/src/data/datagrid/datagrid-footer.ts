@@ -36,6 +36,7 @@ import { Selection } from './providers/selection';
   host: {
     '[class.datagrid-footer]': 'true',
   },
+  standalone: false,
 })
 export class ClrDatagridFooter<T = any> {
   /* reference to the enum so that template can access */

@@ -13,6 +13,7 @@ import { CONTROL_STATE, IfControlStateService } from './if-control-state.service
 
 @Directive({
   selector: '[clrIfSuccess]',
+  standalone: false,
 })
 export class ClrIfSuccess extends AbstractIfState {
   constructor(

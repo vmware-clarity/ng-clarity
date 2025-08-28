@@ -68,6 +68,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     '[class.clr-combobox]': 'true',
     '[class.clr-combobox-disabled]': 'control?.disabled',
   },
+  standalone: false,
 })
 export class ClrCombobox<T>
   extends WrappedFormControl<ClrComboboxContainer>

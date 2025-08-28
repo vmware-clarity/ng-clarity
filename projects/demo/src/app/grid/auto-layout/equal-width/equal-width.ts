@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-grid-demo-auto-layout-equal-width',
   templateUrl: './equal-width.html',
   styleUrls: ['../../grid.demo.scss'],
+  standalone: false,
 })
 export class GridAutoLayoutEqualWidthDemo {}

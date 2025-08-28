@@ -32,6 +32,7 @@ const defaultSize = 'sm';
     '[attr.role]': '"tooltip"',
     '[id]': 'id',
   },
+  standalone: false,
 })
 export class ClrTooltipContent extends AbstractPopover implements OnInit {
   private _id: string;

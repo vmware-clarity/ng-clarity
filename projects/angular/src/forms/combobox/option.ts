@@ -24,6 +24,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     '[attr.tabindex]': '-1',
     '[attr.id]': 'optionId',
   },
+  standalone: false,
 })
 export class ClrOption<T> implements OnInit {
   // A proxy with only the necessary data to be used for a11y and the focus handler service.

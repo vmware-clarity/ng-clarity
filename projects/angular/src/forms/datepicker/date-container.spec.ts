@@ -240,6 +240,7 @@ export default function () {
     </clr-date-container>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  standalone: false,
 })
 class TestComponent {
   model = '';

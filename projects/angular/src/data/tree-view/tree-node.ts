@@ -64,6 +64,7 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
     '[class.clr-tree-node]': 'true',
     '[class.disabled]': 'this._model.disabled',
   },
+  standalone: false,
 })
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
   // Allows the consumer to override our logic deciding if a node is expandable.

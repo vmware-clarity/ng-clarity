@@ -133,6 +133,7 @@ export default function (): void {
 @Component({
   template: `<test-counter *clrIfExpanded></test-counter>`,
   providers: [{ provide: 'counter', useValue: { total: 0 } }],
+  standalone: false,
 })
 class SimpleTest {
   @ViewChild(ClrIfExpanded) ifExpanded: ClrIfExpanded;
@@ -143,6 +144,7 @@ class SimpleTest {
 @Component({
   template: `<test-counter [clrIfExpanded]></test-counter>`,
   providers: [{ provide: 'counter', useValue: { total: 0 } }],
+  standalone: false,
 })
 class SimpleTemplateTest {
   @ViewChild(ClrIfExpanded) ifExpanded: ClrIfExpanded;
@@ -153,6 +155,7 @@ class SimpleTemplateTest {
 @Component({
   selector: 'test-counter',
   template: `{{ count }}`,
+  standalone: false,
 })
 class TestCounter {
   count: number;
@@ -168,6 +171,7 @@ class TestCounter {
       <div *clrIfExpanded>Hello World</div>
     </ng-container>
   `,
+  standalone: false,
 })
 class NgIfTest {
   expandable = true;

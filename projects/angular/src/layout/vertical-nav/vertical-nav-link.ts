@@ -22,6 +22,7 @@ import { VerticalNavGroupService } from './providers/vertical-nav-group.service'
   host: {
     class: 'nav-link',
   },
+  standalone: false,
 })
 export class ClrVerticalNavLink implements OnDestroy {
   private destroy$ = new Subject<void>();

@@ -14,6 +14,7 @@ import { ClrRangeContainer } from './range-container';
 @Directive({
   selector: '[clrRange]',
   host: { '[class.clr-range]': 'true' },
+  standalone: false,
 })
 export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
   constructor(

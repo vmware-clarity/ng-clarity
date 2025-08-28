@@ -38,6 +38,7 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
     <div class="header-backdrop" (click)="closeOpenNav()"></div>
   `,
   host: { '[class.header]': 'true' },
+  standalone: false,
 })
 export class ClrHeader implements OnDestroy {
   @Input() @HostBinding('attr.role') role = 'banner';

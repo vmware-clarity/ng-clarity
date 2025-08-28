@@ -73,6 +73,7 @@ async function pressEscapeKey(fixture: ComponentFixture<TestComponent>, element:
   template: '',
   providers: [ClrPopoverToggleService],
   hostDirectives: [ClrStopEscapePropagationDirective],
+  standalone: false,
 })
 class TestPopoverHostComponent {
   constructor(readonly elementRef: ElementRef<HTMLElement>, readonly toggleService: ClrPopoverToggleService) {}
@@ -91,6 +92,7 @@ class TestPopoverHostComponent {
       </div>
     </clr-modal>
   `,
+  standalone: false,
 })
 class TestComponent {
   @Input() modalOpen = false;

@@ -32,6 +32,7 @@ import { ClrSidePanelModule } from './side-panel.module';
       </div>
     </clr-side-panel>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrSidePanel) sidePanelInstance: ClrSidePanel;
@@ -54,6 +55,7 @@ class TestComponent {
       </div>
     </clr-side-panel>
   `,
+  standalone: false,
 })
 class TestDefaultsComponent {
   opened = true;

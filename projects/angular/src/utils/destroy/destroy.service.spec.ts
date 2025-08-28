@@ -21,6 +21,7 @@ export default function (): void {
       @Component({
         template: '',
         providers: [ClrDestroyService],
+        standalone: false,
       })
       class TestComponent implements OnInit {
         subject$ = new Subject<void>();

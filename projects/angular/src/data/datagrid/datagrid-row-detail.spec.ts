@@ -69,6 +69,7 @@ export default function (): void {
       <clr-dg-cell *ngIf="cell">This is a cell</clr-dg-cell>
     </clr-dg-row-detail>
   `,
+  standalone: false,
 })
 class FullTest {
   replace = false;

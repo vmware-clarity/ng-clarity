@@ -22,6 +22,7 @@ let nbTabLinkComponents = 0;
     role: 'tab',
     type: 'button',
   },
+  standalone: false,
 })
 export class ClrTabLink {
   @Input('id') @HostBinding('id') tabLinkId: string;

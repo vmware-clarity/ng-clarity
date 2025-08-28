@@ -11,6 +11,7 @@ import { ClrWizard } from '@clr/angular';
 @Component({
   selector: 'clr-wizard-alt-cancel',
   templateUrl: './wizard-alt-cancel.demo.html',
+  standalone: false,
 })
 export class WizardAltCancelDemo {
   @ViewChild('wizard') wizard: ClrWizard;

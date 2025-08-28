@@ -13,6 +13,7 @@ import { ClrTabOverflowContent } from './tab-overflow-content';
 
 @Component({
   template: `<clr-tab-overflow-content>Hello world</clr-tab-overflow-content>`,
+  standalone: false,
 })
 class TestComponent {}
 

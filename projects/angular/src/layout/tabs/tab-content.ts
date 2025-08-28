@@ -29,6 +29,7 @@ let nbTabContentComponents = 0;
       </section>
     </ng-template>
   `,
+  standalone: false,
 })
 export class ClrTabContent implements OnDestroy {
   @Input('id') tabContentId: string;

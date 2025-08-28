@@ -12,6 +12,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   selector: 'clr-daterangepicker-demo',
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './datepicker-with-action-buttons.html',
+  standalone: false,
 })
 export class DatePickerWithActionButtonsDemo {
   dateForm = new FormGroup({

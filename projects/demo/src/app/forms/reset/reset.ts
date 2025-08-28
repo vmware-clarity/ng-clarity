@@ -11,6 +11,7 @@ import { ClrForm } from '@clr/angular';
 
 @Component({
   templateUrl: './reset.html',
+  standalone: false,
 })
 export class FormsResetDemo {
   @ViewChild(ClrForm) form: ClrForm;

@@ -35,6 +35,7 @@ export interface ClrFileInputSelection {
     'aria-hidden': 'true', // Remove the hidden file `input` element from the accessibility tree because the browse `button` replaces it.
     '[class.clr-file-input]': 'true',
   },
+  standalone: false,
 })
 export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
   selection: ClrFileInputSelection = undefined;

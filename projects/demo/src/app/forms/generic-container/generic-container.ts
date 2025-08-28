@@ -10,6 +10,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
   templateUrl: './generic-container.html',
+  standalone: false,
 })
 export class FormsGenericContainerDemo {
   model = {

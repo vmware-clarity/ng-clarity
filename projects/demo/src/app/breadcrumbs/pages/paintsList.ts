@@ -15,5 +15,6 @@ import { Component } from '@angular/core';
       <li><a [routerLink]="['./watercolor']">Watercolor</a></li>
       <li><a [routerLink]="['./oils']">Oils</a></li>
     </ul> `,
+  standalone: false,
 })
 export class PaintsListDemo {}

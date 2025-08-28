@@ -13,6 +13,7 @@ import { ProgBarExample } from './progbar-example';
   selector: 'clr-progress-bar-examples-demo',
   styleUrls: ['progress-bars.demo.scss'],
   templateUrl: './progress-bar-examples.html',
+  standalone: false,
 })
 export class ProgressBarExamplesDemo {
   examples: ProgBarExample[];

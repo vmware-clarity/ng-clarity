@@ -41,6 +41,7 @@ import { Selection } from '../providers/selection';
       </clr-dg-row>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class TestComponent {
   showRowDetail = false;

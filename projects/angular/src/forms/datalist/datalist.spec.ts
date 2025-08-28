@@ -18,6 +18,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
       <option value="two">Two</option>
     </datalist>
   `,
+  standalone: false,
 })
 export class TestDatalistId {
   testId;
@@ -30,6 +31,7 @@ export class TestDatalistId {
       <option value="two">Two</option>
     </datalist>
   `,
+  standalone: false,
 })
 export class TestNativeDatalist {}
 

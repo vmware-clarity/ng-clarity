@@ -19,6 +19,7 @@ import { MarkControlService } from './providers/mark-control.service';
     '[class.clr-form-horizontal]': 'layoutService.isHorizontal()',
     '[class.clr-form-compact]': 'layoutService.isCompact()',
   },
+  standalone: false,
 })
 export class ClrForm {
   @ContentChildren(ClrLabel, { descendants: true }) labels: QueryList<ClrLabel>;

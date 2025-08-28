@@ -102,6 +102,7 @@ describe('Loading directive without listener', function () {
 
 @Component({
   template: `<div *ngIf="displayed" [clrLoading]="loading"></div>`,
+  standalone: false,
 })
 class FullTest {
   @ViewChild(ClrLoading) loadingDirective: ClrLoading;

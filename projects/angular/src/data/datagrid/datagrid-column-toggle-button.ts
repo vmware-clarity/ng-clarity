@@ -25,6 +25,7 @@ import { ColumnsService } from './providers/columns.service';
       {{ commonStrings.keys.selectAll }}
     </button>
   `,
+  standalone: false,
 })
 export class ClrDatagridColumnToggleButton {
   private allSelected: Subject<boolean> = new EventEmitter();

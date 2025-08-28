@@ -23,6 +23,7 @@ import { wrapHostContentInsideSpan } from './utils/content-wrapping';
     '[attr.id]': 'dropdownItemId',
   },
   providers: [BASIC_FOCUSABLE_ITEM_PROVIDER],
+  standalone: false,
 })
 export class ClrDropdownItem {
   constructor(

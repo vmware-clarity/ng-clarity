@@ -422,6 +422,7 @@ export default function (): void {
       [clrDgPageInputDisabled]="disableCurrentPageInput"
     ></clr-dg-pagination>
   `,
+  standalone: false,
 })
 class FullTest {
   // this value needs to be initialized; otherwise, when you call a setter for size, the page number is set

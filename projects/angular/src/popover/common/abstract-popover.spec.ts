@@ -17,6 +17,7 @@ import { POPOVER_HOST_ANCHOR } from './popover-host-anchor.token';
 @Component({
   selector: 'test-popover',
   template: `<div class="test-popover">Popover</div>`,
+  standalone: false,
 })
 class TestPopover extends AbstractPopover {
   closeOnOutsideClick = true;
@@ -28,6 +29,7 @@ class TestPopover extends AbstractPopover {
 
 @Component({
   template: `<test-popover *clrIfOpen></test-popover>`,
+  standalone: false,
 })
 class TestPopoverWithIfOpenDirective {
   @ViewChild(TestPopover) testPopover: TestPopover;
@@ -39,6 +41,7 @@ class TestPopoverWithIfOpenDirective {
     <test-popover-ignore #ignoreElement *clrIfOpen></test-popover-ignore>
   `,
   providers: [ClrPopoverToggleService, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
+  standalone: false,
 })
 class InputFocusPopover {
   @ViewChild('ignoreInput') ignore: ElementRef<HTMLInputElement>;
@@ -54,6 +57,7 @@ class InputFocusPopover {
 @Component({
   selector: 'test-popover-ignore',
   template: `<div class="test-popover">Popover</div>`,
+  standalone: false,
 })
 class TestPopoverIgnoreElement extends AbstractPopover {
   constructor(injector: Injector, @Optional() parent: ElementRef<HTMLElement>, parentHost: InputFocusPopover) {

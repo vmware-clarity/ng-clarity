@@ -394,6 +394,7 @@ export default function (): void {
       </clr-datagrid>
     </ng-template>
   `,
+  standalone: false,
 })
 class RenderWidthTest {
   currentTest;
@@ -422,6 +423,7 @@ class RenderWidthTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class StaticTest {
   secondColumn = true;
@@ -445,6 +447,7 @@ class StaticTest {
       </ng-template>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class DynamicTest {
   secondColumn = true;
@@ -465,6 +468,7 @@ class DynamicTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class ColumnsWidthTest {
   firstHeader = 'AAA';
@@ -489,6 +493,7 @@ class ColumnsWidthTest {
       </clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class DatagridHeightTest {
   numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
@@ -527,6 +532,7 @@ class DatagridHeightTest {
       </clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class DatagridDetailPaneTest {
   numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];

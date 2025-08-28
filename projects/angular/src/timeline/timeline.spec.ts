@@ -94,6 +94,7 @@ export default function (): void {
     <clr-timeline #noLayout id="no-layout"></clr-timeline>
     <clr-timeline [clrLayout]="layout" #timeline id="timeline"></clr-timeline>
   `,
+  standalone: false,
 })
 class TestTimeline {
   @ViewChild('noLayout', { static: false }) noLayout: ClrTimeline;
@@ -110,5 +111,6 @@ class TestTimeline {
       <clr-timeline-step></clr-timeline-step>
     </clr-timeline>
   `,
+  standalone: false,
 })
 class TestTimelineContent {}

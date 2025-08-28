@@ -26,6 +26,7 @@ import { PageCollectionService } from './providers/page-collection.service';
     </nav>
   `,
   host: { class: 'clr-wizard-stepnav' },
+  standalone: false,
 })
 export class ClrWizardStepnav {
   @Input() label: string;

@@ -15,5 +15,6 @@ import { Component } from '@angular/core';
       Cotman Watercolour. Accessible but uncompromising on quality with good tinting strength. Available in 48 colours.
     </p>
   `,
+  standalone: false,
 })
 export class WNCotmanDemo {}

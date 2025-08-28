@@ -30,6 +30,7 @@ import { ClrRovingTabindex } from './roving-tabindex';
       <button *ngIf="showLast" clrKeyFocusItem>Button 3</button>
     </div>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrRovingTabindex, { static: true }) keyFocus: ClrRovingTabindex;
@@ -50,6 +51,7 @@ class TestComponent {
       <button *ngIf="showLast">Button 3</button>
     </div>
   `,
+  standalone: false,
 })
 class DOMTestComponent {
   buttons: any;

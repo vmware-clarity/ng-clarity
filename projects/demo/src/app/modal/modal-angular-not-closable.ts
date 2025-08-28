@@ -10,6 +10,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-modal-angular-not-closable-demo',
   templateUrl: './modal-angular-not-closable.demo.html',
+  standalone: false,
 })
 export class ModalAngularNotClosableDemo {
   // Booleans to open each example modal

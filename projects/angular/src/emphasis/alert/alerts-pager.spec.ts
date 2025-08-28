@@ -145,6 +145,7 @@ export default function () {
 
 @Component({
   template: `<clr-alerts-pager [(clrCurrentAlertIndex)]="index"></clr-alerts-pager>`,
+  standalone: false,
 })
 export class TestIndex {
   @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;
@@ -153,6 +154,7 @@ export class TestIndex {
 
 @Component({
   template: `<clr-alerts-pager [(clrCurrentAlert)]="currentAlert"></clr-alerts-pager>`,
+  standalone: false,
 })
 export class TestInstance {
   @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;
@@ -161,6 +163,7 @@ export class TestInstance {
 
 @Component({
   template: `<clr-alerts-pager></clr-alerts-pager>`,
+  standalone: false,
 })
 export class TestBasics {
   @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;

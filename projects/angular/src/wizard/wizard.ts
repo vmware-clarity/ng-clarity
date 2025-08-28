@@ -49,6 +49,7 @@ import { ClrWizardTitle } from './wizard-title';
     '[class.wizard-in-page]': 'inPage',
     '[class.wizard-in-page--fill-content-area]': 'inPage && inPageFillContentArea',
   },
+  standalone: false,
 })
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   /**

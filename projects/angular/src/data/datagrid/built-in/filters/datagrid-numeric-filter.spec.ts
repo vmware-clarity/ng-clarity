@@ -158,6 +158,7 @@ class TestFilter implements ClrDatagridNumericFilterInterface<number> {
     <clr-dg-numeric-filter [clrDgNumericFilter]="filter" [(clrFilterValue)]="filterValue"></clr-dg-numeric-filter>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  standalone: false,
 })
 class FullTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;
@@ -176,6 +177,7 @@ class FullTest {
     ></clr-dg-numeric-filter>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  standalone: false,
 })
 class AccessibilityTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;

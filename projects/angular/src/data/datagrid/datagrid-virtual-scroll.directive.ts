@@ -71,6 +71,7 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 @Directive({
   selector: '[clrVirtualScroll],[ClrVirtualScroll]',
   providers: [Items],
+  standalone: false,
 })
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
@@ -418,37 +419,22 @@ function createCdkVirtualScrollViewport(
   viewportRuler: ViewportRuler,
   scrollable: CdkVirtualScrollable
 ) {
-  let viewPort: CdkVirtualScrollViewport;
-  if (+ANGULAR_VERSION.major < 19) {
-    viewPort = new CdkVirtualScrollViewport(
-      datagridDivElementRef,
-      changeDetectorRef,
-      ngZone,
-      virtualScrollStrategy,
-      directionality,
-      scrollDispatcher,
-      viewportRuler,
-      scrollable
-    );
-  } else {
-    const virtualScrollViewportInjector = Injector.create({
-      parent: inject(EnvironmentInjector),
-      providers: [
-        { provide: ElementRef, useValue: datagridDivElementRef },
-        { provide: ChangeDetectorRef, useValue: changeDetectorRef },
-        { provide: NgZone, useValue: ngZone },
-        { provide: Renderer2, useValue: renderer2 },
-        { provide: VIRTUAL_SCROLL_STRATEGY, useValue: virtualScrollStrategy },
-        { provide: Directionality, useValue: directionality },
-        { provide: ScrollDispatcher, useValue: scrollDispatcher },
-        { provide: ViewportRuler, useValue: viewportRuler },
-        { provide: CdkVirtualScrollable, useValue: scrollable },
-        { provide: CdkVirtualScrollViewport, useClass: CdkVirtualScrollViewport },
-      ],
-    });
-
-    viewPort = virtualScrollViewportInjector.get(CdkVirtualScrollViewport);
-  }
+  const virtualScrollViewportInjector = Injector.create({
+    parent: inject(EnvironmentInjector),
+    providers: [
+      { provide: ElementRef, useValue: datagridDivElementRef },
+      { provide: ChangeDetectorRef, useValue: changeDetectorRef },
+      { provide: NgZone, useValue: ngZone },
+      { provide: Renderer2, useValue: renderer2 },
+      { provide: VIRTUAL_SCROLL_STRATEGY, useValue: virtualScrollStrategy },
+      { provide: Directionality, useValue: directionality },
+      { provide: ScrollDispatcher, useValue: scrollDispatcher },
+      { provide: ViewportRuler, useValue: viewportRuler },
+      { provide: CdkVirtualScrollable, useValue: scrollable },
+      { provide: CdkVirtualScrollViewport, useClass: CdkVirtualScrollViewport },
+    ],
+  });
+  const viewPort = virtualScrollViewportInjector.get(CdkVirtualScrollViewport);
   viewPort._contentWrapper = contentWrapper;
   return viewPort;
 }

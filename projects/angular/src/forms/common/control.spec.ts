@@ -14,11 +14,13 @@ import { ClrControlContainer } from './control-container';
 
 @Component({
   template: `<input type="text" clrControl />`,
+  standalone: false,
 })
 class StandaloneUseTest {}
 
 @Component({
   template: `<input clrControl name="model" class="test-class" [(ngModel)]="model" />`,
+  standalone: false,
 })
 class TemplateDrivenTest {
   model;
@@ -30,6 +32,7 @@ class TemplateDrivenTest {
       <input clrControl name="model" class="test-class" formControlName="model" />
     </div>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

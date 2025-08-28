@@ -55,6 +55,7 @@ import { APP_ROUTES } from './app.routing';
                 </ng-container>
             </clr-vertical-nav-->
   `,
+  standalone: false,
 })
 export class AppContentContainerComponent {
   routes: Route[] = APP_ROUTES;

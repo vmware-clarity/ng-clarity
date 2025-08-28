@@ -30,6 +30,7 @@ const OPTION_PROVIDERS = [
 @Component({
   template: `<clr-options>Test</clr-options>`,
   providers: [...OPTION_PROVIDERS, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
+  standalone: false,
 })
 class TestComponent {}
 
@@ -40,6 +41,7 @@ class TestComponent {}
     </clr-options>
   `,
   providers: [...OPTION_PROVIDERS, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
+  standalone: false,
 })
 class TestComponentWithChild {
   showOption = true;
@@ -48,6 +50,7 @@ class TestComponentWithChild {
 @Component({
   template: `<clr-options>Test</clr-options>`,
   providers: OPTION_PROVIDERS,
+  standalone: false,
 })
 class TestComponentWithError {}
 

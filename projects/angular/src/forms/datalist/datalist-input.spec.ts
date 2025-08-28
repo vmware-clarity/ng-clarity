@@ -21,6 +21,7 @@ import { ClrDatalistInput } from './datalist-input';
 
 @Component({
   template: `<input clrDatalistInput />`,
+  standalone: false,
 })
 class InvalidUseTest {}
 
@@ -35,6 +36,7 @@ class InvalidUseTest {}
       </datalist>
     </clr-datalist-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenTest {}
 
@@ -51,6 +53,7 @@ class TemplateDrivenTest {}
       </clr-datalist-container>
     </div>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

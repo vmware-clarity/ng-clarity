@@ -25,6 +25,7 @@ import { ClrTabsModule } from './tabs.module';
       <button clrTabLink [clrTabLinkInOverflow]="inOverflow">Tab2</button>
     </clr-tab>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChildren(ClrTabLink) tabLinkChildren: QueryList<ClrTabLink>;

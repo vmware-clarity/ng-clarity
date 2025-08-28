@@ -25,6 +25,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     ComboboxFocusHandler,
     OptionSelectionService,
   ],
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrOption) option;

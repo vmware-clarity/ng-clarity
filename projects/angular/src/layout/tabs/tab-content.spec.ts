@@ -15,6 +15,7 @@ import { ClrTabContent } from './tab-content';
 @Component({
   selector: 'test-wrapper',
   template: `<ng-container #tabContentViewContainer></ng-container>`,
+  standalone: false,
 })
 class TestWrapper {
   constructor(private tabsService: TabsService) {}
@@ -31,6 +32,7 @@ class TestWrapper {
       <clr-tab-content>Content1</clr-tab-content>
     </test-wrapper>
   `,
+  standalone: false,
 })
 class TestComponent {}
 

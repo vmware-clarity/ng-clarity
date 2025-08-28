@@ -11,6 +11,7 @@ import { ClrTimelineLayout, ClrTimelineStepState } from '@clr/angular';
 @Component({
   selector: 'clr-timeline-demo-angular',
   templateUrl: './timeline-angular.html',
+  standalone: false,
 })
 export class TimelineAngularDemo {
   readonly verticalLayout = ClrTimelineLayout.VERTICAL;

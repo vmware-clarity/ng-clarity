@@ -14,6 +14,7 @@ import { filter, map, startWith } from 'rxjs/operators';
 @Component({
   selector: 'clr-breadcrumbs-routing-demo',
   templateUrl: './breadcrumbs-routing.demo.html',
+  standalone: false,
 })
 export class BreadcrumbsRoutingDemo {
   readonly breadcrumbs: Observable<BreadcrumbItem[]>;

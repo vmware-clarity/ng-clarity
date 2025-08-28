@@ -38,6 +38,7 @@ interface TestComponent {
       </clr-file-input-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest implements TestComponent {
   readonly form = new FormGroup({
@@ -73,6 +74,7 @@ class ReactiveTest implements TestComponent {
       <clr-control-error *clrIfError="'maxFileSize'">File size too large</clr-control-error>
     </clr-file-input-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenTest implements TestComponent {
   files: FileList;

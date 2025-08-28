@@ -36,6 +36,7 @@ const TEST_ROOT: TestNode = {
 
 @Component({
   template: `<div *clrRecursiveFor="let node of root; getChildren: getChildren"></div>`,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrRecursiveForOf) recursiveForOf: ClrRecursiveForOf<TestNode>;

@@ -55,6 +55,7 @@ import { ClrWizardPage } from './wizard-page';
     '[class.complete]': 'isComplete',
     '[class.error]': 'hasError',
   },
+  standalone: false,
 })
 export class ClrWizardStepnavItem implements OnInit, OnDestroy {
   @Input('page') page: ClrWizardPage;

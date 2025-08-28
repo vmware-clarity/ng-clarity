@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-spinner-types',
   templateUrl: './spinner-types.html',
   styleUrls: ['./spinner.demo.scss'],
+  standalone: false,
 })
 export class SpinnerTypesDemo {}

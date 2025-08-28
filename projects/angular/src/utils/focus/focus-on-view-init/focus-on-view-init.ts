@@ -26,6 +26,7 @@ import { FOCUS_ON_VIEW_INIT } from './focus-on-view-init.provider';
     so that assistive technologies can read its content. */
 @Directive({
   selector: '[clrFocusOnViewInit]',
+  standalone: false,
 })
 export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
   private document: Document;

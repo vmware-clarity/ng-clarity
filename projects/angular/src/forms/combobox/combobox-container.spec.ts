@@ -24,6 +24,7 @@ import { ComboboxContainerService } from './providers/combobox-container.service
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-combobox-container>
   `,
+  standalone: false,
 })
 class NoLabelTest {}
 
@@ -37,6 +38,7 @@ class NoLabelTest {}
       <clr-control-success>Valid</clr-control-success>
     </clr-combobox-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenTest {
   inline = false;
@@ -56,6 +58,7 @@ class TemplateDrivenTest {
       </clr-combobox-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   disabled = false;

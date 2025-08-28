@@ -19,6 +19,7 @@ import { ClrCombobox } from './combobox';
       <clr-option [clrValue]="'Option 2'">Option 2</clr-option>
     </clr-combobox>
   `,
+  standalone: false,
 })
 class TestOptionSelection {}
 

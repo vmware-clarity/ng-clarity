@@ -12,6 +12,7 @@ const LATENCY = 2000;
 
 @Directive({
   selector: '[clrFakeLoader]',
+  standalone: false,
 })
 export class FakeLoader implements OnInit {
   @Input('clrFakeLoader') fake: boolean;

@@ -11,6 +11,7 @@ import { ClrWizard } from '@clr/angular';
 @Component({
   selector: 'clr-wizard-force-forward',
   templateUrl: './wizard-force-forward.demo.html',
+  standalone: false,
 })
 export class WizardForceForwardDemo {
   @ViewChild('wizard') wizard: ClrWizard;

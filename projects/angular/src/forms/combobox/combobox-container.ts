@@ -48,6 +48,7 @@ import { ComboboxContainerService } from './providers/combobox-container.service
     '[class.clr-row]': 'addGrid()',
   },
   providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService, ComboboxContainerService],
+  standalone: false,
 })
 export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
   @ViewChild('controlContainer') controlContainer: ElementRef<HTMLElement>;

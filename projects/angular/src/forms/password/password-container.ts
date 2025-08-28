@@ -78,6 +78,7 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
     TOGGLE_SERVICE_PROVIDER,
     IfControlStateService,
   ],
+  standalone: false,
 })
 export class ClrPasswordContainer extends ClrAbstractContainer {
   show = false;

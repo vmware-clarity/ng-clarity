@@ -21,6 +21,7 @@ import { SignpostIdService } from './providers/signpost-id.service';
     '[attr.aria-controls]': 'ariaControl',
     '[class.active]': 'isOpen',
   },
+  standalone: false,
 })
 
 /*********

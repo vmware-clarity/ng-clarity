@@ -59,5 +59,6 @@ export default function (): void {
 
 @Component({
   template: `<clr-dg-detail-header>${content}</clr-dg-detail-header>`,
+  standalone: false,
 })
 class FullTest {}

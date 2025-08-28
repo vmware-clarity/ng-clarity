@@ -16,6 +16,7 @@ import { MultiAlertService } from './providers/multi-alert.service';
   selector: 'clr-alerts-pager',
   templateUrl: './alerts-pager.html',
   host: { '[class.alerts-pager]': 'true' },
+  standalone: false,
 })
 export class ClrAlertsPager implements OnInit, OnDestroy {
   @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);

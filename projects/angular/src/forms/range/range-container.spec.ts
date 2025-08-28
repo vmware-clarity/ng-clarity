@@ -22,6 +22,7 @@ import { ClrRangeContainer } from './range-container';
       <clr-control-success>Valid</clr-control-success>
     </clr-range-container>
   `,
+  standalone: false,
 })
 class SimpleTest {
   disabled = false;
@@ -35,6 +36,7 @@ class SimpleTest {
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-range-container>
   `,
+  standalone: false,
 })
 class NoLabelTest {}
 
@@ -50,6 +52,7 @@ class NoLabelTest {}
       </clr-range-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   disabled = false;

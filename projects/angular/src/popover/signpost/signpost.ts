@@ -32,6 +32,7 @@ import { ClrSignpostTrigger } from './signpost-trigger';
   host: { '[class.signpost]': 'true' },
   providers: [SignpostFocusManager, SignpostIdService],
   hostDirectives: [ClrPopoverHostDirective],
+  standalone: false,
 })
 
 /*********

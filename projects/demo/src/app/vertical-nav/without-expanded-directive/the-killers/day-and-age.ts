@@ -19,5 +19,6 @@ import { Component } from '@angular/core';
       the Day & Age World Tour.
     </p>
   `,
+  standalone: false,
 })
 export class DayAndAge1Demo {}

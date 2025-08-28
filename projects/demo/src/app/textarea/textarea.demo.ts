@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './textarea.demo.html',
+  standalone: false,
 })
 export class TextareaDemo {
   disabled = true;

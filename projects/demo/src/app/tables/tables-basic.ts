@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-tables-basic-demo',
   templateUrl: './tables-basic.html',
+  standalone: false,
 })
 export class TablesBasicDemo {}

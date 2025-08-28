@@ -20,6 +20,7 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
     '[attr.aria-describedby]': 'ariaDescribedBy',
     '[attr.role]': '"button"',
   },
+  standalone: false,
 })
 export class ClrTooltipTrigger {
   ariaDescribedBy: string;

@@ -367,6 +367,7 @@ export default function (): void {
       </clr-dropdown-menu>
     </clr-dropdown>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrDropdown) dropdownInstance: ClrDropdown;
@@ -405,6 +406,7 @@ class TestComponent {
     </clr-dropdown>
   `,
   encapsulation: ViewEncapsulation.ShadowDom,
+  standalone: false,
 })
 class TestShadowDomComponent {
   @ViewChild(ClrDropdown) dropdownInstance: ClrDropdown;
@@ -433,6 +435,7 @@ class TestShadowDomComponent {
       </div>
     </clr-modal>
   `,
+  standalone: false,
 })
 class DropdownItemThatOpensModalTestComponent {
   modalOpen = false;

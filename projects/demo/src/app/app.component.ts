@@ -28,6 +28,7 @@ import { APP_ROUTES } from './app.routing';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
+  standalone: false,
 })
 export class AppComponent {
   routes: Route[] = APP_ROUTES;

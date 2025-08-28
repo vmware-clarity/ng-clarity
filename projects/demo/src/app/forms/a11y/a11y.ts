@@ -10,6 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   templateUrl: './a11y.html',
+  standalone: false,
 })
 export class FormsA11yDemo {
   reactiveModel = new FormGroup({

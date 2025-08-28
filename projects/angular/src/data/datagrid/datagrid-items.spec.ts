@@ -22,6 +22,7 @@ import { StateDebouncer } from './providers/state-debouncer.provider';
       <li *clrDgItems="let n of numbers; trackBy: trackBy">{{ n }}</li>
     </ul>
   `,
+  standalone: false,
 })
 class FullTest {
   @ViewChild(ClrDatagridItems) datagridItems: ClrDatagridItems<number>;
@@ -37,6 +38,7 @@ class FullTest {
       <li *clrDgItems="let n of numbers; trackBy: trackBy">{{ n }}</li>
     </ul>
   `,
+  standalone: false,
 })
 class TrackByIndexTest {
   @ViewChild(ClrDatagridItems) datagridItems: ClrDatagridItems<number>;

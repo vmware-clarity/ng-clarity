@@ -17,6 +17,7 @@ import { PokemonFilter } from '../utils/pokemon-filter';
   selector: 'clr-datagrid-compact-demo',
   templateUrl: './compact.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridCompactDemo {
   nonPaginatedUsers: User[];

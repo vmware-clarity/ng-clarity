@@ -35,6 +35,7 @@ import { ClrModalModule } from './modal.module';
       </div>
     </clr-modal>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrModal) modalInstance: ClrModal;
@@ -58,6 +59,7 @@ class TestComponent {
       </div>
     </clr-modal>
   `,
+  standalone: false,
 })
 class TestDefaultsComponent {
   opened = true;

@@ -19,6 +19,7 @@ class ChangeDetectionPerfRecord {
   providers: [DynamicData],
   templateUrl: 'performance.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridPerformanceDemo {
   totalRows = 100;

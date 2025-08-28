@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-vertical-nav-accesibility-demo',
   templateUrl: './vertical-nav-accessibility.demo.html',
   styleUrls: ['../vertical-nav.demo.scss'],
+  standalone: false,
 })
 export class VerticalNavAccessibilityDemo {}

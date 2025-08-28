@@ -93,6 +93,7 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
     '[class.clr-row]': 'addGrid()',
   },
   providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+  standalone: false,
 })
 export class ClrFileInputContainer extends ClrAbstractContainer {
   @Input('clrButtonLabel') customButtonLabel: string;

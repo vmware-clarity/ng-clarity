@@ -27,6 +27,7 @@ import { ClrNavigationModule } from './navigation.module';
       </div>
     </clr-header>
   `,
+  standalone: false,
 })
 class TestComponent {}
 

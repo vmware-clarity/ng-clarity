@@ -10,6 +10,7 @@ import { Component } from '@angular/core';
 @Component({
   templateUrl: 'accordion.demo.html',
   styleUrls: ['./accordion.demo.scss'],
+  standalone: false,
 })
 export class AccordionDemo {
   stepOpen = true;

@@ -31,10 +31,12 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
     </div>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
+  standalone: false,
 })
 @Component({
   template: ``,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
+  standalone: false,
 })
 class SimpleContent {
   @ViewChild(ClrPopoverContent, { read: ClrPopoverContent, static: true }) content: ClrPopoverContent;

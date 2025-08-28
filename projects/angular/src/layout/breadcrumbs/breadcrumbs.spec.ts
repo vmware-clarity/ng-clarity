@@ -15,6 +15,7 @@ import { ClrLayoutModule } from '../layout.module';
 
 @Component({
   template: `<clr-breadcrumbs [items]="menuItems"></clr-breadcrumbs>`,
+  standalone: false,
 })
 class TestComponent {
   menuItems = [

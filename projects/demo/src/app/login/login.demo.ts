@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './login.demo.html',
+  standalone: false,
 })
 export class LoginDemo {
   form = {

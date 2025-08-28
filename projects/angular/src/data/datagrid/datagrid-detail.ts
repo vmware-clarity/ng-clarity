@@ -35,6 +35,7 @@ import { DetailService } from './providers/detail.service';
       <div class="clr-sr-only">{{ commonStrings.keys.detailPaneEnd }}</div>
     </div>
   `,
+  standalone: false,
 })
 export class ClrDatagridDetail {
   @Input('clrDetailAriaLabelledBy') ariaLabelledBy: string;

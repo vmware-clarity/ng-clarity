@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-nodes-with-icons-demo',
   styleUrls: ['../tree-view.demo.scss'],
   templateUrl: './nodes-with-icons.html',
+  standalone: false,
 })
 export class NodesWithIconsDemo {
   rootDirectory: any[] = [

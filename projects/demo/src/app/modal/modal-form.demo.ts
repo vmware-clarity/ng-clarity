@@ -20,6 +20,7 @@ export class Hero {
 @Component({
   selector: 'clr-modal-dynamic-form',
   templateUrl: './modal-form.demo.html',
+  standalone: false,
 })
 export class ModalFormDemo {
   basic = false;

@@ -31,6 +31,7 @@ export const IS_TOGGLE_PROVIDER = { provide: IS_TOGGLE, useFactory: isToggleFact
     '[class.clr-toggle-wrapper]': 'toggle',
   },
   providers: [ControlIdService, IS_TOGGLE_PROVIDER],
+  standalone: false,
 })
 export class ClrCheckboxWrapper implements OnInit, OnDestroy {
   @ContentChild(ClrLabel, { static: true }) label: ClrLabel;

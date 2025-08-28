@@ -14,5 +14,6 @@ import { Inventory } from '../inventory/inventory';
   providers: [Inventory],
   templateUrl: './basic-on-push.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridBasicOnPushDemo {}

@@ -37,9 +37,9 @@ import { ClrMonthpicker } from './monthpicker';
 import { ClrYearpicker } from './yearpicker';
 
 export const CLR_DATEPICKER_DIRECTIVES: Type<any>[] = [
+  ClrDateInput,
   ClrDay,
   ClrDateContainer,
-  ClrDateInput,
   ClrDateInputValidator,
   ClrStartDateInput,
   ClrEndDateInput,

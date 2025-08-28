@@ -72,6 +72,7 @@ import { ClrNumberInput } from './number-input';
     '[class.clr-row]': 'addGrid()',
   },
   providers: [FocusService, IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+  standalone: false,
 })
 export class ClrNumberInputContainer extends ClrAbstractContainer {
   focus = false;

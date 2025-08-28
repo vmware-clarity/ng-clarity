@@ -14,6 +14,7 @@ import { DatagridRowDetailRenderer } from './row-detail-renderer';
 
 @Directive({
   selector: 'clr-dg-row',
+  standalone: false,
 })
 export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
   @ContentChildren(DatagridCellRenderer) cells: QueryList<DatagridCellRenderer>;

@@ -13,6 +13,7 @@ import { AccordionWillyWonka } from './accordion-willy-wonka';
 
 @Directive({
   selector: 'clr-accordion-panel',
+  standalone: false,
 })
 export class AccordionOompaLoompa extends OompaLoompa {
   private expand: IfExpandService;

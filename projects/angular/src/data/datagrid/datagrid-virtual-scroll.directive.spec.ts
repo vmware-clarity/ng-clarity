@@ -76,6 +76,7 @@ export interface Cells {
       <clr-dg-footer> {{ data.rows.length }} </clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class FullTest implements OnInit {
   @ViewChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<any>;

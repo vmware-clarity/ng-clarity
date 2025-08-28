@@ -22,6 +22,7 @@ import { ClrExpandableAnimation } from './index';
       <div *ngFor="let item of data">{{ item }}</div>
     </clr-expandable-animation>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrExpandableAnimation, { static: true }) expandable: ClrExpandableAnimation;
@@ -34,6 +35,7 @@ class TestComponent {
       <div *ngFor="let item of data">{{ item }}</div>
     </div>
   `,
+  standalone: false,
 })
 class TestComponentDirective {
   @ViewChild(ClrExpandableAnimationDirective, { static: true }) expandable: ClrExpandableAnimationDirective;

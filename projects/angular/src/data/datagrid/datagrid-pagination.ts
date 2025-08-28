@@ -124,6 +124,7 @@ import { Page } from './providers/page';
     </ng-container>
   `,
   host: { '[class.pagination]': 'true' },
+  standalone: false,
 })
 export class ClrDatagridPagination implements OnDestroy, OnInit {
   @Input('clrDgPageInputDisabled') disableCurrentPageInput: boolean;

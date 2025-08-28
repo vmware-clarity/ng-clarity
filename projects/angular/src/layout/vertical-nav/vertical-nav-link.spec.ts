@@ -98,6 +98,7 @@ export default function (): void {
     </a>
   `,
   providers: [VerticalNavService, VerticalNavIconService, VerticalNavGroupRegistrationService],
+  standalone: false,
 })
 class TestComponent {}
 
@@ -111,6 +112,7 @@ class TestComponent {}
     <a href="#" clrVerticalNavLink id="link3">Link 3</a>
   `,
   providers: [VerticalNavService, VerticalNavIconService, VerticalNavGroupRegistrationService],
+  standalone: false,
 })
 class TestComponentWithGroup {
   @ViewChild('group') navGroup: ClrVerticalNavGroup;

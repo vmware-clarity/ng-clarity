@@ -24,6 +24,7 @@ import {
  */
 @Directive({
   selector: '[cdkDrag]',
+  standalone: false,
 })
 export class CdkDragModule_CdkDrag extends CdkDrag {
   /**

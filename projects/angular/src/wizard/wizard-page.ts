@@ -37,6 +37,7 @@ let wizardPageIndex = 0;
     '[class.active]': 'current',
     '[class.clr-wizard-page]': 'true',
   },
+  standalone: false,
 })
 export class ClrWizardPage implements OnInit {
   /**

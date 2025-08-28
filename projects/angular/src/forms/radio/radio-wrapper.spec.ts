@@ -19,6 +19,7 @@ import { ClrRadioWrapper } from './radio-wrapper';
       <input type="radio" clrRadio name="model" [(ngModel)]="model" />
     </clr-radio-wrapper>
   `,
+  standalone: false,
 })
 class FullTest {
   model = '';
@@ -30,6 +31,7 @@ class FullTest {
       <input type="radio" clrRadio name="model" [(ngModel)]="model" />
     </clr-radio-wrapper>
   `,
+  standalone: false,
 })
 class NoLabelTest {
   model = '';
@@ -43,6 +45,7 @@ class NoLabelTest {
       </clr-radio-wrapper>
     </clr-radio-container>
   `,
+  standalone: false,
 })
 class ContainerTest {
   model = '';

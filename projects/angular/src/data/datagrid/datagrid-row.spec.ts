@@ -650,11 +650,13 @@ export default function (): void {
       <clr-dg-cell>Hello world</clr-dg-cell>
     </clr-dg-row>
   `,
+  standalone: false,
 })
 class ProjectionTest {}
 
 @Component({
   template: `<clr-dg-row [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable">None</clr-dg-row>`,
+  standalone: false,
 })
 class SelectableRow {
   clrDgSelectable = true;
@@ -667,6 +669,7 @@ class SelectableRow {
       None
     </clr-dg-row>
   `,
+  standalone: false,
 })
 class SelectableRowOrder {
   clrDgSelectable = undefined;
@@ -676,6 +679,7 @@ class SelectableRowOrder {
 
 @Component({
   template: `<clr-dg-row [clrDgItem]="item" [(clrDgSelected)]="selected">Hello world</clr-dg-row>`,
+  standalone: false,
 })
 class FullTest {
   item: Item;
@@ -695,6 +699,7 @@ class FullTest {
       </ng-container>
     </clr-dg-row>
   `,
+  standalone: false,
 })
 class ExpandTest {
   expanded = false;
@@ -709,6 +714,7 @@ class ExpandTest {
       <clr-dg-row *ngFor="let item of items" [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable"></clr-dg-row>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class NgForDatagridWithTrackBy {
   clrDgSelectable = true;
@@ -735,6 +741,7 @@ class NgForDatagridWithTrackBy {
       </ng-template>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class DatagridWithDisabledOrHiddenDetails {
   disabledIndex = -1;
