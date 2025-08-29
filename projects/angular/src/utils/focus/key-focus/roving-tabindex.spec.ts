@@ -17,8 +17,8 @@ import { ClrRovingTabindex } from './roving-tabindex';
 
 @Component({
   template: `
+    @if (open) {
     <div
-      *ngIf="open"
       clrRovingTabindex
       [clrRovingTabindexDisabled]="disabled"
       [clrDirection]="direction"
@@ -27,8 +27,11 @@ import { ClrRovingTabindex } from './roving-tabindex';
     >
       <button clrKeyFocusItem>Button 1</button>
       <button clrKeyFocusItem>Button 2</button>
-      <button *ngIf="showLast" clrKeyFocusItem>Button 3</button>
+      @if (showLast) {
+      <button clrKeyFocusItem>Button 3</button>
+      }
     </div>
+    }
   `,
   standalone: false,
 })
@@ -48,7 +51,9 @@ class TestComponent {
     <div [clrRovingTabindex]="buttons" [clrFocusOnLoad]="focusOnLoad">
       <button>Button 1</button>
       <button>Button 2</button>
-      <button *ngIf="showLast">Button 3</button>
+      @if (showLast) {
+      <button>Button 3</button>
+      }
     </div>
   `,
   standalone: false,

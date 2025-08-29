@@ -40,10 +40,12 @@ import { ClrWizard } from '../wizard';
         <ng-template clrPageTitle [clrHeadingLevel]="pageTitleHeadingLevel">{{ projectedPageTitle }}</ng-template>
         <p class="lazy-content">{{ lazyLoadContent }}</p>
       </clr-wizard-page>
-      <clr-wizard-page *ngIf="showExtraPage">
+      @if (showExtraPage) {
+      <clr-wizard-page>
         <ng-template clrPageTitle [clrHeadingLevel]="pageTitleHeadingLevel">Sneaksy Extra Pages!</ng-template>
         <p>Extra page!</p>
       </clr-wizard-page>
+      }
       <clr-wizard-page (clrWizardPageCustomButton)="customFinish()">
         <ng-template clrPageTitle [clrHeadingLevel]="pageTitleHeadingLevel">Title for Page 3</ng-template>
         <p>{{ projectedContent }}</p>

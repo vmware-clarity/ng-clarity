@@ -20,7 +20,9 @@ import { ClrNumberInput } from './number-input';
   selector: 'clr-number-input-container',
   template: `
     <ng-content select="label"></ng-content>
-    <label *ngIf="!label && addGrid()"></label>
+    @if (!label && addGrid()) {
+    <label></label>
+    }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-number-input-wrapper">
         <div class="clr-input-group" [class.clr-focus]="focus" (focusout)="focusOut()">
@@ -45,24 +47,19 @@ import { ClrNumberInput } from './number-input';
             </button>
           </div>
         </div>
-        <cds-icon
-          *ngIf="showInvalid"
-          class="clr-validate-icon"
-          shape="exclamation-circle"
-          status="danger"
-          aria-hidden="true"
-        ></cds-icon>
-        <cds-icon
-          *ngIf="showValid"
-          class="clr-validate-icon"
-          shape="check-circle"
-          status="success"
-          aria-hidden="true"
-        ></cds-icon>
+        @if (showInvalid) {
+        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
+        } @if (showValid) {
+        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
+        }
       </div>
-      <ng-content select="clr-control-helper" *ngIf="showHelper"></ng-content>
-      <ng-content select="clr-control-error" *ngIf="showInvalid"></ng-content>
-      <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
+      @if (showHelper) {
+      <ng-content select="clr-control-helper"></ng-content>
+      } @if (showInvalid) {
+      <ng-content select="clr-control-error"></ng-content>
+      } @if (showValid) {
+      <ng-content select="clr-control-success"></ng-content>
+      }
     </div>
   `,
   host: {

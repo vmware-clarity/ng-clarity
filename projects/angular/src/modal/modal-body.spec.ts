@@ -92,7 +92,9 @@ describe('ClrModalBody Directive', () => {
     <div style="height: 100px; overflow-y: auto;">
       <div class="modal-body" #testElement>
         <label #testLabel>test label</label>
-        <div *ngIf="scrollable" style="height: 200px;"></div>
+        @if (scrollable) {
+        <div style="height: 200px;"></div>
+        }
       </div>
     </div>
   `,

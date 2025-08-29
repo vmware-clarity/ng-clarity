@@ -17,17 +17,15 @@ import { ClrKeyFocusModule } from './key-focus.module';
 
 @Component({
   template: `
-    <div
-      *ngIf="open"
-      clrKeyFocus
-      [clrDirection]="direction"
-      [clrFocusOnLoad]="focusOnLoad"
-      (clrFocusChange)="changed = true"
-    >
+    @if (open) {
+    <div clrKeyFocus [clrDirection]="direction" [clrFocusOnLoad]="focusOnLoad" (clrFocusChange)="changed = true">
       <button clrKeyFocusItem>Button 1</button>
       <button clrKeyFocusItem>Button 2</button>
-      <button *ngIf="showLast" clrKeyFocusItem>Button 3</button>
+      @if (showLast) {
+      <button clrKeyFocusItem>Button 3</button>
+      }
     </div>
+    }
   `,
   standalone: false,
 })
@@ -46,7 +44,9 @@ class TestComponent {
     <div [clrKeyFocus]="buttons" [clrFocusOnLoad]="focusOnLoad">
       <button>Button 1</button>
       <button>Button 2</button>
-      <button *ngIf="showLast">Button 3</button>
+      @if (showLast) {
+      <button>Button 3</button>
+      }
     </div>
   `,
   standalone: false,

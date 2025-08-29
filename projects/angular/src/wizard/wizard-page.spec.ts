@@ -166,8 +166,11 @@ class TemplateTestComponent {
       <clr-wizard-page #viewTestWizardPageThree [(clrWizardPagePreviousDisabled)]="disablePrevious">
         <ng-template clrPageTitle>View Page 3</ng-template>
         <ng-template clrPageNavTitle>short title</ng-template>
-        <p *ngIf="!asyncLoaded">Loading...</p>
-        <p *ngIf="asyncLoaded">{{ asyncContent }}</p>
+        @if (!asyncLoaded) {
+        <p>Loading...</p>
+        } @if (asyncLoaded) {
+        <p>{{ asyncContent }}</p>
+        }
 
         <ng-template clrPageButtons>
           <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
@@ -231,9 +234,9 @@ class ViewTestComponent {
 
 @Component({
   template: `
-    <ng-container *ngFor="let page of [0, 1, 2, 3]">
-      <clr-wizard-page [id]="3 === page ? 'lastpage' : page">Content for page {{ page }}</clr-wizard-page>
-    </ng-container>
+    @for (page of [0, 1, 2, 3]; track page) {
+    <clr-wizard-page [id]="3 === page ? 'lastpage' : page">Content for page {{ page }}</clr-wizard-page>
+    }
   `,
   standalone: false,
 })

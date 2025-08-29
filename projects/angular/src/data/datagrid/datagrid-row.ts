@@ -5,12 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
   Component,
   ContentChildren,
+  DOCUMENT,
   ElementRef,
   EventEmitter,
   Inject,

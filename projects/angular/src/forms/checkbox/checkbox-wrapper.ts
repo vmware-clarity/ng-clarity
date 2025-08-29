@@ -23,7 +23,9 @@ export const IS_TOGGLE_PROVIDER = { provide: IS_TOGGLE, useFactory: isToggleFact
   template: `
     <ng-content select="[clrCheckbox],[clrToggle]"></ng-content>
     <ng-content select="label"></ng-content>
-    <label *ngIf="!label"></label>
+    @if (!label) {
+    <label></label>
+    }
   `,
   host: {
     '[class.clr-checkbox-wrapper]': '!toggle',

@@ -48,7 +48,7 @@ export class TestContext<C, H> {
   }
 
   getProvider<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T {
-    return TestBed.get(token, notFoundValue);
+    return TestBed.inject(token, notFoundValue);
   }
 
   // The Function type here is just to tell Typescript to be nice with abstract classes. Weird.

@@ -57,10 +57,10 @@ import { ViewManagerService } from './providers/view-manager.service';
       </div>
     </div>
     <div class="months">
+      @for (month of monthNames; track month; let monthIndex = $index) {
       <button
         type="button"
         class="calendar-btn month"
-        *ngFor="let month of monthNames; let monthIndex = index"
         (click)="changeMonth(monthIndex)"
         [class.is-selected]="isSelected(monthIndex)"
         [class.is-start-range]="getIsRangeStartMonth(monthIndex)"
@@ -72,6 +72,7 @@ import { ViewManagerService } from './providers/view-manager.service';
       >
         {{ month }}
       </button>
+      }
     </div>
   `,
   host: {

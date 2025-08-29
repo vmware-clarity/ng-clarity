@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <div class="clr-example">
   <h3>Action after the last tab</h3>
@@ -14,7 +14,8 @@
         <cds-icon shape="plus"></cds-icon>
       </div>
     </clr-tabs-actions>
-    <clr-tab *ngFor="let tab of tabs; let i = index">
+    @for (tab of tabs; track tab; let i = $index) {
+    <clr-tab>
       <button clrTabLink>{{tab.title}}</button>
       <clr-tab-content>
         <p>{{ tab.content }}</p>
@@ -24,6 +25,7 @@
         </button>
       </clr-tab-content>
     </clr-tab>
+    }
   </clr-tabs>
   <h3>Action at the end</h3>
   <clr-tabs>
@@ -33,7 +35,8 @@
         Add tab
       </button>
     </clr-tabs-actions>
-    <clr-tab *ngFor="let tab of tabs; let i = index">
+    @for (tab of tabs; track tab; let i = $index) {
+    <clr-tab>
       <button clrTabLink>{{tab.title}}</button>
       <clr-tab-content>
         <p>{{ tab.content }}</p>
@@ -43,6 +46,7 @@
         </button>
       </clr-tab-content>
     </clr-tab>
+    }
   </clr-tabs>
   <h3>Vertical Action at the end</h3>
   <clr-tabs [clrLayout]="layout">
@@ -52,7 +56,8 @@
         Add tab
       </button>
     </clr-tabs-actions>
-    <clr-tab *ngFor="let tab of tabs; let i = index">
+    @for (tab of tabs; track tab; let i = $index) {
+    <clr-tab>
       <button clrTabLink>{{tab.title}}</button>
       <clr-tab-content>
         <p>{{ tab.content }}</p>
@@ -62,6 +67,7 @@
         </button>
       </clr-tab-content>
     </clr-tab>
+    }
   </clr-tabs>
   <h3>With overflow tabs</h3>
   <clr-tabs>
@@ -71,7 +77,8 @@
         Add tab
       </button>
     </clr-tabs-actions>
-    <clr-tab *ngFor="let tab of tabs; let i = index">
+    @for (tab of tabs; track tab; let i = $index) {
+    <clr-tab>
       <button clrTabLink [clrTabLinkInOverflow]="i >= 5">{{tab.title}}</button>
       <clr-tab-content>
         <p>{{ tab.content }}</p>
@@ -81,5 +88,6 @@
         </button>
       </clr-tab-content>
     </clr-tab>
+    }
   </clr-tabs>
 </div>

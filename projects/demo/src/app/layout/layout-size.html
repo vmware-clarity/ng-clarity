@@ -1,5 +1,6 @@
 <div class="clr-row" xmlns="http://www.w3.org/1999/html">
-  <div class="clr-col-4 density-container" *ngFor="let density of densities" [attr.clr-density]="density.type">
+  @for (density of densities; track density) {
+  <div class="clr-col-4 density-container" [attr.clr-density]="density.type">
     <h3 cds-layout="m-b:md">{{density.name}}</h3>
     <div>
       <h4>Alerts</h4>
@@ -24,7 +25,6 @@
             </div>
           </clr-alert-item>
         </clr-alert>
-
         <clr-alert clrAlertType="warning">
           <clr-alert-item>
             <span class="alert-text">Try closing this alert.</span>
@@ -39,7 +39,6 @@
             <span class="alert-text">Try closing this alert.</span>
           </clr-alert-item>
         </clr-alert>
-
         <clr-alert clrAlertType="unknown" [clrAlertLightweight]="true" [clrAlertSizeSmall]="true">
           <clr-alert-item>
             <span class="alert-text">Unknown Lightweight alert</span>
@@ -55,7 +54,6 @@
             <span class="alert-text">Loading NOT lightweight alert</span>
           </clr-alert-item>
         </clr-alert>
-
         <clr-alert [clrAlertSizeSmall]="true">
           <clr-alert-item>
             <span class="alert-text">This is a small alert.</span>
@@ -76,7 +74,6 @@
           </clr-alert-item>
         </clr-alert>
       </div>
-
       <div class="clr-example">
         <clr-alert clrAlertType="danger" [clrAlertAppLevel]="true">
           <clr-alert-item>
@@ -86,29 +83,28 @@
             </div>
           </clr-alert-item>
         </clr-alert>
-
         <hr />
-
         <clr-alerts>
-          <clr-alert *ngFor="let alert of alerts; let i = index" [clrAlertType]="alert.type" [clrAlertAppLevel]="true">
+          @for (alert of alerts; track alert; let i = $index) {
+          <clr-alert [clrAlertType]="alert.type" [clrAlertAppLevel]="true">
             <clr-alert-item>
               <span class="alert-text"> {{ alert.text }} at index {{i}} </span>
             </clr-alert-item>
           </clr-alert>
+          }
         </clr-alerts>
-
         <hr />
-
         <clr-alerts>
-          <clr-alert *ngFor="let alert of alerts; let i = index" [clrAlertType]="alert.type" [clrAlertAppLevel]="false">
+          @for (alert of alerts; track alert; let i = $index) {
+          <clr-alert [clrAlertType]="alert.type" [clrAlertAppLevel]="false">
             <clr-alert-item>
               <span class="alert-text"> {{ alert.text }} at index {{i}} </span>
             </clr-alert-item>
           </clr-alert>
+          }
         </clr-alerts>
       </div>
     </div>
-
     <div>
       <h4>Labels</h4>
       <div class="clr-example">
@@ -117,7 +113,6 @@
         <span class="label label-warning">Warning</span>
         <span class="label label-danger">Error</span>
       </div>
-
       <div class="clr-example">
         <a href="javascript://" class="label label-purple clickable">
           <span class="text">Austin</span>
@@ -162,7 +157,6 @@
         </a>
       </div>
     </div>
-
     <div>
       <h4>Forms</h4>
       <h5>Textarea</h5>
@@ -188,14 +182,11 @@
       <div class="clr-row">
         <div class="clr-example clr-col-4">
           <input type="checkbox" clrCheckbox />
-
           <input type="checkbox" clrCheckbox id="checkbox-testing456-{{density.type}}" />
-
           <clr-checkbox-wrapper>
             <input type="checkbox" clrCheckbox />
             <label>Test</label>
           </clr-checkbox-wrapper>
-
           <clr-checkbox-wrapper>
             <input type="checkbox" clrCheckbox id="checkbox-testing123-{{density.type}}" />
             <label for="checkbox-testing123-{{density.type}}">Test</label>
@@ -203,14 +194,11 @@
         </div>
         <div class="clr-example clr-col-4">
           <input type="checkbox" clrToggle />
-
           <input type="checkbox" clrToggle id="toggle-testing456-{{density.type}}" />
-
           <clr-toggle-wrapper>
             <input type="checkbox" clrToggle />
             <label>Test</label>
           </clr-toggle-wrapper>
-
           <clr-toggle-wrapper>
             <input type="checkbox" clrToggle id="toggle-testing123-{{density.type}}" />
             <label for="toggle-testing123-{{density.type}}">Test</label>
@@ -218,14 +206,11 @@
         </div>
         <div class="clr-example clr-col-4">
           <input type="radio" clrRadio />
-
           <input type="radio" clrRadio id="radio-testing456-{{density.type}}" />
-
           <clr-radio-wrapper>
             <input type="radio" clrRadio />
             <label>Test</label>
           </clr-radio-wrapper>
-
           <clr-radio-wrapper>
             <input type="radio" clrRadio id="radio-testing123-{{density.type}}" />
             <label for="radio-testing123-{{density.type}}">Test</label>
@@ -233,9 +218,9 @@
         </div>
       </div>
     </div>
-
     <div>
       <button class="btn">Hello</button>
     </div>
   </div>
+  }
 </div>

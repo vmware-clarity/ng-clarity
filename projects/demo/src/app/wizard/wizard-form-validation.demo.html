@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <button class="btn btn-primary" (click)="wizard.open()">Open Wizard</button>
 
@@ -49,12 +49,16 @@
     <ng-template clrPageTitle>Title for page 3</ng-template>
     <!-- mandatory -->
     <ng-template clrPageNavTitle>
-      <span *ngIf="formPageOne.valid && formPageTwo.valid">Ready to go!</span>
-      <span *ngIf="!formPageOne.valid || !formPageTwo.valid">Not ready yet</span>
+      @if (formPageOne.valid && formPageTwo.valid) {
+      <span>Ready to go!</span>
+      } @if (!formPageOne.valid || !formPageTwo.valid) {
+      <span>Not ready yet</span>
+      }
     </ng-template>
     <!-- optional -->
 
-    <div *ngIf="formPageOne.valid && formPageTwo.valid">
+    @if (formPageOne.valid && formPageTwo.valid) {
+    <div>
       <p>Congratulations! You are done with this wizard.</p>
       <label>Your information</label>
       <section>
@@ -72,9 +76,10 @@
         </p>
       </section>
     </div>
-
-    <div *ngIf="!formPageOne.valid || !formPageTwo.valid">
+    } @if (!formPageOne.valid || !formPageTwo.valid) {
+    <div>
       <p>Not quite there yet.</p>
     </div>
+    }
   </clr-wizard-page>
 </clr-wizard>

@@ -19,11 +19,11 @@ import { DetailService } from './providers/detail.service';
   // We put the *ngIf on the cdkTrapFocus so it doesn't always exist on the page
   // have to test for presence of header for aria-describedby because it was causing unit tests to crash
   template: `
+    @if (detailService.isOpen) {
     <div
       cdkTrapFocus
       [cdkTrapFocusAutoCapture]="!header"
       class="datagrid-detail-pane-content"
-      *ngIf="detailService.isOpen"
       role="dialog"
       [id]="detailService.id"
       aria-modal="true"
@@ -34,6 +34,7 @@ import { DetailService } from './providers/detail.service';
       <ng-content></ng-content>
       <div class="clr-sr-only">{{ commonStrings.keys.detailPaneEnd }}</div>
     </div>
+    }
   `,
   standalone: false,
 })

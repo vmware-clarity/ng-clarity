@@ -77,7 +77,9 @@ export default function (): void {
   template: `
     <clr-dg-row>
       <clr-dg-cell>Hello</clr-dg-cell>
-      <clr-dg-cell *ngIf="showCell">World</clr-dg-cell>
+      @if (showCell) {
+      <clr-dg-cell>World</clr-dg-cell>
+      }
     </clr-dg-row>
   `,
   standalone: false,

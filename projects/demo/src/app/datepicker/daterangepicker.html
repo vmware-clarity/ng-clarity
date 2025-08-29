@@ -1,8 +1,8 @@
 <!--
-  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Date Range Picker</h2>
 <form clrForm [formGroup]="dateForm" novalidate>
@@ -48,27 +48,18 @@
               formControlName="endDate"
             />
             <clr-control-error *clrIfError="'min'">
-              <ng-container
-                *ngIf="dateForm.get('startDate').errors?.min?.min || dateForm.get('endDate').errors?.min?.min"
-              >
-                Minimum date should be {{dateForm.get('startDate').errors?.min?.min ||
-                dateForm.get('endDate').errors?.min?.min}}
-              </ng-container>
+              @if (dateForm.get('startDate').errors?.min?.min || dateForm.get('endDate').errors?.min?.min) { Minimum
+              date should be {{dateForm.get('startDate').errors?.min?.min || dateForm.get('endDate').errors?.min?.min}}
+              }
             </clr-control-error>
             <clr-control-error *clrIfError="'max'">
-              <ng-container
-                *ngIf="dateForm.get('startDate').errors?.max?.max || dateForm.get('endDate').errors?.max?.max"
-              >
-                Maximum date should be {{dateForm.get('startDate').errors?.max?.max ||
-                dateForm.get('endDate').errors?.max?.max}}
-              </ng-container>
+              @if (dateForm.get('startDate').errors?.max?.max || dateForm.get('endDate').errors?.max?.max) { Maximum
+              date should be {{dateForm.get('startDate').errors?.max?.max || dateForm.get('endDate').errors?.max?.max}}
+              }
             </clr-control-error>
             <clr-control-error *clrIfError="'range'">
-              <ng-container
-                *ngIf="dateForm.get('startDate').errors?.range?.startDate || dateForm.get('endDate').errors?.range?.startDate"
-              >
-                Start date must be less than End date
-              </ng-container>
+              @if (dateForm.get('startDate').errors?.range?.startDate ||
+              dateForm.get('endDate').errors?.range?.startDate) { Start date must be less than End date }
             </clr-control-error>
           </clr-date-range-container>
         </div>

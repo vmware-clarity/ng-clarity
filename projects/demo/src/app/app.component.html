@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <clr-main-container>
   <clr-header class="header-6">
@@ -40,9 +40,11 @@
           <a href="javascript://" clrDropdownItem><cds-icon shape="user"></cds-icon> About</a>
           <a href="javascript://" clrDropdownItem>Preferences</a>
           <a href="javascript://" clrDropdownItem>Log out</a>
-          <form *ngIf="!clrUiDarkThemeApplied" clrForm clrLayout="vertical">
+          @if (!clrUiDarkThemeApplied) {
+          <form clrForm clrLayout="vertical">
             <app-cds-theme-select></app-cds-theme-select>
           </form>
+          }
         </clr-dropdown-menu>
       </clr-dropdown>
     </div>

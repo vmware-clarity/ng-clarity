@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 <h2>Native Datalist (non Clarity)</h2>
 <input list="pasta" />
 <datalist id="pasta">
@@ -25,7 +25,9 @@
     <label>Datalist - Reactive Form</label>
     <input clrDatalistInput placeholder="Option" name="Option" autocomplete="off" formControlName="item" />
     <datalist id="clr-custom-datalistid-1">
-      <option *ngFor="let item of items" [value]="item + ' dl 1'"></option>
+      @for (item of items; track item) {
+      <option [value]="item + ' dl 1'"></option>
+      }
     </datalist>
   </clr-datalist-container>
   <button class="btn btn-primary" type="submit" [disabled]="model.invalid" (click)="logIt()">Submit</button>
@@ -36,7 +38,9 @@
   <clr-datalist-container>
     <input clrDatalistInput [(ngModel)]="vertical.one" placeholder="No label, wrapper" name="Option2" />
     <datalist id="clr-custom-datalistid-2">
-      <option *ngFor="let item of items" [value]="item+ ' dl 2'"></option>
+      @for (item of items; track item) {
+      <option [value]="item+ ' dl 2'"></option>
+      }
     </datalist>
   </clr-datalist-container>
 
@@ -51,7 +55,9 @@
       minlength="8"
     />
     <datalist id="clr-custom-datalistid-3">
-      <option *ngFor="let item of items" [value]="item + ' dl 3'"></option>
+      @for (item of items; track item) {
+      <option [value]="item + ' dl 3'"></option>
+      }
     </datalist>
     <clr-control-helper>Helper text</clr-control-helper>
     <clr-control-error *clrIfError="'required'">This is required</clr-control-error>
@@ -70,7 +76,9 @@
       [disabled]="disabled"
     />
     <datalist id="clr-custom-datalistid-4">
-      <option *ngFor="let item of items" [value]="item + ' dl 4'"></option>
+      @for (item of items; track item) {
+      <option [value]="item + ' dl 4'"></option>
+      }
     </datalist>
     <clr-control-helper>Helper text</clr-control-helper>
     <clr-control-error>There was an error</clr-control-error>
@@ -83,7 +91,9 @@
     <label>Custom datalist id</label>
     <input clrDatalistInput [(ngModel)]="vertical.four" placeholder="custom datalist id" name="Option5" />
     <datalist>
-      <option *ngFor="let item of items" [value]="item+ ' dl 5'"></option>
+      @for (item of items; track item) {
+      <option [value]="item+ ' dl 5'"></option>
+      }
     </datalist>
     <clr-control-helper>Helper text</clr-control-helper>
   </clr-datalist-container>

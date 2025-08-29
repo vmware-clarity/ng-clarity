@@ -57,8 +57,8 @@ import { ViewManagerService } from './providers/view-manager.service';
     </div>
 
     <div class="years">
+      @for (year of yearRangeModel.yearRange; track year) {
       <button
-        *ngFor="let year of yearRangeModel.yearRange"
         type="button"
         class="calendar-btn year"
         [attr.tabindex]="getTabIndex(year)"
@@ -72,6 +72,7 @@ import { ViewManagerService } from './providers/view-manager.service';
       >
         {{ year }}
       </button>
+      }
     </div>
   `,
   host: {

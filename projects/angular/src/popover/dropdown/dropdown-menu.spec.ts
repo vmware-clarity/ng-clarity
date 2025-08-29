@@ -18,7 +18,9 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
 @Component({
   template: `
     <clr-dropdown>
-      <clr-dropdown-menu *ngIf="menu" [clrPosition]="position">Hello world</clr-dropdown-menu>
+      @if (menu) {
+      <clr-dropdown-menu [clrPosition]="position">Hello world</clr-dropdown-menu>
+      }
     </clr-dropdown>
   `,
   standalone: false,

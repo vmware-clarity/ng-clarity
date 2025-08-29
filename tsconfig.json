@@ -10,12 +10,12 @@
     "importHelpers": true,
     "lib": ["es2018", "dom", "dom.iterable"],
     "module": "es2020",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
-    "strict": false, // TURN BACK ON
+    "strict": false,
     "target": "es2022",
     "useDefineForClassFields": false
   },

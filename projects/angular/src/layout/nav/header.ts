@@ -16,25 +16,27 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
 @Component({
   selector: 'clr-header',
   template: `
+    @if (isNavLevel1OnPage) {
     <button
       type="button"
-      *ngIf="isNavLevel1OnPage"
       class="header-hamburger-trigger"
       [attr.aria-label]="responsiveNavCommonString"
       (click)="openNav(responsiveNavCodes.NAV_LEVEL_1)"
     >
       <span></span>
     </button>
+    }
     <ng-content></ng-content>
+    @if (isNavLevel2OnPage) {
     <button
       type="button"
-      *ngIf="isNavLevel2OnPage"
       class="header-overflow-trigger"
       [attr.aria-label]="responsiveOverflowCommonString"
       (click)="openNav(responsiveNavCodes.NAV_LEVEL_2)"
     >
       <span></span>
     </button>
+    }
     <div class="header-backdrop" (click)="closeOpenNav()"></div>
   `,
   host: { '[class.header]': 'true' },

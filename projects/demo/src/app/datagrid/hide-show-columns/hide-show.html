@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Datagrid: Hide-show columns demo</h2>
 
@@ -12,9 +12,11 @@
 <button class="btn btn-outline-primary" (click)="conditionalSignpost = !conditionalSignpost">Toggle Signposts</button>
 <button class="btn btn-outline-primary" (click)="shortFormat = !shortFormat">Toggle Date Type</button>
 <clr-datagrid>
-  <clr-dg-column *ngIf="!deleteIdColumn" [style.width.px]="100">
+  @if (!deleteIdColumn) {
+  <clr-dg-column [style.width.px]="100">
     <ng-container *clrDgHideableColumn>User ID</ng-container>
   </clr-dg-column>
+  }
   <clr-dg-column>
     <!--Name-->
     <ng-container *clrDgHideableColumn="{hidden: hideNameColumn}">Name</ng-container>
@@ -32,15 +34,21 @@
   <clr-dg-placeholder>No users found</clr-dg-placeholder>
 
   <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell *ngIf="!deleteIdColumn">
-      {{user.id}}
-      <clr-signpost *ngIf="conditionalSignpost">
+    @if (!deleteIdColumn) {
+    <clr-dg-cell>
+      {{user.id}} @if (conditionalSignpost) {
+      <clr-signpost>
         <clr-signpost-content *clrIfOpen [clrPosition]="'bottom-middle'">The user is strong.</clr-signpost-content>
       </clr-signpost>
+      }
     </clr-dg-cell>
+    }
     <clr-dg-cell>{{user.name}}</clr-dg-cell>
-    <clr-dg-cell *ngIf="shortFormat">{{user.creation | date:'shortDate'}}</clr-dg-cell>
-    <clr-dg-cell *ngIf="!shortFormat">{{user.creation | date:'fullDate'}}</clr-dg-cell>
+    @if (shortFormat) {
+    <clr-dg-cell>{{user.creation | date:'shortDate'}}</clr-dg-cell>
+    } @if (!shortFormat) {
+    <clr-dg-cell>{{user.creation | date:'fullDate'}}</clr-dg-cell>
+    }
     <clr-dg-cell>
       {{user.pokemon.name}}
       <clr-signpost>

@@ -22,14 +22,16 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
   selector: 'clr-file-input-container',
   template: `
     <ng-content select="label"></ng-content>
-    <label *ngIf="!label && addGrid()"></label>
+    @if (!label && addGrid()) {
+    <label></label>
+    }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-file-input-wrapper">
         <ng-content select="[clrFileInput]"></ng-content>
 
         <!-- file input to handle adding new files to selection when file list is present (prevent replacing selected files on the main file input) -->
+        @if (fileList) {
         <input
-          *ngIf="fileList"
           #fileListFileInput
           type="file"
           class="clr-file-input"
@@ -40,6 +42,7 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
           [disabled]="disabled"
           (change)="addFilesToSelection(fileListFileInput.files)"
         />
+        }
 
         <button
           #browseButton
@@ -52,8 +55,8 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
           <cds-icon shape="folder-open"></cds-icon>
           <span class="clr-file-input-browse-button-text">{{ browseButtonText }}</span>
         </button>
+        @if (!fileList && fileInput?.selection?.fileCount) {
         <button
-          *ngIf="!fileList && fileInput?.selection?.fileCount"
           type="button"
           class="btn btn-sm clr-file-input-clear-button"
           [attr.aria-label]="fileInput?.selection?.clearFilesButtonLabel"
@@ -61,24 +64,19 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
         >
           <cds-icon shape="times" status="neutral"></cds-icon>
         </button>
-        <cds-icon
-          *ngIf="showInvalid"
-          class="clr-validate-icon"
-          shape="exclamation-circle"
-          status="danger"
-          aria-hidden="true"
-        ></cds-icon>
-        <cds-icon
-          *ngIf="showValid"
-          class="clr-validate-icon"
-          shape="check-circle"
-          status="success"
-          aria-hidden="true"
-        ></cds-icon>
+        } @if (showInvalid) {
+        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
+        } @if (showValid) {
+        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
+        }
       </div>
-      <ng-content select="clr-control-helper" *ngIf="showHelper"></ng-content>
-      <ng-content select="clr-control-error" *ngIf="showInvalid"></ng-content>
-      <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
+      @if (showHelper) {
+      <ng-content select="clr-control-helper"></ng-content>
+      } @if (showInvalid) {
+      <ng-content select="clr-control-error"></ng-content>
+      } @if (showValid) {
+      <ng-content select="clr-control-success"></ng-content>
+      }
 
       <!-- If this is present, this file input becomes an "advanced" file input. -->
       <ng-container>

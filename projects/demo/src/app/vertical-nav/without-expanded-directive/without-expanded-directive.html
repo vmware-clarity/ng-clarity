@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <div class="clr-example">
   <div class="main-container">
@@ -26,8 +26,8 @@
       </div>
     </header>
     <div class="content-container">
+      @if (option === 'link') {
       <clr-vertical-nav
-        *ngIf="option === 'link'"
         [clrVerticalNavCollapsible]="true"
         [clrVerticalNavCollapsed]="navCollapsed"
         (clrVerticalNavCollapsedChange)="updateNavCollapsed($event)"
@@ -52,7 +52,6 @@
             <a routerLinkActive="active" [routerLink]="['./beatles/rubber-soul']" clrVerticalNavLink>Rubber Soul</a>
           </clr-vertical-nav-group-children>
         </clr-vertical-nav-group>
-
         <clr-vertical-nav-group routerLinkActive="active">
           <a
             [routerLink]="['./killers']"
@@ -69,15 +68,13 @@
             <a routerLinkActive="active" [routerLink]="['./killers/sams-town']" clrVerticalNavLink>Sam's Town</a>
           </clr-vertical-nav-group-children>
         </clr-vertical-nav-group>
-
         <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./wikipedia']">
           <cds-icon shape="certificate" clrVerticalNavIcon></cds-icon>
           Wikipedia
         </a>
       </clr-vertical-nav>
-
+      } @if (option === 'text') {
       <clr-vertical-nav
-        *ngIf="option === 'text'"
         [clrVerticalNavCollapsible]="true"
         [clrVerticalNavCollapsed]="navCollapsed"
         (clrVerticalNavCollapsedChange)="updateNavCollapsed($event)"
@@ -95,7 +92,6 @@
             <a routerLinkActive="active" [routerLink]="['./beatles/rubber-soul']" clrVerticalNavLink>Rubber Soul</a>
           </clr-vertical-nav-group-children>
         </clr-vertical-nav-group>
-
         <clr-vertical-nav-group routerLinkActive="active">
           <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
           The Killers
@@ -105,12 +101,12 @@
             <a routerLinkActive="active" [routerLink]="['./killers/sams-town']" clrVerticalNavLink>Sam's Town</a>
           </clr-vertical-nav-group-children>
         </clr-vertical-nav-group>
-
         <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./wikipedia']">
           <cds-icon shape="certificate" clrVerticalNavIcon></cds-icon>
           Wikipedia
         </a>
       </clr-vertical-nav>
+      }
       <div class="content-area">
         <div class="example-options">
           <h6>Options</h6>

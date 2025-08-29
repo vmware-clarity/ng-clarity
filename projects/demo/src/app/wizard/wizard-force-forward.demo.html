@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <button class="btn btn-primary" (click)="wizard.open()">Force Forward Wizard</button>
 
@@ -15,9 +15,13 @@
   <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
   <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
 
-  <clr-wizard-page *ngFor="let page of [1, 2, 3, 4]">
+  @for (page of [1, 2, 3, 4]; track page) {
+  <clr-wizard-page>
     <ng-template clrPageTitle>Title for page {{ page }}</ng-template>
     <p>Content for page {{ page }}.</p>
-    <p *ngIf="page === 1">Ohai!</p>
+    @if (page === 1) {
+    <p>Ohai!</p>
+    }
   </clr-wizard-page>
+  }
 </clr-wizard>

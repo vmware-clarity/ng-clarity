@@ -5,8 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT } from '@angular/common';
-import { ElementRef, Inject, Injectable, OnDestroy, Renderer2 } from '@angular/core';
+import { DOCUMENT, ElementRef, Inject, Injectable, OnDestroy, Renderer2 } from '@angular/core';
 import { fromEvent, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 

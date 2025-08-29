@@ -32,51 +32,49 @@ import { ViewManagerService } from './providers/view-manager.service';
   selector: 'clr-date-container, clr-date-range-container',
   template: `
     <ng-content select="label"></ng-content>
-    <label *ngIf="!label && addGrid()"></label>
+    @if (!label && addGrid()) {
+    <label></label>
+    }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper" clrPopoverAnchor>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <!-- render range inputs only if using clr-date-range-container -->
-          <ng-container *ngIf="isRangePicker">
-            <ng-content select="[clrStartDate]"></ng-content>
-            <span class="date-range-separator">-</span>
-            <ng-content select="[clrEndDate]"></ng-content>
-          </ng-container>
+          @if (isRangePicker) {
+          <ng-content select="[clrStartDate]"></ng-content>
+          <span class="date-range-separator">-</span>
+          <ng-content select="[clrEndDate]"></ng-content>
+          }
           <!-- no *ngIf for the singe-date input because it breaks the "auto-wrapped" date picker -->
           <ng-content select="[clrDate]"></ng-content>
+          @if (isEnabled) {
           <button
             #actionButton
             type="button"
             clrPopoverOpenCloseButton
             class="clr-input-group-icon-action"
             [disabled]="isInputDateDisabled"
-            *ngIf="isEnabled"
           >
             <cds-icon status="info" shape="calendar"></cds-icon>
           </button>
+          }
           <clr-datepicker-view-manager
             *clrPopoverContent="open; at: popoverPosition; outsideClickToClose: true; scrollToClose: true"
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        <cds-icon
-          *ngIf="showInvalid"
-          class="clr-validate-icon"
-          shape="exclamation-circle"
-          status="danger"
-          aria-hidden="true"
-        ></cds-icon>
-        <cds-icon
-          *ngIf="showValid"
-          class="clr-validate-icon"
-          shape="check-circle"
-          status="success"
-          aria-hidden="true"
-        ></cds-icon>
+        @if (showInvalid) {
+        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
+        } @if (showValid) {
+        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
+        }
       </div>
-      <ng-content select="clr-control-helper" *ngIf="showHelper"></ng-content>
-      <ng-content select="clr-control-error" *ngIf="showInvalid"></ng-content>
-      <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
+      @if (showHelper) {
+      <ng-content select="clr-control-helper"></ng-content>
+      } @if (showInvalid) {
+      <ng-content select="clr-control-error"></ng-content>
+      } @if (showValid) {
+      <ng-content select="clr-control-success"></ng-content>
+      }
     </div>
   `,
   providers: [

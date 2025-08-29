@@ -29,7 +29,7 @@ export default function (): void {
         this.testComponent = this.fixture.componentInstance;
         this.testElement = this.fixture.nativeElement;
         this.clarityDirective = this.fixture.componentInstance.ifExpanded;
-        this.expand = TestBed.get(IfExpandService);
+        this.expand = TestBed.inject(IfExpandService);
       });
 
       afterEach(function () {
@@ -87,7 +87,7 @@ export default function (): void {
         });
         this.fixture = TestBed.createComponent(SimpleTemplateTest);
         this.fixture.detectChanges();
-        this.expand = TestBed.get(IfExpandService);
+        this.expand = TestBed.inject(IfExpandService);
       });
 
       afterEach(function () {
@@ -110,7 +110,7 @@ export default function (): void {
         this.fixture = TestBed.createComponent(NgIfTest);
         this.fixture.detectChanges();
         this.testComponent = this.fixture.componentInstance;
-        this.expand = TestBed.get(IfExpandService);
+        this.expand = TestBed.inject(IfExpandService);
       });
 
       afterEach(function () {
@@ -167,9 +167,9 @@ class TestCounter {
 
 @Component({
   template: `
-    <ng-container *ngIf="expandable">
-      <div *clrIfExpanded>Hello World</div>
-    </ng-container>
+    @if (expandable) {
+    <div *clrIfExpanded>Hello World</div>
+    }
   `,
   standalone: false,
 })

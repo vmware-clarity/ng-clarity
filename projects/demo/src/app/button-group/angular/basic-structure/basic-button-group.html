@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h4>Basic Structure</h4>
 
@@ -52,9 +52,9 @@
     <clr-button (click)="handleClick(2)">2</clr-button>
     <clr-button (click)="handleClick(3)">3</clr-button>
     <clr-button (click)="handleClick(4)">4</clr-button>
-    <clr-button *ngFor="let button of asyncMenuButtons | async" [clrInMenu]="true" (click)="handleClick(button)">
-      {{button}}
-    </clr-button>
+    @for (button of asyncMenuButtons | async; track button) {
+    <clr-button [clrInMenu]="true" (click)="handleClick(button)"> {{button}} </clr-button>
+    }
   </clr-button-group>
 </div>
 

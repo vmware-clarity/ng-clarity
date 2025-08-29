@@ -13,8 +13,14 @@ import { Items } from './providers/items';
   selector: 'clr-dg-placeholder',
   template: `
     <div class="datagrid-placeholder" [class.datagrid-empty]="emptyDatagrid">
-      <div class="datagrid-placeholder-image" *ngIf="emptyDatagrid"></div>
-      <span class="datagrid-placeholder-content"><ng-content *ngIf="emptyDatagrid"></ng-content></span>
+      @if (emptyDatagrid) {
+      <div class="datagrid-placeholder-image"></div>
+      }
+      <span class="datagrid-placeholder-content"
+        >@if (emptyDatagrid) {
+        <ng-content></ng-content>
+        }</span
+      >
     </div>
   `,
   host: { '[class.datagrid-placeholder-container]': 'true' },

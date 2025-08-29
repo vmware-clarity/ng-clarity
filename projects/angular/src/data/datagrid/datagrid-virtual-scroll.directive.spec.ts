@@ -40,18 +40,14 @@ export interface Cells {
 
 @Component({
   template: `
-    <clr-datagrid
-      [(clrDgSelected)]="selectedRows"
-      *ngIf="{ rows: rows | async }; let data"
-      style="height: 32rem"
-      class="datagrid-compact"
-    >
-      <clr-dg-column *ngFor="let col of cols; trackBy: colByIndex">
+    @if ({ rows: rows | async }; as data) {
+    <clr-datagrid [(clrDgSelected)]="selectedRows" style="height: 32rem" class="datagrid-compact">
+      @for (col of cols; track colByIndex($index, col)) {
+      <clr-dg-column>
         <ng-container>{{ col.name }}</ng-container>
       </clr-dg-column>
-
+      } @if (data.rows; as row) {
       <ng-template
-        *ngIf="data.rows"
         clrVirtualScroll
         let-row
         [clrVirtualRowsOf]="data.rows"
@@ -64,7 +60,9 @@ export interface Cells {
         [clrVirtualRowsTrackBy]="rowByIndex"
       >
         <clr-dg-row [clrDgItem]="row">
-          <clr-dg-cell *ngFor="let col of cols; trackBy: colByIndex">{{ row?.cells[col.name] }}</clr-dg-cell>
+          @for (col of cols; track colByIndex($index, col)) {
+          <clr-dg-cell>{{ row?.cells[col.name] }}</clr-dg-cell>
+          }
           <ng-container ngProjectAs="clr-dg-row-detail">
             <clr-dg-row-detail *clrIfExpanded>
               {{ row | json }}
@@ -72,9 +70,10 @@ export interface Cells {
           </ng-container>
         </clr-dg-row>
       </ng-template>
-
+      }
       <clr-dg-footer> {{ data.rows.length }} </clr-dg-footer>
     </clr-datagrid>
+    }
   `,
   standalone: false,
 })

@@ -19,26 +19,22 @@ import { ComboboxContainerService } from './providers/combobox-container.service
   selector: 'clr-combobox-container',
   template: `
     <ng-content select="label"></ng-content>
-    <label *ngIf="!label && addGrid()"></label>
+    @if (!label && addGrid()) {
+    <label></label>
+    }
     <div class="clr-control-container" [ngClass]="controlClass()" #controlContainer>
       <ng-content select="clr-combobox"></ng-content>
-      <cds-icon
-        *ngIf="showInvalid"
-        class="clr-validate-icon"
-        shape="exclamation-circle"
-        status="danger"
-        aria-hidden="true"
-      ></cds-icon>
-      <cds-icon
-        *ngIf="showValid"
-        class="clr-validate-icon"
-        shape="check-circle"
-        status="success"
-        aria-hidden="true"
-      ></cds-icon>
-      <ng-content select="clr-control-helper" *ngIf="showHelper"></ng-content>
-      <ng-content select="clr-control-error" *ngIf="showInvalid"></ng-content>
-      <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
+      @if (showInvalid) {
+      <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
+      } @if (showValid) {
+      <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
+      } @if (showHelper) {
+      <ng-content select="clr-control-helper"></ng-content>
+      } @if (showInvalid) {
+      <ng-content select="clr-control-error"></ng-content>
+      } @if (showValid) {
+      <ng-content select="clr-control-success"></ng-content>
+      }
     </div>
   `,
   host: {

@@ -17,22 +17,20 @@ import { ClrTimelineStepTitle } from './timeline-step-title';
   template: `
     <ng-content select="clr-timeline-step-header"></ng-content>
     <span class="clr-sr-only">{{ stepTitleText }}</span>
-    <ng-container *ngIf="!isProcessing; else processing">
-      <cds-icon
-        [attr.status]="iconStatus"
-        [attr.shape]="iconShape"
-        [attr.aria-label]="iconAriaLabel"
-        role="img"
-      ></cds-icon>
-    </ng-container>
+    @if (!isProcessing) {
+    <cds-icon
+      [attr.status]="iconStatus"
+      [attr.shape]="iconShape"
+      [attr.aria-label]="iconAriaLabel"
+      role="img"
+    ></cds-icon>
+    } @else {
+    <clr-spinner clrMedium [attr.aria-label]="iconAriaLabel"></clr-spinner>
+    }
     <div class="clr-timeline-step-body">
       <ng-content select="clr-timeline-step-title"></ng-content>
       <ng-content select="clr-timeline-step-description"></ng-content>
     </div>
-
-    <ng-template #processing>
-      <clr-spinner clrMedium [attr.aria-label]="iconAriaLabel"></clr-spinner>
-    </ng-template>
   `,
   host: { '[class.clr-timeline-step]': 'true', '[attr.role]': '"listitem"' },
   standalone: false,

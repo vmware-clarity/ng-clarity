@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Full Datagrid demo</h2>
 
@@ -59,25 +59,31 @@
     </select>
   </clr-select-container>
 
-  <clr-input-container *ngIf="!isServerDriven">
+  @if (!isServerDriven) {
+  <clr-input-container>
     <label>Name filter</label>
     <input clrInput type="text" name="nameFilter" [(ngModel)]="options.nameFilter" />
     <clr-control-helper>Pre applied client side filter</clr-control-helper>
   </clr-input-container>
+  }
 
   <button class="btn btn-primary">Apply</button>
 </form>
 
-<div *ngIf="!resetting">
-  <div *ngIf="selected" class="card card-block">
+@if (!resetting) {
+<div>
+  @if (selected) {
+  <div class="card card-block">
     <p class="card-text username-list">
-      Selected users:
-      <em *ngIf="selected.length == 0">No user selected.</em>
-      <span class="username" *ngFor="let user of selected">{{user.name}}</span>
+      Selected users: @if (selected.length == 0) {
+      <em>No user selected.</em>
+      } @for (user of selected; track user) {
+      <span class="username">{{user.name}}</span>
+      }
     </p>
   </div>
-
-  <clr-datagrid *ngIf="!isServerDriven" [(clrDgSelected)]="selected">
+  } @if (!isServerDriven) {
+  <clr-datagrid [(clrDgSelected)]="selected">
     <clr-dg-column>
       <ng-container *clrDgHideableColumn>User ID</ng-container>
     </clr-dg-column>
@@ -97,23 +103,24 @@
         <clr-datagrid-color-filter-demo #colorFilter class="color-filter"></clr-datagrid-color-filter-demo>
       </clr-dg-filter>
     </clr-dg-column>
-    <clr-dg-column class="lorem-ipsum" *ngIf="loremIpsumColumn">Multi-line text</clr-dg-column>
-
+    @if (loremIpsumColumn) {
+    <clr-dg-column class="lorem-ipsum">Multi-line text</clr-dg-column>
+    }
     <clr-dg-placeholder>No users found</clr-dg-placeholder>
     <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
       <clr-dg-action-overflow
         (click)="loadDynamicRowActions()"
         (clrDgActionOverflowOpenChange)="clrDgActionOverflowOpenChangeFn($event)"
       >
-        <span *ngIf="rowActionsLoading; else actions">
+        @if (rowActionsLoading) {
+        <span>
           <span class="spinner spinner-inline">Loading...</span>
           Loading...
         </span>
-        <ng-template #actions>
-          <button class="action-item" *ngFor="let action of rowActions">{{ action }}</button>
-        </ng-template>
+        } @else { @for (action of rowActions; track action) {
+        <button class="action-item">{{ action }}</button>
+        } }
       </clr-dg-action-overflow>
-
       <clr-dg-cell>{{user.id}}</clr-dg-cell>
       <clr-dg-cell>{{user.name}}</clr-dg-cell>
       <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
@@ -121,24 +128,20 @@
       <clr-dg-cell>
         <span class="color-square" [style.backgroundColor]="user.color"></span>
       </clr-dg-cell>
-      <clr-dg-cell *ngIf="loremIpsumColumn">
+      @if (loremIpsumColumn) {
+      <clr-dg-cell>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortor tellus, tincidunt eget mauris molestie,
         ullamcorper facilisis lacus. Vivamus sagittis suscipit libero, et tristique justo consectetur eget.
       </clr-dg-cell>
+      }
     </clr-dg-row>
-
     <clr-dg-footer>
       {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} users
       <clr-dg-pagination #pagination [clrDgPageSize]="currentPageSize"></clr-dg-pagination>
     </clr-dg-footer>
   </clr-datagrid>
-
-  <clr-datagrid
-    *ngIf="isServerDriven"
-    [(clrDgSelected)]="selected"
-    (clrDgRefresh)="refresh($event)"
-    [clrDgLoading]="loading"
-  >
+  } @if (isServerDriven) {
+  <clr-datagrid [(clrDgSelected)]="selected" (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading">
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
@@ -149,10 +152,12 @@
         <clr-datagrid-color-filter-demo #colorFilter class="color-filter"></clr-datagrid-color-filter-demo>
       </clr-dg-filter>
     </clr-dg-column>
-    <clr-dg-column class="lorem-ipsum" *ngIf="loremIpsumColumn">Multi-line text</clr-dg-column>
-
+    @if (loremIpsumColumn) {
+    <clr-dg-column class="lorem-ipsum">Multi-line text</clr-dg-column>
+    }
     <clr-dg-placeholder>No users found</clr-dg-placeholder>
-    <clr-dg-row *ngFor="let user of users; trackBy: trackById" [clrDgItem]="user">
+    @for (user of users; track trackById($index, user)) {
+    <clr-dg-row [clrDgItem]="user">
       <clr-dg-cell>{{user.id}}</clr-dg-cell>
       <clr-dg-cell>{{user.name}}</clr-dg-cell>
       <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
@@ -160,15 +165,19 @@
       <clr-dg-cell>
         <span class="color-square" [style.backgroundColor]="user.color"></span>
       </clr-dg-cell>
-      <clr-dg-cell *ngIf="loremIpsumColumn">
+      @if (loremIpsumColumn) {
+      <clr-dg-cell>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortor tellus, tincidunt eget mauris molestie,
         ullamcorper facilisis lacus. Vivamus sagittis suscipit libero, et tristique justo consectetur eget.
       </clr-dg-cell>
+      }
     </clr-dg-row>
-
+    }
     <clr-dg-footer>
       {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{total}} users
       <clr-dg-pagination #pagination [clrDgPageSize]="currentPageSize" [clrDgTotalItems]="total"></clr-dg-pagination>
     </clr-dg-footer>
   </clr-datagrid>
+  }
 </div>
+}

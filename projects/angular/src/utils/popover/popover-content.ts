@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT } from '@angular/common';
 import {
   AfterContentChecked,
   Directive,
+  DOCUMENT,
   EmbeddedViewRef,
   EventEmitter,
   Inject,

@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <div
   #contentContainer
@@ -17,8 +17,8 @@
   (keydown)="onKeyDown($event)"
   (focus)="broadcastFocusOnContainer()"
 >
+  @if (isExpandable() && !isModelLoading && !expandService.loading) {
   <button
-    *ngIf="isExpandable() && !isModelLoading && !expandService.loading"
     aria-hidden="true"
     type="button"
     tabindex="-1"
@@ -33,10 +33,12 @@
       [attr.direction]="expandService.expanded ? 'down' : 'right'"
     ></cds-icon>
   </button>
-  <div class="clr-treenode-spinner-container" *ngIf="expandService.loading || isModelLoading">
+  } @if (expandService.loading || isModelLoading) {
+  <div class="clr-treenode-spinner-container">
     <span class="clr-treenode-spinner spinner"></span>
   </div>
-  <div class="clr-checkbox-wrapper clr-treenode-checkbox" *ngIf="featuresService.selectable">
+  } @if (featuresService.selectable) {
+  <div class="clr-checkbox-wrapper clr-treenode-checkbox">
     <input
       aria-hidden="true"
       type="checkbox"
@@ -53,15 +55,19 @@
       <ng-container [ngTemplateOutlet]="treenodeContent"></ng-container>
     </label>
   </div>
-  <div class="clr-treenode-content" (mouseup)="focusTreeNode()" *ngIf="!featuresService.selectable">
+  } @if (!featuresService.selectable) {
+  <div class="clr-treenode-content" (mouseup)="focusTreeNode()">
     <ng-container [ngTemplateOutlet]="treenodeContent"></ng-container>
   </div>
+  }
 
   <ng-template #treenodeContent>
     <ng-content></ng-content>
-    <div class="clr-sr-only" *ngIf="featuresService.selectable || ariaSelected">
+    @if (featuresService.selectable || ariaSelected) {
+    <div class="clr-sr-only">
       <span> {{ariaSelected ? commonStrings.keys.selectedTreeNode : commonStrings.keys.unselectedTreeNode}}</span>
     </div>
+    }
   </ng-template>
 </div>
 <div

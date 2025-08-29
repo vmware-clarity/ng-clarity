@@ -24,7 +24,7 @@ export default function (): void {
         this.testComponent = this.fixture.componentInstance;
         this.testElement = this.fixture.nativeElement;
         this.clarityDirective = this.fixture.componentInstance.directive;
-        this.ifActiveService = TestBed.get(IfActiveService);
+        this.ifActiveService = TestBed.inject(IfActiveService);
       });
 
       afterEach(function () {
@@ -101,7 +101,7 @@ export default function (): void {
         this.testComponent = this.fixture.componentInstance;
         this.testElement = this.fixture.nativeElement;
         this.clarityDirective = this.fixture.componentInstance.directive;
-        this.ifActiveService = TestBed.get(IfActiveService);
+        this.ifActiveService = TestBed.inject(IfActiveService);
       });
 
       afterEach(function () {

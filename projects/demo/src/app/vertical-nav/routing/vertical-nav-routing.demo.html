@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <div class="clr-example">
   <div class="main-container">
@@ -26,8 +26,8 @@
       </div>
     </header>
     <div class="content-container">
+      @if (option === 'link') {
       <clr-vertical-nav
-        *ngIf="option === 'link'"
         [clrVerticalNavCollapsible]="true"
         [clrVerticalNavCollapsed]="navCollapsed"
         (clrVerticalNavCollapsedChange)="updateNavCollapsed($event)"
@@ -50,7 +50,6 @@
             </clr-vertical-nav-group-children>
           </ng-template>
         </clr-vertical-nav-group>
-
         <clr-vertical-nav-group routerLinkActive="active">
           <a
             [routerLink]="['./killers']"
@@ -69,92 +68,80 @@
             </clr-vertical-nav-group-children>
           </ng-template>
         </clr-vertical-nav-group>
-
         <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./wikipedia']">
           <cds-icon shape="certificate" clrVerticalNavIcon></cds-icon>
           Wikipedia
         </a>
       </clr-vertical-nav>
-
-      <ng-container *ngIf="option === 'text'">
-        <clr-vertical-nav
-          [clrVerticalNavCollapsible]="true"
-          [clrVerticalNavCollapsed]="navCollapsed"
-          (clrVerticalNavCollapsedChange)="updateNavCollapsed($event)"
-        >
-          <clr-vertical-nav-group routerLinkActive="active">
-            <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
-            The Beatles
-            <ng-template [clrIfExpanded]="groupExpand" (clrIfExpandedChange)="updateGroupExpand($event)">
-              <clr-vertical-nav-group-children>
-                <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./beatles/abbey-road']">Abbey Road</a>
-                <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./beatles/revolver']">Revolver</a>
-                <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./beatles/rubber-soul']">
-                  Rubber Soul
-                </a>
-              </clr-vertical-nav-group-children>
-            </ng-template>
-          </clr-vertical-nav-group>
-
-          <clr-vertical-nav-group routerLinkActive="active">
-            <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
-            The Killers
-            <ng-template clrIfExpanded>
-              <clr-vertical-nav-group-children>
-                <a routerLinkActive="active" [routerLink]="['./killers/hot-fuss']" clrVerticalNavLink>Hot Fuss</a>
-                <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./killers/day-and-age']">Day & Age</a>
-                <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./killers/sams-town']">Sam's Town</a>
-              </clr-vertical-nav-group-children>
-            </ng-template>
-          </clr-vertical-nav-group>
-
-          <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./wikipedia']">
-            <cds-icon shape="certificate" clrVerticalNavIcon></cds-icon>
-            Wikipedia
-          </a>
-        </clr-vertical-nav>
-      </ng-container>
-
-      <ng-container *ngIf="option === 'lazyText'">
-        <clr-vertical-nav
-          [clrVerticalNavCollapsible]="true"
-          [clrVerticalNavCollapsed]="navCollapsed"
-          (clrVerticalNavCollapsedChange)="updateNavCollapsed($event)"
-        >
-          <clr-vertical-nav-group routerLinkActive="active">
-            <a hidden aria-hidden="true" [routerLink]="['./beatles']"></a>
-            <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
-            The Beatles
-            <ng-template [clrIfExpanded]="groupExpand" (clrIfExpandedChange)="updateGroupExpand($event)">
-              <clr-vertical-nav-group-children>
-                <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./beatles/abbey-road']">Abbey Road</a>
-                <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./beatles/revolver']">Revolver</a>
-                <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./beatles/rubber-soul']">
-                  Rubber Soul
-                </a>
-              </clr-vertical-nav-group-children>
-            </ng-template>
-          </clr-vertical-nav-group>
-
-          <clr-vertical-nav-group routerLinkActive="active">
-            <a hidden aria-hidden="true" [routerLink]="['./killers']"></a>
-            <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
-            The Killers
-            <ng-template clrIfExpanded>
-              <clr-vertical-nav-group-children>
-                <a routerLinkActive="active" [routerLink]="['./killers/hot-fuss']" clrVerticalNavLink>Hot Fuss</a>
-                <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./killers/day-and-age']">Day & Age</a>
-                <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./killers/sams-town']">Sam's Town</a>
-              </clr-vertical-nav-group-children>
-            </ng-template>
-          </clr-vertical-nav-group>
-
-          <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./wikipedia']">
-            <cds-icon shape="certificate" clrVerticalNavIcon></cds-icon>
-            Wikipedia
-          </a>
-        </clr-vertical-nav>
-      </ng-container>
+      } @if (option === 'text') {
+      <clr-vertical-nav
+        [clrVerticalNavCollapsible]="true"
+        [clrVerticalNavCollapsed]="navCollapsed"
+        (clrVerticalNavCollapsedChange)="updateNavCollapsed($event)"
+      >
+        <clr-vertical-nav-group routerLinkActive="active">
+          <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+          The Beatles
+          <ng-template [clrIfExpanded]="groupExpand" (clrIfExpandedChange)="updateGroupExpand($event)">
+            <clr-vertical-nav-group-children>
+              <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./beatles/abbey-road']">Abbey Road</a>
+              <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./beatles/revolver']">Revolver</a>
+              <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./beatles/rubber-soul']"> Rubber Soul </a>
+            </clr-vertical-nav-group-children>
+          </ng-template>
+        </clr-vertical-nav-group>
+        <clr-vertical-nav-group routerLinkActive="active">
+          <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+          The Killers
+          <ng-template clrIfExpanded>
+            <clr-vertical-nav-group-children>
+              <a routerLinkActive="active" [routerLink]="['./killers/hot-fuss']" clrVerticalNavLink>Hot Fuss</a>
+              <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./killers/day-and-age']">Day & Age</a>
+              <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./killers/sams-town']">Sam's Town</a>
+            </clr-vertical-nav-group-children>
+          </ng-template>
+        </clr-vertical-nav-group>
+        <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./wikipedia']">
+          <cds-icon shape="certificate" clrVerticalNavIcon></cds-icon>
+          Wikipedia
+        </a>
+      </clr-vertical-nav>
+      } @if (option === 'lazyText') {
+      <clr-vertical-nav
+        [clrVerticalNavCollapsible]="true"
+        [clrVerticalNavCollapsed]="navCollapsed"
+        (clrVerticalNavCollapsedChange)="updateNavCollapsed($event)"
+      >
+        <clr-vertical-nav-group routerLinkActive="active">
+          <a hidden aria-hidden="true" [routerLink]="['./beatles']"></a>
+          <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+          The Beatles
+          <ng-template [clrIfExpanded]="groupExpand" (clrIfExpandedChange)="updateGroupExpand($event)">
+            <clr-vertical-nav-group-children>
+              <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./beatles/abbey-road']">Abbey Road</a>
+              <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./beatles/revolver']">Revolver</a>
+              <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./beatles/rubber-soul']"> Rubber Soul </a>
+            </clr-vertical-nav-group-children>
+          </ng-template>
+        </clr-vertical-nav-group>
+        <clr-vertical-nav-group routerLinkActive="active">
+          <a hidden aria-hidden="true" [routerLink]="['./killers']"></a>
+          <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+          The Killers
+          <ng-template clrIfExpanded>
+            <clr-vertical-nav-group-children>
+              <a routerLinkActive="active" [routerLink]="['./killers/hot-fuss']" clrVerticalNavLink>Hot Fuss</a>
+              <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./killers/day-and-age']">Day & Age</a>
+              <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./killers/sams-town']">Sam's Town</a>
+            </clr-vertical-nav-group-children>
+          </ng-template>
+        </clr-vertical-nav-group>
+        <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./wikipedia']">
+          <cds-icon shape="certificate" clrVerticalNavIcon></cds-icon>
+          Wikipedia
+        </a>
+      </clr-vertical-nav>
+      }
       <div class="content-area">
         <div class="example-options">
           <h6>Options</h6>
@@ -179,7 +166,8 @@
           <button class="btn" (click)="toggleGroup()">Toggle Group</button>
         </div>
 
-        <clr-alert [clrAlertType]="'alert-danger'" [clrAlertClosable]="false" *ngIf="option === 'text'">
+        @if (option === 'text') {
+        <clr-alert [clrAlertType]="'alert-danger'" [clrAlertClosable]="false">
           <div class="alert-item">
             <span class="alert-text">
               Lazy Loading + Nav Group parent text (instead of parent links) will not highlight when a child route is
@@ -188,8 +176,8 @@
             </span>
           </div>
         </clr-alert>
-
-        <clr-alert [clrAlertType]="'alert-info'" [clrAlertClosable]="false" *ngIf="option === 'lazyText'">
+        } @if (option === 'lazyText') {
+        <clr-alert [clrAlertType]="'alert-info'" [clrAlertClosable]="false">
           <div class="alert-item">
             <span class="alert-text">
               Lazy Loading can work with Nav Group Text but we have to provide a hidden/empty link which is used to
@@ -197,6 +185,7 @@
             </span>
           </div>
         </clr-alert>
+        }
 
         <router-outlet></router-outlet>
       </div>

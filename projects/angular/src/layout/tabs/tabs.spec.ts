@@ -63,10 +63,12 @@ class TestComponent {
 @Component({
   template: `
     <clr-tabs>
-      <clr-tab *ngIf="true" #first>
+      @if (true) {
+      <clr-tab #first>
         <button clrTabLink>Tab1</button>
         <clr-tab-content *clrIfActive>Content1</clr-tab-content>
       </clr-tab>
+      }
       <clr-tab>
         <button clrTabLink>Tab2</button>
         <clr-tab-content *clrIfActive>Content2</clr-tab-content>
@@ -86,10 +88,12 @@ class NgIfFirstTest {
         <button clrTabLink>Tab1</button>
         <clr-tab-content *clrIfActive>Content1</clr-tab-content>
       </clr-tab>
-      <clr-tab *ngIf="true">
+      @if (true) {
+      <clr-tab>
         <button clrTabLink>Tab2</button>
         <clr-tab-content *clrIfActive>Content2</clr-tab-content>
       </clr-tab>
+      }
     </clr-tabs>
   `,
   standalone: false,
@@ -113,10 +117,12 @@ class NgIfSecondTest {
               <button clrTabLink>Child Tab1</button>
               <clr-tab-content *clrIfActive>Child Content1</clr-tab-content>
             </clr-tab>
-            <clr-tab *ngIf="true">
+            @if (true) {
+            <clr-tab>
               <button clrTabLink>Child Tab2</button>
               <clr-tab-content *clrIfActive>Child Content2</clr-tab-content>
             </clr-tab>
+            }
           </clr-tabs>
         </clr-tab-content>
       </clr-tab>

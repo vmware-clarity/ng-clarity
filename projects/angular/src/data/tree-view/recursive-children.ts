@@ -17,11 +17,9 @@ import { TreeFeaturesService } from './tree-features.service';
 @Component({
   selector: 'clr-recursive-children',
   template: `
-    <ng-container *ngIf="shouldRender()">
-      <ng-container *ngFor="let child of parent?.children || children">
-        <ng-container *ngTemplateOutlet="featuresService.recursion.template; context: getContext(child)"></ng-container>
-      </ng-container>
-    </ng-container>
+    @if (shouldRender()) { @for (child of parent?.children || children; track child) {
+    <ng-container *ngTemplateOutlet="featuresService.recursion.template; context: getContext(child)"></ng-container>
+    } }
   `,
   host: {
     '[attr.role]': 'role', // Safari + VO needs direct relationship between treeitem and group; no element should exist between them

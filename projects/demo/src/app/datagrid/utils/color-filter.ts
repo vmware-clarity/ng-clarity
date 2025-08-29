@@ -14,13 +14,14 @@ import { COLORS } from '../inventory/values';
 @Component({
   selector: 'clr-datagrid-color-filter-demo',
   template: `
+    @for (color of allColors; track color) {
     <span
-      *ngFor="let color of allColors"
       class="color-square color-selectable"
       (click)="toggleColor(color)"
       [style.backgroundColor]="color"
       [class.color-selected]="selectedColors[color]"
     ></span>
+    }
   `,
   styleUrls: ['../datagrid.demo.scss'],
   standalone: false,

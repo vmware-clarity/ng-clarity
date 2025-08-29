@@ -15,7 +15,9 @@ import { ControlIdService } from '../common/providers/control-id.service';
   template: `
     <ng-content select="[clrRadio]"></ng-content>
     <ng-content select="label"></ng-content>
-    <label *ngIf="!label"></label>
+    @if (!label) {
+    <label></label>
+    }
   `,
   host: {
     '[class.clr-radio-wrapper]': 'true',

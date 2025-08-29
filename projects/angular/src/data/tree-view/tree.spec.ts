@@ -21,8 +21,9 @@ import { ClrTreeViewModule } from './tree-view.module';
 @Component({
   template: `
     <clr-tree [clrLazy]="lazy">
-      Hello world
-      <clr-tree-node *ngIf="hasChild">Child</clr-tree-node>
+      Hello world @if (hasChild) {
+      <clr-tree-node>Child</clr-tree-node>
+      }
     </clr-tree>
   `,
   standalone: false,

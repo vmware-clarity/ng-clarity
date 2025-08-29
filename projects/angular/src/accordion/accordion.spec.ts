@@ -20,7 +20,9 @@ import { AccordionService } from './providers/accordion.service';
   template: `
     <clr-accordion [clrAccordionMultiPanel]="multi">
       <clr-accordion-panel>panel 1</clr-accordion-panel>
-      <clr-accordion-panel *ngIf="showSecondStep">panel 2</clr-accordion-panel>
+      @if (showSecondStep) {
+      <clr-accordion-panel>panel 2</clr-accordion-panel>
+      }
       <clr-accordion-panel [clrAccordionPanelOpen]="openThirdStep">panel 3</clr-accordion-panel>
     </clr-accordion>
   `,

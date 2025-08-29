@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <clr-toggle-container>
   <label>Options</label>
@@ -27,7 +27,8 @@
   <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
   <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
 
-  <clr-wizard-page *ngFor="let pageNumber of pageNumbers">
+  @for (pageNumber of pageNumbers; track pageNumber) {
+  <clr-wizard-page>
     <ng-template clrPageTitle>Title for page {{pageNumber}}</ng-template>
     <!-- mandatory -->
     <ng-template clrPageNavTitle>Step {{pageNumber}}</ng-template>
@@ -114,4 +115,5 @@
       et orci hendrerit, consequat purus non, imperdiet ipsum.
     </p>
   </clr-wizard-page>
+  }
 </clr-wizard>

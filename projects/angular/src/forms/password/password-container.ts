@@ -27,42 +27,35 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
   selector: 'clr-password-container',
   template: `
     <ng-content select="label"></ng-content>
-    <label *ngIf="!label && addGrid()"></label>
+    @if (!label && addGrid()) {
+    <label></label>
+    }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
         <div class="clr-input-group" [class.clr-focus]="focus">
           <ng-content select="[clrPassword]"></ng-content>
-          <button
-            *ngIf="clrToggle"
-            (click)="toggle()"
-            [disabled]="control?.disabled"
-            class="clr-input-group-icon-action"
-            type="button"
-          >
+          @if (clrToggle) {
+          <button (click)="toggle()" [disabled]="control?.disabled" class="clr-input-group-icon-action" type="button">
             <cds-icon class="clr-password-eye-icon" [attr.shape]="show ? 'eye-hide' : 'eye'"></cds-icon>
             <span class="clr-sr-only">
               {{ show ? hidePasswordText(label?.labelText) : showPasswordText(label?.labelText) }}
             </span>
           </button>
+          }
         </div>
-        <cds-icon
-          *ngIf="showInvalid"
-          class="clr-validate-icon"
-          shape="exclamation-circle"
-          status="danger"
-          aria-hidden="true"
-        ></cds-icon>
-        <cds-icon
-          *ngIf="showValid"
-          class="clr-validate-icon"
-          shape="check-circle"
-          status="success"
-          aria-hidden="true"
-        ></cds-icon>
+        @if (showInvalid) {
+        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
+        } @if (showValid) {
+        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
+        }
       </div>
-      <ng-content select="clr-control-helper" *ngIf="showHelper"></ng-content>
-      <ng-content select="clr-control-error" *ngIf="showInvalid"></ng-content>
-      <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
+      @if (showHelper) {
+      <ng-content select="clr-control-helper"></ng-content>
+      } @if (showInvalid) {
+      <ng-content select="clr-control-error"></ng-content>
+      } @if (showValid) {
+      <ng-content select="clr-control-success"></ng-content>
+      }
     </div>
   `,
   host: {

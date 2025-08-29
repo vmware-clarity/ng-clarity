@@ -341,13 +341,15 @@ class TestAlertInstance {
 @Component({
   template: `
     <clr-alerts>
-      <clr-alert *ngFor="let alert of dynamicAlerts" [clrAlertType]="alert.type" [clrAlertAppLevel]="alert.isAppLevel">
+      @for (alert of dynamicAlerts; track alert) {
+      <clr-alert [clrAlertType]="alert.type" [clrAlertAppLevel]="alert.isAppLevel">
         <div class="alert-item">
           <span class="alert-text">
             {{ alert.text }}
           </span>
         </div>
       </clr-alert>
+      }
     </clr-alerts>
   `,
   changeDetection: ChangeDetectionStrategy.Default,

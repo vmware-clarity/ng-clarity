@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Performance</h2>
 <p>This example handles 2 input types `Columns` and `Rows` count, based on which generates a full example.</p>
@@ -36,12 +36,16 @@
 </div>
 
 <clr-datagrid>
-  <clr-dg-column *ngFor="let col of cols trackBy: colByIndex">
+  @for (col of cols trackBy: colByIndex; track col) {
+  <clr-dg-column>
     <ng-container>{{col.name}}</ng-container>
   </clr-dg-column>
+  }
 
   <clr-dg-row *clrDgItems="let row of rows; trackBy: rowByIndex" [clrDgItem]="row">
-    <clr-dg-cell *ngFor="let col of cols trackBy: colByIndex">{{row.cells[col.name]}}</clr-dg-cell>
+    @for (col of cols trackBy: colByIndex; track col) {
+    <clr-dg-cell>{{row.cells[col.name]}}</clr-dg-cell>
+    }
     <ng-container ngProjectAs="clr-dg-row-detail">
       <clr-dg-row-detail *clrIfExpanded>{{row|json}}</clr-dg-row-detail>
     </ng-container>

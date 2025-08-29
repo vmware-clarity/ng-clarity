@@ -27,13 +27,13 @@ import { Selection } from './providers/selection';
       {{ beginningOfExpandableContentAriaText }}
       {{ commonStrings.keys.datagridExpandableRowsHelperText }}
     </div>
-    <ng-container *ngIf="this.cells?.length > 0" [ngTemplateOutlet]="noCells"></ng-container>
-
-    <ng-container *ngIf="this.cells?.length === 0">
-      <clr-dg-cell class="datagrid-container">
-        <ng-container [ngTemplateOutlet]="noCells"></ng-container>
-      </clr-dg-cell>
-    </ng-container>
+    @if (this.cells?.length > 0) {
+    <ng-container [ngTemplateOutlet]="noCells"></ng-container>
+    } @if (this.cells?.length === 0) {
+    <clr-dg-cell class="datagrid-container">
+      <ng-container [ngTemplateOutlet]="noCells"></ng-container>
+    </clr-dg-cell>
+    }
 
     <ng-template #noCells>
       <ng-content></ng-content>

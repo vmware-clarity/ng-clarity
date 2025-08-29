@@ -19,7 +19,9 @@ import { ClrExpandableAnimation } from './index';
 @Component({
   template: `
     <clr-expandable-animation [clrExpandTrigger]="expanded">
-      <div *ngFor="let item of data">{{ item }}</div>
+      @for (item of data; track item) {
+      <div>{{ item }}</div>
+      }
     </clr-expandable-animation>
   `,
   standalone: false,
@@ -32,7 +34,9 @@ class TestComponent {
 @Component({
   template: `
     <div [clrExpandableAnimation]="expanded">
-      <div *ngFor="let item of data">{{ item }}</div>
+      @for (item of data; track item) {
+      <div>{{ item }}</div>
+      }
     </div>
   `,
   standalone: false,

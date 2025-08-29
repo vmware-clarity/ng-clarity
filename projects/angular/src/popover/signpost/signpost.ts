@@ -16,16 +16,16 @@ import { ClrSignpostTrigger } from './signpost-trigger';
 @Component({
   selector: 'clr-signpost',
   template: `
-    <ng-container *ngIf="!useCustomTrigger">
-      <button
-        type="button"
-        class="signpost-action btn btn-sm btn-icon btn-link"
-        clrSignpostTrigger
-        [attr.aria-label]="signpostTriggerAriaLabel || commonStrings.keys.signpostToggle"
-      >
-        <cds-icon shape="info-circle" [attr.title]="commonStrings.keys.info"></cds-icon>
-      </button>
-    </ng-container>
+    @if (!useCustomTrigger) {
+    <button
+      type="button"
+      class="signpost-action btn btn-sm btn-icon btn-link"
+      clrSignpostTrigger
+      [attr.aria-label]="signpostTriggerAriaLabel || commonStrings.keys.signpostToggle"
+    >
+      <cds-icon shape="info-circle" [attr.title]="commonStrings.keys.info"></cds-icon>
+    </button>
+    }
 
     <ng-content></ng-content>
   `,

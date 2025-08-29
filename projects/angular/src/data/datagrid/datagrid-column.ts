@@ -47,43 +47,43 @@ import { WrappedColumn } from './wrapped-column';
   selector: 'clr-dg-column',
   template: `
     <div class="datagrid-column-flex">
-      <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button" #titleContainer>
+      @if (sortable) {
+      <button class="datagrid-column-title" (click)="sort()" type="button" #titleContainer>
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
-        <cds-icon
-          *ngIf="sortDirection"
-          shape="arrow"
-          [attr.direction]="sortDirection"
-          aria-hidden="true"
-          class="sort-icon"
-        ></cds-icon>
+        @if (sortDirection) {
+        <cds-icon shape="arrow" [attr.direction]="sortDirection" aria-hidden="true" class="sort-icon"></cds-icon>
+        }
       </button>
+      }
       <!-- I'm really not happy with that select since it's not very scalable -->
       <ng-content select="clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter"></ng-content>
 
+      @if (field && !customFilter && colType == 'string') {
       <clr-dg-string-filter
-        *ngIf="field && !customFilter && colType == 'string'"
         [clrFilterPlaceholder]="filterStringPlaceholder"
         [clrDgStringFilter]="registered"
         [(clrFilterValue)]="filterValue"
       ></clr-dg-string-filter>
-
+      } @if (field && !customFilter && colType == 'number') {
       <clr-dg-numeric-filter
-        *ngIf="field && !customFilter && colType == 'number'"
         [clrFilterMaxPlaceholder]="filterNumberMaxPlaceholder"
         [clrFilterMinPlaceholder]="filterNumberMinPlaceholder"
         [clrDgNumericFilter]="registered"
         [(clrFilterValue)]="filterValue"
       ></clr-dg-numeric-filter>
+      }
 
       <ng-template #columnTitle>
         <ng-content></ng-content>
       </ng-template>
 
-      <span class="datagrid-column-title" *ngIf="!sortable" #titleContainer>
+      @if (!sortable) {
+      <span class="datagrid-column-title" #titleContainer>
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
       </span>
-
-      <clr-dg-column-separator *ngIf="showSeparator"></clr-dg-column-separator>
+      } @if (showSeparator) {
+      <clr-dg-column-separator></clr-dg-column-separator>
+      }
     </div>
   `,
   hostDirectives: [ClrPopoverHostDirective],

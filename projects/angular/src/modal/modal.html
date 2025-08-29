@@ -1,11 +1,12 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
-<div *ngIf="_open" class="modal" [class.modal-full-screen]="size == 'full-screen'">
+@if (_open) {
+<div class="modal" [class.modal-full-screen]="size == 'full-screen'">
   <!--fixme: revisit when ngClass works with exit animation-->
   <div
     cdkTrapFocus
@@ -23,22 +24,24 @@
   >
     <div class="clr-sr-only">{{commonStrings.keys.modalContentStart}}</div>
     <!-- This wizard is tightly coupled to the modal styles, so changes here could require changes in the wizard. -->
-    <div *ngIf="!modalContentTemplate; else modalContentTemplate" class="modal-content-wrapper">
+    @if (!modalContentTemplate) {
+    <div class="modal-content-wrapper">
       <div class="modal-content">
         <div class="modal-header--accessible">
           <ng-content select=".leading-button"></ng-content>
           <div class="modal-title-wrapper" #title [id]="modalId" cdkFocusInitial tabindex="-1">
             <ng-content select=".modal-title"></ng-content>
           </div>
+          @if (closable) {
           <button
             type="button"
             [attr.aria-label]="closeButtonAriaLabel || commonStrings.keys.close"
             class="close"
-            *ngIf="closable"
             (click)="close()"
           >
             <cds-icon shape="window-close"></cds-icon>
           </button>
+          }
         </div>
         <div #body class="modal-body-wrapper">
           <ng-content select=".modal-body"></ng-content>
@@ -46,7 +49,13 @@
         <ng-content select=".modal-footer"></ng-content>
       </div>
     </div>
+    } @else {
+    <ng-template [ngTemplateOutlet]="modalContentTemplate"></ng-template>
+    }
     <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   </div>
-  <div [@fade] *ngIf="backdrop" class="modal-backdrop" aria-hidden="true" (click)="backdropClick()"></div>
+  @if (backdrop) {
+  <div [@fade] class="modal-backdrop" aria-hidden="true" (click)="backdropClick()"></div>
+  }
 </div>
+}

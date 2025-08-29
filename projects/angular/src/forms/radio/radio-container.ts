@@ -30,30 +30,28 @@ import { ClrRadio } from './radio';
   selector: 'clr-radio-container',
   template: `
     <ng-content select="label"></ng-content>
-    <label *ngIf="!label && addGrid()"></label>
+    @if (!label && addGrid()) {
+    <label></label>
+    }
     <div class="clr-control-container" [class.clr-control-inline]="clrInline" [ngClass]="controlClass()">
       <ng-content select="clr-radio-wrapper"></ng-content>
-      <div *ngIf="showHelper" class="clr-subtext-wrapper">
+      @if (showHelper) {
+      <div class="clr-subtext-wrapper">
         <ng-content select="clr-control-helper"></ng-content>
       </div>
-      <div *ngIf="showValid || showInvalid" class="clr-subtext-wrapper">
-        <cds-icon
-          *ngIf="showInvalid"
-          class="clr-validate-icon"
-          shape="exclamation-circle"
-          status="danger"
-          aria-hidden="true"
-        ></cds-icon>
-        <cds-icon
-          *ngIf="showValid"
-          class="clr-validate-icon"
-          shape="check-circle"
-          status="success"
-          aria-hidden="true"
-        ></cds-icon>
-        <ng-content select="clr-control-error" *ngIf="showInvalid"></ng-content>
-        <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
+      } @if (showValid || showInvalid) {
+      <div class="clr-subtext-wrapper">
+        @if (showInvalid) {
+        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
+        } @if (showValid) {
+        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
+        } @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+        } @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
+        }
       </div>
+      }
     </div>
   `,
   host: {

@@ -56,7 +56,7 @@ class WrappingTest {}
 class ExplicitTest {}
 
 @Component({
-  template: `<span *ngIf="show" wrappedDirective>World</span>`,
+  template: `@if (show) {<span wrappedDirective>World</span>}`,
   standalone: false,
 })
 class NgIfTest {

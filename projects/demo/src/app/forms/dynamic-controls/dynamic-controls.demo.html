@@ -36,11 +36,13 @@
     </clr-radio-wrapper>
     <clr-control-error> {{ 'REQUIRED' }} </clr-control-error>
   </clr-radio-container>
-  <clr-textarea-container *ngIf="form.get('scenario')?.value === 'two'">
+  @if (form.get('scenario')?.value === 'two') {
+  <clr-textarea-container>
     <label>Label</label>
     <textarea clrTextarea [formControl]="$any(form).get('control')" required></textarea>
     <clr-control-helper>Helper Message</clr-control-helper>
     <clr-control-success>Successful</clr-control-success>
     <clr-control-error>Required error</clr-control-error>
   </clr-textarea-container>
+  }
 </form>

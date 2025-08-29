@@ -22,44 +22,42 @@ import {
 @Component({
   selector: 'clr-file-list',
   template: `
-    <ng-container *ngFor="let file of files">
-      <div
-        *ngIf="createFileMessagesTemplateContext(file); let fileMessagesTemplateContext"
-        role="listitem"
-        class="clr-file-list-item"
-        [ngClass]="{
-          'clr-error': !fileMessagesTemplateContext.success,
-          'clr-success': fileMessagesTemplateContext.success
-        }"
-      >
-        <div class="clr-file-label-and-status-icon">
-          <span class="label clr-file-label">
-            {{ file.name }}
-            <button
-              class="btn btn-sm btn-link-neutral btn-icon clr-file-clear-button"
-              [attr.aria-label]="getClearFileLabel(file.name)"
-              (click)="clearFile(file)"
-            >
-              <cds-icon shape="times"></cds-icon>
-            </button>
-          </span>
-
-          <cds-icon
-            class="clr-validate-icon"
-            [attr.shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
-            [attr.status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
-            aria-hidden="true"
-          ></cds-icon>
-        </div>
-
-        <ng-container
-          *ngIf="fileMessagesTemplate"
-          [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
-          [ngTemplateOutletContext]="fileMessagesTemplateContext"
-          [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
-        ></ng-container>
+    @for (file of files; track file) { @if (createFileMessagesTemplateContext(file); as fileMessagesTemplateContext) {
+    <div
+      role="listitem"
+      class="clr-file-list-item"
+      [ngClass]="{
+        'clr-error': !fileMessagesTemplateContext.success,
+        'clr-success': fileMessagesTemplateContext.success
+      }"
+    >
+      <div class="clr-file-label-and-status-icon">
+        <span class="label clr-file-label">
+          {{ file.name }}
+          <button
+            class="btn btn-sm btn-link-neutral btn-icon clr-file-clear-button"
+            [attr.aria-label]="getClearFileLabel(file.name)"
+            (click)="clearFile(file)"
+          >
+            <cds-icon shape="times"></cds-icon>
+          </button>
+        </span>
+        <cds-icon
+          class="clr-validate-icon"
+          [attr.shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
+          [attr.status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
+          aria-hidden="true"
+        ></cds-icon>
       </div>
-    </ng-container>
+      @if (fileMessagesTemplate) {
+      <ng-container
+        [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
+        [ngTemplateOutletContext]="fileMessagesTemplateContext"
+        [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
+      ></ng-container>
+      }
+    </div>
+    } }
   `,
   host: {
     '[attr.role]': '"list"',

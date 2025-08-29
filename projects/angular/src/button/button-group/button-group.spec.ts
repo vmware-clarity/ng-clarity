@@ -555,10 +555,15 @@ class BtnGroupFlipTest2 {
   template: `
     <clr-button-group>
       <clr-button>Button 1</clr-button>
-      <clr-button *ngIf="show">Button 2</clr-button>
+      @if (show) {
+      <clr-button>Button 2</clr-button>
+      }
       <clr-button>Button 3</clr-button>
-      <clr-button *ngIf="show" [clrInMenu]="true">Button 4</clr-button>
-      <clr-button *ngIf="show" [clrInMenu]="true">Button 5</clr-button>
+      @if (show) {
+      <clr-button [clrInMenu]="true">Button 4</clr-button>
+      } @if (show) {
+      <clr-button [clrInMenu]="true">Button 5</clr-button>
+      }
     </clr-button-group>
   `,
   standalone: false,

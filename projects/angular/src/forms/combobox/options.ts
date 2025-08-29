@@ -5,11 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   Component,
   ContentChildren,
+  DOCUMENT,
   ElementRef,
   Inject,
   Input,
@@ -34,7 +34,8 @@ let nbOptionsComponents = 0;
 @Component({
   selector: 'clr-options',
   template: `
-    <div *ngIf="optionSelectionService.loading" class="clr-combobox-options-loading">
+    @if (optionSelectionService.loading) {
+    <div class="clr-combobox-options-loading">
       <clr-spinner clrInline>
         {{ commonStrings.keys.loading }}
       </clr-spinner>
@@ -42,13 +43,16 @@ let nbOptionsComponents = 0;
         {{ searchText(optionSelectionService.currentInput) }}
       </span>
     </div>
+    }
 
     <!-- Rendered if data set is empty -->
-    <div *ngIf="emptyOptions" [id]="noResultsElementId" role="option">
+    @if (emptyOptions) {
+    <div [id]="noResultsElementId" role="option">
       <span class="clr-combobox-options-empty-text">
         {{ commonStrings.keys.comboboxNoResults }}
       </span>
     </div>
+    }
 
     <!--Option Groups and Options will be projected here-->
     <ng-content></ng-content>

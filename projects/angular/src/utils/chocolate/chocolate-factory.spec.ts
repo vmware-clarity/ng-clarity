@@ -65,7 +65,9 @@ describe('Chocolate factory', function () {
 @Component({
   template: `
     <parent>
-      <child *ngFor="let child of children"></child>
+      @for (child of children; track child) {
+      <child></child>
+      }
     </parent>
   `,
   standalone: false,

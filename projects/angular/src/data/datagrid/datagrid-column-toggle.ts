@@ -58,7 +58,8 @@ import { ColumnsService } from './providers/columns.service';
         </button>
       </div>
       <ul class="switch-content list-unstyled">
-        <li *ngFor="let columnState of hideableColumnStates; trackBy: trackByFn">
+        @for (columnState of hideableColumnStates; track trackByFn($index, columnState)) {
+        <li>
           <clr-checkbox-wrapper>
             <input
               clrCheckbox
@@ -72,6 +73,7 @@ import { ColumnsService } from './providers/columns.service';
             </label>
           </clr-checkbox-wrapper>
         </li>
+        }
       </ul>
       <div class="switch-footer">
         <clr-dg-column-toggle-button (clrAllSelected)="allColumnsSelected()"></clr-dg-column-toggle-button>

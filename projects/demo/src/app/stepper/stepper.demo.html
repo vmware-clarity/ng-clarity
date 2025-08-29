@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h1>Stepper</h1>
 
@@ -101,7 +101,8 @@
     </clr-step-content>
   </clr-stepper-panel>
 
-  <clr-stepper-panel *ngIf="showSecondStep" formGroupName="contact">
+  @if (showSecondStep) {
+  <clr-stepper-panel formGroupName="contact">
     <clr-step-title>Contact Information</clr-step-title>
     <clr-step-description>
       The full license information can be found in LICENSE in the root directory.
@@ -111,16 +112,15 @@
         <label>Email</label>
         <input clrInput formControlName="email" />
       </clr-input-container>
-
       <clr-input-container>
         <label>Phone</label>
         <input clrInput formControlName="phone" />
       </clr-input-container>
-
       <button clrStepButton="previous">previous</button>
       <button clrStepButton="next">next</button>
     </clr-step-content>
   </clr-stepper-panel>
+  }
 
   <clr-stepper-panel formGroupName="password">
     <clr-step-title>Password</clr-step-title>
@@ -170,7 +170,8 @@
     </clr-step-content>
   </clr-stepper-panel>
 
-  <clr-stepper-panel *ngIf="showSecondStep" ngModelGroup="contact">
+  @if (showSecondStep) {
+  <clr-stepper-panel ngModelGroup="contact">
     <clr-step-title>Contact Information</clr-step-title>
     <clr-step-description>
       The full license information can be found in LICENSE in the root directory.
@@ -180,15 +181,14 @@
         <label>Email</label>
         <input clrInput [ngModel]="templateForm.contact.email" name="email" />
       </clr-input-container>
-
       <clr-input-container>
         <label>Phone</label>
         <input clrInput [ngModel]="templateForm.contact.phone" name="phone" />
       </clr-input-container>
-
       <button clrStepButton="next">next</button>
     </clr-step-content>
   </clr-stepper-panel>
+  }
 
   <clr-stepper-panel ngModelGroup="password">
     <clr-step-title>Password</clr-step-title>
@@ -238,7 +238,8 @@
     </clr-step-content>
   </clr-stepper-panel>
 
-  <clr-stepper-panel *ngIf="showSecondStep" formGroupName="contact">
+  @if (showSecondStep) {
+  <clr-stepper-panel formGroupName="contact">
     <clr-step-title>Contact Information</clr-step-title>
     <clr-step-description>
       The full license information can be found in LICENSE in the root directory.
@@ -248,15 +249,14 @@
         <label>Email</label>
         <input clrInput formControlName="email" />
       </clr-input-container>
-
       <clr-input-container>
         <label>Phone</label>
         <input clrInput formControlName="phone" />
       </clr-input-container>
-
       <button clrStepButton="next">next</button>
     </clr-step-content>
   </clr-stepper-panel>
+  }
 
   <clr-stepper-panel formGroupName="password">
     <clr-step-title>Password</clr-step-title>
@@ -282,17 +282,14 @@
 <h3>Stepper with clrIfExpanded directive</h3>
 <h6>Programmatically change step after async call</h6>
 <button (click)="changeStep()" class="btn">Change step on async response</button>
-<form
-  *ngIf="!loading; else loadingTmp"
-  clrStepper
-  [formGroup]="form"
-  (ngSubmit)="submit()"
-  [clrInitialStep]="initialStep"
->
+@if (!loading) {
+<form clrStepper [formGroup]="form" (ngSubmit)="submit()" [clrInitialStep]="initialStep">
   <clr-stepper-panel formGroupName="name">
     <clr-step-title>Legal Name</clr-step-title>
     <clr-step-description>
-      <span *ngIf="!stepsExpandedState.name; else opened">Closed</span>
+      @if (!stepsExpandedState.name) {
+      <span>Closed</span>
+      } @else { Opened }
     </clr-step-description>
     <clr-step-content [(clrIfExpanded)]="stepsExpandedState.name">
       <clr-input-container>
@@ -300,28 +297,26 @@
         <input clrInput formControlName="first" />
         <clr-control-error *clrIfError="'required'">First Name Required</clr-control-error>
       </clr-input-container>
-
       <clr-input-container>
         <label>Last Name</label>
         <input clrInput formControlName="last" />
         <clr-control-error *clrIfError="'required'">Last Name Required</clr-control-error>
       </clr-input-container>
-
       <button clrStepButton="next">next</button>
     </clr-step-content>
   </clr-stepper-panel>
-
   <clr-stepper-panel formGroupName="contact">
     <clr-step-title>Contact Information</clr-step-title>
     <clr-step-description>
-      <span *ngIf="!stepsExpandedState.contact; else opened">Closed</span>
+      @if (!stepsExpandedState.contact) {
+      <span>Closed</span>
+      } @else { Opened }
     </clr-step-description>
     <clr-step-content [(clrIfExpanded)]="stepsExpandedState.contact">
       ...
       <button clrStepButton="next">next</button>
     </clr-step-content>
   </clr-stepper-panel>
-
   <clr-stepper-panel formGroupName="password">
     <clr-step-title>Password</clr-step-title>
     <clr-step-description>...</clr-step-description>
@@ -331,6 +326,4 @@
     </clr-step-content>
   </clr-stepper-panel>
 </form>
-
-<ng-template #opened> Opened </ng-template>
-<ng-template #loadingTmp> Loading... </ng-template>
+} @else { Loading... }

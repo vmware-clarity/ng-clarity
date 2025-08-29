@@ -24,14 +24,15 @@ import { ClrWizardPage } from './wizard-page';
       [attr.aria-labelledby]="labelledby"
     >
       <div class="clr-wizard-stepnav-link-icon">
+        @if (icon; as icon) {
         <cds-icon
-          *ngIf="icon; let icon"
           [id]="stepIconId"
           role="img"
           class="clr-wizard-stepnav-link-icon"
           [attr.shape]="icon.shape"
           [attr.aria-label]="icon.label"
         ></cds-icon>
+        }
       </div>
 
       <span [id]="stepTextId" class="clr-sr-only">{{ commonStrings.keys.wizardStep }}</span>

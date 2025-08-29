@@ -18,15 +18,19 @@ const focusOnViewInitProvider = { provide: FOCUS_ON_VIEW_INIT, useValue: true };
 @Component({
   template: `
     <button #dummyButton>dummy button</button>
-    <div *ngIf="displayNoExistingTabindex">
+    @if (displayNoExistingTabindex) {
+    <div>
       <h1 clrFocusOnViewInit>Title</h1>
     </div>
-    <div *ngIf="displayExistingTabindex">
+    } @if (displayExistingTabindex) {
+    <div>
       <h1 clrFocusOnViewInit tabindex="5">Title</h1>
     </div>
-    <div *ngIf="displayDisabled">
+    } @if (displayDisabled) {
+    <div>
       <h1 [clrFocusOnViewInit]="false">Title</h1>
     </div>
+    }
   `,
   standalone: false,
 })
@@ -43,9 +47,11 @@ class TestComponent {
 @Component({
   template: `
     <button #dummyButton>dummy button</button>
-    <div *ngIf="display">
+    @if (display) {
+    <div>
       <h1 clrFocusOnViewInit>Title</h1>
     </div>
+    }
   `,
   providers: [focusOnViewInitProvider],
   standalone: false,

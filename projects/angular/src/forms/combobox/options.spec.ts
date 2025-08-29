@@ -37,7 +37,9 @@ class TestComponent {}
 @Component({
   template: `
     <clr-options>
-      <clr-option *ngIf="showOption">1</clr-option>
+      @if (showOption) {
+      <clr-option>1</clr-option>
+      }
     </clr-options>
   `,
   providers: [...OPTION_PROVIDERS, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],

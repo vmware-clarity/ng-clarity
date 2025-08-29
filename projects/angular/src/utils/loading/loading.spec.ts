@@ -21,7 +21,7 @@ describe('Loading directive', function () {
     this.fixture.detectChanges();
     this.testComponent = this.fixture.componentInstance;
     this.clarityDirective = this.fixture.componentInstance.loadingDirective;
-    this.listener = TestBed.get(LoadingListener);
+    this.listener = TestBed.inject(LoadingListener);
   });
 
   afterEach(function () {
@@ -101,7 +101,9 @@ describe('Loading directive without listener', function () {
 });
 
 @Component({
-  template: `<div *ngIf="displayed" [clrLoading]="loading"></div>`,
+  template: `@if (displayed) {
+    <div [clrLoading]="loading"></div>
+    }`,
   standalone: false,
 })
 class FullTest {

@@ -21,7 +21,8 @@ import { User } from '../inventory/user';
       <clr-dg-column>Creation date</clr-dg-column>
       <clr-dg-column>Favorite color</clr-dg-column>
 
-      <clr-dg-row *ngFor="let user of users">
+      @for (user of users; track user) {
+      <clr-dg-row>
         <clr-dg-cell>{{ user.id }}</clr-dg-cell>
         <clr-dg-cell>
           aReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongUninterruptedContent
@@ -29,6 +30,7 @@ import { User } from '../inventory/user';
         <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
         <clr-dg-cell>{{ user.color }}</clr-dg-cell>
       </clr-dg-row>
+      }
 
       <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
     </clr-datagrid>

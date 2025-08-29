@@ -341,34 +341,38 @@ export default function (): void {
   template: `
     <div #dgContainer style="width: 232px">
       <!--
-        Datagrid side borders = 2px,
-        action columns are 38px wide,
-        Columns at min width = 2*96px
-        Total calculated datagrid width should be 232px and not be wider than the div container.
+      Datagrid side borders = 2px,
+      action columns are 38px wide,
+      Columns at min width = 2*96px
+      Total calculated datagrid width should be 232px and not be wider than the div container.
       -->
-      <ng-template *ngIf="currentTest === 'defaultDatagridTest'" [ngTemplateOutlet]="default"></ng-template>
-      <ng-template *ngIf="currentTest === 'singleSelectTest'" [ngTemplateOutlet]="single"></ng-template>
-      <ng-template *ngIf="currentTest === 'multiSelectTest'" [ngTemplateOutlet]="multi"></ng-template>
+      @if (currentTest === 'defaultDatagridTest') {
+      <ng-template [ngTemplateOutlet]="default"></ng-template>
+      } @if (currentTest === 'singleSelectTest') {
+      <ng-template [ngTemplateOutlet]="single"></ng-template>
+      } @if (currentTest === 'multiSelectTest') {
+      <ng-template [ngTemplateOutlet]="multi"></ng-template>
+      }
     </div>
     <ng-template #default>
       <clr-datagrid #datagridDefault>
         <clr-dg-column>Column</clr-dg-column>
         <clr-dg-column>Column</clr-dg-column>
         <clr-dg-row>
-          <clr-dg-action-overflow *ngIf="hasActions">
+          @if (hasActions) {
+          <clr-dg-action-overflow>
             <button class="action-item" (click)="(return)">Edit</button>
           </clr-dg-action-overflow>
+          }
           <clr-dg-cell>
-            Value
-            <ng-template [ngIf]="expandable">
-              <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
-            </ng-template>
+            Value @if (expandable) {
+            <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
+            }
           </clr-dg-cell>
           <clr-dg-cell>
-            Value
-            <ng-template [ngIf]="expandable">
-              <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
-            </ng-template>
+            Value @if (expandable) {
+            <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
+            }
           </clr-dg-cell>
         </clr-dg-row>
       </clr-datagrid>
@@ -412,15 +416,23 @@ class RenderWidthTest {
   template: `
     <clr-datagrid>
       <clr-dg-column>AAA</clr-dg-column>
-      <clr-dg-column *ngIf="secondColumn">AAA</clr-dg-column>
-      <clr-dg-row *ngIf="firstRow">
+      @if (secondColumn) {
+      <clr-dg-column>AAA</clr-dg-column>
+      } @if (firstRow) {
+      <clr-dg-row>
         <clr-dg-cell>BBB</clr-dg-cell>
-        <clr-dg-cell *ngIf="secondColumn">BBB</clr-dg-cell>
+        @if (secondColumn) {
+        <clr-dg-cell>BBB</clr-dg-cell>
+        }
       </clr-dg-row>
-      <clr-dg-row *ngIf="!firstRow">
+      } @if (!firstRow) {
+      <clr-dg-row>
         <clr-dg-cell>CCC</clr-dg-cell>
-        <clr-dg-cell *ngIf="secondColumn">CCC</clr-dg-cell>
+        @if (secondColumn) {
+        <clr-dg-cell>CCC</clr-dg-cell>
+        }
       </clr-dg-row>
+      }
     </clr-datagrid>
   `,
   standalone: false,
@@ -434,17 +446,19 @@ class StaticTest {
   template: `
     <clr-datagrid>
       <clr-dg-column>AAA</clr-dg-column>
-      <clr-dg-column *ngIf="secondColumn">AAA</clr-dg-column>
-      <clr-dg-row *ngIf="projected">
+      @if (secondColumn) {
+      <clr-dg-column>AAA</clr-dg-column>
+      } @if (projected) {
+      <clr-dg-row>
         <clr-dg-cell>BBB</clr-dg-cell>
         <clr-dg-cell>BBB</clr-dg-cell>
       </clr-dg-row>
-      <ng-template [ngIf]="clrDgItems.length > 0">
-        <clr-dg-row *clrDgItems="let n of clrDgItems">
-          <clr-dg-cell>BBB</clr-dg-cell>
-          <clr-dg-cell>BBB</clr-dg-cell>
-        </clr-dg-row>
-      </ng-template>
+      } @if (clrDgItems.length > 0) {
+      <clr-dg-row *clrDgItems="let n of clrDgItems">
+        <clr-dg-cell>BBB</clr-dg-cell>
+        <clr-dg-cell>BBB</clr-dg-cell>
+      </clr-dg-row>
+      }
     </clr-datagrid>
   `,
   standalone: false,
@@ -458,11 +472,15 @@ class DynamicTest {
 @Component({
   template: `
     <clr-datagrid>
-      <clr-dg-column *ngIf="fixedWidth" [style.width.px]="42">Fixed width</clr-dg-column>
+      @if (fixedWidth) {
+      <clr-dg-column [style.width.px]="42">Fixed width</clr-dg-column>
+      }
       <clr-dg-column>{{ firstHeader }}</clr-dg-column>
       <clr-dg-column>{{ secondHeader }}</clr-dg-column>
       <clr-dg-row>
-        <clr-dg-cell *ngIf="fixedWidth">Fixed width</clr-dg-cell>
+        @if (fixedWidth) {
+        <clr-dg-cell>Fixed width</clr-dg-cell>
+        }
         <clr-dg-cell>{{ firstCell }}</clr-dg-cell>
         <clr-dg-cell>{{ secondCell }}</clr-dg-cell>
       </clr-dg-row>

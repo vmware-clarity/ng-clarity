@@ -16,7 +16,9 @@ import { Page } from './providers/page';
     <label [for]="pageSizeOptionsId"><ng-content></ng-content></label>
     <div class="clr-select-wrapper">
       <select [id]="pageSizeOptionsId" [class.clr-page-size-select]="true" [(ngModel)]="page.size">
-        <option *ngFor="let option of pageSizeOptions" [ngValue]="option">{{ option }}</option>
+        @for (option of pageSizeOptions; track option) {
+        <option [ngValue]="option">{{ option }}</option>
+        }
       </select>
     </div>
   `,

@@ -1,12 +1,12 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
 -->
 
 <!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole
-     width of the component, after being wrapped to a new line -->
+width of the component, after being wrapped to a new line -->
 <div
   class="clr-combobox-wrapper"
   clrPopoverAnchor
@@ -15,8 +15,8 @@
   [class.invalid]="invalid"
   [class.disabled]="control?.disabled? true: null"
 >
+  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {
   <span
-    *ngIf="multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0"
     role="grid"
     clrRovingTabindex
     [clrRovingTabindexDisabled]="control?.disabled"
@@ -25,14 +25,16 @@
     [attr.aria-disabled]="control?.disabled? true: null"
     class="clr-combobox-pills"
   >
-    <span *ngFor="let item of multiSelectModel; let i = index" class="label label-combobox-pill" role="row">
+    @for (item of multiSelectModel; track item; let i = $index) {
+    <span class="label label-combobox-pill" role="row">
       <span role="gridcell">
         <span class="clr-combobox-pill-content" clrKeyFocusItem>
+          @if (optionSelected) {
           <ng-container
-            *ngIf="optionSelected"
             [ngTemplateOutlet]="optionSelected.template"
             [ngTemplateOutletContext]="{$implicit: optionSelectionService.selectionModel.model[i]}"
           ></ng-container>
+          }
         </span>
       </span>
       <span role="gridcell">
@@ -48,7 +50,9 @@
         </button>
       </span>
     </span>
+    }
   </span>
+  }
 
   <input
     #textboxInput
@@ -87,8 +91,8 @@
 </div>
 
 <!-- Both close handlers are handled manually due to issues in Edge browser.
-     Additionally 'outsideClickToClose' has complex handling that's necessary
-     to be manual due to the component architecture -->
+Additionally 'outsideClickToClose' has complex handling that's necessary
+to be manual due to the component architecture -->
 <div role="dialog" *clrPopoverContent="openState at smartPosition; outsideClickToClose: false; scrollToClose: false">
   <ng-content></ng-content>
 </div>

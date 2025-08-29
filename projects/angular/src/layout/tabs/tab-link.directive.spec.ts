@@ -67,7 +67,7 @@ describe('TabLink Directive', () => {
   });
 
   it('has the correct css classes when vertical', () => {
-    const tabsService = TestBed.get(TabsService) as TabsService;
+    const tabsService = TestBed.inject(TabsService) as TabsService;
     tabsService.layout = TabsLayout.VERTICAL;
     fixture.detectChanges();
     expect(compiled.querySelector('.btn-link')).toBeDefined();
@@ -76,7 +76,7 @@ describe('TabLink Directive', () => {
 
   it('has the correct css classes when vertical with overflow', () => {
     fixture.componentInstance.inOverflow = true;
-    const tabsService = TestBed.get(TabsService) as TabsService;
+    const tabsService = TestBed.inject(TabsService) as TabsService;
     tabsService.layout = TabsLayout.VERTICAL;
     fixture.detectChanges();
     expect(compiled.querySelector('.btn-link')).toBeDefined();

@@ -14,17 +14,11 @@ import { APP_ROUTES } from './app.routing';
   selector: 'my-app-content-container',
   template: `
     <clr-vertical-nav [clrVerticalNavCollapsible]="true">
-      <ng-container *ngFor="let route of routes">
-        <a
-          *ngIf="route.path != ''"
-          clrVerticalNavLink
-          clrAriaCurrentLink
-          [routerLink]="[route.path]"
-          [routerLinkActive]="['active']"
-        >
-          {{ route.path }}
-        </a>
-      </ng-container>
+      @for (route of routes; track route) { @if (route.path != '') {
+      <a clrVerticalNavLink clrAriaCurrentLink [routerLink]="[route.path]" [routerLinkActive]="['active']">
+        {{ route.path }}
+      </a>
+      } }
     </clr-vertical-nav>
     <main class="content-area">
       <router-outlet></router-outlet>
@@ -32,28 +26,28 @@ import { APP_ROUTES } from './app.routing';
 
     <!--DO NOT DELETE THE COMMENTS BELOW. Needed for testing the Vertical Nav-->
     <!--clr-vertical-nav [clrVerticalNavCollapsible]="true" [clrVerticalNavCollapsed]="false" [clr-nav-level]="2">
-                <clr-vertical-nav-group>
-                    <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
-                    Home
-                    <ng-container *ngFor="let route of routes" ngProjectAs="[clrVerticalNavLink]">
-                        <a clrVerticalNavLink *ngIf="route.path != ''"
-                           [routerLink]="[route.path]"
-                           [routerLinkActive]="['active']">
-                            {{route.path}}
-                        </a>
-                    </ng-container>
-                </clr-vertical-nav-group>
-            </clr-vertical-nav-->
+    <clr-vertical-nav-group>
+      <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+      Home
+      <ng-container *ngFor="let route of routes" ngProjectAs="[clrVerticalNavLink]">
+        <a clrVerticalNavLink *ngIf="route.path != ''"
+          [routerLink]="[route.path]"
+          [routerLinkActive]="['active']">
+          {{route.path}}
+        </a>
+      </ng-container>
+    </clr-vertical-nav-group>
+    </clr-vertical-nav-->
 
     <!--clr-vertical-nav [clrVerticalNavCollapsible]="true" [clrVerticalNavCollapsed]="false" [clr-nav-level]="2">
-                <ng-container *ngFor="let route of routes">
-                    <a clrVerticalNavLink *ngIf="route.path != ''"
-                       [routerLink]="[route.path]"
-                       [routerLinkActive]="['active']">
-                        {{route.path}}
-                    </a>
-                </ng-container>
-            </clr-vertical-nav-->
+    <ng-container *ngFor="let route of routes">
+      <a clrVerticalNavLink *ngIf="route.path != ''"
+        [routerLink]="[route.path]"
+        [routerLinkActive]="['active']">
+        {{route.path}}
+      </a>
+    </ng-container>
+    </clr-vertical-nav-->
   `,
   standalone: false,
 })

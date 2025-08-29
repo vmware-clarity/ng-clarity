@@ -26,8 +26,15 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
         [attr.role]="role"
         [attr.id]="id"
       >
-        <span class="spinner spinner-inline" *ngIf="loading"></span>
-        <ng-container *ngIf="inMenu; then inMenuTemplate; else defaultTemplate"></ng-container>
+        @if (loading) {
+        <span class="spinner spinner-inline"></span>
+        } @if (inMenu) {
+        <span class="dropdown-item-content">
+          <ng-container [ngTemplateOutlet]="defaultTemplate"></ng-container>
+        </span>
+        } @else {
+        <ng-content></ng-content>
+        }
       </button>
     </ng-template>
     <ng-template #defaultTemplate>

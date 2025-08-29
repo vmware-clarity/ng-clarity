@@ -24,8 +24,9 @@ import { ClrTreeViewModule } from './tree-view.module';
 @Component({
   template: `
     <clr-tree-node #node [(clrSelected)]="selected" [(clrExpanded)]="expanded" [clrExpandable]="expandable">
-      Hello world
-      <clr-tree-node *ngIf="withChild">Child</clr-tree-node>
+      Hello world @if (withChild) {
+      <clr-tree-node>Child</clr-tree-node>
+      }
     </clr-tree-node>
   `,
   standalone: false,

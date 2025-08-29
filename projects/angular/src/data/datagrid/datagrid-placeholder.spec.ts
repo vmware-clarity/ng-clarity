@@ -40,7 +40,7 @@ export default function (): void {
 
       beforeEach(function () {
         context = this.create(ClrDatagridPlaceholder, SimpleTest, [Items, Page, Sort, FiltersProvider, StateDebouncer]);
-        itemsProvider = TestBed.get(Items);
+        itemsProvider = TestBed.inject(Items);
       });
 
       it('is empty when there are items', function () {

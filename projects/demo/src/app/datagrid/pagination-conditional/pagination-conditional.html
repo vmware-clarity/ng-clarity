@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Conditional Pagination</h2>
 
@@ -25,10 +25,11 @@
   </clr-dg-row>
 
   <clr-dg-footer>
-    <ng-container *ngIf="!paginationEnabled">{{users.length}} users</ng-container>
-    <clr-dg-pagination #pagination [clrDgPageSize]="5" *ngIf="paginationEnabled">
+    @if (!paginationEnabled) { {{users.length}} users } @if (paginationEnabled) {
+    <clr-dg-pagination #pagination [clrDgPageSize]="5">
       {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} users
     </clr-dg-pagination>
+    }
   </clr-dg-footer>
 </clr-datagrid>
 

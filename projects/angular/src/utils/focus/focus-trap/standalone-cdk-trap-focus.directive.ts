@@ -6,8 +6,7 @@
  */
 
 import { CdkTrapFocus, FocusTrapFactory } from '@angular/cdk/a11y';
-import { DOCUMENT } from '@angular/common';
-import { Directive, ElementRef, Inject, Optional } from '@angular/core';
+import { Directive, DOCUMENT, ElementRef, Inject, Optional } from '@angular/core';
 
 @Directive({
   standalone: true,

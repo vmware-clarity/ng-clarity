@@ -35,26 +35,26 @@ import { DatagridRenderOrganizer } from './render/render-organizer';
 
 @Component({
   template: `
+    @if (!destroy) {
     <clr-datagrid
-      *ngIf="!destroy"
       [(clrDgSelected)]="selected"
       [clrDgLoading]="loading"
       [clrDgDisablePageFocus]="disableFocus"
       (clrDgRefresh)="refresh($event)"
     >
       <clr-dg-column>
-        First
-        <clr-dg-filter *ngIf="filter" [clrDgFilter]="testFilter"></clr-dg-filter>
+        First @if (filter) {
+        <clr-dg-filter [clrDgFilter]="testFilter"></clr-dg-filter>
+        }
       </clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
-
       <clr-dg-row *clrDgItems="let item of items">
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         <clr-dg-cell>{{ item * item }}</clr-dg-cell>
       </clr-dg-row>
-
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
+    }
   `,
   standalone: false,
 })
@@ -89,10 +89,12 @@ class FullTest {
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
-      <clr-dg-row *ngFor="let item of items">
+      @for (item of items; track item) {
+      <clr-dg-row>
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         <clr-dg-cell>{{ item * item }}</clr-dg-cell>
       </clr-dg-row>
+      }
 
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
@@ -209,9 +211,11 @@ class SingleSelectionTest {
       <clr-dg-column>Second</clr-dg-column>
 
       <clr-dg-row *clrDgItems="let item of items">
-        <clr-dg-action-overflow *ngIf="item > showIfGreaterThan">
+        @if (item > showIfGreaterThan) {
+        <clr-dg-action-overflow>
           <button class="action-item">Edit</button>
         </clr-dg-action-overflow>
+        }
 
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         <clr-dg-cell>{{ item * item }}</clr-dg-cell>
@@ -236,9 +240,9 @@ class ActionableRowTest {
       <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-        <ng-template [ngIf]="expandable">
-          <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
-        </ng-template>
+        @if (expandable) {
+        <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
+        }
       </clr-dg-row>
 
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
@@ -278,14 +282,16 @@ class ExpandedOnInitTest {
       <clr-dg-column>Second</clr-dg-column>
 
       <clr-dg-row *clrDgItems="let item of items; index as i">
-        <clr-dg-action-overflow *ngIf="action && i === 1">
+        @if (action && i === 1) {
+        <clr-dg-action-overflow>
           <button class="action-item">Edit</button>
         </clr-dg-action-overflow>
+        }
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-        <ng-template [ngIf]="expandable && i === 1">
-          <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
-        </ng-template>
+        @if (expandable && i === 1) {
+        <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
+        }
       </clr-dg-row>
 
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
@@ -305,16 +311,20 @@ class ChocolateClrDgItemsTest {
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
-      <clr-dg-row *ngFor="let item of items; index as i">
-        <clr-dg-action-overflow *ngIf="action && i === 1">
+      @for (item of items; track item; let i = $index) {
+      <clr-dg-row>
+        @if (action && i === 1) {
+        <clr-dg-action-overflow>
           <button class="action-item">Edit</button>
         </clr-dg-action-overflow>
+        }
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-        <ng-template [ngIf]="expandable && i === 1">
-          <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
-        </ng-template>
+        @if (expandable && i === 1) {
+        <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
+        }
       </clr-dg-row>
+      }
 
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
@@ -335,9 +345,9 @@ class ChocolateNgForTest {
 
       <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
         <clr-dg-cell>{{ item }}</clr-dg-cell>
-        <ng-template [ngIf]="expandable">
-          <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
-        </ng-template>
+        @if (expandable) {
+        <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
+        }
       </clr-dg-row>
 
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
@@ -399,10 +409,12 @@ class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
       </clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
-      <clr-dg-row *ngFor="let item of items">
+      @for (item of items; track item) {
+      <clr-dg-row>
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         <clr-dg-cell>{{ item * item }}</clr-dg-cell>
       </clr-dg-row>
+      }
     </clr-datagrid>
   `,
   standalone: false,
@@ -417,10 +429,12 @@ class HiddenColumnTest {
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
-      <clr-dg-row *ngFor="let item of items">
+      @for (item of items; track item) {
+      <clr-dg-row>
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         <clr-dg-cell>{{ item * item }}</clr-dg-cell>
       </clr-dg-row>
+      }
     </clr-datagrid>
   `,
   standalone: false,
@@ -437,7 +451,8 @@ class ProjectionTest {
       </clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
-      <clr-dg-row *ngFor="let item of items">
+      @for (item of items; track item) {
+      <clr-dg-row>
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         <clr-dg-cell>{{ item * item }}</clr-dg-cell>
         <clr-dg-row-detail *clrIfExpanded="true" [clrDgReplace]="replaceCells">
@@ -445,6 +460,7 @@ class ProjectionTest {
           <clr-dg-cell>{{ item * item }} detail (col 2 detail)</clr-dg-cell>
         </clr-dg-row-detail>
       </clr-dg-row>
+      }
 
       <ng-template [(clrIfDetail)]="detailItem">
         <clr-dg-detail>
@@ -496,9 +512,11 @@ class TabsIntegrationTest {
   template: `
     <clr-datagrid [clrDgItemsTrackBy]="trackById">
       <clr-dg-column>Item</clr-dg-column>
-      <clr-dg-row *ngFor="let item of items" [clrDgItem]="item">
+      @for (item of items; track item) {
+      <clr-dg-row [clrDgItem]="item">
         <clr-dg-cell>{{ item.id }}</clr-dg-cell>
       </clr-dg-row>
+      }
       <clr-dg-detail *clrIfDetail></clr-dg-detail>
     </clr-datagrid>
   `,
@@ -515,10 +533,12 @@ class PanelTrackByTest {
     <clr-datagrid>
       <clr-dg-column>Item</clr-dg-column>
       <clr-dg-column>Name</clr-dg-column>
-      <clr-dg-row *ngFor="let item of items" [clrDgItem]="item">
+      @for (item of items; track item) {
+      <clr-dg-row [clrDgItem]="item">
         <clr-dg-cell>{{ item.id }}</clr-dg-cell>
         <clr-dg-cell>{{ item.name }}</clr-dg-cell>
       </clr-dg-row>
+      }
       <ng-template [(clrIfDetail)]="preState" let-detail>
         <clr-dg-detail></clr-dg-detail>
       </ng-template>

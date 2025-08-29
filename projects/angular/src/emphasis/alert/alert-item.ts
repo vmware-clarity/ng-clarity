@@ -13,14 +13,16 @@ import { AlertIconAndTypesService } from './providers/icon-and-types.service';
   selector: 'clr-alert-item',
   template: `
     <div class="alert-icon-wrapper">
-      <clr-spinner class="alert-spinner" clrInline *ngIf="iconService.alertIconShape === 'loading'"></clr-spinner>
+      @if (iconService.alertIconShape === 'loading') {
+      <clr-spinner class="alert-spinner" clrInline></clr-spinner>
+      } @if (iconService.alertIconShape !== 'loading') {
       <cds-icon
         class="alert-icon"
         role="img"
-        *ngIf="iconService.alertIconShape !== 'loading'"
         [attr.shape]="iconService.alertIconShape"
         [attr.aria-label]="iconService.alertIconTitle"
       ></cds-icon>
+      }
     </div>
     <ng-content></ng-content>
   `,

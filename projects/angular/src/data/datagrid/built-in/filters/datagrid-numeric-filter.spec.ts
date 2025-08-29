@@ -80,7 +80,7 @@ export default function (): void {
     beforeEach(function () {
       filter = new TestFilter();
       context = this.create(DatagridNumericFilter, FullTest, PROVIDERS);
-      filtersInstance = TestBed.get(FiltersProvider);
+      filtersInstance = TestBed.inject(FiltersProvider);
     });
 
     afterEach(function () {

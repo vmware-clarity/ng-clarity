@@ -11,8 +11,8 @@
   <div class="datagrid-row-sticky">
     <!-- Sticky elements here -->
     <ng-container #stickyCells>
+      @if (selection.selectionType === SELECTION_TYPE.Multi) {
       <div
-        *ngIf="selection.selectionType === SELECTION_TYPE.Multi"
         class="datagrid-select datagrid-fixed-column datagrid-cell"
         [ngClass]="{ 'clr-form-control-disabled': !clrDgSelectable }"
         role="gridcell"
@@ -33,8 +33,8 @@
           </label>
         </div>
       </div>
+      } @if (selection.selectionType === SELECTION_TYPE.Single) {
       <div
-        *ngIf="selection.selectionType === SELECTION_TYPE.Single"
         class="datagrid-select datagrid-fixed-column datagrid-cell"
         [ngClass]="{ 'clr-form-control-disabled': !clrDgSelectable }"
         role="gridcell"
@@ -57,44 +57,36 @@
           </label>
         </clr-radio-wrapper>
       </div>
-      <div
-        *ngIf="rowActionService.hasActionableRow"
-        class="datagrid-row-actions datagrid-fixed-column datagrid-cell"
-        role="gridcell"
-      >
+      } @if (rowActionService.hasActionableRow) {
+      <div class="datagrid-row-actions datagrid-fixed-column datagrid-cell" role="gridcell">
         <ng-content select="clr-dg-action-overflow"></ng-content>
       </div>
-      <div
-        *ngIf="globalExpandable.hasExpandableRow"
-        class="datagrid-expandable-caret datagrid-fixed-column datagrid-cell"
-        role="gridcell"
-      >
-        <ng-container *ngIf="expand.expandable">
-          <button
-            tabindex="-1"
-            *ngIf="!expand.loading"
-            (click)="toggleExpand()"
-            type="button"
-            class="datagrid-expandable-caret-button"
-            [attr.aria-expanded]="expand.expanded"
-            [attr.aria-label]="expand.expanded ? clrDgDetailCloseLabel : clrDgDetailOpenLabel"
-            [attr.aria-controls]="expand.hasExpandTemplate && !expand.expanded ? null : expandableId"
-          >
-            <cds-icon
-              shape="angle"
-              class="datagrid-expandable-caret-icon"
-              [attr.direction]="expand.expanded ? 'down' : 'right'"
-              [attr.title]="expand.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand"
-            ></cds-icon>
-          </button>
-          <clr-spinner *ngIf="expand.loading" clrSmall>{{ commonStrings.keys.loading }}</clr-spinner>
-        </ng-container>
+      } @if (globalExpandable.hasExpandableRow) {
+      <div class="datagrid-expandable-caret datagrid-fixed-column datagrid-cell" role="gridcell">
+        @if (expand.expandable) { @if (!expand.loading) {
+        <button
+          tabindex="-1"
+          (click)="toggleExpand()"
+          type="button"
+          class="datagrid-expandable-caret-button"
+          [attr.aria-expanded]="expand.expanded"
+          [attr.aria-label]="expand.expanded ? clrDgDetailCloseLabel : clrDgDetailOpenLabel"
+          [attr.aria-controls]="expand.hasExpandTemplate && !expand.expanded ? null : expandableId"
+        >
+          <cds-icon
+            shape="angle"
+            class="datagrid-expandable-caret-icon"
+            [attr.direction]="expand.expanded ? 'down' : 'right'"
+            [attr.title]="expand.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand"
+          ></cds-icon>
+        </button>
+        } @if (expand.loading) {
+        <clr-spinner clrSmall>{{ commonStrings.keys.loading }}</clr-spinner>
+        } }
       </div>
-      <div
-        *ngIf="detailService.enabled"
-        class="datagrid-detail-caret datagrid-fixed-column datagrid-cell"
-        role="gridcell"
-      >
+      } @if (detailService.enabled) {
+      <div class="datagrid-detail-caret datagrid-fixed-column datagrid-cell" role="gridcell">
+        @if (!detailHidden) {
         <button
           tabindex="-1"
           (click)="detailService.toggle(item, detailButton)"
@@ -102,7 +94,6 @@
           #detailButton
           class="datagrid-detail-caret-button"
           [disabled]="detailDisabled"
-          *ngIf="!detailHidden"
           [class.is-open]="detailService.isRowOpen(item)"
           [attr.aria-label]="detailService.isRowOpen(item) ? clrDgDetailCloseLabel : clrDgDetailOpenLabel"
           [attr.aria-expanded]="detailService.isRowOpen(item)"
@@ -116,7 +107,9 @@
             [attr.title]="detailService.isRowOpen(item) ? commonStrings.keys.close: commonStrings.keys.open"
           ></cds-icon>
         </button>
+        }
       </div>
+      }
     </ng-container>
     <!-- placeholder for projecting other sticky cells as pinned-->
   </div>
@@ -126,13 +119,16 @@
       <ng-container #scrollableCells></ng-container>
     </div>
     <!-- details here when replace, re-visit when sticky container is used for pinned cells -->
-    <ng-template *ngIf="replaced && !expand.loading" [ngTemplateOutlet]="detail"></ng-template>
-    <ng-template *ngIf="!replaced && !expand.loading" [ngTemplateOutlet]="detail"></ng-template>
+    @if (replaced && !expand.loading) {
+    <ng-template [ngTemplateOutlet]="detail"></ng-template>
+    } @if (!replaced && !expand.loading) {
+    <ng-template [ngTemplateOutlet]="detail"></ng-template>
+    }
   </div>
 </div>
 <!--
-    We need the "project into template" hacks because we need this in 2 different places
-    depending on whether the details replace the row or not.
+We need the "project into template" hacks because we need this in 2 different places
+depending on whether the details replace the row or not.
 -->
 <ng-template #detail>
   <ng-content select="clr-dg-row-detail"></ng-content>

@@ -28,7 +28,9 @@ import { AccordionService } from './providers/accordion.service';
         (clrAccordionPanelOpenChange)="change($event)"
       >
         <clr-accordion-title>title</clr-accordion-title>
-        <clr-accordion-description *ngIf="showDescription">description</clr-accordion-description>
+        @if (showDescription) {
+        <clr-accordion-description>description</clr-accordion-description>
+        }
         <clr-accordion-content>panel</clr-accordion-content>
       </clr-accordion-panel>
     </clr-accordion>

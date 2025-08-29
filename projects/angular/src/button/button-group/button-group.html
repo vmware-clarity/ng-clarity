@@ -1,13 +1,14 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
-<ng-template *ngFor="let inlineButton of inlineButtons" [ngTemplateOutlet]="inlineButton.templateRef"></ng-template>
-
-<div *ngIf="menuButtons.length > 0" class="btn-group-overflow open" [ngClass]="menuPosition">
+@for (inlineButton of inlineButtons; track inlineButton) {
+<ng-template [ngTemplateOutlet]="inlineButton.templateRef"></ng-template>
+} @if (menuButtons.length > 0) {
+<div class="btn-group-overflow open" [ngClass]="menuPosition">
   <button
     #menuToggle
     class="btn dropdown-toggle"
@@ -30,6 +31,9 @@
     [attr.aria-hidden]="!open"
     *clrPopoverContent="open at popoverPosition; outsideClickToClose: true; scrollToClose: true"
   >
-    <ng-template *ngFor="let menuButton of menuButtons" [ngTemplateOutlet]="menuButton.templateRef"></ng-template>
+    @for (menuButton of menuButtons; track menuButton) {
+    <ng-template [ngTemplateOutlet]="menuButton.templateRef"></ng-template>
+    }
   </div>
 </div>
+}

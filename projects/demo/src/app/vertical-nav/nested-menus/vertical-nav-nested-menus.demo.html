@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h4>With Nav Group Text</h4>
 <div class="clr-example">
@@ -32,29 +32,31 @@
         [clrVerticalNavCollapsible]="true"
         [(clrVerticalNavCollapsed)]="collapse"
       >
-        <ng-container *ngFor="let item of case.items">
-          <clr-vertical-nav-group *ngIf="item['children']">
-            <cds-icon [attr.shape]="item.icon" *ngIf="item['icon']" clrVerticalNavIcon></cds-icon>
-            {{item.label}}
-
-            <clr-vertical-nav-group-children *clrIfExpanded>
-              <a clrVerticalNavLink href="javascript:void(0)" *ngFor="let childItem of item.children">
-                {{childItem.label}}
-              </a>
-            </clr-vertical-nav-group-children>
-          </clr-vertical-nav-group>
-          <div class="nav-divider"></div>
-          <clr-vertical-nav-group *ngIf="item['children']">
-            <cds-icon [attr.shape]="item.icon" *ngIf="item['icon']" clrVerticalNavIcon></cds-icon>
-            {{item.label}}
-
-            <clr-vertical-nav-group-children *clrIfExpanded>
-              <a clrVerticalNavLink href="javascript:void(0)" *ngFor="let childItem of item.children">
-                {{childItem.label}}
-              </a>
-            </clr-vertical-nav-group-children>
-          </clr-vertical-nav-group>
-        </ng-container>
+        @for (item of case.items; track item) { @if (item['children']) {
+        <clr-vertical-nav-group>
+          @if (item['icon']) {
+          <cds-icon [attr.shape]="item.icon" clrVerticalNavIcon></cds-icon>
+          } {{item.label}}
+          <clr-vertical-nav-group-children *clrIfExpanded>
+            @for (childItem of item.children; track childItem) {
+            <a clrVerticalNavLink href="javascript:void(0)"> {{childItem.label}} </a>
+            }
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        }
+        <div class="nav-divider"></div>
+        @if (item['children']) {
+        <clr-vertical-nav-group>
+          @if (item['icon']) {
+          <cds-icon [attr.shape]="item.icon" clrVerticalNavIcon></cds-icon>
+          } {{item.label}}
+          <clr-vertical-nav-group-children *clrIfExpanded>
+            @for (childItem of item.children; track childItem) {
+            <a clrVerticalNavLink href="javascript:void(0)"> {{childItem.label}} </a>
+            }
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        } }
       </clr-vertical-nav>
       <div class="content-area">
         <div>
@@ -97,20 +99,20 @@
     </header>
     <div class="content-container nested-menus-links">
       <clr-vertical-nav [clrVerticalNavCollapsible]="true" [(clrVerticalNavCollapsed)]="collapse">
-        <ng-container *ngFor="let item of case.items">
-          <clr-vertical-nav-group *ngIf="item['children']">
-            <a href="javascript://" clrVerticalNavLink>
-              <cds-icon [attr.shape]="item.icon" *ngIf="item['icon']" clrVerticalNavIcon></cds-icon>
-              {{item.label}}
-            </a>
-
-            <clr-vertical-nav-group-children *clrIfExpanded>
-              <a clrVerticalNavLink href="javascript:void(0)" *ngFor="let childItem of item.children">
-                {{childItem.label}}
-              </a>
-            </clr-vertical-nav-group-children>
-          </clr-vertical-nav-group>
-        </ng-container>
+        @for (item of case.items; track item) { @if (item['children']) {
+        <clr-vertical-nav-group>
+          <a href="javascript://" clrVerticalNavLink>
+            @if (item['icon']) {
+            <cds-icon [attr.shape]="item.icon" clrVerticalNavIcon></cds-icon>
+            } {{item.label}}
+          </a>
+          <clr-vertical-nav-group-children *clrIfExpanded>
+            @for (childItem of item.children; track childItem) {
+            <a clrVerticalNavLink href="javascript:void(0)"> {{childItem.label}} </a>
+            }
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        } }
       </clr-vertical-nav>
       <div class="content-area">
         <h4>{{case.title}}</h4>

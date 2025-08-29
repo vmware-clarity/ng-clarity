@@ -1,34 +1,50 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
 -->
 
-<ng-container *ngIf="hasRangeOptions; else calendarView">
-  <clr-vertical-nav class="clr-date-range-picker-nav">
-    <ng-container *ngFor="let option of dateRangeOptions">
-      <a
-        clrVerticalNavLink
-        href="javascript:void(0)"
-        [attr.aria-label]="option?.label"
-        tabindex="0"
-        (keyup.enter)="onRangeOptionSelect(option)"
-        (click)="onRangeOptionSelect(option)"
-      >
-        {{option.label}}
-      </a>
-    </ng-container>
-  </clr-vertical-nav>
-
-  <ng-container *ngTemplateOutlet="calendarView"></ng-container>
-</ng-container>
+@if (hasRangeOptions) {
+<clr-vertical-nav class="clr-date-range-picker-nav">
+  @for (option of dateRangeOptions; track option) {
+  <a
+    clrVerticalNavLink
+    href="javascript:void(0)"
+    [attr.aria-label]="option?.label"
+    tabindex="0"
+    (keyup.enter)="onRangeOptionSelect(option)"
+    (click)="onRangeOptionSelect(option)"
+  >
+    {{option.label}}
+  </a>
+  }
+</clr-vertical-nav>
+<ng-container *ngTemplateOutlet="calendarView"></ng-container>
+} @else {
+<div class="datepicker-view-manager">
+  @if (isMonthView) {
+  <clr-monthpicker></clr-monthpicker>
+  } @if (isYearView) {
+  <clr-yearpicker></clr-yearpicker>
+  } @if (isDayView) {
+  <clr-daypicker></clr-daypicker>
+  } @if (hasActionButtons) {
+  <clr-datepicker-actions></clr-datepicker-actions>
+  }
+</div>
+}
 
 <ng-template #calendarView>
   <div class="datepicker-view-manager">
-    <clr-monthpicker *ngIf="isMonthView"></clr-monthpicker>
-    <clr-yearpicker *ngIf="isYearView"></clr-yearpicker>
-    <clr-daypicker *ngIf="isDayView"></clr-daypicker>
-    <clr-datepicker-actions *ngIf="hasActionButtons"></clr-datepicker-actions>
+    @if (isMonthView) {
+    <clr-monthpicker></clr-monthpicker>
+    } @if (isYearView) {
+    <clr-yearpicker></clr-yearpicker>
+    } @if (isDayView) {
+    <clr-daypicker></clr-daypicker>
+    } @if (hasActionButtons) {
+    <clr-datepicker-actions></clr-datepicker-actions>
+    }
   </div>
 </ng-template>

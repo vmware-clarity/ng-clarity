@@ -54,10 +54,11 @@ export default function (): void {
 @Component({
   template: `
     <clr-dg-cell>
-      Hello world
-      <clr-signpost *ngIf="signpostTest">
+      Hello world @if (signpostTest) {
+      <clr-signpost>
         <clr-signpost-content *clrIfOpen>The user is strong.</clr-signpost-content>
       </clr-signpost>
+      }
     </clr-dg-cell>
   `,
   standalone: false,

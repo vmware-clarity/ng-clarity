@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Built-in filters</h2>
 
@@ -94,12 +94,12 @@
 <clr-datagrid>
   <clr-dg-column [clrDgField]="'name'" [(clrFilterValue)]="myFilterValue1">Name</clr-dg-column>
   <clr-dg-column>
-    Pokemon
+    Pokemon @if (displayFilter) {
     <clr-dg-string-filter
-      *ngIf="displayFilter"
       [clrDgStringFilter]="pokemonFilter"
       [(clrFilterValue)]="myFilterValue2"
     ></clr-dg-string-filter>
+    }
   </clr-dg-column>
 
   <clr-dg-row *clrDgItems="let user of users">

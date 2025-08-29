@@ -655,15 +655,18 @@ class IconsAndNavGroupTestComponent {}
 @Component({
   template: `
     <clr-vertical-nav #nav>
-      <clr-vertical-nav-group *ngIf="groupToggle">
+      @if (groupToggle) {
+      <clr-vertical-nav-group>
         <cds-icon clrVerticalNavIcon></cds-icon>
         Group
         <a href="#" clrVerticalNavLink>Text</a>
       </clr-vertical-nav-group>
-      <a href="#" clrVerticalNavLink *ngIf="iconToggle">
+      } @if (iconToggle) {
+      <a href="#" clrVerticalNavLink>
         <cds-icon clrVerticalNavIcon></cds-icon>
         Text
       </a>
+      }
     </clr-vertical-nav>
   `,
   standalone: false,

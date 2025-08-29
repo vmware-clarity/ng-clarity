@@ -98,8 +98,8 @@ export default function (): void {
 
       beforeEach(function () {
         context = this.create(ClrDatagridRow, SelectableRow, DATAGRID_SPEC_PROVIDERS);
-        selectionProvider = TestBed.get(Selection);
-        TestBed.get(Items).all = [{ id: 1 }, { id: 2 }];
+        selectionProvider = TestBed.inject(Selection);
+        TestBed.inject(Items).all = [{ id: 1 }, { id: 2 }];
       });
 
       it('should toggle when clrDgSelectable is false for type SelectionType.Multi', () => {
@@ -133,8 +133,8 @@ export default function (): void {
 
       beforeEach(function () {
         context = this.create(ClrDatagridRow, SelectableRowOrder, DATAGRID_SPEC_PROVIDERS);
-        selectionProvider = TestBed.get(Selection);
-        TestBed.get(Items).all = [{ id: 1 }, { id: 2 }];
+        selectionProvider = TestBed.inject(Selection);
+        TestBed.inject(Items).all = [{ id: 1 }, { id: 2 }];
       });
 
       it('renders correctly if item is set after clrDgSelectable', fakeAsync(function () {
@@ -219,8 +219,8 @@ export default function (): void {
 
       beforeEach(function () {
         context = this.create(ClrDatagridRow, FullTest, DATAGRID_SPEC_PROVIDERS);
-        selectionProvider = TestBed.get(Selection);
-        TestBed.get(Items).all = [{ id: 1 }, { id: 2 }];
+        selectionProvider = TestBed.inject(Selection);
+        TestBed.inject(Items).all = [{ id: 1 }, { id: 2 }];
       });
 
       it("doesn't display a checkbox unless selection type is multi", function () {
@@ -694,9 +694,11 @@ class FullTest {
       [clrDgDetailCloseLabel]="clrDgDetailCloseLabel"
     >
       <clr-dg-cell>Hello world</clr-dg-cell>
-      <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="!removeRowDetail">
+      @if (!removeRowDetail) {
+      <ng-container ngProjectAs="clr-dg-row-detail">
         <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
       </ng-container>
+      }
     </clr-dg-row>
   `,
   standalone: false,
@@ -711,7 +713,9 @@ class ExpandTest {
 @Component({
   template: `
     <clr-datagrid [clrDgSelected]="[]" [clrDgItemsTrackBy]="trackBy">
-      <clr-dg-row *ngFor="let item of items" [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable"></clr-dg-row>
+      @for (item of items; track item) {
+      <clr-dg-row [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable"></clr-dg-row>
+      }
     </clr-datagrid>
   `,
   standalone: false,
@@ -726,12 +730,13 @@ class NgForDatagridWithTrackBy {
 @Component({
   template: `
     <clr-datagrid>
+      @for (item of items; track item; let i = $index) {
       <clr-dg-row
-        *ngFor="let item of items; let i = index"
         [clrDgItem]="item"
         [clrDgDetailDisabled]="i === disabledIndex"
         [clrDgDetailHidden]="i === hiddenIndex"
       ></clr-dg-row>
+      }
 
       <ng-template [(clrIfDetail)]="preState" let-detail>
         <clr-dg-detail>

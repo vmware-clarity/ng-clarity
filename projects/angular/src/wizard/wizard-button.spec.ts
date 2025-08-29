@@ -19,15 +19,16 @@ import { ClrWizardModule } from './wizard.module';
 
 @Component({
   template: `
+    @if (show) {
     <clr-wizard-button
       [type]="btnType"
       [clrWizardButtonDisabled]="disableBtn"
       [clrWizardButtonHidden]="hideBtn"
       (clrWizardButtonClicked)="doClick($event)"
-      *ngIf="show"
     >
       hello {{ projector }}
     </clr-wizard-button>
+    }
   `,
   standalone: false,
 })
