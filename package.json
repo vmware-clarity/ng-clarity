@@ -76,6 +76,7 @@
     "@storybook/addon-a11y": "9.1.4",
     "@storybook/addon-docs": "9.1.4",
     "@storybook/angular": "9.1.4",
+    "@storybook/types": "^8.6.14",
     "@types/jasmine": "5.1.9",
     "@types/node-static": "0.7.11",
     "@typescript-eslint/eslint-plugin": "8.41.0",
