@@ -91,8 +91,6 @@ jobs:
         run: npx playwright install --with-deps ${{matrix.browser}}
       - name: Build Storybook
         run: npm run _build:storybook
-      - name: Discover Stories
-        run: npm run ts-node -- ./scripts/write-story-list.ts
       - name: Update Visual Snapshots
         run: npx playwright test --update-snapshots
       - name: Collect Changes
