@@ -8,11 +8,11 @@
 @import '../_utils/clarity-variables';
 
 .clr-breadcrumbs-example {
-  margin: $clr_baselineRem_2 0;
+  margin: var(--cds-global-space-12) 0;
   .breadcrumbs-content-area {
-    min-height: $clr_baselineRem_21_67;
+    min-height: var(--cds-global-layout-width-xs);
   }
   .breadcrumbs-href-content {
-    margin-top: $clr_baselineRem_0_667;
+    margin-top: var(--cds-global-space-7);
   }
 }

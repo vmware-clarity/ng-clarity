@@ -5,8 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import './color-shared.demo';
-
 .card-block {
   padding-bottom: 0;
   overflow: hidden;
@@ -18,10 +16,10 @@
   background: hsl(0, 0%, 80%);
   color: hsl(0, 0%, 0%);
   margin: 0;
-  font-size: $clr_baselineRem_0_667;
+  font-size: var(--cds-global-space-7);
 
   &.upsize {
-    padding-top: $clr_baselineRem_2;
+    padding-top: var(--cds-global-space-12);
   }
 
   &:before,
@@ -36,7 +34,7 @@
     float: left;
     & > span {
       color: hsl(0, 0%, 0%);
-      padding-left: $clr_baselineRem_0_125;
+      padding-left: var(--cds-global-space-3);
     }
   }
 
@@ -58,5 +56,5 @@
 }
 
 .card-swatch-divider {
-  height: $clr_baselineRem_0_5;
+  height: var(--cds-global-space-6);
 }

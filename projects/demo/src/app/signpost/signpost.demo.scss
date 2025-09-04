@@ -14,7 +14,7 @@
   flex-wrap: wrap;
 
   .signpost-item {
-    padding-top: $clr_baselineRem_50px;
+    padding-top: var(--cds-global-space-12);
     flex: 1 1 33%;
     display: flex;
     justify-content: center;
