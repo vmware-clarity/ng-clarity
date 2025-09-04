@@ -29,7 +29,10 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
   loadingMoreItems = false;
   selected: User[] = [];
 
-  constructor(inventory: Inventory, private cdr: ChangeDetectorRef) {
+  constructor(
+    inventory: Inventory,
+    private cdr: ChangeDetectorRef
+  ) {
     this._inventory = inventory;
     this._inventory.size = this.currentPageSize * 3;
     this._inventory.lazyLoadUsers(this._inventory.size);

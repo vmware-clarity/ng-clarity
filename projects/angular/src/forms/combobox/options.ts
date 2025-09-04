@@ -19,15 +19,15 @@ import {
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
+import { ClrOption } from './option';
+import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
+import { OptionSelectionService } from './providers/option-selection.service';
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
 import { IF_ACTIVE_ID } from '../../utils/conditional/if-active.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { LoadingListener } from '../../utils/loading/loading-listener';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { ClrOption } from './option';
-import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
-import { OptionSelectionService } from './providers/option-selection.service';
 
 let nbOptionsComponents = 0;
 
@@ -35,23 +35,23 @@ let nbOptionsComponents = 0;
   selector: 'clr-options',
   template: `
     @if (optionSelectionService.loading) {
-    <div class="clr-combobox-options-loading">
-      <clr-spinner clrInline>
-        {{ commonStrings.keys.loading }}
-      </clr-spinner>
-      <span class="clr-combobox-options-text">
-        {{ searchText(optionSelectionService.currentInput) }}
-      </span>
-    </div>
+      <div class="clr-combobox-options-loading">
+        <clr-spinner clrInline>
+          {{ commonStrings.keys.loading }}
+        </clr-spinner>
+        <span class="clr-combobox-options-text">
+          {{ searchText(optionSelectionService.currentInput) }}
+        </span>
+      </div>
     }
 
     <!-- Rendered if data set is empty -->
     @if (emptyOptions) {
-    <div [id]="noResultsElementId" role="option">
-      <span class="clr-combobox-options-empty-text">
-        {{ commonStrings.keys.comboboxNoResults }}
-      </span>
-    </div>
+      <div [id]="noResultsElementId" role="option">
+        <span class="clr-combobox-options-empty-text">
+          {{ commonStrings.keys.comboboxNoResults }}
+        </span>
+      </div>
     }
 
     <!--Option Groups and Options will be projected here-->

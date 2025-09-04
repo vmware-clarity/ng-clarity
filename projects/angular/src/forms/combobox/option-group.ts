@@ -7,8 +7,8 @@
 
 import { Component, ContentChild, Input } from '@angular/core';
 
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrOptionItems } from './option-items.directive';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Component({
   selector: 'clr-option-group',

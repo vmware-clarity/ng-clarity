@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use 'utils/mixins.clarity';
 @use '../../utils/mixins' as utils-mixins;
@@ -13,7 +14,6 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.progress-bars');
-
 @include utils-mixins.exports('progress-bars.clarity') {
   // KEY POINTS TO NOTE:
   // - Firefox does not handle transitions on progress bars yet. So the movement
@@ -58,13 +58,14 @@
       @include mixins.clr-progress-color(progress-bars-variables.$clr-progress-default-color);
 
       display: block;
-
       background-color: progress-bars-variables.$clr-progress-bg-color;
       border: none;
+
       @include utils-mixins.equilateral(100%);
 
       &[value='0']::-moz-progress-bar {
         // Firefox doesn't allow transition or animation on the progress bar. So it's going to be jumpy for now.
+
         @include utils-mixins.clr-appearance-normal();
 
         color: progress-bars-variables.$clr-progress-bg-color; // why us this using bg color
@@ -97,7 +98,9 @@
   // Variations
   .progress {
     // @deprecated in 3.0
+
     /* warning, success, and danger distinctions for progress bars are deprecated in 3.0 */
+
     @each $type, $color in (success, progress-bars-variables.$clr-progress-success-color),
       (warning, progress-bars-variables.$clr-progress-warning-color),
       (danger, progress-bars-variables.$clr-progress-danger-color)
@@ -131,6 +134,7 @@
         right: 0;
         top: 0;
         margin-top: 0;
+
         @include utils-mixins.generate-typography-token('CAPTION-LG-11-CPT');
       }
     }
@@ -149,6 +153,7 @@
     from {
       opacity: 1;
     }
+
     to {
       opacity: 0;
     }
@@ -163,7 +168,9 @@
 
   $clr-progress-flashTiming: 0.1s;
   $clr-progress-ieTransition: color $clr-progress-flashTiming ease-out 1s;
-  $clr-progress-transition: width 0.23s ease-in, background-color $clr-progress-flashTiming ease-out 0.3s;
+  $clr-progress-transition:
+    width 0.23s ease-in,
+    background-color $clr-progress-flashTiming ease-out 0.3s;
 
   %clr-progress-animatedTransition {
     // for IE...
@@ -219,6 +226,7 @@
     from {
       left: -100%;
     }
+
     to {
       left: 100%;
     }
@@ -229,6 +237,7 @@
 
     & > progress {
       overflow: hidden;
+
       @include mixins.clr-progress-color(transparent);
 
       &::-moz-progress-bar {
@@ -272,10 +281,7 @@
       background-color: progress-bars-variables.$clr-progress-bg-color;
       display: block;
       position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
+      inset: 0;
 
       &::before {
         background-color: progress-bars-variables.$clr-progress-default-color;
@@ -502,6 +508,7 @@
     }
 
     /* warning, success, and danger distinctions for progress bars are deprecated in 3.0 */
+
     @each $type, $color in (success, progress-bars-variables.$clr-progress-success-color),
       (warning, progress-bars-variables.$clr-progress-warning-color),
       (danger, progress-bars-variables.$clr-progress-danger-color)
@@ -516,6 +523,7 @@
   .card-block,
   .card-footer {
     $clr-progressInCard-height: density.$clr-base-layout-space-2xs;
+
     .progress,
     .progress-static {
       height: $clr-progressInCard-height;
@@ -595,6 +603,7 @@
   }
 
   $clr-progress-in-card-height: density.$clr-base-layout-space-s;
+
   .card-block .progress-block {
     margin-bottom: density.$clr-base-vertical-offset-xl;
     padding: 0;
@@ -617,12 +626,6 @@
       & > .progress-meter {
         height: $clr-progress-in-card-height;
       }
-    }
-  }
-
-  @include utils-mixins.fixForIE10AndUp {
-    .progress-block > label {
-      display: inline-block;
     }
   }
 }

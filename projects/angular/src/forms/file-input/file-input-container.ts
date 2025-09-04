@@ -7,23 +7,23 @@
 
 import { Component, ContentChild, ElementRef, forwardRef, inject, Input, ViewChild } from '@angular/core';
 
+import { ClrFileInput } from './file-input';
+import { selectFiles } from './file-input.helpers';
+import { ClrFileList } from './file-list';
+import { ClrFileError, ClrFileSuccess } from './file-messages';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { NgControlService } from '../common/providers/ng-control.service';
-import { ClrFileInput } from './file-input';
-import { selectFiles } from './file-input.helpers';
-import { ClrFileList } from './file-list';
-import { ClrFileError, ClrFileSuccess } from './file-messages';
 
 @Component({
   selector: 'clr-file-input-container',
   template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
-    <label></label>
+      <label></label>
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-file-input-wrapper">
@@ -31,17 +31,17 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
 
         <!-- file input to handle adding new files to selection when file list is present (prevent replacing selected files on the main file input) -->
         @if (fileList) {
-        <input
-          #fileListFileInput
-          type="file"
-          class="clr-file-input"
-          tabindex="-1"
-          aria-hidden="true"
-          [accept]="accept"
-          [multiple]="multiple"
-          [disabled]="disabled"
-          (change)="addFilesToSelection(fileListFileInput.files)"
-        />
+          <input
+            #fileListFileInput
+            type="file"
+            class="clr-file-input"
+            tabindex="-1"
+            aria-hidden="true"
+            [accept]="accept"
+            [multiple]="multiple"
+            [disabled]="disabled"
+            (change)="addFilesToSelection(fileListFileInput.files)"
+          />
         }
 
         <button
@@ -56,26 +56,30 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
           <span class="clr-file-input-browse-button-text">{{ browseButtonText }}</span>
         </button>
         @if (!fileList && fileInput?.selection?.fileCount) {
-        <button
-          type="button"
-          class="btn btn-sm clr-file-input-clear-button"
-          [attr.aria-label]="fileInput?.selection?.clearFilesButtonLabel"
-          (click)="clearSelectedFiles()"
-        >
-          <cds-icon shape="times" status="neutral"></cds-icon>
-        </button>
-        } @if (showInvalid) {
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        } @if (showValid) {
-        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
+          <button
+            type="button"
+            class="btn btn-sm clr-file-input-clear-button"
+            [attr.aria-label]="fileInput?.selection?.clearFilesButtonLabel"
+            (click)="clearSelectedFiles()"
+          >
+            <cds-icon shape="times" status="neutral"></cds-icon>
+          </button>
+        }
+        @if (showInvalid) {
+          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
+        }
+        @if (showValid) {
+          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
         }
       </div>
       @if (showHelper) {
-      <ng-content select="clr-control-helper"></ng-content>
-      } @if (showInvalid) {
-      <ng-content select="clr-control-error"></ng-content>
-      } @if (showValid) {
-      <ng-content select="clr-control-success"></ng-content>
+        <ng-content select="clr-control-helper"></ng-content>
+      }
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
 
       <!-- If this is present, this file input becomes an "advanced" file input. -->

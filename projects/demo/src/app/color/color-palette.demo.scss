@@ -13,8 +13,8 @@
 }
 
 .card-swatch {
-  background: hsl(0, 0%, 80%);
-  color: hsl(0, 0%, 0%);
+  background: hsl(0deg 0% 80%);
+  color: hsl(0deg 0% 0%);
   margin: 0;
   font-size: var(--cds-global-space-7);
 
@@ -22,8 +22,8 @@
     padding-top: var(--cds-global-space-12);
   }
 
-  &:before,
-  &:after {
+  &::before,
+  &::after {
     clear: both;
     display: table;
     content: '';
@@ -32,8 +32,9 @@
   .hex-contrast {
     display: block;
     float: left;
+
     & > span {
-      color: hsl(0, 0%, 0%);
+      color: hsl(0deg 0% 0%);
       padding-left: var(--cds-global-space-3);
     }
   }
@@ -45,7 +46,7 @@
   }
 
   &:not(.dark-text) {
-    color: hsl(0, 0%, 100%);
+    color: hsl(0deg 0% 100%);
   }
 }
 

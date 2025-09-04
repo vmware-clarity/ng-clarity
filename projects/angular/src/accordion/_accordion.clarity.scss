@@ -4,14 +4,15 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use '../utils/a11y';
 @use '../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
 @use 'variables.accordion' as accordion-variables;
 @use '../utils/variables/variables.density' as density;
-@include meta.load-css('properties.accordion');
 
+@include meta.load-css('properties.accordion');
 @include mixins.exports('accordion.clarity') {
   .clr-accordion {
     display: block;
@@ -30,6 +31,7 @@
     border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
     border-bottom-width: 0;
     width: 100%;
+
     @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
 
     text-align: left;
@@ -82,6 +84,7 @@
     cursor: pointer;
     color: inherit;
     gap: density.$clr-base-gap-s;
+
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
       flex-flow: row;
     }
@@ -150,9 +153,11 @@
     > .clr-accordion-header {
       box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
     }
+
     .clr-accordion-panel-complete > .clr-accordion-header {
       box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
     }
+
     .clr-accordion-panel-error > .clr-accordion-header {
       box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
     }
@@ -167,6 +172,7 @@
       &:hover {
         background-color: accordion-variables.$clr-accordion-header-open-hover-background-color;
       }
+
       &:active {
         color: accordion-variables.$clr-accordion-text-color-active;
         background-color: accordion-variables.$clr-accordion-header-open-active-background-color;
@@ -266,6 +272,7 @@
           density.$clr-base-horizontal-offset-l + density.$clr-base-icon-size-s + density.$clr-base-horizontal-offset-m
         );
       color: accordion-variables.$clr-accordion-content-color;
+
       @include mixins.generate-typography-token(
         'SECONDARY-13-RG-STD',
         (

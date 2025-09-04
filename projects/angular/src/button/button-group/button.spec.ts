@@ -10,6 +10,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { ClrButton } from './button';
+import { ClrButtonGroupModule } from './button-group.module';
 import {
   RouterLinkButtonGroupDemoRouteOneComponent,
   RouterLinkButtonGroupDemoRouteThreeComponent,
@@ -18,8 +20,6 @@ import {
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { ClrLoadingModule } from '../../utils/loading/loading.module';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
-import { ClrButton } from './button';
-import { ClrButtonGroupModule } from './button-group.module';
 
 @Component({
   template: `
@@ -241,7 +241,7 @@ export default function (): void {
       });
 
       it('projects the content correctly', () => {
-        expect(buttons[0].textContent).toMatch('Test Button 1');
+        expect(buttons[0].querySelector('span.spinner')).toBeTruthy();
         expect(buttons[1].textContent).toMatch('Test Button 2');
         expect(buttons[2].textContent).toMatch('Test Button 3');
       });

@@ -7,10 +7,11 @@
 
 import { Location } from '@angular/common';
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { delay } from '../../utils/testing/helpers.spec';
 import { ClrLayoutModule } from '../layout.module';
 
 @Component({
@@ -52,14 +53,14 @@ describe('ClrBreadcrumbs', () => {
     breadcrumbList = breadcrumbs.query(By.css('.clr-breadcrumb-menu'));
   });
 
-  it('should have each breadcrumb as a clickable item which navigates to its corresponding page', fakeAsync(() => {
+  it('should have each breadcrumb as a clickable item which navigates to its corresponding page', async () => {
     const item = breadcrumbList.queryAll(By.css('.clr-breadcrumb-item'))[1].query(By.css('a'));
     item.nativeElement.click();
     fixture.detectChanges();
-    tick(1);
+    await delay(1);
     const location: Location = TestBed.inject(Location);
     expect(location.path()).toEqual('/child');
-  }));
+  });
 
   it('should have a seperator between breadcrumbs', () => {
     const link = breadcrumbList.nativeElement.querySelector('.clr-breadcrumb-item');

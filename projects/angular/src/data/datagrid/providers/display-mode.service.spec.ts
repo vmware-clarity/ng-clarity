@@ -7,10 +7,10 @@
 
 import { Observable, Subscription } from 'rxjs';
 
+import { MockDisplayModeService } from './display-mode.mock';
 import { DatagridDisplayMode } from '../enums/display-mode.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { MockDatagridRenderOrganizer } from '../render/render-organizer.mock';
-import { MockDisplayModeService } from './display-mode.mock';
 
 interface UserContext {
   organizer: MockDatagridRenderOrganizer;

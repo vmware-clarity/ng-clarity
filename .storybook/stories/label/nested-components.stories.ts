@@ -9,9 +9,9 @@ import { ClarityModule } from '@clr/angular';
 import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 import { RenderComponentStorybook } from 'helpers/render-component';
 
+import { LabelStoryBookComponent } from './label.storybook.component';
 import { CommonModules } from '../../helpers/common';
 import { BadgeStoryBookComponent } from '../badge/badge.storybook.component';
-import { LabelStoryBookComponent } from './label.storybook.component';
 
 const nestedComponents = [
   {

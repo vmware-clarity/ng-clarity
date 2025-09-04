@@ -10,14 +10,14 @@ import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { ClrPassword } from './password';
+import { ClrPasswordContainer } from './password-container';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
-import { ClrPassword } from './password';
-import { ClrPasswordContainer } from './password-container';
 
 @Component({
   template: `<input type="password" clrPassword />`,

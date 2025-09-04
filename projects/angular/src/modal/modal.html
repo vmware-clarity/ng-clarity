@@ -24,8 +24,8 @@
   >
     <div class="clr-sr-only">{{commonStrings.keys.modalContentStart}}</div>
     <!-- This wizard is tightly coupled to the modal styles, so changes here could require changes in the wizard. -->
-    @if (!modalContentTemplate) {
     <div class="modal-content-wrapper">
+      @if (!modalContentTemplate) {
       <div class="modal-content">
         <div class="modal-header--accessible">
           <ng-content select=".leading-button"></ng-content>
@@ -48,10 +48,10 @@
         </div>
         <ng-content select=".modal-footer"></ng-content>
       </div>
+      } @else {
+      <ng-template [ngTemplateOutlet]="modalContentTemplate"></ng-template>
+      }
     </div>
-    } @else {
-    <ng-template [ngTemplateOutlet]="modalContentTemplate"></ng-template>
-    }
     <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   </div>
   @if (backdrop) {

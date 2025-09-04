@@ -5,13 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import '../_utils/clarity-variables';
-
 .clr-breadcrumbs-example {
   margin: var(--cds-global-space-12) 0;
+
   .breadcrumbs-content-area {
     min-height: var(--cds-global-layout-width-xs);
   }
+
   .breadcrumbs-href-content {
     margin-top: var(--cds-global-space-7);
   }

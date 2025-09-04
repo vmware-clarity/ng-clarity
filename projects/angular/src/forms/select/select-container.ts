@@ -20,23 +20,26 @@ import { NgControlService } from '../common/providers/ng-control.service';
   template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
-    <label></label>
+      <label></label>
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div [ngClass]="wrapperClass()">
         <ng-content select="[clrSelect]"></ng-content>
         @if (showInvalid) {
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        } @if (showValid) {
-        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
+          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
+        }
+        @if (showValid) {
+          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
         }
       </div>
       @if (showHelper) {
-      <ng-content select="clr-control-helper"></ng-content>
-      } @if (showInvalid) {
-      <ng-content select="clr-control-error"></ng-content>
-      } @if (showValid) {
-      <ng-content select="clr-control-success"></ng-content>
+        <ng-content select="clr-control-helper"></ng-content>
+      }
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
   `,

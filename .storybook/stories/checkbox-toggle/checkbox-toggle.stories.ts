@@ -23,7 +23,7 @@ export default {
     // The original story hid these methods.
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
-    type: { control: 'inline-radio', options: CheckboxType },
+    type: { control: { type: 'inline-radio' }, options: CheckboxType },
     templateMode: { control: { disable: true }, table: { disable: true } },
   },
   args: {

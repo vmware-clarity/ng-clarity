@@ -10,7 +10,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 
-import { CdkTrapFocusModule } from '../../../../angular/src/utils/cdk/cdk-trap-focus.module';
 import { ModalAngularNotClosableDemo } from './modal-angular-not-closable';
 import { ModalAngularShowDemo } from './modal-angular-show';
 import { ModalAngularSizeDemo } from './modal-angular-size';
@@ -25,6 +24,7 @@ import { ModalStaticOldDemo } from './modal-static-old';
 import { ModalTrapDemo } from './modal-trap';
 import { ModalDemo } from './modal.demo';
 import { ROUTING } from './modal.demo.routing';
+import { CdkTrapFocusModule } from '../../../../angular/src/utils/cdk/cdk-trap-focus.module';
 
 @NgModule({
   imports: [CommonModule, CdkTrapFocusModule, ClarityModule, ROUTING, FormsModule],

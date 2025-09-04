@@ -6,7 +6,7 @@
  */
 
 import { Component, DebugElement, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -22,6 +22,7 @@ import { ClrWizardButton } from './wizard-button';
 import { ClrWizardPage } from './wizard-page';
 import { MockPage } from './wizard-page.mock';
 import { ClrWizardModule } from './wizard.module';
+import { delay } from '../utils/testing/helpers.spec';
 
 class MyPageCollectionMock extends PageCollectionMock {
   previousPage: MockPage;
@@ -167,9 +168,10 @@ class TemplateTestComponent {
         <ng-template clrPageTitle>View Page 3</ng-template>
         <ng-template clrPageNavTitle>short title</ng-template>
         @if (!asyncLoaded) {
-        <p>Loading...</p>
-        } @if (asyncLoaded) {
-        <p>{{ asyncContent }}</p>
+          <p>Loading...</p>
+        }
+        @if (asyncLoaded) {
+          <p>{{ asyncContent }}</p>
         }
 
         <ng-template clrPageButtons>
@@ -235,7 +237,7 @@ class ViewTestComponent {
 @Component({
   template: `
     @for (page of [0, 1, 2, 3]; track page) {
-    <clr-wizard-page [id]="3 === page ? 'lastpage' : page">Content for page {{ page }}</clr-wizard-page>
+      <clr-wizard-page [id]="3 === page ? 'lastpage' : page">Content for page {{ page }}</clr-wizard-page>
     }
   `,
   standalone: false,
@@ -991,16 +993,16 @@ export default function (): void {
           );
         });
 
-        it('should allow for asynchronous content', fakeAsync(() => {
+        it('should allow for asynchronous content', async () => {
           expect(pageThree.nativeElement.textContent.trim()).toBe('Loading...');
           viewTestComponent.loadAsync();
 
-          tick(120);
+          await delay(120);
 
           fixture.detectChanges();
           expect(viewTestComponent.asyncLoaded).toBe(true, 'make sure async routine ran');
           expect(pageThree.nativeElement.textContent.trim()).toBe('better late than never');
-        }));
+        });
       });
 
       describe('id', () => {

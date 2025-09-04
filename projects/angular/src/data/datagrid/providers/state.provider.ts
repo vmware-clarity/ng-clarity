@@ -9,12 +9,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { DatagridPropertyComparator } from '../built-in/comparators/datagrid-property-comparator';
-import { ClrDatagridStateInterface } from '../interfaces/state.interface';
 import { FiltersProvider } from './filters';
 import { Page } from './page';
 import { Sort } from './sort';
 import { StateDebouncer } from './state-debouncer.provider';
+import { DatagridPropertyComparator } from '../built-in/comparators/datagrid-property-comparator';
+import { ClrDatagridStateInterface } from '../interfaces/state.interface';
 
 /**
  * This provider aggregates state changes from the various providers of the Datagrid

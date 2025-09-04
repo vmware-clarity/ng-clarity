@@ -16,7 +16,7 @@ import { ControlIdService } from '../common/providers/control-id.service';
     <ng-content select="[clrRadio]"></ng-content>
     <ng-content select="label"></ng-content>
     @if (!label) {
-    <label></label>
+      <label></label>
     }
   `,
   host: {

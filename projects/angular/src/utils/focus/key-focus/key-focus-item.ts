@@ -13,7 +13,10 @@ import { Directive, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
   standalone: false,
 })
 export class ClrKeyFocusItem {
-  constructor(private elementRef: ElementRef<HTMLElement>, @Inject(PLATFORM_ID) private platformId: any) {}
+  constructor(
+    private elementRef: ElementRef<HTMLElement>,
+    @Inject(PLATFORM_ID) private platformId: any
+  ) {}
 
   get nativeElement() {
     return this.elementRef.nativeElement;

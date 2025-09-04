@@ -8,8 +8,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { spec, TestContext } from '../testing/helpers.spec';
 import { ClrPopoverOpenCloseButton } from './popover-open-close-button';
+import { spec, TestContext } from '../testing/helpers.spec';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 @Component({

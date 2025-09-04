@@ -14,14 +14,15 @@ import { AlertIconAndTypesService } from './providers/icon-and-types.service';
   template: `
     <div class="alert-icon-wrapper">
       @if (iconService.alertIconShape === 'loading') {
-      <clr-spinner class="alert-spinner" clrInline></clr-spinner>
-      } @if (iconService.alertIconShape !== 'loading') {
-      <cds-icon
-        class="alert-icon"
-        role="img"
-        [attr.shape]="iconService.alertIconShape"
-        [attr.aria-label]="iconService.alertIconTitle"
-      ></cds-icon>
+        <clr-spinner class="alert-spinner" clrInline></clr-spinner>
+      }
+      @if (iconService.alertIconShape !== 'loading') {
+        <cds-icon
+          class="alert-icon"
+          role="img"
+          [attr.shape]="iconService.alertIconShape"
+          [attr.aria-label]="iconService.alertIconTitle"
+        ></cds-icon>
       }
     </div>
     <ng-content></ng-content>

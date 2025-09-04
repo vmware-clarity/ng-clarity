@@ -17,19 +17,21 @@ import { Selection } from './providers/selection';
   selector: 'clr-dg-footer',
   template: `
     @if (selection.selectionType === SELECTION_TYPE.Multi && selection.current.length > 0) {
-    <div class="clr-form-control-disabled">
-      <clr-checkbox-wrapper class="datagrid-footer-select">
-        <input clrCheckbox type="checkbox" checked="checked" disabled />
-        <label>{{ selection.current.length }}</label>
-        <span class="clr-sr-only">{{ commonStrings.keys.selectedRows }}</span>
-      </clr-checkbox-wrapper>
-    </div>
-    } @if (!detailService.isOpen) { @if (hasHideableColumns) {
-    <clr-dg-column-toggle></clr-dg-column-toggle>
+      <div class="clr-form-control-disabled">
+        <clr-checkbox-wrapper class="datagrid-footer-select">
+          <input clrCheckbox type="checkbox" checked="checked" disabled />
+          <label>{{ selection.current.length }}</label>
+          <span class="clr-sr-only">{{ commonStrings.keys.selectedRows }}</span>
+        </clr-checkbox-wrapper>
+      </div>
     }
-    <div class="datagrid-footer-description">
-      <ng-content></ng-content>
-    </div>
+    @if (!detailService.isOpen) {
+      @if (hasHideableColumns) {
+        <clr-dg-column-toggle></clr-dg-column-toggle>
+      }
+      <div class="datagrid-footer-description">
+        <ng-content></ng-content>
+      </div>
     }
     <ng-content select="clr-dg-pagination"></ng-content>
   `,

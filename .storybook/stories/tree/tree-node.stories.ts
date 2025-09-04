@@ -24,7 +24,7 @@ export default {
     // inputs
     clrExpandable: { control: { type: 'boolean' } },
     clrSelected: {
-      control: 'inline-radio',
+      control: { type: 'inline-radio' },
       options: ['not selectable', 'UNSELECTED', 'INDETERMINATE', 'SELECTED'],
       mapping: {
         'not selectable': undefined,

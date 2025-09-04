@@ -32,7 +32,6 @@ The build process consists of the following five stages. Each stage can be ran i
 1. `npm run clean`: deletes all generated code and artifacts
 
 2. `npm run lint`: validates linting, formatting, and license headers for all code files
-
    - `npm run lint:fix`: automatically fixes any linting or formatting issues if possible
 
    - `npm run lint:changed`: same as `npm run lint`, but only for new and modified files
@@ -42,7 +41,6 @@ The build process consists of the following five stages. Each stage can be ran i
 3. `npm run build`: builds all projects
 
 4. `npm run test`: verifies all tests pass
-
    - `npm run test:watch`: runs a watcher on all tests
 
 5. `npm run public-api:check`: verifies the public API has not changed

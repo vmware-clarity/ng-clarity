@@ -6,19 +6,20 @@
  */
 
 import { Component } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ClrIconModule } from '../../icon/icon.module';
-import { ClrPopoverContent } from '../../utils/popover/popover-content';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrCombobox } from './combobox';
 import { ClrComboboxModule } from './combobox.module';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
 import { OptionSelectionService } from './providers/option-selection.service';
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrPopoverContent } from '../../utils/popover/popover-content';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { delay } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `
@@ -215,14 +216,14 @@ export default function (): void {
         expect(combobox.getAttribute('placeholder')).toEqual('hello world');
       });
 
-      it('should disable openClose button', fakeAsync(function () {
+      it('should disable openClose button', async function () {
         fixture.componentInstance.disabled = true;
         fixture.detectChanges();
-        tick();
+        await delay();
         fixture.detectChanges();
         const button: HTMLButtonElement = clarityElement.querySelector('.clr-combobox-trigger');
         expect(button.disabled).toBeTruthy();
-      }));
+      });
     });
   });
 }

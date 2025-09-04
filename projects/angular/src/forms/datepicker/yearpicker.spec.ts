@@ -6,17 +6,16 @@
  */
 
 import { Component } from '@angular/core';
-import { waitForAsync } from '@angular/core/testing';
 
-import { TestContext } from '../../data/datagrid/helpers.spec';
-import { Keys } from '../../utils/enums/keys.enum';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { ClrYearpicker } from './yearpicker';
+import { TestContext } from '../../data/datagrid/helpers.spec';
+import { Keys } from '../../utils/enums/keys.enum';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 export default function () {
   describe('Yearpicker Component', () => {
@@ -120,7 +119,7 @@ export default function () {
         expect(nextDecadeBtn.attributes['aria-label'].value).toEqual('Next decade');
       });
 
-      it('updates the tab indices correctly', waitForAsync(() => {
+      it('updates the tab indices correctly', () => {
         const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll('.year');
 
         expect(buttons[3].tabIndex).toBe(0);
@@ -148,7 +147,7 @@ export default function () {
 
         expect(buttons[4].tabIndex).toBe(-1);
         expect(buttons[3].tabIndex).toBe(0);
-      }));
+      });
     });
 
     describe('Typescript API', () => {

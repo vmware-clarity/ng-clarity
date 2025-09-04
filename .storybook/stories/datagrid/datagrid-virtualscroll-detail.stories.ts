@@ -38,7 +38,7 @@ export default {
     // methods
     dataChanged: { control: { disable: true } },
     resize: { control: { disable: true } },
-    scrollToIndexBehavior: { control: 'radio', options: ['auto', 'smooth'] },
+    scrollToIndexBehavior: { control: { type: 'radio' }, options: ['auto', 'smooth'] },
     // story helpers
     behaviorElements: { control: { disable: true }, table: { disable: true } },
     setExpanded: { control: { disable: true }, table: { disable: true } },

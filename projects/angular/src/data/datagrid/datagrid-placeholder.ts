@@ -14,13 +14,13 @@ import { Items } from './providers/items';
   template: `
     <div class="datagrid-placeholder" [class.datagrid-empty]="emptyDatagrid">
       @if (emptyDatagrid) {
-      <div class="datagrid-placeholder-image"></div>
+        <div class="datagrid-placeholder-image"></div>
       }
-      <span class="datagrid-placeholder-content"
-        >@if (emptyDatagrid) {
-        <ng-content></ng-content>
-        }</span
-      >
+      <span class="datagrid-placeholder-content">
+        @if (emptyDatagrid) {
+          <ng-content></ng-content>
+        }
+      </span>
     </div>
   `,
   host: { '[class.datagrid-placeholder-container]': 'true' },

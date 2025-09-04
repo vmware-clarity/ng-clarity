@@ -14,6 +14,7 @@ import {
   DOCUMENT,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Inject,
   Input,
   NgZone,
@@ -29,8 +30,6 @@ import {
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridItems } from './datagrid-items';
 import { ClrDatagridPlaceholder } from './datagrid-placeholder';
@@ -54,6 +53,8 @@ import { StateProvider } from './providers/state.provider';
 import { TableSizeService } from './providers/table-size.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { CellCoordinates, KeyNavigationGridController } from './utils/key-navigation-grid.controller';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Component({
   selector: 'clr-datagrid',
@@ -109,7 +110,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /**
    * Expose virtual scroll directive for applications to access its public methods
    */
-  @ContentChildren(ClrDatagridVirtualScrollDirective) _virtualScroll: QueryList<ClrDatagridVirtualScrollDirective<any>>;
+  @ContentChildren(forwardRef(() => ClrDatagridVirtualScrollDirective)) _virtualScroll: QueryList<
+    ClrDatagridVirtualScrollDirective<any>
+  >;
   /**
    * We grab the smart iterator from projected content
    */
@@ -300,7 +303,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         this.rows.forEach(row => {
           this._displayedRows.insert(row._view);
         });
-
         this.updateDetailState();
 
         // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller

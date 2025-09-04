@@ -8,15 +8,15 @@
 import { Component, DebugElement, ElementRef, Type, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { addHelpers, TestContext } from '../../data/datagrid/helpers.spec';
-import { IfActiveService } from '../../utils/conditional/if-active.service';
-import { ClrKeyFocus } from '../../utils/focus/key-focus/key-focus';
-import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';
 import { ClrTab } from './tab';
 import { ClrTabLink } from './tab-link.directive';
 import { ClrTabs } from './tabs';
+import { addHelpers, TestContext } from '../../data/datagrid/helpers.spec';
+import { IfActiveService } from '../../utils/conditional/if-active.service';
+import { ClrKeyFocus } from '../../utils/focus/key-focus/key-focus';
+import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `
@@ -64,10 +64,10 @@ class TestComponent {
   template: `
     <clr-tabs>
       @if (true) {
-      <clr-tab #first>
-        <button clrTabLink>Tab1</button>
-        <clr-tab-content *clrIfActive>Content1</clr-tab-content>
-      </clr-tab>
+        <clr-tab #first>
+          <button clrTabLink>Tab1</button>
+          <clr-tab-content *clrIfActive>Content1</clr-tab-content>
+        </clr-tab>
       }
       <clr-tab>
         <button clrTabLink>Tab2</button>
@@ -89,10 +89,10 @@ class NgIfFirstTest {
         <clr-tab-content *clrIfActive>Content1</clr-tab-content>
       </clr-tab>
       @if (true) {
-      <clr-tab>
-        <button clrTabLink>Tab2</button>
-        <clr-tab-content *clrIfActive>Content2</clr-tab-content>
-      </clr-tab>
+        <clr-tab>
+          <button clrTabLink>Tab2</button>
+          <clr-tab-content *clrIfActive>Content2</clr-tab-content>
+        </clr-tab>
       }
     </clr-tabs>
   `,
@@ -118,10 +118,10 @@ class NgIfSecondTest {
               <clr-tab-content *clrIfActive>Child Content1</clr-tab-content>
             </clr-tab>
             @if (true) {
-            <clr-tab>
-              <button clrTabLink>Child Tab2</button>
-              <clr-tab-content *clrIfActive>Child Content2</clr-tab-content>
-            </clr-tab>
+              <clr-tab>
+                <button clrTabLink>Child Tab2</button>
+                <clr-tab-content *clrIfActive>Child Content2</clr-tab-content>
+              </clr-tab>
             }
           </clr-tabs>
         </clr-tab-content>

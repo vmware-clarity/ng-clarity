@@ -168,7 +168,7 @@ class TestCounter {
 @Component({
   template: `
     @if (expandable) {
-    <div *clrIfExpanded>Hello World</div>
+      <div *clrIfExpanded>Hello World</div>
     }
   `,
   standalone: false,

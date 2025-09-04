@@ -8,8 +8,8 @@
 import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
 import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 
-import { CommonModules } from '../../helpers/common';
 import { AppLevelAlertStorybookComponent } from './app-level-alert.storybook.component';
+import { CommonModules } from '../../../.storybook/helpers/common';
 
 export default {
   title: 'Alert/App Level Alerts',
@@ -23,17 +23,17 @@ export default {
     // inputs
     clrAlertIcon: {
       description: 'Changes the leading icon of an alert from the default icon to the icon cds-icon value specified',
-      control: 'radio',
+      control: { type: 'radio' },
       options: ['Default', 'settings'],
       mapping: { Default: '' },
     },
     clrCloseButtonAriaLabel: {
       description: 'Aria label for the close button. Only used if the close button is rendered',
-      control: 'text',
+      control: { type: 'text' },
     },
     clrAlertClosable: {
       description: 'Adds a close button and allows the user to dismiss this alert',
-      control: 'boolean',
+      control: { type: 'boolean' },
     },
     // methods
     close: { control: { disable: true } },
@@ -97,10 +97,10 @@ export const WithActions: StoryObj = {
 };
 
 const paginatedArgTypes = {
-  clrCloseButtonAriaLabel: { control: false, table: { disable: true } },
-  alertCount: { control: false, table: { disable: true } },
-  close: { control: false, table: { disable: true } },
-  open: { control: false, table: { disable: true } },
+  clrCloseButtonAriaLabel: { control: { disable: true }, table: { disable: true } },
+  alertCount: { control: { disable: true }, table: { disable: true } },
+  close: { control: { disable: true }, table: { disable: true } },
+  open: { control: { disable: true }, table: { disable: true } },
 };
 
 export const Paginated: StoryObj = {

@@ -8,8 +8,8 @@
 import { Directive, ElementRef, Injector, Optional, Renderer2, Self, ViewContainerRef } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
-import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrTextareaContainer } from './textarea-container';
+import { WrappedFormControl } from '../common/wrapped-control';
 
 @Directive({
   selector: '[clrTextarea]',

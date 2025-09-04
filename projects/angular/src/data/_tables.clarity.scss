@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
@@ -12,12 +13,12 @@
 @use '@cds/core/tokens/tokens.scss';
 
 // Mixin for basic table styles to be able to reuse them on non-table elements.
+
 @mixin basic-table($table, $thead, $tbody, $tr, $th, $td) {
   #{$table} {
     border-collapse: separate;
     border: table-variables.$clr-table-borderwidth solid table-variables.$clr-table-border-color;
     border-radius: table-variables.$clr-table-border-radius;
-
     background-color: table-variables.$clr-table-bgcolor;
     color: table-variables.$clr-table-font-color;
     margin: table-variables.$clr-table-margin;
@@ -26,9 +27,7 @@
 
     #{$th},
     #{$td} {
-      border-top-style: solid;
-      border-top-width: table-variables.$clr-table-borderwidth;
-      border-top-color: table-variables.$clr-tablerow-bordercolor;
+      border-top: table-variables.$clr-table-borderwidth solid table-variables.$clr-tablerow-bordercolor;
       padding: table-variables.$clr-table-cell-padding;
       text-align: center;
       vertical-align: top;
@@ -44,17 +43,17 @@
 
     #{$td} {
       min-height: table-variables.$clr-table-row-height;
+
       @include mixins.generate-typography-token('BODY-14-RG-CPT');
     }
 
     #{$th} {
       @include mixins.generate-typography-token('ColumnHeader-11-SB-CPT');
+
       color: table-variables.$clr-thead-color;
       background-color: table-variables.$clr-thead-bgcolor;
       vertical-align: middle;
-      border-bottom-style: solid;
-      border-bottom-width: table-variables.$clr-table-borderwidth;
-      border-bottom-color: table-variables.$clr-table-border-color;
+      border-bottom: table-variables.$clr-table-borderwidth solid table-variables.$clr-table-border-color;
       border-top: 0 none;
     }
 
@@ -64,9 +63,7 @@
 
     // in the rare event we have more than one tbody element.
     #{$tbody} + #{$tbody} {
-      border-top-style: solid;
-      border-top-width: table-variables.$clr-table-borderwidth;
-      border-top-color: table-variables.$clr-table-border-color;
+      border-top: table-variables.$clr-table-borderwidth solid table-variables.$clr-table-border-color;
     }
 
     // Rounded corners on tables are a pain...
@@ -116,7 +113,6 @@
 }
 
 @include meta.load-css('properties.tables');
-
 @include mixins.exports('tables.clarity') {
   @include basic-table('.table', 'thead', 'tbody', 'tr', 'th', 'td');
 
@@ -129,9 +125,7 @@
 
     th {
       border-bottom: 0;
-      border-top-style: solid;
-      border-top-width: table-variables.$clr-table-borderwidth;
-      border-top-color: table-variables.$clr-table-border-color;
+      border-top: table-variables.$clr-table-borderwidth solid table-variables.$clr-table-border-color;
       vertical-align: top;
     }
 
@@ -142,9 +136,8 @@
 
       &:first-child {
         @include mixins.generate-typography-token('ColumnHeader-11-SB-CPT');
-        border-right-style: solid;
-        border-right-width: table-variables.$clr-table-borderwidth;
-        border-right-color: table-variables.$clr-table-border-color;
+
+        border-right: table-variables.$clr-table-borderwidth solid table-variables.$clr-table-border-color;
         background-color: table-variables.$clr-thead-bgcolor;
       }
     }

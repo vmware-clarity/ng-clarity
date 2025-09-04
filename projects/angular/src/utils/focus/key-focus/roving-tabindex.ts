@@ -7,9 +7,9 @@
 
 import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 
-import { Keys } from '../../../utils/enums/keys.enum';
 import { FocusableItem } from './interfaces';
 import { ClrKeyFocus } from './key-focus';
+import { Keys } from '../../../utils/enums/keys.enum';
 
 @Component({
   selector: '[clrRovingTabindex]',
@@ -19,7 +19,10 @@ import { ClrKeyFocus } from './key-focus';
 export class ClrRovingTabindex extends ClrKeyFocus {
   private disabled = false;
 
-  constructor(elementRef: ElementRef<HTMLElement>, private renderer: Renderer2) {
+  constructor(
+    elementRef: ElementRef<HTMLElement>,
+    private renderer: Renderer2
+  ) {
     super(elementRef);
   }
 

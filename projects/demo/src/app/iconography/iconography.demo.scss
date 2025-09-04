@@ -4,8 +4,6 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@import '../../../../angular/src/utils/variables/variables.color';
-@import '../../../../angular/src/utils/variables/variables.global';
 
 .selection-preview-settings {
   max-width: var(--cds-global-layout-width-xs);
@@ -39,7 +37,7 @@
   padding: var(--cds-global-space-6) 0;
 
   &.inverse {
-    background: hsl(218, 14%, 30%);
+    background: hsl(218deg 14% 30%);
     margin: var(--cds-global-space-6) 0 0;
   }
 

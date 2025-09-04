@@ -40,7 +40,8 @@ export class ClrStartDateInput extends ClrDateInputBase {
     return this.dateNavigationService.selectedDayChange;
   }
 
-  ngOnInit() {
+  override ngOnInit() {
+    super.ngOnInit();
     this.subscriptions.push(this.dateIOService.minDateChange.subscribe(() => this.triggerControlInputValidation()));
   }
 

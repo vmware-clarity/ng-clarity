@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AccordionStatus } from '../../enums/accordion-status.enum';
 import { StepperModel } from './stepper.model';
+import { AccordionStatus } from '../../enums/accordion-status.enum';
 
 describe('StepperModel', () => {
   let stepper: StepperModel;
@@ -89,7 +89,7 @@ describe('StepperModel', () => {
     stepper.addPanel(step1Id);
     stepper.addPanel(step2Id);
     stepper.addPanel(step3Id);
-    expect(() => stepper.resetPanels()).not.toThrowAnyError();
+    expect(() => stepper.resetPanels()).not.toThrowError();
   });
 
   it('should allow user to open and close a previously completed step', () => {

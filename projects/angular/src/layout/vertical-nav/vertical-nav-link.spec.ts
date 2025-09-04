@@ -10,7 +10,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ClrIconModule } from '../../icon/icon.module';
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavGroupService } from './providers/vertical-nav-group.service';
 import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
@@ -18,6 +17,7 @@ import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNavGroup } from './vertical-nav-group';
 import { ClrVerticalNavLink } from './vertical-nav-link';
 import { ClrVerticalNavModule } from './vertical-nav.module';
+import { ClrIconModule } from '../../icon/icon.module';
 
 export default function (): void {
   describe('Vertical Nav Links', () => {

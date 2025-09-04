@@ -98,6 +98,7 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
         } else {
           this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (e) {
         // We catch the case where clrIfExpanded was put on a non-DOM element, and we just do nothing
       }

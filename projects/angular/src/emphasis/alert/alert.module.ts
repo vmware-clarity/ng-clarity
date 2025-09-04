@@ -18,14 +18,14 @@ import {
   windowCloseIcon,
 } from '@cds/core/icon';
 
-import { ClrIconModule } from '../../icon/icon.module';
-import { ClrDropdownModule } from '../../popover/dropdown/dropdown.module';
-import { ClrSpinnerModule } from '../../progress/spinner';
 import { ClrAlert } from './alert';
 import { ClrAlertItem } from './alert-item';
 import { ClrAlertText } from './alert-text';
 import { ClrAlerts } from './alerts';
 import { ClrAlertsPager } from './alerts-pager';
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrDropdownModule } from '../../popover/dropdown/dropdown.module';
+import { ClrSpinnerModule } from '../../progress/spinner';
 
 export const CLR_ALERT_DIRECTIVES: Type<any>[] = [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, ClrAlertText];
 

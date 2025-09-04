@@ -18,9 +18,9 @@ import {
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
+import { ClrDatalistContainer } from './datalist-container';
 import { FocusService } from '../common/providers/focus.service';
 import { WrappedFormControl } from '../common/wrapped-control';
-import { ClrDatalistContainer } from './datalist-container';
 import { DatalistIdService } from './providers/datalist-id.service';
 
 @Directive({

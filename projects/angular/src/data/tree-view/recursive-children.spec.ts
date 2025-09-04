@@ -7,12 +7,12 @@
 
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { RecursiveChildren } from './recursive-children';
 import { ClrRecursiveForOfContext } from './recursive-for-of';
 import { TreeFeaturesService } from './tree-features.service';
+import { IfExpandService } from '../../utils/conditional/if-expanded.service';
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 /*
  * Some utilities for this spec

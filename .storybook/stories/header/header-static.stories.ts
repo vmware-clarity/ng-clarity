@@ -8,7 +8,7 @@
 import { ClrDropdownModule, ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { CommonModules } from '../../helpers/common';
+import { CommonModules } from '../../../.storybook/helpers/common';
 
 export default {
   title: 'Header/Headers Static',
@@ -132,7 +132,7 @@ const HeaderStaticTemplate: StoryFn = args => ({
       <div class="header-actions">
         <clr-dropdown>
           <button class="nav-text" clrDropdownTrigger aria-label="open user profile">
-            john.doe@vmware.com
+            john.doe&#64;vmware.com
             <cds-icon shape="angle" direction="down"></cds-icon>
           </button>
           <clr-dropdown-menu *clrIfOpen="true" clrPosition="bottom-right">

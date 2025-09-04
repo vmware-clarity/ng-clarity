@@ -9,22 +9,22 @@ import { Component, DebugElement, QueryList, ViewChild, ViewChildren } from '@an
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { Keys } from '../../enums/keys.enum';
-import { expectActiveElementNotToBe } from '../../testing/helpers.spec';
 import { ClrKeyFocus } from './key-focus';
 import { ClrKeyFocusItem } from './key-focus-item';
 import { ClrKeyFocusModule } from './key-focus.module';
+import { Keys } from '../../enums/keys.enum';
+import { expectActiveElementNotToBe } from '../../testing/helpers.spec';
 
 @Component({
   template: `
     @if (open) {
-    <div clrKeyFocus [clrDirection]="direction" [clrFocusOnLoad]="focusOnLoad" (clrFocusChange)="changed = true">
-      <button clrKeyFocusItem>Button 1</button>
-      <button clrKeyFocusItem>Button 2</button>
-      @if (showLast) {
-      <button clrKeyFocusItem>Button 3</button>
-      }
-    </div>
+      <div clrKeyFocus [clrDirection]="direction" [clrFocusOnLoad]="focusOnLoad" (clrFocusChange)="changed = true">
+        <button clrKeyFocusItem>Button 1</button>
+        <button clrKeyFocusItem>Button 2</button>
+        @if (showLast) {
+          <button clrKeyFocusItem>Button 3</button>
+        }
+      </div>
     }
   `,
   standalone: false,
@@ -45,7 +45,7 @@ class TestComponent {
       <button>Button 1</button>
       <button>Button 2</button>
       @if (showLast) {
-      <button>Button 3</button>
+        <button>Button 3</button>
       }
     </div>
   `,

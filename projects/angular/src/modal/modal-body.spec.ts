@@ -20,7 +20,7 @@ describe('ClrModalBody Directive', () => {
   beforeAll(() => {
     originalResizeObserver = ResizeObserver;
     // patching ResizeObserver appears to be the workaround now https://github.com/angular/angular/issues/31695
-    // eslint-disable-next-line no-global-assign
+
     (ResizeObserver as unknown) = class {
       observe = jasmine.createSpy('observe');
       disconnect = jasmine.createSpy('disconnect');
@@ -32,12 +32,10 @@ describe('ClrModalBody Directive', () => {
   });
 
   afterAll(() => {
-    // eslint-disable-next-line no-global-assign
     (ResizeObserver as unknown) = originalResizeObserver;
   });
 
   beforeEach(function () {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     resizeObserverCallback = () => {};
     TestBed.configureTestingModule({
       declarations: [ClrModalBody, TestComponent],
@@ -93,7 +91,7 @@ describe('ClrModalBody Directive', () => {
       <div class="modal-body" #testElement>
         <label #testLabel>test label</label>
         @if (scrollable) {
-        <div style="height: 200px;"></div>
+          <div style="height: 200px;"></div>
         }
       </div>
     </div>

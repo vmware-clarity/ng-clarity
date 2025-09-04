@@ -27,7 +27,7 @@ import { ClrTreeNode } from './tree-node';
   template: `
     <ng-content></ng-content>
     @if (featuresService.recursion) {
-    <clr-recursive-children [children]="featuresService.recursion.root"></clr-recursive-children>
+      <clr-recursive-children [children]="featuresService.recursion.root"></clr-recursive-children>
     }
   `,
   providers: [TREE_FEATURES_PROVIDER, TreeFocusManagerService],

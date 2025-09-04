@@ -6,8 +6,11 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 
+import { DatagridStringFilter } from './datagrid-string-filter';
+import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
 import { ClrPopoverEventsService } from '../../../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../../../utils/popover/providers/popover-position.service';
@@ -19,8 +22,6 @@ import { CustomFilter } from '../../providers/custom-filter';
 import { FiltersProvider } from '../../providers/filters';
 import { Page } from '../../providers/page';
 import { StateDebouncer } from '../../providers/state-debouncer.provider';
-import { DatagridStringFilter } from './datagrid-string-filter';
-import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
 
 const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverToggleService];
 
@@ -37,7 +38,7 @@ export default function (): void {
       context = this.create(DatagridStringFilter, AccessibilityTest, PROVIDERS);
     });
 
-    it('should be able to change the placeholder text', fakeAsync(function () {
+    it('should be able to change the placeholder text', async function () {
       context.testComponent.filterValue = 'M';
       context.testComponent.clrFilterPlaceholder = 'demo placeholder';
 
@@ -45,8 +46,8 @@ export default function (): void {
       const input: HTMLInputElement = document.querySelector("input[type='text']");
       expect(input.getAttribute('placeholder')).toBe('demo placeholder');
       expect(input.getAttribute('aria-label')).toBe('demo placeholder');
-      tick();
-    }));
+      await delay();
+    });
   });
 
   describe('DatagridStringFilter component', function () {
@@ -106,15 +107,14 @@ export default function (): void {
       expect(document.querySelector("input[type='text']")).not.toBeNull();
     });
 
-    it('focuses on the input when the filter opens', fakeAsync(function () {
+    it('focuses on the input when the filter opens', async function () {
       openFilter();
       const input: HTMLInputElement = document.querySelector("input[type='text']");
       spyOn(input, 'focus');
       expect(input.focus).not.toHaveBeenCalled();
-      animationFrameTick();
+      await animationFrameTick();
       expect(input.focus).toHaveBeenCalled();
-    }));
-
+    });
     it('offers two way binding on the filtered state', function () {
       context.testComponent.filterValue = 'M';
       context.detectChanges();
@@ -124,19 +124,18 @@ export default function (): void {
       expect(context.testComponent.filterValue).toBe('t');
     });
 
-    it('has an aria-label on the input', fakeAsync(function () {
+    it('has an aria-label on the input', async function () {
       openFilter();
       const input: HTMLInputElement = document.querySelector("input[type='text']");
       expect(input.getAttribute('aria-label')).toBe('Filter items');
-      tick();
-    }));
-
-    it('has placeholder on the input', fakeAsync(function () {
+      await delay();
+    });
+    it('has placeholder on the input', async function () {
       openFilter();
       const input: HTMLInputElement = document.querySelector("input[type='text']");
       expect(input.getAttribute('placeholder')).toBe('Filter items');
-      tick();
-    }));
+      await delay();
+    });
   });
 }
 

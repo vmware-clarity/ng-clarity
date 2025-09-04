@@ -31,7 +31,10 @@ export default {
     // story helpers
     patterns: { control: { disable: true }, table: { disable: true } },
     data: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
-    clrLayout: { control: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
+    clrLayout: {
+      control: { type: 'radio' },
+      options: Object.values(ClrFormLayout).filter(value => typeof value === 'string'),
+    },
   },
   args: {
     // inputs

@@ -20,7 +20,7 @@ export default {
   component: ClrTabs,
   argTypes: {
     // inputs
-    clrLayout: { control: 'inline-radio', options: TabsLayout },
+    clrLayout: { control: { type: 'inline-radio' }, options: TabsLayout },
     // methods
     closeOnEscapeKey: { control: { disable: true }, table: { disable: true } },
     closeOnFocusOut: { control: { disable: true }, table: { disable: true } },

@@ -17,9 +17,9 @@ import {
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
+import { ClrNumberInputContainer } from './number-input-container';
 import { FocusService } from '../common/providers/focus.service';
 import { WrappedFormControl } from '../common/wrapped-control';
-import { ClrNumberInputContainer } from './number-input-container';
 
 @Directive({
   selector: 'input[type="number"][clrNumberInput]',

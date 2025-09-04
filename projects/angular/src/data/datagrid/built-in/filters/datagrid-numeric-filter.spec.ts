@@ -6,8 +6,11 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 
+import { DatagridNumericFilter } from './datagrid-numeric-filter';
+import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
 import { ClrPopoverEventsService } from '../../../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../../../utils/popover/providers/popover-position.service';
@@ -19,8 +22,6 @@ import { CustomFilter } from '../../providers/custom-filter';
 import { FiltersProvider } from '../../providers/filters';
 import { Page } from '../../providers/page';
 import { StateDebouncer } from '../../providers/state-debouncer.provider';
-import { DatagridNumericFilter } from './datagrid-numeric-filter';
-import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
 
 const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverToggleService];
 
@@ -43,7 +44,7 @@ export default function (): void {
       context.fixture.destroy();
     });
 
-    it('should be able to change the min placeholder text', fakeAsync(function () {
+    it('should be able to change the min placeholder text', async function () {
       context.testComponent.filterValue = [null, 10];
       context.testComponent.clrFilterMinPlaceholder = 'min demo placeholder';
 
@@ -51,10 +52,9 @@ export default function (): void {
       const inputMin: HTMLInputElement = document.querySelector('input[name=low]');
       expect(inputMin.getAttribute('placeholder')).toBe('min demo placeholder');
       expect(inputMin.getAttribute('aria-label')).toBe('min demo placeholder');
-      tick();
-    }));
-
-    it('should be able to change the max placeholder text', fakeAsync(function () {
+      await delay();
+    });
+    it('should be able to change the max placeholder text', async function () {
       context.testComponent.filterValue = [null, 10];
       context.testComponent.clrFilterMaxPlaceholder = 'max demo placeholder';
 
@@ -62,8 +62,8 @@ export default function (): void {
       const inputMax: HTMLInputElement = document.querySelector('input[name=high]');
       expect(inputMax.getAttribute('placeholder')).toBe('max demo placeholder');
       expect(inputMax.getAttribute('aria-label')).toBe('max demo placeholder');
-      tick();
-    }));
+      await delay();
+    });
   });
 
   describe('DatagridNumericFilter component', function () {
@@ -124,15 +124,14 @@ export default function (): void {
       expect(document.querySelector("input[type='number']")).not.toBeNull();
     });
 
-    it('focuses on the input when the filter opens', fakeAsync(function () {
+    it('focuses on the input when the filter opens', async function () {
       openFilter();
       const input: HTMLInputElement = document.querySelector("input[type='number']");
-      spyOn(input, 'focus');
+      spyOn(input, 'focus').and.callThrough();
       expect(input.focus).not.toHaveBeenCalled();
-      animationFrameTick();
+      await animationFrameTick();
       expect(input.focus).toHaveBeenCalled();
-    }));
-
+    });
     it('offers two way binding on the filtered state', function () {
       context.testComponent.filterValue = [1, 10];
       context.detectChanges();

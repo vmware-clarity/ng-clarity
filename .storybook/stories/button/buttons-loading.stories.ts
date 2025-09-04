@@ -8,8 +8,8 @@
 import { ClrLoading, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
 import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 
-import { CommonModules } from '../../helpers/common';
 import { ButtonStorybookComponent } from './button.storybook.component';
+import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Button/Button Loading States',

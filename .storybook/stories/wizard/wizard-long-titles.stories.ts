@@ -22,7 +22,7 @@ export default {
   argTypes: {
     // inputs
     clrHeadingLevel: { control: { type: 'number', min: 1, max: 6 } },
-    clrWizardSize: { control: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] },
+    clrWizardSize: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg', 'xl'] },
     // outputs
     clrWizardOpenChange: { control: { disable: true } },
     clrWizardCurrentPageChanged: { control: { disable: true } },

@@ -10,15 +10,15 @@ import { TestBed } from '@angular/core/testing';
 import { FormsModule, NgControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { ClrCheckbox } from './checkbox';
+import { ClrCheckboxContainer } from './checkbox-container';
+import { ClrCheckboxWrapper } from './checkbox-wrapper';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { WrapperContainerSpec, WrapperFullSpec, WrapperNoLabelSpec } from '../tests/wrapper.spec';
-import { ClrCheckbox } from './checkbox';
-import { ClrCheckboxContainer } from './checkbox-container';
-import { ClrCheckboxWrapper } from './checkbox-wrapper';
 
 @Component({
   template: `

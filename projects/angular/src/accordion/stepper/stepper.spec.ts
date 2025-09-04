@@ -23,7 +23,7 @@ import { ClrStepperModule } from './stepper.module';
         <input formControlName="name" />
       </clr-stepper-panel>
       @if (showSecondStep) {
-      <clr-stepper-panel #panel2 formGroupName="group2"></clr-stepper-panel>
+        <clr-stepper-panel #panel2 formGroupName="group2"></clr-stepper-panel>
       }
     </form>
   `,
@@ -52,7 +52,7 @@ class ReactiveFormsTestComponent {
     <form clrStepper #testForm="ngForm" (ngSubmit)="submit()">
       <clr-stepper-panel ngModelGroup="group"></clr-stepper-panel>
       @if (showSecondStep) {
-      <clr-stepper-panel ngModelGroup="group2"></clr-stepper-panel>
+        <clr-stepper-panel ngModelGroup="group2"></clr-stepper-panel>
       }
     </form>
   `,

@@ -11,10 +11,10 @@ import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@ang
 import { By } from '@angular/platform-browser';
 
 import { ClrCommonFormsModule } from '../common';
-import { NgControlService } from '../common/providers/ng-control.service';
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
+import { NgControlService } from '../common/providers/ng-control.service';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 
 @Component({
   template: `<input type="checkbox" clrToggle />`,

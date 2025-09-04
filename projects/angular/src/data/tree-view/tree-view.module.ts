@@ -9,13 +9,13 @@ import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { angleIcon, ClarityIcons } from '@cds/core/icon';
 
-import { ClrIconModule } from '../../icon/icon.module';
-import { ClrLoadingModule } from '../../utils/loading/loading.module';
 import { RecursiveChildren } from './recursive-children';
 import { ClrRecursiveForOf } from './recursive-for-of';
 import { ClrTree } from './tree';
 import { ClrTreeNode } from './tree-node';
 import { ClrTreeNodeLink } from './tree-node-link';
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrLoadingModule } from '../../utils/loading/loading.module';
 
 export const CLR_TREE_VIEW_DIRECTIVES: Type<any>[] = [ClrTree, ClrTreeNode, ClrRecursiveForOf, ClrTreeNodeLink];
 

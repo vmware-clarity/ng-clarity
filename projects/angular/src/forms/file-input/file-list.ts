@@ -7,8 +7,6 @@
 
 import { Component, ContentChild, inject, Injector } from '@angular/core';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrFileInputContainer } from './file-input-container';
 import { ClrFileListValidationErrors } from './file-input-validator-errors';
 import { selectFiles } from './file-input.helpers';
@@ -18,46 +16,50 @@ import {
   ClrFileMessagesTemplateContext,
   ClrSingleFileValidationErrors,
 } from './file-messages-template';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { NgControlService } from '../common/providers/ng-control.service';
 
 @Component({
   selector: 'clr-file-list',
   template: `
-    @for (file of files; track file) { @if (createFileMessagesTemplateContext(file); as fileMessagesTemplateContext) {
-    <div
-      role="listitem"
-      class="clr-file-list-item"
-      [ngClass]="{
-        'clr-error': !fileMessagesTemplateContext.success,
-        'clr-success': fileMessagesTemplateContext.success
-      }"
-    >
-      <div class="clr-file-label-and-status-icon">
-        <span class="label clr-file-label">
-          {{ file.name }}
-          <button
-            class="btn btn-sm btn-link-neutral btn-icon clr-file-clear-button"
-            [attr.aria-label]="getClearFileLabel(file.name)"
-            (click)="clearFile(file)"
-          >
-            <cds-icon shape="times"></cds-icon>
-          </button>
-        </span>
-        <cds-icon
-          class="clr-validate-icon"
-          [attr.shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
-          [attr.status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
-          aria-hidden="true"
-        ></cds-icon>
-      </div>
-      @if (fileMessagesTemplate) {
-      <ng-container
-        [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
-        [ngTemplateOutletContext]="fileMessagesTemplateContext"
-        [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
-      ></ng-container>
+    @for (file of files; track file) {
+      @if (createFileMessagesTemplateContext(file); as fileMessagesTemplateContext) {
+        <div
+          role="listitem"
+          class="clr-file-list-item"
+          [ngClass]="{
+            'clr-error': !fileMessagesTemplateContext.success,
+            'clr-success': fileMessagesTemplateContext.success,
+          }"
+        >
+          <div class="clr-file-label-and-status-icon">
+            <span class="label clr-file-label">
+              {{ file.name }}
+              <button
+                class="btn btn-sm btn-link-neutral btn-icon clr-file-clear-button"
+                [attr.aria-label]="getClearFileLabel(file.name)"
+                (click)="clearFile(file)"
+              >
+                <cds-icon shape="times"></cds-icon>
+              </button>
+            </span>
+            <cds-icon
+              class="clr-validate-icon"
+              [attr.shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
+              [attr.status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
+              aria-hidden="true"
+            ></cds-icon>
+          </div>
+          @if (fileMessagesTemplate) {
+            <ng-container
+              [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
+              [ngTemplateOutletContext]="fileMessagesTemplateContext"
+              [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
+            ></ng-container>
+          }
+        </div>
       }
-    </div>
-    } }
+    }
   `,
   host: {
     '[attr.role]': '"list"',

@@ -7,9 +7,9 @@
 
 import { ChangeDetectorRef, Directive, Optional } from '@angular/core';
 
+import { DatagridWillyWonka } from './datagrid-willy-wonka';
 import { OompaLoompa } from '../../../utils/chocolate/oompa-loompa';
 import { ExpandableRowsCount } from '../providers/global-expandable-rows';
-import { DatagridWillyWonka } from './datagrid-willy-wonka';
 
 @Directive({
   selector: 'clr-datagrid, clr-dg-row',

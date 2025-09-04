@@ -9,14 +9,14 @@ import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { angleDoubleIcon, angleIcon, ClarityIcons } from '@cds/core/icon';
 
-import { ClrIconModule } from '../../icon/icon.module';
-import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-import { ClrFocusOnViewInitModule } from '../../utils/focus/focus-on-view-init/focus-on-view-init.module';
 import { ClrVerticalNav } from './vertical-nav';
 import { ClrVerticalNavGroup } from './vertical-nav-group';
 import { ClrVerticalNavGroupChildren } from './vertical-nav-group-children';
 import { ClrVerticalNavIcon } from './vertical-nav-icon';
 import { ClrVerticalNavLink } from './vertical-nav-link';
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
+import { ClrFocusOnViewInitModule } from '../../utils/focus/focus-on-view-init/focus-on-view-init.module';
 
 export const CLR_VERTICAL_NAV_DIRECTIVES: Type<any>[] = [
   ClrVerticalNav,

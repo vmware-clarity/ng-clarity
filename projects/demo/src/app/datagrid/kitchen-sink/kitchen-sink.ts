@@ -8,10 +8,10 @@
 import { Component } from '@angular/core';
 import { ClrDatagridSortOrder } from '@clr/angular';
 
+import { DatagridKitchenSinkData } from './kitchen-sink-data';
 import { User } from '../inventory/user';
 import { PokemonComparator } from '../utils/pokemon-comparator';
 import { PokemonFilter } from '../utils/pokemon-filter';
-import { DatagridKitchenSinkData } from './kitchen-sink-data';
 
 @Component({
   selector: 'clr-datagrid-kitchen-sink-demo',

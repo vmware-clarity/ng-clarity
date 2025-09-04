@@ -5,10 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import '../_utils/clarity-variables';
-
 .clr-example {
-  border: var(--cds-global-space-1) solid hsl(0, 0%, 80%);
+  border: var(--cds-global-space-1) solid hsl(0deg 0% 80%);
   border-radius: var(--cds-alias-object-border-radius-100);
   padding: var(--cds-global-space-9);
 

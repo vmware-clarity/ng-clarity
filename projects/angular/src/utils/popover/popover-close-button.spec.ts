@@ -7,9 +7,9 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 
-import { spec, TestContext } from '../testing/helpers.spec';
 import { ClrPopoverCloseButton } from './popover-close-button';
 import { ClrPopoverModuleNext } from './popover.module';
+import { spec, TestContext } from '../testing/helpers.spec';
 import { ClrPopoverEventsService } from './providers/popover-events.service';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 

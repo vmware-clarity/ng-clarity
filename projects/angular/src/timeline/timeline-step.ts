@@ -18,14 +18,14 @@ import { ClrTimelineStepTitle } from './timeline-step-title';
     <ng-content select="clr-timeline-step-header"></ng-content>
     <span class="clr-sr-only">{{ stepTitleText }}</span>
     @if (!isProcessing) {
-    <cds-icon
-      [attr.status]="iconStatus"
-      [attr.shape]="iconShape"
-      [attr.aria-label]="iconAriaLabel"
-      role="img"
-    ></cds-icon>
+      <cds-icon
+        [attr.status]="iconStatus"
+        [attr.shape]="iconShape"
+        [attr.aria-label]="iconAriaLabel"
+        role="img"
+      ></cds-icon>
     } @else {
-    <clr-spinner clrMedium [attr.aria-label]="iconAriaLabel"></clr-spinner>
+      <clr-spinner clrMedium [attr.aria-label]="iconAriaLabel"></clr-spinner>
     }
     <div class="clr-timeline-step-body">
       <ng-content select="clr-timeline-step-title"></ng-content>

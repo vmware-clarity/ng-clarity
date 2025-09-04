@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
 
@@ -42,12 +43,14 @@
       --clr-dropdown-item-hover-bg-color: var(
         --clr-dropdown-bg-hover-color
       ); // #{tokens.$cds-alias-object-interaction-background-hover};
+
       --clr-dropdown-item-active-color: #{tokens.$cds-alias-object-interaction-color-active};
       --clr-dropdown-item-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
       --clr-dropdown-item-selected-color: #{tokens.$cds-alias-object-interaction-color-selected};
       --clr-dropdown-item-selected-bg-color: var(
         --clr-dropdown-selection-color
       ); // #{tokens.$cds-alias-object-interaction-background-selected};
+
       --clr-dropdown-item-selected-hover-bg-color: var(--cds-alias-object-interaction-background-selected-hover);
       --clr-dropdown-item-selected-active-bg-color: var(--cds-alias-object-interaction-background-selected-active);
       --clr-dropdown-item-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};

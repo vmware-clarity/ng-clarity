@@ -23,10 +23,10 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { commonStringsDefault } from '../../utils';
-import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
-import { ClrStandaloneCdkTrapFocus } from '../../utils/focus/focus-trap';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
+import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
+import { ClrStandaloneCdkTrapFocus } from '../../utils/focus/focus-trap';
 
 const createCloseButton = (document: Document, ariaLabel: string) => {
   ClarityIcons.addIcons(timesIcon);

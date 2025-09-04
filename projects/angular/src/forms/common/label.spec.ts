@@ -9,12 +9,12 @@ import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { ClrLabel } from './label';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrSignpostModule, ClrSignpostTrigger } from '../../popover';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrInput } from '../input/input';
 import { ClrInputContainer } from '../input/input-container';
-import { ClrLabel } from './label';
 import { ControlIdService } from './providers/control-id.service';
 import { ClrFormLayout, LayoutService } from './providers/layout.service';
 import { NgControlService } from './providers/ng-control.service';

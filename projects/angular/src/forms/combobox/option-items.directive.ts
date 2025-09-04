@@ -19,8 +19,8 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { OptionSelectionService } from './providers/option-selection.service';
+import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 
 @Directive({
   selector: '[clrOptionItems][clrOptionItemsOf]',

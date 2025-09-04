@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use '../../utils/a11y';
 @use '../../utils/mixins';
@@ -16,14 +17,12 @@
   #{$position}: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-width solid
     vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color;
 }
-
 @mixin vertical-nav-link-colors() {
   color: vertical-nav-variables.$clr-vertical-nav-item-color;
 
   &.active {
     color: vertical-nav-variables.$clr-vertical-nav-item-active-color;
     background-color: vertical-nav-variables.$clr-vertical-nav-selected-bg-color;
-
     position: relative;
 
     @include tabs.nav-link-border-appearence('left');
@@ -31,9 +30,11 @@
     .nav-icon {
       fill: vertical-nav-variables.$clr-vertical-nav-icon-active-color;
     }
+
     &:hover {
       background-color: vertical-nav-variables.$clr-vertical-nav-selected-hover-bg-color;
     }
+
     &:active {
       background-color: vertical-nav-variables.$clr-vertical-nav-selected-active-bg-color;
     }
@@ -44,6 +45,7 @@
     background-color: vertical-nav-variables.$clr-vertical-nav-hover-bg-color;
     text-decoration: none;
   }
+
   &:active {
     color: vertical-nav-variables.$clr-vertical-nav-active-color;
     background-color: vertical-nav-variables.$clr-vertical-nav-active-bg-color;
@@ -51,7 +53,6 @@
 }
 
 @include meta.load-css('properties.vertical-nav');
-
 @include mixins.exports('vertical-nav.clarity') {
   .clr-vertical-nav {
     //Display
@@ -78,8 +79,7 @@
       flex: 1 1 auto;
 
       //Others
-      overflow-y: auto;
-      overflow-x: hidden;
+      overflow: hidden auto;
     }
 
     .nav-group {
@@ -97,6 +97,7 @@
       display: flex;
 
       //Others
+
       @include vertical-nav-link-colors();
 
       .nav-link {
@@ -154,9 +155,11 @@
       cds-icon[shape='angle-double'],
       clr-icon[shape='angle-double'] {
         color: vertical-nav-variables.$clr-vertical-nav-toggle-icon-color;
+
         &:hover {
           color: vertical-nav-variables.$clr-vertical-nav-toggle-icon-hover-color;
         }
+
         &:active {
           color: vertical-nav-variables.$clr-vertical-nav-toggle-icon-active-color;
         }
@@ -169,6 +172,7 @@
           color: vertical-nav-variables.$clr-vertical-nav-toggle-icon-disabled-color;
         }
       }
+
       background-color: transparent;
       cursor: pointer;
       outline-offset: calc(-1 * #{mixins.baselinePx(5)});
@@ -233,6 +237,7 @@
 
     .nav-trigger + .nav-content {
       //Dims
+
       @include vertical-nav-divider();
     }
 
@@ -243,7 +248,9 @@
       padding: vertical-nav-variables.$clr-vertical-nav-item-padding;
 
       //Others
+
       @include mixins.generate-typography-token('BODY-14-RG-CPT');
+
       display: flex;
       align-items: center;
       outline-offset: calc(-1 * #{mixins.baselinePx(5)});
@@ -255,6 +262,7 @@
       //Display
       flex: 1 1 auto;
       //Mixins
+
       @include mixins.overflow-ellipsis();
     }
 
@@ -264,6 +272,7 @@
       text-decoration: none;
 
       //Others
+
       @include vertical-nav-link-colors();
     }
 
@@ -273,6 +282,7 @@
       min-height: vertical-nav-variables.$clr-vertical-nav-item-height;
 
       //Others
+
       @include mixins.generate-typography-token(
         'SECTION-12-SB-CPT',
         (
@@ -288,7 +298,9 @@
       align-self: center;
 
       //Dims
+
       @include mixins.min-equilateral(vertical-nav-variables.$clr-vertical-nav-icon-size);
+
       margin-right: density.$clr-base-gap-xs;
 
       //Others
@@ -373,15 +385,19 @@
       .nav-link.active ~ .nav-group-trigger {
         background-color: vertical-nav-variables.$clr-vertical-nav-selected-bg-color;
       }
+
       .nav-link:hover ~ .nav-group-trigger {
         background-color: vertical-nav-variables.$clr-vertical-nav-hover-bg-color;
       }
+
       .nav-link:active ~ .nav-group-trigger {
         background-color: vertical-nav-variables.$clr-vertical-nav-active-bg-color;
       }
+
       .nav-link.active:hover ~ .nav-group-trigger {
         background-color: vertical-nav-variables.$clr-vertical-nav-selected-hover-bg-color;
       }
+
       .nav-link.active:active ~ .nav-group-trigger {
         background-color: vertical-nav-variables.$clr-vertical-nav-selected-active-bg-color;
       }
@@ -392,7 +408,7 @@
       justify-content: center;
     }
 
-    .main-container:not([class*='open-overflow-menu']):not([class*='open-hamburger-menu']) &.is-collapsed {
+    .main-container:not([class*='open-overflow-menu'], [class*='open-hamburger-menu']) &.is-collapsed {
       //Dims
       width: vertical-nav-variables.$clr-vertical-nav-min-width;
       min-width: vertical-nav-variables.$clr-vertical-nav-min-width;
@@ -418,7 +434,8 @@
           //Display
           flex: 0 0
             calc(
-              #{vertical-nav-variables.$clr-vertical-nav-collapsed-caret-size} + #{vertical-nav-variables.$clr-vertical-nav-icon-right-margin}
+              #{vertical-nav-variables.$clr-vertical-nav-collapsed-caret-size} +
+                #{vertical-nav-variables.$clr-vertical-nav-icon-right-margin}
             );
 
           //Others
@@ -486,6 +503,7 @@
       .nav-trigger + .nav-content {
         //Dims
         border-top: 0;
+
         @include vertical-nav-divider('border-bottom');
       }
     }

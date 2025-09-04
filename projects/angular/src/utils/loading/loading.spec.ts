@@ -103,7 +103,7 @@ describe('Loading directive without listener', function () {
 @Component({
   template: `@if (displayed) {
     <div [clrLoading]="loading"></div>
-    }`,
+  }`,
   standalone: false,
 })
 class FullTest {

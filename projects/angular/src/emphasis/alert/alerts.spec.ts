@@ -342,13 +342,13 @@ class TestAlertInstance {
   template: `
     <clr-alerts>
       @for (alert of dynamicAlerts; track alert) {
-      <clr-alert [clrAlertType]="alert.type" [clrAlertAppLevel]="alert.isAppLevel">
-        <div class="alert-item">
-          <span class="alert-text">
-            {{ alert.text }}
-          </span>
-        </div>
-      </clr-alert>
+        <clr-alert [clrAlertType]="alert.type" [clrAlertAppLevel]="alert.isAppLevel">
+          <div class="alert-item">
+            <span class="alert-text">
+              {{ alert.text }}
+            </span>
+          </div>
+        </clr-alert>
       }
     </clr-alerts>
   `,

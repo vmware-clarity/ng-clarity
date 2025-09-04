@@ -36,14 +36,14 @@
 </div>
 
 <clr-datagrid>
-  @for (col of cols trackBy: colByIndex; track col) {
+  @for (col of cols; track colByIndex($index, col)) {
   <clr-dg-column>
     <ng-container>{{col.name}}</ng-container>
   </clr-dg-column>
   }
 
   <clr-dg-row *clrDgItems="let row of rows; trackBy: rowByIndex" [clrDgItem]="row">
-    @for (col of cols trackBy: colByIndex; track col) {
+    @for (col of cols; track colByIndex($index, col)) {
     <clr-dg-cell>{{row.cells[col.name]}}</clr-dg-cell>
     }
     <ng-container ngProjectAs="clr-dg-row-detail">

@@ -550,8 +550,9 @@ class PreFilterTest {
 @Component({
   template: `
     <clr-dg-column>
-      Column Title @if (show) {
-      <clr-dg-string-filter [(clrFilterValue)]="filterValue" [clrDgStringFilter]="filter"></clr-dg-string-filter>
+      Column Title
+      @if (show) {
+        <clr-dg-string-filter [(clrFilterValue)]="filterValue" [clrDgStringFilter]="filter"></clr-dg-string-filter>
       }
     </clr-dg-column>
   `,

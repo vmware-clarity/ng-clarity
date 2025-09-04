@@ -22,7 +22,11 @@ export class ClrModalBody implements OnDestroy {
   private unlisteners: VoidFunction[] = [];
   private observer: ResizeObserver;
 
-  constructor(private readonly renderer: Renderer2, private readonly host: ElementRef<HTMLElement>, ngZone: NgZone) {
+  constructor(
+    private readonly renderer: Renderer2,
+    private readonly host: ElementRef<HTMLElement>,
+    ngZone: NgZone
+  ) {
     ngZone.runOutsideAngular(() => {
       this.observer = new ResizeObserver(() => this.addOrRemoveTabIndex());
       this.observer.observe(host.nativeElement);

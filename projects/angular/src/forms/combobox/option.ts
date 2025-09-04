@@ -7,16 +7,16 @@
 
 import { Component, ElementRef, HostBinding, HostListener, Input, OnInit } from '@angular/core';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ComboboxFocusHandler, OptionData as OptionProxy } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 @Component({
   selector: 'clr-option',
   template: `
     <ng-content></ng-content>
     @if (selected) {
-    <span class="clr-sr-only">{{ commonStrings.keys.comboboxSelected }}</span>
+      <span class="clr-sr-only">{{ commonStrings.keys.comboboxSelected }}</span>
     }
   `,
   host: {

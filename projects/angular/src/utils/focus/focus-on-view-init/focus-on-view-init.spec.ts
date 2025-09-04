@@ -8,10 +8,10 @@
 import { ApplicationRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { expectActiveElementToBe } from '../../testing/helpers.spec';
 import { ClrFocusOnViewInit } from './focus-on-view-init';
 import { ClrFocusOnViewInitModule } from './focus-on-view-init.module';
 import { FOCUS_ON_VIEW_INIT } from './focus-on-view-init.provider';
+import { expectActiveElementToBe } from '../../testing/helpers.spec';
 
 const focusOnViewInitProvider = { provide: FOCUS_ON_VIEW_INIT, useValue: true };
 
@@ -19,17 +19,19 @@ const focusOnViewInitProvider = { provide: FOCUS_ON_VIEW_INIT, useValue: true };
   template: `
     <button #dummyButton>dummy button</button>
     @if (displayNoExistingTabindex) {
-    <div>
-      <h1 clrFocusOnViewInit>Title</h1>
-    </div>
-    } @if (displayExistingTabindex) {
-    <div>
-      <h1 clrFocusOnViewInit tabindex="5">Title</h1>
-    </div>
-    } @if (displayDisabled) {
-    <div>
-      <h1 [clrFocusOnViewInit]="false">Title</h1>
-    </div>
+      <div>
+        <h1 clrFocusOnViewInit>Title</h1>
+      </div>
+    }
+    @if (displayExistingTabindex) {
+      <div>
+        <h1 clrFocusOnViewInit tabindex="5">Title</h1>
+      </div>
+    }
+    @if (displayDisabled) {
+      <div>
+        <h1 [clrFocusOnViewInit]="false">Title</h1>
+      </div>
     }
   `,
   standalone: false,
@@ -48,9 +50,9 @@ class TestComponent {
   template: `
     <button #dummyButton>dummy button</button>
     @if (display) {
-    <div>
-      <h1 clrFocusOnViewInit>Title</h1>
-    </div>
+      <div>
+        <h1 clrFocusOnViewInit>Title</h1>
+      </div>
     }
   `,
   providers: [focusOnViewInitProvider],

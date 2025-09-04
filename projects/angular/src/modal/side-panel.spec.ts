@@ -6,14 +6,15 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '../utils/cdk/cdk-trap-focus.module';
-import { expectActiveElementToBe } from '../utils/testing/helpers.spec';
 import { ClrSidePanel } from './side-panel';
 import { ClrSidePanelModule } from './side-panel.module';
+import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '../utils/cdk/cdk-trap-focus.module';
+import { delay } from '../utils/testing/helpers.spec';
+import { expectActiveElementToBe } from '../utils/testing/helpers.spec';
 
 @Component({
   template: `
@@ -80,9 +81,9 @@ describe('Side Panel', () => {
     await fixture.whenStable();
   });
 
-  function flushAndExpectOpen(componentFixture: ComponentFixture<any>, open: boolean): void {
+  async function flushAndExpectOpen(componentFixture: ComponentFixture<any>, open: boolean) {
     componentFixture.detectChanges();
-    tick();
+    await delay();
 
     const text: string = componentFixture.nativeElement.textContent.trim();
     if (open) {
@@ -92,13 +93,13 @@ describe('Side Panel', () => {
     }
   }
 
-  it('projects content', fakeAsync(() => {
+  it('projects content', async () => {
     expect(compiled.textContent).toMatch(/Title/);
     expect(compiled.textContent).toMatch(/Body/);
     expect(compiled.textContent).toMatch(/Footer/);
-  }));
+  });
 
-  it('should set aria-hidden attribute to false if opened', fakeAsync(() => {
+  it('should set aria-hidden attribute to false if opened', async () => {
     fixture.componentInstance.opened = false;
     fixture.detectChanges();
     expect(compiled.querySelector('.modal-dialog')).toBeNull();
@@ -106,37 +107,37 @@ describe('Side Panel', () => {
     sidePanel.open();
     fixture.detectChanges();
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-hidden')).toBe('false');
-  }));
+  });
 
-  it('shows and hides the side panel based on the clrSidePanelOpen input', fakeAsync(() => {
+  it('shows and hides the side panel based on the clrSidePanelOpen input', async () => {
     fixture.componentInstance.opened = false;
-    flushAndExpectOpen(fixture, false);
+    await flushAndExpectOpen(fixture, false);
 
     fixture.componentInstance.opened = true;
-    flushAndExpectOpen(fixture, true);
-  }));
+    await flushAndExpectOpen(fixture, true);
+  });
 
-  it('exposes open() and close() methods', fakeAsync(() => {
+  it('exposes open() and close() methods', async () => {
     sidePanel.close();
-    flushAndExpectOpen(fixture, false);
+    await flushAndExpectOpen(fixture, false);
 
     sidePanel.open();
-    flushAndExpectOpen(fixture, true);
-  }));
+    await flushAndExpectOpen(fixture, true);
+  });
 
-  it('should not open if already opened', fakeAsync(() => {
+  it('should not open if already opened', async () => {
     spyOn(sidePanel.openChange, 'emit');
     sidePanel.open();
     expect(sidePanel.openChange.emit).not.toHaveBeenCalled();
-  }));
+  });
 
-  it('should not close when already closed', fakeAsync(() => {
+  it('should not close when already closed', async () => {
     fixture.componentInstance.opened = false;
     spyOn(sidePanel, 'close');
     expect(sidePanel.close).not.toHaveBeenCalled();
-  }));
+  });
 
-  it('should not throw an error when close is called on an already closed side panel', fakeAsync(() => {
+  it('should not throw an error when close is called on an already closed side panel', async () => {
     // Close the test side panel
     fixture.componentInstance.sidePanelInstance.close();
     fixture.detectChanges();
@@ -145,9 +146,9 @@ describe('Side Panel', () => {
       fixture.componentInstance.sidePanelInstance.close();
       fixture.detectChanges();
     }).not.toThrow();
-  }));
+  });
 
-  it('offers two-way binding on clrSidePanelOpen', fakeAsync(() => {
+  it('offers two-way binding on clrSidePanelOpen', async () => {
     expect(fixture.componentInstance.opened).toBe(true);
     sidePanel.close();
     fixture.detectChanges();
@@ -156,15 +157,15 @@ describe('Side Panel', () => {
 
     // todo: uncomment this after animation bug is fixed https://github.com/angular/angular/issues/15798
     // expect(fixture.componentInstance.opened).toBe(true);
-    tick();
+    await delay();
     expect(fixture.componentInstance.opened).toBe(false);
-  }));
+  });
 
-  it('focuses on the title when opened', fakeAsync(() => {
+  it('focuses on the title when opened', async () => {
     expectActiveElementToBe(fixture.nativeElement.querySelector('.modal-title-wrapper'));
-  }));
+  });
 
-  it('supports a clrSidePanelSize option', fakeAsync(() => {
+  it('supports a clrSidePanelSize option', async () => {
     expect(compiled.querySelector('.modal-sm')).toBeNull();
     expect(compiled.querySelector('.modal-lg')).toBeNull();
 
@@ -185,9 +186,9 @@ describe('Side Panel', () => {
 
     expect(compiled.querySelector('.modal-lg')).toBeNull();
     expect(compiled.querySelector('.modal-full-screen')).not.toBeNull();
-  }));
+  });
 
-  it('should be closed on backdrop click by default', fakeAsync(() => {
+  it('should be closed on backdrop click by default', async () => {
     const defaultsFixture = TestBed.createComponent(TestDefaultsComponent);
     defaultsFixture.detectChanges();
     compiled = defaultsFixture.nativeElement;
@@ -195,9 +196,9 @@ describe('Side Panel', () => {
     const backdrop: HTMLElement = compiled.querySelector('.modal-backdrop');
 
     backdrop.click();
-    flushAndExpectOpen(defaultsFixture, false);
+    await flushAndExpectOpen(defaultsFixture, false);
     defaultsFixture.destroy();
-  }));
+  });
 
   it('traps user focus', () => {
     fixture.detectChanges();
@@ -224,7 +225,7 @@ describe('Side Panel', () => {
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBeTruthy();
   });
 
-  it('should have text based boundaries for screen readers', fakeAsync(() => {
+  it('should have text based boundaries for screen readers', async () => {
     // MacOS + Voice Over does not properly isolate side panel content so
     // we must give screen reader users text based warnings when they
     // are entering and leaving side panel content.
@@ -233,9 +234,9 @@ describe('Side Panel', () => {
     const messages = compiled.querySelectorAll<HTMLElement>('.clr-sr-only');
     expect(messages[0].innerText).toBe('Beginning of Modal Content');
     expect(messages[1].innerText).toBe('End of Modal Content');
-  }));
+  });
 
-  it('renders the title before the close button', fakeAsync(() => {
+  it('renders the title before the close button', async () => {
     const modalHeader = compiled.querySelector('.modal-header--accessible');
     expect(modalHeader.children.length).toBeGreaterThanOrEqual(2);
 
@@ -243,5 +244,5 @@ describe('Side Panel', () => {
     const maybleCloseButton = modalHeader.children[1];
     expect(maybeTitleWrapper.classList.contains('modal-title-wrapper')).toBeTrue();
     expect(maybleCloseButton.classList.contains('close')).toBeTrue();
-  }));
+  });
 });

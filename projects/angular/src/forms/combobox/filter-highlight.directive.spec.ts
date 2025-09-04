@@ -7,9 +7,9 @@
 
 import { Component } from '@angular/core';
 
-import { TestContext } from '../../data/datagrid/helpers.spec';
 import { ClrFilterHighlight } from './filter-highlight.directive';
 import { OptionSelectionService } from './providers/option-selection.service';
+import { TestContext } from '../../data/datagrid/helpers.spec';
 
 @Component({
   template: `

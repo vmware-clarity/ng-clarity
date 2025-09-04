@@ -7,8 +7,8 @@
 
 import { Component, Input } from '@angular/core';
 
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { Page } from './providers/page';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Component({
   selector: 'clr-dg-page-size',
@@ -17,7 +17,7 @@ import { Page } from './providers/page';
     <div class="clr-select-wrapper">
       <select [id]="pageSizeOptionsId" [class.clr-page-size-select]="true" [(ngModel)]="page.size">
         @for (option of pageSizeOptions; track option) {
-        <option [ngValue]="option">{{ option }}</option>
+          <option [ngValue]="option">{{ option }}</option>
         }
       </select>
     </div>

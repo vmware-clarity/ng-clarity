@@ -113,15 +113,15 @@ export const globalTypes = {
   },
 };
 
-const themeDecorator = (story, { globals }) => {
-  const { theme } = globals;
+const themeDecorator = (story, { initialGlobals }) => {
+  const { theme } = initialGlobals;
 
   document.body.setAttribute(cdsThemeAttribute, theme);
 
   return story();
 };
-const densityDecorator = (story, { globals }) => {
-  const { density } = globals;
+const densityDecorator = (story, { initialGlobals }) => {
+  const { density } = initialGlobals;
   if (density === DENSITY.NONE) {
     document.body.removeAttribute(clrDensityAttribute);
   } else {

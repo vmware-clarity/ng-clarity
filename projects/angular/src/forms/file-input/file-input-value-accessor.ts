@@ -44,9 +44,7 @@ export class ClrFileInputValueAccessor implements ControlValueAccessor {
     this.onChange(this.elementRef.nativeElement.files);
   }
 
-  // eslint-disable-next-line  @typescript-eslint/no-empty-function
   private onChange = (_value: FileList) => {};
 
-  // eslint-disable-next-line  @typescript-eslint/no-empty-function
   private onTouched = () => {};
 }

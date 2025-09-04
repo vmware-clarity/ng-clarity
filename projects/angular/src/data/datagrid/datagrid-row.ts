@@ -25,11 +25,6 @@ import {
 } from '@angular/core';
 import { combineLatest, ReplaySubject, Subscription } from 'rxjs';
 
-import { ClrExpandableAnimationDirective } from '../../utils/animations/expandable-animation/expandable-animation.directive';
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { LoadingListener } from '../../utils/loading/loading-listener';
 import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
@@ -41,6 +36,11 @@ import { Items } from './providers/items';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
 import { WrappedRow } from './wrapped-row';
+import { ClrExpandableAnimationDirective } from '../../utils/animations/expandable-animation/expandable-animation.directive';
+import { IfExpandService } from '../../utils/conditional/if-expanded.service';
+import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { LoadingListener } from '../../utils/loading/loading-listener';
 
 let nbRow = 0;
 

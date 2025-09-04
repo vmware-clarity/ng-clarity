@@ -23,7 +23,6 @@ import {
 } from '@angular/cdk/scrolling';
 import {
   AfterViewInit,
-  VERSION as ANGULAR_VERSION,
   ChangeDetectorRef,
   Directive,
   DoCheck,
@@ -447,33 +446,22 @@ function createCdkVirtualForOfDirective<T>(
   virtualScrollViewport: CdkVirtualScrollViewport,
   ngZone: NgZone
 ) {
-  if (+ANGULAR_VERSION.major < 19) {
-    return new CdkVirtualForOf<T>(
-      viewContainerRef,
-      templateRef,
-      iterableDiffers,
-      viewRepeater,
-      virtualScrollViewport,
-      ngZone
-    );
-  } else {
-    const virtualScrollViewportInjector = Injector.create({
-      parent: inject(EnvironmentInjector),
-      providers: [{ provide: CdkVirtualScrollViewport, useValue: virtualScrollViewport }],
-    });
+  const virtualScrollViewportInjector = Injector.create({
+    parent: inject(EnvironmentInjector),
+    providers: [{ provide: CdkVirtualScrollViewport, useValue: virtualScrollViewport }],
+  });
 
-    const cdkVirtualForInjector = Injector.create({
-      parent: virtualScrollViewportInjector,
-      providers: [
-        { provide: ViewContainerRef, useValue: viewContainerRef },
-        { provide: TemplateRef, useValue: templateRef },
-        { provide: IterableDiffers, useValue: iterableDiffers },
-        { provide: _VIEW_REPEATER_STRATEGY, useValue: viewRepeater },
-        { provide: NgZone, useValue: ngZone },
-        { provide: CdkVirtualForOf, useClass: CdkVirtualForOf },
-      ],
-    });
+  const cdkVirtualForInjector = Injector.create({
+    parent: virtualScrollViewportInjector,
+    providers: [
+      { provide: ViewContainerRef, useValue: viewContainerRef },
+      { provide: TemplateRef, useValue: templateRef },
+      { provide: IterableDiffers, useValue: iterableDiffers },
+      { provide: _VIEW_REPEATER_STRATEGY, useValue: viewRepeater },
+      { provide: NgZone, useValue: ngZone },
+      { provide: CdkVirtualForOf, useClass: CdkVirtualForOf },
+    ],
+  });
 
-    return cdkVirtualForInjector.get(CdkVirtualForOf);
-  }
+  return cdkVirtualForInjector.get(CdkVirtualForOf);
 }

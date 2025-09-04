@@ -8,12 +8,12 @@
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils';
-import { Keys } from '../../utils/enums/keys.enum';
-import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { Keys } from '../../utils/enums/keys.enum';
+import { normalizeKey } from '../../utils/focus/key-focus/util';
 @Component({
   selector: 'clr-monthpicker',
   template: `
@@ -58,20 +58,20 @@ import { ViewManagerService } from './providers/view-manager.service';
     </div>
     <div class="months">
       @for (month of monthNames; track month; let monthIndex = $index) {
-      <button
-        type="button"
-        class="calendar-btn month"
-        (click)="changeMonth(monthIndex)"
-        [class.is-selected]="isSelected(monthIndex)"
-        [class.is-start-range]="getIsRangeStartMonth(monthIndex)"
-        [class.is-end-range]="getIsRangeEndMonth(monthIndex)"
-        [class.in-range]="isInRange(monthIndex)"
-        [attr.tabindex]="getTabIndex(monthIndex)"
-        [class.is-today]="calendarYear === currentCalendarYear && monthIndex === currentCalendarMonth"
-        (mouseenter)="onHover(monthIndex)"
-      >
-        {{ month }}
-      </button>
+        <button
+          type="button"
+          class="calendar-btn month"
+          (click)="changeMonth(monthIndex)"
+          [class.is-selected]="isSelected(monthIndex)"
+          [class.is-start-range]="getIsRangeStartMonth(monthIndex)"
+          [class.is-end-range]="getIsRangeEndMonth(monthIndex)"
+          [class.in-range]="isInRange(monthIndex)"
+          [attr.tabindex]="getTabIndex(monthIndex)"
+          [class.is-today]="calendarYear === currentCalendarYear && monthIndex === currentCalendarMonth"
+          (mouseenter)="onHover(monthIndex)"
+        >
+          {{ month }}
+        </button>
       }
     </div>
   `,

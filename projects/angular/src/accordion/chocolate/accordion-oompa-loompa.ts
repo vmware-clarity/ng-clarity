@@ -7,9 +7,9 @@
 
 import { ChangeDetectorRef, Directive, Optional } from '@angular/core';
 
+import { AccordionWillyWonka } from './accordion-willy-wonka';
 import { OompaLoompa } from '../../utils/chocolate/oompa-loompa';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { AccordionWillyWonka } from './accordion-willy-wonka';
 
 @Directive({
   selector: 'clr-accordion-panel',

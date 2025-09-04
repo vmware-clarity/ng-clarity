@@ -26,7 +26,9 @@ export class ClrFileInfo {}
 @Component({
   selector: 'clr-file-success',
   // We check for success here so that consumers don't have to.
-  template: `@if (context.success) {<ng-content></ng-content>}`,
+  template: `@if (context.success) {
+    <ng-content></ng-content>
+  }`,
   host: {
     '[style.display]': 'context.success ? "inline-block" : "none"',
     '[class.clr-subtext]': 'true',

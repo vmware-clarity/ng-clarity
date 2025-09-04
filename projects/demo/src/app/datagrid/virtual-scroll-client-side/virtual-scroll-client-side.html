@@ -44,7 +44,7 @@
   (clrDgCustomSelectAll)="toggleSelectAllRows($event)"
   style="height: 32rem"
 >
-  @for (col of cols trackBy: colByIndex; track col) {
+  @for (col of cols; track colByIndex($index, col)) {
   <clr-dg-column>
     <ng-container>{{col.name}}</ng-container>
   </clr-dg-column>
@@ -60,7 +60,7 @@
     (renderedRangeChange)="renderRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="row">
-      @for (col of cols trackBy: colByIndex; track col) {
+      @for (col of cols; track colByIndex($index, col)) {
       <clr-dg-cell>{{row.cells[col.name]}}</clr-dg-cell>
       }
       <ng-container ngProjectAs="clr-dg-row-detail">

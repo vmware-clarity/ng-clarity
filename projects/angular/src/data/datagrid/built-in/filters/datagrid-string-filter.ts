@@ -20,6 +20,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
 import { ClrCommonStringsService } from '../../../../utils/i18n/common-strings.service';
 import { ClrPopoverToggleService } from '../../../../utils/popover/providers/popover-toggle.service';
@@ -28,7 +29,6 @@ import { ClrDatagridStringFilterInterface } from '../../interfaces/string-filter
 import { CustomFilter } from '../../providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from '../../providers/filters';
 import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
-import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
 
 @Component({
   selector: 'clr-dg-string-filter',

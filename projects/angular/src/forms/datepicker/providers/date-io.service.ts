@@ -8,6 +8,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
+import { LocaleHelperService } from './locale-helper.service';
 import { DateRange, DateRangeOption } from '../interfaces/date-range.interface';
 import { DayModel } from '../model/day.model';
 import {
@@ -23,7 +24,6 @@ import {
   USER_INPUT_REGEX,
 } from '../utils/constants';
 import { getNumberOfDaysInTheMonth, parseToFourDigitYear } from '../utils/date-utils';
-import { LocaleHelperService } from './locale-helper.service';
 
 @Injectable()
 export class DateIOService {

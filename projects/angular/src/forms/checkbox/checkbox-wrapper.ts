@@ -8,9 +8,9 @@
 import { Component, ContentChild, forwardRef, Inject, InjectionToken, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
+import { ClrCheckbox } from './checkbox';
 import { ClrLabel } from '../common/label';
 import { ControlIdService } from '../common/providers/control-id.service';
-import { ClrCheckbox } from './checkbox';
 
 export const IS_TOGGLE = new InjectionToken<BehaviorSubject<boolean>>('IS_TOGGLE');
 export function isToggleFactory() {
@@ -24,7 +24,7 @@ export const IS_TOGGLE_PROVIDER = { provide: IS_TOGGLE, useFactory: isToggleFact
     <ng-content select="[clrCheckbox],[clrToggle]"></ng-content>
     <ng-content select="label"></ng-content>
     @if (!label) {
-    <label></label>
+      <label></label>
     }
   `,
   host: {

@@ -17,9 +17,9 @@ import {
   SkipSelf,
 } from '@angular/core';
 
+import { ClrStackViewLabel } from './stack-view-custom-tags';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrStackViewLabel } from './stack-view-custom-tags';
 
 @Component({
   selector: 'clr-stack-block',
@@ -42,7 +42,7 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
     >
       <cds-icon shape="angle" class="stack-block-caret" [attr.direction]="caretDirection"></cds-icon>
       @if (getChangedValue) {
-      <span class="clr-sr-only">{{ commonStrings.keys.stackViewChanged }}</span>
+        <span class="clr-sr-only">{{ commonStrings.keys.stackViewChanged }}</span>
       }
       <div class="stack-view-key">
         <!-- This structure changed to fix #3567 and the a11y request was to move away from dl's -->
@@ -56,14 +56,14 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
 
     <clr-expandable-animation [clrExpandTrigger]="expanded" class="stack-children">
       @if (expanded) {
-      <div
-        [style.height]="expanded ? 'auto' : 0"
-        role="region"
-        [attr.id]="getStackChildrenId()"
-        [attr.aria-labelledby]="labelledById"
-      >
-        <ng-content select="clr-stack-block"></ng-content>
-      </div>
+        <div
+          [style.height]="expanded ? 'auto' : 0"
+          role="region"
+          [attr.id]="getStackChildrenId()"
+          [attr.aria-labelledby]="labelledById"
+        >
+          <ng-content select="clr-stack-block"></ng-content>
+        </div>
       }
     </clr-expandable-animation>
   `,

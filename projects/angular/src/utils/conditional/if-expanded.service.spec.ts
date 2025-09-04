@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrLoadingState } from '../loading/loading';
 import { IfExpandService } from './if-expanded.service';
+import { ClrLoadingState } from '../loading/loading';
 
 export default function (): void {
   describe('Expand provider', function () {

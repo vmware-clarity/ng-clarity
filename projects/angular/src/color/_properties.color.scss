@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 
@@ -32,7 +33,6 @@
       --clr-color-neutral-800: #{variables.$clr-color-neutral-800};
       --clr-color-neutral-900: #{variables.$clr-color-neutral-900};
       --clr-color-neutral-1000: #{variables.$clr-color-neutral-1000};
-
       --clr-color-on-neutral-0: #{variables.$clr-color-on-neutral-0};
       --clr-color-on-neutral-50: #{variables.$clr-color-on-neutral-50};
       --clr-color-on-neutral-100: #{variables.$clr-color-on-neutral-100};
@@ -59,7 +59,6 @@
       --clr-color-action-800: #{variables.$clr-color-action-800};
       --clr-color-action-900: #{variables.$clr-color-action-900};
       --clr-color-action-1000: #{variables.$clr-color-action-1000};
-
       --clr-color-on-action-50: #{variables.$clr-color-on-action-50};
       --clr-color-on-action-100: #{variables.$clr-color-on-action-100};
       --clr-color-on-action-200: #{variables.$clr-color-on-action-200};
@@ -85,7 +84,6 @@
       --clr-color-secondary-action-800: #{variables.$clr-color-secondary-action-800};
       --clr-color-secondary-action-900: #{variables.$clr-color-secondary-action-900};
       --clr-color-secondary-action-1000: #{variables.$clr-color-secondary-action-1000};
-
       --clr-color-on-secondary-action-50: #{variables.$clr-color-on-secondary-action-50};
       --clr-color-on-secondary-action-100: #{variables.$clr-color-on-secondary-action-100};
       --clr-color-on-secondary-action-200: #{variables.$clr-color-on-secondary-action-200};
@@ -111,7 +109,6 @@
       --clr-color-danger-800: #{variables.$clr-color-danger-800};
       --clr-color-danger-900: #{variables.$clr-color-danger-900};
       --clr-color-danger-1000: #{variables.$clr-color-danger-1000};
-
       --clr-color-on-danger-50: #{variables.$clr-color-on-danger-50};
       --clr-color-on-danger-100: #{variables.$clr-color-on-danger-100};
       --clr-color-on-danger-200: #{variables.$clr-color-on-danger-200};
@@ -137,7 +134,6 @@
       --clr-color-warning-800: #{variables.$clr-color-warning-800};
       --clr-color-warning-900: #{variables.$clr-color-warning-900};
       --clr-color-warning-1000: #{variables.$clr-color-warning-1000};
-
       --clr-color-on-warning-50: #{variables.$clr-color-on-warning-50};
       --clr-color-on-warning-100: #{variables.$clr-color-on-warning-100};
       --clr-color-on-warning-200: #{variables.$clr-color-on-warning-200};
@@ -163,7 +159,6 @@
       --clr-color-success-800: #{variables.$clr-color-success-800};
       --clr-color-success-900: #{variables.$clr-color-success-900};
       --clr-color-success-1000: #{variables.$clr-color-success-1000};
-
       --clr-color-on-success-50: #{variables.$clr-color-on-success-50};
       --clr-color-on-success-100: #{variables.$clr-color-on-success-100};
       --clr-color-on-success-200: #{variables.$clr-color-on-success-200};

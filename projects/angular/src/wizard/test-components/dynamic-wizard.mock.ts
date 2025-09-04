@@ -18,12 +18,14 @@ import { ClrWizard } from '../wizard';
       <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
       <clr-wizard-button [type]="'finish'">Fait Accompli</clr-wizard-button>
 
-      @for (page of pages; track page) { @if (!(page === 2) || showSecondPage) {
-      <clr-wizard-page [id]="page">
-        <ng-template clrPageTitle>Page {{ page }}</ng-template>
-        <p>Content for page {{ page }}</p>
-      </clr-wizard-page>
-      } }
+      @for (page of pages; track page) {
+        @if (!(page === 2) || showSecondPage) {
+          <clr-wizard-page [id]="page">
+            <ng-template clrPageTitle>Page {{ page }}</ng-template>
+            <p>Content for page {{ page }}</p>
+          </clr-wizard-page>
+        }
+      }
     </clr-wizard>
   `,
   standalone: false,

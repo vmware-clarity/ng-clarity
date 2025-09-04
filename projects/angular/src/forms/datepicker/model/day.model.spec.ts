@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { assertEqualDates } from '../utils/test-utils';
 import { DayModel } from './day.model';
+import { assertEqualDates } from '../../../utils/testing/helpers.spec';
 
 export default function (): void {
   describe('DayModel', function () {
@@ -70,7 +70,7 @@ export default function (): void {
 
     it('provides a toDateString method that returns the local date string', () => {
       const testString = dayModel1.toDateString();
-      expect(testString).toEqual('Monday, January 1, 2018');
+      expect(testString).toEqual('Monday 1 January 2018');
     });
 
     it('provides a toComparisonString method to compare dates', () => {

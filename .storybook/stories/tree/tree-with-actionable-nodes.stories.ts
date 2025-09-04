@@ -20,7 +20,7 @@ export default {
   argTypes: {
     clrLazy: { control: { disable: true }, table: { disable: true } },
     active: {
-      control: 'inline-radio',
+      control: { type: 'inline-radio' },
       options: ['apples', 'oranges', 'pumpkins'],
     },
   },

@@ -14,7 +14,7 @@ import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribut
   template: `
     <progress [id]="id" [attr.max]="max" [attr.value]="value" [attr.data-displayval]="displayValue"></progress>
     @if (displayStringValue()) {
-    <span>{{ displayValue }}</span>
+      <span>{{ displayValue }}</span>
     }
   `,
   standalone: false,

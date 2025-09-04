@@ -7,8 +7,8 @@
 
 import { take } from 'rxjs/operators';
 
-import { AccordionStatus } from '../../enums/accordion-status.enum';
 import { StepperService } from './stepper.service';
+import { AccordionStatus } from '../../enums/accordion-status.enum';
 
 describe('StepperService', () => {
   let stepperService: StepperService;

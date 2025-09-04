@@ -6,17 +6,21 @@
  */
 
 import { Component, DebugElement } from '@angular/core';
-import { fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 import { BehaviorSubject } from 'rxjs';
 
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter } from '../../../utils/dom-adapter/dom-adapter.mock';
 import { ClrDatagrid } from '../datagrid';
 import { ClrDatagridColumnSeparator } from '../datagrid-column-separator';
+import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
+import { DatagridHeaderRenderer } from './header-renderer';
+import { DatagridRenderOrganizer } from './render-organizer';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { TestContext } from '../helpers.spec';
+import { MOCK_ORGANIZER_PROVIDER, MockDatagridRenderOrganizer } from './render-organizer.mock';
 import { ColumnState } from '../interfaces/column-state.interface';
 import { ColumnResizerService } from '../providers/column-resizer.service';
 import { ColumnsService } from '../providers/columns.service';
@@ -26,10 +30,6 @@ import { Page } from '../providers/page';
 import { Sort } from '../providers/sort';
 import { StateDebouncer } from '../providers/state-debouncer.provider';
 import { TableSizeService } from '../providers/table-size.service';
-import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
-import { DatagridHeaderRenderer } from './header-renderer';
-import { DatagridRenderOrganizer } from './render-organizer';
-import { MOCK_ORGANIZER_PROVIDER, MockDatagridRenderOrganizer } from './render-organizer.mock';
 
 @Component({
   template: `<clr-dg-column>Hello world</clr-dg-column>`,
@@ -178,11 +178,11 @@ export default function (): void {
       columnSeparator.hideTracker();
     };
 
-    beforeEach(fakeAsync(function () {
+    beforeEach(async function () {
       context = this.create(ClrDatagrid, HeaderResizeTestComponent);
 
       context.detectChanges();
-      tick();
+      await delay();
 
       columnHeader1DebugElement = context.fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[0];
       columnHeader2DebugElement = context.fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[1];
@@ -206,8 +206,7 @@ export default function (): void {
       columnHeader3ColumnSeparatorDebugElement = context.fixture.debugElement.queryAll(
         By.directive(ClrDatagridColumnSeparator)
       )[2];
-    }));
-
+    });
     it('each header should have min-width', function () {
       expect(columnHeader1ResizerService.minColumnWidth).toBe(96);
       expect(columnHeader2ResizerService.minColumnWidth).toBe(120);
@@ -229,12 +228,12 @@ export default function (): void {
       expect(column4InitialWidth).toBeGreaterThan(columnHeader4ResizerService.minColumnWidth);
     });
 
-    it('expands other flexible headers if header width shrinks', fakeAsync(function () {
+    it('expands other flexible headers if header width shrinks', async function () {
       const resizeBy = -20;
       emulateResizeOnColumn(resizeBy, columnHeader1ColumnSeparatorDebugElement.componentInstance);
 
       context.detectChanges();
-      tick();
+      await delay();
 
       expect(widthOf(columnHeader1Element)).toBe(column1InitialWidth + resizeBy);
       expect(widthOf(columnHeader2Element)).toBeGreaterThan(column2InitialWidth);
@@ -243,8 +242,7 @@ export default function (): void {
         `A strict width shouldn't change when other header's width changes`
       );
       expect(widthOf(columnHeader4Element)).toBeGreaterThan(column4InitialWidth);
-    }));
-
+    });
     it('resized header should have fixed width class', function () {
       expect(columnHeader1Element.classList.contains(STRICT_WIDTH_CLASS)).toBeFalse();
       const resizeBy = -20;
@@ -264,12 +262,12 @@ export default function (): void {
       expect(widthOf(columnHeader4Element)).toBeLessThan(column4InitialWidth);
     });
 
-    it("shouldn't shrink flexible headers below their min-width if header width expands by large amount", fakeAsync(function () {
+    it("shouldn't shrink flexible headers below their min-width if header width expands by large amount", async function () {
       const resizeBy = 1000;
       emulateResizeOnColumn(resizeBy, columnHeader1ColumnSeparatorDebugElement.componentInstance);
 
       context.detectChanges();
-      tick();
+      await delay();
 
       expect(widthOf(columnHeader1Element)).toBe(column1InitialWidth + resizeBy);
       expect(widthOf(columnHeader2Element)).toBe(120);
@@ -278,23 +276,22 @@ export default function (): void {
         `A strict width shouldn't change when other header's width changes`
       );
       expect(widthOf(columnHeader4Element)).toBe(96);
-    }));
-
+    });
     it('gives header its min-width if a user tried to drag too much to left', function () {
       const resizeBy = -1000;
       emulateResizeOnColumn(resizeBy, columnHeader1ColumnSeparatorDebugElement.componentInstance);
       expect(widthOf(columnHeader1Element)).toBe(96);
     });
 
-    it('emits new header width once resizing ends', fakeAsync(function () {
+    it('emits new header width once resizing ends', async function () {
       expect(context.testComponent.newWidth).toBeUndefined();
       const resizeBy = 20;
       emulateResizeOnColumn(resizeBy, columnHeader3ColumnSeparatorDebugElement.componentInstance);
 
       context.detectChanges();
-      tick();
+      await delay();
 
       expect(context.testComponent.newWidth).toBe(column3InitialWidth + resizeBy);
-    }));
+    });
   });
 }

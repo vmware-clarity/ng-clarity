@@ -22,8 +22,8 @@ import {
   loadTravelIconSet,
 } from '@cds/core/icon';
 
-import { environment } from '../environments/environment';
 import { APP_ROUTES } from './app.routing';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',

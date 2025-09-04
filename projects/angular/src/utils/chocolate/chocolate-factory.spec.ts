@@ -66,7 +66,7 @@ describe('Chocolate factory', function () {
   template: `
     <parent>
       @for (child of children; track child) {
-      <child></child>
+        <child></child>
       }
     </parent>
   `,
@@ -105,7 +105,10 @@ class ChocolateChild extends OompaLoompa implements OnInit, OnDestroy {
 
   private index: number;
 
-  constructor(cdr: ChangeDetectorRef, public parent: ChocolateParent) {
+  constructor(
+    cdr: ChangeDetectorRef,
+    public parent: ChocolateParent
+  ) {
     super(cdr, parent);
   }
 

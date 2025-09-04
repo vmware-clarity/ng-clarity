@@ -8,14 +8,14 @@
 import { Directive, ElementRef, EventEmitter, Inject, OnDestroy, Output, Renderer2 } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
+import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
+import { DatagridRenderOrganizer } from './render-organizer';
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnState } from '../interfaces/column-state.interface';
 import { ColumnResizerService } from '../providers/column-resizer.service';
 import { COLUMN_STATE, COLUMN_STATE_PROVIDER } from '../providers/column-state.provider';
 import { ColumnsService } from '../providers/columns.service';
-import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
-import { DatagridRenderOrganizer } from './render-organizer';
 
 @Directive({
   selector: 'clr-dg-column',

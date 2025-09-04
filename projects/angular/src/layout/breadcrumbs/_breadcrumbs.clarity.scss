@@ -10,8 +10,8 @@
 @use 'variables.breadcrumbs' as breadcrumb-variables;
 @use '../nav/variables.nav' as nav-variables;
 @use '../../utils/variables/variables.density' as density;
-@include meta.load-css('properties.breadcrumbs');
 
+@include meta.load-css('properties.breadcrumbs');
 @include mixins.exports('breadcrumbs.clarity') {
   .clr-breadcrumb-menu {
     display: flex;
@@ -23,6 +23,7 @@
       align-items: center;
       height: density.$clr-base-row-height-s;
       color: breadcrumb-variables.$clr-breadcrumb-active-color;
+
       @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
 
       a {
@@ -42,7 +43,7 @@
         }
       }
 
-      &:not(:last-child):after {
+      &:not(:last-child)::after {
         content: '/';
         margin: 0 breadcrumb-variables.$clr-breadcrumb-item-space;
       }
@@ -50,6 +51,7 @@
 
     .clr-breadcrumb-expand {
       @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+
       margin: 0;
       padding: 0;
       gap: 0;

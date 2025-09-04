@@ -39,7 +39,8 @@ export class ClrEndDateInput extends ClrDateInputBase {
     return this.dateNavigationService.selectedEndDayChange;
   }
 
-  ngOnInit() {
+  override ngOnInit() {
+    super.ngOnInit();
     this.subscriptions.push(this.dateIOService.maxDateChange.subscribe(() => this.triggerControlInputValidation()));
   }
 

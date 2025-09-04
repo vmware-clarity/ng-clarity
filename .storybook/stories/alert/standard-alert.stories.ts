@@ -9,8 +9,8 @@ import { ClrAlert, ClrAlertModule } from '@clr/angular';
 import { argsToTemplate, moduleMetadata, StoryContext, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
 
-import { CommonModules, removeFocusOutline } from '../../helpers/common';
 import { StandardAlertStorybookComponent } from './standard-alert.storybook.component';
+import { CommonModules, removeFocusOutline } from '../../helpers/common';
 
 export default {
   title: 'Alert/Standard Alerts',
@@ -24,28 +24,28 @@ export default {
     // inputs
     clrAlertIcon: {
       description: 'Changes the leading icon of an alert from the default icon to the icon cds-icon value specified.',
-      control: 'radio',
+      control: { type: 'radio' },
       options: ['Default', 'settings'],
       mapping: { Default: '' },
     },
     clrAlertLightweight: {
       description: 'Less prominent type of alert. Not compatible with `clrAlertClosable` or `clrAlertAppLevel`',
-      control: 'boolean',
+      control: { type: 'boolean' },
     },
     clrCloseButtonAriaLabel: {
       description:
         'Application level alert. Intended to be used at the top of an application for application wide alerts',
-      control: 'text',
+      control: { type: 'text' },
       if: { arg: 'clrAlertClosable', exists: false },
     },
     clrAlertClosable: {
       description: 'Adds a close button and allows the user to dismiss this alert',
-      control: 'boolean',
+      control: { type: 'boolean' },
       if: { arg: 'clrAlertLightweight', eq: false },
     },
     clrAlertSizeSmall: {
       description: 'Renders the alert in a compact, smaller view',
-      control: 'boolean',
+      control: { type: 'boolean' },
     },
     // outputs
     clrAlertClosedChange: { control: { disable: true } },

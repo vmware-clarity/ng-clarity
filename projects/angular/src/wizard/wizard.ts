@@ -28,7 +28,6 @@ import { filter } from 'rxjs/operators';
 
 import { ClrModal } from '../modal/modal';
 import { ClrCommonStringsService } from '../utils';
-import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ButtonHubService } from './providers/button-hub.service';
 import { HeaderActionService } from './providers/header-actions.service';
 import { PageCollectionService } from './providers/page-collection.service';
@@ -36,6 +35,7 @@ import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { ClrWizardHeaderAction } from './wizard-header-action';
 import { ClrWizardPage } from './wizard-page';
 import { ClrWizardTitle } from './wizard-title';
+import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 
 @Component({
   selector: 'clr-wizard',

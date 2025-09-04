@@ -6,10 +6,12 @@
  */
 
 import { Component } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 import { isObservable, Observable } from 'rxjs';
 
+import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './dropdown-focus-handler.service';
 import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
 import { FOCUS_SERVICE_PROVIDER, FocusService } from '../../../utils/focus/focus.service';
 import { FocusableItem } from '../../../utils/focus/focusable-item/focusable-item';
@@ -17,7 +19,6 @@ import { MockFocusableItem } from '../../../utils/focus/focusable-item/focusable
 import { Linkers } from '../../../utils/focus/focusable-item/linkers';
 import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../../utils/testing/helpers.spec';
-import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './dropdown-focus-handler.service';
 
 @Component({
   selector: 'simple-host',
@@ -76,23 +77,23 @@ export default function (): void {
         expect(this.fixture.debugElement.injector.get(FocusableItem, null)).toBe(this.focusHandler);
       });
 
-      it('toggles open when arrow up or down on the trigger', fakeAsync(function (this: TestContext) {
+      it('toggles open when arrow up or down on the trigger', async function (this: TestContext) {
         expect(this.toggleService.open).toBeFalsy();
         this.focusHandler.trigger = this.trigger;
 
         this.focusHandler.trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'arrowup' }));
-        tick();
+        await delay();
         expect(this.toggleService.open).toBeTruthy();
 
         //once open, the up/down arrow keys control the focus on menu items, so we close again for the next test
         this.toggleService.open = false;
-        tick();
+        await delay();
         expect(this.toggleService.open).toBeFalsy();
 
         this.focusHandler.trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'arrowdown' }));
-        tick();
+        await delay();
         expect(this.toggleService.open).toBeTruthy();
-      }));
+      });
 
       it('listens to arrow keys on the trigger', function (this: TestContext) {
         const spy = spyOn(this.focusService, 'listenToArrowKeys');
@@ -162,14 +163,14 @@ export default function (): void {
         expectActiveElementToBe(this.trigger);
       });
 
-      it('does not prevent moving focus to a different part of the page', fakeAsync(function (this: TestContext) {
+      it('does not prevent moving focus to a different part of the page', async function (this: TestContext) {
         this.focusHandler.trigger = this.trigger;
         this.focusHandler.container = this.container;
         this.toggleService.open = true;
-        tick();
+        await delay();
         this.outside.focus();
         expectActiveElementToBe(this.outside);
-      }));
+      });
 
       it('links received children vertically', function (this: TestContext) {
         const spy = spyOn(Linkers, 'linkVertical');
@@ -220,19 +221,19 @@ export default function (): void {
         expect(this.toggleService.open).toBeTruthy();
       });
 
-      it('moves to the first child when opened with a click', fakeAsync(function (this: TestContext) {
+      it('moves to the first child when opened with a click', async function (this: TestContext) {
         this.focusHandler.addChildren(this.children);
         const moveTo = spyOn(this.focusService, 'moveTo');
         const move = spyOn(this.focusService, 'move');
         this.toggleService.toggleWithEvent({});
-        tick();
+        await delay();
 
         // First we move to the clicked item, which is the trigger,
         expect(moveTo).toHaveBeenCalledWith(this.focusHandler);
         // then we move down to the first item,
         expect(move).toHaveBeenCalledWith(ArrowKeyDirection.DOWN);
         // but maybe that's too detailed for this unit test? It's just the easiest way to test it right now.
-      }));
+      });
     });
 
     describe('nested dropdown', function () {
@@ -269,14 +270,13 @@ export default function (): void {
         expect(spy).not.toHaveBeenCalled();
       });
 
-      it('does not focus on the container when the dropdown becomes open', fakeAsync(function (this: TestContext) {
+      it('does not focus on the container when the dropdown becomes open', async function (this: TestContext) {
         this.focusHandler.container = this.container;
         this.toggleService.open = true;
         // This specific focusing action is asynchronous so we have to tick
-        tick();
+        await delay();
         expectActiveElementNotToBe(this.container);
-      }));
-
+      });
       it('does not focus on the trigger when the dropdown becomes closed', function (this: TestContext) {
         this.focusHandler.trigger = this.trigger;
         this.focusHandler.container = this.container;
@@ -314,16 +314,16 @@ export default function (): void {
         expect(this.toggleService.open).toBeFalsy();
       });
 
-      it('moves to the first child when opened with a click', fakeAsync(function (this: TestContext) {
+      it('moves to the first child when opened with a click', async function (this: TestContext) {
         this.focusHandler.addChildren(this.children);
         const moveTo = spyOn(this.focusService, 'moveTo');
         const move = spyOn(this.focusService, 'move');
         this.toggleService.toggleWithEvent({});
-        tick();
+        await delay();
 
         expect(moveTo).toHaveBeenCalledWith(this.focusHandler);
         expect(move).toHaveBeenCalledWith(ArrowKeyDirection.RIGHT);
-      }));
+      });
     });
   });
 }

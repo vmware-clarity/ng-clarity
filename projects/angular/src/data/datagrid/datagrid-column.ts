@@ -25,8 +25,6 @@ import {
 import { Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils';
-import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
-import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
 import { DatagridNumericFilterImpl } from './built-in/filters/datagrid-numeric-filter-impl';
 import { DatagridPropertyNumericFilter } from './built-in/filters/datagrid-property-numeric-filter';
@@ -42,35 +40,38 @@ import { Sort } from './providers/sort';
 import { HIDDEN_COLUMN_CLASS } from './render/constants';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { WrappedColumn } from './wrapped-column';
+import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
+import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 
 @Component({
   selector: 'clr-dg-column',
   template: `
     <div class="datagrid-column-flex">
       @if (sortable) {
-      <button class="datagrid-column-title" (click)="sort()" type="button" #titleContainer>
-        <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
-        @if (sortDirection) {
-        <cds-icon shape="arrow" [attr.direction]="sortDirection" aria-hidden="true" class="sort-icon"></cds-icon>
-        }
-      </button>
+        <button class="datagrid-column-title" (click)="sort()" type="button" #titleContainer>
+          <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
+          @if (sortDirection) {
+            <cds-icon shape="arrow" [attr.direction]="sortDirection" aria-hidden="true" class="sort-icon"></cds-icon>
+          }
+        </button>
       }
       <!-- I'm really not happy with that select since it's not very scalable -->
       <ng-content select="clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter"></ng-content>
 
       @if (field && !customFilter && colType == 'string') {
-      <clr-dg-string-filter
-        [clrFilterPlaceholder]="filterStringPlaceholder"
-        [clrDgStringFilter]="registered"
-        [(clrFilterValue)]="filterValue"
-      ></clr-dg-string-filter>
-      } @if (field && !customFilter && colType == 'number') {
-      <clr-dg-numeric-filter
-        [clrFilterMaxPlaceholder]="filterNumberMaxPlaceholder"
-        [clrFilterMinPlaceholder]="filterNumberMinPlaceholder"
-        [clrDgNumericFilter]="registered"
-        [(clrFilterValue)]="filterValue"
-      ></clr-dg-numeric-filter>
+        <clr-dg-string-filter
+          [clrFilterPlaceholder]="filterStringPlaceholder"
+          [clrDgStringFilter]="registered"
+          [(clrFilterValue)]="filterValue"
+        ></clr-dg-string-filter>
+      }
+      @if (field && !customFilter && colType == 'number') {
+        <clr-dg-numeric-filter
+          [clrFilterMaxPlaceholder]="filterNumberMaxPlaceholder"
+          [clrFilterMinPlaceholder]="filterNumberMinPlaceholder"
+          [clrDgNumericFilter]="registered"
+          [(clrFilterValue)]="filterValue"
+        ></clr-dg-numeric-filter>
       }
 
       <ng-template #columnTitle>
@@ -78,11 +79,12 @@ import { WrappedColumn } from './wrapped-column';
       </ng-template>
 
       @if (!sortable) {
-      <span class="datagrid-column-title" #titleContainer>
-        <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
-      </span>
-      } @if (showSeparator) {
-      <clr-dg-column-separator></clr-dg-column-separator>
+        <span class="datagrid-column-title" #titleContainer>
+          <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
+        </span>
+      }
+      @if (showSeparator) {
+        <clr-dg-column-separator></clr-dg-column-separator>
       }
     </div>
   `,

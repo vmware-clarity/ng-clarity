@@ -65,8 +65,11 @@ export default function (): void {
 @Component({
   template: `
     <clr-dg-row-detail [clrDgReplace]="replace">
-      @if (!cell) { Hello world } @if (cell) {
-      <clr-dg-cell>This is a cell</clr-dg-cell>
+      @if (!cell) {
+        Hello world
+      }
+      @if (cell) {
+        <clr-dg-cell>This is a cell</clr-dg-cell>
       }
     </clr-dg-row-detail>
   `,

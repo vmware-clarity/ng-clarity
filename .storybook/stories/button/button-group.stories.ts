@@ -15,8 +15,8 @@ import {
 import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
-import { BUTTON_STYLES, BUTTON_TYPES } from '../../helpers/button-class.helper';
 import { ButtonGroupStorybookComponent } from './button-group.storybook.component';
+import { BUTTON_STYLES, BUTTON_TYPES } from '../../helpers/button-class.helper';
 
 export default {
   title: 'Button/Button Group',
@@ -28,7 +28,7 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrMenuPosition: { control: 'radio', options: CLR_MENU_POSITIONS },
+    clrMenuPosition: { control: { type: 'radio' }, options: CLR_MENU_POSITIONS },
     // methods
     getMoveIndex: { control: { disable: true }, table: { disable: true } },
     initializeButtons: { control: { disable: true }, table: { disable: true } },
@@ -39,8 +39,8 @@ export default {
       description: 'Enter JSON array (e.g. `[2,3]`)',
       control: { type: 'array' },
     },
-    buttonStyle: { control: 'radio', options: BUTTON_STYLES },
-    buttonType: { control: 'radio', options: BUTTON_TYPES },
+    buttonStyle: { control: { type: 'radio' }, options: BUTTON_STYLES },
+    buttonType: { control: { type: 'radio' }, options: BUTTON_TYPES },
     templateMode: { control: { disable: true }, table: { disable: true } },
   },
   args: {

@@ -8,54 +8,54 @@
 import { AfterViewInit, Component, ElementRef, Input, Optional, Renderer2, ViewChild } from '@angular/core';
 import { startWith } from 'rxjs/operators';
 
+import { DayModel } from './model/day.model';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { FocusService } from '../common/providers/focus.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
-import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { ControlClassService } from '../common/providers/control-class.service';
+import { ControlIdService } from '../common/providers/control-id.service';
+import { FocusService } from '../common/providers/focus.service';
+import { LayoutService } from '../common/providers/layout.service';
+import { NgControlService } from '../common/providers/ng-control.service';
 
 @Component({
   selector: 'clr-date-container, clr-date-range-container',
   template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
-    <label></label>
+      <label></label>
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper" clrPopoverAnchor>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <!-- render range inputs only if using clr-date-range-container -->
           @if (isRangePicker) {
-          <ng-content select="[clrStartDate]"></ng-content>
-          <span class="date-range-separator">-</span>
-          <ng-content select="[clrEndDate]"></ng-content>
+            <ng-content select="[clrStartDate]"></ng-content>
+            <span class="date-range-separator">-</span>
+            <ng-content select="[clrEndDate]"></ng-content>
           }
           <!-- no *ngIf for the singe-date input because it breaks the "auto-wrapped" date picker -->
           <ng-content select="[clrDate]"></ng-content>
           @if (isEnabled) {
-          <button
-            #actionButton
-            type="button"
-            clrPopoverOpenCloseButton
-            class="clr-input-group-icon-action"
-            [disabled]="isInputDateDisabled"
-          >
-            <cds-icon status="info" shape="calendar"></cds-icon>
-          </button>
+            <button
+              #actionButton
+              type="button"
+              clrPopoverOpenCloseButton
+              class="clr-input-group-icon-action"
+              [disabled]="isInputDateDisabled"
+            >
+              <cds-icon status="info" shape="calendar"></cds-icon>
+            </button>
           }
           <clr-datepicker-view-manager
             *clrPopoverContent="open; at: popoverPosition; outsideClickToClose: true; scrollToClose: true"
@@ -63,17 +63,20 @@ import { ViewManagerService } from './providers/view-manager.service';
           ></clr-datepicker-view-manager>
         </div>
         @if (showInvalid) {
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        } @if (showValid) {
-        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
+          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
+        }
+        @if (showValid) {
+          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
         }
       </div>
       @if (showHelper) {
-      <ng-content select="clr-control-helper"></ng-content>
-      } @if (showInvalid) {
-      <ng-content select="clr-control-error"></ng-content>
-      } @if (showValid) {
-      <ng-content select="clr-control-success"></ng-content>
+        <ng-content select="clr-control-helper"></ng-content>
+      }
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
   `,

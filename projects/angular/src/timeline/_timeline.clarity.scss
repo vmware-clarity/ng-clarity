@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use '../utils/mixins';
 @use 'variables.timeline' as timeline-variables;
@@ -11,7 +12,6 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.timeline');
-
 @include mixins.exports('timeline.clarity') {
   .clr-timeline {
     display: flex;
@@ -65,12 +65,14 @@
       background: timeline-variables.$clr-timeline-line-color;
       height: timeline-variables.$clr-timeline-line-thickness;
       width: calc(100% - timeline-variables.$clr-timeline-icon-size);
-
       transform: translate(
         timeline-variables.$clr-timeline-icon-size,
         calc(
-          -0.5 * ((timeline-variables.$clr-timeline-step-internal-spacing * 2) +
-                timeline-variables.$clr-timeline-line-thickness + timeline-variables.$clr-timeline-icon-size)
+          -0.5 *
+            (
+              (timeline-variables.$clr-timeline-step-internal-spacing * 2) +
+                timeline-variables.$clr-timeline-line-thickness + timeline-variables.$clr-timeline-icon-size
+            )
         )
       );
     }
@@ -88,13 +90,16 @@
   .clr-timeline-step-body {
     display: flex;
     flex-direction: column;
+
     cds-icon,
     clr-icon {
       &:not([size]) {
         @include mixins.equilateral(timeline-variables.$clr-timeline-default-icon-size);
       }
+
       min-width: initial;
       min-height: initial;
+
       &[shape='circle'],
       &[shape='dot-circle'],
       &[shape='success-standard'],
@@ -125,6 +130,7 @@
       display: block;
       margin-top: density.$clr-base-gap-s;
     }
+
     img {
       width: 100%;
       margin-top: density.$clr-base-vertical-offset-m;
@@ -151,10 +157,10 @@
         height: calc(
           100% - (timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-step-internal-spacing)
         );
-
         transform: translate(
           calc(
-            -0.5 * (timeline-variables.$clr-timeline-icon-size + timeline-variables.$clr-timeline-line-thickness) - timeline-variables.$clr-timeline-step-internal-spacing
+            -0.5 * (timeline-variables.$clr-timeline-icon-size + timeline-variables.$clr-timeline-line-thickness) -
+              timeline-variables.$clr-timeline-step-internal-spacing
           ),
           calc(
             (-1 * timeline-variables.$clr-timeline-step-internal-spacing) + timeline-variables.$clr-timeline-icon-size
@@ -166,7 +172,8 @@
     .clr-timeline-step-header {
       text-align: right;
       white-space: normal;
-      word-break: break-word;
+      overflow-wrap: anywhere;
+      word-break: normal;
       width: mixins.baselinePx(60);
       min-width: mixins.baselinePx(60);
       margin: timeline-variables.$clr-timeline-step-internal-spacing 0 0 0;

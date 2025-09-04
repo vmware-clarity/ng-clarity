@@ -4,9 +4,8 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../../../../angular/src/utils/mixins';
-@import '../../../../angular/src/utils/variables/variables.color';
-@import '../../../../angular/src/utils/variables/variables.global';
 
 $full-lh-block-width: var(--cds-global-space-11);
 $ruler-highlight-width: calc($full-lh-block-width * 0.25);
@@ -21,10 +20,7 @@ $ruler-highlight-width: calc($full-lh-block-width * 0.25);
 
 .line-height-container {
   position: absolute;
-  left: 0;
-  top: 0;
-  right: auto;
-  bottom: 0;
+  inset: 0 auto 0 0;
   background-color: var(--clr-color-action-900, #{$clr-color-action-900});
   width: $full-lh-block-width;
 }

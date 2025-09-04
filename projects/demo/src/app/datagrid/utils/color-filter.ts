@@ -15,12 +15,12 @@ import { COLORS } from '../inventory/values';
   selector: 'clr-datagrid-color-filter-demo',
   template: `
     @for (color of allColors; track color) {
-    <span
-      class="color-square color-selectable"
-      (click)="toggleColor(color)"
-      [style.backgroundColor]="color"
-      [class.color-selected]="selectedColors[color]"
-    ></span>
+      <span
+        class="color-square color-selectable"
+        (click)="toggleColor(color)"
+        [style.backgroundColor]="color"
+        [class.color-selected]="selectedColors[color]"
+      ></span>
     }
   `,
   styleUrls: ['../datagrid.demo.scss'],

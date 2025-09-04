@@ -7,9 +7,9 @@
 
 import { Directive, Optional, TemplateRef, ViewContainerRef } from '@angular/core';
 
-import { NgControlService } from '../providers/ng-control.service';
 import { AbstractIfState } from './abstract-if-state';
 import { CONTROL_STATE, IfControlStateService } from './if-control-state.service';
+import { NgControlService } from '../providers/ng-control.service';
 
 @Directive({
   selector: '[clrIfSuccess]',

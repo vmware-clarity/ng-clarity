@@ -8,6 +8,10 @@
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { columnToggleTrackByFn } from './datagrid-column-toggle-trackby';
+import { DatagridColumnChanges } from './enums/column-changes.enum';
+import { ColumnState } from './interfaces/column-state.interface';
+import { ColumnsService } from './providers/columns.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
@@ -16,10 +20,6 @@ import { ClrSide } from '../../utils/popover/enums/side.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { columnToggleTrackByFn } from './datagrid-column-toggle-trackby';
-import { DatagridColumnChanges } from './enums/column-changes.enum';
-import { ColumnState } from './interfaces/column-state.interface';
-import { ColumnsService } from './providers/columns.service';
 
 @Component({
   selector: 'clr-dg-column-toggle',
@@ -27,7 +27,7 @@ import { ColumnsService } from './providers/columns.service';
     <button
       role="button"
       type="button"
-      class="btn btn-sm column-toggle--action"
+      class="btn btn-sm column-toggle-action"
       clrPopoverAnchor
       clrPopoverOpenCloseButton
       [attr.aria-controls]="popoverId"
@@ -59,20 +59,20 @@ import { ColumnsService } from './providers/columns.service';
       </div>
       <ul class="switch-content list-unstyled">
         @for (columnState of hideableColumnStates; track trackByFn($index, columnState)) {
-        <li>
-          <clr-checkbox-wrapper>
-            <input
-              clrCheckbox
-              type="checkbox"
-              [disabled]="hasOnlyOneVisibleColumn && !columnState.hidden"
-              [ngModel]="!columnState.hidden"
-              (ngModelChange)="toggleColumnState(columnState, !$event)"
-            />
-            <label>
-              <ng-template [ngTemplateOutlet]="columnState.titleTemplateRef"></ng-template>
-            </label>
-          </clr-checkbox-wrapper>
-        </li>
+          <li>
+            <clr-checkbox-wrapper>
+              <input
+                clrCheckbox
+                type="checkbox"
+                [disabled]="hasOnlyOneVisibleColumn && !columnState.hidden"
+                [ngModel]="!columnState.hidden"
+                (ngModelChange)="toggleColumnState(columnState, !$event)"
+              />
+              <label>
+                <ng-template [ngTemplateOutlet]="columnState.titleTemplateRef"></ng-template>
+              </label>
+            </clr-checkbox-wrapper>
+          </li>
         }
       </ul>
       <div class="switch-footer">

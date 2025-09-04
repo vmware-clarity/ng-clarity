@@ -7,11 +7,11 @@
 
 import { Component } from '@angular/core';
 
-import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownItem } from './dropdown-item';
 import { ROOT_DROPDOWN_PROVIDER } from './providers/dropdown.service';
+import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `<button clrDropdownItem [disabled]="disabledDeprecated" [clrDisabled]="disabled">Hello world</button>`,

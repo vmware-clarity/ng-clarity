@@ -27,13 +27,11 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
         [attr.id]="id"
       >
         @if (loading) {
-        <span class="spinner spinner-inline"></span>
-        } @if (inMenu) {
-        <span class="dropdown-item-content">
-          <ng-container [ngTemplateOutlet]="defaultTemplate"></ng-container>
-        </span>
+          <span class="spinner spinner-inline"></span>
+        } @else if (inMenu) {
+          <ng-container [ngTemplateOutlet]="inMenuTemplate"></ng-container>
         } @else {
-        <ng-content></ng-content>
+          <ng-container [ngTemplateOutlet]="defaultTemplate"></ng-container>
         }
       </button>
     </ng-template>

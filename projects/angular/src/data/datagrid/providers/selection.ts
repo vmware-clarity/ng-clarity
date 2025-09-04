@@ -9,9 +9,9 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { SelectionType } from '../enums/selection-type';
 import { FiltersProvider } from './filters';
 import { Items } from './items';
+import { SelectionType } from '../enums/selection-type';
 
 let nbSelection = 0;
 
@@ -59,7 +59,10 @@ export class Selection<T = any> {
    */
   private subscriptions: Subscription[] = [];
 
-  constructor(private _items: Items<T>, filters: FiltersProvider<T>) {
+  constructor(
+    private _items: Items<T>,
+    filters: FiltersProvider<T>
+  ) {
     this.id = 'clr-dg-selection' + nbSelection++;
 
     this.subscriptions.push(

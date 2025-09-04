@@ -10,13 +10,13 @@ import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { angleIcon, ClarityIcons } from '@cds/core/icon';
 
-import { ClrIconModule } from '../../icon/icon.module';
-import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
 import { ClrStackBlock } from './stack-block';
 import { ClrStackContentInput } from './stack-content-input';
 import { ClrStackHeader } from './stack-header';
 import { ClrStackView } from './stack-view';
 import { ClrStackViewCustomTags, ClrStackViewLabel } from './stack-view-custom-tags';
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
 
 export const CLR_STACK_VIEW_DIRECTIVES: Type<any>[] = [
   ClrStackView,

@@ -5,8 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import '../_utils/clarity-variables';
-
 .example-margin-bottom {
   margin-bottom: var(--cds-global-space-9);
 }
@@ -26,8 +24,7 @@
   margin: 0;
   max-height: calc(10 * var(--cds-global-space-12)); // 480px
   height: calc(10 * var(--cds-global-space-12)); // 480px
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto;
 }
 
 .christmas ::ng-deep {
@@ -35,23 +32,26 @@
   .clr-treenode-children > .clr-tree-node {
     &:nth-child(even) {
       input[type='checkbox']:checked + label::before {
-        background-color: hsl(98, 83%, 30%);
+        background-color: hsl(98deg 83% 30%);
       }
+
       input[type='checkbox']:indeterminate + label {
         &::before,
         &::after {
-          border-color: hsl(98, 83%, 30%);
+          border-color: hsl(98deg 83% 30%);
         }
       }
     }
+
     &:nth-child(odd) {
       input[type='checkbox']:checked + label::before {
-        background-color: hsl(359, 71%, 49%);
+        background-color: hsl(359deg 71% 49%);
       }
+
       input[type='checkbox']:indeterminate + label {
         &::before,
         &::after {
-          border-color: hsl(359, 71%, 49%);
+          border-color: hsl(359deg 71% 49%);
         }
       }
     }

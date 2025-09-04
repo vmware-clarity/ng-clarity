@@ -15,9 +15,9 @@ import { PageCollectionService } from './providers/page-collection.service';
     <nav [attr.aria-label]="label">
       <ol class="clr-wizard-stepnav-list">
         @for (page of pageService.pages; track page; let i = $index) {
-        <li clr-wizard-stepnav-item [page]="page" class="clr-wizard-stepnav-item">
-          {{ i + 1 }}
-        </li>
+          <li clr-wizard-stepnav-item [page]="page" class="clr-wizard-stepnav-item">
+            {{ i + 1 }}
+          </li>
         }
       </ol>
     </nav>

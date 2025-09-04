@@ -7,8 +7,8 @@
 
 import { Component, EmbeddedViewRef, Inject, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 
-import { IF_ACTIVE_ID, IfActiveService } from '../../utils/conditional/if-active.service';
 import { TabsService } from './providers/tabs.service';
+import { IF_ACTIVE_ID, IfActiveService } from '../../utils/conditional/if-active.service';
 
 let nbTabContentComponents = 0;
 

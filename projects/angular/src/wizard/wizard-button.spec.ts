@@ -20,14 +20,14 @@ import { ClrWizardModule } from './wizard.module';
 @Component({
   template: `
     @if (show) {
-    <clr-wizard-button
-      [type]="btnType"
-      [clrWizardButtonDisabled]="disableBtn"
-      [clrWizardButtonHidden]="hideBtn"
-      (clrWizardButtonClicked)="doClick($event)"
-    >
-      hello {{ projector }}
-    </clr-wizard-button>
+      <clr-wizard-button
+        [type]="btnType"
+        [clrWizardButtonDisabled]="disableBtn"
+        [clrWizardButtonHidden]="hideBtn"
+        (clrWizardButtonClicked)="doClick($event)"
+      >
+        hello {{ projector }}
+      </clr-wizard-button>
     }
   `,
   standalone: false,

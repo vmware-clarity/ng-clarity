@@ -29,7 +29,7 @@ import { AccordionService } from './providers/accordion.service';
       >
         <clr-accordion-title>title</clr-accordion-title>
         @if (showDescription) {
-        <clr-accordion-description>description</clr-accordion-description>
+          <clr-accordion-description>description</clr-accordion-description>
         }
         <clr-accordion-content>panel</clr-accordion-content>
       </clr-accordion-panel>

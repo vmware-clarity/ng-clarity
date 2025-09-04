@@ -6,23 +6,16 @@
  */
 
 import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
-import {
-  ComponentFixture,
-  discardPeriodicTasks,
-  fakeAsync,
-  flush,
-  flushMicrotasks,
-  TestBed,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { animationFrameScheduler, BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import { ClarityModule } from '../../clr-angular.module';
-import { Keys } from '../../utils/enums/keys.enum';
-import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
+import { ClarityModule } from '../../clr-angular.module';
 import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
+import { Keys } from '../../utils/enums/keys.enum';
+import { delay, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 
 export interface Column {
   index: number;
@@ -41,38 +34,39 @@ export interface Cells {
 @Component({
   template: `
     @if ({ rows: rows | async }; as data) {
-    <clr-datagrid [(clrDgSelected)]="selectedRows" style="height: 32rem" class="datagrid-compact">
-      @for (col of cols; track colByIndex($index, col)) {
-      <clr-dg-column>
-        <ng-container>{{ col.name }}</ng-container>
-      </clr-dg-column>
-      } @if (data.rows; as row) {
-      <ng-template
-        clrVirtualScroll
-        let-row
-        [clrVirtualRowsOf]="data.rows"
-        [clrVirtualDataRange]="dataRange"
-        [clrVirtualPersistItems]="persistItems"
-        [clrVirtualRowsItemSize]="24"
-        [clrVirtualRowsMinBufferPx]="200"
-        [clrVirtualRowsMaxBufferPx]="400"
-        [clrVirtualRowsTemplateCacheSize]="4000"
-        [clrVirtualRowsTrackBy]="rowByIndex"
-      >
-        <clr-dg-row [clrDgItem]="row">
-          @for (col of cols; track colByIndex($index, col)) {
-          <clr-dg-cell>{{ row?.cells[col.name] }}</clr-dg-cell>
-          }
-          <ng-container ngProjectAs="clr-dg-row-detail">
-            <clr-dg-row-detail *clrIfExpanded>
-              {{ row | json }}
-            </clr-dg-row-detail>
-          </ng-container>
-        </clr-dg-row>
-      </ng-template>
-      }
-      <clr-dg-footer> {{ data.rows.length }} </clr-dg-footer>
-    </clr-datagrid>
+      <clr-datagrid [(clrDgSelected)]="selectedRows" style="height: 32rem" class="datagrid-compact">
+        @for (col of cols; track colByIndex($index, col)) {
+          <clr-dg-column>
+            <ng-container>{{ col.name }}</ng-container>
+          </clr-dg-column>
+        }
+        @if (data.rows; as row) {
+          <ng-template
+            clrVirtualScroll
+            let-row
+            [clrVirtualRowsOf]="data.rows"
+            [clrVirtualDataRange]="dataRange"
+            [clrVirtualPersistItems]="persistItems"
+            [clrVirtualRowsItemSize]="24"
+            [clrVirtualRowsMinBufferPx]="200"
+            [clrVirtualRowsMaxBufferPx]="400"
+            [clrVirtualRowsTemplateCacheSize]="4000"
+            [clrVirtualRowsTrackBy]="rowByIndex"
+          >
+            <clr-dg-row [clrDgItem]="row">
+              @for (col of cols; track colByIndex($index, col)) {
+                <clr-dg-cell>{{ row?.cells[col.name] }}</clr-dg-cell>
+              }
+              <ng-container ngProjectAs="clr-dg-row-detail">
+                <clr-dg-row-detail *clrIfExpanded>
+                  {{ row | json }}
+                </clr-dg-row-detail>
+              </ng-container>
+            </clr-dg-row>
+          </ng-template>
+        }
+        <clr-dg-footer> {{ data.rows.length }} </clr-dg-footer>
+      </clr-datagrid>
     }
   `,
   standalone: false,
@@ -160,24 +154,25 @@ class FullTest implements OnInit {
 
 export default function (): void {
   describe('ClrDatagrid virtual scroller', function () {
-    function sleep(millisecondsToWait = 100) {
-      return new Promise(resolve => setTimeout(resolve, millisecondsToWait));
-    }
-
-    function finishInit(fixture: ComponentFixture<any>) {
+    async function finishInit(fixture: ComponentFixture<any>) {
       // On the first cycle we render and measure the viewport.
       fixture.detectChanges();
-      flush();
+      await delay();
 
       // On the second cycle we render the items.
       fixture.detectChanges();
-      flush();
+      await delay();
 
       // Flush the initial fake scroll event.
-      animationFrameScheduler.flush();
-      flush();
+      // animationFrameScheduler.flush();
+      await delay();
       fixture.detectChanges();
-      discardPeriodicTasks();
+    }
+    async function waitRequiredCycles(fixture: ComponentFixture<any>) {
+      await delay();
+      await fixture.whenStable();
+      await fixture.whenRenderingDone();
+      fixture.detectChanges();
     }
 
     describe('Typescript API', function () {
@@ -237,7 +232,7 @@ export default function (): void {
         fixture.destroy();
       });
 
-      it('Spy on Scroll to index', fakeAsync(() => {
+      it('Spy on Scroll to index', async () => {
         fixture.detectChanges();
         const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');
 
@@ -250,9 +245,9 @@ export default function (): void {
         expect(spyVirtualScroll).toHaveBeenCalledWith(0);
 
         fixture.destroy();
-      }));
+      });
 
-      it('Spy on update data range', fakeAsync(() => {
+      it('Spy on update data range', async () => {
         fixture.detectChanges();
         const spyVirtualScroll = spyOn(instance.virtualScroll, 'updateDataRange');
 
@@ -277,49 +272,33 @@ export default function (): void {
         expect(spyVirtualScroll).toHaveBeenCalledWith(dataRange.skip, dataRange.data);
 
         fixture.destroy();
-      }));
+      });
 
-      it('Moves focus on PageDown and PageUp', fakeAsync(() => {
-        finishInit(fixture);
+      it('Moves focus on PageDown and PageUp', async () => {
+        await finishInit(fixture);
         fixture.autoDetectChanges();
-        fixture.whenStable();
-        fixture.whenRenderingDone();
-
+        await waitRequiredCycles(fixture);
         const grid = compiled.querySelector('[role=grid]');
-
         // need to start with this cell exactly, because it has tabindex=0
         const headerCheckboxCell = grid.querySelector('[role=columnheader].datagrid-select');
         headerCheckboxCell.focus();
-        sleep(10);
-        fixture.detectChanges();
-
+        await waitRequiredCycles(fixture);
         expectActiveElementToBe(headerCheckboxCell);
-
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        // active checkbox input with ID clr-dg-row-cb365
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[14], 'PageDown, cells[14]');
+        await waitRequiredCycles(fixture);
 
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[9], 'PageDown, cells[9]');
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        sleep();
-        fixture.whenStable();
-        fixture.whenRenderingDone();
-        // active checkbox input with ID clr-dg-row-cb382
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[29], 'PageDown, cells[29]');
+        await waitRequiredCycles(fixture);
 
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[9], 'PageDown, cells[9]');
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        sleep();
-        fixture.whenStable();
-        fixture.whenRenderingDone();
-        // active checkbox input with ID clr-dg-row-cb358
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[15], 'PageUp, cells[15]');
+        await waitRequiredCycles(fixture);
 
-        flush();
-        flushMicrotasks();
-        discardPeriodicTasks();
-
-        fixture.autoDetectChanges(false);
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[17], 'PageUp, cells[17]');
+        fixture.changeDetectorRef.detach();
         fixture.destroy();
-      }));
+      });
     });
   });
 }

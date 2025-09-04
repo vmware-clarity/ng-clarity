@@ -8,9 +8,9 @@
 import { AfterContentInit, ContentChildren, Directive, OnDestroy, QueryList } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ColumnsService } from '../providers/columns.service';
 import { DatagridCellRenderer } from './cell-renderer';
 import { DatagridRowDetailRenderer } from './row-detail-renderer';
+import { ColumnsService } from '../providers/columns.service';
 
 @Directive({
   selector: 'clr-dg-row',

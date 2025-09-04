@@ -21,11 +21,11 @@ import {
   ViewChild,
 } from '@angular/core';
 
+import { ClrModalConfigurationService } from './modal-configuration.service';
+import { ModalStackService } from './modal-stack.service';
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ScrollingService } from '../utils/scrolling/scrolling-service';
-import { ClrModalConfigurationService } from './modal-configuration.service';
-import { ModalStackService } from './modal-stack.service';
 
 @Component({
   selector: 'clr-modal',

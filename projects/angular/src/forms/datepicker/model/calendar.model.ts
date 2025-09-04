@@ -5,13 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { getNumberOfDaysInTheMonth } from '../utils/date-utils';
 import { DayModel } from './day.model';
+import { getNumberOfDaysInTheMonth } from '../utils/date-utils';
 
 export class CalendarModel {
   days: DayModel[];
 
-  constructor(readonly year: number, readonly month: number) {
+  constructor(
+    readonly year: number,
+    readonly month: number
+  ) {
     this.initializeDaysInCalendar();
   }
 

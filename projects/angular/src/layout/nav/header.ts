@@ -9,33 +9,33 @@ import { Component, HostBinding, Input, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-header',
   template: `
     @if (isNavLevel1OnPage) {
-    <button
-      type="button"
-      class="header-hamburger-trigger"
-      [attr.aria-label]="responsiveNavCommonString"
-      (click)="openNav(responsiveNavCodes.NAV_LEVEL_1)"
-    >
-      <span></span>
-    </button>
+      <button
+        type="button"
+        class="header-hamburger-trigger"
+        [attr.aria-label]="responsiveNavCommonString"
+        (click)="openNav(responsiveNavCodes.NAV_LEVEL_1)"
+      >
+        <span></span>
+      </button>
     }
     <ng-content></ng-content>
     @if (isNavLevel2OnPage) {
-    <button
-      type="button"
-      class="header-overflow-trigger"
-      [attr.aria-label]="responsiveOverflowCommonString"
-      (click)="openNav(responsiveNavCodes.NAV_LEVEL_2)"
-    >
-      <span></span>
-    </button>
+      <button
+        type="button"
+        class="header-overflow-trigger"
+        [attr.aria-label]="responsiveOverflowCommonString"
+        (click)="openNav(responsiveNavCodes.NAV_LEVEL_2)"
+      >
+        <span></span>
+      </button>
     }
     <div class="header-backdrop" (click)="closeOpenNav()"></div>
   `,

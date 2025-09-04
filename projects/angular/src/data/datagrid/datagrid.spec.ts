@@ -6,10 +6,8 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
-import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
-import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { ClrDatagrid } from './datagrid';
@@ -32,28 +30,31 @@ import { Selection } from './providers/selection';
 import { Sort } from './providers/sort';
 import { HIDDEN_COLUMN_CLASS } from './render/constants';
 import { DatagridRenderOrganizer } from './render/render-organizer';
+import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
+import { delay } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `
     @if (!destroy) {
-    <clr-datagrid
-      [(clrDgSelected)]="selected"
-      [clrDgLoading]="loading"
-      [clrDgDisablePageFocus]="disableFocus"
-      (clrDgRefresh)="refresh($event)"
-    >
-      <clr-dg-column>
-        First @if (filter) {
-        <clr-dg-filter [clrDgFilter]="testFilter"></clr-dg-filter>
-        }
-      </clr-dg-column>
-      <clr-dg-column>Second</clr-dg-column>
-      <clr-dg-row *clrDgItems="let item of items">
-        <clr-dg-cell>{{ item }}</clr-dg-cell>
-        <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-      </clr-dg-row>
-      <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
-    </clr-datagrid>
+      <clr-datagrid
+        [(clrDgSelected)]="selected"
+        [clrDgLoading]="loading"
+        [clrDgDisablePageFocus]="disableFocus"
+        (clrDgRefresh)="refresh($event)"
+      >
+        <clr-dg-column>
+          First
+          @if (filter) {
+            <clr-dg-filter [clrDgFilter]="testFilter"></clr-dg-filter>
+          }
+        </clr-dg-column>
+        <clr-dg-column>Second</clr-dg-column>
+        <clr-dg-row *clrDgItems="let item of items">
+          <clr-dg-cell>{{ item }}</clr-dg-cell>
+          <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+        </clr-dg-row>
+        <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
+      </clr-datagrid>
     }
   `,
   standalone: false,
@@ -90,10 +91,10 @@ class FullTest {
       <clr-dg-column>Second</clr-dg-column>
 
       @for (item of items; track item) {
-      <clr-dg-row>
-        <clr-dg-cell>{{ item }}</clr-dg-cell>
-        <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-      </clr-dg-row>
+        <clr-dg-row>
+          <clr-dg-cell>{{ item }}</clr-dg-cell>
+          <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+        </clr-dg-row>
       }
 
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
@@ -212,9 +213,9 @@ class SingleSelectionTest {
 
       <clr-dg-row *clrDgItems="let item of items">
         @if (item > showIfGreaterThan) {
-        <clr-dg-action-overflow>
-          <button class="action-item">Edit</button>
-        </clr-dg-action-overflow>
+          <clr-dg-action-overflow>
+            <button class="action-item">Edit</button>
+          </clr-dg-action-overflow>
         }
 
         <clr-dg-cell>{{ item }}</clr-dg-cell>
@@ -241,7 +242,7 @@ class ActionableRowTest {
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         <clr-dg-cell>{{ item * item }}</clr-dg-cell>
         @if (expandable) {
-        <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
+          <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
         }
       </clr-dg-row>
 
@@ -283,14 +284,14 @@ class ExpandedOnInitTest {
 
       <clr-dg-row *clrDgItems="let item of items; index as i">
         @if (action && i === 1) {
-        <clr-dg-action-overflow>
-          <button class="action-item">Edit</button>
-        </clr-dg-action-overflow>
+          <clr-dg-action-overflow>
+            <button class="action-item">Edit</button>
+          </clr-dg-action-overflow>
         }
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         <clr-dg-cell>{{ item * item }}</clr-dg-cell>
         @if (expandable && i === 1) {
-        <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
+          <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
         }
       </clr-dg-row>
 
@@ -312,18 +313,18 @@ class ChocolateClrDgItemsTest {
       <clr-dg-column>Second</clr-dg-column>
 
       @for (item of items; track item; let i = $index) {
-      <clr-dg-row>
-        @if (action && i === 1) {
-        <clr-dg-action-overflow>
-          <button class="action-item">Edit</button>
-        </clr-dg-action-overflow>
-        }
-        <clr-dg-cell>{{ item }}</clr-dg-cell>
-        <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-        @if (expandable && i === 1) {
-        <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
-        }
-      </clr-dg-row>
+        <clr-dg-row>
+          @if (action && i === 1) {
+            <clr-dg-action-overflow>
+              <button class="action-item">Edit</button>
+            </clr-dg-action-overflow>
+          }
+          <clr-dg-cell>{{ item }}</clr-dg-cell>
+          <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+          @if (expandable && i === 1) {
+            <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
+          }
+        </clr-dg-row>
       }
 
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
@@ -346,7 +347,7 @@ class ChocolateNgForTest {
       <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         @if (expandable) {
-        <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
+          <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
         }
       </clr-dg-row>
 
@@ -410,10 +411,10 @@ class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
       <clr-dg-column>Second</clr-dg-column>
 
       @for (item of items; track item) {
-      <clr-dg-row>
-        <clr-dg-cell>{{ item }}</clr-dg-cell>
-        <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-      </clr-dg-row>
+        <clr-dg-row>
+          <clr-dg-cell>{{ item }}</clr-dg-cell>
+          <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+        </clr-dg-row>
       }
     </clr-datagrid>
   `,
@@ -430,10 +431,10 @@ class HiddenColumnTest {
       <clr-dg-column>Second</clr-dg-column>
 
       @for (item of items; track item) {
-      <clr-dg-row>
-        <clr-dg-cell>{{ item }}</clr-dg-cell>
-        <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-      </clr-dg-row>
+        <clr-dg-row>
+          <clr-dg-cell>{{ item }}</clr-dg-cell>
+          <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+        </clr-dg-row>
       }
     </clr-datagrid>
   `,
@@ -452,14 +453,14 @@ class ProjectionTest {
       <clr-dg-column>Second</clr-dg-column>
 
       @for (item of items; track item) {
-      <clr-dg-row>
-        <clr-dg-cell>{{ item }}</clr-dg-cell>
-        <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-        <clr-dg-row-detail *clrIfExpanded="true" [clrDgReplace]="replaceCells">
-          <clr-dg-cell class="first-expandable-row-cell">{{ item }} (col 1 detail)</clr-dg-cell>
-          <clr-dg-cell>{{ item * item }} detail (col 2 detail)</clr-dg-cell>
-        </clr-dg-row-detail>
-      </clr-dg-row>
+        <clr-dg-row>
+          <clr-dg-cell>{{ item }}</clr-dg-cell>
+          <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+          <clr-dg-row-detail *clrIfExpanded="true" [clrDgReplace]="replaceCells">
+            <clr-dg-cell class="first-expandable-row-cell">{{ item }} (col 1 detail)</clr-dg-cell>
+            <clr-dg-cell>{{ item * item }} detail (col 2 detail)</clr-dg-cell>
+          </clr-dg-row-detail>
+        </clr-dg-row>
       }
 
       <ng-template [(clrIfDetail)]="detailItem">
@@ -513,9 +514,9 @@ class TabsIntegrationTest {
     <clr-datagrid [clrDgItemsTrackBy]="trackById">
       <clr-dg-column>Item</clr-dg-column>
       @for (item of items; track item) {
-      <clr-dg-row [clrDgItem]="item">
-        <clr-dg-cell>{{ item.id }}</clr-dg-cell>
-      </clr-dg-row>
+        <clr-dg-row [clrDgItem]="item">
+          <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+        </clr-dg-row>
       }
       <clr-dg-detail *clrIfDetail></clr-dg-detail>
     </clr-datagrid>
@@ -534,10 +535,10 @@ class PanelTrackByTest {
       <clr-dg-column>Item</clr-dg-column>
       <clr-dg-column>Name</clr-dg-column>
       @for (item of items; track item) {
-      <clr-dg-row [clrDgItem]="item">
-        <clr-dg-cell>{{ item.id }}</clr-dg-cell>
-        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
-      </clr-dg-row>
+        <clr-dg-row [clrDgItem]="item">
+          <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+        </clr-dg-row>
       }
       <ng-template [(clrIfDetail)]="preState" let-detail>
         <clr-dg-detail></clr-dg-detail>
@@ -571,9 +572,9 @@ export default function (): void {
         expect(refreshed).toBe(true);
       });
 
-      it('allows to manually resize the datagrid', fakeAsync(function () {
+      it('allows to manually resize the datagrid', async function () {
         context.detectChanges();
-        tick();
+        await delay();
 
         const organizer: DatagridRenderOrganizer = context.getClarityProvider(DatagridRenderOrganizer);
         let resizeSteps = 0;
@@ -583,7 +584,7 @@ export default function (): void {
         expect(resizeSteps).toBe(0);
         context.clarityDirective.resize();
         expect(resizeSteps).toBe(5);
-      }));
+      });
     });
 
     describe('Template API', function () {
@@ -606,18 +607,17 @@ export default function (): void {
         expect(context.clarityDirective.loading).toBe(true);
       });
 
-      it('offers two-way binding on the currently selected items', fakeAsync(function () {
+      it('offers two-way binding on the currently selected items', async function () {
         const selection = context.getClarityProvider(Selection);
         context.testComponent.selected = [2];
         context.detectChanges();
-        tick();
+        await delay();
         expect(selection.current).toEqual([2]);
         selection.setSelected(1, true);
         context.detectChanges();
-        tick();
+        await delay();
         expect(context.testComponent.selected).toEqual([2, 1]);
-      }));
-
+      });
       it('allows to set pre-selected items when initializing the full list of items', function () {
         const selection = context.getClarityProvider(Selection);
         context.testComponent.items = [4, 5, 6];
@@ -859,14 +859,14 @@ export default function (): void {
         expect(context.clarityElement.querySelector('.datagrid-column.datagrid-expandable-caret')).toBeNull();
       });
 
-      it('can expand rows on initialization', waitForAsync(function () {
+      it('can expand rows on initialization', async function () {
         const context = this.create(ClrDatagrid, ExpandedOnInitTest);
         const caretIcon = context.clarityElement.querySelector('.datagrid-expandable-caret-icon');
         expect(caretIcon).not.toBeNull();
         expect(caretIcon.getAttribute('direction')).toBe('down');
         const rowDetail = context.clarityElement.querySelector('.datagrid-row-detail');
         expect(rowDetail).not.toBeNull();
-      }));
+      });
 
       it('hides cells in dg-row-detail when column is hidden and rows are replaced', function () {
         const context = this.create(ClrDatagrid, ExpandedCellsTest);
@@ -938,10 +938,6 @@ export default function (): void {
       beforeEach(function () {
         context = this.create(ClrDatagrid, SingleSelectionTest, [Selection]);
         selection = context.getClarityProvider(Selection) as Selection<number>;
-      });
-
-      describe('TypeScript API', function () {
-        // None for now, would duplicate tests of Selection provider
       });
 
       describe('Template API', function () {
@@ -1210,19 +1206,19 @@ export default function (): void {
           expect(selection.current.every(x => [1, 2, 3, 5, 6, 7].includes(x))).toBeTrue();
         });
 
-        it('can deselect items inside a range', fakeAsync(function () {
+        it('can deselect items inside a range', async function () {
           // define range
           selection.current.push(1, 2, 3, 4, 5, 6, 7);
           context.detectChanges();
-          tick();
+          await delay();
           // // deselect inside range
           checkboxes[2].click();
           checkboxes[4].click();
           checkboxes[6].click();
           context.detectChanges();
-          tick();
+          await delay();
           expect(selection.current).toEqual([1, 3, 5, 7]);
-        }));
+        });
       });
     });
 
@@ -1380,17 +1376,17 @@ export default function (): void {
       });
 
       // Tests if manual style="width: 123px" was applied and not overridden during the calculation from the above test.
-      it('column width manual setting is applied', fakeAsync(function () {
+      it('column width manual setting is applied', async function () {
         context.detectChanges();
-        tick();
+        await delay();
 
         expect(context.clarityElement.querySelector('.datagrid-column').clientWidth).toBe(123);
 
         context.detectChanges();
-        tick();
+        await delay();
 
         expect(context.clarityElement.querySelector('.datagrid-column').getAttribute('style')).toBe('width: 123px;');
-      }));
+      });
     });
 
     describe('detail pane and track by', function () {

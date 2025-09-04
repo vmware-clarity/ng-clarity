@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:map';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
@@ -13,6 +14,7 @@
 
 input[clrDatalistInput] {
   position: relative;
+
   &::-webkit-calendar-picker-indicator {
     opacity: 0;
     cursor: text;
@@ -30,6 +32,7 @@ input[clrDatalistInput] {
     color: forms-variables.$clr-forms-datalist-caret-color;
     cursor: text;
     margin: density.$clr-base-vertical-offset-xs density.$clr-base-horizontal-offset-xs;
+
     @include mixins.equilateral(forms-variables.$clr-forms-datalist-caret-icon-size);
   }
 }

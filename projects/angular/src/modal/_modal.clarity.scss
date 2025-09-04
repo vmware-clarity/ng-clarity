@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:map';
 @use 'sass:meta';
 @use '../utils/mixins';
@@ -13,7 +14,6 @@
 @use '../utils/variables/variables.density' as density;
 
 @include meta.load-css('properties.modal');
-
 @include mixins.exports('modal.clarity') {
   .clr-side-panel-pinned-right-sm {
     padding-right: modal-variables.$clr-modal-sm-width !important;
@@ -54,10 +54,12 @@
   .clr-modal-host {
     overflow: hidden;
     position: relative;
+
     .modal,
     .modal-backdrop {
       position: absolute;
     }
+
     .clr-modal-host-scrollable {
       height: 100%;
       overflow-y: auto;
@@ -66,10 +68,7 @@
 
   .modal {
     position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
+    inset: 0;
     z-index: map.get(variables.$clr-layers, modal);
     display: flex;
     flex-direction: column;
@@ -109,10 +108,7 @@
       }
 
       &.modal-full-screen {
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
+        inset: 0;
         padding: 0;
       }
 
@@ -129,7 +125,6 @@
         justify-content: end;
         max-height: 100%;
         min-height: $min-bottom-side-panel-height;
-
         height: calc(modal-variables.$clr-modal-md-width * $modal-height-width-ratio);
 
         &:has(.modal-sm) {
@@ -144,6 +139,7 @@
           height: calc(modal-variables.$clr-modal-xl-width * $modal-height-width-ratio);
         }
       }
+
       .modal-dialog {
         max-height: 100%;
         width: 100%;
@@ -187,6 +183,7 @@
     // because this would be breaking for the static modals.
     &--accessible {
       @extend .modal-header;
+
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -201,6 +198,7 @@
         //cds-text do not have color, margin
         font-family: modal-variables.$clr-modal-title-font-family; //TODO remove line and PI tokens in GA 17+
         //TODO remove API tokens overrides in GA 17+
+
         @include mixins.generate-typography-token(
           'SECTION-20-STD',
           (
@@ -224,6 +222,7 @@
 
         &:not([size]) {
           // per measurement, this results in an icon that is 24x24...
+
           @include mixins.equilateral(modal-variables.$clr-modal-icon-size);
         }
       }
@@ -250,7 +249,6 @@
       border: 0;
       margin-right: modal-variables.$clr-modal-horizontal-gap;
       appearance: none;
-      -webkit-appearance: none;
     }
   }
 
@@ -269,18 +267,19 @@
     // This doesn't do much, but at least with several paragraphs in the content
     // it doesn't mess up the modal's proportions.
     max-height: 70vh;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden auto;
 
     .modal-body,
     .side-panel-body {
       color: tokens.$cds-alias-typography-color-400;
+
       @include mixins.generate-typography-token('BODY-14-RG-STD');
     }
 
     & > :first-child {
       margin-top: 0;
     }
+
     & > :last-child {
       margin-bottom: 0;
     }
@@ -307,7 +306,6 @@
       max-height: 55vh;
     }
   }
-
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     .modal-body-wrapper {
       max-height: 55vh;
@@ -316,10 +314,7 @@
 
   .modal-backdrop {
     position: fixed;
-    top: -100vh;
-    bottom: 0;
-    right: 0;
-    left: -100vw;
+    inset: -100vh 0 0 -100vw;
     background-color: modal-variables.$clr-modal-backdrop-color;
     z-index: map.get(variables.$clr-layers, modal-bg);
   }

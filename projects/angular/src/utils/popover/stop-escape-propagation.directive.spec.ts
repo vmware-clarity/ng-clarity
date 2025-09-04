@@ -76,7 +76,10 @@ async function pressEscapeKey(fixture: ComponentFixture<TestComponent>, element:
   standalone: false,
 })
 class TestPopoverHostComponent {
-  constructor(readonly elementRef: ElementRef<HTMLElement>, readonly toggleService: ClrPopoverToggleService) {}
+  constructor(
+    readonly elementRef: ElementRef<HTMLElement>,
+    readonly toggleService: ClrPopoverToggleService
+  ) {}
 
   @HostListener('keydown.escape', ['$event'])
   onEscapeKey(event) {

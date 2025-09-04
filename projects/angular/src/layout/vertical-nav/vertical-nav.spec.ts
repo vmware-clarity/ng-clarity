@@ -6,7 +6,7 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -15,6 +15,7 @@ import { commonStringsDefault } from '../../utils';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNav } from './vertical-nav';
 import { ClrVerticalNavModule } from './vertical-nav.module';
+import { delay } from '../../utils/testing/helpers.spec';
 
 export default function (): void {
   describe('Vertical Nav', () => {
@@ -543,7 +544,7 @@ export default function (): void {
         expect(vertNavService.collapsed).toBe(true);
       });
 
-      it('emits the collapsed state', fakeAsync(function () {
+      it('emits the collapsed state', async function () {
         expect(fixture.componentInstance.collapsedChange).toBeUndefined();
         vertNavService.collapsible = true;
 
@@ -553,17 +554,17 @@ export default function (): void {
         trigger.click();
 
         fixture.detectChanges();
-        tick();
+        await delay();
 
         expect(fixture.componentInstance.collapsedChange).toBe(true);
 
         trigger.click();
 
         fixture.detectChanges();
-        tick();
+        await delay();
 
         expect(fixture.componentInstance.collapsedChange).toBe(false);
-      }));
+      });
     });
 
     describe('Accessibility', () => {
@@ -656,16 +657,17 @@ class IconsAndNavGroupTestComponent {}
   template: `
     <clr-vertical-nav #nav>
       @if (groupToggle) {
-      <clr-vertical-nav-group>
-        <cds-icon clrVerticalNavIcon></cds-icon>
-        Group
-        <a href="#" clrVerticalNavLink>Text</a>
-      </clr-vertical-nav-group>
-      } @if (iconToggle) {
-      <a href="#" clrVerticalNavLink>
-        <cds-icon clrVerticalNavIcon></cds-icon>
-        Text
-      </a>
+        <clr-vertical-nav-group>
+          <cds-icon clrVerticalNavIcon></cds-icon>
+          Group
+          <a href="#" clrVerticalNavLink>Text</a>
+        </clr-vertical-nav-group>
+      }
+      @if (iconToggle) {
+        <a href="#" clrVerticalNavLink>
+          <cds-icon clrVerticalNavIcon></cds-icon>
+          Text
+        </a>
       }
     </clr-vertical-nav>
   `,

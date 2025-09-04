@@ -7,14 +7,15 @@
 
 import { AnimationEvent } from '@angular/animations';
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '../utils/cdk/cdk-trap-focus.module';
-import { expectActiveElementToBe } from '../utils/testing/helpers.spec';
 import { ClrModal } from './modal';
 import { ClrModalModule } from './modal.module';
+import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '../utils/cdk/cdk-trap-focus.module';
+import { delay } from '../utils/testing/helpers.spec';
+import { expectActiveElementToBe } from '../utils/testing/helpers.spec';
 
 @Component({
   template: `
@@ -84,9 +85,9 @@ describe('Modal', () => {
     await fixture.whenStable();
   });
 
-  function flushAndExpectOpen(componentFixture: ComponentFixture<any>, open: boolean): void {
+  async function flushAndExpectOpen(componentFixture: ComponentFixture<any>, open: boolean) {
     componentFixture.detectChanges();
-    tick();
+    await delay();
 
     const text: string = componentFixture.nativeElement.textContent.trim();
     if (open) {
@@ -96,13 +97,13 @@ describe('Modal', () => {
     }
   }
 
-  it('projects content', fakeAsync(() => {
+  it('projects content', async () => {
     expect(compiled.textContent).toMatch(/Title/);
     expect(compiled.textContent).toMatch(/Body/);
     expect(compiled.textContent).toMatch(/Footer/);
-  }));
+  });
 
-  it('should set aria-hidden attribute to false if opened', fakeAsync(() => {
+  it('should set aria-hidden attribute to false if opened', async () => {
     fixture.componentInstance.opened = false;
     fixture.detectChanges();
     expect(compiled.querySelector('.modal-dialog')).toBeNull();
@@ -110,31 +111,31 @@ describe('Modal', () => {
     modal.open();
     fixture.detectChanges();
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-hidden')).toBe('false');
-  }));
+  });
 
-  it('shows and hides the modal based on the clrModalOpen input', fakeAsync(() => {
+  it('shows and hides the modal based on the clrModalOpen input', async () => {
     fixture.componentInstance.opened = false;
-    flushAndExpectOpen(fixture, false);
+    await flushAndExpectOpen(fixture, false);
 
     fixture.componentInstance.opened = true;
-    flushAndExpectOpen(fixture, true);
-  }));
+    await flushAndExpectOpen(fixture, true);
+  });
 
-  it('exposes open() and close() methods', fakeAsync(() => {
+  it('exposes open() and close() methods', async () => {
     modal.close();
-    flushAndExpectOpen(fixture, false);
+    await flushAndExpectOpen(fixture, false);
 
     modal.open();
-    flushAndExpectOpen(fixture, true);
-  }));
+    await flushAndExpectOpen(fixture, true);
+  });
 
-  it('should not open if already opened', fakeAsync(() => {
+  it('should not open if already opened', async () => {
     spyOn(modal._openChanged, 'emit');
     modal.open();
     expect(modal._openChanged.emit).not.toHaveBeenCalled();
-  }));
+  });
 
-  it('should not emit clrModalOpenChange - animation will do that for us', fakeAsync(() => {
+  it('should not emit clrModalOpenChange - animation will do that for us', async () => {
     /**
      * Needed just to mock the event so I could enter the `if` statement.
      */
@@ -152,15 +153,15 @@ describe('Modal', () => {
     modal.close();
     modal.fadeDone(fakeAnimationEvent);
     expect(modal._openChanged.emit).toHaveBeenCalledTimes(1);
-  }));
+  });
 
-  it('should not close when already closed', fakeAsync(() => {
+  it('should not close when already closed', async () => {
     fixture.componentInstance.opened = false;
     spyOn(modal, 'close');
     expect(modal.close).not.toHaveBeenCalled();
-  }));
+  });
 
-  it('should not throw an error when close is called on an already closed modal', fakeAsync(() => {
+  it('should not throw an error when close is called on an already closed modal', async () => {
     // Close the test modal
     fixture.componentInstance.modalInstance.close();
     fixture.detectChanges();
@@ -169,9 +170,9 @@ describe('Modal', () => {
       fixture.componentInstance.modalInstance.close();
       fixture.detectChanges();
     }).not.toThrow();
-  }));
+  });
 
-  it('offers two-way binding on clrModalOpen', fakeAsync(() => {
+  it('offers two-way binding on clrModalOpen', async () => {
     expect(fixture.componentInstance.opened).toBe(true);
     modal.close();
     fixture.detectChanges();
@@ -180,15 +181,15 @@ describe('Modal', () => {
 
     // todo: uncomment this after animation bug is fixed https://github.com/angular/angular/issues/15798
     // expect(fixture.componentInstance.opened).toBe(true);
-    tick();
+    await delay();
     expect(fixture.componentInstance.opened).toBe(false);
-  }));
+  });
 
-  it('focuses on the title when opened', fakeAsync(() => {
+  it('focuses on the title when opened', async () => {
     expectActiveElementToBe(fixture.nativeElement.querySelector('.modal-title-wrapper'));
-  }));
+  });
 
-  it('supports a clrModalSize option', fakeAsync(() => {
+  it('supports a clrModalSize option', async () => {
     expect(compiled.querySelector('.modal-sm')).toBeNull();
     expect(compiled.querySelector('.modal-lg')).toBeNull();
 
@@ -209,16 +210,16 @@ describe('Modal', () => {
 
     expect(compiled.querySelector('.modal-lg')).toBeNull();
     expect(compiled.querySelector('.modal-full-screen')).not.toBeNull();
-  }));
+  });
 
-  it('supports a clrModalClosable option', fakeAsync(() => {
+  it('supports a clrModalClosable option', async () => {
     fixture.componentInstance.closable = false;
     fixture.detectChanges();
 
     expect(compiled.querySelector('.close')).toBeNull();
 
     modal.close();
-    flushAndExpectOpen(fixture, true);
+    await flushAndExpectOpen(fixture, true);
 
     fixture.componentInstance.closable = true;
     fixture.detectChanges();
@@ -227,10 +228,10 @@ describe('Modal', () => {
     modal.close();
     fixture.detectChanges();
 
-    flushAndExpectOpen(fixture, false);
-  }));
+    await flushAndExpectOpen(fixture, false);
+  });
 
-  it('should not be closed on backdrop click by default', fakeAsync(() => {
+  it('should not be closed on backdrop click by default', async () => {
     const defaultsFixture = TestBed.createComponent(TestDefaultsComponent);
     defaultsFixture.detectChanges();
     compiled = defaultsFixture.nativeElement;
@@ -238,11 +239,11 @@ describe('Modal', () => {
     const backdrop: HTMLElement = compiled.querySelector('.modal-backdrop');
 
     backdrop.click();
-    flushAndExpectOpen(defaultsFixture, true);
+    await flushAndExpectOpen(defaultsFixture, true);
     defaultsFixture.destroy();
-  }));
+  });
 
-  it('supports a clrModalStaticBackdrop option', fakeAsync(() => {
+  it('supports a clrModalStaticBackdrop option', async () => {
     const backdrop: HTMLElement = compiled.querySelector('.modal-backdrop');
 
     fixture.componentInstance.staticBackdrop = true;
@@ -253,16 +254,16 @@ describe('Modal', () => {
     expect(compiled.querySelector('.close')).not.toBeNull();
 
     backdrop.click();
-    flushAndExpectOpen(fixture, true);
+    await flushAndExpectOpen(fixture, true);
 
     fixture.componentInstance.staticBackdrop = false;
     fixture.detectChanges();
 
     backdrop.click();
-    flushAndExpectOpen(fixture, false);
-  }));
+    await flushAndExpectOpen(fixture, false);
+  });
 
-  it('focus trap remain active after clicking on backdrop', fakeAsync(() => {
+  it('focus trap remain active after clicking on backdrop', async () => {
     const backdrop: HTMLElement = compiled.querySelector('div.modal-backdrop');
     const titleWrapperElement: HTMLElement = compiled.querySelector('div.modal-title-wrapper');
     const focusStealButton: HTMLElement = compiled.querySelector('button.btn.to-focus');
@@ -279,9 +280,9 @@ describe('Modal', () => {
     expectActiveElementToBe(focusStealButton);
 
     backdrop.click();
-    flushAndExpectOpen(fixture, true);
+    await flushAndExpectOpen(fixture, true);
     expectActiveElementToBe(titleWrapperElement);
-  }));
+  });
 
   it('traps user focus', () => {
     fixture.detectChanges();
@@ -327,7 +328,7 @@ describe('Modal', () => {
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(modal.modalId);
   });
 
-  it('should have text based boundaries for screen readers', fakeAsync(() => {
+  it('should have text based boundaries for screen readers', async () => {
     // MacOS + Voice Over does not properly isolate modal content so
     // we must give screen reader users text based warnings when they
     // are entering and leaving modal content.
@@ -336,9 +337,9 @@ describe('Modal', () => {
     const messages = compiled.querySelectorAll<HTMLElement>('.clr-sr-only');
     expect(messages[0].innerText).toBe('Beginning of Modal Content');
     expect(messages[1].innerText).toBe('End of Modal Content');
-  }));
+  });
 
-  it('renders the title before the close button', fakeAsync(() => {
+  it('renders the title before the close button', async () => {
     const modalHeader = compiled.querySelector('.modal-header--accessible');
     expect(modalHeader.children.length).toBeGreaterThanOrEqual(2);
 
@@ -346,5 +347,5 @@ describe('Modal', () => {
     const maybleCloseButton = modalHeader.children[1];
     expect(maybeTitleWrapper.classList.contains('modal-title-wrapper')).toBeTrue();
     expect(maybleCloseButton.classList.contains('close')).toBeTrue();
-  }));
+  });
 });

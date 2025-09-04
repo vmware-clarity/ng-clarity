@@ -7,6 +7,7 @@
 
 import { Component, ContentChild, forwardRef, Optional } from '@angular/core';
 
+import { ClrNumberInput } from './number-input';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
@@ -14,14 +15,13 @@ import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
-import { ClrNumberInput } from './number-input';
 
 @Component({
   selector: 'clr-number-input-container',
   template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
-    <label></label>
+      <label></label>
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-number-input-wrapper">
@@ -48,17 +48,20 @@ import { ClrNumberInput } from './number-input';
           </div>
         </div>
         @if (showInvalid) {
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        } @if (showValid) {
-        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
+          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
+        }
+        @if (showValid) {
+          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
         }
       </div>
       @if (showHelper) {
-      <ng-content select="clr-control-helper"></ng-content>
-      } @if (showInvalid) {
-      <ng-content select="clr-control-error"></ng-content>
-      } @if (showValid) {
-      <ng-content select="clr-control-success"></ng-content>
+        <ng-content select="clr-control-helper"></ng-content>
+      }
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
   `,

@@ -30,7 +30,7 @@ export default {
     clrDgField: { control: { disable: true } },
     clrDgSortBy: { type: 'string' },
     clrDgSortOrder: {
-      control: 'radio',
+      control: { type: 'radio' },
       options: Object.values(ClrDatagridSortOrder).filter(value => typeof value === 'string'),
     },
     // outputs

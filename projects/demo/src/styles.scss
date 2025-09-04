@@ -4,14 +4,15 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@import '../../../node_modules/@cds/core/styles/module.reset.min.css';
-@import '../../../node_modules/@cds/core/styles/module.tokens.min.css';
-@import '../../../node_modules/@cds/core/styles/module.layout.min.css';
-@import '../../../node_modules/@cds/core/styles/module.typography.min.css';
-@import '../../../node_modules/@cds/core/styles/theme.dark.min.css';
-@import './app/_utils/clarity-variables';
-@import '../../angular/src/utils/variables/variables';
-@import '../../ui/src/temp-overrides.scss'; // @TODO remove in v18
+
+@use 'sass:map';
+@use '../../../node_modules/@cds/core/styles/module.reset.min.css' as reset;
+@use '../../../node_modules/@cds/core/styles/module.tokens.min.css' as tokens;
+@use '../../../node_modules/@cds/core/styles/module.layout.min.css' as layout;
+@use '../../../node_modules/@cds/core/styles/module.typography.min.css' as typography;
+@use '../../../node_modules/@cds/core/styles/theme.dark.min.css';
+@use '../../angular/src/utils/variables/variables';
+@use '../../ui/src/temp-overrides'; // @TODO remove in v18
 
 :root {
   --clr-test-header-text-color: magenta;
@@ -40,21 +41,17 @@
 .modal.static {
   position: relative;
   padding: var(--cds-global-space-14);
-  z-index: map-get($clr-layers, sidepanel-bg) - 1;
+  z-index: map.get(variables.$clr-layers, sidepanel-bg) - 1;
 }
 
 .modal-backdrop.static {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: map-get($clr-layers, sidepanel-bg) - 2;
+  inset: 0;
+  z-index: map.get(variables.$clr-layers, sidepanel-bg) - 2;
 }
 
 .modal-icon {
   float: left;
-  color: $clr-color-success-400;
   font-size: var(--cds-global-space-14);
   margin-right: var(--cds-global-space-6);
 }

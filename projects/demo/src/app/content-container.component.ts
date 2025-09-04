@@ -14,11 +14,13 @@ import { APP_ROUTES } from './app.routing';
   selector: 'my-app-content-container',
   template: `
     <clr-vertical-nav [clrVerticalNavCollapsible]="true">
-      @for (route of routes; track route) { @if (route.path != '') {
-      <a clrVerticalNavLink clrAriaCurrentLink [routerLink]="[route.path]" [routerLinkActive]="['active']">
-        {{ route.path }}
-      </a>
-      } }
+      @for (route of routes; track route) {
+        @if (route.path != '') {
+          <a clrVerticalNavLink clrAriaCurrentLink [routerLink]="[route.path]" [routerLinkActive]="['active']">
+            {{ route.path }}
+          </a>
+        }
+      }
     </clr-vertical-nav>
     <main class="content-area">
       <router-outlet></router-outlet>

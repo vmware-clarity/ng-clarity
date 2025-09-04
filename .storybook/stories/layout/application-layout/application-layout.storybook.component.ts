@@ -23,8 +23,8 @@ import {
 import { ClarityModule, ClrIconModule } from '@clr/angular';
 import { elements } from 'helpers/elements.data';
 
-import { VerticalNavIconService } from '../../../../projects/angular/src/layout/vertical-nav/providers/vertical-nav-icon.service';
 import { organization } from './organization';
+import { VerticalNavIconService } from '../../../../projects/angular/src/layout/vertical-nav/providers/vertical-nav-icon.service';
 
 @Component({
   selector: 'storybook-application-layout',

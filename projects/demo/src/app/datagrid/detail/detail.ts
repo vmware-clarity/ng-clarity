@@ -24,7 +24,10 @@ export class DatagridDetailDemo implements AfterViewInit {
   stateEvent: any = null;
   private _preState: any = null;
 
-  constructor(inventory: Inventory, private cdr: ChangeDetectorRef) {
+  constructor(
+    inventory: Inventory,
+    private cdr: ChangeDetectorRef
+  ) {
     inventory.size = 103;
     inventory.reset();
     this.users = inventory.all;

@@ -4,13 +4,13 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../../emphasis/alert/variables.alert' as alert-variables;
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use '../../utils/variables/variables.density' as density;
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
-
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('forms.checkbox') {
@@ -24,6 +24,7 @@
   // @TODO un-nest the checkbox from the wrapper, after old forms are removed
   .clr-checkbox-wrapper {
     @include forms-mixins.form-flatten-validate-text();
+
     position: relative;
     display: flex;
     align-items: flex-start;
@@ -42,7 +43,9 @@
     //Opacity is set to 0 so that the input remains accessible
     input[type='checkbox'] {
       @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-checkbox-size);
+
       @extend %custom-checkbox;
+
       padding: density.$clr-base-vertical-offset-xs 0;
 
       &:not(:disabled) {
@@ -76,6 +79,7 @@
 
       &:focus {
         outline: none;
+
         &::before {
           @include mixins.include-outline-style-form-fields(mixins.baselinePx(3));
         }
@@ -86,6 +90,7 @@
           background: forms-variables.$clr-forms-checkbox-background-color;
           border: none;
         }
+
         &::after {
           display: inline-block;
         }
@@ -94,8 +99,10 @@
       &.clr-indeterminate,
       &:indeterminate {
         &::before {
-          border: #{tokens.$cds-alias-object-border-width-100} solid forms-variables.$clr-forms-checkbox-indeterminate-border-color;
+          border: #{tokens.$cds-alias-object-border-width-100} solid
+            forms-variables.$clr-forms-checkbox-indeterminate-border-color;
         }
+
         &::after {
           border-left: none;
           border-bottom-color: forms-variables.$clr-forms-checkbox-indeterminate-border-color;
@@ -109,15 +116,18 @@
           cursor: not-allowed;
           color: forms-variables.$clr-forms-label-disabled-color;
         }
+
         &::before {
           background-color: forms-variables.$clr-forms-checkbox-disabled-background-color;
           border-color: forms-variables.$clr-forms-checkbox-disabled-border-color;
         }
+
         &:checked {
           &::before {
             background-color: forms-variables.$clr-forms-checkbox-disabled-checked-background-color;
             border: none;
           }
+
           &::after {
             border-color: forms-variables.$clr-forms-checkbox-disabled-mark-color;
           }
@@ -144,7 +154,6 @@
   .clr-checkbox-wrapper.clr-checkbox-wrapper-disabled {
     .clr-control-label {
       cursor: not-allowed;
-
       color: forms-variables.$clr-forms-label-disabled-color;
     }
 
@@ -158,6 +167,7 @@
         background-color: forms-variables.$clr-forms-checkbox-disabled-checked-background-color;
         border: none;
       }
+
       &::after {
         border-color: forms-variables.$clr-forms-checkbox-disabled-mark-color;
       }

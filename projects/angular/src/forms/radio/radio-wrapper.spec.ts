@@ -7,10 +7,10 @@
 
 import { Component } from '@angular/core';
 
-import { WrapperContainerSpec, WrapperFullSpec, WrapperNoLabelSpec } from '../tests/wrapper.spec';
 import { ClrRadio } from './radio';
 import { ClrRadioContainer } from './radio-container';
 import { ClrRadioWrapper } from './radio-wrapper';
+import { WrapperContainerSpec, WrapperFullSpec, WrapperNoLabelSpec } from '../tests/wrapper.spec';
 
 @Component({
   template: `

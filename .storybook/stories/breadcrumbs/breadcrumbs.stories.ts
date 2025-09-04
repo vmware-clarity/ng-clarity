@@ -65,7 +65,7 @@ export default {
     expand: { control: { disable: true }, table: { disable: true } },
     handleItemClick: { control: { disable: true }, table: { disable: true } },
     // story helpers
-    items: { control: 'object' },
+    items: { control: { type: 'object' } },
   },
   args: {
     // story helpers

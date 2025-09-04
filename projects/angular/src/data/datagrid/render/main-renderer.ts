@@ -24,6 +24,10 @@ import { Subscription } from 'rxjs';
 
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { ClrDatagrid } from '../datagrid';
+import { DatagridHeaderRenderer } from './header-renderer';
+import { NoopDomAdapter } from './noop-dom-adapter';
+import { DatagridRenderOrganizer } from './render-organizer';
+import { DatagridRowRenderer } from './row-renderer';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnState, ColumnStateDiff } from '../interfaces/column-state.interface';
@@ -33,10 +37,6 @@ import { Items } from '../providers/items';
 import { Page } from '../providers/page';
 import { TableSizeService } from '../providers/table-size.service';
 import { KeyNavigationGridController } from '../utils/key-navigation-grid.controller';
-import { DatagridHeaderRenderer } from './header-renderer';
-import { NoopDomAdapter } from './noop-dom-adapter';
-import { DatagridRenderOrganizer } from './render-organizer';
-import { DatagridRowRenderer } from './row-renderer';
 
 // Fixes build error
 // @dynamic (https://github.com/angular/angular/issues/19698#issuecomment-338340211)

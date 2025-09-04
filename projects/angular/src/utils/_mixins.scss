@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:list';
 @use 'sass:map';
 @use 'sass:selector';
@@ -14,8 +15,10 @@
 //Credit: Zurb Foundation for Apps https://github.com/zurb/foundation-apps/blob/master/scss/helpers/_functions.scss
 //Keep track of modules that have been imported, so we don't import more than once
 $imported-modules: () !default;
+
 @mixin exports($name) {
   //check if they have been imported
+
   @if (not list.index($imported-modules, $name)) {
     $imported-modules: list.append($imported-modules, $name) !global;
     @content;
@@ -24,8 +27,8 @@ $imported-modules: () !default;
 
 //TODO: Should these mixins be moved into their own separate file?
 //Outline Styles
-$clr-outline-color: hsl(197, 68%, 65%) !default;
-$clr-outline-color-inverse: hsla(0, 0%, 100%, 0.09) !default;
+$clr-outline-color: hsl(197deg 68% 65%) !default;
+$clr-outline-color-inverse: hsl(0deg 0% 100% / 9%) !default;
 $clr-outline-blur: tokens.$cds-global-space-2;
 $clr-outline-spread: tokens.$cds-global-space-2;
 
@@ -34,91 +37,78 @@ $clr-outline-spread: tokens.$cds-global-space-2;
   outline-color: -webkit-focus-ring-color;
   outline-offset: $offset;
 }
-
 @mixin include-slim-outline-style-form-fields($width: tokens.$cds-global-space-2) {
   outline-color: Highlight;
   outline-color: -webkit-focus-ring-color;
   outline-style: auto;
   outline-width: $width;
 }
-
 @mixin include-outline-style-links() {
   outline: 0;
   text-decoration: underline;
 }
-
 @mixin include-outline-style-header-links($outline-color: $clr-outline-color-inverse) {
   background: $outline-color;
   outline: 0;
   text-decoration: none;
 }
-
 @mixin overflow-ellipsis($leftAlignment: false, $justifyContent: 'start') {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
   @if $leftAlignment == true {
     text-align: left;
     justify-content: #{$justifyContent};
   }
 }
-
 @mixin off-screen-styles() {
   position: fixed !important;
   border: none !important;
   height: 1px !important;
   width: 1px !important;
-
   left: 0 !important;
   top: calc(-1 * #{tokens.$cds-global-space-1}) !important;
-
   overflow: hidden !important;
   visibility: hidden !important;
-
   padding: 0 !important;
   margin: 0 0 calc(-1 * #{tokens.$cds-global-space-1}) 0 !important;
 }
-
 @mixin focus-within() {
   &:focus-within,
   &.focus-within {
     outline: tokens.$cds-global-space-2 solid Highlight;
   }
 
-  @media (-webkit-min-device-pixel-ratio: 0) {
+  @media (-min-device-pixel-ratio: 0) {
     &:focus-within,
     &.focus-within {
       outline: baselinePx(5) auto -webkit-focus-ring-color;
     }
   }
 }
-
 @mixin equilateral($size: 1.2rem) {
   height: $size;
   width: $size;
 }
-
 @mixin min-equilateral($size: 1.2rem) {
   @include equilateral($size);
+
   min-height: $size;
   min-width: $size;
 }
-
 @mixin max-equilateral($size: 1.2rem) {
   @include equilateral($size);
+
   max-height: $size;
   max-width: $size;
 }
-
 @mixin clr-appearance-normal() {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  -o-appearance: none;
+  appearance: none;
 }
-
 @mixin clr-no-styles-button {
   @include clr-appearance-normal();
+
   margin: 0;
   padding: 0;
   border: none;
@@ -148,64 +138,53 @@ $opp-directions: (
     margin-bottom: 0;
   }
 }
-
-@mixin fixForFirefox() {
-  @-moz-document url-prefix() {
-    @content;
-  }
-}
-
 @mixin fixForMsEdge() {
   @supports (-ms-ime-align: auto) {
     @content;
   }
 }
 
-@mixin fixForIE10AndUp() {
-  _:-ms-input-placeholder,
-  :root {
-    @content;
-  }
-}
-
-@mixin fixForIE11AndUp() {
-  _:-ms-fullscreen,
-  :root {
-    @content;
-  }
-}
-
 // Moves styles outside of any parent selector conditionally,
 // while allowing an additional selector to be appended.
+
 @mixin optional-at-root($selector) {
   // Check if parent selector exists
+
   @if & {
     // Append the additional selector to the parent selector
+
     @at-root #{selector.append(&, $selector)} {
       @content;
     }
   } @else {
     // Use the parent selector with the additional selector
+
     @at-root #{$selector} {
       @content;
     }
   }
 }
-
 @mixin input-placeholder-wrapper() {
   /* _normalize overwrite */
+
   @include optional-at-root('::-webkit-input-placeholder') {
     @content;
   }
+
   /* Internet Explorer 10-11 */
+
   @include optional-at-root(':-ms-input-placeholder') {
     @content;
   }
+
   /* Microsoft Edge */
+
   @include optional-at-root('::-ms-input-placeholder') {
     @content;
   }
+
   /* Chrome, Firefox, Opera, Safari 10.1+ */
+
   @include optional-at-root('::placeholder') {
     @content;
   }
@@ -428,7 +407,6 @@ $typography-tokens: (
     #{$key}: $value;
   }
 }
-
 @mixin generate-typography-header-token($name, $fallbacks: (), $addFontFamily: true, $addColor: true) {
   @if ($addFontFamily) {
     @include setValue(
@@ -437,32 +415,27 @@ $typography-tokens: (
       variables.$clr-font
     ); // tokens.$cds-alias-typography-header-font-family);
   }
-
   @if ($addColor) {
     @include setValue(color, $fallbacks, tokens.$cds-alias-typography-color-300);
   }
 
   @include generate-typography-token($name, $fallbacks);
 }
-
 @mixin generate-typography-body-token($name, $fallbacks: (), $addFontFamily: true, $addColor: true) {
   @if ($addFontFamily) {
     @include setValue(font-family, $fallbacks, variables.$clr-font); // tokens.$cds-alias-typography-font-family);
   }
-
   @if ($addColor) {
     @include setValue(color, $fallbacks, tokens.$cds-alias-typography-color-450);
   }
 
   @include generate-typography-token($name, $fallbacks);
 }
-
 @mixin generate-typography-token($name, $fallbacks: ()) {
   @each $key, $value in map.get($typography-tokens, $name) {
     @include setValue($key, $fallbacks, $value);
   }
 }
-
 @mixin cell-children-aligment() {
   clr-icon {
     margin-top: calc((-1 * tokens.$cds-global-space-3) - tokens.$cds-global-space-1);

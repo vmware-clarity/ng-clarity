@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use '../../utils/mixins';
 @use 'variables.tree-view' as tree-view-variables;
@@ -11,7 +12,6 @@
 @use '../../utils/variables/variables.density' as density;
 
 @include meta.load-css('properties.tree-view');
-
 @include mixins.exports('tree-view.clarity') {
   .clr-tree-node {
     //Display
@@ -124,6 +124,7 @@
       &:not([size]) {
         @include mixins.min-equilateral(tree-view-variables.$clr-tree-caret-size);
       }
+
       color: tree-view-variables.$clr-tree-node-content-text-only-color;
       vertical-align: middle;
     }
@@ -152,6 +153,7 @@
 
   .clr-treenode-checkbox input[type='checkbox'] {
     @include mixins.min-equilateral(tree-view-variables.$clr-tree-checkbox-size);
+
     padding: 0;
     // Using margin instead of gap due to checkbox implementation specifics.
     margin: density.$clr-base-vertical-offset-multi-row-inline-m tree-view-variables.$clr-tree-node-content-gap
@@ -207,6 +209,7 @@
     //Dimensions
     margin: 0;
     padding: 0;
+
     @include mixins.min-equilateral(tree-view-variables.$clr-tree-node-touch-target);
 
     //Others
@@ -226,6 +229,7 @@
 
   .clr-treenode-caret-icon {
     //Dimensions
+
     @include mixins.equilateral(tree-view-variables.$clr-tree-caret-size);
 
     //Others
@@ -234,12 +238,15 @@
 
   .clr-treenode-spinner-container {
     //Dimensions
+
     @include mixins.min-equilateral(tree-view-variables.$clr-tree-node-touch-target);
+
     padding: tree-view-variables.$clr-tree-node-content-padding;
   }
 
   .clr-treenode-spinner {
     //Dimensions
+
     @include mixins.min-equilateral(tree-view-variables.$clr-tree-spinner-size);
   }
 
@@ -255,7 +262,9 @@
     display: inline-block;
 
     //Dimensions
+
     @include mixins.equilateral(100%);
+
     margin: 0;
 
     //Others

@@ -7,12 +7,12 @@
 
 import { Component } from '@angular/core';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridPagination } from './datagrid-pagination';
 import { TestContext } from './helpers.spec';
 import { DetailService } from './providers/detail.service';
 import { Page } from './providers/page';
 import { StateDebouncer } from './providers/state-debouncer.provider';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 export default function (): void {
   describe('ClrDatagridPagination component', function () {
