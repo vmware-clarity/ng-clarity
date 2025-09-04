@@ -16,7 +16,7 @@
     --clr-vertical-nav-item-top-level-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
     --clr-vertical-nav-header-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
 
-    --clr-vertical-nav-trigger-divider-border-width: #{variables.$clr-global-borderwidth};
+    --clr-vertical-nav-trigger-divider-border-width: #{tokens.$cds-global-space-1};
 
     &,
     & [clr-density] {

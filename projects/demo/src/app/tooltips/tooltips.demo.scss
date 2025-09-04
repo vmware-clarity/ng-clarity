@@ -10,7 +10,7 @@
   position: relative;
 
   &.squeeze {
-    padding: $clr_baselineRem_1;
+    padding: var(--cds-global-space-9);
   }
 
   &.example-center {

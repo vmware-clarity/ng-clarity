@@ -10,8 +10,8 @@
 .clr-example {
   .example-aside-section {
     width: 20%;
-    padding: $clr_baselineRem_1;
-    border: $clr-global-borderwidth solid;
+    padding: var(--cds-global-space-9);
+    border: var(--cds-global-space-1) solid;
 
     @media screen and (max-width: map-get($clr-grid-breakpoints, sm)) {
       display: none;
@@ -19,10 +19,10 @@
   }
 
   .example-footer {
-    $example-footer-height: $clr_baselineRem_2_5;
+    $example-footer-height: var(--cds-global-space-13);
     height: $example-footer-height;
     line-height: $example-footer-height;
-    padding: 0 $clr_baselineRem_1;
-    border: $clr-global-borderwidth solid;
+    padding: 0 var(--cds-global-space-9);
+    border: var(--cds-global-space-1) solid;
   }
 }
