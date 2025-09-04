@@ -27,8 +27,8 @@ const stories: any[] = Object.values(convertToIndexV3(index).stories);
 for (const story of stories) {
   const component = story.kind.split('/')[0];
   const storyId = story.id;
-  const storyName = story.kind.replaceAll(' ', '-').replaceAll('/', '-').toLowerCase();
   const componentParsed = component.replaceAll(' ', '-').replaceAll('/', '-').toLowerCase();
+  const storyName = storyId.replace(`${componentParsed}-`, '');
   if (story.id.endsWith('--docs') || !component) {
     continue;
   }
