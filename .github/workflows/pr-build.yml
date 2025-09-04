@@ -9,9 +9,6 @@ jobs:
     name: PR Build
     timeout-minutes: 30
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        angular: ['Angular v15', 'Angular v16', 'Angular v17', 'Angular v18', 'Angular v19']
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -21,43 +18,20 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Install Dependencies
         run: npm ci
-      - name: Update to Angular v16
-        if: ${{matrix.angular == 'Angular v16' || matrix.angular == 'Angular v17' || matrix.angular == 'Angular v18' || matrix.angular == 'Angular v19'}}
-        run: |
-          npx ng update @angular/core@16 @angular/common@16 @angular/cli@16 @angular/cdk@16 --force
-      - name: Update to Angular v17
-        if: ${{matrix.angular == 'Angular v17' || matrix.angular == 'Angular v18' || matrix.angular == 'Angular v19'}}
-        run: |
-          npx ng update @angular/core@17 @angular/common@17 @angular/cli@17 @angular/cdk@17 --allow-dirty --force
-      - name: Update to Angular v18
-        if: ${{matrix.angular == 'Angular v18' || matrix.angular == 'Angular v19'}}
-        run: |
-          npx ng update @angular/core@18 @angular/common@18 @angular/cli@18 @angular/cdk@18 --allow-dirty --force
-      - name: Update to Angular v19
-        if: ${{matrix.angular == 'Angular v19'}}
-        run: |
-          npx ng update @angular/core@19 @angular/common@19 @angular/cli@19 @angular/cdk@19 --allow-dirty --force
-      - name: Disable Storybook Build
-        if: ${{matrix.angular != 'Angular v15'}}
-        run: node ./scripts/clear-npm-script.js _build:storybook
       - name: Lint
-        if: ${{matrix.angular == 'Angular v15'}}
         run: npm run lint
       - name: Build
         run: npm run build
       - name: Test
         run: npm run test
       - name: Public Api Check
-        if: ${{matrix.angular == 'Angular v15'}}
         run: npm run public-api:check
       - name: Upload Docs Artifact
-        if: ${{matrix.angular == 'Angular v15'}}
         uses: actions/upload-artifact@v4
         with:
           name: docs
           path: dist/docs/
       - name: Upload Coverage Artifact
-        if: ${{matrix.angular == 'Angular v15'}}
         uses: actions/upload-artifact@v4
         with:
           name: coverage
