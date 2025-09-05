@@ -82,9 +82,7 @@ const DropdownMenuTemplate: StoryFn = args => ({
         </clr-dropdown-menu>
       </clr-dropdown>
     </div>
-    <ng-template #defaultTemplate>
-      {{ menuItemText }} {{ menuIndex + 1 }}
-    </ng-template>
+    <ng-template #defaultTemplate>{{ menuItemText }} {{ menuIndex + 1 }}</ng-template>
     <ng-template #truncatedTemplate>
       <div cds-text="truncate">
         <ng-container *ngTemplateOutlet="defaultTemplate"></ng-container>
