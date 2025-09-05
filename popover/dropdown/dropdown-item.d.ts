@@ -17,7 +17,6 @@ export declare class ClrDropdownItem {
      */
     get dropdownItemId(): string;
     set dropdownItemId(value: string);
-    ngAfterViewInit(): void;
     private onDropdownItemClick;
     private onSpaceKeydown;
     private onEnterKeydown;

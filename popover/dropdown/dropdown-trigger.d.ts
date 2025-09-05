@@ -11,7 +11,6 @@ export declare class ClrDropdownTrigger {
     constructor(dropdown: ClrDropdown, toggleService: ClrPopoverToggleService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler, renderer: Renderer2);
     get active(): boolean;
     onDropdownTriggerClick(event: any): void;
-    ngAfterViewInit(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownTrigger, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownTrigger, "[clrDropdownTrigger],[clrDropdownToggle]", never, {}, {}, never, never, false, never>;
 }

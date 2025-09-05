@@ -5532,28 +5532,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-function wrapHostContentInsideSpan(hostElement, renderer, wrapperClass) {
-    if (!hostElement || !renderer) {
-        return;
-    }
-    const wrapper = renderer.createElement('span');
-    if (wrapperClass) {
-        renderer.addClass(wrapper, wrapperClass);
-    }
-    // Move all existing children into the wrapper
-    // We must loop while there are child nodes and re-append them to wrapper.
-    while (hostElement.firstChild) {
-        renderer.appendChild(wrapper, hostElement.firstChild);
-    }
-    renderer.appendChild(hostElement, wrapper);
-}
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 class ClrDropdownTrigger {
     constructor(dropdown, toggleService, el, focusHandler, renderer) {
         this.toggleService = toggleService;
@@ -5571,11 +5549,6 @@ class ClrDropdownTrigger {
     }
     onDropdownTriggerClick(event) {
         this.toggleService.toggleWithEvent(event);
-    }
-    ngAfterViewInit() {
-        if (!this.isRootLevelToggle) {
-            wrapHostContentInsideSpan(this.el.nativeElement, this.renderer, 'dropdown-item-content');
-        }
     }
 }
 ClrDropdownTrigger.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownTrigger, deps: [{ token: ClrDropdown }, { token: ClrPopoverToggleService }, { token: i0.ElementRef }, { token: DropdownFocusHandler }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive });
@@ -5678,9 +5651,6 @@ class ClrDropdownItem {
     }
     set dropdownItemId(value) {
         this.focusableItem.id = value;
-    }
-    ngAfterViewInit() {
-        wrapHostContentInsideSpan(this.el.nativeElement, this.renderer, 'dropdown-item-content');
     }
     onDropdownItemClick() {
         // Move focus back to the root dropdown trigger.
