@@ -168,6 +168,7 @@ import { CommonModules } from '../../helpers/common';
       }
     `,
   ],
+  standalone: false,
 })
 class FormsStoryComponent {
   _isDisabled = false;

@@ -108,6 +108,7 @@ import { CommonModules } from '../../helpers/common';
       </clr-input-container>
     </form>
   `,
+  standalone: false,
 })
 class FormsStoryComponent {
   columns = new Array(11);
