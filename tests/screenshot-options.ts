@@ -36,6 +36,12 @@ export const screenshotOptions: ScreenshotOptions = {
   'combobox--no-results': {
     fullPageScreenshot: true,
   },
+  'combobox--opened': {
+    fullPageScreenshot: true,
+  },
+  'combobox--opened-multi-line-items': {
+    fullPageScreenshot: true,
+  },
   'header--collapsed': {
     viewport: { width: 500, height: 300 },
   },

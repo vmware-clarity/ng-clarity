@@ -44,13 +44,13 @@ interface OptionGroup {
           <ng-container *ngIf="useGroups; else flatOptions">
             <clr-option-group *ngFor="let group of optionGroups" [clrOptionGroupLabel]="group.groupName">
               <clr-option *clrOptionItems="let option of group.options" [clrValue]="option.symbol">
-                {{ option.name }}
+                <ng-container *ngTemplateOutlet="defaultTemplate; context: { option: option }"></ng-container>
               </clr-option>
             </clr-option-group>
           </ng-container>
           <ng-template #flatOptions>
             <clr-option *clrOptionItems="let element of elements" [clrValue]="element.symbol">
-              {{ element.name }}
+              <ng-container *ngTemplateOutlet="defaultTemplate; context: { option: element }"></ng-container>
             </clr-option>
           </ng-template>
         </clr-options>
@@ -59,6 +59,18 @@ interface OptionGroup {
         {{ helperText }}
       </clr-control-helper>
     </clr-combobox-container>
+    <ng-template #defaultTemplate let-option="option">
+      <ng-container *ngIf="!multiLineItems">
+        {{ option.name }}
+      </ng-container>
+      <ng-container *ngIf="multiLineItems">
+        <div cds-layout="vertical">
+          <span>{{ option.name }}</span>
+          <span>{{ option.name }}</span>
+          <span>{{ option.name }}</span>
+        </div>
+      </ng-container>
+    </ng-template>
   `,
 })
 export class StorybookComboboxComponent {
@@ -72,6 +84,7 @@ export class StorybookComboboxComponent {
   @Input() controlHelper = false;
   @Input() helperText = 'Helper text';
   @Input() useGroups = true;
+  @Input() multiLineItems = false;
 
   /**
    * If true, expects `elements` as array of strings (flat list).
