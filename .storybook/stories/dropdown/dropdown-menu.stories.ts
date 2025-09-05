@@ -59,11 +59,15 @@ const DropdownMenuTemplate: StoryFn = args => ({
           <label class="dropdown-header" aria-hidden="true">{{ menuHeader }}</label>
           <clr-dropdown *ngFor="let _ of createArray(menuCount); let menuIndex = index">
             <button clrDropdownTrigger>
-              <ng-container *ngIf="!truncateMenuItemText; then defaultTemplate; else truncatedTemplate"></ng-container>
+              <div [attr.cds-text]="truncateMenuItemText ? 'truncate' : undefined">
+                {{ menuItemText }} {{ menuIndex + 1 }}
+              </div>
             </button>
             <clr-dropdown-menu>
               <label class="dropdown-header" aria-hidden="true">
-                <ng-container *ngIf="truncateMenuItemText; then defaultTemplate; else truncatedTemplate"></ng-container>
+                <div [attr.cds-text]="truncateMenuItemText ? 'truncate' : undefined">
+                  {{ menuItemText }} {{ menuIndex + 1 }}
+                </div>
                 Actions
               </label>
               <div
@@ -78,12 +82,6 @@ const DropdownMenuTemplate: StoryFn = args => ({
         </clr-dropdown-menu>
       </clr-dropdown>
     </div>
-    <ng-template #defaultTemplate>{{ menuItemText }} {{ menuIndex + 1 }}</ng-template>
-    <ng-template #truncatedTemplate>
-      <div cds-text="truncate">
-        <ng-container *ngTemplateOutlet="defaultTemplate"></ng-container>
-      </div>
-    </ng-template>
   `,
   props: args,
 });
