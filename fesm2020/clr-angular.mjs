@@ -2627,18 +2627,10 @@ ClrButton.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15
         [attr.id]="id"
       >
         <span class="spinner spinner-inline" *ngIf="loading"></span>
-        <ng-container *ngIf="inMenu; then inMenuTemplate; else defaultTemplate"></ng-container>
+        <ng-content></ng-content>
       </button>
     </ng-template>
-    <ng-template #defaultTemplate>
-      <ng-content></ng-content>
-    </ng-template>
-    <ng-template #inMenuTemplate>
-      <span class="dropdown-item-content">
-        <ng-container [ngTemplateOutlet]="defaultTemplate"></ng-container>
-      </span>
-    </ng-template>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }] });
+  `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }] });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrButton, decorators: [{
             type: Component,
             args: [{
@@ -2655,16 +2647,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
         [attr.id]="id"
       >
         <span class="spinner spinner-inline" *ngIf="loading"></span>
-        <ng-container *ngIf="inMenu; then inMenuTemplate; else defaultTemplate"></ng-container>
+        <ng-content></ng-content>
       </button>
-    </ng-template>
-    <ng-template #defaultTemplate>
-      <ng-content></ng-content>
-    </ng-template>
-    <ng-template #inMenuTemplate>
-      <span class="dropdown-item-content">
-        <ng-container [ngTemplateOutlet]="defaultTemplate"></ng-container>
-      </span>
     </ng-template>
   `,
                     providers: [{ provide: LoadingListener, useExisting: ClrButton }],
