@@ -77,7 +77,7 @@ export default {
     docs: {
       story: {
         inline: false,
-        iframeHeight: 700,
+        height: 700,
       },
     },
   },
