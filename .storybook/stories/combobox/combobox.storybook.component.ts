@@ -60,10 +60,10 @@ interface OptionGroup {
       </clr-control-helper>
     </clr-combobox-container>
     <ng-template #defaultTemplate let-option="option">
-      <ng-container *ngIf="!multiLine">
+      <ng-container *ngIf="!multiLineItems">
         {{ option.name }}
       </ng-container>
-      <ng-container *ngIf="multiLine">
+      <ng-container *ngIf="multiLineItems">
         <div cds-layout="vertical">
           <span>{{ option.name }}</span>
           <span>{{ option.name }}</span>
@@ -84,7 +84,7 @@ export class StorybookComboboxComponent {
   @Input() controlHelper = false;
   @Input() helperText = 'Helper text';
   @Input() useGroups = true;
-  @Input() multiLine = false;
+  @Input() multiLineItems = false;
 
   /**
    * If true, expects `elements` as array of strings (flat list).
