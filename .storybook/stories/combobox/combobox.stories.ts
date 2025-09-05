@@ -62,6 +62,7 @@ export default {
     elements: elements,
     singleModel: 'Am',
     multiModel: ['Am', 'As', 'Ba'],
+    multiLine: false,
   },
 };
 
@@ -133,6 +134,19 @@ export const Loading: StoryObj = {
   args: {
     clrLoading: true,
     elements: [],
+  },
+  play({ canvasElement }) {
+    (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();
+  },
+};
+export const Opened: StoryObj = {
+  play({ canvasElement }) {
+    (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();
+  },
+};
+export const OpenedMultiLine: StoryObj = {
+  args: {
+    multiLine: true,
   },
   play({ canvasElement }) {
     (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();
