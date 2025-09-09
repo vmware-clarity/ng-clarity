@@ -44,14 +44,14 @@ for (const story of stories) {
       viewMode: 'story',
     });
 
-    const viewport = getPageViewPort(component, storyName);
+    const viewport = getPageViewPort(componentParsed, storyName);
     if (viewport) {
       page.setViewportSize(viewport);
     }
 
     await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
-    const fullPage = takeFullPageScreenshot(component, storyName);
+    const fullPage = takeFullPageScreenshot(componentParsed, storyName);
     const screenshotTarget = fullPage ? page : page.locator('body');
 
     await expect(screenshotTarget).toHaveScreenshot(screenshotPath.split(path.sep), {
