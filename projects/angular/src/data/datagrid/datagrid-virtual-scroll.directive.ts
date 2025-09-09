@@ -147,7 +147,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   get totalContentHeight() {
-    return this.virtualScrollViewport?._totalContentHeight || '';
+    return this.virtualScrollViewport?._totalContentHeight() || '';
   }
 
   @Input('clrVirtualRowsOf')
