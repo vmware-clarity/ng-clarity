@@ -169,7 +169,7 @@ export default function (): void {
       fixture.detectChanges();
     }
     async function waitRequiredCycles(fixture: ComponentFixture<any>) {
-      await delay();
+      await delay(500);
       await fixture.whenStable();
       await fixture.whenRenderingDone();
       fixture.detectChanges();
