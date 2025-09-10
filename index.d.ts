@@ -721,41 +721,87 @@ declare class ClrDropdownMenu extends AbstractPopover implements AfterContentIni
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": { "alias": "clrPosition"; "required": false; }; }, {}, ["items"], ["*"], false, never>;
 }
 
-declare class ClrDropdownTrigger {
-    private toggleService;
-    private el;
-    private renderer;
-    isRootLevelToggle: boolean;
-    constructor(dropdown: ClrDropdown, toggleService: ClrPopoverToggleService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler, renderer: Renderer2);
-    get active(): boolean;
-    onDropdownTriggerClick(event: any): void;
-    ngAfterViewInit(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownTrigger, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownTrigger, "[clrDropdownTrigger],[clrDropdownToggle]", never, {}, {}, never, never, false, never>;
+declare function collapse(): AnimationMetadata[];
+
+declare class DomAdapter {
+    userDefinedWidth(element: HTMLElement): number;
+    scrollBarWidth(element: any): number;
+    scrollWidth(element: any): any;
+    computedHeight(element: any): number;
+    clientRect(element: any): DOMRect;
+    minWidth(element: any): number;
+    focus(element: any): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DomAdapter, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<DomAdapter>;
 }
 
-declare class ClrDropdownItem {
-    private dropdown;
-    private _dropdownService;
-    private focusableItem;
-    private el;
-    private renderer;
-    constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem$1, el: ElementRef, renderer: Renderer2);
-    get disabled(): boolean | string;
-    set disabled(value: boolean | string);
-    /**
-     * Let you overwrite the focusable auto increment id.
-     */
-    get dropdownItemId(): string;
-    set dropdownItemId(value: string);
-    ngAfterViewInit(): void;
-    private onDropdownItemClick;
-    private onSpaceKeydown;
-    private onEnterKeydown;
-    private stopImmediatePropagationIfDisabled;
-    private findRootDropdown;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownItem, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
+declare class BaseExpandableAnimation {
+    protected element: ElementRef<HTMLElement>;
+    protected domAdapter: DomAdapter;
+    protected renderer: Renderer2;
+    startHeight: number;
+    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
+    updateStartHeight(): void;
+    initAnimationEffects(): void;
+    cleanupAnimationEffects(cancelAnimations?: boolean): void;
+    private cancelElementAnimations;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BaseExpandableAnimation, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<BaseExpandableAnimation, never, never, {}, {}, never, never, true, never>;
+}
+
+declare class ClrExpandableAnimation extends BaseExpandableAnimation {
+    clrExpandTrigger: boolean;
+    get expandAnimation(): {
+        value: boolean;
+        params: {
+            startHeight: number;
+        };
+    };
+    animationStart(event: AnimationEvent): void;
+    animationDone(event: AnimationEvent): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimation, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": { "alias": "clrExpandTrigger"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare const EXPANDABLE_ANIMATION_DIRECTIVES: Type<any>[];
+
+declare function fade(opacity?: number): AnimationMetadata[];
+
+declare function fadeSlide(direction: string): AnimationMetadata[];
+
+declare function slide(direction: string): AnimationMetadata[];
+
+/**
+ * This is an abstract class because we need it to still be a valid token for dependency injection after transpiling.
+ * This does not mean you should extend it, simply implementing it is fine.
+ */
+declare abstract class LoadingListener {
+    abstract loadingStateChange(state: ClrLoadingState | string): void;
+}
+
+declare enum ClrLoadingState {
+    DEFAULT = 0,
+    LOADING = 1,
+    SUCCESS = 2,
+    ERROR = 3
+}
+declare class ClrLoading implements OnDestroy {
+    private listener;
+    static ngAcceptInputType_loadingState: boolean | ClrLoadingState | null | string;
+    private _loadingState;
+    constructor(listener: LoadingListener);
+    get loadingState(): boolean | string | ClrLoadingState;
+    set loadingState(value: boolean | string | ClrLoadingState);
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoading, [{ optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLoading, "[clrLoading]", never, { "loadingState": { "alias": "clrLoading"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare const CLR_LOADING_DIRECTIVES: Type<any>[];
+declare class ClrLoadingModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingModule, [typeof ClrLoading], [typeof i2.CommonModule], [typeof ClrLoading]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLoadingModule>;
 }
 
 declare class IfActiveService {
@@ -865,32 +911,6 @@ declare class ClrIfOpen implements OnDestroy {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfOpen, "[clrIfOpen]", never, { "open": { "alias": "clrIfOpen"; "required": false; }; }, { "openChange": "clrIfOpenChange"; }, never, never, false, never>;
 }
 
-/**
- * This is an abstract class because we need it to still be a valid token for dependency injection after transpiling.
- * This does not mean you should extend it, simply implementing it is fine.
- */
-declare abstract class LoadingListener {
-    abstract loadingStateChange(state: ClrLoadingState | string): void;
-}
-
-declare enum ClrLoadingState {
-    DEFAULT = 0,
-    LOADING = 1,
-    SUCCESS = 2,
-    ERROR = 3
-}
-declare class ClrLoading implements OnDestroy {
-    private listener;
-    static ngAcceptInputType_loadingState: boolean | ClrLoadingState | null | string;
-    private _loadingState;
-    constructor(listener: LoadingListener);
-    get loadingState(): boolean | string | ClrLoadingState;
-    set loadingState(value: boolean | string | ClrLoadingState);
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoading, [{ optional: true; }]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLoading, "[clrLoading]", never, { "loadingState": { "alias": "clrLoading"; "required": false; }; }, {}, never, never, false, never>;
-}
-
 declare class IfExpandService implements LoadingListener {
     expandable: number;
     hasExpandTemplate: boolean;
@@ -935,123 +955,6 @@ declare class ClrConditionalModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrConditionalModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrConditionalModule, [typeof ClrIfActive, typeof ClrIfOpen, typeof ClrIfExpanded], [typeof i2.CommonModule], [typeof ClrIfActive, typeof ClrIfOpen, typeof ClrIfExpanded]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrConditionalModule>;
-}
-
-declare const CLR_DROPDOWN_DIRECTIVES: Type<any>[];
-declare class ClrDropdownModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDropdownModule, [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem], [typeof i2.CommonModule], [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem, typeof ClrConditionalModule, typeof ClrIconModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrDropdownModule>;
-}
-
-declare class ClrSpinner {
-    private _inline;
-    private _inverse;
-    private _small;
-    private _medium;
-    /**
-     * Default class for all spinners. This class is always true
-     */
-    get spinnerClass(): boolean;
-    get inlineClass(): boolean;
-    set clrInline(value: boolean | string);
-    get inverseClass(): boolean;
-    set clrInverse(value: boolean | string);
-    get smallClass(): boolean;
-    set clrSmall(value: boolean | string);
-    /**
-     * When clrSmall & clrMedium are set both to true.
-     * The CSS with high priority will be small - so medium size will be ignored.
-     *
-     * For this reason if clrSmall is set we won't add clrMedium class.
-     *
-     * NOTE: This is dictated by the CSS rules.
-     * DON'T USE clrSmall & clrMedium to toggle classes. This could change without notice.
-     *
-     * Also there is no logical need to have both of them set to TRUE or FALSE.
-     */
-    get mediumClass(): boolean;
-    set clrMedium(value: boolean | string);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinner, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSpinner, "clr-spinner", never, { "clrInline": { "alias": "clrInline"; "required": false; }; "clrInverse": { "alias": "clrInverse"; "required": false; }; "clrSmall": { "alias": "clrSmall"; "required": false; }; "clrMedium": { "alias": "clrMedium"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare const CLR_SPINNER_DIRECTIVES: Type<any>[];
-declare class ClrSpinnerModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinnerModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSpinnerModule, [typeof ClrSpinner], [typeof i2.CommonModule], [typeof ClrSpinner]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSpinnerModule>;
-}
-
-declare const CLR_ALERT_DIRECTIVES: Type<any>[];
-declare class ClrAlertModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAlertModule, [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrDropdownModule, typeof ClrSpinnerModule], [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrAlertModule>;
-}
-
-declare class ClrEmphasisModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrEmphasisModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, never, [typeof ClrAlertModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrEmphasisModule>;
-}
-
-declare function collapse(): AnimationMetadata[];
-
-declare class DomAdapter {
-    userDefinedWidth(element: HTMLElement): number;
-    scrollBarWidth(element: any): number;
-    scrollWidth(element: any): any;
-    computedHeight(element: any): number;
-    clientRect(element: any): DOMRect;
-    minWidth(element: any): number;
-    focus(element: any): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DomAdapter, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<DomAdapter>;
-}
-
-declare class BaseExpandableAnimation {
-    protected element: ElementRef<HTMLElement>;
-    protected domAdapter: DomAdapter;
-    protected renderer: Renderer2;
-    startHeight: number;
-    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
-    updateStartHeight(): void;
-    initAnimationEffects(): void;
-    cleanupAnimationEffects(cancelAnimations?: boolean): void;
-    private cancelElementAnimations;
-    static ɵfac: i0.ɵɵFactoryDeclaration<BaseExpandableAnimation, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<BaseExpandableAnimation, never, never, {}, {}, never, never, true, never>;
-}
-
-declare class ClrExpandableAnimation extends BaseExpandableAnimation {
-    clrExpandTrigger: boolean;
-    get expandAnimation(): {
-        value: boolean;
-        params: {
-            startHeight: number;
-        };
-    };
-    animationStart(event: AnimationEvent): void;
-    animationDone(event: AnimationEvent): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimation, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": { "alias": "clrExpandTrigger"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare const EXPANDABLE_ANIMATION_DIRECTIVES: Type<any>[];
-
-declare function fade(opacity?: number): AnimationMetadata[];
-
-declare function fadeSlide(direction: string): AnimationMetadata[];
-
-declare function slide(direction: string): AnimationMetadata[];
-
-declare const CLR_LOADING_DIRECTIVES: Type<any>[];
-declare class ClrLoadingModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingModule, [typeof ClrLoading], [typeof i2.CommonModule], [typeof ClrLoading]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLoadingModule>;
 }
 
 declare const commonStringsDefault: ClrCommonStrings;
@@ -1283,6 +1186,101 @@ declare class ClrDestroyService extends Subject<void> implements OnDestroy {
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDestroyService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrDestroyService>;
+}
+
+declare class ClrDropdownTrigger {
+    private toggleService;
+    private el;
+    private renderer;
+    isRootLevelToggle: boolean;
+    constructor(dropdown: ClrDropdown, toggleService: ClrPopoverToggleService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler, renderer: Renderer2);
+    get active(): boolean;
+    onDropdownTriggerClick(event: any): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownTrigger, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownTrigger, "[clrDropdownTrigger],[clrDropdownToggle]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrDropdownItem {
+    private dropdown;
+    private _dropdownService;
+    private focusableItem;
+    private el;
+    private renderer;
+    constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem$1, el: ElementRef, renderer: Renderer2);
+    get disabled(): boolean | string;
+    set disabled(value: boolean | string);
+    /**
+     * Let you overwrite the focusable auto increment id.
+     */
+    get dropdownItemId(): string;
+    set dropdownItemId(value: string);
+    private onDropdownItemClick;
+    private onSpaceKeydown;
+    private onEnterKeydown;
+    private stopImmediatePropagationIfDisabled;
+    private findRootDropdown;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownItem, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare const CLR_DROPDOWN_DIRECTIVES: Type<any>[];
+declare class ClrDropdownModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDropdownModule, [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem], [typeof i2.CommonModule], [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem, typeof ClrConditionalModule, typeof ClrIconModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrDropdownModule>;
+}
+
+declare class ClrSpinner {
+    private _inline;
+    private _inverse;
+    private _small;
+    private _medium;
+    /**
+     * Default class for all spinners. This class is always true
+     */
+    get spinnerClass(): boolean;
+    get inlineClass(): boolean;
+    set clrInline(value: boolean | string);
+    get inverseClass(): boolean;
+    set clrInverse(value: boolean | string);
+    get smallClass(): boolean;
+    set clrSmall(value: boolean | string);
+    /**
+     * When clrSmall & clrMedium are set both to true.
+     * The CSS with high priority will be small - so medium size will be ignored.
+     *
+     * For this reason if clrSmall is set we won't add clrMedium class.
+     *
+     * NOTE: This is dictated by the CSS rules.
+     * DON'T USE clrSmall & clrMedium to toggle classes. This could change without notice.
+     *
+     * Also there is no logical need to have both of them set to TRUE or FALSE.
+     */
+    get mediumClass(): boolean;
+    set clrMedium(value: boolean | string);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinner, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSpinner, "clr-spinner", never, { "clrInline": { "alias": "clrInline"; "required": false; }; "clrInverse": { "alias": "clrInverse"; "required": false; }; "clrSmall": { "alias": "clrSmall"; "required": false; }; "clrMedium": { "alias": "clrMedium"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare const CLR_SPINNER_DIRECTIVES: Type<any>[];
+declare class ClrSpinnerModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinnerModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSpinnerModule, [typeof ClrSpinner], [typeof i2.CommonModule], [typeof ClrSpinner]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSpinnerModule>;
+}
+
+declare const CLR_ALERT_DIRECTIVES: Type<any>[];
+declare class ClrAlertModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAlertModule, [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrDropdownModule, typeof ClrSpinnerModule], [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrAlertModule>;
+}
+
+declare class ClrEmphasisModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrEmphasisModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, never, [typeof ClrAlertModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrEmphasisModule>;
 }
 
 /**
