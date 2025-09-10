@@ -41,24 +41,41 @@ interface OptionGroup {
           {{ selected }}
         </ng-container>
         <clr-options>
-          <ng-container *ngIf="useGroups; else flatOptions">
-            <clr-option-group *ngFor="let group of optionGroups" [clrOptionGroupLabel]="group.groupName">
-              <clr-option *clrOptionItems="let option of group.options" [clrValue]="option.symbol">
-                {{ option.name }}
-              </clr-option>
-            </clr-option-group>
-          </ng-container>
+          @if (useGroups) {
+            @for (group of optionGroups; track group) {
+              <clr-option-group [clrOptionGroupLabel]="group.groupName">
+                <clr-option *clrOptionItems="let option of group.options" [clrValue]="option.symbol">
+                  <ng-container *ngTemplateOutlet="defaultTemplate; context: { option: option }"></ng-container>
+                </clr-option>
+              </clr-option-group>
+            }
+          } @else {
+            <ng-container *ngTemplateOutlet="flatOptions"></ng-container>
+          }
           <ng-template #flatOptions>
             <clr-option *clrOptionItems="let element of elements" [clrValue]="element.symbol">
-              {{ element.name }}
+              <ng-container *ngTemplateOutlet="defaultTemplate; context: { option: element }"></ng-container>
             </clr-option>
           </ng-template>
         </clr-options>
       </clr-combobox>
-      <clr-control-helper *ngIf="controlHelper">
-        {{ helperText }}
-      </clr-control-helper>
+      @if (controlHelper) {
+        <clr-control-helper>
+          {{ helperText }}
+        </clr-control-helper>
+      }
     </clr-combobox-container>
+    <ng-template #defaultTemplate let-option="option">
+      @if (multiLineItems) {
+        <div cds-layout="vertical">
+          <span>{{ option.name }}</span>
+          <span>{{ option.name }}</span>
+          <span>{{ option.name }}</span>
+        </div>
+      } @else {
+        {{ option.name }}
+      }
+    </ng-template>
   `,
 })
 export class StorybookComboboxComponent {
@@ -72,6 +89,7 @@ export class StorybookComboboxComponent {
   @Input() controlHelper = false;
   @Input() helperText = 'Helper text';
   @Input() useGroups = true;
+  @Input() multiLineItems = false;
 
   /**
    * If true, expects `elements` as array of strings (flat list).
