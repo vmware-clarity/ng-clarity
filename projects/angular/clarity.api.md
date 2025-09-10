@@ -2299,8 +2299,6 @@ export class ClrDropdownItem {
     get dropdownItemId(): string;
     set dropdownItemId(value: string);
     // (undocumented)
-    ngAfterViewInit(): void;
-    // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownItem, never>;
@@ -2342,8 +2340,6 @@ export class ClrDropdownTrigger {
     get active(): boolean;
     // (undocumented)
     isRootLevelToggle: boolean;
-    // (undocumented)
-    ngAfterViewInit(): void;
     // (undocumented)
     onDropdownTriggerClick(event: any): void;
     // (undocumented)

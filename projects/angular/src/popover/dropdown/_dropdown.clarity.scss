@@ -144,7 +144,7 @@
           @include mixins.equilateral(density.$clr-base-icon-size-xs);
 
           transform: rotate(-90deg);
-          flex: 0 0 auto;
+          margin-left: auto;
         }
 
         &.active::after {
@@ -169,12 +169,6 @@
 
       &:focus {
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
-      }
-
-      &-content {
-        @include mixins.overflow-ellipsis(true);
-
-        flex: 1 1 auto;
       }
     }
 

@@ -9,7 +9,6 @@ import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/
 
 import { ClrDropdown } from './dropdown';
 import { RootDropdownService } from './providers/dropdown.service';
-import { wrapHostContentInsideSpan } from './utils/content-wrapping';
 import { BASIC_FOCUSABLE_ITEM_PROVIDER } from '../../utils/focus/focusable-item/basic-focusable-item.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 
@@ -52,10 +51,6 @@ export class ClrDropdownItem {
   }
   set dropdownItemId(value: string) {
     this.focusableItem.id = value;
-  }
-
-  ngAfterViewInit() {
-    wrapHostContentInsideSpan(this.el.nativeElement, this.renderer, 'dropdown-item-content');
   }
 
   @HostListener('click')
