@@ -1632,22 +1632,11 @@ class ClrButton {
       >
         @if (loading) {
           <span class="spinner spinner-inline"></span>
-        } @else if (inMenu) {
-          <ng-container [ngTemplateOutlet]="inMenuTemplate"></ng-container>
-        } @else {
-          <ng-container [ngTemplateOutlet]="defaultTemplate"></ng-container>
         }
+        <ng-content></ng-content>
       </button>
     </ng-template>
-    <ng-template #defaultTemplate>
-      <ng-content></ng-content>
-    </ng-template>
-    <ng-template #inMenuTemplate>
-      <span class="dropdown-item-content">
-        <ng-container [ngTemplateOutlet]="defaultTemplate"></ng-container>
-      </span>
-    </ng-template>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }] }); }
+  `, isInline: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrButton, decorators: [{
             type: Component,
@@ -1666,20 +1655,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
       >
         @if (loading) {
           <span class="spinner spinner-inline"></span>
-        } @else if (inMenu) {
-          <ng-container [ngTemplateOutlet]="inMenuTemplate"></ng-container>
-        } @else {
-          <ng-container [ngTemplateOutlet]="defaultTemplate"></ng-container>
         }
+        <ng-content></ng-content>
       </button>
-    </ng-template>
-    <ng-template #defaultTemplate>
-      <ng-content></ng-content>
-    </ng-template>
-    <ng-template #inMenuTemplate>
-      <span class="dropdown-item-content">
-        <ng-container [ngTemplateOutlet]="defaultTemplate"></ng-container>
-      </span>
     </ng-template>
   `,
                     providers: [{ provide: LoadingListener, useExisting: ClrButton }],
