@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../utils/mixins';
 @use '../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
@@ -57,7 +58,6 @@
       --clr-btn-default-disabled-color: #{tokens.$cds-alias-typography-disabled};
       --clr-btn-default-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
       --clr-btn-default-disabled-border-color: #{tokens.$cds-alias-status-disabled};
-
       --clr-btn-default-checked-color: #{tokens.$cds-alias-typography-color-100};
       --clr-btn-default-checked-bg-color: var(--clr-btn-default-color);
       --clr-btn-default-checked-hover-color: var(--clr-btn-default-checked-color);
@@ -78,7 +78,6 @@
       --clr-btn-default-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
       --clr-btn-default-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
       --clr-btn-default-outline-disabled-border-color: #{tokens.$cds-alias-status-disabled};
-
       --clr-btn-default-outline-checked-color: #{tokens.$cds-alias-typography-color-100};
       --clr-btn-default-outline-checked-bg-color: var(--clr-btn-default-outline-bg-color);
 
@@ -90,7 +89,6 @@
       --clr-btn-primary-hover-color: var(--clr-btn-primary-color);
       --clr-btn-primary-active-color: #{tokens.$cds-alias-typography-color-100};
       --clr-btn-primary-active-bg-color: var(--cds-alias-object-interaction-info-active);
-
       --clr-btn-primary-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
       --clr-btn-primary-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
       --clr-btn-primary-disabled-border-color: #{tokens.$cds-alias-status-disabled};
@@ -105,7 +103,6 @@
       --clr-btn-primary-outline-hover-color: #{tokens.$cds-alias-typography-info-hover};
       --clr-btn-primary-outline-active-bg-color: var(--clr-btn-outline-bg-color);
       --clr-btn-primary-outline-active-color: var(--clr-btn-primary-outline-color);
-
       --clr-btn-primary-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
       --clr-btn-primary-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
       --clr-btn-primary-outline-disabled-border-color: #{tokens.$cds-alias-status-disabled};
@@ -120,7 +117,6 @@
       --clr-btn-success-hover-color: var(--clr-btn-success-color);
       --clr-btn-success-active-color: #{tokens.$cds-alias-typography-color-100};
       --clr-btn-success-active-bg-color: var(--cds-alias-object-interaction-success-active);
-
       --clr-btn-success-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
       --clr-btn-success-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
       --clr-btn-success-disabled-border-color: #{tokens.$cds-alias-status-disabled};
@@ -135,7 +131,6 @@
       --clr-btn-success-outline-hover-color: #{tokens.$cds-alias-typography-success-hover};
       --clr-btn-success-outline-active-bg-color: var(--clr-btn-success-outline-bg-color);
       --clr-btn-success-outline-active-color: var(--clr-btn-success-outline-color);
-
       --clr-btn-success-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
       --clr-btn-success-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
       --clr-btn-success-outline-disabled-border-color: #{tokens.$cds-alias-status-disabled};
@@ -150,7 +145,6 @@
       --clr-btn-danger-hover-color: var(--clr-btn-danger-color);
       --clr-btn-danger-active-bg-color: var(--cds-alias-object-interaction-danger-active);
       --clr-btn-danger-active-color: #{tokens.$cds-alias-typography-color-100};
-
       --clr-btn-danger-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
       --clr-btn-danger-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
       --clr-btn-danger-disabled-border-color: #{tokens.$cds-alias-status-disabled};
@@ -165,7 +159,6 @@
       --clr-btn-danger-outline-hover-color: #{tokens.$cds-alias-typography-danger-hover};
       --clr-btn-danger-outline-active-bg-color: var(--clr-btn-danger-outline-bg-color);
       --clr-btn-danger-outline-active-color: var(--clr-btn-danger-outline-color);
-
       --clr-btn-danger-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
       --clr-btn-danger-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
       --clr-btn-danger-outline-disabled-border-color: #{tokens.$cds-alias-status-disabled};
@@ -180,7 +173,6 @@
       --clr-btn-warning-hover-color: var(--clr-btn-warning-color);
       --clr-btn-warning-active-bg-color: var(--cds-alias-object-interaction-warning-active);
       --clr-btn-warning-active-color: var(--clr-btn-warning-color);
-
       --clr-btn-warning-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
       --clr-btn-warning-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
       --clr-btn-warning-disabled-border-color: #{tokens.$cds-alias-status-disabled};
@@ -195,7 +187,6 @@
       --clr-btn-warning-outline-hover-color: #{tokens.$cds-alias-typography-warning-hover};
       --clr-btn-warning-outline-active-bg-color: var(--clr-btn-warning-outline-bg-color);
       --clr-btn-warning-outline-active-color: var(--clr-btn-warning-outline-color);
-
       --clr-btn-warning-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
       --clr-btn-warning-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
       --clr-btn-warning-outline-disabled-border-color: #{tokens.$cds-alias-status-disabled};
@@ -210,7 +201,6 @@
       --clr-btn-neutral-hover-color: var(--clr-btn-neutral-color);
       --clr-btn-neutral-active-bg-color: var(--cds-alias-object-interaction-neutral-active);
       --clr-btn-neutral-active-color: var(--clr-btn-neutral-color);
-
       --clr-btn-neutral-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
       --clr-btn-neutral-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
       --clr-btn-neutral-disabled-border-color: #{tokens.$cds-alias-status-disabled};
@@ -225,7 +215,6 @@
       --clr-btn-neutral-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-neutral-secondary-hover};
       --clr-btn-neutral-outline-active-color: #{tokens.$cds-alias-status-neutral};
       --clr-btn-neutral-outline-active-bg-color: #{tokens.$cds-alias-object-opacity-0};
-
       --clr-btn-neutral-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
       --clr-btn-neutral-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
       --clr-btn-neutral-outline-disabled-border-color: #{tokens.$cds-alias-status-disabled};
@@ -240,10 +229,8 @@
       --clr-btn-link-active-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-hover-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-hover-color: #{tokens.$cds-alias-typography-info-hover};
-
       --clr-btn-link-visited-color: #{tokens.$cds-alias-typography-link-color-visited};
       --clr-btn-link-visited-hover-color: #{tokens.$cds-alias-typography-link-color-visited-hover};
-
       --clr-btn-link-disabled-color: #{tokens.$cds-alias-typography-disabled};
       --clr-btn-link-disabled-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-disabled-border-color: var(--clr-btn-transparent-bg-color);
@@ -328,7 +315,6 @@
       --clr-btn-inverse-hover-color: var(--clr-btn-inverse-color); // var(--clr-color-neutral-0);
       --clr-btn-inverse-active-bg-color: var(--cds-alias-object-interaction-inverse-active);
       --clr-btn-inverse-active-color: #{tokens.$cds-global-color-white};
-
       --clr-btn-inverse-disabled-color: #{tokens.$cds-alias-typography-disabled};
       --clr-btn-inverse-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
       --clr-btn-inverse-disabled-border-color: #{tokens.$cds-alias-status-disabled};

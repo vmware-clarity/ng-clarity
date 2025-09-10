@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../../utils/mixins';
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
@@ -20,6 +21,7 @@
 
     padding: forms-variables.$clr-forms-input-padding;
     max-height: forms-variables.$clr-forms-input-wrapper-height;
+
     @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
 
     &[readonly] {
@@ -40,11 +42,13 @@
 
   .clr-error .clr-input:not([readonly]) {
     border-bottom-color: forms-variables.$clr-forms-invalid-color;
+
     @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-invalid-color);
   }
 
   .clr-success .clr-input:not([readonly]) {
     border-bottom-color: forms-variables.$clr-forms-valid-color;
+
     @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-valid-color);
   }
 
@@ -67,6 +71,7 @@
   /**
    Placeholder
    **/
+
   @include mixins.input-placeholder-wrapper() {
     color: forms-variables.$clr-forms-placeholder-color;
   }

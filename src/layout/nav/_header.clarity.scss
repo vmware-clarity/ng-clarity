@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:map';
 @use 'sass:meta';
 @use '../../image/icons.clarity';
@@ -25,7 +26,6 @@
     outline-offset: header-variables.$clr-header-outline-offset; // So that the outline styles aren't hidden because of the browser
   }
 }
-
 @mixin header-section-divider() {
   display: inline-block;
   content: '';
@@ -36,7 +36,6 @@
   left: 0;
   top: calc((header-variables.$clr-header-height - density.$clr-base-icon-size-3xl) / 2);
 }
-
 @mixin header-nav-appearance() {
   color: header-variables.$clr-header-font-color;
 
@@ -48,7 +47,6 @@
     cursor: not-allowed;
   }
 }
-
 @mixin header-backgrounds() {
   &.header-1 {
     background-color: header-variables.$clr-header-bg-color;
@@ -83,7 +81,6 @@
     background-color: header-variables.$clr-header-8-bg-color;
   }
 }
-
 @mixin header-branding() {
   .branding {
     display: flex;
@@ -111,17 +108,18 @@
     .title {
       color: header-variables.$clr-header-title-color;
       font-family: header-variables.$clr-header-title-font-family;
+
       @include mixins.generate-typography-token(
         'SUBSECTION-16-EXP',
         (
           font-weight: header-variables.$clr-header-title-font-weight,
         )
       );
+
       text-decoration: none;
     }
   }
 }
-
 @mixin header-links {
   .settings, /* TODO: deprecated. Remove when the clarity css naming convention is implemented.*/
   .header-nav,
@@ -148,6 +146,7 @@
 
       &.nav-icon-text {
         gap: density.$clr-base-gap-s;
+
         cds-icon,
         clr-icon {
           transform: none;
@@ -173,7 +172,6 @@
     }
   }
 }
-
 @mixin header-nav {
   .header-nav {
     display: flex;
@@ -193,7 +191,6 @@
     }
   }
 }
-
 @mixin header-actions {
   .settings,
   .header-actions {
@@ -201,8 +198,8 @@
     display: flex;
     justify-content: flex-end;
 
-    & > *:not(.dropdown):before,
-    & > .dropdown > .dropdown-toggle:before {
+    & > *:not(.dropdown)::before,
+    & > .dropdown > .dropdown-toggle::before {
       @include header-section-divider();
     }
 
@@ -210,6 +207,7 @@
     & > .dropdown {
       & > .dropdown-toggle {
         position: relative;
+
         @include header-nav-appearance();
         @include header-nav-link();
       }
@@ -234,7 +232,6 @@
     }
   }
 }
-
 @mixin header-search() {
   .search-box,
   .search {
@@ -269,7 +266,9 @@
         background-repeat: no-repeat;
         background-size: contain;
         cursor: pointer;
+
         @include mixins.min-equilateral(header-variables.$clr-header-search-icon-size);
+
         vertical-align: middle;
         margin: 0;
         margin-right: calc(
@@ -289,23 +288,25 @@
       color: header-variables.$clr-header-search-input-font-color;
       border-radius: density.$clr-base-border-radius-s;
       height: tokens.$cds-global-space-11;
-
       padding: 0 0 0 calc(header-variables.$clr-header-search-icon-size + 2 * header-variables.$clr-header-search-gap);
-
       vertical-align: middle;
 
       // Typography
+
       @include mixins.generate-typography-token('BODY-14-SB-EXP');
 
       // hacky fix for chrome autofill wrong colors. Better solution not found.
       // set transition between current correct to inner wrong immutable colors to very long time.
       &:-webkit-autofill,
       &:-webkit-autofill:focus {
-        transition: background-color 0s 600000s, color 0s 600000s;
+        transition:
+          background-color 0s 600000s,
+          color 0s 600000s;
       }
 
       &::placeholder {
         color: header-variables.$clr-header-search-placeholder-text-color;
+
         @include mixins.generate-typography-token('BODY-14-RG-EXP');
       }
 
@@ -330,7 +331,6 @@
     position: relative;
   }
 }
-
 @mixin header-search-md {
   .search-box,
   .search {
@@ -345,7 +345,6 @@
 }
 
 @include meta.load-css('../main-container/properties.header');
-
 @include mixins.exports('header.clarity') {
   // TODO: rename to follow clr naming convention
   header,

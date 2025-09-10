@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:map';
 @use '../../image/icons.clarity';
 @use '../../utils/mixins';
@@ -27,9 +28,11 @@
       &:not([multiple]) {
         @include forms-mixins.input-border-bottom-animation();
       }
+
       &[multiple]:focus {
         @include mixins.include-slim-outline-style-form-fields();
       }
+
       position: relative;
       padding: 0 density.$clr-base-icon-size-l 0 #{density.$clr-base-horizontal-offset-s};
       cursor: pointer;
@@ -74,14 +77,14 @@
     &::after {
       position: absolute;
       content: '';
+
       @include mixins.equilateral(forms-variables.$clr-forms-select-caret-size);
+
       top: calc((100% - forms-variables.$clr-forms-select-caret-size) / 2);
       right: density.$clr-base-horizontal-offset-s;
       // Using mask instead of background-image so we can use the CSS properties
       // and support both light / dark themes.
-      -webkit-mask: icons.generateCaretIcon();
       mask: icons.generateCaretIcon();
-      -webkit-mask-repeat: no-repeat;
       mask-repeat: no-repeat;
       background-color: forms-variables.$clr-forms-select-caret-color;
     }
@@ -122,6 +125,7 @@
 
     option {
       @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+
       padding: density.$clr-base-vertical-offset-xs density.$clr-base-horizontal-offset-2xl
         density.$clr-base-vertical-offset-xs density.$clr-base-horizontal-offset-l;
       color: forms-variables.$clr-forms-select-multiple-option-color;
@@ -135,8 +139,10 @@
   .clr-error select {
     &:not([multiple]) {
       border-bottom-color: forms-variables.$clr-forms-invalid-color;
+
       @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-invalid-color);
     }
+
     &[multiple] {
       border-color: forms-variables.$clr-forms-invalid-color;
     }
@@ -145,8 +151,10 @@
   .clr-success select {
     &:not([multiple]) {
       border-bottom-color: forms-variables.$clr-forms-valid-color;
+
       @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-valid-color);
     }
+
     &[multiple] {
       border-color: forms-variables.$clr-forms-valid-color;
     }
@@ -166,6 +174,7 @@
     select:disabled {
       color: forms-variables.$clr-forms-select-disabled-color;
       cursor: not-allowed;
+
       &:hover {
         background: none;
         border-color: forms-variables.$clr-forms-border-color;

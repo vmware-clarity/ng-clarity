@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use '../../image/icons.clarity';
 @use '../../utils/mixins';
@@ -17,15 +18,17 @@
   &::before,
   &::after {
     @include mixins.min-equilateral($spinner-size);
+
     border-width: $stroke-width-size;
   }
+
   @include mixins.min-equilateral($spinner-size);
 }
-
 @mixin spinner-color-before-after($fill-color, $tail-color) {
   &::before {
     border-color: $tail-color;
   }
+
   &::after {
     border-color: $fill-color;
     border-right-color: transparent;
@@ -38,8 +41,10 @@
     // spinner-lg is the default
     position: relative;
     display: inline-block;
+
     @include mixins.min-equilateral(spinner-variables.$clr-spinner-default-size);
     @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+
     animation: spin 1s linear infinite;
     margin-right: 0;
     padding: 0;
@@ -49,7 +54,9 @@
 
     &::after {
       content: '';
+
       @include mixins.min-equilateral(spinner-variables.$clr-spinner-default-size);
+
       position: absolute;
       top: 0;
       left: 0;
@@ -62,7 +69,9 @@
 
     &::before {
       content: '';
+
       @include mixins.min-equilateral(spinner-variables.$clr-spinner-default-size);
+
       position: absolute;
       top: 0;
       left: 0;
@@ -92,6 +101,7 @@
 
     &.spinner-inverse {
       // TODO: get ux input on direction here
+
       @include spinner-color-before-after(
         spinner-variables.$clr-spinner-fill-inverse-color,
         spinner-variables.$clr-spinner-fill-inverse-bg-color
@@ -100,20 +110,20 @@
 
     &.spinner-neutral-0 {
       // needed for loading banner alerts in core
+
       @include spinner-color-before-after(spinner-variables.$clr-spinner-fill-color, rgba(transparent, 1));
     }
 
     &.spinner-check {
       animation: none;
+
       &::after,
       &::before {
         border: none;
       }
       // Using mask instead of background-image so we can use the CSS properties
       // and support both light / dark themes.
-      -webkit-mask: icons.generateCheckIcon();
       mask: icons.generateCheckIcon();
-      -webkit-mask-repeat: no-repeat;
       mask-repeat: no-repeat;
       background-color: button-variables.$clr-btn-success-checked-color;
     }
@@ -151,6 +161,7 @@
     0% {
       transform: rotate(0deg);
     }
+
     100% {
       transform: rotate(360deg);
     }

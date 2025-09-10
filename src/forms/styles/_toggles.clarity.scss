@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use '../../button/variables.toggles' as toggle-variables;
 @use '../../utils/variables/variables.density' as density;
@@ -18,7 +19,6 @@
 }
 
 @include meta.load-css('../../button/properties.toggles');
-
 @include mixins.exports('toggles.clarity') {
   $mark-half-size: calc(#{forms-variables.$clr-forms-checkbox-mark-size} * 0.5);
 
@@ -48,13 +48,17 @@
     // Toggle Switch background
     input[type='checkbox'] {
       position: relative;
+
       @extend %custom-checkbox;
+
       height: toggle-variables.$clr-toggle-switch-base-height;
       width: toggle-variables.$clr-toggle-switch-base-width;
       flex: 0 0 auto;
       border-radius: density.$clr-base-border-radius-xl; // Style outline radius properly
       background-color: toggle-variables.$clr-toggle-bg-color-off;
+
       @include clr-toggle-transition-styles;
+
       transition-property: background-color;
 
       &:not(:disabled) {
@@ -73,6 +77,7 @@
 
         @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
         @include clr-toggle-transition-styles;
+
         transition-property: left, border-width, border-color;
       }
 
@@ -81,7 +86,9 @@
         position: absolute;
         content: '';
         visibility: hidden;
+
         @include clr-toggle-transition-styles;
+
         left: #{tokens.$cds-global-space-3};
         transition-property: visibility, left, border-color;
         height: calc(#{$mark-half-size} + #{tokens.$cds-global-space-1});
@@ -173,7 +180,9 @@
 
     .clr-control-label {
       display: block;
+
       @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+
       padding: 0 0 0 density.$clr-base-horizontal-offset-m;
       margin-top: 0;
     }

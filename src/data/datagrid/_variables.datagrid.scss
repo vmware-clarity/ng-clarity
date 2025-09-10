@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../variables.tables' as tables-variables;
 @use '../../progress/spinner/variables.spinner' as spinner-variables;
 @use '../../utils/variables/variables.density' as density;
@@ -16,6 +17,7 @@ $clr-datagrid-default-border-color: var(--clr-datagrid-default-border-color) !de
 $clr-datagrid-icon-color: var(--clr-datagrid-icon-color) !default;
 $clr-datagrid-row-hover-color: var(--clr-datagrid-row-hover-color) !default;
 $clr-datagrid-row-active-color: var(--clr-datagrid-row-active-color) !default;
+
 /* unused, remove in v18 */
 $clr-datagrid-row-hover-font-color: var(--clr-datagrid-row-hover-font-color) !default;
 $clr-datagrid-action-toggle-color: var(--clr-datagrid-action-toggle-color) !default;
@@ -26,6 +28,7 @@ $clr-datagrid-pagination-input-border-focus-color: var(--clr-datagrid-pagination
 $clr-datagrid-popover-bg-color: var(--clr-datagrid-popover-bg-color) !default;
 $clr-datagrid-popover-border-color: var(--clr-datagrid-popover-border-color) !default;
 $clr-datagrid-popover-font-color: var(--clr-datagrid-popover-font-color) !default;
+
 /* unused, remove in v18 */
 $clr-datagrid-action-popover-hover-color: var(--clr-datagrid-action-popover-hover-color) !default;
 $clr-datagrid-row-selected: var(--clr-datagrid-row-selected) !default;

@@ -28,6 +28,7 @@
     $infix: breakpoint.clr-breakpoint-infix($breakpoint, $breakpoints);
 
     // Allow columns to stretch full width below their breakpoints
+
     @for $i from 1 through $columns {
       .clr-col#{$infix}-#{$i} {
         @extend %clr-grid-column;
@@ -74,6 +75,7 @@
       }
 
       // `$columns - 1` because offsetting by the width of an entire row isn't possible
+
       @for $i from 0 through ($columns - 1) {
         @if not($infix == '' and $i == 0) {
           /* stylelint-disable */

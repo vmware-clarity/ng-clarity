@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../../utils/mixins';
 @use '../tabs/variables.tabs' as tabs-variables;
 @use 'variables.subnav' as subnav-variables;
@@ -35,7 +36,9 @@
     .nav-link {
       position: relative;
       color: tabs-variables.$clr-nav-link-color;
+
       @include mixins.generate-typography-token('BODY-14-RG-STD');
+
       padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
       display: flex;
 
@@ -49,6 +52,7 @@
 
       &.dropdown-toggle {
         padding: 0 density.$clr-base-horizontal-offset-m;
+
         cds-icon {
           color: tabs-variables.$clr-nav-link-color;
         }
@@ -76,13 +80,16 @@
       &.active {
         text-decoration: none;
       }
+
       &.active {
         &:hover {
           background-color: tabs-variables.$clr-nav-selected-hover-background-color;
         }
+
         &:active {
           background-color: tabs-variables.$clr-nav-selected-active-background-color;
         }
+
         color: tabs-variables.$clr-nav-link-active-color;
       }
     }

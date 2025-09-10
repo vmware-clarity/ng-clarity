@@ -22,11 +22,12 @@
       /* Chrome, Safari, Edge, Opera */
       &::-webkit-outer-spin-button,
       &::-webkit-inner-spin-button {
-        -webkit-appearance: none;
+        appearance: none;
         margin: 0;
       }
+
       /* Firefox */
-      -moz-appearance: textfield;
+      appearance: textfield;
 
       &-separator {
         background: tokens.$cds-alias-object-border-color;
@@ -44,9 +45,11 @@
       &:hover {
         background-color: tokens.$cds-alias-object-interaction-background-hover;
       }
+
       &:active {
         background-color: tokens.$cds-alias-object-interaction-background-active;
       }
+
       &:disabled {
         background-color: unset;
       }

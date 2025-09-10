@@ -6,7 +6,6 @@
  */
 
 @use 'sass:map';
-
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
 @use '../../utils/variables/variables.density' as density;
@@ -24,6 +23,7 @@
 
     .clr-file-input {
       @include mixins.equilateral(0);
+
       opacity: 0;
       overflow: hidden;
       position: absolute;
@@ -39,6 +39,7 @@
       padding: 0;
       min-width: unset;
       border: 0;
+
       cds-icon:not([size]) {
         @include mixins.equilateral(density.$clr-base-icon-size-l);
       }
@@ -89,6 +90,7 @@
     .clr-file-clear-button {
       margin: 0;
       padding: 0;
+
       @include mixins.min-equilateral(density.$clr-base-icon-size-s);
 
       cds-icon {

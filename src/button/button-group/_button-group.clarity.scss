@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../../utils/mixins';
 @use '../variables.buttons' as buttons-variables;
 @use '../../utils/variables/variables.density' as density;
@@ -47,6 +48,7 @@
         appearance: none;
         opacity: 1;
         top: 0;
+
         @include mixins.equilateral(100%);
         // using cds-alias-object-interaction-outline token will be better when focus state get implemented
         border: Highlight solid 2px;
@@ -176,7 +178,9 @@
       position: absolute;
       top: 0;
       left: 0;
+
       @include mixins.equilateral(0);
+
       opacity: 0;
     }
   }

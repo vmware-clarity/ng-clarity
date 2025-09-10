@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:map';
 @use 'sass:meta';
 @use '../../utils/mixins';
@@ -23,15 +24,11 @@
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: $top;
-  right: $right;
-  bottom: $bottom;
-  left: $left;
+  inset: $top $right $bottom $left;
   background: vertical-nav-variables.$clr-vertical-nav-bg-color;
   z-index: responsive-nav-variables.$clr-sliding-panel-z-index;
   height: 100vh;
 }
-
 @mixin menu-trigger($right: auto, $left: 0, $transformX: responsive-nav-variables.$clr-trigger-position) {
   position: fixed;
   top: 0;
@@ -45,7 +42,6 @@
     content: none;
   }
 }
-
 @mixin hamburger-menu-trigger-animation() {
   & > span {
     background: transparent;
@@ -66,13 +62,11 @@
     }
   }
 }
-
 @mixin clr-nav-close-trigger-animation() {
   left: tokens.$cds-global-space-3;
   transform-origin: 9%;
   transition: responsive-nav-variables.$clr-trigger-animation;
 }
-
 @mixin overflow-menu-trigger-animation() {
   & > span {
     background: transparent;
@@ -97,13 +91,13 @@
 }
 
 @include meta.load-css('properties.responsive-nav');
-
 @include mixins.exports('responsive-nav.clarity') {
   .clr-nav-close {
     margin: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-l;
     background: none;
     border: none;
     color: var(--color);
+
     --color: #{tokens.$cds-global-color-white};
 
     &:hover,
@@ -162,7 +156,9 @@
     & > span::before,
     & > span::after {
       display: inline-block;
+
       @include mixins.equilateral(tokens.$cds-global-space-3);
+
       background: responsive-nav-variables.$clr-responsive-nav-trigger-bg-color;
       // TODO: Use border radius token?
       border-radius: tokens.$cds-global-space-3;
@@ -198,16 +194,15 @@
       .header-hamburger-trigger,
       .header-overflow-trigger {
         display: inline-block;
-
         border: none;
         background: none;
         cursor: pointer;
+
         @include mixins.equilateral(header-variables.$clr-header-height);
 
         // TODO: replace `hamburger` and `dots` to use CDS-ICON `bars` and `ellipsis-vertical` respectively.
         // 2px to vertically align the trigger lines. display flex was not working on all browsers.
         padding: 0 0 tokens.$cds-global-space-2 0;
-
         text-align: center;
         white-space: nowrap;
 
@@ -224,6 +219,7 @@
       .sub-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
         @include sliding-nav-positioning();
+
         transform: translateX(calc(-1 * #{responsive-nav-variables.$clr-sliding-panel-width}));
         transition: responsive-nav-variables.$clr-sliding-panel-animation;
       }
@@ -233,6 +229,7 @@
       .sub-nav.clr-nav-level-2,
       .clr-vertical-nav.clr-nav-level-2 {
         @include sliding-nav-positioning(0, 0, 0, auto);
+
         transform: translateX(responsive-nav-variables.$clr-sliding-panel-width);
         transition: responsive-nav-variables.$clr-sliding-panel-animation;
       }
@@ -266,7 +263,6 @@
 
           .nav-link {
             padding: vertical-nav-variables.$clr-vertical-nav-item-padding;
-
             width: 100%;
             max-width: 100%;
             overflow: hidden;
@@ -337,10 +333,7 @@
         .header {
           .header-backdrop {
             position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            inset: 0;
             background: tokens.$cds-alias-object-overlay-backdrop-background;
             cursor: pointer;
             z-index: responsive-nav-variables.$clr-sliding-panel-backdrop-z-index;
@@ -490,7 +483,6 @@
       }
     }
   }
-
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     .main-container {
       .header {

@@ -23,14 +23,32 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-/* stylelint-disable */
-/* stylelint-enable */
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/* stylelint-disable */
+/* stylelint-enable */
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
@@ -59,7 +77,7 @@
   --cds-alias-typography-link-color-visited: var(--cds-global-color-violet-700);
   --cds-alias-typography-link-color-visited-hover: var(--cds-global-color-violet-1000);
   --cds-alias-typography-link-color-active: var(--cds-global-color-red-700);
-  --cds-alias-object-container-backdrop-background: hsla(0, 0%, 100%, 0.6);
+  --cds-alias-object-container-backdrop-background: hsl(0deg 0% 100% / 60%);
   --cds-alias-object-interaction-background-hover: var(--cds-global-color-construction-50);
   --cds-alias-object-interaction-background-active: var(--cds-global-color-construction-100);
   --cds-alias-object-interaction-background-selected: var(--cds-global-color-blue-75);

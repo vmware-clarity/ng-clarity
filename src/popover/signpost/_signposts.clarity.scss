@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:map';
 @use 'sass:meta';
 @use '../../utils/mixins';
@@ -13,7 +14,6 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.signpost');
-
 @include mixins.exports('signpost.clarity') {
   $clr-signpost-pointer-size-negative: calc(-1 * signpost-variables.$clr-signpost-pointer-size);
 
@@ -35,6 +35,7 @@
         &:not([size]) {
           @include mixins.equilateral(density.$clr-base-icon-size-l);
         }
+
         color: signpost-variables.$clr-signpost-action-color;
       }
 
@@ -84,11 +85,14 @@
 
     .popover-pointer {
       @include mixins.equilateral(0);
+
       position: absolute;
 
-      &:before {
+      &::before {
         content: '';
+
         @include mixins.equilateral(0);
+
         position: absolute;
       }
     }
@@ -96,6 +100,7 @@
     /***
             The signpost is above the icon top-{HORIZONTAL_POSITION}
         */
+
     /***
             TODO: Create a general mix-in for the popover-pointer that can
             1. Accomadate all 12 positions
@@ -121,7 +126,7 @@
         border-top: signpost-variables.$clr-signpost-pointer-border;
         bottom: $clr-signpost-pointer-size-negative;
 
-        &:before {
+        &::before {
           border-top: signpost-variables.$clr-signpost-pointer-pseudo-border;
           bottom: tokens.$cds-global-space-2;
         }
@@ -137,7 +142,7 @@
         border-left: signpost-variables.$clr-signpost-pointer-invisible-border;
         right: calc(-1 * tokens.$cds-global-space-1);
 
-        &:before {
+        &::before {
           border-left: signpost-variables.$clr-signpost-pointer-invisible-border;
           right: tokens.$cds-global-space-1;
         }
@@ -149,7 +154,7 @@
         border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
         left: 50%;
 
-        &:before {
+        &::before {
           border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
           left: tokens.$cds-global-space-1;
         }
@@ -165,7 +170,7 @@
         border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
         left: calc(-1 * tokens.$cds-global-space-1);
 
-        &:before {
+        &::before {
           border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
           left: tokens.$cds-global-space-1;
         }
@@ -182,10 +187,9 @@
     &.bottom-right {
       .popover-pointer {
         border-bottom: signpost-variables.$clr-signpost-pointer-border;
-
         top: $clr-signpost-pointer-size-negative;
 
-        &:before {
+        &::before {
           border-bottom: signpost-variables.$clr-signpost-pointer-pseudo-border;
           top: tokens.$cds-global-space-2;
         }
@@ -201,7 +205,7 @@
         border-left: signpost-variables.$clr-signpost-pointer-invisible-border;
         right: calc(-1 * tokens.$cds-global-space-1);
 
-        &:before {
+        &::before {
           border-left: signpost-variables.$clr-signpost-pointer-invisible-border;
           right: tokens.$cds-global-space-1;
         }
@@ -213,7 +217,7 @@
         border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
         left: 50%;
 
-        &:before {
+        &::before {
           border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
           right: calc($clr-signpost-pointer-size-negative - tokens.$cds-global-space-1);
         }
@@ -229,7 +233,7 @@
         border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
         left: calc(-1 * tokens.$cds-global-space-1);
 
-        &:before {
+        &::before {
           border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
           left: tokens.$cds-global-space-1;
         }
@@ -246,10 +250,9 @@
     &.left-bottom {
       .popover-pointer {
         border-left: signpost-variables.$clr-signpost-pointer-border;
-
         right: $clr-signpost-pointer-size-negative;
 
-        &:before {
+        &::before {
           border-left: signpost-variables.$clr-signpost-pointer-pseudo-border;
         }
       }
@@ -264,7 +267,7 @@
         border-top: signpost-variables.$clr-signpost-pointer-invisible-border;
         bottom: calc(-1 * tokens.$cds-global-space-1);
 
-        &:before {
+        &::before {
           border-top: signpost-variables.$clr-signpost-pointer-invisible-border;
           top: calc($clr-signpost-pointer-size-negative - tokens.$cds-global-space-1);
           right: tokens.$cds-global-space-2;
@@ -277,7 +280,7 @@
         border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
         top: 50%;
 
-        &:before {
+        &::before {
           border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
           top: tokens.$cds-global-space-1;
           left: calc($clr-signpost-pointer-size-negative - tokens.$cds-global-space-2);
@@ -294,7 +297,7 @@
         border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
         top: calc(-1 * tokens.$cds-global-space-1);
 
-        &:before {
+        &::before {
           border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
           top: tokens.$cds-global-space-1;
           left: calc($clr-signpost-pointer-size-negative - tokens.$cds-global-space-2);
@@ -314,7 +317,7 @@
         border-right: signpost-variables.$clr-signpost-pointer-border;
         left: $clr-signpost-pointer-size-negative;
 
-        &:before {
+        &::before {
           border-right: signpost-variables.$clr-signpost-pointer-pseudo-border;
           left: tokens.$cds-global-space-2;
         }
@@ -330,7 +333,7 @@
         border-top: signpost-variables.$clr-signpost-pointer-invisible-border;
         bottom: calc(-1 * tokens.$cds-global-space-1);
 
-        &:before {
+        &::before {
           border-top: signpost-variables.$clr-signpost-pointer-invisible-border;
           top: calc($clr-signpost-pointer-size-negative - tokens.$cds-global-space-1);
         }
@@ -342,7 +345,7 @@
         border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
         top: 50%;
 
-        &:before {
+        &::before {
           border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
           top: tokens.$cds-global-space-1;
         }
@@ -358,7 +361,7 @@
         border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
         top: calc(-1 * tokens.$cds-global-space-1);
 
-        &:before {
+        &::before {
           border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
           top: tokens.$cds-global-space-1;
         }
@@ -378,6 +381,7 @@
 
     .signpost-title {
       @include mixins.generate-typography-token('ColumnHeader-11-SB-CPT');
+
       margin-right: auto;
     }
   }

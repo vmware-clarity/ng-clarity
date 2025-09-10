@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @forward 'mixins/breakpoint';
 @forward 'mixins/grid';
 @forward 'mixins/grid-framework';
@@ -16,7 +17,7 @@
 @forward 'grid/grid';
 
 *,
-*:before,
-*:after {
+*::before,
+*::after {
   box-sizing: border-box;
 }

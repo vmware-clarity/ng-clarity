@@ -105,7 +105,6 @@ $clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !defaul
 
   @return null;
 }
-
 @function lookupGrayLabelColor($property: color) {
   @if $property == color {
     @return $clr-label-gray-color;
@@ -121,7 +120,6 @@ $clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !defaul
 
   @return null;
 }
-
 @function lookupPurpleLabelColor($property: color) {
   @if $property == color {
     @return $clr-label-purple-color;
@@ -137,7 +135,6 @@ $clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !defaul
 
   @return null;
 }
-
 @function lookupBlueLabelColor($property: color) {
   @if $property == color {
     @return $clr-label-blue-color;
@@ -153,7 +150,6 @@ $clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !defaul
 
   @return null;
 }
-
 @function lookupOrangeLabelColor($property: color) {
   @if $property == color {
     @return $clr-label-orange-color;
@@ -169,7 +165,6 @@ $clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !defaul
 
   @return null;
 }
-
 @function lookupLightBlueLabelColor($property: color) {
   @if $property == color {
     @return $clr-label-light-blue-color;
@@ -185,7 +180,6 @@ $clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !defaul
 
   @return null;
 }
-
 @function lookupInfoLabelColor($property: color) {
   @if $property == color {
     @return $clr-label-info-font-color;
@@ -201,7 +195,6 @@ $clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !defaul
 
   @return null;
 }
-
 @function lookupSuccessLabelColor($property: color) {
   @if $property == color {
     @return $clr-label-success-font-color;
@@ -217,7 +210,6 @@ $clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !defaul
 
   @return null;
 }
-
 @function lookupWarningLabelColor($property: color) {
   @if $property == color {
     @return $clr-label-warning-font-color;
@@ -233,7 +225,6 @@ $clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !defaul
 
   @return null;
 }
-
 @function lookupDangerLabelColor($property: color) {
   @if $property == color {
     @return $clr-label-danger-font-color;

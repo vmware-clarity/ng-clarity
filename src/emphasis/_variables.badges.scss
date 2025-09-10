@@ -69,7 +69,6 @@ $clr-badge-light-blue-color: var(--clr-badge-light-blue-color) !default;
 
   @return null;
 }
-
 @function lookupGrayBadgeColor($property: color) {
   @if $property == color {
     @return $clr-badge-gray-color;
@@ -81,7 +80,6 @@ $clr-badge-light-blue-color: var(--clr-badge-light-blue-color) !default;
 
   @return null;
 }
-
 @function lookupPurpleBadgeColor($property: color) {
   @if $property == color {
     @return $clr-badge-purple-color;
@@ -93,7 +91,6 @@ $clr-badge-light-blue-color: var(--clr-badge-light-blue-color) !default;
 
   @return null;
 }
-
 @function lookupBlueBadgeColor($property: color) {
   @if $property == color {
     @return $clr-badge-blue-color;
@@ -105,7 +102,6 @@ $clr-badge-light-blue-color: var(--clr-badge-light-blue-color) !default;
 
   @return null;
 }
-
 @function lookupOrangeBadgeColor($property: color) {
   @if $property == color {
     @return $clr-badge-orange-color;
@@ -117,7 +113,6 @@ $clr-badge-light-blue-color: var(--clr-badge-light-blue-color) !default;
 
   @return null;
 }
-
 @function lookupLightBlueBadgeColor($property: color) {
   @if $property == color {
     @return $clr-badge-light-blue-color;
@@ -129,7 +124,6 @@ $clr-badge-light-blue-color: var(--clr-badge-light-blue-color) !default;
 
   @return null;
 }
-
 @function lookupInfoBadgeColor($property: color) {
   @if $property == color {
     @return $clr-badge-info-color;
@@ -141,7 +135,6 @@ $clr-badge-light-blue-color: var(--clr-badge-light-blue-color) !default;
 
   @return null;
 }
-
 @function lookupSuccessBadgeColor($property: color) {
   @if $property == color {
     @return $clr-badge-success-color;
@@ -153,7 +146,6 @@ $clr-badge-light-blue-color: var(--clr-badge-light-blue-color) !default;
 
   @return null;
 }
-
 @function lookupWarningBadgeColor($property: color) {
   @if $property == color {
     @return $clr-badge-warning-color;
@@ -165,7 +157,6 @@ $clr-badge-light-blue-color: var(--clr-badge-light-blue-color) !default;
 
   @return null;
 }
-
 @function lookupDangerBadgeColor($property: color) {
   @if $property == color {
     @return $clr-badge-danger-color;
