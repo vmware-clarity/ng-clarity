@@ -18,16 +18,12 @@
     "url": "https://github.com/vmware-clarity/ng-clarity/issues"
   },
   "peerDependencies": {
-    "@angular/cdk": "15 || 16 || 17 || 18 || 19",
-    "@angular/common": "15 || 16 || 17 || 18 || 19",
-    "@angular/core": "15 || 16 || 17 || 18 || 19",
+    "@angular/cdk": "20",
+    "@angular/common": "20",
+    "@angular/core": "20",
     "@cds/core": ">= 6.9.2"
   },
-  "module": "fesm2015/clr-angular.mjs",
-  "es2020": "fesm2020/clr-angular.mjs",
-  "esm2020": "esm2020/clr-angular.mjs",
-  "fesm2020": "fesm2020/clr-angular.mjs",
-  "fesm2015": "fesm2015/clr-angular.mjs",
+  "module": "fesm2022/clr-angular.mjs",
   "typings": "index.d.ts",
   "exports": {
     "./package.json": {
@@ -35,11 +31,7 @@
     },
     ".": {
       "types": "./index.d.ts",
-      "esm2020": "./esm2020/clr-angular.mjs",
-      "es2020": "./fesm2020/clr-angular.mjs",
-      "es2015": "./fesm2015/clr-angular.mjs",
-      "node": "./fesm2015/clr-angular.mjs",
-      "default": "./fesm2020/clr-angular.mjs"
+      "default": "./fesm2022/clr-angular.mjs"
     }
   },
   "sideEffects": false,
