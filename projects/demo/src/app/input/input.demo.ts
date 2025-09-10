@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './input.demo.html',
+  styles: '.custom-class { text-decoration: underline; width: 100%; }',
   standalone: false,
 })
 export class InputDemo {
