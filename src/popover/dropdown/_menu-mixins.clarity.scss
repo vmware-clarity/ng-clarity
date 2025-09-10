@@ -51,11 +51,9 @@
   gap: density.$clr-base-gap-xs;
   align-items: center;
   height: auto;
-  min-height: density.$clr-base-row-height-s;
   margin: 0;
   width: 100%;
   text-transform: none;
-  justify-content: space-between;
 
   &.active {
     color: dropdown-variables.$clr-dropdown-item-selected-color;
