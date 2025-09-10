@@ -13,6 +13,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
       <ng-content></ng-content>
     </ng-template>
   `,
+  standalone: false,
 })
 export class TemplateRefContainer {
   @ViewChild(TemplateRef) template: TemplateRef<any>;

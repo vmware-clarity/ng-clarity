@@ -7,8 +7,8 @@
 
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DetailService } from './providers/detail.service';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-dg-detail-header',
@@ -30,11 +30,15 @@ import { DetailService } from './providers/detail.service';
       </button>
     </div>
   `,
+  standalone: false,
 })
 export class ClrDatagridDetailHeader implements AfterViewInit {
   @ViewChild('title') title: ElementRef<HTMLElement>;
 
-  constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
+  constructor(
+    public detailService: DetailService,
+    public commonStrings: ClrCommonStringsService
+  ) {}
 
   get titleId() {
     return `${this.detailService.id}-title`;

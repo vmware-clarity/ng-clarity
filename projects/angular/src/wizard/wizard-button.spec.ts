@@ -19,16 +19,18 @@ import { ClrWizardModule } from './wizard.module';
 
 @Component({
   template: `
-    <clr-wizard-button
-      [type]="btnType"
-      [clrWizardButtonDisabled]="disableBtn"
-      [clrWizardButtonHidden]="hideBtn"
-      (clrWizardButtonClicked)="doClick($event)"
-      *ngIf="show"
-    >
-      hello {{ projector }}
-    </clr-wizard-button>
+    @if (show) {
+      <clr-wizard-button
+        [type]="btnType"
+        [clrWizardButtonDisabled]="disableBtn"
+        [clrWizardButtonHidden]="hideBtn"
+        (clrWizardButtonClicked)="doClick($event)"
+      >
+        hello {{ projector }}
+      </clr-wizard-button>
+    }
   `,
+  standalone: false,
 })
 class ViewTestComponent {
   show = true;
@@ -61,6 +63,7 @@ export default function (): void {
 
       @Component({
         template: `<clr-wizard-button></clr-wizard-button>`,
+        standalone: false,
       })
       class TestComponent {}
 

@@ -7,10 +7,10 @@
 
 import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrDropdown } from './dropdown';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 import { wrapHostContentInsideSpan } from './utils/content-wrapping';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 @Directive({
   // We support both selectors for legacy reasons
@@ -23,6 +23,7 @@ import { wrapHostContentInsideSpan } from './utils/content-wrapping';
     '[attr.aria-haspopup]': '"menu"',
     '[attr.aria-expanded]': 'active',
   },
+  standalone: false,
 })
 export class ClrDropdownTrigger {
   isRootLevelToggle = true;

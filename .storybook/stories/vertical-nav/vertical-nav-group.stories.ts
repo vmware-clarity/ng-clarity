@@ -8,8 +8,8 @@
 import { bellIcon, calendarIcon, folderIcon, homeIcon, searchIcon, userIcon } from '@cds/core/icon';
 import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
 import { ClrVerticalNavGroup, ClrVerticalNavModule } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { action } from 'storybook/actions';
 
 import { CommonModules } from '../../helpers/common';
 

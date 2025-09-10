@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-move-all-in-menu-demo',
   templateUrl: 'move-all-in-menu.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class MoveAllInMenuDemo {
   hide = false;

@@ -9,5 +9,5 @@
 
 [[redirects]]
   from = "/demo/*"
-  to = "/demo/index.html"
+  to = "/demo/browser/index.html"
   status = 200

@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-stack-view-static-demo',
   templateUrl: './stack-view-static.html',
   styleUrls: ['./stack-view.demo.scss'],
+  standalone: false,
 })
 export class StackViewStaticDemo {}

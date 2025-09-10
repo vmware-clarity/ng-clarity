@@ -1,19 +1,23 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <div class="clr-example">
-  <div *ngFor="let example of examples" class="progbar-examples">
+  @for (example of examples; track example) {
+  <div class="progbar-examples">
     <h4>{{example.title}}</h4>
     <div [ngClass]="example.cssClassnames()">
       <progress [value]="example.value" max="100" [attr.data-displayval]="example.value + '%'"></progress>
-      <span *ngIf="example.isLabeled">{{example.value}}%</span>
+      @if (example.isLabeled) {
+      <span>{{example.value}}%</span>
+      }
     </div>
     <p>
       <button class="btn btn-outline" (click)="example.start()" [ngClass]="example.demoId">Show</button>
     </p>
   </div>
+  }
 </div>

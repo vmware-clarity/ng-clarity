@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-layout-no-subnav-demo',
   templateUrl: './layout-no-subnav.html',
   styleUrls: ['./layout.demo.scss'],
+  standalone: false,
 })
 export class LayoutNoSubnavDemo {}

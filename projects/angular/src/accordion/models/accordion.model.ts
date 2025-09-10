@@ -16,7 +16,10 @@ export class AccordionPanelModel {
   disabled = false;
   open = false;
   templateId = `${this.id}-${this.accordionId}`;
-  constructor(public id: string, public accordionId: number | string) {}
+  constructor(
+    public id: string,
+    public accordionId: number | string
+  ) {}
 }
 
 export class AccordionModel {

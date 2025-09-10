@@ -7,14 +7,18 @@
 
 import { Directive, OnDestroy } from '@angular/core';
 
-import { ColumnsService } from '../providers/columns.service';
 import { DatagridRowRenderer } from './row-renderer';
+import { ColumnsService } from '../providers/columns.service';
 
 @Directive({
   selector: 'clr-dg-row-detail',
+  standalone: false,
 })
 export class DatagridRowDetailRenderer extends DatagridRowRenderer implements OnDestroy {
-  constructor(private parentRow: DatagridRowRenderer, columnsService: ColumnsService) {
+  constructor(
+    private parentRow: DatagridRowRenderer,
+    columnsService: ColumnsService
+  ) {
     super(columnsService);
     parentRow.expandableRows.push(this);
   }

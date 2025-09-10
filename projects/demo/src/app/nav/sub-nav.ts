@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-nav-demo-subnav',
   styleUrls: ['./sub-nav.demo.scss'],
   templateUrl: './sub-nav.demo.html',
+  standalone: false,
 })
 export class SubNavDemo {}

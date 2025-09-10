@@ -1,8 +1,8 @@
 <!--
-  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>With Action buttons</h2>
 <form clrForm [formGroup]="dateForm" novalidate>
@@ -33,14 +33,12 @@
               [max]="dateForm.get('maxDate').value"
             />
             <clr-control-error *clrIfError="'min'">
-              <ng-container *ngIf="dateForm.get('date').errors?.min?.min">
-                Minimum date should be {{dateForm.get('date').errors?.min?.min}}
-              </ng-container>
+              @if (dateForm.get('date').errors?.min?.min) { Minimum date should be
+              {{dateForm.get('date').errors?.min?.min}} }
             </clr-control-error>
             <clr-control-error *clrIfError="'max'">
-              <ng-container *ngIf="dateForm.get('date').errors?.max?.max">
-                Maximum date should be {{dateForm.get('date').errors?.max?.max}}
-              </ng-container>
+              @if (dateForm.get('date').errors?.max?.max) { Maximum date should be
+              {{dateForm.get('date').errors?.max?.max}} }
             </clr-control-error>
           </clr-date-container>
         </div>

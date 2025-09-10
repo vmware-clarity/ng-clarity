@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h1>Layout - {{layout}} - {{grid ? 'grid' : 'no grid'}}</h1>
 
@@ -458,8 +458,11 @@
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
       <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
-      <span *ngIf="!fileInput.value" class="clr-subtext">Helper Text</span>
-      <span *ngIf="fileInput.value" class="clr-subtext">{{fileInput.value}}</span>
+      @if (!fileInput.value) {
+      <span class="clr-subtext">Helper Text</span>
+      } @if (fileInput.value) {
+      <span class="clr-subtext">{{fileInput.value}}</span>
+      }
     </div>
   </div>
 

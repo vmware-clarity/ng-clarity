@@ -12,5 +12,6 @@ import { Directive } from '@angular/core';
   host: {
     tabindex: '0',
   },
+  standalone: false,
 })
 export class ClrTabAction {}

@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use '../utils/mixins';
 @use 'variables.badges' as badges-variables;
@@ -25,7 +26,6 @@
     color: badges-variables.getBadgeColor($color, color);
   }
 }
-
 @mixin generateStatusLabelStyles($status: info) {
   &.label-#{$status} {
     background: label-variables.getLabelColor($status, bg-color);
@@ -46,7 +46,9 @@
   .label,
   a.label {
     //default
+
     @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
+
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -118,7 +120,6 @@
     @include generateLabelStyles(blue, 3);
     @include generateLabelStyles(orange, 4);
     @include generateLabelStyles(light-blue, 5);
-
     @include generateStatusLabelStyles(info);
     @include generateStatusLabelStyles(success);
     @include generateStatusLabelStyles(warning);
@@ -135,17 +136,10 @@
       background: label-variables.$clr-label-bg-disabled-color;
       color: label-variables.$clr-label-disabled-color;
       border-color: label-variables.$clr-label-disabled-border-color;
+
       .badge {
         background: label-variables.$clr-label-disabled-color;
       }
-    }
-  }
-
-  @include mixins.fixForFirefox() {
-    .label,
-    a.label {
-      // properly aligns labels in firefox...
-      vertical-align: bottom;
     }
   }
 }

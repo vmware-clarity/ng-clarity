@@ -5,12 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
   Component,
   ContentChildren,
+  DOCUMENT,
   ElementRef,
   EventEmitter,
   Inject,
@@ -25,11 +25,6 @@ import {
 } from '@angular/core';
 import { combineLatest, ReplaySubject, Subscription } from 'rxjs';
 
-import { ClrExpandableAnimationDirective } from '../../utils/animations/expandable-animation/expandable-animation.directive';
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { LoadingListener } from '../../utils/loading/loading-listener';
 import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
@@ -41,6 +36,11 @@ import { Items } from './providers/items';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
 import { WrappedRow } from './wrapped-row';
+import { ClrExpandableAnimationDirective } from '../../utils/animations/expandable-animation/expandable-animation.directive';
+import { IfExpandService } from '../../utils/conditional/if-expanded.service';
+import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { LoadingListener } from '../../utils/loading/loading-listener';
 
 let nbRow = 0;
 
@@ -59,6 +59,7 @@ let nbRow = 0;
     { provide: IfExpandService, useExisting: DatagridIfExpandService },
     { provide: LoadingListener, useExisting: DatagridIfExpandService },
   ],
+  standalone: false,
 })
 export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
   @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<boolean>(false);

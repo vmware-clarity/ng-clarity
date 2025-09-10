@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-typography-font-weight',
   styleUrls: ['./typography.demo.scss'],
   templateUrl: './typography-font-weight.html',
+  standalone: false,
 })
 export class TypographyFontWeightDemo {}

@@ -46,3 +46,6 @@ Thumbs.db
 /playwright-report/
 /playwright/.cache/
 /test-results/
+
+#Storybook
+debug-storybook.log

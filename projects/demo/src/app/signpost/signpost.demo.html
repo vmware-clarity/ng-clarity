@@ -1,32 +1,29 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h4>Positions</h4>
 
 <div class="content-container">
   <div class="content-area">
     <div class="signpost-demo">
-      <div class="signpost-item" *ngFor="let position of positions">
+      @for (position of positions; track position) {
+      <div class="signpost-item">
         <div class="signpost-positions">
           <div class="description">
             <h4>{{ position.description }}</h4>
           </div>
           <div class="position">
             <clr-signpost>
-              <button
-                *ngIf="position.useCustomTrigger"
-                [id]="position.id"
-                type="button"
-                class="btn btn-sm btn-link"
-                clrSignpostTrigger
-              >
+              @if (position.useCustomTrigger) {
+              <button [id]="position.id" type="button" class="btn btn-sm btn-link" clrSignpostTrigger>
                 {{ position.text }}
                 <cds-icon [attr.shape]="position.icon"></cds-icon>
               </button>
+              }
               <clr-signpost-content *clrIfOpen [clrPosition]="position.position">
                 <div>{{ position.position }}</div>
                 <div>Lorem Ipsum versions of Lorem Ipsum {{ position['content'] }}</div>
@@ -35,6 +32,7 @@
           </div>
         </div>
       </div>
+      }
     </div>
   </div>
 </div>

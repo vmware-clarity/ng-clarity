@@ -9,10 +9,10 @@ import { ClarityModule } from '@clr/angular';
 import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 import { RenderComponentStorybook } from 'helpers/render-component';
 
+import { ButtonStorybookComponent } from './button.storybook.component';
 import { CommonModules } from '../../helpers/common';
 import { BadgeStoryBookComponent } from '../badge/badge.storybook.component';
 import { LabelStoryBookComponent } from '../label/label.storybook.component';
-import { ButtonStorybookComponent } from './button.storybook.component';
 
 const LABEL_TYPES = ['label-info', 'label-success', 'label-warning', 'label-danger'];
 const BADGE_TYPES = ['badge-info', 'badge-success', 'badge-warning', 'badge-danger'];

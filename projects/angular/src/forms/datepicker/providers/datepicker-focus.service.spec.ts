@@ -87,6 +87,7 @@ class MockNgZone extends NgZone {
     <button id="1" [attr.tabindex]="tabIndex">Test Button</button>
     <input type="date" />
   `,
+  standalone: false,
 })
 class TestComponent {
   tabIndex = '0';

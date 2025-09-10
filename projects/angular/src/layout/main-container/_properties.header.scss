@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
 @use '../../utils/variables/variables.density' as density;
@@ -17,7 +18,8 @@
     --clr-header-search-placeholder-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
     --clr-header-search-placeholder-text-color: #{tokens.$cds-global-color-construction-400};
     --clr-header-search-border-active: #{tokens.$cds-alias-object-border-width-100} solid Highlight;
-    --clr-header-search-border-hover: #{tokens.$cds-alias-object-border-width-100} solid #{tokens.$cds-global-color-construction-400};
+    --clr-header-search-border-hover: #{tokens.$cds-alias-object-border-width-100} solid
+      #{tokens.$cds-global-color-construction-400};
     --clr-header-divider-color: #{tokens.$cds-global-color-construction-600};
     --clr-header-bg-color: #{tokens.$cds-global-color-cool-gray-1000};
     --clr-header-2-bg-color: #{tokens.$cds-global-color-construction-800};

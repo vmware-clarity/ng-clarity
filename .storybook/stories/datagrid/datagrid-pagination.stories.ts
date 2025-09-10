@@ -6,8 +6,8 @@
  */
 
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridPagination } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { action } from 'storybook/actions';
 
 import { elements } from '../../helpers/elements.data';
 

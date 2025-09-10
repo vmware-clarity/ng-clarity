@@ -7,8 +7,8 @@
 
 import { Injectable, Optional, Renderer2 } from '@angular/core';
 
-import { CONTROL_STATE } from '../if-control-state/if-control-state.service';
 import { LayoutService } from './layout.service';
+import { CONTROL_STATE } from '../if-control-state/if-control-state.service';
 
 const CLASS_ERROR = 'clr-error';
 const CLASS_SUCCESS = 'clr-success';

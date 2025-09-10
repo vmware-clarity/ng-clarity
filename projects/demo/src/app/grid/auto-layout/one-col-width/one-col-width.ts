@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-grid-demo-one-col-width',
   templateUrl: './one-col-width.html',
   styleUrls: ['../../grid.demo.scss'],
+  standalone: false,
 })
 export class GridOneColWidthDemo {}

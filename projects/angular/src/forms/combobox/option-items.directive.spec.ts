@@ -8,12 +8,12 @@
 import { Component, TrackByFunction, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrComboboxModule } from './combobox.module';
 import { ClrOptionItems } from './option-items.directive';
 import { OptionSelectionService } from './providers/option-selection.service';
+import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
+import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 @Component({
   template: `
@@ -22,6 +22,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     </ul>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  standalone: false,
 })
 class FullTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
@@ -36,6 +37,7 @@ class FullTest {
     </ul>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  standalone: false,
 })
 class TrackByIndexTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
@@ -50,6 +52,7 @@ class TrackByIndexTest {
     </ul>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  standalone: false,
 })
 class ObjectDataTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
@@ -102,7 +105,7 @@ export default function (): void {
 
       it('will not filter on first open', function () {
         expect(this.clarityDirective.iterableProxy._ngForOf).toEqual([0, 1, 2, 3]);
-        const optionService: OptionSelectionService<any> = TestBed.get(OptionSelectionService);
+        const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
         this.testComponent.numbers.push(12);
         optionService.currentInput = '1';
         this.fixture.detectChanges();
@@ -111,7 +114,7 @@ export default function (): void {
 
       it('can filter out items based on the option service currentInput field', function () {
         expect(this.clarityDirective.iterableProxy._ngForOf).toEqual([0, 1, 2, 3]);
-        const optionService: OptionSelectionService<any> = TestBed.get(OptionSelectionService);
+        const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
         optionService.showAllOptions = false;
         this.testComponent.numbers.push(12);
         optionService.currentInput = '1';
@@ -120,7 +123,7 @@ export default function (): void {
       });
 
       it('has case-insensitive filter', function () {
-        const optionService: OptionSelectionService<any> = TestBed.get(OptionSelectionService);
+        const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
         optionService.showAllOptions = false;
         this.testComponent.numbers.push('Room', 'Broom');
         optionService.currentInput = 'ro';
@@ -129,7 +132,7 @@ export default function (): void {
       });
 
       it('has diacritic-insensitive filter', function () {
-        const optionService: OptionSelectionService<any> = TestBed.get(OptionSelectionService);
+        const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
         optionService.showAllOptions = false;
         this.testComponent.numbers.push('Ardèche', 'Ardennes', 'Ariège');
         optionService.currentInput = 'arde';
@@ -204,7 +207,7 @@ export default function (): void {
       });
 
       it('sets display field', function () {
-        const optionService: OptionSelectionService<any> = TestBed.get(OptionSelectionService);
+        const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
         expect(this.clarityDirective._filterField).toEqual('a');
         expect(optionService.displayField).toEqual('a');
       });
@@ -217,7 +220,7 @@ export default function (): void {
       });
 
       it('has case-insensitive filter', function () {
-        const optionService: OptionSelectionService<any> = TestBed.get(OptionSelectionService);
+        const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
         optionService.showAllOptions = false;
         this.testComponent.numbers.push({ a: 'Room' }, { a: 'Broom' });
         optionService.currentInput = 'ro';
@@ -226,7 +229,7 @@ export default function (): void {
       });
 
       it('has diacritic-insensitive filter', function () {
-        const optionService: OptionSelectionService<any> = TestBed.get(OptionSelectionService);
+        const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
         optionService.showAllOptions = false;
         this.testComponent.numbers.push({ a: 'Ardèche' }, { a: 'Ardennes' }, { a: 'Ariège' });
         optionService.currentInput = 'arde';

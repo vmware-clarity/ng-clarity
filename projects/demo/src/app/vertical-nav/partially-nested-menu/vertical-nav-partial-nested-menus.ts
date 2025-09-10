@@ -13,6 +13,7 @@ import { VerticalNavCases } from '../vertical-nav-cases';
   selector: 'clr-vertical-nav-partial-nested-menus-demo',
   templateUrl: './vertical-nav-partial-nested-menus.demo.html',
   styleUrls: ['../vertical-nav.demo.scss'],
+  standalone: false,
 })
 export class VerticalNavPartiallyNestedMenusDemo {
   case: any;

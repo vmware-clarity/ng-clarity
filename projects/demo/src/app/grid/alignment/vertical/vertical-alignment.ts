@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-grid-vertical-alignment',
   templateUrl: './vertical-alignment.html',
   styleUrls: ['../../grid.demo.scss'],
+  standalone: false,
 })
 export class GridVerticalAlignmentDemo {}

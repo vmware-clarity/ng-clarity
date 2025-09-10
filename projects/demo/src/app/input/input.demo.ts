@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './input.demo.html',
+  standalone: false,
 })
 export class InputDemo {
   disabled = true;

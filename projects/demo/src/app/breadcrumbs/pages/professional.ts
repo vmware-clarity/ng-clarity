@@ -16,5 +16,6 @@ import { Component } from '@angular/core';
       Watercolour is formulated using only the purest pigments to ensure performance and permanence.
     </p>
   `,
+  standalone: false,
 })
 export class WNProfessionalDemo {}

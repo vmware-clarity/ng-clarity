@@ -13,6 +13,7 @@ import { VerticalNavCases } from '../vertical-nav-cases';
   selector: 'clr-without-expanded-directive-demo',
   templateUrl: './without-expanded-directive.html',
   styleUrls: ['../vertical-nav.demo.scss'],
+  standalone: false,
 })
 export class WithoutExpandedDirectiveDemo {
   case: any;

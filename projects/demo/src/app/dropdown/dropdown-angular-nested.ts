@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-dropdown-angular-nested-demo',
   templateUrl: './dropdown-angular-nested.demo.html',
   styleUrls: ['./dropdown.demo.scss'],
+  standalone: false,
 })
 export class DropdownAngularNestedDemo {}

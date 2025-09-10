@@ -8,8 +8,8 @@
 import { ClrCheckboxContainer, ClrCheckboxModule } from '@clr/angular';
 import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 
-import { CommonModules } from '../../helpers/common';
 import { CheckboxToggleStorybookComponent } from './checkbox-toggle.storybook.component';
+import { CommonModules } from '../../helpers/common';
 
 enum CheckboxType {
   Checkbox = 'checkbox',
@@ -29,7 +29,7 @@ export default {
     addGrid: { control: { disable: true }, table: { disable: true } },
     controlClass: { control: { disable: true }, table: { disable: true } },
     // story helpers
-    type: { control: 'inline-radio', options: CheckboxType },
+    type: { control: { type: 'inline-radio' }, options: CheckboxType },
     createArray: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: 100 } },
   },

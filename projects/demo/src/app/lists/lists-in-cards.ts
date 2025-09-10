@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-lists-in-cards-demo',
   templateUrl: './lists-in-cards.html',
+  standalone: false,
 })
 export class ListsInCardsDemo {}

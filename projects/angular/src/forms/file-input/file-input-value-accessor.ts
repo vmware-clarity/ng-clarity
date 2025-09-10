@@ -13,6 +13,7 @@ import { clearFiles, selectFiles } from './file-input.helpers';
 @Directive({
   selector: 'input[type="file"][clrFileInput]',
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: ClrFileInputValueAccessor, multi: true }],
+  standalone: false,
 })
 export class ClrFileInputValueAccessor implements ControlValueAccessor {
   constructor(private readonly elementRef: ElementRef<HTMLInputElement>) {}
@@ -43,9 +44,7 @@ export class ClrFileInputValueAccessor implements ControlValueAccessor {
     this.onChange(this.elementRef.nativeElement.files);
   }
 
-  // eslint-disable-next-line  @typescript-eslint/no-empty-function
   private onChange = (_value: FileList) => {};
 
-  // eslint-disable-next-line  @typescript-eslint/no-empty-function
   private onTouched = () => {};
 }

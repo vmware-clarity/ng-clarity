@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-color-palette',
   styleUrls: ['./color-palette.demo.scss'],
   templateUrl: './color-palette.demo.html',
+  standalone: false,
 })
 export class ColorPalette {
   oldPalettes = [

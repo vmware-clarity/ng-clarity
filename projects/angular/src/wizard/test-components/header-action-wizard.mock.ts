@@ -49,6 +49,7 @@ import { bellIcon, ClarityIcons, cloudIcon, warningStandardIcon } from '@cds/cor
       </clr-wizard-page>
     </clr-wizard>
   `,
+  standalone: false,
 })
 export class HeaderActionsTestComponent {
   open = true;

@@ -15,6 +15,7 @@ import { ClrStackViewModule } from './stack-view.module';
     <clr-stack-label class="one">Title</clr-stack-label>
     <clr-stack-label class="two" id="ohai">Title</clr-stack-label>
   `,
+  standalone: false,
 })
 class TestComponent {}
 

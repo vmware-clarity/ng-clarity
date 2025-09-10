@@ -7,15 +7,16 @@
 
 import { Component, ContentChild, Inject } from '@angular/core';
 
-import { IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IfActiveService } from '../../utils/conditional/if-active.service';
 import { TabsService } from './providers/tabs.service';
 import { ClrTabContent } from './tab-content';
 import { ClrTabLink } from './tab-link.directive';
+import { IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IfActiveService } from '../../utils/conditional/if-active.service';
 
 @Component({
   selector: 'clr-tab',
   template: `<ng-content></ng-content>`,
   providers: [IF_ACTIVE_ID_PROVIDER],
+  standalone: false,
 })
 export class ClrTab {
   @ContentChild(ClrTabLink, { static: true }) tabLink: ClrTabLink;

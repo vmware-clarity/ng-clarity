@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-typography-headers',
   styleUrls: ['./typography.demo.scss'],
   templateUrl: './typography-headers.html',
+  standalone: false,
 })
 export class TypographyHeadersDemo {}

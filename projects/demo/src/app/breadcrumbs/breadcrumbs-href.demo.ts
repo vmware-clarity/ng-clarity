@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-breadcrumbs-href-demo',
   templateUrl: './breadcrumbs-href.demo.html',
   styleUrls: ['./breadcrumbs.demo.scss'],
+  standalone: false,
 })
 export class BreadcrumbsHrefDemo {
   menuItems = [

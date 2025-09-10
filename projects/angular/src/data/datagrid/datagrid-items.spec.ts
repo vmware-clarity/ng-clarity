@@ -22,6 +22,7 @@ import { StateDebouncer } from './providers/state-debouncer.provider';
       <li *clrDgItems="let n of numbers; trackBy: trackBy">{{ n }}</li>
     </ul>
   `,
+  standalone: false,
 })
 class FullTest {
   @ViewChild(ClrDatagridItems) datagridItems: ClrDatagridItems<number>;
@@ -37,6 +38,7 @@ class FullTest {
       <li *clrDgItems="let n of numbers; trackBy: trackBy">{{ n }}</li>
     </ul>
   `,
+  standalone: false,
 })
 class TrackByIndexTest {
   @ViewChild(ClrDatagridItems) datagridItems: ClrDatagridItems<number>;
@@ -63,7 +65,7 @@ export default function (): void {
         this.fixture.detectChanges();
         this.testComponent = this.fixture.componentInstance;
         this.clarityDirective = this.fixture.componentInstance.datagridItems;
-        this.itemsProvider = TestBed.get(Items);
+        this.itemsProvider = TestBed.inject(Items);
       });
 
       afterEach(function () {
@@ -115,7 +117,7 @@ export default function (): void {
         this.fixture.detectChanges();
         this.testComponent = this.fixture.componentInstance;
         this.clarityDirective = this.fixture.componentInstance.datagridItems;
-        this.itemsProvider = TestBed.get(Items);
+        this.itemsProvider = TestBed.inject(Items);
       });
 
       afterEach(function () {

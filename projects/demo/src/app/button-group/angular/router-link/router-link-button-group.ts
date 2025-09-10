@@ -10,20 +10,24 @@ import { Component } from '@angular/core';
 @Component({
   templateUrl: './router-link-button-group.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class RouterLinkButtonGroupDemo {}
 
 @Component({
   template: 'route-one works!',
+  standalone: false,
 })
 export class RouterLinkButtonGroupDemoRouteOneComponent {}
 
 @Component({
   template: 'route-two works!',
+  standalone: false,
 })
 export class RouterLinkButtonGroupDemoRouteTwoComponent {}
 
 @Component({
   template: 'route-three works!',
+  standalone: false,
 })
 export class RouterLinkButtonGroupDemoRouteThreeComponent {}

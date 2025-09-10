@@ -20,5 +20,6 @@ import { Component } from '@angular/core';
       song "Crystal".
     </p>
   `,
+  standalone: false,
 })
 export class KillersDemo {}

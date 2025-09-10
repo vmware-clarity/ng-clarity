@@ -8,8 +8,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrIfOpen } from './if-open.directive';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 export default function (): void {
   describe('IfOpen Directive', function () {
@@ -21,7 +21,7 @@ export default function (): void {
         this.testComponent = this.fixture.componentInstance;
         this.testElement = this.fixture.nativeElement;
         this.clarityDirective = this.fixture.componentInstance.directive;
-        this.toggleService = TestBed.get(ClrPopoverToggleService);
+        this.toggleService = TestBed.inject(ClrPopoverToggleService);
       });
 
       afterEach(function () {
@@ -76,7 +76,7 @@ export default function (): void {
         this.testComponent = this.fixture.componentInstance;
         this.testElement = this.fixture.nativeElement;
         this.clarityDirective = this.fixture.componentInstance.directive;
-        this.toggleService = TestBed.get(ClrPopoverToggleService);
+        this.toggleService = TestBed.inject(ClrPopoverToggleService);
       });
 
       afterEach(function () {
@@ -99,6 +99,7 @@ export default function (): void {
 
 @Component({
   template: `<ng-template [(clrIfOpen)]="openState">Hello Template!</ng-template>`,
+  standalone: false,
 })
 class IfOpenTest {
   @ViewChild(ClrIfOpen) directive: ClrIfOpen;

@@ -11,6 +11,7 @@ import { ClrWizard } from '@clr/angular';
 @Component({
   selector: 'clr-wizard-header-actions',
   templateUrl: './wizard-header-actions.demo.html',
+  standalone: false,
 })
 export class WizardHeaderActionsDemo {
   @ViewChild('wizard') wizard: ClrWizard;

@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-layout-additional-sections-demo',
   templateUrl: './layout-additional-sections.html',
   styleUrls: ['./layout.demo.scss'],
+  standalone: false,
 })
 export class LayoutAdditionalSectionsDemo {}

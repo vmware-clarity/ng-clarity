@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-icon-variants-demo',
   styleUrls: ['./iconography.demo.scss'],
   templateUrl: './icon-variants.demo.html',
+  standalone: false,
 })
 export class IconVariantsDemo {}

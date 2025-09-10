@@ -46,7 +46,7 @@ export default function (): void {
     it('has a close button that updates the ClrPopoverToggleService.open value', function () {
       const closer: HTMLElement = context.clarityElement.querySelector('.signpost-action');
       expect(closer).toBeDefined();
-      const service: ClrPopoverToggleService = TestBed.get(ClrPopoverToggleService);
+      const service: ClrPopoverToggleService = TestBed.inject(ClrPopoverToggleService);
       service.open = true;
       closer.click();
       context.detectChanges();
@@ -115,6 +115,7 @@ export default function (): void {
     <clr-signpost-content [clrPosition]="position">Signpost content</clr-signpost-content>
   `,
   providers: [{ provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
+  standalone: false,
 })
 class SimpleTest {
   position = 'right-middle';

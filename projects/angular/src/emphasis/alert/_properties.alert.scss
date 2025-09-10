@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
 @use '../../utils/variables/variables.density' as density;
@@ -152,7 +153,6 @@
       --clr-app-alert-danger-pager-bg-color: #{tokens.$cds-alias-status-danger-shade};
       --clr-app-alert-success-pager-bg-color: #{tokens.$cds-alias-status-success-shade};
       --clr-app-alert-neutral-pager-bg-color: #{tokens.$cds-alias-status-neutral-shade};
-
       --clr-app-alert-info-pager-font-color: #{tokens.$cds-alias-typography-color-100};
       --clr-app-alert-warning-pager-font-color: #{tokens.$cds-global-color-black};
       --clr-app-alert-danger-pager-font-color: #{tokens.$cds-alias-typography-color-100};

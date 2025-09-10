@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Basic structure</h2>
 
@@ -21,12 +21,14 @@
   <clr-dg-column>Creation date</clr-dg-column>
   <clr-dg-column>Favorite color</clr-dg-column>
 
-  <clr-dg-row *ngFor="let user of users">
+  @for (user of users; track user) {
+  <clr-dg-row>
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>{{user.name}}</clr-dg-cell>
     <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
     <clr-dg-cell>{{user.color}}</clr-dg-cell>
   </clr-dg-row>
+  }
 
   <clr-dg-footer>{{users.length}} users</clr-dg-footer>
 </clr-datagrid>

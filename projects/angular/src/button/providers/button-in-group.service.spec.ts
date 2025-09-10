@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrButton } from '../button-group/button';
 import { ButtonInGroupService } from './button-in-group.service';
+import { ClrButton } from '../button-group/button';
 
 export default function (): void {
   describe('Button In Group Service', () => {

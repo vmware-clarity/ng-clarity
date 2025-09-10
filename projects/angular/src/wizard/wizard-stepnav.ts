@@ -14,18 +14,16 @@ import { PageCollectionService } from './providers/page-collection.service';
   template: `
     <nav [attr.aria-label]="label">
       <ol class="clr-wizard-stepnav-list">
-        <li
-          *ngFor="let page of pageService.pages; let i = index"
-          clr-wizard-stepnav-item
-          [page]="page"
-          class="clr-wizard-stepnav-item"
-        >
-          {{ i + 1 }}
-        </li>
+        @for (page of pageService.pages; track page; let i = $index) {
+          <li clr-wizard-stepnav-item [page]="page" class="clr-wizard-stepnav-item">
+            {{ i + 1 }}
+          </li>
+        }
       </ol>
     </nav>
   `,
   host: { class: 'clr-wizard-stepnav' },
+  standalone: false,
 })
 export class ClrWizardStepnav {
   @Input() label: string;

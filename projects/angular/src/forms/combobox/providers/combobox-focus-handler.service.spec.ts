@@ -8,11 +8,11 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler, OptionData } from './combobox-focus-handler.service';
+import { OptionSelectionService } from './option-selection.service';
 import { Keys } from '../../../utils/enums/keys.enum';
 import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 import { SingleSelectComboboxModel } from '../model/single-select-combobox.model';
-import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler, OptionData } from './combobox-focus-handler.service';
-import { OptionSelectionService } from './option-selection.service';
 
 @Component({
   template: `
@@ -21,6 +21,7 @@ import { OptionSelectionService } from './option-selection.service';
       <ul #listbox></ul>
     </form>
   `,
+  standalone: false,
 })
 class SimpleHost {
   @ViewChild('textInput') textInput: ElementRef<HTMLInputElement>;

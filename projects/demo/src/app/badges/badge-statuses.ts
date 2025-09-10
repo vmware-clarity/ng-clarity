@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-badge-statuses-demo',
   templateUrl: './badge-statuses.demo.html',
+  standalone: false,
 })
 export class BadgeStatusesDemo {}

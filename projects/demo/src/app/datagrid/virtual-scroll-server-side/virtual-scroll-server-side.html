@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Virtual scroll server side</h2>
 <div>
@@ -15,8 +15,8 @@
   <div>Current Page Size: {{currentPageSize}}</div>
 </div>
 
+@if ({ users: users | async }; as data) {
 <clr-datagrid
-  *ngIf="{ users: users | async }; let data"
   [clrDgLoading]="loading"
   [clrLoadingMoreItems]="loadingMoreItems"
   [(clrDgSelected)]="selected"
@@ -40,9 +40,8 @@
   <clr-dg-column [clrDgField]="'color'">
     <ng-container *clrDgHideableColumn="{ hidden: false }">Favorite color</ng-container>
   </clr-dg-column>
-
+  @if (data.users; as user) {
   <ng-template
-    *ngIf="data.users"
     clrVirtualScroll
     let-user
     [clrVirtualRowsOf]="data.users"
@@ -70,7 +69,6 @@
       <clr-dg-cell>
         <span class="color-square" [style.backgroundColor]="user.color"></span>
       </clr-dg-cell>
-
       <clr-dg-row-detail [clrIfExpanded]="user.expanded" (clrIfExpandedChange)="setExpanded($event, user)">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
         Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed
@@ -78,9 +76,10 @@
       </clr-dg-row-detail>
     </clr-dg-row>
   </ng-template>
-
+  }
   <clr-dg-footer> {{data.users?.length}} </clr-dg-footer>
 </clr-datagrid>
+}
 
 <br />
 {{selected|json}}

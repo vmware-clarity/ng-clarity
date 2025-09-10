@@ -13,6 +13,7 @@ import { map, tap } from 'rxjs/operators';
 @Component({
   templateUrl: './combobox.demo.html',
   styles: [],
+  standalone: false,
 })
 export class ComboboxDemo {
   loading = false;

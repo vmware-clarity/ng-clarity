@@ -68,5 +68,6 @@ export default function (): void {
 
 @Component({
   template: `<clr-dg-column-toggle-button>Testing 1 2 3</clr-dg-column-toggle-button>`,
+  standalone: false,
 })
 class ButtonTest {}

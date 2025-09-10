@@ -14,5 +14,6 @@ import { Component } from '@angular/core';
       We have a wide selection of fine art materials and supplies. Find supplies for painting, drawing, sketching,
       sculpting and more.
     </p>`,
+  standalone: false,
 })
 export class ToolsDemo {}

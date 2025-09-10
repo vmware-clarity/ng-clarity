@@ -17,15 +17,15 @@ import {
   SkipSelf,
 } from '@angular/core';
 
+import { ClrStackViewLabel } from './stack-view-custom-tags';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrStackViewLabel } from './stack-view-custom-tags';
 
 @Component({
   selector: 'clr-stack-block',
   template: `
     <!-- The 'preventDefault' for the space keydown event prevents the page
-         from scrolling when a stack block is toggled via the space key. -->
+    from scrolling when a stack block is toggled via the space key. -->
     <div
       class="stack-block-label"
       (click)="toggleExpand($event)"
@@ -41,7 +41,9 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
       [attr.aria-controls]="getStackChildrenId()"
     >
       <cds-icon shape="angle" class="stack-block-caret" [attr.direction]="caretDirection"></cds-icon>
-      <span class="clr-sr-only" *ngIf="getChangedValue">{{ commonStrings.keys.stackViewChanged }}</span>
+      @if (getChangedValue) {
+        <span class="clr-sr-only">{{ commonStrings.keys.stackViewChanged }}</span>
+      }
       <div class="stack-view-key">
         <!-- This structure changed to fix #3567 and the a11y request was to move away from dl's -->
         <!-- I added the key class to update css targets for the original component style -->
@@ -53,15 +55,16 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
     </div>
 
     <clr-expandable-animation [clrExpandTrigger]="expanded" class="stack-children">
-      <div
-        [style.height]="expanded ? 'auto' : 0"
-        role="region"
-        *ngIf="expanded"
-        [attr.id]="getStackChildrenId()"
-        [attr.aria-labelledby]="labelledById"
-      >
-        <ng-content select="clr-stack-block"></ng-content>
-      </div>
+      @if (expanded) {
+        <div
+          [style.height]="expanded ? 'auto' : 0"
+          role="region"
+          [attr.id]="getStackChildrenId()"
+          [attr.aria-labelledby]="labelledById"
+        >
+          <ng-content select="clr-stack-block"></ng-content>
+        </div>
+      }
     </clr-expandable-animation>
   `,
   // Custom elements are inline by default
@@ -78,6 +81,7 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
     '[attr.role]': '"heading"',
     '[attr.aria-level]': 'headingLevel',
   },
+  standalone: false,
 })
 export class ClrStackBlock implements OnInit {
   @Input('clrSbExpanded') @HostBinding('class.stack-block-expanded') expanded = false;

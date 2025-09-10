@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-tables-leftcell-demo',
   templateUrl: './tables-leftcell.html',
+  standalone: false,
 })
 export class TablesLeftcellDemo {}

@@ -14,6 +14,7 @@ import { User } from '../inventory/user';
   providers: [Inventory],
   templateUrl: 'detail.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridDetailDemo implements AfterViewInit {
   users: User[];
@@ -23,7 +24,10 @@ export class DatagridDetailDemo implements AfterViewInit {
   stateEvent: any = null;
   private _preState: any = null;
 
-  constructor(inventory: Inventory, private cdr: ChangeDetectorRef) {
+  constructor(
+    inventory: Inventory,
+    private cdr: ChangeDetectorRef
+  ) {
     inventory.size = 103;
     inventory.reset();
     this.users = inventory.all;

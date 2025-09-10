@@ -15,6 +15,7 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
   host: {
     '[class.clr-smart-open-close]': 'true',
   },
+  standalone: false,
 })
 export class ClrPopoverOpenCloseButton implements OnDestroy {
   @Output('clrPopoverOpenCloseChange') openCloseChange = new EventEmitter<boolean>();

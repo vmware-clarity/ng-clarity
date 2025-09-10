@@ -16,8 +16,6 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClarityModule } from '../../clr-angular.module';
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
 import { DatagridWillyWonka } from './chocolate/datagrid-willy-wonka';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ColumnsService } from './providers/columns.service';
@@ -37,6 +35,8 @@ import { TableSizeService } from './providers/table-size.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { DatagridRowRenderer } from './render/row-renderer';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
+import { IfExpandService } from '../../utils/conditional/if-expanded.service';
+import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
 
 // Reusable list of providers used in a number of tests
 export const DATAGRID_SPEC_PROVIDERS = [
@@ -87,7 +87,6 @@ export class TestContext<D, C> {
   }
 
   // The Function type here is just to tell Typescript to be nice with abstract classes. Weird.
-  // eslint-disable-next-line @typescript-eslint/ban-types
   getClarityProvider<T>(token: Type<T> | InjectionToken<T> | Function): T {
     return this.clarityDebugElement.injector.get(token);
   }

@@ -15,6 +15,7 @@ import { User } from '../inventory/user';
   providers: [Inventory],
   templateUrl: './smart-iterator.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridSmartIteratorDemo {
   users: User[];

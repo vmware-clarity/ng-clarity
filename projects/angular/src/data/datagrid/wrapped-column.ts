@@ -14,6 +14,7 @@ import { AfterViewInit, Component, EmbeddedViewRef, OnDestroy, TemplateRef, View
       <ng-content></ng-content>
     </ng-template>
   `,
+  standalone: false,
 })
 export class WrappedColumn implements AfterViewInit, OnDestroy {
   @ViewChild('columnPortal') templateRef: TemplateRef<void>;

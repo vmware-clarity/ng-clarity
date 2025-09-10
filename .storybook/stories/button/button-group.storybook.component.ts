@@ -23,7 +23,7 @@ import { createArray } from 'helpers/common';
       [ngStyle]="{ 'margin-top': clrMenuPosition.includes('top') ? '200px' : '20px' }"
     >
       <ng-container
-        *ngTemplateOutlet="buttonGroupTemplate; context: { buttonType: this.buttonType, buttonStyle: this.buttonStyle }"
+        *ngTemplateOutlet="buttonGroupTemplate; context: { buttonType: buttonType, buttonStyle: buttonStyle }"
       ></ng-container>
     </div>
 

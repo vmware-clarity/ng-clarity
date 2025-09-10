@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-breadcrumbs-demo',
   templateUrl: './breadcrumbs.demo.html',
   styleUrls: ['./breadcrumbs.demo.scss'],
+  standalone: false,
 })
 export class BreadcrumbsDemo {}

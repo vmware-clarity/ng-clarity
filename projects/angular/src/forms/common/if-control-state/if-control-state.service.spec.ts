@@ -5,12 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
+import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 import { EMPTY } from 'rxjs';
 
-import { NgControlService } from '../providers/ng-control.service';
 import { CONTROL_STATE, IfControlStateService } from './if-control-state.service';
+import { NgControlService } from '../providers/ng-control.service';
 
 export default function (): void {
   describe('IfControlStateService', function () {
@@ -26,17 +26,17 @@ export default function (): void {
       expect(() => service.triggerStatusChange()).not.toThrowError();
     });
 
-    it('provides observable for statusChanges, return valid when touched and no rules added', fakeAsync(() => {
+    it('provides observable for statusChanges, return valid when touched and no rules added', async () => {
       const cb = jasmine.createSpy('cb');
       const sub = service.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
       ngControlService.setControl(testControl);
       // Change the state of the input to trigger statusChange
       testControl.markAsTouched();
       testControl.updateValueAndValidity();
-      tick();
+      await delay();
       expect(cb).toHaveBeenCalledWith(CONTROL_STATE.VALID);
       sub.unsubscribe();
-    }));
+    });
 
     it('should allow a manual trigger of status observable, return NONE', () => {
       const cb = jasmine.createSpy('cb');
@@ -77,7 +77,7 @@ export default function (): void {
       sub.unsubscribe();
     });
 
-    it('should return state INVALID', fakeAsync(() => {
+    it('should return state INVALID', async () => {
       const cb = jasmine.createSpy('cb');
       const sub = service.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
       const fakeControl = {
@@ -87,12 +87,12 @@ export default function (): void {
       };
       ngControlService.setControl(fakeControl);
       service.triggerStatusChange();
-      tick();
+      await delay();
       expect(cb).toHaveBeenCalledWith(CONTROL_STATE.INVALID);
       sub.unsubscribe();
-    }));
+    });
 
-    it('should return state VALID', fakeAsync(() => {
+    it('should return state VALID', async () => {
       const cb = jasmine.createSpy('cb');
       const sub = service.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
       const fakeControl = {
@@ -102,9 +102,9 @@ export default function (): void {
       };
       ngControlService.setControl(fakeControl);
       service.triggerStatusChange();
-      tick();
+      await delay();
       expect(cb).toHaveBeenCalledWith(CONTROL_STATE.VALID);
       sub.unsubscribe();
-    }));
+    });
   });
 }

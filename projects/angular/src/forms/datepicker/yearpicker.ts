@@ -7,13 +7,13 @@
 
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
 
-import { Keys } from '../../utils/enums/keys.enum';
-import { normalizeKey } from '../../utils/focus/key-focus/util';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { YearRangeModel } from './model/year-range.model';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { Keys } from '../../utils/enums/keys.enum';
+import { normalizeKey } from '../../utils/focus/key-focus/util';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-yearpicker',
@@ -57,27 +57,29 @@ import { ViewManagerService } from './providers/view-manager.service';
     </div>
 
     <div class="years">
-      <button
-        *ngFor="let year of yearRangeModel.yearRange"
-        type="button"
-        class="calendar-btn year"
-        [attr.tabindex]="getTabIndex(year)"
-        [class.is-selected]="year === selectedStartYear || year === selectedEndYear"
-        [class.is-start-range]="getIsRangeStartYear(year)"
-        [class.is-end-range]="getIsRangeEndYear(year)"
-        [class.in-range]="isInRange(year)"
-        [class.is-today]="isCurrentCalendarYear(year)"
-        (click)="changeYear(year)"
-        (mouseenter)="onHover(year)"
-      >
-        {{ year }}
-      </button>
+      @for (year of yearRangeModel.yearRange; track year) {
+        <button
+          type="button"
+          class="calendar-btn year"
+          [attr.tabindex]="getTabIndex(year)"
+          [class.is-selected]="year === selectedStartYear || year === selectedEndYear"
+          [class.is-start-range]="getIsRangeStartYear(year)"
+          [class.is-end-range]="getIsRangeEndYear(year)"
+          [class.in-range]="isInRange(year)"
+          [class.is-today]="isCurrentCalendarYear(year)"
+          (click)="changeYear(year)"
+          (mouseenter)="onHover(year)"
+        >
+          {{ year }}
+        </button>
+      }
     </div>
   `,
   host: {
     '[class.yearpicker]': 'true',
     role: 'application',
   },
+  standalone: false,
 })
 export class ClrYearpicker implements AfterViewInit {
   /**

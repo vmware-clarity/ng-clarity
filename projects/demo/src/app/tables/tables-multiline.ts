@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-tables-multiline-demo',
   templateUrl: './tables-multiline.html',
+  standalone: false,
 })
 export class TablesMultilineDemo {}

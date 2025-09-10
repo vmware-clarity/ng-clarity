@@ -10,6 +10,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-modal-max-height-demo',
   templateUrl: './modal-max-height.html',
+  standalone: false,
 })
 export class ModalMaxHeightDemo {
   open = false;

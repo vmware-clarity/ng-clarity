@@ -6,7 +6,7 @@
  */
 
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,15 +15,19 @@ import { ClrAccordion } from './accordion';
 import { ClrAccordionPanel } from './accordion-panel';
 import { ClrAccordionModule } from './accordion.module';
 import { AccordionService } from './providers/accordion.service';
+import { delay } from '../utils/testing/helpers.spec';
 
 @Component({
   template: `
     <clr-accordion [clrAccordionMultiPanel]="multi">
       <clr-accordion-panel>panel 1</clr-accordion-panel>
-      <clr-accordion-panel *ngIf="showSecondStep">panel 2</clr-accordion-panel>
+      @if (showSecondStep) {
+        <clr-accordion-panel>panel 2</clr-accordion-panel>
+      }
       <clr-accordion-panel [clrAccordionPanelOpen]="openThirdStep">panel 3</clr-accordion-panel>
     </clr-accordion>
   `,
+  standalone: false,
 })
 class TestComponent {
   multi = false;
@@ -109,7 +113,7 @@ describe('ClrAccordion', () => {
       expect(accordionPanels.length).toBe(3);
     });
 
-    it('should open one panel at a time', fakeAsync(() => {
+    it('should open one panel at a time', async () => {
       const panels = fixture.debugElement.queryAll(By.directive(ClrAccordionPanel));
 
       expect(accordionInstance.multiPanel).toBe(false);
@@ -120,11 +124,11 @@ describe('ClrAccordion', () => {
 
       panels[1].nativeElement.querySelector('button').click();
       fixture.detectChanges();
-      tick(200); // delay for animation
+      await delay(200); // delay for animation
 
       expect(fixture.nativeElement.textContent.trim()).toContain('panel 2');
       expect(fixture.nativeElement.textContent.trim()).not.toContain('panel 1');
-    }));
+    });
 
     it('should allow multiple open panels when in multi panel mode', () => {
       testComponent.multi = true;
@@ -139,13 +143,13 @@ describe('ClrAccordion', () => {
       expect(fixture.nativeElement.textContent.trim()).not.toContain('panel 3');
     });
 
-    it('should reorder panels when panel content children has changed', fakeAsync(() => {
+    it('should reorder panels when panel content children has changed', async () => {
       spyOn(accordionService, 'updatePanelOrder');
       testComponent.showSecondStep = false;
       fixture.detectChanges();
-      tick();
+      await delay();
       expect(accordionService.updatePanelOrder).toHaveBeenCalled();
       expect(fixture.debugElement.queryAll(By.directive(ClrAccordionPanel)).length).toBe(2);
-    }));
+    });
   });
 });

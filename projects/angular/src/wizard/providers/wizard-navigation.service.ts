@@ -189,7 +189,10 @@ export class WizardNavigationService implements OnDestroy {
    *
    * @memberof WizardNavigationService
    */
-  constructor(public pageCollection: PageCollectionService, public buttonService: ButtonHubService) {
+  constructor(
+    public pageCollection: PageCollectionService,
+    public buttonService: ButtonHubService
+  ) {
     this.previousButtonSubscription = buttonService.previousBtnClicked.subscribe(() => {
       const currentPage = this.currentPage;
       if (this.currentPageIsFirst || currentPage.previousStepDisabled) {

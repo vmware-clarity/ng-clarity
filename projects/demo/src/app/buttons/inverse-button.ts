@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-buttons-demo-inverse-button',
   templateUrl: './inverse-button.html',
   styleUrls: ['./buttons.demo.scss'],
+  standalone: false,
 })
 export class InverseButtonDemo {}

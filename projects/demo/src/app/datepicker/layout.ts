@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './layout.html',
+  standalone: false,
 })
 export class DatepickerLayoutDemo {
   disabled = true;

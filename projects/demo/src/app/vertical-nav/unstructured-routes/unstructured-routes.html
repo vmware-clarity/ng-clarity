@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <div class="clr-example">
   <div class="main-container">
@@ -26,8 +26,8 @@
       </div>
     </header>
     <div class="content-container">
+      @if (option === 'lazy') {
       <clr-vertical-nav
-        *ngIf="option === 'lazy'"
         [clrVerticalNavCollapsible]="true"
         [clrVerticalNavCollapsed]="navCollapsed"
         (clrVerticalNavCollapsedChange)="updateNavCollapsed($event)"
@@ -50,7 +50,6 @@
             </clr-vertical-nav-group-children>
           </ng-template>
         </clr-vertical-nav-group>
-
         <clr-vertical-nav-group routerLinkActive="active">
           <a
             [routerLink]="['./killers']"
@@ -69,15 +68,13 @@
             </clr-vertical-nav-group-children>
           </ng-template>
         </clr-vertical-nav-group>
-
         <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./wikipedia']">
           <cds-icon shape="certificate" clrVerticalNavIcon></cds-icon>
           Wikipedia
         </a>
       </clr-vertical-nav>
-
+      } @if (option === 'no-lazy') {
       <clr-vertical-nav
-        *ngIf="option === 'no-lazy'"
         [clrVerticalNavCollapsible]="true"
         [clrVerticalNavCollapsed]="navCollapsed"
         (clrVerticalNavCollapsedChange)="updateNavCollapsed($event)"
@@ -102,7 +99,6 @@
             <a routerLinkActive="active" [routerLink]="['./rubber-soul']" clrVerticalNavLink>Rubber Soul</a>
           </clr-vertical-nav-group-children>
         </clr-vertical-nav-group>
-
         <clr-vertical-nav-group routerLinkActive="active">
           <a
             [routerLink]="['./killers']"
@@ -119,12 +115,12 @@
             <a routerLinkActive="active" [routerLink]="['./sams-town']" clrVerticalNavLink>Sam's Town</a>
           </clr-vertical-nav-group-children>
         </clr-vertical-nav-group>
-
         <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./wikipedia']">
           <cds-icon shape="certificate" clrVerticalNavIcon></cds-icon>
           Wikipedia
         </a>
       </clr-vertical-nav>
+      }
       <div class="content-area">
         <div class="example-options">
           <h6>Options</h6>
@@ -144,7 +140,8 @@
           <button class="btn" (click)="toggleNav()">Toggle Nav</button>
           <button class="btn" (click)="toggleGroup()">Toggle Group</button>
         </div>
-        <clr-alert [clrAlertType]="'alert-danger'" [clrAlertClosable]="false" *ngIf="option === 'lazy'">
+        @if (option === 'lazy') {
+        <clr-alert [clrAlertType]="'alert-danger'" [clrAlertClosable]="false">
           <div class="alert-item">
             <span class="alert-text">
               Lazy Loading + Unstructured Routes will not highlight when a child route is active and the nav group is
@@ -152,6 +149,7 @@
             </span>
           </div>
         </clr-alert>
+        }
         <router-outlet></router-outlet>
       </div>
     </div>

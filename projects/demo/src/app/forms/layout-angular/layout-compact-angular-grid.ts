@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './layout-angular.html',
+  standalone: false,
 })
 export class FormsLayoutCompactAngularGridDemo {
   layout = 'compact';

@@ -10,6 +10,7 @@ import { Component } from '@angular/core';
 @Component({
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './disabled.html',
+  standalone: false,
 })
 export class DisabledDemo {
   model = '';

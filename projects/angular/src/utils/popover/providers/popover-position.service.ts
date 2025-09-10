@@ -26,7 +26,10 @@ export class ClrPopoverPositionService {
   private contentOffsets: ClrPopoverContentOffset;
   private _shouldRealign = new Subject<void>();
 
-  constructor(private eventService: ClrPopoverEventsService, @Inject(PLATFORM_ID) public platformId: any) {
+  constructor(
+    private eventService: ClrPopoverEventsService,
+    @Inject(PLATFORM_ID) public platformId: any
+  ) {
     this.shouldRealign = this._shouldRealign.asObservable();
   }
 

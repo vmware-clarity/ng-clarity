@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-typography-links',
   styleUrls: ['./typography.demo.scss'],
   templateUrl: './typography-links.html',
+  standalone: false,
 })
 export class TypographyLinksDemo {}

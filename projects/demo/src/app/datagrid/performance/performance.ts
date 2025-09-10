@@ -19,6 +19,7 @@ class ChangeDetectionPerfRecord {
   providers: [DynamicData],
   templateUrl: 'performance.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridPerformanceDemo {
   totalRows = 100;
@@ -44,7 +45,6 @@ export class DatagridPerformanceDemo {
   }
 
   showChangeDetection() {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const profiler = ng.profiler;
 

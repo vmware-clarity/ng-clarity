@@ -8,13 +8,13 @@
 import { AfterContentInit, Component, ContentChildren, Input, OnDestroy, QueryList } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { SelectionType } from './enums/selection-type';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 /**
  * Generic bland container serving various purposes for Datagrid.
@@ -27,13 +27,14 @@ import { Selection } from './providers/selection';
       {{ beginningOfExpandableContentAriaText }}
       {{ commonStrings.keys.datagridExpandableRowsHelperText }}
     </div>
-    <ng-container *ngIf="this.cells?.length > 0" [ngTemplateOutlet]="noCells"></ng-container>
-
-    <ng-container *ngIf="this.cells?.length === 0">
+    @if (this.cells?.length > 0) {
+      <ng-container [ngTemplateOutlet]="noCells"></ng-container>
+    }
+    @if (this.cells?.length === 0) {
       <clr-dg-cell class="datagrid-container">
         <ng-container [ngTemplateOutlet]="noCells"></ng-container>
       </clr-dg-cell>
-    </ng-container>
+    }
 
     <ng-template #noCells>
       <ng-content></ng-content>
@@ -46,6 +47,7 @@ import { Selection } from './providers/selection';
     '[attr.id]': 'expand.expandableId',
     role: 'row',
   },
+  standalone: false,
 })
 export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
   @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;

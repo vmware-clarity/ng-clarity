@@ -6,25 +6,29 @@
  */
 
 import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { RecursiveChildren } from './recursive-children';
 import { ClrTree } from './tree';
 import { TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNode } from './tree-node';
 import { ClrTreeViewModule } from './tree-view.module';
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
+import { delay } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `
     <clr-tree [clrLazy]="lazy">
       Hello world
-      <clr-tree-node *ngIf="hasChild">Child</clr-tree-node>
+      @if (hasChild) {
+        <clr-tree-node>Child</clr-tree-node>
+      }
     </clr-tree>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrTree) tree: ClrTree<void>;
@@ -50,6 +54,7 @@ class TestComponent {
       </clr-tree-node>
     </clr-tree>
   `,
+  standalone: false,
 })
 class TreeTypeAhead {}
 
@@ -130,34 +135,34 @@ export default function (): void {
       this.fixture.detectChanges();
     });
 
-    it('focuses node whose text content that starts with pressed keys', fakeAsync(function () {
+    it('focuses node whose text content that starts with pressed keys', async function () {
       forTypeAheadDirectives[0].focusTreeNode();
       expect(document.activeElement.textContent.trim()).toBe('California');
       document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 's' }));
-      tick(200);
+      await delay(200);
       expect(document.activeElement.textContent.trim()).toBe('San Francisco');
       document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 's' }));
-      tick(200);
+      await delay(200);
       expect(document.activeElement.textContent.trim()).toBe('Seattle');
-    }));
+    });
 
-    it('skips and focuses node whose text content that starts with pressed keys', fakeAsync(function () {
+    it('skips and focuses node whose text content that starts with pressed keys', async function () {
       forTypeAheadDirectives[0].focusTreeNode();
       expect(document.activeElement.textContent.trim()).toBe('California');
       document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'se' }));
-      tick(200);
+      await delay(200);
       expect(document.activeElement.textContent.trim()).toBe('Seattle');
-    }));
+    });
 
-    it('should skip node even if its text content starts with pressed keys', fakeAsync(function () {
+    it('should skip node even if its text content starts with pressed keys', async function () {
       forTypeAheadDirectives[0].focusTreeNode();
       expect(document.activeElement.textContent.trim()).toBe('California');
       document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'b' }));
-      tick(200);
+      await delay(200);
       expect(document.activeElement.textContent.trim()).toBe(
         'California',
         'Should skip Burlington because the containing node is not expanded'
       );
-    }));
+    });
   });
 }

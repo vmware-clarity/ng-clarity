@@ -13,6 +13,7 @@ import { filter, takeUntil, tap } from 'rxjs/operators';
 @Component({
   selector: 'dynamic-controls-demo',
   templateUrl: './dynamic-controls.demo.html',
+  standalone: false,
 })
 export class DynamicControlsDemo {
   destroyed = new Subject<void>();

@@ -7,15 +7,16 @@
 
 import { Component } from '@angular/core';
 
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
 import { ClrTooltipTrigger } from './tooltip-trigger';
 import { ClrTooltipModule } from './tooltip.module';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `<span clrTooltipTrigger [attr.aria-label]="ariaLabel">Hello world</span>`,
+  standalone: false,
 })
 class SimpleTest {
   ariaLabel = 'Uniq aria label';

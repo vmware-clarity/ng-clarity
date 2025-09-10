@@ -13,6 +13,7 @@ import { VerticalNavCases } from '../vertical-nav-cases';
   selector: 'clr-vertical-nav-direct-icon-demo',
   templateUrl: './vertical-nav-icon.demo.html',
   styleUrls: ['../vertical-nav.demo.scss'],
+  standalone: false,
 })
 export class VerticalNavDirectIconDemo {
   case: any;

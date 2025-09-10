@@ -17,13 +17,14 @@ import {
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
+import { ClrNumberInputContainer } from './number-input-container';
 import { FocusService } from '../common/providers/focus.service';
 import { WrappedFormControl } from '../common/wrapped-control';
-import { ClrNumberInputContainer } from './number-input-container';
 
 @Directive({
   selector: 'input[type="number"][clrNumberInput]',
   host: { '[class.clr-input]': 'true', '[class.clr-number-input]': 'true' },
+  standalone: false,
 })
 export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> {
   protected override index = 1;

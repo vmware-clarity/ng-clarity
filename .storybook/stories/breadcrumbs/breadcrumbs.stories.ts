@@ -6,9 +6,9 @@
  */
 
 import { provideRouter } from '@angular/router';
-import { action } from '@storybook/addon-actions';
 import { applicationConfig, moduleMetadata, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
+import { action } from 'storybook/actions';
 
 import { ClrBreadcrumbs, ClrBreadcrumbsModule } from '../../../projects/angular/src/layout/breadcrumbs';
 
@@ -65,7 +65,7 @@ export default {
     expand: { control: { disable: true }, table: { disable: true } },
     handleItemClick: { control: { disable: true }, table: { disable: true } },
     // story helpers
-    items: { control: 'object' },
+    items: { control: { type: 'object' } },
   },
   args: {
     // story helpers

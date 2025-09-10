@@ -19,11 +19,15 @@ import { MarkControlService } from './providers/mark-control.service';
     '[class.clr-form-horizontal]': 'layoutService.isHorizontal()',
     '[class.clr-form-compact]': 'layoutService.isCompact()',
   },
+  standalone: false,
 })
 export class ClrForm {
   @ContentChildren(ClrLabel, { descendants: true }) labels: QueryList<ClrLabel>;
 
-  constructor(public layoutService: LayoutService, private markControlService: MarkControlService) {}
+  constructor(
+    public layoutService: LayoutService,
+    private markControlService: MarkControlService
+  ) {}
 
   @Input('clrLabelSize')
   set labelSize(size: number | string) {

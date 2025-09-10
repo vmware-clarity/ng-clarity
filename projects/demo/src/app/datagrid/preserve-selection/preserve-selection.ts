@@ -16,6 +16,7 @@ import { User } from '../inventory/user';
   providers: [Inventory],
   templateUrl: 'preserve-selection.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridPreserveSelectionDemo {
   users: User[];

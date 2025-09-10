@@ -6,11 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { waitForAsync } from '@angular/core/testing';
 
-import { TestContext } from '../../data/datagrid/helpers.spec';
-import { Keys } from '../../utils/enums/keys.enum';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { DayModel } from './model/day.model';
 import { ClrMonthpicker } from './monthpicker';
 import { DateFormControlService } from './providers/date-form-control.service';
@@ -18,6 +14,9 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { TestContext } from '../../data/datagrid/helpers.spec';
+import { Keys } from '../../utils/enums/keys.enum';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 export default function () {
   describe('Monthpicker Component', () => {
@@ -90,7 +89,7 @@ export default function () {
         }
       });
 
-      it('updates the tab indices correctly', waitForAsync(() => {
+      it('updates the tab indices correctly', async () => {
         const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll('button.month');
         expect(buttons[1].tabIndex).toBe(0);
 
@@ -117,7 +116,7 @@ export default function () {
 
         expect(buttons[2].tabIndex).toBe(-1);
         expect(buttons[1].tabIndex).toBe(0);
-      }));
+      });
     });
 
     describe('Typescript API', () => {
@@ -278,5 +277,6 @@ export default function () {
 
 @Component({
   template: `<clr-monthpicker></clr-monthpicker>`,
+  standalone: false,
 })
 class TestComponent {}

@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <div class="clr-example">
   <clr-stack-view>
@@ -16,14 +16,16 @@
       <clr-stack-label>Label 1</clr-stack-label>
       <clr-stack-content>Content 1</clr-stack-content>
 
-      <clr-stack-block *ngIf="children.length == 0">
+      @if (children.length == 0) {
+      <clr-stack-block>
         <clr-spinner clrInline>Loading...</clr-spinner>
       </clr-stack-block>
-
-      <clr-stack-block *ngFor="let child of children">
+      } @for (child of children; track child) {
+      <clr-stack-block>
         <clr-stack-label>{{child.title}}</clr-stack-label>
         <clr-stack-content>{{child.content}}</clr-stack-content>
       </clr-stack-block>
+      }
     </clr-stack-block>
 
     <clr-stack-block>

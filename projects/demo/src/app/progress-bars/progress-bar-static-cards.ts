@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-progress-bar-static-cards-demo',
   styleUrls: ['progress-bars.demo.scss'],
   templateUrl: './progress-bar-static-cards.html',
+  standalone: false,
 })
 export class ProgressBarStaticCardsDemo {}

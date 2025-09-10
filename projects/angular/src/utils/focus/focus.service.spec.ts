@@ -19,12 +19,14 @@ import { MockFocusableItem } from './focusable-item/focusable-item.mock';
   selector: 'simple-host',
   template: '',
   providers: [FOCUS_SERVICE_PROVIDER],
+  standalone: false,
 })
 class SimpleHost {}
 
 @Component({
   template: '<simple-host></simple-host>',
   providers: [FOCUS_SERVICE_PROVIDER],
+  standalone: false,
 })
 class NestedHost {}
 

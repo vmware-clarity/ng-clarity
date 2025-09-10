@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { fakeAsync, tick } from '@angular/core/testing';
+import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay as rxDelay } from 'rxjs/operators';
 
 import { RecursiveTreeNodeModel } from './recursive-tree-node.model';
 
@@ -71,37 +71,35 @@ export default function (): void {
       expect(root.children.map(c => c.parent)).toEqual([root, root]);
     });
 
-    it('can unwrap a Promise for the children', fakeAsync(function () {
+    it('can unwrap a Promise for the children', async function () {
       const root = new RecursiveTreeNodeModel('A', null, promiseChildren, this.featureService);
       root.fetchChildren();
-      tick();
+      await delay();
       expect(root.children.map(c => c.model)).toEqual(['AA', 'AB']);
-    }));
-
+    });
     it('can unwrap an Observable for the children', function () {
       const root = new RecursiveTreeNodeModel('A', null, observableChildren, this.featureService);
       expect(root.children.map(c => c.model)).toEqual(['AA', 'AB']);
     });
 
-    it('marks itself as loading while waiting for children from a Promise', fakeAsync(function () {
+    it('marks itself as loading while waiting for children from a Promise', async function () {
       const root = new RecursiveTreeNodeModel('A', null, promiseChildren, this.featureService);
       root.fetchChildren();
       expect(root.loading).toBeTrue();
-      tick();
+      await delay();
       expect(root.loading).toBeFalse();
-    }));
-
-    it('marks itself as loading while waiting for children from an Observable', fakeAsync(function () {
+    });
+    it('marks itself as loading while waiting for children from an Observable', async function () {
       const root = new RecursiveTreeNodeModel(
         'A',
         null,
-        node => observableChildren(node).pipe(delay(0)),
+        node => observableChildren(node).pipe(rxDelay(0)),
         this.featureService
       );
       root.fetchChildren();
       expect(root.loading).toBeTrue();
-      tick();
+      await delay();
       expect(root.loading).toBeFalse();
-    }));
+    });
   });
 }

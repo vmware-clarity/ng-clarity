@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <div class="clr-example example-min-height">
   <h6>Toggle the only button from the Overflow Menu View</h6>
@@ -13,7 +13,9 @@
     <clr-button class="btn">3</clr-button>
     <clr-button class="btn">4</clr-button>
     <clr-button class="btn">5</clr-button>
-    <clr-button class="btn" [clrInMenu]="true" *ngIf="show">6</clr-button>
+    @if (show) {
+    <clr-button class="btn" [clrInMenu]="true">6</clr-button>
+    }
   </clr-button-group>
   <div>
     <button class="btn" (click)="toggleShow()">Toggle</button>

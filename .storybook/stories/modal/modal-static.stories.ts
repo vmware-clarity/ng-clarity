@@ -18,7 +18,7 @@ export default {
     }),
   ],
   argTypes: {
-    size: { control: 'radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
+    size: { control: { type: 'radio' }, options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
   },
   args: {
     title: 'Small Modal',

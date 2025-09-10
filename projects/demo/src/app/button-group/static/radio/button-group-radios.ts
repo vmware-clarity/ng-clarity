@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-button-group-radios-demo',
   templateUrl: './button-group-radios.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class ButtonGroupRadiosDemo {}

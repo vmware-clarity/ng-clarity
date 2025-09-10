@@ -5,15 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ComponentFactory,
-  ComponentFactoryResolver,
-  ElementRef,
-  InjectionToken,
-  Injector,
-  Type,
-  ViewContainerRef,
-} from '@angular/core';
+import { ElementRef, InjectionToken, Injector, Type, ViewContainerRef } from '@angular/core';
 
 import { EmptyAnchor } from './empty-anchor';
 
@@ -29,12 +21,10 @@ export class HostWrapper<W> implements Injector {
     this.injector = vcr.injector;
     // If the host is already wrapped, we don't do anything
     if (!this.injector.get(containerType, null)) {
-      const cfr = this.injector.get(ComponentFactoryResolver);
       const el = this.injector.get(ElementRef);
 
       // We need a new anchor, since we're projecting the current one.
-      vcr.createComponent(cfr.resolveComponentFactory(EmptyAnchor));
-      const factory: ComponentFactory<W> = cfr.resolveComponentFactory(containerType);
+      vcr.createComponent(EmptyAnchor);
       // Craft the element array based on what slot to use. Angular only uses the index to determine
       // which ng-content to project into, so if you have more than one ng-content you'll need to set
       // the index in the constructor appropriately
@@ -42,7 +32,9 @@ export class HostWrapper<W> implements Injector {
       element[index] = [el.nativeElement];
       // We're assuming only one projection slot, but in more complex cases we might want to provide
       // a different array of projected elements.
-      const containerRef = vcr.createComponent(factory, undefined, undefined, element);
+      const containerRef = vcr.createComponent(containerType, {
+        projectableNodes: element,
+      });
       // We can now remove the useless anchor
       vcr.remove(0);
 

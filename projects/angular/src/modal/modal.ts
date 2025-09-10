@@ -21,11 +21,11 @@ import {
   ViewChild,
 } from '@angular/core';
 
+import { ClrModalConfigurationService } from './modal-configuration.service';
+import { ModalStackService } from './modal-stack.service';
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ScrollingService } from '../utils/scrolling/scrolling-service';
-import { ClrModalConfigurationService } from './modal-configuration.service';
-import { ModalStackService } from './modal-stack.service';
 
 @Component({
   selector: 'clr-modal',
@@ -60,6 +60,7 @@ import { ModalStackService } from './modal-stack.service';
       transition('* => void', [animate('0.2s ease-in-out', style({ opacity: 0 }))]),
     ]),
   ],
+  standalone: false,
 })
 export class ClrModal implements OnChanges, OnDestroy {
   modalId = uniqueIdFactory();

@@ -12,6 +12,7 @@ import { ClrWizard } from '@clr/angular';
   selector: 'clr-wizard-alt-next',
   templateUrl: './wizard-alt-next.demo.html',
   styles: ['.stress { color: red; }'],
+  standalone: false,
 })
 export class WizardAltNextDemo implements OnInit {
   @ViewChild('wizard') wizard: ClrWizard;

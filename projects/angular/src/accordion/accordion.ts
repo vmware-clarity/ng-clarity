@@ -30,6 +30,7 @@ import { AccordionService } from './providers/accordion.service';
   host: { '[class.clr-accordion]': 'true' },
   providers: [AccordionService],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input('clrAccordionMultiPanel') multiPanel: boolean | string = false;

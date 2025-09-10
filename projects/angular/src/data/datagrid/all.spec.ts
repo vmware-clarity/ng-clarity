@@ -12,7 +12,6 @@
  * over the place because we load them asynchronously.
  */
 
-import DomAdapterSpecs from '../../utils/dom-adapter/dom-adapter.spec';
 import DatagridPropertyComparatorSpecs from './built-in/comparators/datagrid-property-comparator.spec';
 import DatagridNumericFilterImplSpecs from './built-in/filters/datagrid-numeric-filter-impl.spec';
 import DatagridNumericFilterSpecs from './built-in/filters/datagrid-numeric-filter.spec';
@@ -61,6 +60,7 @@ import KeyNavigationSpec from './utils/key-navigation-grid.controller.spec';
 import WrappedCellSpec from './wrapped-cell.spec';
 import WrappedColumnSpec from './wrapped-column.spec';
 import WrappedRowSpec from './wrapped-row.spec';
+import DomAdapterSpecs from '../../utils/dom-adapter/dom-adapter.spec';
 
 describe('Datagrid', function () {
   addHelpers();

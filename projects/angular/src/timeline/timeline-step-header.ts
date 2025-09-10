@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-timeline-step-header',
   template: `<ng-content></ng-content>`,
   host: { '[class.clr-timeline-step-header]': 'true' },
+  standalone: false,
 })
 export class ClrTimelineStepHeader {}

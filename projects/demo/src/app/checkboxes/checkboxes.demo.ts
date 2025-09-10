@@ -10,6 +10,7 @@ import { ClrForm } from '@clr/angular';
 
 @Component({
   templateUrl: './checkboxes.demo.html',
+  standalone: false,
 })
 export class CheckboxesDemo {
   @ViewChildren(ClrForm) forms: QueryList<ClrForm>;

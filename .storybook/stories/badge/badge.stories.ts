@@ -45,7 +45,7 @@ export const Initial: StoryObj = {
 
 export const SingleBadge: StoryObj = {
   argTypes: {
-    badgeType: { control: 'select', options: [...BADGE_STATUS_TYPES, ...BADGE_COLOR_TYPES] },
+    badgeType: { control: { type: 'select' }, options: [...BADGE_STATUS_TYPES, ...BADGE_COLOR_TYPES] },
   },
   args: {
     showLinkBadge: false,

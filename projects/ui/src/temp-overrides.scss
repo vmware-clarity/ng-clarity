@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '@cds/core/tokens/tokens.scss';
 @use '../../angular/src/utils/mixins';
 @use '../../angular/src/utils/variables/variables.density' as density;
@@ -14,16 +15,13 @@
     // font family override
     --cds-global-typography-font-family: var(--clr-metropolis-font-family);
     --cds-global-typography-header-font-family: var(--clr-metropolis-font-family);
-
     --cds-alias-utility-gray: #{tokens.$cds-global-color-construction-600};
-
     --cds-alias-typography-link-color: #{tokens.$cds-global-color-blue-800};
     --cds-alias-typography-link-color-hover: #{tokens.$cds-global-color-blue-900};
     --cds-alias-typography-link-color-visited: #{tokens.$cds-global-color-violet-700};
     --cds-alias-typography-link-color-visited-hover: #{tokens.$cds-global-color-violet-1000};
     --cds-alias-typography-link-color-active: #{tokens.$cds-global-color-red-700};
-
-    --cds-alias-object-container-backdrop-background: hsla(0, 0%, 100%, 0.6);
+    --cds-alias-object-container-backdrop-background: hsl(0deg 0% 100% / 60%);
     --cds-alias-object-interaction-background-hover: #{tokens.$cds-global-color-construction-50};
     --cds-alias-object-interaction-background-active: #{tokens.$cds-global-color-construction-100};
     --cds-alias-object-interaction-background-selected: #{tokens.$cds-global-color-blue-75};
@@ -63,7 +61,6 @@
     --cds-alias-object-interaction-background-shade-selected: #{tokens.$cds-global-color-white};
     --cds-alias-object-interaction-background-shade-selected-hover: #{tokens.$cds-global-color-construction-200};
     --cds-alias-object-interaction-background-shade-selected-active: #{tokens.$cds-global-color-construction-300};
-
     --cds-alias-object-container-background-inverse: #{tokens.$cds-global-color-construction-600};
     --cds-alias-object-container-background-inverse-tint: #{tokens.$cds-global-color-construction-800};
     --cds-alias-object-container-background-inverse-shade: #{tokens.$cds-global-color-construction-500};
@@ -78,7 +75,6 @@
     --δ7: #{density.$clr-base-layout-space-xl};
     --δ8: #{density.$clr-base-layout-space-2xl};
     --δ9: #{density.$clr-base-layout-space-3xl};
-
     --cds-global-layout-space-xxxs: var(--δ1);
     --cds-global-layout-space-xxs: var(--δ2);
     --cds-global-layout-space-xs: var(--δ3);
@@ -123,11 +119,9 @@
     --cds-alias-typography-link-color-visited: #{tokens.$cds-global-color-violet-300};
     --cds-alias-typography-link-color-visited-hover: #{tokens.$cds-global-color-violet-200};
     --cds-alias-typography-link-color-active: #{tokens.$cds-global-color-red-600};
-
     --cds-alias-status-warning-dark: #{tokens.$cds-global-color-ochre-600};
     --cds-alias-status-warning-tint: #{tokens.$cds-global-color-ochre-900};
     --cds-alias-status-danger-tint: #{tokens.$cds-global-color-red-900};
-
     --cds-alias-object-container-backdrop-background: #{tokens.$cds-alias-object-opacity-300};
     --cds-alias-object-interaction-background-hover: #{tokens.$cds-global-color-construction-800};
     --cds-alias-object-interaction-background-active: #{tokens.$cds-global-color-construction-600};
@@ -156,7 +150,6 @@
     --cds-alias-object-interaction-background-shade-selected: #{tokens.$cds-global-color-blue-900};
     --cds-alias-object-interaction-background-shade-selected-hover: #{tokens.$cds-global-color-construction-800};
     --cds-alias-object-interaction-background-shade-selected-active: #{tokens.$cds-global-color-construction-600};
-
     --cds-alias-object-container-background-inverse: #{tokens.$cds-global-color-construction-200};
     --cds-alias-object-container-background-inverse-tint: #{tokens.$cds-global-color-construction-100};
     --cds-alias-object-container-background-inverse-shade: #{tokens.$cds-global-color-construction-300};

@@ -20,7 +20,7 @@ export default {
   component: ClrTimeline,
   argTypes: {
     // inputs
-    clrLayout: { control: 'inline-radio', options: ClrTimelineLayout },
+    clrLayout: { control: { type: 'inline-radio' }, options: ClrTimelineLayout },
     // story helpers
     ClrTimelineStepState: { control: { disable: true }, table: { disable: true } },
   },

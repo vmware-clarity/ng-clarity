@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-spinner-sizes',
   templateUrl: './spinner-sizes.html',
   styleUrls: ['./spinner.demo.scss'],
+  standalone: false,
 })
 export class SpinnerSizesDemo {}

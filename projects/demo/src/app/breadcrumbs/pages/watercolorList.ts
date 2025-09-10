@@ -22,5 +22,6 @@ import { Component } from '@angular/core';
       <li><a [routerLink]="['./winsor-newton']">Winsor & Newton</a></li>
     </ul>
   `,
+  standalone: false,
 })
 export class WatercolorListDemo {}

@@ -9,23 +9,25 @@ import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { ClrLabel } from './label';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrSignpostModule, ClrSignpostTrigger } from '../../popover';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrInput } from '../input/input';
 import { ClrInputContainer } from '../input/input-container';
-import { ClrLabel } from './label';
 import { ControlIdService } from './providers/control-id.service';
 import { ClrFormLayout, LayoutService } from './providers/layout.service';
 import { NgControlService } from './providers/ng-control.service';
 
 @Component({
   template: `<label></label>`,
+  standalone: false,
 })
 class NoForTest {}
 
 @Component({
   template: `<label [for]="forValue"></label>`,
+  standalone: false,
 })
 class ExplicitForTest {
   forValue = 'hello';
@@ -34,6 +36,7 @@ class ExplicitForTest {
 @Component({
   template: `<div><label for="hello"></label></div>`,
   providers: [ControlIdService],
+  standalone: false,
 })
 class ContainerizedTest {
   @ViewChild(ClrLabel, { static: true }) label;
@@ -42,11 +45,13 @@ class ContainerizedTest {
 @Component({
   template: `<div><label for="hello"></label></div>`,
   providers: [NgControlService],
+  standalone: false,
 })
 class WrapperTest {}
 
 @Component({
   template: `<label for="hello" class="clr-col-12 clr-col-md-3"></label>`,
+  standalone: false,
 })
 class ExistingGridTest {}
 
@@ -59,6 +64,7 @@ class ExistingGridTest {}
       </clr-signpost>
     </label>
   `,
+  standalone: false,
 })
 class SignpostTest {
   @ViewChild(ClrSignpostTrigger) signpostTrigger: ClrSignpostTrigger;
@@ -71,11 +77,13 @@ class SignpostTest {
       <input type="text" />
     </label>
   `,
+  standalone: false,
 })
 class DefaultClickBehaviorTest {}
 
 @Component({
   template: `<label id="explicit-label"></label>`,
+  standalone: false,
 })
 class ExplicitIdTest {}
 
@@ -86,6 +94,7 @@ class ExplicitIdTest {}
       <input clrInput />
     </clr-input-container>
   `,
+  standalone: false,
 })
 class ControlIdTest {}
 
@@ -96,6 +105,7 @@ class ControlIdTest {}
       <input id="explicit-control" clrInput />
     </clr-input-container>
   `,
+  standalone: false,
 })
 class ExplicitControlIdTest {}
 

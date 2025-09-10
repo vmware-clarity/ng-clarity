@@ -8,12 +8,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { expectActiveElementToBe } from '../../testing/helpers.spec';
 import { ClrKeyFocusItem } from './key-focus-item';
 import { ClrKeyFocusModule } from './key-focus.module';
+import { expectActiveElementToBe } from '../../testing/helpers.spec';
 
 @Component({
   template: `<button clrKeyFocusItem>Button 1</button>`,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrKeyFocusItem, { static: true }) button: ClrKeyFocusItem;

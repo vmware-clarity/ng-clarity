@@ -25,8 +25,6 @@ import {
 import { Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils';
-import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
-import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
 import { DatagridNumericFilterImpl } from './built-in/filters/datagrid-numeric-filter-impl';
 import { DatagridPropertyNumericFilter } from './built-in/filters/datagrid-property-numeric-filter';
@@ -42,48 +40,52 @@ import { Sort } from './providers/sort';
 import { HIDDEN_COLUMN_CLASS } from './render/constants';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { WrappedColumn } from './wrapped-column';
+import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
+import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 
 @Component({
   selector: 'clr-dg-column',
   template: `
     <div class="datagrid-column-flex">
-      <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button" #titleContainer>
-        <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
-        <cds-icon
-          *ngIf="sortDirection"
-          shape="arrow"
-          [attr.direction]="sortDirection"
-          aria-hidden="true"
-          class="sort-icon"
-        ></cds-icon>
-      </button>
+      @if (sortable) {
+        <button class="datagrid-column-title" (click)="sort()" type="button" #titleContainer>
+          <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
+          @if (sortDirection) {
+            <cds-icon shape="arrow" [attr.direction]="sortDirection" aria-hidden="true" class="sort-icon"></cds-icon>
+          }
+        </button>
+      }
       <!-- I'm really not happy with that select since it's not very scalable -->
       <ng-content select="clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter"></ng-content>
 
-      <clr-dg-string-filter
-        *ngIf="field && !customFilter && colType == 'string'"
-        [clrFilterPlaceholder]="filterStringPlaceholder"
-        [clrDgStringFilter]="registered"
-        [(clrFilterValue)]="filterValue"
-      ></clr-dg-string-filter>
-
-      <clr-dg-numeric-filter
-        *ngIf="field && !customFilter && colType == 'number'"
-        [clrFilterMaxPlaceholder]="filterNumberMaxPlaceholder"
-        [clrFilterMinPlaceholder]="filterNumberMinPlaceholder"
-        [clrDgNumericFilter]="registered"
-        [(clrFilterValue)]="filterValue"
-      ></clr-dg-numeric-filter>
+      @if (field && !customFilter && colType == 'string') {
+        <clr-dg-string-filter
+          [clrFilterPlaceholder]="filterStringPlaceholder"
+          [clrDgStringFilter]="registered"
+          [(clrFilterValue)]="filterValue"
+        ></clr-dg-string-filter>
+      }
+      @if (field && !customFilter && colType == 'number') {
+        <clr-dg-numeric-filter
+          [clrFilterMaxPlaceholder]="filterNumberMaxPlaceholder"
+          [clrFilterMinPlaceholder]="filterNumberMinPlaceholder"
+          [clrDgNumericFilter]="registered"
+          [(clrFilterValue)]="filterValue"
+        ></clr-dg-numeric-filter>
+      }
 
       <ng-template #columnTitle>
         <ng-content></ng-content>
       </ng-template>
 
-      <span class="datagrid-column-title" *ngIf="!sortable" #titleContainer>
-        <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
-      </span>
-
-      <clr-dg-column-separator *ngIf="showSeparator"></clr-dg-column-separator>
+      @if (!sortable) {
+        <span class="datagrid-column-title" #titleContainer>
+          <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
+        </span>
+      }
+      @if (showSeparator) {
+        <clr-dg-column-separator></clr-dg-column-separator>
+      }
     </div>
   `,
   hostDirectives: [ClrPopoverHostDirective],
@@ -93,6 +95,7 @@ import { WrappedColumn } from './wrapped-column';
     role: 'columnheader',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ClrDatagridColumn<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>

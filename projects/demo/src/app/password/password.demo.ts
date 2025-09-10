@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './password.demo.html',
+  standalone: false,
 })
 export class PasswordDemo {
   disabled = true;

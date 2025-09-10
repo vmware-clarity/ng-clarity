@@ -15,6 +15,7 @@ import { User } from '../inventory/user';
   providers: [Inventory],
   templateUrl: './filtering.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridFilteringDemo {
   users: User[];

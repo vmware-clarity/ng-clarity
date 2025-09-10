@@ -7,16 +7,16 @@
 
 import { Component, ContentChild, Input } from '@angular/core';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostTrigger } from './signpost-trigger';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 
 @Component({
   selector: 'clr-signpost',
   template: `
-    <ng-container *ngIf="!useCustomTrigger">
+    @if (!useCustomTrigger) {
       <button
         type="button"
         class="signpost-action btn btn-sm btn-icon btn-link"
@@ -25,13 +25,14 @@ import { ClrSignpostTrigger } from './signpost-trigger';
       >
         <cds-icon shape="info-circle" [attr.title]="commonStrings.keys.info"></cds-icon>
       </button>
-    </ng-container>
+    }
 
     <ng-content></ng-content>
   `,
   host: { '[class.signpost]': 'true' },
   providers: [SignpostFocusManager, SignpostIdService],
   hostDirectives: [ClrPopoverHostDirective],
+  standalone: false,
 })
 
 /*********

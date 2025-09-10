@@ -6,7 +6,6 @@
  */
 
 @use '../../../../angular/src/utils/mixins';
-@import '../_utils/clarity-variables';
 
 .datagrid-nav {
   column-count: 3;
@@ -47,6 +46,7 @@
   .username:not(:last-child)::after {
     content: ', ';
   }
+
   .username:last-child::after {
     content: '.';
   }

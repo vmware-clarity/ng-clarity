@@ -6,8 +6,8 @@
  */
 
 import { ClrWizardModule, ClrWizardPage } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { action } from 'storybook/actions';
 
 import { removeFocusOutline } from '../../helpers/common';
 
@@ -66,7 +66,7 @@ export default {
     docs: {
       story: {
         inline: false,
-        iframeHeight: 500,
+        height: 700,
       },
     },
   },

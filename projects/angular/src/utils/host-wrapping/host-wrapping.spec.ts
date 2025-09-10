@@ -19,11 +19,13 @@ const WRAPPER_SERVICE = new InjectionToken<number>('WrapperService');
   selector: 'wrapper-component',
   template: `Hello <ng-content></ng-content>!`,
   providers: [{ provide: WRAPPER_SERVICE, useValue: 42 }],
+  standalone: false,
 })
 class WrapperComponent {}
 
 @Directive({
   selector: '[wrappedDirective]',
+  standalone: false,
 })
 class WrappedDirective implements OnInit {
   injected: number;
@@ -43,16 +45,21 @@ class HostWrappingTestModule {}
 
 @Component({
   template: `<span wrappedDirective>World</span>`,
+  standalone: false,
 })
 class WrappingTest {}
 
 @Component({
   template: `<wrapper-component><span wrappedDirective>World</span></wrapper-component>`,
+  standalone: false,
 })
 class ExplicitTest {}
 
 @Component({
-  template: `<span *ngIf="show" wrappedDirective>World</span>`,
+  template: `@if (show) {
+    <span wrappedDirective>World</span>
+  }`,
+  standalone: false,
 })
 class NgIfTest {
   show = true;

@@ -13,5 +13,6 @@ import { StackViewNgDemo } from './stack-view-ng-demo';
   selector: 'clr-stack-view-angular-modal-edit-demo',
   templateUrl: './stack-view-angular-modal-edit.html',
   styleUrls: ['./stack-view.demo.scss'],
+  standalone: false,
 })
 export class StackViewAngularModalEditDemo extends StackViewNgDemo {}

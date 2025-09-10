@@ -65,10 +65,15 @@ export default function (): void {
 @Component({
   template: `
     <clr-dg-row-detail [clrDgReplace]="replace">
-      <ng-container *ngIf="!cell">Hello world</ng-container>
-      <clr-dg-cell *ngIf="cell">This is a cell</clr-dg-cell>
+      @if (!cell) {
+        Hello world
+      }
+      @if (cell) {
+        <clr-dg-cell>This is a cell</clr-dg-cell>
+      }
     </clr-dg-row-detail>
   `,
+  standalone: false,
 })
 class FullTest {
   replace = false;

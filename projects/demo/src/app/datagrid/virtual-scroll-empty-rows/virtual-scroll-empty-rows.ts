@@ -22,6 +22,7 @@ import { User } from '../inventory/user';
   providers: [Inventory],
   templateUrl: './virtual-scroll-empty-rows.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridVirtualScrollEmptyRowsDemo {
   userRange: ListRange | undefined;
@@ -45,7 +46,10 @@ export class DatagridVirtualScrollEmptyRowsDemo {
   private _indexToJump: number;
   private _latency = 500;
 
-  constructor(public inventory: Inventory, private cdr: ChangeDetectorRef) {
+  constructor(
+    public inventory: Inventory,
+    private cdr: ChangeDetectorRef
+  ) {
     inventory.size = this.totalRows;
     inventory.latency = this._latency;
     inventory.reset();

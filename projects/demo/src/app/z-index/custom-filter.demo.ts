@@ -12,6 +12,7 @@ import { Observable, Subject } from 'rxjs';
 @Component({
   selector: 'z-index-custom-filter',
   template: `<z-index-various-content></z-index-various-content>`,
+  standalone: false,
 })
 export class ZIndexCustomFilter<T> implements ClrDatagridFilterInterface<T> {
   private changesSubject = new Subject<T>();

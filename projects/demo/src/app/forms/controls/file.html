@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>File Input Component</h2>
 
@@ -28,13 +28,13 @@
   </clr-file-input-container>
 
   <pre>
-touched: {{ form.controls.file.touched }}
+    touched: {{ form.controls.file.touched }}
 
-status: {{ form.controls.file.status }}
+    status: {{ form.controls.file.status }}
 
-value (length): {{ form.controls.file.value?.length }}
+    value (length): {{ form.controls.file.value?.length }}
 
-errors: {{ form.controls.file.errors | json }}
+    errors: {{ form.controls.file.errors | json }}
   </pre>
 
   <clr-file-input-container>
@@ -70,21 +70,25 @@ errors: {{ form.controls.file.errors | json }}
       <ng-template clr-file-messages let-file let-errors="errors">
         <clr-file-info>Info text for {{ file.name }}</clr-file-info>
         <clr-file-success>Success message for {{ file.name }}</clr-file-success>
-        <clr-file-error *ngIf="errors.accept">File type not accepted</clr-file-error>
-        <clr-file-error *ngIf="errors.minFileSize">File size too small</clr-file-error>
-        <clr-file-error *ngIf="errors.maxFileSize">File size too large</clr-file-error>
+        @if (errors.accept) {
+        <clr-file-error>File type not accepted</clr-file-error>
+        } @if (errors.minFileSize) {
+        <clr-file-error>File size too small</clr-file-error>
+        } @if (errors.maxFileSize) {
+        <clr-file-error>File size too large</clr-file-error>
+        }
       </ng-template>
     </clr-file-list>
   </clr-file-input-container>
 
   <pre>
-touched: {{ advancedForm.controls.files.touched }}
+    touched: {{ advancedForm.controls.files.touched }}
 
-status: {{ advancedForm.controls.files.status }}
+    status: {{ advancedForm.controls.files.status }}
 
-value (length): {{ advancedForm.controls.files.value?.length }}
+    value (length): {{ advancedForm.controls.files.value?.length }}
 
-errors: {{ advancedForm.controls.files.errors | json }}
+    errors: {{ advancedForm.controls.files.errors | json }}
   </pre>
 </form>
 

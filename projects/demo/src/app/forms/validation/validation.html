@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Validation</h2>
 
@@ -131,7 +131,9 @@
       <label>Datalist</label>
       <input clrDatalistInput name="datalist" formControlName="datalist" required />
       <datalist>
-        <option *ngFor="let item of items" [value]="item"></option>
+        @for (item of items; track item) {
+        <option [value]="item"></option>
+        }
       </datalist>
       <clr-control-helper>Helper text</clr-control-helper>
       <clr-control-error *clrIfError="'required'">This field is required!</clr-control-error>

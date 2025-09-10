@@ -1,12 +1,18 @@
 <table class="calendar-table" role="presentation">
   <tr class="calendar-row weekdays">
-    <th *ngFor="let day of localeDays" class="calendar-cell weekday">
+    @for (day of localeDays; track day) {
+    <th class="calendar-cell weekday">
       <span [attr.aria-label]="day.day">{{day.narrow}}</span>
     </th>
+    }
   </tr>
-  <tr class="calendar-row" *ngFor="let row of calendarViewModel.calendarView">
-    <td *ngFor="let dayView of row" class="calendar-cell">
+  @for (row of calendarViewModel.calendarView; track row) {
+  <tr class="calendar-row">
+    @for (dayView of row; track dayView) {
+    <td class="calendar-cell">
       <clr-day [clrDayView]="dayView" (selectDay)="setSelectedDay($event)"></clr-day>
     </td>
+    }
   </tr>
+  }
 </table>

@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-nav-demo-navs',
   styleUrls: [],
   templateUrl: './navs.demo.html',
+  standalone: false,
 })
 export class NavsDemo {}

@@ -6,14 +6,15 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { Keys } from '../../utils/enums/keys.enum';
 import { ClrStackBlock } from './stack-block';
 import { ClrStackView } from './stack-view';
 import { ClrStackViewModule } from './stack-view.module';
+import { Keys } from '../../utils/enums/keys.enum';
+import { delay } from '../../utils/testing/helpers.spec';
 
 import Spy = jasmine.Spy;
 
@@ -24,6 +25,7 @@ import Spy = jasmine.Spy;
       <clr-stack-content>Content</clr-stack-content>
     </clr-stack-block>
   `,
+  standalone: false,
 })
 class BasicBlock {
   @ViewChild(ClrStackBlock) blockInstance: ClrStackBlock;
@@ -45,6 +47,7 @@ class BasicBlock {
       </clr-stack-block>
     </clr-stack-block>
   `,
+  standalone: false,
 })
 class NestedBlocks {
   @ViewChild('main') blockInstance: ClrStackBlock;
@@ -57,6 +60,7 @@ class NestedBlocks {
       <clr-stack-content>Content</clr-stack-content>
     </clr-stack-block>
   `,
+  standalone: false,
 })
 class DynamicBlock {
   @ViewChild(ClrStackBlock) blockInstance: ClrStackBlock;
@@ -78,6 +82,7 @@ class DynamicBlock {
       </clr-stack-block>
     </clr-stack-block>
   `,
+  standalone: false,
 })
 class DynamicBlockWithInput {
   @ViewChild('main') blockInstance: ClrStackBlock;
@@ -110,6 +115,7 @@ class DynamicBlockWithInput {
       </clr-stack-block>
     </clr-stack-block>
   `,
+  standalone: false,
 })
 class BlocksWithIinteractiveElements {
   @ViewChild('main') blockInstance: ClrStackBlock;
@@ -142,14 +148,6 @@ export default function (): void {
     function getBlockInstance(bFixture: ComponentFixture<any>): ClrStackBlock {
       return bFixture.componentInstance.blockInstance;
     }
-
-    describe('Accessibility', () => {
-      beforeEach(() => {
-        fixture = TestBed.createComponent(BasicBlock);
-        fixture.componentInstance.ariaLevel = 42;
-        fixture.detectChanges();
-      });
-    });
 
     it('projects content', () => {
       fixture = TestBed.createComponent(BasicBlock);
@@ -392,12 +390,12 @@ export default function (): void {
       expect(defaultBlockLabelledBy).toBe(stackLabelId);
     });
 
-    it('should have expected heading roles and aria heading levels', fakeAsync(() => {
+    it('should have expected heading roles and aria heading levels', async () => {
       fixture = TestBed.createComponent(NestedBlocks);
       fixture.detectChanges();
       const component = fixture.componentInstance;
       component.blockInstance.expanded = true;
-      tick();
+      await delay();
       fixture.detectChanges();
 
       const topLevelBlock = fixture.nativeElement.querySelector('.stack-block-expandable');
@@ -409,7 +407,7 @@ export default function (): void {
         expect(blok.getAttribute('role')).toBe('heading');
         expect(blok.getAttribute('aria-level')).toBe('4');
       });
-    }));
+    });
 
     describe('Space interaction with elements', () => {
       let spy: Spy<any>;
@@ -428,12 +426,12 @@ export default function (): void {
         expect(spy).toHaveBeenCalledWith(keyUp);
       }
 
-      beforeEach(fakeAsync(() => {
+      beforeEach(async () => {
         fixture = TestBed.createComponent(BlocksWithIinteractiveElements);
         fixture.whenRenderingDone();
         fixture.detectChanges();
         spy = spyOn(fixture.componentInstance.testBlockInstance, 'toggleExpand').and.callThrough();
-      }));
+      });
 
       it('Events sent through input element should NOT expand block', () => {
         expect(getBlockInstance(fixture).expanded).toBeTruthy();

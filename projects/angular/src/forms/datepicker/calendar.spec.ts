@@ -7,9 +7,6 @@
 
 import { Component } from '@angular/core';
 
-import { TestContext } from '../../data/datagrid/helpers.spec';
-import { Keys } from '../../utils/enums/keys.enum';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrCalendar } from './calendar';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
@@ -19,6 +16,9 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { TestContext } from '../../data/datagrid/helpers.spec';
+import { Keys } from '../../utils/enums/keys.enum';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 export default function () {
   describe('Calendar Component', () => {
@@ -177,5 +177,6 @@ export default function () {
 
 @Component({
   template: `<clr-calendar></clr-calendar>`,
+  standalone: false,
 })
 class TestComponent {}

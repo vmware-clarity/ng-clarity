@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-alert-demo-styles',
   styleUrls: ['../alert.demo.scss'],
   templateUrl: './alert-styles.demo.html',
+  standalone: false,
 })
 export class AlertStylesDemo {}

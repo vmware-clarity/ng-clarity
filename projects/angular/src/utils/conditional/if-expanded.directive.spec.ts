@@ -29,7 +29,7 @@ export default function (): void {
         this.testComponent = this.fixture.componentInstance;
         this.testElement = this.fixture.nativeElement;
         this.clarityDirective = this.fixture.componentInstance.ifExpanded;
-        this.expand = TestBed.get(IfExpandService);
+        this.expand = TestBed.inject(IfExpandService);
       });
 
       afterEach(function () {
@@ -87,7 +87,7 @@ export default function (): void {
         });
         this.fixture = TestBed.createComponent(SimpleTemplateTest);
         this.fixture.detectChanges();
-        this.expand = TestBed.get(IfExpandService);
+        this.expand = TestBed.inject(IfExpandService);
       });
 
       afterEach(function () {
@@ -110,7 +110,7 @@ export default function (): void {
         this.fixture = TestBed.createComponent(NgIfTest);
         this.fixture.detectChanges();
         this.testComponent = this.fixture.componentInstance;
-        this.expand = TestBed.get(IfExpandService);
+        this.expand = TestBed.inject(IfExpandService);
       });
 
       afterEach(function () {
@@ -133,6 +133,7 @@ export default function (): void {
 @Component({
   template: `<test-counter *clrIfExpanded></test-counter>`,
   providers: [{ provide: 'counter', useValue: { total: 0 } }],
+  standalone: false,
 })
 class SimpleTest {
   @ViewChild(ClrIfExpanded) ifExpanded: ClrIfExpanded;
@@ -143,6 +144,7 @@ class SimpleTest {
 @Component({
   template: `<test-counter [clrIfExpanded]></test-counter>`,
   providers: [{ provide: 'counter', useValue: { total: 0 } }],
+  standalone: false,
 })
 class SimpleTemplateTest {
   @ViewChild(ClrIfExpanded) ifExpanded: ClrIfExpanded;
@@ -153,6 +155,7 @@ class SimpleTemplateTest {
 @Component({
   selector: 'test-counter',
   template: `{{ count }}`,
+  standalone: false,
 })
 class TestCounter {
   count: number;
@@ -164,10 +167,11 @@ class TestCounter {
 
 @Component({
   template: `
-    <ng-container *ngIf="expandable">
+    @if (expandable) {
       <div *clrIfExpanded>Hello World</div>
-    </ng-container>
+    }
   `,
+  standalone: false,
 })
 class NgIfTest {
   expandable = true;

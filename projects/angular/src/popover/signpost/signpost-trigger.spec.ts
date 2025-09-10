@@ -8,11 +8,11 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClrIconModule } from '../../icon/icon.module';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostModule } from './signpost.module';
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 export default function (): void {
   describe('SignpostToggle component', function () {
@@ -31,7 +31,7 @@ export default function (): void {
       fixture = TestBed.createComponent(TestTrigger);
       fixture.detectChanges();
       clarityElement = fixture.nativeElement;
-      toggleService = TestBed.get(ClrPopoverToggleService);
+      toggleService = TestBed.inject(ClrPopoverToggleService);
       trigger = clarityElement.querySelector('.signpost-action');
     });
 
@@ -95,6 +95,7 @@ export default function (): void {
       <cds-icon shape="info-circle"></cds-icon>
     </button>
   `,
+  standalone: false,
 })
 class TestTrigger {
   label = null;

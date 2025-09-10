@@ -18,14 +18,15 @@ import { ClrWizard } from '../wizard';
       <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
       <clr-wizard-button [type]="'finish'">Fait Accompli</clr-wizard-button>
 
-      <ng-container *ngFor="let page of pages">
+      @for (page of pages; track page) {
         <clr-wizard-page [id]="page">
           <ng-template clrPageTitle>Page {{ page }}</ng-template>
           <p>Content for page {{ page }}</p>
         </clr-wizard-page>
-      </ng-container>
+      }
     </clr-wizard>
   `,
+  standalone: false,
 })
 export class DynamicEmptyWizardTestComponent {
   @ViewChild('wizard', { static: true }) wizard: ClrWizard;

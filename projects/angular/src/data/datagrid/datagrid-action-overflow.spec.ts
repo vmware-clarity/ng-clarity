@@ -7,12 +7,12 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 
-import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
 import { TestContext } from './helpers.spec';
 import { RowActionService } from './providers/row-action-service';
+import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 
 export default function (): void {
   describe('DatagridActionOverflow component', function () {
@@ -126,6 +126,7 @@ export default function (): void {
       </clr-dg-action-overflow>
     </div>
   `,
+  standalone: false,
 })
 class SimpleTest {
   open: boolean;

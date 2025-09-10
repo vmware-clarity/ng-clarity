@@ -15,6 +15,7 @@ import { ExpandableRowsCount } from './providers/global-expandable-rows';
  */
 @Directive({
   selector: '[clrIfExpanded]',
+  standalone: false,
 })
 export class DatagridDetailRegisterer {
   constructor(@Optional() private expandableRowsCount: ExpandableRowsCount) {

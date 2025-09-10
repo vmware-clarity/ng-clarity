@@ -10,15 +10,15 @@ import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { ClrRadio } from './radio';
+import { ClrRadioContainer } from './radio-container';
+import { ClrRadioWrapper } from './radio-wrapper';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
-import { ClrRadio } from './radio';
-import { ClrRadioContainer } from './radio-container';
-import { ClrRadioWrapper } from './radio-wrapper';
 
 @Component({
   template: `
@@ -26,6 +26,7 @@ import { ClrRadioWrapper } from './radio-wrapper';
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-radio-container>
   `,
+  standalone: false,
 })
 class NoLabelTest {}
 
@@ -46,6 +47,7 @@ class NoLabelTest {}
       <clr-control-success>Valid</clr-control-success>
     </clr-radio-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenTest {
   inline = false;
@@ -72,6 +74,7 @@ class TemplateDrivenTest {
       </clr-radio-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   disabled = false;

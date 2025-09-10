@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT } from '@angular/common';
 import {
   AfterContentChecked,
   Directive,
+  DOCUMENT,
   EmbeddedViewRef,
   EventEmitter,
   Inject,
@@ -30,6 +30,7 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 /** @dynamic */
 @Directive({
   selector: '[clrPopoverContent]',
+  standalone: false,
 })
 export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
   private view: EmbeddedViewRef<void>;

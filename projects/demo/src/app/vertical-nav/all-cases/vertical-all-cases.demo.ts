@@ -13,6 +13,7 @@ import { VerticalNavCases } from '../vertical-nav-cases';
   selector: 'clr-vertical-nav-all-cases',
   templateUrl: './vertical-all-cases.demo.html',
   styleUrls: ['../vertical-nav.demo.scss'],
+  standalone: false,
 })
 export class VerticalNavAllCases {
   cases: any[];

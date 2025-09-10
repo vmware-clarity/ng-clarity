@@ -7,10 +7,10 @@
 
 import { Observable } from 'rxjs';
 
-import { ClrDatagridFilterInterface } from '../../interfaces/filter.interface';
-import { ClrDatagridNumericFilterInterface } from '../../interfaces/numeric-filter.interface';
 import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
 import { DatagridPropertyNumericFilter } from './datagrid-property-numeric-filter';
+import { ClrDatagridFilterInterface } from '../../interfaces/filter.interface';
+import { ClrDatagridNumericFilterInterface } from '../../interfaces/numeric-filter.interface';
 
 export default function (): void {
   describe('DatagridNumericFilterImpl', function () {

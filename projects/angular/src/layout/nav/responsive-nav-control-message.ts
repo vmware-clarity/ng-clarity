@@ -6,7 +6,10 @@
  */
 
 export class ResponsiveNavControlMessage {
-  constructor(private _controlCode: string, private _navLevel: number) {}
+  constructor(
+    private _controlCode: string,
+    private _navLevel: number
+  ) {}
 
   get controlCode(): string {
     return this._controlCode;

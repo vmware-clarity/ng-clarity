@@ -10,6 +10,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'overlay-clipping-demo',
   templateUrl: './overlay-clipping.demo.html',
+  standalone: false,
 })
 export class OverlayClippingDemo {
   open = false;

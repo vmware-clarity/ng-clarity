@@ -10,6 +10,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'z-index-various-content',
   templateUrl: './various-content.html',
+  standalone: false,
 })
 export class ZIndexVariousContent {
   demo: any;

@@ -14,6 +14,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
 @Directive({
   selector: '[clrDate], [clrStartDate], [clrEndDate]',
   providers: [{ provide: NG_VALIDATORS, useExisting: ClrDateInputValidator, multi: true }],
+  standalone: false,
 })
 export class ClrDateInputValidator implements Validator {
   constructor(@Optional() private dateIOService: DateIOService) {}
@@ -38,6 +39,7 @@ export class ClrDateInputValidator implements Validator {
 @Directive({
   selector: '[clrStartDate]',
   providers: [{ provide: NG_VALIDATORS, useExisting: ClrStartDateInputValidator, multi: true }],
+  standalone: false,
 })
 export class ClrStartDateInputValidator implements Validator {
   constructor(
@@ -62,6 +64,7 @@ export class ClrStartDateInputValidator implements Validator {
 @Directive({
   selector: '[clrEndDate]',
   providers: [{ provide: NG_VALIDATORS, useExisting: ClrEndDateInputValidator, multi: true }],
+  standalone: false,
 })
 export class ClrEndDateInputValidator implements Validator {
   constructor(

@@ -11,17 +11,19 @@ import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule, Va
 import { By } from '@angular/platform-browser';
 
 import { ClrCommonFormsModule } from '../common';
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 import { ClrInput } from './input';
 import { ClrInputContainer } from './input-container';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 
 @Component({
   template: `<input type="text" clrInput />`,
+  standalone: false,
 })
 class StandaloneUseTest {}
 
 @Component({
   template: `<input clrInput name="model" class="test-class" [(ngModel)]="model" />`,
+  standalone: false,
 })
 class TemplateDrivenTest {}
 
@@ -31,6 +33,7 @@ class TemplateDrivenTest {}
       <input clrInput name="model" class="test-class" formControlName="model" />
     </div>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

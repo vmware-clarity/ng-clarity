@@ -4,30 +4,30 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@import '../../../../angular/src/utils/variables/variables.color';
-@import '../../../../angular/src/utils/variables/variables.global';
+
+@use '../../../../angular/src/utils/variables.clarity';
 
 @function getLineHeightGap($line-height: 1.2) {
   @if ($line-height < 1) {
     @return 0;
   }
+
   @return ($line-height - 1) * 0.5;
 }
-
 @function getDescenderHeight($line-height: 1.2) {
   $top-gap: 0.147;
   $ascender: 0.17;
   $x-height: 0.517;
   // these constants will become dynamic
+
   @return 1 - $top-gap - $ascender - $x-height;
 }
-
 @function pullUp($line-height: 1.2) {
   $top-gap: 0.147;
   // these constant will become dynamic
+
   @return ($top-gap + getLineHeightGap($line-height)) * -1em;
 }
-
 @function pushDown($line-height: 1.2) {
   @return (getDescenderHeight() + getLineHeightGap($line-height)) * -1em;
 }
@@ -51,20 +51,18 @@
     margin-top: pushDown($line-height);
   }
 }
-
 @mixin lhe-test-box-border() {
   border-width: var(--cds-global-space-1);
   border-style: solid;
-  border-color: var(--clr-color-neutral-300, #{$clr-color-neutral-300});
+  border-color: var(--clr-color-neutral-300, #{variables.$clr-color-neutral-300});
 }
-
 @mixin lhe-test-box-pad-color() {
-  box-shadow: inset 0 0 0 var(--cds-global-space-6) var(--clr-color-success-100, #{$clr-color-success-100});
+  box-shadow: inset 0 0 0 var(--cds-global-space-6) var(--clr-color-success-100, #{variables.$clr-color-success-100});
 }
 
 .title {
   border-bottom: var(--cds-global-space-2) solid;
-  border-bottom-color: var(--clr-color-neutral-800, #{$clr-color-neutral-800});
+  border-bottom-color: var(--clr-color-neutral-800, #{variables.$clr-color-neutral-800});
 }
 
 .box-test,
@@ -79,6 +77,7 @@
 .just-text-box {
   display: inline-block;
   padding: var(--cds-global-space-6);
+
   @include lhe-test-box-pad-color();
   @include lhe-test-box-border();
 
@@ -100,8 +99,10 @@
 .test-card,
 .neutral-card {
   align-items: flex-start;
+
   @include lhe-test-box-pad-color();
   @include lhe-test-box-border();
+
   display: flex;
   margin: 0;
   margin-left: var(--cds-global-space-9);
@@ -140,7 +141,7 @@
 }
 
 h1.test-subject {
-  box-shadow: inset 0 0 0 var(--cds-global-space-5) var(--clr-color-warning-500, #{$clr-color-warning-500});
+  box-shadow: inset 0 0 0 var(--cds-global-space-5) var(--clr-color-warning-500, #{variables.$clr-color-warning-500});
   padding: var(--cds-global-space-5);
 
   &.line-height-eraser {
@@ -149,7 +150,7 @@ h1.test-subject {
 }
 
 .lhe-test-well {
-  background: var(--clr-color-neutral-100, #{$clr-color-neutral-100});
+  background: var(--clr-color-neutral-100, #{variables.$clr-color-neutral-100});
   margin-top: var(--cds-global-space-9);
   padding: var(--cds-global-space-6);
   border-radius: var(--cds-alias-object-border-radius-100);

@@ -6,22 +6,26 @@
  */
 
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 
-import { DomAdapter } from '../../dom-adapter/dom-adapter';
 import { ClrExpandableAnimationDirective } from './expandable-animation.directive';
 import { ClrExpandableAnimationModule } from './expandable-animation.module';
+import { DomAdapter } from '../../dom-adapter/dom-adapter';
 
 import { ClrExpandableAnimation } from './index';
 
 @Component({
   template: `
     <clr-expandable-animation [clrExpandTrigger]="expanded">
-      <div *ngFor="let item of data">{{ item }}</div>
+      @for (item of data; track item) {
+        <div>{{ item }}</div>
+      }
     </clr-expandable-animation>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrExpandableAnimation, { static: true }) expandable: ClrExpandableAnimation;
@@ -31,9 +35,12 @@ class TestComponent {
 @Component({
   template: `
     <div [clrExpandableAnimation]="expanded">
-      <div *ngFor="let item of data">{{ item }}</div>
+      @for (item of data; track item) {
+        <div>{{ item }}</div>
+      }
     </div>
   `,
+  standalone: false,
 })
 class TestComponentDirective {
   @ViewChild(ClrExpandableAnimationDirective, { static: true }) expandable: ClrExpandableAnimationDirective;
@@ -81,37 +88,37 @@ function expandableAnimationSpec(testComponent, component) {
 
     // We test startHeight property separately from the DOM updates, because it has slightly different lifecycle
     // which though related to the DOM heights does not correspond 1:1 on all lifecycle steps.
-    it('updates startHeight property on expand and collapse', fakeAsync(() => {
+    it('updates startHeight property on expand and collapse', async () => {
       clarityDirective.updateStartHeight();
       const collapsedHeight = clarityDirective.startHeight;
       componentInstance.data.push('two');
       componentInstance.expanded = true;
       fixture.detectChanges();
       expect(clarityDirective.startHeight).toEqual(collapsedHeight);
-      tick();
+      await delay();
       expect(clarityDirective.startHeight).toEqual(collapsedHeight * 2);
       const expandedHeight = clarityDirective.startHeight;
       componentInstance.data.pop();
       componentInstance.expanded = false;
       fixture.detectChanges();
       expect(clarityDirective.startHeight).toEqual(expandedHeight);
-      tick();
+      await delay();
       expect(clarityDirective.startHeight).toEqual(collapsedHeight);
-    }));
+    });
   });
 
   describe('DOM updates', () => {
-    it('updates element height on expand and collapse', fakeAsync(() => {
+    it('updates element height on expand and collapse', async () => {
       const collapsedHeight = clarityElement.clientHeight;
       expect(collapsedHeight).toBeGreaterThan(0);
       componentInstance.data.push('two');
       fixture.detectChanges();
-      tick();
+      await delay();
       expect(clarityElement.clientHeight).toEqual(collapsedHeight * 2);
       componentInstance.data.pop();
       fixture.detectChanges();
-      tick();
+      await delay();
       expect(clarityElement.clientHeight).toEqual(collapsedHeight);
-    }));
+    });
   });
 }

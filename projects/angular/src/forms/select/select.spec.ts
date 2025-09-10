@@ -8,17 +8,19 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 import { ClrSelect } from './select';
 import { ClrSelectContainer } from './select-container';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 
 @Component({
   template: `<select clrSelect></select>`,
+  standalone: false,
 })
 class StandaloneUseTest {}
 
 @Component({
   template: `<select clrSelect name="model" class="test-class" [(ngModel)]="model"></select>`,
+  standalone: false,
 })
 class TemplateDrivenTest {}
 
@@ -28,6 +30,7 @@ class TemplateDrivenTest {}
       <select clrSelect name="model" class="test-class" formControlName="model"></select>
     </div>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

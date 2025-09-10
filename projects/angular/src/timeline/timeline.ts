@@ -15,6 +15,7 @@ import { TimelineIconAttributeService } from './providers/timeline-icon-attribut
   template: `<ng-content></ng-content>`,
   host: { '[class.clr-timeline]': 'true', '[attr.role]': '"list"' },
   providers: [TimelineIconAttributeService],
+  standalone: false,
 })
 export class ClrTimeline {
   @Input('clrLayout') layout: ClrTimelineLayout = ClrTimelineLayout.HORIZONTAL;

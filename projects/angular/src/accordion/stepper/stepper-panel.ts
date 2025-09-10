@@ -37,6 +37,7 @@ import { StepperService } from './providers/stepper.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: stepAnimation,
   providers: [IfExpandService],
+  standalone: false,
 })
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   @ViewChild('headerButton') headerButton: ElementRef<HTMLButtonElement>;

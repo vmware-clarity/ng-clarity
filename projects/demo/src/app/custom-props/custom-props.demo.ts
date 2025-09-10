@@ -85,6 +85,7 @@ function getNewTheme(oldTheme: string): string {
 @Component({
   templateUrl: 'custom-props.demo.html',
   styleUrls: ['./custom-props.demo.scss'],
+  standalone: false,
 })
 export class CustomPropsDemo {
   private _theme = 'default';

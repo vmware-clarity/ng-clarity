@@ -14,6 +14,7 @@ import { checkForExistingPresetName, FontPreset, fontPresets, getPreset } from '
   selector: 'clr-typography-font-switcher',
   styleUrls: ['./font-switcher.scss'],
   templateUrl: './font-switcher.html',
+  standalone: false,
 })
 export class FontSwitcher {
   @Input() layout: 'vertical' | 'horizontal' = 'vertical';

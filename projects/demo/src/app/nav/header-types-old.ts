@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-header-demo-types-old',
   templateUrl: './header-types-old.demo.html',
   styleUrls: ['./headers.demo.scss'],
+  standalone: false,
 })
 export class HeaderTypesOldDemo {}

@@ -14,6 +14,7 @@ import { AfterViewInit, Component, EmbeddedViewRef, OnDestroy, TemplateRef, View
       <ng-content></ng-content>
     </ng-template>
   `,
+  standalone: false,
 })
 export class WrappedCell implements AfterViewInit, OnDestroy {
   @ViewChild('cellPortal') templateRef: TemplateRef<void>;

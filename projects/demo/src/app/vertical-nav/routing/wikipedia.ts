@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-wikipedia-demo',
   template: `<p clrFocusOnViewInit>Credit: Wikipedia</p>`,
+  standalone: false,
 })
 export class WikipediaDemo {}

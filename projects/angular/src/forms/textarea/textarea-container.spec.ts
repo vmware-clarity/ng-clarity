@@ -8,9 +8,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 import { ClrTextarea } from './textarea';
 import { ClrTextareaContainer } from './textarea-container';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 
 @Component({
   template: `
@@ -22,6 +22,7 @@ import { ClrTextareaContainer } from './textarea-container';
       <clr-control-success>Valid</clr-control-success>
     </clr-textarea-container>
   `,
+  standalone: false,
 })
 class SimpleTest {
   disabled = false;
@@ -35,6 +36,7 @@ class SimpleTest {
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-textarea-container>
   `,
+  standalone: false,
 })
 class NoLabelTest {}
 
@@ -50,6 +52,7 @@ class NoLabelTest {}
       </clr-textarea-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   disabled = false;

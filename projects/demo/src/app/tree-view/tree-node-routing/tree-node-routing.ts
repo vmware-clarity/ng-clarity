@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-tree-node-routing-demo',
   styleUrls: ['../tree-view.demo.scss'],
   templateUrl: 'tree-node-routing.html',
+  standalone: false,
 })
 export class TreeNodeRoutingDemo {}

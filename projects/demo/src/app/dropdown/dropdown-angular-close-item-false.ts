@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-dropdown-angular-close-item-false-demo',
   templateUrl: './dropdown-angular-close-item-false.demo.html',
   styleUrls: ['./dropdown.demo.scss'],
+  standalone: false,
 })
 export class DropdownAngularCloseItemFalseDemo {}

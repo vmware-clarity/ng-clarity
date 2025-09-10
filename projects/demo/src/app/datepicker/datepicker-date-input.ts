@@ -14,14 +14,7 @@ const date2: Date = new Date(2017, 4, 5);
   selector: 'clr-datepicker-date-input-demo',
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './datepicker-date-input.html',
-  // providers: [{provide: LOCALE_ID, useValue: "en"}],
-  // providers: [{provide: LOCALE_ID, useValue: "ar-AE"}]
-  // providers: [{provide: LOCALE_ID, useValue: "hi"}]
-  // providers: [{provide: LOCALE_ID, useValue: "ak"}]
-  // providers: [{provide: LOCALE_ID, useValue: "fr"}]
-  // providers: [{provide: LOCALE_ID, useValue: "ru-UA"}]
-  // providers: [{provide: LOCALE_ID, useValue: "de"}]
-  // Do not remove the above comments. They are present to make sure that we can test different locales easily.
+  standalone: false,
 })
 export class DatepickerDateInputDemo {
   date: Date = date1;

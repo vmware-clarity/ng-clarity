@@ -10,10 +10,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '@cds/core/icon';
 
-import { ClrIconModule } from '../../icon/icon.module';
-import { ClrCommonFormsModule } from '../common/common.module';
 import { ClrTextarea } from './textarea';
 import { ClrTextareaContainer } from './textarea-container';
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrCommonFormsModule } from '../common/common.module';
 
 @NgModule({
   imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],

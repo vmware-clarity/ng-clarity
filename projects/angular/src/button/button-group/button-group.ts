@@ -17,6 +17,7 @@ import {
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
+import { ClrButton } from './button';
 import { ClrDestroyService } from '../../utils/destroy/destroy.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -31,7 +32,6 @@ import {
 } from '../providers/button-group-focus-handler.service';
 import { InitialFocus } from '../providers/button-group-focus.enum';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
-import { ClrButton } from './button';
 
 @Component({
   selector: 'clr-button-group',
@@ -39,6 +39,7 @@ import { ClrButton } from './button';
   providers: [ButtonInGroupService, ClrDestroyService, BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FOCUS_SERVICE_PROVIDER],
   hostDirectives: [ClrPopoverHostDirective],
   host: { '[class.btn-group]': 'true' },
+  standalone: false,
 })
 export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   @Input('clrToggleButtonAriaLabel') clrToggleButtonAriaLabel: string = this.commonStrings.keys.rowActions;

@@ -15,6 +15,7 @@ import { User } from '../inventory/user';
   providers: [Inventory],
   templateUrl: 'column-sizing.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridColumnSizingDemo {
   users: User[];

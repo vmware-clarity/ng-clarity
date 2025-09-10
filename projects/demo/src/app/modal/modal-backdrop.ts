@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-modal-backdrop-demo',
   templateUrl: './modal-backdrop.demo.html',
+  standalone: false,
 })
 export class ModalBackdropDemo {}

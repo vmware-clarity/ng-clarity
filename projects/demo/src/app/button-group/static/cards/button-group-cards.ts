@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-button-group-cards-demo',
   templateUrl: './button-group-cards.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class ButtonGroupCardsDemo {}

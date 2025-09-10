@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-datepicker-in-template-driven-forms-demo',
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './datepicker-in-template-driven-forms.html',
+  standalone: false,
 })
 export class DatepickerInTemplateDrivenFormsDemo {
   name = 'Jane';

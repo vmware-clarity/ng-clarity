@@ -13,6 +13,7 @@ import { VerticalNavCases } from '../vertical-nav-cases';
   selector: 'clr-vertical-nav-nested-icon-menus-demo',
   templateUrl: './vertical-nav-nested-icon-menus.demo.html',
   styleUrls: ['../vertical-nav.demo.scss'],
+  standalone: false,
 })
 export class VerticalNavNestedIconMenusDemo {
   case: any;

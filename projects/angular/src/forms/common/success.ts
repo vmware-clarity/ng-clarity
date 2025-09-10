@@ -19,6 +19,7 @@ import { ControlIdService } from './providers/control-id.service';
     '[class.success]': 'true',
     '[attr.id]': 'id',
   },
+  standalone: false,
 })
 export class ClrControlSuccess extends ClrAbstractControl {
   override controlIdSuffix = CONTROL_SUFFIX.SUCCESS;

@@ -6,14 +6,13 @@
  */
 
 import { Component } from '@angular/core';
-import { fakeAsync } from '@angular/core/testing';
 
-import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
-import { spec } from '../../utils/testing/helpers.spec';
 import { ClrNavLevel } from './nav-level';
 import { ClrNavigationModule } from './navigation.module';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
+import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
+import { spec } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `
@@ -21,6 +20,7 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
       <a href="javascript:void(0)">Level 1</a>
     </nav>
   `,
+  standalone: false,
 })
 class TestComponent {}
 
@@ -32,12 +32,11 @@ describe('NavLevelDirective', function () {
     expect(navLevel.level).toBe(ResponsiveNavCodes.NAV_LEVEL_1);
   });
 
-  it('#level is set to 2', fakeAsync(function () {
+  it('#level is set to 2', async function () {
     const navLevel = this.clarityDirective;
     navLevel._level = 2;
     expect(navLevel.level).toBe(ResponsiveNavCodes.NAV_LEVEL_2);
-  }));
-
+  });
   it('should set [attr.hidden] when called hideNavigation()', function () {
     const navLevel = this.clarityDirective;
     navLevel.hideNavigation();

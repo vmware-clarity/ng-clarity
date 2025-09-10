@@ -6,7 +6,11 @@
  */
 
 export class DayModel {
-  constructor(readonly year: number, readonly month: number, readonly date: number) {}
+  constructor(
+    readonly year: number,
+    readonly month: number,
+    readonly date: number
+  ) {}
 
   /**
    * Checks if the passed CalendarDate is equal to itself.

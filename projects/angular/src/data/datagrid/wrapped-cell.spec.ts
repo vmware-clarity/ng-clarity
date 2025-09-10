@@ -12,6 +12,7 @@ import { WrappedCell } from './wrapped-cell';
 
 @Component({
   template: `<dg-wrapped-cell>Hello World!</dg-wrapped-cell>`,
+  standalone: false,
 })
 class WrappedCellTest {
   @ViewChild(WrappedCell, { static: true }) wrapper: WrappedCell;

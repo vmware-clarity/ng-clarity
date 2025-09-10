@@ -17,6 +17,7 @@ import { PokemonComparator } from '../utils/pokemon-comparator';
   providers: [Inventory],
   templateUrl: './sorting.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridSortingDemo {
   users: User[];

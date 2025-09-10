@@ -16,4 +16,4 @@ export const popoverPositions = [
   'right-top',
 ] as const;
 
-export type PopoverPosition = typeof popoverPositions[number];
+export type PopoverPosition = (typeof popoverPositions)[number];

@@ -35,6 +35,7 @@ import { ClrStepperPanel } from './stepper-panel';
   },
   providers: [StepperService, { provide: AccordionService, useExisting: StepperService }],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input('clrInitialStep') initialPanel: string;

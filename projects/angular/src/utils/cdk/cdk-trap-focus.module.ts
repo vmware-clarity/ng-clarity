@@ -6,14 +6,14 @@
  */
 
 import { CdkTrapFocus, FocusTrapFactory } from '@angular/cdk/a11y';
-import { DOCUMENT } from '@angular/common';
-import { Directive, ElementRef, Inject, NgModule, Optional } from '@angular/core';
+import { Directive, DOCUMENT, ElementRef, Inject, NgModule, Optional } from '@angular/core';
 
 /**
  * This is just a copy of CdkTrapFocus so it can be used independent of the rest of the A11yModule.
  */
 @Directive({
   selector: '[cdkTrapFocus]',
+  standalone: false,
 })
 export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
   /**

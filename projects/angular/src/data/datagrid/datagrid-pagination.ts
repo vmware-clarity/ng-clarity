@@ -18,83 +18,86 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridPageSize } from './datagrid-page-size';
 import { DetailService } from './providers/detail.service';
 import { Page } from './providers/page';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-dg-pagination',
   template: `
-    <ng-container *ngIf="!detailService.isOpen">
-      <div class="pagination-size" *ngIf="_pageSizeComponent">
-        <ng-content select="clr-dg-page-size"></ng-content>
-      </div>
+    @if (!detailService.isOpen) {
+      @if (_pageSizeComponent) {
+        <div class="pagination-size">
+          <ng-content select="clr-dg-page-size"></ng-content>
+        </div>
+      }
       <div class="pagination-description">
         <ng-content></ng-content>
       </div>
-      <div class="pagination-list" *ngIf="page.last > 1">
-        <button
-          type="button"
-          class="pagination-first"
-          [disabled]="page.current <= 1"
-          (click)="page.current = 1"
-          [attr.aria-label]="commonStrings.keys.firstPage"
-        >
-          <span class="clr-sr-only">{{ commonStrings.keys.firstPage }}</span>
-          <cds-icon shape="step-forward-2" direction="down"></cds-icon>
-        </button>
-        <button
-          type="button"
-          class="pagination-previous"
-          [disabled]="page.current <= 1"
-          (click)="page.current = page.current - 1"
-          [attr.aria-label]="commonStrings.keys.previousPage"
-        >
-          <span class="clr-sr-only">{{ commonStrings.keys.previousPage }}</span>
-          <cds-icon shape="angle" direction="left"></cds-icon>
-        </button>
-        <div class="pagination-pages">
-          <input
-            *ngIf="!disableCurrentPageInput; else readOnly"
-            #currentPageInput
-            type="text"
-            class="pagination-current clr-input"
-            [size]="page.last.toString().length"
-            [value]="page.current"
-            (keydown.enter)="updateCurrentPage($event)"
-            (blur)="verifyCurrentPage($event)"
-            [attr.aria-label]="commonStrings.keys.currentPage"
-          />
-          <ng-template #readOnly>
-            <span>{{ page.current }}</span>
-          </ng-template>
-
-          &nbsp;/&nbsp;<span [attr.aria-label]="commonStrings.keys.totalPages">{{ page.last }}</span>
+      @if (page.last > 1) {
+        <div class="pagination-list">
+          <button
+            type="button"
+            class="pagination-first"
+            [disabled]="page.current <= 1"
+            (click)="page.current = 1"
+            [attr.aria-label]="commonStrings.keys.firstPage"
+          >
+            <span class="clr-sr-only">{{ commonStrings.keys.firstPage }}</span>
+            <cds-icon shape="step-forward-2" direction="down"></cds-icon>
+          </button>
+          <button
+            type="button"
+            class="pagination-previous"
+            [disabled]="page.current <= 1"
+            (click)="page.current = page.current - 1"
+            [attr.aria-label]="commonStrings.keys.previousPage"
+          >
+            <span class="clr-sr-only">{{ commonStrings.keys.previousPage }}</span>
+            <cds-icon shape="angle" direction="left"></cds-icon>
+          </button>
+          <div class="pagination-pages">
+            @if (!disableCurrentPageInput) {
+              <input
+                #currentPageInput
+                type="text"
+                class="pagination-current clr-input"
+                [size]="page.last.toString().length"
+                [value]="page.current"
+                (keydown.enter)="updateCurrentPage($event)"
+                (blur)="verifyCurrentPage($event)"
+                [attr.aria-label]="commonStrings.keys.currentPage"
+              />
+            } @else {
+              <span>{{ page.current }}</span>
+            }
+            &nbsp;/&nbsp;<span [attr.aria-label]="commonStrings.keys.totalPages">{{ page.last }}</span>
+          </div>
+          <button
+            type="button"
+            class="pagination-next"
+            [disabled]="page.current >= page.last"
+            (click)="page.current = page.current + 1"
+            [attr.aria-label]="commonStrings.keys.nextPage"
+          >
+            <span class="clr-sr-only">{{ commonStrings.keys.nextPage }}</span>
+            <cds-icon shape="angle" direction="right"></cds-icon>
+          </button>
+          <button
+            type="button"
+            class="pagination-last"
+            [disabled]="page.current >= page.last"
+            (click)="page.current = page.last"
+            [attr.aria-label]="commonStrings.keys.lastPage"
+          >
+            <span class="clr-sr-only">{{ commonStrings.keys.lastPage }}</span>
+            <cds-icon shape="step-forward-2" direction="up"></cds-icon>
+          </button>
         </div>
-        <button
-          type="button"
-          class="pagination-next"
-          [disabled]="page.current >= page.last"
-          (click)="page.current = page.current + 1"
-          [attr.aria-label]="commonStrings.keys.nextPage"
-        >
-          <span class="clr-sr-only">{{ commonStrings.keys.nextPage }}</span>
-          <cds-icon shape="angle" direction="right"></cds-icon>
-        </button>
-        <button
-          type="button"
-          class="pagination-last"
-          [disabled]="page.current >= page.last"
-          (click)="page.current = page.last"
-          [attr.aria-label]="commonStrings.keys.lastPage"
-        >
-          <span class="clr-sr-only">{{ commonStrings.keys.lastPage }}</span>
-          <cds-icon shape="step-forward-2" direction="up"></cds-icon>
-        </button>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="detailService.isOpen">
+      }
+    }
+    @if (detailService.isOpen) {
       <div class="pagination-description-compact">
         {{ page.firstItem + 1 }}-{{ page.lastItem + 1 }} / {{ page.totalItems }}
       </div>
@@ -121,9 +124,10 @@ import { Page } from './providers/page';
           <cds-icon shape="angle" direction="right"></cds-icon>
         </button>
       </div>
-    </ng-container>
+    }
   `,
   host: { '[class.pagination]': 'true' },
+  standalone: false,
 })
 export class ClrDatagridPagination implements OnDestroy, OnInit {
   @Input('clrDgPageInputDisabled') disableCurrentPageInput: boolean;
@@ -139,7 +143,11 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
    */
   private _pageSubscription: Subscription;
 
-  constructor(public page: Page, public commonStrings: ClrCommonStringsService, public detailService: DetailService) {
+  constructor(
+    public page: Page,
+    public commonStrings: ClrCommonStringsService,
+    public detailService: DetailService
+  ) {
     page.activated = true;
   }
 

@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-layout-only-vertical-nav-primary',
   templateUrl: './layout-vertical-nav-primary.html',
   styleUrls: ['./layout.demo.scss'],
+  standalone: false,
 })
 export class LayoutVerticalNavPrimaryDemo {}

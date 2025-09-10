@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-button-group-projection-update-test-6-demo',
   templateUrl: './projection-update-test-6.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class ProjectionUpdateTest6Demo {
   show = true;

@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Selection (Row mode)</h2>
 
@@ -23,9 +23,11 @@
 
 <div class="card card-block">
   <p class="card-text username-list">
-    Selected user:
-    <em *ngIf="!singleSelected">No user selected.</em>
-    <span class="username" *ngIf="singleSelected">{{singleSelected.name}}</span>
+    Selected user: @if (!singleSelected) {
+    <em>No user selected.</em>
+    } @if (singleSelected) {
+    <span class="username">{{singleSelected.name}}</span>
+    }
   </p>
 </div>
 
@@ -57,9 +59,11 @@
 
 <div class="card card-block">
   <p class="card-text username-list">
-    Selected users:
-    <em *ngIf="multiSelected.length == 0">No user selected.</em>
-    <span class="username" *ngFor="let user of multiSelected">{{user.name}}</span>
+    Selected users: @if (multiSelected.length == 0) {
+    <em>No user selected.</em>
+    } @for (user of multiSelected; track user) {
+    <span class="username">{{user.name}}</span>
+    }
   </p>
 </div>
 

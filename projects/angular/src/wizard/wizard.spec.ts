@@ -5,9 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { fakeAsync, tick } from '@angular/core/testing';
-
-import { TestContext } from '../utils/testing/helpers.spec';
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { TemplateApiWizardTestComponent } from './test-components/api-wizard.mock';
@@ -16,6 +13,8 @@ import { DynamicEmptyWizardTestComponent } from './test-components/dynamic-empty
 import { DynamicWizardTestComponent } from './test-components/dynamic-wizard.mock';
 import { UnopenedWizardTestComponent } from './test-components/unopened-wizard.mock';
 import { ClrWizard } from './wizard';
+import { TestContext } from '../utils/testing/helpers.spec';
+import { delay } from '../utils/testing/helpers.spec';
 
 export default function (): void {
   describe('Wizard', () => {
@@ -380,22 +379,23 @@ export default function (): void {
             expect(val).toBe('OHAI', 'updates as expected');
           });
 
-          it('content can lazy load if needed', fakeAsync(() => {
+          it('content can lazy load if needed', async () => {
             let val: string;
 
             wizard.next();
             context.detectChanges();
 
+            debugger;
             val = context.hostElement.querySelector('.clr-wizard-page.active').textContent.trim();
             expect(val).toBe(context.hostComponent.lazyLoadContent, 'projects as expected');
 
             context.hostComponent.doLazyLoad();
-            tick();
+            await delay();
             context.detectChanges();
 
             val = context.hostElement.querySelector('.clr-wizard-page.active').textContent.trim();
             expect(val).toBe('Content loaded!', 'updates as expected');
-          }));
+          });
         });
 
         describe('Buttons', () => {

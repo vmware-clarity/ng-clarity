@@ -16,7 +16,7 @@ import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
 
 const POSITIONS = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'] as const;
-type Position = typeof POSITIONS[number];
+type Position = (typeof POSITIONS)[number];
 
 const SIZES = ['xs', 'sm', 'md', 'lg'];
 
@@ -32,6 +32,7 @@ const defaultSize = 'sm';
     '[attr.role]': '"tooltip"',
     '[id]': 'id',
   },
+  standalone: false,
 })
 export class ClrTooltipContent extends AbstractPopover implements OnInit {
   private _id: string;

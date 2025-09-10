@@ -4,11 +4,13 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use '../utils/mixins';
 @use 'variables.badges' as badges-variables;
 @use '../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
+
 @include meta.load-css('properties.badges');
 
 @mixin generateBadgeStyles($color: gray, $alias: 1) {
@@ -18,7 +20,6 @@
     color: badges-variables.getBadgeColor($color, color);
   }
 }
-
 @mixin generateStatusBadgeStyles($status: info) {
   &.badge-#{$status} {
     background: badges-variables.getBadgeColor($status, bg-color);
@@ -42,6 +43,7 @@
     background-color: badges-variables.$clr-badge-background-color;
     height: density.$clr-base-row-height-xs;
     border-radius: density.$clr-base-border-radius-xl;
+
     @include mixins.generate-typography-token('CAPTION-SM-10');
 
     padding: 0 density.$clr-base-horizontal-offset-xs;
@@ -65,7 +67,6 @@
     @include generateBadgeStyles(blue, 3);
     @include generateBadgeStyles(orange, 4);
     @include generateBadgeStyles(light-blue, 5);
-
     @include generateStatusBadgeStyles(info);
     @include generateStatusBadgeStyles(success);
     @include generateStatusBadgeStyles(danger);

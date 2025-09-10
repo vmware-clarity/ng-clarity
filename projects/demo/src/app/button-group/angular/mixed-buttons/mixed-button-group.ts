@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-mixed-button-groups-demo',
   templateUrl: './mixed-button-group.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class MixedButtonGroupDemo {}

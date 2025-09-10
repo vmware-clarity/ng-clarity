@@ -1,5 +1,7 @@
-<div *ngIf="items?.length" role="list" class="clr-breadcrumb-menu">
-  <clr-breadcrumb-item *ngIf="items.length > max && !isExpanded">
+@if (items?.length) {
+<div role="list" class="clr-breadcrumb-menu">
+  @if (items.length > max && !isExpanded) {
+  <clr-breadcrumb-item>
     <button
       [attr.aria-label]="commonStrings.keys.expandBreadcrumbsLabel"
       class="btn btn-link btn-sm clr-breadcrumb-expand"
@@ -9,27 +11,25 @@
       <cds-icon shape="ellipsis-horizontal"></cds-icon>
     </button>
   </clr-breadcrumb-item>
-  <clr-breadcrumb-item *ngFor="let breadcrumb of items | slice: -limit : items.length; let isLastItem=last">
-    <span *ngIf="isLastItem; else breadcrumbLinks" aria-current="page">{{ breadcrumb.label }}</span>
-
-    <ng-template #breadcrumbLinks>
-      <a
-        *ngIf="breadcrumb.routerLink"
-        [routerLink]="breadcrumb.routerLink"
-        [queryParams]="breadcrumb.queryParams"
-        [target]="breadcrumb.target || '_self'"
-        (click)="handleItemClick(breadcrumb)"
-      >
-        {{ breadcrumb.label }}
-      </a>
-      <a
-        *ngIf="breadcrumb.href"
-        [href]="breadcrumb.href"
-        [target]="breadcrumb.target || '_self'"
-        (click)="handleItemClick(breadcrumb)"
-      >
-        {{ breadcrumb.label }}
-      </a>
-    </ng-template>
+  } @for (breadcrumb of items | slice: -limit : items.length; track breadcrumb; let isLastItem = $last) {
+  <clr-breadcrumb-item>
+    @if (isLastItem) {
+    <span aria-current="page">{{ breadcrumb.label }}</span>
+    } @else { @if (breadcrumb.routerLink) {
+    <a
+      [routerLink]="breadcrumb.routerLink"
+      [queryParams]="breadcrumb.queryParams"
+      [target]="breadcrumb.target || '_self'"
+      (click)="handleItemClick(breadcrumb)"
+    >
+      {{ breadcrumb.label }}
+    </a>
+    } @if (breadcrumb.href) {
+    <a [href]="breadcrumb.href" [target]="breadcrumb.target || '_self'" (click)="handleItemClick(breadcrumb)">
+      {{ breadcrumb.label }}
+    </a>
+    } }
   </clr-breadcrumb-item>
+  }
 </div>
+}

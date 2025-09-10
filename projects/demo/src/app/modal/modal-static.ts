@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-modal-static-demo',
   templateUrl: './modal-static.demo.html',
+  standalone: false,
 })
 export class ModalStaticDemo {}

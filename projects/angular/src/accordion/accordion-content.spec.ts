@@ -10,8 +10,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { IfExpandService } from '../utils/conditional/if-expanded.service';
 import { ClrAccordionModule } from './accordion.module';
+import { IfExpandService } from '../utils/conditional/if-expanded.service';
 
 @Component({
   template: `
@@ -19,6 +19,7 @@ import { ClrAccordionModule } from './accordion.module';
       <clr-accordion-content>Hello world</clr-accordion-content>
     </clr-accordion>
   `,
+  standalone: false,
 })
 class TestComponent {}
 

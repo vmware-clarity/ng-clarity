@@ -7,10 +7,10 @@
 
 import { Component } from '@angular/core';
 
-import { WrapperContainerSpec, WrapperFullSpec, WrapperNoLabelSpec } from '../tests/wrapper.spec';
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxContainer } from './checkbox-container';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
+import { WrapperContainerSpec, WrapperFullSpec, WrapperNoLabelSpec } from '../tests/wrapper.spec';
 
 @Component({
   template: `
@@ -19,6 +19,7 @@ import { ClrCheckboxWrapper } from './checkbox-wrapper';
       <input type="checkbox" clrCheckbox name="model" [(ngModel)]="model" />
     </clr-checkbox-wrapper>
   `,
+  standalone: false,
 })
 class FullTest {
   model = '';
@@ -30,6 +31,7 @@ class FullTest {
       <input type="checkbox" clrCheckbox name="model" [(ngModel)]="model" />
     </clr-checkbox-wrapper>
   `,
+  standalone: false,
 })
 class NoLabelTest {
   model = '';
@@ -43,6 +45,7 @@ class NoLabelTest {
       </clr-checkbox-wrapper>
     </clr-checkbox-container>
   `,
+  standalone: false,
 })
 class ContainerTest {
   model = '';

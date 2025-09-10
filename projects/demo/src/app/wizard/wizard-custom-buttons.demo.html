@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <button class="btn btn-primary" (click)="wizard.open()">Wizard</button>
 
@@ -103,14 +103,16 @@
     <ng-template clrPageNavTitle>Custom buttons</ng-template>
     <!-- optional -->
 
-    <p *ngIf="!showWarning">
+    @if (!showWarning) {
+    <p>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae minima inventore quia, officiis rem id explicabo
       incidunt, illum deleniti qui doloremque voluptatem, saepe tenetur quas! Quaerat explicabo expedita placeat vero.
     </p>
-
-    <p *ngIf="showWarning">
+    } @if (showWarning) {
+    <p>
       <button type="submit" class="btn btn-danger" (click)="handleDangerClick()">Click here if you are sure</button>
     </p>
+    }
 
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
 

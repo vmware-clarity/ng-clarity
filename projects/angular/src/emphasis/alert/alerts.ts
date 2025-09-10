@@ -33,6 +33,7 @@ import { MultiAlertService } from './providers/multi-alert.service';
     '[class.alert-neutral]': "this.currentAlertType == 'neutral'",
   },
   styles: [':host { display: block }'],
+  standalone: false,
 })
 export class ClrAlerts implements AfterContentInit, OnDestroy {
   @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);

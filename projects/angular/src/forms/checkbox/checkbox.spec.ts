@@ -8,17 +8,19 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 
 @Component({
   template: `<input type="checkbox" clrCheckbox />`,
+  standalone: false,
 })
 class StandaloneUseTest {}
 
 @Component({
   template: `<input type="checkbox" clrCheckbox name="model" class="test-class" [(ngModel)]="model" />`,
+  standalone: false,
 })
 class TemplateDrivenTest {}
 
@@ -28,6 +30,7 @@ class TemplateDrivenTest {}
       <input type="checkbox" clrCheckbox name="model" class="test-class" formControlName="model" />
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

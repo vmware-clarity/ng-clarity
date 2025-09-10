@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h4>Eager tree, consistent pre-selection</h4>
 <div id="consistent-pre-selection" class="clr-example">
@@ -150,11 +150,12 @@
 <h4>Larger declarative tree</h4>
 <div class="clr-example">
   <clr-tree>
-    <clr-tree-node *ngFor="let node of larger">
-      {{node.name}}
-      <clr-tree-node *ngFor="let child of node.children" [(clrSelected)]="child.selected">
-        {{child.name}}
-      </clr-tree-node>
+    @for (node of larger; track node) {
+    <clr-tree-node>
+      {{node.name}} @for (child of node.children; track child) {
+      <clr-tree-node [(clrSelected)]="child.selected"> {{child.name}} </clr-tree-node>
+      }
     </clr-tree-node>
+    }
   </clr-tree>
 </div>

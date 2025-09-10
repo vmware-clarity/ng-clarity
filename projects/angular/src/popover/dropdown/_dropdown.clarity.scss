@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use 'menu-mixins.clarity.scss' as menu-mixins;
 @use '../../button/variables.buttons' as button-variables;
@@ -16,7 +17,6 @@
 @use '../../utils/variables/variables.density' as density;
 
 @include meta.load-css('properties.dropdown');
-
 @include mixins.exports('dropdown.clarity') {
   .dropdown {
     position: relative;
@@ -33,6 +33,7 @@
       clr-icon[shape^='caret'],
       clr-icon[shape^='angle'] {
         color: inherit;
+
         @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       }
 
@@ -99,6 +100,7 @@
 
     .dropdown-header {
       @include menu-mixins.generate-dropdown-header();
+
       & ~ .dropdown-item,
       & ~ .dropdown > .dropdown-item {
         padding-left: density.$clr-base-horizontal-offset-2xl;
@@ -125,49 +127,53 @@
 
       &.active {
         position: relative;
+
         @include tabs.nav-link-border-appearence('left');
       }
 
       &.expandable {
         padding-right: density.$clr-base-horizontal-offset-xs;
-        &:after {
+
+        &::after {
           content: '';
-          -webkit-mask: icons.generateCaretIcon("'none'");
           mask: icons.generateCaretIcon("'none'");
-          -webkit-mask-repeat: no-repeat;
           mask-repeat: no-repeat;
-          -webkit-mask-size: cover;
           mask-size: cover;
           background-color: dropdown-variables.$clr-dropdown-item-color;
+
           @include mixins.equilateral(density.$clr-base-icon-size-xs);
+
           transform: rotate(-90deg);
           flex: 0 0 auto;
         }
 
-        &.active:after {
+        &.active::after {
           background-color: dropdown-variables.$clr-dropdown-item-selected-color;
         }
 
-        &:hover:after {
+        &:hover::after {
           background-color: dropdown-variables.$clr-dropdown-item-hover-color;
         }
 
-        &:active:after {
+        &:active::after {
           background-color: dropdown-variables.$clr-dropdown-item-active-color;
         }
 
         &.disabled,
         &:disabled {
-          &:after {
+          &::after {
             background-color: dropdown-variables.$clr-dropdown-item-disabled-color;
           }
         }
       }
+
       &:focus {
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
+
       &-content {
         @include mixins.overflow-ellipsis(true);
+
         flex: 1 1 auto;
       }
     }
@@ -182,9 +188,8 @@
     }
 
     .dropdown-divider {
-      border-bottom-width: dropdown-variables.$clr-dropdown-divider-border-width;
-      border-bottom-style: solid;
-      border-bottom-color: dropdown-variables.$clr-dropdown-divider-color;
+      border-bottom: dropdown-variables.$clr-dropdown-divider-border-width solid
+        dropdown-variables.$clr-dropdown-divider-color;
       margin: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-l;
     }
   }
@@ -221,7 +226,7 @@
     &.top-right > .dropdown-menu {
       top: auto;
       bottom: 100%;
-      margin: 0 0 $dropdown-menu-positional-nudge 0;
+      margin: 0 0 $dropdown-menu-positional-nudge;
     }
 
     &.top-left > .dropdown-menu {
@@ -282,43 +287,34 @@
       &.left-top {
         > .dropdown-menu,
         > .dropdown-menu-wrapper > .dropdown-menu {
-          top: 0;
-          bottom: auto;
-          left: auto;
-          right: 100%;
+          inset: 0 100% auto auto;
           margin-top: $clr-dropdown-submenu-vertical-margin;
           margin-right: $clr-dropdown-submenu-overlap-margin;
         }
       }
+
       &.right-top {
         > .dropdown-menu,
         > .dropdown-menu-wrapper > .dropdown-menu {
-          top: 0;
-          bottom: auto;
-          left: 100%;
-          right: auto;
+          inset: 0 auto auto 100%;
           margin-top: $clr-dropdown-submenu-vertical-margin;
           margin-left: $clr-dropdown-submenu-overlap-margin;
         }
       }
+
       &.left-bottom {
         > .dropdown-menu,
         > .dropdown-menu-wrapper > .dropdown-menu {
-          top: auto;
-          bottom: 0;
-          left: auto;
-          right: 100%;
+          inset: auto 100% 0 auto;
           margin-bottom: $clr-dropdown-submenu-vertical-margin;
           margin-right: $clr-dropdown-submenu-overlap-margin;
         }
       }
+
       &.right-bottom {
         > .dropdown-menu,
         > .dropdown-menu-wrapper > .dropdown-menu {
-          top: auto;
-          bottom: 0;
-          left: 100%;
-          right: auto;
+          inset: auto auto 0 100%;
           margin-bottom: $clr-dropdown-submenu-vertical-margin;
           margin-left: $clr-dropdown-submenu-overlap-margin;
         }

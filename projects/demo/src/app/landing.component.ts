@@ -9,5 +9,6 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './landing.html',
+  standalone: false,
 })
 export class LandingComponent {}

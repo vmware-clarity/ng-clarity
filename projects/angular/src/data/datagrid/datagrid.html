@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <ng-content select="clr-dg-action-bar"></ng-content>
 <div class="datagrid-outer-wrapper">
@@ -16,16 +16,17 @@
               <div class="datagrid-row-master datagrid-row-flex">
                 <div class="datagrid-row-sticky">
                   <!--header for datagrid where you can select multiple rows -->
+                  @if (selection.selectionType === SELECTION_TYPE.Multi) {
                   <div
                     #stickyHeader
                     role="columnheader"
                     class="datagrid-column datagrid-select datagrid-fixed-column"
-                    *ngIf="selection.selectionType === SELECTION_TYPE.Multi"
                     (keydown.space)="toggleAllSelected($event)"
                   >
-                    <div *ngIf="!virtualScroll || customSelectAllEnabled" class="clr-checkbox-wrapper">
+                    @if (!virtualScroll || customSelectAllEnabled) {
+                    <div class="clr-checkbox-wrapper">
                       <!-- We need to move focus and space-key handling to the parent because of keyboard arrow key navigation,
-                           which is not able to transfer focus directly on the input when focused with the tab key -->
+                          which is not able to transfer focus directly on the input when focused with the tab key -->
                       <input
                         #selectAllCheckbox
                         type="checkbox"
@@ -39,85 +40,93 @@
                         <span class="clr-sr-only">{{commonStrings.keys.selectAll}}</span>
                       </label>
                     </div>
-
+                    }
                     <div class="datagrid-column-separator"></div>
                   </div>
+                  }
                   <!-- header for datagrid where you can select one row only -->
-                  <div
-                    #stickyHeader
-                    role="columnheader"
-                    class="datagrid-column datagrid-select datagrid-fixed-column"
-                    *ngIf="selection.selectionType === SELECTION_TYPE.Single"
-                  >
+                  @if (selection.selectionType === SELECTION_TYPE.Single) {
+                  <div #stickyHeader role="columnheader" class="datagrid-column datagrid-select datagrid-fixed-column">
                     <div class="clr-sr-only">{{clrDgSingleSelectionAriaLabel}}</div>
                     <div class="datagrid-column-separator"></div>
                   </div>
+                  }
                   <!-- header for single row action; only displayType if we have at least one actionable row in datagrid -->
+                  @if (rowActionService.hasActionableRow) {
                   <div
                     #stickyHeader
                     role="columnheader"
                     class="datagrid-column datagrid-row-actions datagrid-fixed-column"
-                    *ngIf="rowActionService.hasActionableRow"
                   >
                     <div class="clr-sr-only">{{clrDgSingleActionableAriaLabel}}</div>
                     <div class="datagrid-column-separator"></div>
                   </div>
+                  }
                   <!-- header for carets; only displayType if we have at least one expandable row in datagrid -->
+                  @if (expandableRows.hasExpandableRow || detailService.enabled) {
                   <div
                     #stickyHeader
                     role="columnheader"
                     class="datagrid-column datagrid-expandable-caret datagrid-fixed-column"
-                    *ngIf="expandableRows.hasExpandableRow || detailService.enabled"
                   >
                     <div class="clr-sr-only">{{clrDetailExpandableAriaLabel}}</div>
                     <div class="datagrid-column-separator"></div>
                   </div>
+                  }
                 </div>
                 <div class="datagrid-row-scrollable">
                   <ng-container #projectedDisplayColumns></ng-container>
                 </div>
-                <div *ngIf="virtualScroll" class="datagrid-row-sticky datagrid-row-sticky-scroll">
+                @if (virtualScroll) {
+                <div class="datagrid-row-sticky datagrid-row-sticky-scroll">
                   <div class="datagrid-column"></div>
                 </div>
+                }
               </div>
             </div>
           </div>
 
           <div class="datagrid-content" [class.datagrid-content-virtual]="virtualScroll" #contentWrapper>
-            <div
-              *ngIf="virtualScroll"
-              class="datagrid-content-virtual-spacer"
-              [style.height]="virtualScroll?.totalContentHeight"
-            ></div>
+            @if (virtualScroll) {
+            <div class="datagrid-content-virtual-spacer" [style.height]="virtualScroll?.totalContentHeight"></div>
+            }
             <div role="presentation" class="datagrid-rows">
-              <clr-dg-row class="datagrid-row-loading" *ngIf="loadingMoreItems">
+              @if (loadingMoreItems) {
+              <clr-dg-row class="datagrid-row-loading">
                 <clr-dg-cell>
                   <clr-spinner clrMedium></clr-spinner>
                   <span>{{ commonStrings.keys.loading }}</span>
                 </clr-dg-cell>
               </clr-dg-row>
+              }
 
               <ng-container #displayedRows></ng-container>
 
-              <clr-dg-row class="datagrid-row-loading" *ngIf="loadingMoreItems">
+              @if (loadingMoreItems) {
+              <clr-dg-row class="datagrid-row-loading">
                 <clr-dg-cell>
                   <clr-spinner clrMedium></clr-spinner>
                   <span>{{ commonStrings.keys.loading }}</span>
                 </clr-dg-cell>
               </clr-dg-row>
+              }
 
               <!-- Custom placeholder overrides the default empty one -->
               <ng-content select="clr-dg-placeholder"></ng-content>
-              <clr-dg-placeholder *ngIf="!placeholder"></clr-dg-placeholder>
+              @if (!placeholder) {
+              <clr-dg-placeholder></clr-dg-placeholder>
+              }
             </div>
           </div>
         </div>
       </div>
     </div>
     <ng-content select="clr-dg-footer"></ng-content>
-    <div class="datagrid-spinner" *ngIf="loading">
+    @if (loading) {
+    <div class="datagrid-spinner">
       <clr-spinner clrMedium>Loading</clr-spinner>
     </div>
+    }
   </div>
   <ng-content select="[clrIfDetail],clr-dg-detail"></ng-content>
 </div>

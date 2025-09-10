@@ -6,11 +6,11 @@
  */
 
 import { ClrSidePanel, ClrSidePanelModule, commonStringsDefault } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { fn } from 'storybook/test';
 
-import { removeFocusOutline } from '../../helpers/common';
-import { CommonModules } from '../../helpers/common';
+import { removeFocusOutline } from '../../../.storybook/helpers/common';
+import { CommonModules } from '../../../.storybook/helpers/common';
 
 export function render(story: StoryObj, template: StoryFn): StoryObj {
   return {
@@ -56,8 +56,8 @@ export const config = {
     clrSidePanelPosition: 'right',
     clrSidePanelSkipAnimation: false,
     // outputs
-    clrSidePanelOpenChange: action('clrSidePanelOpenChange'),
-    clrSidePanelAltClose: action('clrSidePanelAltClose'),
+    clrSidePanelOpenChange: fn(),
+    clrSidePanelAltClose: fn(),
     // story helpers
     title: 'Side Panel Title',
     body: 'Hello World!',

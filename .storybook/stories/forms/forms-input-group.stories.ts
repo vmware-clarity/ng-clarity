@@ -66,6 +66,7 @@ import { CommonModules } from '../../helpers/common';
       </clr-input-container>
     </form>
   `,
+  standalone: false,
 })
 class FormsStoryComponent {
   _isDisabled = false;
@@ -140,7 +141,10 @@ export default {
   argTypes: {
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
-    clrLayout: { control: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
+    clrLayout: {
+      control: { type: 'radio' },
+      options: Object.values(ClrFormLayout).filter(value => typeof value === 'string'),
+    },
   },
   args: {
     clrLayout: ClrFormLayout.HORIZONTAL,

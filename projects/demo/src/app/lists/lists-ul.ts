@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-lists-ul-demo',
   templateUrl: './lists-ul.html',
+  standalone: false,
 })
 export class ListsUlDemo {}

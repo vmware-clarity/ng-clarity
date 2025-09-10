@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-dropdown-static-buttonlink-toggle-demo',
   styleUrls: ['./dropdown.demo.scss'],
   templateUrl: './dropdown-static-buttonlink-toggle.demo.html',
+  standalone: false,
 })
 export class DropdownStaticButtonLinkToggleDemo {}

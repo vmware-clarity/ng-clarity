@@ -7,10 +7,10 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { CDK_DRAG_CONFIG, CDK_DROP_LIST, CdkDrag, DragDrop, DragDropConfig } from '@angular/cdk/drag-drop';
-import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectorRef,
   Directive,
+  DOCUMENT,
   ElementRef,
   Inject,
   NgModule,
@@ -24,6 +24,7 @@ import {
  */
 @Directive({
   selector: '[cdkDrag]',
+  standalone: false,
 })
 export class CdkDragModule_CdkDrag extends CdkDrag {
   /**

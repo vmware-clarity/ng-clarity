@@ -15,6 +15,7 @@ import { User } from '../inventory/user';
   providers: [Inventory],
   templateUrl: 'test-cases-async.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridTestCasesAsyncDemo {
   users: User[];

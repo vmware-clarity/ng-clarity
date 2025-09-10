@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-datepicker-css-regression-demo',
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './css-regression.html',
+  standalone: false,
 })
 export class DatepickerCSSRegressionDemo {
   date: Date = new Date(2017, 4, 1);

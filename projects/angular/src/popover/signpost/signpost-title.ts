@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-signpost-title',
   template: `<ng-content></ng-content>`,
   host: { '[class.signpost-title]': 'true' },
+  standalone: false,
 })
 export class ClrSignpostTitle {}

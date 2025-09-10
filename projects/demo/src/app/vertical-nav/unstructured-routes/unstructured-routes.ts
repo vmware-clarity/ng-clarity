@@ -13,6 +13,7 @@ import { VerticalNavCases } from '../vertical-nav-cases';
   selector: 'clr-vertical-nav-unstructured-routes-demo',
   templateUrl: './unstructured-routes.html',
   styleUrls: ['../vertical-nav.demo.scss'],
+  standalone: false,
 })
 export class UnstructuredRoutesDemo {
   case: any;

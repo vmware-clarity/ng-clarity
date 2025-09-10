@@ -8,37 +8,37 @@
 import { AfterContentInit, AfterViewInit, Component, ElementRef, Optional, ViewChild } from '@angular/core';
 
 import { ClrAbstractContainer } from '../common/abstract-container';
+import { ComboboxContainerService } from './providers/combobox-container.service';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
-import { ComboboxContainerService } from './providers/combobox-container.service';
 
 @Component({
   selector: 'clr-combobox-container',
   template: `
     <ng-content select="label"></ng-content>
-    <label *ngIf="!label && addGrid()"></label>
+    @if (!label && addGrid()) {
+      <label></label>
+    }
     <div class="clr-control-container" [ngClass]="controlClass()" #controlContainer>
       <ng-content select="clr-combobox"></ng-content>
-      <cds-icon
-        *ngIf="showInvalid"
-        class="clr-validate-icon"
-        shape="exclamation-circle"
-        status="danger"
-        aria-hidden="true"
-      ></cds-icon>
-      <cds-icon
-        *ngIf="showValid"
-        class="clr-validate-icon"
-        shape="check-circle"
-        status="success"
-        aria-hidden="true"
-      ></cds-icon>
-      <ng-content select="clr-control-helper" *ngIf="showHelper"></ng-content>
-      <ng-content select="clr-control-error" *ngIf="showInvalid"></ng-content>
-      <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
+      @if (showInvalid) {
+        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
+      }
+      @if (showValid) {
+        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
+      }
+      @if (showHelper) {
+        <ng-content select="clr-control-helper"></ng-content>
+      }
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
+      }
     </div>
   `,
   host: {
@@ -48,6 +48,7 @@ import { ComboboxContainerService } from './providers/combobox-container.service
     '[class.clr-row]': 'addGrid()',
   },
   providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService, ComboboxContainerService],
+  standalone: false,
 })
 export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
   @ViewChild('controlContainer') controlContainer: ElementRef<HTMLElement>;

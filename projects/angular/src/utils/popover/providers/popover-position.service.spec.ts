@@ -9,18 +9,19 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
 
+import { ClrPopoverEventsService } from './popover-events.service';
+import { ClrPopoverPositionService } from './popover-position.service';
+import { ClrPopoverToggleService } from './popover-toggle.service';
 import { ClrAlignment } from '../enums/alignment.enum';
 import { ClrAxis } from '../enums/axis.enum';
 import { ClrSide } from '../enums/side.enum';
 import { ClrPopoverPosition } from '../interfaces/popover-position.interface';
-import { ClrPopoverEventsService } from './popover-events.service';
-import { ClrPopoverPositionService } from './popover-position.service';
-import { ClrPopoverToggleService } from './popover-toggle.service';
 
 @Component({
   selector: 'test-host',
   template: `<button #anchor class="btn">Anchor</button>`,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
+  standalone: false,
 })
 class TestHost {
   @ViewChild('anchor', { read: ElementRef, static: true }) anchor: ElementRef<HTMLButtonElement>;

@@ -25,6 +25,7 @@ class ChangeDetectionPerfRecord {
   providers: [DynamicData, Inventory],
   templateUrl: './virtual-scroll-client-side.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {
   range: ListRange;
@@ -112,7 +113,6 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
   }
 
   showChangeDetection() {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const profiler = ng.profiler;
 

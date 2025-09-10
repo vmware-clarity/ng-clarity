@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { fakeAsync, tick } from '@angular/core/testing';
+import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 
-import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 import { TooltipMouseService } from './tooltip-mouse.service';
+import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 
 export default function (): void {
   describe('Tooltip Mouse Service', () => {
@@ -26,32 +26,32 @@ export default function (): void {
       expect(toggleService.open).toBe(true);
     });
 
-    it('should hide the tooltip if the mouse leaves the trigger and does not enter the content', fakeAsync(() => {
+    it('should hide the tooltip if the mouse leaves the trigger and does not enter the content', async () => {
       toggleService.open = true;
 
       mouseService.onMouseLeaveTrigger();
-      tick();
+      await delay();
 
       expect(toggleService.open).toBe(false);
-    }));
+    });
 
-    it('should hide the tooltip if the mouse leaves the content and does not enter the trigger', fakeAsync(() => {
+    it('should hide the tooltip if the mouse leaves the content and does not enter the trigger', async () => {
       toggleService.open = true;
 
       mouseService.onMouseLeaveContent();
-      tick();
+      await delay();
 
       expect(toggleService.open).toBe(false);
-    }));
+    });
 
-    it('should not hide the tooltip as the mouse moves from the trigger to the content', fakeAsync(() => {
+    it('should not hide the tooltip as the mouse moves from the trigger to the content', async () => {
       toggleService.open = true;
 
       mouseService.onMouseLeaveTrigger();
       mouseService.onMouseEnterContent();
-      tick();
+      await delay();
 
       expect(toggleService.open).toBe(true);
-    }));
+    });
   });
 }

@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-loading-button-group-demo',
   templateUrl: './loading-button-group.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class LoadingButtonGroupDemo {
   load = false;

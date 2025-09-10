@@ -27,6 +27,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
+import { ClrComboboxContainer } from './combobox-container';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
@@ -42,7 +43,6 @@ import { ClrPopoverPositionService } from '../../utils/popover/providers/popover
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { WrappedFormControl } from '../common/wrapped-control';
-import { ClrComboboxContainer } from './combobox-container';
 import { ComboboxModel } from './model/combobox.model';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
@@ -68,6 +68,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     '[class.clr-combobox]': 'true',
     '[class.clr-combobox-disabled]': 'control?.disabled',
   },
+  standalone: false,
 })
 export class ClrCombobox<T>
   extends WrappedFormControl<ClrComboboxContainer>

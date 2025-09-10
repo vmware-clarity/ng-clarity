@@ -14,6 +14,7 @@ import { WrappedFormControl } from './wrapped-control';
 @Directive({
   selector: '[clrControl]',
   host: { '[class.clr-input]': 'true' },
+  standalone: false,
 })
 export class ClrControl extends WrappedFormControl<ClrControlContainer> {
   protected override index = 1;

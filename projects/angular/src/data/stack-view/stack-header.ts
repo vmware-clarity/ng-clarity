@@ -28,6 +28,7 @@ import { ClrStackView } from './stack-view';
       }
     `,
   ],
+  standalone: false,
 })
 export class ClrStackHeader {
   constructor(public stackView: ClrStackView) {}

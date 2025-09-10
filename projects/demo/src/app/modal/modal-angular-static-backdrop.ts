@@ -10,6 +10,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-modal-angular-static-backdrop-demo',
   templateUrl: './modal-angular-static-backdrop.demo.html',
+  standalone: false,
 })
 export class ModalAngularStaticBackdropDemo {
   // Booleans to open each example modal

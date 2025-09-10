@@ -10,11 +10,11 @@ import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrInputModule } from '../input/input.module';
 import { ClrForm } from './form';
+import { ClrInputModule } from '../input/input.module';
 import { LayoutService } from './providers/layout.service';
 import { MarkControlService } from './providers/mark-control.service';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   template: `
@@ -26,6 +26,7 @@ import { MarkControlService } from './providers/mark-control.service';
       <button class="btn btn-primary" #submitBtn type="submit">Submit</button>
     </form>
   `,
+  standalone: false,
 })
 class SimpleTest {
   @ViewChild(ClrForm, { static: true }) form: ClrForm;

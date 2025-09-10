@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../../utils/mixins';
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
@@ -15,6 +16,7 @@
   .clr-textarea-wrapper {
     white-space: nowrap;
     display: flex;
+
     .clr-validate-icon {
       margin-left: 0;
     }
@@ -29,18 +31,22 @@
     color: forms-variables.$clr-forms-text-color;
     border-radius: forms-variables.$clr-forms-textarea-border-radius;
     padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
+
     @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
 
     &:focus {
       // TODO(CDE-863) - Remove outline mixin and convert this component to just use border-color to avoid the white
       // outline in addition to the intended color on focus
+
       @include mixins.include-slim-outline-style-form-fields();
+
       outline-color: forms-variables.$clr-forms-focused-color;
       border-color: forms-variables.$clr-forms-focused-color;
     }
 
     &:disabled {
       @include forms-mixins.disabled-form-fields();
+
       background-color: forms-variables.$clr-forms-textarea-disabled-background;
       border-color: forms-variables.$clr-forms-border-disabled-color;
     }

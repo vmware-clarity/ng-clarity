@@ -6,21 +6,22 @@
  */
 
 import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subscription } from 'rxjs';
 
-import { ClrModalModule } from '../../modal/modal.module';
-import { FocusService } from '../../utils/focus/focus.service';
-import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownItem } from './dropdown-item';
 import { ClrDropdownTrigger } from './dropdown-trigger';
 import { ClrDropdownModule } from './dropdown.module';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
+import { ClrModalModule } from '../../modal/modal.module';
+import { FocusService } from '../../utils/focus/focus.service';
+import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
+import { delay } from '../../utils/testing/helpers.spec';
 
 export default function (): void {
   describe('Dropdown', () => {
@@ -103,7 +104,7 @@ export default function (): void {
       expect(compiled.textContent.trim()).not.toMatch('Foo');
     });
 
-    it('closes the menu when clicked outside of the host', fakeAsync(() => {
+    it('closes the menu when clicked outside of the host', async () => {
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
       const outsideButton: HTMLElement = compiled.querySelector('.outside-click-test');
 
@@ -121,7 +122,7 @@ export default function (): void {
 
       // click on the dropdown
       dropdownToggle.click();
-      tick();
+      await delay();
       fixture.detectChanges();
       expect(compiled.querySelector('.dropdown-item')).not.toBeNull();
 
@@ -133,9 +134,9 @@ export default function (): void {
       expect(fixture.componentInstance.testCnt).toEqual(2);
       // check if the open class is added
       expect(compiled.querySelector('.dropdown-item')).toBeNull();
-    }));
+    });
 
-    it('supports clrMenuClosable option. Closes the dropdown menu when clrMenuClosable is set to true', fakeAsync(() => {
+    it('supports clrMenuClosable option. Closes the dropdown menu when clrMenuClosable is set to true', async () => {
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
       dropdownToggle.click();
       fixture.detectChanges();
@@ -143,7 +144,7 @@ export default function (): void {
       const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
 
       dropdownItem.click();
-      tick();
+      await delay();
       fixture.detectChanges();
       expect(compiled.querySelector('.dropdown-item')).toBeNull();
 
@@ -153,12 +154,12 @@ export default function (): void {
       expect(compiled.querySelector('.dropdown-item')).not.toBeNull();
 
       dropdownItem.click();
-      tick();
+      await delay();
       fixture.detectChanges();
       expect(compiled.querySelector('.dropdown-item')).not.toBeNull();
-    }));
+    });
 
-    it('closes all dropdown menus when clrMenuClosable is true', fakeAsync(() => {
+    it('closes all dropdown menus when clrMenuClosable is true', async () => {
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
       dropdownToggle.click();
       fixture.detectChanges();
@@ -170,15 +171,15 @@ export default function (): void {
 
       const nestedItem: HTMLElement = compiled.querySelector('.nested-item');
       nestedItem.click();
-      tick();
+      await delay();
 
       fixture.detectChanges();
 
       const items: HTMLElement = compiled.querySelector('.dropdown-item');
       expect(items).toBeNull();
-    }));
+    });
 
-    it('does not close the menu when a disabled item is clicked', fakeAsync(() => {
+    it('does not close the menu when a disabled item is clicked', async () => {
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
       dropdownToggle.click();
       fixture.detectChanges();
@@ -187,17 +188,17 @@ export default function (): void {
       const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
 
       disabledDropdownItem.click();
-      tick();
+      await delay();
       fixture.detectChanges();
       expect(compiled.querySelector('.dropdown-item')).not.toBeNull();
 
       dropdownItem.click();
-      tick();
+      await delay();
       fixture.detectChanges();
       expect(compiled.querySelector('.dropdown-item')).toBeNull();
-    }));
+    });
 
-    it("doesn't close before custom click events have triggered", fakeAsync(function () {
+    it("doesn't close before custom click events have triggered", async function () {
       const toggleService = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(ClrPopoverToggleService);
 
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
@@ -214,31 +215,30 @@ export default function (): void {
 
       const nestedItem: HTMLElement = compiled.querySelector('.nested-item');
       nestedItem.click();
-      tick();
+      await delay();
       fixture.detectChanges();
 
       // Make sure the dropdown correctly closed, otherwise our expect() in the subscription might not have run.
       expect(toggleService.open).toBe(false);
-    }));
-
-    it('puts focus back on the trigger when a dropdown item is clicked', fakeAsync(() => {
+    });
+    it('puts focus back on the trigger when a dropdown item is clicked', async () => {
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
 
       dropdownToggle.click();
-      tick();
+      await delay();
       fixture.detectChanges();
 
       const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
       expectActiveElementToBe(dropdownItem);
 
       dropdownItem.click();
-      tick();
+      await delay();
       fixture.detectChanges();
 
       expectActiveElementToBe(dropdownToggle);
-    }));
+    });
 
-    it('does not put focus back on the trigger when a dropdown item is clicked if [clrCloseMenuOnItemClick] is false', fakeAsync(() => {
+    it('does not put focus back on the trigger when a dropdown item is clicked if [clrCloseMenuOnItemClick] is false', async () => {
       // set [clrCloseMenuOnItemClick]="false"
       fixture.componentInstance.dropdownInstance.isMenuClosable = false;
       fixture.detectChanges();
@@ -246,18 +246,18 @@ export default function (): void {
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
 
       dropdownToggle.click();
-      tick();
+      await delay();
       fixture.detectChanges();
 
       const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
       expectActiveElementToBe(dropdownItem);
 
       dropdownItem.click();
-      tick();
+      await delay();
       fixture.detectChanges();
 
       expectActiveElementToBe(dropdownItem);
-    }));
+    });
 
     it('declares a FocusService provider', () => {
       const focusService = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(FocusService, null);
@@ -367,6 +367,7 @@ export default function (): void {
       </clr-dropdown-menu>
     </clr-dropdown>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrDropdown) dropdownInstance: ClrDropdown;
@@ -405,6 +406,7 @@ class TestComponent {
     </clr-dropdown>
   `,
   encapsulation: ViewEncapsulation.ShadowDom,
+  standalone: false,
 })
 class TestShadowDomComponent {
   @ViewChild(ClrDropdown) dropdownInstance: ClrDropdown;
@@ -433,6 +435,7 @@ class TestShadowDomComponent {
       </div>
     </clr-modal>
   `,
+  standalone: false,
 })
 class DropdownItemThatOpensModalTestComponent {
   modalOpen = false;

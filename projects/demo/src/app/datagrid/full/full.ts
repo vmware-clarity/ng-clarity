@@ -19,6 +19,7 @@ import { PokemonFilter } from '../utils/pokemon-filter';
   providers: [Inventory],
   templateUrl: './full.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridFullDemo {
   options = {

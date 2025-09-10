@@ -20,27 +20,30 @@ import { Selection } from '../providers/selection';
       <clr-dg-column>Second</clr-dg-column>
       <clr-dg-column>Third</clr-dg-column>
 
-      <clr-dg-row *ngFor="let item of items; index as i" [clrDgItem]="item">
-        <clr-dg-cell>{{ i * 3 }}</clr-dg-cell>
-        <clr-dg-cell>{{ i * 3 + 1 }}</clr-dg-cell>
-        <clr-dg-cell>{{ i * 3 + 2 }}</clr-dg-cell>
-
-        <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="showRowDetail">
-          <clr-dg-row-detail *clrIfExpanded="expandedRowIndexes.includes(i)" [clrDgReplace]="replaceCells">
-            <ng-template [ngIf]="columns">
-              <clr-dg-cell>{{ i * 3 }} replaced</clr-dg-cell>
-              <clr-dg-cell>{{ i * 3 + 1 }} replaced</clr-dg-cell>
-              <clr-dg-cell>{{ i * 3 + 2 }} replaced</clr-dg-cell>
-            </ng-template>
-
-            <ng-template [ngIf]="!columns"
-              >{{ i * 3 }} Lorem ipsum dolor sit amet, consectetur adipiscing elit.</ng-template
-            >
-          </clr-dg-row-detail>
-        </ng-container>
-      </clr-dg-row>
+      @for (item of items; track item; let i = $index) {
+        <clr-dg-row [clrDgItem]="item">
+          <clr-dg-cell>{{ i * 3 }}</clr-dg-cell>
+          <clr-dg-cell>{{ i * 3 + 1 }}</clr-dg-cell>
+          <clr-dg-cell>{{ i * 3 + 2 }}</clr-dg-cell>
+          @if (showRowDetail) {
+            <ng-container ngProjectAs="clr-dg-row-detail">
+              <clr-dg-row-detail *clrIfExpanded="expandedRowIndexes.includes(i)" [clrDgReplace]="replaceCells">
+                @if (columns) {
+                  <clr-dg-cell>{{ i * 3 }} replaced</clr-dg-cell>
+                  <clr-dg-cell>{{ i * 3 + 1 }} replaced</clr-dg-cell>
+                  <clr-dg-cell>{{ i * 3 + 2 }} replaced</clr-dg-cell>
+                }
+                @if (!columns) {
+                  {{ i * 3 }} Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                }
+              </clr-dg-row-detail>
+            </ng-container>
+          }
+        </clr-dg-row>
+      }
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class TestComponent {
   showRowDetail = false;

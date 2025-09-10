@@ -8,8 +8,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { spec, TestContext } from '../testing/helpers.spec';
 import { ClrPopoverOpenCloseButton } from './popover-open-close-button';
+import { spec, TestContext } from '../testing/helpers.spec';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 @Component({
@@ -19,6 +19,7 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
     ' Open Close' +
     ' Button</button>',
   providers: [ClrPopoverToggleService],
+  standalone: false,
 })
 class TestHost {
   @ViewChild('testAnchor', { read: ElementRef, static: true }) anchor: ElementRef<HTMLButtonElement>;

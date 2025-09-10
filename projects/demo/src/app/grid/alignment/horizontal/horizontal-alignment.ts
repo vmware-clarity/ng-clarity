@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-grid-horizontal-alignment',
   templateUrl: './horizontal-alignment.html',
   styleUrls: ['../../grid.demo.scss'],
+  standalone: false,
 })
 export class GridHorizontalAlignmentDemo {}

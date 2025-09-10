@@ -13,6 +13,7 @@ import { ClrRadioWrapper } from '../radio/radio-wrapper';
 
 @Directive({
   selector: '[clrRadio]',
+  standalone: false,
 })
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
   constructor(

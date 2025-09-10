@@ -27,7 +27,7 @@ export default function (): void {
       fixture = TestBed.createComponent(IfDetailTest);
       testComponent = fixture.debugElement.componentInstance;
       testElement = fixture.debugElement.nativeElement;
-      detailService = TestBed.get(DetailService);
+      detailService = TestBed.inject(DetailService);
       spyOn(detailService, 'close').and.callThrough();
       fixture.detectChanges();
     });
@@ -92,6 +92,7 @@ export default function (): void {
 
 @Component({
   template: `<ng-template [(clrIfDetail)]="detailState">${content}</ng-template>`,
+  standalone: false,
 })
 class IfDetailTest {
   @ViewChild(ClrIfDetail) detail: ClrIfDetail;

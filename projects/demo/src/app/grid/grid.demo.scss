@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../_utils/clarity-variables';
 @use '@cds/core/tokens/tokens.scss';
 
 .clr-example {
@@ -18,22 +17,22 @@
     height: var(--cds-global-space-11);
     border-radius: var(--cds-alias-object-border-radius-100);
     background: tokens.$cds-alias-object-container-background-shade;
-    margin: clarity-variables.$clr-base-vertical-offset-m 0;
+    margin: var(--clr-base-vertical-offset-m) 0;
 
     &.clr-example-enable-borders {
-      border: var(--cds-global-space-1) solid $border-color;
+      border: var(--cds-global-space-1) solid #{$border-color};
     }
   }
 
   .clr-example-row {
-    background: $border-color;
-    height: clarity-variables.$clr-base-row-height-l;
-    margin: clarity-variables.$clr-base-vertical-offset-m 0;
+    background: #{$border-color};
+    height: var(--clr-base-row-height-l);
+    margin: var(--clr-base-vertical-offset-m) 0;
   }
 
   &.container-example {
     [class^='clr-col'] {
-      border: 2px solid $border-color;
+      border: 2px solid #{$border-color};
     }
   }
 }

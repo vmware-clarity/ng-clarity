@@ -8,10 +8,10 @@
 import { Component, Directive } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { ClrDatagridPagination } from './datagrid-pagination';
 import { ClrDatagridModule } from './datagrid.module';
 import { Page } from './providers/page';
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `
@@ -27,6 +27,7 @@ import { Page } from './providers/page';
       </clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class IntegrationTest {
   items = Array(100).fill(0);
@@ -38,6 +39,7 @@ class IntegrationTest {
  */
 @Directive({
   selector: '[instantiationCounter]',
+  standalone: false,
 })
 class InstantiationCounter {
   static total = 0;

@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-move-button-in-menu-demo',
   templateUrl: './move-button-in-menu.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class MoveButtonInMenuDemo {
   flip = false;

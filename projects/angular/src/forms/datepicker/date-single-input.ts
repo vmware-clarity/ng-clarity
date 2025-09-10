@@ -15,8 +15,10 @@ import { DatepickerFocusService } from './providers/datepicker-focus.service';
   selector: '[clrDate]',
   host: {
     '[class.clr-input]': 'true',
+    '[class.clr-date-input]': 'true',
   },
   providers: [DatepickerFocusService],
+  standalone: false,
 })
 export class ClrDateInput extends ClrDateInputBase {
   @Output('clrDateChange') override dateChange = new EventEmitter<Date>(false);
@@ -29,13 +31,11 @@ export class ClrDateInput extends ClrDateInputBase {
   @Input()
   set min(dateString: string) {
     this.dateIOService.setMinDate(dateString);
-    this.triggerControlValidation();
   }
 
   @Input()
   set max(dateString: string) {
     this.dateIOService.setMaxDate(dateString);
-    this.triggerControlValidation();
   }
 
   protected override get userSelectedDayChange() {
@@ -44,13 +44,5 @@ export class ClrDateInput extends ClrDateInputBase {
 
   protected override updateDayModel(dayModel: DayModel) {
     this.dateNavigationService.persistedDate = this.dateNavigationService.selectedDay = dayModel;
-  }
-
-  private triggerControlValidation() {
-    if (this.datepickerHasFormControl()) {
-      // Set `emitEvent` to false to prevent unnecessary value change event. Status change event will be emitted by `setErrors` below.
-      this.control.control?.updateValueAndValidity({ emitEvent: false });
-      this.control.control?.setErrors(this.control.control.errors);
-    }
   }
 }

@@ -7,9 +7,9 @@
 
 import { Observable, Subject } from 'rxjs';
 
+import { DatagridPropertyStringFilter } from './datagrid-property-string-filter';
 import { ClrDatagridFilterInterface } from '../../interfaces/filter.interface';
 import { ClrDatagridStringFilterInterface } from '../../interfaces/string-filter.interface';
-import { DatagridPropertyStringFilter } from './datagrid-property-string-filter';
 
 export class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInterface<T> {
   /**

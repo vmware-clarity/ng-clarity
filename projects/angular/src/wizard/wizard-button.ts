@@ -48,6 +48,7 @@ export const CUSTOM_BUTTON_TYPES: any = {
     </button>
   `,
   host: { class: 'clr-wizard-btn-wrapper', '[attr.aria-hidden]': 'isHidden' },
+  standalone: false,
 })
 export class ClrWizardButton {
   @Input('type') type = '';
@@ -59,7 +60,10 @@ export class ClrWizardButton {
   // EventEmitter which is emitted when a button is clicked.
   @Output('clrWizardButtonClicked') wasClicked = new EventEmitter<string>(false);
 
-  constructor(public navService: WizardNavigationService, public buttonService: ButtonHubService) {}
+  constructor(
+    public navService: WizardNavigationService,
+    public buttonService: ButtonHubService
+  ) {}
 
   get isCancel(): boolean {
     return this.checkDefaultAndCustomType(this.type, 'cancel');

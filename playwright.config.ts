@@ -10,8 +10,8 @@ import { defineConfig, devices } from '@playwright/test';
 const browser = process.env['CLARITY_VRT_BROWSER'];
 
 const deviceMap = {
-  chromium: 'Desktop Chrome',
-  firefox: 'Desktop Firefox',
+  chromium: { ...devices['Desktop Chrome'], channel: 'chromium' },
+  firefox: { ...devices['Desktop Firefox'] },
 };
 
 /**
@@ -27,12 +27,12 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: true,
   retries: 2,
-  workers: 3,
+  workers: '95%',
   reporter: 'html',
   projects: [
     {
       name: browser,
-      use: { ...devices[deviceMap[browser]] },
+      use: deviceMap[browser],
     },
   ],
   webServer: {

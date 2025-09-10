@@ -58,7 +58,11 @@ export class Items<T = any> {
 
   private _allChanges = new Subject<T[]>();
 
-  constructor(private _filters: FiltersProvider<T>, private _sort: Sort<T>, private _page: Page) {}
+  constructor(
+    private _filters: FiltersProvider<T>,
+    private _sort: Sort<T>,
+    private _page: Page
+  ) {}
 
   get smart(): boolean {
     return this._smart;

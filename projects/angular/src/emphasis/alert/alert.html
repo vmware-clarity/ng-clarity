@@ -1,12 +1,12 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
+@if (!_closed) {
 <div
-  *ngIf="!_closed"
   class="alert"
   [ngClass]="alertClass"
   [class.alert-sm]="isSmall"
@@ -16,7 +16,10 @@
   <div class="alert-items">
     <ng-content></ng-content>
   </div>
-  <button type="button" class="close" *ngIf="closable" (click)="close()" [attr.aria-label]="clrCloseButtonAriaLabel">
+  @if (closable) {
+  <button type="button" class="close" (click)="close()" [attr.aria-label]="clrCloseButtonAriaLabel">
     <cds-icon shape="times"></cds-icon>
   </button>
+  }
 </div>
+}

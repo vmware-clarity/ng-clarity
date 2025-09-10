@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-alert-not-closable-demo-angular',
   styleUrls: ['../alert.demo.scss'],
   templateUrl: './alert-angular-not-closable.demo.html',
+  standalone: false,
 })
 export class AlertAngularNotClosableDemo {}

@@ -20,6 +20,7 @@ function customTestComponentFactory(
   @Component({
     template: `<div clrForm clrLayout="${layout}" ${hasLabelSize ? `clrLabelSize="${labelSize}"` : ''}></div>`,
     providers: [LayoutService],
+    standalone: false,
   })
   class TestComponent {}
   return TestComponent;

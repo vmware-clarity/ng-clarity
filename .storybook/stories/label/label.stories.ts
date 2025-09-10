@@ -30,7 +30,7 @@ export default {
 
 export const Initial: StoryObj = {
   argTypes: {
-    labelType: { control: 'select', options: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES] },
+    labelType: { control: { type: 'select' }, options: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES] },
   },
   args: {
     labelType: '',

@@ -16,7 +16,7 @@ import { Selection } from './providers/selection';
 @Component({
   selector: 'clr-dg-footer',
   template: `
-    <ng-container *ngIf="selection.selectionType === SELECTION_TYPE.Multi && selection.current.length > 0">
+    @if (selection.selectionType === SELECTION_TYPE.Multi && selection.current.length > 0) {
       <div class="clr-form-control-disabled">
         <clr-checkbox-wrapper class="datagrid-footer-select">
           <input clrCheckbox type="checkbox" checked="checked" disabled />
@@ -24,18 +24,21 @@ import { Selection } from './providers/selection';
           <span class="clr-sr-only">{{ commonStrings.keys.selectedRows }}</span>
         </clr-checkbox-wrapper>
       </div>
-    </ng-container>
-    <ng-container *ngIf="!detailService.isOpen">
-      <clr-dg-column-toggle *ngIf="hasHideableColumns"></clr-dg-column-toggle>
+    }
+    @if (!detailService.isOpen) {
+      @if (hasHideableColumns) {
+        <clr-dg-column-toggle></clr-dg-column-toggle>
+      }
       <div class="datagrid-footer-description">
         <ng-content></ng-content>
       </div>
-    </ng-container>
+    }
     <ng-content select="clr-dg-pagination"></ng-content>
   `,
   host: {
     '[class.datagrid-footer]': 'true',
   },
+  standalone: false,
 })
 export class ClrDatagridFooter<T = any> {
   /* reference to the enum so that template can access */

@@ -10,8 +10,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { GridHorizontalAlignmentDemo } from './alignment/horizontal/horizontal-alignment';
 import { GridVerticalAlignmentDemo } from './alignment/vertical/vertical-alignment';
-import { GridAutoLayoutEqualWidthMultiRowDemo } from './auto-layout/equal-width-multi-row/equal-width-multi-row';
 import { GridAutoLayoutEqualWidthDemo } from './auto-layout/equal-width/equal-width';
+import { GridAutoLayoutEqualWidthMultiRowDemo } from './auto-layout/equal-width-multi-row/equal-width-multi-row';
 import { GridOneColWidthDemo } from './auto-layout/one-col-width/one-col-width';
 import { GridVariableWidthContentDemo } from './auto-layout/variable-width-content/variable-width-content';
 import { GridColumnWrappingDemo } from './column-wrapping/column-wrapping';

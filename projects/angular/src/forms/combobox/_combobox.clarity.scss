@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use '../../popover/dropdown/menu-mixins.clarity';
 @use '../../utils/mixins';
@@ -13,8 +14,8 @@
 @use 'variables.combobox' as combobox-variables;
 @use '@cds/core/tokens/tokens.scss';
 @use '../../utils/variables/variables.density' as density;
-@include meta.load-css('properties.combobox');
 
+@include meta.load-css('properties.combobox');
 @include mixins.exports('combobox.clarity') {
   // needed for the proper calculation of popover offset that we do to keep label always visible
   .clr-combobox-form-control {
@@ -37,9 +38,11 @@
     border-bottom-left-radius: combobox-variables.$clr-combobox-border-radius;
     border-bottom-right-radius: combobox-variables.$clr-combobox-border-radius;
   }
+
   .clr-focus {
     width: 100%;
   }
+
   .clr-error .clr-focus-indicator {
     background-color: forms-variables.$clr-forms-invalid-color;
   }
@@ -50,15 +53,15 @@
     gap: density.$clr-base-gap-xs;
 
     //Dimensions
-    padding-top: calc(density.$clr-base-vertical-offset-xs - tokens.$cds-alias-object-border-width-100);
-    padding-bottom: calc(density.$clr-base-vertical-offset-xs - tokens.$cds-alias-object-border-width-100);
-    padding-left: combobox-variables.$clr-combobox-trigger-padding-left;
-    padding-right: calc(
-      combobox-variables.$clr-combobox-caret-icon-size + combobox-variables.$clr-combobox-trigger-padding-left +
-        combobox-variables.$clr-combobox-trigger-padding-right
-    );
-
+    padding: calc(density.$clr-base-vertical-offset-xs - tokens.$cds-alias-object-border-width-100)
+      calc(
+        combobox-variables.$clr-combobox-caret-icon-size + combobox-variables.$clr-combobox-trigger-padding-left +
+          combobox-variables.$clr-combobox-trigger-padding-right
+      )
+      calc(density.$clr-base-vertical-offset-xs - tokens.$cds-alias-object-border-width-100)
+      combobox-variables.$clr-combobox-trigger-padding-left;
     min-width: combobox-variables.$clr-combobox-min-width;
+
     .clr-input {
       padding: 0;
       max-height: density.$clr-base-row-height-xs;
@@ -67,6 +70,7 @@
         color: combobox-variables.$clr-combobox-text-color;
       }
     }
+
     font-size: combobox-variables.$clr-combobox-font-size;
     font-weight: combobox-variables.$clr-combobox-font-weight;
 
@@ -81,15 +85,14 @@
     }
 
     //Mixins
+
     @include styles-mixins.form-fields-appearance();
 
     // override the above mixin for combobox-specific styles
     background-color: combobox-variables.$clr-combobox-input-background-color;
-
     border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
     border-color: combobox-variables.$clr-combobox-border-color;
-
     border-radius: combobox-variables.$clr-combobox-border-radius;
 
     // the border color is on the component; we don't want it on the input itself
@@ -127,15 +130,14 @@
       border-width: tokens.$cds-alias-object-border-width-100;
       border-style: solid;
       align-items: center;
-
       border-radius: combobox-variables.$clr-combobox-pill-border-radius;
       border-color: combobox-variables.$clr-combobox-pill-border-color;
-
       padding: combobox-variables.$clr-combobox-pill-padding;
       gap: density.$clr-base-gap-xs;
 
       .clr-combobox-pill-content {
         @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
+
         color: combobox-variables.$clr-combobox-pill-font-color;
         padding: 0;
       }
@@ -155,6 +157,7 @@
   .clr-combobox-trigger {
     &:disabled {
       color: tokens.$cds-alias-object-interaction-color-disabled;
+
       cds-icon[shape='angle'],
       clr-icon[shape='angle'] {
         color: tokens.$cds-alias-object-interaction-color-disabled;
@@ -163,7 +166,6 @@
     //Dimensions
     padding-left: combobox-variables.$clr-combobox-trigger-padding-left;
     padding-right: combobox-variables.$clr-combobox-trigger-padding-right;
-
     margin: auto;
     position: absolute;
     display: flex;
@@ -175,7 +177,7 @@
     //Other
     background: none;
     border: none;
-    color: currentColor;
+    color: currentcolor;
     cursor: pointer;
     outline: none;
 
@@ -191,11 +193,10 @@
 
   .clr-combobox-options {
     @include menu-mixins.generate-dropdown-menu();
-    position: static;
 
+    position: static;
     max-height: mixins.baselinePx(240);
     overflow-y: auto;
-
     visibility: visible;
 
     .clr-combobox-options-loading {
@@ -208,7 +209,8 @@
       }
 
       .clr-combobox-options-text {
-        word-break: break-word;
+        overflow-wrap: anywhere;
+        word-break: normal;
       }
     }
 
