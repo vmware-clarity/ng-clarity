@@ -71,10 +71,14 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     if (injector) {
       this.ngControlService = injector.get(NgControlService, null);
       this.ifControlStateService = injector.get(IfControlStateService, null);
+      this.controlClassService = injector.get(ControlClassService, null);
       this.markControlService = injector.get(MarkControlService, null);
       this.differs = injector.get(KeyValueDiffers, null);
     }
 
+    if (this.controlClassService) {
+      this.controlClassService.initControlClass(renderer, el.nativeElement);
+    }
     if (this.markControlService) {
       this.subscriptions.push(
         this.markControlService.touchedChange.subscribe(() => {
@@ -111,11 +115,6 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   ngOnInit() {
     this._containerInjector = new HostWrapper(this.wrapperType, this.vcr, this.index);
     this.controlIdService = this._containerInjector.get(ControlIdService);
-
-    this.controlClassService = this._containerInjector.get(ControlClassService, null);
-    if (this.controlClassService) {
-      this.controlClassService.initControlClass(this.renderer, this.el.nativeElement);
-    }
 
     /**
      * not all containers will provide `ContainerIdService`
