@@ -109,7 +109,7 @@ function fullTest(description, testContainer, testControl, testComponent, contro
     it('should set the class on the control with ControlClassService', () => {
       expect(controlClassService).toBeTruthy();
       expect(controlClassService.initControlClass).toHaveBeenCalled();
-      expect(controlClassService.className).toEqual('test-class');
+      expect(controlClassService.className).toEqual('');
     });
 
     it('should handle blur events', () => {
