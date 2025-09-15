@@ -9,6 +9,8 @@
 @use '../../angular/src/utils/mixins';
 @use '../../angular/src/utils/variables/variables.density' as density;
 
+// Some of the tokens are not updated or missing in cds-core.
+// Use the overrides as source of truth.
 :root {
   &,
   [cds-theme] {
@@ -16,7 +18,11 @@
     --cds-global-typography-font-family: var(--clr-metropolis-font-family);
     --cds-global-typography-header-font-family: var(--clr-metropolis-font-family);
 
-    // skeleton loading tokens
+    // link color tokens are not updated in cds-core.
+    --cds-alias-typography-link-color: #{tokens.$cds-global-color-blue-800};
+    --cds-alias-typography-link-color-hover: #{tokens.$cds-global-color-blue-900};
+
+    // skeleton loading tokens. Not available in cds-core.
     --cds-global-animation-skeleton-duration: 4s;
     --cds-global-animation-easing-in-out: cubic-bezier(0.42, 0.01, 0.58, 1); // ease-in-out;
     --cds-alias-object-skeleton-loading-gradient: linear-gradient(
@@ -77,6 +83,10 @@
   }
 
   [cds-theme~='dark'] {
+    // no change to the original dark tokens, but needed for correcting the override
+    --cds-alias-typography-link-color: #{tokens.$cds-global-color-blue-400};
+    --cds-alias-typography-link-color-hover: #{tokens.$cds-global-color-blue-200};
+
     // skeleton loading gradient
     --cds-alias-object-skeleton-loading-gradient: linear-gradient(
       90deg,
