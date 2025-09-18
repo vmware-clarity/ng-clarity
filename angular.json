@@ -51,6 +51,7 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
+              "baseHref": "/demo/browser/",
               "extractLicenses": true,
               "budgets": [
                 {
@@ -62,15 +63,6 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "4kb",
                   "maximumError": "8kb"
-                }
-              ]
-            },
-            "dark": {
-              "styles": ["projects/angular/src/dark-theme.scss", "projects/demo/src/styles.scss"],
-              "fileReplacements": [
-                {
-                  "replace": "projects/demo/src/environments/environment.ts",
-                  "with": "projects/demo/src/environments/environment.dark.ts"
                 }
               ]
             }
@@ -85,9 +77,6 @@
           "configurations": {
             "production": {
               "buildTarget": "clr-demo:build:production"
-            },
-            "dark": {
-              "buildTarget": "clr-demo:build:dark"
             }
           }
         }
