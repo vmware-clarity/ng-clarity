@@ -696,7 +696,7 @@ class ExpandTest {
 @Component({
   template: `
     <clr-datagrid [clrDgSelected]="[]" [clrDgItemsTrackBy]="trackBy">
-      @for (item of items; track item) {
+      @for (item of items; track item.id) {
         <clr-dg-row [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable"></clr-dg-row>
       }
     </clr-datagrid>
@@ -713,7 +713,7 @@ class NgForDatagridWithTrackBy {
 @Component({
   template: `
     <clr-datagrid>
-      @for (item of items; track item; let i = $index) {
+      @for (item of items; track item.id; let i = $index) {
         <clr-dg-row
           [clrDgItem]="item"
           [clrDgDetailDisabled]="i === disabledIndex"

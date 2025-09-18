@@ -10,26 +10,19 @@ const { hideBin } = require('yargs/helpers');
 const argv = yargs(hideBin(process.argv));
 
 const isWatch = argv.strict(false).option('watch', { type: 'boolean', default: false }).parse().watch;
-const cpusAvailable = require('os').cpus().length;
-const executors = isWatch ? 1 : Math.min(cpusAvailable - 1, 8);
 const browser = isWatch ? 'Chrome' : 'ChromeHeadless';
 
 module.exports = function (config) {
   config.set({
     basePath: '',
-    frameworks: ['parallel', 'jasmine', '@angular-devkit/build-angular'],
+    frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
-      require('karma-parallel'),
       require('karma-mocha-reporter'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
     ],
-    parallelOptions: {
-      executors,
-      shardStrategy: 'round-robin',
-    },
     client: {
       jasmine: {
         random: false,
