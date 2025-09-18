@@ -56,12 +56,6 @@ jobs:
         with:
           name: docs
           path: dist/docs/
-      - name: Upload Netlify Toml Artifact
-        if: ${{matrix.angular == 'Angular v15'}}
-        uses: actions/upload-artifact@v4
-        with:
-          name: netlify-config
-          path: netlify.toml
       - name: Upload Coverage Artifact
         if: ${{matrix.angular == 'Angular v15'}}
         uses: actions/upload-artifact@v4

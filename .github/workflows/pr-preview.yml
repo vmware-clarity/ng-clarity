@@ -10,8 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: haya14busa/action-workflow_run-status@v1
+      - name: Get PR Event
+        id: get-pr-event
+        uses: potiuk/get-workflow-origin@v1_5
+        with:
+          token: ${{secrets.GITHUB_TOKEN}}
+          sourceRunId: ${{github.event.workflow_run.id}}
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: ${{steps.get-pr-event.outputs.sourceHeadBranch}}
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -25,15 +33,6 @@ jobs:
           workflow: ${{github.event.workflow_run.workflow_id}}
           run_id: ${{github.event.workflow_run.id}}
           if_no_artifact_found: ignore
-      - name: Download Netlify Toml Artifact
-        id: download-netlify
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          name: netlify-config
-          path: netlify.toml
-          workflow: ${{github.event.workflow_run.workflow_id}}
-          run_id: ${{github.event.workflow_run.id}}
-          if_no_artifact_found: ignore
       - name: Download Coverage Artifact
         id: download-coverage
         uses: dawidd6/action-download-artifact@v2
@@ -43,13 +42,6 @@ jobs:
           workflow: ${{github.event.workflow_run.workflow_id}}
           run_id: ${{github.event.workflow_run.id}}
           if_no_artifact_found: ignore
-      - name: Get PR Event
-        id: get-pr-event
-        if: ${{steps.download-docs.outputs.found_artifact == 'true'}}
-        uses: potiuk/get-workflow-origin@v1_5
-        with:
-          token: ${{secrets.GITHUB_TOKEN}}
-          sourceRunId: ${{github.event.workflow_run.id}}
       - name: Deploy Docs Preview
         if: ${{steps.download-docs.outputs.found_artifact == 'true'}}
         timeout-minutes: 5
