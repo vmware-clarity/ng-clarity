@@ -23,7 +23,7 @@ import { MockDisplayModeService } from './providers/display-mode.mock';
 import { DisplayModeService } from './providers/display-mode.service';
 import { FiltersProvider } from './providers/filters';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
-import { ClrDatagridItemsTrackByFunction, Items } from './providers/items';
+import { ClrDatagridItemsIdentityFunction, Items } from './providers/items';
 import { Page } from './providers/page';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
@@ -174,7 +174,7 @@ class MultiSelectionSimpleTest {
 
 @Component({
   template: `
-    <clr-datagrid [clrDgItemsTrackBy]="dgTrackByFn" [(clrDgSelected)]="selected">
+    <clr-datagrid [clrDgItemsIdentityFn]="dgTrackByFn" [(clrDgSelected)]="selected">
       <clr-dg-column>Value</clr-dg-column>
 
       <clr-dg-row *clrDgItems="let item of items; trackBy: ngForTrackByFn" [clrDgItem]="item">
@@ -189,7 +189,7 @@ class MultiSelectionNgForTest {
   selected: { value: number }[] = [];
 
   ngForTrackByFn: TrackByFunction<{ value: number }> = (_index, item) => item.value;
-  dgTrackByFn: ClrDatagridItemsTrackByFunction<{ value: number }> = item => item.value;
+  dgTrackByFn: ClrDatagridItemsIdentityFunction<{ value: number }> = item => item.value;
 }
 
 @Component({
@@ -535,7 +535,7 @@ class TabsIntegrationTest {
 
 @Component({
   template: `
-    <clr-datagrid [clrDgItemsTrackBy]="trackById">
+    <clr-datagrid [clrDgItemsIdentityFn]="trackById">
       <clr-dg-column>Item</clr-dg-column>
       @for (item of items; track item.id) {
         <clr-dg-row [clrDgItem]="item">
@@ -551,7 +551,7 @@ class PanelTrackByTest {
   items = Array.from(Array(3), (v, i) => {
     return { name: v, id: i };
   });
-  trackById: ClrDatagridItemsTrackByFunction<{ id: number }> = item => item.id;
+  trackById: ClrDatagridItemsIdentityFunction<{ id: number }> = item => item.id;
 }
 @Component({
   template: `

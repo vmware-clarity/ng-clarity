@@ -7,7 +7,7 @@
 
 import { ListRange } from '@angular/cdk/collections';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ClrDatagridItemsTrackByFunction, ClrDatagridStateInterface } from '@clr/angular';
+import { ClrDatagridItemsIdentityFunction, ClrDatagridStateInterface } from '@clr/angular';
 import { Observable } from 'rxjs';
 
 import { Inventory } from '../inventory/inventory';
@@ -40,7 +40,7 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
     this.users = this._inventory.getAllUsersSubject();
   }
 
-  trackItemById: ClrDatagridItemsTrackByFunction<User> = item => item?.id;
+  trackItemById: ClrDatagridItemsIdentityFunction<User> = item => item?.id;
 
   ngOnInit(): void {
     this.users.subscribe(users => {

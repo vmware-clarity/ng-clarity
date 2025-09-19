@@ -14,7 +14,7 @@ import { FiltersProvider } from './filters';
 import { Page } from './page';
 import { Sort } from './sort';
 
-export type ClrDatagridItemsTrackByFunction<T> = (item: T) => any;
+export type ClrDatagridItemsIdentityFunction<T> = (item: T) => any;
 
 @Injectable()
 export class Items<T = any> {
@@ -106,7 +106,7 @@ export class Items<T = any> {
   /**
    * Tracking function to identify objects.
    */
-  trackBy: ClrDatagridItemsTrackByFunction<T> = item => item;
+  identifyBy: ClrDatagridItemsIdentityFunction<T> = item => item;
 
   /**
    * Cleans up our subscriptions to other providers
