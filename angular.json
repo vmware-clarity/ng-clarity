@@ -24,7 +24,8 @@
           "builder": "@angular/build:application",
           "options": {
             "outputPath": {
-              "base": "dist/docs/demo"
+              "base": "dist/docs/demo",
+              "browser": ""
             },
             "index": "projects/demo/src/index.html",
             "polyfills": ["projects/demo/src/polyfills.ts"],
@@ -64,15 +65,6 @@
                   "maximumError": "8kb"
                 }
               ]
-            },
-            "dark": {
-              "styles": ["projects/angular/src/dark-theme.scss", "projects/demo/src/styles.scss"],
-              "fileReplacements": [
-                {
-                  "replace": "projects/demo/src/environments/environment.ts",
-                  "with": "projects/demo/src/environments/environment.dark.ts"
-                }
-              ]
             }
           },
           "defaultConfiguration": ""
@@ -85,9 +77,6 @@
           "configurations": {
             "production": {
               "buildTarget": "clr-demo:build:production"
-            },
-            "dark": {
-              "buildTarget": "clr-demo:build:dark"
             }
           }
         }
