@@ -57,12 +57,11 @@
   border-color: var(--cds-alias-object-border-color);
 }
 @mixin lhe-test-box-pad-color() {
-  box-shadow: inset 0 0 0 var(--cds-global-space-6) var(--cds-alias-status-success);
+  box-shadow: inset 0 0 0 var(--cds-global-space-6) var(--cds-alias-viz-sequential-green-200);
 }
 
 .title {
-  border-bottom: var(--cds-global-space-2) solid;
-  border-bottom-color: var(--cds-alias-status-neutral);
+  border-bottom: var(--cds-global-space-2) solid var(--cds-alias-status-neutral);
 }
 
 .box-test,
@@ -141,7 +140,7 @@
 }
 
 h1.test-subject {
-  box-shadow: inset 0 0 0 var(--cds-global-space-5) var(--cds-alias-status-warning);
+  box-shadow: inset 0 0 0 var(--cds-global-space-5) var(--cds-alias-viz-sequential-ochre-400);
   padding: var(--cds-global-space-5);
 
   &.line-height-eraser {
@@ -150,8 +149,9 @@ h1.test-subject {
 }
 
 .lhe-test-well {
-  background: var(--cds-alias-status-neutral);
+  background: var(--cds-alias-object-container-background-tint);
   margin-top: var(--cds-global-space-9);
   padding: var(--cds-global-space-6);
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
   border-radius: var(--cds-alias-object-border-radius-100);
 }
