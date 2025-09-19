@@ -293,13 +293,14 @@ export default function (): void {
         testContext.layoutService = wrapperDebugElement.injector.get(LayoutService);
       } catch (error) {
         // Swallow errors
-        console.log(error);
+        console.log(includeProviders ? error : new Error(`EXPECTED ERROR: ${error}`));
       }
     }
 
+    // These two tests are expected to throw errors which are swallowed with try / catch in setupTest
     describe('getProviderFromContainer', function () {
       it('gets a provider from the container', function (this: TestContext) {
-        setupTest(this, WithWrapperNoId, TestControl);
+        setupTest(this, WithWrapperNoId, TestControl, false);
         expect(this.control.getProviderFromContainer(ControlIdService)).toEqual(this.controlIdService);
       });
 
