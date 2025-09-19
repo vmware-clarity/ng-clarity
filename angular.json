@@ -24,7 +24,8 @@
           "builder": "@angular/build:application",
           "options": {
             "outputPath": {
-              "base": "dist/docs/demo"
+              "base": "dist/docs/demo",
+              "browser": ""
             },
             "index": "projects/demo/src/index.html",
             "polyfills": ["projects/demo/src/polyfills.ts"],
@@ -51,7 +52,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "baseHref": "/demo/browser/",
               "extractLicenses": true,
               "budgets": [
                 {
