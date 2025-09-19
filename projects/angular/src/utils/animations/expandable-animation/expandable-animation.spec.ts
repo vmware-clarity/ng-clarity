@@ -20,8 +20,8 @@ import { ClrExpandableAnimation } from './index';
 @Component({
   template: `
     <clr-expandable-animation [clrExpandTrigger]="expanded">
-      @for (item of data; track item) {
-        <div>{{ item }}</div>
+      @for (item of data; track item.id) {
+        <div>{{ item.value }}</div>
       }
     </clr-expandable-animation>
   `,
@@ -30,13 +30,13 @@ import { ClrExpandableAnimation } from './index';
 class TestComponent {
   @ViewChild(ClrExpandableAnimation, { static: true }) expandable: ClrExpandableAnimation;
   expanded = false;
-  data = ['one'];
+  data = [{ id: 1, value: 'one' }];
 }
 @Component({
   template: `
     <div [clrExpandableAnimation]="expanded">
-      @for (item of data; track item) {
-        <div>{{ item }}</div>
+      @for (item of data; track item.id) {
+        <div>{{ item.value }}</div>
       }
     </div>
   `,
@@ -45,7 +45,7 @@ class TestComponent {
 class TestComponentDirective {
   @ViewChild(ClrExpandableAnimationDirective, { static: true }) expandable: ClrExpandableAnimationDirective;
   expanded = false;
-  data = ['one'];
+  data = [{ id: 1, value: 'one' }];
 }
 
 let fixture: ComponentFixture<any>;
@@ -91,7 +91,7 @@ function expandableAnimationSpec(testComponent, component) {
     it('updates startHeight property on expand and collapse', async () => {
       clarityDirective.updateStartHeight();
       const collapsedHeight = clarityDirective.startHeight;
-      componentInstance.data.push('two');
+      componentInstance.data.push({ id: 2, value: 'two' });
       componentInstance.expanded = true;
       fixture.detectChanges();
       expect(clarityDirective.startHeight).toEqual(collapsedHeight);
@@ -111,7 +111,7 @@ function expandableAnimationSpec(testComponent, component) {
     it('updates element height on expand and collapse', async () => {
       const collapsedHeight = clarityElement.clientHeight;
       expect(collapsedHeight).toBeGreaterThan(0);
-      componentInstance.data.push('two');
+      componentInstance.data.push({ id: 2, value: 'two' });
       fixture.detectChanges();
       await delay();
       expect(clarityElement.clientHeight).toEqual(collapsedHeight * 2);
