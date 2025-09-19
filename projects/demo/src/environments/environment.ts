@@ -11,7 +11,6 @@
 
 export const environment = {
   production: false,
-  dark: false,
 };
 
 /*

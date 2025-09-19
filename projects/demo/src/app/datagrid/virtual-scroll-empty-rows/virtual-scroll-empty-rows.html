@@ -58,7 +58,7 @@
   #datagrid
   [(clrDgSelected)]="selectedUsers"
   (clrDgRefresh)="refresh($event)"
-  [clrDgItemsTrackBy]="trackItemById"
+  [clrDgItemsIdentityFn]="trackItemById"
   [style.height.px]="datagridHeight"
   [ngClass]="{ 'datagrid-overflow-ellipsis': overflowEllipsis }"
 >
