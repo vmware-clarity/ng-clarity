@@ -341,7 +341,7 @@ class TestAlertInstance {
 @Component({
   template: `
     <clr-alerts>
-      @for (alert of dynamicAlerts; track alert) {
+      @for (alert of dynamicAlerts; track alert.type) {
         <clr-alert [clrAlertType]="alert.type" [clrAlertAppLevel]="alert.isAppLevel">
           <div class="alert-item">
             <span class="alert-text">

@@ -498,8 +498,8 @@ export default function (): void {
           expect(selectionInstance.current).toEqual([items[2]]);
         });
 
-        it('should support trackBy item id', async function () {
-          itemsInstance.trackBy = item => item.id;
+        it('should support identifyBy item id', async function () {
+          itemsInstance.identifyBy = item => item.id;
           selectionInstance.setSelected(items[2], true);
           const clones = cloneItems();
           itemsInstance.all = clones;
@@ -533,8 +533,8 @@ export default function (): void {
           expect(selectionInstance.currentSingle).toBe(undefined);
         });
 
-        it('should support trackBy item id', async function () {
-          itemsInstance.trackBy = item => item.id;
+        it('should support identifyBy item id', async function () {
+          itemsInstance.identifyBy = item => item.id;
           selectionInstance.currentSingle = items[2];
           const clones = cloneItems();
           itemsInstance.all = clones;
@@ -594,8 +594,8 @@ export default function (): void {
         });
         // We don't support server-driven, multi-selection without trackBy.
         // We don't support server-driven, multi-selection, trackBy index.
-        it('should support trackBy item id', async () => {
-          itemsInstance.trackBy = item => item.id;
+        it('should support identifyBy item id', async () => {
+          itemsInstance.identifyBy = item => item.id;
           itemsInstance.all = itemsA;
           await delay();
           selectionInstance.setSelected(itemsA[0], true);
@@ -609,8 +609,8 @@ export default function (): void {
           expect(selectionInstance.current[0].modified).toEqual(true);
         });
 
-        it('accepts pre-selected items with trackBy when `all` has not been defined', async () => {
-          itemsInstance.trackBy = item => item.id;
+        it('accepts pre-selected items with identifyBy when `all` has not been defined', async () => {
+          itemsInstance.identifyBy = item => item.id;
           selectionInstance.current = [{ id: 1 }, { id: 2 }, { id: 3 }];
           await delay();
           itemsInstance.all = itemsA;
@@ -621,7 +621,7 @@ export default function (): void {
         });
 
         it('should support toggleAll selection on page change', async () => {
-          itemsInstance.trackBy = item => item.id;
+          itemsInstance.identifyBy = item => item.id;
           itemsInstance.all = itemsA;
           pageInstance.size = 3;
           pageInstance.current = 1;
@@ -641,7 +641,7 @@ export default function (): void {
 
         it('should not clear selection when filter applied and clrDgPreserveSelection is true', async () => {
           const evenFilter: ItemEvenFilter = new ItemEvenFilter();
-          itemsInstance.trackBy = item => item.id;
+          itemsInstance.identifyBy = item => item.id;
           itemsInstance.all = itemsA;
           await delay();
           selectionInstance.setSelected(itemsA[0], true);
@@ -660,10 +660,10 @@ export default function (): void {
         beforeEach(function () {
           selectionInstance.selectionType = SelectionType.Single;
         });
-        // We don't support server-driven, multi-selection without trackBy.
+        // We don't support server-driven, multi-selection without identifyBy.
 
-        it('should support trackBy item id', async () => {
-          itemsInstance.trackBy = item => item.id;
+        it('should support identifyBy item id', async () => {
+          itemsInstance.identifyBy = item => item.id;
           itemsInstance.all = itemsA;
           await delay();
           selectionInstance.currentSingle = itemsA[0];
@@ -677,8 +677,8 @@ export default function (): void {
           // expect(selectionInstance.currentSingle.modified).toEqual(true);
         });
 
-        it('accepts pre-selected items with trackBy when `all` has not been defined', async () => {
-          itemsInstance.trackBy = item => item.id;
+        it('accepts pre-selected items with identifyBy when `all` has not been defined', async () => {
+          itemsInstance.identifyBy = item => item.id;
           selectionInstance.currentSingle = { id: 1 };
           await delay();
           itemsInstance.all = itemsA;
@@ -792,8 +792,8 @@ export default function (): void {
         expect(selectionInstance.isLocked(2)).toBe(true);
       });
 
-      it('should use trackBy to find already locked items when the list is replaced (object)', function () {
-        itemsInstance.trackBy = ({ id }) => id;
+      it('should use identifyBy to find already locked items when the list is replaced (object)', function () {
+        itemsInstance.identifyBy = ({ id }) => id;
         selectionInstance.selectionType = SelectionType.Multi;
         itemsInstance.all = [{ id: 1 }, { id: 2 }];
         selectionInstance.lockItem({ id: 2 }, true);

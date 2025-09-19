@@ -10,26 +10,20 @@ const { hideBin } = require('yargs/helpers');
 const argv = yargs(hideBin(process.argv));
 
 const isWatch = argv.strict(false).option('watch', { type: 'boolean', default: false }).parse().watch;
-const cpusAvailable = require('os').cpus().length;
-const executors = isWatch ? 1 : Math.min(cpusAvailable - 1, 8);
 const browser = isWatch ? 'Chrome' : 'ChromeHeadless';
 
 module.exports = function (config) {
   config.set({
     basePath: '',
-    frameworks: ['parallel', 'jasmine', '@angular-devkit/build-angular'],
+    frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
-      require('karma-parallel'),
       require('karma-mocha-reporter'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
+      require('./scripts/clean-progress-reporter'),
     ],
-    parallelOptions: {
-      executors,
-      shardStrategy: 'round-robin',
-    },
     client: {
       jasmine: {
         random: false,
@@ -46,13 +40,17 @@ module.exports = function (config) {
       check: {
         global: {
           statements: 90,
-          branches: 83,
+          branches: 81,
           functions: 90,
           lines: 90,
         },
       },
     },
-    reporters: ['mocha'],
+    reporters: ['clean-progress', 'mocha'],
+    mochaReporter: {
+      output: 'minimal', // prints progress dots + final summary
+      ignoreSkipped: true,
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

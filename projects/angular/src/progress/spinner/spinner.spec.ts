@@ -57,6 +57,12 @@ describe('ClrSpinner component', () => {
       });
     });
 
+    afterEach(() => {
+      if (fixture) {
+        fixture.destroy();
+      }
+    });
+
     it('should project content', () => {
       fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -93,28 +99,27 @@ describe('ClrSpinner component', () => {
         );
       }
 
-      it(`.${SPINNER_SMALL_SIZE} should have the size ot 18x18`, () => {
-        const fixtureSmall = TestBed.createComponent(TestSmallComponent);
-        fixtureSmall.detectChanges();
-
-        expect(componentHeight(fixtureSmall)).toBe(18);
-        expect(componentWidth(fixtureSmall)).toBe(18);
+      it(`.${SPINNER_SMALL_SIZE} should have the size ot 18x18`, async () => {
+        fixture = TestBed.createComponent(TestSmallComponent);
+        fixture.detectChanges();
+        expect(componentHeight(fixture)).toBe(18);
+        expect(componentWidth(fixture)).toBe(18);
       });
 
       it(`.${SPINNER_MEDIUM_SIZE} should have the size ot 36x36`, () => {
-        const fixtureMedium = TestBed.createComponent(TestMediumComponent);
-        fixtureMedium.detectChanges();
+        fixture = TestBed.createComponent(TestMediumComponent);
+        fixture.detectChanges();
 
-        expect(componentHeight(fixtureMedium)).toBe(36);
-        expect(componentWidth(fixtureMedium)).toBe(36);
+        expect(componentHeight(fixture)).toBe(36);
+        expect(componentWidth(fixture)).toBe(36);
       });
 
       it(`.${SPINNER_LARGE_SIZE} should have the size ot 72x72`, () => {
-        const fixtureLarge = TestBed.createComponent(TestLargeComponent);
-        fixtureLarge.detectChanges();
+        fixture = TestBed.createComponent(TestLargeComponent);
+        fixture.detectChanges();
 
-        expect(componentHeight(fixtureLarge)).toBe(72);
-        expect(componentWidth(fixtureLarge)).toBe(72);
+        expect(componentHeight(fixture)).toBe(72);
+        expect(componentWidth(fixture)).toBe(72);
       });
 
       it(`should add .${SPINNER_SMALL_SIZE}`, () => {
