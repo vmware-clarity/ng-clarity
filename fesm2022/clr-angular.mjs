@@ -20643,7 +20643,7 @@ class Items {
         /**
          * Tracking function to identify objects.
          */
-        this.trackBy = item => item;
+        this.identifyBy = item => item;
     }
     get smart() {
         return this._smart;
@@ -21134,10 +21134,10 @@ class Selection {
                     let selectionUpdated = false;
                     // if the currentSingle has been set before data was loaded, we look up and save the ref from current data set
                     if (this.currentSingle && !this.prevSingleSelectionRef) {
-                        this.prevSingleSelectionRef = _items.trackBy(this.currentSingle);
+                        this.prevSingleSelectionRef = _items.identifyBy(this.currentSingle);
                     }
                     updatedItems.forEach(item => {
-                        const ref = _items.trackBy(item);
+                        const ref = _items.identifyBy(item);
                         // If one of the updated items is the previously selectedSingle, set it as the new one
                         if (this.prevSingleSelectionRef === ref) {
                             newSingle = item;
@@ -21172,7 +21172,7 @@ class Selection {
                     if (this.current.length > 0 && this.prevSelectionRefs.length !== this.current.length) {
                         this.prevSelectionRefs = [];
                         this.current.forEach(item => {
-                            this.prevSelectionRefs.push(_items.trackBy(item));
+                            this.prevSelectionRefs.push(_items.identifyBy(item));
                         });
                     }
                     // Duplicate loop, when the issue is issue#2342 is revisited keep in mind that
@@ -21181,7 +21181,7 @@ class Selection {
                     //
                     // The both loops below that goes over updatedItems could be combined into one.
                     updatedItems.forEach(item => {
-                        const ref = _items.trackBy(item);
+                        const ref = _items.identifyBy(item);
                         if (this.lockedRefs.indexOf(ref) > -1) {
                             updateLockedRef.push(ref);
                         }
@@ -21191,7 +21191,7 @@ class Selection {
                     // the if statement below results in broken behavior.
                     if (leftOver.length > 0) {
                         updatedItems.forEach(item => {
-                            const ref = _items.trackBy(item);
+                            const ref = _items.identifyBy(item);
                             // Look in current selected refs array if item is selected, and update actual value
                             const selectedIndex = this.prevSelectionRefs.indexOf(ref);
                             if (selectedIndex > -1) {
@@ -21258,7 +21258,7 @@ class Selection {
         }
         this._currentSingle = value;
         if (value) {
-            this.prevSingleSelectionRef = this._items.trackBy(value);
+            this.prevSingleSelectionRef = this._items.identifyBy(value);
         }
         this.emitChange();
     }
@@ -21346,7 +21346,7 @@ class Selection {
      */
     lockItem(item, lock) {
         if (this.canItBeLocked()) {
-            const ref = this._items.trackBy(item);
+            const ref = this._items.identifyBy(item);
             if (lock === true) {
                 // Add to lockedRef
                 this.lockedRefs.push(ref);
@@ -21366,7 +21366,7 @@ class Selection {
          * into the array when there is no need for that.
          */
         if (this.canItBeLocked()) {
-            const ref = this._items.trackBy(item);
+            const ref = this._items.identifyBy(item);
             return this.lockedRefs.indexOf(ref) > -1;
         }
         return false;
@@ -21404,7 +21404,7 @@ class Selection {
     selectItem(item) {
         this.current = this.current.concat(item);
         // Push selected ref onto array
-        this.prevSelectionRefs.push(this._items.trackBy(item));
+        this.prevSelectionRefs.push(this._items.identifyBy(item));
     }
     /**
      * Deselects an item
@@ -22504,8 +22504,8 @@ class ClrDatagrid {
     set rowSelectionMode(value) {
         this.selection.rowSelectionMode = value;
     }
-    set trackBy(value) {
-        this.items.trackBy = value;
+    set identityFn(value) {
+        this.items.identifyBy = value;
     }
     /**
      * Indicates if all currently displayed items are selected
@@ -22678,7 +22678,7 @@ class ClrDatagrid {
     updateDetailState() {
         // Try to update only when there is something cached and its open.
         if (this.detailService.state && this.detailService.isOpen) {
-            const row = this.rows.find(row => this.items.trackBy(row.item) === this.items.trackBy(this.detailService.state));
+            const row = this.rows.find(row => this.items.identifyBy(row.item) === this.items.identifyBy(this.detailService.state));
             /**
              * Reopen updated row or close it
              */
@@ -22734,7 +22734,7 @@ class ClrDatagrid {
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDatagrid, deps: [{ token: DatagridRenderOrganizer }, { token: Items }, { token: ExpandableRowsCount }, { token: Selection }, { token: RowActionService }, { token: StateProvider }, { token: DisplayModeService }, { token: i0.Renderer2 }, { token: DetailService }, { token: DOCUMENT }, { token: i0.ElementRef }, { token: Page }, { token: ClrCommonStringsService }, { token: KeyNavigationGridController }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrDatagrid, isStandalone: false, selector: "clr-datagrid", inputs: { loadingMoreItems: ["clrLoadingMoreItems", "loadingMoreItems"], clrDgSingleSelectionAriaLabel: "clrDgSingleSelectionAriaLabel", clrDgSingleActionableAriaLabel: "clrDgSingleActionableAriaLabel", clrDetailExpandableAriaLabel: "clrDetailExpandableAriaLabel", clrDgDisablePageFocus: "clrDgDisablePageFocus", customSelectAllEnabled: ["clrDgCustomSelectAllEnabled", "customSelectAllEnabled"], loading: ["clrDgLoading", "loading"], selected: ["clrDgSelected", "selected"], singleSelected: ["clrDgSingleSelected", "singleSelected"], clrDgPreserveSelection: "clrDgPreserveSelection", rowSelectionMode: ["clrDgRowSelection", "rowSelectionMode"], trackBy: ["clrDgItemsTrackBy", "trackBy"] }, outputs: { selectedChanged: "clrDgSelectedChange", singleSelectedChanged: "clrDgSingleSelectedChange", refresh: "clrDgRefresh", customSelectAll: "clrDgCustomSelectAll" }, host: { properties: { "class.datagrid-host": "true", "class.datagrid-detail-open": "detailService.isOpen", "class.datagrid-virtual-scroll": "!!virtualScroll" } }, providers: [
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrDatagrid, isStandalone: false, selector: "clr-datagrid", inputs: { loadingMoreItems: ["clrLoadingMoreItems", "loadingMoreItems"], clrDgSingleSelectionAriaLabel: "clrDgSingleSelectionAriaLabel", clrDgSingleActionableAriaLabel: "clrDgSingleActionableAriaLabel", clrDetailExpandableAriaLabel: "clrDetailExpandableAriaLabel", clrDgDisablePageFocus: "clrDgDisablePageFocus", customSelectAllEnabled: ["clrDgCustomSelectAllEnabled", "customSelectAllEnabled"], loading: ["clrDgLoading", "loading"], selected: ["clrDgSelected", "selected"], singleSelected: ["clrDgSingleSelected", "singleSelected"], clrDgPreserveSelection: "clrDgPreserveSelection", rowSelectionMode: ["clrDgRowSelection", "rowSelectionMode"], identityFn: ["clrDgItemsIdentityFn", "identityFn"] }, outputs: { selectedChanged: "clrDgSelectedChange", singleSelectedChanged: "clrDgSingleSelectedChange", refresh: "clrDgRefresh", customSelectAll: "clrDgCustomSelectAll" }, host: { properties: { "class.datagrid-host": "true", "class.datagrid-detail-open": "detailService.isOpen", "class.datagrid-virtual-scroll": "!!virtualScroll" } }, providers: [
             Selection,
             Sort,
             FiltersProvider,
@@ -22869,9 +22869,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
             }], rowSelectionMode: [{
                 type: Input,
                 args: ['clrDgRowSelection']
-            }], trackBy: [{
+            }], identityFn: [{
                 type: Input,
-                args: ['clrDgItemsTrackBy']
+                args: ['clrDgItemsIdentityFn']
             }] } });
 
 /*
