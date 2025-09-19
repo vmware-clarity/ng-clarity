@@ -320,15 +320,15 @@ class ChocolateClrDgItemsTest {
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
-      @for (item of items; track item; let i = $index) {
+      @for (item of items; track item.id; let i = $index) {
         <clr-dg-row>
           @if (action && i === 1) {
             <clr-dg-action-overflow>
               <button class="action-item">Edit</button>
             </clr-dg-action-overflow>
           }
-          <clr-dg-cell>{{ item }}</clr-dg-cell>
-          <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+          <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ item.value * item.value }}</clr-dg-cell>
           @if (expandable && i === 1) {
             <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
           }
@@ -341,7 +341,11 @@ class ChocolateClrDgItemsTest {
   standalone: false,
 })
 class ChocolateNgForTest {
-  items = [1, 2, 3];
+  items = [
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+  ];
   action = false;
   expandable = false;
 }

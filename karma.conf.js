@@ -22,6 +22,7 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
+      require('./scripts/clean-progress-reporter'),
     ],
     client: {
       jasmine: {
@@ -45,7 +46,11 @@ module.exports = function (config) {
         },
       },
     },
-    reporters: ['mocha'],
+    reporters: ['clean-progress', 'mocha'],
+    mochaReporter: {
+      output: 'minimal', // prints progress dots + final summary
+      ignoreSkipped: true,
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
