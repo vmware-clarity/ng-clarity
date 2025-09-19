@@ -65,7 +65,7 @@ describe('Chocolate factory', function () {
 @Component({
   template: `
     <parent>
-      @for (child of children; track child) {
+      @for (child of children; track child.id) {
         <child></child>
       }
     </parent>
@@ -73,7 +73,10 @@ describe('Chocolate factory', function () {
   standalone: false,
 })
 class ChocolateTest extends WillyWonka {
-  children = [0, 0];
+  children = [
+    { id: 1, value: 0 },
+    { id: 1, value: 0 },
+  ];
 }
 
 @Component({

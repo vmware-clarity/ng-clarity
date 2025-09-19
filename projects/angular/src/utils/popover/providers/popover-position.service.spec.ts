@@ -97,6 +97,7 @@ export default function (): void {
           popoverContent.style.height = '25px';
           document.body.appendChild(popoverContent);
           this.positionService.alignContent(popoverContent);
+
           expect(handleVerticalAxisOneViolationSpy).not.toHaveBeenCalled();
           expect(handleHorizontalAxisOneViolationSpy).not.toHaveBeenCalled();
           expect(handleVerticalAxisTwoViolationsSpy).not.toHaveBeenCalled();
