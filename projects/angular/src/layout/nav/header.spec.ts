@@ -90,7 +90,9 @@ describe('Header with custom role', () => {
     });
 
     TestBed.configureTestingModule({
+      imports: [ClrNavigationModule, ClrIconModule],
       declarations: [TestComponent],
+      providers: [MainContainerWillyWonka],
     });
 
     fixture = TestBed.createComponent(TestComponent);
@@ -114,7 +116,9 @@ describe('Header without role', () => {
     });
 
     TestBed.configureTestingModule({
+      imports: [ClrNavigationModule, ClrIconModule],
       declarations: [TestComponent],
+      providers: [MainContainerWillyWonka],
     });
 
     fixture = TestBed.createComponent(TestComponent);
