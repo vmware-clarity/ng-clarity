@@ -40,11 +40,9 @@
           <a href="javascript://" clrDropdownItem><cds-icon shape="user"></cds-icon> About</a>
           <a href="javascript://" clrDropdownItem>Preferences</a>
           <a href="javascript://" clrDropdownItem>Log out</a>
-          @if (!clrUiDarkThemeApplied) {
-            <form clrForm clrLayout="vertical">
-              <app-cds-theme-select></app-cds-theme-select>
-            </form>
-          }
+          <form clrForm clrLayout="vertical">
+            <app-cds-theme-select></app-cds-theme-select>
+          </form>
         </clr-dropdown-menu>
       </clr-dropdown>
     </div>

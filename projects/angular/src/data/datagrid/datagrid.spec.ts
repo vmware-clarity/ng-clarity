@@ -23,7 +23,7 @@ import { MockDisplayModeService } from './providers/display-mode.mock';
 import { DisplayModeService } from './providers/display-mode.service';
 import { FiltersProvider } from './providers/filters';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
-import { ClrDatagridItemsTrackByFunction, Items } from './providers/items';
+import { ClrDatagridItemsIdentityFunction, Items } from './providers/items';
 import { Page } from './providers/page';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
@@ -90,10 +90,10 @@ class FullTest {
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
-      @for (item of items; track item) {
+      @for (item of items; track item.id) {
         <clr-dg-row>
-          <clr-dg-cell>{{ item }}</clr-dg-cell>
-          <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+          <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ item.value * item.value }}</clr-dg-cell>
         </clr-dg-row>
       }
 
@@ -103,7 +103,11 @@ class FullTest {
   standalone: false,
 })
 class NgForTest {
-  items = [1, 2, 3];
+  items = [
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+  ];
 }
 
 // Have to wrap the OnPush component otherwise change detection doesn't run.
@@ -113,7 +117,11 @@ class NgForTest {
   standalone: false,
 })
 class OnPushTest {
-  items = [1, 2, 3];
+  items = [
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+  ];
   selected: any[] = [];
 }
 
@@ -125,8 +133,8 @@ class OnPushTest {
       <clr-dg-column>Second</clr-dg-column>
 
       <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
-        <clr-dg-cell>{{ item }}</clr-dg-cell>
-        <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.value * item.value }}</clr-dg-cell>
       </clr-dg-row>
     </clr-datagrid>
   `,
@@ -166,7 +174,7 @@ class MultiSelectionSimpleTest {
 
 @Component({
   template: `
-    <clr-datagrid [clrDgItemsTrackBy]="dgTrackByFn" [(clrDgSelected)]="selected">
+    <clr-datagrid [clrDgItemsIdentityFn]="dgTrackByFn" [(clrDgSelected)]="selected">
       <clr-dg-column>Value</clr-dg-column>
 
       <clr-dg-row *clrDgItems="let item of items; trackBy: ngForTrackByFn" [clrDgItem]="item">
@@ -181,7 +189,7 @@ class MultiSelectionNgForTest {
   selected: { value: number }[] = [];
 
   ngForTrackByFn: TrackByFunction<{ value: number }> = (_index, item) => item.value;
-  dgTrackByFn: ClrDatagridItemsTrackByFunction<{ value: number }> = item => item.value;
+  dgTrackByFn: ClrDatagridItemsIdentityFunction<{ value: number }> = item => item.value;
 }
 
 @Component({
@@ -312,15 +320,15 @@ class ChocolateClrDgItemsTest {
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
-      @for (item of items; track item; let i = $index) {
+      @for (item of items; track item.id; let i = $index) {
         <clr-dg-row>
           @if (action && i === 1) {
             <clr-dg-action-overflow>
               <button class="action-item">Edit</button>
             </clr-dg-action-overflow>
           }
-          <clr-dg-cell>{{ item }}</clr-dg-cell>
-          <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+          <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ item.value * item.value }}</clr-dg-cell>
           @if (expandable && i === 1) {
             <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
           }
@@ -333,7 +341,11 @@ class ChocolateClrDgItemsTest {
   standalone: false,
 })
 class ChocolateNgForTest {
-  items = [1, 2, 3];
+  items = [
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+  ];
   action = false;
   expandable = false;
 }
@@ -410,10 +422,10 @@ class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
       </clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
-      @for (item of items; track item) {
+      @for (item of items; track item.id) {
         <clr-dg-row>
-          <clr-dg-cell>{{ item }}</clr-dg-cell>
-          <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+          <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ item.value * item.value }}</clr-dg-cell>
         </clr-dg-row>
       }
     </clr-datagrid>
@@ -421,7 +433,11 @@ class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
   standalone: false,
 })
 class HiddenColumnTest {
-  items = [1, 2, 3];
+  items = [
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+  ];
 }
 
 @Component({
@@ -430,10 +446,10 @@ class HiddenColumnTest {
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
-      @for (item of items; track item) {
+      @for (item of items; track item.id) {
         <clr-dg-row>
-          <clr-dg-cell>{{ item }}</clr-dg-cell>
-          <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+          <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ item.value * item.value }}</clr-dg-cell>
         </clr-dg-row>
       }
     </clr-datagrid>
@@ -441,7 +457,11 @@ class HiddenColumnTest {
   standalone: false,
 })
 class ProjectionTest {
-  items = [1, 2, 3];
+  items = [
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+  ];
 }
 
 @Component({
@@ -452,13 +472,13 @@ class ProjectionTest {
       </clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
-      @for (item of items; track item) {
+      @for (item of items; track item.id) {
         <clr-dg-row>
-          <clr-dg-cell>{{ item }}</clr-dg-cell>
-          <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+          <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ item.value * item.value }}</clr-dg-cell>
           <clr-dg-row-detail *clrIfExpanded="true" [clrDgReplace]="replaceCells">
-            <clr-dg-cell class="first-expandable-row-cell">{{ item }} (col 1 detail)</clr-dg-cell>
-            <clr-dg-cell>{{ item * item }} detail (col 2 detail)</clr-dg-cell>
+            <clr-dg-cell class="first-expandable-row-cell">{{ item.id }} (col 1 detail)</clr-dg-cell>
+            <clr-dg-cell>{{ item.value * item.value }} detail (col 2 detail)</clr-dg-cell>
           </clr-dg-row-detail>
         </clr-dg-row>
       }
@@ -478,7 +498,11 @@ class ProjectionTest {
   standalone: false,
 })
 class ExpandedCellsTest {
-  items = [1, 2, 3];
+  items = [
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+  ];
   detailItem = null;
   replaceCells = false;
   firstColumnHidden = false;
@@ -511,9 +535,9 @@ class TabsIntegrationTest {
 
 @Component({
   template: `
-    <clr-datagrid [clrDgItemsTrackBy]="trackById">
+    <clr-datagrid [clrDgItemsIdentityFn]="trackById">
       <clr-dg-column>Item</clr-dg-column>
-      @for (item of items; track item) {
+      @for (item of items; track item.id) {
         <clr-dg-row [clrDgItem]="item">
           <clr-dg-cell>{{ item.id }}</clr-dg-cell>
         </clr-dg-row>
@@ -527,14 +551,14 @@ class PanelTrackByTest {
   items = Array.from(Array(3), (v, i) => {
     return { name: v, id: i };
   });
-  trackById: ClrDatagridItemsTrackByFunction<{ id: number }> = item => item.id;
+  trackById: ClrDatagridItemsIdentityFunction<{ id: number }> = item => item.id;
 }
 @Component({
   template: `
     <clr-datagrid>
       <clr-dg-column>Item</clr-dg-column>
       <clr-dg-column>Name</clr-dg-column>
-      @for (item of items; track item) {
+      @for (item of items; track item.id) {
         <clr-dg-row [clrDgItem]="item">
           <clr-dg-cell>{{ item.id }}</clr-dg-cell>
           <clr-dg-cell>{{ item.name }}</clr-dg-cell>
@@ -1353,7 +1377,7 @@ export default function (): void {
       });
 
       it('projects async row cells in correct order', function () {
-        context.testComponent.items.push(7);
+        context.testComponent.items.push({ id: 7, value: 7 });
         context.detectChanges();
         const rows = context.clarityElement.querySelectorAll('.datagrid-row');
         const lastAddedRow = rows[rows.length - 1];
