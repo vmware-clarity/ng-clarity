@@ -93,16 +93,13 @@ export class ClrFileInputValidator implements Validator {
       }
 
       // MIME check
-      if (entry.includes('/')) {
-        if (entry.endsWith('/*')) {
-          const prefix = entry.slice(0, entry.length - 1); // keep trailing slash
-          if (type.startsWith(prefix)) {
-            return true;
-          }
-        } else if (type === entry) {
+      if (entry.endsWith('/*')) {
+        const prefix = entry.slice(0, entry.length - 1); // keep trailing slash
+        if (type.startsWith(prefix)) {
           return true;
         }
-        continue;
+      } else if (entry.includes('/') && type === entry) {
+        return true;
       }
     }
 

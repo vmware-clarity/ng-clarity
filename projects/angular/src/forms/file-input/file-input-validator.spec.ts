@@ -171,7 +171,7 @@ function fileInputValidatorSpec(testComponent: Type<TestComponent>) {
     expect(getErrorMessages(nativeElement)).toBe('File size too large');
   });
 
-  it('accept: ".gz" should accept both readme.gz and archive.tar.gz (suffix match)', () => {
+  it('accept: ".gz" should accept both readme.gz, archive.tar.gz (suffix match) but reject package.gz.tar', () => {
     fixture.componentInstance.accept = '.gz';
     fixture.detectChanges();
 
@@ -182,6 +182,10 @@ function fileInputValidatorSpec(testComponent: Type<TestComponent>) {
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'archive.tar.gz')]);
     fixture.detectChanges();
     expect(nativeElement.querySelector('clr-control-error')).toBeNull();
+
+    selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'package.gz.tar')]);
+    fixture.detectChanges();
+    expect(getErrorMessages(nativeElement)).toBe('File type not accepted');
   });
 
   it('accept: ".tar.gz" should accept archive.tar.gz and reject readme.gz', () => {
