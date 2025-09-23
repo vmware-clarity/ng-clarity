@@ -12,6 +12,6 @@
     "url": "https://github.com/vmware-clarity/ng-clarity/issues"
   },
   "peerDependencies": {
-    "@cds/core": "^6.9.2"
+    "@cds/core": "^6.16.1"
   }
 }
