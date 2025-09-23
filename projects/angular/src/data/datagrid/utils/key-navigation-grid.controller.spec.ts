@@ -20,7 +20,7 @@ import { Selection } from '../providers/selection';
       <clr-dg-column>Second</clr-dg-column>
       <clr-dg-column>Third</clr-dg-column>
 
-      @for (item of items; track item; let i = $index) {
+      @for (item of items; track item.id; let i = $index) {
         <clr-dg-row [clrDgItem]="item">
           <clr-dg-cell>{{ i * 3 }}</clr-dg-cell>
           <clr-dg-cell>{{ i * 3 + 1 }}</clr-dg-cell>
@@ -53,7 +53,12 @@ class TestComponent {
 
   expandedRowIndexes: number[] = [];
 
-  items = Array(4);
+  items = [
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+    { id: 4, value: 4 },
+  ];
 }
 
 export default function (): void {
@@ -1288,7 +1293,9 @@ export default function (): void {
 
       beforeEach(function () {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
-        context.testComponent.items = Array(10);
+        context.testComponent.items = Array.from(Array(10), (v, i) => {
+          return { value: v, id: i };
+        });
         context.testComponent.selected = [];
         context.testComponent.showRowDetail = true;
         context.detectChanges();

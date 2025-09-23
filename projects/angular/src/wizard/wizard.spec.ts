@@ -385,7 +385,6 @@ export default function (): void {
             wizard.next();
             context.detectChanges();
 
-            debugger;
             val = context.hostElement.querySelector('.clr-wizard-page.active').textContent.trim();
             expect(val).toBe(context.hostComponent.lazyLoadContent, 'projects as expected');
 

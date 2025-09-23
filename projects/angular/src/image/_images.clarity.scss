@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+@use '@cds/core/tokens/tokens.scss';
 @use '../emphasis/alert/variables.alert' as alert-variables;
 @use '../utils/mixins';
-@use '../utils/variables/variables.color';
 @use 'icons.clarity';
 
 @mixin icon-background-styles() {
@@ -37,7 +37,7 @@
     }
 
     &.clr-icon-warning-white {
-      background-image: icons.generateWarningIcon(variables.$clr-color-neutral-0);
+      background-image: icons.generateWarningIcon(#{tokens.$cds-global-color-white});
     }
 
     &.clr-vmw-logo {

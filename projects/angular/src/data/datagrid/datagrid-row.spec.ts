@@ -19,7 +19,7 @@ import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
 import { MockDisplayModeService } from './providers/display-mode.mock';
 import { DisplayModeService } from './providers/display-mode.service';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
-import { ClrDatagridItemsTrackByFunction, Items } from './providers/items';
+import { ClrDatagridItemsIdentityFunction, Items } from './providers/items';
 import { Selection } from './providers/selection';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { LoadingListener } from '../../utils/loading/loading-listener';
@@ -696,7 +696,7 @@ class ExpandTest {
 @Component({
   template: `
     <clr-datagrid [clrDgSelected]="[]" [clrDgItemsTrackBy]="trackBy">
-      @for (item of items; track item) {
+      @for (item of items; track item.id) {
         <clr-dg-row [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable"></clr-dg-row>
       }
     </clr-datagrid>
@@ -707,13 +707,13 @@ class NgForDatagridWithTrackBy {
   clrDgSelectable = true;
 
   readonly items: Item[] = [{ id: 42 }];
-  readonly trackBy: ClrDatagridItemsTrackByFunction<Item> = item => item.id;
+  readonly trackBy: ClrDatagridItemsIdentityFunction<Item> = item => item.id;
 }
 
 @Component({
   template: `
     <clr-datagrid>
-      @for (item of items; track item; let i = $index) {
+      @for (item of items; track item.id; let i = $index) {
         <clr-dg-row
           [clrDgItem]="item"
           [clrDgDetailDisabled]="i === disabledIndex"

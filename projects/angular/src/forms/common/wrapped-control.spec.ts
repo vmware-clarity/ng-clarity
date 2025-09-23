@@ -267,10 +267,13 @@ interface TestContext {
 
 export default function (): void {
   describe('WrappedFormControl', () => {
-    function setupTest<T>(testContext: TestContext, testComponent: Type<T>, testControl: any) {
+    function setupTest<T>(testContext: TestContext, testComponent: Type<T>, testControl: any, includeProviders = true) {
       TestBed.configureTestingModule({
         imports: [WrappedFormControlTestModule, FormsModule, ReactiveFormsModule],
         declarations: [testComponent, ClrControlError, ClrControlHelper, ClrControlSuccess],
+        providers: includeProviders
+          ? [MarkControlService, ControlClassService, NgControlService, IfControlStateService, LayoutService]
+          : [],
       });
       testContext.fixture = TestBed.createComponent(testComponent);
       testContext.fixture.detectChanges();
@@ -290,18 +293,19 @@ export default function (): void {
         testContext.layoutService = wrapperDebugElement.injector.get(LayoutService);
       } catch (error) {
         // Swallow errors
-        console.log(error);
+        console.log(includeProviders ? error : new Error(`EXPECTED ERROR: ${error}`));
       }
     }
 
+    // These two tests are expected to throw errors which are swallowed with try / catch in setupTest
     describe('getProviderFromContainer', function () {
       it('gets a provider from the container', function (this: TestContext) {
-        setupTest(this, WithWrapperNoId, TestControl);
+        setupTest(this, WithWrapperNoId, TestControl, false);
         expect(this.control.getProviderFromContainer(ControlIdService)).toEqual(this.controlIdService);
       });
 
       it('returns not found if provider is missing', function (this: TestContext) {
-        setupTest(this, WithWrapperNoId, TestControl);
+        setupTest(this, WithWrapperNoId, TestControl, false);
         expect(this.control.getProviderFromContainer(MarkControlService, false)).toBeFalse();
       });
     });

@@ -39,7 +39,7 @@
 <clr-datagrid
   #dynamicRowsDatagrid
   [(clrDgSelected)]="selectedRows"
-  [clrDgItemsTrackBy]="trackItemById"
+  [clrDgItemsIdentityFn]="trackItemById"
   [clrDgCustomSelectAllEnabled]="true"
   (clrDgCustomSelectAll)="toggleSelectAllRows($event)"
   style="height: 32rem"
@@ -130,7 +130,7 @@
 <clr-datagrid
   #usersDatagrid
   [(clrDgSelected)]="selectedUsers"
-  [clrDgItemsTrackBy]="trackItemById"
+  [clrDgItemsIdentityFn]="trackItemById"
   class="datagrid-compact"
   style="height: 30rem"
 >
