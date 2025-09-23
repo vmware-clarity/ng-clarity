@@ -546,6 +546,52 @@ export enum ClrAxis {
 }
 
 // @public (undocumented)
+export class ClrBadge {
+    // (undocumented)
+    color: ClrBadgeColors | string;
+    // (undocumented)
+    get colorClass(): string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrBadgeColor"; "required": false; }; }, {}, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBadge, never>;
+}
+
+// @public (undocumented)
+export enum ClrBadgeColors {
+    // (undocumented)
+    Blue = "blue",
+    // (undocumented)
+    Danger = "danger",
+    // (undocumented)
+    Empty = "",
+    // (undocumented)
+    Gray = "gray",
+    // (undocumented)
+    Info = "info",
+    // (undocumented)
+    LightBlue = "light-blue",
+    // (undocumented)
+    Orange = "orange",
+    // (undocumented)
+    Purple = "purple",
+    // (undocumented)
+    Success = "success",
+    // (undocumented)
+    Warning = "warning"
+}
+
+// @public (undocumented)
+export class ClrBadgeModule {
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBadgeModule, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrBadgeModule>;
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBadgeModule, [typeof ClrBadge], [typeof i2.CommonModule], [typeof ClrBadge]>;
+}
+
+// @public (undocumented)
 export class ClrBreadcrumbItem {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbItem, "clr-breadcrumb-item", never, {}, {}, never, ["*"], false, never>;
@@ -2355,7 +2401,7 @@ export class ClrEmphasisModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrEmphasisModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, never, [typeof ClrAlertModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, never, [typeof ClrAlertModule, typeof ClrBadgeModule]>;
 }
 
 // @public (undocumented)
@@ -4362,7 +4408,7 @@ export class ClrTabLink {
     get inOverflow(): boolean;
     set inOverflow(inOverflow: boolean);
     // (undocumented)
-    get tabindex(): 0 | -1;
+    get tabindex(): -1 | 0;
     // (undocumented)
     tabLinkId: string;
     // (undocumented)
