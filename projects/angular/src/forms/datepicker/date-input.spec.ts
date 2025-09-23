@@ -98,9 +98,9 @@ export default function () {
           expect(context.clarityElement.classList).toContain('clr-input');
         });
 
-        it('should capture any classes set on the control', () => {
+        it('should not capture any custom classes set on the control', () => {
           expect(controlClassService).toBeTruthy();
-          expect(controlClassService.className).toContain('test-class');
+          expect(controlClassService.className).not.toContain('test-class');
         });
 
         it('should handle focus and blur events', () => {

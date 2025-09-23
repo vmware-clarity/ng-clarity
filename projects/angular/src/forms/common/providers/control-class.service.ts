@@ -40,13 +40,20 @@ export class ControlClassService {
   // We want to remove the column classes from the input up to the container
   initControlClass(renderer: Renderer2, element: HTMLElement) {
     if (element && element.className) {
-      this.className = element.className;
       const klasses = element.className.split(' ');
+      const controlKlasses = [];
+
       klasses.forEach(klass => {
+        if (klass.startsWith('clr-')) {
+          controlKlasses.push(klass);
+        }
+
         if (klass.startsWith('clr-col')) {
           renderer.removeClass(element, klass);
         }
       });
+
+      this.className = controlKlasses.join(' ').trim();
     }
   }
 }
