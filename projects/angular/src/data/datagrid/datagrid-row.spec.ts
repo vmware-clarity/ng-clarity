@@ -695,7 +695,7 @@ class ExpandTest {
 
 @Component({
   template: `
-    <clr-datagrid [clrDgSelected]="[]" [clrDgItemsTrackBy]="trackBy">
+    <clr-datagrid [clrDgSelected]="[]" [clrDgItemsIdentityFn]="trackBy">
       @for (item of items; track item.id) {
         <clr-dg-row [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable"></clr-dg-row>
       }
