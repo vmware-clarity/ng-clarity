@@ -6,7 +6,6 @@
  */
 
 @use 'sass:math';
-@use 'variables.color';
 @use '@cds/core/tokens/tokens.scss';
 @use '../../utils/variables/variables.density' as density;
 
@@ -35,16 +34,15 @@ $clr-font-base-size: 14 !default; // Moved from original needs a better name
 $clr-global-app-background: var(--clr-global-app-background) !default;
 
 // App selection color
-$clr-global-selection-color: hsl(201deg 29% 88%) !default;
-$clr-selection-color: $clr-global-selection-color !default; // $clr-selection-color is deprecated and will be removed.
-$clr-global-on-selection-color: variables.$clr-color-neutral-1000 !default;
+$clr-global-selection-color: var(--clr-global-selection-color) !default;
+$clr-global-on-selection-color: var(--clr-global-on-selection-color) !default;
 
 // App hover color
-$clr-global-hover-color: variables.$clr-color-neutral-200 !default;
-$clr-global-content-header-font-color: variables.$clr-color-neutral-1000 !default;
-$clr-global-font-color: variables.$clr-color-neutral-700 !default;
-$clr-global-success-color: variables.$clr-color-success-500 !default;
-$clr-global-error-color: variables.$clr-color-danger-800 !default;
+$clr-global-hover-color: var(--clr-global-hover-color) !default;
+$clr-global-content-header-font-color: var(--clr-global-content-header-font-color) !default;
+$clr-global-font-color: var(--clr-global-font-color) !default;
+$clr-global-success-color: var(--clr-global-success-color) !default;
+$clr-global-error-color: var(--clr-global-error-color) !default;
 
 // TODO: Can any of this be grouped in a 'Layout' section?
 //5.Content Area Paddings
@@ -57,10 +55,8 @@ $clr-content-area-padding-left: #{density.$clr-base-horizontal-offset-2xl} !defa
 // Usage: ../emphasis/alert/_alert.clarity.scss
 // Usage: ../modal/_modal.clarity.scss
 // Usage: ../popover/signpost/_signpost.clarity.scss
-$clr-close-color--normal: var(--clr-close-color) !default;
-$clr-close-color: $clr-close-color--normal !default;
-$clr-close-color--hover: var(--clr-close-color-hover) !default;
-$clr-close-color-hover: $clr-close-color--hover !default;
+$clr-close-color: var(--clr-close-color) !default;
+$clr-close-color-hover: var(--clr-close-color-hover) !default;
 $clr-close-color-active: var(--clr-close-color-active) !default;
 
 // Box Shadow
