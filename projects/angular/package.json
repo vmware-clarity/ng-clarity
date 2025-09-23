@@ -21,6 +21,6 @@
     "@angular/cdk": "20",
     "@angular/common": "20",
     "@angular/core": "20",
-    "@cds/core": ">= 6.9.2"
+    "@cds/core": ">= 6.16.1"
   }
 }

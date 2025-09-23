@@ -39,7 +39,7 @@
       // @TODO v18 remove in favor of --clr-wizard-stepnav-selected-bgcolor
       --clr-wizard-stepnav-active-bgcolor: #{tokens.$cds-alias-object-interaction-background-selected};
       --clr-wizard-stepnav-selected-bgcolor: var(--clr-wizard-stepnav-active-bgcolor);
-      --clr-wizard-stepnav-selected-error-bgcolor: #{tokens.$cds-alias-object-interaction-danger-secondary-hover};
+      --clr-wizard-stepnav-selected-error-bgcolor: #{tokens.$cds-alias-status-danger-tint};
       --clr-wizard-stepnav-selected-hover-bgcolor: var(--cds-alias-object-interaction-background-selected-hover);
       --clr-wizard-stepnav-selected-active-bgcolor: var(--cds-alias-object-interaction-background-selected-active);
       --clr-wizard-stepnav-link-error-icon-color: #{tokens.$cds-alias-status-danger};
