@@ -3486,6 +3486,7 @@ declare class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     ngOnDestroy(): void;
     triggerValidation(): void;
     protected getProviderFromContainer<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T;
+    private injectControlClassService;
     private triggerDoCheck;
     private markAsTouched;
     private setAriaDescribedBy;

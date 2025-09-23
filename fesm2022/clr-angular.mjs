@@ -6745,13 +6745,17 @@ class ControlClassService {
     // We want to remove the column classes from the input up to the container
     initControlClass(renderer, element) {
         if (element && element.className) {
-            this.className = element.className;
             const klasses = element.className.split(' ');
+            const controlKlasses = [];
             klasses.forEach(klass => {
+                if (klass.startsWith('clr-')) {
+                    controlKlasses.push(klass);
+                }
                 if (klass.startsWith('clr-col')) {
                     renderer.removeClass(element, klass);
                 }
             });
+            this.className = controlKlasses.join(' ').trim();
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ControlClassService, deps: [{ token: LayoutService, optional: true }], target: i0.ɵɵFactoryTarget.Injectable }); }
@@ -6870,12 +6874,8 @@ class WrappedFormControl {
         if (injector) {
             this.ngControlService = injector.get(NgControlService, null);
             this.ifControlStateService = injector.get(IfControlStateService, null);
-            this.controlClassService = injector.get(ControlClassService, null);
             this.markControlService = injector.get(MarkControlService, null);
             this.differs = injector.get(KeyValueDiffers, null);
-        }
-        if (this.controlClassService) {
-            this.controlClassService.initControlClass(renderer, el.nativeElement);
         }
         if (this.markControlService) {
             this.subscriptions.push(this.markControlService.touchedChange.subscribe(() => {
@@ -6903,6 +6903,7 @@ class WrappedFormControl {
     ngOnInit() {
         this._containerInjector = new HostWrapper(this.wrapperType, this.vcr, this.index);
         this.controlIdService = this._containerInjector.get(ControlIdService);
+        this.injectControlClassService(this._containerInjector);
         /**
          * not all containers will provide `ContainerIdService`
          */
@@ -6953,6 +6954,14 @@ class WrappedFormControl {
         }
         catch (e) {
             return notFoundValue;
+        }
+    }
+    injectControlClassService(injector) {
+        if (!this.controlClassService) {
+            this.controlClassService = injector.get(ControlClassService, null);
+            if (this.controlClassService) {
+                this.controlClassService.initControlClass(this.renderer, this.el.nativeElement);
+            }
         }
     }
     triggerDoCheck(differ, ngControl) {
