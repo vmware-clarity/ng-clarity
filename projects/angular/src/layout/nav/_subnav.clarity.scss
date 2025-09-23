@@ -17,15 +17,9 @@
   .sub-nav,
   .subnav {
     display: flex;
-    // IE/OldEdge
-    box-shadow: subnav-variables.$clr-nav-shadow;
 
     @if variables.$clr-use-custom-properties == true {
-      box-shadow: 0
-        calc(-1 * #{tokens.$cds-global-space-1})
-        0
-        var(--clr-nav-box-shadow-color, variables.$clr-color-neutral-400)
-        inset;
+      box-shadow: 0 calc(-1 * #{tokens.$cds-global-space-1}) 0 var(--clr-nav-box-shadow-color) inset;
     }
 
     justify-content: space-between; //nav to the first and aside to the very right

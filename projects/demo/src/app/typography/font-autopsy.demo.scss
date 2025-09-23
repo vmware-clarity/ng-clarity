@@ -22,13 +22,13 @@ $ruler-highlight-width: calc($full-lh-block-width * 0.25);
 .line-height-container {
   position: absolute;
   inset: 0 auto 0 0;
-  background-color: var(--clr-color-action-900, #{variables.$clr-color-action-900});
+  background-color: var(--cds-global-color-blue-900);
   width: $full-lh-block-width;
 }
 
 .line-height-measurement {
   transform: rotate(-90deg);
-  color: var(--clr-color-neutral-0, #{variables.$clr-color-neutral-0});
+  color: var(--cds-global-color-white);
   display: block;
   font-weight: bold;
   font-size: var(--cds-global-space-9);
@@ -48,7 +48,7 @@ $ruler-highlight-width: calc($full-lh-block-width * 0.25);
 
 .ruler {
   position: relative;
-  background: var(--clr-color-secondary-action-600, #{variables.$clr-color-secondary-action-600});
+  background: var(--cds-global-color-blue-500);
   overflow: hidden;
   z-index: 1;
   opacity: 0.6;
@@ -56,7 +56,7 @@ $ruler-highlight-width: calc($full-lh-block-width * 0.25);
   &::after {
     content: 'RULER';
     font-size: var(--cds-global-space-7);
-    color: var(--clr-color-neutral-1000, #{variables.$clr-color-neutral-1000});
+    color: var(--cds-global-color-black);
     position: absolute;
     display: block;
     line-height: 1;
@@ -69,9 +69,8 @@ $ruler-highlight-width: calc($full-lh-block-width * 0.25);
   }
 
   &.top-gap {
-    box-shadow: $ruler-highlight-width 0 0 0 inset var(--clr-color-warning-700, #{variables.$clr-color-warning-700});
-    background: var(--clr-color-warning-300, #{variables.$clr-color-warning-300});
-    color: var(--clr-color-on-warning-300, #{variables.$clr-color-on-warning-300});
+    box-shadow: $ruler-highlight-width 0 0 0 inset var(--cds-global-color-ochre-700);
+    background: var(--cds-global-color-yellow-200);
     flex: 0 1 auto;
 
     &::after {
@@ -80,9 +79,8 @@ $ruler-highlight-width: calc($full-lh-block-width * 0.25);
   }
 
   &.ascender {
-    box-shadow: $ruler-highlight-width 0 0 0 inset var(--clr-color-success-700, #{variables.$clr-color-success-700});
-    background: var(--clr-color-success-400, #{variables.$clr-color-success-400});
-    color: var(--clr-color-on-success-400, #{variables.$clr-color-on-success-400});
+    box-shadow: $ruler-highlight-width 0 0 0 inset var(--cds-global-color-green-700);
+    background: var(--cds-global-color-green-300);
     flex: 0 1 auto;
 
     &::after {
@@ -92,9 +90,8 @@ $ruler-highlight-width: calc($full-lh-block-width * 0.25);
   }
 
   &.x-height {
-    box-shadow: $ruler-highlight-width 0 0 0 inset var(--clr-color-action-700, #{variables.$clr-color-action-700});
-    background: var(--clr-color-action-400, #{variables.$clr-color-action-400});
-    color: var(--clr-color-on-action-400, #{variables.$clr-color-on-action-400});
+    box-shadow: $ruler-highlight-width 0 0 0 inset var(--cds-global-color-blue-700);
+    background: var(--cds-global-color-blue-300);
     flex: 0 1 auto;
 
     &::after {
@@ -103,10 +100,8 @@ $ruler-highlight-width: calc($full-lh-block-width * 0.25);
   }
 
   &.descender {
-    box-shadow: $ruler-highlight-width 0 0 0 inset
-      var(--clr-color-secondary-action-700, #{variables.$clr-color-secondary-action-700});
-    background: var(--clr-color-secondary-action-300, #{variables.$clr-color-secondary-action-300});
-    color: var(--clr-color-on-secondary-action-300, #{variables.$clr-color-on-secondary-action-300});
+    box-shadow: $ruler-highlight-width 0 0 0 inset var(--cds-global-color-violet-700);
+    background: var(--cds-global-color-violet-300);
     flex: 1;
 
     &::after {
@@ -116,9 +111,8 @@ $ruler-highlight-width: calc($full-lh-block-width * 0.25);
   }
 
   &.descender-overage {
-    box-shadow: $full-lh-block-width 0 0 0 inset var(--clr-color-danger-800, #{variables.$clr-color-danger-800});
-    background-color: var(--clr-color-danger-200, #{variables.$clr-color-danger-200});
-    color: var(--clr-color-on-danger-200, #{variables.$clr-color-on-danger-200});
+    box-shadow: $full-lh-block-width 0 0 0 inset var(--cds-global-color-red-700);
+    background-color: var(--cds-global-color-red-200);
     display: block;
 
     &::after {
@@ -140,6 +134,6 @@ $ruler-highlight-width: calc($full-lh-block-width * 0.25);
   text-align: center;
   font-size: 1000px;
   line-height: 1;
-  color: var(--clr-color-neutral-1000, #{variables.$clr-color-neutral-1000});
+  color: var(--cds-global-color-black);
   z-index: 0;
 }
