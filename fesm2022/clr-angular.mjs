@@ -16134,11 +16134,15 @@ class ClrFileInputValidator {
             for (let i = 0; i < files.length; i++) {
                 const file = files.item(i);
                 // accept validation (native attribute)
-                if (accept) {
-                    const [fileExtension] = file.name.match(/\..+$/);
-                    if (!accept.includes(file.type) && !accept.includes(fileExtension)) {
+                if (accept && accept.length) {
+                    if (!this.validateAccept(file, accept)) {
                         errors.accept = errors.accept || [];
-                        errors.accept.push({ name: file.name, accept, type: file.type, extension: fileExtension });
+                        errors.accept.push({
+                            name: file.name,
+                            accept,
+                            type: file.type || '',
+                            extension: this.getSuffixByDepth(file.name, 2), // last up to 2 parts for reporting
+                        });
                     }
                 }
                 // min file validation (custom input)
@@ -16154,6 +16158,39 @@ class ClrFileInputValidator {
             }
         }
         return Object.keys(errors).length ? errors : null;
+    }
+    getSuffixByDepth(filename, depth) {
+        const match = filename.toLowerCase().match(new RegExp(`(\\.[^.]+){1,${depth}}$`, 'i'));
+        return match ? match[0] : '';
+    }
+    validateAccept(file, acceptList) {
+        const name = file.name.toLowerCase();
+        const type = (file.type || '').toLowerCase();
+        for (const entryRaw of acceptList) {
+            const entry = entryRaw.trim().toLowerCase();
+            if (!entry) {
+                continue;
+            }
+            // Extension check
+            if (entry.startsWith('.')) {
+                const depth = (entry.match(/\./g) || []).length;
+                if (this.getSuffixByDepth(name, depth) === entry) {
+                    return true;
+                }
+                continue;
+            }
+            // MIME check
+            if (entry.endsWith('/*')) {
+                const prefix = entry.slice(0, entry.length - 1); // keep trailing slash
+                if (type.startsWith(prefix)) {
+                    return true;
+                }
+            }
+            else if (entry.includes('/') && type === entry) {
+                return true;
+            }
+        }
+        return false;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrFileInputValidator, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrFileInputValidator, isStandalone: false, selector: "input[type=\"file\"][clrFileInput]", inputs: { minFileSize: ["clrMinFileSize", "minFileSize"], maxFileSize: ["clrMaxFileSize", "maxFileSize"] }, providers: [{ provide: NG_VALIDATORS, useExisting: ClrFileInputValidator, multi: true }], ngImport: i0 }); }
