@@ -41,8 +41,8 @@ class TestWrapper {}
   standalone: false,
 })
 class TestControl extends WrappedFormControl<TestWrapper> {
-  constructor(vcr: ViewContainerRef) {
-    super(vcr, TestWrapper, null, null, null, null);
+  constructor(vcr: ViewContainerRef, el: ElementRef<HTMLElement>) {
+    super(vcr, TestWrapper, null, null, null, el);
   }
 }
 
@@ -62,8 +62,8 @@ class TestWrapper2 {}
   standalone: false,
 })
 class TestControl2 extends WrappedFormControl<TestWrapper2> {
-  constructor(vcr: ViewContainerRef) {
-    super(vcr, TestWrapper2, null, null, null, null);
+  constructor(vcr: ViewContainerRef, el: ElementRef<HTMLElement>) {
+    super(vcr, TestWrapper2, null, null, null, el);
   }
 }
 

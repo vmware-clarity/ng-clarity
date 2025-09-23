@@ -71,7 +71,6 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     if (injector) {
       this.ngControlService = injector.get(NgControlService, null);
       this.ifControlStateService = injector.get(IfControlStateService, null);
-      this.injectControlClassService(injector);
       this.markControlService = injector.get(MarkControlService, null);
       this.differs = injector.get(KeyValueDiffers, null);
     }

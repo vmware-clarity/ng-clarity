@@ -55,7 +55,7 @@ function fullTest(description, testContainer, testControl, testComponent, contro
       datalistIdService;
 
     beforeEach(() => {
-      spyOn(WrappedFormControl.prototype, 'ngOnInit');
+      spyOn(WrappedFormControl.prototype, 'ngOnInit').and.callThrough();
       spyOn(ControlClassService.prototype, 'initControlClass').and.callThrough();
       TestBed.configureTestingModule({
         imports: [FormsModule, ClrIconModule, ClrCommonFormsModule, ReactiveFormsModule],
