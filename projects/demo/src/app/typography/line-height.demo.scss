@@ -54,15 +54,14 @@
 @mixin lhe-test-box-border() {
   border-width: var(--cds-global-space-1);
   border-style: solid;
-  border-color: var(--clr-color-neutral-300, #{variables.$clr-color-neutral-300});
+  border-color: var(--cds-alias-object-border-color);
 }
 @mixin lhe-test-box-pad-color() {
-  box-shadow: inset 0 0 0 var(--cds-global-space-6) var(--clr-color-success-100, #{variables.$clr-color-success-100});
+  box-shadow: inset 0 0 0 var(--cds-global-space-6) var(--cds-alias-viz-sequential-green-200);
 }
 
 .title {
-  border-bottom: var(--cds-global-space-2) solid;
-  border-bottom-color: var(--clr-color-neutral-800, #{variables.$clr-color-neutral-800});
+  border-bottom: var(--cds-global-space-2) solid var(--cds-alias-status-neutral);
 }
 
 .box-test,
@@ -141,7 +140,7 @@
 }
 
 h1.test-subject {
-  box-shadow: inset 0 0 0 var(--cds-global-space-5) var(--clr-color-warning-500, #{variables.$clr-color-warning-500});
+  box-shadow: inset 0 0 0 var(--cds-global-space-5) var(--cds-alias-viz-sequential-ochre-400);
   padding: var(--cds-global-space-5);
 
   &.line-height-eraser {
@@ -150,8 +149,9 @@ h1.test-subject {
 }
 
 .lhe-test-well {
-  background: var(--clr-color-neutral-100, #{variables.$clr-color-neutral-100});
+  background: var(--cds-alias-object-container-background-tint);
   margin-top: var(--cds-global-space-9);
   padding: var(--cds-global-space-6);
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
   border-radius: var(--cds-alias-object-border-radius-100);
 }
