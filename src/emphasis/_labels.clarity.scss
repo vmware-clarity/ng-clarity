@@ -7,7 +7,7 @@
 
 @use 'sass:meta';
 @use '../utils/mixins';
-@use 'variables.badges' as badges-variables;
+@use 'badge/variables.badges' as badges-variables;
 @use 'variables.label' as label-variables;
 @use '../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
