@@ -1,7 +1,7 @@
 import * as i0 from '@angular/core';
 import { Directive, NgModule, Input, Optional, Injectable, ChangeDetectionStrategy, Component, EventEmitter, ContentChildren, Output, HostBinding, SkipSelf, PLATFORM_ID, ViewChild, Inject, HostListener, Renderer2, DOCUMENT, InjectionToken, ElementRef, NgZone, ChangeDetectorRef, ContentChild, forwardRef, KeyValueDiffers, Self, Attribute, LOCALE_ID, TemplateRef, ViewContainerRef, inject, Injector, runInInjectionContext, EnvironmentInjector, IterableDiffers, ViewChildren } from '@angular/core';
 import * as i5 from '@angular/common';
-import { CommonModule, isPlatformBrowser, NgForOf, getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, getLocaleFirstDayOfWeek, getLocaleDateFormat, FormatWidth } from '@angular/common';
+import { CommonModule, isPlatformBrowser, NgForOf, getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, getLocaleFirstDayOfWeek, getLocaleDateFormat, FormatWidth, NgClass } from '@angular/common';
 import { ClarityIcons, angleIcon, exclamationCircleIcon, checkCircleIcon, ellipsisHorizontalIcon, windowCloseIcon, infoCircleIcon, timesIcon, angleDoubleIcon, eventIcon, calendarIcon, folderOpenIcon, minusIcon, plusIcon, eyeHideIcon, eyeIcon, ellipsisVerticalIcon, viewColumnsIcon, arrowIcon, stepForward2Icon, filterGridCircleIcon, filterGridIcon, errorStandardIcon, helpIcon, infoStandardIcon, noteIcon, successStandardIcon, warningStandardIcon, circleIcon, dotCircleIcon } from '@cds/core/icon';
 import { map, tap, startWith, distinctUntilChanged, filter, skipUntil, debounceTime, takeUntil, take, first, switchMap as switchMap$1 } from 'rxjs/operators';
 import * as i2$1 from 'rxjs';
@@ -27247,15 +27247,71 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+var ClrBadgeColors;
+(function (ClrBadgeColors) {
+    ClrBadgeColors["Empty"] = "";
+    ClrBadgeColors["Info"] = "info";
+    ClrBadgeColors["Warning"] = "warning";
+    ClrBadgeColors["Danger"] = "danger";
+    ClrBadgeColors["Success"] = "success";
+    ClrBadgeColors["Gray"] = "gray";
+    ClrBadgeColors["Blue"] = "blue";
+    ClrBadgeColors["LightBlue"] = "light-blue";
+    ClrBadgeColors["Orange"] = "orange";
+    ClrBadgeColors["Purple"] = "purple";
+})(ClrBadgeColors || (ClrBadgeColors = {}));
+class ClrBadge {
+    constructor() {
+        this.color = ClrBadgeColors.Empty;
+    }
+    get colorClass() {
+        return this.color ? `badge-${this.color}` : '';
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrBadge, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrBadge, isStandalone: true, selector: "clr-badge", inputs: { color: ["clrBadgeColor", "color"] }, ngImport: i0, template: `<span class="badge" [ngClass]="colorClass"><ng-content></ng-content></span>`, isInline: true, dependencies: [{ kind: "directive", type: NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }] }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrBadge, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'clr-badge',
+                    template: `<span class="badge" [ngClass]="colorClass"><ng-content></ng-content></span>`,
+                    imports: [NgClass],
+                }]
+        }], propDecorators: { color: [{
+                type: Input,
+                args: ['clrBadgeColor']
+            }] } });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 class ClrEmphasisModule {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrEmphasisModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.2.2", ngImport: i0, type: ClrEmphasisModule, exports: [ClrAlertModule] }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.2.2", ngImport: i0, type: ClrEmphasisModule, imports: [ClrBadge], exports: [ClrAlertModule, ClrBadge] }); }
     static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrEmphasisModule, imports: [ClrAlertModule] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrEmphasisModule, decorators: [{
             type: NgModule,
             args: [{
-                    exports: [ClrAlertModule],
+                    imports: [ClrBadge],
+                    exports: [ClrAlertModule, ClrBadge],
                 }]
         }] });
 
@@ -31489,16 +31545,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-
 /**
  * Generated bundle index. Do not edit.
  */
 
-export { BaseExpandableAnimation, CHANGE_KEYS, CLR_ALERT_DIRECTIVES, CLR_BUTTON_GROUP_DIRECTIVES, CLR_DATAGRID_DIRECTIVES, CLR_DATEPICKER_DIRECTIVES, CLR_DROPDOWN_DIRECTIVES, CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, CLR_ICON_DIRECTIVES, CLR_LAYOUT_DIRECTIVES, CLR_LOADING_BUTTON_DIRECTIVES, CLR_LOADING_DIRECTIVES, CLR_MENU_POSITIONS, CLR_MODAL_DIRECTIVES, CLR_NAVIGATION_DIRECTIVES, CLR_PROGRESS_BAR_DIRECTIVES, CLR_SIDEPANEL_DIRECTIVES, CLR_SIGNPOST_DIRECTIVES, CLR_SPINNER_DIRECTIVES, CLR_STACK_VIEW_DIRECTIVES, CLR_TABS_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, CLR_TREE_VIEW_DIRECTIVES, CLR_VERTICAL_NAV_DIRECTIVES, CLR_WIZARD_DIRECTIVES, CONDITIONAL_DIRECTIVES, CUSTOM_BUTTON_TYPES, CdsIconCustomTag, ClarityModule, ClrAbstractContainer, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle, ClrAlert, ClrAlertItem, ClrAlertModule, ClrAlertText, ClrAlerts, ClrAlertsPager, ClrAlignment, ClrAriaCurrentLink, ClrAxis, ClrBreadcrumbItem, ClrBreadcrumbs, ClrBreadcrumbsModule, ClrButton, ClrButtonGroup, ClrButtonGroupModule, ClrButtonModule, ClrCalendar, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxModule, ClrCheckboxWrapper, ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrCommonFormsModule, ClrCommonStringsService, ClrConditionalModule, ClrControl, ClrControlContainer, ClrControlError, ClrControlHelper, ClrControlSuccess, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrDatalist, ClrDatalistContainer, ClrDatalistInput, ClrDatalistModule, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrDestroyService, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrEmphasisModule, ClrEndDateInput, ClrEndDateInputValidator, ClrExpandableAnimation, ClrFileError, ClrFileInfo, ClrFileInput, ClrFileInputContainer, ClrFileInputModule, ClrFileInputValidator, ClrFileInputValueAccessor, ClrFileList, ClrFileMessagesTemplate, ClrFileSuccess, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrForm, ClrFormLayout, ClrFormsModule, ClrHeader, ClrIconCustomTag, ClrIconModule, ClrIfActive, ClrIfDetail, ClrIfError, ClrIfExpanded, ClrIfOpen, ClrIfSuccess, ClrInput, ClrInputContainer, ClrInputModule, ClrLabel, ClrLayout, ClrLayoutModule, ClrLoading, ClrLoadingButton, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState, ClrMainContainer, ClrMainContainerModule, ClrModal, ClrModalBody, ClrModalConfigurationService, ClrModalHostComponent, ClrModalModule, ClrMonthpicker, ClrNavLevel, ClrNavigationModule, ClrNumberInput, ClrNumberInputContainer, ClrNumberInputModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, ClrPassword, ClrPasswordContainer, ClrPasswordModule, ClrPopoverAnchor, ClrPopoverContent, ClrPopoverEventsService, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverPositionService, ClrPopoverToggleService, ClrProgressBar, ClrProgressBarModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrRadioWrapper, ClrRange, ClrRangeContainer, ClrRangeModule, ClrRecursiveForOf, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrSelectedState, ClrSide, ClrSidePanel, ClrSidePanelModule, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrSpinner, ClrSpinnerModule, ClrStackBlock, ClrStackContentInput, ClrStackHeader, ClrStackView, ClrStackViewCustomTags, ClrStackViewLabel, ClrStackViewModule, ClrStandaloneCdkTrapFocus, ClrStartDateInput, ClrStartDateInputValidator, ClrStepButton, ClrStepButtonType, ClrStepper, ClrStepperModule, ClrStepperPanel, ClrStopEscapePropagationDirective, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStep, ClrTimelineStepDescription, ClrTimelineStepHeader, ClrTimelineStepState, ClrTimelineStepTitle, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, ClrVerticalNav, ClrVerticalNavGroup, ClrVerticalNavGroupChildren, ClrVerticalNavIcon, ClrVerticalNavLink, ClrVerticalNavModule, ClrWizard, ClrWizardButton, ClrWizardHeaderAction, ClrWizardModule, ClrWizardPage, ClrWizardPageButtons, ClrWizardPageHeaderActions, ClrWizardPageNavTitle, ClrWizardPageTitle, ClrWizardStepnav, ClrWizardStepnavItem, ClrWizardTitle, ClrYearpicker, DEFAULT_BUTTON_TYPES, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, EXPANDABLE_ANIMATION_DIRECTIVES, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, IS_TOGGLE, IS_TOGGLE_PROVIDER, LoadingListener, MainContainerWillyWonka, NavDetectionOompaLoompa, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, ToggleServiceFactory, WrappedFormControl, collapse, commonStringsDefault, fade, fadeSlide, isToggleFactory, slide, AccordionOompaLoompa as ÇlrAccordionOompaLoompa, AccordionWillyWonka as ÇlrAccordionWillyWonka, ActionableOompaLoompa as ÇlrActionableOompaLoompa, ActiveOompaLoompa as ÇlrActiveOompaLoompa, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka, TabsWillyWonka as ÇlrTabsWillyWonka, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
+export { BaseExpandableAnimation, CHANGE_KEYS, CLR_ALERT_DIRECTIVES, CLR_BUTTON_GROUP_DIRECTIVES, CLR_DATAGRID_DIRECTIVES, CLR_DATEPICKER_DIRECTIVES, CLR_DROPDOWN_DIRECTIVES, CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, CLR_ICON_DIRECTIVES, CLR_LAYOUT_DIRECTIVES, CLR_LOADING_BUTTON_DIRECTIVES, CLR_LOADING_DIRECTIVES, CLR_MENU_POSITIONS, CLR_MODAL_DIRECTIVES, CLR_NAVIGATION_DIRECTIVES, CLR_PROGRESS_BAR_DIRECTIVES, CLR_SIDEPANEL_DIRECTIVES, CLR_SIGNPOST_DIRECTIVES, CLR_SPINNER_DIRECTIVES, CLR_STACK_VIEW_DIRECTIVES, CLR_TABS_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, CLR_TREE_VIEW_DIRECTIVES, CLR_VERTICAL_NAV_DIRECTIVES, CLR_WIZARD_DIRECTIVES, CONDITIONAL_DIRECTIVES, CUSTOM_BUTTON_TYPES, CdsIconCustomTag, ClarityModule, ClrAbstractContainer, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle, ClrAlert, ClrAlertItem, ClrAlertModule, ClrAlertText, ClrAlerts, ClrAlertsPager, ClrAlignment, ClrAriaCurrentLink, ClrAxis, ClrBadge, ClrBadgeColors, ClrBreadcrumbItem, ClrBreadcrumbs, ClrBreadcrumbsModule, ClrButton, ClrButtonGroup, ClrButtonGroupModule, ClrButtonModule, ClrCalendar, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxModule, ClrCheckboxWrapper, ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrCommonFormsModule, ClrCommonStringsService, ClrConditionalModule, ClrControl, ClrControlContainer, ClrControlError, ClrControlHelper, ClrControlSuccess, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrDatalist, ClrDatalistContainer, ClrDatalistInput, ClrDatalistModule, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrDestroyService, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrEmphasisModule, ClrEndDateInput, ClrEndDateInputValidator, ClrExpandableAnimation, ClrFileError, ClrFileInfo, ClrFileInput, ClrFileInputContainer, ClrFileInputModule, ClrFileInputValidator, ClrFileInputValueAccessor, ClrFileList, ClrFileMessagesTemplate, ClrFileSuccess, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrForm, ClrFormLayout, ClrFormsModule, ClrHeader, ClrIconCustomTag, ClrIconModule, ClrIfActive, ClrIfDetail, ClrIfError, ClrIfExpanded, ClrIfOpen, ClrIfSuccess, ClrInput, ClrInputContainer, ClrInputModule, ClrLabel, ClrLayout, ClrLayoutModule, ClrLoading, ClrLoadingButton, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState, ClrMainContainer, ClrMainContainerModule, ClrModal, ClrModalBody, ClrModalConfigurationService, ClrModalHostComponent, ClrModalModule, ClrMonthpicker, ClrNavLevel, ClrNavigationModule, ClrNumberInput, ClrNumberInputContainer, ClrNumberInputModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, ClrPassword, ClrPasswordContainer, ClrPasswordModule, ClrPopoverAnchor, ClrPopoverContent, ClrPopoverEventsService, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverPositionService, ClrPopoverToggleService, ClrProgressBar, ClrProgressBarModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrRadioWrapper, ClrRange, ClrRangeContainer, ClrRangeModule, ClrRecursiveForOf, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrSelectedState, ClrSide, ClrSidePanel, ClrSidePanelModule, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrSpinner, ClrSpinnerModule, ClrStackBlock, ClrStackContentInput, ClrStackHeader, ClrStackView, ClrStackViewCustomTags, ClrStackViewLabel, ClrStackViewModule, ClrStandaloneCdkTrapFocus, ClrStartDateInput, ClrStartDateInputValidator, ClrStepButton, ClrStepButtonType, ClrStepper, ClrStepperModule, ClrStepperPanel, ClrStopEscapePropagationDirective, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStep, ClrTimelineStepDescription, ClrTimelineStepHeader, ClrTimelineStepState, ClrTimelineStepTitle, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, ClrVerticalNav, ClrVerticalNavGroup, ClrVerticalNavGroupChildren, ClrVerticalNavIcon, ClrVerticalNavLink, ClrVerticalNavModule, ClrWizard, ClrWizardButton, ClrWizardHeaderAction, ClrWizardModule, ClrWizardPage, ClrWizardPageButtons, ClrWizardPageHeaderActions, ClrWizardPageNavTitle, ClrWizardPageTitle, ClrWizardStepnav, ClrWizardStepnavItem, ClrWizardTitle, ClrYearpicker, DEFAULT_BUTTON_TYPES, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, EXPANDABLE_ANIMATION_DIRECTIVES, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, IS_TOGGLE, IS_TOGGLE_PROVIDER, LoadingListener, MainContainerWillyWonka, NavDetectionOompaLoompa, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, ToggleServiceFactory, WrappedFormControl, collapse, commonStringsDefault, fade, fadeSlide, isToggleFactory, slide, AccordionOompaLoompa as ÇlrAccordionOompaLoompa, AccordionWillyWonka as ÇlrAccordionWillyWonka, ActionableOompaLoompa as ÇlrActionableOompaLoompa, ActiveOompaLoompa as ÇlrActiveOompaLoompa, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka, TabsWillyWonka as ÇlrTabsWillyWonka, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
 //# sourceMappingURL=clr-angular.mjs.map
