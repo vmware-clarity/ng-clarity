@@ -28,7 +28,7 @@ jobs:
       - name: Create Temp Directory for Diff Artifacts
         run: mkdir -p ${{runner.temp}}/artifacts/
       - name: Download Changes
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v6
         with:
           name: visual-snapshot-changes-.+\.diff
           name_is_regexp: true

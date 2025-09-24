@@ -26,7 +26,7 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Download Docs Artifact
         id: download-docs
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v6
         with:
           name: docs
           path: dist/docs
@@ -35,7 +35,7 @@ jobs:
           if_no_artifact_found: ignore
       - name: Download Coverage Artifact
         id: download-coverage
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v6
         with:
           name: coverage
           path: dist/docs/coverage
