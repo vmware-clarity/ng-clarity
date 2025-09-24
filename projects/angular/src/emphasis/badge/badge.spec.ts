@@ -25,14 +25,12 @@ class TestComponent {
 describe('ClrBadge component', () => {
   describe('View', () => {
     let fixture: ComponentFixture<any>;
-    let compiled: any;
 
     beforeEach(() => {
       TestBed.configureTestingModule({ imports: [ClrBadgeModule], declarations: [TestComponent] });
 
       fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
-      compiled = fixture.nativeElement;
     });
 
     afterEach(() => {
@@ -43,7 +41,7 @@ describe('ClrBadge component', () => {
 
     it('projects content', () => {
       // default
-      const badgeElement = compiled.querySelector('.badge');
+      const badgeElement = fixture.nativeElement.querySelector('.badge');
       expect(badgeElement).not.toBeNull();
 
       expect(badgeElement.textContent).toBeEmptyString();
@@ -55,16 +53,105 @@ describe('ClrBadge component', () => {
       expect(badgeElement.textContent).toBe(newBadgeText);
     });
 
-    it('change color', () => {
+    it('change to regular colors', () => {
       // default
-      const badgeElement = compiled.querySelector('.badge');
+      const badgeElement = fixture.nativeElement.querySelector('.badge');
       expect(badgeElement).not.toBeNull();
 
-      // set color purple
+      // set purple color
       fixture.componentInstance.color = ClrBadgeColors.Purple;
       fixture.detectChanges();
 
       expect(badgeElement.className).toContain('badge-purple');
+
+      // set blue color
+      fixture.componentInstance.color = ClrBadgeColors.Blue;
+      fixture.detectChanges();
+
+      expect(badgeElement.className).toContain('badge-blue');
+
+      // set light blue color
+      fixture.componentInstance.color = ClrBadgeColors.LightBlue;
+      fixture.detectChanges();
+
+      expect(badgeElement.className).toContain('badge-light-blue');
+
+      // set orange color
+      fixture.componentInstance.color = ClrBadgeColors.Orange;
+      fixture.detectChanges();
+
+      expect(badgeElement.className).toContain('badge-orange');
+      // set gray color
+      fixture.componentInstance.color = ClrBadgeColors.Gray;
+      fixture.detectChanges();
+
+      expect(badgeElement.className).toContain('badge-gray');
+    });
+
+    it('change to status colors', () => {
+      // default
+      const badgeElement = fixture.nativeElement.querySelector('.badge');
+      expect(badgeElement).not.toBeNull();
+
+      // set info color
+      fixture.componentInstance.color = ClrBadgeColors.Info;
+      fixture.detectChanges();
+
+      expect(badgeElement.className).toContain('badge-info');
+
+      // set warning color
+      fixture.componentInstance.color = ClrBadgeColors.Warning;
+      fixture.detectChanges();
+
+      expect(badgeElement.className).toContain('badge-warning');
+
+      // set danger color
+      fixture.componentInstance.color = ClrBadgeColors.Danger;
+      fixture.detectChanges();
+
+      expect(badgeElement.className).toContain('badge-danger');
+
+      // set success color
+      fixture.componentInstance.color = ClrBadgeColors.Success;
+      fixture.detectChanges();
+
+      expect(badgeElement.className).toContain('badge-success');
+    });
+
+    it('change to number colors', () => {
+      // default
+      const badgeElement = fixture.nativeElement.querySelector('.badge');
+      expect(badgeElement).not.toBeNull();
+
+      // set color 1
+      fixture.componentInstance.color = '1';
+      fixture.detectChanges();
+
+      expect(badgeElement.className).toContain('badge-1');
+
+      // set color 2
+      fixture.componentInstance.color = '2';
+      fixture.detectChanges();
+
+      expect(badgeElement.className).toContain('badge-2');
+
+      // set color 3
+      fixture.componentInstance.color = '3';
+      fixture.detectChanges();
+
+      expect(badgeElement.className).toContain('badge-3');
+
+      // set color 4
+      fixture.componentInstance.color = '4';
+      fixture.detectChanges();
+
+      expect(badgeElement.className).toContain('badge-4');
+
+      // set color 5
+      fixture.componentInstance.color = '5';
+      fixture.detectChanges();
+
+      expect(badgeElement.className).toContain('badge-5');
     });
   });
 });
