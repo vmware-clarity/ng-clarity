@@ -552,7 +552,7 @@ export class ClrBadge {
     // (undocumented)
     get colorClass(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrBadgeColor"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrBadgeColor"; "required": false; }; }, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrBadge, never>;
 }
@@ -579,16 +579,6 @@ export enum ClrBadgeColors {
     Success = "success",
     // (undocumented)
     Warning = "warning"
-}
-
-// @public (undocumented)
-export class ClrBadgeModule {
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBadgeModule, never>;
-    // (undocumented)
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrBadgeModule>;
-    // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBadgeModule, [typeof ClrBadge], [typeof i2.CommonModule], [typeof ClrBadge]>;
 }
 
 // @public (undocumented)
@@ -2401,7 +2391,7 @@ export class ClrEmphasisModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrEmphasisModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, never, [typeof ClrAlertModule, typeof ClrBadgeModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, [typeof ClrBadge], [typeof ClrAlertModule, typeof ClrBadge]>;
 }
 
 // @public (undocumented)

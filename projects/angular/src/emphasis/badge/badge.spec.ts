@@ -9,7 +9,6 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrBadge, ClrBadgeColors } from './badge';
-import { ClrBadgeModule } from './badge.module';
 
 @Component({
   template: ` <clr-badge [clrBadgeColor]="color">{{ content }}</clr-badge> `,
@@ -27,7 +26,7 @@ describe('ClrBadge component', () => {
     let fixture: ComponentFixture<any>;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({ imports: [ClrBadgeModule], declarations: [TestComponent] });
+      TestBed.configureTestingModule({ imports: [ClrBadge], declarations: [TestComponent] });
 
       fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();

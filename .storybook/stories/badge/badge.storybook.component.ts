@@ -7,7 +7,7 @@
 
 import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ClrBadgeModule } from '@clr/angular';
+import { ClrBadge } from '@clr/angular';
 
 @Component({
   selector: 'storybook-badge',
@@ -24,7 +24,7 @@ import { ClrBadgeModule } from '@clr/angular';
     }
   `,
   standalone: true,
-  imports: [NgClass, ClrBadgeModule],
+  imports: [NgClass, ClrBadge],
 })
 export class BadgeStoryBookComponent {
   @Input() context = '42';

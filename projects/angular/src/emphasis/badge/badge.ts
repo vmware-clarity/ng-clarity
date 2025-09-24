@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 export enum ClrBadgeColors {
@@ -23,7 +24,7 @@ export enum ClrBadgeColors {
 @Component({
   selector: 'clr-badge',
   template: `<span class="badge" [ngClass]="colorClass"><ng-content></ng-content></span>`,
-  standalone: false,
+  imports: [NgClass],
 })
 export class ClrBadge {
   @Input('clrBadgeColor') color: ClrBadgeColors | string = ClrBadgeColors.Empty;
