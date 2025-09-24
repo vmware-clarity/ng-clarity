@@ -15,7 +15,7 @@ import { BadgeStoryBookComponent } from '../badge/badge.storybook.component';
 import { LabelStoryBookComponent } from '../label/label.storybook.component';
 
 const LABEL_TYPES = ['label-info', 'label-success', 'label-warning', 'label-danger'];
-const BADGE_TYPES = ['badge-info', 'badge-success', 'badge-warning', 'badge-danger'];
+const BADGE_TYPES = ['info', 'success', 'warning', 'danger'];
 const innerComponents = [
   { type: BadgeStoryBookComponent, options: { badgeTypes: [BADGE_TYPES[2]], context: '5+', showLinkBadge: false } },
   { type: LabelStoryBookComponent, options: { labelTypes: [LABEL_TYPES[0]], content: '2+' } },

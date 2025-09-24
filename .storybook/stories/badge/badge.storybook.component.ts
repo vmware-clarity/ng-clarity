@@ -5,27 +5,39 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { ClrBadge } from '@clr/angular';
 
 @Component({
   selector: 'storybook-badge',
   template: `
-    <ng-container *ngFor="let status of badgeList">
-      <span class="badge" [ngClass]="status">{{ context }}</span>
-      <a *ngIf="showLinkBadge" href="#" class="badge" [ngClass]="status">{{ context }}</a>
-    </ng-container>
+    @for (status of badgeList; track status) {
+      @if (cssBadge) {
+        <span class="badge" [ngClass]="badgeClass(status)">{{ context }}</span>
+        @if (showLinkBadge) {
+          <a href="#" class="badge" [ngClass]="badgeClass(status)">{{ context }}</a>
+        }
+      } @else {
+        <clr-badge [clrBadgeColor]="status">{{ context }}</clr-badge>
+      }
+    }
   `,
   standalone: true,
-  imports: [NgIf, NgFor, NgClass],
+  imports: [NgClass, ClrBadge],
 })
 export class BadgeStoryBookComponent {
   @Input() context = '42';
   @Input() showLinkBadge = true;
+  @Input() cssBadge = true;
   @Input() badgeTypes: string[] = [''];
   @Input() badgeType = '';
 
   get badgeList() {
     return this.badgeType ? [this.badgeType] : this.badgeTypes;
+  }
+
+  badgeClass(name: string) {
+    return `badge-${name}`;
   }
 }
