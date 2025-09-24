@@ -22,7 +22,7 @@ export enum ClrBadgeColors {
 
 @Component({
   selector: 'clr-badge',
-  template: ` <span class="badge" [ngClass]="colorClass"><ng-content></ng-content></span>`,
+  template: `<span class="badge" [ngClass]="colorClass"><ng-content></ng-content></span>`,
   standalone: false,
 })
 export class ClrBadge {
