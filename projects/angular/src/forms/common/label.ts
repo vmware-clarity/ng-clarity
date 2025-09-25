@@ -28,7 +28,7 @@ import { NgControlService } from './providers/ng-control.service';
   selector: 'label',
   standalone: false,
 })
-export class ClrLabel implements OnInit, OnDestroy {
+export class ClrControlLabel implements OnInit, OnDestroy {
   @Input('id') idInput: string;
   @HostBinding('attr.id') idAttr: string;
 

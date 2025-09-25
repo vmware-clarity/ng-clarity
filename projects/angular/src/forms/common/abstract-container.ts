@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
 import { CONTROL_STATE, IfControlStateService } from './if-control-state/if-control-state.service';
-import { ClrLabel } from './label';
+import { ClrControlLabel } from './label';
 import { ControlClassService } from './providers/control-class.service';
 import { LayoutService } from './providers/layout.service';
 import { NgControlService } from './providers/ng-control.service';
@@ -20,7 +20,7 @@ import { ClrControlSuccess } from './success';
 
 @Directive()
 export abstract class ClrAbstractContainer implements OnDestroy, AfterContentInit {
-  @ContentChild(ClrLabel, { static: false }) label: ClrLabel;
+  @ContentChild(ClrControlLabel, { static: false }) label: ClrControlLabel;
   @ContentChild(ClrControlSuccess) controlSuccessComponent: ClrControlSuccess;
   @ContentChild(ClrControlError) controlErrorComponent: ClrControlError;
   @ContentChild(ClrControlHelper) controlHelperComponent: ClrControlHelper;

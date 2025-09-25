@@ -7,7 +7,7 @@
 
 import { ContentChildren, Directive, HostListener, Input, QueryList } from '@angular/core';
 
-import { ClrLabel } from './label';
+import { ClrControlLabel } from './label';
 import { LayoutService } from './providers/layout.service';
 import { MarkControlService } from './providers/mark-control.service';
 
@@ -22,7 +22,7 @@ import { MarkControlService } from './providers/mark-control.service';
   standalone: false,
 })
 export class ClrForm {
-  @ContentChildren(ClrLabel, { descendants: true }) labels: QueryList<ClrLabel>;
+  @ContentChildren(ClrControlLabel, { descendants: true }) labels: QueryList<ClrControlLabel>;
 
   constructor(
     public layoutService: LayoutService,
