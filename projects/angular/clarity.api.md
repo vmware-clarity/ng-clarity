@@ -2942,9 +2942,35 @@ export class ClrLabel {
     // (undocumented)
     get colorClass(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeContent": { "alias": "clrBadgeContent"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "closable": { "alias": "clrClosable"; "required": false; }; }, {}, never, ["*"], true, never>;
+    disabled: boolean;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeContent": { "alias": "clrBadgeContent"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "closable": { "alias": "clrClosable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; }, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLabel, never>;
+}
+
+// @public (undocumented)
+export enum ClrLabelColors {
+    // (undocumented)
+    Blue = "blue",
+    // (undocumented)
+    Danger = "danger",
+    // (undocumented)
+    Empty = "",
+    // (undocumented)
+    Gray = "gray",
+    // (undocumented)
+    Info = "info",
+    // (undocumented)
+    LightBlue = "light-blue",
+    // (undocumented)
+    Orange = "orange",
+    // (undocumented)
+    Purple = "purple",
+    // (undocumented)
+    Success = "success",
+    // (undocumented)
+    Warning = "warning"
 }
 
 // @public (undocumented)
@@ -4527,30 +4553,6 @@ export class ClrTabsModule {
     //
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa], [typeof i2.CommonModule, typeof ClrConditionalModule, typeof ClrIconModule, typeof ClrTemplateRefModule, typeof ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa, typeof ClrConditionalModule]>;
-}
-
-// @public (undocumented)
-export enum ClrLabelColors {
-    // (undocumented)
-    Blue = "blue",
-    // (undocumented)
-    Danger = "danger",
-    // (undocumented)
-    Empty = "",
-    // (undocumented)
-    Gray = "gray",
-    // (undocumented)
-    Info = "info",
-    // (undocumented)
-    LightBlue = "light-blue",
-    // (undocumented)
-    Orange = "orange",
-    // (undocumented)
-    Purple = "purple",
-    // (undocumented)
-    Success = "success",
-    // (undocumented)
-    Warning = "warning"
 }
 
 // @public (undocumented)

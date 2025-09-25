@@ -25,6 +25,9 @@ export default {
     // story helpers
     clickable: false,
     closeIcon: false,
+    disabled: false,
+    cssLabel: true,
+    showBadge: false,
   },
 };
 
@@ -52,6 +55,16 @@ export const StatusLabel: StoryObj = {
   },
   args: {
     labelTypes: LABEL_STATUS_TYPES,
+  },
+};
+
+export const DisabledLabel: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    labelType: '',
+    disabled: true,
   },
 };
 
@@ -83,5 +96,53 @@ export const StatusLabelClickableWithClose: StoryObj = {
     labelTypes: LABEL_STATUS_TYPES,
     clickable: true,
     closeIcon: true,
+  },
+};
+
+export const AngularComponent: StoryObj = {
+  argTypes: {
+    labelType: { control: { type: 'select' }, options: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES] },
+  },
+  args: {
+    labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
+    cssLabel: false,
+  },
+};
+
+export const AngularComponentClickableWithBadge: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
+    cssLabel: false,
+    clickable: true,
+    showBadge: true,
+  },
+};
+
+export const AngularComponentClickableWithClose: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
+    cssLabel: false,
+    clickable: true,
+    closeIcon: true,
+  },
+};
+
+export const AngularComponentDisabled: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
+    disabled: true,
+    cssLabel: false,
+    clickable: true,
+    closeIcon: true,
+    showBadge: true,
   },
 };

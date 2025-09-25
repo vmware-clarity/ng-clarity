@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 import { ClrIconModule } from '../../icon';
@@ -26,22 +25,27 @@ export enum ClrLabelColors {
 
 @Component({
   selector: 'clr-label',
-  template: ` <span class="label" [ngClass]="colorClass" [class.clickable]="clickable">
-    <span class="text"><ng-content></ng-content></span>
+  template: ` <span class="text"><ng-content></ng-content></span>
     @if (badgeContent) {
       <clr-badge>{{ badgeContent }}</clr-badge>
     }
     @if (closable) {
       <cds-icon shape="close"></cds-icon>
-    }
-  </span>`,
-  imports: [NgClass, ClrBadge, ClrIconModule],
+    }`,
+  host: {
+    class: 'label',
+    '[class.clickable]': 'clickable',
+    '[class.disabled]': 'disabled',
+    '[class]': 'colorClass',
+  },
+  imports: [ClrBadge, ClrIconModule],
 })
 export class ClrLabel {
   @Input('clrColor') color: ClrLabelColors | string = ClrLabelColors.Empty;
   @Input('clrBadgeContent') badgeContent = '';
   @Input('clrClickable') clickable = false;
   @Input('clrClosable') closable = false;
+  @Input('clrDisabled') disabled = false;
 
   get colorClass() {
     return this.color ? `label-${this.color}` : '';
