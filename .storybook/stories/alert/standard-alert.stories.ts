@@ -147,6 +147,44 @@ export const WithLongContentAndOpenActionsDropdown: StoryObj = {
   },
 };
 
+export const MultipleSeparatedAlerts: StoryObj = {
+  args: {
+    alertCount: 1,
+    alertTypes: ['info', 'info'],
+  },
+};
+
+export const MultipleSeparatedAlertsInsideCard: StoryObj = {
+  args: {
+    alertCount: 1,
+    alertTypes: ['info', 'info'],
+  },
+  render: (args: StandardAlertStorybookComponent) => ({
+    props: {
+      ...args,
+    },
+    template: `
+      <div class="card">
+        <div class="card-header">
+          Header
+          <storybook-standard-alert ${argsToTemplate(args)}></storybook-standard-alert>
+        </div>
+        <div class="card-block">
+          <div class="card-title">Block</div>
+          <div class="card-text">
+            <storybook-standard-alert ${argsToTemplate(args)}></storybook-standard-alert>
+            Card content can contain text, links, images, data visualizations, lists and more.
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-sm btn-link">Footer Action 1</button>
+          <button class="btn btn-sm btn-link">Footer Action 2</button>
+        </div>
+      </div>
+    `,
+  }),
+};
+
 function openDropdown({ canvasElement }: StoryContext) {
   canvasElement.querySelector<HTMLButtonElement>('button[clrDropdownTrigger]').click();
 
