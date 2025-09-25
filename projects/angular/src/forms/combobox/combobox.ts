@@ -26,6 +26,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { filter, tap } from 'rxjs';
 
 import { ClrComboboxContainer } from './combobox-container';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
@@ -132,6 +133,14 @@ export class ClrCombobox<T>
     // default to SingleSelectComboboxModel, in case the optional input [ClrMulti] isn't used
     optionSelectionService.selectionModel = new SingleSelectComboboxModel<T>();
     this.updateControlValue();
+  }
+
+  @Input('clrEditable')
+  get editable() {
+    return this.optionSelectionService.editable;
+  }
+  set editable(value: boolean) {
+    this.optionSelectionService.editable = value;
   }
 
   @Input('clrMulti')
@@ -311,8 +320,14 @@ export class ClrCombobox<T>
     // do nothing
   }
 
-  focusInput() {
+  onWrapperClick(event) {
+    if (this.disabled) {
+      return;
+    }
     this.focusHandler.focusInput();
+    if (this.editable || (!this.editable && this.trigger.nativeElement.contains(event.target))) {
+      this.toggleService.toggleWithEvent(event);
+    }
   }
 
   private initializeSubscriptions(): void {
@@ -326,11 +341,30 @@ export class ClrCombobox<T>
           this.toggleService.open = false;
         }
         this.updateControlValue();
-      })
+      }),
+      this.focusHandler.pseudoFocus.focusChanged
+        .pipe(
+          filter(item => !!item),
+          tap(item => {
+            if (this.editable) {
+              this.optionSelectionService.filtering = false;
+              this.searchText = item.value as string;
+              this.optionSelectionService.filtering = true;
+            }
+          })
+        )
+        .subscribe()
     );
 
     this.subscriptions.push(
       this.toggleService.openChange.subscribe(open => {
+        if (this.editable) {
+          if (this.searchText) {
+            this.optionSelectionService.showAllOptions = false;
+            this.optionSelectionService.currentInput = this.searchText;
+          }
+          return;
+        }
         if (open) {
           this.focusFirstActive();
         } else {

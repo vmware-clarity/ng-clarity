@@ -60,6 +60,7 @@ let nbOptionsComponents = 0;
   providers: [{ provide: LoadingListener, useExisting: ClrOptions }],
   host: {
     '[class.clr-combobox-options]': 'true',
+    '[class.clr-combobox-options-hidden]': 'emptyOptions && editable',
     '[attr.role]': '"listbox"',
     '[id]': 'optionsId',
   },
@@ -108,6 +109,10 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
    */
   get emptyOptions() {
     return !this.optionSelectionService.loading && this.items.length === 0;
+  }
+
+  get editable() {
+    return this.optionSelectionService.editable;
   }
 
   get noResultsElementId() {

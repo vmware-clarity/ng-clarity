@@ -14,6 +14,8 @@ import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 @Injectable()
 export class OptionSelectionService<T> {
   loading = false;
+  editable = false;
+  filtering = true;
   displayField: string;
   selectionModel: ComboboxModel<T>;
   inputChanged: Observable<string>;

@@ -49,6 +49,7 @@ export default {
     updateOn: { control: { type: 'radio' }, options: ['change', 'blur', 'submit'] },
   },
   args: {
+    clrEditable: false,
     clrMulti: false,
     placeholder: 'Placeholder text',
     id: '',
@@ -82,6 +83,33 @@ export const SingleSelectionWithGroups: StoryObj = {
 
 export const SingleSelectionDisabled: StoryObj = {
   args: {
+    controlDisabled: true,
+  },
+};
+
+export const Editable: StoryObj = {
+  args: {
+    clrEditable: true,
+  },
+};
+
+export const Editable_Preselected: StoryObj = {
+  args: {
+    singleModel: 'Ba',
+    clrEditable: true,
+  },
+};
+
+export const EditableWithGroups: StoryObj = {
+  args: {
+    useGroups: true,
+    clrEditable: true,
+  },
+};
+
+export const EditableDisabled: StoryObj = {
+  args: {
+    clrEditable: true,
     controlDisabled: true,
   },
 };

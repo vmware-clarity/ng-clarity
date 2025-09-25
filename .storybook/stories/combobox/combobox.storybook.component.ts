@@ -25,6 +25,7 @@ interface OptionGroup {
     <clr-combobox-container>
       <label [for]="id">{{ label }}</label>
       <clr-combobox
+        [clrEditable]="clrEditable"
         [clrMulti]="clrMulti"
         [placeholder]="placeholder"
         [id]="id"
@@ -79,6 +80,7 @@ interface OptionGroup {
   `,
 })
 export class StorybookComboboxComponent {
+  @Input() clrEditable = false;
   @Input() clrMulti = false;
   @Input() placeholder = 'Placeholder text';
   @Input() id = '';
