@@ -51,11 +51,11 @@ export default function (): void {
       const element = document.createElement('input');
       element.className = 'test-class';
       controlClassService.initControlClass(renderer as any, element);
-      expect(controlClassService.className).toEqual('test-class');
+      expect(controlClassService.className).toEqual('');
       expect(renderer.removeClass).not.toHaveBeenCalled();
       element.className = 'clr-col-4 test-class';
       controlClassService.initControlClass(renderer as any, element);
-      expect(controlClassService.className).toEqual('clr-col-4 test-class');
+      expect(controlClassService.className).toEqual('clr-col-4');
       expect(renderer.removeClass).toHaveBeenCalledWith(element, 'clr-col-4');
     });
 

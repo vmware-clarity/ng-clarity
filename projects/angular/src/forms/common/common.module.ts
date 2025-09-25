@@ -16,7 +16,7 @@ import { ClrForm } from './form';
 import { ClrControlHelper } from './helper';
 import { ClrIfError } from './if-control-state/if-error';
 import { ClrIfSuccess } from './if-control-state/if-success';
-import { ClrLabel } from './label';
+import { ClrControlLabel } from './label';
 import { ClrLayout } from './layout';
 import { ClrControlSuccess } from './success';
 import { ClrIconModule } from '../../icon/icon.module';
@@ -24,7 +24,7 @@ import { ClrIconModule } from '../../icon/icon.module';
 @NgModule({
   imports: [CommonModule, ClrIconModule],
   declarations: [
-    ClrLabel,
+    ClrControlLabel,
     ClrControlError,
     ClrControlSuccess,
     ClrControlHelper,
@@ -36,7 +36,7 @@ import { ClrIconModule } from '../../icon/icon.module';
     ClrControl,
   ],
   exports: [
-    ClrLabel,
+    ClrControlLabel,
     ClrControlError,
     ClrControlSuccess,
     ClrControlHelper,

@@ -17,7 +17,7 @@ import {
 } from '@angular/core';
 
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrLabel } from '../common';
+import { ClrControlLabel } from '../common';
 import { ClrRadio } from './radio';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
@@ -78,7 +78,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
   ariaLabelledBy: string;
 
   @ContentChildren(ClrRadio, { descendants: true }) radios: QueryList<ClrRadio>;
-  @ContentChild(ClrLabel, { read: ElementRef, static: true }) groupLabel: ElementRef<HTMLElement>;
+  @ContentChild(ClrControlLabel, { read: ElementRef, static: true }) groupLabel: ElementRef<HTMLElement>;
 
   private inline = false;
   private _generatedId = uniqueIdFactory();

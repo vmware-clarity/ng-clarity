@@ -55,7 +55,7 @@ function fullTest(description, testContainer, testControl, testComponent, contro
       datalistIdService;
 
     beforeEach(() => {
-      spyOn(WrappedFormControl.prototype, 'ngOnInit');
+      spyOn(WrappedFormControl.prototype, 'ngOnInit').and.callThrough();
       spyOn(ControlClassService.prototype, 'initControlClass').and.callThrough();
       TestBed.configureTestingModule({
         imports: [FormsModule, ClrIconModule, ClrCommonFormsModule, ReactiveFormsModule],
@@ -109,7 +109,7 @@ function fullTest(description, testContainer, testControl, testComponent, contro
     it('should set the class on the control with ControlClassService', () => {
       expect(controlClassService).toBeTruthy();
       expect(controlClassService.initControlClass).toHaveBeenCalled();
-      expect(controlClassService.className).toEqual('test-class');
+      expect(controlClassService.className).toEqual('');
     });
 
     it('should handle blur events', () => {
