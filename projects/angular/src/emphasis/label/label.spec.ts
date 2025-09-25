@@ -8,25 +8,25 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClrTag, ClrTagColors } from './label';
+import { ClrLabel, ClrLabelColors } from './label';
 
 @Component({
   template: ` <clr-badge [clrColor]="color">{{ content }}</clr-badge> `,
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrTag) badgeInstance: ClrTag;
+  @ViewChild(ClrLabel) badgeInstance: ClrLabel;
 
   content = '';
-  color: ClrTagColors | string = ClrTagColors.Empty;
+  color: ClrLabelColors | string = ClrLabelColors.Empty;
 }
 
-describe('ClrTag component', () => {
+describe('ClrLabel component', () => {
   describe('View', () => {
     let fixture: ComponentFixture<any>;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({ imports: [ClrTag], declarations: [TestComponent] });
+      TestBed.configureTestingModule({ imports: [ClrLabel], declarations: [TestComponent] });
 
       fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -58,30 +58,30 @@ describe('ClrTag component', () => {
       expect(badgeElement).not.toBeNull();
 
       // set purple color
-      fixture.componentInstance.color = ClrTagColors.Purple;
+      fixture.componentInstance.color = ClrLabelColors.Purple;
       fixture.detectChanges();
 
       expect(badgeElement.className).toContain('badge-purple');
 
       // set blue color
-      fixture.componentInstance.color = ClrTagColors.Blue;
+      fixture.componentInstance.color = ClrLabelColors.Blue;
       fixture.detectChanges();
 
       expect(badgeElement.className).toContain('badge-blue');
 
       // set light blue color
-      fixture.componentInstance.color = ClrTagColors.LightBlue;
+      fixture.componentInstance.color = ClrLabelColors.LightBlue;
       fixture.detectChanges();
 
       expect(badgeElement.className).toContain('badge-light-blue');
 
       // set orange color
-      fixture.componentInstance.color = ClrTagColors.Orange;
+      fixture.componentInstance.color = ClrLabelColors.Orange;
       fixture.detectChanges();
 
       expect(badgeElement.className).toContain('badge-orange');
       // set gray color
-      fixture.componentInstance.color = ClrTagColors.Gray;
+      fixture.componentInstance.color = ClrLabelColors.Gray;
       fixture.detectChanges();
 
       expect(badgeElement.className).toContain('badge-gray');
@@ -93,25 +93,25 @@ describe('ClrTag component', () => {
       expect(badgeElement).not.toBeNull();
 
       // set info color
-      fixture.componentInstance.color = ClrTagColors.Info;
+      fixture.componentInstance.color = ClrLabelColors.Info;
       fixture.detectChanges();
 
       expect(badgeElement.className).toContain('badge-info');
 
       // set warning color
-      fixture.componentInstance.color = ClrTagColors.Warning;
+      fixture.componentInstance.color = ClrLabelColors.Warning;
       fixture.detectChanges();
 
       expect(badgeElement.className).toContain('badge-warning');
 
       // set danger color
-      fixture.componentInstance.color = ClrTagColors.Danger;
+      fixture.componentInstance.color = ClrLabelColors.Danger;
       fixture.detectChanges();
 
       expect(badgeElement.className).toContain('badge-danger');
 
       // set success color
-      fixture.componentInstance.color = ClrTagColors.Success;
+      fixture.componentInstance.color = ClrLabelColors.Success;
       fixture.detectChanges();
 
       expect(badgeElement.className).toContain('badge-success');

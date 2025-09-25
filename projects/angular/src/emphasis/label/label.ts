@@ -11,7 +11,7 @@ import { Component, Input } from '@angular/core';
 import { ClrIconModule } from '../../icon';
 import { ClrBadge } from '../badge';
 
-export enum ClrTagColors {
+export enum ClrLabelColors {
   Empty = '',
   Info = 'info',
   Warning = 'warning',
@@ -37,8 +37,8 @@ export enum ClrTagColors {
   </span>`,
   imports: [NgClass, ClrBadge, ClrIconModule],
 })
-export class ClrTag {
-  @Input('clrColor') color: ClrTagColors | string = ClrTagColors.Empty;
+export class ClrLabel {
+  @Input('clrColor') color: ClrLabelColors | string = ClrLabelColors.Empty;
   @Input('clrBadgeContent') badgeContent = '';
   @Input('clrClickable') clickable = false;
   @Input('clrClosable') closable = false;

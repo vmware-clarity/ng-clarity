@@ -9,10 +9,10 @@ import { NgModule } from '@angular/core';
 
 import { ClrAlertModule } from './alert';
 import { ClrBadge } from './badge';
-import { ClrTag } from './label';
+import { ClrLabel } from './label';
 
 @NgModule({
-  imports: [ClrBadge, ClrTag],
-  exports: [ClrAlertModule, ClrBadge, ClrTag],
+  imports: [ClrBadge, ClrLabel],
+  exports: [ClrAlertModule, ClrBadge, ClrLabel],
 })
 export class ClrEmphasisModule {}

@@ -7,7 +7,7 @@
 
 import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ClrIconModule, ClrTag } from '@clr/angular';
+import { ClrIconModule, ClrLabel } from '@clr/angular';
 
 import { RenderComponentStorybook } from '../../helpers/render-component';
 
@@ -35,7 +35,7 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
     }
   `,
   standalone: true,
-  imports: [ClrIconModule, ClrTag, NgClass],
+  imports: [ClrIconModule, ClrLabel, NgClass],
 })
 export class LabelStoryBookComponent extends RenderComponentStorybook {
   @Input() content = 'Hello World!';

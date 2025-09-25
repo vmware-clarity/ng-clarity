@@ -2414,7 +2414,7 @@ export class ClrEmphasisModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrEmphasisModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, [typeof ClrBadge], [typeof ClrAlertModule, typeof ClrBadge]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, [typeof ClrBadge, typeof ClrLabel], [typeof ClrAlertModule, typeof ClrBadge, typeof ClrLabel]>;
 }
 
 // @public (undocumented)
@@ -2927,6 +2927,24 @@ export class ClrInputModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrInputModule>;
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof ClrInput, typeof ClrInputContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIconModule, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrInput, typeof ClrInputContainer]>;
+}
+
+// @public (undocumented)
+export class ClrLabel {
+    // (undocumented)
+    badgeContent: string;
+    // (undocumented)
+    clickable: boolean;
+    // (undocumented)
+    closable: boolean;
+    // (undocumented)
+    color: ClrLabelColors | string;
+    // (undocumented)
+    get colorClass(): string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeContent": { "alias": "clrBadgeContent"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "closable": { "alias": "clrClosable"; "required": false; }; }, {}, never, ["*"], true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLabel, never>;
 }
 
 // @public (undocumented)
@@ -4509,6 +4527,30 @@ export class ClrTabsModule {
     //
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa], [typeof i2.CommonModule, typeof ClrConditionalModule, typeof ClrIconModule, typeof ClrTemplateRefModule, typeof ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa, typeof ClrConditionalModule]>;
+}
+
+// @public (undocumented)
+export enum ClrLabelColors {
+    // (undocumented)
+    Blue = "blue",
+    // (undocumented)
+    Danger = "danger",
+    // (undocumented)
+    Empty = "",
+    // (undocumented)
+    Gray = "gray",
+    // (undocumented)
+    Info = "info",
+    // (undocumented)
+    LightBlue = "light-blue",
+    // (undocumented)
+    Orange = "orange",
+    // (undocumented)
+    Purple = "purple",
+    // (undocumented)
+    Success = "success",
+    // (undocumented)
+    Warning = "warning"
 }
 
 // @public (undocumented)
