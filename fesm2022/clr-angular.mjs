@@ -1,7 +1,7 @@
 import * as i0 from '@angular/core';
 import { Directive, NgModule, Input, Optional, Injectable, ChangeDetectionStrategy, Component, EventEmitter, ContentChildren, Output, HostBinding, SkipSelf, PLATFORM_ID, ViewChild, Inject, HostListener, Renderer2, DOCUMENT, InjectionToken, ElementRef, NgZone, ChangeDetectorRef, ContentChild, forwardRef, KeyValueDiffers, Self, Attribute, LOCALE_ID, TemplateRef, ViewContainerRef, inject, Injector, runInInjectionContext, EnvironmentInjector, IterableDiffers, ViewChildren } from '@angular/core';
 import * as i5 from '@angular/common';
-import { CommonModule, isPlatformBrowser, NgForOf, getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, getLocaleFirstDayOfWeek, getLocaleDateFormat, FormatWidth, NgClass } from '@angular/common';
+import { CommonModule, isPlatformBrowser, NgForOf, getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, getLocaleFirstDayOfWeek, getLocaleDateFormat, FormatWidth } from '@angular/common';
 import { ClarityIcons, angleIcon, exclamationCircleIcon, checkCircleIcon, ellipsisHorizontalIcon, windowCloseIcon, infoCircleIcon, timesIcon, angleDoubleIcon, eventIcon, calendarIcon, folderOpenIcon, minusIcon, plusIcon, eyeHideIcon, eyeIcon, ellipsisVerticalIcon, viewColumnsIcon, arrowIcon, stepForward2Icon, filterGridCircleIcon, filterGridIcon, errorStandardIcon, helpIcon, infoStandardIcon, noteIcon, successStandardIcon, warningStandardIcon, circleIcon, dotCircleIcon } from '@cds/core/icon';
 import { map, tap, startWith, distinctUntilChanged, filter, skipUntil, debounceTime, takeUntil, take, first, switchMap as switchMap$1 } from 'rxjs/operators';
 import * as i2$1 from 'rxjs';
@@ -27275,18 +27275,21 @@ class ClrBadge {
         return this.color ? `badge-${this.color}` : '';
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrBadge, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrBadge, isStandalone: true, selector: "clr-badge", inputs: { color: ["clrBadgeColor", "color"] }, ngImport: i0, template: `<span class="badge" [ngClass]="colorClass"><ng-content></ng-content></span>`, isInline: true, dependencies: [{ kind: "directive", type: NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }] }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrBadge, isStandalone: true, selector: "clr-badge", inputs: { color: ["clrColor", "color"] }, host: { properties: { "class": "colorClass" }, classAttribute: "badge" }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrBadge, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-badge',
-                    template: `<span class="badge" [ngClass]="colorClass"><ng-content></ng-content></span>`,
-                    imports: [NgClass],
+                    template: `<ng-content></ng-content>`,
+                    host: {
+                        class: 'badge',
+                        '[class]': 'colorClass',
+                    },
                 }]
         }], propDecorators: { color: [{
                 type: Input,
-                args: ['clrBadgeColor']
+                args: ['clrColor']
             }] } });
 
 /*

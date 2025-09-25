@@ -31,7 +31,7 @@ declare class ClrBadge {
     color: ClrBadgeColors | string;
     get colorClass(): string;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrBadge, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrBadgeColor"; "required": false; }; }, {}, never, ["*"], true, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrColor"; "required": false; }; }, {}, never, ["*"], true, never>;
 }
 
 interface ClrCommonStrings {
