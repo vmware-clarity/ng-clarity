@@ -6,10 +6,10 @@
  */
 
 @use 'sass:meta';
-@use '../utils/mixins';
-@use 'badge/variables.badges' as badges-variables;
+@use '../../utils/mixins';
+@use '../badge/variables.badges' as badges-variables;
 @use 'variables.label' as label-variables;
-@use '../utils/variables/variables.density' as density;
+@use '../../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.label');
@@ -102,6 +102,8 @@
     }
 
     &.clickable:not(.disabled) {
+      cursor: pointer;
+
       &:hover {
         text-decoration: none;
         background: label-variables.$clr-label-bg-hover-color;

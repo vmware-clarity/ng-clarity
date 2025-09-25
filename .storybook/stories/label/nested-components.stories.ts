@@ -18,7 +18,7 @@ const nestedComponents = [
     type: LabelStoryBookComponent,
     options: {
       clickable: false,
-      labelColorTypes: ['label-info'],
+      labelColorTypes: ['info'],
       closeIcon: true,
       components: [
         { type: BadgeStoryBookComponent, options: { context: '1', badgeTypes: [''], showLinkBadge: false } },
@@ -29,7 +29,7 @@ const nestedComponents = [
     type: LabelStoryBookComponent,
     options: {
       clickable: true,
-      labelColorTypes: ['label-success'],
+      labelColorTypes: ['success'],
       components: [
         { type: BadgeStoryBookComponent, options: { context: '2', badgeTypes: ['info'], showLinkBadge: false } },
       ],
@@ -38,7 +38,7 @@ const nestedComponents = [
   {
     type: LabelStoryBookComponent,
     options: {
-      labelColorTypes: ['label-warning'],
+      labelColorTypes: ['warning'],
       components: [
         {
           type: BadgeStoryBookComponent,

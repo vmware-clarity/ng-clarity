@@ -5,36 +5,42 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ClrIconModule } from '@clr/angular';
+import { ClrIconModule, ClrTag } from '@clr/angular';
 
 import { RenderComponentStorybook } from '../../helpers/render-component';
 
 @Component({
   selector: 'storybook-label',
   template: `
-    <ng-template #labelContent>
-      <span class="text">{{ content }}</span>
-      <ng-container #renderContainer></ng-container>
-      <cds-icon *ngIf="closeIcon" shape="close"></cds-icon>
-    </ng-template>
-    <ng-container *ngIf="clickable">
-      <a href="javascript://" class="label clickable" *ngFor="let type of labelList" [class]="type">
-        <ng-container *ngTemplateOutlet="labelContent"></ng-container>
-      </a>
-    </ng-container>
-    <ng-container *ngIf="!clickable">
-      <span class="label" *ngFor="let type of labelList" [class]="type">
-        <ng-container *ngTemplateOutlet="labelContent"></ng-container>
-      </span>
-    </ng-container>
+    @for (type of labelList; track type) {
+      @if (cssLabel) {
+        <span class="label" [ngClass]="labelClass(type)" [class.clickable]="clickable">
+          <span class="text">{{ content }}</span>
+          @if (closeIcon) {
+            <cds-icon shape="close"></cds-icon>
+          }
+        </span>
+      } @else {
+        <clr-label
+          [clrColor]="type"
+          [clrBadgeContent]="badgeContent"
+          [clrClickable]="clickable"
+          [clrClosable]="closeIcon"
+        >
+          {{ content }}
+        </clr-label>
+      }
+    }
   `,
   standalone: true,
-  imports: [NgFor, NgIf, NgTemplateOutlet, ClrIconModule],
+  imports: [ClrIconModule, ClrTag, NgClass],
 })
 export class LabelStoryBookComponent extends RenderComponentStorybook {
   @Input() content = 'Hello World!';
+  @Input() badgeContent = '42';
+  @Input() cssLabel = true;
   @Input() clickable = false;
   @Input() closeIcon = false;
   @Input() labelTypes = [''];
@@ -42,5 +48,9 @@ export class LabelStoryBookComponent extends RenderComponentStorybook {
 
   get labelList() {
     return this.labelType ? [this.labelType] : this.labelTypes;
+  }
+
+  labelClass(name: string) {
+    return `label-${name}`;
   }
 }
