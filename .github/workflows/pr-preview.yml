@@ -9,7 +9,17 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
-      - uses: haya14busa/action-workflow_run-status@v1
+      - name: Update commit status
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            sha: context.payload.workflow_run.head_commit.id,
+            state: context.payload.workflow_run.conclusion,
+            context: `${context.workflow} / ${context.job} (${context.payload.workflow_run.event} => ${context.eventName})`,
+            target_url: context.payload.workflow_run.html_url});
       - name: Get PR Event
         id: get-pr-event
         uses: potiuk/get-workflow-origin@v1_5
@@ -26,20 +36,18 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Download Docs Artifact
         id: download-docs
-        uses: dawidd6/action-download-artifact@v2
+        uses: actions/download-artifact@v5
         with:
           name: docs
           path: dist/docs
-          workflow: ${{github.event.workflow_run.workflow_id}}
           run_id: ${{github.event.workflow_run.id}}
           if_no_artifact_found: ignore
       - name: Download Coverage Artifact
         id: download-coverage
-        uses: dawidd6/action-download-artifact@v2
+        uses: actions/download-artifact@v5
         with:
           name: coverage
           path: dist/docs/coverage
-          workflow: ${{github.event.workflow_run.workflow_id}}
           run_id: ${{github.event.workflow_run.id}}
           if_no_artifact_found: ignore
       - name: Deploy Docs Preview
