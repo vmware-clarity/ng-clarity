@@ -10,16 +10,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { ClrIconModule } from '../icon/icon.module';
-import { ClrSpinnerModule } from '../progress/spinner/spinner.module';
-import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { ClrTimelineStepState } from './enums/timeline-step-state.enum';
 import { TimelineIconAttributeService } from './providers/timeline-icon-attribute.service';
 import { TimelineStepIdService } from './providers/timeline-step-id.service';
 import { ClrTimelineStep } from './timeline-step';
 import { ClrTimelineModule } from './timeline.module';
+import { ClrSpinnerModule } from '../progress/spinner/spinner.module';
+import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 
 @Component({
   template: `<clr-timeline-step [clrState]="state"><clr-timeline-step></clr-timeline-step></clr-timeline-step>`,
+  standalone: false,
 })
 class TestTimelineStep {
   state: ClrTimelineStepState = ClrTimelineStepState.NOT_STARTED;
@@ -35,6 +36,7 @@ class TestTimelineStep {
       <clr-timeline-step-description>Description Content</clr-timeline-step-description>
     </clr-timeline-step>
   `,
+  standalone: false,
 })
 class TestTimelineStepContent {}
 

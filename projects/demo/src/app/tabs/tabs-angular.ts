@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-modal-tabs-angular',
   styleUrls: ['./tabs.demo.scss'],
   templateUrl: './tabs-angular.demo.html',
+  standalone: false,
 })
 export class TabsAngularDemo {
   layout = 'vertical';

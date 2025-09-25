@@ -491,6 +491,7 @@ export default function (): void {
       <clr-button>Button 5</clr-button>
     </clr-button-group>
   `,
+  standalone: false,
 })
 class BtnGroupInlineViewContainer {
   @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
@@ -506,6 +507,7 @@ class BtnGroupInlineViewContainer {
       <clr-button [clrInMenu]="true">Button 5</clr-button>
     </clr-button-group>
   `,
+  standalone: false,
 })
 class BtnGroupBothViewContainersTest {
   @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
@@ -523,6 +525,7 @@ class BtnGroupBothViewContainersTest {
       <clr-button [clrInMenu]="flip">Button 5</clr-button>
     </clr-button-group>
   `,
+  standalone: false,
 })
 class BtnGroupFlipTest1 {
   @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
@@ -540,6 +543,7 @@ class BtnGroupFlipTest1 {
       <clr-button [clrInMenu]="true">Button 5</clr-button>
     </clr-button-group>
   `,
+  standalone: false,
 })
 class BtnGroupFlipTest2 {
   @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
@@ -551,12 +555,19 @@ class BtnGroupFlipTest2 {
   template: `
     <clr-button-group>
       <clr-button>Button 1</clr-button>
-      <clr-button *ngIf="show">Button 2</clr-button>
+      @if (show) {
+        <clr-button>Button 2</clr-button>
+      }
       <clr-button>Button 3</clr-button>
-      <clr-button *ngIf="show" [clrInMenu]="true">Button 4</clr-button>
-      <clr-button *ngIf="show" [clrInMenu]="true">Button 5</clr-button>
+      @if (show) {
+        <clr-button [clrInMenu]="true">Button 4</clr-button>
+      }
+      @if (show) {
+        <clr-button [clrInMenu]="true">Button 5</clr-button>
+      }
     </clr-button-group>
   `,
+  standalone: false,
 })
 class BtnGroupProjectionUpdateTest {
   @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
@@ -575,6 +586,7 @@ class BtnGroupProjectionUpdateTest {
       <clr-button [clrInMenu]="true">Button 5</clr-button>
     </clr-button-group>
   `,
+  standalone: false,
 })
 class BtnGroupMenuViewContainer {
   @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
@@ -602,6 +614,7 @@ class BtnGroupMenuViewContainer {
       <clr-button [clrInMenu]="true">Button 10</clr-button>
     </clr-button-group>
   `,
+  standalone: false,
 })
 class BtnGroupEHCAIWCTest {
   @ViewChild('btnGroup1') btnGroup1: ClrButtonGroup;

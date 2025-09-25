@@ -9,5 +9,6 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './radio.html',
+  standalone: false,
 })
 export class FormsRadioDemo {}

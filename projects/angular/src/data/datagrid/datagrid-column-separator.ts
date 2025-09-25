@@ -5,15 +5,24 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Inject, NgZone, OnDestroy, Renderer2, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  DOCUMENT,
+  ElementRef,
+  Inject,
+  NgZone,
+  OnDestroy,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 
+import { ColumnResizerService } from './providers/column-resizer.service';
+import { TableSizeService } from './providers/table-size.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ColumnResizerService } from './providers/column-resizer.service';
-import { TableSizeService } from './providers/table-size.service';
 
 // Default resize length on each keyboard move event
 const KEYBOARD_RESIZE_LENGTH = 12;
@@ -41,6 +50,7 @@ const KEYBOARD_RESIZE_LENGTH = 12;
   host: {
     '[class.datagrid-column-separator]': 'true',
   },
+  standalone: false,
 })
 export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
   columnSeparatorId = uniqueIdFactory();

@@ -10,10 +10,10 @@ import localeAk from '@angular/common/locales/ak';
 import localeHr from '@angular/common/locales/hr';
 import localeKkj from '@angular/common/locales/kkj';
 
-import { DayModel } from '../model/day.model';
-import { assertEqualDates } from '../utils/test-utils';
 import { DateIOService } from './date-io.service';
 import { LocaleHelperService } from './locale-helper.service';
+import { assertEqualDates } from '../../../utils/testing/helpers.spec';
+import { DayModel } from '../model/day.model';
 
 registerLocaleData(localeAk);
 registerLocaleData(localeHr);

@@ -1,10 +1,11 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
+@if (collapsible) {
 <button
   type="button"
   class="nav-trigger"
@@ -13,16 +14,13 @@
   [attr.aria-expanded]="ariaExpanded"
   [attr.aria-label]="toggleLabel || commonStrings.keys.verticalNavToggle"
   (click)="toggleByButton()"
-  *ngIf="collapsible"
 >
-  <cds-icon
-    shape="angle-double"
-    class="nav-trigger-icon"
-    [attr.direction]="(this.collapsed) ? 'right' : 'left'"
-  ></cds-icon>
+  <cds-icon shape="angle-double" class="nav-trigger-icon" [attr.direction]="(collapsed) ? 'right' : 'left'"></cds-icon>
 </button>
+}
 <div [id]="contentId" class="nav-content">
   <ng-content></ng-content>
+  @if (collapsible && collapsed) {
   <button
     type="button"
     (click)="collapsed = false"
@@ -31,6 +29,6 @@
     tabindex="-1"
     [attr.aria-controls]="contentId"
     [attr.aria-label]="toggleLabel || commonStrings.keys.verticalNavToggle"
-    *ngIf="collapsible && collapsed"
   ></button>
+  }
 </div>

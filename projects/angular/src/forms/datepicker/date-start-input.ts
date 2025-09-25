@@ -15,9 +15,11 @@ import { DatepickerFocusService } from './providers/datepicker-focus.service';
   selector: '[clrStartDate]',
   host: {
     '[class.clr-input]': 'true',
+    '[class.clr-date-start-input]': 'true',
     '[style.text-align]': "'right'",
   },
   providers: [DatepickerFocusService],
+  standalone: false,
 })
 export class ClrStartDateInput extends ClrDateInputBase {
   @Output('clrStartDateChange') override dateChange = new EventEmitter<Date>(false);
@@ -38,11 +40,9 @@ export class ClrStartDateInput extends ClrDateInputBase {
     return this.dateNavigationService.selectedDayChange;
   }
 
-  triggerControlInputValidation() {
-    if (this.datepickerHasFormControl()) {
-      this.control.control?.updateValueAndValidity({ emitEvent: false });
-      this.control.control?.setErrors(this.control.control.errors);
-    }
+  override ngOnInit() {
+    super.ngOnInit();
+    this.subscriptions.push(this.dateIOService.minDateChange.subscribe(() => this.triggerControlInputValidation()));
   }
 
   protected override updateDayModel(dayModel: DayModel) {

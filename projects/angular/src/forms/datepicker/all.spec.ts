@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { addHelpers } from '../../data/datagrid/helpers.spec';
 import CalendarSpecs from './calendar.spec';
 import DateContainerSpecs from './date-container.spec';
 import DateInputSpecs from './date-input.spec';
@@ -26,6 +25,7 @@ import DatepickerFocusServiceSpecs from './providers/datepicker-focus.service.sp
 import LocaleHelperServiceSpecs from './providers/locale-helper.service.spec';
 import ViewManagerServiceSpecs from './providers/view-manager.service.spec';
 import YearpickerSpecs from './yearpicker.spec';
+import { addHelpers } from '../../data/datagrid/helpers.spec';
 
 describe('Datepicker', function () {
   addHelpers();

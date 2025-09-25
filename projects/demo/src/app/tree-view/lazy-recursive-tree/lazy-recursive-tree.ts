@@ -14,6 +14,7 @@ import { InfiniteTree } from '../utils/infinite-tree';
   selector: 'clr-lazy-recursive-tree-demo',
   styleUrls: ['../tree-view.demo.scss'],
   templateUrl: './lazy-recursive-tree.html',
+  standalone: false,
 })
 export class LazyRecursiveTreeDemo {
   tree = new InfiniteTree(3);

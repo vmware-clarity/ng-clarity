@@ -8,9 +8,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 import { ClrDatalistContainer } from './datalist-container';
 import { ClrDatalistInput } from './datalist-input';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 
 @Component({
   template: `
@@ -27,6 +27,7 @@ import { ClrDatalistInput } from './datalist-input';
       <clr-control-success>Valid</clr-control-success>
     </clr-datalist-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenTest {
   disabled = false;
@@ -45,6 +46,7 @@ class TemplateDrivenTest {
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-datalist-container>
   `,
+  standalone: false,
 })
 class NoLabelTest {}
 
@@ -65,6 +67,7 @@ class NoLabelTest {}
       </clr-datalist-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   disabled = false;

@@ -32,6 +32,7 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
     '[class.dropdown-menu]': 'true',
     '[attr.role]': '"menu"',
   },
+  standalone: false,
 })
 export class ClrDropdownMenu extends AbstractPopover implements AfterContentInit, OnDestroy {
   @ContentChildren(FocusableItem) items: QueryList<FocusableItem>;

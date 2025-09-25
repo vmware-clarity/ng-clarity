@@ -20,12 +20,13 @@ export default {
   component: ClrDropdownMenu,
   argTypes: {
     // inputs
-    clrPosition: { control: 'radio', options: CLR_MENU_POSITIONS },
+    clrPosition: { control: { type: 'radio' }, options: CLR_MENU_POSITIONS },
     // methods
     anchor: { control: { disable: true }, table: { disable: true } },
     release: { control: { disable: true }, table: { disable: true } },
     // story helpers
     createArray: { control: { disable: true }, table: { disable: true } },
+    truncateMenuItemText: { control: { type: 'boolean' } },
     menuHeader: { control: { type: 'text' } },
     menuItemText: { control: { type: 'text' } },
     menuCount: { control: { type: 'number', min: 1, max: 100 } },
@@ -34,6 +35,7 @@ export default {
   },
   args: {
     // inputs
+    truncateMenuItemText: false,
     menuHeader: 'Menus',
     menuItemText: 'Menu',
     clrPosition: 'top-left',
@@ -56,9 +58,18 @@ const DropdownMenuTemplate: StoryFn = args => ({
         <clr-dropdown-menu [clrPosition]="clrPosition" *clrIfOpen="true">
           <label class="dropdown-header" aria-hidden="true">{{ menuHeader }}</label>
           <clr-dropdown *ngFor="let _ of createArray(menuCount); let menuIndex = index">
-            <button clrDropdownTrigger>{{ menuItemText }} {{ menuIndex + 1 }}</button>
+            <button clrDropdownTrigger>
+              <div [attr.cds-text]="truncateMenuItemText ? 'truncate' : undefined">
+                {{ menuItemText }} {{ menuIndex + 1 }}
+              </div>
+            </button>
             <clr-dropdown-menu>
-              <label class="dropdown-header" aria-hidden="true">{{ menuItemText }} {{ menuIndex + 1 }} Actions</label>
+              <label class="dropdown-header" aria-hidden="true">
+                <div [attr.cds-text]="truncateMenuItemText ? 'truncate' : undefined">
+                  {{ menuItemText }} {{ menuIndex + 1 }}
+                </div>
+                Actions
+              </label>
               <div
                 *ngFor="let _ of createArray(actionCount); let actionIndex = index"
                 [attr.aria-label]="'Action' + (actionIndex + 1)"
@@ -116,6 +127,13 @@ export const DropdownMenu: StoryObj = {
 export const LongItemText: StoryObj = {
   render: DropdownMenuTemplate,
   args: {
+    menuItemText: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
+  },
+};
+export const LongItemTextTruncated: StoryObj = {
+  render: DropdownMenuTemplate,
+  args: {
+    truncateMenuItemText: true,
     menuItemText: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
   },
 };

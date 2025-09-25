@@ -5,10 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import '../_utils/clarity-variables';
-
 .clr-example {
   .card {
-    max-width: $clr_baselineRem_600px;
+    max-width: var(--cds-global-layout-width-xs);
   }
 }

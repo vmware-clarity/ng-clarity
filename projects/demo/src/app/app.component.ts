@@ -22,16 +22,15 @@ import {
   loadTravelIconSet,
 } from '@cds/core/icon';
 
-import { environment } from '../environments/environment';
 import { APP_ROUTES } from './app.routing';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
+  standalone: false,
 })
 export class AppComponent {
   routes: Route[] = APP_ROUTES;
-  clrUiDarkThemeApplied = environment.dark;
 
   constructor() {
     loadChartIconSet();

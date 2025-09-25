@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './selects.demo.html',
+  standalone: false,
 })
 export class SelectsDemo {
   disabled = true;

@@ -25,7 +25,6 @@ import {
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { CONTROL_SUFFIX } from './abstract-control';
 import { IfControlStateService } from './if-control-state/if-control-state.service';
 import { ContainerIdService } from './providers/container-id.service';
@@ -33,6 +32,7 @@ import { ControlClassService } from './providers/control-class.service';
 import { ControlIdService } from './providers/control-id.service';
 import { MarkControlService } from './providers/mark-control.service';
 import { Helpers, NgControlService } from './providers/ng-control.service';
+import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 
 export enum CHANGE_KEYS {
   FORM = 'form',
@@ -71,14 +71,10 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     if (injector) {
       this.ngControlService = injector.get(NgControlService, null);
       this.ifControlStateService = injector.get(IfControlStateService, null);
-      this.controlClassService = injector.get(ControlClassService, null);
       this.markControlService = injector.get(MarkControlService, null);
       this.differs = injector.get(KeyValueDiffers, null);
     }
 
-    if (this.controlClassService) {
-      this.controlClassService.initControlClass(renderer, el.nativeElement);
-    }
     if (this.markControlService) {
       this.subscriptions.push(
         this.markControlService.touchedChange.subscribe(() => {
@@ -115,6 +111,8 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   ngOnInit() {
     this._containerInjector = new HostWrapper(this.wrapperType, this.vcr, this.index);
     this.controlIdService = this._containerInjector.get(ControlIdService);
+
+    this.injectControlClassService(this._containerInjector);
 
     /**
      * not all containers will provide `ContainerIdService`
@@ -167,8 +165,18 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   protected getProviderFromContainer<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T {
     try {
       return this._containerInjector.get(token, notFoundValue);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       return notFoundValue;
+    }
+  }
+
+  private injectControlClassService(injector: Injector) {
+    if (!this.controlClassService) {
+      this.controlClassService = injector.get(ControlClassService, null);
+      if (this.controlClassService) {
+        this.controlClassService.initControlClass(this.renderer, this.el.nativeElement);
+      }
     }
   }
 

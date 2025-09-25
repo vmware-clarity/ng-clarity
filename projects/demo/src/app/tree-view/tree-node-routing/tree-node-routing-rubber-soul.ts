@@ -18,5 +18,6 @@ import { Component } from '@angular/core';
       several weeks, as well as in the United States, where it was issued with a different selection of tracks.
     </p>
   `,
+  standalone: false,
 })
 export class TreeNodeRoutingRubberSoulDemo {}

@@ -35,6 +35,7 @@ export const clrDensityAttribute = 'clr-density';
       </select>
     </clr-select-container>
   `,
+  standalone: false,
 })
 export class CdsThemeSelectComponent implements OnInit, OnDestroy {
   theme = 'light';

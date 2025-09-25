@@ -18,5 +18,6 @@ import { Component } from '@angular/core';
       <clr-dg-cell>Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.</clr-dg-cell>
     </clr-dg-row-detail>
   `,
+  standalone: false,
 })
 export class DetailWrapper {}

@@ -21,11 +21,13 @@ class BasicTemplateDrivenDemo {
 
 @Component({
   templateUrl: './template-driven.html',
+  standalone: false,
 })
 export class FormsTemplateDrivenDemo extends BasicTemplateDrivenDemo {}
 
 @Component({
   templateUrl: './template-driven.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormsTemplateDrivenOnPushDemo extends BasicTemplateDrivenDemo {}

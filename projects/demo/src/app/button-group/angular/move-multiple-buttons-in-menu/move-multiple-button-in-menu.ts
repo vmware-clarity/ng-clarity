@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-move-mulitple-button-in-menu-demo',
   templateUrl: './move-multiple-button-in-menu.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class MoveMultipleButtonInMenuDemo {
   flip = false;

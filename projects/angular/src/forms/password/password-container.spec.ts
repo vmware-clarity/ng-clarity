@@ -10,14 +10,14 @@ import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { ClrPassword } from './password';
+import { ClrPasswordContainer } from './password-container';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
-import { ClrPassword } from './password';
-import { ClrPasswordContainer } from './password-container';
 
 @Component({
   template: `
@@ -29,6 +29,7 @@ import { ClrPasswordContainer } from './password-container';
       <clr-control-success>Valid</clr-control-success>
     </clr-password-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenTest {
   disabled = false;
@@ -43,6 +44,7 @@ class TemplateDrivenTest {
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-password-container>
   `,
+  standalone: false,
 })
 class NoLabelTest {}
 
@@ -58,6 +60,7 @@ class NoLabelTest {}
       </clr-password-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   disabled = false;

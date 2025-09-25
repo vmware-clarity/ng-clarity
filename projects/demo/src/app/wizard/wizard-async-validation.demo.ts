@@ -11,6 +11,7 @@ import { ClrWizard } from '@clr/angular';
 @Component({
   selector: 'clr-wizard-async-validation',
   templateUrl: './wizard-async-validation.demo.html',
+  standalone: false,
 })
 export class WizardAsyncValidation {
   @ViewChild('wizard') wizard: ClrWizard;

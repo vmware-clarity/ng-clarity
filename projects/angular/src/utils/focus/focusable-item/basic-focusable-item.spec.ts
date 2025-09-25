@@ -14,6 +14,7 @@ import { FocusableItem } from './focusable-item';
 @Component({
   template: '',
   providers: [BASIC_FOCUSABLE_ITEM_PROVIDER],
+  standalone: false,
 })
 class SimpleHost {}
 

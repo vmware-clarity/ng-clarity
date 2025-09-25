@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './radios.demo.html',
+  standalone: false,
 })
 export class RadiosDemo {
   disabled = true;

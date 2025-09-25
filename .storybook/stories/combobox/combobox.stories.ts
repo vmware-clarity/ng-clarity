@@ -7,9 +7,9 @@
 
 import { moduleMetadata, StoryObj } from '@storybook/angular';
 
+import { StorybookComboboxComponent } from './combobox.storybook.component';
 import { CommonModules } from '../../helpers/common';
 import { elements } from '../../helpers/elements.data';
-import { StorybookComboboxComponent } from './combobox.storybook.component';
 
 export default {
   title: 'Combobox/Combobox',
@@ -42,11 +42,11 @@ export default {
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
     // story helpers
-    useGroups: { control: 'boolean' },
+    useGroups: { control: { type: 'boolean' } },
     elements: { control: { disable: true }, table: { disable: true } },
     optionGroups: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: elements.length } },
-    updateOn: { control: 'radio', options: ['change', 'blur', 'submit'] },
+    updateOn: { control: { type: 'radio' }, options: ['change', 'blur', 'submit'] },
   },
   args: {
     clrMulti: false,
@@ -62,6 +62,7 @@ export default {
     elements: elements,
     singleModel: 'Am',
     multiModel: ['Am', 'As', 'Ba'],
+    multiLineItems: false,
   },
 };
 
@@ -133,6 +134,19 @@ export const Loading: StoryObj = {
   args: {
     clrLoading: true,
     elements: [],
+  },
+  play({ canvasElement }) {
+    (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();
+  },
+};
+export const Opened: StoryObj = {
+  play({ canvasElement }) {
+    (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();
+  },
+};
+export const OpenedMultiLineItems: StoryObj = {
+  args: {
+    multiLineItems: true,
   },
   play({ canvasElement }) {
     (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();

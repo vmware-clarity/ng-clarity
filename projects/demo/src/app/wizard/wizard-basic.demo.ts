@@ -17,6 +17,7 @@ const scrollingPageNumbers = [
 @Component({
   selector: 'clr-wizard-basic',
   templateUrl: './wizard-basic.demo.html',
+  standalone: false,
 })
 export class WizardBasicDemo {
   @ViewChild('wizard') wizard: ClrWizard;

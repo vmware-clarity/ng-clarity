@@ -6,16 +6,17 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ClrIconModule } from '../../icon/icon.module';
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNavGroup } from './vertical-nav-group';
 import { ClrVerticalNavModule } from './vertical-nav.module';
+import { ClrIconModule } from '../../icon/icon.module';
+import { IfExpandService } from '../../utils/conditional/if-expanded.service';
+import { delay } from '../../utils/testing/helpers.spec';
 
 export default function (): void {
   describe('Vertical Nav Group', () => {
@@ -184,7 +185,7 @@ export default function (): void {
         expect(expandService.expanded).toBe(false);
       });
 
-      it('emits the expanded state when its changed', fakeAsync(function () {
+      it('emits the expanded state when its changed', async function () {
         expect(fixture.componentInstance.expanded).toBe(false);
         expect(navGroup.expanded).toBe(false);
         expect(expandService.expanded).toBe(false);
@@ -193,10 +194,10 @@ export default function (): void {
         navGroup.toggleExpand();
         fixture.detectChanges();
 
-        tick();
+        await delay();
 
         expect(fixture.componentInstance.expandedChange).toBe(true);
-      }));
+      });
     });
 
     describe('View Basics', () => {
@@ -245,6 +246,7 @@ export default function (): void {
       </clr-vertical-nav-group-children>
     </clr-vertical-nav-group>
   `,
+  standalone: false,
 })
 class GroupInternalsTestComponent {
   @ViewChild('group') navGroup: ClrVerticalNavGroup;
@@ -261,6 +263,7 @@ class GroupInternalsTestComponent {
       </ng-template>
     </clr-vertical-nav-group>
   `,
+  standalone: false,
 })
 class IfExpandedTestComponent {
   @ViewChild('group') navGroup: ClrVerticalNavGroup;
@@ -279,6 +282,7 @@ class IfExpandedTestComponent {
       </clr-vertical-nav-group-children>
     </clr-vertical-nav-group>
   `,
+  standalone: false,
 })
 class TemplateAPITestComponent {
   @ViewChild('group') navGroup: ClrVerticalNavGroup;

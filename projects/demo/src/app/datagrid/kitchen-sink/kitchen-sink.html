@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Kitchen sink</h2>
 
@@ -20,7 +20,8 @@
   <clr-dg-column>Creation date</clr-dg-column>
   <clr-dg-column>Favorite color</clr-dg-column>
 
-  <clr-dg-row *ngFor="let user of variableLengthUsers">
+  @for (user of variableLengthUsers; track user) {
+  <clr-dg-row>
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>{{user.name}}</clr-dg-cell>
     <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
@@ -28,6 +29,7 @@
       <span class="color-square" [style.backgroundColor]="user.color"></span>
     </clr-dg-cell>
   </clr-dg-row>
+  }
 
   <clr-dg-footer>{{variableLengthUsers.length}} users</clr-dg-footer>
 </clr-datagrid>
@@ -104,9 +106,11 @@
 <div id="single-selection">
   <div class="card card-block">
     <p class="card-text username-list">
-      Selected user:
-      <em *ngIf="!singleSelected">No user selected.</em>
-      <span class="username" *ngIf="singleSelected">{{singleSelected.name}}</span>
+      Selected user: @if (!singleSelected) {
+      <em>No user selected.</em>
+      } @if (singleSelected) {
+      <span class="username">{{singleSelected.name}}</span>
+      }
     </p>
   </div>
   <clr-datagrid [(clrDgSingleSelected)]="singleSelected">
@@ -132,45 +136,57 @@
 <div id="multl-selection">
   <div class="card card-block">
     <p class="card-text username-list">
-      Selected users:
-      <em *ngIf="selected.length == 0">No user selected.</em>
-      <span class="username" *ngFor="let user of selected">{{user.name}}</span>
+      Selected users: @if (selected.length == 0) {
+      <em>No user selected.</em>
+      } @for (user of selected; track user) {
+      <span class="username">{{user.name}}</span>
+      }
     </p>
 
     <p class="card-text username-list">
-      Users to be added to group:
-      <em *ngIf="toAdd.length == 0">No user selected.</em>
-      <span class="username" *ngFor="let user of toAdd">{{user.name}}</span>
+      Users to be added to group: @if (toAdd.length == 0) {
+      <em>No user selected.</em>
+      } @for (user of toAdd; track user) {
+      <span class="username">{{user.name}}</span>
+      }
     </p>
 
     <p class="card-text username-list">
-      Users to be deleted:
-      <em *ngIf="toDelete.length == 0">No user selected.</em>
-      <span class="username" *ngFor="let user of toDelete">{{user.name}}</span>
+      Users to be deleted: @if (toDelete.length == 0) {
+      <em>No user selected.</em>
+      } @for (user of toDelete; track user) {
+      <span class="username">{{user.name}}</span>
+      }
     </p>
 
     <p class="card-text username-list">
-      User to be edited:
-      <em *ngIf="!toEdit">No user selected.</em>
-      <span class="username" *ngIf="toEdit">{{toEdit.name}}</span>
+      User to be edited: @if (!toEdit) {
+      <em>No user selected.</em>
+      } @if (toEdit) {
+      <span class="username">{{toEdit.name}}</span>
+      }
     </p>
 
     <p class="card-text username-list">
-      Users to be exported:
-      <em *ngIf="toExport.length == 0">No user selected.</em>
-      <span class="username" *ngFor="let user of toExport">{{user.name}}</span>
+      Users to be exported: @if (toExport.length == 0) {
+      <em>No user selected.</em>
+      } @for (user of toExport; track user) {
+      <span class="username">{{user.name}}</span>
+      }
     </p>
   </div>
 
   <clr-datagrid [(clrDgSelected)]="selected">
     <clr-dg-action-bar>
-      <div class="btn-group" role="group" aria-label="Available Actions" *ngIf="selected.length > 0">
+      @if (selected.length > 0) {
+      <div class="btn-group" role="group" aria-label="Available Actions">
         <button type="button" class="btn btn-sm btn-secondary" (click)="onAdd()">Add to group</button>
         <button type="button" class="btn btn-sm btn-secondary" (click)="onDelete()">Delete</button>
-        <button type="button" class="btn btn-sm btn-secondary" (click)="onEdit()" *ngIf="selected.length == 1">
-          Edit
-        </button>
+        @if (selected.length == 1) {
+        <button type="button" class="btn btn-sm btn-secondary" (click)="onEdit()">Edit</button>
+        }
       </div>
+      }
 
       <div class="btn-group">
         <clr-dropdown>
@@ -226,7 +242,9 @@
     <clr-dg-column>Favorite color</clr-dg-column>
 
     <clr-dg-placeholder>We couldn't find any users!</clr-dg-placeholder>
-    <clr-dg-row *ngFor="let user of []"></clr-dg-row>
+    @for (user of []; track user) {
+    <clr-dg-row></clr-dg-row>
+    }
 
     <clr-dg-footer>{{[].length}} users</clr-dg-footer>
   </clr-datagrid>
@@ -237,7 +255,9 @@
     <clr-dg-column>Creation date</clr-dg-column>
     <clr-dg-column>Favorite color</clr-dg-column>
 
-    <clr-dg-row *ngFor="let user of []"></clr-dg-row>
+    @for (user of []; track user) {
+    <clr-dg-row></clr-dg-row>
+    }
 
     <clr-dg-footer>{{[].length}} users</clr-dg-footer>
   </clr-datagrid>
@@ -371,23 +391,20 @@
 
       <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="replace">
         <ng-template [clrFakeLoader]="slowLoad" clrLoading>
-          <ng-template [ngIf]="detail === 'default'">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
-            Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
-            sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh
-            lacus, in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum
-            vulputate sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere ipsum tincidunt
-            velit pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet metus
-            finibus hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit diam.
-          </ng-template>
-
-          <ng-template [ngIf]="detail === 'columns'">
-            <clr-dg-cell>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</clr-dg-cell>
-            <clr-dg-cell>Proin in neque in ante placerat mattis id sed quam.</clr-dg-cell>
-            <clr-dg-cell>Proin rhoncus lacus et tempor dignissim.</clr-dg-cell>
-            <clr-dg-cell>Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed arcu.</clr-dg-cell>
-            <clr-dg-cell>Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.</clr-dg-cell>
-          </ng-template>
+          @if (detail === 'default') { Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante
+          placerat mattis id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet
+          suscipit eget, pellentesque sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.
+          Aenean sagittis nibh lacus, in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor.
+          Vestibulum vulputate sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere ipsum
+          tincidunt velit pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet
+          metus finibus hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit
+          diam. } @if (detail === 'columns') {
+          <clr-dg-cell>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</clr-dg-cell>
+          <clr-dg-cell>Proin in neque in ante placerat mattis id sed quam.</clr-dg-cell>
+          <clr-dg-cell>Proin rhoncus lacus et tempor dignissim.</clr-dg-cell>
+          <clr-dg-cell>Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed arcu.</clr-dg-cell>
+          <clr-dg-cell>Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.</clr-dg-cell>
+          }
         </ng-template>
       </clr-dg-row-detail>
     </clr-dg-row>
@@ -400,9 +417,11 @@
 <div id="hide-show">
   <button class="btn btn-outline-primary" id="toggle-id" (click)="toggleId()">Toggle ID</button>
   <clr-datagrid>
-    <clr-dg-column *ngIf="showId">
+    @if (showId) {
+    <clr-dg-column>
       <ng-container *clrDgHideableColumn>User ID</ng-container>
     </clr-dg-column>
+    }
     <clr-dg-column>
       <!--Name-->
       <ng-container *clrDgHideableColumn>Name</ng-container>
@@ -420,9 +439,13 @@
     <clr-dg-placeholder>No users found</clr-dg-placeholder>
 
     <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-      <clr-dg-cell *ngIf="showId">{{user.id}}</clr-dg-cell>
+      @if (showId) {
+      <clr-dg-cell>{{user.id}}</clr-dg-cell>
+      }
       <clr-dg-cell>{{user.name}}</clr-dg-cell>
-      <clr-dg-cell *ngIf="showDate">{{user.creation | date}}</clr-dg-cell>
+      @if (showDate) {
+      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+      }
       <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
       <clr-dg-cell>
         <span class="color-square" [style.backgroundColor]="user.color"></span>
@@ -442,18 +465,23 @@
     <clr-dg-column>Creation date</clr-dg-column>
     <clr-dg-column>Favorite color</clr-dg-column>
 
-    <clr-dg-row *ngFor="let user of nonPaginatedUsers; first as isFirst;">
-      <clr-dg-cell *ngIf="isFirst">
+    @for (user of nonPaginatedUsers; track user; let isFirst = $first) {
+    <clr-dg-row>
+      @if (isFirst) {
+      <clr-dg-cell>
         <clr-toggle-wrapper>
           <input type="checkbox" clrToggle />
           <label>{{user.id}}</label>
         </clr-toggle-wrapper>
       </clr-dg-cell>
-      <clr-dg-cell *ngIf="!isFirst">{{user.id}}</clr-dg-cell>
+      } @if (!isFirst) {
+      <clr-dg-cell>{{user.id}}</clr-dg-cell>
+      }
       <clr-dg-cell>{{user.name}}</clr-dg-cell>
       <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
       <clr-dg-cell>{{user.color}}</clr-dg-cell>
     </clr-dg-row>
+    }
 
     <clr-dg-footer>{{users.length}} users</clr-dg-footer>
   </clr-datagrid>

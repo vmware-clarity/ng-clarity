@@ -5,10 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   Directive,
+  DOCUMENT,
   ElementRef,
   Inject,
   Input,
@@ -26,6 +27,7 @@ import { FOCUS_ON_VIEW_INIT } from './focus-on-view-init.provider';
     so that assistive technologies can read its content. */
 @Directive({
   selector: '[clrFocusOnViewInit]',
+  standalone: false,
 })
 export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
   private document: Document;

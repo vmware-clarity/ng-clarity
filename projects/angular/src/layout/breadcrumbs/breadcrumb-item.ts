@@ -14,5 +14,6 @@ import { Component } from '@angular/core';
     class: 'clr-breadcrumb-item',
     '[attr.role]': '"list-item"',
   },
+  standalone: false,
 })
 export class ClrBreadcrumbItem {}

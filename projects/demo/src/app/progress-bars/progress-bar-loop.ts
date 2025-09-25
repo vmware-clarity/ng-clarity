@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-progress-bar-loop-demo',
   styleUrls: ['progress-bars.demo.scss'],
   templateUrl: './progress-bar-loop.html',
+  standalone: false,
 })
 export class ProgressBarLoopDemo {}

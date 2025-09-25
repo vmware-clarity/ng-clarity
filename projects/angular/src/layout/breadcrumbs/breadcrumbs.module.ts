@@ -9,10 +9,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { ClrIconModule } from '../../icon/icon.module';
-import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
 import { ClrBreadcrumbItem } from './breadcrumb-item';
 import { ClrBreadcrumbs } from './breadcrumbs';
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
 
 @NgModule({
   declarations: [ClrBreadcrumbs, ClrBreadcrumbItem],

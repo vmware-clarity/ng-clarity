@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-signpost-demo',
   styleUrls: ['./signpost.demo.scss'],
   templateUrl: 'signpost.demo.html',
+  standalone: false,
 })
 export class SignpostDemo {
   openState = false;

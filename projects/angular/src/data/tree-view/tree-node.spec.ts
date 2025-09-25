@@ -8,11 +8,6 @@
 import { Component, PLATFORM_ID, ViewChild } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ClrIconModule } from '../../icon/icon.module';
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { Keys } from '../../utils/enums/keys.enum';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { expectActiveElementToBe, spec, TestContext } from '../../utils/testing/helpers.spec';
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { ClrSelectedState } from './models/selected-state.enum';
@@ -20,14 +15,22 @@ import { TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNode } from './tree-node';
 import { ClrTreeViewModule } from './tree-view.module';
+import { ClrIconModule } from '../../icon/icon.module';
+import { IfExpandService } from '../../utils/conditional/if-expanded.service';
+import { Keys } from '../../utils/enums/keys.enum';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { expectActiveElementToBe, spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `
     <clr-tree-node #node [(clrSelected)]="selected" [(clrExpanded)]="expanded" [clrExpandable]="expandable">
       Hello world
-      <clr-tree-node *ngIf="withChild">Child</clr-tree-node>
+      @if (withChild) {
+        <clr-tree-node>Child</clr-tree-node>
+      }
     </clr-tree-node>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild('node') tree: ClrTreeNode<void>;
@@ -44,6 +47,7 @@ class TestComponent {
       <a href="href" class="clr-treenode-link" [class.active]="active">Hello world</a>
     </clr-tree-node>
   `,
+  standalone: false,
 })
 class LinkTestComponent {
   active: boolean | undefined;

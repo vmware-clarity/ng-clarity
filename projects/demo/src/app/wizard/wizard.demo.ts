@@ -41,5 +41,6 @@ import { Component, ViewEncapsulation } from '@angular/core';
     <router-outlet></router-outlet>
   `,
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class WizardDemo {}

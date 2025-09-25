@@ -8,8 +8,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 
-import { ClrIconModule } from '../../icon/icon.module';
 import { ClrMainContainer } from './main-container';
+import { ClrIconModule } from '../../icon/icon.module';
 
 export const CLR_LAYOUT_DIRECTIVES: Type<any>[] = [ClrMainContainer];
 

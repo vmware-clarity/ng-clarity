@@ -18,6 +18,7 @@
 @include mixins.exports('forms.file') {
   .clr-file-wrapper {
     @include forms-mixins.form-flatten-validate-text();
+
     position: relative;
 
     .clr-control-label {
@@ -31,6 +32,7 @@
 
   .clr-file {
     @include mixins.equilateral(0);
+
     opacity: 0;
     overflow: hidden;
     position: absolute;
@@ -39,6 +41,7 @@
 
   .clr-form-compact .clr-file-wrapper {
     @include forms-mixins.form-flatten-compact-adjustments();
+
     margin-top: 0;
 
     & ~ .clr-subtext,

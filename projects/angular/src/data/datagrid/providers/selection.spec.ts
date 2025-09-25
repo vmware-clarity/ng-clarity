@@ -5,17 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { fakeAsync, tick } from '@angular/core/testing';
+import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 import { Subject } from 'rxjs';
 
-import { SelectionType } from '../enums/selection-type';
-import { ClrDatagridFilterInterface } from '../interfaces/filter.interface';
 import { FiltersProvider } from './filters';
 import { Items } from './items';
 import { Page } from './page';
 import { Selection } from './selection';
 import { Sort } from './sort';
 import { StateDebouncer } from './state-debouncer.provider';
+import { SelectionType } from '../enums/selection-type';
+import { ClrDatagridFilterInterface } from '../interfaces/filter.interface';
 
 const numberSort = (a: number, b: number) => a - b;
 
@@ -141,20 +141,19 @@ export default function (): void {
         expect(selectionInstance.isSelected(4)).toBe(true);
       });
 
-      it('accepts pre-selected items in multi selection type when `all` has not been defined', fakeAsync(function () {
+      it('accepts pre-selected items in multi selection type when `all` has not been defined', async function () {
         itemsInstance.all = null;
-        tick();
+        await delay();
         selectionInstance.selectionType = SelectionType.Multi;
         selectionInstance.current = [4, 2];
-        tick();
+        await delay();
         itemsInstance.all = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        tick();
+        await delay();
         expect(selectionInstance.isSelected(1)).toBe(false);
         expect(selectionInstance.isSelected(2)).toBe(true);
         expect(selectionInstance.isSelected(3)).toBe(false);
         expect(selectionInstance.isSelected(4)).toBe(true);
-      }));
-
+      });
       it('accepts pre-selected item in single selection type', function () {
         selectionInstance.selectionType = SelectionType.Single;
         selectionInstance.currentSingle = 2;
@@ -164,21 +163,20 @@ export default function (): void {
         expect(selectionInstance.isSelected(4)).toBe(false);
       });
 
-      it('accepts pre-selected item in single selection type when `all` has not been defined', fakeAsync(function () {
+      it('accepts pre-selected item in single selection type when `all` has not been defined', async function () {
         itemsInstance.all = null;
-        tick();
+        await delay();
         selectionInstance.selectionType = SelectionType.Single;
         selectionInstance.currentSingle = 2;
-        tick();
+        await delay();
         itemsInstance.all = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        tick();
+        await delay();
         expect(selectionInstance.isSelected(1)).toBe(false);
         expect(selectionInstance.isSelected(2)).toBe(true);
         expect(selectionInstance.isSelected(3)).toBe(false);
         expect(selectionInstance.isSelected(4)).toBe(false);
-      }));
-
-      it('exposes an Observable to follow selection changes in multi selection type', fakeAsync(function () {
+      });
+      it('exposes an Observable to follow selection changes in multi selection type', async function () {
         selectionInstance.selectionType = SelectionType.Multi;
         let nbChanges = 0;
         let currentSelection: number[];
@@ -187,17 +185,16 @@ export default function (): void {
           currentSelection = items;
         });
         selectionInstance.setSelected(4, true);
-        tick();
+        await delay();
         expect(currentSelection).toEqual([4]);
         selectionInstance.toggleAll();
-        tick();
+        await delay();
         expect(currentSelection.sort(numberSort)).toEqual(itemsInstance.displayed);
         selectionInstance.toggleAll();
-        tick();
+        await delay();
         expect(currentSelection).toEqual([]);
         expect(nbChanges).toBe(3);
-      }));
-
+      });
       it('exposes an Observable to follow selection changes in single selection type', function () {
         selectionInstance.selectionType = SelectionType.Single;
         let nbChanges = 0;
@@ -213,7 +210,7 @@ export default function (): void {
         expect(nbChanges).toBe(2);
       });
 
-      it('does not emit selection change twice after a filter is applied', fakeAsync(function () {
+      it('does not emit selection change twice after a filter is applied', async function () {
         selectionInstance.selectionType = SelectionType.Multi;
         let nbChanges = 0;
 
@@ -222,21 +219,20 @@ export default function (): void {
         });
 
         selectionInstance.current = [4, 2];
-        tick();
+        await delay();
         expect(nbChanges).toBe(1);
 
         const evenFilter: EvenFilter = new EvenFilter();
         filtersInstance.add(evenFilter);
         evenFilter.toggle();
-        tick();
+        await delay();
 
         // current is set to [] because filter is applied, and nbChanges is 3.
         // there isn't an additional change that would have been fired to
         // update current selection given the new data set post filter.
         expect(selectionInstance.current.length).toBe(0);
         expect(nbChanges).toBe(2);
-      }));
-
+      });
       it('clears selection when a filter is added (selectionType single)', function () {
         selectionInstance.selectionType = SelectionType.Single;
         selectionInstance.currentSingle = 2;
@@ -250,30 +246,29 @@ export default function (): void {
         expect(selectionInstance.currentSingle).toBe(null);
       });
 
-      it('keeps only the remaining selection when the items are updated (selectionType single)', fakeAsync(function () {
+      it('keeps only the remaining selection when the items are updated (selectionType single)', async function () {
         selectionInstance.selectionType = SelectionType.Single;
         selectionInstance.currentSingle = 3;
 
         itemsInstance.all = [1, 2, 3, 5];
 
-        tick();
+        await delay();
 
         expect(selectionInstance.currentSingle).toBe(3);
-      }));
-
+      });
       it(
         'clears the selections when the items are updated and ' +
           'they do not contain the previous selection (selectionType single)',
-        fakeAsync(function () {
+        async function () {
           selectionInstance.selectionType = SelectionType.Single;
           selectionInstance.currentSingle = 4;
 
           itemsInstance.all = [1, 3, 5];
 
-          tick();
+          await delay();
 
           expect(selectionInstance.currentSingle).toBeUndefined();
-        })
+        }
       );
 
       it('maintains the selection when the page is changed (selectionType single)', function () {
@@ -300,46 +295,45 @@ export default function (): void {
         expect(selectionInstance.current.length).toBe(0);
       });
 
-      it('keeps only the remaining selection when the items are updated', fakeAsync(function () {
+      it('keeps only the remaining selection when the items are updated', async function () {
         selectionInstance.selectionType = SelectionType.Multi;
         selectionInstance.current = [4, 2];
 
         itemsInstance.all = [1, 2, 3, 5];
 
-        tick();
+        await delay();
 
         expect(selectionInstance.current.length).toBe(1);
         expect(selectionInstance.current).toEqual([2]);
-      }));
-
+      });
       it(
         'keeps all the selections when the items are updated ' + 'and the contain all the previous selection',
-        fakeAsync(function () {
+        async function () {
           selectionInstance.selectionType = SelectionType.Multi;
           selectionInstance.current = [4, 2];
 
           itemsInstance.all = [1, 2, 3, 4, 5];
 
-          tick();
+          await delay();
 
           expect(selectionInstance.current.length).toBe(2);
           expect(selectionInstance.current).toEqual([4, 2]);
-        })
+        }
       );
 
       it(
         'clears the selections when the items are updated and ' + 'they do not contain the previous selection',
-        fakeAsync(function () {
+        async function () {
           selectionInstance.selectionType = SelectionType.Multi;
           selectionInstance.current = [4, 2];
 
           itemsInstance.all = [1, 3, 5];
 
-          tick();
+          await delay();
 
           expect(selectionInstance.current.length).toBe(0);
           expect(selectionInstance.current).toEqual([]);
-        })
+        }
       );
 
       it('maintains the selection when the page is changed', function () {
@@ -425,7 +419,7 @@ export default function (): void {
         expect(selectionInstance.current).toEqual([2, 3]);
       });
 
-      it('keeps only the remaining selection when the items are updated', fakeAsync(function () {
+      it('keeps only the remaining selection when the items are updated', async function () {
         selectionInstance.selectionType = SelectionType.Multi;
         selectionInstance.current = [4, 3, 2];
         const evenFilter: EvenFilter = new EvenFilter();
@@ -435,11 +429,11 @@ export default function (): void {
 
         itemsInstance.all = [1, 2, 3, 5];
 
-        tick();
+        await delay();
 
         expect(selectionInstance.current.length).toBe(2);
         expect(selectionInstance.current).toEqual([3, 2]);
-      }));
+      });
     });
 
     describe('client-side selection and pagination', function () {
@@ -504,15 +498,15 @@ export default function (): void {
           expect(selectionInstance.current).toEqual([items[2]]);
         });
 
-        it('should support trackBy item id', fakeAsync(function () {
-          itemsInstance.trackBy = item => item.id;
+        it('should support identifyBy item id', async function () {
+          itemsInstance.identifyBy = item => item.id;
           selectionInstance.setSelected(items[2], true);
           const clones = cloneItems();
           itemsInstance.all = clones;
-          tick();
+          await delay();
           expect(selectionInstance.current).toEqual([clones[2]]);
           testSelectedItems(clones, [2]);
-        }));
+        });
       });
 
       describe('single selection', function () {
@@ -529,24 +523,24 @@ export default function (): void {
           expect(selectionInstance.isSelected(items[5])).toBe(true);
         });
 
-        it('should clear selection if it is no longer in dataset', fakeAsync(() => {
+        it('should clear selection if it is no longer in dataset', async () => {
           selectionInstance.currentSingle = items[2];
           pageInstance.current = 2;
           expect(selectionInstance.isSelected(items[2])).toBe(true);
 
           itemsInstance.all = cloneItems().splice(2, 1);
-          tick();
+          await delay();
           expect(selectionInstance.currentSingle).toBe(undefined);
-        }));
+        });
 
-        it('should support trackBy item id', fakeAsync(function () {
-          itemsInstance.trackBy = item => item.id;
+        it('should support identifyBy item id', async function () {
+          itemsInstance.identifyBy = item => item.id;
           selectionInstance.currentSingle = items[2];
           const clones = cloneItems();
           itemsInstance.all = clones;
-          tick();
+          await delay();
           testSelectedItems(clones, [2]);
-        }));
+        });
       });
     });
 
@@ -600,99 +594,99 @@ export default function (): void {
         });
         // We don't support server-driven, multi-selection without trackBy.
         // We don't support server-driven, multi-selection, trackBy index.
-        it('should support trackBy item id', fakeAsync(() => {
-          itemsInstance.trackBy = item => item.id;
+        it('should support identifyBy item id', async () => {
+          itemsInstance.identifyBy = item => item.id;
           itemsInstance.all = itemsA;
-          tick();
+          await delay();
           selectionInstance.setSelected(itemsA[0], true);
           testSelection(true, false, false);
           itemsInstance.all = itemsB;
-          tick();
+          await delay();
           testSelection(true, false, false);
           itemsInstance.all = itemsC;
-          tick();
+          await delay();
           testSelection(false, false, true);
           expect(selectionInstance.current[0].modified).toEqual(true);
-        }));
+        });
 
-        it('accepts pre-selected items with trackBy when `all` has not been defined', fakeAsync(() => {
-          itemsInstance.trackBy = item => item.id;
+        it('accepts pre-selected items with identifyBy when `all` has not been defined', async () => {
+          itemsInstance.identifyBy = item => item.id;
           selectionInstance.current = [{ id: 1 }, { id: 2 }, { id: 3 }];
-          tick();
+          await delay();
           itemsInstance.all = itemsA;
-          tick();
+          await delay();
           itemsA.forEach(item => {
             expect(selectionInstance.isSelected(item)).toBe(true);
           });
-        }));
+        });
 
-        it('should support toggleAll selection on page change', fakeAsync(() => {
-          itemsInstance.trackBy = item => item.id;
+        it('should support toggleAll selection on page change', async () => {
+          itemsInstance.identifyBy = item => item.id;
           itemsInstance.all = itemsA;
           pageInstance.size = 3;
           pageInstance.current = 1;
-          tick();
+          await delay();
           selectionInstance.toggleAll();
           testToggleAllSelection(true, false, false);
           itemsInstance.all = itemsB;
           pageInstance.current = 2;
-          tick();
+          await delay();
           testToggleAllSelection(true, false, false);
           itemsInstance.all = itemsC;
           pageInstance.current = 1;
-          tick();
+          await delay();
           testToggleAllSelection(false, false, true);
           expect(selectionInstance.current[0].modified).toEqual(true);
-        }));
+        });
 
-        it('should not clear selection when filter applied and clrDgPreserveSelection is true', fakeAsync(() => {
+        it('should not clear selection when filter applied and clrDgPreserveSelection is true', async () => {
           const evenFilter: ItemEvenFilter = new ItemEvenFilter();
-          itemsInstance.trackBy = item => item.id;
+          itemsInstance.identifyBy = item => item.id;
           itemsInstance.all = itemsA;
-          tick();
+          await delay();
           selectionInstance.setSelected(itemsA[0], true);
           selectionInstance.preserveSelection = true;
 
           filtersInstance.add(evenFilter as ClrDatagridFilterInterface<Item>);
           evenFilter.toggle();
-          tick();
+          await delay();
 
           expect(selectionInstance.current.length).toBe(1);
           expect(selectionInstance.isSelected(itemsA[0])).toBeTruthy();
-        }));
+        });
       });
 
       describe('single selection', function () {
         beforeEach(function () {
           selectionInstance.selectionType = SelectionType.Single;
         });
-        // We don't support server-driven, multi-selection without trackBy.
+        // We don't support server-driven, multi-selection without identifyBy.
 
-        it('should support trackBy item id', fakeAsync(() => {
-          itemsInstance.trackBy = item => item.id;
+        it('should support identifyBy item id', async () => {
+          itemsInstance.identifyBy = item => item.id;
           itemsInstance.all = itemsA;
-          tick();
+          await delay();
           selectionInstance.currentSingle = itemsA[0];
           testSelection(true, false, false);
           itemsInstance.all = itemsB;
-          tick();
+          await delay();
           testSelection(true, false, false);
           // itemsInstance.all = itemsC;
           // tick();
           // testSelection(false, false, true);
           // expect(selectionInstance.currentSingle.modified).toEqual(true);
-        }));
+        });
 
-        it('accepts pre-selected items with trackBy when `all` has not been defined', fakeAsync(() => {
-          itemsInstance.trackBy = item => item.id;
+        it('accepts pre-selected items with identifyBy when `all` has not been defined', async () => {
+          itemsInstance.identifyBy = item => item.id;
           selectionInstance.currentSingle = { id: 1 };
-          tick();
+          await delay();
           itemsInstance.all = itemsA;
-          tick();
+          await delay();
           expect(selectionInstance.isSelected(itemsA[0])).toBe(true);
           expect(selectionInstance.isSelected(itemsA[1])).toBe(false);
           expect(selectionInstance.isSelected(itemsA[2])).toBe(false);
-        }));
+        });
       });
     });
 
@@ -798,8 +792,8 @@ export default function (): void {
         expect(selectionInstance.isLocked(2)).toBe(true);
       });
 
-      it('should use trackBy to find already locked items when the list is replaced (object)', function () {
-        itemsInstance.trackBy = ({ id }) => id;
+      it('should use identifyBy to find already locked items when the list is replaced (object)', function () {
+        itemsInstance.identifyBy = ({ id }) => id;
         selectionInstance.selectionType = SelectionType.Multi;
         itemsInstance.all = [{ id: 1 }, { id: 2 }];
         selectionInstance.lockItem({ id: 2 }, true);

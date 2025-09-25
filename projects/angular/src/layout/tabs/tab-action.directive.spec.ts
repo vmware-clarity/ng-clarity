@@ -14,9 +14,9 @@ import { ClrTabsModule } from './tabs.module';
 @Component({
   template: `
     <clr-tabs>
-      <clr-tabs-action>
+      <clr-tabs-actions>
         <button clrTabAction>Tab Action</button>
-      </clr-tabs-action>
+      </clr-tabs-actions>
       <clr-tab>
         <button clrTabLink>Tab1</button>
       </clr-tab>
@@ -25,6 +25,7 @@ import { ClrTabsModule } from './tabs.module';
       </clr-tab>
     </clr-tabs>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChildren(ClrTabAction, { read: ElementRef }) tabsActions: QueryList<ElementRef>;

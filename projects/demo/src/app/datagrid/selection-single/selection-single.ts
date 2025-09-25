@@ -16,6 +16,7 @@ import { User } from '../inventory/user';
   providers: [Inventory],
   templateUrl: 'selection-single.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridSelectionSingleDemo {
   users: User[];

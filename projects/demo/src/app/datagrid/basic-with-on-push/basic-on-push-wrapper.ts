@@ -21,23 +21,30 @@ import { User } from '../inventory/user';
       <clr-dg-column>Creation date</clr-dg-column>
       <clr-dg-column>Favorite color</clr-dg-column>
 
-      <clr-dg-row *ngFor="let user of users">
-        <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-        <clr-dg-cell>
-          aReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongUninterruptedContent
-        </clr-dg-cell>
-        <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-        <clr-dg-cell>{{ user.color }}</clr-dg-cell>
-      </clr-dg-row>
+      @for (user of users; track user) {
+        <clr-dg-row>
+          <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+          <clr-dg-cell>
+            aReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongUninterruptedContent
+          </clr-dg-cell>
+          <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.color }}</clr-dg-cell>
+        </clr-dg-row>
+      }
 
       <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 export class DatagridBasicOnPushWrapperDemo {
   users: User[];
 
-  constructor(inventory: Inventory, private cd: ChangeDetectorRef, private el: ElementRef) {
+  constructor(
+    inventory: Inventory,
+    private cd: ChangeDetectorRef,
+    private el: ElementRef
+  ) {
     inventory.size = 10;
     inventory.reset();
     this.users = inventory.all;

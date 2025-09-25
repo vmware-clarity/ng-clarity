@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-button-group-icons-text-demo',
   templateUrl: './button-group-icons-text.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class ButtonGroupIconsTextDemo {}

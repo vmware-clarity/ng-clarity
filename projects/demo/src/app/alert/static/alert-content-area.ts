@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-alert-demo-content-area',
   styleUrls: ['../alert.demo.scss'],
   templateUrl: './alert-content-area.demo.html',
+  standalone: false,
 })
 export class AlertContentAreaDemo {}

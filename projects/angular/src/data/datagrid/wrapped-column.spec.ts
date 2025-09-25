@@ -12,6 +12,7 @@ import { WrappedColumn } from './wrapped-column';
 
 @Component({
   template: `<dg-wrapped-column>Hello World!</dg-wrapped-column>`,
+  standalone: false,
 })
 class WrappedColumnTest {
   @ViewChild(WrappedColumn, { static: true }) wrapper: WrappedColumn;

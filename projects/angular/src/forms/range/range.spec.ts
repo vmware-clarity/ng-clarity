@@ -8,17 +8,19 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 import { ClrRange } from './range';
 import { ClrRangeContainer } from './range-container';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 
 @Component({
   template: `<input type="text" clrRange />`,
+  standalone: false,
 })
 class StandaloneUseTest {}
 
 @Component({
   template: `<input clrRange name="model" class="test-class" [(ngModel)]="model" />`,
+  standalone: false,
 })
 class TemplateDrivenTest {}
 
@@ -28,6 +30,7 @@ class TemplateDrivenTest {}
       <input clrRange name="model" class="test-class" formControlName="model" />
     </div>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

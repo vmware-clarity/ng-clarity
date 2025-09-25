@@ -5,18 +5,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ApplicationRef, Component, ElementRef, Injector, Optional, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Injector, Optional, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { AbstractPopover } from './abstract-popover';
 import { POPOVER_HOST_ANCHOR } from './popover-host-anchor.token';
+import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 @Component({
   selector: 'test-popover',
   template: `<div class="test-popover">Popover</div>`,
+  standalone: false,
 })
 class TestPopover extends AbstractPopover {
   closeOnOutsideClick = true;
@@ -28,6 +29,7 @@ class TestPopover extends AbstractPopover {
 
 @Component({
   template: `<test-popover *clrIfOpen></test-popover>`,
+  standalone: false,
 })
 class TestPopoverWithIfOpenDirective {
   @ViewChild(TestPopover) testPopover: TestPopover;
@@ -39,6 +41,7 @@ class TestPopoverWithIfOpenDirective {
     <test-popover-ignore #ignoreElement *clrIfOpen></test-popover-ignore>
   `,
   providers: [ClrPopoverToggleService, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
+  standalone: false,
 })
 class InputFocusPopover {
   @ViewChild('ignoreInput') ignore: ElementRef<HTMLInputElement>;
@@ -54,6 +57,7 @@ class InputFocusPopover {
 @Component({
   selector: 'test-popover-ignore',
   template: `<div class="test-popover">Popover</div>`,
+  standalone: false,
 })
 class TestPopoverIgnoreElement extends AbstractPopover {
   constructor(injector: Injector, @Optional() parent: ElementRef<HTMLElement>, parentHost: InputFocusPopover) {
@@ -67,6 +71,7 @@ class TestPopoverIgnoreElement extends AbstractPopover {
 describe('Abstract Popover', function () {
   let fixture: ComponentFixture<any>;
   let toggleService: ClrPopoverToggleService;
+  let cdr: ChangeDetectorRef;
 
   describe('Keyboard Events', () => {
     beforeEach(() => {
@@ -74,6 +79,7 @@ describe('Abstract Popover', function () {
       toggleService = TestBed.inject(ClrPopoverToggleService);
       toggleService.open = true;
       fixture = TestBed.createComponent(TestPopover);
+      cdr = fixture.componentInstance.ref;
       fixture.detectChanges();
     });
 
@@ -85,18 +91,17 @@ describe('Abstract Popover', function () {
       expect(toggleService.open).toBe(false);
     });
 
-    it('should not run change detection when any button is pressed except ESC', () => {
-      const appRef = TestBed.inject(ApplicationRef);
-      spyOn(appRef, 'tick').and.callThrough();
+    it('should not run change detection when any button is pressed except ESC', async () => {
+      spyOn(cdr, 'markForCheck').and.callThrough();
 
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Shift' }));
-      expect(appRef.tick).not.toHaveBeenCalled();
+      expect(cdr.markForCheck).not.toHaveBeenCalled();
 
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
-      expect(appRef.tick).not.toHaveBeenCalled();
+      expect(cdr.markForCheck).not.toHaveBeenCalled();
 
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
-      expect(appRef.tick).toHaveBeenCalled();
+      expect(cdr.markForCheck).toHaveBeenCalled();
     });
   });
 

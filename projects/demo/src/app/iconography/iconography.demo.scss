@@ -4,24 +4,22 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@import '../../../../angular/src/utils/variables/variables.color';
-@import '../../../../angular/src/utils/variables/variables.global';
 
 .selection-preview-settings {
-  max-width: $clr_baselineRem_500px;
+  max-width: var(--cds-global-layout-width-xs);
 }
 
 .clr-icon-collection {
-  padding: $clr_baselineRem_1;
+  padding: var(--cds-global-space-9);
 
   .clr-icon-item {
-    padding: $clr_baselineRem_0_5 $clr_baselineRem_0_25;
+    padding: var(--cds-global-space-6) var(--cds-global-space-4);
     white-space: nowrap;
 
     cds-icon {
-      width: $clr_baselineRem_1;
-      height: $clr_baselineRem_1;
-      margin: 0 $clr_baselineRem_0_5;
+      width: var(--cds-global-space-9);
+      height: var(--cds-global-space-9);
+      margin: 0 var(--cds-global-space-6);
     }
 
     span.icon-shape-name {
@@ -36,16 +34,16 @@
   justify-content: center;
   background: transparent;
   margin: 0;
-  padding: $clr_baselineRem_0_5 0;
+  padding: var(--cds-global-space-6) 0;
 
   &.inverse {
-    background: hsl(218, 14%, 30%);
-    margin: $clr_baselineRem_0_5 0 0;
+    background: hsl(218deg 14% 30%);
+    margin: var(--cds-global-space-6) 0 0;
   }
 
   cds-icon {
-    width: $clr_baselineRem_1_5;
-    height: $clr_baselineRem_1_5;
-    margin: 0 $clr_baselineRem_0_25;
+    width: var(--cds-global-space-11);
+    height: var(--cds-global-space-11);
+    margin: 0 var(--cds-global-space-4);
   }
 }

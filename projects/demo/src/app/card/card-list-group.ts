@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-list-group-demo',
   styleUrls: ['./card.demo.scss'],
   templateUrl: './card-list-group.html',
+  standalone: false,
 })
 export class CardListGroupDemo {}

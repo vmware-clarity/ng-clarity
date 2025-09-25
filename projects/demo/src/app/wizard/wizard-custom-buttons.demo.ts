@@ -11,6 +11,7 @@ import { ClrWizard } from '@clr/angular';
 @Component({
   selector: 'clr-wizard-custom-buttons',
   templateUrl: './wizard-custom-buttons.demo.html',
+  standalone: false,
 })
 export class WizardCustomButtonsDemo {
   @ViewChild('wizard') wizard: ClrWizard;

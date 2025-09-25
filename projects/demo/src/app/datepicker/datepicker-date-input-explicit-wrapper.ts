@@ -12,13 +12,7 @@ import { Component, LOCALE_ID } from '@angular/core';
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './datepicker-date-input-explicit-wrapper.html',
   providers: [{ provide: LOCALE_ID, useValue: 'en' }],
-  // providers: [{provide: LOCALE_ID, useValue: "ar-AE"}]
-  // providers: [{provide: LOCALE_ID, useValue: "hi"}]
-  // providers: [{provide: LOCALE_ID, useValue: "ak"}]
-  // providers: [{provide: LOCALE_ID, useValue: "fr"}]
-  // providers: [{provide: LOCALE_ID, useValue: "ru-UA"}]
-  // providers: [{provide: LOCALE_ID, useValue: "de"}]
-  // Do not remove the above comments. They are present to make sure that we can test different locales easily.
+  standalone: false,
 })
 export class DatepickerDateInputExplicitWrapperDemo {
   date: Date = new Date();

@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:map';
 @use 'sass:meta';
 @use '../../utils/mixins';
@@ -12,7 +13,6 @@
 @use 'variables.alert' as alert-variables;
 @use '../../button/buttons.clarity';
 @use '../../utils/variables/variables.density' as density;
-
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.alert');
@@ -31,6 +31,7 @@
   }
 
   $border-prop: alert-variables.getAlertColor($alertType, border-color);
+
   @if $border-prop != 'none' {
     border: alert-variables.$clr-alert-borderwidth solid $border-prop;
   } @else {
@@ -63,6 +64,7 @@
 
       &:active {
         color: $myActionSassVar;
+
         cds-icon,
         clr-icon {
           color: $myActionSassVar;
@@ -91,12 +93,12 @@
     }
   }
 }
-
 @mixin generateLightweightAlertType($alertType: 'info') {
   &.alert-#{$alertType} {
     .alert-text {
       color: alert-variables.getAlertColor('lightweight-#{$alertType}', color);
     }
+
     .alert-icon {
       color: alert-variables.getAlertColor('lightweight-#{$alertType}', icon);
     }
@@ -139,6 +141,7 @@
 
   .alert {
     @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
@@ -181,6 +184,7 @@
 
       .clr-icon {
         @include mixins.equilateral(alert-variables.$clr-alert-icon-dimension-sm);
+
         margin-right: alert-variables.$clr-icon-margin-right;
       }
 
@@ -216,6 +220,7 @@
         color: dropdown-variables.$clr-dropdown-text-color;
       }
     }
+
     .dropdown-toggle:not(.btn) {
       background: transparent;
       border: none;
@@ -224,9 +229,10 @@
     .close {
       order: 100;
       flex: 0 0 density.$clr-base-icon-size-l;
+
       @include mixins.equilateral(density.$clr-base-icon-size-l);
 
-      cds-icon,
+      cds-icon:not([size]),
       clr-icon {
         @include mixins.min-equilateral(density.$clr-base-icon-size-l);
       }
@@ -234,6 +240,7 @@
 
     .alert-spinner.spinner-inline {
       @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+
       margin: 0;
 
       &::before,
@@ -255,6 +262,7 @@
         .alert-actions,
         .alert-text {
           padding: 0;
+
           @include mixins.generate-typography-token('BODY-14-RG-STD');
         }
       }
@@ -293,6 +301,7 @@
     .alert-item .btn {
       @extend .btn;
       @extend .btn-sm;
+
       margin: 0;
     }
 
@@ -348,6 +357,7 @@
       .alert-text,
       .alert-actions {
         @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
+
         padding: 0;
       }
     }
@@ -414,6 +424,7 @@
           }
         }
       }
+
       .close {
         display: none;
       }
@@ -462,6 +473,7 @@
     .alerts-wrapper {
       display: flex;
       flex-direction: row;
+
       clr-alert {
         flex: 1 1 100%;
       }
@@ -491,17 +503,22 @@
 
   .alerts-pager-button {
     @include mixins.clr-no-styles-button();
+
     color: var(--clr-app-alert-pager-text-color);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     @include mixins.equilateral(density.$clr-base-icon-size-l);
 
     cds-icon,
     clr-icon {
       color: var(--clr-app-alert-pager-text-color);
-      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+
+      &:not([size]) {
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+      }
 
       @each $alertType in $alertTypes {
         .alert-#{$alertType} & {
@@ -523,6 +540,7 @@
 
     > .alerts-pager-text {
       @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
+
       min-width: mixins.baselinePx(40);
     }
 

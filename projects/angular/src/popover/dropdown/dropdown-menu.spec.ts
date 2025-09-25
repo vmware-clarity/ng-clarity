@@ -7,20 +7,23 @@
 
 import { Component } from '@angular/core';
 
+import { ClrDropdown } from './dropdown';
+import { ClrDropdownMenu } from './dropdown-menu';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { Point } from '../common/popover';
-import { ClrDropdown } from './dropdown';
-import { ClrDropdownMenu } from './dropdown-menu';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 
 @Component({
   template: `
     <clr-dropdown>
-      <clr-dropdown-menu *ngIf="menu" [clrPosition]="position">Hello world</clr-dropdown-menu>
+      @if (menu) {
+        <clr-dropdown-menu [clrPosition]="position">Hello world</clr-dropdown-menu>
+      }
     </clr-dropdown>
   `,
+  standalone: false,
 })
 class SimpleTest {
   position: string;

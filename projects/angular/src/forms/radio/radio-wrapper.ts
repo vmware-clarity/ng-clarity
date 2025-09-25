@@ -15,12 +15,15 @@ import { ControlIdService } from '../common/providers/control-id.service';
   template: `
     <ng-content select="[clrRadio]"></ng-content>
     <ng-content select="label"></ng-content>
-    <label *ngIf="!label"></label>
+    @if (!label) {
+      <label></label>
+    }
   `,
   host: {
     '[class.clr-radio-wrapper]': 'true',
   },
   providers: [ControlIdService],
+  standalone: false,
 })
 export class ClrRadioWrapper implements OnInit {
   @ContentChild(ClrLabel, { static: true }) label: ClrLabel;

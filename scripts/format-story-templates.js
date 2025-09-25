@@ -18,27 +18,27 @@ const filePaths = args.filter(arg => arg !== '--fix');
 
 let exitCode = 0;
 
-const storyTsFilePaths = filePaths.length
-  ? filePaths.filter(filePath => filePath.endsWith('.stories.ts'))
-  : glob.sync('.storybook/**/*.stories.ts');
+async function main() {
+  const storyTsFilePaths = filePaths.length
+    ? filePaths.filter(filePath => filePath.endsWith('.stories.ts'))
+    : glob.sync('.storybook/**/*.stories.ts');
+  for (const storyTsFilePath of storyTsFilePaths) {
+    const storyTsCode = fs.readFileSync(storyTsFilePath).toString();
+    const formattedStoryTsCode = await formatStoryTsCode(storyTsCode);
 
-for (const storyTsFilePath of storyTsFilePaths) {
-  const storyTsCode = fs.readFileSync(storyTsFilePath).toString();
-  const formattedStoryTsCode = formatStoryTsCode(storyTsCode);
-
-  if (formattedStoryTsCode !== storyTsCode) {
-    if (fix) {
-      fs.writeFileSync(storyTsFilePath, formattedStoryTsCode);
-    } else {
-      console.error(storyTsFilePath);
-      exitCode = 1;
+    if (formattedStoryTsCode !== storyTsCode) {
+      if (fix) {
+        fs.writeFileSync(storyTsFilePath, formattedStoryTsCode);
+      } else {
+        console.error(storyTsFilePath);
+        exitCode = 1;
+      }
     }
   }
+  process.exit(exitCode);
 }
 
-process.exit(exitCode);
-
-function formatStoryTsCode(storyTsCode) {
+async function formatStoryTsCode(storyTsCode) {
   const storyTemplates = findStoryTemplates(storyTsCode);
 
   let formattedStoryTsCode = storyTsCode;
@@ -46,7 +46,7 @@ function formatStoryTsCode(storyTsCode) {
   for (const { storyTemplate, expressions, indentLevel } of storyTemplates) {
     const indent = ' '.repeat(indentLevel + 2);
 
-    const formattedStoryTemplate = formatStoryTemplate(storyTemplate, expressions, indentLevel);
+    const formattedStoryTemplate = await formatStoryTemplate(storyTemplate, expressions, indentLevel);
 
     const indentedStoryTemplate = formattedStoryTemplate
       .trim()
@@ -109,10 +109,10 @@ function getExpressions(node) {
     : {};
 }
 
-function formatStoryTemplate(storyTemplate, expressions, indentLevel) {
+async function formatStoryTemplate(storyTemplate, expressions, indentLevel) {
   const storyTemplateWithExpressionPlaceholders = replaceExpressions(storyTemplate, expressions);
 
-  const formattedStoryTemplate = prettier.format(storyTemplateWithExpressionPlaceholders, {
+  const formattedStoryTemplate = await prettier.format(storyTemplateWithExpressionPlaceholders, {
     ...prettierConfig,
     printWidth: prettierConfig.printWidth - indentLevel,
     parser: 'angular',
@@ -141,3 +141,5 @@ function replaceExpressionPlaceholders(storyTemplate, expressions) {
 
   return storyTemplate;
 }
+
+main();

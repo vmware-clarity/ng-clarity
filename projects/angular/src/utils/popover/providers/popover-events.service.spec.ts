@@ -16,6 +16,7 @@ import { ClrPopoverToggleService } from './popover-toggle.service';
   selector: 'test-host',
   template: '',
   providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  standalone: false,
 })
 class TestHost {}
 
@@ -42,7 +43,7 @@ export default function (): void {
         anchor.textContent = 'AnchorButton';
         anchor.setAttribute('role', 'button');
         anchor.setAttribute('type', 'button');
-        anchor.classList.add('btn', 'btn-sm', 'btn-link', 'column-toggle--action');
+        anchor.classList.add('btn', 'btn-sm', 'btn-link', 'column-toggle-action');
         context.eventService.anchorButtonRef = anchorRef;
         return anchorRef;
       }

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/core';
 import { inject } from '@angular/core/testing';
 
 import { ScrollingService } from './scrolling-service';

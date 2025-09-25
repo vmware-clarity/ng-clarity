@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:map';
 @use 'sass:meta';
 @use '../image/icons.clarity';
@@ -16,7 +17,6 @@
 @use '../utils/variables/variables.density' as density;
 
 @include meta.load-css('properties.login');
-
 @include mixins.exports('login.clarity') {
   .login-wrapper {
     display: flex;
@@ -54,9 +54,7 @@
         .logo {
           height: tokens.$cds-global-space-7;
           width: 100%;
-          -webkit-mask: icons.generateLoginVMWareLogo();
           mask: icons.generateLoginVMWareLogo();
-          -webkit-mask-repeat: no-repeat;
           mask-repeat: no-repeat;
           background-color: login-variables.$clr-login-logo-color;
         }
@@ -64,9 +62,11 @@
 
       .login-footer {
         gap: login-variables.$clr-login-footer-gap;
+
         a,
         .copyright {
           @include mixins.generate-typography-token('CAPTION-LG-11-STD');
+
           color: login-variables.$clr-login-copyright-color;
         }
       }
@@ -82,6 +82,7 @@
 
       .title {
         @include mixins.generate-typography-token('DISPLAY-40');
+
         color: login-variables.$clr-login-title-color;
 
         .welcome {
@@ -92,6 +93,7 @@
         .subtitle, // @deprecated in v17
         .hint {
           @include mixins.generate-typography-token('SECTION-20-STD');
+
           color: login-variables.$clr-login-hint-color;
           margin: #{density.$clr-base-vertical-offset-m} 0 0 0;
         }
@@ -170,6 +172,7 @@
 
         .error {
           @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
+
           display: none;
           padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
           background: login-variables.$clr-login-error-background-color;
@@ -177,23 +180,21 @@
           border-radius: alert-variables.$clr-alert-borderradius;
           border: alert-variables.$clr-alert-borderwidth solid alert-variables.$clr-alert-danger-border-color;
 
-          &:before {
+          &::before {
             content: '';
-            -webkit-mask: icons.generateErrorIcon("'none'");
             mask: icons.generateErrorIcon("'none'");
-            -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
-            -webkit-mask-size: cover;
             mask-size: cover;
             background-color: login-variables.$clr-login-error-icon-color;
             margin: tokens.$cds-global-space-1 density.$clr-base-horizontal-offset-s 0 0;
+
             @include mixins.equilateral(login-variables.$clr-login-icon-size);
           }
 
           &.active {
             display: flex;
 
-            &:before {
+            &::before {
               flex: 0 0 login-variables.$clr-login-icon-size;
             }
           }
@@ -206,11 +207,12 @@
 
         .signup {
           @include mixins.generate-typography-token('LINK-14');
+
           text-align: center;
         }
       }
 
-      &:after {
+      &::after {
         position: absolute;
         content: '';
         display: block;
@@ -234,13 +236,12 @@
         margin-left: 0;
         padding: density.$clr-base-vertical-offset-2xl 20%;
 
-        &:after {
+        &::after {
           content: none;
         }
       }
     }
   }
-
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     .login-wrapper {
       .login {

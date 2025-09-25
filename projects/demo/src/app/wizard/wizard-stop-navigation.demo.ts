@@ -11,6 +11,7 @@ import { ClrWizard } from '@clr/angular';
 @Component({
   selector: 'clr-wizard-stop-navigation',
   templateUrl: './wizard-stop-navigation.demo.html',
+  standalone: false,
 })
 export class WizardStopNavigation {
   @ViewChild('wizard') wizard: ClrWizard;

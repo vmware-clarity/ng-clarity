@@ -13,6 +13,7 @@ import { delay } from 'rxjs/operators';
   selector: 'clr-basic-button-group-demo',
   templateUrl: './basic-button-group.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class BasicButtonGroupDemo {
   position = 'bottom-left';

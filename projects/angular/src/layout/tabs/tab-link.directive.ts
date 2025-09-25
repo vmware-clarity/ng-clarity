@@ -5,22 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ComponentFactoryResolver,
-  Directive,
-  ElementRef,
-  HostBinding,
-  HostListener,
-  Inject,
-  Input,
-  ViewContainerRef,
-} from '@angular/core';
+import { Directive, ElementRef, HostBinding, HostListener, Inject, Input, ViewContainerRef } from '@angular/core';
 
-import { IF_ACTIVE_ID, IfActiveService } from '../../utils/conditional/if-active.service';
-import { TemplateRefContainer } from '../../utils/template-ref/template-ref-container';
 import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';
 import { TABS_ID } from './tabs-id.provider';
+import { IF_ACTIVE_ID, IfActiveService } from '../../utils/conditional/if-active.service';
+import { TemplateRefContainer } from '../../utils/template-ref/template-ref-container';
 
 let nbTabLinkComponents = 0;
 
@@ -31,6 +22,7 @@ let nbTabLinkComponents = 0;
     role: 'tab',
     type: 'button',
   },
+  standalone: false,
 })
 export class ClrTabLink {
   @Input('id') @HostBinding('id') tabLinkId: string;
@@ -43,7 +35,6 @@ export class ClrTabLink {
     public ifActiveService: IfActiveService,
     @Inject(IF_ACTIVE_ID) readonly id: number,
     public el: ElementRef<HTMLElement>,
-    cfr: ComponentFactoryResolver,
     viewContainerRef: ViewContainerRef,
     private tabsService: TabsService,
     @Inject(TABS_ID) public tabsId: number
@@ -55,10 +46,9 @@ export class ClrTabLink {
     // Tab links can be rendered in one of two places: in the main area or inside the overflow dropdown menu.
     // Here, we create a container so that its template can be used to create embeddedView on the fly.
     // See TabsService's renderView() method and how it's used in Tabs class for an example.
-    const factory = cfr.resolveComponentFactory(TemplateRefContainer);
-    this.templateRefContainer = viewContainerRef.createComponent(factory, undefined, undefined, [
-      [el.nativeElement],
-    ]).instance;
+    this.templateRefContainer = viewContainerRef.createComponent(TemplateRefContainer, {
+      projectableNodes: [[el.nativeElement]],
+    }).instance;
   }
 
   @Input('clrTabLinkInOverflow')

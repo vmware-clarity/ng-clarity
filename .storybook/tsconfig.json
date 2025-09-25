@@ -2,9 +2,12 @@
   "extends": "../projects/angular/tsconfig.lib.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
-      "@clr/angular": ["./../projects/angular/src/index.ts"]
+      "@clr/angular": ["./../projects/angular/src/index.ts"],
+      "@cds/core/icon/interfaces/icon.interfaces": ["../node_modules/@cds/core/icon/interfaces/icon.interfaces.d.ts"]
     },
     "types": ["node"]
   },

@@ -23,5 +23,6 @@ import { Component } from '@angular/core';
       1960s.
     </p>
   `,
+  standalone: false,
 })
 export class Beatles1Demo {}

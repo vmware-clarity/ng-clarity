@@ -6,7 +6,6 @@
  */
 
 import { Component } from '@angular/core';
-import { waitForAsync } from '@angular/core/testing';
 
 import { ClrDatagridDetail } from './datagrid-detail';
 import { TestContext } from './helpers.spec';
@@ -54,7 +53,7 @@ export default function (): void {
         expect(context.clarityElement.innerHTML).not.toContain(content);
       });
 
-      it('hides content with the esc key', waitForAsync(() => {
+      it('hides content with the esc key', async () => {
         spyOn(detailService, 'close');
         detailService.open({});
         context.detectChanges();
@@ -63,7 +62,7 @@ export default function (): void {
         document.body.dispatchEvent(event);
         context.detectChanges();
         expect(detailService.close).toHaveBeenCalled();
-      }));
+      });
 
       it('conditionally enables focus trap when opened', () => {
         expect(context.clarityElement.innerHTML).not.toContain('cdktrapfocus');
@@ -131,6 +130,7 @@ export default function (): void {
       <clr-dg-detail-body>${content}</clr-dg-detail-body>
     </clr-dg-detail>
   `,
+  standalone: false,
 })
 class FullTest {
   ariaLabelledBy: string;

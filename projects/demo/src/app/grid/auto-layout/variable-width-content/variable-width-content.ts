@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-grid-demo-variable-width-content',
   templateUrl: './variable-width-content.html',
   styleUrls: ['../../grid.demo.scss'],
+  standalone: false,
 })
 export class GridVariableWidthContentDemo {}

@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use '@cds/core/tokens/tokens.scss';
@@ -28,6 +29,7 @@
       --clr-login-trademark-font-size: #{variables.$clr-h2-font-size}; // @deprecated in v17. to be removed in v18
       --clr-login-trademark-letter-spacing: #{variables.$clr-h2-letter-spacing}; // @deprecated in v17. to be removed in v18
     }
+
     [cds-theme~='dark'] {
       --clr-login-logo-color: #{tokens.$cds-global-color-white};
     }

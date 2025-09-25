@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-grid-demo-ordering',
   templateUrl: './ordering.html',
   styleUrls: ['../grid.demo.scss'],
+  standalone: false,
 })
 export class GridOrderingDemo {}

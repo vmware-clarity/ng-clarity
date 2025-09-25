@@ -25,13 +25,14 @@ $clr-animation-easing: ease-in-out;
   from {
     background-position-x: 0;
   }
+
   to {
     background-position-x: -200%;
   }
 }
 
 @mixin skeleton-loading() {
-  &:before {
+  &::before {
     content: '';
     display: inline-block;
     width: 100%;
@@ -58,7 +59,8 @@ $clr-animation-easing: ease-in-out;
   .fadeDown {
     opacity: 0;
     transform: translate(0, -25%);
-    transition: opacity $clr-animation-duration $clr-animation-easing,
+    transition:
+      opacity $clr-animation-duration $clr-animation-easing,
       transform $clr-animation-duration $clr-animation-easing;
     will-change: opacity, transform;
 

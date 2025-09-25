@@ -19,11 +19,11 @@ import {
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
+import { Point, Popover } from './popover';
+import { PopoverOptions } from './popover-options.interface';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { Point, Popover } from './popover';
-import { PopoverOptions } from './popover-options.interface';
 
 /**
  * Fallback to hide when *clrIfOpen is not being used
@@ -54,7 +54,10 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   private subscription: Subscription;
   private documentESCListener: VoidFunction | null = null;
 
-  protected constructor(injector: Injector, @SkipSelf() protected parentHost: ElementRef<HTMLElement>) {
+  protected constructor(
+    injector: Injector,
+    @SkipSelf() protected parentHost: ElementRef<HTMLElement>
+  ) {
     this.el = injector.get(ElementRef);
     this.toggleService = injector.get(ClrPopoverToggleService);
     this.renderer = injector.get(Renderer2);

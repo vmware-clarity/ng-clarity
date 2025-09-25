@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ApplicationRef, Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -14,6 +14,7 @@ import { OutsideClick } from './outside-click';
 describe('Outside click', () => {
   let fixture: ComponentFixture<FullTest>;
   let testComponent: FullTest;
+  let outslideClickDirective: OutsideClick;
 
   let host: HTMLElement, button: HTMLElement, outside: HTMLElement;
 
@@ -22,6 +23,7 @@ describe('Outside click', () => {
     fixture = TestBed.createComponent(FullTest);
     fixture.detectChanges();
     testComponent = fixture.componentInstance;
+    outslideClickDirective = fixture.componentInstance.outslideClick;
     host = fixture.debugElement.query(By.css('.host')).nativeElement;
     button = fixture.debugElement.query(By.css('button')).nativeElement;
     outside = fixture.debugElement.query(By.css('.outside')).nativeElement;
@@ -54,8 +56,7 @@ describe('Outside click', () => {
   });
 
   it('should not run change detection if the click event happened on the host element', () => {
-    const appRef = TestBed.inject(ApplicationRef);
-    const spy = spyOn(appRef, 'tick').and.callThrough();
+    const spy = spyOn(outslideClickDirective.outsideClick, 'emit').and.callThrough();
 
     host.click();
     host.click();
@@ -77,8 +78,10 @@ describe('Outside click', () => {
       <button>Button</button>
     </p>
   `,
+  standalone: false,
 })
 class FullTest {
+  @ViewChild(OutsideClick) outslideClick: OutsideClick;
   strict = false;
   nbClicks = 0;
 

@@ -7,17 +7,18 @@
 
 import { Component } from '@angular/core';
 
-import { FocusService } from '../../utils/focus/focus.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownTrigger } from './dropdown-trigger';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
+import { FocusService } from '../../utils/focus/focus.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `<button clrDropdownTrigger>Hello world</button>`,
   // These services are declared here because they need the renderer
   providers: [FocusService, DROPDOWN_FOCUS_HANDLER_PROVIDER],
+  standalone: false,
 })
 class SimpleTest {}
 

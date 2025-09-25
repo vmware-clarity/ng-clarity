@@ -9,14 +9,14 @@ import { ClarityModule } from '@clr/angular';
 import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 import { RenderComponentStorybook } from 'helpers/render-component';
 
+import { AppLevelAlertStorybookComponent } from './app-level-alert.storybook.component';
+import { StandardAlertStorybookComponent } from './standard-alert.storybook.component';
 import { CommonModules } from '../../helpers/common';
 import { BadgeStoryBookComponent } from '../badge/badge.storybook.component';
 import { LabelStoryBookComponent } from '../label/label.storybook.component';
-import { AppLevelAlertStorybookComponent } from './app-level-alert.storybook.component';
-import { StandardAlertStorybookComponent } from './standard-alert.storybook.component';
 
 const LABEL_TYPES = ['label-info', 'label-success', 'label-warning', 'label-danger'];
-const BADGE_TYPES = ['badge-info', 'badge-success', 'badge-warning', 'badge-danger'];
+const BADGE_TYPES = ['info', 'success', 'warning', 'danger'];
 const innerComponents = [
   { type: BadgeStoryBookComponent, options: { badgeTypes: [BADGE_TYPES[0]] } },
   { type: BadgeStoryBookComponent, options: { badgeTypes: [BADGE_TYPES[1]] } },

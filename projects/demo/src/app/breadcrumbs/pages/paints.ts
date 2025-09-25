@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-paints-demo',
   template: ` <router-outlet></router-outlet>`,
+  standalone: false,
 })
 export class PaintsDemo {}

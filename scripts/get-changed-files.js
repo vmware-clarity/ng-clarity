@@ -12,10 +12,13 @@
 
 const childProcess = require('child_process');
 const minimatch = require('minimatch');
-const yargs = require('yargs');
+const yargs = require('yargs/yargs');
+const { hideBin } = require('yargs/helpers');
 
-const filter = yargs.argv.filter;
-const command = yargs.argv.command;
+const argv = yargs(hideBin(process.argv)).argv;
+
+const filter = argv.filter;
+const command = argv.command;
 const files = getFilteredChanges(filter);
 
 runCommandOnChangedFiles(command, files);

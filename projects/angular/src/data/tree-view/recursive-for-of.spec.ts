@@ -36,6 +36,7 @@ const TEST_ROOT: TestNode = {
 
 @Component({
   template: `<div *clrRecursiveFor="let node of root; getChildren: getChildren"></div>`,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrRecursiveForOf) recursiveForOf: ClrRecursiveForOf<TestNode>;
@@ -64,7 +65,7 @@ export default function (): void {
       this.fixture.detectChanges();
       this.hostComponent = this.fixture.componentInstance;
       this.clarityDirective = this.fixture.componentInstance.recursiveForOf;
-      this.featuresService = TestBed.get(TreeFeaturesService);
+      this.featuresService = TestBed.inject(TreeFeaturesService);
     });
 
     it('accepts a [clrRecursiveForOf] input', function (this: Context) {

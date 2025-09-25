@@ -21,6 +21,7 @@ interface TreeNode {
   selector: 'clr-eager-recursive-tree-demo',
   styleUrls: ['../tree-view.demo.scss'],
   templateUrl: './eager-recursive-tree.html',
+  standalone: false,
 })
 export class EagerRecursiveTreeDemo {
   singleRoot: TreeNode = {

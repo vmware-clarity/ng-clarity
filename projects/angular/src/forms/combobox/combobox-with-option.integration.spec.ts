@@ -6,11 +6,11 @@
  */
 
 import { Component } from '@angular/core';
-import { fakeAsync, tick } from '@angular/core/testing';
 
+import { ClrCombobox } from './combobox';
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { ClrCombobox } from './combobox';
+import { delay } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `
@@ -19,6 +19,7 @@ import { ClrCombobox } from './combobox';
       <clr-option [clrValue]="'Option 2'">Option 2</clr-option>
     </clr-combobox>
   `,
+  standalone: false,
 })
 class TestOptionSelection {}
 
@@ -39,29 +40,28 @@ export default function (): void {
       context.detectChanges();
     });
 
-    it('renders the selected option in the input when it is clicked', fakeAsync(function () {
+    it('renders the selected option in the input when it is clicked', async function () {
       const options = document.body.querySelectorAll('.clr-combobox-option');
       const selection: HTMLInputElement = context.clarityElement.querySelector('.clr-combobox-input');
 
       expect(selection.value).toMatch('');
       (options[0] as HTMLElement).click();
       context.detectChanges();
-      tick();
+      await delay();
       expect(selection.value).toMatch(/Option 1/);
-    }));
-
-    it('clears the previous selection and renders the new selection', fakeAsync(function () {
+    });
+    it('clears the previous selection and renders the new selection', async function () {
       const options = document.body.querySelectorAll('.clr-combobox-option');
       const selection: HTMLInputElement = context.clarityElement.querySelector('.clr-combobox-input');
       (options[0] as HTMLElement).click();
       context.detectChanges();
-      tick();
+      await delay();
       expect(selection.value).toMatch(/Option 1/);
       toggleService.open = true;
       (options[1] as HTMLElement).click();
       context.detectChanges();
-      tick();
+      await delay();
       expect(selection.value).toMatch(/Option 2/);
-    }));
+    });
   });
 }

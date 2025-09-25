@@ -6,10 +6,9 @@
  */
 
 import { DebugElement, InjectionToken, ModuleWithProviders, Type } from '@angular/core';
-import { ComponentFixture, TestBed, TestModuleMetadata, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, TestModuleMetadata } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-
 // import { reportSlowSpecs } from "./slow-specs.spec";
 
 export class TestContext<C, H> {
@@ -48,12 +47,11 @@ export class TestContext<C, H> {
   }
 
   getProvider<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T {
-    return TestBed.get(token, notFoundValue);
+    return TestBed.inject(token, notFoundValue);
   }
 
   // The Function type here is just to tell Typescript to be nice with abstract classes. Weird.
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
   getClarityProvider<T>(token: Type<T> | InjectionToken<T> | Function, notFoundValue?: T): T {
     return this.clarityDebugElement.injector.get(token, notFoundValue);
   }
@@ -159,6 +157,17 @@ export function addHelpersDeprecated(
   });
 }
 
+export function assertEqualDates(date1: Date, date2: Date): boolean {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+}
+export function delay(ms = 0): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 /**
  * Helper for testing requestAnimationFrame code. FakeAssync internally mocks requestAnimationFrame as setTimeout(16).
  * That's why we need to test it with tick(16). 16 is not a truly magic number, it's the approximated single frame time
@@ -167,8 +176,8 @@ export function addHelpersDeprecated(
  * where tick() follows the changeDetection, requestAnimationFrame may be used to setup preconditions for a change detection
  * cycle, so it should precede a detectChanges call.
  */
-export function animationFrameTick(fixture?: ComponentFixture<any>) {
-  tick(16);
+export async function animationFrameTick(fixture?: ComponentFixture<any>) {
+  await delay(16);
   if (fixture) {
     fixture.detectChanges();
   }
@@ -182,9 +191,9 @@ export function animationFrameTick(fixture?: ComponentFixture<any>) {
 // reportSlowSpecs();
 
 export function expectActiveElementToBe(element: Element, failOutput = null): void {
-  expect(document.activeElement).toBe(element, failOutput);
+  expect(document.activeElement).withContext(failOutput).toBe(element);
 }
 
 export function expectActiveElementNotToBe(element: Element, failOutput = null): void {
-  expect(document.activeElement).not.toBe(element, failOutput);
+  expect(document.activeElement).withContext(failOutput).not.toBe(element);
 }

@@ -8,15 +8,15 @@
 import { Component, DebugElement, ElementRef, Type, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { addHelpers, TestContext } from '../../data/datagrid/helpers.spec';
-import { IfActiveService } from '../../utils/conditional/if-active.service';
-import { ClrKeyFocus } from '../../utils/focus/key-focus/key-focus';
-import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';
 import { ClrTab } from './tab';
 import { ClrTabLink } from './tab-link.directive';
 import { ClrTabs } from './tabs';
+import { addHelpers, TestContext } from '../../data/datagrid/helpers.spec';
+import { IfActiveService } from '../../utils/conditional/if-active.service';
+import { ClrKeyFocus } from '../../utils/focus/key-focus/key-focus';
+import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `
@@ -51,6 +51,7 @@ import { ClrTabs } from './tabs';
       </clr-tab>
     </clr-tabs>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrTabs) tabsInstance: ClrTabs;
@@ -62,16 +63,19 @@ class TestComponent {
 @Component({
   template: `
     <clr-tabs>
-      <clr-tab *ngIf="true" #first>
-        <button clrTabLink>Tab1</button>
-        <clr-tab-content *clrIfActive>Content1</clr-tab-content>
-      </clr-tab>
+      @if (true) {
+        <clr-tab #first>
+          <button clrTabLink>Tab1</button>
+          <clr-tab-content *clrIfActive>Content1</clr-tab-content>
+        </clr-tab>
+      }
       <clr-tab>
         <button clrTabLink>Tab2</button>
         <clr-tab-content *clrIfActive>Content2</clr-tab-content>
       </clr-tab>
     </clr-tabs>
   `,
+  standalone: false,
 })
 class NgIfFirstTest {
   @ViewChild('first') firstTab: ClrTab;
@@ -84,12 +88,15 @@ class NgIfFirstTest {
         <button clrTabLink>Tab1</button>
         <clr-tab-content *clrIfActive>Content1</clr-tab-content>
       </clr-tab>
-      <clr-tab *ngIf="true">
-        <button clrTabLink>Tab2</button>
-        <clr-tab-content *clrIfActive>Content2</clr-tab-content>
-      </clr-tab>
+      @if (true) {
+        <clr-tab>
+          <button clrTabLink>Tab2</button>
+          <clr-tab-content *clrIfActive>Content2</clr-tab-content>
+        </clr-tab>
+      }
     </clr-tabs>
   `,
+  standalone: false,
 })
 class NgIfSecondTest {
   @ViewChild('first', { static: true }) firstTab: ClrTab;
@@ -110,15 +117,18 @@ class NgIfSecondTest {
               <button clrTabLink>Child Tab1</button>
               <clr-tab-content *clrIfActive>Child Content1</clr-tab-content>
             </clr-tab>
-            <clr-tab *ngIf="true">
-              <button clrTabLink>Child Tab2</button>
-              <clr-tab-content *clrIfActive>Child Content2</clr-tab-content>
-            </clr-tab>
+            @if (true) {
+              <clr-tab>
+                <button clrTabLink>Child Tab2</button>
+                <clr-tab-content *clrIfActive>Child Content2</clr-tab-content>
+              </clr-tab>
+            }
           </clr-tabs>
         </clr-tab-content>
       </clr-tab>
     </clr-tabs>
   `,
+  standalone: false,
 })
 class NestedTabsTest {
   @ViewChild(ClrTabs, { static: true }) tabsInstance: ClrTabs;
@@ -137,6 +147,7 @@ class NestedTabsTest {
       </clr-tab>
     </clr-tabs>
   `,
+  standalone: false,
 })
 class NoClrIfActiveTest {
   @ViewChild(ClrTabs, { static: true }) tabsInstance: ClrTabs;
@@ -155,6 +166,7 @@ class NoClrIfActiveTest {
       </clr-tabs>
     </div>
   `,
+  standalone: false,
 })
 class ScalingTestComponent {
   @ViewChild('content') content: ElementRef<HTMLElement>;

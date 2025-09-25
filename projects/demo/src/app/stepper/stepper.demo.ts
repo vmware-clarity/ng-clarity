@@ -5,32 +5,31 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrLoadingState } from '@clr/angular';
 
 @Component({
   templateUrl: 'stepper.demo.html',
   styleUrls: ['./stepper.demo.scss'],
+  standalone: false,
 })
 export class StepperDemo {
-  state: ClrLoadingState = ClrLoadingState.DEFAULT;
+  @ViewChild('nextBtn') nxtBtn?: ElementRef<HTMLElement>;
 
+  state: ClrLoadingState = ClrLoadingState.DEFAULT;
+  expanded = false;
   showSecondStep = true;
   initialStep = 'name';
   form: FormGroup = this.getReactiveForm();
   templateForm: any = this.getTemplateForm();
   partiallyCompletedForm: FormGroup = this.getReactiveForm();
 
-  #fb = inject(FormBuilder);
-  expanded = false;
-  formGroup = this.#fb.group({
-    group: this.#fb.group({
+  formGroup = new FormGroup({
+    group: new FormGroup({
       step: new FormControl(null, Validators.required),
     }),
   });
-
-  @ViewChild('nextBtn') nxtBtn?: ElementRef<HTMLElement>;
 
   stepsExpandedState = {
     name: false,

@@ -16,6 +16,7 @@ import { ControlIdService } from './providers/control-id.service';
 
 @Component({
   template: `<clr-control-error>Test error</clr-control-error>`,
+  standalone: false,
 })
 class SimpleTest {}
 

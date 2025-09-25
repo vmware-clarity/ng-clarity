@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-alert-close-event-demo-angular',
   styleUrls: ['../alert.demo.scss'],
   templateUrl: './alert-angular-close-event.demo.html',
+  standalone: false,
 })
 export class AlertAngularCloseEventDemo {
   closeMessage = '';

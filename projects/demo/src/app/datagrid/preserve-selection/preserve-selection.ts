@@ -6,7 +6,7 @@
  */
 
 import { Component, TrackByFunction } from '@angular/core';
-import { ClrDatagridItemsTrackByFunction, ClrDatagridStateInterface } from '@clr/angular';
+import { ClrDatagridItemsIdentityFunction, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -16,6 +16,7 @@ import { User } from '../inventory/user';
   providers: [Inventory],
   templateUrl: 'preserve-selection.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridPreserveSelectionDemo {
   users: User[];
@@ -53,7 +54,7 @@ export class DatagridPreserveSelectionDemo {
 
   trackByIndex: TrackByFunction<User> = index => index;
   trackById: TrackByFunction<User> = (_index, item) => item.id;
-  trackItemById: ClrDatagridItemsTrackByFunction<User> = item => item.id;
+  trackItemById: ClrDatagridItemsIdentityFunction<User> = item => item.id;
 
   async refresh(state: ClrDatagridStateInterface) {
     this.loading = true;

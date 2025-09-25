@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-layout-only-subnav-primary',
   templateUrl: './layout-subnav-primary.html',
   styleUrls: ['./layout.demo.scss'],
+  standalone: false,
 })
 export class LayoutSubnavPrimaryDemo {}

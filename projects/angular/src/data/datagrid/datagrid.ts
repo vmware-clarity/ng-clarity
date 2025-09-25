@@ -5,15 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
   Component,
   ContentChild,
   ContentChildren,
+  DOCUMENT,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Inject,
   Input,
   NgZone,
@@ -29,8 +30,6 @@ import {
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridItems } from './datagrid-items';
 import { ClrDatagridPlaceholder } from './datagrid-placeholder';
@@ -44,7 +43,7 @@ import { DetailService } from './providers/detail.service';
 import { DisplayModeService } from './providers/display-mode.service';
 import { FiltersProvider } from './providers/filters';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
-import { ClrDatagridItemsTrackByFunction, Items } from './providers/items';
+import { ClrDatagridItemsIdentityFunction, Items } from './providers/items';
 import { Page } from './providers/page';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
@@ -54,6 +53,8 @@ import { StateProvider } from './providers/state.provider';
 import { TableSizeService } from './providers/table-size.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { CellCoordinates, KeyNavigationGridController } from './utils/key-navigation-grid.controller';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Component({
   selector: 'clr-datagrid',
@@ -80,6 +81,7 @@ import { CellCoordinates, KeyNavigationGridController } from './utils/key-naviga
     '[class.datagrid-detail-open]': 'detailService.isOpen',
     '[class.datagrid-virtual-scroll]': '!!virtualScroll',
   },
+  standalone: false,
 })
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
   @Input('clrLoadingMoreItems') loadingMoreItems: boolean;
@@ -108,7 +110,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /**
    * Expose virtual scroll directive for applications to access its public methods
    */
-  @ContentChildren(ClrDatagridVirtualScrollDirective) _virtualScroll: QueryList<ClrDatagridVirtualScrollDirective<any>>;
+  @ContentChildren(forwardRef(() => ClrDatagridVirtualScrollDirective)) _virtualScroll: QueryList<
+    ClrDatagridVirtualScrollDirective<any>
+  >;
   /**
    * We grab the smart iterator from projected content
    */
@@ -235,9 +239,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this.selection.rowSelectionMode = value;
   }
 
-  @Input('clrDgItemsTrackBy')
-  set trackBy(value: ClrDatagridItemsTrackByFunction<T>) {
-    this.items.trackBy = value;
+  @Input('clrDgItemsIdentityFn')
+  set identityFn(value: ClrDatagridItemsIdentityFunction<T>) {
+    this.items.identifyBy = value;
   }
 
   /**
@@ -299,7 +303,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         this.rows.forEach(row => {
           this._displayedRows.insert(row._view);
         });
-
         this.updateDetailState();
 
         // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
@@ -402,6 +405,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       })
     );
 
+    if (this.virtualScroll) {
+      this.toggleVirtualScrollSubscriptions();
+    }
+
     // We need to preserve shift state, so it can be used on selection change, regardless of the input event
     // that triggered the change. This helps us to easily resolve the k/b only case together with the mouse selection case.
     this.zone.runOutsideAngular(() => {
@@ -441,7 +448,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   updateDetailState() {
     // Try to update only when there is something cached and its open.
     if (this.detailService.state && this.detailService.isOpen) {
-      const row = this.rows.find(row => this.items.trackBy(row.item) === this.items.trackBy(this.detailService.state));
+      const row = this.rows.find(
+        row => this.items.identifyBy(row.item) === this.items.identifyBy(this.detailService.state)
+      );
 
       /**
        * Reopen updated row or close it

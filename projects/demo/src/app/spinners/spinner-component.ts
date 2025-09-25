@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-spinner-component',
   templateUrl: './spinner-component.html',
+  standalone: false,
 })
 export class SpinnerComponentDemo {}

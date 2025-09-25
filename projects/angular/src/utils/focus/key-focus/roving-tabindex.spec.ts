@@ -9,27 +9,31 @@ import { Component, DebugElement, QueryList, ViewChild, ViewChildren } from '@an
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { Keys } from '../../../utils/enums/keys.enum';
-import { expectActiveElementNotToBe } from '../../testing/helpers.spec';
 import { ClrKeyFocusItem } from './key-focus-item';
 import { ClrKeyFocusModule } from './key-focus.module';
 import { ClrRovingTabindex } from './roving-tabindex';
+import { Keys } from '../../../utils/enums/keys.enum';
+import { expectActiveElementNotToBe } from '../../testing/helpers.spec';
 
 @Component({
   template: `
-    <div
-      *ngIf="open"
-      clrRovingTabindex
-      [clrRovingTabindexDisabled]="disabled"
-      [clrDirection]="direction"
-      [clrFocusOnLoad]="focusOnLoad"
-      (clrFocusChange)="changed = true"
-    >
-      <button clrKeyFocusItem>Button 1</button>
-      <button clrKeyFocusItem>Button 2</button>
-      <button *ngIf="showLast" clrKeyFocusItem>Button 3</button>
-    </div>
+    @if (open) {
+      <div
+        clrRovingTabindex
+        [clrRovingTabindexDisabled]="disabled"
+        [clrDirection]="direction"
+        [clrFocusOnLoad]="focusOnLoad"
+        (clrFocusChange)="changed = true"
+      >
+        <button clrKeyFocusItem>Button 1</button>
+        <button clrKeyFocusItem>Button 2</button>
+        @if (showLast) {
+          <button clrKeyFocusItem>Button 3</button>
+        }
+      </div>
+    }
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrRovingTabindex, { static: true }) keyFocus: ClrRovingTabindex;
@@ -47,9 +51,12 @@ class TestComponent {
     <div [clrRovingTabindex]="buttons" [clrFocusOnLoad]="focusOnLoad">
       <button>Button 1</button>
       <button>Button 2</button>
-      <button *ngIf="showLast">Button 3</button>
+      @if (showLast) {
+        <button>Button 3</button>
+      }
     </div>
   `,
+  standalone: false,
 })
 class DOMTestComponent {
   buttons: any;

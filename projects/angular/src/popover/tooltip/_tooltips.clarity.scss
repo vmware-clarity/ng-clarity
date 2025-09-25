@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:map';
 @use 'sass:meta';
 @use '@cds/core/tokens/tokens.scss';
@@ -18,7 +19,6 @@
   width: mixins.baselinePx(240);
   border-radius: tooltip-variables.$clr-tooltip-border-radius;
   padding: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-l;
-
   color: tooltip-variables.$clr-tooltip-color;
   background-color: tooltip-variables.$clr-tooltip-background-color;
 
@@ -29,7 +29,6 @@
     )
   );
 }
-
 @mixin vertical-tooltip-generator($dirA: top, $dirB: right) {
   $oppA: map.get(mixins.$opp-directions, $dirA);
   $oppB: map.get(mixins.$opp-directions, $dirB);
@@ -41,7 +40,6 @@
   #{$oppA}: 100%;
   #{$oppB}: 50%;
   #{$dirB}: auto;
-
   border-#{$oppA}-#{$oppB}-radius: 0;
   margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
 
@@ -53,14 +51,12 @@
     #{$dirA}: auto;
     #{$dirB}: auto;
     #{$oppA}: calc(-1 * #{tooltip-variables.$clr-tooltip-arrow-height});
-
     border-#{$oppB}: tooltip-variables.$clr-tooltip-arrow-height solid tooltip-variables.$clr-tooltip-background-color;
     border-#{$dirA}: tooltip-variables.$clr-tooltip-arrow-width solid tooltip-variables.$clr-tooltip-background-color;
     border-#{$oppA}: tooltip-variables.$clr-tooltip-arrow-width solid transparent;
     border-#{$dirB}: tooltip-variables.$clr-tooltip-arrow-width solid transparent;
   }
 }
-
 @mixin horizontal-tooltip-generator($dirA: right) {
   $oppA: map.get(mixins.$opp-directions, $dirA);
 
@@ -83,7 +79,6 @@
     bottom: auto;
     #{$dirA}: auto;
     #{$oppA}: calc(-1 * #{tooltip-variables.$clr-tooltip-arrow-width});
-
     border-top: tooltip-variables.$clr-tooltip-arrow-height solid tooltip-variables.$clr-tooltip-background-color;
     border-#{$dirA}: tooltip-variables.$clr-tooltip-arrow-width solid tooltip-variables.$clr-tooltip-background-color;
     border-bottom: tooltip-variables.$clr-tooltip-arrow-height solid transparent;
@@ -92,7 +87,6 @@
 }
 
 @include meta.load-css('properties.tooltip');
-
 @include mixins.exports('tooltips.clarity') {
   .tooltip {
     display: inline-block;
@@ -113,10 +107,7 @@
       // This allows a user to hover their mouse over the tooltip to stop it from hiding
       &::after {
         position: absolute;
-        top: -20px;
-        left: -20px;
-        right: -20px;
-        bottom: -20px;
+        inset: -20px;
         content: '';
         // make sure this is underneath the tooltip so that user can use their mouse to select text
         z-index: -1;
@@ -227,14 +218,12 @@
 
   //Icons
   .tooltip {
-    & > .clr-icon {
+    > .clr-icon {
       margin-right: 0;
     }
 
-    & {
-      > svg {
-        pointer-events: none;
-      }
+    > svg {
+      pointer-events: none;
     }
   }
 

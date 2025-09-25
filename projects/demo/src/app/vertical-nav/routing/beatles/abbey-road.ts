@@ -20,5 +20,6 @@ import { Component } from '@angular/core';
       "Something"/"Come Together", released in October, topped the Billboard chart in the US.
     </p>
   `,
+  standalone: false,
 })
 export class AbbeyRoadDemo {}

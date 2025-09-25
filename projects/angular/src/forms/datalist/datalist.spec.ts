@@ -7,9 +7,9 @@
 
 import { Component } from '@angular/core';
 
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { ClrDatalist } from './datalist';
 import { DatalistIdService } from './providers/datalist-id.service';
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `
@@ -18,6 +18,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
       <option value="two">Two</option>
     </datalist>
   `,
+  standalone: false,
 })
 export class TestDatalistId {
   testId;
@@ -30,6 +31,7 @@ export class TestDatalistId {
       <option value="two">Two</option>
     </datalist>
   `,
+  standalone: false,
 })
 export class TestNativeDatalist {}
 

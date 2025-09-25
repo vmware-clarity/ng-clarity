@@ -5,11 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import '../_utils/clarity-variables';
-
 .clr-example {
   &.demo-menu-height {
-    height: $clr_baselineRem_336px;
+    height: calc(10 * var(--cds-global-space-11)); //360px
   }
 
   &.dropdown-demo {

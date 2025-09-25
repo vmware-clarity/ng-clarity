@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-alert-small-demo-angular',
   styleUrls: ['../alert.demo.scss'],
   templateUrl: './alert-angular-small.demo.html',
+  standalone: false,
 })
 export class AlertAngularSmallDemo {}

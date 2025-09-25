@@ -8,11 +8,11 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, Optional, SkipSelf } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
+import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdown.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
-import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdown.service';
 
 @Component({
   selector: 'clr-dropdown',
@@ -23,6 +23,7 @@ import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdow
   },
   providers: [ROOT_DROPDOWN_PROVIDER, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
   hostDirectives: [ClrPopoverHostDirective],
+  standalone: false,
 })
 export class ClrDropdown implements OnDestroy {
   @Input('clrCloseMenuOnItemClick') isMenuClosable = true;

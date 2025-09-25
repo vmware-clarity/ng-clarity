@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DatagridRenderStep } from '../enums/render-step.enum';
 import { DatagridRenderOrganizer } from './render-organizer';
+import { DatagridRenderStep } from '../enums/render-step.enum';
 
 /**
  * Having a little fun with Typescript just to see how it goes.

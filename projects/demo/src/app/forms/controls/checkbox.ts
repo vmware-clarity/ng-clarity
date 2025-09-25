@@ -9,5 +9,6 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './checkbox.html',
+  standalone: false,
 })
 export class FormsCheckboxDemo {}

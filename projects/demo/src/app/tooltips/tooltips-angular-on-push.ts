@@ -14,5 +14,6 @@ import { TooltipsAngularDemo } from './tooltips-angular';
   styleUrls: ['./tooltips.demo.scss'],
   templateUrl: './tooltips-angular.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class TooltipsAngularOnPushDemo extends TooltipsAngularDemo {}

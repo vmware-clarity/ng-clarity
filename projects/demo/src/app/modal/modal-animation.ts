@@ -10,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'clr-modal-animation-demo',
   templateUrl: './modal-animation.demo.html',
+  standalone: false,
 })
 export class ModalAnimationDemo implements OnInit {
   animatedExampleIn = false;

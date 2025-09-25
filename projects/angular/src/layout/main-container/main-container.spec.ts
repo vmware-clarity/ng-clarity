@@ -8,14 +8,15 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ClrMainContainer } from './main-container';
+import { ClrMainContainerModule } from './main-container.module';
 import { ClrNavigationModule } from '../nav/navigation.module';
 import { ResponsiveNavCodes } from '../nav/responsive-nav-codes';
 import { ResponsiveNavControlMessage } from '../nav/responsive-nav-control-message';
-import { ClrMainContainer } from './main-container';
-import { ClrMainContainerModule } from './main-container.module';
 
 @Component({
   template: `<clr-main-container>Test</clr-main-container>`,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrMainContainer) mainContainerInstance: ClrMainContainer;

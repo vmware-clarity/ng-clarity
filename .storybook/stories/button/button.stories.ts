@@ -10,8 +10,8 @@ import { ClrButton } from '@clr/angular';
 import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
-import { BUTTON_STYLES, BUTTON_TYPES } from '../../helpers/button-class.helper';
 import { ButtonStorybookComponent } from './button.storybook.component';
+import { BUTTON_STYLES, BUTTON_TYPES } from '../../helpers/button-class.helper';
 
 export default {
   title: 'Button/Button',
@@ -26,8 +26,8 @@ export default {
     click: { control: { disable: true } },
     emitClick: { control: { disable: true }, table: { disable: true } },
     loadingStateChange: { control: { disable: true }, table: { disable: true } },
-    buttonStyle: { control: 'radio', options: BUTTON_STYLES },
-    buttonType: { control: 'radio', options: BUTTON_TYPES },
+    buttonStyle: { control: { type: 'radio' }, options: BUTTON_STYLES },
+    buttonType: { control: { type: 'radio' }, options: BUTTON_TYPES },
     templateMode: { control: { disable: true }, table: { disable: true } },
   },
   args: {

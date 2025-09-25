@@ -45,12 +45,12 @@ export default function () {
     it('single and pseudo-focuscontains only the last item and multiple contains all items', () => {
       populateModels();
 
-      expect(singleModel.model).not.toBeArray();
+      expect(Array.isArray(singleModel.model)).toBeFalse();
       expect(singleModel.model).toEqual('three');
-      expect(pseudoFocusModel.model).not.toBeArray();
+      expect(Array.isArray(pseudoFocusModel.model)).toBeFalse();
       expect(pseudoFocusModel.model).toEqual('three');
 
-      expect(multiModel.model).toBeArray();
+      expect(Array.isArray(multiModel.model)).toBeTrue();
       expect(multiModel.model.length).toBe(3);
       expect(multiModel.model).toEqual(['one', 'two', 'three']);
     });

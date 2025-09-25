@@ -11,15 +11,16 @@
   (clrModalAlternateClose)="altClose.emit($event)"
   [clrModalOverrideScrollService]="true"
 >
+  @if (clrSidePanelPinnable) {
   <button
     type="button"
     [attr.aria-label]="commonStrings.keys.sidePanelPin"
     class="leading-button pinnable"
-    *ngIf="clrSidePanelPinnable"
     (click)="togglePinned()"
   >
     <cds-icon [attr.shape]="pinned ? 'unpin' : 'pin'"></cds-icon>
   </button>
+  }
   <div class="modal-title"><ng-content select=".side-panel-title"></ng-content></div>
   <div class="modal-body"><ng-content select=".side-panel-body"></ng-content></div>
   <div class="modal-footer"><ng-content select=".side-panel-footer"></ng-content></div>

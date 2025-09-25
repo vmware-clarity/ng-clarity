@@ -8,9 +8,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 import { ClrNumberInput } from './number-input';
 import { ClrNumberInputContainer } from './number-input-container';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 
 @Component({
   template: `
@@ -22,6 +22,7 @@ import { ClrNumberInputContainer } from './number-input-container';
       <clr-control-success>Valid</clr-control-success>
     </clr-number-input-container>
   `,
+  standalone: false,
 })
 class SimpleTest {
   disabled = false;
@@ -35,6 +36,7 @@ class SimpleTest {
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-number-input-container>
   `,
+  standalone: false,
 })
 class NoLabelTest {
   model;
@@ -52,6 +54,7 @@ class NoLabelTest {
       </clr-number-input-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   disabled = false;

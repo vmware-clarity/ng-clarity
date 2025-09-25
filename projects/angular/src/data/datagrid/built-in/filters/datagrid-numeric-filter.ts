@@ -8,6 +8,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
 import { ClrCommonStringsService } from '../../../../utils/i18n/common-strings.service';
 import { ClrPopoverToggleService } from '../../../../utils/popover/providers/popover-toggle.service';
@@ -16,7 +17,6 @@ import { ClrDatagridNumericFilterInterface } from '../../interfaces/numeric-filt
 import { CustomFilter } from '../../providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from '../../providers/filters';
 import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
-import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
 
 @Component({
   selector: 'clr-dg-numeric-filter',
@@ -55,6 +55,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
       </div>
     </clr-dg-filter>
   `,
+  standalone: false,
 })
 export class DatagridNumericFilter<T = any>
   extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>>

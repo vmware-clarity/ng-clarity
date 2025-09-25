@@ -8,11 +8,11 @@
 import { Component, QueryList, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClrEmphasisModule } from '../../emphasis/emphasis.module';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrAlert } from './alert';
 import { ClrAlertsPager } from './alerts-pager';
 import { MultiAlertService } from './providers/multi-alert.service';
+import { ClrEmphasisModule } from '../../emphasis/emphasis.module';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 export default function () {
   describe('ClrAlerts pager component', function () {
@@ -145,6 +145,7 @@ export default function () {
 
 @Component({
   template: `<clr-alerts-pager [(clrCurrentAlertIndex)]="index"></clr-alerts-pager>`,
+  standalone: false,
 })
 export class TestIndex {
   @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;
@@ -153,6 +154,7 @@ export class TestIndex {
 
 @Component({
   template: `<clr-alerts-pager [(clrCurrentAlert)]="currentAlert"></clr-alerts-pager>`,
+  standalone: false,
 })
 export class TestInstance {
   @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;
@@ -161,6 +163,7 @@ export class TestInstance {
 
 @Component({
   template: `<clr-alerts-pager></clr-alerts-pager>`,
+  standalone: false,
 })
 export class TestBasics {
   @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;

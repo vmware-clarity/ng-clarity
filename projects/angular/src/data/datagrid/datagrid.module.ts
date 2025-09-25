@@ -23,15 +23,6 @@ import {
 
 import { ClrFormsModule } from '../../forms/forms.module';
 import { ClrIconModule } from '../../icon/icon.module';
-import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
-import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
-import { CdkDragModule } from '../../utils/cdk/cdk-drag.module';
-import { CdkTrapFocusModule } from '../../utils/cdk/cdk-trap-focus.module';
-import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
-import { ClrLoadingModule } from '../../utils/loading/loading.module';
-import { ClrOutsideClickModule } from '../../utils/outside-click/outside-click.module';
-import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
 import { DatagridNumericFilter } from './built-in/filters/datagrid-numeric-filter';
 import { DatagridStringFilter } from './built-in/filters/datagrid-string-filter';
 import { ActionableOompaLoompa } from './chocolate/actionable-oompa-loompa';
@@ -64,10 +55,20 @@ import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.dir
 import { DatagridCellRenderer } from './render/cell-renderer';
 import { DatagridHeaderRenderer } from './render/header-renderer';
 import { DatagridMainRenderer } from './render/main-renderer';
+import { DatagridRowDetailRenderer } from './render/row-detail-renderer';
 import { DatagridRowRenderer } from './render/row-renderer';
 import { WrappedCell } from './wrapped-cell';
 import { WrappedColumn } from './wrapped-column';
 import { WrappedRow } from './wrapped-row';
+import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
+import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
+import { CdkDragModule } from '../../utils/cdk/cdk-drag.module';
+import { CdkTrapFocusModule } from '../../utils/cdk/cdk-trap-focus.module';
+import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
+import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
+import { ClrLoadingModule } from '../../utils/loading/loading.module';
+import { ClrOutsideClickModule } from '../../utils/outside-click/outside-click.module';
+import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
 
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   // Core
@@ -101,6 +102,7 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   DatagridCellRenderer,
   DatagridHeaderRenderer,
   DatagridMainRenderer,
+  DatagridRowDetailRenderer,
   DatagridRowRenderer,
 
   // Chocolate

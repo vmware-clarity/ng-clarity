@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-grid-demo-container',
   templateUrl: './grid-container.html',
   styleUrls: ['../grid.demo.scss'],
+  standalone: false,
 })
 export class GridContainerDemo {}

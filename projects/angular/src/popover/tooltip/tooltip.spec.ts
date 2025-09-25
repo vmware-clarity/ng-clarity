@@ -7,10 +7,10 @@
 
 import { Component } from '@angular/core';
 
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { ClrTooltip } from './tooltip';
 import { ClrTooltipModule } from './tooltip.module';
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `
@@ -21,6 +21,7 @@ import { ClrTooltipModule } from './tooltip.module';
       </clr-tooltip-content>
     </clr-tooltip>
   `,
+  standalone: false,
 })
 class SimpleTest {}
 

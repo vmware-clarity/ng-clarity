@@ -16,6 +16,7 @@ import { USERS } from './users';
   host: {
     lang: 'fr',
   },
+  standalone: false,
 })
 export class I18nA11yDemo implements OnDestroy {
   users = USERS;

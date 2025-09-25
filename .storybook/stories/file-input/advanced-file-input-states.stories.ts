@@ -21,7 +21,7 @@ export default {
   ],
   argTypes: {
     // form inputs
-    clrLayout: { control: false },
+    clrLayout: { control: { disable: true } },
   },
 };
 

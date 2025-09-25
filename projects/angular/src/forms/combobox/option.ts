@@ -7,15 +7,17 @@
 
 import { Component, ElementRef, HostBinding, HostListener, Input, OnInit } from '@angular/core';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ComboboxFocusHandler, OptionData as OptionProxy } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 @Component({
   selector: 'clr-option',
   template: `
     <ng-content></ng-content>
-    <span *ngIf="selected" class="clr-sr-only">{{ commonStrings.keys.comboboxSelected }}</span>
+    @if (selected) {
+      <span class="clr-sr-only">{{ commonStrings.keys.comboboxSelected }}</span>
+    }
   `,
   host: {
     '[class.clr-combobox-option]': 'true',
@@ -24,6 +26,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     '[attr.tabindex]': '-1',
     '[attr.id]': 'optionId',
   },
+  standalone: false,
 })
 export class ClrOption<T> implements OnInit {
   // A proxy with only the necessary data to be used for a11y and the focus handler service.

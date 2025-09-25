@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-typography-font-char-test',
   styleUrls: ['./typography.demo.scss'],
   templateUrl: './typography-font-char-test.html',
+  standalone: false,
 })
 export class TypographyFontCharTestDemo {}

@@ -8,17 +8,19 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 import { ClrRadio } from './radio';
 import { ClrRadioWrapper } from './radio-wrapper';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 
 @Component({
   template: `<input type="radio" clrRadio />`,
+  standalone: false,
 })
 class StandaloneUseTest {}
 
 @Component({
   template: `<input type="radio" clrRadio name="model" class="test-class" [(ngModel)]="model" />`,
+  standalone: false,
 })
 class TemplateDrivenTest {}
 
@@ -28,6 +30,7 @@ class TemplateDrivenTest {}
       <input type="radio" clrRadio name="model" class="test-class" formControlName="model" />
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   example = new FormGroup({

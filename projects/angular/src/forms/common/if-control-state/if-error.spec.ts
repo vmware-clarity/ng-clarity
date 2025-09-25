@@ -6,16 +6,17 @@
  */
 
 import { Component } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
+import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 
+import { IfControlStateService } from './if-control-state.service';
+import { ClrIfError } from './if-error';
 import { ClrIconModule } from '../../../icon/icon.module';
 import { ClrInput } from '../../input/input';
 import { ClrInputContainer } from '../../input/input-container';
 import { ClrControlError } from '../error';
 import { NgControlService } from '../providers/ng-control.service';
-import { IfControlStateService } from './if-control-state.service';
-import { ClrIfError } from './if-error';
 
 const errorMessage = 'ERROR_MESSAGE';
 const minLengthMessage = 'MIN_LENGTH_MESSAGE';
@@ -23,12 +24,14 @@ const maxLengthMessage = 'MAX_LENGTH_MESSAGE';
 
 @Component({
   template: `<div *clrIfError></div>`,
+  standalone: false,
 })
 class InvalidUseTest {}
 
 @Component({
   template: `<clr-control-error *clrIfError>${errorMessage}</clr-control-error>`,
   providers: [IfControlStateService, NgControlService],
+  standalone: false,
 })
 class GeneralErrorTest {}
 
@@ -41,6 +44,7 @@ class GeneralErrorTest {}
     </clr-control-error>
   `,
   providers: [IfControlStateService, NgControlService],
+  standalone: false,
 })
 class SpecificErrorTest {}
 
@@ -74,16 +78,16 @@ export default function (): void {
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
       });
 
-      it('displays the error message after touched on general errors', fakeAsync(() => {
+      it('displays the error message after touched on general errors', async () => {
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         const control = new FormControl('', Validators.required);
         control.markAsTouched();
         ngControlService.setControl(control);
         ifControlStateService.triggerStatusChange();
         fixture.detectChanges();
-        tick();
+        await delay();
         expect(fixture.nativeElement.innerHTML).toContain(errorMessage);
-      }));
+      });
     });
 
     describe('specific error', () => {
@@ -104,52 +108,52 @@ export default function (): void {
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
       });
 
-      it('displays the error when the specific error is defined', fakeAsync(() => {
+      it('displays the error when the specific error is defined', async () => {
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         const control = new FormControl('', [Validators.required, Validators.minLength(5)]);
         control.markAsTouched();
         ngControlService.setControl(control);
         ifControlStateService.triggerStatusChange();
-        tick();
+        await delay();
         fixture.detectChanges();
         expect(fixture.nativeElement.innerHTML).toContain(errorMessage);
-      }));
+      });
 
-      it('hides the message even when it is invalid due to a different validation error', fakeAsync(() => {
+      it('hides the message even when it is invalid due to a different validation error', async () => {
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         const control = new FormControl('abc', [Validators.required, Validators.minLength(5)]);
         ngControlService.setControl(control);
         ifControlStateService.triggerStatusChange();
-        tick();
+        await delay();
         fixture.detectChanges();
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         expect(fixture.nativeElement.innerHTML).toContain(minLengthMessage);
-      }));
+      });
 
-      it('displays the error message with values from error object in context', fakeAsync(() => {
+      it('displays the error message with values from error object in context', async () => {
         const control = new FormControl('abcdef', [Validators.maxLength(5)]);
         ngControlService.setControl(control);
         ifControlStateService.triggerStatusChange();
-        tick();
+        await delay();
         fixture.detectChanges();
         expect(fixture.nativeElement.innerHTML).toContain(`${maxLengthMessage}-5-6`);
-      }));
+      });
 
-      it('updates the error message with values from error object in context', fakeAsync(() => {
+      it('updates the error message with values from error object in context', async () => {
         const control = new FormControl('abcdef', [Validators.maxLength(5)]);
         ngControlService.setControl(control);
         ifControlStateService.triggerStatusChange();
-        tick();
+        await delay();
         fixture.detectChanges();
         expect(fixture.nativeElement.innerHTML).toContain(`${maxLengthMessage}-5-6`);
 
         control.setValue('abcdefg');
-        tick();
+        await delay();
         fixture.detectChanges();
         expect(fixture.nativeElement.innerHTML).toContain(`${maxLengthMessage}-5-7`);
-      }));
+      });
 
-      it('should show error only when they are required', fakeAsync(() => {
+      it('should show error only when they are required', async () => {
         const control = new FormControl(undefined, [
           Validators.required,
           Validators.minLength(4),
@@ -158,7 +162,7 @@ export default function (): void {
         control.markAsTouched();
         ngControlService.setControl(control);
         ifControlStateService.triggerStatusChange();
-        tick();
+        await delay();
         fixture.detectChanges();
 
         // Required message
@@ -168,7 +172,7 @@ export default function (): void {
 
         // MinLength message
         control.setValue('abc');
-        tick();
+        await delay();
         fixture.detectChanges();
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         expect(fixture.nativeElement.innerHTML).toContain(minLengthMessage);
@@ -176,7 +180,7 @@ export default function (): void {
 
         // MaxLength message
         control.setValue('abcdef');
-        tick();
+        await delay();
         fixture.detectChanges();
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         expect(fixture.nativeElement.innerHTML).not.toContain(minLengthMessage);
@@ -184,12 +188,12 @@ export default function (): void {
 
         // No errors
         control.setValue('abcde');
-        tick();
+        await delay();
         fixture.detectChanges();
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         expect(fixture.nativeElement.innerHTML).not.toContain(minLengthMessage);
         expect(fixture.nativeElement.innerHTML).not.toContain(maxLengthMessage);
-      }));
+      });
     });
   });
 }

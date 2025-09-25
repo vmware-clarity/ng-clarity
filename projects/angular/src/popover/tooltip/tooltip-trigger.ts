@@ -8,9 +8,9 @@
 import { Directive, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 @Directive({
   selector: '[clrTooltipTrigger]',
@@ -20,6 +20,7 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
     '[attr.aria-describedby]': 'ariaDescribedBy',
     '[attr.role]': '"button"',
   },
+  standalone: false,
 })
 export class ClrTooltipTrigger {
   ariaDescribedBy: string;

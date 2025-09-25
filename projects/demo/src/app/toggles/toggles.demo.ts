@@ -10,6 +10,7 @@ import { ClrForm } from '@clr/angular';
 
 @Component({
   templateUrl: './toggles.demo.html',
+  standalone: false,
 })
 export class TogglesDemo {
   @ViewChildren(ClrForm) forms: QueryList<ClrForm>;

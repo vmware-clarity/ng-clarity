@@ -7,8 +7,6 @@
 
 import { Component } from '@angular/core';
 
-import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrDay } from './day';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
@@ -17,6 +15,8 @@ import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { TestContext } from '../../data/datagrid/helpers.spec';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 export default function () {
   describe('Day Component', () => {
@@ -246,6 +246,7 @@ export default function () {
 
 @Component({
   template: `<clr-day [clrDayView]="dayView"></clr-day>`,
+  standalone: false,
 })
 class TestComponent {
   isToday = false;

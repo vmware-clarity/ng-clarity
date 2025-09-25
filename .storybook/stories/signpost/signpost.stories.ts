@@ -35,7 +35,7 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrPosition: { control: 'radio', options: positions },
+    clrPosition: { control: { type: 'radio' }, options: positions },
     // methods
     close: { control: { disable: true }, table: { disable: true } },
     anchor: { control: { disable: true }, table: { disable: true } },

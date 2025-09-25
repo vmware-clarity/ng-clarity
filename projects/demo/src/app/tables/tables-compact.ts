@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-tables-compact-demo',
   templateUrl: './tables-compact.html',
+  standalone: false,
 })
 export class TablesCompactDemo {}

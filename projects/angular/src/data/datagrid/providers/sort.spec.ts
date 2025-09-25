@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDatagridComparatorInterface } from '../interfaces/comparator.interface';
 import { Sort } from './sort';
 import { StateDebouncer } from './state-debouncer.provider';
+import { ClrDatagridComparatorInterface } from '../interfaces/comparator.interface';
 
 export default function (): void {
   describe('Sort provider', function () {

@@ -11,6 +11,7 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Directive({
   selector: 'clr-stack-content',
+  standalone: false,
 })
 export class ClrStackViewCustomTags {
   // No behavior
@@ -23,6 +24,7 @@ export class ClrStackViewCustomTags {
   host: {
     '[attr.id]': 'id',
   },
+  standalone: false,
 })
 export class ClrStackViewLabel implements OnInit {
   private _generatedId: string = null;

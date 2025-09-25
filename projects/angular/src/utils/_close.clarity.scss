@@ -4,8 +4,10 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:string';
 @use 'mixins';
+@use '@cds/core/tokens/tokens.scss';
 @use 'variables/variables.global';
 
 @include mixins.exports('close.clarity') {
@@ -15,18 +17,17 @@
     cursor: pointer;
     background: transparent;
     border: 0;
-    -webkit-appearance: none;
+    appearance: none;
   }
   // scss-lint:enable QualifyingElement
 
   .close {
     float: right;
-    font-size: variables.$clr_baselineRem_1_5;
+    font-size: tokens.$cds-global-space-11;
     transition: color linear 0.2s;
     font-weight: 200;
     text-shadow: none;
     line-height: inherit;
-
     color: variables.$clr-close-color;
 
     cds-icon,

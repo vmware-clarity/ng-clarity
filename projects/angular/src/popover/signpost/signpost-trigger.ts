@@ -5,13 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Directive, ElementRef, HostListener, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Directive, DOCUMENT, ElementRef, HostListener, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 @Directive({
   selector: '[clrSignpostTrigger]',
@@ -21,6 +21,7 @@ import { SignpostIdService } from './providers/signpost-id.service';
     '[attr.aria-controls]': 'ariaControl',
     '[class.active]': 'isOpen',
   },
+  standalone: false,
 })
 
 /*********

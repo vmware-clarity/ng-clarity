@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CONTROL_STATE } from '../if-control-state/if-control-state.service';
 import { ControlClassService } from './control-class.service';
 import { LayoutService } from './layout.service';
+import { CONTROL_STATE } from '../if-control-state/if-control-state.service';
 
 export default function (): void {
   describe('ControlClassService', function () {
@@ -51,11 +51,11 @@ export default function (): void {
       const element = document.createElement('input');
       element.className = 'test-class';
       controlClassService.initControlClass(renderer as any, element);
-      expect(controlClassService.className).toEqual('test-class');
+      expect(controlClassService.className).toEqual('');
       expect(renderer.removeClass).not.toHaveBeenCalled();
       element.className = 'clr-col-4 test-class';
       controlClassService.initControlClass(renderer as any, element);
-      expect(controlClassService.className).toEqual('clr-col-4 test-class');
+      expect(controlClassService.className).toEqual('clr-col-4');
       expect(renderer.removeClass).toHaveBeenCalledWith(element, 'clr-col-4');
     });
 

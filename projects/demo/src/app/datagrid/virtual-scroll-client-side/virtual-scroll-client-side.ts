@@ -7,7 +7,7 @@
 
 import { ListRange } from '@angular/cdk/collections';
 import { AfterViewChecked, ApplicationRef, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ClrDatagridItemsTrackByFunction, ClrDatagridSortOrder } from '@clr/angular';
+import { ClrDatagridItemsIdentityFunction, ClrDatagridSortOrder } from '@clr/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Column, DynamicData, Row } from '../inventory/dynamic-data';
@@ -25,6 +25,7 @@ class ChangeDetectionPerfRecord {
   providers: [DynamicData, Inventory],
   templateUrl: './virtual-scroll-client-side.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {
   range: ListRange;
@@ -66,7 +67,7 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
     };
   }
 
-  trackItemById: ClrDatagridItemsTrackByFunction<User> = item => item?.id;
+  trackItemById: ClrDatagridItemsIdentityFunction<User> = item => item?.id;
 
   ngAfterViewChecked(): void {
     this.cdr.detectChanges();
@@ -112,7 +113,6 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
   }
 
   showChangeDetection() {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const profiler = ng.profiler;
 

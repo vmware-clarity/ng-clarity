@@ -9,7 +9,6 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
 import { ClrDatagridModule } from './datagrid.module';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnsService } from './providers/columns.service';
@@ -21,6 +20,7 @@ import { StateDebouncer } from './providers/state-debouncer.provider';
 import { TableSizeService } from './providers/table-size.service';
 import { DatagridHeaderRenderer } from './render/header-renderer';
 import { DatagridRenderOrganizer } from './render/render-organizer';
+import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
 
 const PROVIDERS_NEEDED = [
   Sort,
@@ -167,6 +167,7 @@ export default function (): void {
 
 @Component({
   template: `<ng-container *clrDgHideableColumn>Why am I not inside a datagrid column?</ng-container>`,
+  standalone: false,
 })
 class HideableNotInsideColumnTest {}
 
@@ -180,6 +181,7 @@ class HideableNotInsideColumnTest {}
     </clr-dg-column>
     <clr-dg-column></clr-dg-column>
   `,
+  standalone: false,
 })
 class HideableSugaredTest {
   hideFirst: boolean;
@@ -195,6 +197,7 @@ class HideableSugaredTest {
       <ng-template clrDgHideableColumn [(clrDgHidden)]="hideSecond">Name</ng-template>
     </clr-dg-column>
   `,
+  standalone: false,
 })
 class HideableDesugeredTest {
   hideSecond: boolean;

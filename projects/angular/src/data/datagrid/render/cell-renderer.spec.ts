@@ -17,6 +17,7 @@ import { MOCK_ORGANIZER_PROVIDER, MockDatagridRenderOrganizer } from './render-o
 
 @Component({
   template: `<clr-dg-cell>Hello world</clr-dg-cell>`,
+  standalone: false,
 })
 class SimpleTest {}
 

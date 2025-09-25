@@ -26,6 +26,7 @@ const fakeOutPage = new MockPage(pageIndex);
     <div clr-wizard-stepnav-item [page]="page"></div>
     <ng-template clrPageNavTitle>This is my {{ projector }}</ng-template>
   `,
+  standalone: false,
 })
 class TestComponent implements AfterContentInit {
   @ViewChild(ClrWizardStepnavItem, { static: true }) stepNavItem: ClrWizardStepnavItem;

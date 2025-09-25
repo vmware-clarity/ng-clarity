@@ -5,18 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import '../_utils/clarity-variables';
-
 .clr-example-1 {
-  padding-left: $clr_baselineRem_1;
+  padding-left: var(--cds-global-space-9);
 }
 
 .clr-example-2 {
-  padding: 0 0 $clr_baselineRem_350px $clr_baselineRem_1;
+  padding: 0 0 calc(10 * var(--cds-global-space-11)) var(--cds-global-space-9);
 }
 
 .clr-example-3 {
-  padding-bottom: $clr_baselineRem_350px;
+  padding-bottom: calc(10 * var(--cds-global-space-11));
 }
 
 .clr-example-input {
@@ -25,31 +23,31 @@
 
 .date-section,
 .date-range-section {
-  margin: 0 $clr_baselineRem_0_83;
+  margin: 0 var(--cds-global-space-8);
 
   .flex-section {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: $clr_baselineRem_0_83;
+    margin-bottom: var(--cds-global-space-8);
   }
 
   .card {
     flex-basis: 47%;
-    margin: $clr_baselineRem_1 $clr_baselineRem_0_625;
+    margin: var(--cds-global-space-9) var(--cds-global-space-7);
     display: flex;
     flex-wrap: wrap;
 
     &::before {
       content: attr(data-heading);
       position: absolute;
-      top: calc(-1 * $clr_baselineRem_0_5);
-      left: $clr_baselineRem_0_5;
+      top: calc(-1 * var(--cds-global-space-6));
+      left: var(--cds-global-space-6);
       background: var(--clr-global-app-background);
-      padding: 0 $clr_baselineRem_0_416;
+      padding: 0 var(--cds-global-space-8);
       border: 0;
       font-weight: 400;
-      font-size: $clr_baselineRem_0_75;
+      font-size: var(--cds-global-space-8);
     }
   }
 
@@ -62,13 +60,13 @@
   }
 
   .card-content {
-    padding: $clr_baselineRem_1_5 var(--cds-global-space-7);
+    padding: var(--cds-global-space-11) var(--cds-global-space-7);
     display: flex;
     justify-content: center;
     width: 100%;
 
     &::after {
-      margin-bottom: $clr_baselineRem_0_25;
+      margin-bottom: var(--cds-global-space-4);
       display: block;
       content: '';
     }
@@ -81,7 +79,7 @@
     .title {
       padding-right: var(--cds-global-space-8);
       margin-right: var(--cds-global-space-5);
-      border-right: $clr_baselineRem_1px solid var(--clr-card-border-color);
+      border-right: var(--cds-global-space-1) solid var(--clr-card-border-color);
     }
 
     .features-list {

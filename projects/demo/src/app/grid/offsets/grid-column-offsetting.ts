@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-grid-demo-column-offsetting',
   templateUrl: './grid-column-offsetting.html',
   styleUrls: ['../grid.demo.scss'],
+  standalone: false,
 })
 export class GridColumnOffsettingDemo {}

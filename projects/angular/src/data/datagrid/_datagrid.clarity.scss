@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:map';
 @use 'sass:meta';
 @use '../tables.clarity';
@@ -24,11 +25,9 @@
 @mixin clr-datagrid-header-bg {
   background-color: tables-variables.$clr-thead-bgcolor;
 }
-
 @mixin clr-datagrid-popover-shadows {
   box-shadow: datagrid-variables.$clr-datagrid-popovers-box-shadow;
 }
-
 @mixin datagrid-action-overflow-appearance {
   position: absolute;
   background: datagrid-variables.$clr-datagrid-popover-bg-color;
@@ -37,7 +36,9 @@
   border-style: solid;
   border-width: tokens.$cds-alias-object-border-width-100;
   border-color: datagrid-variables.$clr-datagrid-popover-border-color;
+
   @include clr-datagrid-popover-shadows;
+
   border-radius: density.$clr-base-border-radius-s;
   font-weight: normal;
   white-space: nowrap;
@@ -47,13 +48,14 @@
     position: absolute;
     top: 50%;
     right: 100%;
+
     @include mixins.equilateral(0);
+
     margin-top: calc(-1 * datagrid-variables.$clr-datagrid-action-arrow-size);
     border-top: datagrid-variables.$clr-datagrid-action-arrow-size solid transparent;
     border-bottom: datagrid-variables.$clr-datagrid-action-arrow-size solid transparent;
-    border-right-width: datagrid-variables.$clr-datagrid-action-arrow-size;
-    border-right-style: solid;
-    border-right-color: datagrid-variables.$clr-datagrid-popover-border-color;
+    border-right: datagrid-variables.$clr-datagrid-action-arrow-size solid
+      datagrid-variables.$clr-datagrid-popover-border-color;
   }
 
   &::after {
@@ -61,14 +63,15 @@
     position: absolute;
     top: 50%;
     right: 100%;
+
     @include mixins.equilateral(0);
+
     margin-top: calc(-1 * datagrid-variables.$clr-datagrid-action-arrow-size + tokens.$cds-global-space-1);
     border-top: calc(datagrid-variables.$clr-datagrid-action-arrow-size - tokens.$cds-global-space-1) solid transparent;
     border-bottom: calc(datagrid-variables.$clr-datagrid-action-arrow-size - tokens.$cds-global-space-1) solid
       transparent;
-    border-right-width: calc(datagrid-variables.$clr-datagrid-action-arrow-size - tokens.$cds-global-space-1);
-    border-right-style: solid;
-    border-right-color: datagrid-variables.$clr-datagrid-popover-bg-color;
+    border-right: calc(datagrid-variables.$clr-datagrid-action-arrow-size - tokens.$cds-global-space-1) solid
+      datagrid-variables.$clr-datagrid-popover-bg-color;
   }
 
   .action-item {
@@ -76,7 +79,6 @@
     @include menu-mixins.generate-dropdown-item-height();
   }
 }
-
 @mixin datagrid-action-button-styles(
   $height: tables-variables.$clr-table-row-height,
   $columnWidth: datagrid-variables.$clr-datagrid-fixed-column-size,
@@ -85,13 +87,13 @@
   // Calculates how much padding to set on top/bottom and left/right by dividing the height by the icon size
   $verticalPadding: calc(($height - $iconSize) / 2);
   $horizontalPadding: calc(($columnWidth - $iconSize) / 2);
+
   cursor: pointer;
   width: 100%;
   height: $height;
   padding: $verticalPadding $horizontalPadding;
   display: inline-flex;
 }
-
 @mixin datagrid-column-separator($position: right, $selector: 'after', $alignTop: true) {
   &#{':' + $selector} {
     content: '';
@@ -100,6 +102,7 @@
     position: absolute;
     #{$position}: 0;
     background-color: tables-variables.$clr-table-border-color;
+
     @if $alignTop == true {
       top: tokens.$cds-global-space-3;
     } @else {
@@ -109,7 +112,6 @@
 }
 
 @include meta.load-css('properties.datagrid');
-
 @include mixins.exports('datagrid.clarity') {
   @include tables.basic-table(
     '.datagrid',
@@ -129,6 +131,7 @@
       .datagrid {
         display: flex;
       }
+
       .datagrid-table-wrapper,
       .datagrid-table {
         overflow: auto;
@@ -138,9 +141,9 @@
         position: static;
         display: flex;
         flex: 0 0 auto;
-        overflow-x: auto;
-        overflow-y: hidden;
+        overflow: auto hidden;
         scrollbar-width: none;
+
         .datagrid-row {
           display: flex;
           flex: 1 1 auto;
@@ -179,9 +182,7 @@
   }
 
   .datagrid-row {
-    border-top-style: solid;
-    border-top-width: tables-variables.$clr-table-borderwidth;
-    border-top-color: tables-variables.$clr-table-border-color;
+    border-top: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
 
     &:first-of-type {
       border-top: none;
@@ -203,6 +204,7 @@
       &:hover .datagrid-row-sticky {
         background-color: datagrid-variables.$clr-datagrid-row-selected-hover-background-color;
       }
+
       &:active,
       &:active .datagrid-row-sticky {
         background-color: datagrid-variables.$clr-datagrid-row-selected-active-background-color;
@@ -219,8 +221,10 @@
 
       .datagrid-row-master {
         position: relative;
+
         @include animations.skeleton-loading();
-        &:before {
+
+        &::before {
           position: absolute;
           top: tables-variables.$clr-table-cell-vertical-padding;
           left: tables-variables.$clr-table-cell-horizontal-padding;
@@ -228,6 +232,7 @@
           width: calc(100% - (2 * tables-variables.$clr-table-cell-horizontal-padding));
           z-index: map.get(variables.$clr-layers, datagrid-row-skeleton);
         }
+
         .datagrid-row-sticky,
         .datagrid-row-scrollable {
           opacity: 0;
@@ -261,6 +266,7 @@
     .datagrid-select {
       input {
         @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+
         padding: 0;
       }
 
@@ -317,9 +323,11 @@
 
     &-scroll {
       right: 0;
+
       > div.datagrid-column {
         min-width: tokens.$cds-global-space-7;
         padding: 0;
+
         @include datagrid-column-separator('left', 'before');
       }
     }
@@ -402,12 +410,11 @@
       @include clr-datagrid-header-bg;
 
       border-top: none;
-      border-bottom-style: solid;
-      border-bottom-width: tokens.$cds-alias-object-border-width-100;
-      border-bottom-color: tables-variables.$clr-table-border-color;
+      border-bottom: tokens.$cds-alias-object-border-width-100 solid tables-variables.$clr-table-border-color;
 
       .datagrid-row-sticky {
         @include clr-datagrid-header-bg;
+
         z-index: map.get(variables.$clr-layers, datagrid-header-sticky);
       }
 
@@ -439,19 +446,21 @@
 
     .datagrid-content {
       display: contents;
+
       &-virtual {
         position: relative;
         display: block;
         flex: 1 1 100%;
-        overflow-x: auto;
-        overflow-y: scroll;
+        overflow: auto scroll;
         will-change: scroll-position;
         contain: strict;
         transform: translateZ(0);
+
         &-spacer {
           flex: 0 0 auto;
           transform-origin: 0 0;
         }
+
         .datagrid-rows {
           position: absolute;
           top: 0;
@@ -498,6 +507,7 @@
 
       .datagrid-numeric-filter-input {
         width: density.$clr-base-layout-space-5xl;
+
         .clr-form-control {
           margin-top: 0;
         }
@@ -505,10 +515,13 @@
 
       .datagrid-filter-toggle {
         @include mixins.clr-no-styles-button();
+
         cursor: pointer;
         float: right;
         vertical-align: middle;
+
         @include mixins.min-equilateral(datagrid-variables.$clr-datagrid-filter-toggle-size);
+
         margin-left: density.$clr-base-horizontal-offset-s;
         background-repeat: no-repeat;
         background-size: contain;
@@ -551,6 +564,7 @@
 
       .datagrid-column-title {
         @include mixins.clr-no-styles-button();
+
         color: tables-variables.$clr-table-font-color;
         text-align: left;
         flex: 1 1 auto;
@@ -578,12 +592,15 @@
         .sort-icon {
           color: tokens.$cds-alias-object-interaction-color;
           margin-left: auto; // pushes icon to rhs b/c of parents display: flex
+
           @include mixins.equilateral(datagrid-variables.$clr-datagrid-icon-size);
+
           vertical-align: middle;
 
           &:hover {
             color: tokens.$cds-alias-object-interaction-color-hover;
           }
+
           &:active {
             color: tokens.$cds-alias-object-interaction-color-active;
           }
@@ -598,10 +615,12 @@
         order: 100;
         margin-left: auto;
         height: 100%;
+
         @include datagrid-column-separator($alignTop: false);
 
         .datagrid-column-handle {
           @include mixins.clr-no-styles-button();
+
           position: absolute;
           width: calc(tokens.$cds-global-space-6 + tokens.$cds-global-space-1);
           right: calc(-1 * tokens.$cds-global-space-4);
@@ -617,10 +636,8 @@
           display: none;
           width: tokens.$cds-global-space-1;
           height: 0;
-          border-right-style: dotted;
-          border-right-color: tokens.$cds-global-color-blue-300;
-          border-right-width: tokens.$cds-alias-object-border-width-100;
-          transform: translateX(0px);
+          border-right: tokens.$cds-alias-object-border-width-100 dotted tokens.$cds-global-color-blue-300;
+          transform: translateX(0);
           cursor: col-resize;
 
           &.on-arrow-key-resize {
@@ -678,6 +695,7 @@
       &.datagrid-expandable-caret,
       &.datagrid-detail-caret {
         padding: 0;
+
         button {
           outline-offset: datagrid-variables.$clr-datagrid-cell-outline-offset;
         }
@@ -735,7 +753,7 @@
       .datagrid-action-toggle,
       .datagrid-detail-caret-button,
       .datagrid-expandable-caret-button {
-        &:before {
+        &::before {
           content: '';
           position: absolute;
           height: 100%;
@@ -750,9 +768,7 @@
       flex: 1 1 auto;
       display: flex;
       justify-content: center;
-      border-top-style: solid;
-      border-top-color: tables-variables.$clr-table-border-color;
-      border-top-width: tokens.$cds-alias-object-border-width-100;
+      border-top: tokens.$cds-alias-object-border-width-100 solid tables-variables.$clr-table-border-color;
     }
 
     .datagrid-placeholder {
@@ -768,6 +784,7 @@
         justify-content: flex-start;
         gap: density.$clr-base-gap-m;
         padding: density.$clr-base-vertical-offset-2xl density.$clr-base-horizontal-offset-2xl;
+
         @include mixins.generate-typography-token(
           'BODY-14-SB-STD',
           (
@@ -777,11 +794,13 @@
             letter-spacing: datagrid-variables.$clr-datagrid-placeholder-letter-spacing,
           )
         );
+
         color: datagrid-variables.$clr-datagrid-placeholder-color;
       }
 
       .datagrid-placeholder-image {
         @include mixins.equilateral(density.$clr-base-layout-space-2xl);
+
         background-repeat: no-repeat;
         background-size: contain;
         background-position: center;
@@ -795,6 +814,7 @@
         display: none;
       }
     }
+
     .datagrid-row-scrollable {
       .datagrid-column {
         .datagrid-column-separator {
@@ -810,7 +830,7 @@
     .datagrid-scrolling-cells {
       .datagrid-cell {
         // Keep row action cells so they can be used.
-        &:not(.datagrid-expandable-caret):not(.datagrid-row-actions):not(.datagrid-select) {
+        &:not(.datagrid-expandable-caret, .datagrid-row-actions, .datagrid-select) {
           display: none;
         }
       }
@@ -830,6 +850,7 @@
 
   .datagrid-footer {
     @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
+
     flex: 0 0 auto;
     display: flex;
     flex-flow: row nowrap;
@@ -869,6 +890,7 @@
 
         .clr-page-size-select {
           @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
+
           height: auto;
           min-height: density.$clr-base-row-height-s;
           vertical-align: middle;
@@ -886,7 +908,7 @@
       display: flex;
       align-items: center;
 
-      .column-toggle--action {
+      .column-toggle-action {
         // I'm overriding .btn/.btn-link here but am not confident this is the correct way to do it.
         min-width: tokens.$cds-global-space-8;
         text-transform: capitalize;
@@ -913,6 +935,7 @@
           background-color: datagrid-variables.$clr-datagrid-column-toggle-fill-hover-color;
           color: datagrid-variables.$clr-datagrid-column-toggle-text-hover-color;
         }
+
         &:active,
         &:focus {
           box-shadow: none;
@@ -958,7 +981,9 @@
 
     .datagrid-action-bar {
       $action-bar-offset: mixins.baselinePx(20);
+
       margin-top: $action-bar-offset;
+
       & ~ .datagrid-spinner {
         height: calc(100% - #{$action-bar-offset});
         top: $action-bar-offset;
@@ -967,19 +992,24 @@
 
     .datagrid-detail-pane {
       margin-top: tokens.$cds-global-space-5;
+
       &-content {
         padding: tokens.$cds-global-space-6;
+
         .datagrid-detail-header {
           gap: mixins.baselinePx(10);
           font-size: tokens.$cds-global-space-7;
           line-height: mixins.baselinePx(20);
+
           .datagrid-detail-pane-close {
             flex-basis: mixins.baselinePx(20);
-            button cds-icon {
+
+            button cds-icon:not([size]) {
               @include mixins.min-equilateral(mixins.baselinePx(20));
             }
           }
         }
+
         .datagrid-detail-body {
           padding: tokens.$cds-global-space-6 0;
         }
@@ -999,6 +1029,14 @@
       flex: 0 0 datagrid-variables.$clr-datagrid-compact-fixed-column-size;
       max-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
       min-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
+
+      .clr-checkbox-wrapper,
+      .clr-radio-wrapper {
+        .clr-control-label {
+          min-height: mixins.baselinePx(20);
+          padding: tokens.$cds-global-space-2 0;
+        }
+      }
     }
 
     .datagrid-row {
@@ -1006,9 +1044,10 @@
         font-size: mixins.baselinePx(13);
         line-height: tokens.$cds-global-space-8;
       }
+
       &.datagrid-row-skeleton {
         .datagrid-row-master {
-          &:before {
+          &::before {
             top: tables-variables.$clr-table-compact-vertical-padding;
             left: tables-variables.$clr-table-compact-horizontal-padding;
             height: calc(100% - (2 * tables-variables.$clr-table-compact-vertical-padding));
@@ -1036,6 +1075,7 @@
           tokens.$cds-global-space-7
         );
       }
+
       .spinner {
         margin-top: datagrid-variables.$clr-datagrid-compact-expandable-row-spinner-margin;
       }
@@ -1081,8 +1121,23 @@
     }
 
     .datagrid-signpost-trigger .signpost .signpost-trigger {
-      cds-icon:not([shape='info-circle'], [shape='exclamation-triangle'], [shape='exclamation-circle'], [shape='check-circle'], [shape='info'], [shape='error']),
-      clr-icon:not([shape='info-circle'], [shape='exclamation-triangle'], [shape='exclamation-circle'], [shape='check-circle'], [shape='info'], [shape='error']) {
+      cds-icon:not(
+        [size],
+        [shape='info-circle'],
+        [shape='exclamation-triangle'],
+        [shape='exclamation-circle'],
+        [shape='check-circle'],
+        [shape='info'],
+        [shape='error']
+      ),
+      clr-icon:not(
+        [shape='info-circle'],
+        [shape='exclamation-triangle'],
+        [shape='exclamation-circle'],
+        [shape='check-circle'],
+        [shape='info'],
+        [shape='error']
+      ) {
         @include mixins.equilateral(tables-variables.$clr-table-compact-row-height);
       }
     }
@@ -1100,10 +1155,13 @@
 
         .clr-select-wrapper {
           max-height: mixins.baselinePx(20);
+
           &::after {
             --clr-forms-select-caret-size: #{tokens.$cds-global-space-6};
+
             right: tokens.$cds-global-space-2;
           }
+
           .clr-page-size-select {
             min-height: mixins.baselinePx(20);
             padding: 0 mixins.baselinePx(20) 0 tokens.$cds-global-space-2;
@@ -1115,7 +1173,7 @@
         top: 0;
       }
 
-      .column-switch-wrapper .column-toggle--action {
+      .column-switch-wrapper .column-toggle-action {
         border-radius: tokens.$cds-global-space-2;
         padding: 0 tokens.$cds-global-space-4;
         height: mixins.baselinePx(20);
@@ -1137,6 +1195,7 @@
       .pagination-current,
       button {
         border-radius: tokens.$cds-global-space-2;
+
         @include mixins.min-equilateral(mixins.baselinePx(20));
       }
     }
@@ -1154,6 +1213,7 @@
       line-height: tokens.$cds-global-space-8;
       padding: mixins.baselinePx(20);
       gap: mixins.baselinePx(10);
+
       .datagrid-placeholder-image {
         @include mixins.equilateral(tokens.$cds-global-space-10);
       }
@@ -1181,13 +1241,16 @@
 
     .pagination-current {
       @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
+
       background: none;
       background-color: forms-variables.$clr-forms-textarea-background-color;
       border-color: datagrid-variables.$clr-datagrid-pagination-input-border-color;
       border-width: tokens.$cds-alias-object-border-width-100;
       border-style: solid;
       border-radius: density.$clr-base-border-radius-s;
+
       @include mixins.min-equilateral(density.$clr-base-layout-space-l);
+
       text-align: center;
       transition: none !important;
       padding: density.$clr-base-vertical-offset-xs 0;
@@ -1228,6 +1291,7 @@
     button {
       @include mixins.clr-no-styles-button();
       @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+
       justify-content: center;
       color: datagrid-variables.$clr-datagrid-pagination-btn-color;
       // FIXME: this should be in the general reboot
@@ -1280,6 +1344,7 @@
          * e.g. Helloworldthisisaveryveryveryveryverylongcontent
          */
         max-width: 100%;
+
         /**
          * To get rid of detail-pane overlapping the content inside the rows
          */
@@ -1345,7 +1410,7 @@
   .datagrid-row-detail-open {
     position: relative;
 
-    &:before {
+    &::before {
       content: '';
       display: inline-block;
       position: absolute;
@@ -1355,7 +1420,7 @@
       right: 0;
     }
 
-    &:after {
+    &::after {
       content: '';
       display: inline-block;
       position: absolute;
@@ -1398,7 +1463,9 @@
   .datagrid-detail-header {
     flex: 0 0 auto;
     //TODO Fix figma font sizes in next GA 17+
+
     @include mixins.generate-typography-token('SECTION-20-STD');
+
     margin-top: 0;
     display: flex;
     flex-direction: row;
@@ -1426,6 +1493,7 @@
 
         cds-icon {
           @include mixins.min-equilateral(datagrid-variables.$clr-datagrid-detail-pane-close-icon-size);
+
           color: modal-variables.$clr-modal-close-color;
         }
       }
@@ -1520,7 +1588,9 @@
     border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
     border-color: datagrid-variables.$clr-datagrid-popover-border-color;
+
     @include clr-datagrid-popover-shadows();
+
     width: mixins.baselinePx(250);
     display: flex;
     flex-direction: column;
@@ -1529,7 +1599,9 @@
     .switch-header {
       display: flex;
       justify-content: space-between;
+
       @include mixins.generate-typography-token('SUBSECTION-16-EXP');
+
       padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl 0
         density.$clr-base-horizontal-offset-xl;
 
@@ -1542,7 +1614,9 @@
       h5,
       h6 {
         color: variables.$clr-p1-color;
+
         @include mixins.generate-typography-token('SUBSECTION-16-EXP');
+
         margin: 0;
       }
 
@@ -1557,6 +1631,7 @@
           &:hover {
             color: datagrid-variables.$clr-datagrid-column-switch-header-font-hover-color;
           }
+
           &:active {
             color: datagrid-variables.$clr-datagrid-column-switch-header-font-active-color;
           }
@@ -1588,6 +1663,7 @@
     .switch-footer {
       padding: 0 density.$clr-base-horizontal-offset-xl density.$clr-base-vertical-offset-xl
         density.$clr-base-horizontal-offset-xl;
+
       .btn {
         margin: 0;
         padding: 0;
@@ -1607,7 +1683,9 @@
     border-style: solid;
     border-color: datagrid-variables.$clr-datagrid-popover-border-color;
     padding: density.$clr-base-vertical-offset-xl;
+
     @include clr-datagrid-popover-shadows;
+
     border-radius: density.$clr-base-border-radius-s;
     font-weight: normal;
 
@@ -1687,6 +1765,7 @@
           border-style: solid;
           padding: tables-variables.$clr-table-cell-padding;
           vertical-align: top;
+
           @include mixins.generate-typography-token('CAPTION-LG-11-STD');
         }
       }
@@ -1699,7 +1778,9 @@
           // calculation container element
           display: table-cell;
           min-width: tokens.$cds-global-space-15;
+
           @include mixins.generate-typography-token('BODY-14-RG-CPT');
+
           padding: tables-variables.$clr-table-cell-padding;
           vertical-align: top;
         }

@@ -250,6 +250,7 @@ export default function () {
           </clr-alert>
         </clr-alerts>
       `,
+      standalone: false,
     })
     class InitiallyClosedAlertTestComponent {}
 
@@ -294,6 +295,7 @@ export default function () {
       </clr-alert>
     </clr-alerts>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrAlerts) alertsInstance: ClrAlerts;
@@ -327,6 +329,7 @@ class TestComponent {
       </clr-alert>
     </clr-alerts>
   `,
+  standalone: false,
 })
 class TestAlertInstance {
   @ViewChild(ClrAlerts) alertsInstance: ClrAlerts;
@@ -338,16 +341,19 @@ class TestAlertInstance {
 @Component({
   template: `
     <clr-alerts>
-      <clr-alert *ngFor="let alert of dynamicAlerts" [clrAlertType]="alert.type" [clrAlertAppLevel]="alert.isAppLevel">
-        <div class="alert-item">
-          <span class="alert-text">
-            {{ alert.text }}
-          </span>
-        </div>
-      </clr-alert>
+      @for (alert of dynamicAlerts; track alert.type) {
+        <clr-alert [clrAlertType]="alert.type" [clrAlertAppLevel]="alert.isAppLevel">
+          <div class="alert-item">
+            <span class="alert-text">
+              {{ alert.text }}
+            </span>
+          </div>
+        </clr-alert>
+      }
     </clr-alerts>
   `,
-  changeDetection: ChangeDetectionStrategy.Default, // Using default to test for error NG0100 in console, CDE-1249
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: false,
 })
 class DynamicAlerts {
   @ViewChild(ClrAlerts) alertsInstance: ClrAlerts;

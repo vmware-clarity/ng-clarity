@@ -7,7 +7,7 @@
 
 import { ListRange } from '@angular/cdk/collections';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ClrDatagridItemsTrackByFunction, ClrDatagridStateInterface } from '@clr/angular';
+import { ClrDatagridItemsIdentityFunction, ClrDatagridStateInterface } from '@clr/angular';
 import { Observable } from 'rxjs';
 
 import { Inventory } from '../inventory/inventory';
@@ -19,6 +19,7 @@ import { ColorFilter } from '../utils/color-filter';
   providers: [Inventory],
   templateUrl: './virtual-scroll-server-side.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridVirtualScrollServerSideDemo implements OnInit {
   users: Observable<User[]>;
@@ -28,7 +29,10 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
   loadingMoreItems = false;
   selected: User[] = [];
 
-  constructor(inventory: Inventory, private cdr: ChangeDetectorRef) {
+  constructor(
+    inventory: Inventory,
+    private cdr: ChangeDetectorRef
+  ) {
     this._inventory = inventory;
     this._inventory.size = this.currentPageSize * 3;
     this._inventory.lazyLoadUsers(this._inventory.size);
@@ -36,7 +40,7 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
     this.users = this._inventory.getAllUsersSubject();
   }
 
-  trackItemById: ClrDatagridItemsTrackByFunction<User> = item => item?.id;
+  trackItemById: ClrDatagridItemsIdentityFunction<User> = item => item?.id;
 
   ngOnInit(): void {
     this.users.subscribe(users => {

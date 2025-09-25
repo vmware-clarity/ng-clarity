@@ -7,9 +7,9 @@
 
 import { Component, ContentChildren, Injector, OnInit, QueryList, ViewContainerRef } from '@angular/core';
 
+import { WrappedCell } from './wrapped-cell';
 import { ClrSignpost } from '../../popover/signpost/signpost';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
-import { WrappedCell } from './wrapped-cell';
 
 @Component({
   selector: 'clr-dg-cell',
@@ -19,6 +19,7 @@ import { WrappedCell } from './wrapped-cell';
     '[class.datagrid-signpost-trigger]': 'signpost.length > 0',
     role: 'gridcell',
   },
+  standalone: false,
 })
 export class ClrDatagridCell implements OnInit {
   /*********

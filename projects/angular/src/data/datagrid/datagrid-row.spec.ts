@@ -7,9 +7,8 @@
 
 import { AnimationBuilder } from '@angular/animations';
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoadingListener } from '../../utils/loading/loading-listener';
 import { ClrDatagrid } from './datagrid';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrDatagridRow } from './datagrid-row';
@@ -20,9 +19,11 @@ import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
 import { MockDisplayModeService } from './providers/display-mode.mock';
 import { DisplayModeService } from './providers/display-mode.service';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
-import { ClrDatagridItemsTrackByFunction, Items } from './providers/items';
+import { ClrDatagridItemsIdentityFunction, Items } from './providers/items';
 import { Selection } from './providers/selection';
 import { DatagridRenderOrganizer } from './render/render-organizer';
+import { LoadingListener } from '../../utils/loading/loading-listener';
+import { delay } from '../../utils/testing/helpers.spec';
 
 type Item = { id: number };
 
@@ -98,8 +99,8 @@ export default function (): void {
 
       beforeEach(function () {
         context = this.create(ClrDatagridRow, SelectableRow, DATAGRID_SPEC_PROVIDERS);
-        selectionProvider = TestBed.get(Selection);
-        TestBed.get(Items).all = [{ id: 1 }, { id: 2 }];
+        selectionProvider = TestBed.inject(Selection);
+        TestBed.inject(Items).all = [{ id: 1 }, { id: 2 }];
       });
 
       it('should toggle when clrDgSelectable is false for type SelectionType.Multi', () => {
@@ -133,11 +134,11 @@ export default function (): void {
 
       beforeEach(function () {
         context = this.create(ClrDatagridRow, SelectableRowOrder, DATAGRID_SPEC_PROVIDERS);
-        selectionProvider = TestBed.get(Selection);
-        TestBed.get(Items).all = [{ id: 1 }, { id: 2 }];
+        selectionProvider = TestBed.inject(Selection);
+        TestBed.inject(Items).all = [{ id: 1 }, { id: 2 }];
       });
 
-      it('renders correctly if item is set after clrDgSelectable', fakeAsync(function () {
+      it('renders correctly if item is set after clrDgSelectable', async function () {
         selectionProvider.selectionType = SelectionType.Multi;
         const tempItem = context.testComponent.item;
         context.testComponent.item = undefined;
@@ -149,21 +150,19 @@ export default function (): void {
 
         expect(checkbox.getAttribute('disabled')).toBeDefined();
         expect(checkbox.getAttribute('aria-disabled')).toBe('true');
-      }));
-
-      it('should provide a selection input aria-labels', fakeAsync(function () {
+      });
+      it('should provide a selection input aria-labels', async function () {
         // Test multi select rows
         selectionProvider.selectionType = SelectionType.Multi;
         context.detectChanges();
         const checkboxLabel = context.clarityElement.querySelector('label');
-        expect(checkboxLabel.textContent).toBeString('uniq aria-label');
+        expect(checkboxLabel.textContent).toBe('uniq aria-label');
         // Test single select row
         selectionProvider.selectionType = SelectionType.Single;
         context.detectChanges();
         const radioLabel = context.clarityElement.querySelector('label');
-        expect(radioLabel.textContent).toBeString('uniq aria-label');
-      }));
-
+        expect(radioLabel.textContent).toBe('uniq aria-label');
+      });
       it('should toggle when clrDgSelectable is false for type SelectionType.Multi', () => {
         selectionProvider.selectionType = SelectionType.Multi;
         context.testComponent.clrDgSelectable = false;
@@ -219,8 +218,8 @@ export default function (): void {
 
       beforeEach(function () {
         context = this.create(ClrDatagridRow, FullTest, DATAGRID_SPEC_PROVIDERS);
-        selectionProvider = TestBed.get(Selection);
-        TestBed.get(Items).all = [{ id: 1 }, { id: 2 }];
+        selectionProvider = TestBed.inject(Selection);
+        TestBed.inject(Items).all = [{ id: 1 }, { id: 2 }];
       });
 
       it("doesn't display a checkbox unless selection type is multi", function () {
@@ -295,19 +294,18 @@ export default function (): void {
         expect(context.clarityElement.classList.contains('datagrid-selected')).toBeTruthy();
       });
 
-      it('offers two-way binding on the selected state of the row', fakeAsync(function () {
+      it('offers two-way binding on the selected state of the row', async function () {
         selectionProvider.selectionType = SelectionType.Multi;
         context.testComponent.item = { id: 1 };
-        flushAndAssertSelected(false);
+        await flushAndAssertSelected(false);
         // Input
         context.testComponent.selected = true;
-        flushAndAssertSelected(true);
+        await flushAndAssertSelected(true);
         // Output
         context.clarityElement.querySelector("input[type='checkbox']").click();
-        flushAndAssertSelected(false);
-      }));
-
-      it("supports selected rows even if the datagrid isn't selectable", fakeAsync(function () {
+        await flushAndAssertSelected(false);
+      });
+      it("supports selected rows even if the datagrid isn't selectable", async function () {
         selectionProvider.selectionType = SelectionType.None;
         expect(context.testComponent.item).toBeUndefined();
         expect(context.clarityDirective.selected).toBe(false);
@@ -317,8 +315,7 @@ export default function (): void {
         context.testComponent.selected = false;
         context.detectChanges();
         expect(context.clarityDirective.selected).toBe(false);
-      }));
-
+      });
       it('selects the model on click only when `rowSelectionMode` is enabled (Single selection)', function () {
         selectionProvider.selectionType = SelectionType.Single;
         context.testComponent.item = { id: 1 };
@@ -381,10 +378,10 @@ export default function (): void {
         expect(row.querySelector('label label')).toBeNull();
       });
 
-      function flushAndAssertSelected(selected: boolean) {
+      async function flushAndAssertSelected(selected: boolean) {
         context.detectChanges();
         // ngModel is asynchronous, we need an extra change detection
-        tick();
+        await delay();
         context.detectChanges();
         expect(context.testComponent.selected).toBe(selected);
         expect(context.clarityDirective.selected).toBe(selected);
@@ -452,95 +449,85 @@ export default function (): void {
         expect(context.clarityElement.textContent).not.toMatch('Detail');
       });
 
-      it('displays both the row and the details when expanded and not replacing', fakeAsync(function () {
+      it('displays both the row and the details when expanded and not replacing', async function () {
         expand.expanded = true;
-        tick();
+        await delay();
         context.detectChanges();
         expect(context.clarityElement.textContent).toMatch('Detail');
-      }));
-
-      it('displays only the details when expanded and replacing', fakeAsync(function () {
+      });
+      it('displays only the details when expanded and replacing', async function () {
         expand.setReplace(true);
         expand.expanded = true;
-        tick();
+        await delay();
         context.detectChanges();
         const cellStyle = context.clarityElement.querySelector('.datagrid-scrolling-cells > .datagrid-cell');
         const details = context.clarityElement.querySelector('.datagrid-row-detail');
         expect(window.getComputedStyle(cellStyle).display).toBe('none');
         expect(window.getComputedStyle(details).display).toBe('flex');
         expect(details.textContent).toMatch('Detail');
-      }));
-
-      it("doesn't display the details while loading", fakeAsync(function () {
+      });
+      it("doesn't display the details while loading", async function () {
         expand.expanded = true;
         expand.loading = true;
         context.detectChanges();
-        tick(100);
+        await delay(100);
         expect(context.clarityElement.textContent.trim()).not.toMatch('Detail');
-      }));
-
-      it('expands and collapses when the caret is clicked', fakeAsync(function () {
+      });
+      it('expands and collapses when the caret is clicked', async function () {
         const caret = context.clarityElement.querySelector('.datagrid-expandable-caret button');
         caret.click();
-        flushAnimations();
+        await flushAnimations();
         expect(expand.expanded).toBe(true);
         caret.click();
-        flushAnimations();
+        await flushAnimations();
         expect(expand.expanded).toBe(false);
-      }));
-
-      it('expands and collapses change the aria-label text aria-expanded', fakeAsync(function () {
+      });
+      it('expands and collapses change the aria-label text aria-expanded', async function () {
         const caret = context.clarityElement.querySelector('.datagrid-expandable-caret button');
         caret.click();
-        flushAnimations();
+        await flushAnimations();
         expect(caret.getAttribute('aria-label')).toBe(context.testComponent.clrDgDetailCloseLabel);
         expect(caret.getAttribute('aria-expanded')).toBe('true');
         caret.click();
-        flushAnimations();
+        await flushAnimations();
         expect(caret.getAttribute('aria-label')).toBe(context.testComponent.clrDgDetailOpenLabel);
         expect(caret.getAttribute('aria-expanded')).toBe('false');
-      }));
-
-      it('offers 2-way binding on the expanded state of the row', fakeAsync(function () {
+      });
+      it('offers 2-way binding on the expanded state of the row', async function () {
         context.testComponent.expanded = true;
-        flushAnimations();
+        await flushAnimations();
         expect(context.clarityDirective.expanded).toBe(true);
         context.clarityElement.querySelector('.datagrid-expandable-caret button').click();
-        flushAnimations();
+        await flushAnimations();
         expect(context.testComponent.expanded).toBe(false);
-      }));
-
-      it('adds the correct class when replaced and expanded', fakeAsync(function () {
+      });
+      it('adds the correct class when replaced and expanded', async function () {
         expect(context.clarityElement.classList.contains('datagrid-row-replaced')).toBeFalsy();
         context.testComponent.expanded = true;
         expand.setReplace(true);
-        flushAnimations();
+        await flushAnimations();
         expect(context.clarityElement.classList.contains('datagrid-row-replaced')).toBeTruthy();
-      }));
-
-      it('adds the correct class when collapsed', fakeAsync(function () {
+      });
+      it('adds the correct class when collapsed', async function () {
         // covers both collapsed+replaced and collapsed+not_replaced
         expect(context.clarityElement.classList.contains('datagrid-row-replaced')).toBeFalsy();
-      }));
-
-      it('adds the correct class when not replaced and expanded', fakeAsync(function () {
+      });
+      it('adds the correct class when not replaced and expanded', async function () {
         expect(context.clarityElement.classList.contains('datagrid-row-replaced')).toBeFalsy();
         context.testComponent.expanded = true;
-        flushAnimations();
+        await flushAnimations();
         expect(context.clarityElement.classList.contains('datagrid-row-replaced')).toBeFalsy();
-      }));
-
-      it("adds 'is-replaced' class to the replacement cell container when cells are replaced", fakeAsync(function () {
+      });
+      it("adds 'is-replaced' class to the replacement cell container when cells are replaced", async function () {
         const beforeReplaced = context.clarityElement.querySelector('.is-replaced');
         expect(beforeReplaced).toBeNull();
         context.testComponent.expanded = true;
         expand.setReplace(true);
-        flushAnimations();
+        await flushAnimations();
         const afterReplaced = context.clarityElement.querySelector('.is-replaced');
         expect(afterReplaced.classList.contains('is-replaced')).toBeTruthy();
-      }));
-
-      it('retains its own cells when row detail gets toggled', fakeAsync(function () {
+      });
+      it('retains its own cells when row detail gets toggled', async function () {
         expect(context.clarityElement.querySelectorAll('clr-dg-cell').length).toBe(1);
         context.testComponent.removeRowDetail = true;
         context.detectChanges();
@@ -548,11 +535,10 @@ export default function (): void {
         context.testComponent.removeRowDetail = false;
         context.detectChanges();
         expect(context.clarityElement.querySelectorAll('clr-dg-cell').length).toBe(1);
-      }));
-
-      function flushAnimations() {
+      });
+      async function flushAnimations() {
         context.detectChanges();
-        tick();
+        await delay();
         context.detectChanges();
       }
     });
@@ -577,9 +563,9 @@ export default function (): void {
         expect(button.getAttribute('aria-controls')).not.toBeNull();
       });
 
-      it('display the details when pre selected', fakeAsync(function () {
+      it('display the details when pre selected', async function () {
         context.testComponent.preState = context.testComponent.items[0];
-        tick();
+        await delay();
         context.detectChanges();
 
         const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button');
@@ -588,14 +574,13 @@ export default function (): void {
         expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
         expect(detailBody.innerText).toBe('' + context.testComponent.preState.id);
         expect(context.clarityElement.querySelector('clr-dg-detail')).not.toBeNull();
-      }));
-
-      it('open and close the details', fakeAsync(function () {
+      });
+      it('open and close the details', async function () {
         const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button');
         expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
 
         button.click();
-        tick();
+        await delay();
         context.detectChanges();
 
         const detailBody = document.querySelector('div.clr-dg-detail-body-wrapper') as HTMLElement;
@@ -604,16 +589,15 @@ export default function (): void {
         expect(context.clarityElement.querySelector('clr-dg-detail')).not.toBeNull();
 
         button.click();
-        tick();
+        await delay();
         context.detectChanges();
 
         expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
         expect(context.clarityElement.querySelector('clr-dg-detail')).toBeNull();
-      }));
-
-      it('try open the disabled details', fakeAsync(function () {
+      });
+      it('try open the disabled details', async function () {
         context.testComponent.disabledIndex = 0;
-        tick();
+        await delay();
         context.detectChanges();
 
         const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button[disabled]');
@@ -622,24 +606,23 @@ export default function (): void {
         expect(context.clarityElement.querySelector('clr-dg-detail')).toBeNull();
 
         button.click();
-        tick();
+        await delay();
         context.detectChanges();
 
         expect(button).not.toBeNull();
         expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
         expect(context.clarityElement.querySelector('clr-dg-detail')).toBeNull();
-      }));
-
-      it('check if detail button is hidden', fakeAsync(function () {
+      });
+      it('check if detail button is hidden', async function () {
         context.testComponent.hiddenIndex = 0;
-        tick();
+        await delay();
         context.detectChanges();
-        tick();
+        await delay();
         context.detectChanges();
 
         const buttons = context.clarityElement.querySelectorAll('button.datagrid-detail-caret-button');
         expect(buttons.length).toBe(1);
-      }));
+      });
     });
   });
 }
@@ -650,11 +633,13 @@ export default function (): void {
       <clr-dg-cell>Hello world</clr-dg-cell>
     </clr-dg-row>
   `,
+  standalone: false,
 })
 class ProjectionTest {}
 
 @Component({
   template: `<clr-dg-row [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable">None</clr-dg-row>`,
+  standalone: false,
 })
 class SelectableRow {
   clrDgSelectable = true;
@@ -667,6 +652,7 @@ class SelectableRow {
       None
     </clr-dg-row>
   `,
+  standalone: false,
 })
 class SelectableRowOrder {
   clrDgSelectable = undefined;
@@ -676,6 +662,7 @@ class SelectableRowOrder {
 
 @Component({
   template: `<clr-dg-row [clrDgItem]="item" [(clrDgSelected)]="selected">Hello world</clr-dg-row>`,
+  standalone: false,
 })
 class FullTest {
   item: Item;
@@ -690,11 +677,14 @@ class FullTest {
       [clrDgDetailCloseLabel]="clrDgDetailCloseLabel"
     >
       <clr-dg-cell>Hello world</clr-dg-cell>
-      <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="!removeRowDetail">
-        <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
-      </ng-container>
+      @if (!removeRowDetail) {
+        <ng-container ngProjectAs="clr-dg-row-detail">
+          <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
+        </ng-container>
+      }
     </clr-dg-row>
   `,
+  standalone: false,
 })
 class ExpandTest {
   expanded = false;
@@ -705,27 +695,31 @@ class ExpandTest {
 
 @Component({
   template: `
-    <clr-datagrid [clrDgSelected]="[]" [clrDgItemsTrackBy]="trackBy">
-      <clr-dg-row *ngFor="let item of items" [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable"></clr-dg-row>
+    <clr-datagrid [clrDgSelected]="[]" [clrDgItemsIdentityFn]="trackBy">
+      @for (item of items; track item.id) {
+        <clr-dg-row [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable"></clr-dg-row>
+      }
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class NgForDatagridWithTrackBy {
   clrDgSelectable = true;
 
   readonly items: Item[] = [{ id: 42 }];
-  readonly trackBy: ClrDatagridItemsTrackByFunction<Item> = item => item.id;
+  readonly trackBy: ClrDatagridItemsIdentityFunction<Item> = item => item.id;
 }
 
 @Component({
   template: `
     <clr-datagrid>
-      <clr-dg-row
-        *ngFor="let item of items; let i = index"
-        [clrDgItem]="item"
-        [clrDgDetailDisabled]="i === disabledIndex"
-        [clrDgDetailHidden]="i === hiddenIndex"
-      ></clr-dg-row>
+      @for (item of items; track item.id; let i = $index) {
+        <clr-dg-row
+          [clrDgItem]="item"
+          [clrDgDetailDisabled]="i === disabledIndex"
+          [clrDgDetailHidden]="i === hiddenIndex"
+        ></clr-dg-row>
+      }
 
       <ng-template [(clrIfDetail)]="preState" let-detail>
         <clr-dg-detail>
@@ -735,6 +729,7 @@ class NgForDatagridWithTrackBy {
       </ng-template>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class DatagridWithDisabledOrHiddenDetails {
   disabledIndex = -1;

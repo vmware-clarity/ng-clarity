@@ -7,9 +7,9 @@
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { MAX_DISPLAY_ITEMS } from './breadcrumbs.constants';
 import { BreadcrumbItem } from './model/breadcrumbs.model';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-breadcrumbs',
@@ -20,6 +20,7 @@ import { BreadcrumbItem } from './model/breadcrumbs.model';
     '[attr.aria-label]': 'commonStrings.keys.breadcrumbsLabel',
     '[attr.role]': '"navigation"',
   },
+  standalone: false,
 })
 export class ClrBreadcrumbs {
   isExpanded = false;

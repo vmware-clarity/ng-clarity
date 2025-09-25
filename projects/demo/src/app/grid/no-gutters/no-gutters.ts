@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-grid-no-gutters',
   templateUrl: './no-gutters.html',
   styleUrls: ['../grid.demo.scss'],
+  standalone: false,
 })
 export class GridNoGuttersDemo {}

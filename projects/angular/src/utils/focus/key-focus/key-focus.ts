@@ -17,15 +17,16 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { Keys } from '../../enums/keys.enum';
 import { ClrFocusDirection } from './enums/focus-direction.enum';
 import { FocusableItem } from './interfaces';
 import { ClrKeyFocusItem } from './key-focus-item';
 import { normalizeKey, preventArrowKeyScroll } from './util';
+import { Keys } from '../../enums/keys.enum';
 
 @Component({
   selector: '[clrKeyFocus]',
   template: '<ng-content></ng-content>',
+  standalone: false,
 })
 export class ClrKeyFocus {
   @Input('clrDirection') direction: ClrFocusDirection | string = ClrFocusDirection.VERTICAL;

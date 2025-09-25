@@ -7,8 +7,8 @@
 
 import { Injectable } from '@angular/core';
 
-import { DatagridDisplayMode } from '../enums/display-mode.enum';
 import { DisplayModeService } from './display-mode.service';
+import { DatagridDisplayMode } from '../enums/display-mode.enum';
 
 @Injectable()
 export class MockDisplayModeService extends DisplayModeService {

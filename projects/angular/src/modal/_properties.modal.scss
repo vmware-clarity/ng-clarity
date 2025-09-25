@@ -4,12 +4,12 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:color';
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use './variables.modal' as modal-variables;
 @use '../utils/variables/variables.density' as density;
-
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('modal.properties') {
@@ -19,7 +19,6 @@
     --clr-modal-md-width: #{mixins.baselinePx(576)};
     --clr-modal-lg-width: #{mixins.baselinePx(864)};
     --clr-modal-xl-width: #{mixins.baselinePx(1152)};
-
     --clr-modal-title-font-family: #{variables.$clr-font};
     --clr-modal-title-font-weight: #{tokens.$cds-alias-typography-section-font-weight};
     --clr-modal-title-letter-spacing: #{mixins.baselinePx(-0.2)};
@@ -27,7 +26,6 @@
     &,
     & [clr-density] {
       --clr-modal-border-radius: #{density.$clr-base-border-radius-s};
-
       --clr-modal-title-font-size: #{density.$clr-base-typography-font-size-section};
       --clr-modal-title-line-height: #{density.$clr-base-typography-line-height-24};
     }

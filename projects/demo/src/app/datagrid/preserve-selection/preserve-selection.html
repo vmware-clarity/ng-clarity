@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Preserving Selection while Filtering</h2>
 
@@ -31,9 +31,11 @@
 
 <div class="card card-block">
   <p class="card-text username-list">
-    Selected users:
-    <em *ngIf="clientNoTrackBySelected.length == 0">No user selected.</em>
-    <span class="username" *ngFor="let user of clientNoTrackBySelected">{{user.name}}</span>
+    Selected users: @if (clientNoTrackBySelected.length == 0) {
+    <em>No user selected.</em>
+    } @for (user of clientNoTrackBySelected; track user) {
+    <span class="username">{{user.name}}</span>
+    }
   </p>
 </div>
 
@@ -78,9 +80,11 @@
 
 <div class="card card-block">
   <p class="card-text username-list">
-    Selected users:
-    <em *ngIf="clientTrackByIndexSelected.length == 0">No user selected.</em>
-    <span class="username" *ngFor="let user of clientTrackByIndexSelected">{{user.name}}</span>
+    Selected users: @if (clientTrackByIndexSelected.length == 0) {
+    <em>No user selected.</em>
+    } @for (user of clientTrackByIndexSelected; track user) {
+    <span class="username">{{user.name}}</span>
+    }
   </p>
 </div>
 
@@ -123,9 +127,11 @@
 
 <div class="card card-block">
   <p class="card-text username-list">
-    Selected users:
-    <em *ngIf="clientTrackByIdSelected.length == 0">No user selected.</em>
-    <span class="username" *ngFor="let user of clientTrackByIdSelected">{{user.name}}</span>
+    Selected users: @if (clientTrackByIdSelected.length == 0) {
+    <em>No user selected.</em>
+    } @for (user of clientTrackByIdSelected; track user) {
+    <span class="username">{{user.name}}</span>
+    }
   </p>
 </div>
 
@@ -168,9 +174,11 @@
 
 <div class="card card-block">
   <p class="card-text username-list">
-    Selected users:
-    <em *ngIf="serverTrackByIdSelected.length == 0">No user selected.</em>
-    <span class="username" *ngFor="let user of serverTrackByIdSelected">{{user.name}}</span>
+    Selected users: @if (serverTrackByIdSelected.length == 0) {
+    <em>No user selected.</em>
+    } @for (user of serverTrackByIdSelected; track user) {
+    <span class="username">{{user.name}}</span>
+    }
   </p>
 </div>
 
@@ -179,7 +187,7 @@
   (clrDgRefresh)="refresh($event)"
   [clrDgLoading]="loading"
   [clrDgPreserveSelection]="preserveFilteringServerTrackBy"
-  [clrDgItemsTrackBy]="trackItemById"
+  [clrDgItemsIdentityFn]="trackItemById"
 >
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'" [(clrFilterValue)]="nameFilterServerTrackBy">Name</clr-dg-column>
@@ -188,7 +196,8 @@
     <ng-container *clrDgHideableColumn>Favorite color</ng-container>
   </clr-dg-column>
 
-  <clr-dg-row *ngFor="let user of serverTrackByIdUsers; trackBy: trackById" [clrDgItem]="user">
+  @for (user of serverTrackByIdUsers; track trackById($index, user)) {
+  <clr-dg-row [clrDgItem]="user">
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>{{user.name}}</clr-dg-cell>
     <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
@@ -196,6 +205,7 @@
       <span class="color-square" [style.backgroundColor]="user.color"></span>
     </clr-dg-cell>
   </clr-dg-row>
+  }
 
   <clr-dg-footer>
     {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{total}} users

@@ -28,6 +28,7 @@ import { ClrModalConfigurationService } from './modal-configuration.service';
   host: {
     '[class.side-panel]': 'true',
   },
+  standalone: false,
 })
 export class ClrSidePanel implements OnInit, OnDestroy {
   @Output('clrSidePanelOpenChange') openChange = new EventEmitter<boolean>(false);

@@ -6,10 +6,10 @@
  */
 
 import { ClrDatepickerModule, ClrEndDateInput, ClrStartDateInput } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { action } from 'storybook/actions';
 
-import { CommonModules } from '../../helpers/common';
+import { CommonModules } from '../../../.storybook/helpers/common';
 
 export default {
   title: 'Datepicker/DateRangepicker',

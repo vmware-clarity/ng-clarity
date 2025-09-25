@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-menu-directions-demo',
   templateUrl: './menu-directions.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class StaticMenuDirectionsDemo {}

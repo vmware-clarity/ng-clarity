@@ -8,7 +8,6 @@
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrIconModule } from '../icon/icon.module';
-import { addHelpersDeprecated } from '../utils/testing/helpers.spec';
 import ButtonHubSpecs from './providers/button-hub.service.spec';
 import HeaderActionsSpecs from './providers/header-actions.service.spec';
 import PageCollectionSpecs from './providers/page-collection.service.spec';
@@ -20,6 +19,7 @@ import WizardStepnavItemSpecs from './wizard-stepnav-item.spec';
 import WizardStepnavSpecs from './wizard-stepnav.spec';
 import { ClrWizardModule } from './wizard.module';
 import WizardSpecs from './wizard.spec';
+import { addHelpersDeprecated } from '../utils/testing/helpers.spec';
 
 describe('New Wizard Tests', () => {
   addHelpersDeprecated([ClrWizardModule, ClrIconModule, NoopAnimationsModule]);

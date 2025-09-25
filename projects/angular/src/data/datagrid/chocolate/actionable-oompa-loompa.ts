@@ -7,12 +7,13 @@
 
 import { ChangeDetectorRef, Directive, Optional } from '@angular/core';
 
+import { DatagridWillyWonka } from './datagrid-willy-wonka';
 import { OompaLoompa } from '../../../utils/chocolate/oompa-loompa';
 import { RowActionService } from '../providers/row-action-service';
-import { DatagridWillyWonka } from './datagrid-willy-wonka';
 
 @Directive({
   selector: 'clr-datagrid, clr-dg-row',
+  standalone: false,
 })
 export class ActionableOompaLoompa extends OompaLoompa {
   private rowActions: RowActionService;

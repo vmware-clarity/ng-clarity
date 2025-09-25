@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <button class="btn btn-primary" (click)="wizard.open()">Wizard: Stop Navigation</button>
 
@@ -19,13 +19,20 @@
 >
   <clr-wizard-title>Wizard stops navigating while validating</clr-wizard-title>
 
-  <clr-wizard-button type="cancel" *ngIf="!readyToFinish">Cancel</clr-wizard-button>
-  <clr-wizard-button type="previous" *ngIf="!readyToFinish">Back</clr-wizard-button>
+  @if (!readyToFinish) {
+  <clr-wizard-button type="cancel">Cancel</clr-wizard-button>
+  } @if (!readyToFinish) {
+  <clr-wizard-button type="previous">Back</clr-wizard-button>
+  }
   <clr-wizard-button type="next">Next</clr-wizard-button>
   <clr-wizard-button type="finish">
-    <span *ngIf="untouched && !loading">Validate</span>
-    <span *ngIf="loading">Please wait...</span>
-    <span *ngIf="readyToFinish">OK</span>
+    @if (untouched && !loading) {
+    <span>Validate</span>
+    } @if (loading) {
+    <span>Please wait...</span>
+    } @if (readyToFinish) {
+    <span>OK</span>
+    }
   </clr-wizard-button>
 
   <clr-wizard-page
@@ -58,23 +65,26 @@
   <clr-wizard-page [clrWizardPagePreventDefaultNext]="true" (clrWizardPageOnCommit)="onCommit()">
     <ng-template clrPageTitle>Validate your information</ng-template>
     <ng-template clrPageNavTitle>
-      <span *ngIf="!readyToFinish">Validate Info</span>
-      <span *ngIf="readyToFinish">Ready to Go!</span>
+      @if (!readyToFinish) {
+      <span>Validate Info</span>
+      } @if (readyToFinish) {
+      <span>Ready to Go!</span>
+      }
     </ng-template>
 
-    <p *ngIf="untouched && !loading">
+    @if (untouched && !loading) {
+    <p>
       Click the Validate button to kick off a timed routine. While the validation is running, try clicking buttons and
       stepnav items. Note that they don't do anything while the validation is running. The validation is just an
       exercise. It will not fail.
     </p>
-
-    <ng-container *ngIf="loading">
-      <p>Loading...</p>
-      <div class="progress">
-        <progress [value]="progress" max="100" [attr.data-displayval]="progress + '%'"></progress>
-      </div>
-    </ng-container>
-
-    <p *ngIf="readyToFinish">Click on the OK button to close the wizard.</p>
+    } @if (loading) {
+    <p>Loading...</p>
+    <div class="progress">
+      <progress [value]="progress" max="100" [attr.data-displayval]="progress + '%'"></progress>
+    </div>
+    } @if (readyToFinish) {
+    <p>Click on the OK button to close the wizard.</p>
+    }
   </clr-wizard-page>
 </clr-wizard>

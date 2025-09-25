@@ -12,7 +12,6 @@
  * over the place because we load them asynchronously.
  */
 
-import { addHelpers } from '../../data/datagrid/helpers.spec';
 import ComboboxContainerSpecs from './combobox-container.spec';
 import ComboboxOptionIntegrationSpecs from './combobox-with-option.integration.spec';
 import ComboboxOptionsMenuIntegrationSpecs from './combobox-with-options-menu.integration.spec';
@@ -25,12 +24,13 @@ import OptionsSpecs from './options.spec';
 import ComboboxContainerProviderSpecs from './providers/combobox-container.service.spec';
 import comboboxFocusHandlerServiceSpec from './providers/combobox-focus-handler.service.spec';
 import OptionSelectionProviderSpecs from './providers/option-selection.service.spec';
+import { addHelpers } from '../../data/datagrid/helpers.spec';
 
 describe('Combobox component', function () {
   addHelpers();
 
   describe('Directives', () => {
-    ComboboxContainerSpecs(), ComboboxSpecs();
+    (ComboboxContainerSpecs(), ComboboxSpecs());
     OptionsSpecs();
     OptionSpecs();
     optionItemsDirectiveSpec();

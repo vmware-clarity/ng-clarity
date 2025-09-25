@@ -7,12 +7,13 @@
 
 import { ChangeDetectorRef, Directive, Optional } from '@angular/core';
 
+import { MainContainerWillyWonka } from './main-container-willy-wonka';
 import { OompaLoompa } from '../../../utils/chocolate/oompa-loompa';
 import { ResponsiveNavigationService } from '../providers/responsive-navigation.service';
-import { MainContainerWillyWonka } from './main-container-willy-wonka';
 
 @Directive({
   selector: 'clr-header',
+  standalone: false,
 })
 export class NavDetectionOompaLoompa extends OompaLoompa {
   private responsiveNavService: ResponsiveNavigationService;

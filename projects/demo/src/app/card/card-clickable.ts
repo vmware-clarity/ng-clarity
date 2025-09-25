@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-card-clickable-demo',
   styleUrls: ['./card.demo.scss'],
   templateUrl: './card-clickable.html',
+  standalone: false,
 })
 export class CardClickableDemo {}

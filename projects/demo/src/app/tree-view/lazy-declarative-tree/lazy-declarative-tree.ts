@@ -16,6 +16,7 @@ import { InfiniteTree } from '../utils/infinite-tree';
   selector: 'clr-lazy-declarative-tree-demo',
   styleUrls: ['../tree-view.demo.scss'],
   templateUrl: './lazy-declarative-tree.html',
+  standalone: false,
 })
 export class LazyDeclarativeTreeDemo {
   tree = new InfiniteTree(9);

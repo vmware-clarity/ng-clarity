@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use '../../accordion/variables.accordion' as accordion-variables;
 @use '../../image/icons.clarity';
@@ -14,7 +15,6 @@
 @use '../../utils/variables/variables.density' as density;
 
 @include meta.load-css('properties.stack-view');
-
 @include mixins.exports('stack-view.clarity') {
   .stack-header {
     display: flex;
@@ -43,7 +43,7 @@
 
   .stack-view {
     overflow-y: auto;
-    word-wrap: break-word;
+    overflow-wrap: break-word;
     margin-top: 0;
     border: stack-view-variables.$clr-stack-view-border-width solid stack-view-variables.$clr-stack-view-border-color;
     border-radius: stack-view-variables.$clr-stack-view-border-radius;
@@ -61,9 +61,8 @@
       // Wrapping for nested stack-blocks
       flex-flow: row wrap;
       overflow-y: hidden;
-      border-bottom-width: stack-view-variables.$clr-stack-view-border-width;
-      border-bottom-style: solid;
-      border-bottom-color: stack-view-variables.$clr-stack-view-stack-block-border-bottom;
+      border-bottom: stack-view-variables.$clr-stack-view-border-width solid
+        stack-view-variables.$clr-stack-view-stack-block-border-bottom;
     }
 
     // We have to handle potential nested elements, typically for web components
@@ -78,7 +77,9 @@
     .stack-block-changed::before {
       content: ' ';
       position: absolute;
+
       @include mixins.equilateral(0);
+
       border-top: tokens.$cds-global-space-6 solid stack-view-variables.$clr-stack-block-changed-border-top-color;
       border-right: tokens.$cds-global-space-6 solid transparent;
     }
@@ -115,8 +116,11 @@
 
     .stack-block-caret {
       visibility: hidden;
+
       @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+
       --color: #{stack-view-variables.$clr-stack-view-stack-block-caret-color};
+
       margin-right: density.$clr-base-horizontal-offset-m;
     }
 
@@ -159,12 +163,15 @@
         &::before {
           display: inline-block;
           content: '';
+
           @include mixins.min-equilateral(density.$clr-base-icon-size-s);
           @include images.icon-background-styles();
+
           background-image: icons.generateCaretIcon(accordion-variables.$clr-accordion-text-color);
           transform: rotate(-90deg);
           margin-right: density.$clr-base-layout-space-xs;
         }
+
         .stack-block-caret {
           visibility: visible;
         }
@@ -172,7 +179,9 @@
 
       > .stack-block-label,
       > .stack-block-content {
-        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        transition:
+          background-color 0.2s ease-in-out,
+          color 0.2s ease-in-out;
       }
 
       &:not(.stack-block-expanded) > .stack-block-label:hover {
@@ -194,9 +203,8 @@
       }
 
       &.stack-block-expanded > .stack-block-label {
-        border-bottom-width: stack-view-variables.$clr-stack-view-border-width;
-        border-bottom-style: solid;
-        border-bottom-color: stack-view-variables.$clr-stack-view-stack-block-border-bottom;
+        border-bottom: stack-view-variables.$clr-stack-view-border-width solid
+          stack-view-variables.$clr-stack-view-stack-block-border-bottom;
         color: stack-view-variables.$clr-stack-view-expanded-row-color;
         background-color: stack-view-variables.$clr-stack-view-expanded-row-bg-color;
 

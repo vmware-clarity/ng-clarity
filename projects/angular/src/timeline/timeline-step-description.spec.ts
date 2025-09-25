@@ -42,5 +42,6 @@ export default function (): void {
 
 @Component({
   template: `<clr-timeline-step-description>Description Content</clr-timeline-step-description>`,
+  standalone: false,
 })
 class TestTimelineStepDescription {}

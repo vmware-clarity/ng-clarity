@@ -38,5 +38,6 @@ import { Component } from '@angular/core';
     </div>
     <router-outlet></router-outlet>
   `,
+  standalone: false,
 })
 export class GridDemo {}

@@ -6,8 +6,8 @@
  */
 
 import { ClrSelectedState, ClrTreeNode, ClrTreeViewModule } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { action } from 'storybook/actions';
 
 import { CommonModules } from '../../helpers/common';
 import { filesRoot, getFileTreeNodeMarkup } from '../../helpers/files.data';
@@ -24,7 +24,7 @@ export default {
     // inputs
     clrExpandable: { control: { type: 'boolean' } },
     clrSelected: {
-      control: 'inline-radio',
+      control: { type: 'inline-radio' },
       options: ['not selectable', 'UNSELECTED', 'INDETERMINATE', 'SELECTED'],
       mapping: {
         'not selectable': undefined,

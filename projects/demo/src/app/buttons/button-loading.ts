@@ -12,6 +12,7 @@ import { ClrLoadingState } from '@clr/angular';
   selector: 'clr-buttons-demo-button-loading',
   templateUrl: './button-loading.html',
   styleUrls: ['./buttons.demo.scss'],
+  standalone: false,
 })
 export class ButtonLoadingDemo {
   validateState: ClrLoadingState = ClrLoadingState.DEFAULT;

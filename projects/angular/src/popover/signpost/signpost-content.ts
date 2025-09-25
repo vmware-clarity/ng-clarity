@@ -5,8 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Component, ElementRef, Inject, Injector, Input, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  Component,
+  DOCUMENT,
+  ElementRef,
+  Inject,
+  Injector,
+  Input,
+  OnDestroy,
+  Optional,
+  PLATFORM_ID,
+} from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
@@ -55,6 +65,7 @@ const POSITIONS: string[] = [
     </div>
   `,
   host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
+  standalone: false,
 })
 export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
   @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;

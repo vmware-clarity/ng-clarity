@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../../utils/mixins';
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
@@ -14,6 +15,7 @@
   .clr-input-group {
     @include forms-mixins.form-fields-appearance();
     @include forms-mixins.input-border-bottom-animation();
+
     position: relative;
     max-width: 100%;
     max-height: forms-variables.$clr-forms-input-wrapper-height;
@@ -56,24 +58,30 @@
 
     .clr-input-group-icon-action {
       @include mixins.clr-no-styles-button();
+
       padding: 0 density.$clr-base-horizontal-offset-s;
       cursor: pointer;
 
       cds-icon,
       clr-icon {
         fill: forms-variables.$clr-forms-icon-color;
-        @include mixins.equilateral(var(--clr-forms-input-group-icon-action-size));
+
+        &:not([size]) {
+          @include mixins.equilateral(var(--clr-forms-input-group-icon-action-size));
+        }
       }
     }
   }
 
   .clr-error .clr-input-group {
     border-bottom-color: forms-variables.$clr-forms-invalid-color;
+
     @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-invalid-color);
   }
 
   .clr-success .clr-input-group {
     border-bottom-color: forms-variables.$clr-forms-valid-color;
+
     @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-valid-color);
   }
 
@@ -81,6 +89,7 @@
     .clr-input-group {
       border-bottom-color: forms-variables.$clr-forms-border-disabled-color;
     }
+
     .clr-input-group-icon-action {
       color: forms-variables.$clr-forms-text-disabled-color;
       cursor: not-allowed;
@@ -95,6 +104,7 @@
   .clr-form-control-readonly .clr-input-group {
     border: none;
     background: transparent;
+
     .clr-input-group-actions {
       display: none;
     }

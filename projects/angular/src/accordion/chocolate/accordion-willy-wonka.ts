@@ -11,5 +11,6 @@ import { WillyWonka } from '../../utils/chocolate/willy-wonka';
 
 @Directive({
   selector: 'clr-accordion',
+  standalone: false,
 })
 export class AccordionWillyWonka extends WillyWonka {}

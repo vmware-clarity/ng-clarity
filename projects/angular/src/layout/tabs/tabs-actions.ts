@@ -19,6 +19,7 @@ export type ClrTabsActionsPosition = 'left' | 'right';
   host: {
     '[class.tabs-actions]': 'true',
   },
+  standalone: false,
 })
 export class ClrTabsActions {
   @Input()

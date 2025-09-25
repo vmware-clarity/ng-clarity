@@ -8,12 +8,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 
-import { ClrIconModule } from '../../icon/icon.module';
-import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownItem } from './dropdown-item';
 import { ClrDropdownMenu } from './dropdown-menu';
 import { ClrDropdownTrigger } from './dropdown-trigger';
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
 
 export const CLR_DROPDOWN_DIRECTIVES: Type<any>[] = [ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem];
 

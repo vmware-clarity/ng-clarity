@@ -15,7 +15,7 @@ export default {
   component: CardStorybookComponent,
   argTypes: {
     createArray: { control: { disable: true }, table: { disable: true } },
-    buttonStyle: { control: 'radio', options: BUTTON_STYLES },
+    buttonStyle: { control: { type: 'radio' }, options: BUTTON_STYLES },
   },
   args: {
     createArray: (n: number) => new Array(n),

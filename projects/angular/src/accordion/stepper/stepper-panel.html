@@ -1,65 +1,53 @@
-<ng-container *ngIf="panel | async; let panel">
-  <div [ngClass]="getPanelStateClasses(panel)">
-    <div class="clr-accordion-header clr-stepper-header">
-      <button
-        type="button"
-        class="clr-accordion-header-button"
-        (click)="togglePanel()"
-        [id]="getAccordionHeaderId(panel.templateId)"
-        [attr.aria-disabled]="panel.disabled"
-        [attr.aria-controls]="getAccordionContentId(panel.templateId)"
-        [attr.aria-expanded]="panel.open"
-        [class.clr-accordion-header-has-description]="(accordionDescription.changes | async)?.length || accordionDescription.length"
-        #headerButton
-      >
-        <span class="clr-step-status">
-          <cds-icon shape="angle" direction="right" class="clr-accordion-angle clr-step-angle"></cds-icon>
-          <span class="clr-step-status-icon">
-            <cds-icon
-              status="danger"
-              *ngIf="panel.status === AccordionStatus.Error"
-              shape="exclamation-circle"
-              class="clr-step-error-icon"
-            ></cds-icon>
-            <cds-icon
-              status="success"
-              *ngIf="panel.status === AccordionStatus.Complete"
-              shape="check-circle"
-              class="clr-step-complete-icon"
-            ></cds-icon>
-          </span>
-        </span>
-        <span class="clr-step-title-wrapper">
-          <span class="clr-step-number">{{panelNumber}}.</span>
-          <ng-content select="clr-step-title"></ng-content>
-        </span>
-        <ng-content select="clr-step-description"></ng-content>
-      </button>
-      <div class="clr-sr-only" role="status">
-        <ng-container *ngIf="panel.status === AccordionStatus.Error"> {{ stepErrorText(panelNumber)}} </ng-container>
-        <ng-container *ngIf="panel.status === AccordionStatus.Complete">
-          {{ stepCompleteText(panelNumber)}}
-        </ng-container>
-      </div>
-    </div>
-    <div
-      @skipInitialRender
-      role="region"
-      class="clr-accordion-content-region"
-      [id]="getAccordionContentId(panel.templateId)"
-      [attr.aria-hidden]="!panel.open"
-      [attr.aria-labelledby]="getAccordionHeaderId(panel.templateId)"
+@if (panel | async; as panel) {
+<div [ngClass]="getPanelStateClasses(panel)">
+  <div class="clr-accordion-header clr-stepper-header">
+    <button
+      type="button"
+      class="clr-accordion-header-button"
+      (click)="togglePanel()"
+      [id]="getAccordionHeaderId(panel.templateId)"
+      [attr.aria-disabled]="panel.disabled"
+      [attr.aria-controls]="getAccordionContentId(panel.templateId)"
+      [attr.aria-expanded]="panel.open"
+      [class.clr-accordion-header-has-description]="(accordionDescription.changes | async)?.length || accordionDescription.length"
+      #headerButton
     >
-      <div
-        *ngIf="panel.open"
-        @toggle
-        (@toggle.done)="collapsePanelOnAnimationDone(panel)"
-        class="clr-accordion-content"
-      >
-        <div class="clr-accordion-inner-content">
-          <ng-content></ng-content>
-        </div>
-      </div>
+      <span class="clr-step-status">
+        <cds-icon shape="angle" direction="right" class="clr-accordion-angle clr-step-angle"></cds-icon>
+        <span class="clr-step-status-icon">
+          @if (panel.status === AccordionStatus.Error) {
+          <cds-icon status="danger" shape="exclamation-circle" class="clr-step-error-icon"></cds-icon>
+          } @if (panel.status === AccordionStatus.Complete) {
+          <cds-icon status="success" shape="check-circle" class="clr-step-complete-icon"></cds-icon>
+          }
+        </span>
+      </span>
+      <span class="clr-step-title-wrapper">
+        <span class="clr-step-number">{{panelNumber}}.</span>
+        <ng-content select="clr-step-title"></ng-content>
+      </span>
+      <ng-content select="clr-step-description"></ng-content>
+    </button>
+    <div class="clr-sr-only" role="status">
+      @if (panel.status === AccordionStatus.Error) { {{ stepErrorText(panelNumber)}} } @if (panel.status ===
+      AccordionStatus.Complete) { {{ stepCompleteText(panelNumber)}} }
     </div>
   </div>
-</ng-container>
+  <div
+    @skipInitialRender
+    role="region"
+    class="clr-accordion-content-region"
+    [id]="getAccordionContentId(panel.templateId)"
+    [attr.aria-hidden]="!panel.open"
+    [attr.aria-labelledby]="getAccordionHeaderId(panel.templateId)"
+  >
+    @if (panel.open) {
+    <div @toggle (@toggle.done)="collapsePanelOnAnimationDone(panel)" class="clr-accordion-content">
+      <div class="clr-accordion-inner-content">
+        <ng-content></ng-content>
+      </div>
+    </div>
+    }
+  </div>
+</div>
+}

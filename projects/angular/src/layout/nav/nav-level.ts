@@ -5,9 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import {
   Directive,
+  DOCUMENT,
   ElementRef,
   HostListener,
   Inject,
@@ -22,10 +23,10 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { commonStringsDefault } from '../../utils';
-import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
-import { ClrStandaloneCdkTrapFocus } from '../../utils/focus/focus-trap';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
+import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
+import { ClrStandaloneCdkTrapFocus } from '../../utils/focus/focus-trap';
 
 const createCloseButton = (document: Document, ariaLabel: string) => {
   ClarityIcons.addIcons(timesIcon);
@@ -51,6 +52,7 @@ const createCloseButton = (document: Document, ariaLabel: string) => {
 @Directive({
   selector: '[clr-nav-level]',
   hostDirectives: [ClrStandaloneCdkTrapFocus],
+  standalone: false,
 })
 export class ClrNavLevel implements OnInit {
   @Input('clr-nav-level') _level: number;

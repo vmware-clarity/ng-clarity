@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './layout-modal.html',
+  standalone: false,
 })
 export class FormsLayoutModalDemo {
   layout = 'vertical';

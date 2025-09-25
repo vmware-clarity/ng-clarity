@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-wikipedia1-demo',
   template: `<p>Credit: Wikipedia</p>`,
+  standalone: false,
 })
 export class Wikipedia1Demo {}

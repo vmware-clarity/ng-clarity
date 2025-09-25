@@ -12,11 +12,16 @@ const LATENCY = 2000;
 
 @Directive({
   selector: '[clrFakeLoader]',
+  standalone: false,
 })
 export class FakeLoader implements OnInit {
   @Input('clrFakeLoader') fake: boolean;
 
-  constructor(private template: TemplateRef<any>, private container: ViewContainerRef, private loading: ClrLoading) {}
+  constructor(
+    private template: TemplateRef<any>,
+    private container: ViewContainerRef,
+    private loading: ClrLoading
+  ) {}
 
   ngOnInit() {
     if (this.fake) {

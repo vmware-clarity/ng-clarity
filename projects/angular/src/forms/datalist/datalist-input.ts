@@ -18,9 +18,9 @@ import {
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
+import { ClrDatalistContainer } from './datalist-container';
 import { FocusService } from '../common/providers/focus.service';
 import { WrappedFormControl } from '../common/wrapped-control';
-import { ClrDatalistContainer } from './datalist-container';
 import { DatalistIdService } from './providers/datalist-id.service';
 
 @Directive({
@@ -29,6 +29,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
     '[class.clr-input]': 'true',
     '[attr.list]': 'listValue',
   },
+  standalone: false,
 })
 export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> implements AfterContentInit {
   listValue: string;

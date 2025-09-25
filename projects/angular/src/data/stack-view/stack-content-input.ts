@@ -15,6 +15,7 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
     '[class.clr-input]': 'true',
     '[attr.aria-labelledby]': 'uniqueId',
   },
+  standalone: false,
 })
 export class ClrStackContentInput {
   uniqueId = uniqueIdFactory();

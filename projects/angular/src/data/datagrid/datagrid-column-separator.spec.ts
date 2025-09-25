@@ -9,19 +9,20 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
-import { Keys } from '../../utils/enums/keys.enum';
-import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrDatagridColumnSeparator } from './datagrid-column-separator';
 import { ColumnResizerService } from './providers/column-resizer.service';
 import { TableSizeService } from './providers/table-size.service';
 import { MOCK_TABLE_SIZE_PROVIDER } from './providers/table-size.service.mock';
 import { DatagridRenderOrganizer } from './render/render-organizer';
+import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
+import { Keys } from '../../utils/enums/keys.enum';
+import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `<clr-dg-column-separator></clr-dg-column-separator>`,
   styles: [':host { position: position; width: 200px; height: 400px;}'],
   providers: [ColumnResizerService, MOCK_TABLE_SIZE_PROVIDER],
+  standalone: false,
 })
 class TestComponent {}
 

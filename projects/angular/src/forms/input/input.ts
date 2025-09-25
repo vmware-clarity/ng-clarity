@@ -8,12 +8,13 @@
 import { Directive, ElementRef, Injector, Optional, Renderer2, Self, ViewContainerRef } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
-import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrInputContainer } from './input-container';
+import { WrappedFormControl } from '../common/wrapped-control';
 
 @Directive({
   selector: '[clrInput]',
   host: { '[class.clr-input]': 'true' },
+  standalone: false,
 })
 export class ClrInput extends WrappedFormControl<ClrInputContainer> {
   protected override index = 1;

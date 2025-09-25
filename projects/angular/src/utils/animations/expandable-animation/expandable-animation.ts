@@ -24,6 +24,7 @@ import { BaseExpandableAnimation } from './base-expandable-animation';
   ],
   animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])],
   providers: [DomAdapter],
+  standalone: false,
 })
 export class ClrExpandableAnimation extends BaseExpandableAnimation {
   @Input() clrExpandTrigger = false;

@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-button-group-checkboxes-demo',
   templateUrl: './button-group-checkboxes.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class ButtonGroupCheckboxesDemo {}

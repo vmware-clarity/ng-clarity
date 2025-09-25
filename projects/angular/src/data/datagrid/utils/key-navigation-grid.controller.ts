@@ -9,8 +9,8 @@ import { EventEmitter, Injectable, NgZone, OnDestroy } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Keys } from '../../../utils/enums/keys.enum';
 import { KeyNavigationUtils } from './key-navigation-utils';
+import { Keys } from '../../../utils/enums/keys.enum';
 
 const actionableItemSelectors = [
   'a[href]',

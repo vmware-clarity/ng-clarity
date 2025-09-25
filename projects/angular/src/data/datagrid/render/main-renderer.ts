@@ -24,19 +24,19 @@ import { Subscription } from 'rxjs';
 
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { ClrDatagrid } from '../datagrid';
+import { DatagridHeaderRenderer } from './header-renderer';
+import { NoopDomAdapter } from './noop-dom-adapter';
+import { DatagridRenderOrganizer } from './render-organizer';
+import { DatagridRowRenderer } from './row-renderer';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
-import { ColumnStateDiff } from '../interfaces/column-state.interface';
+import { ColumnState, ColumnStateDiff } from '../interfaces/column-state.interface';
 import { ColumnsService } from '../providers/columns.service';
 import { DetailService } from '../providers/detail.service';
 import { Items } from '../providers/items';
 import { Page } from '../providers/page';
 import { TableSizeService } from '../providers/table-size.service';
 import { KeyNavigationGridController } from '../utils/key-navigation-grid.controller';
-import { DatagridHeaderRenderer } from './header-renderer';
-import { NoopDomAdapter } from './noop-dom-adapter';
-import { DatagridRenderOrganizer } from './render-organizer';
-import { DatagridRowRenderer } from './row-renderer';
 
 // Fixes build error
 // @dynamic (https://github.com/angular/angular/issues/19698#issuecomment-338340211)
@@ -53,6 +53,7 @@ export const domAdapterFactory = (platformId: any) => {
 @Directive({
   selector: 'clr-datagrid',
   providers: [{ provide: DomAdapter, useFactory: domAdapterFactory, deps: [PLATFORM_ID] }],
+  standalone: false,
 })
 export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
   @ContentChildren(DatagridHeaderRenderer) private headers: QueryList<DatagridHeaderRenderer>;
@@ -242,7 +243,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     });
   }
 
-  private columnStateChanged(state) {
+  private columnStateChanged(state: ColumnState) {
     // eslint-disable-next-line eqeqeq
     if (!this.headers || state.columnIndex == null) {
       return;
@@ -256,7 +257,9 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
             this.rows.forEach(row => {
               if (row?.cells.length === this.columnsService.columns.length) {
                 row.cells.get(columnIndex).setWidth(state);
-                row.expandableRow?.cells.get(columnIndex)?.setWidth(state);
+                row.expandableRows.forEach(expandableRow => {
+                  expandableRow.cells.get(columnIndex)?.setWidth(state);
+                });
               }
             });
             break;
@@ -265,7 +268,10 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
             this.rows.forEach(row => {
               if (row.cells && row.cells.length) {
                 row.cells.get(columnIndex).setHidden(state);
-                row.expandableRow?.cells.get(columnIndex)?.setHidden(state);
+
+                row.expandableRows.forEach(expandableRow => {
+                  expandableRow.cells.get(columnIndex)?.setHidden(state);
+                });
               }
             });
             this.updateColumnSeparatorsVisibility();
@@ -276,7 +282,9 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
               this.headers.get(columnIndex).setHidden(state);
               this.rows.forEach(row => {
                 row.setCellsState();
-                row.expandableRow?.setCellsState();
+                row.expandableRows.forEach(expandableRow => {
+                  expandableRow.setCellsState();
+                });
               });
             }
             break;

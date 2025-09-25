@@ -8,9 +8,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 import { ClrSelect } from './select';
 import { ClrSelectContainer } from './select-container';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 
 @Component({
   template: `
@@ -22,6 +22,7 @@ import { ClrSelectContainer } from './select-container';
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-select-container>
   `,
+  standalone: false,
 })
 class NoLabelTest {}
 
@@ -38,6 +39,7 @@ class NoLabelTest {}
       <clr-control-success>Valid</clr-control-success>
     </clr-select-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenTest {
   disabled = false;
@@ -57,6 +59,7 @@ class TemplateDrivenTest {
       <clr-control-success>Valid</clr-control-success>
     </clr-select-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenMultipleTest {
   disabled = false;
@@ -78,6 +81,7 @@ class TemplateDrivenMultipleTest {
       </clr-select-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   disabled = false;
@@ -101,6 +105,7 @@ class ReactiveTest {
       </clr-select-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveMultipleTest {
   disabled = false;

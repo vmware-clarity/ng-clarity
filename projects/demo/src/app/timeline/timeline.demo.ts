@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-timeline-demo',
   templateUrl: './timeline.demo.html',
+  standalone: false,
 })
 export class TimelineDemo {}

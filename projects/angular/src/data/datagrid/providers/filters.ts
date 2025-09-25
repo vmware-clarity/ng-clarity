@@ -9,9 +9,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 
-import { ClrDatagridFilterInterface } from '../interfaces/filter.interface';
 import { Page } from './page';
 import { StateDebouncer } from './state-debouncer.provider';
+import { ClrDatagridFilterInterface } from '../interfaces/filter.interface';
 
 @Injectable()
 export class FiltersProvider<T = any> {
@@ -26,7 +26,10 @@ export class FiltersProvider<T = any> {
    */
   private _all: RegisteredFilter<T, ClrDatagridFilterInterface<T>>[] = [];
 
-  constructor(private _page: Page, private stateDebouncer: StateDebouncer) {}
+  constructor(
+    private _page: Page,
+    private stateDebouncer: StateDebouncer
+  ) {}
 
   // We do not want to expose the Subject itself, but the Observable which is read-only
   get change(): Observable<ClrDatagridFilterInterface<T>[]> {
@@ -110,5 +113,8 @@ export class FiltersProvider<T = any> {
 }
 
 export class RegisteredFilter<T, F extends ClrDatagridFilterInterface<T>> {
-  constructor(public filter: F, public unregister: () => void) {}
+  constructor(
+    public filter: F,
+    public unregister: () => void
+  ) {}
 }

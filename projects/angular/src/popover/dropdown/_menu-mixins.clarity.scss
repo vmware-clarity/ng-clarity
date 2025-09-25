@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:map';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
@@ -24,20 +25,16 @@
 
   //Other
   background-color: dropdown-variables.$clr-dropdown-bg-color;
-
   border-width: tokens.$cds-alias-object-border-width-100;
   border-style: solid;
   border-color: dropdown-variables.$clr-dropdown-border-color;
   border-radius: density.$clr-base-border-radius-s;
-
   box-shadow: tokens.$cds-alias-object-shadow-200;
-
   margin-top: density.$clr-base-vertical-offset-2xs;
   padding: density.$clr-base-vertical-offset-l density.$clr-base-layout-space-4xs;
   visibility: hidden;
   z-index: map.get(variables.$clr-layers, dropdown-menu);
 }
-
 @mixin generate-dropdown-item() {
   @include mixins.generate-typography-token(
     'SECONDARY-13-RG-EXP',
@@ -53,11 +50,10 @@
   display: flex;
   gap: density.$clr-base-gap-xs;
   align-items: center;
-  height: density.$clr-base-row-height-s;
+  height: auto;
   margin: 0;
   width: 100%;
   text-transform: none;
-  justify-content: space-between;
 
   &.active {
     color: dropdown-variables.$clr-dropdown-item-selected-color;
@@ -68,6 +64,7 @@
     color: dropdown-variables.$clr-dropdown-item-hover-color;
     background-color: dropdown-variables.$clr-dropdown-item-hover-bg-color;
     text-decoration: none;
+
     &.active {
       background-color: dropdown-variables.$clr-dropdown-item-selected-hover-bg-color;
     }
@@ -76,6 +73,7 @@
   &:active {
     color: dropdown-variables.$clr-dropdown-item-active-color;
     background-color: dropdown-variables.$clr-dropdown-item-active-bg-color;
+
     &.active {
       background-color: dropdown-variables.$clr-dropdown-item-selected-active-bg-color;
     }
@@ -102,13 +100,14 @@
     }
   }
 }
-
 @mixin generate-dropdown-header() {
   display: block;
   color: dropdown-variables.$clr-dropdown-header-color;
+
   @include mixins.overflow-ellipsis(true);
 
   // Typography
+
   @include mixins.generate-typography-token(
     'SECONDARY-13-MD-EXP',
     (
@@ -119,7 +118,6 @@
   padding: 0 density.$clr-base-horizontal-offset-l;
   margin: 0;
 }
-
 @mixin generate-dropdown-item-height() {
   padding: 0 density.$clr-base-horizontal-offset-2xl 0 density.$clr-base-horizontal-offset-l;
 

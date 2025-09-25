@@ -18,7 +18,7 @@ import { Component, Input } from '@angular/core';
       'link-hovered': hover,
       'link-clicked': active,
       'link-visited': visited,
-      'link-visited-hover': visitedHover
+      'link-visited-hover': visitedHover,
     }"
     >Test Link</a
   >`,

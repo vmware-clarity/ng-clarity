@@ -23,13 +23,17 @@ export enum ClrStepButtonType {
     '[class.btn]': 'true',
     '[type]': "'button'",
   },
+  standalone: false,
 })
 export class ClrStepButton implements OnInit {
   @Input('clrStepButton') type: ClrStepButtonType | string = ClrStepButtonType.Next;
   @HostBinding('class.btn-success') submitButton = false;
   @HostBinding('class.btn-link') previousButton = false;
 
-  constructor(private clrStep: ClrStepperPanel, private stepperService: StepperService) {}
+  constructor(
+    private clrStep: ClrStepperPanel,
+    private stepperService: StepperService
+  ) {}
 
   ngOnInit() {
     this.submitButton = this.type === ClrStepButtonType.Submit;

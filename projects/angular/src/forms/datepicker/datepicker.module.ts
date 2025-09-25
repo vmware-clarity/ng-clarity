@@ -16,13 +16,6 @@ import {
   exclamationCircleIcon,
 } from '@cds/core/icon';
 
-import { ClrIconModule } from '../../icon/icon.module';
-import { ClrVerticalNavModule } from '../../layout';
-import { CdkTrapFocusModule } from '../../utils/cdk/cdk-trap-focus.module';
-import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
-import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
-import { ClrCommonFormsModule } from '../common/common.module';
 import { ClrCalendar } from './calendar';
 import { ClrDateContainer } from './date-container';
 import { ClrEndDateInput } from './date-end-input';
@@ -35,11 +28,18 @@ import { ClrDay } from './day';
 import { ClrDaypicker } from './daypicker';
 import { ClrMonthpicker } from './monthpicker';
 import { ClrYearpicker } from './yearpicker';
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrVerticalNavModule } from '../../layout';
+import { CdkTrapFocusModule } from '../../utils/cdk/cdk-trap-focus.module';
+import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
+import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
+import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
+import { ClrCommonFormsModule } from '../common/common.module';
 
 export const CLR_DATEPICKER_DIRECTIVES: Type<any>[] = [
+  ClrDateInput,
   ClrDay,
   ClrDateContainer,
-  ClrDateInput,
   ClrDateInputValidator,
   ClrStartDateInput,
   ClrEndDateInput,

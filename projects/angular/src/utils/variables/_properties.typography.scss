@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../mixins';
 @use '../../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
@@ -12,11 +13,9 @@
   :root {
     // Temporal internal use only. Should be removed once CDS token based family is available.
     --clr-metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
-
     --clr-body-font: var(--clr-metropolis-font-family); // #{tokens.$cds-alias-typography-font-family};
     --clr-font: var(--clr-body-font);
     --clr-display-font: var(--clr-metropolis-font-family); //#{tokens.$cds-alias-typography-header-font-family};
-
     --clr-font-weight-light: #{tokens.$cds-alias-typography-font-weight-light};
     --clr-font-weight-regular: #{tokens.$cds-alias-typography-font-weight-regular};
     --clr-font-weight-semibold: #{tokens.$cds-alias-typography-font-weight-semibold};
@@ -110,46 +109,32 @@
     & [clr-density] {
       --clr-h1-font-size: #{density.$clr-base-typography-font-size-display};
       --clr-h1-line-height: #{density.$clr-base-typography-line-height-44};
-
       --clr-h2-font-size: #{density.$clr-base-typography-font-size-headline};
       --clr-h2-line-height: #{density.$clr-base-typography-line-height-36};
-
       --clr-h3-font-size: #{density.$clr-base-typography-font-size-heading};
       --clr-h3-line-height: #{density.$clr-base-typography-line-height-32};
-
       --clr-h4-font-size: #{density.$clr-base-typography-font-size-section};
       --clr-h4-line-height: #{density.$clr-base-typography-line-height-24};
-
       --clr-h5-font-size: #{density.$clr-base-typography-font-size-sub-section};
       --clr-h5-line-height: #{density.$clr-base-typography-line-height-24};
-
       --clr-h6-font-size: #{density.$clr-base-typography-font-size-sub-section};
       --clr-h6-line-height: #{density.$clr-base-typography-line-height-24};
-
       --clr-p0-font-size: #{density.$clr-base-typography-font-size-default};
       --clr-p0-line-height: #{density.$clr-base-typography-line-height-20};
-
       --clr-p1-font-size: #{density.$clr-base-typography-font-size-default};
       --clr-p1-line-height: #{density.$clr-base-typography-line-height-20};
-
       --clr-p2-font-size: #{density.$clr-base-typography-font-size-inline};
       --clr-p2-line-height: #{density.$clr-base-typography-line-height-24};
-
       --clr-p3-font-size: #{density.$clr-base-typography-font-size-inline};
       --clr-p3-line-height: #{density.$clr-base-typography-line-height-24};
-
       --clr-p4-font-size: #{density.$clr-base-typography-font-size-inline};
       --clr-p4-line-height: #{density.$clr-base-typography-line-height-20};
-
       --clr-p5-font-size: #{density.$clr-base-typography-font-size-inline};
       --clr-p5-line-height: #{density.$clr-base-typography-line-height-24};
-
       --clr-p6-font-size: #{density.$clr-base-typography-font-size-caption};
       --clr-p6-line-height: #{density.$clr-base-typography-line-height-16};
-
       --clr-p7-font-size: #{density.$clr-base-typography-font-size-caption-small};
       --clr-p7-line-height: #{density.$clr-base-typography-line-height-12};
-
       --clr-p8-font-size: #{density.$clr-base-typography-font-size-caption-small};
       --clr-p8-line-height: #{density.$clr-base-typography-line-height-12};
     }
@@ -162,7 +147,6 @@
       --clr-h4-color: #{tokens.$cds-alias-typography-color-300};
       --clr-h5-color: #{tokens.$cds-alias-typography-color-300};
       --clr-h6-color: #{tokens.$cds-alias-typography-color-300};
-
       --clr-p0-color: #{tokens.$cds-alias-typography-color-450};
       --clr-p1-color: #{tokens.$cds-alias-typography-color-450};
       --clr-p2-color: #{tokens.$cds-alias-typography-color-450};

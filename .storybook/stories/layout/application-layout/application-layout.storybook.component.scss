@@ -7,9 +7,11 @@
 clr-tabs {
   display: block;
 }
+
 clr-vertical-nav {
   border-right: 1px solid var(--cds-alias-object-border-color);
   height: 100%;
+
   &.tree-nav.is-collapsed {
     clr-tree {
       display: none;
@@ -20,14 +22,20 @@ clr-vertical-nav {
 .page-heading {
   display: flex;
   margin: var(--clr-base-vertical-offset-l) 0;
+
   > cds-icon {
     margin-right: var(--clr-base-horizontal-offset-m);
-    height: var(--clr-base-icon-size-l);
-    width: var(--clr-base-icon-size-l);
+
+    &:not([size]) {
+      height: var(--clr-base-icon-size-l);
+      width: var(--clr-base-icon-size-l);
+    }
   }
+
   h5 {
     margin: 0;
   }
+
   .divider {
     width: 1px;
     background: var(--cds-alias-utility-gray-shade);
@@ -50,6 +58,7 @@ clr-vertical-nav {
     width: 100%;
   }
 }
+
 .clr-timeline-step {
   min-width: auto;
 }

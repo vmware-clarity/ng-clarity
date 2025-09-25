@@ -17,5 +17,6 @@ import { Component } from '@angular/core';
   host: {
     '[class.datagrid-detail-body]': 'true',
   },
+  standalone: false,
 })
 export class ClrDatagridDetailBody {}

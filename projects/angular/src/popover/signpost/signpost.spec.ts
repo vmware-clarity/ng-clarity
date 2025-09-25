@@ -6,8 +6,10 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { fakeAsync, tick } from '@angular/core/testing';
 
+import { SignpostIdService } from './providers/signpost-id.service';
+import { ClrSignpost } from './signpost';
+import { ClrSignpostModule } from './signpost.module';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import {
   expectActiveElementNotToBe,
@@ -15,9 +17,7 @@ import {
   spec,
   TestContext,
 } from '../../utils/testing/helpers.spec';
-import { SignpostIdService } from './providers/signpost-id.service';
-import { ClrSignpost } from './signpost';
-import { ClrSignpostModule } from './signpost.module';
+import { delay } from '../../utils/testing/helpers.spec';
 
 interface Context extends TestContext<ClrSignpost, TestDefaultSignpost | TestCustomTriggerSignpost> {
   toggleService: ClrPopoverToggleService;
@@ -93,11 +93,9 @@ export default function (): void {
         expectActiveElementNotToBe(signpostToggle);
       });
 
-      it('should not get focus back on trigger if signpost gets closed with outside click on another interactive element', fakeAsync(function (
-        this: Context
-      ) {
+      it('should not get focus back on trigger if signpost gets closed with outside click on another interactive element', async function (this: Context) {
         this.toggleService.open = true;
-        tick();
+        await delay();
         this.detectChanges();
         expect(this.hostElement.querySelector('.signpost-content')).not.toBeNull();
 
@@ -108,13 +106,11 @@ export default function (): void {
 
         expect(this.hostElement.querySelector('.signpost-content')).toBeNull();
         expectActiveElementToBe(this.hostComponent.outsideClickBtn.nativeElement);
-      }));
+      });
 
-      it('should get focus back on trigger if signpost gets closed with outside click on non-interactive element', fakeAsync(function (
-        this: Context
-      ) {
+      it('should get focus back on trigger if signpost gets closed with outside click on non-interactive element', async function (this: Context) {
         this.toggleService.open = true;
-        tick();
+        await delay();
         this.detectChanges();
         expect(this.hostElement.querySelector('.signpost-content')).not.toBeNull();
 
@@ -123,7 +119,7 @@ export default function (): void {
 
         expect(this.hostElement.querySelector('.signpost-content')).toBeNull();
         expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
-      }));
+      });
 
       it('should get focus back on trigger if signpost gets closed while focused element inside content', function (this: Context) {
         this.toggleService.open = true;
@@ -263,6 +259,7 @@ export default function (): void {
       <clr-signpost-content *clrIfOpen="openState">Signpost content</clr-signpost-content>
     </clr-signpost>
   `,
+  standalone: false,
 })
 class TestCustomTriggerSignpost {
   @ViewChild(ClrSignpost) signpost: ClrSignpost;
@@ -283,6 +280,7 @@ class TestCustomTriggerSignpost {
       </clr-signpost-content>
     </clr-signpost>
   `,
+  standalone: false,
 })
 class TestDefaultSignpost {
   @ViewChild(ClrSignpost) signpost: ClrSignpost;

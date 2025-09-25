@@ -9,6 +9,15 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
+import { ClrDateContainer } from './date-container';
+import { DayModel } from './model/day.model';
+import { DateFormControlService } from './providers/date-form-control.service';
+import { DateIOService } from './providers/date-io.service';
+import { DateNavigationService } from './providers/date-navigation.service';
+import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
+import { MockDatepickerEnabledService } from './providers/datepicker-enabled.service.mock';
+import { LocaleHelperService } from './providers/locale-helper.service';
+import { ViewManagerService } from './providers/view-manager.service';
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { PopoverPosition } from '../../popover/common/popover-positions';
 import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
@@ -23,15 +32,6 @@ import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
 import { ClrFormLayout, LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
-import { ClrDateContainer } from './date-container';
-import { DayModel } from './model/day.model';
-import { DateFormControlService } from './providers/date-form-control.service';
-import { DateIOService } from './providers/date-io.service';
-import { DateNavigationService } from './providers/date-navigation.service';
-import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
-import { MockDatepickerEnabledService } from './providers/datepicker-enabled.service.mock';
-import { LocaleHelperService } from './providers/locale-helper.service';
-import { ViewManagerService } from './providers/view-manager.service';
 
 const DATEPICKER_PROVIDERS: any[] = [
   ClrPopoverToggleService,
@@ -240,6 +240,7 @@ export default function () {
     </clr-date-container>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  standalone: false,
 })
 class TestComponent {
   model = '';

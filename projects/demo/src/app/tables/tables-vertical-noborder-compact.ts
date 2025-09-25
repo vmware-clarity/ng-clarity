@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-tables-vertical-noborder-compact-demo',
   templateUrl: './tables-vertical-noborder-compact.html',
+  standalone: false,
 })
 export class TablesVerticalNoborderCompactDemo {}

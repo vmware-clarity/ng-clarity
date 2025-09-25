@@ -7,9 +7,9 @@
 
 import { Subscription } from 'rxjs';
 
+import { DetailService } from './detail.service';
 import { ModalStackService } from '../../../modal/modal-stack.service';
 import { expectActiveElementToBe } from '../../../utils/testing/helpers.spec';
-import { DetailService } from './detail.service';
 
 // Prevent ModalStackService from adding event handlers.
 const PLATFORM_SERVER_ID = 'server';

@@ -6,20 +6,21 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Needed to recreate issue #1084
+import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 
 import { ClrDatagridColumn } from '../datagrid-column';
 import { ClrDatagridModule } from '../datagrid.module';
-import { DatagridRenderStep } from '../enums/render-step.enum';
 import { DATAGRID_SPEC_PROVIDERS, TestContext } from '../helpers.spec';
-import { ColumnsService } from '../providers/columns.service';
 import { DatagridHeaderRenderer } from './header-renderer';
 import { DatagridMainRenderer } from './main-renderer';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { MockDatagridRenderOrganizer } from './render-organizer.mock';
 import { DatagridRowRenderer } from './row-renderer';
+import { DatagridRenderStep } from '../enums/render-step.enum';
+import { ColumnsService } from '../providers/columns.service';
 
 export default function (): void {
   describe('DatagridMainRenderer directive', function () {
@@ -30,7 +31,7 @@ export default function (): void {
       let computeStateSpy: jasmine.Spy;
       let columnsService: ColumnsService;
 
-      beforeEach(fakeAsync(function () {
+      beforeEach(async function () {
         resizeSpy = spyOn(DatagridRenderOrganizer.prototype, 'resize');
         context = this.createWithOverrideDirective(
           DatagridMainRenderer,
@@ -44,9 +45,8 @@ export default function (): void {
         columnsService = context.getClarityProvider(ColumnsService);
 
         context.detectChanges();
-        tick();
-      }));
-
+        await delay();
+      });
       it('triggers the render process on initialization', function () {
         expect(resizeSpy.calls.count()).toBe(1);
       });
@@ -103,46 +103,42 @@ export default function (): void {
       let context: TestContext<DatagridMainRenderer, DynamicTest>;
       let resizeSpy, rowsSpy: jasmine.Spy;
 
-      beforeEach(fakeAsync(function () {
+      beforeEach(async function () {
         resizeSpy = spyOn(DatagridRenderOrganizer.prototype, 'resize');
         rowsSpy = spyOn(DatagridRowRenderer.prototype, 'setCellsState');
         context = this.create(DatagridMainRenderer, DynamicTest);
 
         context.detectChanges();
-        tick();
-      }));
-
-      it('does not trigger the render process until the rows are loaded', fakeAsync(function () {
+        await delay();
+      });
+      it('does not trigger the render process until the rows are loaded', async function () {
         expect(resizeSpy.calls.count()).toBe(0);
         context.testComponent.projected = true;
         context.detectChanges();
-        tick();
+        await delay();
         expect(resizeSpy.calls.count()).toBe(1);
-      }));
-
-      it('ignores columns changes until the rows are loaded', fakeAsync(function () {
+      });
+      it('ignores columns changes until the rows are loaded', async function () {
         context.testComponent.secondColumn = false;
         context.detectChanges();
-        tick();
+        await delay();
         expect(resizeSpy.calls.count()).toBe(0);
         context.testComponent.projected = true;
         context.detectChanges();
-        tick();
+        await delay();
         expect(resizeSpy.calls.count()).toBe(1);
         context.testComponent.secondColumn = true;
         context.detectChanges();
-        tick();
+        await delay();
         expect(resizeSpy.calls.count()).toBe(2);
-      }));
-
-      it('triggers the render process if the rows are given through *clrDgItems', fakeAsync(function () {
+      });
+      it('triggers the render process if the rows are given through *clrDgItems', async function () {
         expect(resizeSpy.calls.count()).toBe(0);
         context.testComponent.clrDgItems = [1];
         context.detectChanges();
-        tick();
+        await delay();
         expect(resizeSpy.calls.count()).toBe(1);
-      }));
-
+      });
       it('tracks changes of cells', function () {
         context.testComponent.clrDgItems = [0, 1, 2];
         context.detectChanges();
@@ -341,34 +337,42 @@ export default function (): void {
   template: `
     <div #dgContainer style="width: 232px">
       <!--
-        Datagrid side borders = 2px,
-        action columns are 38px wide,
-        Columns at min width = 2*96px
-        Total calculated datagrid width should be 232px and not be wider than the div container.
+      Datagrid side borders = 2px,
+      action columns are 38px wide,
+      Columns at min width = 2*96px
+      Total calculated datagrid width should be 232px and not be wider than the div container.
       -->
-      <ng-template *ngIf="currentTest === 'defaultDatagridTest'" [ngTemplateOutlet]="default"></ng-template>
-      <ng-template *ngIf="currentTest === 'singleSelectTest'" [ngTemplateOutlet]="single"></ng-template>
-      <ng-template *ngIf="currentTest === 'multiSelectTest'" [ngTemplateOutlet]="multi"></ng-template>
+      @if (currentTest === 'defaultDatagridTest') {
+        <ng-template [ngTemplateOutlet]="default"></ng-template>
+      }
+      @if (currentTest === 'singleSelectTest') {
+        <ng-template [ngTemplateOutlet]="single"></ng-template>
+      }
+      @if (currentTest === 'multiSelectTest') {
+        <ng-template [ngTemplateOutlet]="multi"></ng-template>
+      }
     </div>
     <ng-template #default>
       <clr-datagrid #datagridDefault>
         <clr-dg-column>Column</clr-dg-column>
         <clr-dg-column>Column</clr-dg-column>
         <clr-dg-row>
-          <clr-dg-action-overflow *ngIf="hasActions">
-            <button class="action-item" (click)="(return)">Edit</button>
-          </clr-dg-action-overflow>
+          @if (hasActions) {
+            <clr-dg-action-overflow>
+              <button class="action-item" (click)="(return)">Edit</button>
+            </clr-dg-action-overflow>
+          }
           <clr-dg-cell>
             Value
-            <ng-template [ngIf]="expandable">
+            @if (expandable) {
               <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
-            </ng-template>
+            }
           </clr-dg-cell>
           <clr-dg-cell>
             Value
-            <ng-template [ngIf]="expandable">
+            @if (expandable) {
               <clr-dg-row-detail *clrIfExpanded>Detail</clr-dg-row-detail>
-            </ng-template>
+            }
           </clr-dg-cell>
         </clr-dg-row>
       </clr-datagrid>
@@ -394,6 +398,7 @@ export default function (): void {
       </clr-datagrid>
     </ng-template>
   `,
+  standalone: false,
 })
 class RenderWidthTest {
   currentTest;
@@ -411,17 +416,28 @@ class RenderWidthTest {
   template: `
     <clr-datagrid>
       <clr-dg-column>AAA</clr-dg-column>
-      <clr-dg-column *ngIf="secondColumn">AAA</clr-dg-column>
-      <clr-dg-row *ngIf="firstRow">
-        <clr-dg-cell>BBB</clr-dg-cell>
-        <clr-dg-cell *ngIf="secondColumn">BBB</clr-dg-cell>
-      </clr-dg-row>
-      <clr-dg-row *ngIf="!firstRow">
-        <clr-dg-cell>CCC</clr-dg-cell>
-        <clr-dg-cell *ngIf="secondColumn">CCC</clr-dg-cell>
-      </clr-dg-row>
+      @if (secondColumn) {
+        <clr-dg-column>AAA</clr-dg-column>
+      }
+      @if (firstRow) {
+        <clr-dg-row>
+          <clr-dg-cell>BBB</clr-dg-cell>
+          @if (secondColumn) {
+            <clr-dg-cell>BBB</clr-dg-cell>
+          }
+        </clr-dg-row>
+      }
+      @if (!firstRow) {
+        <clr-dg-row>
+          <clr-dg-cell>CCC</clr-dg-cell>
+          @if (secondColumn) {
+            <clr-dg-cell>CCC</clr-dg-cell>
+          }
+        </clr-dg-row>
+      }
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class StaticTest {
   secondColumn = true;
@@ -432,19 +448,24 @@ class StaticTest {
   template: `
     <clr-datagrid>
       <clr-dg-column>AAA</clr-dg-column>
-      <clr-dg-column *ngIf="secondColumn">AAA</clr-dg-column>
-      <clr-dg-row *ngIf="projected">
-        <clr-dg-cell>BBB</clr-dg-cell>
-        <clr-dg-cell>BBB</clr-dg-cell>
-      </clr-dg-row>
-      <ng-template [ngIf]="clrDgItems.length > 0">
+      @if (secondColumn) {
+        <clr-dg-column>AAA</clr-dg-column>
+      }
+      @if (projected) {
+        <clr-dg-row>
+          <clr-dg-cell>BBB</clr-dg-cell>
+          <clr-dg-cell>BBB</clr-dg-cell>
+        </clr-dg-row>
+      }
+      @if (clrDgItems.length > 0) {
         <clr-dg-row *clrDgItems="let n of clrDgItems">
           <clr-dg-cell>BBB</clr-dg-cell>
           <clr-dg-cell>BBB</clr-dg-cell>
         </clr-dg-row>
-      </ng-template>
+      }
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class DynamicTest {
   secondColumn = true;
@@ -455,16 +476,21 @@ class DynamicTest {
 @Component({
   template: `
     <clr-datagrid>
-      <clr-dg-column *ngIf="fixedWidth" [style.width.px]="42">Fixed width</clr-dg-column>
+      @if (fixedWidth) {
+        <clr-dg-column [style.width.px]="42">Fixed width</clr-dg-column>
+      }
       <clr-dg-column>{{ firstHeader }}</clr-dg-column>
       <clr-dg-column>{{ secondHeader }}</clr-dg-column>
       <clr-dg-row>
-        <clr-dg-cell *ngIf="fixedWidth">Fixed width</clr-dg-cell>
+        @if (fixedWidth) {
+          <clr-dg-cell>Fixed width</clr-dg-cell>
+        }
         <clr-dg-cell>{{ firstCell }}</clr-dg-cell>
         <clr-dg-cell>{{ secondCell }}</clr-dg-cell>
       </clr-dg-row>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class ColumnsWidthTest {
   firstHeader = 'AAA';
@@ -489,6 +515,7 @@ class ColumnsWidthTest {
       </clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class DatagridHeightTest {
   numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
@@ -527,6 +554,7 @@ class DatagridHeightTest {
       </clr-dg-footer>
     </clr-datagrid>
   `,
+  standalone: false,
 })
 class DatagridDetailPaneTest {
   numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];

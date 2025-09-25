@@ -6,7 +6,7 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -15,6 +15,7 @@ import { commonStringsDefault } from '../../utils';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNav } from './vertical-nav';
 import { ClrVerticalNavModule } from './vertical-nav.module';
+import { delay } from '../../utils/testing/helpers.spec';
 
 export default function (): void {
   describe('Vertical Nav', () => {
@@ -543,7 +544,7 @@ export default function (): void {
         expect(vertNavService.collapsed).toBe(true);
       });
 
-      it('emits the collapsed state', fakeAsync(function () {
+      it('emits the collapsed state', async function () {
         expect(fixture.componentInstance.collapsedChange).toBeUndefined();
         vertNavService.collapsible = true;
 
@@ -553,17 +554,17 @@ export default function (): void {
         trigger.click();
 
         fixture.detectChanges();
-        tick();
+        await delay();
 
         expect(fixture.componentInstance.collapsedChange).toBe(true);
 
         trigger.click();
 
         fixture.detectChanges();
-        tick();
+        await delay();
 
         expect(fixture.componentInstance.collapsedChange).toBe(false);
-      }));
+      });
     });
 
     describe('Accessibility', () => {
@@ -605,6 +606,7 @@ export default function (): void {
       </clr-vertical-nav>
     </div>
   `,
+  standalone: false,
 })
 class NoIconsNoNavGroupTestComponent {
   collapsible = false;
@@ -619,6 +621,7 @@ class NoIconsNoNavGroupTestComponent {
       </a>
     </clr-vertical-nav>
   `,
+  standalone: false,
 })
 class IconsButNoNavGroupTestComponent {}
 
@@ -632,6 +635,7 @@ class IconsButNoNavGroupTestComponent {}
       </clr-vertical-nav>
     </div>
   `,
+  standalone: false,
 })
 class OnlyNavGroupTestComponent {}
 
@@ -645,23 +649,29 @@ class OnlyNavGroupTestComponent {}
       </clr-vertical-nav-group>
     </clr-vertical-nav>
   `,
+  standalone: false,
 })
 class IconsAndNavGroupTestComponent {}
 
 @Component({
   template: `
     <clr-vertical-nav #nav>
-      <clr-vertical-nav-group *ngIf="groupToggle">
-        <cds-icon clrVerticalNavIcon></cds-icon>
-        Group
-        <a href="#" clrVerticalNavLink>Text</a>
-      </clr-vertical-nav-group>
-      <a href="#" clrVerticalNavLink *ngIf="iconToggle">
-        <cds-icon clrVerticalNavIcon></cds-icon>
-        Text
-      </a>
+      @if (groupToggle) {
+        <clr-vertical-nav-group>
+          <cds-icon clrVerticalNavIcon></cds-icon>
+          Group
+          <a href="#" clrVerticalNavLink>Text</a>
+        </clr-vertical-nav-group>
+      }
+      @if (iconToggle) {
+        <a href="#" clrVerticalNavLink>
+          <cds-icon clrVerticalNavIcon></cds-icon>
+          Text
+        </a>
+      }
     </clr-vertical-nav>
   `,
+  standalone: false,
 })
 class ViewBasicsTestComponent {
   @ViewChild('nav') nav: ClrVerticalNav;
@@ -680,6 +690,7 @@ class ViewBasicsTestComponent {
       (clrVerticalNavCollapsedChange)="updateCollapsed($event)"
     ></clr-vertical-nav>
   `,
+  standalone: false,
 })
 class APITestComponent {
   collapsible = false;
@@ -705,6 +716,7 @@ class APITestComponent {
       </clr-vertical-nav>
     </div>
   `,
+  standalone: false,
 })
 class ResponsiveVerticalNavTestComponent {
   overflowMenu = false;

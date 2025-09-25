@@ -15,6 +15,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
   host: {
     '[id]': 'datalistId',
   },
+  standalone: false,
 })
 export class ClrDatalist implements AfterContentInit {
   datalistId: string;

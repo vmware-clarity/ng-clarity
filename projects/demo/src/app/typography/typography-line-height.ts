@@ -65,6 +65,7 @@ function updateFontProperties(fontObj: FontPreset): void {
   selector: 'clr-typography-line-height',
   styleUrls: ['./line-height.demo.scss'],
   templateUrl: './typography-line-height.html',
+  standalone: false,
 })
 export class TypographyLineHeightDemo {
   showBackgrounds = false;

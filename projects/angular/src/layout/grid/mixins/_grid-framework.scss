@@ -7,6 +7,7 @@
 
 @use 'sass:map';
 @use '../../../utils/variables/variables';
+@use '@cds/core/tokens/tokens.scss';
 @use 'breakpoint';
 @use 'grid';
 
@@ -18,7 +19,7 @@
   // Common properties for all breakpoints
   %clr-grid-column {
     width: 100%;
-    min-height: variables.$clr_baselineRem_1px; // Prevent columns from collapsing when empty
+    min-height: tokens.$cds-global-space-1; // Prevent columns from collapsing when empty
     padding-right: $gutter;
     padding-left: $gutter;
   }
@@ -27,6 +28,7 @@
     $infix: breakpoint.clr-breakpoint-infix($breakpoint, $breakpoints);
 
     // Allow columns to stretch full width below their breakpoints
+
     @for $i from 1 through $columns {
       .clr-col#{$infix}-#{$i} {
         @extend %clr-grid-column;
@@ -73,6 +75,7 @@
       }
 
       // `$columns - 1` because offsetting by the width of an entire row isn't possible
+
       @for $i from 0 through ($columns - 1) {
         @if not($infix == '' and $i == 0) {
           /* stylelint-disable */

@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use './variables.vertical-nav' as vertical-nav-variables;
@@ -15,8 +16,7 @@
     --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
     --clr-vertical-nav-item-top-level-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
     --clr-vertical-nav-header-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
-
-    --clr-vertical-nav-trigger-divider-border-width: #{variables.$clr-global-borderwidth};
+    --clr-vertical-nav-trigger-divider-border-width: #{tokens.$cds-global-space-1};
 
     &,
     & [clr-density] {
@@ -26,27 +26,28 @@
       --clr-vertical-nav-collapsed-caret-size: #{density.$clr-base-icon-size-2xl};
 
       // Vertical Nav - Align
-      --clr-vertical-nav-item-padding: #{density.$clr-base-vertical-offset-m} #{density.$clr-base-horizontal-offset-m} #{density.$clr-base-vertical-offset-m}
-        #{density.$clr-base-horizontal-offset-xl};
-      --clr-vertical-nav-item-child-padding: #{density.$clr-base-vertical-offset-m} #{density.$clr-base-horizontal-offset-m}
-        #{density.$clr-base-vertical-offset-m} calc(#{vertical-nav-variables.$clr-vertical-nav-icon-size} + #{density.$clr-base-horizontal-offset-xl} +
-            #{density.$clr-base-gap-xs});
+      --clr-vertical-nav-item-padding: #{density.$clr-base-vertical-offset-m} #{density.$clr-base-horizontal-offset-m}
+        #{density.$clr-base-vertical-offset-m} #{density.$clr-base-horizontal-offset-xl};
+      --clr-vertical-nav-item-child-padding: #{density.$clr-base-vertical-offset-m}
+        #{density.$clr-base-horizontal-offset-m} #{density.$clr-base-vertical-offset-m}
+        calc(
+          #{vertical-nav-variables.$clr-vertical-nav-icon-size} + #{density.$clr-base-horizontal-offset-xl} +
+            #{density.$clr-base-gap-xs}
+        );
       --clr-vertical-nav-item-height: #{density.$clr-base-row-height-m};
       --clr-vertical-nav-min-width: #{density.$clr-base-layout-space-3xl};
-
       --clr-vertical-nav-toggle-button-size: #{density.$clr-base-row-height-m};
 
       // Vertical Nav - Header
-      --clr-vertical-nav-header-padding: #{density.$clr-base-vertical-offset-multi-row-m} #{density.$clr-base-horizontal-offset-xl};
+      --clr-vertical-nav-header-padding: #{density.$clr-base-vertical-offset-multi-row-m}
+        #{density.$clr-base-horizontal-offset-xl};
     }
 
     &,
     & [cds-theme] {
       /* Vertical Nav */
       --clr-vertical-nav-divider-color: #{tokens.$cds-alias-object-border-color};
-
       --clr-vertical-nav-icon-active-color: #{tokens.$cds-alias-object-interaction-color};
-
       --clr-vertical-nav-item-color: #{tokens.$cds-alias-object-interaction-color};
       --clr-vertical-nav-item-active-color: #{tokens.$cds-alias-object-interaction-color-active};
 
@@ -59,7 +60,6 @@
       --clr-vertical-nav-bg-color: var(--cds-alias-object-interaction-background-shade);
       --clr-vertical-nav-hover-bg-color: var(--cds-alias-object-interaction-background-shade-hover);
       --clr-vertical-nav-active-bg-color: var(--cds-alias-object-interaction-background-shade-active);
-
       --clr-vertical-nav-active-color: #{tokens.$cds-alias-object-interaction-color-active};
 
       // Vertical Nav - Trigger

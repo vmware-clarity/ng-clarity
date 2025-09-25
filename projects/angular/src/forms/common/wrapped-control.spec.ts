@@ -6,12 +6,10 @@
  */
 
 import { Component, Directive, ElementRef, Injector, NgModule, Renderer2, Type, ViewContainerRef } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
-import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
 import { ClrAbstractContainer } from './abstract-container';
 import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
@@ -23,6 +21,9 @@ import { MarkControlService } from './providers/mark-control.service';
 import { NgControlService } from './providers/ng-control.service';
 import { ClrControlSuccess } from './success';
 import { WrappedFormControl } from './wrapped-control';
+import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
+import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
+import { delay } from '../../utils/testing/helpers.spec';
 
 /*
  * Components using the WrappedFormControl we want to test.
@@ -31,15 +32,17 @@ import { WrappedFormControl } from './wrapped-control';
   selector: 'test-wrapper',
   template: `<ng-content></ng-content>`,
   providers: [ControlIdService],
+  standalone: false,
 })
 class TestWrapper {}
 
 @Directive({
   selector: '[testControl]',
+  standalone: false,
 })
 class TestControl extends WrappedFormControl<TestWrapper> {
-  constructor(vcr: ViewContainerRef) {
-    super(vcr, TestWrapper, null, null, null, null);
+  constructor(vcr: ViewContainerRef, el: ElementRef<HTMLElement>) {
+    super(vcr, TestWrapper, null, null, null, el);
   }
 }
 
@@ -50,15 +53,17 @@ class TestControl extends WrappedFormControl<TestWrapper> {
     <div id="second"><ng-content></ng-content></div>
   `,
   providers: [ControlIdService],
+  standalone: false,
 })
 class TestWrapper2 {}
 
 @Directive({
   selector: '[testControl2]',
+  standalone: false,
 })
 class TestControl2 extends WrappedFormControl<TestWrapper2> {
-  constructor(vcr: ViewContainerRef) {
-    super(vcr, TestWrapper2, null, null, null, null);
+  constructor(vcr: ViewContainerRef, el: ElementRef<HTMLElement>) {
+    super(vcr, TestWrapper2, null, null, null, el);
   }
 }
 
@@ -66,11 +71,13 @@ class TestControl2 extends WrappedFormControl<TestWrapper2> {
   selector: 'test-wrapper3',
   template: `<div id="wrapper"><ng-content></ng-content></div>`,
   providers: [ControlIdService, NgControlService, IfControlStateService, ControlClassService],
+  standalone: false,
 })
 class TestWrapper3 extends ClrAbstractContainer {}
 
 @Directive({
   selector: '[testControl3]',
+  standalone: false,
 })
 class TestControl3 extends WrappedFormControl<TestWrapper3> {
   constructor(
@@ -88,6 +95,7 @@ class TestControl3 extends WrappedFormControl<TestWrapper3> {
   selector: 'form-wrapper',
   template: `<div id="form-wrapper"><ng-content></ng-content></div>`,
   providers: [MarkControlService, LayoutService],
+  standalone: false,
 })
 class FormWrapper {}
 
@@ -103,26 +111,31 @@ class WrappedFormControlTestModule {}
  */
 @Component({
   template: `<input testControl />`,
+  standalone: false,
 })
 class NoWrapperNoId {}
 
 @Component({
   template: `<input testControl id="hello" />`,
+  standalone: false,
 })
 class NoWrapperWithId {}
 
 @Component({
   template: `<test-wrapper><input testControl /></test-wrapper>`,
+  standalone: false,
 })
 class WithWrapperNoId {}
 
 @Component({
   template: `<test-wrapper><input testControl id="hello" /></test-wrapper>`,
+  standalone: false,
 })
 class WithWrapperWithId {}
 
 @Component({
   template: `<test-wrapper2><input testControl id="hello" /></test-wrapper2>`,
+  standalone: false,
 })
 class WithMultipleNgContent {}
 
@@ -134,6 +147,7 @@ class WithMultipleNgContent {}
       </test-wrapper3>
     </form-wrapper>
   `,
+  standalone: false,
 })
 class WithControl {
   model = '';
@@ -146,6 +160,7 @@ class WithControl {
       <test-wrapper3><input type="number" testControl3 [(ngModel)]="model" required id="control2" /></test-wrapper3>
     </form-wrapper>
   `,
+  standalone: false,
 })
 class WithNumberControl {
   model = '';
@@ -160,6 +175,7 @@ class WithNumberControl {
       </test-wrapper3>
     </form-wrapper>
   `,
+  standalone: false,
 })
 class WithControlAndHelper {
   model = '';
@@ -174,6 +190,7 @@ class WithControlAndHelper {
       </test-wrapper3>
     </form-wrapper>
   `,
+  standalone: false,
 })
 class WithControlAndError {
   model = '';
@@ -188,6 +205,7 @@ class WithControlAndError {
       </test-wrapper3>
     </form-wrapper>
   `,
+  standalone: false,
 })
 class WithControlAndSuccess {
   model = '';
@@ -203,6 +221,7 @@ class WithControlAndSuccess {
       </test-wrapper3>
     </form-wrapper>
   `,
+  standalone: false,
 })
 class WithDynamicFormControl {
   form = new FormGroup<any>({
@@ -224,6 +243,7 @@ class WithDynamicFormControl {
       </test-wrapper3>
     </form-wrapper>
   `,
+  standalone: false,
 })
 class WithDynamicNgControl {
   form = {};
@@ -247,10 +267,13 @@ interface TestContext {
 
 export default function (): void {
   describe('WrappedFormControl', () => {
-    function setupTest<T>(testContext: TestContext, testComponent: Type<T>, testControl: any) {
+    function setupTest<T>(testContext: TestContext, testComponent: Type<T>, testControl: any, includeProviders = true) {
       TestBed.configureTestingModule({
         imports: [WrappedFormControlTestModule, FormsModule, ReactiveFormsModule],
         declarations: [testComponent, ClrControlError, ClrControlHelper, ClrControlSuccess],
+        providers: includeProviders
+          ? [MarkControlService, ControlClassService, NgControlService, IfControlStateService, LayoutService]
+          : [],
       });
       testContext.fixture = TestBed.createComponent(testComponent);
       testContext.fixture.detectChanges();
@@ -270,17 +293,19 @@ export default function (): void {
         testContext.layoutService = wrapperDebugElement.injector.get(LayoutService);
       } catch (error) {
         // Swallow errors
+        console.log(includeProviders ? error : new Error(`EXPECTED ERROR: ${error}`));
       }
     }
 
+    // These two tests are expected to throw errors which are swallowed with try / catch in setupTest
     describe('getProviderFromContainer', function () {
       it('gets a provider from the container', function (this: TestContext) {
-        setupTest(this, WithWrapperNoId, TestControl);
+        setupTest(this, WithWrapperNoId, TestControl, false);
         expect(this.control.getProviderFromContainer(ControlIdService)).toEqual(this.controlIdService);
       });
 
       it('returns not found if provider is missing', function (this: TestContext) {
-        setupTest(this, WithWrapperNoId, TestControl);
+        setupTest(this, WithWrapperNoId, TestControl, false);
         expect(this.control.getProviderFromContainer(MarkControlService, false)).toBeFalse();
       });
     });
@@ -413,24 +438,22 @@ export default function (): void {
         expect(this.input.getAttribute('aria-describedby')).toBe(null);
       });
 
-      it('adds the aria-describedby with helper and error ids', fakeAsync(function (this: TestContext) {
+      it('adds the aria-describedby with helper and error ids', async function (this: TestContext) {
         setupTest(this, WithControlAndError, TestControl3);
         this.input.focus();
         this.input.blur();
         this.fixture.detectChanges();
-        tick();
+        await delay();
         expect(this.input.getAttribute('aria-describedby')).toEqual(`${this.input.id}-helper ${this.input.id}-error`);
-      }));
-
-      it('adds the aria-describedby for error messages', fakeAsync(function (this: TestContext) {
+      });
+      it('adds the aria-describedby for error messages', async function (this: TestContext) {
         setupTest(this, WithControlAndError, TestControl3);
         this.input.focus();
         this.input.blur();
         this.fixture.detectChanges();
-        tick();
+        await delay();
         expect(this.input.getAttribute('aria-describedby')).toContain('-error');
-      }));
-
+      });
       it('does not set aria-describedby unless error helper is present', function () {
         setupTest(this, WithControl, TestControl3);
         this.input.focus();
@@ -440,38 +463,36 @@ export default function (): void {
         expect(this.input.getAttribute('aria-describedby')).toBe(null);
       });
 
-      it('adds the aria-describedby for success messages', fakeAsync(function (this: TestContext) {
+      it('adds the aria-describedby for success messages', async function (this: TestContext) {
         setupTest(this, WithControlAndSuccess, TestControl3);
         this.input.focus();
         this.fixture.componentInstance.model = 'test';
         this.input.blur();
         this.fixture.detectChanges();
-        tick();
+        await delay();
 
         expect(this.input.getAttribute('aria-describedby')).toContain('-success');
-      }));
-
-      it('adds the aria-describedby with helper and success ids', fakeAsync(function (this: TestContext) {
+      });
+      it('adds the aria-describedby with helper and success ids', async function (this: TestContext) {
         setupTest(this, WithControlAndSuccess, TestControl3);
         this.input.focus();
         this.fixture.componentInstance.model = 'test';
         this.input.blur();
         this.fixture.detectChanges();
-        tick();
+        await delay();
 
         expect(this.input.getAttribute('aria-describedby')).toEqual(`${this.input.id}-helper ${this.input.id}-success`);
-      }));
-
-      it('does not set aria-describedby unless success helper is present', fakeAsync(function () {
+      });
+      it('does not set aria-describedby unless success helper is present', async function () {
         setupTest(this, WithControl, TestControl3);
         this.input.focus();
         this.fixture.componentInstance.model = 'test';
         this.input.blur();
         this.fixture.detectChanges();
-        tick();
+        await delay();
 
         expect(this.input.getAttribute('aria-describedby')).toBe(null);
-      }));
+      });
     });
   });
 }

@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-tooltips-angular-demo',
   styleUrls: ['./tooltips.demo.scss'],
   templateUrl: './tooltips-angular.html',
+  standalone: false,
 })
 export class TooltipsAngularDemo {
   blankStringId = '';

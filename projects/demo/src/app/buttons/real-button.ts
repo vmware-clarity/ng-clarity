@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-buttons-demo-real-button',
   templateUrl: './real-button.html',
   styleUrls: ['./buttons.demo.scss'],
+  standalone: false,
 })
 export class RealButtonDemo {}

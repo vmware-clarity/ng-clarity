@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Compact Datagrid</h2>
 
@@ -18,7 +18,8 @@
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Pokemon</clr-dg-column>
-  <clr-dg-row *ngFor="let user of users; let i = index;">
+  @for (user of users; track user; let i = $index) {
+  <clr-dg-row>
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>
       <cds-icon shape="user"></cds-icon>
@@ -26,6 +27,7 @@
     </clr-dg-cell>
     <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
   </clr-dg-row>
+  }
 
   <clr-dg-footer>{{users.length}} users</clr-dg-footer>
 </clr-datagrid>
@@ -38,7 +40,8 @@
     <clr-dg-column>Creation date</clr-dg-column>
     <clr-dg-column>Favorite color</clr-dg-column>
 
-    <clr-dg-row *ngFor="let user of nonPaginatedUsers">
+    @for (user of nonPaginatedUsers; track user) {
+    <clr-dg-row>
       <clr-dg-cell>{{user.id}}</clr-dg-cell>
       <clr-dg-cell>
         <cds-icon shape="user"></cds-icon>
@@ -49,6 +52,7 @@
         <span class="color-square" [style.backgroundColor]="user.color"></span>
       </clr-dg-cell>
     </clr-dg-row>
+    }
 
     <clr-dg-footer>{{nonPaginatedUsers.length}} users</clr-dg-footer>
   </clr-datagrid>
@@ -175,7 +179,9 @@
     <clr-dg-column>Favorite color</clr-dg-column>
 
     <clr-dg-placeholder>We couldn't find any users!</clr-dg-placeholder>
-    <clr-dg-row *ngFor="let user of []"></clr-dg-row>
+    @for (user of []; track user) {
+    <clr-dg-row></clr-dg-row>
+    }
 
     <clr-dg-footer>{{[].length}} users</clr-dg-footer>
   </clr-datagrid>
@@ -310,23 +316,20 @@
 
       <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="replace">
         <ng-template [clrFakeLoader]="slowLoad" clrLoading>
-          <ng-template [ngIf]="detail === 'default'">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
-            Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
-            sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh
-            lacus, in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum
-            vulputate sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere ipsum tincidunt
-            velit pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet metus
-            finibus hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit diam.
-          </ng-template>
-
-          <ng-template [ngIf]="detail === 'columns'">
-            <clr-dg-cell>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</clr-dg-cell>
-            <clr-dg-cell>Proin in neque in ante placerat mattis id sed quam.</clr-dg-cell>
-            <clr-dg-cell>Proin rhoncus lacus et tempor dignissim.</clr-dg-cell>
-            <clr-dg-cell>Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed arcu.</clr-dg-cell>
-            <clr-dg-cell>Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.</clr-dg-cell>
-          </ng-template>
+          @if (detail === 'default') { Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante
+          placerat mattis id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet
+          suscipit eget, pellentesque sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.
+          Aenean sagittis nibh lacus, in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor.
+          Vestibulum vulputate sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere ipsum
+          tincidunt velit pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet
+          metus finibus hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit
+          diam. } @if (detail === 'columns') {
+          <clr-dg-cell>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</clr-dg-cell>
+          <clr-dg-cell>Proin in neque in ante placerat mattis id sed quam.</clr-dg-cell>
+          <clr-dg-cell>Proin rhoncus lacus et tempor dignissim.</clr-dg-cell>
+          <clr-dg-cell>Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed arcu.</clr-dg-cell>
+          <clr-dg-cell>Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.</clr-dg-cell>
+          }
         </ng-template>
       </clr-dg-row-detail>
     </clr-dg-row>
@@ -337,9 +340,11 @@
 <h3>Hide-show columns</h3>
 <div id="datagrid-compact-hide-show-columns">
   <clr-datagrid [(clrDgSelected)]="selected" class="datagrid-compact">
-    <clr-dg-column *ngIf="showId">
+    @if (showId) {
+    <clr-dg-column>
       <ng-container *clrDgHideableColumn>User ID</ng-container>
     </clr-dg-column>
+    }
     <clr-dg-column>
       <!--Name-->
       <ng-container *clrDgHideableColumn>Name</ng-container>
@@ -357,9 +362,13 @@
     <clr-dg-placeholder>No users found</clr-dg-placeholder>
 
     <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-      <clr-dg-cell *ngIf="showId">{{user.id}}</clr-dg-cell>
+      @if (showId) {
+      <clr-dg-cell>{{user.id}}</clr-dg-cell>
+      }
       <clr-dg-cell>{{user.name}}</clr-dg-cell>
-      <clr-dg-cell *ngIf="showDate">{{user.creation | date}}</clr-dg-cell>
+      @if (showDate) {
+      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+      }
       <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
       <clr-dg-cell>
         <span class="color-square" [style.backgroundColor]="user.color"></span>
@@ -381,7 +390,8 @@
     <clr-dg-column>Creation date</clr-dg-column>
     <clr-dg-column>Favorite color</clr-dg-column>
 
-    <clr-dg-row *ngFor="let user of nonPaginatedUsers">
+    @for (user of nonPaginatedUsers; track user) {
+    <clr-dg-row>
       <clr-dg-cell>
         {{user.id}}
         <clr-signpost>
@@ -402,6 +412,7 @@
         <span class="color-square" [style.backgroundColor]="user.color"></span>
       </clr-dg-cell>
     </clr-dg-row>
+    }
 
     <clr-dg-footer>{{nonPaginatedUsers.length}} users</clr-dg-footer>
   </clr-datagrid>

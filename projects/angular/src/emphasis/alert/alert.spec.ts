@@ -29,6 +29,7 @@ const CLOSE_ARIA_LABEL = 'Close Test Alert';
       </div>
     </clr-alert>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrAlert) alertInstance: ClrAlert;

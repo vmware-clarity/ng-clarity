@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-layout-all-demo',
   templateUrl: './layout-all.html',
   styleUrls: ['./layout.demo.scss'],
+  standalone: false,
 })
 export class LayoutAllDemo {}

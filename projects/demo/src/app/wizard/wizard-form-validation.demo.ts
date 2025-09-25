@@ -11,6 +11,7 @@ import { ClrWizard } from '@clr/angular';
 @Component({
   selector: 'clr-wizard-form-validation',
   templateUrl: './wizard-form-validation.demo.html',
+  standalone: false,
 })
 export class WizardFormValidation {
   @ViewChild('wizard') wizard: ClrWizard;

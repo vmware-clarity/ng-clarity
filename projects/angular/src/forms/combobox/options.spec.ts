@@ -8,15 +8,15 @@
 import { Component, ElementRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import { ClrOptions } from './options';
+import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
+import { OptionSelectionService } from './providers/option-selection.service';
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { FocusService } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { ClrOptions } from './options';
-import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
-import { OptionSelectionService } from './providers/option-selection.service';
 
 const OPTION_PROVIDERS = [
   ClrPopoverToggleService,
@@ -30,16 +30,20 @@ const OPTION_PROVIDERS = [
 @Component({
   template: `<clr-options>Test</clr-options>`,
   providers: [...OPTION_PROVIDERS, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
+  standalone: false,
 })
 class TestComponent {}
 
 @Component({
   template: `
     <clr-options>
-      <clr-option *ngIf="showOption">1</clr-option>
+      @if (showOption) {
+        <clr-option>1</clr-option>
+      }
     </clr-options>
   `,
   providers: [...OPTION_PROVIDERS, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
+  standalone: false,
 })
 class TestComponentWithChild {
   showOption = true;
@@ -48,6 +52,7 @@ class TestComponentWithChild {
 @Component({
   template: `<clr-options>Test</clr-options>`,
   providers: OPTION_PROVIDERS,
+  standalone: false,
 })
 class TestComponentWithError {}
 

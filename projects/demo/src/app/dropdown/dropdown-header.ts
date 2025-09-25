@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-dropdown-header-demo',
   templateUrl: './dropdown-header.demo.html',
   styleUrls: ['./dropdown.demo.scss'],
+  standalone: false,
 })
 export class DropdownHeaderDemo {}

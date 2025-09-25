@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:meta';
 @use '../utils/mixins';
 @use 'variables.buttons' as buttons-variables;
@@ -14,83 +15,63 @@
   @if not $property {
     @return null;
   }
-
   @if $type == default {
     @return buttons-variables.lookupFromDefaultButtonColors($property);
   }
-
   @if $type == default-outline {
     @return buttons-variables.lookupFromDefaultOutlineButtonColors($property);
   }
-
   @if $type == primary {
     @return buttons-variables.lookupFromPrimaryButtonColors($property);
   }
-
   @if $type == primary-outline {
     @return buttons-variables.lookupFromPrimaryOutlineButtonColors($property);
   }
-
   @if $type == success {
     @return buttons-variables.lookupFromSuccessButtonColors($property);
   }
-
   @if $type == success-outline {
     @return buttons-variables.lookupFromSuccessOutlineButtonColors($property);
   }
-
   @if $type == danger {
     @return buttons-variables.lookupFromDangerButtonColors($property);
   }
-
   @if $type == neutral {
     @return buttons-variables.lookupFromNeutralButtonColors($property);
   }
-
   @if $type == neutral-outline {
     @return buttons-variables.lookupFromNeutralOutlineButtonColors($property);
   }
-
   @if $type == danger-outline {
     @return buttons-variables.lookupFromDangerOutlineButtonColors($property);
   }
-
   @if $type == warning {
     @return buttons-variables.lookupFromWarningButtonColors($property);
   }
-
   @if $type == warning-outline {
     @return buttons-variables.lookupFromWarningOutlineButtonColors($property);
   }
-
   @if $type == link {
     @return buttons-variables.lookupFromLinkButtonColors($property);
   }
-
   @if $type == link-primary {
     @return buttons-variables.lookupFromLinkPrimaryButtonColors($property);
   }
-
   @if $type == link-success {
     @return buttons-variables.lookupFromLinkSuccessButtonColors($property);
   }
-
   @if $type == link-warning {
     @return buttons-variables.lookupFromLinkWarningButtonColors($property);
   }
-
   @if $type == link-danger {
     @return buttons-variables.lookupFromLinkDangerButtonColors($property);
   }
-
   @if $type == link-neutral {
     @return buttons-variables.lookupFromLinkNeutralButtonColors($property);
   }
-
   @if $type == inverse {
     @return buttons-variables.lookupFromInverseButtonColors($property);
   }
-
   @if $type == icon {
     @return buttons-variables.lookupFromIconButtonColors($property);
   }
@@ -103,7 +84,6 @@
     #{$style}: getSassButtonColor($button-type, $styleNickname);
   }
 }
-
 @mixin populateButtonProperties($button-type: default) {
   @include button-css-var($button-type, border-color);
   @include button-css-var($button-type, background-color, bg-color);
@@ -112,12 +92,16 @@
   cds-icon,
   clr-icon {
     @include button-css-var($button-type, color);
-    @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+
+    &:not([size]) {
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+    }
   }
 
   &:hover {
     @include button-css-var($button-type, background-color, hover-bg-color);
     @include button-css-var($button-type, color, hover-color);
+
     cds-icon,
     clr-icon {
       @include button-css-var($button-type, color, hover-color);
@@ -127,6 +111,7 @@
   &:active {
     @include button-css-var($button-type, background-color, active-bg-color);
     @include button-css-var($button-type, color, active-color);
+
     cds-icon,
     clr-icon {
       @include button-css-var($button-type, color, active-color);
@@ -136,16 +121,18 @@
   &.disabled,
   &:disabled {
     @include button-css-var($button-type, color, disabled-color);
+
     cursor: not-allowed;
+
     @include button-css-var($button-type, background-color, disabled-bg-color);
     @include button-css-var($button-type, border-color, disabled-border-color);
+
     cds-icon,
     clr-icon {
       @include button-css-var($button-type, color, disabled-color);
     }
   }
 }
-
 @mixin btn-checked-styles($button-type: default, $type: checkbox) {
   // add semantic prop: group-checked-font-color
   input[type='#{$type}']:checked + label {
@@ -192,18 +179,15 @@
     }
   }
 }
-
 @mixin btn-nowrap() {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-
 @mixin btn-min-max-widths() {
   min-width: tokens.$cds-global-space-14;
   max-width: mixins.baselinePx(360);
 }
-
 @mixin btn-text-properties() {
   text-align: center;
   text-decoration: none;
@@ -213,15 +197,12 @@
     text-decoration: none;
   }
 }
-
 @mixin btn-default-border-styles() {
   border: buttons-variables.$clr-btn-border-width solid;
   border-radius: buttons-variables.$clr-btn-border-radius;
 }
-
 @mixin btn-appearance() {
   cursor: pointer;
-
   display: inline-flex;
   gap: buttons-variables.$clr-btn-gap;
   align-items: center;
@@ -230,16 +211,14 @@
   // Overrides a Fix for IOS in BS4 _normalize.scss (~ln 330)
   // `!important` is to override specificity in this instance
   // But we wanted to preserve the normalize fix in non-Clarity buttons for iOS
-  -webkit-appearance: none !important;
+  appearance: none !important;
 }
-
 @mixin btn-sm-appearance() {
   @include mixins.generate-typography-token('BUTTON-11-SMALL');
 
   height: buttons-variables.$clr-btn-appearance-standard-height;
   padding: buttons-variables.$clr-btn-appearance-standard-padding;
 }
-
 @mixin generateButton() {
   @include btn-appearance();
   @include btn-default-border-styles();
@@ -249,7 +228,6 @@
 }
 
 @include meta.load-css('properties.buttons');
-
 @include mixins.exports('buttons.clarity') {
   .btn {
     @include generateButton();
@@ -295,6 +273,7 @@
   .btn-success .btn {
     @include populateButtonProperties(success);
   }
+
   .btn.btn-warning,
   .btn-warning .btn {
     @include populateButtonProperties(warning);
@@ -338,6 +317,7 @@
   .btn-outline-success .btn {
     @include populateButtonProperties(success-outline);
   }
+
   .btn.btn-warning-outline,
   .btn.btn-outline-warning,
   .btn-warning-outline .btn,
@@ -366,12 +346,15 @@
     //To override the visited state of anchor links styled as buttons
     &:visited {
       @include button-css-var(link, color, visited-color);
+
       cds-icon,
       clr-icon {
         @include button-css-var(link, color, visited-color);
       }
+
       &:hover {
         @include button-css-var(link, color, visited-hover-color);
+
         cds-icon,
         clr-icon {
           @include button-css-var(link, color, visited-hover-color);
@@ -441,7 +424,7 @@
     }
 
     clr-icon,
-    cds-icon {
+    cds-icon:not([size]) {
       height: buttons-variables.$clr-btn-appearance-standard-icon-size;
       width: buttons-variables.$clr-btn-appearance-standard-icon-size;
     }

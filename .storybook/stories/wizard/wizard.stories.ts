@@ -6,8 +6,8 @@
  */
 
 import { ClrWizard, ClrWizardModule, commonStringsDefault } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { action } from 'storybook/actions';
 
 import { removeFocusOutline } from '../../helpers/common';
 
@@ -22,7 +22,7 @@ export default {
   argTypes: {
     // inputs
     clrHeadingLevel: { control: { type: 'number', min: 1, max: 6 } },
-    clrWizardSize: { control: 'inline-radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
+    clrWizardSize: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
     // outputs
     clrWizardOpenChange: { control: { disable: true } },
     clrWizardCurrentPageChanged: { control: { disable: true } },
@@ -77,7 +77,7 @@ export default {
     docs: {
       story: {
         inline: false,
-        iframeHeight: 500,
+        height: 700,
       },
     },
   },

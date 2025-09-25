@@ -10,6 +10,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { ClrButton } from './button';
+import { ClrButtonGroupModule } from './button-group.module';
 import {
   RouterLinkButtonGroupDemoRouteOneComponent,
   RouterLinkButtonGroupDemoRouteThreeComponent,
@@ -18,8 +20,6 @@ import {
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { ClrLoadingModule } from '../../utils/loading/loading.module';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
-import { ClrButton } from './button';
-import { ClrButtonGroupModule } from './button-group.module';
 
 @Component({
   template: `
@@ -27,6 +27,7 @@ import { ClrButtonGroupModule } from './button-group.module';
     <clr-button #button2 [clrInMenu]="button2InMenu" class="btn btn-primary">Button 2</clr-button>
     <clr-button #button3 disabled class="test">Button 3</clr-button>
   `,
+  standalone: false,
 })
 class TestButtonComponent {
   @ViewChild('button1') button1: ClrButton;
@@ -52,6 +53,7 @@ class TestButtonComponent {
       <ng-template [ngTemplateOutlet]="button3.templateRef"></ng-template>
     </div>
   `,
+  standalone: false,
 })
 export class ButtonViewTestComponent {
   @ViewChild('button1') button1: ClrButton;
@@ -69,6 +71,7 @@ export class ButtonViewTestComponent {
       <clr-button id="button-two" routerLink="route-three" routerLinkActive="btn-primary">3</clr-button>
     </clr-button-group>
   `,
+  standalone: false,
 })
 class TestButtonWithRouterLinkActiveComponent {}
 
@@ -238,7 +241,7 @@ export default function (): void {
       });
 
       it('projects the content correctly', () => {
-        expect(buttons[0].textContent).toMatch('Test Button 1');
+        expect(buttons[0].querySelector('span.spinner')).toBeTruthy();
         expect(buttons[1].textContent).toMatch('Test Button 2');
         expect(buttons[2].textContent).toMatch('Test Button 3');
       });

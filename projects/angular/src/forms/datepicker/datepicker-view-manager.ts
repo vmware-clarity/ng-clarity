@@ -7,11 +7,11 @@
 
 import { Component } from '@angular/core';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-datepicker-view-manager',
@@ -25,6 +25,7 @@ import { ViewManagerService } from './providers/view-manager.service';
     '[attr.aria-label]': 'commonStrings.keys.datepickerDialogLabel',
     role: 'dialog',
   },
+  standalone: false,
 })
 export class ClrDatepickerViewManager {
   constructor(

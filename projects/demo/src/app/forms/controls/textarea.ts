@@ -9,5 +9,6 @@ import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './textarea.html',
+  standalone: false,
 })
 export class FormsTextareaDemo {}

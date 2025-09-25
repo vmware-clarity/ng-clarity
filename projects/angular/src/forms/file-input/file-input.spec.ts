@@ -8,12 +8,13 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 
 @Component({
   template: `<input type="file" clrFileInput />`,
+  standalone: false,
 })
 class StandaloneUseTest {}
 
@@ -25,6 +26,7 @@ class StandaloneUseTest {}
       </clr-file-input-container>
     </form>
   `,
+  standalone: false,
 })
 class ReactiveTest {
   form = new FormGroup({
@@ -38,6 +40,7 @@ class ReactiveTest {
       <input class="test-class" type="file" clrFileInput name="model" [(ngModel)]="model" />
     </clr-file-input-container>
   `,
+  standalone: false,
 })
 class TemplateDrivenTest {
   model: FileList;

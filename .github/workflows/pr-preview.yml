@@ -25,6 +25,15 @@ jobs:
           workflow: ${{github.event.workflow_run.workflow_id}}
           run_id: ${{github.event.workflow_run.id}}
           if_no_artifact_found: ignore
+      - name: Download Netlify Toml Artifact
+        id: download-netlify
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: netlify-config
+          path: netlify.toml
+          workflow: ${{github.event.workflow_run.workflow_id}}
+          run_id: ${{github.event.workflow_run.id}}
+          if_no_artifact_found: ignore
       - name: Download Coverage Artifact
         id: download-coverage
         uses: dawidd6/action-download-artifact@v2

@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-static-button-group-types-demo',
   templateUrl: './button-group-types.html',
   styleUrls: ['../../button-group.demo.scss'],
+  standalone: false,
 })
 export class ButtonGroupTypes {}

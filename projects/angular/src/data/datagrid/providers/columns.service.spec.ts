@@ -7,9 +7,9 @@
 
 import { BehaviorSubject, Subscription } from 'rxjs';
 
+import { ColumnsService } from './columns.service';
 import { ALL_COLUMN_CHANGES, DatagridColumnChanges } from '../enums/column-changes.enum';
 import { ColumnState } from '../interfaces/column-state.interface';
-import { ColumnsService } from './columns.service';
 
 export default function (): void {
   describe('ColumnsService provider', function () {

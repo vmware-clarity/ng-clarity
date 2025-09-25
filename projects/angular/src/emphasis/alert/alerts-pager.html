@@ -11,7 +11,7 @@
       <cds-icon shape="angle" direction="left" [attr.title]="commonStrings.keys.previous"></cds-icon>
     </button>
   </div>
-  <div class="alerts-pager-text">{{this.multiAlertService.current+1}} / {{this.multiAlertService.count}}</div>
+  <div class="alerts-pager-text">{{multiAlertService.current+1}} / {{multiAlertService.count}}</div>
   <div class="alerts-page-up">
     <button class="alerts-pager-button" type="button" (click)="pageUp()" [attr.aria-label]="nextAlertAriaLabel">
       <cds-icon shape="angle" direction="right" [attr.title]="commonStrings.keys.next"></cds-icon>

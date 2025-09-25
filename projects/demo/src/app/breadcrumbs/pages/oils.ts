@@ -16,5 +16,6 @@ import { Component } from '@angular/core';
       with the colors.
     </p>
   `,
+  standalone: false,
 })
 export class OilsDemo {}

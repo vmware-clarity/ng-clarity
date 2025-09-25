@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'clr-wizard-in-page',
   templateUrl: './wizard-in-page.demo.html',
+  standalone: false,
 })
 export class WizardInPageDemo {
   router = inject(Router);

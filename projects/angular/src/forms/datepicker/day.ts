@@ -7,10 +7,10 @@
 
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
 import { DateNavigationService } from './providers/date-navigation.service';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-day',
@@ -36,13 +36,17 @@ import { DateNavigationService } from './providers/date-navigation.service';
     </button>
   `,
   host: { '[class.day]': 'true' },
+  standalone: false,
 })
 export class ClrDay {
   @Output('selectDay') onSelectDay = new EventEmitter<DayModel>();
 
   private _dayView: DayViewModel;
 
-  constructor(private _dateNavigationService: DateNavigationService, private commonStrings: ClrCommonStringsService) {}
+  constructor(
+    private _dateNavigationService: DateNavigationService,
+    private commonStrings: ClrCommonStringsService
+  ) {}
 
   /**
    * DayViewModel input which is used to build the Day View.

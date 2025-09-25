@@ -12,8 +12,8 @@ import {
   ClrDatagridSortOrder,
   commonStringsDefault,
 } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { action } from 'storybook/actions';
 
 import { elements } from '../../helpers/elements.data';
 
@@ -30,7 +30,7 @@ export default {
     clrDgField: { control: { disable: true } },
     clrDgSortBy: { type: 'string' },
     clrDgSortOrder: {
-      control: 'radio',
+      control: { type: 'radio' },
       options: Object.values(ClrDatagridSortOrder).filter(value => typeof value === 'string'),
     },
     // outputs

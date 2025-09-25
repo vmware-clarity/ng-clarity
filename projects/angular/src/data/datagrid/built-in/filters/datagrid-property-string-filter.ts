@@ -11,7 +11,10 @@ import { NestedProperty } from '../nested-property';
 export class DatagridPropertyStringFilter<T = any> implements ClrDatagridStringFilterInterface<T> {
   private nestedProp: NestedProperty<T>;
 
-  constructor(public prop: string, public exact = false) {
+  constructor(
+    public prop: string,
+    public exact = false
+  ) {
     this.nestedProp = new NestedProperty(prop);
   }
 

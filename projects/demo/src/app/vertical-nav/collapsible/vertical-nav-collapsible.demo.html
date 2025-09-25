@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <div class="clr-example">
   <div class="main-container">
@@ -27,12 +27,13 @@
     </header>
     <div class="content-container">
       <clr-vertical-nav [clrVerticalNavCollapsible]="collapsible" [(clrVerticalNavCollapsed)]="collapse">
-        <ng-container *ngFor="let item of case.items">
-          <a clrVerticalNavLink href="javascript:void(0)" *ngIf="!item['children']">
-            <cds-icon [attr.shape]="item.icon" *ngIf="item['icon']" clrVerticalNavIcon></cds-icon>
-            {{item.label}}
-          </a>
-        </ng-container>
+        @for (item of case.items; track item) { @if (!item['children']) {
+        <a clrVerticalNavLink href="javascript:void(0)">
+          @if (item['icon']) {
+          <cds-icon [attr.shape]="item.icon" clrVerticalNavIcon></cds-icon>
+          } {{item.label}}
+        </a>
+        } }
       </clr-vertical-nav>
       <div class="content-area">
         <div>
@@ -76,12 +77,13 @@
     </header>
     <div class="content-container">
       <clr-vertical-nav class="nav-trigger--bottom" [clrVerticalNavCollapsible]="true">
-        <ng-container *ngFor="let item of case.items">
-          <a clrVerticalNavLink href="javascript:void(0)" *ngIf="!item['children']">
-            <cds-icon [attr.shape]="item.icon" *ngIf="item['icon']" clrVerticalNavIcon></cds-icon>
-            {{item.label}}
-          </a>
-        </ng-container>
+        @for (item of case.items; track item) { @if (!item['children']) {
+        <a clrVerticalNavLink href="javascript:void(0)">
+          @if (item['icon']) {
+          <cds-icon [attr.shape]="item.icon" clrVerticalNavIcon></cds-icon>
+          } {{item.label}}
+        </a>
+        } }
       </clr-vertical-nav>
       <div class="content-area">
         <h4>{{case.title}}</h4>

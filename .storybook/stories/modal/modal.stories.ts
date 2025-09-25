@@ -6,8 +6,8 @@
  */
 
 import { ClrCheckboxModule, ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
+import { action } from 'storybook/actions';
 
 import { CommonModules, removeFocusOutline } from '../../helpers/common';
 
@@ -21,7 +21,7 @@ export default {
   component: ClrModal,
   argTypes: {
     // inputs
-    clrModalSize: { control: 'radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
+    clrModalSize: { control: { type: 'radio' }, options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
     // outputs
     clrModalAlternateClose: { control: { disable: true } },
     clrModalOpenChange: { control: { disable: true } },

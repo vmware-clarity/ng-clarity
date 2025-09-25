@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use '@cds/core/tokens/tokens.scss';
@@ -23,6 +24,7 @@
 
   li {
     color: variables.$clr-list-item-color;
+
     @include mixins.generate-typography-token('BODY-14-RG-STD');
   }
 
@@ -50,7 +52,7 @@
   // right now this causes no problems. but watch out in the future because it may
   // cause issues with nested tabs
   // just be aware that this may need to be overridden down the line.
-  ul:not(.list-unstyled):not([cds-list]),
+  ul:not(.list-unstyled, [cds-list]),
   ol:not([cds-list]) {
     & > li > ul.list-unstyled {
       margin-left: $left-margin;

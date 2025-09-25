@@ -18,6 +18,7 @@ import { BaseExpandableAnimation } from './base-expandable-animation';
   host: {
     '[class.clr-expandable-animation]': 'true',
   },
+  standalone: false,
 })
 export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
   @Input('clrExpandableAnimation') expanded = false;

@@ -11,6 +11,7 @@ import { ClrWizard } from '@clr/angular';
 @Component({
   selector: 'clr-wizard-skip-page',
   templateUrl: './wizard-skip-page.demo.html',
+  standalone: false,
 })
 export class WizardSkipPageDemo {
   @ViewChild('wizard') wizard: ClrWizard;

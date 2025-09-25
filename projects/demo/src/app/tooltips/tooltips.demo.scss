@@ -4,13 +4,12 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@import '../_utils/clarity-variables';
 
 .clr-example {
   position: relative;
 
   &.squeeze {
-    padding: $clr_baselineRem_1;
+    padding: var(--cds-global-space-9);
   }
 
   &.example-center {

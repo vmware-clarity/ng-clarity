@@ -7,9 +7,6 @@
 
 import { Component } from '@angular/core';
 
-import { TestContext } from '../../data/datagrid/helpers.spec';
-import { Keys } from '../../utils/enums/keys.enum';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrCalendar } from './calendar';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
@@ -19,6 +16,9 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { TestContext } from '../../data/datagrid/helpers.spec';
+import { Keys } from '../../utils/enums/keys.enum';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 export default function () {
   describe('Calendar Component', () => {
@@ -56,6 +56,7 @@ export default function () {
 
     describe('Typescript API', () => {
       function assertFocusedDay(year: number, month: number, day: number) {
+        expect(dateNavigationService.focusedDay).not.toBeUndefined();
         expect(dateNavigationService.focusedDay.date).toBe(day);
         expect(dateNavigationService.focusedDay.month).toBe(month);
         expect(dateNavigationService.focusedDay.year).toBe(year);
@@ -64,12 +65,13 @@ export default function () {
       it('generates a CalendarViewModel on initialization', () => {
         // Testing for the Jan 2015 calendar since that was the selected date in
         // beforeEach before the calendar was initialized
-        expect(context.clarityDirective.calendarViewModel).not.toBeNull();
+        expect(context.clarityDirective.calendarViewModel.calendar).not.toBeUndefined();
         expect(context.clarityDirective.calendarViewModel.calendar.month).toBe(0);
         expect(context.clarityDirective.calendarViewModel.calendar.year).toBe(2015);
       });
 
       it('has access to the selectedDay', () => {
+        expect(context.clarityDirective.selectedDay).not.toBeUndefined();
         expect(context.clarityDirective.selectedDay.month).toBe(0);
         expect(context.clarityDirective.selectedDay.year).toBe(2015);
         expect(context.clarityDirective.selectedDay.date).toBe(1);
@@ -88,9 +90,10 @@ export default function () {
       });
 
       it('has access to the focusable day', () => {
-        expect(context.clarityDirective.focusedDay.month).toBe(0);
-        expect(context.clarityDirective.focusedDay.year).toBe(2015);
-        expect(context.clarityDirective.focusedDay.date).toBe(1);
+        expect(context.clarityDirective.focusedDay).not.toBeNull();
+        expect(context.clarityDirective.focusedDay?.month).toBe(0);
+        expect(context.clarityDirective.focusedDay?.year).toBe(2015);
+        expect(context.clarityDirective.focusedDay?.date).toBe(1);
       });
 
       it('has access to the locale days', () => {
@@ -177,5 +180,6 @@ export default function () {
 
 @Component({
   template: `<clr-calendar></clr-calendar>`,
+  standalone: false,
 })
 class TestComponent {}

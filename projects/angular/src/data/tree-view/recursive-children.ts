@@ -8,24 +8,25 @@
 import { Component, Input, Optional } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { TreeNodeModel } from './models/tree-node.model';
 import { ClrRecursiveForOfContext } from './recursive-for-of';
 import { TreeFeaturesService } from './tree-features.service';
+import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 
 @Component({
   selector: 'clr-recursive-children',
   template: `
-    <ng-container *ngIf="shouldRender()">
-      <ng-container *ngFor="let child of parent?.children || children">
+    @if (shouldRender()) {
+      @for (child of parent?.children || children; track child) {
         <ng-container *ngTemplateOutlet="featuresService.recursion.template; context: getContext(child)"></ng-container>
-      </ng-container>
-    </ng-container>
+      }
+    }
   `,
   host: {
     '[attr.role]': 'role', // Safari + VO needs direct relationship between treeitem and group; no element should exist between them
   },
+  standalone: false,
 })
 /**
  * Internal component, do not export!
@@ -40,7 +41,10 @@ export class RecursiveChildren<T> {
   subscription: Subscription;
   role: string;
 
-  constructor(public featuresService: TreeFeaturesService<T>, @Optional() private expandService: IfExpandService) {
+  constructor(
+    public featuresService: TreeFeaturesService<T>,
+    @Optional() private expandService: IfExpandService
+  ) {
     if (expandService) {
       this.subscription = expandService.expandChange.subscribe(value => {
         if (!value && this.parent && !featuresService.eager && featuresService.recursion) {

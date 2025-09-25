@@ -249,7 +249,7 @@ export default function (): void {
 
       it('accepts a custom filter in the projected content', function () {
         this.context = this.create(ClrDatagridColumn, FilterTest, DATAGRID_SPEC_PROVIDERS);
-        expect(TestBed.get(FiltersProvider).getActiveFilters()).toEqual([this.context.testComponent.filter]);
+        expect(TestBed.inject(FiltersProvider).getActiveFilters()).toEqual([this.context.testComponent.filter]);
       });
 
       it('accepts a custom string filter in the projected content', function () {
@@ -258,7 +258,7 @@ export default function (): void {
         // We make the filter active to see if the FiltersProvider provider knows about it
         this.stringFilter.value = 'hello';
         this.context.detectChanges();
-        expect(TestBed.get(FiltersProvider).getActiveFilters()).toEqual([this.stringFilter]);
+        expect(TestBed.inject(FiltersProvider).getActiveFilters()).toEqual([this.stringFilter]);
       });
 
       it('prioritizes custom comparators over the default property name one', function () {
@@ -276,7 +276,7 @@ export default function (): void {
         this.context.testComponent.field = 'test';
         this.context.detectChanges();
         expect(this.context.clarityElement.querySelectorAll('clr-dg-filter').length).toBe(1);
-        expect(TestBed.get(FiltersProvider).getActiveFilters()).toEqual([this.context.testComponent.filter]);
+        expect(TestBed.inject(FiltersProvider).getActiveFilters()).toEqual([this.context.testComponent.filter]);
       });
 
       it('prioritizes custom string filters over the default property name one', function () {
@@ -288,7 +288,7 @@ export default function (): void {
         this.stringFilter.value = 'hello';
         this.context.detectChanges();
         expect(this.context.clarityElement.querySelectorAll('clr-dg-filter').length).toBe(1);
-        expect(TestBed.get(FiltersProvider).getActiveFilters()).toEqual([this.stringFilter]);
+        expect(TestBed.inject(FiltersProvider).getActiveFilters()).toEqual([this.stringFilter]);
       });
     });
 
@@ -522,6 +522,7 @@ class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
       Hello world
     </clr-dg-column>
   `,
+  standalone: false,
 })
 class SimpleTest {
   comparator: ClrDatagridComparatorInterface<number> | string;
@@ -536,6 +537,7 @@ class SimpleTest {
       <clr-dg-filter class="my-filter" [clrDgFilter]="filter">Filter content</clr-dg-filter>
     </clr-dg-column>
   `,
+  standalone: false,
 })
 class FilterTest {
   filter = new TestFilter();
@@ -549,6 +551,7 @@ class FilterTest {
       <clr-dg-string-filter class="my-string-filter" [clrDgStringFilter]="filter"></clr-dg-string-filter>
     </clr-dg-column>
   `,
+  standalone: false,
 })
 class StringFilterTest {
   filter = new TestStringFilter();
@@ -560,6 +563,7 @@ class StringFilterTest {
 
 @Component({
   template: `<clr-dg-column [(clrFilterValue)]="filterValue" [clrDgField]="field">Column Title</clr-dg-column>`,
+  standalone: false,
 })
 class PreFilterTest {
   field: string;
@@ -570,13 +574,12 @@ class PreFilterTest {
   template: `
     <clr-dg-column>
       Column Title
-      <clr-dg-string-filter
-        *ngIf="show"
-        [(clrFilterValue)]="filterValue"
-        [clrDgStringFilter]="filter"
-      ></clr-dg-string-filter>
+      @if (show) {
+        <clr-dg-string-filter [(clrFilterValue)]="filterValue" [clrDgStringFilter]="filter"></clr-dg-string-filter>
+      }
     </clr-dg-column>
   `,
+  standalone: false,
 })
 class UnregisterTest {
   show: boolean;
@@ -586,6 +589,7 @@ class UnregisterTest {
 
 @Component({
   template: `<clr-dg-column [clrDgField]="field" [clrDgColType]="type">Column Title</clr-dg-column>`,
+  standalone: false,
 })
 class ColTypeTest {
   field: string;
@@ -596,5 +600,6 @@ class ColTypeTest {
 // as it tries to reflect view changes that's not dependent on input changes
 @Component({
   template: `<clr-dg-column [clrDgField]="'test'">Hello World</clr-dg-column>`,
+  standalone: false,
 })
 class OnPushViewChangeTest {}

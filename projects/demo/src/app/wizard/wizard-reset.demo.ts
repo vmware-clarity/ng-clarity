@@ -11,6 +11,7 @@ import { ClrWizard } from '@clr/angular';
 @Component({
   selector: 'clr-wizard-reset',
   templateUrl: './wizard-reset.demo.html',
+  standalone: false,
 })
 export class WizardResetDemo implements OnInit {
   @ViewChild('wizard') wizard: ClrWizard;

@@ -7,11 +7,9 @@
 
 import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrDropdown } from './dropdown';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
-import { wrapHostContentInsideSpan } from './utils/content-wrapping';
-
+import { ClrPopoverToggleService } from '../../utils';
 @Directive({
   // We support both selectors for legacy reasons
   selector: '[clrDropdownTrigger],[clrDropdownToggle]',
@@ -23,6 +21,7 @@ import { wrapHostContentInsideSpan } from './utils/content-wrapping';
     '[attr.aria-haspopup]': '"menu"',
     '[attr.aria-expanded]': 'active',
   },
+  standalone: false,
 })
 export class ClrDropdownTrigger {
   isRootLevelToggle = true;
@@ -48,11 +47,5 @@ export class ClrDropdownTrigger {
   @HostListener('click', ['$event'])
   onDropdownTriggerClick(event: any): void {
     this.toggleService.toggleWithEvent(event);
-  }
-
-  ngAfterViewInit() {
-    if (!this.isRootLevelToggle) {
-      wrapHostContentInsideSpan(this.el.nativeElement, this.renderer, 'dropdown-item-content');
-    }
   }
 }

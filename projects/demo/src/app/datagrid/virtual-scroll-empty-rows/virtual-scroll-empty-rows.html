@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Virtual scroll empty rows</h2>
 
@@ -58,7 +58,7 @@
   #datagrid
   [(clrDgSelected)]="selectedUsers"
   (clrDgRefresh)="refresh($event)"
-  [clrDgItemsTrackBy]="trackItemById"
+  [clrDgItemsIdentityFn]="trackItemById"
   [style.height.px]="datagridHeight"
   [ngClass]="{ 'datagrid-overflow-ellipsis': overflowEllipsis }"
 >
@@ -118,9 +118,9 @@
         <cds-icon shape="angle" direction="down"></cds-icon>
       </button>
       <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
-        <div *ngFor="let index of getIndexes(dataRange.total)" (click)="jumpTo(index)" clrDropdownItem>
-          {{index + 1}}
-        </div>
+        @for (index of getIndexes(dataRange.total); track index) {
+        <div (click)="jumpTo(index)" clrDropdownItem>{{index + 1}}</div>
+        }
       </clr-dropdown-menu>
     </clr-dropdown>
   </clr-dg-footer>

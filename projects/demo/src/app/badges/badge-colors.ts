@@ -7,8 +7,13 @@
 
 import { Component } from '@angular/core';
 
+import { ClrBadgeColors } from '../../../../angular/src/emphasis/badge';
+
 @Component({
   selector: 'clr-badge-colors-demo',
   templateUrl: './badge-colors.demo.html',
+  standalone: false,
 })
-export class BadgeColorsDemo {}
+export class BadgeColorsDemo {
+  protected readonly ClrBadgeColors = ClrBadgeColors;
+}

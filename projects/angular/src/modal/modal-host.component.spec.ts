@@ -34,6 +34,7 @@ describe('ModalHost for SidePanel', () => {
 
 @Component({
   template: '<div clrModalHost #hostElement></div>',
+  standalone: false,
 })
 class TestComponent {
   constructor(public hostElement: ElementRef<HTMLElement>) {}

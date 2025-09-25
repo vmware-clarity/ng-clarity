@@ -12,6 +12,7 @@ import { ClrSelectedState } from '@clr/angular';
   selector: 'clr-pre-selection-demo',
   styleUrls: ['../tree-view.demo.scss'],
   templateUrl: './pre-selection.html',
+  standalone: false,
 })
 export class PreSelectionDemo {
   eager = {

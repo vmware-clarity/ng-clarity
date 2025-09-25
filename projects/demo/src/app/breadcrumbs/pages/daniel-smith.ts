@@ -16,5 +16,6 @@ import { Component } from '@angular/core';
       strength, clarity, density and more.
     </p>
   `,
+  standalone: false,
 })
 export class DanielSmithDemo {}

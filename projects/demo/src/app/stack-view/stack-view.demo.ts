@@ -21,5 +21,6 @@ import { Component } from '@angular/core';
 
     <router-outlet></router-outlet>
   `,
+  standalone: false,
 })
 export class StackViewDemo {}

@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   selector: 'clr-eager-declarative-tree-demo',
   styleUrls: ['../tree-view.demo.scss'],
   templateUrl: './eager-declarative-tree.html',
+  standalone: false,
 })
 export class EagerDeclarativeTreeDemo {
   expanded1 = true;

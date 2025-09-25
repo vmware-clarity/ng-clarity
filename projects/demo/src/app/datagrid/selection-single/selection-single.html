@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h2>Selection (Single)</h2>
 
@@ -29,9 +29,11 @@
 
 <div class="card card-block">
   <p class="card-text username-list">
-    Selected user:
-    <em *ngIf="!singleSelected">No user selected.</em>
-    <span class="username" *ngIf="singleSelected">{{singleSelected.name}}</span>
+    Selected user: @if (!singleSelected) {
+    <em>No user selected.</em>
+    } @if (singleSelected) {
+    <span class="username">{{singleSelected.name}}</span>
+    }
   </p>
 </div>
 
@@ -64,9 +66,11 @@
 
 <div class="card card-block">
   <p class="card-text username-list">
-    Selected user:
-    <em *ngIf="!trackByIndexSingleSelected">No user selected.</em>
-    <span class="username" *ngIf="trackByIndexSingleSelected">{{trackByIndexSingleSelected.name}}</span>
+    Selected user: @if (!trackByIndexSingleSelected) {
+    <em>No user selected.</em>
+    } @if (trackByIndexSingleSelected) {
+    <span class="username">{{trackByIndexSingleSelected.name}}</span>
+    }
   </p>
 </div>
 
@@ -99,9 +103,11 @@
 
 <div class="card card-block">
   <p class="card-text username-list">
-    Selected user:
-    <em *ngIf="!trackByIdSingleSelected">No user selected.</em>
-    <span class="username" *ngIf="trackByIdSingleSelected">{{trackByIdSingleSelected.name}}</span>
+    Selected user: @if (!trackByIdSingleSelected) {
+    <em>No user selected.</em>
+    } @if (trackByIdSingleSelected) {
+    <span class="username">{{trackByIdSingleSelected.name}}</span>
+    }
   </p>
 </div>
 
@@ -134,9 +140,11 @@
 
 <div class="card card-block">
   <p class="card-text username-list">
-    Selected user:
-    <em *ngIf="!trackByIdServerSingleSelected">No user selected.</em>
-    <span class="username" *ngIf="trackByIdServerSingleSelected">{{trackByIdServerSingleSelected.name}}</span>
+    Selected user: @if (!trackByIdServerSingleSelected) {
+    <em>No user selected.</em>
+    } @if (trackByIdServerSingleSelected) {
+    <span class="username">{{trackByIdServerSingleSelected.name}}</span>
+    }
   </p>
 </div>
 
@@ -150,11 +158,8 @@
   <clr-dg-column>Creation date</clr-dg-column>
   <clr-dg-column>Favorite color</clr-dg-column>
 
-  <clr-dg-row
-    *ngFor="let user of trackByIdServerUsers; trackBy: trackById"
-    [clrDgItem]="user"
-    [clrDgRowSelectionLabel]="'Select row for ' + user.name"
-  >
+  @for (user of trackByIdServerUsers; track trackById($index, user)) {
+  <clr-dg-row [clrDgItem]="user" [clrDgRowSelectionLabel]="'Select row for ' + user.name">
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>{{user.name}}</clr-dg-cell>
     <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
@@ -162,6 +167,7 @@
       <span class="color-square" [style.backgroundColor]="user.color"></span>
     </clr-dg-cell>
   </clr-dg-row>
+  }
 
   <clr-dg-footer>
     {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{total}} users

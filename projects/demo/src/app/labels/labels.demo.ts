@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-label-demo',
   templateUrl: './labels.demo.html',
+  standalone: false,
 })
 export class LabelsDemo {}

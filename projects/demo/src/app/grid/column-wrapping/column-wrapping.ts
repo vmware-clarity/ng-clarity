@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-grid-demo-column-wrapping',
   templateUrl: './column-wrapping.html',
   styleUrls: ['../grid.demo.scss'],
+  standalone: false,
 })
 export class GridColumnWrappingDemo {}

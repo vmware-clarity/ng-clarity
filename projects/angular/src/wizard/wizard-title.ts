@@ -11,6 +11,7 @@ import { HeadingLevel } from './heading-level';
 
 @Directive({
   selector: 'clr-wizard-title',
+  standalone: false,
 })
 export class ClrWizardTitle {
   @Input('clrHeadingLevel') headingLevel: HeadingLevel;

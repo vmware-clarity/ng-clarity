@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <div class="clr-example">
   <div class="main-container">
@@ -66,15 +66,13 @@
         <div>Test for dev error <a href="https://angular.io/errors/NG0100">NG0100</a> in console</div>
         <!--  CDE-1249 test for dev error NG0100 in console  -->
         <clr-alerts>
-          <clr-alert
-            *ngFor="let alert of alerts; let i = index"
-            [clrAlertType]="alert.type"
-            [clrAlertAppLevel]="alert.isAppLevel"
-          >
+          @for (alert of alerts; track alert; let i = $index) {
+          <clr-alert [clrAlertType]="alert.type" [clrAlertAppLevel]="alert.isAppLevel">
             <clr-alert-item>
               <span class="alert-text"> {{ alert.text }} at index {{i}} </span>
             </clr-alert-item>
           </clr-alert>
+          }
         </clr-alerts>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus non beatae omnis esse quibusdam dolorum

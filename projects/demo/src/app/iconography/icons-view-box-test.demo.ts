@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-icons-view-box-test-demo',
   styleUrls: ['./iconography.demo.scss'],
   templateUrl: './icons-view-box-test.demo.html',
+  standalone: false,
 })
 export class IconsViewBoxTestDemo {}

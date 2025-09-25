@@ -5,12 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import '../_utils/clarity-variables';
-
 .clr-example {
   header {
     &.space-below {
-      margin-bottom: $clr_baselineRem_1;
+      margin-bottom: var(--cds-global-space-9);
     }
   }
 }

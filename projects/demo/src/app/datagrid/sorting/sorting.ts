@@ -23,6 +23,7 @@ export class UserCreationComparator implements ClrDatagridComparatorInterface<Us
   providers: [Inventory],
   templateUrl: './sorting.html',
   styleUrls: ['../datagrid.demo.scss'],
+  standalone: false,
 })
 export class DatagridSortingDemo {
   users: User[];

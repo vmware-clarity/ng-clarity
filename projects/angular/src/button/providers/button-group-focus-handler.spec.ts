@@ -8,14 +8,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, ButtonGroupFocusHandler } from './button-group-focus-handler.service';
+import { InitialFocus } from './button-group-focus.enum';
 import { ClrPopoverToggleService } from '../../utils';
 import { Keys } from '../../utils/enums/keys.enum';
 import { FocusService } from '../../utils/focus/focus.service';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrButtonGroupModule } from '../button-group';
 import { ClrButtonGroup } from '../button-group/button-group';
-import { BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, ButtonGroupFocusHandler } from './button-group-focus-handler.service';
-import { InitialFocus } from './button-group-focus.enum';
 
 @Component({
   template: `
@@ -28,6 +28,7 @@ import { InitialFocus } from './button-group-focus.enum';
     </clr-button-group>
   `,
   providers: [BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FocusService, ClrPopoverToggleService],
+  standalone: false,
 })
 class BtnGroupViewContainer {
   @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;

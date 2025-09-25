@@ -15,6 +15,7 @@ import { getPreset } from './utils/font-presets';
   selector: 'clr-typography-font-autopsy',
   styleUrls: ['./font-autopsy.demo.scss'],
   templateUrl: './typography-font-autopsy.html',
+  standalone: false,
 })
 export class TypographyFontAutopsyDemo {
   presetSwitcher = new FormGroup({

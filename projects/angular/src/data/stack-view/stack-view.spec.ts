@@ -21,6 +21,7 @@ import { ClrStackViewModule } from './stack-view.module';
       </clr-stack-block>
     </clr-stack-view>
   `,
+  standalone: false,
 })
 class TestComponent {}
 

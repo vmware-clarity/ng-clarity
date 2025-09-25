@@ -14,6 +14,7 @@ import { ClrProgressBarModule } from './progress-bar.module';
 
 @Component({
   template: `<clr-progress-bar id="randomId" [clrValue]="progressValue"></clr-progress-bar>`,
+  standalone: false,
 })
 class TestComponent {}
 
@@ -26,6 +27,7 @@ class TestComponent {}
       [clrDisplayval]="displayValue"
     ></clr-progress-bar>
   `,
+  standalone: false,
 })
 class TestDisplayValueComponent {}
 
@@ -41,6 +43,7 @@ class TestDisplayValueComponent {}
       class="random"
     ></clr-progress-bar>
   `,
+  standalone: false,
 })
 class TestStylesComponent {}
 

@@ -19,6 +19,7 @@ import { ControlIdService } from './providers/control-id.service';
     '[class.error]': 'true',
     '[attr.id]': 'id',
   },
+  standalone: false,
 })
 export class ClrControlError extends ClrAbstractControl {
   override controlIdSuffix = CONTROL_SUFFIX.ERROR;

@@ -6,22 +6,10 @@
  */
 
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrFormsModule } from '../../forms/forms.module';
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { FocusService } from '../common/providers/focus.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrDateContainer } from './date-container';
 import { ClrDateInput } from './date-single-input';
 import { DayModel } from './model/day.model';
@@ -33,6 +21,19 @@ import { MockDatepickerEnabledService } from './providers/datepicker-enabled.ser
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { TestContext } from '../../data/datagrid/helpers.spec';
+import { ClrFormsModule } from '../../forms/forms.module';
+import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
+import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
+import { delay } from '../../utils/testing/helpers.spec';
+import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { ControlClassService } from '../common/providers/control-class.service';
+import { ControlIdService } from '../common/providers/control-id.service';
+import { FocusService } from '../common/providers/focus.service';
+import { LayoutService } from '../common/providers/layout.service';
+import { NgControlService } from '../common/providers/ng-control.service';
 
 export default function () {
   describe('Date Input Component', () => {
@@ -97,9 +98,9 @@ export default function () {
           expect(context.clarityElement.classList).toContain('clr-input');
         });
 
-        it('should capture any classes set on the control', () => {
+        it('should not capture any custom classes set on the control', () => {
           expect(controlClassService).toBeTruthy();
-          expect(controlClassService.className).toContain('test-class');
+          expect(controlClassService.className).not.toContain('test-class');
         });
 
         it('should handle focus and blur events', () => {
@@ -369,15 +370,15 @@ export default function () {
         dateNavigationService = dateContainerDebugElement.injector.get(DateNavigationService);
       });
 
-      it('should set control on NgControlService', fakeAsync(() => {
+      it('should set control on NgControlService', async () => {
         expect(TestBed.inject(NgControlService).setControl).toHaveBeenCalled();
-      }));
+      });
 
-      it('updates the selectedDay when the app changes the ngModel value', fakeAsync(() => {
+      it('updates the selectedDay when the app changes the ngModel value', async () => {
         fixture.componentInstance.dateValue = '01/02/2015';
 
         fixture.detectChanges();
-        tick();
+        await delay();
 
         expect(dateInputDebugElement.nativeElement.value).toBe('01/02/2015');
         expect(dateNavigationService.selectedDay).toEqual(new DayModel(2015, 0, 2));
@@ -385,11 +386,11 @@ export default function () {
         fixture.componentInstance.dateValue = '05/05/2015';
 
         fixture.detectChanges();
-        tick();
+        await delay();
 
         expect(dateInputDebugElement.nativeElement.value).toBe('05/05/2015');
         expect(dateNavigationService.selectedDay).toEqual(new DayModel(2015, 4, 5));
-      }));
+      });
 
       it('updates the model and the input element when selectedDay updated notification is received', () => {
         expect(fixture.componentInstance.dateValue).toBeUndefined();
@@ -402,38 +403,39 @@ export default function () {
         expect(fixture.componentInstance.dateValue).toBe('02/01/2015');
       });
 
-      it('allows you to reset the model', fakeAsync(() => {
+      it('allows you to reset the model', async () => {
         fixture.componentInstance.dateValue = '01/02/2015';
         fixture.detectChanges();
-        tick();
+        await delay();
 
         expect(dateInputDebugElement.nativeElement.value).toBe('01/02/2015');
         expect(dateNavigationService.selectedDay).toEqual(new DayModel(2015, 0, 2));
 
         fixture.nativeElement.querySelector('#reset').click();
         fixture.detectChanges();
-        tick();
+        await delay();
 
         expect(dateInputDebugElement.nativeElement.value).toBe('');
         expect(dateNavigationService.selectedDay).toEqual(null);
 
         fixture.componentInstance.dateValue = '01/02/2015';
         fixture.detectChanges();
-        tick();
+        await delay();
 
         expect(dateInputDebugElement.nativeElement.value).toBe('01/02/2015');
         expect(dateNavigationService.selectedDay).toEqual(new DayModel(2015, 0, 2));
-      }));
+      });
 
-      it('updates the model and the selectedDay when the changes the input field', fakeAsync(() => {
+      it('updates the model and the selectedDay when the changes the input field', async () => {
+        await fixture.whenStable();
         dateInputDebugElement.nativeElement.value = '01/02/2015';
-        dateInputDebugElement.nativeElement.dispatchEvent(new Event('change'));
+        dateInputDebugElement.nativeElement.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
 
         fixture.detectChanges();
-        tick();
+        await delay();
 
         expect(dateNavigationService.selectedDay).toEqual(new DayModel(2015, 0, 2));
-      }));
+      });
     });
 
     describe('Mobile Datepicker with Reactive Forms', () => {
@@ -494,9 +496,9 @@ export default function () {
         dateFormControlService = dateContainerDebugElement.injector.get(DateFormControlService);
       });
 
-      it('should set control on NgControlService', fakeAsync(() => {
+      it('should set control on NgControlService', async () => {
         expect(TestBed.inject(NgControlService).setControl).toHaveBeenCalled();
-      }));
+      });
 
       it('initializes the input and the selected day with the value set by the user', () => {
         expect(fixture.componentInstance.testForm.get('date').value).not.toBeNull();
@@ -579,9 +581,9 @@ export default function () {
         dateFormControlService = dateContainerDebugElement.injector.get(DateFormControlService);
       });
 
-      it('should set control on NgControlService', fakeAsync(() => {
+      it('should set control on NgControlService', async () => {
         expect(TestBed.inject(NgControlService).setControl).toHaveBeenCalled();
-      }));
+      });
 
       it('marks the form as touched when the markAsTouched event is received', async () => {
         await fixture.whenStable();
@@ -652,9 +654,9 @@ export default function () {
         dateNavigationService = dateContainerDebugElement.injector.get(DateNavigationService);
       });
 
-      it('should not set control on NgControlService', fakeAsync(() => {
+      it('should not set control on NgControlService', async () => {
         expect(TestBed.inject(NgControlService).setControl).not.toHaveBeenCalled();
-      }));
+      });
 
       it('when disabled is true there must be attribute attached to the input', () => {
         fixture.componentInstance.disabled = true;
@@ -786,6 +788,7 @@ export default function () {
     />
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  standalone: false,
 })
 class TestComponent {
   date: Date;
@@ -801,6 +804,7 @@ class TestComponent {
     <input type="date" clrDate [(ngModel)]="dateValue" #picker="ngModel" />
     <button id="reset" (click)="picker.reset()">Reset</button>
   `,
+  standalone: false,
 })
 class TestComponentWithNgModel {
   dateValue: string;
@@ -810,6 +814,7 @@ class TestComponentWithNgModel {
 
 @Component({
   template: `<input type="date" [(clrDate)]="date" [disabled]="disabled" />`,
+  standalone: false,
 })
 class TestComponentWithClrDate {
   date: Date;
@@ -823,6 +828,7 @@ class TestComponentWithClrDate {
     </form>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  standalone: false,
 })
 class TestComponentWithReactiveForms {
   dateInput = '01/01/2015';
@@ -841,6 +847,7 @@ class TestComponentWithReactiveForms {
       <input type="date" clrDate (clrDateChange)="dateChanged($event)" [(ngModel)]="dateInput" name="date" />
     </form>
   `,
+  standalone: false,
 })
 class TestComponentWithTemplateDrivenForms {
   @ViewChild('templateForm') templateForm: NgForm;

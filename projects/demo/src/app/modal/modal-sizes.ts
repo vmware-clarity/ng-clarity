@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-modal-sizes-demo',
   templateUrl: './modal-sizes.demo.html',
+  standalone: false,
 })
 export class ModalSizesDemo {}

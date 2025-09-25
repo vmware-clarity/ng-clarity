@@ -20,7 +20,7 @@ export default {
     // inputs
     clrButtonLabel: { type: 'string' },
     // form inputs
-    clrLayout: { control: false },
+    clrLayout: { control: { disable: true } },
   },
   args: {
     // inputs

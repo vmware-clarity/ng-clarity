@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-icon-orientation-demo',
   styleUrls: ['./iconography.demo.scss'],
   templateUrl: './icon-orientation.demo.html',
+  standalone: false,
 })
 export class IconOrientationDemo {}

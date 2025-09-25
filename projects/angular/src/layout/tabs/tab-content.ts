@@ -7,8 +7,8 @@
 
 import { Component, EmbeddedViewRef, Inject, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 
-import { IF_ACTIVE_ID, IfActiveService } from '../../utils/conditional/if-active.service';
 import { TabsService } from './providers/tabs.service';
+import { IF_ACTIVE_ID, IfActiveService } from '../../utils/conditional/if-active.service';
 
 let nbTabContentComponents = 0;
 
@@ -29,6 +29,7 @@ let nbTabContentComponents = 0;
       </section>
     </ng-template>
   `,
+  standalone: false,
 })
 export class ClrTabContent implements OnDestroy {
   @Input('id') tabContentId: string;

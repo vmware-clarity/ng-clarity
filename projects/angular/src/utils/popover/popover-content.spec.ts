@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 
-import { TestContext } from '../testing/helpers.spec';
+import { delay, TestContext } from '../testing/helpers.spec';
 import { ClrAlignment } from './enums/alignment.enum';
 import { ClrAxis } from './enums/axis.enum';
 import { ClrSide } from './enums/side.enum';
@@ -31,10 +31,12 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
     </div>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
+  standalone: false,
 })
 @Component({
   template: ``,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
+  standalone: false,
 })
 class SimpleContent {
   @ViewChild(ClrPopoverContent, { read: ClrPopoverContent, static: true }) content: ClrPopoverContent;
@@ -61,6 +63,7 @@ export default function (): void {
       eventService: ClrPopoverEventsService;
       positionService: ClrPopoverPositionService;
       toggleService: ClrPopoverToggleService;
+      changeDetectorRef: ChangeDetectorRef;
     };
 
     beforeEach(function (this: Context) {
@@ -77,6 +80,7 @@ export default function (): void {
       this.fixture.detectChanges();
       this.testComponent = this.fixture.componentInstance;
       this.clarityDirective = this.fixture.componentInstance.content;
+      this.changeDetectorRef = this.fixture.debugElement.injector.get(ChangeDetectorRef);
       this.eventService = this.fixture.debugElement.injector.get(ClrPopoverEventsService);
       this.positionService = this.fixture.debugElement.injector.get(ClrPopoverPositionService);
       this.toggleService = this.fixture.debugElement.injector.get(ClrPopoverToggleService);
@@ -111,17 +115,17 @@ export default function (): void {
         expect(content.length).toBe(0);
       });
 
-      it('responds to shouldRealign events from the positionService', fakeAsync(function (this: Context) {
+      it('responds to shouldRealign events from the positionService', async function (this: Context) {
         const alignContentSpy = spyOn(this.clarityDirective as any, 'alignContent');
         this.testComponent.openState = true; // Add content to the DOM
         this.fixture.detectChanges();
         expect(alignContentSpy).not.toHaveBeenCalled();
         this.positionService.realign();
         this.fixture.detectChanges();
-        tick();
+        await delay();
         // Make sure it has been called exactly one time
         expect(alignContentSpy).toHaveBeenCalledTimes(1);
-      }));
+      });
     });
 
     describe('Template API', () => {
@@ -171,14 +175,15 @@ export default function (): void {
         expect(testElement.style.left).toMatch(/\d+px/);
       });
 
-      it('does not fail when the popup view is immediately destroyed', fakeAsync(function (this: Context) {
+      it('does not fail when the popup view is immediately destroyed', async function (this: Context) {
+        spyOn(this.fixture, 'detectChanges');
         this.testComponent.openState = true;
         this.fixture.detectChanges();
         this.testComponent.openState = false;
         this.fixture.detectChanges();
 
-        expect(tick).not.toThrowAnyError();
-      }));
+        expect(this.fixture.detectChanges).not.toThrowAnyError();
+      });
     });
   });
 }

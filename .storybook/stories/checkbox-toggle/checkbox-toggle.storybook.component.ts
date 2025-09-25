@@ -26,12 +26,12 @@ export enum CheckboxType {
       <ng-container *ngSwitchCase="'single'">
         <ng-container *ngIf="type === 'checkbox'">
           <ng-container
-            *ngTemplateOutlet="checkboxTemplate; context: { checked: this.checked, disabled: this.disabled }"
+            *ngTemplateOutlet="checkboxTemplate; context: { checked: checked, disabled: disabled }"
           ></ng-container>
         </ng-container>
         <ng-container *ngIf="type === 'toggle'">
           <ng-container
-            *ngTemplateOutlet="toggleTemplate; context: { checked: this.checked, disabled: this.disabled }"
+            *ngTemplateOutlet="toggleTemplate; context: { checked: checked, disabled: disabled }"
           ></ng-container>
         </ng-container>
       </ng-container>

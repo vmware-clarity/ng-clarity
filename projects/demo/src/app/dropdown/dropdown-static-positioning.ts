@@ -11,5 +11,6 @@ import { Component } from '@angular/core';
   selector: 'clr-dropdown-static-positioning-demo',
   styleUrls: ['./dropdown.demo.scss'],
   templateUrl: './dropdown-static-positioning.demo.html',
+  standalone: false,
 })
 export class DropdownStaticPositioningDemo {}

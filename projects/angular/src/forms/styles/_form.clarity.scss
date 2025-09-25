@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
 @use '../../utils/variables/variables.density' as density;
@@ -12,6 +13,7 @@
 @include mixins.exports('forms.wrappers') {
   .clr-form {
     $widthSize: calc(100% - #{forms-variables.$clr-forms-icon-size});
+
     padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-s;
 
     &-full-width {
@@ -51,6 +53,7 @@
         .clr-control-container {
           flex-wrap: nowrap;
         }
+
         .clr-subtext {
           flex: 0 0 auto;
         }
@@ -61,7 +64,8 @@
         .clr-success .clr-select-wrapper::after {
           right: forms-variables.$clr-forms-baseline;
         }
-        .clr-control-container:not(.clr-error):not(.clr-success) textarea {
+
+        .clr-control-container:not(.clr-error, .clr-success) textarea {
           width: $widthSize;
         }
       }

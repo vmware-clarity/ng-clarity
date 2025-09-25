@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import '../_utils/clarity-variables';
+@use '../../../../angular/src/utils/mixins';
 
 .datagrid-nav {
   column-count: 3;
@@ -14,20 +14,20 @@
 .color-square {
   display: inline-block;
   vertical-align: bottom;
-  height: $clr_baselineRem_13px;
-  width: $clr_baselineRem_13px;
-  border: $clr_baselineRem_1px solid black;
-  border-radius: $clr_baselineRem_4px;
+  height: mixins.baselinePx(13);
+  width: mixins.baselinePx(13);
+  border: var(--cds-global-space-1) solid black;
+  border-radius: var(--cds-global-space-3);
 }
 
 .color-filter {
   display: block;
-  width: $clr_baselineRem_100px;
+  width: mixins.baselinePx(100);
 }
 
 .color-selectable {
   cursor: pointer;
-  margin: $clr_baselineRem_2px;
+  margin: var(--cds-global-space-2);
   opacity: 0.2;
 
   &:hover,
@@ -37,7 +37,7 @@
 }
 
 .lorem-ipsum {
-  width: $clr_baselineRem_300px;
+  width: mixins.baselinePx(300);
 }
 
 .username-list {
@@ -46,29 +46,30 @@
   .username:not(:last-child)::after {
     content: ', ';
   }
+
   .username:last-child::after {
     content: '.';
   }
 }
 
 #vertical-scrolling {
-  height: $clr_baselineRem_500px;
+  height: mixins.baselinePx(500);
 }
 
 .conditional-datagrid {
-  height: $clr_baselineRem_300px;
+  height: mixins.baselinePx(300);
 }
 
 .footer-counters {
   display: inline-block;
   border-right: var(--cds-alias-object-border-color) solid 1px;
-  padding: 0 $clr_baselineRem_8px;
-  margin: 0 $clr_baselineRem_8px;
+  padding: 0 var(--cds-global-space-5);
+  margin: 0 var(--cds-global-space-5);
   font-weight: var(--cds-global-typography-font-weight-semibold);
 }
 
 .footer-button {
-  min-width: $clr_baselineRem_1;
-  margin: 0 0 0 $clr_baselineRem_8px;
+  min-width: var(--cds-global-space-9);
+  margin: 0 0 0 var(--cds-global-space-5);
   padding: 0;
 }

@@ -5,90 +5,79 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  AfterViewInit,
-  Component,
-  ContentChild,
-  ElementRef,
-  Input,
-  Optional,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, Optional, Renderer2, ViewChild } from '@angular/core';
 import { startWith } from 'rxjs/operators';
 
+import { DayModel } from './model/day.model';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { FocusService } from '../common/providers/focus.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
-import { ClrEndDateInput } from './date-end-input';
-import { ClrDateInput } from './date-single-input';
-import { ClrStartDateInput } from './date-start-input';
-import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { ControlClassService } from '../common/providers/control-class.service';
+import { ControlIdService } from '../common/providers/control-id.service';
+import { FocusService } from '../common/providers/focus.service';
+import { LayoutService } from '../common/providers/layout.service';
+import { NgControlService } from '../common/providers/ng-control.service';
 
 @Component({
   selector: 'clr-date-container, clr-date-range-container',
   template: `
     <ng-content select="label"></ng-content>
-    <label *ngIf="!label && addGrid()"></label>
+    @if (!label && addGrid()) {
+      <label></label>
+    }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper" clrPopoverAnchor>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <!-- render range inputs only if using clr-date-range-container -->
-          <ng-container *ngIf="isRangePicker">
+          @if (isRangePicker) {
             <ng-content select="[clrStartDate]"></ng-content>
             <span class="date-range-separator">-</span>
             <ng-content select="[clrEndDate]"></ng-content>
-          </ng-container>
+          }
           <!-- no *ngIf for the singe-date input because it breaks the "auto-wrapped" date picker -->
           <ng-content select="[clrDate]"></ng-content>
-          <button
-            #actionButton
-            type="button"
-            clrPopoverOpenCloseButton
-            class="clr-input-group-icon-action"
-            [disabled]="isInputDateDisabled"
-            *ngIf="isEnabled"
-          >
-            <cds-icon status="info" shape="calendar"></cds-icon>
-          </button>
+          @if (isEnabled) {
+            <button
+              #actionButton
+              type="button"
+              clrPopoverOpenCloseButton
+              class="clr-input-group-icon-action"
+              [disabled]="isInputDateDisabled"
+            >
+              <cds-icon status="info" shape="calendar"></cds-icon>
+            </button>
+          }
           <clr-datepicker-view-manager
             *clrPopoverContent="open; at: popoverPosition; outsideClickToClose: true; scrollToClose: true"
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        <cds-icon
-          *ngIf="showInvalid"
-          class="clr-validate-icon"
-          shape="exclamation-circle"
-          status="danger"
-          aria-hidden="true"
-        ></cds-icon>
-        <cds-icon
-          *ngIf="showValid"
-          class="clr-validate-icon"
-          shape="check-circle"
-          status="success"
-          aria-hidden="true"
-        ></cds-icon>
+        @if (showInvalid) {
+          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
+        }
+        @if (showValid) {
+          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
+        }
       </div>
-      <ng-content select="clr-control-helper" *ngIf="showHelper"></ng-content>
-      <ng-content select="clr-control-error" *ngIf="showInvalid"></ng-content>
-      <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
+      @if (showHelper) {
+        <ng-content select="clr-control-helper"></ng-content>
+      }
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
+      }
     </div>
   `,
   providers: [
@@ -111,13 +100,10 @@ import { ViewManagerService } from './providers/view-manager.service';
     '[class.clr-form-control]': 'true',
     '[class.clr-row]': 'addGrid()',
   },
+  standalone: false,
 })
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
-
-  @ContentChild(ClrDateInput) private readonly clrDateInput: ClrDateInput;
-  @ContentChild(ClrStartDateInput) private readonly clrStartDateInput: ClrStartDateInput;
-  @ContentChild(ClrEndDateInput) private readonly clrEndDateInput: ClrEndDateInput;
 
   private toggleButton: ElementRef<HTMLButtonElement>;
 
@@ -186,8 +172,6 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   set min(dateString: string) {
     if (this.dateNavigationService.isRangePicker) {
       this.dateIOService.setMinDate(dateString);
-      this.clrStartDateInput?.triggerControlInputValidation();
-      this.clrEndDateInput?.triggerControlInputValidation();
     } else {
       console.error(
         'Error! The date container [min] input only works for date range pickers. Use the native `min` attribute/property for single-date inputs.'
@@ -199,8 +183,6 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   set max(dateString: string) {
     if (this.dateNavigationService.isRangePicker) {
       this.dateIOService.setMaxDate(dateString);
-      this.clrStartDateInput?.triggerControlInputValidation();
-      this.clrEndDateInput?.triggerControlInputValidation();
     } else {
       console.error(
         'Error! The date container [max] input only works for date range pickers. Use the native `max` attribute/property for single-date inputs.'
@@ -298,13 +280,14 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
 
   private dateRangeStructuralChecks() {
     if (this.dateNavigationService.isRangePicker) {
-      if (this.clrDateInput) {
+      const inputs: HTMLElement[] = Array.from(this.elem.nativeElement.querySelectorAll('input'));
+      if (inputs.some(input => input.classList.contains('clr-date-input'))) {
         console.error('Error! clr-date-range-container must contain clrStartDate and clrEndDate inputs');
       }
-      if (!this.clrStartDateInput) {
+      if (!inputs.some(input => input.classList.contains('clr-date-start-input'))) {
         console.error('Error! clr-date-range-container must contain clrStartDate input');
       }
-      if (!this.clrEndDateInput) {
+      if (!inputs.some(input => input.classList.contains('clr-date-end-input'))) {
         console.error('Error! clr-date-range-container must contain clrEndDate input');
       }
     }

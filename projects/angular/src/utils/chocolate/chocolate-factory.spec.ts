@@ -65,12 +65,18 @@ describe('Chocolate factory', function () {
 @Component({
   template: `
     <parent>
-      <child *ngFor="let child of children"></child>
+      @for (child of children; track child.id) {
+        <child></child>
+      }
     </parent>
   `,
+  standalone: false,
 })
 class ChocolateTest extends WillyWonka {
-  children = [0, 0];
+  children = [
+    { id: 1, value: 0 },
+    { id: 1, value: 0 },
+  ];
 }
 
 @Component({
@@ -81,6 +87,7 @@ class ChocolateTest extends WillyWonka {
     {{ incrementChange() }}
   `,
   providers: [{ provide: WillyWonka, useExisting: ChocolateParent }],
+  standalone: false,
 })
 class ChocolateParent extends WillyWonka {
   nbChildren = 0;
@@ -94,13 +101,17 @@ class ChocolateParent extends WillyWonka {
 @Component({
   selector: 'child',
   template: '{{last}} {{incrementChange()}}',
+  standalone: false,
 })
 class ChocolateChild extends OompaLoompa implements OnInit, OnDestroy {
   changes = 0;
 
   private index: number;
 
-  constructor(cdr: ChangeDetectorRef, public parent: ChocolateParent) {
+  constructor(
+    cdr: ChangeDetectorRef,
+    public parent: ChocolateParent
+  ) {
     super(cdr, parent);
   }
 

@@ -4,6 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use 'sass:map';
 @use 'sass:meta';
 @use '../utils/mixins';
@@ -13,7 +14,6 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.card');
-
 @include mixins.exports('card.clarity') {
   %card-border-appearance {
     box-shadow: card-variables.$clr-card-box-shadow;
@@ -26,7 +26,10 @@
     border: tokens.$cds-alias-object-border-width-100 solid card-variables.$clr-card-clickable-border-color;
     cursor: pointer;
     text-decoration: none;
-    transition: border 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    transition:
+      border 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
   }
 
   %card-space-between {
@@ -53,6 +56,7 @@
     background-color: card-variables.$clr-card-bg-color;
     width: 100%;
     margin-top: density.$clr-base-vertical-offset-2xl;
+
     @extend %card-border-appearance;
 
     .alert {
@@ -99,6 +103,7 @@
 
     .list-group-item {
       @include mixins.generate-typography-token('BODY-14-RG-STD');
+
       padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
       background-color: card-variables.$clr-card-bg-color;
       border-bottom: card-variables.$clr-card-border-width solid card-variables.$clr-card-border-color;
@@ -108,6 +113,7 @@
 
     //NOTE: This is a fix just for dropdowns in Cards in Edge.
     //TODO: Figure out why the caret sign is not aligned next to the dropdown toggle only in cards
+
     @include mixins.fixForMsEdge() {
       .dropdown > .dropdown-toggle::after {
         display: inline-block;
@@ -130,6 +136,7 @@
   h3.card-header,
   .card-header {
     @include mixins.generate-typography-token('SECTION-20-STD');
+
     padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
     color: card-variables.$clr-card-header-title-color;
   }
@@ -137,6 +144,7 @@
   h4.card-title,
   .card-title {
     @include mixins.generate-typography-token('SUBSECTION-16-EXP');
+
     color: card-variables.$clr-card-content-title-color;
   }
 
@@ -154,6 +162,7 @@
 
   .card-text {
     @include mixins.generate-typography-token('BODY-14-RG-STD');
+
     color: card-variables.$clr-card-text-color;
   }
 
@@ -181,6 +190,7 @@
   .card > .card-img:first-child:last-child {
     & > img {
       border-radius: card-variables.$clr-card-border-radius;
+
       @extend %card-image-appearance;
     }
   }
@@ -220,6 +230,7 @@
   .card-block {
     .card-divider {
       @extend %card-space-between;
+
       margin-left: calc(-1 * density.$clr-base-horizontal-offset-xl);
       margin-right: calc(-1 * density.$clr-base-horizontal-offset-xl);
       width: auto;
@@ -241,11 +252,13 @@
     .card-media-image {
       display: inline-block; //to make sure IE11 respects the max-height and max-width
       flex: 0 0 auto;
+
       @include mixins.max-equilateral(density.$clr-base-icon-size-4xl);
     }
 
     .card-media-description {
       @include mixins.generate-typography-token('BODY-14-RG-STD');
+
       display: flex;
       flex-direction: column;
       color: card-variables.$clr-card-text-color;
@@ -281,6 +294,7 @@
   //Credit: Bootstrap 4 Card Masonry
   //Added some fixes to avoid flickering in Clickable cards
   //Added extra column classes to control the number of CSS columns
+
   @media screen and (min-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     .card-columns {
       column-count: 3;
@@ -290,7 +304,7 @@
 
       //Note: Safari Bug Fix for CSS Columns
       //http://stackoverflow.com/a/34998087/3538394
-      -webkit-perspective: 1;
+      perspective: 1;
 
       &.card-columns-2 {
         column-count: 2;

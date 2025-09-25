@@ -8,8 +8,8 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { DatagridRenderStep } from '../enums/render-step.enum';
 import { DatagridRenderOrganizer } from './render-organizer';
+import { DatagridRenderStep } from '../enums/render-step.enum';
 
 /**
  * Mock that gives direct access to the subjects, to trigger specific parts of the render cycle.

@@ -9,8 +9,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 
-import { ClrDatagridComparatorInterface } from '../interfaces/comparator.interface';
 import { StateDebouncer } from './state-debouncer.provider';
+import { ClrDatagridComparatorInterface } from '../interfaces/comparator.interface';
 
 @Injectable()
 export class Sort<T = any> {

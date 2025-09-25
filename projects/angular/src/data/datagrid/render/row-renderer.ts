@@ -5,26 +5,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  AfterContentInit,
-  ContentChild,
-  ContentChildren,
-  Directive,
-  forwardRef,
-  OnDestroy,
-  QueryList,
-} from '@angular/core';
+import { AfterContentInit, ContentChildren, Directive, OnDestroy, QueryList } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ColumnsService } from '../providers/columns.service';
 import { DatagridCellRenderer } from './cell-renderer';
+import { DatagridRowDetailRenderer } from './row-detail-renderer';
+import { ColumnsService } from '../providers/columns.service';
 
 @Directive({
-  selector: 'clr-dg-row, clr-dg-row-detail',
+  selector: 'clr-dg-row',
+  standalone: false,
 })
 export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
   @ContentChildren(DatagridCellRenderer) cells: QueryList<DatagridCellRenderer>;
-  @ContentChild(forwardRef(() => DatagridRowRenderer)) expandableRow: DatagridRowRenderer;
+  expandableRows: DatagridRowDetailRenderer[] = [];
 
   private subscriptions: Subscription[] = [];
 

@@ -8,13 +8,13 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IfActiveService } from '../../utils/conditional/if-active.service';
 import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';
 import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';
 import { ClrTabLink } from './tab-link.directive';
 import { TABS_ID_PROVIDER } from './tabs-id.provider';
 import { ClrTabsModule } from './tabs.module';
+import { IfActiveService } from '../../utils/conditional/if-active.service';
 
 @Component({
   template: `
@@ -25,6 +25,7 @@ import { ClrTabsModule } from './tabs.module';
       <button clrTabLink [clrTabLinkInOverflow]="inOverflow">Tab2</button>
     </clr-tab>
   `,
+  standalone: false,
 })
 class TestComponent {
   @ViewChildren(ClrTabLink) tabLinkChildren: QueryList<ClrTabLink>;
@@ -66,7 +67,7 @@ describe('TabLink Directive', () => {
   });
 
   it('has the correct css classes when vertical', () => {
-    const tabsService = TestBed.get(TabsService) as TabsService;
+    const tabsService = TestBed.inject(TabsService) as TabsService;
     tabsService.layout = TabsLayout.VERTICAL;
     fixture.detectChanges();
     expect(compiled.querySelector('.btn-link')).toBeDefined();
@@ -75,7 +76,7 @@ describe('TabLink Directive', () => {
 
   it('has the correct css classes when vertical with overflow', () => {
     fixture.componentInstance.inOverflow = true;
-    const tabsService = TestBed.get(TabsService) as TabsService;
+    const tabsService = TestBed.inject(TabsService) as TabsService;
     tabsService.layout = TabsLayout.VERTICAL;
     fixture.detectChanges();
     expect(compiled.querySelector('.btn-link')).toBeDefined();

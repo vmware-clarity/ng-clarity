@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
-  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-  ~ This software is released under MIT license.
-  ~ The full license information can be found in LICENSE in the root directory of this project.
-  -->
+~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+~ This software is released under MIT license.
+~ The full license information can be found in LICENSE in the root directory of this project.
+-->
 
 <h5>Preview Settings</h5>
 
@@ -30,12 +30,16 @@
   </clr-radio-container>
 </form>
 
-<section *ngFor="let set of allShapeSets" class="selection-shapes">
+@for (set of allShapeSets; track set) {
+<section class="selection-shapes">
   <h5>{{ set.name }}</h5>
   <div class="clr-row cds-icon-collection">
-    <div *ngFor="let shape of set.shapes" class="cds-icon-item clr-col-xs-12 clr-col-sm-6 clr-col-md-4 clr-col-lg-3">
+    @for (shape of set.shapes; track shape) {
+    <div class="cds-icon-item clr-col-xs-12 clr-col-sm-6 clr-col-md-4 clr-col-lg-3">
       <cds-icon [attr.shape]="shape" [attr.title]="shape" [attr.solid]="solid" [attr.badge]="options"></cds-icon>
       <span class="icon-shape-name">{{ shape }}</span>
     </div>
+    }
   </div>
 </section>
+}

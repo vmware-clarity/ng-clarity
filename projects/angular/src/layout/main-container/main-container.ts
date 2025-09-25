@@ -15,12 +15,16 @@ import { ResponsiveNavControlMessage } from '../nav/responsive-nav-control-messa
 @Directive({
   selector: 'clr-main-container',
   host: { '[class.main-container]': 'true' },
+  standalone: false,
 })
 export class ClrMainContainer implements OnDestroy, OnInit {
   private _subscription: Subscription;
   private _classList: DOMTokenList;
 
-  constructor(private elRef: ElementRef<HTMLElement>, private responsiveNavService: ResponsiveNavigationService) {}
+  constructor(
+    private elRef: ElementRef<HTMLElement>,
+    private responsiveNavService: ResponsiveNavigationService
+  ) {}
 
   ngOnInit() {
     this._classList = this.elRef.nativeElement.classList;

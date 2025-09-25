@@ -16,8 +16,8 @@ import { CardStorybookComponent } from 'stories/card/card.storybook.component';
 import { CheckboxToggleStorybookComponent } from 'stories/checkbox-toggle/checkbox-toggle.storybook.component';
 import { LinkStorybookComponent } from 'stories/link/link.storybook.component';
 
-import { CommonModules } from '../../helpers/common';
 import { AccordionStorybookComponent } from './accordion.storybook.component';
+import { CommonModules } from '../../helpers/common';
 
 const nestedComponents = [
   { type: AccordionStorybookComponent, options: { panelCount: 1 } },

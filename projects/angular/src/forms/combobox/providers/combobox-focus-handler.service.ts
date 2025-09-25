@@ -9,13 +9,13 @@ import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectorRef, Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from '@angular/core';
 import { take } from 'rxjs/operators';
 
+import { OptionSelectionService } from './option-selection.service';
 import { Keys } from '../../../utils/enums/keys.enum';
 import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
 import { customFocusableItemProvider } from '../../../utils/focus/focusable-item/custom-focusable-item-provider';
 import { normalizeKey } from '../../../utils/focus/key-focus/util';
 import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 import { PseudoFocusModel } from '../model/pseudo-focus.model';
-import { OptionSelectionService } from './option-selection.service';
 
 @Injectable()
 export class ComboboxFocusHandler<T> {
@@ -226,7 +226,10 @@ export const COMBOBOX_FOCUS_HANDLER_PROVIDER = customFocusableItemProvider(Combo
 export class OptionData<T> {
   el: HTMLElement;
 
-  constructor(public id: string, public value: T) {}
+  constructor(
+    public id: string,
+    public value: T
+  ) {}
 
   equals(other: OptionData<T>): boolean {
     if (!other) {

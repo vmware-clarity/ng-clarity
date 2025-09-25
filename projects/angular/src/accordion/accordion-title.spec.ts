@@ -14,6 +14,7 @@ import { ClrAccordionModule } from './accordion.module';
 
 @Component({
   template: `<clr-accordion-title>Hello world</clr-accordion-title>`,
+  standalone: false,
 })
 class TestComponent {}
 
