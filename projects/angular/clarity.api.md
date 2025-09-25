@@ -874,6 +874,9 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     get displayField(): string;
     // (undocumented)
+    get editable(): boolean;
+    set editable(value: boolean);
+    // (undocumented)
     protected el: ElementRef<HTMLElement>;
     // (undocumented)
     focused: boolean;
@@ -881,8 +884,6 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     focusedPill: any;
     // (undocumented)
     focusFirstActive(): void;
-    // (undocumented)
-    focusInput(): void;
     // (undocumented)
     getActiveDescendant(): string;
     // (undocumented)
@@ -913,6 +914,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     onFocus(): void;
     // (undocumented)
     onKeyUp(event: KeyboardEvent): void;
+    // (undocumented)
+    onWrapperClick(event: any): void;
     // (undocumented)
     get openState(): boolean;
     // (undocumented)
@@ -945,7 +948,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     writeValue(value: T | T[]): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, null, { optional: true; }, { optional: true; }, null, null, null]>;
 }
@@ -3372,6 +3375,8 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     constructor(optionSelectionService: OptionSelectionService<T>, id: number, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, toggleService: ClrPopoverToggleService, parentHost: ElementRef<HTMLElement>, document: any);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
+    // (undocumented)
+    get editable(): boolean;
     get emptyOptions(): boolean;
     // (undocumented)
     id: number;
