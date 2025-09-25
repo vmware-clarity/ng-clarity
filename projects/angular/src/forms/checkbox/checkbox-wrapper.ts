@@ -9,7 +9,7 @@ import { Component, ContentChild, forwardRef, Inject, InjectionToken, OnDestroy,
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { ClrCheckbox } from './checkbox';
-import { ClrLabel } from '../common/label';
+import { ClrControlLabel } from '../common/label';
 import { ControlIdService } from '../common/providers/control-id.service';
 
 export const IS_TOGGLE = new InjectionToken<BehaviorSubject<boolean>>('IS_TOGGLE');
@@ -36,7 +36,7 @@ export const IS_TOGGLE_PROVIDER = { provide: IS_TOGGLE, useFactory: isToggleFact
   standalone: false,
 })
 export class ClrCheckboxWrapper implements OnInit, OnDestroy {
-  @ContentChild(ClrLabel, { static: true }) label: ClrLabel;
+  @ContentChild(ClrControlLabel, { static: true }) label: ClrControlLabel;
   @ContentChild(forwardRef(() => ClrCheckbox), { static: true }) checkbox: ClrCheckbox;
   toggle = false;
   private subscriptions: Subscription[] = [];
