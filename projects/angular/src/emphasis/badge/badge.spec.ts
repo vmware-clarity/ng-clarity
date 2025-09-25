@@ -11,7 +11,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrBadge, ClrBadgeColors } from './badge';
 
 @Component({
-  template: ` <clr-badge [clrBadgeColor]="color">{{ content }}</clr-badge> `,
+  template: ` <clr-badge [clrColor]="color">{{ content }}</clr-badge> `,
   standalone: false,
 })
 class TestComponent {

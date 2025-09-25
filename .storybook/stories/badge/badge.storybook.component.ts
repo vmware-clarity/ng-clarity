@@ -19,7 +19,7 @@ import { ClrBadge } from '@clr/angular';
           <a href="#" class="badge" [ngClass]="badgeClass(status)">{{ context }}</a>
         }
       } @else {
-        <clr-badge [clrBadgeColor]="status">{{ context }}</clr-badge>
+        <clr-badge [clrColor]="status">{{ context }}</clr-badge>
       }
     }
   `,
