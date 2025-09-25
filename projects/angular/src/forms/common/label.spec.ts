@@ -9,7 +9,7 @@ import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ClrLabel } from './label';
+import { ClrControlLabel } from './label';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrSignpostModule, ClrSignpostTrigger } from '../../popover';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
@@ -39,7 +39,7 @@ class ExplicitForTest {
   standalone: false,
 })
 class ContainerizedTest {
-  @ViewChild(ClrLabel, { static: true }) label;
+  @ViewChild(ClrControlLabel, { static: true }) label;
 }
 
 @Component({
@@ -110,9 +110,9 @@ class ControlIdTest {}
 class ExplicitControlIdTest {}
 
 export default function (): void {
-  describe('ClrLabel', () => {
+  describe('ClrControlLabel', () => {
     it("doesn't crash if it is not used in an Angular form", function () {
-      TestBed.configureTestingModule({ declarations: [ClrLabel, NoForTest] });
+      TestBed.configureTestingModule({ declarations: [ClrControlLabel, NoForTest] });
       expect(() => {
         const fixture = TestBed.createComponent(NoForTest);
         fixture.detectChanges();
@@ -120,7 +120,7 @@ export default function (): void {
     });
 
     it("doesn't set the the class unless its inside of a container", function () {
-      TestBed.configureTestingModule({ declarations: [ClrLabel, NoForTest] });
+      TestBed.configureTestingModule({ declarations: [ClrControlLabel, NoForTest] });
       const fixture = TestBed.createComponent(NoForTest);
       fixture.detectChanges();
       expect(
@@ -131,7 +131,7 @@ export default function (): void {
     it('does set the the class when its inside of a container', function () {
       TestBed.configureTestingModule({
         imports: [ClrIconModule],
-        declarations: [ClrLabel, ContainerizedTest],
+        declarations: [ClrControlLabel, ContainerizedTest],
       });
       const fixture = TestBed.createComponent(ContainerizedTest);
       fixture.detectChanges();
@@ -143,7 +143,7 @@ export default function (): void {
     it('does set the class when its inside of a wrapper', function () {
       TestBed.configureTestingModule({
         imports: [ClrIconModule],
-        declarations: [ClrLabel, WrapperTest],
+        declarations: [ClrControlLabel, WrapperTest],
       });
       const fixture = TestBed.createComponent(WrapperTest);
       fixture.detectChanges();
@@ -153,7 +153,7 @@ export default function (): void {
     });
 
     it('sets the for attribute to the id given by the service', function () {
-      TestBed.configureTestingModule({ declarations: [ClrLabel, NoForTest], providers: [ControlIdService] });
+      TestBed.configureTestingModule({ declarations: [ClrControlLabel, NoForTest], providers: [ControlIdService] });
       const fixture = TestBed.createComponent(NoForTest);
       fixture.detectChanges();
       const controlIdService = fixture.debugElement.injector.get(ControlIdService);
@@ -167,7 +167,7 @@ export default function (): void {
     it('adds the grid classes for non-vertical layouts', function () {
       TestBed.configureTestingModule({
         imports: [ClrIconModule],
-        declarations: [ClrLabel, ClrInputContainer, ContainerizedTest],
+        declarations: [ClrControlLabel, ClrInputContainer, ContainerizedTest],
         providers: [LayoutService],
       });
       const fixture = TestBed.createComponent(ContainerizedTest);
@@ -182,7 +182,7 @@ export default function (): void {
     it('adds the grid classes for non-vertical non-default layouts', function () {
       TestBed.configureTestingModule({
         imports: [ClrIconModule],
-        declarations: [ClrLabel, ClrInputContainer, ContainerizedTest],
+        declarations: [ClrControlLabel, ClrInputContainer, ContainerizedTest],
         providers: [LayoutService],
       });
       const fixture = TestBed.createComponent(ContainerizedTest);
@@ -198,7 +198,7 @@ export default function (): void {
     it('disables adding the grid classes when manually disabled', function () {
       TestBed.configureTestingModule({
         imports: [ClrIconModule],
-        declarations: [ClrLabel, ClrInputContainer, ContainerizedTest],
+        declarations: [ClrControlLabel, ClrInputContainer, ContainerizedTest],
         providers: [LayoutService],
       });
       const fixture = TestBed.createComponent(ContainerizedTest);
@@ -212,7 +212,10 @@ export default function (): void {
     });
 
     it('leaves the grid classes untouched if they exist', function () {
-      TestBed.configureTestingModule({ declarations: [ClrLabel, ExistingGridTest], providers: [ControlIdService] });
+      TestBed.configureTestingModule({
+        declarations: [ClrControlLabel, ExistingGridTest],
+        providers: [ControlIdService],
+      });
       const fixture = TestBed.createComponent(ExistingGridTest);
       fixture.detectChanges();
       const label = fixture.nativeElement.querySelector('label');
@@ -221,7 +224,10 @@ export default function (): void {
     });
 
     it('leaves the for attribute untouched if it exists', function () {
-      TestBed.configureTestingModule({ declarations: [ClrLabel, ExplicitForTest], providers: [ControlIdService] });
+      TestBed.configureTestingModule({
+        declarations: [ClrControlLabel, ExplicitForTest],
+        providers: [ControlIdService],
+      });
       const fixture = TestBed.createComponent(ExplicitForTest);
       fixture.detectChanges();
       const label = fixture.nativeElement.querySelector('label');
@@ -229,7 +235,10 @@ export default function (): void {
     });
 
     it('provides a host binding on the for attribute', function () {
-      TestBed.configureTestingModule({ declarations: [ClrLabel, ExplicitForTest], providers: [ControlIdService] });
+      TestBed.configureTestingModule({
+        declarations: [ClrControlLabel, ExplicitForTest],
+        providers: [ControlIdService],
+      });
       const fixture = TestBed.createComponent(ExplicitForTest);
       fixture.detectChanges();
       fixture.componentInstance.forValue = 'updatedFor';
@@ -239,7 +248,10 @@ export default function (): void {
     });
 
     it('leaves the id attribute untouched if it exists (with control id service)', function () {
-      TestBed.configureTestingModule({ declarations: [ClrLabel, ExplicitIdTest], providers: [ControlIdService] });
+      TestBed.configureTestingModule({
+        declarations: [ClrControlLabel, ExplicitIdTest],
+        providers: [ControlIdService],
+      });
       const fixture = TestBed.createComponent(ExplicitIdTest);
       fixture.detectChanges();
       const label = fixture.nativeElement.querySelector('label');
@@ -247,7 +259,7 @@ export default function (): void {
     });
 
     it('leaves the id attribute untouched if it exists (without control id service)', function () {
-      TestBed.configureTestingModule({ declarations: [ClrLabel, ExplicitIdTest] });
+      TestBed.configureTestingModule({ declarations: [ClrControlLabel, ExplicitIdTest] });
       const fixture = TestBed.createComponent(ExplicitIdTest);
       fixture.detectChanges();
       const label = fixture.nativeElement.querySelector('label');
@@ -255,7 +267,7 @@ export default function (): void {
     });
 
     it('uses the control id when present', function () {
-      TestBed.configureTestingModule({ declarations: [ClrLabel, ClrInputContainer, ClrInput, ControlIdTest] });
+      TestBed.configureTestingModule({ declarations: [ClrControlLabel, ClrInputContainer, ClrInput, ControlIdTest] });
       const fixture = TestBed.createComponent(ControlIdTest);
       fixture.detectChanges();
       const input = fixture.nativeElement.querySelector('input');
@@ -264,7 +276,9 @@ export default function (): void {
     });
 
     it('uses an explicit control id when present', function () {
-      TestBed.configureTestingModule({ declarations: [ClrLabel, ClrInputContainer, ClrInput, ExplicitControlIdTest] });
+      TestBed.configureTestingModule({
+        declarations: [ClrControlLabel, ClrInputContainer, ClrInput, ExplicitControlIdTest],
+      });
       const fixture = TestBed.createComponent(ExplicitControlIdTest);
       fixture.detectChanges();
       const label = fixture.nativeElement.querySelector('label');
@@ -275,7 +289,7 @@ export default function (): void {
     it('signposts work inside labels', function () {
       TestBed.configureTestingModule({
         imports: [ClrSignpostModule, ClrIconModule],
-        declarations: [ClrLabel, SignpostTest],
+        declarations: [ClrControlLabel, SignpostTest],
       });
       const fixture = TestBed.createComponent(SignpostTest);
       fixture.detectChanges();
@@ -287,7 +301,7 @@ export default function (): void {
 
     it('focus input on label click', function () {
       TestBed.configureTestingModule({
-        declarations: [ClrLabel, DefaultClickBehaviorTest],
+        declarations: [ClrControlLabel, DefaultClickBehaviorTest],
       });
       const fixture = TestBed.createComponent(DefaultClickBehaviorTest);
       fixture.detectChanges();

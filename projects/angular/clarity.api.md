@@ -232,7 +232,7 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
     // (undocumented)
     protected ifControlStateService: IfControlStateService;
     // (undocumented)
-    label: ClrLabel;
+    label: ClrControlLabel;
     // Warning: (ae-forgotten-export) The symbol "LayoutService" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -552,7 +552,7 @@ export class ClrBadge {
     // (undocumented)
     get colorClass(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrBadgeColor"; "required": false; }; }, {}, never, ["*"], true, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrColor"; "required": false; }; }, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrBadge, never>;
 }
@@ -837,7 +837,7 @@ export class ClrCheckboxWrapper implements OnInit, OnDestroy {
     // (undocumented)
     checkbox: ClrCheckbox;
     // (undocumented)
-    label: ClrLabel;
+    label: ClrControlLabel;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -986,7 +986,7 @@ export class ClrCommonFormsModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrCommonFormsModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCommonFormsModule, [typeof ClrLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl], [typeof i2.CommonModule, typeof ClrIconModule], [typeof ClrLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCommonFormsModule, [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl], [typeof i2.CommonModule, typeof ClrIconModule], [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl]>;
 }
 
 // @public (undocumented)
@@ -1217,6 +1217,29 @@ export class ClrControlHelper extends ClrAbstractControl {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlHelper, "clr-control-helper", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlHelper, [{ optional: true; }, { optional: true; }]>;
+}
+
+// @public (undocumented)
+export class ClrControlLabel implements OnInit, OnDestroy {
+    constructor(controlIdService: ControlIdService, layoutService: LayoutService, ngControlService: NgControlService, renderer: Renderer2, el: ElementRef<HTMLLabelElement>);
+    // (undocumented)
+    disableGrid(): void;
+    // (undocumented)
+    forAttr: string;
+    // (undocumented)
+    idAttr: string;
+    // (undocumented)
+    idInput: string;
+    // (undocumented)
+    get labelText(): string;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrControlLabel, "label", never, { "idInput": { "alias": "id"; "required": false; }; "forAttr": { "alias": "for"; "required": false; }; }, {}, ["signpost"], never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlLabel, [{ optional: true; }, { optional: true; }, { optional: true; }, null, null]>;
 }
 
 // @public (undocumented)
@@ -2683,7 +2706,7 @@ export class ClrForm {
     // Warning: (ae-forgotten-export) The symbol "MarkControlService" needs to be exported by the entry point index.d.ts
     constructor(layoutService: LayoutService, markControlService: MarkControlService);
     // (undocumented)
-    labels: QueryList<ClrLabel>;
+    labels: QueryList<ClrControlLabel>;
     // (undocumented)
     set labelSize(size: number | string);
     // (undocumented)
@@ -2904,29 +2927,6 @@ export class ClrInputModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrInputModule>;
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof ClrInput, typeof ClrInputContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIconModule, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrInput, typeof ClrInputContainer]>;
-}
-
-// @public (undocumented)
-export class ClrLabel implements OnInit, OnDestroy {
-    constructor(controlIdService: ControlIdService, layoutService: LayoutService, ngControlService: NgControlService, renderer: Renderer2, el: ElementRef<HTMLLabelElement>);
-    // (undocumented)
-    disableGrid(): void;
-    // (undocumented)
-    forAttr: string;
-    // (undocumented)
-    idAttr: string;
-    // (undocumented)
-    idInput: string;
-    // (undocumented)
-    get labelText(): string;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    ngOnInit(): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLabel, "label", never, { "idInput": { "alias": "id"; "required": false; }; "forAttr": { "alias": "for"; "required": false; }; }, {}, ["signpost"], never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLabel, [{ optional: true; }, { optional: true; }, { optional: true; }, null, null]>;
 }
 
 // @public (undocumented)
@@ -3740,7 +3740,7 @@ export class ClrRadioModule {
 // @public (undocumented)
 export class ClrRadioWrapper implements OnInit {
     // (undocumented)
-    label: ClrLabel;
+    label: ClrControlLabel;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
