@@ -27,7 +27,7 @@ export enum ClrBadgeColors {
   imports: [NgClass],
 })
 export class ClrBadge {
-  @Input('clrBadgeColor') color: ClrBadgeColors | string = ClrBadgeColors.Empty;
+  @Input('clrColor') color: ClrBadgeColors | string = ClrBadgeColors.Empty;
 
   get colorClass() {
     return this.color ? `badge-${this.color}` : '';
