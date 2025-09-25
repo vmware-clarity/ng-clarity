@@ -9,19 +9,8 @@ import { StoryObj } from '@storybook/angular';
 
 import { BadgeStoryBookComponent } from './badge.storybook.component';
 
-const BADGE_COLOR_TYPES = [
-  'badge-gray',
-  'badge-purple',
-  'badge-blue',
-  'badge-orange',
-  'badge-light-blue',
-  'badge-1',
-  'badge-2',
-  'badge-3',
-  'badge-4',
-  'badge-5',
-];
-const BADGE_STATUS_TYPES = ['', 'badge-info', 'badge-success', 'badge-warning', 'badge-danger'];
+const BADGE_COLOR_TYPES = ['gray', 'purple', 'blue', 'orange', 'light-blue', '1', '2', '3', '4', '5'];
+const BADGE_STATUS_TYPES = ['', 'info', 'success', 'warning', 'danger'];
 
 export default {
   title: 'Badge/Badge',
@@ -34,6 +23,7 @@ export default {
     context: '42',
     badgeType: null,
     badgeTypes: [...BADGE_STATUS_TYPES, ...BADGE_COLOR_TYPES],
+    cssBadge: true,
   },
 };
 
@@ -49,6 +39,15 @@ export const SingleBadge: StoryObj = {
   },
   args: {
     showLinkBadge: false,
-    badgeType: 'badge-info',
+    badgeType: 'info',
+  },
+};
+
+export const BadgeComponent: StoryObj = {
+  argTypes: {
+    badgeType: { control: { type: 'select' }, options: [...BADGE_STATUS_TYPES, ...BADGE_COLOR_TYPES] },
+  },
+  args: {
+    cssBadge: false,
   },
 };

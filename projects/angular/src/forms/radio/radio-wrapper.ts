@@ -7,7 +7,7 @@
 
 import { Component, ContentChild, OnInit } from '@angular/core';
 
-import { ClrLabel } from '../common/label';
+import { ClrControlLabel } from '../common/label';
 import { ControlIdService } from '../common/providers/control-id.service';
 
 @Component({
@@ -26,7 +26,7 @@ import { ControlIdService } from '../common/providers/control-id.service';
   standalone: false,
 })
 export class ClrRadioWrapper implements OnInit {
-  @ContentChild(ClrLabel, { static: true }) label: ClrLabel;
+  @ContentChild(ClrControlLabel, { static: true }) label: ClrControlLabel;
 
   ngOnInit() {
     if (this.label) {
