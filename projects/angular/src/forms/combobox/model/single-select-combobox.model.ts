@@ -9,6 +9,7 @@ import { ComboboxModel } from './combobox.model';
 
 export class SingleSelectComboboxModel<T> implements ComboboxModel<T> {
   model: T;
+  displayField: string;
 
   containsItem(item: T): boolean {
     return this.model === item;

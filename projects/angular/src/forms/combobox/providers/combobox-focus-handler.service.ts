@@ -73,7 +73,7 @@ export class ComboboxFocusHandler<T> {
   }
 
   focusFirstActive() {
-    if (this.selectionService.editable) {
+    if (this.selectionService.editable && !this.selectionService.multiselectable) {
       return;
     }
     if (this.optionData.length > 0) {

@@ -63,6 +63,7 @@ width of the component, after being wrapped to a new line -->
     [(ngModel)]="searchText"
     (blur)="onBlur()"
     (focus)="onFocus()"
+    (change)="onChange()"
     [attr.aria-expanded]="openState"
     [attr.aria-owns]="ariaOwns"
     aria-haspopup="listbox"

@@ -96,4 +96,13 @@ export class OptionSelectionService<T> {
     this.selectionModel.model = value;
     this._selectionChanged.next(this.selectionModel);
   }
+
+  parseStringToModel(value: string): T {
+    if (this.selectionModel.displayField) {
+      return {
+        [this.displayField]: value,
+      } as T;
+    }
+    return value as T;
+  }
 }

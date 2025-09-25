@@ -26,7 +26,6 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { filter, tap } from 'rxjs';
 
 import { ClrComboboxContainer } from './combobox-container';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
@@ -238,12 +237,26 @@ export class ClrCombobox<T>
   @HostListener('keydown', ['$event'])
   onKeyUp(event: KeyboardEvent) {
     // if BACKSPACE in multiselect mode, delete the last pill if text is empty
-    if (event.key === Keys.Backspace && this.multiSelect && this._searchText.length === 0) {
+    if (this.multiSelect) {
       const multiModel: T[] = this.optionSelectionService.selectionModel.model as T[];
-      if (multiModel && multiModel.length > 0) {
-        const lastItem: T = multiModel[multiModel.length - 1];
-        this.control?.control.markAsTouched();
-        this.optionSelectionService.unselect(lastItem);
+      switch (event.key) {
+        case Keys.Backspace:
+          if (!this._searchText.length) {
+            if (multiModel && multiModel.length > 0) {
+              const lastItem: T = multiModel[multiModel.length - 1];
+              this.control?.control.markAsTouched();
+              this.optionSelectionService.unselect(lastItem);
+            }
+          }
+          break;
+        case Keys.Enter:
+          if (this.editable && this._searchText.length > 0 && this.options.emptyOptions) {
+            const parsedInput = this.optionSelectionService.parseStringToModel(this._searchText);
+            this.control?.control.markAsTouched();
+            this.optionSelectionService.select(parsedInput);
+            this.searchText = '';
+          }
+          break;
       }
     }
   }
@@ -283,6 +296,13 @@ export class ClrCombobox<T>
     // fix for "expression changed" error when focus is returned to a combobox after a modal is closed
     // https://github.com/vmware-clarity/ng-clarity/issues/663
     this.cdr.detectChanges();
+  }
+
+  onChange() {
+    if (this.editable && !this.multiSelect && this.options.emptyOptions) {
+      const parsedInput = this.optionSelectionService.parseStringToModel(this._searchText);
+      this.optionSelectionService.setSelectionValue(parsedInput);
+    }
   }
 
   getSelectionAriaLabel() {
@@ -341,24 +361,12 @@ export class ClrCombobox<T>
           this.toggleService.open = false;
         }
         this.updateControlValue();
-      }),
-      this.focusHandler.pseudoFocus.focusChanged
-        .pipe(
-          filter(item => !!item),
-          tap(item => {
-            if (this.editable) {
-              this.optionSelectionService.filtering = false;
-              this.searchText = item.value as string;
-              this.optionSelectionService.filtering = true;
-            }
-          })
-        )
-        .subscribe()
+      })
     );
 
     this.subscriptions.push(
       this.toggleService.openChange.subscribe(open => {
-        if (this.editable) {
+        if (this.editable && !this.multiSelect) {
           if (this.searchText) {
             this.optionSelectionService.showAllOptions = false;
             this.optionSelectionService.currentInput = this.searchText;
