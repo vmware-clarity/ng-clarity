@@ -12,17 +12,7 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
-      - name: Update commit status
-        uses: actions/github-script@v6
-        with:
-          script: |
-            await github.rest.repos.createCommitStatus({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            sha: context.payload.workflow_run.head_commit.id,
-            state: context.payload.workflow_run.conclusion,
-            context: `${context.workflow} / ${context.job} (${context.payload.workflow_run.event} => ${context.eventName})`,
-            target_url: context.payload.workflow_run.html_url});
+      - uses: haya14busa/action-workflow_run-status@v1
       - name: Get PR Event
         id: get-pr-event
         uses: potiuk/get-workflow-origin@v1_5
