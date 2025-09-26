@@ -7,7 +7,17 @@ jobs:
     if: ${{github.event.workflow_run.conclusion == 'success'}}
     runs-on: ubuntu-latest
     steps:
-      - uses: haya14busa/action-workflow_run-status@v1
+      - name: Update commit status
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            sha: context.payload.workflow_run.head_commit.id,
+            state: context.payload.workflow_run.conclusion,
+            context: `${context.workflow} / ${context.job} (${context.payload.workflow_run.event} => ${context.eventName})`,
+            target_url: context.payload.workflow_run.html_url});
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -28,14 +38,11 @@ jobs:
       - name: Create Temp Directory for Diff Artifacts
         run: mkdir -p ${{runner.temp}}/artifacts/
       - name: Download Changes
-        uses: dawidd6/action-download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
-          name: visual-snapshot-changes-.+\.diff
-          name_is_regexp: true
+          pattern: visual-snapshot-changes-.+\.diff
           path: ${{runner.temp}}/artifacts/
-          workflow: ${{github.event.workflow_run.workflow_id}}
-          run_id: ${{github.event.workflow_run.id}}
-          if_no_artifact_found: ignore
+          run-id: ${{github.event.workflow_run.id}}
       - name: Apply Changes
         id: apply-changes
         run: |
