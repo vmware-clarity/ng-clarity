@@ -9,6 +9,7 @@ permissions:
   pull-requests: write
 jobs:
   pr-visual-snapshot-update-bot:
+    name: PR Visual Snapshot Update Bot
     if: ${{github.event.workflow_run.conclusion == 'success'}}
     runs-on: ubuntu-latest
     steps:
