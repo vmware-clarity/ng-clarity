@@ -40,14 +40,14 @@ jobs:
         with:
           name: docs
           path: dist/docs
-          run_id: ${{github.event.workflow_run.id}}
+          run-id: ${{github.event.workflow_run.id}}
       - name: Download Coverage Artifact
         id: download-coverage
         uses: actions/download-artifact@v4
         with:
           name: coverage
           path: dist/docs/coverage
-          run_id: ${{github.event.workflow_run.id}}
+          run-id: ${{github.event.workflow_run.id}}
       - name: Deploy Docs Preview
         if: ${{steps.download-docs.outputs.found_artifact == 'true'}}
         timeout-minutes: 5
