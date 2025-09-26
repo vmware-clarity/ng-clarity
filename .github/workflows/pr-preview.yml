@@ -6,12 +6,23 @@ on:
       - completed
 permissions:
   actions: read
+  statuses: write
 jobs:
   pr-preview:
-    name: PR Preview
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
+      - name: Update commit status
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            sha: context.payload.workflow_run.head_commit.id,
+            state: context.payload.workflow_run.conclusion,
+            context: `${context.workflow} / ${context.job} (${context.payload.workflow_run.event} => ${context.eventName})`,
+            target_url: context.payload.workflow_run.html_url});
       - name: Get PR Event
         id: get-pr-event
         uses: potiuk/get-workflow-origin@v1_5
@@ -55,4 +66,4 @@ jobs:
         timeout-minutes: 5
         env:
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-        run: npx netlify-cli@23.7.3 deploy --no-build --site ${{secrets.NETLIFY_SITE_NAME}} --alias ${{steps.get-pr-event.outputs.pullRequestNumber}}
+        run: npx netlify-cli deploy --no-build --site ${{secrets.NETLIFY_SITE_NAME}} --alias ${{steps.get-pr-event.outputs.pullRequestNumber}}
