@@ -98,7 +98,7 @@ export class OptionSelectionService<T> {
   }
 
   parseStringToModel(value: string): T {
-    if (this.selectionModel.displayField) {
+    if (this.displayField) {
       return {
         [this.displayField]: value,
       } as T;

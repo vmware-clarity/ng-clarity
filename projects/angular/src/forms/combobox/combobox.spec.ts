@@ -19,7 +19,6 @@ import { COMBOBOX_FOCUS_HANDLER_PROVIDER } from './providers/combobox-focus-hand
 import { OptionSelectionService } from './providers/option-selection.service';
 import { ClrIconModule } from '../../icon/icon.module';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
-import { Keys } from '../../utils/enums/keys.enum';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrPopoverContent } from '../../utils/popover/popover-content';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
@@ -216,20 +215,6 @@ export default function (): void {
         input.blur();
         await delay(100);
         expect(input.value).toBe('');
-      });
-
-      it('should change the value on navigation when editable', async () => {
-        fixture.componentInstance.editable = true;
-        fixture.detectChanges();
-        const event = new KeyboardEvent('keydown', { key: Keys.ArrowDown });
-        const input = clarityElement.querySelector('.clr-combobox-input') as HTMLInputElement;
-        expect(input).not.toBeNull();
-        input.dispatchEvent(event);
-        input.dispatchEvent(event);
-        input.dispatchEvent(event);
-        fixture.detectChanges();
-        await delay(100);
-        expect(input.value).toBe('3');
       });
 
       it('contains a options menu trigger', () => {
