@@ -6,11 +6,13 @@ on:
       - completed
 permissions:
   actions: read
+  statuses: write
 jobs:
   pr-preview:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
+      - uses: haya14busa/action-workflow_run-status@v1
       - name: Get PR Event
         id: get-pr-event
         uses: potiuk/get-workflow-origin@v1_5
