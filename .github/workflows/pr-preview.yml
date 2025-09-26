@@ -41,7 +41,7 @@ jobs:
         id: download-docs
         uses: actions/download-artifact@v4
         with:
-          name: docs
+          pattern: docs
           path: dist/docs
           run-id: ${{github.event.workflow_run.id}}
           github-token: ${{ github.token }}
