@@ -4,7 +4,6 @@ on:
     workflows: [PR Build]
 permissions:
   actions: read
-  statuses: write
   contents: write
   issues: write
 jobs:
