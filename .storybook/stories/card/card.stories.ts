@@ -28,7 +28,15 @@ export default {
     buttonStyle: 'btn-outline',
     clickable: true,
     hasImage: true,
+    showAlerts: false,
+    alertCount: 2,
   },
 };
 
 export const Card: StoryObj = {};
+
+export const CardWithAlerts: StoryObj = {
+  args: {
+    showAlerts: true,
+  },
+};
