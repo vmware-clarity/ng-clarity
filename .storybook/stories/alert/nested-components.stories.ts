@@ -15,7 +15,7 @@ import { CommonModules } from '../../helpers/common';
 import { BadgeStoryBookComponent } from '../badge/badge.storybook.component';
 import { LabelStoryBookComponent } from '../label/label.storybook.component';
 
-const LABEL_TYPES = ['label-info', 'label-success', 'label-warning', 'label-danger'];
+const LABEL_TYPES = ['info', 'success', 'warning', 'danger'];
 const BADGE_TYPES = ['info', 'success', 'warning', 'danger'];
 const innerComponents = [
   { type: BadgeStoryBookComponent, options: { badgeTypes: [BADGE_TYPES[0]] } },
