@@ -5,6 +5,7 @@ on:
 permissions:
   actions: read
   statuses: write
+  contents: write
 jobs:
   pr-visual-snapshot-update-bot:
     if: ${{github.event.workflow_run.conclusion == 'success'}}
