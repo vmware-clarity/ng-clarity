@@ -31,11 +31,6 @@ jobs:
         with:
           name: docs
           path: dist/docs/
-      - name: Upload Netlify Toml Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: netlify-config
-          path: netlify.toml
       - name: Upload Coverage Artifact
         uses: actions/upload-artifact@v4
         with:
