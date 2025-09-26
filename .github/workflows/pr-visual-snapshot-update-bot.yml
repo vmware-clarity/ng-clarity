@@ -43,7 +43,7 @@ jobs:
       - name: Download Changes
         uses: actions/download-artifact@v4
         with:
-          pattern: visual-snapshot-changes-.+\.diff
+          pattern: visual-snapshot-changes-*.diff
           path: ${{runner.temp}}/artifacts/
           run-id: ${{github.event.workflow_run.id}}
           github-token: ${{ github.token }}
