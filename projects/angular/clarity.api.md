@@ -911,6 +911,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     onBlur(): void;
     // (undocumented)
+    onChange(): void;
+    // (undocumented)
     onFocus(): void;
     // (undocumented)
     onKeyUp(event: KeyboardEvent): void;
