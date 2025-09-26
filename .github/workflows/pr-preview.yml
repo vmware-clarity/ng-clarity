@@ -36,14 +36,14 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Download Docs Artifact
         id: download-docs
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v4
         with:
           name: docs
           path: dist/docs
           run_id: ${{github.event.workflow_run.id}}
       - name: Download Coverage Artifact
         id: download-coverage
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v4
         with:
           name: coverage
           path: dist/docs/coverage
