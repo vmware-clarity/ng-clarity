@@ -15,7 +15,7 @@ jobs:
             const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
               owner: '${{github.repository_owner}}',
               repo: '${{ github.event.repository.name }}',
-              run_id: '${{github.event.workflow_run.id}}',
+              run-id: '${{github.event.workflow_run.id}}',
             });
 
             return !!artifacts.data.artifacts.find(artifact => artifact.name === 'docs');
