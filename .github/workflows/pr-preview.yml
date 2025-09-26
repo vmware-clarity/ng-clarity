@@ -4,6 +4,9 @@ on:
     workflows: [PR Build]
     types:
       - completed
+permissions:
+  actions: read
+  statuses: write
 jobs:
   pr-preview:
     timeout-minutes: 10
@@ -41,13 +44,15 @@ jobs:
           name: docs
           path: dist/docs
           run-id: ${{github.event.workflow_run.id}}
+          github-token: ${{ github.token }}
       - name: Download Coverage Artifact
         id: download-coverage
         uses: actions/download-artifact@v4
         with:
-          name: coverage
+          pattern: coverage
           path: dist/docs/coverage
           run-id: ${{github.event.workflow_run.id}}
+          github-token: ${{ github.token }}
       - name: Deploy Docs Preview
         if: ${{steps.download-docs.outputs.found_artifact == 'true'}}
         timeout-minutes: 5
