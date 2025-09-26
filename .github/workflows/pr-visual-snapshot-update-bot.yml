@@ -2,6 +2,9 @@ name: PR Visual Snapshot Update Bot
 on:
   workflow_run:
     workflows: [PR Build]
+permissions:
+  actions: read
+  statuses: write
 jobs:
   pr-visual-snapshot-update-bot:
     if: ${{github.event.workflow_run.conclusion == 'success'}}
@@ -43,6 +46,7 @@ jobs:
           pattern: visual-snapshot-changes-.+\.diff
           path: ${{runner.temp}}/artifacts/
           run-id: ${{github.event.workflow_run.id}}
+          github-token: ${{ github.token }}
       - name: Apply Changes
         id: apply-changes
         run: |
