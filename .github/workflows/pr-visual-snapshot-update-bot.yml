@@ -41,10 +41,8 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           pattern: visual-snapshot-changes-.+\.diff
-          name_is_regexp: true
           path: ${{runner.temp}}/artifacts/
           run_id: ${{github.event.workflow_run.id}}
-          if_no_artifact_found: ignore
       - name: Apply Changes
         id: apply-changes
         run: |
