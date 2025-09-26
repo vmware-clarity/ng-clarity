@@ -2936,15 +2936,15 @@ export class ClrLabel {
     // (undocumented)
     clickable: boolean;
     // (undocumented)
-    closable: boolean;
-    // (undocumented)
     color: ClrLabelColors | string;
     // (undocumented)
     get colorClass(): string;
     // (undocumented)
     disabled: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeContent": { "alias": "clrBadgeContent"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "closable": { "alias": "clrClosable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; }, {}, never, ["*"], true, never>;
+    textContent: string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeContent": { "alias": "clrBadgeContent"; "required": false; }; "textContent": { "alias": "clrText"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; }, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLabel, never>;
 }

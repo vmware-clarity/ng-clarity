@@ -25,13 +25,15 @@ export enum ClrLabelColors {
 
 @Component({
   selector: 'clr-label',
-  template: ` <span class="text"><ng-content></ng-content></span>
+  template: ` @if (textContent) {
+      <span class="text">{{ textContent }}</span>
+    }
+
     @if (badgeContent) {
       <clr-badge>{{ badgeContent }}</clr-badge>
     }
-    @if (closable) {
-      <cds-icon shape="close"></cds-icon>
-    }`,
+
+    <ng-content></ng-content>`,
   host: {
     class: 'label',
     '[class.clickable]': 'clickable',
@@ -43,8 +45,8 @@ export enum ClrLabelColors {
 export class ClrLabel {
   @Input('clrColor') color: ClrLabelColors | string = ClrLabelColors.Empty;
   @Input('clrBadgeContent') badgeContent = '';
+  @Input('clrText') textContent = '';
   @Input('clrClickable') clickable = false;
-  @Input('clrClosable') closable = false;
   @Input('clrDisabled') disabled = false;
 
   get colorClass() {

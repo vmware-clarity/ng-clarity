@@ -28,12 +28,17 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
       } @else {
         <clr-label
           [clrColor]="type"
+          [clrText]="content"
           [clrBadgeContent]="badge"
           [clrClickable]="clickable"
           [clrDisabled]="disabled"
-          [clrClosable]="closeIcon"
         >
-          {{ content }}
+          @if (showProjectedContent) {
+            <span class="text">Projected {{ content }}</span>
+          }
+          @if (closeIcon) {
+            <cds-icon shape="close"></cds-icon>
+          }
         </clr-label>
       }
     }
@@ -48,6 +53,7 @@ export class LabelStoryBookComponent extends RenderComponentStorybook {
   @Input() clickable = false;
   @Input() disabled = false;
   @Input() closeIcon = false;
+  @Input() showProjectedContent = false;
   @Input() showBadge: false;
   @Input() labelTypes = [''];
   @Input() labelType = '';
