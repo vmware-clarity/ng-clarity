@@ -1,6 +1,6 @@
 ![Clarity Angular](logo.png)
 
-# Clarity Angular
+# Clarity Angular1
 
 ## Getting Started
 
