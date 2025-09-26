@@ -9,9 +9,20 @@ import { ComboboxModel } from './combobox.model';
 
 export class MultiSelectComboboxModel<T> implements ComboboxModel<T> {
   model: T[];
+  displayField: string;
 
   containsItem(item: T): boolean {
-    return this.model ? this.model.includes(item) : false;
+    if (this.model) {
+      if (typeof item === 'object') {
+        const includes = this.model.some(modelItem => {
+          return modelItem[this.displayField] === item[this.displayField];
+        });
+        return includes;
+      } else {
+        return this.model.includes(item);
+      }
+    }
+    return false;
   }
 
   select(item: T): void {

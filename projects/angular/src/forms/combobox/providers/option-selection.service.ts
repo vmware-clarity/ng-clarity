@@ -14,6 +14,8 @@ import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 @Injectable()
 export class OptionSelectionService<T> {
   loading = false;
+  editable = false;
+  filtering = true;
   displayField: string;
   selectionModel: ComboboxModel<T>;
   inputChanged: Observable<string>;
@@ -93,5 +95,14 @@ export class OptionSelectionService<T> {
 
     this.selectionModel.model = value;
     this._selectionChanged.next(this.selectionModel);
+  }
+
+  parseStringToModel(value: string): T {
+    if (this.displayField) {
+      return {
+        [this.displayField]: value,
+      } as T;
+    }
+    return value as T;
   }
 }

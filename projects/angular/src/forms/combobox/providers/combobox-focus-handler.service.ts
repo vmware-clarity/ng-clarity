@@ -73,6 +73,9 @@ export class ComboboxFocusHandler<T> {
   }
 
   focusFirstActive() {
+    if (this.selectionService.editable && !this.selectionService.multiselectable) {
+      return;
+    }
     if (this.optionData.length > 0) {
       if (this.selectionService.selectionModel.isEmpty()) {
         this.pseudoFocus.select(this.optionData[0]);

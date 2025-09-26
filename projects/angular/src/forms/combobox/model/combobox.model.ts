@@ -7,6 +7,7 @@
 
 export abstract class ComboboxModel<T> {
   model: T | T[];
+  displayField?: string;
   abstract containsItem(item: T): boolean;
   abstract select(item: T): void;
   abstract unselect(item: T): void;

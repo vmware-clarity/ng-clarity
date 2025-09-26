@@ -15,8 +15,11 @@ import { ClrCombobox } from './combobox';
 import { ClrComboboxModule } from './combobox.module';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
+import { COMBOBOX_FOCUS_HANDLER_PROVIDER } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
 import { ClrIconModule } from '../../icon/icon.module';
+import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
+import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrPopoverContent } from '../../utils/popover/popover-content';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { delay } from '../../utils/testing/helpers.spec';
@@ -27,6 +30,7 @@ import { delay } from '../../utils/testing/helpers.spec';
       [placeholder]="placeholder"
       [(ngModel)]="selection"
       [clrMulti]="multi"
+      [clrEditable]="editable"
       (clrInputChange)="inputChanged($event)"
       (clrOpenChange)="openChanged($event)"
       [disabled]="disabled"
@@ -42,6 +46,7 @@ import { delay } from '../../utils/testing/helpers.spec';
 })
 class TestComponent {
   multi: boolean;
+  editable = false;
   selection: any;
   inputValue: string;
   openState: boolean;
@@ -67,7 +72,12 @@ export default function (): void {
       TestBed.configureTestingModule({
         imports: [ClrComboboxModule, ClrIconModule, FormsModule, NoopAnimationsModule],
         declarations: [TestComponent, ClrPopoverContent],
-        providers: [OptionSelectionService],
+        providers: [
+          OptionSelectionService,
+          IF_ACTIVE_ID_PROVIDER,
+          FOCUS_SERVICE_PROVIDER,
+          COMBOBOX_FOCUS_HANDLER_PROVIDER,
+        ],
       });
 
       fixture = TestBed.createComponent(TestComponent);
@@ -181,6 +191,30 @@ export default function (): void {
       it('contains an editable input', () => {
         const input = clarityElement.querySelector('.clr-combobox-input');
         expect(input).not.toBeNull();
+      });
+
+      it('keep input value on blur if combobox is editable', async () => {
+        fixture.componentInstance.editable = true;
+        const input = clarityElement.querySelector('.clr-combobox-input') as HTMLInputElement;
+        expect(input).not.toBeNull();
+        input.value = '4';
+        input.dispatchEvent(new Event('change'));
+        expect(input.value).toBe('4');
+        input.blur();
+        expect(input.value).toBe('4');
+      });
+
+      it('clear input value on blur if combobox is not editable', async () => {
+        fixture.componentInstance.editable = false;
+        toggleService.open = true;
+        const input = clarityElement.querySelector('.clr-combobox-input') as HTMLInputElement;
+        expect(input).not.toBeNull();
+        input.value = '4';
+        input.dispatchEvent(new Event('change'));
+        expect(input.value).toBe('4');
+        input.blur();
+        await delay(100);
+        expect(input.value).toBe('');
       });
 
       it('contains a options menu trigger', () => {

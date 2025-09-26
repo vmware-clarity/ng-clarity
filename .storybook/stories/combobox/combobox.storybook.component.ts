@@ -23,8 +23,16 @@ interface OptionGroup {
   imports: [CommonModule, FormsModule, ClrComboboxModule, ClrLoadingModule],
   template: `
     <clr-combobox-container>
-      <label [for]="id">{{ label }}</label>
+      <label [for]="id"
+        >{{ label }}
+        @if (clrMulti) {
+          <p>Model: {{ multiModel | json }}</p>
+        } @else {
+          <p>Model: {{ singleModel | json }}</p>
+        }
+      </label>
       <clr-combobox
+        [clrEditable]="clrEditable"
         [clrMulti]="clrMulti"
         [placeholder]="placeholder"
         [id]="id"
@@ -38,24 +46,38 @@ interface OptionGroup {
         [required]="controlRequired"
       >
         <ng-container *clrOptionSelected="let selected">
-          {{ selected }}
+          {{ objectValues ? selected.symbol : selected }}
         </ng-container>
         <clr-options>
           @if (useGroups) {
             @for (group of optionGroups; track group) {
               <clr-option-group [clrOptionGroupLabel]="group.groupName">
-                <clr-option *clrOptionItems="let option of group.options" [clrValue]="option.symbol">
-                  <ng-container *ngTemplateOutlet="defaultTemplate; context: { option: option }"></ng-container>
-                </clr-option>
+                <ng-template
+                  clrOptionItems
+                  [clrOptionItemsOf]="group.options"
+                  [clrOptionItemsField]="objectValues ? 'symbol' : undefined"
+                  let-option
+                >
+                  <clr-option [clrValue]="objectValues ? option : option.symbol">
+                    <ng-container *ngTemplateOutlet="defaultTemplate; context: { option: option }"></ng-container>
+                  </clr-option>
+                </ng-template>
               </clr-option-group>
             }
           } @else {
             <ng-container *ngTemplateOutlet="flatOptions"></ng-container>
           }
           <ng-template #flatOptions>
-            <clr-option *clrOptionItems="let element of elements" [clrValue]="element.symbol">
-              <ng-container *ngTemplateOutlet="defaultTemplate; context: { option: element }"></ng-container>
-            </clr-option>
+            <ng-template
+              clrOptionItems
+              [clrOptionItemsOf]="elements"
+              [clrOptionItemsField]="objectValues ? 'symbol' : undefined"
+              let-element
+            >
+              <clr-option [clrValue]="objectValues ? element : element.symbol">
+                <ng-container *ngTemplateOutlet="defaultTemplate; context: { option: element }"></ng-container>
+              </clr-option>
+            </ng-template>
           </ng-template>
         </clr-options>
       </clr-combobox>
@@ -79,6 +101,7 @@ interface OptionGroup {
   `,
 })
 export class StorybookComboboxComponent {
+  @Input() clrEditable = false;
   @Input() clrMulti = false;
   @Input() placeholder = 'Placeholder text';
   @Input() id = '';
@@ -90,6 +113,7 @@ export class StorybookComboboxComponent {
   @Input() helperText = 'Helper text';
   @Input() useGroups = true;
   @Input() multiLineItems = false;
+  @Input() objectValues = false;
 
   /**
    * If true, expects `elements` as array of strings (flat list).

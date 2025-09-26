@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { moduleMetadata, StoryObj } from '@storybook/angular';
+import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 
 import { StorybookComboboxComponent } from './combobox.storybook.component';
 import { CommonModules } from '../../helpers/common';
@@ -49,6 +49,7 @@ export default {
     updateOn: { control: { type: 'radio' }, options: ['change', 'blur', 'submit'] },
   },
   args: {
+    clrEditable: false,
     clrMulti: false,
     placeholder: 'Placeholder text',
     id: '',
@@ -59,6 +60,7 @@ export default {
     controlHelper: false,
     helperText: 'Helper text',
     useGroups: false,
+    objectValues: false,
     elements: elements,
     singleModel: 'Am',
     multiModel: ['Am', 'As', 'Ba'],
@@ -86,6 +88,32 @@ export const SingleSelectionDisabled: StoryObj = {
   },
 };
 
+export const SingleSelectionEditable: StoryObj = {
+  args: {
+    clrEditable: true,
+  },
+};
+export const SingleSelectionEditableWithObjectValues: StoryObj = {
+  args: {
+    clrEditable: true,
+    objectValues: true,
+  },
+  render: (args: StorybookComboboxComponent) => {
+    const transformedArgs = args;
+    transformedArgs.singleModel = transformedArgs.objectValues
+      ? { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 }
+      : ('Am' as any);
+    return {
+      props: {
+        ...args,
+      },
+      template: `
+        <storybook-combobox ${argsToTemplate(args)}></storybook-combobox>
+      `,
+    };
+  },
+};
+
 export const MultiSelection: StoryObj = {
   args: {
     clrMulti: true,
@@ -110,6 +138,38 @@ export const MultiSelectionDisabled: StoryObj = {
   args: {
     clrMulti: true,
     controlDisabled: true,
+  },
+};
+
+export const MultiSelectionEditable: StoryObj = {
+  args: {
+    clrMulti: true,
+    clrEditable: true,
+  },
+};
+export const MultiSelectionEditableWithObjectValues: StoryObj = {
+  args: {
+    clrMulti: true,
+    clrEditable: true,
+    objectValues: true,
+  },
+  render: (args: StorybookComboboxComponent) => {
+    const transformedArgs = args;
+    transformedArgs.multiModel = transformedArgs.objectValues
+      ? [
+          { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 },
+          { name: 'Berkelium', symbol: 'Bk', number: 97, electronegativity: 1.3 },
+          { name: 'Chlorine', symbol: 'Cl', number: 17, electronegativity: 3.16 },
+        ]
+      : (['Am', 'As', 'Ba'] as any);
+    return {
+      props: {
+        ...args,
+      },
+      template: `
+        <storybook-combobox ${argsToTemplate(args)}></storybook-combobox>
+      `,
+    };
   },
 };
 
