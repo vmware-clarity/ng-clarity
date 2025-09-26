@@ -38,11 +38,11 @@ jobs:
       - name: Create Temp Directory for Diff Artifacts
         run: mkdir -p ${{runner.temp}}/artifacts/
       - name: Download Changes
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v4
         with:
           pattern: visual-snapshot-changes-.+\.diff
           path: ${{runner.temp}}/artifacts/
-          run_id: ${{github.event.workflow_run.id}}
+          run-id: ${{github.event.workflow_run.id}}
       - name: Apply Changes
         id: apply-changes
         run: |
