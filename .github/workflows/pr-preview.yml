@@ -6,7 +6,6 @@ on:
       - completed
 permissions:
   actions: read
-  statuses: write
 jobs:
   pr-preview:
     timeout-minutes: 10
@@ -42,8 +41,16 @@ jobs:
           path: dist/docs/coverage
           run-id: ${{github.event.workflow_run.id}}
           github-token: ${{ github.token }}
+      - name: Check For Docs
+        id: check-for-docs
+        run: |
+          if [ -d dist/docs ] && [ "$(ls -A dist/docs)" ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Deploy Docs Preview
-        if: ${{steps.download-docs.outputs.found_artifact == 'true'}}
+        if: ${{ steps.check-for-docs.outputs.found == 'true' }}
         timeout-minutes: 5
         env:
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
