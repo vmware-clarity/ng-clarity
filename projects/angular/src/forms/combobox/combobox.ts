@@ -149,7 +149,6 @@ export class ClrCombobox<T>
   set multiSelect(value: boolean | string) {
     if (value) {
       this.optionSelectionService.selectionModel = new MultiSelectComboboxModel<T>();
-      this.optionSelectionService.selectionModel.displayField = this.displayField;
     } else {
       // in theory, setting this again should not cause errors even though we already set it in constructor,
       // since the initial call to writeValue (caused by [ngModel] input) should happen after this
