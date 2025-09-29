@@ -6,11 +6,17 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrDatagridSortOrder } from '@clr/angular';
+import { ClrDatagridComparatorInterface, ClrDatagridSortOrder } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
 import { PokemonComparator } from '../utils/pokemon-comparator';
+
+export class UserCreationComparator implements ClrDatagridComparatorInterface<User> {
+  compare(a: User, b: User) {
+    return a.creation.getTime() - b.creation.getTime();
+  }
+}
 
 @Component({
   selector: 'clr-datagrid-sorting-demo',
@@ -24,6 +30,7 @@ export class DatagridSortingDemo {
   sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
 
   pokemonComparator = new PokemonComparator();
+  userCreationComparator = new UserCreationComparator();
 
   constructor(inventory: Inventory) {
     inventory.size = 10;
