@@ -62,6 +62,6 @@ export class LabelStoryBookComponent extends RenderComponentStorybook {
   }
 
   labelClass(name: string) {
-    return `label-${name}`;
+    return name ? `label-${name}` : '';
   }
 }
