@@ -20271,6 +20271,7 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
         this.detailService = detailService;
         this.changeDetectorRef = changeDetectorRef;
         this.commonStrings = commonStrings;
+        this.disableUnsort = false;
         this.sortOrderChange = new EventEmitter();
         this.filterValueChange = new EventEmitter();
         /**
@@ -20358,10 +20359,11 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
             case ClrDatagridSortOrder.DESC:
                 this.sort(true);
                 break;
-            // the Unsorted case happens when the current state is neither Asc or Desc
+            // the Unsorted case happens when the current state is neither Asc nor Desc
             case ClrDatagridSortOrder.UNSORTED:
             default:
                 this._sort.clear();
+                this._sortDirection = null;
                 break;
         }
     }
@@ -20468,6 +20470,13 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
         if (!this.sortable) {
             return;
         }
+        if (!this.disableUnsort && reverse === undefined && this.sortOrder === ClrDatagridSortOrder.DESC) {
+            this._sortOrder = ClrDatagridSortOrder.UNSORTED;
+            this._sort.clear();
+            this._sortDirection = null;
+            this.sortOrderChange.emit(this._sortOrder);
+            return;
+        }
         this._sort.toggle(this._sortBy, reverse);
         // setting the private variable to not retrigger the setter logic
         this._sortOrder = this._sort.reverse ? ClrDatagridSortOrder.DESC : ClrDatagridSortOrder.ASC;
@@ -20519,14 +20528,17 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDatagridColumn, deps: [{ token: i0.ElementRef }, { token: Sort }, { token: FiltersProvider }, { token: i0.ViewContainerRef }, { token: DetailService }, { token: i0.ChangeDetectorRef }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrDatagridColumn, isStandalone: false, selector: "clr-dg-column", inputs: { filterStringPlaceholder: ["clrFilterStringPlaceholder", "filterStringPlaceholder"], filterNumberMaxPlaceholder: ["clrFilterNumberMaxPlaceholder", "filterNumberMaxPlaceholder"], filterNumberMinPlaceholder: ["clrFilterNumberMinPlaceholder", "filterNumberMinPlaceholder"], colType: ["clrDgColType", "colType"], field: ["clrDgField", "field"], sortBy: ["clrDgSortBy", "sortBy"], sortOrder: ["clrDgSortOrder", "sortOrder"], updateFilterValue: ["clrFilterValue", "updateFilterValue"] }, outputs: { sortOrderChange: "clrDgSortOrderChange", filterValueChange: "clrFilterValueChange" }, host: { attributes: { "role": "columnheader" }, properties: { "class.datagrid-column": "true", "attr.aria-sort": "ariaSort" } }, queries: [{ propertyName: "projectedFilter", first: true, predicate: CustomFilter, descendants: true }], viewQueries: [{ propertyName: "titleContainer", first: true, predicate: ["titleContainer"], descendants: true, read: ElementRef }], usesInheritance: true, usesOnChanges: true, hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrDatagridColumn, isStandalone: false, selector: "clr-dg-column", inputs: { filterStringPlaceholder: ["clrFilterStringPlaceholder", "filterStringPlaceholder"], filterNumberMaxPlaceholder: ["clrFilterNumberMaxPlaceholder", "filterNumberMaxPlaceholder"], filterNumberMinPlaceholder: ["clrFilterNumberMinPlaceholder", "filterNumberMinPlaceholder"], disableUnsort: ["clrDgDisableUnsort", "disableUnsort"], colType: ["clrDgColType", "colType"], field: ["clrDgField", "field"], sortBy: ["clrDgSortBy", "sortBy"], sortOrder: ["clrDgSortOrder", "sortOrder"], updateFilterValue: ["clrFilterValue", "updateFilterValue"] }, outputs: { sortOrderChange: "clrDgSortOrderChange", filterValueChange: "clrFilterValueChange" }, host: { attributes: { "role": "columnheader" }, properties: { "class.datagrid-column": "true", "attr.aria-sort": "ariaSort" } }, queries: [{ propertyName: "projectedFilter", first: true, predicate: CustomFilter, descendants: true }], viewQueries: [{ propertyName: "titleContainer", first: true, predicate: ["titleContainer"], descendants: true, read: ElementRef }], usesInheritance: true, usesOnChanges: true, hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
     <div class="datagrid-column-flex">
       @if (sortable) {
         <button class="datagrid-column-title" (click)="sort()" type="button" #titleContainer>
           <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
-          @if (sortDirection) {
-            <cds-icon shape="arrow" [attr.direction]="sortDirection" aria-hidden="true" class="sort-icon"></cds-icon>
-          }
+          <cds-icon
+            [attr.shape]="sortDirection ? 'arrow' : 'two-way-arrows'"
+            [attr.direction]="sortDirection ? sortDirection : 'left'"
+            aria-hidden="true"
+            class="sort-icon"
+          ></cds-icon>
         </button>
       }
       <!-- I'm really not happy with that select since it's not very scalable -->
@@ -20572,9 +20584,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
       @if (sortable) {
         <button class="datagrid-column-title" (click)="sort()" type="button" #titleContainer>
           <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
-          @if (sortDirection) {
-            <cds-icon shape="arrow" [attr.direction]="sortDirection" aria-hidden="true" class="sort-icon"></cds-icon>
-          }
+          <cds-icon
+            [attr.shape]="sortDirection ? 'arrow' : 'two-way-arrows'"
+            [attr.direction]="sortDirection ? sortDirection : 'left'"
+            aria-hidden="true"
+            class="sort-icon"
+          ></cds-icon>
         </button>
       }
       <!-- I'm really not happy with that select since it's not very scalable -->
@@ -20628,6 +20643,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
             }], filterNumberMinPlaceholder: [{
                 type: Input,
                 args: ['clrFilterNumberMinPlaceholder']
+            }], disableUnsort: [{
+                type: Input,
+                args: ['clrDgDisableUnsort']
             }], sortOrderChange: [{
                 type: Output,
                 args: ['clrDgSortOrderChange']
