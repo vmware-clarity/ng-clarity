@@ -32,7 +32,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           pattern: docs
-          path: dist/docs
+          path: dist
           run-id: ${{github.event.workflow_run.id}}
           github-token: ${{ github.token }}
       - name: Download Coverage Artifact
@@ -40,7 +40,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           pattern: coverage
-          path: dist/docs/coverage
+          path: dist/docs
           run-id: ${{github.event.workflow_run.id}}
           github-token: ${{ github.token }}
       - name: Check For Docs
