@@ -33,4 +33,4 @@ jobs:
         timeout-minutes: 5
         env:
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-        run: npx netlify-cli deploy --no-build --site ${{secrets.NETLIFY_SITE_NAME}}
+        run: npx netlify-cli@23.6.0 deploy --no-build --site ${{secrets.NETLIFY_SITE_NAME}}
