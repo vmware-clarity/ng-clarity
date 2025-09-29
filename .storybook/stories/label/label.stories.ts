@@ -21,13 +21,13 @@ export default {
   },
   args: {
     labelType: null,
+    badgeContent: '',
     labelTypes: [''],
     // story helpers
     clickable: false,
     closeIcon: false,
     disabled: false,
     cssLabel: true,
-    showBadge: false,
     showProjectedContent: false,
   },
 };
@@ -144,7 +144,7 @@ export const AngularComponentClickableWithBadge: StoryObj = {
     labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
     cssLabel: false,
     clickable: true,
-    showBadge: true,
+    badgeContent: '42',
   },
 };
 
@@ -172,6 +172,6 @@ export const AngularComponentDisabled: StoryObj = {
     cssLabel: false,
     clickable: true,
     closeIcon: true,
-    showBadge: true,
+    badgeContent: '42',
   },
 };

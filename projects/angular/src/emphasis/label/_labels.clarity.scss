@@ -23,7 +23,6 @@
     cds-icon,
     clr-icon {
       color: label-variables.$clr-label-font-color-light;
-      background-color: label-variables.getLabelColor($color, bg-color);
     }
   }
 
@@ -40,7 +39,6 @@
 
     cds-icon,
     clr-icon {
-      background: label-variables.getLabelColor($status, bg-color);
       color: label-variables.getLabelColor($status, color);
     }
   }
@@ -128,7 +126,6 @@
 
         cds-icon,
         clr-icon {
-          background: label-variables.$clr-label-bg-hover-color;
           color: label-variables.$clr-label-hover-color;
         }
       }
@@ -141,7 +138,6 @@
         cds-icon,
         clr-icon {
           color: label-variables.$clr-label-active-color;
-          background: label-variables.$clr-label-bg-active-color;
         }
       }
     }
@@ -169,7 +165,6 @@
 
       cds-icon,
       clr-icon {
-        background: label-variables.$clr-label-bg-disabled-color;
         color: label-variables.$clr-label-disabled-color;
       }
 

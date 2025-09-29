@@ -18,7 +18,7 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
       @if (cssLabel) {
         <span class="label" [ngClass]="labelClass(type)" [class.clickable]="clickable" [class.disabled]="disabled">
           <span class="text">{{ content }}</span>
-          @if (showBadge) {
+          @if (badgeContent) {
             <span class="badge">{{ badgeContent }}</span>
           }
           @if (closeIcon) {
@@ -29,7 +29,7 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
         <clr-label
           [clrColor]="type"
           [clrText]="content"
-          [clrBadgeContent]="badge"
+          [clrBadgeContent]="badgeContent"
           [clrClickable]="clickable"
           [clrDisabled]="disabled"
         >
@@ -48,22 +48,17 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
 })
 export class LabelStoryBookComponent extends RenderComponentStorybook {
   @Input() content = 'Hello World!';
-  @Input() badgeContent = '42';
+  @Input() badgeContent = '';
   @Input() cssLabel = true;
   @Input() clickable = false;
   @Input() disabled = false;
   @Input() closeIcon = false;
   @Input() showProjectedContent = false;
-  @Input() showBadge: false;
   @Input() labelTypes = [''];
   @Input() labelType = '';
 
   get labelList() {
     return this.labelType ? [this.labelType] : this.labelTypes;
-  }
-
-  get badge() {
-    return this.showBadge ? this.badgeContent : '';
   }
 
   labelClass(name: string) {
