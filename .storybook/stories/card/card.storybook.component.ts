@@ -24,12 +24,14 @@ import { createArray } from 'helpers/common';
       </div>
       <h3 *ngIf="header" class="card-header">
         {{ header }}
-        @for (alert of createArray(alertCount); track alert) {
-          <clr-alert>
-            <clr-alert-item>
-              <span class="alert-text">This alert indicates success.</span>
-            </clr-alert-item>
-          </clr-alert>
+        @if (showAlerts) {
+          @for (alert of createArray(alertCount); track alert) {
+            <clr-alert>
+              <clr-alert-item>
+                <span class="alert-text">This alert indicates success.</span>
+              </clr-alert-item>
+            </clr-alert>
+          }
         }
       </h3>
       <div class="card-block">
