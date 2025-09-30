@@ -211,7 +211,7 @@ export default function (): void {
         instance.virtualScroll.minBufferPx = 300;
         expect(instance.virtualScroll.minBufferPx).toBe(300);
 
-        expect(instance.virtualScroll.itemSize).toBe(24);
+        expect(instance.virtualScroll.itemSize).toBe(25);
         instance.virtualScroll.itemSize = 20;
         expect(instance.virtualScroll.itemSize).toBe(20);
 
@@ -287,17 +287,17 @@ export default function (): void {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         await waitRequiredCycles(fixture);
         // Row 15
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[9], 'PageDown, cells[9]');
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[9], 'PageDown, cells[9], Row 15');
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         await waitRequiredCycles(fixture);
 
         // Row 29
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[9], 'PageDown, cells[9]');
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[9], 'PageDown, cells[9], Row 29');
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         await waitRequiredCycles(fixture);
 
         // Row 20
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[17], 'PageUp, cells[17]');
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[17], 'PageUp, cells[17], Row 20');
         fixture.changeDetectorRef.detach();
       });
     });
