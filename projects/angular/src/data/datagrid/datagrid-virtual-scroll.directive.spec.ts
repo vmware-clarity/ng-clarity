@@ -47,7 +47,7 @@ export interface Cells {
             [clrVirtualRowsOf]="data.rows"
             [clrVirtualDataRange]="dataRange"
             [clrVirtualPersistItems]="persistItems"
-            [clrVirtualRowsItemSize]="24"
+            [clrVirtualRowsItemSize]="25"
             [clrVirtualRowsMinBufferPx]="200"
             [clrVirtualRowsMaxBufferPx]="400"
             [clrVirtualRowsTemplateCacheSize]="4000"

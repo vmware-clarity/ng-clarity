@@ -30,7 +30,8 @@
       --clr-table-cell-padding: var(--clr-table-cell-vertical-padding) var(--clr-table-cell-horizontal-padding);
       --clr-table-margin: #{density.$clr-base-vertical-offset-2xl} 0 0 0;
       --clr-table-fontsize: #{tokens.$cds-alias-typography-secondary-font-size};
-      --clr-table-row-height: #{density.$clr-base-dg-row-height};
+      --clr-table-cell-height: #{density.$clr-base-dg-row-height};
+      --clr-table-row-height: calc(var(--clr-table-cell-height) + var(--clr-table-borderwidth));
     }
 
     &,

@@ -80,7 +80,7 @@
   }
 }
 @mixin datagrid-action-button-styles(
-  $height: tables-variables.$clr-table-row-height,
+  $height: tables-variables.$clr-table-cell-height,
   $columnWidth: datagrid-variables.$clr-datagrid-fixed-column-size,
   $iconSize: datagrid-variables.$clr-datagrid-icon-size
 ) {
@@ -183,6 +183,7 @@
 
   .datagrid-row {
     border-top: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
+    min-height: tables-variables.$clr-table-row-height;
 
     &:first-of-type {
       border-top: none;
@@ -290,11 +291,11 @@
 
     .datagrid-signpost-trigger .signpost {
       margin: calc(-1 * density.$clr-base-vertical-offset-multi-row-inline-m) 0;
-      height: tables-variables.$clr-table-row-height;
+      height: tables-variables.$clr-table-cell-height;
 
       .signpost-trigger {
         height: inherit;
-        line-height: tables-variables.$clr-table-row-height;
+        line-height: tables-variables.$clr-table-cell-height;
       }
     }
 
@@ -653,11 +654,11 @@
 
       .datagrid-signpost-trigger .signpost {
         margin: calc(-1 * tokens.$cds-global-space-5) 0;
-        height: tables-variables.$clr-table-row-height;
+        height: tables-variables.$clr-table-cell-height;
 
         .signpost-trigger {
           height: inherit;
-          line-height: tables-variables.$clr-table-row-height;
+          line-height: tables-variables.$clr-table-cell-height;
         }
       }
 
@@ -766,9 +767,13 @@
 
     .datagrid-placeholder-container {
       flex: 1 1 auto;
-      display: flex;
+      display: none;
       justify-content: center;
       border-top: tokens.$cds-alias-object-border-width-100 solid tables-variables.$clr-table-border-color;
+
+      &:has(> .datagrid-placeholder.datagrid-empty) {
+        display: flex;
+      }
     }
 
     .datagrid-placeholder {
@@ -1645,9 +1650,7 @@
       gap: density.$clr-base-gap-xs;
       max-height: mixins.baselinePx(300);
       overflow-y: auto;
-      min-height: calc(
-        tables-variables.$clr-table-row-height + tokens.$cds-alias-object-border-width-100
-      ); // prevents scrollbars in IE.
+      min-height: tables-variables.$clr-table-row-height; // prevents scrollbars in IE.
 
       // Increase specificity
       &.list-unstyled {

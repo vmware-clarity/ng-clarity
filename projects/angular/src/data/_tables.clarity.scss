@@ -42,7 +42,7 @@
     }
 
     #{$td} {
-      min-height: table-variables.$clr-table-row-height;
+      min-height: table-variables.$clr-table-cell-height;
 
       @include mixins.generate-typography-token('BODY-14-RG-CPT');
     }
