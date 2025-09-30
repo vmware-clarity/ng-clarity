@@ -147,6 +147,13 @@ export const WithLongContentAndOpenActionsDropdown: StoryObj = {
   },
 };
 
+export const MultipleSeparatedAlerts: StoryObj = {
+  args: {
+    alertCount: 1,
+    alertTypes: ['info', 'info'],
+  },
+};
+
 function openDropdown({ canvasElement }: StoryContext) {
   canvasElement.querySelector<HTMLButtonElement>('button[clrDropdownTrigger]').click();
 
