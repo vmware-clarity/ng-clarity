@@ -1318,7 +1318,9 @@ export default function (): void {
       // |33c|34e|35d|36d|37d| -> row 5
       // |       |38d|39d|40d|
       // |41c|42e|43d|44d|45d| -> row 6
-      //      .........
+      // |       |46d|47e|48d|
+      // |49c|50e|51d|52d|53d| -> row 7
+      // |54c|55e|56d|57d|58d| -> row 8
       // |59c|60e|61d|62d|63d| -> row 9
 
       // Covers key navigation over data cells
@@ -1411,29 +1413,29 @@ export default function (): void {
 
         // PageUp: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[5].querySelector('[type=checkbox]'), 'PageUp, cells[5]');
-
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        expectActiveElementToBe(cells[10].querySelector('[type=checkbox]'));
+        expectActiveElementToBe(cells[10].querySelector('[type=checkbox]'), 'PageUp, cells[10]');
 
         // PageDown: from not expanded row to expanded sub row (goes to main row)
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[33].querySelector('[type=checkbox]'), 'PageDown, cells[33]');
+        expectActiveElementToBe(cells[25].querySelector('[type=checkbox]'), 'PageDown, cells[25]');
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[54].querySelector('[type=checkbox]'), 'PageDown, cells[54]');
+        expectActiveElementToBe(cells[41].querySelector('[type=checkbox]'), 'PageDown, cells[41]');
 
         // PageUp: from not expanded row to expanded sub row (goes to main row)
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[33].querySelector('[type=checkbox]'), 'PageUp, cells[33]');
+        expectActiveElementToBe(cells[25].querySelector('[type=checkbox]'), 'PageUp, cells[25]');
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expectActiveElementToBe(cells[33].querySelector('[type=checkbox]'));
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[54].querySelector('[type=checkbox]'), 'PageDown, cells[54]');
+        expectActiveElementToBe(cells[49].querySelector('[type=checkbox]'), 'PageDown, cells[49]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        expectActiveElementToBe(cells[59].querySelector('[type=checkbox]'));
+        expectActiveElementToBe(cells[54].querySelector('[type=checkbox]'));
 
         // PageUp: from not expanded row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
@@ -1839,10 +1841,10 @@ export default function (): void {
 
         // PageUp: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[5].querySelector('[type=checkbox]'), 'PageUp, cells[5]');
+        expectActiveElementToBe(cells[10].querySelector('[type=checkbox]'), 'PageUp, cells[10]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        expectActiveElementToBe(cells[10].querySelector('[type=checkbox]'));
+        expectActiveElementToBe(cells[15].querySelector('[type=checkbox]'));
 
         // PageDown: from not expanded row to expanded sub row (goes to main row)
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
@@ -1850,7 +1852,7 @@ export default function (): void {
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[48].querySelector('[type=checkbox]'), 'PageDown, cells[48]');
+        expectActiveElementToBe(cells[43].querySelector('[type=checkbox]'), 'PageDown, cells[43] 1');
 
         // PageUp: from not expanded row to expanded sub row (goes to main row)
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
@@ -1858,7 +1860,7 @@ export default function (): void {
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[48].querySelector('[type=checkbox]'), 'PageDown, cells[48]');
+        expectActiveElementToBe(cells[48].querySelector('[type=checkbox]'), 'PageDown, cells[48] 1');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expectActiveElementToBe(cells[53].querySelector('[type=checkbox]'));
