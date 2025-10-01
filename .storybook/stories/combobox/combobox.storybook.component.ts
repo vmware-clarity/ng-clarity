@@ -23,14 +23,7 @@ interface OptionGroup {
   imports: [CommonModule, FormsModule, ClrComboboxModule, ClrLoadingModule],
   template: `
     <clr-combobox-container>
-      <label [for]="id"
-        >{{ label }}
-        @if (clrMulti) {
-          <p>Model: {{ multiModel | json }}</p>
-        } @else {
-          <p>Model: {{ singleModel | json }}</p>
-        }
-      </label>
+      <label [for]="id">{{ label }}</label>
       <clr-combobox
         [clrEditable]="clrEditable"
         [clrMulti]="clrMulti"
