@@ -18,7 +18,7 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
   standalone: true,
   template: `
     <section *ngIf="componentDescription" [innerHTML]="componentDescription"></section>
-    <div *ngFor="let alert of alertTypes" style="margin-top: 5px">
+    <div *ngFor="let alert of alertTypes">
       <clr-alert
         [clrAlertClosable]="clrAlertClosable"
         [clrAlertIcon]="clrAlertIcon"

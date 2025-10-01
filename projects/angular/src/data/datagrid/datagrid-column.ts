@@ -50,9 +50,12 @@ import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.direct
       @if (sortable) {
         <button class="datagrid-column-title" (click)="sort()" type="button" #titleContainer>
           <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
-          @if (sortDirection) {
-            <cds-icon shape="arrow" [attr.direction]="sortDirection" aria-hidden="true" class="sort-icon"></cds-icon>
-          }
+          <cds-icon
+            [attr.shape]="sortDirection ? 'arrow' : 'two-way-arrows'"
+            [attr.direction]="sortDirection ? sortDirection : 'left'"
+            aria-hidden="true"
+            class="sort-icon"
+          ></cds-icon>
         </button>
       }
       <!-- I'm really not happy with that select since it's not very scalable -->
@@ -104,6 +107,7 @@ export class ClrDatagridColumn<T = any>
   @Input('clrFilterStringPlaceholder') filterStringPlaceholder: string;
   @Input('clrFilterNumberMaxPlaceholder') filterNumberMaxPlaceholder: string;
   @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder: string;
+  @Input('clrDgDisableUnsort') disableUnsort = false;
 
   @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
@@ -240,10 +244,11 @@ export class ClrDatagridColumn<T = any>
       case ClrDatagridSortOrder.DESC:
         this.sort(true);
         break;
-      // the Unsorted case happens when the current state is neither Asc or Desc
+      // the Unsorted case happens when the current state is neither Asc nor Desc
       case ClrDatagridSortOrder.UNSORTED:
       default:
         this._sort.clear();
+        this._sortDirection = null;
         break;
     }
   }
@@ -362,6 +367,14 @@ export class ClrDatagridColumn<T = any>
    */
   sort(reverse?: boolean) {
     if (!this.sortable) {
+      return;
+    }
+
+    if (!this.disableUnsort && reverse === undefined && this.sortOrder === ClrDatagridSortOrder.DESC) {
+      this._sortOrder = ClrDatagridSortOrder.UNSORTED;
+      this._sort.clear();
+      this._sortDirection = null;
+      this.sortOrderChange.emit(this._sortOrder);
       return;
     }
 
