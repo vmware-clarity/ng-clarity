@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../utils/variables/variables';
+@use '../../utils/variables/variables';
 
 // Usage: ./_labels.clarity.scss
 $clr-label-borderwidth: var(--clr-label-border-width) !default;
