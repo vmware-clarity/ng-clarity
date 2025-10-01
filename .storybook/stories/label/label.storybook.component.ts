@@ -5,42 +5,63 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ClrIconModule } from '@clr/angular';
+import { ClrIconModule, ClrLabel } from '@clr/angular';
 
 import { RenderComponentStorybook } from '../../helpers/render-component';
 
 @Component({
   selector: 'storybook-label',
   template: `
-    <ng-template #labelContent>
-      <span class="text">{{ content }}</span>
-      <ng-container #renderContainer></ng-container>
-      <cds-icon *ngIf="closeIcon" shape="close"></cds-icon>
-    </ng-template>
-    <ng-container *ngIf="clickable">
-      <a href="javascript://" class="label clickable" *ngFor="let type of labelList" [class]="type">
-        <ng-container *ngTemplateOutlet="labelContent"></ng-container>
-      </a>
-    </ng-container>
-    <ng-container *ngIf="!clickable">
-      <span class="label" *ngFor="let type of labelList" [class]="type">
-        <ng-container *ngTemplateOutlet="labelContent"></ng-container>
-      </span>
-    </ng-container>
+    @for (type of labelList; track type) {
+      @if (cssLabel) {
+        <span class="label" [ngClass]="labelClass(type)" [class.clickable]="clickable" [class.disabled]="disabled">
+          <span class="text">{{ content }}</span>
+          @if (badgeText) {
+            <span class="badge">{{ badgeText }}</span>
+          }
+          @if (closeIcon) {
+            <cds-icon shape="close"></cds-icon>
+          }
+        </span>
+      } @else {
+        <clr-label
+          [clrColor]="type"
+          [clrText]="content"
+          [clrBadgeText]="badgeText"
+          [clrClickable]="clickable"
+          [clrDisabled]="disabled"
+        >
+          @if (showProjectedContent) {
+            <span class="text">Projected {{ content }}</span>
+          }
+          @if (closeIcon) {
+            <cds-icon shape="close"></cds-icon>
+          }
+        </clr-label>
+      }
+    }
   `,
   standalone: true,
-  imports: [NgFor, NgIf, NgTemplateOutlet, ClrIconModule],
+  imports: [ClrIconModule, ClrLabel, NgClass],
 })
 export class LabelStoryBookComponent extends RenderComponentStorybook {
   @Input() content = 'Hello World!';
+  @Input() badgeText = '';
+  @Input() cssLabel = true;
   @Input() clickable = false;
+  @Input() disabled = false;
   @Input() closeIcon = false;
+  @Input() showProjectedContent = false;
   @Input() labelTypes = [''];
   @Input() labelType = '';
 
   get labelList() {
     return this.labelType ? [this.labelType] : this.labelTypes;
+  }
+
+  labelClass(name: string) {
+    return name ? `label-${name}` : '';
   }
 }

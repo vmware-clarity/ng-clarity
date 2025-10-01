@@ -60,7 +60,7 @@
     @extend %card-border-appearance;
 
     .alert {
-      @extend %card-space-between;
+      margin: 0 0 #{density.$clr-base-gap-s} 0;
     }
 
     .btn-link {

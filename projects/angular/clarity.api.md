@@ -564,13 +564,13 @@ export enum ClrBadgeColors {
     // (undocumented)
     Danger = "danger",
     // (undocumented)
-    Empty = "",
-    // (undocumented)
     Gray = "gray",
     // (undocumented)
     Info = "info",
     // (undocumented)
     LightBlue = "light-blue",
+    // (undocumented)
+    None = "",
     // (undocumented)
     Orange = "orange",
     // (undocumented)
@@ -1445,6 +1445,8 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     set colType(value: 'string' | 'number');
     customFilter: boolean;
     // (undocumented)
+    disableUnsort: boolean;
+    // (undocumented)
     get field(): string;
     set field(field: string);
     // (undocumented)
@@ -1491,7 +1493,7 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, never>;
 }
@@ -2419,7 +2421,7 @@ export class ClrEmphasisModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrEmphasisModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, [typeof ClrBadge], [typeof ClrAlertModule, typeof ClrBadge]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, [typeof ClrBadge, typeof ClrLabel], [typeof ClrAlertModule, typeof ClrBadge, typeof ClrLabel]>;
 }
 
 // @public (undocumented)
@@ -2932,6 +2934,50 @@ export class ClrInputModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrInputModule>;
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof ClrInput, typeof ClrInputContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIconModule, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrInput, typeof ClrInputContainer]>;
+}
+
+// @public (undocumented)
+export class ClrLabel {
+    // (undocumented)
+    badgeText: string;
+    // (undocumented)
+    clickable: boolean;
+    // (undocumented)
+    color: ClrLabelColors | string;
+    // (undocumented)
+    get colorClass(): string;
+    // (undocumented)
+    disabled: boolean;
+    // (undocumented)
+    textContent: string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeText": { "alias": "clrBadgeText"; "required": false; }; "textContent": { "alias": "clrText"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; }, {}, never, ["*"], true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLabel, never>;
+}
+
+// @public (undocumented)
+export enum ClrLabelColors {
+    // (undocumented)
+    Blue = "blue",
+    // (undocumented)
+    Danger = "danger",
+    // (undocumented)
+    Gray = "gray",
+    // (undocumented)
+    Info = "info",
+    // (undocumented)
+    LightBlue = "light-blue",
+    // (undocumented)
+    None = "",
+    // (undocumented)
+    Orange = "orange",
+    // (undocumented)
+    Purple = "purple",
+    // (undocumented)
+    Success = "success",
+    // (undocumented)
+    Warning = "warning"
 }
 
 // @public (undocumented)

@@ -18,7 +18,7 @@ class TestComponent {
   @ViewChild(ClrBadge) badgeInstance: ClrBadge;
 
   content = '';
-  color: ClrBadgeColors | string = ClrBadgeColors.Empty;
+  color: ClrBadgeColors | string = ClrBadgeColors.None;
 }
 
 describe('ClrBadge component', () => {

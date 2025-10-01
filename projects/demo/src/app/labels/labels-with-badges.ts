@@ -6,10 +6,13 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrLabelColors } from '@clr/angular';
 
 @Component({
   selector: 'clr-labels-with-badges-demo',
   templateUrl: './labels-with-badges.demo.html',
   standalone: false,
 })
-export class LabelsWithBadgesDemo {}
+export class LabelsWithBadgesDemo {
+  protected readonly ClrLabelColors = ClrLabelColors;
+}
