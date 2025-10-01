@@ -195,6 +195,7 @@
 
     &:first-of-type {
       border-top: none;
+      min-height: calc(tables-variables.$clr-table-row-height - tables-variables.$clr-table-borderwidth);
     }
 
     &:hover,
