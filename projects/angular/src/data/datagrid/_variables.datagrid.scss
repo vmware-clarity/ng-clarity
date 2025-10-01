@@ -95,7 +95,7 @@ $clr-datagrid-expandable-row-spinner-margin: calc(
 // @deprecated in favor of compact mode in density theme
 // using the compact value of spinner-variables.$clr-spinner-small-size as cds-global-space-7
 $clr-datagrid-compact-expandable-row-spinner-margin: calc(
-  (tables-variables.$clr-table-cell-height - #{tokens.$cds-global-space-7}) / 2
+  (tables-variables.$clr-table-compact-row-height - #{tokens.$cds-global-space-7}) / 2
 );
 $clr-datagrid-compact-fixed-column-size: calc(
   #{tokens.$cds-global-space-7} + (#{tables-variables.$clr-table-compact-horizontal-padding} * 2)
