@@ -8,7 +8,7 @@
 import { Component, Input } from '@angular/core';
 
 export enum ClrBadgeColors {
-  Empty = '',
+  None = '',
   Info = 'info',
   Warning = 'warning',
   Danger = 'danger',
@@ -29,7 +29,7 @@ export enum ClrBadgeColors {
   },
 })
 export class ClrBadge {
-  @Input('clrColor') color: ClrBadgeColors | string = ClrBadgeColors.Empty;
+  @Input('clrColor') color: ClrBadgeColors | string = ClrBadgeColors.None;
 
   get colorClass() {
     return this.color ? `badge-${this.color}` : '';

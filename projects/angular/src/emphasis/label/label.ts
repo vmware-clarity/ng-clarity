@@ -11,7 +11,7 @@ import { ClrIconModule } from '../../icon';
 import { ClrBadge } from '../badge';
 
 export enum ClrLabelColors {
-  Empty = '',
+  None = '',
   Info = 'info',
   Warning = 'warning',
   Danger = 'danger',
@@ -29,8 +29,8 @@ export enum ClrLabelColors {
       <span class="text">{{ textContent }}</span>
     }
 
-    @if (badgeContent) {
-      <clr-badge>{{ badgeContent }}</clr-badge>
+    @if (badgeText) {
+      <clr-badge>{{ badgeText }}</clr-badge>
     }
 
     <ng-content></ng-content>`,
@@ -43,8 +43,8 @@ export enum ClrLabelColors {
   imports: [ClrBadge, ClrIconModule],
 })
 export class ClrLabel {
-  @Input('clrColor') color: ClrLabelColors | string = ClrLabelColors.Empty;
-  @Input('clrBadgeContent') badgeContent = '';
+  @Input('clrColor') color: ClrLabelColors | string = ClrLabelColors.None;
+  @Input('clrBadgeText') badgeText = '';
   @Input('clrText') textContent = '';
   @Input('clrClickable') clickable = false;
   @Input('clrDisabled') disabled = false;

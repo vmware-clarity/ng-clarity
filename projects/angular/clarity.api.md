@@ -564,13 +564,13 @@ export enum ClrBadgeColors {
     // (undocumented)
     Danger = "danger",
     // (undocumented)
-    Empty = "",
-    // (undocumented)
     Gray = "gray",
     // (undocumented)
     Info = "info",
     // (undocumented)
     LightBlue = "light-blue",
+    // (undocumented)
+    None = "",
     // (undocumented)
     Orange = "orange",
     // (undocumented)
@@ -2932,7 +2932,7 @@ export class ClrInputModule {
 // @public (undocumented)
 export class ClrLabel {
     // (undocumented)
-    badgeContent: string;
+    badgeText: string;
     // (undocumented)
     clickable: boolean;
     // (undocumented)
@@ -2944,7 +2944,7 @@ export class ClrLabel {
     // (undocumented)
     textContent: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeContent": { "alias": "clrBadgeContent"; "required": false; }; "textContent": { "alias": "clrText"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; }, {}, never, ["*"], true, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeText": { "alias": "clrBadgeText"; "required": false; }; "textContent": { "alias": "clrText"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; }, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLabel, never>;
 }
@@ -2956,13 +2956,13 @@ export enum ClrLabelColors {
     // (undocumented)
     Danger = "danger",
     // (undocumented)
-    Empty = "",
-    // (undocumented)
     Gray = "gray",
     // (undocumented)
     Info = "info",
     // (undocumented)
     LightBlue = "light-blue",
+    // (undocumented)
+    None = "",
     // (undocumented)
     Orange = "orange",
     // (undocumented)

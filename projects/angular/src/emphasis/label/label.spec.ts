@@ -13,7 +13,7 @@ import { ClrLabel, ClrLabelColors } from './label';
 @Component({
   template: ` <clr-label
     [clrColor]="color"
-    [clrBadgeContent]="badgeContent"
+    [clrBadgeText]="badgeText"
     [clrText]="text"
     [clrClickable]="clickable"
     [clrDisabled]="disabled"
@@ -27,7 +27,7 @@ class TestComponent {
 
   projectedContent = '';
   text = '';
-  badgeContent = '';
+  badgeText = '';
   clickable = false;
   disabled = false;
   color: ClrLabelColors | string = ClrLabelColors.Empty;
@@ -70,16 +70,16 @@ describe('ClrLabel component', () => {
       expect(htmlElement).not.toBeNull();
 
       const newText = 'Hello World';
-      const badgeContent = '15';
+      const badgeText = '15';
       fixture.componentInstance.text = newText;
-      fixture.componentInstance.badgeContent = badgeContent;
+      fixture.componentInstance.badgeText = badgeText;
       fixture.detectChanges();
 
       const textElement = fixture.nativeElement.querySelector('.text');
       expect(textElement.textContent).toBe(newText);
 
       const badgeElement = fixture.nativeElement.querySelector('.badge');
-      expect(badgeElement.textContent).toBe(badgeContent);
+      expect(badgeElement.textContent).toBe(badgeText);
     });
 
     it('use API and projection for content', () => {
@@ -88,11 +88,11 @@ describe('ClrLabel component', () => {
       expect(htmlElement).not.toBeNull();
 
       const newText = 'Hello World';
-      const badgeContent = '15';
+      const badgeText = '15';
       const projectedText = 'Projected Cpontent';
       fixture.componentInstance.projectedContent = projectedText;
       fixture.componentInstance.text = newText;
-      fixture.componentInstance.badgeContent = badgeContent;
+      fixture.componentInstance.badgeText = badgeText;
       fixture.detectChanges();
 
       expect(htmlElement.textContent.trim()).toEndWith(projectedText);
@@ -101,7 +101,7 @@ describe('ClrLabel component', () => {
       expect(textElement.textContent).toBe(newText);
 
       const badgeElement = fixture.nativeElement.querySelector('.badge');
-      expect(badgeElement.textContent).toBe(badgeContent);
+      expect(badgeElement.textContent).toBe(badgeText);
     });
 
     it('change to regular colors', () => {

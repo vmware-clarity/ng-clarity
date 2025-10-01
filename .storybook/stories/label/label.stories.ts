@@ -21,7 +21,7 @@ export default {
   },
   args: {
     labelType: null,
-    badgeContent: '',
+    badgeText: '',
     labelTypes: [''],
     // story helpers
     clickable: false,
@@ -112,7 +112,7 @@ export const StatusLabelClickableWithClose: StoryObj = {
   },
 };
 
-export const AngularComponent: StoryObj = {
+export const LabelComponent: StoryObj = {
   argTypes: {
     labelType: { control: { type: 'select' }, options: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES] },
     cssLabel: { control: { disable: true }, table: { disable: true } },
@@ -123,7 +123,7 @@ export const AngularComponent: StoryObj = {
   },
 };
 
-export const AngularComponentWithProjectedContent: StoryObj = {
+export const LabelComponentWithProjectedContent: StoryObj = {
   argTypes: {
     labelType: { control: { type: 'select' }, options: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES] },
     cssLabel: { control: { disable: true }, table: { disable: true } },
@@ -135,7 +135,7 @@ export const AngularComponentWithProjectedContent: StoryObj = {
   },
 };
 
-export const AngularComponentClickableWithBadge: StoryObj = {
+export const LabelComponentClickableWithBadge: StoryObj = {
   argTypes: {
     labelType: { control: { disable: true }, table: { disable: true } },
     cssLabel: { control: { disable: true }, table: { disable: true } },
@@ -144,11 +144,11 @@ export const AngularComponentClickableWithBadge: StoryObj = {
     labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
     cssLabel: false,
     clickable: true,
-    badgeContent: '42',
+    badgeText: '42',
   },
 };
 
-export const AngularComponentClickableWithClose: StoryObj = {
+export const LabelComponentClickableWithClose: StoryObj = {
   argTypes: {
     labelType: { control: { disable: true }, table: { disable: true } },
     cssLabel: { control: { disable: true }, table: { disable: true } },
@@ -161,7 +161,7 @@ export const AngularComponentClickableWithClose: StoryObj = {
   },
 };
 
-export const AngularComponentDisabled: StoryObj = {
+export const LabelComponentDisabled: StoryObj = {
   argTypes: {
     labelType: { control: { disable: true }, table: { disable: true } },
     cssLabel: { control: { disable: true }, table: { disable: true } },
@@ -172,6 +172,6 @@ export const AngularComponentDisabled: StoryObj = {
     cssLabel: false,
     clickable: true,
     closeIcon: true,
-    badgeContent: '42',
+    badgeText: '42',
   },
 };

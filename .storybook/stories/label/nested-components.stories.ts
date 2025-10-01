@@ -20,7 +20,7 @@ const nestedComponents = [
       labelTypes: ['info'],
       closeIcon: true,
       cssLabel: false,
-      badgeContent: '1',
+      badgeText: '1',
     },
   },
   {
@@ -29,7 +29,7 @@ const nestedComponents = [
       clickable: true,
       labelTypes: ['success'],
       cssLabel: false,
-      badgeContent: '2',
+      badgeText: '2',
     },
   },
   {
@@ -37,7 +37,7 @@ const nestedComponents = [
     options: {
       labelTypes: ['warning'],
       cssLabel: false,
-      badgeContent: '3',
+      badgeText: '3',
     },
   },
   {
