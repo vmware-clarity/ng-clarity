@@ -30,7 +30,7 @@ class TestComponent {
   badgeText = '';
   clickable = false;
   disabled = false;
-  color: ClrLabelColors | string = ClrLabelColors.Empty;
+  color: ClrLabelColors | string = ClrLabelColors.None;
 }
 
 describe('ClrLabel component', () => {

@@ -25,7 +25,7 @@ export enum ClrLabelColors {
 
 @Component({
   selector: 'clr-label',
-  template: ` @if (textContent) {
+  template: `@if (textContent) {
       <span class="text">{{ textContent }}</span>
     }
 
