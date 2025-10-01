@@ -286,18 +286,18 @@ export default function (): void {
         expectActiveElementToBe(headerCheckboxCell);
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         await waitRequiredCycles(fixture);
-        // Row 15
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[9], 'PageDown, cells[9], Row 15');
+        // Row 14
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[8], 'PageDown, cells[8], Row 14');
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         await waitRequiredCycles(fixture);
 
-        // Row 29
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[9], 'PageDown, cells[9], Row 29');
+        // Row 28
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[8], 'PageDown, cells[8], Row 28');
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         await waitRequiredCycles(fixture);
 
-        // Row 20
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[17], 'PageUp, cells[17], Row 20');
+        // Row 19
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[16], 'PageUp, cells[16], Row 19');
         fixture.changeDetectorRef.detach();
       });
     });

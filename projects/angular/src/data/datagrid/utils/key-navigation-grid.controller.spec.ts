@@ -1860,10 +1860,10 @@ export default function (): void {
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[48].querySelector('[type=checkbox]'), 'PageDown, cells[48] 1');
+        expectActiveElementToBe(cells[43].querySelector('[type=checkbox]'), 'PageDown, cells[43] 2');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        expectActiveElementToBe(cells[53].querySelector('[type=checkbox]'));
+        expectActiveElementToBe(cells[48].querySelector('[type=checkbox]'));
 
         // PageUp: from not expanded row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));

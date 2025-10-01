@@ -149,6 +149,14 @@
           flex: 1 1 auto;
         }
       }
+
+      .datagrid-placeholder-container {
+        display: none;
+
+        &:has(> .datagrid-placeholder.datagrid-empty) {
+          display: flex;
+        }
+      }
     }
   }
 
@@ -767,13 +775,9 @@
 
     .datagrid-placeholder-container {
       flex: 1 1 auto;
-      display: none;
+      display: flex;
       justify-content: center;
       border-top: tokens.$cds-alias-object-border-width-100 solid tables-variables.$clr-table-border-color;
-
-      &:has(> .datagrid-placeholder.datagrid-empty) {
-        display: flex;
-      }
     }
 
     .datagrid-placeholder {
