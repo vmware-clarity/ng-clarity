@@ -1,0 +1,20 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+
+// Usage: ../popover/tooltip/_tooltips.clarity.scss
+$clr-tooltip-arrow-height: #{density.$clr-base-icon-size-xs} !default;
+$clr-tooltip-arrow-width: #{density.$clr-base-icon-size-xs} !default;
+// arrow width/height (12px) + distance (8px)
+$clr-tooltip-adjusted-margin: calc($clr-tooltip-arrow-height + density.$clr-base-vertical-offset-m) !default;
+
+$clr-tooltip-color: var(--clr-tooltip-color) !default;
+$clr-tooltip-background-color: var(--clr-tooltip-background-color) !default;
+$clr-tooltip-border-radius: var(--clr-tooltip-border-radius) !default;
+$clr-tooltip-font-weight: var(--clr-tooltip-font-weight) !default;

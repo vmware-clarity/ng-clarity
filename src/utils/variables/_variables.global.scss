@@ -1,0 +1,90 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:math';
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+
+// Usage: ./_properties.clarity.scss
+// This will remove custom property declarations if set to false
+$clr-use-custom-properties: true !default;
+
+// Usage: ../typography/_typography.clarity.scss
+$clr-baseline-int: 24 !default; // used by design for relational sizing
+$clr-baseline-denominator: 20 !default; // used in code to reduce impact of browser rounding
+$browser-default-size: 16; // if font-size set to 100% on html selector, it equates to 16px
+// this takes our sizing in code, divides it by the browser default at 100%
+// and then converts it to a percentage so that browser settings sizing is not broken
+$clr-basefont-size: math.div($clr-baseline-denominator, $browser-default-size) * 100% !default;
+
+// DEPRECATED in 3.0; No longer sets anything now that we are using percentage
+$clr-font-base-size: 14 !default; // Moved from original needs a better name
+
+@function convertBaselineToBase20($size: 24) {
+  $clr-baseline-to-basefontsize-multiplier: math.div($clr-baseline-int, $clr-baseline-denominator);
+
+  @return math.div($size, $clr-baseline-int) * $clr-baseline-to-basefontsize-multiplier * 1rem;
+}
+
+// App bg color
+$clr-global-app-background: var(--clr-global-app-background) !default;
+
+// App selection color
+$clr-global-selection-color: var(--clr-global-selection-color) !default;
+$clr-global-on-selection-color: var(--clr-global-on-selection-color) !default;
+
+// App hover color
+$clr-global-hover-color: var(--clr-global-hover-color) !default;
+$clr-global-content-header-font-color: var(--clr-global-content-header-font-color) !default;
+$clr-global-font-color: var(--clr-global-font-color) !default;
+$clr-global-success-color: var(--clr-global-success-color) !default;
+$clr-global-error-color: var(--clr-global-error-color) !default;
+
+// TODO: Can any of this be grouped in a 'Layout' section?
+//5.Content Area Paddings
+$clr-content-area-padding-top: #{density.$clr-base-vertical-offset-2xl} !default;
+$clr-content-area-padding-right: #{density.$clr-base-horizontal-offset-2xl} !default;
+$clr-content-area-padding-bottom: #{density.$clr-base-vertical-offset-2xl} !default;
+$clr-content-area-padding-left: #{density.$clr-base-horizontal-offset-2xl} !default;
+
+// Close button colors
+// Usage: ../emphasis/alert/_alert.clarity.scss
+// Usage: ../modal/_modal.clarity.scss
+// Usage: ../popover/signpost/_signpost.clarity.scss
+$clr-close-color: var(--clr-close-color) !default;
+$clr-close-color-hover: var(--clr-close-color-hover) !default;
+$clr-close-color-active: var(--clr-close-color-active) !default;
+
+// Box Shadow
+$clr-popover-box-shadow-color: rgb(140 140 140 / 25%) !default;
+
+// All z-indexes should come from here, to have a centralized file to reorganize them if needed
+$clr-layers: (
+  content: 0,
+  select-box: 2,
+  datalist-box: 2,
+  datagrid-row: 500,
+  datagrid-row-sticky: 500,
+  datagrid-row-skeleton: 501,
+  datagrid-header: 501,
+  datagrid-header-sticky: 502,
+  datagrid-host: 590,
+  alert: 1033,
+  // Used by responsive nav sidepanel
+  sidepanel-bg: 1038,
+  sidepanel: 1039,
+  // Not used in Clarity but released by mistake in 17.2.0 and already consumed by teams through NGX
+  // see https://jira.eng.vmware.com/browse/CDE-2109
+  side-panel-bg: 1038,
+  side-panel: 1039,
+  modal-bg: 1040,
+  modal: 1050,
+  dropdown-menu: 1050,
+  column-switch: 1050,
+  tooltips: 1050,
+  smart-popover: 1050,
+) !default;
