@@ -31,9 +31,11 @@ $clr-thead-color: var(--clr-thead-color) !default;
 
 $clr-table-fontsize: var(--clr-table-fontsize) !default;
 
+$clr-table-cell-height: var(--clr-table-cell-height) !default;
 $clr-table-row-height: var(--clr-table-row-height) !default;
 // @deprecated ALL compact properties in favor of compact mode in density theme
 $clr-table-cell-compact-padding: var(--clr-table-cell-compact-padding) !default;
+$clr-table-compact-cell-height: var(--clr-table-compact-cell-height) !default;
 // @deprecated in v17 in favor of $clr-table-compact-row-height
 $clr-table--compact-rowHeight: var(--clr-table-compact-row-height) !default; // Leaving for backwards compatibility
 $clr-table-compact-row-height: $clr-table--compact-rowHeight;
