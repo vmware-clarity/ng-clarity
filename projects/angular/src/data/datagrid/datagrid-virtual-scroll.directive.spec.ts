@@ -57,7 +57,7 @@ export interface Cells {
         [clrVirtualRowsOf]="data.rows"
         [clrVirtualDataRange]="dataRange"
         [clrVirtualPersistItems]="persistItems"
-        [clrVirtualRowsItemSize]="24"
+        [clrVirtualRowsItemSize]="25"
         [clrVirtualRowsMinBufferPx]="200"
         [clrVirtualRowsMaxBufferPx]="400"
         [clrVirtualRowsTemplateCacheSize]="4000"
@@ -216,7 +216,7 @@ export default function (): void {
         instance.virtualScroll.minBufferPx = 300;
         expect(instance.virtualScroll.minBufferPx).toBe(300);
 
-        expect(instance.virtualScroll.itemSize).toBe(24);
+        expect(instance.virtualScroll.itemSize).toBe(25);
         instance.virtualScroll.itemSize = 20;
         expect(instance.virtualScroll.itemSize).toBe(20);
 
