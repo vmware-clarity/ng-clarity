@@ -102,7 +102,7 @@
     --clr-table-cell-vertical-padding: #{table-variables.$clr-table-compact-vertical-padding};
     #{$th},
     #{$td} {
-      min-height: table-variables.$clr-table-compact-row-height;
+      min-height: table-variables.$clr-table-compact-cell-height;
       padding: table-variables.$clr-table-cell-compact-padding;
     }
     #{$td} {
