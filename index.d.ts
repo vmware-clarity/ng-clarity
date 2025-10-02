@@ -2182,8 +2182,11 @@ declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     private readonly injector;
     renderedRangeChange: EventEmitter<ListRange>;
     persistItems: boolean;
+    private _isUserProvidedItemSize;
+    private _itemSize;
+    private _minBufferPx;
+    private _maxBufferPx;
     private shouldUpdateAriaRowIndexes;
-    private _cdkFixedSizeVirtualScrollInputs;
     private readonly datagridElementRef;
     private gridRoleElement;
     private readonly virtualScrollStrategy;
@@ -2221,6 +2224,7 @@ declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     scrollDown(offset: number, behavior?: ScrollBehavior): void;
     scrollToIndex(index: number, behavior?: ScrollBehavior): void;
     private updateDataRange;
+    private updateItemSize;
     private updateCdkVirtualForInputs;
     private updateFixedSizeVirtualScrollInputs;
     private updateAriaRowCount;
