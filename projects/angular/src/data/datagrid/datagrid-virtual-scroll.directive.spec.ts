@@ -47,7 +47,7 @@ export interface Cells {
             [clrVirtualRowsOf]="data.rows"
             [clrVirtualDataRange]="dataRange"
             [clrVirtualPersistItems]="persistItems"
-            [clrVirtualRowsItemSize]="24"
+            [clrVirtualRowsItemSize]="25"
             [clrVirtualRowsMinBufferPx]="200"
             [clrVirtualRowsMaxBufferPx]="400"
             [clrVirtualRowsTemplateCacheSize]="4000"
@@ -211,7 +211,7 @@ export default function (): void {
         instance.virtualScroll.minBufferPx = 300;
         expect(instance.virtualScroll.minBufferPx).toBe(300);
 
-        expect(instance.virtualScroll.itemSize).toBe(24);
+        expect(instance.virtualScroll.itemSize).toBe(25);
         instance.virtualScroll.itemSize = 20;
         expect(instance.virtualScroll.itemSize).toBe(20);
 
@@ -286,18 +286,18 @@ export default function (): void {
         expectActiveElementToBe(headerCheckboxCell);
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         await waitRequiredCycles(fixture);
-        // Row 15
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[9], 'PageDown, cells[9]');
+        // Row 14
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[8], 'PageDown, cells[8], Row 14');
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         await waitRequiredCycles(fixture);
 
-        // Row 29
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[9], 'PageDown, cells[9]');
+        // Row 28
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[8], 'PageDown, cells[8], Row 28');
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         await waitRequiredCycles(fixture);
 
-        // Row 20
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[17], 'PageUp, cells[17]');
+        // Row 19
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[16], 'PageUp, cells[16], Row 19');
         fixture.changeDetectorRef.detach();
       });
     });
