@@ -61,12 +61,6 @@ type CdkVirtualForInputs<T> = Partial<Pick<CdkVirtualForOf<T>, CdkVirtualForInpu
 
 type CdkFixedSizeVirtualScrollInputs = Pick<CdkFixedSizeVirtualScroll, 'itemSize' | 'minBufferPx' | 'maxBufferPx'>;
 
-const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = {
-  itemSize: 32,
-  minBufferPx: 200,
-  maxBufferPx: 400,
-};
-
 @Directive({
   selector: '[clrVirtualScroll],[ClrVirtualScroll]',
   providers: [Items],
@@ -76,7 +70,11 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   @Input('clrVirtualPersistItems') persistItems = true;
 
   private shouldUpdateAriaRowIndexes = false;
-  private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
+
+  private _isUserProvidedItemSize = false;
+  private _itemSize = 33;
+  private _minBufferPx = 200;
+  private _maxBufferPx = 400;
 
   private readonly datagridElementRef: ElementRef<HTMLElement>;
 
@@ -91,8 +89,12 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   private mutationChanges: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
     mutations.forEach((mutation: MutationRecord) => {
       // it is possible this to be called twice because the old class is removed and the new added
-      if ((mutation.target as HTMLElement).classList.contains('datagrid-compact') && this.itemSize > 24) {
-        this.itemSize = 24;
+      if (
+        !this._isUserProvidedItemSize &&
+        (mutation.target as HTMLElement).classList.contains('datagrid-compact') &&
+        this.itemSize > 25
+      ) {
+        this.updateItemSize(25);
       }
     });
   });
@@ -126,11 +128,18 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     // default
     this.cdkVirtualForTemplateCacheSize = 20;
 
-    const rowHeightToken = window.getComputedStyle(document.body).getPropertyValue('--clr-table-row-height');
-    const rowHeightValue = +/calc\(([0-9]+) \* calc\(\(1rem \/ 20\) \* 1\)\)/.exec(rowHeightToken)?.[1];
+    const cellHeightToken = window.getComputedStyle(document.body).getPropertyValue('--clr-table-cell-height');
+    const cellHeightValue = +/calc\(([0-9]+) \* calc\(\(1rem \/ 20\) \* 1\)\)/.exec(cellHeightToken)?.[1];
+
+    const borderWidthToken = window.getComputedStyle(document.body).getPropertyValue('--clr-table-borderwidth');
+    const borderWidthValue = +/calc\(([0-9]+) \* \(1rem \/ 20\)\)/.exec(borderWidthToken)?.[1];
+
+    // initially rowHeightValue is calculated based on `--clr-table-row-height` that had a discreet value.
+    // currently `--clr-table-row-height` is calculated based on `--clr-table-cell-height` + `--clr-table-borderwidth`
+    const rowHeightValue = cellHeightValue + borderWidthValue;
 
     if (rowHeightValue && this.itemSize > rowHeightValue) {
-      this.itemSize = rowHeightValue;
+      this.updateItemSize(rowHeightValue);
     }
 
     this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
@@ -138,11 +147,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       attributeOldValue: true,
     });
 
-    this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(
-      this._cdkFixedSizeVirtualScrollInputs.itemSize,
-      this._cdkFixedSizeVirtualScrollInputs.minBufferPx,
-      this._cdkFixedSizeVirtualScrollInputs.maxBufferPx
-    );
+    this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(this.itemSize, this.minBufferPx, this.maxBufferPx);
   }
 
   get totalContentHeight() {
@@ -188,28 +193,28 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
   @Input('clrVirtualRowsItemSize')
   get itemSize() {
-    return this._cdkFixedSizeVirtualScrollInputs.itemSize;
+    return this._itemSize;
   }
   set itemSize(value: CdkFixedSizeVirtualScrollInputs['itemSize']) {
-    this._cdkFixedSizeVirtualScrollInputs.itemSize = coerceNumberProperty(value);
-    this.updateFixedSizeVirtualScrollInputs();
+    this._isUserProvidedItemSize = true;
+    this.updateItemSize(value);
   }
 
   @Input('clrVirtualRowsMinBufferPx')
   get minBufferPx() {
-    return this._cdkFixedSizeVirtualScrollInputs.minBufferPx;
+    return this._minBufferPx;
   }
   set minBufferPx(value: CdkFixedSizeVirtualScrollInputs['minBufferPx']) {
-    this._cdkFixedSizeVirtualScrollInputs.minBufferPx = coerceNumberProperty(value);
+    this._minBufferPx = coerceNumberProperty(value);
     this.updateFixedSizeVirtualScrollInputs();
   }
 
   @Input('clrVirtualRowsMaxBufferPx')
   get maxBufferPx() {
-    return this._cdkFixedSizeVirtualScrollInputs.maxBufferPx;
+    return this._maxBufferPx;
   }
   set maxBufferPx(value: CdkFixedSizeVirtualScrollInputs['maxBufferPx']) {
-    this._cdkFixedSizeVirtualScrollInputs.maxBufferPx = coerceNumberProperty(value);
+    this._maxBufferPx = coerceNumberProperty(value);
     this.updateFixedSizeVirtualScrollInputs();
   }
 
@@ -323,6 +328,11 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.virtualScrollViewport?.scrollToIndex(index, behavior);
   }
 
+  private updateItemSize(value: CdkFixedSizeVirtualScrollInputs['itemSize']) {
+    this._itemSize = coerceNumberProperty(value);
+    this.updateFixedSizeVirtualScrollInputs();
+  }
+
   private updateDataRange(skip: number, data: T[]) {
     let items = this.cdkVirtualForOf as T[];
 
@@ -347,11 +357,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
   private updateFixedSizeVirtualScrollInputs() {
     if (this.virtualScrollStrategy) {
-      this.virtualScrollStrategy.updateItemAndBufferSize(
-        this._cdkFixedSizeVirtualScrollInputs.itemSize,
-        this._cdkFixedSizeVirtualScrollInputs.minBufferPx,
-        this._cdkFixedSizeVirtualScrollInputs.maxBufferPx
-      );
+      this.virtualScrollStrategy.updateItemAndBufferSize(this.itemSize, this.minBufferPx, this.maxBufferPx);
     }
   }
 

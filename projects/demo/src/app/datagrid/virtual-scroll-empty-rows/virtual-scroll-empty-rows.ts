@@ -31,7 +31,7 @@ export class DatagridVirtualScrollEmptyRowsDemo {
   persistItems = true;
   overflowEllipsis = true;
   datagridHeight = 700;
-  virtualScrollRowHeight = 24;
+  virtualScrollRowHeight = 25;
 
   dataRange: ClrDatagridVirtualScrollRangeInterface<User> = {
     total: this.totalRows,

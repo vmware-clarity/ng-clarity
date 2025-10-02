@@ -78,7 +78,7 @@
 }
 
 @mixin datagrid-action-button-styles(
-  $height: tables-variables.$clr-table-row-height,
+  $height: tables-variables.$clr-table-cell-height,
   $columnWidth: datagrid-variables.$clr-datagrid-fixed-column-size,
   $iconSize: datagrid-variables.$clr-datagrid-icon-size
 ) {
@@ -146,6 +146,14 @@
           flex: 1 1 auto;
         }
       }
+
+      .datagrid-placeholder-container {
+        display: none;
+
+        &:has(> .datagrid-placeholder.datagrid-empty) {
+          display: flex;
+        }
+      }
     }
   }
 
@@ -182,9 +190,12 @@
     border-top-style: solid;
     border-top-width: tables-variables.$clr-table-borderwidth;
     border-top-color: tables-variables.$clr-table-border-color;
+    min-height: tables-variables.$clr-table-row-height;
 
     &:first-of-type {
       border-top: none;
+
+      min-height: calc(tables-variables.$clr-table-row-height - tables-variables.$clr-table-borderwidth);
     }
 
     &:hover,
@@ -290,11 +301,11 @@
 
     .datagrid-signpost-trigger .signpost {
       margin: calc(-1 * density.$clr-base-vertical-offset-multi-row-inline-m) 0;
-      height: tables-variables.$clr-table-row-height;
+      height: tables-variables.$clr-table-cell-height;
 
       .signpost-trigger {
         height: inherit;
-        line-height: tables-variables.$clr-table-row-height;
+        line-height: tables-variables.$clr-table-cell-height;
       }
     }
 
@@ -642,11 +653,11 @@
 
       .datagrid-signpost-trigger .signpost {
         margin: calc(-1 * tokens.$cds-global-space-5) 0;
-        height: tables-variables.$clr-table-row-height;
+        height: tables-variables.$clr-table-cell-height;
 
         .signpost-trigger {
           height: inherit;
-          line-height: tables-variables.$clr-table-row-height;
+          line-height: tables-variables.$clr-table-cell-height;
         }
       }
 
@@ -1008,6 +1019,12 @@
     }
 
     .datagrid-row {
+      min-height: tables-variables.$clr-table-compact-row-height;
+
+      &:first-of-type {
+        min-height: calc(tables-variables.$clr-table-compact-row-height - tables-variables.$clr-table-borderwidth);
+      }
+
       .datagrid-row-detail .datagrid-cell.datagrid-container {
         font-size: mixins.baselinePx(13);
         line-height: tokens.$cds-global-space-8;
@@ -1576,9 +1593,7 @@
       gap: density.$clr-base-gap-xs;
       max-height: mixins.baselinePx(300);
       overflow-y: auto;
-      min-height: calc(
-        tables-variables.$clr-table-row-height + tokens.$cds-alias-object-border-width-100
-      ); // prevents scrollbars in IE.
+      min-height: tables-variables.$clr-table-row-height; // prevents scrollbars in IE.
 
       // Increase specificity
       &.list-unstyled {
