@@ -1318,9 +1318,7 @@ export default function (): void {
       // |33c|34e|35d|36d|37d| -> row 5
       // |       |38d|39d|40d|
       // |41c|42e|43d|44d|45d| -> row 6
-      // |       |46d|47e|48d|
-      // |49c|50e|51d|52d|53d| -> row 7
-      // |54c|55e|56d|57d|58d| -> row 8
+      //      .........
       // |59c|60e|61d|62d|63d| -> row 9
 
       // Covers key navigation over data cells
