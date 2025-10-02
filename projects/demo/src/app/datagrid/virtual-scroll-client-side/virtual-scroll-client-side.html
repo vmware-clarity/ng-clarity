@@ -53,9 +53,6 @@
     clrVirtualScroll
     let-row
     [clrVirtualRowsOf]="data.rows"
-    [clrVirtualRowsItemSize]="24"
-    [clrVirtualRowsMinBufferPx]="200"
-    [clrVirtualRowsMaxBufferPx]="400"
     [clrVirtualRowsTrackBy]="rowByIndex"
     (renderedRangeChange)="renderRangeChange($event)"
   >
@@ -144,7 +141,6 @@
     clrVirtualScroll
     let-user
     [clrVirtualRowsOf]="data.users"
-    [clrVirtualRowsItemSize]="32"
     [clrVirtualRowsMinBufferPx]="200"
     [clrVirtualRowsMaxBufferPx]="400"
     [clrVirtualRowsTemplateCacheSize]="400"

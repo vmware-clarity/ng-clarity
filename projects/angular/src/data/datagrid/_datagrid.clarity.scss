@@ -80,7 +80,7 @@
   }
 }
 @mixin datagrid-action-button-styles(
-  $height: tables-variables.$clr-table-row-height,
+  $height: tables-variables.$clr-table-cell-height,
   $columnWidth: datagrid-variables.$clr-datagrid-fixed-column-size,
   $iconSize: datagrid-variables.$clr-datagrid-icon-size
 ) {
@@ -149,6 +149,14 @@
           flex: 1 1 auto;
         }
       }
+
+      .datagrid-placeholder-container {
+        display: none;
+
+        &:has(> .datagrid-placeholder.datagrid-empty) {
+          display: flex;
+        }
+      }
     }
   }
 
@@ -183,9 +191,11 @@
 
   .datagrid-row {
     border-top: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
+    min-height: tables-variables.$clr-table-row-height;
 
     &:first-of-type {
       border-top: none;
+      min-height: calc(tables-variables.$clr-table-row-height - tables-variables.$clr-table-borderwidth);
     }
 
     &:hover,
@@ -273,6 +283,12 @@
       .clr-checkbox-wrapper,
       .clr-radio-wrapper {
         @include mixins.max-equilateral(density.$clr-base-icon-size-s);
+
+        .clr-control-label:has(.clr-sr-only) {
+          padding: 0;
+          min-height: tokens.$cds-global-space-1;
+          min-width: tokens.$cds-global-space-1;
+        }
       }
 
       &,
@@ -290,11 +306,11 @@
 
     .datagrid-signpost-trigger .signpost {
       margin: calc(-1 * density.$clr-base-vertical-offset-multi-row-inline-m) 0;
-      height: tables-variables.$clr-table-row-height;
+      height: tables-variables.$clr-table-cell-height;
 
       .signpost-trigger {
         height: inherit;
-        line-height: tables-variables.$clr-table-row-height;
+        line-height: tables-variables.$clr-table-cell-height;
       }
     }
 
@@ -624,9 +640,9 @@
           position: absolute;
           width: calc(tokens.$cds-global-space-6 + tokens.$cds-global-space-1);
           right: calc(-1 * tokens.$cds-global-space-4);
-          top: calc(-1 * tokens.$cds-global-space-4);
+          top: 0;
           cursor: col-resize;
-          height: calc(100% + #{tokens.$cds-global-space-6} - #{tokens.$cds-alias-object-border-width-100});
+          height: 100%;
           z-index: map.get(variables.$clr-layers, datagrid-header);
         }
 
@@ -653,11 +669,11 @@
 
       .datagrid-signpost-trigger .signpost {
         margin: calc(-1 * tokens.$cds-global-space-5) 0;
-        height: tables-variables.$clr-table-row-height;
+        height: tables-variables.$clr-table-cell-height;
 
         .signpost-trigger {
           height: inherit;
-          line-height: tables-variables.$clr-table-row-height;
+          line-height: tables-variables.$clr-table-cell-height;
         }
       }
 
@@ -1029,17 +1045,15 @@
       flex: 0 0 datagrid-variables.$clr-datagrid-compact-fixed-column-size;
       max-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
       min-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
-
-      .clr-checkbox-wrapper,
-      .clr-radio-wrapper {
-        .clr-control-label {
-          min-height: mixins.baselinePx(20);
-          padding: tokens.$cds-global-space-2 0;
-        }
-      }
     }
 
     .datagrid-row {
+      min-height: tables-variables.$clr-table-compact-row-height;
+
+      &:first-of-type {
+        min-height: calc(tables-variables.$clr-table-compact-row-height - tables-variables.$clr-table-borderwidth);
+      }
+
       .datagrid-row-detail .datagrid-cell.datagrid-container {
         font-size: mixins.baselinePx(13);
         line-height: tokens.$cds-global-space-8;
@@ -1070,7 +1084,7 @@
     .datagrid-detail-caret {
       .datagrid-detail-caret-button {
         @include datagrid-action-button-styles(
-          tables-variables.$clr-table-compact-row-height,
+          tables-variables.$clr-table-compact-cell-height,
           datagrid-variables.$clr-datagrid-compact-fixed-column-size,
           tokens.$cds-global-space-7
         );
@@ -1094,7 +1108,7 @@
 
       .datagrid-expandable-caret-button {
         @include datagrid-action-button-styles(
-          tables-variables.$clr-table-compact-row-height,
+          tables-variables.$clr-table-compact-cell-height,
           datagrid-variables.$clr-datagrid-compact-fixed-column-size,
           tokens.$cds-global-space-7
         );
@@ -1113,7 +1127,7 @@
     .datagrid-row-actions {
       .datagrid-action-toggle {
         @include datagrid-action-button-styles(
-          tables-variables.$clr-table-compact-row-height,
+          tables-variables.$clr-table-compact-cell-height,
           datagrid-variables.$clr-datagrid-compact-fixed-column-size,
           tokens.$cds-global-space-7
         );
@@ -1138,7 +1152,7 @@
         [shape='info'],
         [shape='error']
       ) {
-        @include mixins.equilateral(tables-variables.$clr-table-compact-row-height);
+        @include mixins.equilateral(tables-variables.$clr-table-compact-cell-height);
       }
     }
 
@@ -1645,9 +1659,7 @@
       gap: density.$clr-base-gap-xs;
       max-height: mixins.baselinePx(300);
       overflow-y: auto;
-      min-height: calc(
-        tables-variables.$clr-table-row-height + tokens.$cds-alias-object-border-width-100
-      ); // prevents scrollbars in IE.
+      min-height: tables-variables.$clr-table-row-height; // prevents scrollbars in IE.
 
       // Increase specificity
       &.list-unstyled {
