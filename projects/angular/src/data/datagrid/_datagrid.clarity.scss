@@ -1054,7 +1054,7 @@
     .datagrid-detail-caret {
       .datagrid-detail-caret-button {
         @include datagrid-action-button-styles(
-          tables-variables.$clr-table-compact-row-height,
+          tables-variables.$clr-table-compact-cell-height,
           datagrid-variables.$clr-datagrid-compact-fixed-column-size,
           tokens.$cds-global-space-7
         );
@@ -1077,7 +1077,7 @@
 
       .datagrid-expandable-caret-button {
         @include datagrid-action-button-styles(
-          tables-variables.$clr-table-compact-row-height,
+          tables-variables.$clr-table-compact-cell-height,
           datagrid-variables.$clr-datagrid-compact-fixed-column-size,
           tokens.$cds-global-space-7
         );
@@ -1096,7 +1096,7 @@
     .datagrid-row-actions {
       .datagrid-action-toggle {
         @include datagrid-action-button-styles(
-          tables-variables.$clr-table-compact-row-height,
+          tables-variables.$clr-table-compact-cell-height,
           datagrid-variables.$clr-datagrid-compact-fixed-column-size,
           tokens.$cds-global-space-7
         );
@@ -1106,7 +1106,7 @@
     .datagrid-signpost-trigger .signpost .signpost-trigger {
       cds-icon:not([size], [shape='info-circle'], [shape='exclamation-triangle'], [shape='exclamation-circle'], [shape='check-circle'], [shape='info'], [shape='error']),
       clr-icon:not([shape='info-circle'], [shape='exclamation-triangle'], [shape='exclamation-circle'], [shape='check-circle'], [shape='info'], [shape='error']) {
-        @include mixins.equilateral(tables-variables.$clr-table-compact-row-height);
+        @include mixins.equilateral(tables-variables.$clr-table-compact-cell-height);
       }
     }
 
