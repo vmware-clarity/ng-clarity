@@ -11,47 +11,37 @@ import { RenderComponentStorybook } from 'helpers/render-component';
 
 import { LabelStoryBookComponent } from './label.storybook.component';
 import { CommonModules } from '../../helpers/common';
-import { BadgeStoryBookComponent } from '../badge/badge.storybook.component';
 
 const nestedComponents = [
   {
     type: LabelStoryBookComponent,
     options: {
       clickable: false,
-      labelColorTypes: ['label-info'],
+      labelTypes: ['info'],
       closeIcon: true,
-      components: [
-        { type: BadgeStoryBookComponent, options: { context: '1', badgeTypes: [''], showLinkBadge: false } },
-      ],
+      cssLabel: false,
+      badgeText: '1',
     },
   },
   {
     type: LabelStoryBookComponent,
     options: {
       clickable: true,
-      labelColorTypes: ['label-success'],
-      components: [
-        { type: BadgeStoryBookComponent, options: { context: '2', badgeTypes: ['info'], showLinkBadge: false } },
-      ],
+      labelTypes: ['success'],
+      cssLabel: false,
+      badgeText: '2',
     },
   },
   {
     type: LabelStoryBookComponent,
     options: {
-      labelColorTypes: ['label-warning'],
-      components: [
-        {
-          type: BadgeStoryBookComponent,
-          options: { context: '3', badgeTypes: ['danger'], showLinkBadge: false },
-        },
-      ],
+      labelTypes: ['warning'],
+      cssLabel: false,
+      badgeText: '3',
     },
   },
   {
     type: LabelStoryBookComponent,
-    options: {
-      components: [{ type: BadgeStoryBookComponent, options: { badgeTypes: ['warning'], showLinkBadge: false } }],
-    },
   },
 ];
 

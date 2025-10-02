@@ -6,10 +6,10 @@
  */
 
 @use 'sass:meta';
-@use '../utils/mixins';
-@use 'badge/variables.badges' as badges-variables;
+@use '../../utils/mixins';
+@use '../badge/variables.badges' as badges-variables;
 @use 'variables.label' as label-variables;
-@use '../utils/variables/variables.density' as density;
+@use '../../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.label');
@@ -19,6 +19,11 @@
   &.label-#{$alias} {
     border: label-variables.$clr-label-borderwidth solid label-variables.getLabelColor($color, border-color);
     background-color: label-variables.getLabelColor($color, bg-color);
+
+    cds-icon,
+    clr-icon {
+      color: label-variables.$clr-label-font-color-light;
+    }
   }
 
   &.label-#{'' + $color} > .badge {
@@ -31,6 +36,11 @@
     background: label-variables.getLabelColor($status, bg-color);
     color: label-variables.getLabelColor($status, color);
     border: label-variables.$clr-label-borderwidth solid label-variables.getLabelColor($status, border-color);
+
+    cds-icon,
+    clr-icon {
+      color: label-variables.getLabelColor($status, color);
+    }
   }
   &.label-#{'' + $status} > .badge {
     background: badges-variables.getBadgeColor($status, bg-color);
@@ -93,6 +103,11 @@
 
     &:visited {
       color: label-variables.$clr-label-font-color-light;
+
+      cds-icon,
+      clr-icon {
+        color: label-variables.$clr-label-font-color-light;
+      }
     }
 
     &:focus,
@@ -102,16 +117,28 @@
     }
 
     &.clickable:not(.disabled) {
+      cursor: pointer;
+
       &:hover {
         text-decoration: none;
         background: label-variables.$clr-label-bg-hover-color;
         color: label-variables.$clr-label-hover-color;
+
+        cds-icon,
+        clr-icon {
+          color: label-variables.$clr-label-hover-color;
+        }
       }
 
       &:active {
         color: label-variables.$clr-label-active-color;
         background: label-variables.$clr-label-bg-active-color;
         transform: translateY(tokens.$cds-global-space-2);
+
+        cds-icon,
+        clr-icon {
+          color: label-variables.$clr-label-active-color;
+        }
       }
     }
 
@@ -132,13 +159,18 @@
     &.disabled,
     &:disabled {
       cursor: not-allowed;
-      pointer-events: none;
       background: label-variables.$clr-label-bg-disabled-color;
       color: label-variables.$clr-label-disabled-color;
       border-color: label-variables.$clr-label-disabled-border-color;
 
+      cds-icon,
+      clr-icon {
+        color: label-variables.$clr-label-disabled-color;
+      }
+
       .badge {
         background: label-variables.$clr-label-disabled-color;
+        color: label-variables.$clr-label-bg-disabled-color;
       }
     }
   }

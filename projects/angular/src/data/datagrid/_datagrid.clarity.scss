@@ -283,6 +283,12 @@
       .clr-checkbox-wrapper,
       .clr-radio-wrapper {
         @include mixins.max-equilateral(density.$clr-base-icon-size-s);
+
+        .clr-control-label:has(.clr-sr-only) {
+          padding: 0;
+          min-height: tokens.$cds-global-space-1;
+          min-width: tokens.$cds-global-space-1;
+        }
       }
 
       &,
@@ -634,9 +640,9 @@
           position: absolute;
           width: calc(tokens.$cds-global-space-6 + tokens.$cds-global-space-1);
           right: calc(-1 * tokens.$cds-global-space-4);
-          top: calc(-1 * tokens.$cds-global-space-4);
+          top: 0;
           cursor: col-resize;
-          height: calc(100% + #{tokens.$cds-global-space-6} - #{tokens.$cds-alias-object-border-width-100});
+          height: 100%;
           z-index: map.get(variables.$clr-layers, datagrid-header);
         }
 
@@ -1039,14 +1045,6 @@
       flex: 0 0 datagrid-variables.$clr-datagrid-compact-fixed-column-size;
       max-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
       min-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
-
-      .clr-checkbox-wrapper,
-      .clr-radio-wrapper {
-        .clr-control-label {
-          min-height: mixins.baselinePx(20);
-          padding: tokens.$cds-global-space-2 0;
-        }
-      }
     }
 
     .datagrid-row {
