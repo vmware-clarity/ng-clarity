@@ -134,6 +134,14 @@ export class ClrCombobox<T>
     this.updateControlValue();
   }
 
+  @Input('clrEditable')
+  get editable() {
+    return this.optionSelectionService.editable;
+  }
+  set editable(value: boolean) {
+    this.optionSelectionService.editable = value;
+  }
+
   @Input('clrMulti')
   get multiSelect() {
     return this.optionSelectionService.multiselectable;
@@ -229,12 +237,26 @@ export class ClrCombobox<T>
   @HostListener('keydown', ['$event'])
   onKeyUp(event: KeyboardEvent) {
     // if BACKSPACE in multiselect mode, delete the last pill if text is empty
-    if (event.key === Keys.Backspace && this.multiSelect && this._searchText.length === 0) {
+    if (this.multiSelect) {
       const multiModel: T[] = this.optionSelectionService.selectionModel.model as T[];
-      if (multiModel && multiModel.length > 0) {
-        const lastItem: T = multiModel[multiModel.length - 1];
-        this.control?.control.markAsTouched();
-        this.optionSelectionService.unselect(lastItem);
+      switch (event.key) {
+        case Keys.Backspace:
+          if (!this._searchText.length) {
+            if (multiModel && multiModel.length > 0) {
+              const lastItem: T = multiModel[multiModel.length - 1];
+              this.control?.control.markAsTouched();
+              this.optionSelectionService.unselect(lastItem);
+            }
+          }
+          break;
+        case Keys.Enter:
+          if (this.editable && this._searchText.length > 0 && this.options.emptyOptions) {
+            const parsedInput = this.optionSelectionService.parseStringToModel(this._searchText);
+            this.control?.control.markAsTouched();
+            this.optionSelectionService.select(parsedInput);
+            this.searchText = '';
+          }
+          break;
       }
     }
   }
@@ -276,6 +298,13 @@ export class ClrCombobox<T>
     this.cdr.detectChanges();
   }
 
+  onChange() {
+    if (this.editable && !this.multiSelect && this.options.emptyOptions) {
+      const parsedInput = this.optionSelectionService.parseStringToModel(this._searchText);
+      this.optionSelectionService.setSelectionValue(parsedInput);
+    }
+  }
+
   getSelectionAriaLabel() {
     if (this.containerService && this.containerService.labelText) {
       return `${this.containerService.labelText} ${this.commonStrings.keys.comboboxSelection}`;
@@ -311,8 +340,14 @@ export class ClrCombobox<T>
     // do nothing
   }
 
-  focusInput() {
+  onWrapperClick(event) {
+    if (this.disabled) {
+      return;
+    }
     this.focusHandler.focusInput();
+    if (this.editable || (!this.editable && this.trigger.nativeElement.contains(event.target))) {
+      this.toggleService.toggleWithEvent(event);
+    }
   }
 
   private initializeSubscriptions(): void {
@@ -331,6 +366,13 @@ export class ClrCombobox<T>
 
     this.subscriptions.push(
       this.toggleService.openChange.subscribe(open => {
+        if (this.editable && !this.multiSelect) {
+          if (this.searchText) {
+            this.optionSelectionService.showAllOptions = false;
+            this.optionSelectionService.currentInput = this.searchText;
+          }
+          return;
+        }
         if (open) {
           this.focusFirstActive();
         } else {

@@ -10,7 +10,7 @@ width of the component, after being wrapped to a new line -->
 <div
   class="clr-combobox-wrapper"
   clrPopoverAnchor
-  (click)="focusInput()"
+  (click)="onWrapperClick($event)"
   [class.multi]="multiSelect"
   [class.invalid]="invalid"
   [class.disabled]="control?.disabled? true: null"
@@ -63,6 +63,7 @@ width of the component, after being wrapped to a new line -->
     [(ngModel)]="searchText"
     (blur)="onBlur()"
     (focus)="onFocus()"
+    (change)="onChange()"
     [attr.aria-expanded]="openState"
     [attr.aria-owns]="ariaOwns"
     aria-haspopup="listbox"
@@ -76,7 +77,6 @@ width of the component, after being wrapped to a new line -->
 
   <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->
   <button
-    clrPopoverOpenCloseButton
     #trigger
     type="button"
     class="clr-combobox-trigger"

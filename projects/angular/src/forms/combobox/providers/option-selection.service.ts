@@ -14,7 +14,8 @@ import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 @Injectable()
 export class OptionSelectionService<T> {
   loading = false;
-  displayField: string;
+  editable = false;
+  filtering = true;
   selectionModel: ComboboxModel<T>;
   inputChanged: Observable<string>;
 
@@ -23,11 +24,22 @@ export class OptionSelectionService<T> {
   showAllOptions = true;
 
   private _currentInput = '';
+  private _displayField: string;
   private _inputChanged = new BehaviorSubject('');
   private _selectionChanged = new ReplaySubject<ComboboxModel<T>>(1);
 
   constructor() {
     this.inputChanged = this._inputChanged.asObservable();
+  }
+
+  get displayField() {
+    return this._displayField;
+  }
+  set displayField(value: string) {
+    this._displayField = value;
+    if (this.selectionModel) {
+      this.selectionModel.displayField = value;
+    }
   }
 
   get currentInput(): string {
@@ -93,5 +105,14 @@ export class OptionSelectionService<T> {
 
     this.selectionModel.model = value;
     this._selectionChanged.next(this.selectionModel);
+  }
+
+  parseStringToModel(value: string): T {
+    if (this.displayField) {
+      return {
+        [this.displayField]: value,
+      } as T;
+    }
+    return value as T;
   }
 }
