@@ -3649,6 +3649,7 @@ declare class ClrComboboxContainer extends ClrAbstractContainer implements After
 
 declare abstract class ComboboxModel<T> {
     model: T | T[];
+    displayField?: string;
     abstract containsItem(item: T): boolean;
     abstract select(item: T): void;
     abstract unselect(item: T): void;
@@ -3671,14 +3672,18 @@ declare class ClrOptionSelected<T> {
 
 declare class OptionSelectionService<T> {
     loading: boolean;
-    displayField: string;
+    editable: boolean;
+    filtering: boolean;
     selectionModel: ComboboxModel<T>;
     inputChanged: Observable<string>;
     showAllOptions: boolean;
     private _currentInput;
+    private _displayField;
     private _inputChanged;
     private _selectionChanged;
     constructor();
+    get displayField(): string;
+    set displayField(value: string);
     get currentInput(): string;
     set currentInput(input: string);
     get selectionChanged(): Observable<ComboboxModel<T>>;
@@ -3687,6 +3692,7 @@ declare class OptionSelectionService<T> {
     toggle(item: T): void;
     unselect(item: T): void;
     setSelectionValue(value: T | T[]): void;
+    parseStringToModel(value: string): T;
     static ɵfac: i0.ɵɵFactoryDeclaration<OptionSelectionService<any>, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<OptionSelectionService<any>>;
 }
@@ -3780,6 +3786,8 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     private onTouchedCallback;
     private onChangeCallback;
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, toggleService: ClrPopoverToggleService, positionService: ClrPopoverPositionService, controlStateService: IfControlStateService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
+    get editable(): boolean;
+    set editable(value: boolean);
     get multiSelect(): boolean | string;
     set multiSelect(value: boolean | string);
     get id(): string;
@@ -3801,6 +3809,7 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     unselect(item: T): void;
     onBlur(): void;
     onFocus(): void;
+    onChange(): void;
     getSelectionAriaLabel(): string;
     focusFirstActive(): void;
     writeValue(value: T | T[]): void;
@@ -3808,13 +3817,13 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     registerOnChange(onChange: any): void;
     getActiveDescendant(): string;
     setDisabledState(): void;
-    focusInput(): void;
+    onWrapperClick(event: any): void;
     private initializeSubscriptions;
     private updateInputValue;
     private updateControlValue;
     private getDisplayNames;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, null, { optional: true; }, { optional: true; }, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
 declare class ClrOption<T> implements OnInit {
@@ -3857,6 +3866,7 @@ declare class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy
      * Tests if the list of options is empty, meaning it doesn't contain any items
      */
     get emptyOptions(): boolean;
+    get editable(): boolean;
     get noResultsElementId(): string;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
