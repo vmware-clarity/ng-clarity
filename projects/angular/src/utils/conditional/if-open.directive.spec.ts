@@ -9,19 +9,19 @@ import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrIfOpen } from './if-open.directive';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../popover';
 
 export default function (): void {
   describe('IfOpen Directive', function () {
     describe('Typescript API', function () {
       beforeEach(function () {
-        TestBed.configureTestingModule({ declarations: [ClrIfOpen, IfOpenTest], providers: [ClrPopoverToggleService] });
+        TestBed.configureTestingModule({ declarations: [ClrIfOpen, IfOpenTest], providers: [ClrPopoverService] });
         this.fixture = TestBed.createComponent(IfOpenTest);
         this.fixture.detectChanges();
         this.testComponent = this.fixture.componentInstance;
         this.testElement = this.fixture.nativeElement;
         this.clarityDirective = this.fixture.componentInstance.directive;
-        this.toggleService = TestBed.inject(ClrPopoverToggleService);
+        this.toggleService = TestBed.inject(ClrPopoverService);
       });
 
       afterEach(function () {
@@ -70,13 +70,13 @@ export default function (): void {
 
     describe('View', function () {
       beforeEach(function () {
-        TestBed.configureTestingModule({ declarations: [ClrIfOpen, IfOpenTest], providers: [ClrPopoverToggleService] });
+        TestBed.configureTestingModule({ declarations: [ClrIfOpen, IfOpenTest], providers: [ClrPopoverService] });
         this.fixture = TestBed.createComponent(IfOpenTest);
         this.fixture.detectChanges();
         this.testComponent = this.fixture.componentInstance;
         this.testElement = this.fixture.nativeElement;
         this.clarityDirective = this.fixture.componentInstance.directive;
-        this.toggleService = TestBed.inject(ClrPopoverToggleService);
+        this.toggleService = TestBed.inject(ClrPopoverService);
       });
 
       afterEach(function () {

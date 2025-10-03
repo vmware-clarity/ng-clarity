@@ -21,9 +21,9 @@ import { startWith } from 'rxjs/operators';
 
 import { Point, Popover } from './popover';
 import { PopoverOptions } from './popover-options.interface';
+import { ClrPopoverService } from '../../utils';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 /**
  * Fallback to hide when *clrIfOpen is not being used
@@ -39,7 +39,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   closeOnOutsideClick = false;
 
   protected el: ElementRef<HTMLElement>;
-  protected toggleService: ClrPopoverToggleService;
+  protected popoverService: ClrPopoverService;
   protected renderer: Renderer2;
   protected ngZone: NgZone;
   protected ref: ChangeDetectorRef;
@@ -59,7 +59,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
     @SkipSelf() protected parentHost: ElementRef<HTMLElement>
   ) {
     this.el = injector.get(ElementRef);
-    this.toggleService = injector.get(ClrPopoverToggleService);
+    this.popoverService = injector.get(ClrPopoverService);
     this.renderer = injector.get(Renderer2);
     this.ngZone = injector.get(NgZone);
     this.ref = injector.get(ChangeDetectorRef);
@@ -67,7 +67,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
     this.anchorElem = parentHost.nativeElement;
 
     this.popoverInstance = new Popover(this.el.nativeElement);
-    this.subscription = this.toggleService.openChange.pipe(startWith(this.toggleService.open)).subscribe(open => {
+    this.subscription = this.popoverService.openChange.pipe(startWith(this.popoverService.open)).subscribe(open => {
       if (open) {
         this.anchor();
         this.attachESCListener();
@@ -78,7 +78,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
         this.renderer.addClass(this.el.nativeElement, isOffScreenClassName);
       }
     });
-    if (this.toggleService.open) {
+    if (this.popoverService.open) {
       this.anchor();
       this.attachESCListener();
     }
@@ -91,7 +91,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
         .anchor(this.anchorElem, this.anchorPoint, this.popoverPoint, this.popoverOptions)
         .subscribe(() => {
           // if a scroll event is detected, close the popover
-          this.toggleService.open = false;
+          this.popoverService.open = false;
         });
       this.attachOutsideClickListener();
     }
@@ -122,7 +122,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
         if (event && event.key) {
           if (normalizeKey(event.key) === Keys.Escape) {
             this.ngZone.run(() => {
-              this.toggleService.open = false;
+              this.popoverService.open = false;
               this.ref.markForCheck();
             });
           }
@@ -149,11 +149,11 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
     } else if (this.anchorElem.contains(event.target)) {
       return;
     }
-    this.toggleService.open = false;
+    this.popoverService.open = false;
   };
 
   private attachOutsideClickListener() {
-    if (this.closeOnOutsideClick && this.toggleService.open) {
+    if (this.closeOnOutsideClick && this.popoverService.open) {
       if (document && document.addEventListener) {
         // To listen outside click, the listener should catch the event during the capturing phase.
         // We have to do this ugly document check as Renderer2.listen doesn't allow passive/useCapture listen.

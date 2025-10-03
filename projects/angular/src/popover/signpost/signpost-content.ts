@@ -18,7 +18,7 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrCommonStringsService } from '../../utils';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { AbstractPopover } from '../common/abstract-popover';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
@@ -156,7 +156,7 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
    *
    */
   close() {
-    this.toggleService.open = false;
+    this.popoverService.open = false;
   }
 
   override ngOnDestroy() {

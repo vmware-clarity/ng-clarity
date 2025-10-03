@@ -10,6 +10,7 @@ import { Inject, Injectable, OnDestroy, Optional, PLATFORM_ID, Renderer2, SkipSe
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
+import { ClrPopoverService } from '../../../utils';
 import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
 import { FocusService } from '../../../utils/focus/focus.service';
 import { customFocusableItemProvider } from '../../../utils/focus/focusable-item/custom-focusable-item-provider';
@@ -17,7 +18,6 @@ import { FocusableItem } from '../../../utils/focus/focusable-item/focusable-ite
 import { Linkers } from '../../../utils/focus/focusable-item/linkers';
 import { wrapObservable } from '../../../utils/focus/wrap-observable';
 import { uniqueIdFactory } from '../../../utils/id-generator/id-generator.service';
-import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 
 @Injectable()
 export class DropdownFocusHandler implements OnDestroy, FocusableItem {
@@ -38,7 +38,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     @SkipSelf()
     @Optional()
     private parent: DropdownFocusHandler,
-    private toggleService: ClrPopoverToggleService,
+    private toggleService: ClrPopoverService,
     private focusService: FocusService,
     @Inject(PLATFORM_ID) private platformId: any
   ) {

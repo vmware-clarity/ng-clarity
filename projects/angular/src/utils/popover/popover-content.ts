@@ -5,12 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import {
-  AfterContentChecked,
+  ConnectedPosition,
+  Overlay,
+  OverlayConfig,
+  OverlayContainer,
+  OverlayRef,
+  STANDARD_DROPDOWN_BELOW_POSITIONS,
+} from '@angular/cdk/overlay';
+import { DomPortal } from '@angular/cdk/portal';
+import { DOCUMENT } from '@angular/common';
+import {
   Directive,
-  DOCUMENT,
+  ElementRef,
   EmbeddedViewRef,
-  EventEmitter,
   Inject,
   Input,
   OnDestroy,
@@ -19,161 +28,248 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 
+import { ClrAlignment } from './enums/alignment.enum';
+import { ClrAxis } from './enums/axis.enum';
+import { ClrSide } from './enums/side.enum';
 import { ClrPopoverPosition } from './interfaces/popover-position.interface';
-import { ClrPopoverEventsService } from './providers/popover-events.service';
-import { ClrPopoverPositionService } from './providers/popover-position.service';
-import { ClrPopoverToggleService } from './providers/popover-toggle.service';
+import { ClrPopoverService } from './providers/popover.service';
 
-// https://github.com/angular/angular/issues/20351#issuecomment-344009887
 /** @dynamic */
 @Directive({
   selector: '[clrPopoverContent]',
   standalone: false,
 })
-export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
+export class ClrPopoverContent implements OnDestroy {
   private view: EmbeddedViewRef<void>;
-  private subscriptions: Subscription[] = [];
-  private removeClickListenerFn: VoidFunction | null = null;
+  private domPortal: DomPortal;
+  private subscriptions = new Subscription();
+  private overlayRef: OverlayRef = null;
+  private preferredPosition: ConnectedPosition = {
+    originX: 'start',
+    originY: 'top',
+    overlayX: 'end',
+    overlayY: 'top',
+  };
 
-  private shouldRealign = false;
-  private previousContentHeight: number | null = null;
-
-  // Check-collector pattern:
-  // In order to get accurate content height/width values, we cannot calculate alignment offsets until
-  // after the projected content has stabilized.
-  // As multiple check events may happen in the same rendering cycle, we need to collect all events
-  // and only act after the content is really stable. Or we may get wrong intermediate positioning values.
-  // We will channel subsequent content check events through this observable.
-  private checkCollector = new EventEmitter<void>();
+  private positions: ConnectedPosition[] = STANDARD_DROPDOWN_BELOW_POSITIONS;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private container: ViewContainerRef,
     private template: TemplateRef<any>,
     private renderer: Renderer2,
-    private smartPositionService: ClrPopoverPositionService,
-    private smartEventsService: ClrPopoverEventsService,
-    private smartOpenService: ClrPopoverToggleService
-  ) {}
+    private overlay: Overlay,
+    private overlayContainer: OverlayContainer,
+    private popoverService: ClrPopoverService
+  ) {
+    overlayContainer.getContainerElement().classList.add('clr-container-element');
+  }
 
   @Input('clrPopoverContent')
   set open(value: boolean) {
-    this.smartOpenService.open = !!value;
+    this.popoverService.open = !!value;
   }
 
   @Input('clrPopoverContentAt')
-  set contentAt(position: ClrPopoverPosition) {
-    this.smartPositionService.position = position;
+  set contentAt(position: ClrPopoverPosition | ConnectedPosition[]) {
+    if (Array.isArray(position)) {
+      this.positions = position;
+    } else {
+      //TODO: remap these positions to something the CDK Overlay can use
+      this.parsePositionObject(position);
+    }
   }
 
   @Input('clrPopoverContentOutsideClickToClose')
   set outsideClickClose(clickToClose: boolean) {
-    this.smartEventsService.outsideClickClose = !!clickToClose;
+    this.popoverService.outsideClickClose = !!clickToClose;
   }
 
   @Input('clrPopoverContentScrollToClose')
   set scrollToClose(scrollToClose: boolean) {
-    this.smartEventsService.scrollToClose = !!scrollToClose;
-  }
-
-  ngAfterContentChecked(): void {
-    if (this.smartOpenService.open && this.view) {
-      const rootNodeOffsetHeight = this.view.rootNodes[0].offsetHeight;
-      if (
-        this.shouldRealign ||
-        (this.previousContentHeight !== null && this.previousContentHeight !== rootNodeOffsetHeight)
-      ) {
-        // Channel content-check event through the check-collector
-        this.previousContentHeight = rootNodeOffsetHeight;
-        this.checkCollector.emit();
-      }
-    }
+    this.popoverService.scrollToClose = !!scrollToClose;
   }
 
   ngAfterViewInit() {
-    this.subscriptions.push(
-      this.smartOpenService.openChange.subscribe(change => {
+    if (this.popoverService.open) {
+      this.showOverlay();
+    }
+    this.subscriptions.add(
+      this.popoverService.openChange.subscribe(change => {
         if (change) {
-          this.addContent();
+          this.showOverlay();
         } else {
-          this.removeContent();
-        }
-      }),
-      this.smartPositionService.shouldRealign.subscribe(() => {
-        this.shouldRealign = true;
-      }),
-      // Here we collect subsequent synchronously received content-check events and only take action
-      // at the end of the cycle. See below for details on the check-collector pattern.
-      this.checkCollector.pipe(debounceTime(0)).subscribe(() => {
-        this.alignContent();
-        this.shouldRealign = false;
-        if (this.view) {
-          this.renderer.setStyle(this.view.rootNodes[0], 'opacity', '1');
-          this.smartOpenService.popoverVisibleEmit(true);
+          this.removeOverlay();
         }
       })
     );
   }
 
   ngOnDestroy() {
-    this.removeContent();
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.removeOverlay();
+    this.subscriptions.unsubscribe();
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+      this.overlayRef = null;
+    }
   }
 
-  /**
-   * TODO(matt): investigate why DebugElement retains a reference to the nodes and causes a memory leak.
-   * A note about the use of appendChild/removeChild
-   * The DebugElement is keeping a reference to the detached node and its unclear why.
-   * This does warrant further investigation. But, since it doesn't happen in production mode
-   * it is a low priority issue for now.
-   */
-  private addContent() {
-    // Create the view container
-    this.view = this.container.createEmbeddedView(this.template);
-    const [rootNode] = this.view.rootNodes;
-    this.smartEventsService.contentRef = rootNode; // So we know where/what to set close focus on
-    this.renderer.addClass(rootNode, 'clr-popover-content');
-    // Reset to the begining of the document to be available for sizing/positioning calculations.
-    // If we add new content to the bottom it triggers changes in the layout that may lead to false anchor
-    // coordinates values.
-    this.renderer.setStyle(rootNode, 'top', '0px');
-    this.renderer.setStyle(rootNode, 'left', '0px');
-    // We need to hide it during the calculation phase, while it's not yet finally positioned.
-    this.renderer.setStyle(rootNode, 'opacity', '0');
-    this.removeClickListenerFn = this.renderer.listen(rootNode, 'click', event => {
-      this.smartOpenService.openEvent = event;
-    });
-    this.view.rootNodes.forEach(node => {
-      this.renderer.appendChild(this.document.body, node);
-    });
-    // Mark for realingment on the next content-check cycle.
-    this.shouldRealign = true;
+  private _createOverlayRef(): OverlayRef {
+    const overlay = this.overlay.create(
+      new OverlayConfig({
+        // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
+        positionStrategy: this.overlay
+          .position()
+          .flexibleConnectedTo(this.popoverService.anchorElementRef)
+          .withPositions([this.preferredPosition, ...this.positions]),
+        scrollStrategy: this.popoverService.scrollToClose
+          ? this.overlay.scrollStrategies.close()
+          : this.overlay.scrollStrategies.reposition(),
+        panelClass: 'clr-popover-content',
+        hasBackdrop: false,
+      })
+    );
+
+    this.subscriptions.add(
+      overlay.keydownEvents().subscribe(event => {
+        if (event.keyCode === ESCAPE && !hasModifierKey(event)) {
+          event.preventDefault();
+          this.popoverService.open = false;
+          this.popoverService.setOpenedButtonFocus();
+        }
+      })
+    );
+    this.subscriptions.add(
+      overlay.outsidePointerEvents().subscribe(event => {
+        // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
+        if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
+          return;
+        }
+        // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
+        if (this.popoverService.openEvent) {
+          if (
+            (this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
+            (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
+            this.popoverService.openEvent.target === event.target
+          ) {
+            return;
+          }
+        }
+
+        if (this.popoverService.outsideClickClose) {
+          this.popoverService.open = false;
+          this.popoverService.setOpenedButtonFocus();
+        }
+      })
+    );
+    this.subscriptions.add(
+      overlay.detachments().subscribe(() => {
+        this.popoverService.open = false;
+        this.popoverService.setOpenedButtonFocus();
+      })
+    );
+
+    return overlay;
   }
 
-  private removeContent(): void {
+  private showOverlay() {
+    if (!this.overlayRef) {
+      this.overlayRef = this._createOverlayRef();
+    }
+
+    if (!this.view) {
+      this.view = this.container.createEmbeddedView(this.template);
+      const [rootNode] = this.view.rootNodes;
+      this.popoverService.contentRef = new ElementRef(rootNode); // So we know where/what to set close focus on
+      this.domPortal = new DomPortal<HTMLElement>(this.popoverService.contentRef);
+    }
+    this.overlayRef.attach(this.domPortal);
+
+    setTimeout(() => this.popoverService.popoverVisibleEmit(true));
+  }
+
+  private removeOverlay(): void {
     if (!this.view) {
       return;
     }
-    if (this.removeClickListenerFn) {
-      this.removeClickListenerFn();
-      this.removeClickListenerFn = null;
+    if (this.overlayRef.hasAttached()) {
+      this.overlayRef.detach();
     }
-    this.view.rootNodes.forEach(node => this.renderer.removeChild(this.document.body, node));
-    this.container.clear();
-    delete this.view;
-    this.smartOpenService.popoverVisibleEmit(false);
+    if (this.domPortal.isAttached) {
+      this.domPortal.detach();
+    }
+    if (this.view) {
+      this.view.destroy();
+      this.view = null;
+    }
+
+    this.popoverService.popoverVisibleEmit(false);
   }
 
-  private alignContent() {
-    if (!this.view) {
-      return;
+  private parsePositionObject(position: ClrPopoverPosition) {
+    if (position.axis === ClrAxis.VERTICAL) {
+      // top or bottom
+      if (position.side === ClrSide.BEFORE) {
+        // above
+        this.preferredPosition.originY = 'top';
+        this.preferredPosition.overlayY = 'bottom';
+      } else {
+        // below
+        this.preferredPosition.originY = 'bottom';
+        this.preferredPosition.overlayY = 'top';
+      }
+      switch (position.anchor) {
+        case ClrAlignment.START:
+          this.preferredPosition.originX = 'start';
+          break;
+        case ClrAlignment.CENTER:
+          this.preferredPosition.originX = 'center';
+          break;
+        default: // end
+          this.preferredPosition.originX = 'end';
+      }
+      switch (position.content) {
+        case ClrAlignment.START:
+          this.preferredPosition.overlayX = 'start';
+          break;
+        case ClrAlignment.CENTER:
+          this.preferredPosition.overlayX = 'center';
+          break;
+        default: // end
+          this.preferredPosition.overlayX = 'end';
+      }
+    } else {
+      // Horizontal
+      if (position.side === ClrSide.BEFORE) {
+        // left
+        this.preferredPosition.originX = 'start';
+        this.preferredPosition.overlayX = 'end';
+      } else {
+        // right
+        this.preferredPosition.originX = 'end';
+        this.preferredPosition.overlayX = 'start';
+      }
+      switch (position.anchor) {
+        case ClrAlignment.START:
+          this.preferredPosition.originY = 'top';
+          break;
+        case ClrAlignment.CENTER:
+          this.preferredPosition.originY = 'center';
+          break;
+        default: // end
+          this.preferredPosition.originY = 'bottom';
+      }
+      switch (position.content) {
+        case ClrAlignment.START:
+          this.preferredPosition.overlayY = 'top';
+          break;
+        case ClrAlignment.CENTER:
+          this.preferredPosition.overlayY = 'center';
+          break;
+        default: // end
+          this.preferredPosition.overlayY = 'bottom';
+      }
     }
-
-    const positionCoords = this.smartPositionService.alignContent(this.view.rootNodes[0]);
-    this.renderer.setStyle(this.view.rootNodes[0], 'top', `${positionCoords.yOffset}px`);
-    this.renderer.setStyle(this.view.rootNodes[0], 'left', `${positionCoords.xOffset}px`);
-    this.smartOpenService.popoverAlignedEmit(this.view.rootNodes[0]);
   }
 }

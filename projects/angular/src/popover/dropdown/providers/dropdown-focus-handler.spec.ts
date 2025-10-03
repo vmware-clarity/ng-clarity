@@ -12,32 +12,32 @@ import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 import { isObservable, Observable } from 'rxjs';
 
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './dropdown-focus-handler.service';
+import { ClrPopoverService } from '../../../utils';
 import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
 import { FOCUS_SERVICE_PROVIDER, FocusService } from '../../../utils/focus/focus.service';
 import { FocusableItem } from '../../../utils/focus/focusable-item/focusable-item';
 import { MockFocusableItem } from '../../../utils/focus/focusable-item/focusable-item.mock';
 import { Linkers } from '../../../utils/focus/focusable-item/linkers';
-import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../../utils/testing/helpers.spec';
 
 @Component({
   selector: 'simple-host',
   template: '',
-  providers: [ClrPopoverToggleService, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
+  providers: [ClrPopoverService, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
   standalone: false,
 })
 class SimpleHost {}
 
 @Component({
   template: '<simple-host></simple-host>',
-  providers: [ClrPopoverToggleService, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
+  providers: [ClrPopoverService, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
   standalone: false,
 })
 class NestedHost {}
 
 interface TestContext {
   fixture: ComponentFixture<SimpleHost | NestedHost>;
-  toggleService: ClrPopoverToggleService;
+  toggleService: ClrPopoverService;
   focusService: FocusService;
   focusHandler: DropdownFocusHandler;
   trigger: HTMLElement;
@@ -52,7 +52,7 @@ export default function (): void {
       beforeEach(function (this: TestContext) {
         TestBed.configureTestingModule({ declarations: [SimpleHost] });
         this.fixture = TestBed.createComponent(SimpleHost);
-        this.toggleService = this.fixture.debugElement.injector.get(ClrPopoverToggleService);
+        this.toggleService = this.fixture.debugElement.injector.get(ClrPopoverService);
         this.focusService = this.fixture.debugElement.injector.get(FocusService);
         this.focusHandler = this.fixture.debugElement.injector.get(DropdownFocusHandler, null);
         this.trigger = document.createElement('button');
@@ -241,7 +241,7 @@ export default function (): void {
         TestBed.configureTestingModule({ declarations: [SimpleHost, NestedHost] });
         this.fixture = TestBed.createComponent(NestedHost);
         const nestedInjector = this.fixture.debugElement.query(By.directive(SimpleHost)).injector;
-        this.toggleService = nestedInjector.get(ClrPopoverToggleService);
+        this.toggleService = nestedInjector.get(ClrPopoverService);
         this.focusService = nestedInjector.get(FocusService);
         this.focusHandler = nestedInjector.get(DropdownFocusHandler, null);
         this.trigger = document.createElement('button');

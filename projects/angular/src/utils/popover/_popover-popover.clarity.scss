@@ -8,10 +8,16 @@
 @use 'sass:map';
 @use '../mixins';
 @use '../variables/variables.global';
+@use '@angular/cdk/overlay-prebuilt.css';
 
 @include mixins.exports('smart-popover.clarity') {
   .clr-popover-content {
     position: fixed;
+    z-index: map.get(variables.$clr-layers, smart-popover);
+  }
+
+  .clr-container-element {
+    // position: absolute;
     z-index: map.get(variables.$clr-layers, smart-popover);
   }
 }

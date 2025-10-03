@@ -8,7 +8,7 @@
 import { Directive, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverToggleService } from '../popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../popover';
 
 @Directive({
   selector: '[clrIfOpen]',
@@ -40,11 +40,11 @@ export class ClrIfOpen implements OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    private toggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     private template: TemplateRef<any>,
     private container: ViewContainerRef
   ) {
-    this.subscription = toggleService.openChange.subscribe(change => {
+    this.subscription = popoverService.openChange.subscribe(change => {
       this.updateView(change);
       this.openChange.emit(change);
     });
@@ -52,14 +52,14 @@ export class ClrIfOpen implements OnDestroy {
 
   /**
    * @description
-   * A property that gets/sets ClrPopoverToggleService.open with value.
+   * A property that gets/sets ClrPopoverService.open with value.
    */
   @Input('clrIfOpen')
   get open() {
-    return this.toggleService.open;
+    return this.popoverService.open;
   }
   set open(value: boolean | string) {
-    this.toggleService.open = value as boolean;
+    this.popoverService.open = value as boolean;
   }
 
   ngOnDestroy() {

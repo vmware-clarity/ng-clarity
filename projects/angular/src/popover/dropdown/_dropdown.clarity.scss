@@ -315,4 +315,18 @@
       }
     }
   }
+
+  .clr-dropdown {
+    .dropdown-menu {
+      display: none;
+      visibility: visible;
+    }
+  }
+
+  .clr-dropdown-container {
+    & > .dropdown-menu {
+      display: block;
+      visibility: visible;
+    }
+  }
 }

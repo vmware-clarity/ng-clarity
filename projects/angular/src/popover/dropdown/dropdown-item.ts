@@ -57,7 +57,7 @@ export class ClrDropdownItem {
   private onDropdownItemClick(): void {
     // Move focus back to the root dropdown trigger.
     // This is done BEFORE the dropdown is closed so that focus gets moved properly if a modal is opened.
-    if (this.dropdown.isMenuClosable && !this.disabled && this.dropdown.toggleService.open) {
+    if (this.dropdown.isMenuClosable && !this.disabled && this.dropdown.popoverService.open) {
       const rootDropdown = this.findRootDropdown();
 
       rootDropdown.focusHandler.focus();
