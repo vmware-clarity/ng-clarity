@@ -27,7 +27,10 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
     renderedRangeChange: EventEmitter<ListRange>;
     persistItems: boolean;
     private shouldUpdateAriaRowIndexes;
-    private _cdkFixedSizeVirtualScrollInputs;
+    private _isUserProvidedItemSize;
+    private _itemSize;
+    private _minBufferPx;
+    private _maxBufferPx;
     private readonly datagridElementRef;
     private gridRoleElement;
     private readonly virtualScrollStrategy;
@@ -64,6 +67,7 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
     scrollUp(offset: number, behavior?: ScrollBehavior): void;
     scrollDown(offset: number, behavior?: ScrollBehavior): void;
     scrollToIndex(index: number, behavior?: ScrollBehavior): void;
+    private updateItemSize;
     private updateDataRange;
     private updateCdkVirtualForInputs;
     private updateFixedSizeVirtualScrollInputs;

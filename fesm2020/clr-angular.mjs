@@ -21803,11 +21803,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-const defaultCdkFixedSizeVirtualScrollInputs = {
-    itemSize: 32,
-    minBufferPx: 200,
-    maxBufferPx: 400,
-};
 class ClrDatagridVirtualScrollDirective {
     constructor(changeDetectorRef, iterableDiffers, items, ngZone, renderer2, templateRef, viewContainerRef, directionality, scrollDispatcher, viewportRuler, datagrid, columnsService, injector) {
         this.changeDetectorRef = changeDetectorRef;
@@ -21826,15 +21821,20 @@ class ClrDatagridVirtualScrollDirective {
         this.renderedRangeChange = new EventEmitter();
         this.persistItems = true;
         this.shouldUpdateAriaRowIndexes = false;
-        this._cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
+        this._isUserProvidedItemSize = false;
+        this._itemSize = 33;
+        this._minBufferPx = 200;
+        this._maxBufferPx = 400;
         this.subscriptions = [];
         this.topIndex = 0;
         // @deprecated remove the mutation observer when `datagrid-compact` class is deleted
         this.mutationChanges = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 // it is possible this to be called twice because the old class is removed and the new added
-                if (mutation.target.classList.contains('datagrid-compact') && this.itemSize > 24) {
-                    this.itemSize = 24;
+                if (!this._isUserProvidedItemSize &&
+                    mutation.target.classList.contains('datagrid-compact') &&
+                    this.itemSize > 25) {
+                    this.updateItemSize(25);
                 }
             });
         });
@@ -21847,16 +21847,21 @@ class ClrDatagridVirtualScrollDirective {
         this.datagridElementRef = datagrid.el;
         // default
         this.cdkVirtualForTemplateCacheSize = 20;
-        const rowHeightToken = window.getComputedStyle(document.body).getPropertyValue('--clr-table-row-height');
-        const rowHeightValue = +/calc\(([0-9]+) \* calc\(\(1rem \/ 20\) \* 1\)\)/.exec(rowHeightToken)?.[1];
+        const cellHeightToken = window.getComputedStyle(document.body).getPropertyValue('--clr-table-cell-height');
+        const cellHeightValue = +/calc\(([0-9]+) \* calc\(\(1rem \/ 20\) \* 1\)\)/.exec(cellHeightToken)?.[1];
+        const borderWidthToken = window.getComputedStyle(document.body).getPropertyValue('--clr-table-borderwidth');
+        const borderWidthValue = +/calc\(([0-9]+) \* \(1rem \/ 20\)\)/.exec(borderWidthToken)?.[1];
+        // initially rowHeightValue is calculated based on `--clr-table-row-height` that had a discreet value.
+        // currently `--clr-table-row-height` is calculated based on `--clr-table-cell-height` + `--clr-table-borderwidth`
+        const rowHeightValue = cellHeightValue + borderWidthValue;
         if (rowHeightValue && this.itemSize > rowHeightValue) {
-            this.itemSize = rowHeightValue;
+            this.updateItemSize(rowHeightValue);
         }
         this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
             attributeFilter: ['class'],
             attributeOldValue: true,
         });
-        this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(this._cdkFixedSizeVirtualScrollInputs.itemSize, this._cdkFixedSizeVirtualScrollInputs.minBufferPx, this._cdkFixedSizeVirtualScrollInputs.maxBufferPx);
+        this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(this.itemSize, this.minBufferPx, this.maxBufferPx);
     }
     get totalContentHeight() {
         return this.virtualScrollViewport?._totalContentHeight || '';
@@ -21891,24 +21896,24 @@ class ClrDatagridVirtualScrollDirective {
         this.updateCdkVirtualForInputs();
     }
     get itemSize() {
-        return this._cdkFixedSizeVirtualScrollInputs.itemSize;
+        return this._itemSize;
     }
     set itemSize(value) {
-        this._cdkFixedSizeVirtualScrollInputs.itemSize = coerceNumberProperty(value);
-        this.updateFixedSizeVirtualScrollInputs();
+        this._isUserProvidedItemSize = true;
+        this.updateItemSize(value);
     }
     get minBufferPx() {
-        return this._cdkFixedSizeVirtualScrollInputs.minBufferPx;
+        return this._minBufferPx;
     }
     set minBufferPx(value) {
-        this._cdkFixedSizeVirtualScrollInputs.minBufferPx = coerceNumberProperty(value);
+        this._minBufferPx = coerceNumberProperty(value);
         this.updateFixedSizeVirtualScrollInputs();
     }
     get maxBufferPx() {
-        return this._cdkFixedSizeVirtualScrollInputs.maxBufferPx;
+        return this._maxBufferPx;
     }
     set maxBufferPx(value) {
-        this._cdkFixedSizeVirtualScrollInputs.maxBufferPx = coerceNumberProperty(value);
+        this._maxBufferPx = coerceNumberProperty(value);
         this.updateFixedSizeVirtualScrollInputs();
     }
     set dataRange(range) {
@@ -21979,6 +21984,10 @@ class ClrDatagridVirtualScrollDirective {
     scrollToIndex(index, behavior = 'auto') {
         this.virtualScrollViewport?.scrollToIndex(index, behavior);
     }
+    updateItemSize(value) {
+        this._itemSize = coerceNumberProperty(value);
+        this.updateFixedSizeVirtualScrollInputs();
+    }
     updateDataRange(skip, data) {
         let items = this.cdkVirtualForOf;
         if (!this.persistItems || !items || items?.length !== this.totalItems) {
@@ -21998,7 +22007,7 @@ class ClrDatagridVirtualScrollDirective {
     }
     updateFixedSizeVirtualScrollInputs() {
         if (this.virtualScrollStrategy) {
-            this.virtualScrollStrategy.updateItemAndBufferSize(this._cdkFixedSizeVirtualScrollInputs.itemSize, this._cdkFixedSizeVirtualScrollInputs.minBufferPx, this._cdkFixedSizeVirtualScrollInputs.maxBufferPx);
+            this.virtualScrollStrategy.updateItemAndBufferSize(this.itemSize, this.minBufferPx, this.maxBufferPx);
         }
     }
     updateAriaRowCount(rowCount) {
