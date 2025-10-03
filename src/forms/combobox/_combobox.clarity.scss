@@ -227,6 +227,10 @@
         padding-left: density.$clr-base-horizontal-offset-2xl;
       }
     }
+
+    &-hidden {
+      opacity: 0;
+    }
   }
 
   .clr-combobox-option {
