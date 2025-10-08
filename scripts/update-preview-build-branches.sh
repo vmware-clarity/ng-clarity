@@ -33,15 +33,8 @@ bump_and_push () {
   # Ensure analyzer has a commit to evaluate
   git commit --allow-empty -m "build(preview): trigger version bump for ${GIT_COMMIT_SHA}"
 
-  # Get next version via semantic-release
-  next_version=$(npx semantic-release --extends ./.releaserc.preview.js --dry-run --no-ci 2>&1 \
-    | awk '/The next release version is /{print $NF; exit}')
-
-  if [ -z "${next_version}" ]; then
-    shortsha=$(echo "${GIT_COMMIT_SHA}" | cut -c1-7)
-    next_version="0.0.0-preview.${shortsha}"
-    echo "semantic-release returned no version; using fallback ${next_version}"
-  fi
+  shortsha=$(echo "${GIT_COMMIT_SHA}" | cut -c1-7)
+  next_version="0.0.0-preview.${shortsha}"
 
   # Write version into package.json (no tags)
   npm version "${next_version}" --no-git-tag-version --allow-same-version
