@@ -5,8 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 
+import { ClrLabel } from '../../forms';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { Page } from './providers/page';
 
@@ -24,10 +25,14 @@ import { Page } from './providers/page';
 export class ClrDatagridPageSize {
   @Input('clrPageSizeOptions') pageSizeOptions: number[];
   @Input('clrPageSizeOptionsId') pageSizeOptionsId = uniqueIdFactory();
+  @ViewChild(ClrLabel, { static: true }) label: ClrLabel;
 
   constructor(public page: Page) {}
 
   ngOnInit() {
+    if (this.label) {
+      this.label.disableGrid();
+    }
     if (!this.pageSizeOptions || this.pageSizeOptions.length === 0) {
       this.pageSizeOptions = [this.page.size];
     }
