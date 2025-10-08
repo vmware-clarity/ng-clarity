@@ -11,7 +11,7 @@ import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
 import { ClrTooltipTrigger } from './tooltip-trigger';
 import { ClrTooltipModule } from './tooltip.module';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
@@ -24,24 +24,24 @@ class SimpleTest {
 
 interface TooltipContext extends TestContext<ClrTooltipTrigger, SimpleTest> {
   tooltipIdService: TooltipIdService;
-  toggleService: ClrPopoverToggleService;
+  popoverService: ClrPopoverService;
 }
 
 export default function (): void {
   describe('TooltipTrigger component', function (this: TooltipContext) {
     spec(ClrTooltipTrigger, SimpleTest, ClrTooltipModule, {
-      providers: [ClrPopoverToggleService, TooltipIdService, TooltipMouseService],
+      providers: [ClrPopoverService, TooltipIdService, TooltipMouseService],
     });
 
     beforeEach(function () {
-      this.toggleService = this.getClarityProvider(ClrPopoverToggleService);
+      this.popoverService = this.getClarityProvider(ClrPopoverService);
       this.tooltipIdService = this.getClarityProvider(TooltipIdService);
       this.detectChanges();
     });
 
     describe('TypeScript API', function () {
       it('notifies the IfOpen service', function () {
-        const toggleService = this.getClarityProvider(ClrPopoverToggleService);
+        const toggleService = this.getClarityProvider(ClrPopoverService);
         this.clarityDirective.showTooltip();
         expect(toggleService.open).toBe(true);
         this.clarityDirective.hideTooltip();

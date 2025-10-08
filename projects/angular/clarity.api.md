@@ -4800,7 +4800,7 @@ export class ClrTooltipModule {
 
 // @public (undocumented)
 export class ClrTooltipTrigger {
-    constructor(toggleService: ClrPopoverToggleService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService);
+    constructor(popoverService: ClrPopoverService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService);
     // (undocumented)
     ariaDescribedBy: string;
     // (undocumented)

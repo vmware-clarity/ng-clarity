@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 
 @Directive({
   selector: '[clrTooltipTrigger]',
@@ -27,7 +27,7 @@ export class ClrTooltipTrigger {
   private subs: Subscription[] = [];
 
   constructor(
-    private toggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     tooltipIdService: TooltipIdService,
     private tooltipMouseService: TooltipMouseService
   ) {
@@ -41,12 +41,12 @@ export class ClrTooltipTrigger {
 
   @HostListener('focus')
   showTooltip(): void {
-    this.toggleService.open = true;
+    this.popoverService.open = true;
   }
 
   @HostListener('blur')
   hideTooltip(): void {
-    this.toggleService.open = false;
+    this.popoverService.open = false;
   }
 
   @HostListener('mouseenter')
