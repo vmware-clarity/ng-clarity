@@ -13,7 +13,7 @@ const path = require('path');
 fs.copyFileSync('projects/ui/package.json', 'dist/clr-ui/package.json');
 fs.copyFileSync('projects/ui/README.md', 'dist/clr-ui/README.md');
 
-// Copies all scss fiels from angular directory
+// Copies all scss files from angular directory
 const files = glob.sync('projects/angular/**/*.scss');
 for (const file of files) {
   const dest = path.join('dist/clr-ui', path.relative('projects/angular', file));
