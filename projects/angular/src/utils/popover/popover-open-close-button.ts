@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, EventEmitter, HostListener, OnDestroy, Output } from '@angular/core';
+import { Directive, EventEmitter, HostListener, OnDestroy, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverService } from './providers/popover.service';
+import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 @Directive({
   selector: '[clrPopoverOpenCloseButton]',
@@ -22,12 +22,9 @@ export class ClrPopoverOpenCloseButton implements OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(
-    private popoverService: ClrPopoverService,
-    private elementRef: ElementRef
-  ) {
+  constructor(private toggleService: ClrPopoverToggleService) {
     this.subscriptions.push(
-      popoverService.openChange.subscribe(change => {
+      toggleService.openChange.subscribe(change => {
         this.openCloseChange.next(change);
       })
     );
@@ -35,8 +32,7 @@ export class ClrPopoverOpenCloseButton implements OnDestroy {
 
   @HostListener('click', ['$event'])
   handleClick(event: MouseEvent) {
-    this.popoverService.openButtonRef = this.elementRef;
-    this.popoverService.toggleWithEvent(event);
+    this.toggleService.toggleWithEvent(event);
   }
 
   ngOnDestroy() {

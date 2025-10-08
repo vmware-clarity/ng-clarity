@@ -9,13 +9,12 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 
 import { ClrPopoverAnchor } from './popover-anchor';
 import { spec, TestContext } from '../testing/helpers.spec';
-import { ClrPopoverEventsService } from './providers/popover-events.service';
-import { ClrPopoverToggleService } from './providers/popover-toggle.service';
+import { ClrPopoverService } from './providers/popover.service';
 
 @Component({
   selector: 'test-host',
   template: '<button #testAnchor clrPopoverAnchor>Smart Anchor</button>',
-  providers: [ClrPopoverEventsService, ClrPopoverToggleService],
+  providers: [ClrPopoverService],
   standalone: false,
 })
 class TestHost {
@@ -25,19 +24,19 @@ class TestHost {
 export default function (): void {
   describe('ClrPopoverAnchor', function () {
     type Context = TestContext<ClrPopoverAnchor, TestHost> & {
-      eventService: ClrPopoverEventsService;
+      popoverService: ClrPopoverService;
     };
 
     describe('Template API', () => {
       spec(ClrPopoverAnchor, TestHost, undefined);
 
       beforeEach(function (this: Context) {
-        this.eventService = this.getClarityProvider(ClrPopoverEventsService);
+        this.popoverService = this.getClarityProvider(ClrPopoverService);
         this.detectChanges();
       });
 
       it('registers the anchor element with the event service', function (this: Context) {
-        expect(this.eventService.anchorButtonRef).toEqual(this.hostComponent.anchor);
+        expect(this.popoverService.anchorElementRef).toEqual(this.hostComponent.anchor);
       });
     });
 

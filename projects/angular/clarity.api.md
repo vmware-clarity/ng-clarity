@@ -858,7 +858,7 @@ export class ClrCheckboxWrapper implements OnInit, OnDestroy {
 export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> implements ControlValueAccessor, LoadingListener, AfterContentInit {
     // Warning: (ae-forgotten-export) The symbol "ComboboxContainerService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ComboboxFocusHandler" needs to be exported by the entry point index.d.ts
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, toggleService: ClrPopoverService, controlStateService: IfControlStateService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, controlStateService: IfControlStateService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
     // (undocumented)
     get ariaControls(): string;
     // (undocumented)
@@ -4429,7 +4429,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
 
 // @public (undocumented)
 export class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
-    constructor(toggleService: ClrPopoverService);
+    constructor(popoverService: ClrPopoverService);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)

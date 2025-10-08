@@ -76,7 +76,7 @@ export class ClrCombobox<T>
   @Input('placeholder') placeholder = '';
 
   @Output('clrInputChange') clrInputChange = new EventEmitter<string>(false);
-  @Output('clrOpenChange') clrOpenChange = this.toggleService.openChange;
+  @Output('clrOpenChange') clrOpenChange = this.popoverService.openChange;
 
   /**
    * This output should be used to set up a live region using aria-live and populate it with updates that reflect each combobox change.
@@ -116,7 +116,7 @@ export class ClrCombobox<T>
     protected override el: ElementRef<HTMLElement>,
     public optionSelectionService: OptionSelectionService<T>,
     public commonStrings: ClrCommonStringsService,
-    private toggleService: ClrPopoverService,
+    private popoverService: ClrPopoverService,
     @Optional() private controlStateService: IfControlStateService,
     @Optional() private containerService: ComboboxContainerService,
     @Inject(PLATFORM_ID) private platformId: any,
@@ -170,7 +170,7 @@ export class ClrCombobox<T>
   set searchText(text: string) {
     // if input text has changed since last time, fire a change event so application can react to it
     if (text !== this._searchText) {
-      if (this.toggleService.open) {
+      if (this.popoverService.open) {
         this.optionSelectionService.showAllOptions = false;
       }
       this._searchText = text;
@@ -183,7 +183,7 @@ export class ClrCombobox<T>
   }
 
   get openState(): boolean {
-    return this.toggleService.open;
+    return this.popoverService.open;
   }
 
   get multiSelectModel(): T[] {
@@ -344,7 +344,7 @@ export class ClrCombobox<T>
     }
     this.focusHandler.focusInput();
     if (this.editable || (!this.editable && this.trigger.nativeElement.contains(event.target))) {
-      this.toggleService.toggleWithEvent(event);
+      this.popoverService.toggleWithEvent(event);
     }
   }
 
@@ -356,14 +356,14 @@ export class ClrCombobox<T>
         //   this.positionService.realign();
         // }
         if (!this.multiSelect && newSelection && !newSelection.isEmpty()) {
-          this.toggleService.open = false;
+          this.popoverService.open = false;
         }
         this.updateControlValue();
       })
     );
 
     this.subscriptions.push(
-      this.toggleService.openChange.subscribe(open => {
+      this.popoverService.openChange.subscribe(open => {
         if (this.editable && !this.multiSelect) {
           if (this.searchText) {
             this.optionSelectionService.showAllOptions = false;
@@ -385,7 +385,7 @@ export class ClrCombobox<T>
     );
 
     this.subscriptions.push(
-      this.toggleService.popoverAligned.subscribe(popoverNode => {
+      this.popoverService.popoverAligned.subscribe(popoverNode => {
         // When used outside a combobox container
         if (!this.containerService) {
           return;

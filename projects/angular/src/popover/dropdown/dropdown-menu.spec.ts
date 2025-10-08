@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownMenu } from './dropdown-menu';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { Point } from '../common/popover';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
@@ -37,7 +37,7 @@ export default function (): void {
     spec(ClrDropdownMenu, SimpleTest, null, { declarations: [ClrDropdown] });
 
     beforeEach(function (this: Context) {
-      this.getClarityProvider(ClrPopoverToggleService).open = true;
+      this.getClarityProvider(ClrPopoverService).open = true;
       this.detectChanges();
     });
 

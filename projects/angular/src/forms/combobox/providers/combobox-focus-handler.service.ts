@@ -32,7 +32,7 @@ export class ComboboxFocusHandler<T> {
 
   constructor(
     rendererFactory: RendererFactory2,
-    private toggleService: ClrPopoverService,
+    private popoverService: ClrPopoverService,
     private selectionService: OptionSelectionService<T>,
     @Inject(PLATFORM_ID) private platformId: any
   ) {
@@ -101,7 +101,7 @@ export class ComboboxFocusHandler<T> {
   }
 
   private handleFocusSubscription() {
-    this.toggleService.openChange.subscribe(open => {
+    this.popoverService.openChange.subscribe(open => {
       if (!open) {
         this.pseudoFocus.model = null;
       }
@@ -128,13 +128,13 @@ export class ComboboxFocusHandler<T> {
   }
 
   private openAndMoveTo(direction: ArrowKeyDirection) {
-    if (!this.toggleService.open) {
-      this.toggleService.openChange.pipe(take(1)).subscribe(open => {
+    if (!this.popoverService.open) {
+      this.popoverService.openChange.pipe(take(1)).subscribe(open => {
         if (open) {
           this.moveFocusTo(direction);
         }
       });
-      this.toggleService.open = true;
+      this.popoverService.open = true;
     } else {
       this.moveFocusTo(direction);
     }
@@ -147,7 +147,7 @@ export class ComboboxFocusHandler<T> {
     if (event) {
       switch (key) {
         case Keys.Enter:
-          if (this.toggleService.open && this.pseudoFocus.model) {
+          if (this.popoverService.open && this.pseudoFocus.model) {
             if (this.selectionService.multiselectable) {
               this.selectionService.toggle(this.pseudoFocus.model.value);
             } else {
@@ -157,8 +157,8 @@ export class ComboboxFocusHandler<T> {
           }
           break;
         case Keys.Space:
-          if (!this.toggleService.open) {
-            this.toggleService.open = true;
+          if (!this.popoverService.open) {
+            this.popoverService.open = true;
             preventDefault = true;
           }
           break;
@@ -178,9 +178,9 @@ export class ComboboxFocusHandler<T> {
             event.key !== Keys.Tab &&
             !(this.selectionService.multiselectable && event.key === Keys.Backspace) &&
             !(event.key === Keys.Escape) &&
-            !this.toggleService.open
+            !this.popoverService.open
           ) {
-            this.toggleService.open = true;
+            this.popoverService.open = true;
           }
           break;
       }
@@ -203,7 +203,7 @@ export class ComboboxFocusHandler<T> {
     if (isPlatformBrowser(this.platformId)) {
       this.renderer.listen(el, 'blur', event => {
         if (this.focusOutOfComponent(event)) {
-          this.toggleService.open = false;
+          this.popoverService.open = false;
           // Workaround for popover close-on-outside-click timing issues in Edge browser
           if (this.componentCdRef) {
             this.componentCdRef.detectChanges();

@@ -19,7 +19,7 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
 import { ClrModalModule } from '../../modal/modal.module';
 import { FocusService } from '../../utils/focus/focus.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { delay } from '../../utils/testing/helpers.spec';
 
@@ -199,7 +199,7 @@ export default function (): void {
     });
 
     it("doesn't close before custom click events have triggered", async function () {
-      const toggleService = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(ClrPopoverToggleService);
+      const popoverService = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(ClrPopoverService);
 
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
       dropdownToggle.click();
@@ -209,7 +209,7 @@ export default function (): void {
       nestedToggle.click();
       fixture.detectChanges();
 
-      subscription = toggleService.openChange.subscribe(() => {
+      subscription = popoverService.openChange.subscribe(() => {
         expect(fixture.componentInstance.customClickHandlerDone).toBe(true);
       });
 
@@ -219,7 +219,7 @@ export default function (): void {
       fixture.detectChanges();
 
       // Make sure the dropdown correctly closed, otherwise our expect() in the subscription might not have run.
-      expect(toggleService.open).toBe(false);
+      expect(popoverService.open).toBe(false);
     });
     it('puts focus back on the trigger when a dropdown item is clicked', async () => {
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
@@ -331,15 +331,15 @@ export default function (): void {
     });
 
     it('API toggles the menu when clicked on the trigger', () => {
-      expect(fixture.componentInstance.dropdownInstance.toggleService.open).toBeFalse();
+      expect(fixture.componentInstance.dropdownInstance.popoverService.open).toBeFalse();
 
       // click the dropdown toggle to open the menu
       fixture.componentInstance.dropdownTriggerInstance.onDropdownTriggerClick(new MouseEvent('click'));
-      expect(fixture.componentInstance.dropdownInstance.toggleService.open).toBeTrue();
+      expect(fixture.componentInstance.dropdownInstance.popoverService.open).toBeTrue();
 
       // click the dropdown toggle again to close the menu
       fixture.componentInstance.dropdownTriggerInstance.onDropdownTriggerClick(new MouseEvent('click'));
-      expect(fixture.componentInstance.dropdownInstance.toggleService.open).toBeFalse();
+      expect(fixture.componentInstance.dropdownInstance.popoverService.open).toBeFalse();
     });
   });
 }

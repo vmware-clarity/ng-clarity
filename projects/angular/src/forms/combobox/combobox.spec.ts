@@ -21,7 +21,7 @@ import { ClrIconModule } from '../../icon/icon.module';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrPopoverContent } from '../../utils/popover/popover-content';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { delay } from '../../utils/testing/helpers.spec';
 
 @Component({
@@ -63,7 +63,7 @@ class TestComponent {
 export default function (): void {
   describe('Combobox Component', function () {
     let clarityElement: HTMLElement;
-    let toggleService: ClrPopoverToggleService;
+    let popoverService: ClrPopoverService;
     let selectionService: OptionSelectionService<string>;
     let fixture: ComponentFixture<TestComponent>;
     let clarityDirective: ClrCombobox<string>;
@@ -85,13 +85,13 @@ export default function (): void {
       clarityDirective = comboboxDebugElement.componentInstance;
       clarityElement = comboboxDebugElement.nativeElement;
       selectionService = comboboxDebugElement.injector.get(OptionSelectionService) as OptionSelectionService<string>;
-      toggleService = comboboxDebugElement.injector.get(ClrPopoverToggleService);
+      popoverService = comboboxDebugElement.injector.get(ClrPopoverService);
 
       fixture.detectChanges();
     });
 
     afterEach(function () {
-      toggleService.open = false;
+      popoverService.open = false;
       fixture.detectChanges();
     });
 
@@ -110,7 +110,7 @@ export default function (): void {
 
       it('has open state read-only property', () => {
         expect(clarityDirective.openState).toBeFalsy();
-        toggleService.open = true;
+        popoverService.open = true;
         expect(clarityDirective.openState).toBeTrue();
       });
 
@@ -119,20 +119,20 @@ export default function (): void {
       });
 
       it('does not close panel on clear', () => {
-        toggleService.open = true;
+        popoverService.open = true;
         clarityDirective.writeValue(null);
         expect(clarityDirective.openState).toBeTrue();
       });
 
       it('closes panel on selection', () => {
-        toggleService.open = true;
+        popoverService.open = true;
         selectionService.select('test');
         expect(clarityDirective.openState).toBeFalse();
       });
 
       it('does not close panel on selection if multiselect', () => {
         clarityDirective.multiSelect = true;
-        toggleService.open = true;
+        popoverService.open = true;
         selectionService.select('test');
         expect(clarityDirective.openState).toBeTrue();
       });
@@ -174,7 +174,7 @@ export default function (): void {
 
       it('notifies on open changes', () => {
         expect(fixture.componentInstance.openState).toBeFalsy();
-        toggleService.open = true;
+        popoverService.open = true;
         expect(fixture.componentInstance.openState).toBeTrue();
       });
     });
@@ -206,7 +206,7 @@ export default function (): void {
 
       it('clear input value on blur if combobox is not editable', async () => {
         fixture.componentInstance.editable = false;
-        toggleService.open = true;
+        popoverService.open = true;
         const input = clarityElement.querySelector('.clr-combobox-input') as HTMLInputElement;
         expect(input).not.toBeNull();
         input.value = '4';
@@ -223,9 +223,9 @@ export default function (): void {
 
       it('opens the menu on the trigger click', () => {
         const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-trigger');
-        expect(toggleService.open).toBe(false);
+        expect(popoverService.open).toBe(false);
         trigger.click();
-        expect(toggleService.open).toBe(true);
+        expect(popoverService.open).toBe(true);
       });
 
       it('has aria-owns attribute', () => {
@@ -238,7 +238,7 @@ export default function (): void {
         const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
         expect(trigger.hasAttribute('aria-expanded')).toBeTrue();
         expect(trigger.getAttribute('aria-expanded')).toEqual('false');
-        toggleService.open = true;
+        popoverService.open = true;
         fixture.detectChanges();
         expect(trigger.getAttribute('aria-expanded')).toEqual('true');
       });
