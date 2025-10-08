@@ -9,6 +9,7 @@ import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
+import * as _angular_cdk_overlay from '@angular/cdk/overlay';
 import { AnimationBuilder } from '@angular/animations';
 import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
 import { AnimationMetadata } from '@angular/animations';
@@ -71,6 +72,9 @@ import { ValidationErrors } from '@angular/forms';
 import { Validator } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
+
+// @public (undocumented)
+export const AvailablePopoverPositions: _angular_cdk_overlay.ConnectedPosition[];
 
 // @public (undocumented)
 export class BaseExpandableAnimation {
@@ -4074,16 +4078,16 @@ export class ClrSignpost {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "AbstractPopover" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
+export class ClrSignpostContent implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "SignpostIdService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "SignpostFocusManager" needs to be exported by the entry point index.d.ts
-    constructor(injector: Injector, parentHost: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: any);
+    constructor(injector: Injector, parentHost: ElementRef<HTMLElement>, element: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: any, popoverService: ClrPopoverService);
     close(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
+    // (undocumented)
+    get isOffScreen(): boolean;
     // (undocumented)
     ngOnDestroy(): void;
     get position(): string;
@@ -4095,7 +4099,7 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "signpostCloseAriaLabel": { "alias": "clrSignpostCloseAriaLabel"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; }, {}, never, ["clr-signpost-title", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [null, { optional: true; }, null, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [null, { optional: true; }, null, null, null, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -4119,7 +4123,7 @@ export class ClrSignpostTitle {
 
 // @public (undocumented)
 export class ClrSignpostTrigger implements OnDestroy {
-    constructor(toggleService: ClrPopoverToggleService, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
+    constructor(popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
     // (undocumented)
     ariaControl: string;
     // (undocumented)
@@ -4760,6 +4764,8 @@ export class ClrTooltip {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltip, never>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "AbstractPopover" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
 export class ClrTooltipContent extends AbstractPopover implements OnInit {
     // Warning: (ae-forgotten-export) The symbol "TooltipIdService" needs to be exported by the entry point index.d.ts
@@ -5745,7 +5751,7 @@ export class ÇlrClrPopoverModuleNext {
 
 // @public (undocumented)
 export class ÇlrClrPopoverOpenCloseButton implements OnDestroy {
-    constructor(popoverService: ClrPopoverService, elementRef: ElementRef);
+    constructor(toggleService: ClrPopoverToggleService);
     // (undocumented)
     handleClick(event: MouseEvent): void;
     // (undocumented)
