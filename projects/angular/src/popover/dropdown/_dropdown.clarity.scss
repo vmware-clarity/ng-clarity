@@ -98,8 +98,6 @@
   .dropdown-menu {
     @include menu-mixins.generate-dropdown-menu();
 
-    display: none;
-
     .dropdown-header {
       @include menu-mixins.generate-dropdown-header();
 
@@ -325,10 +323,8 @@
     }
   }
 
-  .clr-dropdown-container {
-    & > .dropdown-menu {
-      display: block;
-      visibility: visible;
-    }
+  .clr-dropdown-container > .dropdown-menu {
+    visibility: visible;
+    position: static;
   }
 }

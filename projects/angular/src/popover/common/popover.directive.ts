@@ -140,9 +140,6 @@ export class PopoverDirective implements AfterViewInit {
       this.popoverService.position in this.popoverService.popoverPositions
         ? this.popoverService.popoverPositions[this.popoverService.position]
         : this.popoverService.popoverPositions[this.popoverService.defaultPosition || 'top-right'];
-
-    console.log(this.preferredPosition);
-    console.log(this.popoverService.position in this.popoverService.popoverPositions);
   }
 
   showOverlay() {

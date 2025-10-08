@@ -104,7 +104,6 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
 
   @Input('clrPosition')
   set position(position: string) {
-    console.log('clrPosition', position);
     // set the popover values based on menu position
     this.popoverService.position = position || this.popoverService.defaultPosition;
 
