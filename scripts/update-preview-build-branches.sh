@@ -33,15 +33,25 @@ bump_and_push () {
   # Ensure analyzer has a commit to evaluate
   git commit --allow-empty -m "build(preview): trigger version bump for ${GIT_COMMIT_SHA}"
 
-  # Write version into package.json (no tags, no publish) using preview config
-  PREVIEW_BRANCH="$(git rev-parse --abbrev-ref HEAD)" \
-  npx semantic-release --no-ci --extends ../.releaserc.preview.js
+  # Get next version via semantic-release
+  next_version=$(npx semantic-release --extends ./.releaserc.preview.js --dry-run --no-ci 2>&1 \
+    | awk '/The next release version is /{print $NF; exit}')
 
-  node -e "console.log('preview version in ${dir}:', require('./package.json').version)"
+  if [ -z "${next_version}" ]; then
+    shortsha=$(echo "${GIT_COMMIT_SHA}" | cut -c1-7)
+    next_version="0.0.0-preview.${shortsha}"
+    echo "semantic-release returned no version; using fallback ${next_version}"
+  fi
 
-  # Commit artifacts + updated package.json in a single commit
+  # Write version into package.json (no tags)
+  npm version "${next_version}" --no-git-tag-version --allow-same-version
+
+  # Log version
+  echo "Preview version for ${dir}: ${next_version}"
+
+  # Commit artifacts + updated package.json
   git add .
-  git commit -m "build: preview build for ${GIT_COMMIT_SHA}" || true
+  git commit -m "build: preview build (${next_version}) for ${GIT_COMMIT_SHA}" || true
 
   # Push to preview branch
   git push origin "HEAD:${remote_ref}"
