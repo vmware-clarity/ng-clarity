@@ -49,6 +49,19 @@ export default function (): void {
           expect(select.options[0].innerText).toMatch('0');
         });
       });
+      describe('Inside Form Test', function () {
+        let context: TestContext<ClrDatagridPageSize, FormTest>;
+
+        beforeEach(function () {
+          context = this.create(ClrDatagridPageSize, FormTest, [Page, StateDebouncer]);
+        });
+
+        it('label should not have col classes when inside a form', function () {
+          const label = context.clarityElement.querySelector('label') as HTMLElement;
+          expect(label).not.toBeNull();
+          expect(label.className.includes('clr-col')).toBeFalse();
+        });
+      });
 
       describe('Full Test', function () {
         let context: TestContext<ClrDatagridPageSize, FullTest>;
@@ -112,6 +125,15 @@ export default function (): void {
   template: `<clr-dg-page-size>Hello world</clr-dg-page-size>`,
 })
 class SimpleTest {}
+
+@Component({
+  template: `
+    <form clrForm>
+      <clr-dg-page-size>Hello world</clr-dg-page-size>
+    </form>
+  `,
+})
+class FormTest {}
 
 @Component({
   template: `

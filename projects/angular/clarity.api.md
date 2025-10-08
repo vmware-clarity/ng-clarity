@@ -1813,6 +1813,8 @@ export interface ClrDatagridNumericFilterInterface<T> {
 export class ClrDatagridPageSize {
     constructor(page: Page);
     // (undocumented)
+    set label(label: ClrLabel);
+    // (undocumented)
     ngOnInit(): void;
     // (undocumented)
     page: Page;
