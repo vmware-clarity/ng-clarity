@@ -27,7 +27,7 @@ import { IF_ACTIVE_ID } from '../../utils/conditional/if-active.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { LoadingListener } from '../../utils/loading/loading-listener';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 
 let nbOptionsComponents = 0;
 
@@ -80,7 +80,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     private el: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     private focusHandler: ComboboxFocusHandler<T>,
-    private toggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef<HTMLElement>,
@@ -125,11 +125,11 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     this.subscriptions.push(
       fromEvent(this.document, 'scroll', { capture: true }).subscribe(event => {
         if (
-          this.toggleService.open &&
+          this.popoverService.open &&
           (event as Event).target !== this.el.nativeElement &&
           (event as Event).target !== this.focusHandler.textInput
         ) {
-          this.toggleService.open = false;
+          this.popoverService.open = false;
         }
       }),
       this.items.changes.subscribe(items => {

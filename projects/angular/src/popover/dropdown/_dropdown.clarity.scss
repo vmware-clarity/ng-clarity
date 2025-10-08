@@ -98,6 +98,8 @@
   .dropdown-menu {
     @include menu-mixins.generate-dropdown-menu();
 
+    display: none;
+
     .dropdown-header {
       @include menu-mixins.generate-dropdown-header();
 

@@ -45,7 +45,6 @@ export class PopoverDirective implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.popoverService.open) {
-      console.log(this.popoverService.anchorElementRef);
       this.popoverService.anchorElementRef
         ? this.showOverlay()
         : setTimeout(() => {
@@ -248,7 +247,7 @@ export class PopoverDirective implements AfterViewInit {
 
         if (this.popoverService.outsideClickClose) {
           this.popoverService.open = false;
-          // this.popoverService.setOpenedButtonFocus();
+          this.popoverService.setOpenedButtonFocus();
         }
       })
     );
@@ -256,7 +255,7 @@ export class PopoverDirective implements AfterViewInit {
     this.subscriptions.push(
       overlay.detachments().subscribe(() => {
         this.popoverService.open = false;
-        // this.popoverService.setOpenedButtonFocus();
+        this.popoverService.setOpenedButtonFocus();
       })
     );
 

@@ -14,7 +14,7 @@ import { Keys } from '../../../utils/enums/keys.enum';
 import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
 import { customFocusableItemProvider } from '../../../utils/focus/focusable-item/custom-focusable-item-provider';
 import { normalizeKey } from '../../../utils/focus/key-focus/util';
-import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../../utils/popover/providers/popover.service';
 import { PseudoFocusModel } from '../model/pseudo-focus.model';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class ComboboxFocusHandler<T> {
 
   constructor(
     rendererFactory: RendererFactory2,
-    private toggleService: ClrPopoverToggleService,
+    private toggleService: ClrPopoverService,
     private selectionService: OptionSelectionService<T>,
     @Inject(PLATFORM_ID) private platformId: any
   ) {
