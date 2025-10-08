@@ -5,36 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-const base = require('./.releaserc.base.js');
-
-// Extract @semantic-release/commit-analyzer options from base
-let analyzerOpts = {};
-if (Array.isArray(base.plugins)) {
-  const analyzer = base.plugins.find(p => Array.isArray(p) && p[0] === '@semantic-release/commit-analyzer');
-  if (analyzer && analyzer[1]) {
-    analyzerOpts = { ...analyzer[1] };
-  }
-}
-
-const mergedRules = [...(analyzerOpts.releaseRules || []), { type: 'build', release: 'patch' }];
+const baseReleaseConfig = require('./.releaserc.base.js');
 
 module.exports = {
-  branches: [{ name: 'no-tags', prerelease: true }],
-  dryRun: false,
+  ...baseReleaseConfig,
   plugins: [
-    [
-      '@semantic-release/commit-analyzer',
-      {
-        ...analyzerOpts,
-        releaseRules: mergedRules,
-      },
-    ],
-    [
-      '@semantic-release/npm',
-      {
-        npmPublish: false,
-        tarballDir: false,
-      },
-    ],
+    ...baseReleaseConfig.plugins.filter(plugin => {
+      if (Array.isArray(plugin) && plugin[0] === '@semantic-release/exec') {
+        return false;
+      }
+      return true;
+    }),
   ],
 };
