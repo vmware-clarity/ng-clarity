@@ -21,18 +21,12 @@ cp -r ./dist/clr-angular/* ./preview-build-clr-angular
 shortsha=$(echo "${GIT_COMMIT_SHA}" | cut -c1-7)
 next_version="0.0.0-preview.${shortsha}"
 
-if [ ! -f package.json ]; then
-  echo "ERROR: ${dir}/package.json not found. Ensure your dist includes package.json." >&2
-fi
-
-# Write version into package.json (no tags)
-npm version "${next_version}" --no-git-tag-version --allow-same-version
-
 # Log version
 echo "Preview version for ${dir}: ${next_version}"
 
 # push @clr/ui
 pushd ./preview-build-clr-ui
+npm version "${next_version}" --no-git-tag-version --allow-same-version
 git add .
 git commit -m "build: preview build (${next_version}) for ${GIT_COMMIT_SHA}"
 git push origin preview-build-clr-ui:refs/heads/preview-build/$GIT_BRANCH/clr-ui
@@ -40,6 +34,7 @@ popd
 
 # push @clr/angular
 pushd ./preview-build-clr-angular
+npm version "${next_version}" --no-git-tag-version --allow-same-version
 git add .
 git commit -m "build: preview build (${next_version}) for ${GIT_COMMIT_SHA}"
 git push origin preview-build-clr-angular:refs/heads/preview-build/$GIT_BRANCH/clr-angular
