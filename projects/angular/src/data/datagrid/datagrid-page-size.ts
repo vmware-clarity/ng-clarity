@@ -25,14 +25,17 @@ import { Page } from './providers/page';
 export class ClrDatagridPageSize {
   @Input('clrPageSizeOptions') pageSizeOptions: number[];
   @Input('clrPageSizeOptionsId') pageSizeOptionsId = uniqueIdFactory();
-  @ViewChild(ClrLabel, { static: true }) label: ClrLabel;
 
   constructor(public page: Page) {}
 
-  ngOnInit() {
-    if (this.label) {
-      this.label.disableGrid();
+  @ViewChild(ClrLabel, { static: true })
+  set label(label: ClrLabel) {
+    if (label) {
+      label.disableGrid();
     }
+  }
+
+  ngOnInit() {
     if (!this.pageSizeOptions || this.pageSizeOptions.length === 0) {
       this.pageSizeOptions = [this.page.size];
     }
