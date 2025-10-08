@@ -1,0 +1,23 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../utils/variables/variables';
+
+// Usage: ../layout/_card.clarity.scss
+$clr-card-bg-color: var(--clr-card-bg-color);
+$clr-card-divider-color: var(--clr-card-divider-color);
+$clr-card-title-color: var(--clr-card-title-color);
+$clr-card-title-font-weight: var(--clr-card-title-font-weight);
+$clr-card-header-title-color: var(--clr-card-header-title-color);
+$clr-card-content-title-color: var(--clr-card-content-title-color);
+$clr-card-border-color: var(--clr-card-border-color);
+$clr-card-box-shadow: var(--clr-card-box-shadow);
+$clr-card-clickable-border-color: var(--clr-card-clickable-border-color);
+$clr-card-clickable-box-shadow: var(--clr-card-clickable-box-shadow);
+$clr-card-border-radius: var(--clr-card-border-radius);
+$clr-card-border-width: var(--clr-card-border-width);
+$clr-card-text-color: var(--clr-card-text-color);
