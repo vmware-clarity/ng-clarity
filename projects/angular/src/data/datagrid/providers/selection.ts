@@ -7,7 +7,7 @@
 
 import { Injectable } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, delay } from 'rxjs/operators';
 
 import { SelectionType } from '../enums/selection-type';
 import { FiltersProvider } from './filters';
@@ -72,7 +72,7 @@ export class Selection<T = any> {
     );
 
     this.subscriptions.push(
-      _items.allChanges.subscribe(updatedItems => {
+      _items.allChanges.pipe(delay(0)).subscribe(updatedItems => {
         // Reset the lockedRefs;
         const updateLockedRef: T[] = [];
 
@@ -110,15 +110,9 @@ export class Selection<T = any> {
               selectionUpdated = true;
             }
 
-            // TODO: Discussed this with Eudes and this is fine for now.
-            // But we need to figure out a different pattern for the
-            // child triggering the parent change detection problem.
-            // Using setTimeout for now to fix this.
-            setTimeout(() => {
-              if (selectionUpdated) {
-                this.currentSingle = newSingle;
-              }
-            }, 0);
+            if (selectionUpdated) {
+              this.currentSingle = newSingle;
+            }
             break;
           }
 
@@ -169,15 +163,9 @@ export class Selection<T = any> {
                 }
               }
 
-              // TODO: Discussed this with Eudes and this is fine for now.
-              // But we need to figure out a different pattern for the
-              // child triggering the parent change detection problem.
-              // Using setTimeout for now to fix this.
-              setTimeout(() => {
-                if (selectionUpdated) {
-                  this.current = leftOver;
-                }
-              }, 0);
+              if (selectionUpdated) {
+                this.current = leftOver;
+              }
             }
             break;
           }
@@ -223,7 +211,6 @@ export class Selection<T = any> {
     if (value === this._currentSingle) {
       return;
     }
-
     this._currentSingle = value;
     if (value) {
       this.prevSingleSelectionRef = this._items.trackBy(value);
@@ -285,6 +272,9 @@ export class Selection<T = any> {
       case SelectionType.None:
         break;
       case SelectionType.Single:
+        if (selected) {
+          this.currentSingle = item;
+        }
         // in single selection, set currentSingle method should be used
         break;
       case SelectionType.Multi:

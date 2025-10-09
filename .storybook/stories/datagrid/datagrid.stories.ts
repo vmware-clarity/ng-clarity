@@ -49,6 +49,7 @@ export default {
       action('clrDgCustomSelectAll').apply(this, [selectAllChecked]);
       this.selectedRows = selectAllChecked ? elements.map((element, i) => i).filter(i => i % 2) : [];
     },
+    clrDgItemsIdentityFn: item => item.id,
     clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     // story helpers
     elements,
@@ -79,6 +80,7 @@ const DatagridTemplate: StoryFn = args => ({
       ${args.height ? '[style.height.px]="height"' : ''}
       ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
       ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
+      ${args.singleSelectable ? '[clrDgItemsIdentityFn]="clrDgItemsIdentityFn"' : ''}
       [ngClass]="{ 'datagrid-compact': compact, 'datagrid-overflow-ellipsis': overflowEllipsis }"
       [clrDetailExpandableAriaLabel]="clrDetailExpandableAriaLabel"
       [clrDgDisablePageFocus]="clrDgDisablePageFocus"
@@ -151,6 +153,14 @@ export const SingleSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
     singleSelectable: true,
+  },
+};
+
+export const SingleSelectWithSelection: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    singleSelectable: true,
+    selectedRows: [1],
   },
 };
 export const MultiSelect: StoryObj = {

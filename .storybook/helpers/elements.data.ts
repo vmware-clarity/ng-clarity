@@ -8,6 +8,7 @@
 import { BehaviorSubject } from 'rxjs';
 
 export interface Element {
+  id: number;
   name: string;
   symbol: string;
   number: number;
@@ -15,7 +16,7 @@ export interface Element {
   expanded?: boolean;
 }
 
-export const elements: Element[] = [
+export const rawElements = [
   { name: 'Actinium', symbol: 'Ac', number: 89, electronegativity: 1.1 },
   { name: 'Aluminum', symbol: 'Al', number: 13, electronegativity: 1.61 },
   { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 },
@@ -135,5 +136,10 @@ export const elements: Element[] = [
   { name: 'Zinc', symbol: 'Zn', number: 30, electronegativity: 1.65 },
   { name: 'Zirconium', symbol: 'Zr', number: 40, electronegativity: 1.33 },
 ];
+
+export const elements: Element[] = rawElements.map((el, index) => ({
+  id: index + 1,
+  ...el,
+}));
 
 export const behaviorElements = new BehaviorSubject(elements);

@@ -31,7 +31,7 @@ export class DatagridSelectionSingleDemo {
   trackByIdServerSingleSelected: User;
 
   loading = true;
-  total: number;
+  total = 0;
 
   constructor(private inventory: Inventory) {
     inventory.size = 100;
