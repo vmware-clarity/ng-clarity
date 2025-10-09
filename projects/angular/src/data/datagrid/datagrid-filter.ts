@@ -21,17 +21,19 @@ import {
 import { Subscription } from 'rxjs';
 
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
+import {
+  ClrAlignment,
+  ClrAxis,
+  ClrCommonStringsService,
+  ClrPopoverPosition,
+  ClrPopoverService,
+  ClrSide,
+} from '../../utils';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from './providers/filters';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
-import { ClrAxis } from '../../utils/popover/enums/axis.enum';
-import { ClrSide } from '../../utils/popover/enums/side.enum';
-import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 /**
  * Custom filter that can be added in any column to override the default object property string filter.
@@ -105,14 +107,14 @@ export class ClrDatagridFilter<T = any>
   constructor(
     _filters: FiltersProvider<T>,
     public commonStrings: ClrCommonStringsService,
-    private smartToggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     @Inject(PLATFORM_ID) private platformId: any,
     private elementRef: ElementRef<HTMLElement>,
     @Optional() private keyNavigation: KeyNavigationGridController
   ) {
     super(_filters);
     this.subs.push(
-      smartToggleService.openChange.subscribe(change => {
+      popoverService.openChange.subscribe(change => {
         this.open = change;
         this.ariaExpanded = change;
       })
@@ -124,9 +126,10 @@ export class ClrDatagridFilter<T = any>
     return this._open;
   }
   set open(open: boolean) {
+    console.log(open);
     open = !!open;
     if (this.open !== open) {
-      this.smartToggleService.open = open;
+      this.popoverService.open = open;
       this.openChange.emit(open);
       if (!open && isPlatformBrowser(this.platformId)) {
         this.anchor.nativeElement.focus();

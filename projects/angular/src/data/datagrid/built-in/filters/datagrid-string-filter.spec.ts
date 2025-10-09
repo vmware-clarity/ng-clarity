@@ -11,10 +11,8 @@ import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 
 import { DatagridStringFilter } from './datagrid-string-filter';
 import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
+import { ClrPopoverService } from '../../../../utils';
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
-import { ClrPopoverEventsService } from '../../../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../../../utils/popover/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../../../utils/popover/providers/popover-toggle.service';
 import { animationFrameTick } from '../../../../utils/testing/helpers.spec';
 import { TestContext } from '../../helpers.spec';
 import { ClrDatagridStringFilterInterface } from '../../interfaces/string-filter.interface';
@@ -23,7 +21,7 @@ import { FiltersProvider } from '../../providers/filters';
 import { Page } from '../../providers/page';
 import { StateDebouncer } from '../../providers/state-debouncer.provider';
 
-const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverToggleService];
+const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverService];
 
 export default function (): void {
   describe('DatagridStringFilter accessibility', function () {
@@ -67,8 +65,6 @@ export default function (): void {
     });
 
     afterEach(function () {
-      const popoverContent = document.querySelectorAll('.clr-popover-content');
-      popoverContent.forEach(content => document.body.removeChild(content));
       context.fixture.destroy();
     });
 
@@ -115,6 +111,7 @@ export default function (): void {
       await animationFrameTick();
       expect(input.focus).toHaveBeenCalled();
     });
+
     it('offers two way binding on the filtered state', function () {
       context.testComponent.filterValue = 'M';
       context.detectChanges();
@@ -130,6 +127,7 @@ export default function (): void {
       expect(input.getAttribute('aria-label')).toBe('Filter items');
       await delay();
     });
+
     it('has placeholder on the input', async function () {
       openFilter();
       const input: HTMLInputElement = document.querySelector("input[type='text']");
@@ -149,7 +147,6 @@ class TestFilter implements ClrDatagridStringFilterInterface<string> {
   template: `
     <clr-dg-string-filter [clrDgStringFilter]="filter" [(clrFilterValue)]="filterValue"></clr-dg-string-filter>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
   standalone: false,
 })
 class FullTest {
@@ -167,7 +164,6 @@ class FullTest {
       [clrFilterPlaceholder]="clrFilterPlaceholder"
     ></clr-dg-string-filter>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
   standalone: false,
 })
 class AccessibilityTest {

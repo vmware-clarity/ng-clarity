@@ -11,10 +11,8 @@ import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 
 import { DatagridNumericFilter } from './datagrid-numeric-filter';
 import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
+import { ClrPopoverService } from '../../../../utils';
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
-import { ClrPopoverEventsService } from '../../../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../../../utils/popover/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../../../utils/popover/providers/popover-toggle.service';
 import { animationFrameTick } from '../../../../utils/testing/helpers.spec';
 import { TestContext } from '../../helpers.spec';
 import { ClrDatagridNumericFilterInterface } from '../../interfaces/numeric-filter.interface';
@@ -23,7 +21,7 @@ import { FiltersProvider } from '../../providers/filters';
 import { Page } from '../../providers/page';
 import { StateDebouncer } from '../../providers/state-debouncer.provider';
 
-const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverToggleService];
+const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverService];
 
 export default function (): void {
   describe('DatagridNumericFilter accessibility', function () {
@@ -39,8 +37,6 @@ export default function (): void {
     });
 
     afterEach(function () {
-      const popoverContent = document.querySelectorAll('.clr-popover-content');
-      popoverContent.forEach(content => document.body.removeChild(content));
       context.fixture.destroy();
     });
 
@@ -54,6 +50,7 @@ export default function (): void {
       expect(inputMin.getAttribute('aria-label')).toBe('min demo placeholder');
       await delay();
     });
+
     it('should be able to change the max placeholder text', async function () {
       context.testComponent.filterValue = [null, 10];
       context.testComponent.clrFilterMaxPlaceholder = 'max demo placeholder';
@@ -84,8 +81,6 @@ export default function (): void {
     });
 
     afterEach(function () {
-      const popoverContent = document.querySelectorAll('.clr-popover-content');
-      popoverContent.forEach(content => document.body.removeChild(content));
       context.fixture.destroy();
     });
 
@@ -156,7 +151,6 @@ class TestFilter implements ClrDatagridNumericFilterInterface<number> {
   template: `
     <clr-dg-numeric-filter [clrDgNumericFilter]="filter" [(clrFilterValue)]="filterValue"></clr-dg-numeric-filter>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
   standalone: false,
 })
 class FullTest {
@@ -175,7 +169,6 @@ class FullTest {
       [clrFilterMinPlaceholder]="clrFilterMinPlaceholder"
     ></clr-dg-numeric-filter>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
   standalone: false,
 })
 class AccessibilityTest {
