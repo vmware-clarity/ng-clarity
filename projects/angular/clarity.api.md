@@ -3614,7 +3614,7 @@ export class ClrPopoverModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, [typeof PopoverDirective], never, [typeof PopoverDirective, typeof ClrDropdownModule, typeof ClrSignpostModule, typeof ClrTooltipModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, [typeof PopoverDirective], [typeof PopoverDirective, typeof ClrDropdownModule, typeof ClrSignpostModule, typeof ClrTooltipModule]>;
 }
 
 // @public
@@ -4518,7 +4518,7 @@ export class ClrTabLink {
     get inOverflow(): boolean;
     set inOverflow(inOverflow: boolean);
     // (undocumented)
-    get tabindex(): -1 | 0;
+    get tabindex(): 0 | -1;
     // (undocumented)
     tabLinkId: string;
     // (undocumented)
@@ -5621,7 +5621,7 @@ export class PopoverDirective implements AfterViewInit {
     // (undocumented)
     showOverlay(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<PopoverDirective, "clr-tooltip-content, clr-signpost-content, clr-dropdown-menu", never, {}, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<PopoverDirective, "clr-tooltip-content, clr-signpost-content, clr-dropdown-menu", never, {}, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<PopoverDirective, never>;
 }

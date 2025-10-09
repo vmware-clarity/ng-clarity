@@ -13,7 +13,7 @@ import { ClrSignpostModule } from './signpost';
 import { ClrTooltipModule } from './tooltip';
 
 @NgModule({
-  declarations: [PopoverDirective],
+  imports: [PopoverDirective],
   exports: [PopoverDirective, ClrDropdownModule, ClrSignpostModule, ClrTooltipModule],
 })
 export class ClrPopoverModule {}

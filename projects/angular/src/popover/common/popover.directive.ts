@@ -18,11 +18,10 @@ import { DomPortal } from '@angular/cdk/portal';
 import { AfterViewInit, Directive, Inject, NgZone } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
+import { ClrPopoverService } from '../../utils';
 
 @Directive({
   selector: 'clr-tooltip-content, clr-signpost-content, clr-dropdown-menu',
-  standalone: false,
 })
 export class PopoverDirective implements AfterViewInit {
   private subscriptions: Subscription[] = [];
