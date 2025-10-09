@@ -684,7 +684,7 @@ export class ClrButton implements LoadingListener {
 // @public (undocumented)
 export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "ButtonGroupFocusHandler" needs to be exported by the entry point index.d.ts
-    constructor(buttonGroupNewService: ButtonInGroupService, toggleService: ClrPopoverToggleService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
+    constructor(buttonGroupNewService: ButtonInGroupService, popoverService: ClrPopoverService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
     // (undocumented)
     buttonGroupNewService: ButtonInGroupService;
     // (undocumented)

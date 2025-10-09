@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, ButtonGroupFocusHandler } from './button-group-focus-handler.service';
 import { InitialFocus } from './button-group-focus.enum';
-import { ClrPopoverToggleService } from '../../utils';
+import { ClrPopoverService } from '../../utils';
 import { Keys } from '../../utils/enums/keys.enum';
 import { FocusService } from '../../utils/focus/focus.service';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
@@ -27,7 +27,7 @@ import { ClrButtonGroup } from '../button-group/button-group';
       <clr-button [clrInMenu]="true">Button 5</clr-button>
     </clr-button-group>
   `,
-  providers: [BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FocusService, ClrPopoverToggleService],
+  providers: [BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FocusService, ClrPopoverService],
   standalone: false,
 })
 class BtnGroupViewContainer {
