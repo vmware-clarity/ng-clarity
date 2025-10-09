@@ -3,7 +3,7 @@ import { Directive, NgModule, Input, Optional, Injectable, ChangeDetectionStrate
 import * as i5 from '@angular/common';
 import { CommonModule, isPlatformBrowser, NgForOf, getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, getLocaleFirstDayOfWeek, getLocaleDateFormat, FormatWidth } from '@angular/common';
 import { ClarityIcons, angleIcon, exclamationCircleIcon, checkCircleIcon, ellipsisHorizontalIcon, windowCloseIcon, infoCircleIcon, timesIcon, angleDoubleIcon, eventIcon, calendarIcon, folderOpenIcon, minusIcon, plusIcon, eyeHideIcon, eyeIcon, ellipsisVerticalIcon, viewColumnsIcon, arrowIcon, stepForward2Icon, filterGridCircleIcon, filterGridIcon, errorStandardIcon, helpIcon, infoStandardIcon, noteIcon, successStandardIcon, warningStandardIcon, circleIcon, dotCircleIcon } from '@cds/core/icon';
-import { map, tap, startWith, distinctUntilChanged, filter, skipUntil, debounceTime, takeUntil, take, first, switchMap as switchMap$1 } from 'rxjs/operators';
+import { map, tap, startWith, distinctUntilChanged, filter, skipUntil, debounceTime, takeUntil, take, first, delay, switchMap as switchMap$1 } from 'rxjs/operators';
 import * as i2$1 from 'rxjs';
 import { Subject, BehaviorSubject, Observable, isObservable, of, fromEvent, ReplaySubject, shareReplay, combineLatest, startWith as startWith$1, switchMap, merge, map as map$1, EMPTY, tap as tap$1 } from 'rxjs';
 import * as i2 from '@angular/animations';
@@ -21264,7 +21264,7 @@ class Selection {
             }
             this.clearSelection();
         }));
-        this.subscriptions.push(_items.allChanges.subscribe(updatedItems => {
+        this.subscriptions.push(_items.allChanges.pipe(delay(0)).subscribe(updatedItems => {
             // Reset the lockedRefs;
             const updateLockedRef = [];
             switch (this.selectionType) {
@@ -21296,15 +21296,9 @@ class Selection {
                     if (_items.smart && !newSingle) {
                         selectionUpdated = true;
                     }
-                    // TODO: Discussed this with Eudes and this is fine for now.
-                    // But we need to figure out a different pattern for the
-                    // child triggering the parent change detection problem.
-                    // Using setTimeout for now to fix this.
-                    setTimeout(() => {
-                        if (selectionUpdated) {
-                            this.currentSingle = newSingle;
-                        }
-                    }, 0);
+                    if (selectionUpdated) {
+                        this.currentSingle = newSingle;
+                    }
                     break;
                 }
                 case SelectionType.Multi: {
@@ -21349,15 +21343,9 @@ class Selection {
                                 selectionUpdated = true;
                             }
                         }
-                        // TODO: Discussed this with Eudes and this is fine for now.
-                        // But we need to figure out a different pattern for the
-                        // child triggering the parent change detection problem.
-                        // Using setTimeout for now to fix this.
-                        setTimeout(() => {
-                            if (selectionUpdated) {
-                                this.current = leftOver;
-                            }
-                        }, 0);
+                        if (selectionUpdated) {
+                            this.current = leftOver;
+                        }
                     }
                     break;
                 }
@@ -21399,7 +21387,7 @@ class Selection {
             return;
         }
         this._currentSingle = value;
-        if (value) {
+        if (this._items.all && this._items.identifyBy && value) {
             this.prevSingleSelectionRef = this._items.identifyBy(value);
         }
         this.emitChange();
@@ -21451,6 +21439,9 @@ class Selection {
             case SelectionType.None:
                 break;
             case SelectionType.Single:
+                if (selected) {
+                    this.currentSingle = item;
+                }
                 // in single selection, set currentSingle method should be used
                 break;
             case SelectionType.Multi:
