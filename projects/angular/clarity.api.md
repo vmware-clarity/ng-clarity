@@ -758,7 +758,7 @@ export class ClrCalendar implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "DatepickerFocusService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "DateIOService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "DateFormControlService" needs to be exported by the entry point index.d.ts
-    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _dateIOService: DateIOService, _elRef: ElementRef<HTMLElement>, _dateFormControlService: DateFormControlService, _toggleService: ClrPopoverToggleService);
+    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _dateIOService: DateIOService, _elRef: ElementRef<HTMLElement>, _dateFormControlService: DateFormControlService, _popoverService: ClrPopoverService);
     // Warning: (ae-forgotten-export) The symbol "CalendarModel" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -2107,7 +2107,7 @@ export class ClrDataModule {
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "DatepickerEnabledService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ViewManagerService" needs to be exported by the entry point index.d.ts
-    constructor(renderer: Renderer2, elem: ElementRef, toggleService: ClrPopoverToggleService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
+    constructor(renderer: Renderer2, elem: ElementRef, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
     // (undocumented)
     set actionButton(button: ElementRef<HTMLButtonElement>);
     // (undocumented)
@@ -2240,7 +2240,7 @@ export class ClrDateInputValidator implements Validator {
 
 // @public (undocumented)
 export class ClrDatepickerActions {
-    constructor(commonStrings: ClrCommonStringsService, toggleService: ClrPopoverToggleService, dateNavigationService: DateNavigationService, dateFormControlService: DateFormControlService);
+    constructor(commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, dateFormControlService: DateFormControlService);
     // (undocumented)
     protected apply(): void;
     // (undocumented)
@@ -4519,7 +4519,7 @@ export class ClrTabLink {
     get inOverflow(): boolean;
     set inOverflow(inOverflow: boolean);
     // (undocumented)
-    get tabindex(): 0 | -1;
+    get tabindex(): -1 | 0;
     // (undocumented)
     tabLinkId: string;
     // (undocumented)
