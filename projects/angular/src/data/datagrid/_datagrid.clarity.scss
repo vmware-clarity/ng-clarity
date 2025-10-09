@@ -995,12 +995,17 @@
       margin-top: tokens.$cds-global-space-5;
     }
 
+    .datagrid-spinner {
+      height: calc(100% - #{tokens.$cds-global-space-5});
+      top: tokens.$cds-global-space-5;
+    }
+
     .datagrid-action-bar {
       $action-bar-offset: mixins.baselinePx(20);
 
       margin-top: $action-bar-offset;
 
-      & ~ .datagrid-spinner {
+      & ~ .datagrid-outer-wrapper .datagrid-spinner {
         height: calc(100% - #{$action-bar-offset});
         top: $action-bar-offset;
       }
