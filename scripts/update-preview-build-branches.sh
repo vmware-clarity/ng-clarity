@@ -18,40 +18,24 @@ rm -rf ./preview-build-clr-angular/*
 cp -r ./dist/clr-ui/* ./preview-build-clr-ui
 cp -r ./dist/clr-angular/* ./preview-build-clr-angular
 
-bump_and_push () {
-  local dir="$1"        # worktree directory
-  local remote_ref="$2" # remote ref to push to
+shortsha=$(echo "${GIT_COMMIT_SHA}" | cut -c1-7)
+next_version="0.0.0-preview.${shortsha}"
 
-  pushd "$dir"
+# Log version
+echo "Preview version for ${dir}: ${next_version}"
 
-  if [ ! -f package.json ]; then
-    echo "ERROR: ${dir}/package.json not found. Ensure your dist includes package.json." >&2
-    popd
-    return 1
-  fi
+# push @clr/ui
+pushd ./preview-build-clr-ui
+npm version "${next_version}" --no-git-tag-version --allow-same-version
+git add .
+git commit -m "build: preview build (${next_version}) for ${GIT_COMMIT_SHA}"
+git push origin preview-build-clr-ui:refs/heads/preview-build/$GIT_BRANCH/clr-ui
+popd
 
-  # Ensure analyzer has a commit to evaluate
-  git commit --allow-empty -m "build(preview): trigger version bump for ${GIT_COMMIT_SHA}"
-
-  shortsha=$(echo "${GIT_COMMIT_SHA}" | cut -c1-7)
-  next_version="0.0.0-preview.${shortsha}"
-
-  # Write version into package.json (no tags)
-  npm version "${next_version}" --no-git-tag-version --allow-same-version
-
-  # Log version
-  echo "Preview version for ${dir}: ${next_version}"
-
-  # Commit artifacts + updated package.json
-  git add .
-  git commit -m "build: preview build (${next_version}) for ${GIT_COMMIT_SHA}" || true
-
-  # Push to preview branch
-  git push origin "HEAD:${remote_ref}"
-
-  popd
-}
-
-# --- run for both packages ---
-bump_and_push "preview-build-clr-ui" "refs/heads/preview-build/${GIT_BRANCH}/clr-ui"
-bump_and_push "preview-build-clr-angular" "refs/heads/preview-build/${GIT_BRANCH}/clr-angular"
+# push @clr/angular
+pushd ./preview-build-clr-angular
+npm version "${next_version}" --no-git-tag-version --allow-same-version
+git add .
+git commit -m "build: preview build (${next_version}) for ${GIT_COMMIT_SHA}"
+git push origin preview-build-clr-angular:refs/heads/preview-build/$GIT_BRANCH/clr-angular
+popd
