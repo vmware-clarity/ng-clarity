@@ -4518,7 +4518,7 @@ export class ClrTabLink {
     get inOverflow(): boolean;
     set inOverflow(inOverflow: boolean);
     // (undocumented)
-    get tabindex(): 0 | -1;
+    get tabindex(): -1 | 0;
     // (undocumented)
     tabLinkId: string;
     // (undocumented)
@@ -4543,7 +4543,7 @@ export class ClrTabOverflowContent {
 
 // @public (undocumented)
 export class ClrTabs implements AfterContentInit, OnDestroy {
-    constructor(ifActiveService: IfActiveService, toggleService: ClrPopoverToggleService, tabsService: TabsService, tabsId: number, commonStrings: ClrCommonStringsService);
+    constructor(ifActiveService: IfActiveService, popoverService: ClrPopoverService, tabsService: TabsService, tabsId: number, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get activeTabInOverflow(): boolean;
     // (undocumented)
@@ -4580,6 +4580,8 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // (undocumented)
     openOverflowOnFocus(): void;
     // (undocumented)
+    popoverService: ClrPopoverService;
+    // (undocumented)
     resetKeyFocusCurrentToActive(event: FocusEvent): void;
     // (undocumented)
     get tabLinkDirectives(): ClrTabLink[];
@@ -4597,8 +4599,6 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     toggleOverflowOnClick(): void;
     // (undocumented)
     toggleOverflowOnPosition(position: number): void;
-    // (undocumented)
-    toggleService: ClrPopoverToggleService;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabs, "clr-tabs", never, { "layout": { "alias": "clrLayout"; "required": false; }; }, {}, ["tabsActions", "tabs"], ["clr-tabs-actions"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
