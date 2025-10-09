@@ -133,6 +133,7 @@ class SimpleTest {}
       <clr-dg-page-size>Hello world</clr-dg-page-size>
     </form>
   `,
+  standalone: false,
 })
 class FormTest {}
 
