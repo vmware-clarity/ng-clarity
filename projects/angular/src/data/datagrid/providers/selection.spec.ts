@@ -776,21 +776,21 @@ export default function (): void {
         expect(selectionInstance.isLocked(4)).toBe(true);
       });
 
-      it('should remove locked item when is no longer part from the items list and type is Single', async function () {
+      it('should remove locked item when is no longer part from the items list and type is Single', fakeAsync(() => {
         selectionInstance.selectionType = SelectionType.Single;
         selectionInstance.lockItem(4, true);
         itemsInstance.all = [5, 6, 7];
-        await delay();
+        tick(0);
         expect(selectionInstance.isLocked(4)).toBe(false);
-      });
+      }));
 
-      it('should remove locked item when is no longer part from the items list and type is Multi', async function () {
+      it('should remove locked item when is no longer part from the items list and type is Multi', fakeAsync(() => {
         selectionInstance.selectionType = SelectionType.Multi;
         selectionInstance.lockItem(6, true);
         itemsInstance.all = [5, 7, 8];
-        await delay();
+        tick(0);
         expect(selectionInstance.isLocked(6)).toBe(false);
-      });
+      }));
 
       it('should use trackBy to find already locked items when the list is replaced (integer)', function () {
         selectionInstance.selectionType = SelectionType.Multi;
