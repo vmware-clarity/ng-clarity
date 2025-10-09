@@ -126,7 +126,6 @@ export class ClrDatagridFilter<T = any>
     return this._open;
   }
   set open(open: boolean) {
-    console.log(open);
     open = !!open;
     if (this.open !== open) {
       this.popoverService.open = open;

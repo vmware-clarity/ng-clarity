@@ -144,7 +144,6 @@ export class DatagridStringFilter<T = any>
   ngAfterViewInit() {
     this.subs.push(
       this.popoverService.openChange.subscribe(openChange => {
-        console.log(openChange);
         this.open = openChange;
         // Note: this is being run outside of the Angular zone because `element.focus()` doesn't require
         // running change detection.
