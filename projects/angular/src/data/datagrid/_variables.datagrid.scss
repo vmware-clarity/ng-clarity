@@ -11,7 +11,10 @@
 @use '@cds/core/tokens/tokens.scss';
 
 // Usage: ../data/datagrid/_datagrid.clarity.scss
-$clr-datagrid-margin-top: density.$clr-base-vertical-offset-l;
+$clr-datagrid-margin-top: var(--clr-datagrid-margin-top);
+$clr-datagrid-compact-margin-top: var(--clr-datagrid-margin-top);
+$clr-datagrid-action-bar-offset: var(--clr-datagrid-action-bar-offset);
+$clr-datagrid-compact-action-bar-offset: var(--clr-datagrid-action-bar-offset);
 $clr-datagrid-font-color: var(--clr-datagrid-font-color) !default;
 $clr-datagrid-default-border-color: var(--clr-datagrid-default-border-color) !default;
 $clr-datagrid-icon-color: var(--clr-datagrid-icon-color) !default;
