@@ -59,6 +59,7 @@ export default {
     compact: false,
     overflowEllipsis: false,
     hidableColumns: false,
+    showActions: false,
     height: 0,
     selectedRows: [],
   },
@@ -95,6 +96,13 @@ const DatagridTemplate: StoryFn = args => ({
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
       (clrDgCustomSelectAll)="clrDgCustomSelectAll($event)"
     >
+      <clr-dg-action-bar *ngIf="showActions">
+        <div class="btn-group" role="group" aria-label="Available Actions">
+          <button type="button" class="btn btn-sm btn-secondary">Add to group</button>
+          <button type="button" class="btn btn-sm btn-secondary">Delete</button>
+          <button type="button" class="btn btn-sm btn-secondary">Edit</button>
+        </div>
+      </clr-dg-action-bar>
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
       </clr-dg-column>
@@ -218,5 +226,47 @@ export const CompactOverflowEllipsis: StoryObj = {
   args: {
     compact: true,
     overflowEllipsis: true,
+  },
+};
+export const ActionsBar: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    showActions: true,
+  },
+};
+export const CompactActionsBar: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    showActions: true,
+    compact: true,
+  },
+};
+
+export const Loading: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    clrDgLoading: true,
+  },
+};
+export const CompactLoading: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    clrDgLoading: true,
+    compact: true,
+  },
+};
+export const LoadingWithActionsBar: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    clrDgLoading: true,
+    showActions: true,
+  },
+};
+export const CompactLoadingWithActionsBar: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    clrDgLoading: true,
+    showActions: true,
+    compact: true,
   },
 };
