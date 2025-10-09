@@ -237,7 +237,7 @@ export default function (): void {
         fixture.destroy();
       });
 
-      it('Spy on Scroll to index', fakeAsync(() => {
+      it('Spy on Scroll to index', function () {
         fixture.detectChanges();
         const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');
 
@@ -250,9 +250,9 @@ export default function (): void {
         expect(spyVirtualScroll).toHaveBeenCalledWith(0);
 
         fixture.destroy();
-      }));
+      });
 
-      it('Spy on update data range', fakeAsync(() => {
+      it('Spy on update data range', function () {
         fixture.detectChanges();
         const spyVirtualScroll = spyOn(instance.virtualScroll, 'updateDataRange');
 
@@ -277,7 +277,7 @@ export default function (): void {
         expect(spyVirtualScroll).toHaveBeenCalledWith(dataRange.skip, dataRange.data);
 
         fixture.destroy();
-      }));
+      });
 
       it('Moves focus on PageDown and PageUp', fakeAsync(() => {
         finishInit(fixture);

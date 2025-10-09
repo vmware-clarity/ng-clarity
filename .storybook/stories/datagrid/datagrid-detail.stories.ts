@@ -62,6 +62,7 @@ export default {
 };
 
 const longContentElement: Element = {
+  id: 223,
   name: 'A really really really really really really really really really long content in the cell',
   symbol: 'Ac',
   number: 89,
@@ -69,6 +70,7 @@ const longContentElement: Element = {
 };
 
 const longUninterruptedContentElement: Element = {
+  id: 224,
   name: 'aReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongUninterruptedContent',
   symbol: 'Ac',
   number: 89,
