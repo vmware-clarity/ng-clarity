@@ -10,8 +10,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
 import { TestContext } from './helpers.spec';
 import { RowActionService } from './providers/row-action-service';
+import { ClrPopoverService } from '../../utils';
 import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 
 export default function (): void {
@@ -20,7 +20,7 @@ export default function (): void {
     let toggle: HTMLElement;
 
     beforeEach(function () {
-      context = this.create(ClrDatagridActionOverflow, SimpleTest, [RowActionService, ClrPopoverToggleService]);
+      context = this.create(ClrDatagridActionOverflow, SimpleTest, [RowActionService, ClrPopoverService]);
       toggle = context.clarityElement.querySelector('.clr-smart-open-close');
     });
 
@@ -97,7 +97,7 @@ export default function (): void {
       toggle.click();
       context.detectChanges();
 
-      const actionItem: HTMLElement = document.querySelector('.clr-popover-content > .action-item');
+      const actionItem: HTMLElement = document.querySelector('.clr-popover-content .action-item');
       actionItem.click();
       context.detectChanges();
       expect(context.clarityDirective.open).toBe(false);

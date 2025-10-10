@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -122,6 +123,7 @@ const CLR_DATAGRID_INTERNAL_DIRECTIVES = [ClrDatagridColumnToggle, ClrDatagridCo
     CommonModule,
     CdkDragModule,
     CdkTrapFocusModule,
+    ScrollingModule,
     ClrIconModule,
     ClrFormsModule,
     FormsModule,

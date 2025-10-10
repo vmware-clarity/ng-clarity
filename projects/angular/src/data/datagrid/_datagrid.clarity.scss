@@ -29,7 +29,8 @@
   box-shadow: datagrid-variables.$clr-datagrid-popovers-box-shadow;
 }
 @mixin datagrid-action-overflow-appearance {
-  position: absolute;
+  /* position: absolute; */
+  position: relative;
   background: datagrid-variables.$clr-datagrid-popover-bg-color;
   padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
   margin-left: tokens.$cds-global-space-4;

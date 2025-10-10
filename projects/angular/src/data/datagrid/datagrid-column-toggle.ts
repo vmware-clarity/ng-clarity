@@ -9,17 +9,19 @@ import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { columnToggleTrackByFn } from './datagrid-column-toggle-trackby';
+import {
+  ClrAlignment,
+  ClrAxis,
+  ClrCommonStringsService,
+  ClrPopoverHostDirective,
+  ClrPopoverPosition,
+  ClrPopoverService,
+  ClrSide,
+} from '../../utils';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnState } from './interfaces/column-state.interface';
 import { ColumnsService } from './providers/columns.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
-import { ClrAxis } from '../../utils/popover/enums/axis.enum';
-import { ClrSide } from '../../utils/popover/enums/side.enum';
-import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 @Component({
   selector: 'clr-dg-column-toggle',
@@ -108,9 +110,9 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   constructor(
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
-    popoverToggleService: ClrPopoverToggleService
+    popoverService: ClrPopoverService
   ) {
-    this.subscription = popoverToggleService.openChange.subscribe(change => (this.openState = change));
+    this.subscription = popoverService.openChange.subscribe(change => (this.openState = change));
   }
 
   get allColumnsVisible(): boolean {

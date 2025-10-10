@@ -13,7 +13,7 @@ import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service
 import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -110,7 +110,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   constructor(
     protected renderer: Renderer2,
     protected elem: ElementRef,
-    private toggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     private dateNavigationService: DateNavigationService,
     private datepickerEnabledService: DatepickerEnabledService,
     private dateFormControlService: DateFormControlService,
@@ -132,7 +132,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     );
 
     this.subscriptions.push(
-      toggleService.openChange.subscribe(() => {
+      popoverService.openChange.subscribe(() => {
         dateFormControlService.markAsTouched();
       })
     );
@@ -200,7 +200,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   }
 
   get open() {
-    return this.toggleService.open;
+    return this.popoverService.open;
   }
 
   /**
@@ -227,7 +227,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   ngAfterViewInit(): void {
     this.dateRangeStructuralChecks();
     this.subscriptions.push(
-      this.toggleService.openChange.subscribe(open => {
+      this.popoverService.openChange.subscribe(open => {
         if (open) {
           this.initializeCalendar();
         } else {

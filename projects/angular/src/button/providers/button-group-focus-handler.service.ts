@@ -8,7 +8,7 @@
 import { Injectable, Renderer2 } from '@angular/core';
 
 import { InitialFocus } from './button-group-focus.enum';
-import { ClrPopoverToggleService } from '../../utils';
+import { ClrPopoverService } from '../../utils';
 import { FocusService } from '../../utils/focus/focus.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { Linkers } from '../../utils/focus/focusable-item/linkers';
@@ -24,7 +24,7 @@ export class ButtonGroupFocusHandler {
 
   constructor(
     private focusService: FocusService,
-    private toggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     private renderer: Renderer2
   ) {}
 
@@ -65,7 +65,7 @@ export class ButtonGroupFocusHandler {
   }
 
   private closeMenu(event: KeyboardEvent, focusBackOnToggle: boolean) {
-    this.toggleService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
     if (focusBackOnToggle) {
       this.menuToggle.focus();
     }

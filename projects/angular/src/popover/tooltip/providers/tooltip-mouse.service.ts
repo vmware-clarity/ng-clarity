@@ -7,18 +7,18 @@
 
 import { Injectable } from '@angular/core';
 
-import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../../utils/popover/providers/popover.service';
 
 @Injectable()
 export class TooltipMouseService {
   private mouseOverTrigger: boolean;
   private mouseOverContent: boolean;
 
-  constructor(private readonly toggleService: ClrPopoverToggleService) {}
+  constructor(private readonly popoverService: ClrPopoverService) {}
 
   onMouseEnterTrigger() {
     this.mouseOverTrigger = true;
-    this.toggleService.open = true;
+    this.popoverService.open = true;
   }
 
   onMouseLeaveTrigger() {
@@ -40,7 +40,7 @@ export class TooltipMouseService {
     // the `mouseOverContent` property after the user moves the mouse from the trigger to the content.
     setTimeout(() => {
       if (!this.mouseOverTrigger && !this.mouseOverContent) {
-        this.toggleService.open = false;
+        this.popoverService.open = false;
       }
     }, 0);
   }

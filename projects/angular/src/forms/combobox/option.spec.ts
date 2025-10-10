@@ -14,12 +14,12 @@ import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service
 import { OptionSelectionService } from './providers/option-selection.service';
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 
 @Component({
   template: `<clr-option [clrValue]="value" [id]="id" #option>Test</clr-option>`,
   providers: [
-    ClrPopoverToggleService,
+    ClrPopoverService,
     { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },
     SingleSelectComboboxModel,
     ComboboxFocusHandler,
@@ -36,19 +36,19 @@ class TestComponent {
 export default function (): void {
   describe('Combobox Option Component', function () {
     let context: TestContext<ClrOption<string>, TestComponent>;
-    let toggleService: ClrPopoverToggleService;
+    let popoverService: ClrPopoverService;
     let optionSelectionService: OptionSelectionService<string>;
 
     describe('View Basics', function () {
       beforeEach(function () {
         context = this.createOnly(ClrOption, TestComponent, []);
-        toggleService = context.getClarityProvider(ClrPopoverToggleService);
+        popoverService = context.getClarityProvider(ClrPopoverService);
         optionSelectionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
         optionSelectionService.selectionModel = new SingleSelectComboboxModel<string>() as ComboboxModel<string>;
       });
 
       afterEach(function () {
-        toggleService.open = false;
+        popoverService.open = false;
         context.detectChanges();
       });
 
@@ -79,13 +79,13 @@ export default function (): void {
     describe('Typescript API', function () {
       beforeEach(function () {
         context = this.createOnly(ClrOption, TestComponent, []);
-        toggleService = context.getClarityProvider(ClrPopoverToggleService);
+        popoverService = context.getClarityProvider(ClrPopoverService);
         optionSelectionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
         optionSelectionService.selectionModel = new SingleSelectComboboxModel<string>();
       });
 
       afterEach(function () {
-        toggleService.open = false;
+        popoverService.open = false;
         context.detectChanges();
       });
 
