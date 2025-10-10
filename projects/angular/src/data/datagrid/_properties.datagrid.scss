@@ -21,9 +21,13 @@
     --clr-datagrid-column-separator-expandby: #{tokens.$cds-global-space-6};
     --clr-datagrid-action-arrow-size: #{tokens.$cds-global-space-4};
     --clr-datagrid-cell-outline-offset: calc(-1 * #{tokens.$cds-global-space-2});
+    --clr-datagrid-compact-margin-top: #{tokens.$cds-global-space-5};
+    --clr-datagrid-compact-action-bar-offset: #{mixins.baselinePx(20)};
 
     &,
     [clr-density] {
+      --clr-datagrid-margin-top: #{density.$clr-base-vertical-offset-l};
+      --clr-datagrid-action-bar-offset: #{density.$clr-base-vertical-offset-2xl};
       --clr-datagrid-column-toggle-padding: 0 #{density.$clr-base-horizontal-offset-m};
 
       --clr-datagrid-detail-pane-content-padding: #{density.$clr-base-vertical-offset-xl} #{density.$clr-base-horizontal-offset-xl};
