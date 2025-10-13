@@ -61,6 +61,7 @@ import { DatagridRowRenderer } from './render/row-renderer';
 import { WrappedCell } from './wrapped-cell';
 import { WrappedColumn } from './wrapped-column';
 import { WrappedRow } from './wrapped-row';
+import { ClrPopoverModule } from '../../popover/popover.module';
 import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
 import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
 import { CdkDragModule } from '../../utils/cdk/cdk-drag.module';
@@ -127,6 +128,7 @@ const CLR_DATAGRID_INTERNAL_DIRECTIVES = [ClrDatagridColumnToggle, ClrDatagridCo
     ClrIconModule,
     ClrFormsModule,
     FormsModule,
+    ClrPopoverModule,
     ClrLoadingModule,
     ClrConditionalModule,
     ClrOutsideClickModule,

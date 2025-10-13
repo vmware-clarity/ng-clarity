@@ -13,6 +13,7 @@ import {
   OverlayConfig,
   OverlayRef,
   ScrollDispatcher,
+  ScrollStrategy,
 } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
 import { AfterViewInit, Directive, Inject, NgZone } from '@angular/core';
@@ -156,7 +157,10 @@ export class PopoverDirective implements AfterViewInit {
     // this.overlayRef.updatePosition();
     setTimeout(() => {
       this.popoverService.popoverVisibleEmit(true);
-      this.popoverService.contentRef.nativeElement.focus();
+
+      if (this.popoverService.contentRef.nativeElement.focus) {
+        this.popoverService.contentRef.nativeElement.focus();
+      }
     });
   }
 
@@ -194,9 +198,7 @@ export class PopoverDirective implements AfterViewInit {
       new OverlayConfig({
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
         positionStrategy: positionStrategy,
-        scrollStrategy: this.popoverService.scrollToClose
-          ? this.overlay.scrollStrategies.close()
-          : this.overlay.scrollStrategies.reposition({ autoClose: true }),
+        scrollStrategy: this.getScrollStrategy(),
         panelClass: this.popoverService.panelClass,
         hasBackdrop: this.popoverService.hasBackdrop,
       })
@@ -256,5 +258,11 @@ export class PopoverDirective implements AfterViewInit {
     );
 
     return overlay;
+  }
+
+  private getScrollStrategy(): ScrollStrategy {
+    return this.popoverService.scrollToClose
+      ? this.overlay.scrollStrategies.close()
+      : this.overlay.scrollStrategies.reposition();
   }
 }

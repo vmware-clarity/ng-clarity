@@ -17,7 +17,7 @@ import {
   Optional,
   QueryList,
 } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { ClrOption } from './option';
 import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
@@ -123,15 +123,6 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     this.focusHandler.listbox = this.el.nativeElement;
 
     this.subscriptions.push(
-      fromEvent(this.document, 'scroll', { capture: true }).subscribe(event => {
-        if (
-          this.popoverService.open &&
-          (event as Event).target !== this.el.nativeElement &&
-          (event as Event).target !== this.focusHandler.textInput
-        ) {
-          this.popoverService.open = false;
-        }
-      }),
       this.items.changes.subscribe(items => {
         if (items.length) {
           setTimeout(() => {
