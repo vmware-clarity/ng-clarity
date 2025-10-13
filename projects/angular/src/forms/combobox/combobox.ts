@@ -352,13 +352,14 @@ export class ClrCombobox<T>
     this.subscriptions.push(
       this.optionSelectionService.selectionChanged.subscribe((newSelection: ComboboxModel<T>) => {
         this.updateInputValue(newSelection);
-        // if (this.multiSelect) {
-        //   this.positionService.realign();
-        // }
         if (!this.multiSelect && newSelection && !newSelection.isEmpty()) {
           this.popoverService.open = false;
         }
         this.updateControlValue();
+
+        setTimeout(() => {
+          this.popoverService?.overlayRef?.updatePosition();
+        });
       })
     );
 

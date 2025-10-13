@@ -129,6 +129,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.subscriptions.forEach(s => s.unsubscribe());
     if (this.overlayRef) {
       this.overlayRef.dispose();
+      this.popoverService.overlayRef = null;
       this.overlayRef = null;
     }
   }
@@ -207,6 +208,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private showOverlay() {
     if (!this.overlayRef) {
       this.overlayRef = this._createOverlayRef();
+      this.popoverService.overlayRef = this.overlayRef;
     }
 
     if (!this.view) {
