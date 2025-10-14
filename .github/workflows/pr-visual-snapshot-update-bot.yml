@@ -62,6 +62,8 @@ jobs:
       - name: Push Changes
         if: ${{steps.diff.outputs.status == 'dirty'}}
         id: push-changes
+        env:
+          SOURCE_HEAD_BRANCH: ${{steps.get-pr-event.outputs.sourceHeadBranch}}
         run: |
           repositoryUrl=${{github.server_url}}/${{github.repository}}.git
           updateBranchName=visual-snapshot-update/pr-${{steps.get-pr-event.outputs.pullRequestNumber}}
@@ -71,7 +73,7 @@ jobs:
           git config user.email "noreply@github.com"
 
           # commit changes
-          git commit --message 'chore: update visual snapshots for `${{steps.get-pr-event.outputs.sourceHeadBranch}}`'
+          git commit --message "chore: update visual snapshots for '$SOURCE_HEAD_BRANCH'"
 
           # push changes
           git push $repositoryUrl HEAD:refs/heads/$updateBranchName --force
