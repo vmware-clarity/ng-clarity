@@ -994,8 +994,8 @@
     }
 
     .datagrid-spinner {
-      height: calc(100% - #{tokens.$cds-global-space-5});
-      top: tokens.$cds-global-space-5;
+      height: calc(100% - #{datagrid-variables.$clr-datagrid-compact-margin-top});
+      top: datagrid-variables.$clr-datagrid-compact-margin-top;
     }
 
     .datagrid-action-bar {
