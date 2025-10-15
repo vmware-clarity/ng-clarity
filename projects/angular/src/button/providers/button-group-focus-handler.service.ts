@@ -30,14 +30,14 @@ export class ButtonGroupFocusHandler {
 
   ngOnDestroy() {
     this._unlistenFuncs.forEach((unlisten: () => void) => unlisten());
-    this.focusService.detachListeners();
+    this.focusService.detachListeners(this.menu);
   }
 
   initialize({ menu, menuToggle }: { menu: HTMLElement; menuToggle: HTMLElement }) {
     this.menu = menu;
     this.menuToggle = menuToggle;
 
-    this.focusService.registerContainer(this.menu, '-1');
+    this.focusService.registerContainer(this.menu);
     this.listenToKeys();
     this.linkButtons();
 

@@ -58,8 +58,6 @@ const AvailablePopoverPositions = [
 export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
   @ContentChildren(FocusableItem) items: QueryList<FocusableItem>;
 
-  private focusHandler: DropdownFocusHandler;
-
   constructor(
     injector: Injector,
     @Optional()
@@ -68,29 +66,16 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     @Optional()
     @SkipSelf()
     nested: ClrDropdownMenu,
-    focusHandler: DropdownFocusHandler,
+    private focusHandler: DropdownFocusHandler,
     private elementRef: ElementRef,
     private popoverService: ClrPopoverService
   ) {
     if (!parentHost) {
       throw new Error('clr-dropdown-menu should only be used inside of a clr-dropdown');
     }
-    // super(injector, parentHost);
-    // if (!nested) {
-    //   // Default positioning for normal dropdown is bottom-left
-    //   this.anchorPoint = Point.BOTTOM_LEFT;
-    //   this.popoverPoint = Point.LEFT_TOP;
-    // } else {
-    //   // Default positioning for nested dropdown is right-top
-    //   this.anchorPoint = Point.RIGHT_TOP;
-    //   this.popoverPoint = Point.LEFT_TOP;
-    // }
-    // this.popoverOptions.allowMultipleOpen = true;
-    // this.popoverOptions.ignoreGlobalESCListener = true;
-    // this.closeOnOutsideClick = true;
-    this.focusHandler = focusHandler;
 
     popoverService.contentRef = elementRef;
+    popoverService.scrollToClose = true;
 
     if (!nested) {
       popoverService.defaultPosition = 'bottom-left';
@@ -106,45 +91,6 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
   set position(position: string) {
     // set the popover values based on menu position
     this.popoverService.position = position || this.popoverService.defaultPosition;
-
-    // switch (position) {
-    //   case 'top-right':
-    //     this.anchorPoint = Point.TOP_RIGHT;
-    //     this.popoverPoint = Point.RIGHT_BOTTOM;
-    //     break;
-    //   case 'top-left':
-    //     this.anchorPoint = Point.TOP_LEFT;
-    //     this.popoverPoint = Point.LEFT_BOTTOM;
-    //     break;
-    //   case 'bottom-right':
-    //     this.anchorPoint = Point.BOTTOM_RIGHT;
-    //     this.popoverPoint = Point.RIGHT_TOP;
-    //     break;
-    //   case 'bottom-left':
-    //     this.anchorPoint = Point.BOTTOM_LEFT;
-    //     this.popoverPoint = Point.LEFT_TOP;
-    //     break;
-    //   case 'right-top':
-    //     this.anchorPoint = Point.RIGHT_TOP;
-    //     this.popoverPoint = Point.LEFT_TOP;
-    //     break;
-    //   case 'right-bottom':
-    //     this.anchorPoint = Point.RIGHT_BOTTOM;
-    //     this.popoverPoint = Point.LEFT_BOTTOM;
-    //     break;
-    //   case 'left-top':
-    //     this.anchorPoint = Point.LEFT_TOP;
-    //     this.popoverPoint = Point.RIGHT_TOP;
-    //     break;
-    //   case 'left-bottom':
-    //     this.anchorPoint = Point.LEFT_BOTTOM;
-    //     this.popoverPoint = Point.RIGHT_BOTTOM;
-    //     break;
-    //   default:
-    //     this.anchorPoint = Point.BOTTOM_LEFT;
-    //     this.popoverPoint = Point.LEFT_TOP;
-    //     break;
-    // }
   }
 
   ngAfterContentInit() {
@@ -155,7 +101,6 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // super.ngOnDestroy();
     this.focusHandler.resetChildren();
   }
 }

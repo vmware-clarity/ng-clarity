@@ -14,7 +14,7 @@ import { FocusableItem } from './focusable-item/focusable-item';
 @Injectable()
 export class FocusService {
   private _current: FocusableItem;
-  private _unlistenFuncs: (() => void)[] = [];
+  private _unlistenFuncsMap: Map<FocusableItem, (() => void)[]> = new Map();
 
   constructor(private renderer: Renderer2) {}
 
@@ -29,19 +29,34 @@ export class FocusService {
   listenToArrowKeys(el: HTMLElement) {
     // The following listeners return false when there was an action to take for the key pressed,
     // in order to prevent the default behavior of that key.
-    this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowup', () => !this.move(ArrowKeyDirection.UP)));
-    this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowdown', () => !this.move(ArrowKeyDirection.DOWN)));
-    this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowleft', () => !this.move(ArrowKeyDirection.LEFT)));
-    this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowright', () => !this.move(ArrowKeyDirection.RIGHT)));
+    // const unlistenFuncs = [];
+    //
+    //
+    // this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowup', () => !this.move(ArrowKeyDirection.UP)));
+    // this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowdown', () => !this.move(ArrowKeyDirection.DOWN)));
+    // this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowleft', () => !this.move(ArrowKeyDirection.LEFT)));
+    // // this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowright', () => !this.move(ArrowKeyDirection.RIGHT)));
+    //
+    // this._unlistenFuncsMap.set(el, unlistenFuncs);
+    console.log(el);
+
+    // todo remove this func
   }
 
-  registerContainer(el: HTMLElement, tabIndex = '0') {
-    this.renderer.setAttribute(el, 'tabindex', tabIndex);
-    this.listenToArrowKeys(el);
+  registerContainer(el: HTMLElement) {
     // The following listeners return false when there was an action to take for the key pressed,
     // in order to prevent the default behavior of that key.
-    this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.space', () => !this.activateCurrent()));
-    this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.enter', () => !this.activateCurrent()));
+    const unlistenFuncs = [];
+
+    unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowup', () => !this.move(ArrowKeyDirection.UP)));
+    unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowdown', () => !this.move(ArrowKeyDirection.DOWN)));
+    unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowleft', () => !this.move(ArrowKeyDirection.LEFT)));
+    // unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowright', () => !this.move(ArrowKeyDirection.RIGHT)));
+
+    unlistenFuncs.push(this.renderer.listen(el, 'keydown.space', () => !this.activateCurrent()));
+    unlistenFuncs.push(this.renderer.listen(el, 'keydown.enter', () => !this.activateCurrent()));
+
+    this._unlistenFuncsMap.set(el, unlistenFuncs);
   }
 
   moveTo(item: FocusableItem) {
@@ -88,8 +103,12 @@ export class FocusService {
     return false;
   }
 
-  detachListeners() {
-    this._unlistenFuncs.forEach(unlisten => unlisten());
+  detachListeners(el: HTMLElement) {
+    const unlistenFuncs = this._unlistenFuncsMap.get(el);
+
+    unlistenFuncs?.forEach(unlisten => unlisten());
+
+    this._unlistenFuncsMap.delete(el);
   }
 }
 

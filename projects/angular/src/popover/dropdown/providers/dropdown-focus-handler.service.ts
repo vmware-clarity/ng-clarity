@@ -8,7 +8,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, OnDestroy, Optional, PLATFORM_ID, Renderer2, SkipSelf } from '@angular/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { ClrPopoverService } from '../../../utils';
 import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
@@ -59,20 +59,13 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
       this._unlistenFuncs.push(
         this.renderer.listen(el, 'keydown.arrowright', event => this.popoverService.toggleWithEvent(event))
       );
-    } else {
-      this._unlistenFuncs.push(
-        this.renderer.listen(el, 'keydown.arrowup', event => this.popoverService.toggleWithEvent(event))
-      );
-      this._unlistenFuncs.push(
-        this.renderer.listen(el, 'keydown.arrowdown', event => this.popoverService.toggleWithEvent(event))
-      );
-      this.focusService.listenToArrowKeys(el);
     }
   }
 
   get container() {
     return this._container;
   }
+
   set container(el: HTMLElement) {
     this._container = el;
 
@@ -80,6 +73,9 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     this._unlistenFuncs.push(
       this.renderer.listen(el, 'keydown.tab', event => this.popoverService.toggleWithEvent(event))
     );
+
+    // The root container is the only one we register to the focus service, others do not need focus
+    this.focusService.registerContainer(el);
 
     if (this.parent) {
       // if it's a nested container, pressing escape has the same effect as pressing left key, which closes the current
@@ -91,45 +87,13 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
           event.stopPropagation();
         })
       );
-    } else {
-      // The root container is the only one we register to the focus service, others do not need focus
-      this.focusService.registerContainer(el);
-
-      // The root container will simply close the container when escape key is pressed
-      this._unlistenFuncs.push(
-        this.renderer.listen(el, 'keydown.escape', event => this.popoverService.toggleWithEvent(event))
-      );
-
-      // When the user moves focus outside of the menu, we close the dropdown
-      this._unlistenFuncs.push(
-        this.renderer.listen(el, 'blur', event => {
-          // we clear out any existing focus on the items
-          this.children.pipe(take(1)).subscribe(items => items.forEach(item => item.blur()));
-
-          // event.relatedTarget is null in IE11. In that case we use document.activeElement which correctly points
-          // to the element we want to check. Note that other browsers might point document.activeElement to the
-          // wrong element. This is ok, because all the other browsers we support relies on event.relatedTarget.
-          const target = event.relatedTarget || document.activeElement;
-
-          // If the user clicks on an item which triggers the blur, we don't want to close it since it may open a submenu.
-          // In the case of needing to close it (i.e. user selected an item and the dropdown menu is set to close on
-          // selection), dropdown-item.ts handles it.
-          if (target && isPlatformBrowser(this.platformId)) {
-            if (el.contains(target) || target === this.trigger) {
-              return;
-            }
-          }
-          // We let the user move focus to where the want, we don't force the focus back on the trigger
-          this.focusBackOnTriggerWhenClosed = false;
-          this.popoverService.open = false;
-        })
-      );
     }
   }
 
   ngOnDestroy() {
     this._unlistenFuncs.forEach((unlisten: () => void) => unlisten());
-    this.focusService.detachListeners();
+
+    this.focusService.detachListeners(this.container);
   }
 
   /**

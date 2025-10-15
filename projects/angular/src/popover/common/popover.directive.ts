@@ -83,6 +83,14 @@ export class PopoverDirective implements AfterViewInit {
           this.scrollableParent?.scrollParent ? this.scrollableParent?.scrollParent : window.document,
           'scroll'
         ).subscribe(() => {
+          if (this.popoverService.scrollToClose) {
+            this.zone.run(() => {
+              this.removeOverlay();
+            });
+
+            return;
+          }
+
           if (this.overlayRef) {
             if (this.elementIsVisibleInViewport(this.popoverService.anchorElementRef?.nativeElement)) {
               this.overlayRef.updatePosition();
