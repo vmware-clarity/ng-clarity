@@ -6,7 +6,7 @@
  */
 
 import { Component, TrackByFunction } from '@angular/core';
-import { ClrDatagridStateInterface } from '@clr/angular';
+import { ClrDatagridItemsIdentityFunction, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -43,6 +43,7 @@ export class DatagridSelectionSingleDemo {
 
   trackByIndex: TrackByFunction<User> = index => index;
   trackById: TrackByFunction<User> = (_index, item) => item.id;
+  idendityFn: ClrDatagridItemsIdentityFunction<User> = item => item.id;
 
   async refresh(state: ClrDatagridStateInterface) {
     // this.loading = true;
@@ -64,5 +65,12 @@ export class DatagridSelectionSingleDemo {
       this.total = result.length;
       this.loading = false;
     });
+  }
+
+  selectItems() {
+    this.singleSelected = { ...this.users[1] };
+    this.trackByIndexSingleSelected = { ...this.users[1] };
+    this.trackByIdSingleSelected = { ...this.users[1] };
+    this.trackByIdServerSingleSelected = { ...this.users[1] };
   }
 }

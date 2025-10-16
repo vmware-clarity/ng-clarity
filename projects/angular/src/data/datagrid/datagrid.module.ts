@@ -51,6 +51,7 @@ import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridRowDetail } from './datagrid-row-detail';
 import { ClrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
+import { ClrDatagridSingleSelectionValueAccessor } from './datagrid-single-selection.directive';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DatagridCellRenderer } from './render/cell-renderer';
 import { DatagridHeaderRenderer } from './render/header-renderer';
@@ -97,6 +98,7 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   WrappedCell,
   WrappedColumn,
   WrappedRow,
+  ClrDatagridSingleSelectionValueAccessor,
 
   // Renderers
   DatagridCellRenderer,

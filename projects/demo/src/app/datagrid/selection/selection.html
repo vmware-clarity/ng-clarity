@@ -29,19 +29,26 @@
   objects, we could perform any operation we want on them.
 </p>
 
+<p>
+  User should be able to dynamically change selection trough datagrid input
+  <code class="clr-code">[(clrDgSelected)]</code>.
+  <button class="btn" (click)="selectItems()">Select items</button>
+</p>
+
 <h3>Client side, no trackBy</h3>
 
 <div class="card card-block">
-  <p class="card-text username-list">
+  <div class="card-text username-list">
     Selected users: @if (clientNoTrackBySelected.length == 0) {
     <em>No user selected.</em>
     } @for (user of clientNoTrackBySelected; track user) {
     <span class="username">{{user.name}}</span>
+    <div class="username">{{user | json }}</div>
     }
-  </p>
+  </div>
 </div>
 
-<clr-datagrid [(clrDgSelected)]="clientNoTrackBySelected">
+<clr-datagrid [(clrDgSelected)]="clientNoTrackBySelected" [clrDgItemsIdentityFn]="identityFn">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -71,16 +78,17 @@
 <h3>Client side, trackBy index</h3>
 
 <div class="card card-block">
-  <p class="card-text username-list">
+  <div class="card-text username-list">
     Selected users: @if (clientTrackByIndexSelected.length == 0) {
     <em>No user selected.</em>
     } @for (user of clientTrackByIndexSelected; track user) {
     <span class="username">{{user.name}}</span>
+    <div class="username">{{user | json }}</div>
     }
-  </p>
+  </div>
 </div>
 
-<clr-datagrid [(clrDgSelected)]="clientTrackByIndexSelected">
+<clr-datagrid [(clrDgSelected)]="clientTrackByIndexSelected" [clrDgItemsIdentityFn]="identityFn">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -110,16 +118,17 @@
 <h3>Client side, trackBy item</h3>
 
 <div class="card card-block">
-  <p class="card-text username-list">
+  <div class="card-text username-list">
     Selected users: @if (clientTrackByIdSelected.length == 0) {
     <em>No user selected.</em>
     } @for (user of clientTrackByIdSelected; track user) {
     <span class="username">{{user.name}}</span>
+    <div class="username">{{user | json }}</div>
     }
-  </p>
+  </div>
 </div>
 
-<clr-datagrid [(clrDgSelected)]="clientTrackByIdSelected">
+<clr-datagrid [(clrDgSelected)]="clientTrackByIdSelected" [clrDgItemsIdentityFn]="identityFn">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -149,16 +158,22 @@
 <h3>Server-driven, trackBy item</h3>
 
 <div class="card card-block">
-  <p class="card-text username-list">
+  <div class="card-text username-list">
     Selected users: @if (serverTrackByIdSelected.length == 0) {
     <em>No user selected.</em>
     } @for (user of serverTrackByIdSelected; track user) {
     <span class="username">{{user.name}}</span>
+    <div class="username">{{user | json }}</div>
     }
-  </p>
+  </div>
 </div>
 
-<clr-datagrid [(clrDgSelected)]="serverTrackByIdSelected" (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading">
+<clr-datagrid
+  [(clrDgSelected)]="serverTrackByIdSelected"
+  (clrDgRefresh)="refresh($event)"
+  [clrDgLoading]="loading"
+  [clrDgItemsIdentityFn]="identityFn"
+>
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>

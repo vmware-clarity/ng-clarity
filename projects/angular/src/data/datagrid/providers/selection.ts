@@ -35,6 +35,8 @@ export class Selection<T = any> {
 
   private prevSelectionRefs: T[] = []; // Refs of selected items
   private prevSingleSelectionRef: T; // Ref of single selected item
+  private currentSelectionRefs: T[]; // Refs of currently selected items
+  private currentSingleSelectionRef: T; // Ref of currently selected item
   private lockedRefs: T[] = []; // Ref of locked items
   private valueCollector = new Subject<T[]>();
   private _selectionType: SelectionType = SelectionType.None;
@@ -193,7 +195,7 @@ export class Selection<T = any> {
       return;
     }
     this._selectionType = value;
-    if (value === SelectionType.None) {
+    if ([SelectionType.None, SelectionType.Single].includes(value)) {
       delete this.current;
     } else {
       this.updateCurrent([], false);
@@ -215,6 +217,7 @@ export class Selection<T = any> {
       return;
     }
     this._currentSingle = value;
+    this.currentSingleSelectionRef = this._items.identifyBy(value);
     if (this._items.all && this._items.identifyBy && value) {
       this.prevSingleSelectionRef = this._items.identifyBy(value);
     }
@@ -247,7 +250,7 @@ export class Selection<T = any> {
 
   updateCurrent(value: T[], emit: boolean) {
     this._current = value;
-
+    this.currentSelectionRefs = this._current.map(item => this._items.identifyBy(item));
     if (emit) {
       this.valueCollector.next(value);
     }
@@ -257,10 +260,11 @@ export class Selection<T = any> {
    * Checks if an item is currently selected
    */
   isSelected(item: T): boolean {
+    const ref = this._items.identifyBy(item);
     if (this._selectionType === SelectionType.Single) {
-      return this.currentSingle === item;
+      return this.currentSingleSelectionRef === ref;
     } else if (this._selectionType === SelectionType.Multi) {
-      return this.current.indexOf(item) >= 0;
+      return this.currentSelectionRefs.indexOf(ref) >= 0;
     }
     return false;
   }
