@@ -25,6 +25,8 @@ export default {
   args: {
     // story helpers
     elements,
+    showActionOverflow: false,
+    modalOpen: true,
   },
 };
 
@@ -54,6 +56,10 @@ const NestedDatagridTemplate: StoryFn = args => ({
           <clr-dg-column>Electronegativity</clr-dg-column>
 
           <clr-dg-row *clrDgItems="let element of elements; let index = index" [clrDgItem]="element">
+            <clr-dg-action-overflow *ngIf="showActionOverflow">
+              <button class="action-item">Edit</button>
+              <button class="action-item">Delete</button>
+            </clr-dg-action-overflow>
             <clr-dg-cell>{{ element.name }}</clr-dg-cell>
             <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
             <clr-dg-cell>{{ element.number }}</clr-dg-cell>
@@ -90,4 +96,16 @@ const NestedDatagridTemplate: StoryFn = args => ({
 
 export const NestedDatagridDetail: StoryObj = {
   render: NestedDatagridTemplate,
+};
+
+export const NestedDatagridWithOpenedActions: StoryObj = {
+  render: NestedDatagridTemplate,
+  args: {
+    showActionOverflow: true,
+  },
+  play({ canvasElement }) {
+    setTimeout(() => {
+      (canvasElement.querySelector('button.datagrid-action-toggle') as HTMLElement).click();
+    }, 1);
+  },
 };
