@@ -109,6 +109,6 @@ export const NestedDatagridWithOpenedActions: StoryObj = {
   play({ canvasElement }) {
     setTimeout(() => {
       (canvasElement.querySelector('button.datagrid-action-toggle') as HTMLElement).click();
-    }, 1);
+    }, 100);
   },
 };
