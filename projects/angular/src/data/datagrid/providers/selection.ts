@@ -250,7 +250,7 @@ export class Selection<T = any> {
 
   updateCurrent(value: T[], emit: boolean) {
     this._current = value;
-    this.currentSelectionRefs = this._current.map(item => this._items.identifyBy(item));
+    this.currentSelectionRefs = this._current?.map(item => this._items.identifyBy(item)) || [];
     if (emit) {
       this.valueCollector.next(value);
     }
@@ -273,7 +273,8 @@ export class Selection<T = any> {
    * Selects or deselects an item
    */
   setSelected(item: T, selected: boolean) {
-    const index = this.current ? this.current.indexOf(item) : -1;
+    const ref = this._items.identifyBy(item);
+    const index = this.currentSelectionRefs ? this.currentSelectionRefs.indexOf(ref) : -1;
 
     switch (this._selectionType) {
       case SelectionType.None:
@@ -312,7 +313,10 @@ export class Selection<T = any> {
     if (nbDisplayed < 1) {
       return false;
     }
-    const temp: T[] = displayedItems.filter(item => this.current.indexOf(item) > -1);
+    const temp: T[] = displayedItems.filter(item => {
+      const ref = this._items.identifyBy(item);
+      return this.currentSelectionRefs.indexOf(ref) > -1;
+    });
     return temp.length === displayedItems.length;
   }
 
@@ -361,14 +365,16 @@ export class Selection<T = any> {
      */
     if (this.isAllSelected()) {
       this._items.displayed.forEach(item => {
-        const currentIndex = this.current.indexOf(item);
+        const ref = this._items.identifyBy(item);
+        const currentIndex = this.currentSelectionRefs.indexOf(ref);
         if (currentIndex > -1 && this.isLocked(item) === false) {
           this.deselectItem(currentIndex);
         }
       });
     } else {
       this._items.displayed.forEach(item => {
-        if (this.current.indexOf(item) < 0 && this.isLocked(item) === false) {
+        const ref = this._items.identifyBy(item);
+        if (this.currentSelectionRefs.indexOf(ref) < 0 && this.isLocked(item) === false) {
           this.selectItem(item);
         }
       });
