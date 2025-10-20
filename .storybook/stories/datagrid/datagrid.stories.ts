@@ -202,6 +202,15 @@ export const CompactSingleSelect: StoryObj = {
     singleSelectable: true,
   },
 };
+
+export const CompactSingleSelectWithSelection: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    compact: true,
+    singleSelectable: true,
+    selectedRow: { ...elements[1] },
+  },
+};
 export const CompactMultiSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
@@ -214,7 +223,7 @@ export const CompactMultiSelectWithSelection: StoryObj = {
   args: {
     compact: true,
     multiSelectable: true,
-    selectedRows: [1],
+    selectedRows: [{ ...elements[1] }, { ...elements[2] }],
   },
 };
 
