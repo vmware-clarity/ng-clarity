@@ -134,3 +134,11 @@ export const CompactOverflowEllipsisActionOverflow: StoryObj = {
     multiSelectable: true,
   },
 };
+
+export const ActionOverflowOpenedInRelativeBody: StoryObj = {
+  render: ActionOverflowTemplate,
+  play({ canvasElement }) {
+    document.body.style.position = 'relative';
+    (canvasElement.querySelector('button.datagrid-action-toggle') as HTMLElement).click();
+  },
+};
