@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, forwardRef, HostListener, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Directive, ElementRef, forwardRef, Input, Renderer2 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
@@ -17,20 +17,24 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       multi: true,
     },
   ],
-  standalone: false,
+  host: {
+    '(change)': 'onChange(value)',
+    '(blur)': 'onTouched()',
+  },
 })
-export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAccessor, OnChanges {
+export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
   @Input() value: any;
   @Input() clrDgIdentityFn!: (value: any) => unknown;
 
   private model: any;
-  private disabled = false;
 
-  constructor(private el: ElementRef<HTMLInputElement>) {}
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef<HTMLInputElement>
+  ) {}
 
-  ngOnChanges(_: SimpleChanges): void {
-    this.updateChecked();
-  }
+  onChange: (value: any) => void = () => {};
+  onTouched: () => void = () => {};
 
   writeValue(value: any): void {
     this.model = value;
@@ -46,27 +50,8 @@ export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAcce
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-    if (!this.el.nativeElement.hasAttribute('disabled')) {
-      this.el.nativeElement.disabled = isDisabled;
-    }
+    this.renderer.setProperty(this.elementRef.nativeElement, 'disabled', isDisabled);
   }
-
-  @HostListener('change')
-  _onHostChange(): void {
-    if (this.disabled) {
-      return;
-    }
-    this.onChange(this.value);
-  }
-
-  @HostListener('blur')
-  _onHostBlur(): void {
-    this.onTouched();
-  }
-
-  private onChange: (value: any) => void = () => {};
-  private onTouched: () => void = () => {};
 
   private keyOf = (value: any): unknown => {
     if (value && this.clrDgIdentityFn) {
@@ -76,9 +61,8 @@ export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAcce
   };
 
   private updateChecked(): void {
-    const input = this.el.nativeElement;
     const model = this.keyOf(this.model);
     const value = this.keyOf(this.value);
-    input.checked = model === value;
+    this.renderer.setProperty(this.elementRef.nativeElement, 'checked', model === value);
   }
 }

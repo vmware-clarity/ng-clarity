@@ -98,7 +98,6 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   WrappedCell,
   WrappedColumn,
   WrappedRow,
-  ClrDatagridSingleSelectionValueAccessor,
 
   // Renderers
   DatagridCellRenderer,
@@ -118,6 +117,7 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
 ];
 
 const CLR_DATAGRID_INTERNAL_DIRECTIVES = [ClrDatagridColumnToggle, ClrDatagridColumnToggleButton];
+const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAccessor];
 
 @NgModule({
   imports: [
@@ -134,9 +134,10 @@ const CLR_DATAGRID_INTERNAL_DIRECTIVES = [ClrDatagridColumnToggle, ClrDatagridCo
     ClrSpinnerModule,
     ClrPopoverModuleNext,
     ClrKeyFocusModule,
+    CLR_DATAGRID_STANDALONE_DIRECTIVES,
   ],
   declarations: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_INTERNAL_DIRECTIVES],
-  exports: [CLR_DATAGRID_DIRECTIVES],
+  exports: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_STANDALONE_DIRECTIVES],
 })
 export class ClrDatagridModule {
   constructor() {
