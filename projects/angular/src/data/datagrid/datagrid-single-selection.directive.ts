@@ -6,7 +6,7 @@
  */
 
 import { Directive, ElementRef, forwardRef, Input, Renderer2 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DefaultValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
   selector: 'input[type=radio][clrDgSingleSelectionRadio]',
@@ -22,7 +22,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     '(blur)': 'onTouched()',
   },
 })
-export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
+export class ClrDatagridSingleSelectionValueAccessor extends DefaultValueAccessor {
   @Input() value: any;
   @Input() clrDgIdentityFn!: (value: any) => unknown;
 
@@ -31,26 +31,13 @@ export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAcce
   constructor(
     private renderer: Renderer2,
     private elementRef: ElementRef<HTMLInputElement>
-  ) {}
+  ) {
+    super(renderer, elementRef, null);
+  }
 
-  onChange: (value: any) => void = () => {};
-  onTouched: () => void = () => {};
-
-  writeValue(value: any): void {
+  override writeValue(value: any): void {
     this.model = value;
     this.updateChecked();
-  }
-
-  registerOnChange(fn: (value: any) => void): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.renderer.setProperty(this.elementRef.nativeElement, 'disabled', isDisabled);
   }
 
   private keyOf = (value: any): unknown => {
