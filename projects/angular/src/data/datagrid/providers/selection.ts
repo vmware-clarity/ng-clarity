@@ -35,8 +35,6 @@ export class Selection<T = any> {
 
   private prevSelectionRefs: T[] = []; // Refs of selected items
   private prevSingleSelectionRef: T; // Ref of single selected item
-  private currentSelectionRefs: T[]; // Refs of currently selected items
-  private currentSingleSelectionRef: T; // Ref of currently selected item
   private lockedRefs: T[] = []; // Ref of locked items
   private valueCollector = new Subject<T[]>();
   private _selectionType: SelectionType = SelectionType.None;
@@ -217,7 +215,6 @@ export class Selection<T = any> {
       return;
     }
     this._currentSingle = value;
-    this.currentSingleSelectionRef = this._items.identifyBy(value);
     if (this._items.all && this._items.identifyBy && value) {
       this.prevSingleSelectionRef = this._items.identifyBy(value);
     }
@@ -231,6 +228,16 @@ export class Selection<T = any> {
 
   private get _selectable(): boolean {
     return this._selectionType === SelectionType.Multi || this._selectionType === SelectionType.Single;
+  }
+
+  // Refs of currently selected items
+  private get currentSelectionRefs(): T[] {
+    return this._current?.map(item => this._items.identifyBy(item)) || [];
+  }
+
+  // Ref of currently selected item
+  private get currentSingleSelectionRef(): T {
+    return this._currentSingle && this._items.identifyBy(this._currentSingle);
   }
 
   clearSelection(): void {
@@ -250,7 +257,6 @@ export class Selection<T = any> {
 
   updateCurrent(value: T[], emit: boolean) {
     this._current = value;
-    this.currentSelectionRefs = this._current?.map(item => this._items.identifyBy(item)) || [];
     if (emit) {
       this.valueCollector.next(value);
     }
@@ -373,8 +379,7 @@ export class Selection<T = any> {
       });
     } else {
       this._items.displayed.forEach(item => {
-        const ref = this._items.identifyBy(item);
-        if (this.currentSelectionRefs.indexOf(ref) < 0 && this.isLocked(item) === false) {
+        if (!this.isSelected(item) && this.isLocked(item) === false) {
           this.selectItem(item);
         }
       });
