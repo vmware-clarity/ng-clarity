@@ -68,9 +68,10 @@ export class DatagridSelectionSingleDemo {
   }
 
   selectItems() {
-    this.singleSelected = { ...this.users[1] };
-    this.trackByIndexSingleSelected = { ...this.users[1] };
-    this.trackByIdSingleSelected = { ...this.users[1] };
-    this.trackByIdServerSingleSelected = { ...this.users[1] };
+    const selectedUser = { ...this.users[1] };
+    this.singleSelected = selectedUser;
+    this.trackByIndexSingleSelected = selectedUser;
+    this.trackByIdSingleSelected = selectedUser;
+    this.trackByIdServerSingleSelected = selectedUser;
   }
 }

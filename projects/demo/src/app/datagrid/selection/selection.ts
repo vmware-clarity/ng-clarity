@@ -63,17 +63,14 @@ export class DatagridSelectionDemo {
   }
 
   selectItems() {
-    this.clientNoTrackBySelected.push(
+    const selectedUsers = [
       { ...this.clientNoTrackByUsers[1] },
       { ...this.clientNoTrackByUsers[2] },
-      { ...this.clientNoTrackByUsers[3] }
-    );
-    this.clientTrackByIndexSelected = [
-      this.clientNoTrackByUsers[1],
-      this.clientNoTrackByUsers[2],
-      this.clientNoTrackByUsers[3],
+      { ...this.clientNoTrackByUsers[3] },
     ];
-    this.clientTrackByIdSelected = [this.clientNoTrackByUsers[1]];
-    this.serverTrackByIdSelected = [this.clientNoTrackByUsers[1]];
+    this.clientNoTrackBySelected.push(...selectedUsers);
+    this.clientTrackByIndexSelected = selectedUsers;
+    this.clientTrackByIdSelected = selectedUsers;
+    this.serverTrackByIdSelected = selectedUsers;
   }
 }
