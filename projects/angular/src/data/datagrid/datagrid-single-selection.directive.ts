@@ -21,6 +21,7 @@ import { DefaultValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     '(change)': 'onChange(value)',
     '(blur)': 'onTouched()',
   },
+  standalone: false,
 })
 export class ClrDatagridSingleSelectionValueAccessor extends DefaultValueAccessor {
   @Input() value: any;
