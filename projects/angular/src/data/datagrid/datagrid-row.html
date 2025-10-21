@@ -44,11 +44,12 @@
             tabindex="-1"
             type="radio"
             clrRadio
+            clrDgSingleSelectionRadio
+            [clrDgItemsTrackBy]="trackBy"
             [id]="radioId"
             [name]="selection.id + '-radio'"
             [value]="item"
             [(ngModel)]="selection.currentSingle"
-            [checked]="selection.currentSingle === item"
             [disabled]="clrDgSelectable ? null : true"
             [attr.aria-disabled]="clrDgSelectable ? null : true"
           />

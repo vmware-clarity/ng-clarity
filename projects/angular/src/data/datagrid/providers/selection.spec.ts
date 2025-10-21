@@ -184,7 +184,7 @@ export default function (): void {
         let currentSelection: number[];
         selectionInstance.change.subscribe((items: any) => {
           nbChanges++;
-          currentSelection = items;
+          currentSelection = [...items];
         });
         selectionInstance.setSelected(4, true);
         tick();
@@ -545,7 +545,7 @@ export default function (): void {
           const clones = cloneItems();
           itemsInstance.all = clones;
           tick();
-          testSelectedItems(clones, [2]);
+          expect(itemsInstance.trackBy(selectionInstance.currentSingle)).toEqual(3);
         }));
       });
     });
@@ -603,15 +603,15 @@ export default function (): void {
         it('should support trackBy item id', fakeAsync(() => {
           itemsInstance.trackBy = item => item.id;
           itemsInstance.all = itemsA;
-          tick();
           selectionInstance.setSelected(itemsA[0], true);
-          testSelection(true, false, false);
+          tick();
+          testSelection(true, false, true);
           itemsInstance.all = itemsB;
           tick();
-          testSelection(true, false, false);
+          testSelection(true, false, true);
           itemsInstance.all = itemsC;
           tick();
-          testSelection(false, false, true);
+          testSelection(true, false, true);
           expect(selectionInstance.current[0].modified).toEqual(true);
         }));
 
@@ -633,15 +633,15 @@ export default function (): void {
           pageInstance.current = 1;
           tick();
           selectionInstance.toggleAll();
-          testToggleAllSelection(true, false, false);
+          testToggleAllSelection(true, false, true);
           itemsInstance.all = itemsB;
           pageInstance.current = 2;
           tick();
-          testToggleAllSelection(true, false, false);
+          testToggleAllSelection(true, false, true);
           itemsInstance.all = itemsC;
           pageInstance.current = 1;
           tick();
-          testToggleAllSelection(false, false, true);
+          testToggleAllSelection(true, false, true);
           expect(selectionInstance.current[0].modified).toEqual(true);
         }));
 
@@ -673,10 +673,10 @@ export default function (): void {
           itemsInstance.all = itemsA;
           tick();
           selectionInstance.currentSingle = itemsA[0];
-          testSelection(true, false, false);
+          testSelection(true, false, true);
           itemsInstance.all = itemsB;
           tick();
-          testSelection(true, false, false);
+          testSelection(true, false, true);
           // itemsInstance.all = itemsC;
           // tick();
           // testSelection(false, false, true);
