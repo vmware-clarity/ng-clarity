@@ -985,7 +985,8 @@
     }
 
     .datagrid-detail-pane {
-      margin-top: tokens.$cds-global-space-5;
+      margin-top: datagrid-variables.$clr-datagrid-compact-margin-top;
+
       &-content {
         padding: tokens.$cds-global-space-6;
         .datagrid-detail-header {
@@ -1392,7 +1393,7 @@
   }
 
   .datagrid-detail-pane {
-    margin-top: density.$clr-base-vertical-offset-l;
+    margin-top: datagrid-variables.$clr-datagrid-margin-top;
     border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
     border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
