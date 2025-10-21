@@ -182,7 +182,7 @@ export default function (): void {
         let currentSelection: number[];
         selectionInstance.change.subscribe((items: any) => {
           nbChanges++;
-          currentSelection = items;
+          currentSelection = [...items];
         });
         selectionInstance.setSelected(4, true);
         await delay();
@@ -539,7 +539,7 @@ export default function (): void {
           const clones = cloneItems();
           itemsInstance.all = clones;
           await delay();
-          testSelectedItems(clones, [2]);
+          expect(itemsInstance.identifyBy(selectionInstance.currentSingle)).toEqual(3);
         });
       });
     });
@@ -597,15 +597,15 @@ export default function (): void {
         it('should support identifyBy item id', async () => {
           itemsInstance.identifyBy = item => item.id;
           itemsInstance.all = itemsA;
-          await delay();
           selectionInstance.setSelected(itemsA[0], true);
-          testSelection(true, false, false);
+          await delay();
+          testSelection(true, false, true);
           itemsInstance.all = itemsB;
           await delay();
-          testSelection(true, false, false);
+          testSelection(true, false, true);
           itemsInstance.all = itemsC;
           await delay();
-          testSelection(false, false, true);
+          testSelection(true, false, true);
           expect(selectionInstance.current[0].modified).toEqual(true);
         });
 
@@ -627,15 +627,15 @@ export default function (): void {
           pageInstance.current = 1;
           await delay();
           selectionInstance.toggleAll();
-          testToggleAllSelection(true, false, false);
+          testToggleAllSelection(true, false, true);
           itemsInstance.all = itemsB;
           pageInstance.current = 2;
           await delay();
-          testToggleAllSelection(true, false, false);
+          testToggleAllSelection(true, false, true);
           itemsInstance.all = itemsC;
           pageInstance.current = 1;
           await delay();
-          testToggleAllSelection(false, false, true);
+          testToggleAllSelection(true, false, true);
           expect(selectionInstance.current[0].modified).toEqual(true);
         });
 
@@ -667,10 +667,10 @@ export default function (): void {
           itemsInstance.all = itemsA;
           await delay();
           selectionInstance.currentSingle = itemsA[0];
-          testSelection(true, false, false);
+          testSelection(true, false, true);
           itemsInstance.all = itemsB;
           await delay();
-          testSelection(true, false, false);
+          testSelection(true, false, true);
           // itemsInstance.all = itemsC;
           // tick();
           // testSelection(false, false, true);
@@ -770,17 +770,19 @@ export default function (): void {
         expect(selectionInstance.isLocked(4)).toBe(true);
       });
 
-      it('should remove locked item when is no longer part from the items list and type is Single', function () {
+      it('should remove locked item when is no longer part from the items list and type is Single', async function () {
         selectionInstance.selectionType = SelectionType.Single;
         selectionInstance.lockItem(4, true);
         itemsInstance.all = [5, 6, 7];
+        await delay();
         expect(selectionInstance.isLocked(4)).toBe(false);
       });
 
-      it('should remove locked item when is no longer part from the items list and type is Multi', function () {
+      it('should remove locked item when is no longer part from the items list and type is Multi', async function () {
         selectionInstance.selectionType = SelectionType.Multi;
         selectionInstance.lockItem(6, true);
         itemsInstance.all = [5, 7, 8];
+        await delay();
         expect(selectionInstance.isLocked(6)).toBe(false);
       });
 

@@ -7,7 +7,7 @@
 
 import { Injectable } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, delay } from 'rxjs/operators';
 
 import { FiltersProvider } from './filters';
 import { Items } from './items';
@@ -75,7 +75,7 @@ export class Selection<T = any> {
     );
 
     this.subscriptions.push(
-      _items.allChanges.subscribe(updatedItems => {
+      _items.allChanges.pipe(delay(0)).subscribe(updatedItems => {
         // Reset the lockedRefs;
         const updateLockedRef: T[] = [];
 
@@ -113,15 +113,9 @@ export class Selection<T = any> {
               selectionUpdated = true;
             }
 
-            // TODO: Discussed this with Eudes and this is fine for now.
-            // But we need to figure out a different pattern for the
-            // child triggering the parent change detection problem.
-            // Using setTimeout for now to fix this.
-            setTimeout(() => {
-              if (selectionUpdated) {
-                this.currentSingle = newSingle;
-              }
-            }, 0);
+            if (selectionUpdated) {
+              this.currentSingle = newSingle;
+            }
             break;
           }
 
@@ -172,15 +166,9 @@ export class Selection<T = any> {
                 }
               }
 
-              // TODO: Discussed this with Eudes and this is fine for now.
-              // But we need to figure out a different pattern for the
-              // child triggering the parent change detection problem.
-              // Using setTimeout for now to fix this.
-              setTimeout(() => {
-                if (selectionUpdated) {
-                  this.current = leftOver;
-                }
-              }, 0);
+              if (selectionUpdated) {
+                this.current = leftOver;
+              }
             }
             break;
           }
@@ -205,7 +193,7 @@ export class Selection<T = any> {
       return;
     }
     this._selectionType = value;
-    if (value === SelectionType.None) {
+    if ([SelectionType.None, SelectionType.Single].includes(value)) {
       delete this.current;
     } else {
       this.updateCurrent([], false);
@@ -226,9 +214,8 @@ export class Selection<T = any> {
     if (value === this._currentSingle) {
       return;
     }
-
     this._currentSingle = value;
-    if (value) {
+    if (this._items.all && this._items.identifyBy && value) {
       this.prevSingleSelectionRef = this._items.identifyBy(value);
     }
     this.emitChange();
@@ -241,6 +228,16 @@ export class Selection<T = any> {
 
   private get _selectable(): boolean {
     return this._selectionType === SelectionType.Multi || this._selectionType === SelectionType.Single;
+  }
+
+  // Refs of currently selected items
+  private get currentSelectionRefs(): T[] {
+    return this._current?.map(item => this._items.identifyBy(item)) || [];
+  }
+
+  // Ref of currently selected item
+  private get currentSingleSelectionRef(): T {
+    return this._currentSingle && this._items.identifyBy(this._currentSingle);
   }
 
   clearSelection(): void {
@@ -260,7 +257,6 @@ export class Selection<T = any> {
 
   updateCurrent(value: T[], emit: boolean) {
     this._current = value;
-
     if (emit) {
       this.valueCollector.next(value);
     }
@@ -270,10 +266,11 @@ export class Selection<T = any> {
    * Checks if an item is currently selected
    */
   isSelected(item: T): boolean {
+    const ref = this._items.identifyBy(item);
     if (this._selectionType === SelectionType.Single) {
-      return this.currentSingle === item;
+      return this.currentSingleSelectionRef === ref;
     } else if (this._selectionType === SelectionType.Multi) {
-      return this.current.indexOf(item) >= 0;
+      return this.currentSelectionRefs.indexOf(ref) >= 0;
     }
     return false;
   }
@@ -282,12 +279,16 @@ export class Selection<T = any> {
    * Selects or deselects an item
    */
   setSelected(item: T, selected: boolean) {
-    const index = this.current ? this.current.indexOf(item) : -1;
+    const ref = this._items.identifyBy(item);
+    const index = this.currentSelectionRefs ? this.currentSelectionRefs.indexOf(ref) : -1;
 
     switch (this._selectionType) {
       case SelectionType.None:
         break;
       case SelectionType.Single:
+        if (selected) {
+          this.currentSingle = item;
+        }
         // in single selection, set currentSingle method should be used
         break;
       case SelectionType.Multi:
@@ -318,7 +319,10 @@ export class Selection<T = any> {
     if (nbDisplayed < 1) {
       return false;
     }
-    const temp: T[] = displayedItems.filter(item => this.current.indexOf(item) > -1);
+    const temp: T[] = displayedItems.filter(item => {
+      const ref = this._items.identifyBy(item);
+      return this.currentSelectionRefs.indexOf(ref) > -1;
+    });
     return temp.length === displayedItems.length;
   }
 
@@ -367,14 +371,15 @@ export class Selection<T = any> {
      */
     if (this.isAllSelected()) {
       this._items.displayed.forEach(item => {
-        const currentIndex = this.current.indexOf(item);
+        const ref = this._items.identifyBy(item);
+        const currentIndex = this.currentSelectionRefs.indexOf(ref);
         if (currentIndex > -1 && this.isLocked(item) === false) {
           this.deselectItem(currentIndex);
         }
       });
     } else {
       this._items.displayed.forEach(item => {
-        if (this.current.indexOf(item) < 0 && this.isLocked(item) === false) {
+        if (!this.isSelected(item) && this.isLocked(item) === false) {
           this.selectItem(item);
         }
       });

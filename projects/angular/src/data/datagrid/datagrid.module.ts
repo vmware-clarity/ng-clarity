@@ -52,6 +52,7 @@ import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridRowDetail } from './datagrid-row-detail';
 import { ClrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
+import { ClrDatagridSingleSelectionValueAccessor } from './datagrid-single-selection.directive';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DatagridCellRenderer } from './render/cell-renderer';
 import { DatagridHeaderRenderer } from './render/header-renderer';
@@ -118,6 +119,7 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
 ];
 
 const CLR_DATAGRID_INTERNAL_DIRECTIVES = [ClrDatagridColumnToggle, ClrDatagridColumnToggleButton];
+const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAccessor];
 
 @NgModule({
   imports: [
@@ -136,9 +138,10 @@ const CLR_DATAGRID_INTERNAL_DIRECTIVES = [ClrDatagridColumnToggle, ClrDatagridCo
     ClrSpinnerModule,
     ClrPopoverModuleNext,
     ClrKeyFocusModule,
+    CLR_DATAGRID_STANDALONE_DIRECTIVES,
   ],
   declarations: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_INTERNAL_DIRECTIVES],
-  exports: [CLR_DATAGRID_DIRECTIVES],
+  exports: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_STANDALONE_DIRECTIVES],
 })
 export class ClrDatagridModule {
   constructor() {

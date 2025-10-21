@@ -399,15 +399,13 @@
   }
 
   .datagrid-action-bar {
-    $action-bar-offset: density.$clr-base-vertical-offset-2xl;
-
-    margin-top: $action-bar-offset;
+    margin-top: datagrid-variables.$clr-datagrid-action-bar-offset;
 
     // This changes the height and position of the datagrid-spinner when there is an action-bar
     // Allows us to cover the action-bar with the spinner backgdrop and prevent user interactions.
     & ~ .datagrid-outer-wrapper .datagrid-spinner {
-      height: calc(100% - #{$action-bar-offset});
-      top: $action-bar-offset; // Account for the margin above the datagrid-action-bar
+      height: calc(100% - #{datagrid-variables.$clr-datagrid-action-bar-offset});
+      top: datagrid-variables.$clr-datagrid-action-bar-offset; // Account for the margin above the datagrid-action-bar
     }
   }
 
@@ -993,22 +991,25 @@
   // @deprecated CSS rule `.datagrid-compact { ... }` in favor of compact mode in density theme
   .datagrid-compact {
     .datagrid {
-      margin-top: tokens.$cds-global-space-5;
+      margin-top: datagrid-variables.$clr-datagrid-compact-margin-top;
+    }
+
+    .datagrid-spinner {
+      height: calc(100% - #{datagrid-variables.$clr-datagrid-compact-margin-top});
+      top: datagrid-variables.$clr-datagrid-compact-margin-top;
     }
 
     .datagrid-action-bar {
-      $action-bar-offset: mixins.baselinePx(20);
+      margin-top: datagrid-variables.$clr-datagrid-compact-action-bar-offset;
 
-      margin-top: $action-bar-offset;
-
-      & ~ .datagrid-spinner {
-        height: calc(100% - #{$action-bar-offset});
-        top: $action-bar-offset;
+      & ~ .datagrid-outer-wrapper .datagrid-spinner {
+        height: calc(100% - #{datagrid-variables.$clr-datagrid-compact-action-bar-offset});
+        top: datagrid-variables.$clr-datagrid-compact-action-bar-offset;
       }
     }
 
     .datagrid-detail-pane {
-      margin-top: tokens.$cds-global-space-5;
+      margin-top: datagrid-variables.$clr-datagrid-compact-margin-top;
 
       &-content {
         padding: tokens.$cds-global-space-6;
@@ -1447,7 +1448,7 @@
   }
 
   .datagrid-detail-pane {
-    margin-top: density.$clr-base-vertical-offset-l;
+    margin-top: datagrid-variables.$clr-datagrid-margin-top;
     border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
     border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
