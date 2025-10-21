@@ -15,7 +15,7 @@ import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.direct
   selector: 'clr-tooltip',
   template: `<ng-content></ng-content>`,
   host: {
-    '[class.tooltip]': 'true',
+    '[class.clr-tooltip-container]': 'true',
   },
   providers: [TooltipIdService, TooltipMouseService],
   hostDirectives: [ClrPopoverHostDirective],

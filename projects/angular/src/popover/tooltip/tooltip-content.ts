@@ -5,19 +5,36 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, HostListener, Inject, Injector, Input, OnInit, Optional } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Inject,
+  Injector,
+  Input,
+  OnInit,
+  Optional,
+  Renderer2,
+} from '@angular/core';
 
-import { assertNever } from '../../utils/assert/assert.helpers';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { AbstractPopover } from '../common/abstract-popover';
-import { Point } from '../common/popover';
+import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-tooltip-position.enum';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
+import { ClrPopoverService } from '../../utils';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
 
 const POSITIONS = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'] as const;
 type Position = (typeof POSITIONS)[number];
 
+const AvailablePopoverPositions = [
+  ClrCDKPopoverPositions['bottom-left'],
+  ClrCDKPopoverPositions['bottom-right'],
+  ClrCDKPopoverPositions['left'],
+  ClrCDKPopoverPositions['right'],
+  ClrCDKPopoverPositions['top-left'],
+  ClrCDKPopoverPositions['top-right'],
+];
 const SIZES = ['xs', 'sm', 'md', 'lg'];
 
 const defaultPosition = 'right';
@@ -34,7 +51,7 @@ const defaultSize = 'sm';
   },
   standalone: false,
 })
-export class ClrTooltipContent extends AbstractPopover implements OnInit {
+export class ClrTooltipContent implements OnInit {
   private _id: string;
   private _position: string;
   private _size: string;
@@ -45,9 +62,16 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef<HTMLElement>,
     private tooltipIdService: TooltipIdService,
+    public el: ElementRef,
+    private renderer: Renderer2,
+    private popoverService: ClrPopoverService,
     private tooltipMouseService: TooltipMouseService
   ) {
-    super(injector, parentHost);
+    popoverService.contentRef = el;
+    popoverService.availablePositions = AvailablePopoverPositions;
+    popoverService.popoverPositions = ClrCDKPopoverPositions;
+    popoverService.scrollToClose = true;
+    popoverService.panelClass = ['clr-tooltip-container'];
 
     if (!parentHost) {
       throw new Error('clr-tooltip-content should only be used inside of a clr-tooltip');
@@ -79,35 +103,7 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
     this._position = newPosition;
     this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
 
-    // set the popover values based on direction
-    switch (newPosition) {
-      case 'top-right':
-        this.anchorPoint = Point.TOP_CENTER;
-        this.popoverPoint = Point.LEFT_BOTTOM;
-        break;
-      case 'top-left':
-        this.anchorPoint = Point.TOP_CENTER;
-        this.popoverPoint = Point.RIGHT_BOTTOM;
-        break;
-      case 'bottom-right':
-        this.anchorPoint = Point.BOTTOM_CENTER;
-        this.popoverPoint = Point.LEFT_TOP;
-        break;
-      case 'bottom-left':
-        this.anchorPoint = Point.BOTTOM_CENTER;
-        this.popoverPoint = Point.RIGHT_TOP;
-        break;
-      case 'right':
-        this.anchorPoint = Point.RIGHT_CENTER;
-        this.popoverPoint = Point.LEFT_TOP;
-        break;
-      case 'left':
-        this.anchorPoint = Point.LEFT_CENTER;
-        this.popoverPoint = Point.RIGHT_TOP;
-        break;
-      default:
-        assertNever(newPosition);
-    }
+    this.popoverService.position = this._position;
   }
 
   @Input('clrSize')

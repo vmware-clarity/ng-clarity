@@ -26,11 +26,12 @@ export class ClrPopoverService {
   openButtonRef: ElementRef;
   position: string;
   defaultPosition: string;
-  panelClass: string;
+  panelClass: string | string[];
   popoverPositions: ClrCDKPopoverPositions;
   availablePositions: any;
   hasBackdrop: false;
   overlayRef: OverlayRef;
+  noFocus: boolean;
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;
@@ -102,6 +103,10 @@ export class ClrPopoverService {
   }
 
   setOpenedButtonFocus(): void {
+    if (this.noFocus) {
+      return;
+    }
+
     if (this.openButtonRef) {
       this.openButtonRef?.nativeElement?.focus();
     } else {

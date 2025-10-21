@@ -7,7 +7,7 @@
 
 import { Injectable } from '@angular/core';
 
-import { ClrPopoverService } from '../../../utils/popover/providers/popover.service';
+import { ClrPopoverService } from '../../../utils';
 
 @Injectable()
 export class TooltipMouseService {
@@ -42,6 +42,6 @@ export class TooltipMouseService {
       if (!this.mouseOverTrigger && !this.mouseOverContent) {
         this.popoverService.open = false;
       }
-    }, 0);
+    }, 100);
   }
 }
