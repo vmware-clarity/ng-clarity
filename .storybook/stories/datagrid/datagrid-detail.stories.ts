@@ -54,6 +54,7 @@ export default {
     multiSelectable: false,
     expandable: false,
     compact: false,
+    removeMargin: false,
     hidableColumns: false,
     height: 0,
     disabledDetailIndex: -1,
@@ -97,12 +98,16 @@ const DetailTemplate: StoryFn = args => {
             background-color: var(--cds-alias-status-info);
           }
         }
+        .removed-margin {
+          --clr-datagrid-margin-top: 0px;
+          --clr-datagrid-compact-margin-top: 0px;
+        }
       </style>
       <clr-datagrid
         ${args.height ? '[style.height.px]="height"' : ''}
         ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
         ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
-        [ngClass]="{ 'datagrid-compact': compact }"
+        [ngClass]="{ 'datagrid-compact': compact, 'removed-margin': removeMargin }"
       >
         <clr-dg-column ${args.showLongUninterruptedContent ? '' : '[style.width.px]="250"'}>
           <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
@@ -196,6 +201,35 @@ export const OpenDetail: StoryObj = {
     removeFocusOutline({ canvasElement });
   },
   args: {
+    detailContentType: 'datagrid',
+    // The height is set larger than the height of the rows to regression test the detail pane border. (CDE-2188)
+    height: 500,
+  },
+};
+export const OpenDetailWithRemovedMargin: StoryObj = {
+  render: DetailTemplate,
+  play({ canvasElement }: StoryContext) {
+    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+
+    removeFocusOutline({ canvasElement });
+  },
+  args: {
+    removeMargin: true,
+    detailContentType: 'datagrid',
+    // The height is set larger than the height of the rows to regression test the detail pane border. (CDE-2188)
+    height: 500,
+  },
+};
+export const CompactOpenDetailWithRemovedMargin: StoryObj = {
+  render: DetailTemplate,
+  play({ canvasElement }: StoryContext) {
+    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+
+    removeFocusOutline({ canvasElement });
+  },
+  args: {
+    removeMargin: true,
+    compact: true,
     detailContentType: 'datagrid',
     // The height is set larger than the height of the rows to regression test the detail pane border. (CDE-2188)
     height: 500,
