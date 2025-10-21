@@ -85,6 +85,7 @@ export declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterV
     get clrDgRowSelectionLabel(): string;
     set clrDgRowSelectionLabel(label: string);
     get _view(): any;
+    get trackBy(): import("./providers/items").ClrDatagridItemsTrackByFunction<any>;
     ngOnInit(): void;
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;

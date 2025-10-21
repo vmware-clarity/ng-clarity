@@ -47,6 +47,8 @@ export declare class Selection<T = any> {
     set currentSingle(value: T);
     get change(): Observable<T[] | T>;
     private get _selectable();
+    private get currentSelectionRefs();
+    private get currentSingleSelectionRef();
     clearSelection(): void;
     /**
      * Cleans up our subscriptions to other providers
