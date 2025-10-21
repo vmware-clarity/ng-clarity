@@ -83,7 +83,7 @@
     </p>
   </div>
   } @if (!isServerDriven) {
-  <clr-datagrid [(clrDgSelected)]="selected">
+  <clr-datagrid [(clrDgSelected)]="selected" [clrDgItemsIdentityFn]="identityFn">
     <clr-dg-column>
       <ng-container *clrDgHideableColumn>User ID</ng-container>
     </clr-dg-column>
@@ -141,7 +141,12 @@
     </clr-dg-footer>
   </clr-datagrid>
   } @if (isServerDriven) {
-  <clr-datagrid [(clrDgSelected)]="selected" (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading">
+  <clr-datagrid
+    [(clrDgSelected)]="selected"
+    [clrDgItemsIdentityFn]="identityFn"
+    (clrDgRefresh)="refresh($event)"
+    [clrDgLoading]="loading"
+  >
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>

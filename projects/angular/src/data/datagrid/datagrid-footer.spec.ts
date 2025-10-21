@@ -50,7 +50,7 @@ export default function (): void {
       it('does not show the selection details when selection type is single', function () {
         const clarityDirectiveSelection = context.clarityDirective.selection;
         clarityDirectiveSelection.selectionType = SelectionType.Single;
-        clarityDirectiveSelection.current.push(1);
+        clarityDirectiveSelection.current = [1];
 
         context.detectChanges();
 

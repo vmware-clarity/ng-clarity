@@ -25,19 +25,26 @@
   objects, we could perform any operation we want on it.
 </p>
 
+<p>
+  User should be able to dynamically change selection trough datagrid input
+  <code class="clr-code">[(clrDgSingleSelected)]</code>.
+  <button class="btn" (click)="selectItems()">Select items</button>
+</p>
+
 <h3>Client side, no trackBy</h3>
 
 <div class="card card-block">
-  <p class="card-text username-list">
+  <div class="card-text username-list">
     Selected user: @if (!singleSelected) {
     <em>No user selected.</em>
     } @if (singleSelected) {
     <span class="username">{{singleSelected.name}}</span>
+    <div class="username">Value: {{singleSelected | json }}</div>
     }
-  </p>
+  </div>
 </div>
 
-<clr-datagrid [(clrDgSingleSelected)]="singleSelected">
+<clr-datagrid [(clrDgSingleSelected)]="singleSelected" [clrDgItemsIdentityFn]="idendityFn">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -65,16 +72,17 @@
 <h3>Client side, trackBy index</h3>
 
 <div class="card card-block">
-  <p class="card-text username-list">
+  <div class="card-text username-list">
     Selected user: @if (!trackByIndexSingleSelected) {
     <em>No user selected.</em>
     } @if (trackByIndexSingleSelected) {
     <span class="username">{{trackByIndexSingleSelected.name}}</span>
+    <div class="username">Value: {{trackByIndexSingleSelected | json }}</div>
     }
-  </p>
+  </div>
 </div>
 
-<clr-datagrid [(clrDgSingleSelected)]="trackByIndexSingleSelected">
+<clr-datagrid [(clrDgSingleSelected)]="trackByIndexSingleSelected" [clrDgItemsIdentityFn]="idendityFn">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -102,16 +110,17 @@
 <h3>Client side, trackBy item</h3>
 
 <div class="card card-block">
-  <p class="card-text username-list">
+  <div class="card-text username-list">
     Selected user: @if (!trackByIdSingleSelected) {
     <em>No user selected.</em>
     } @if (trackByIdSingleSelected) {
     <span class="username">{{trackByIdSingleSelected.name}}</span>
+    <div class="username">Value: {{trackByIdSingleSelected | json }}</div>
     }
-  </p>
+  </div>
 </div>
 
-<clr-datagrid [(clrDgSingleSelected)]="trackByIdSingleSelected">
+<clr-datagrid [(clrDgSingleSelected)]="trackByIdSingleSelected" [clrDgItemsIdentityFn]="idendityFn">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -139,19 +148,21 @@
 <h3>Server-driven, trackBy item</h3>
 
 <div class="card card-block">
-  <p class="card-text username-list">
+  <div class="card-text username-list">
     Selected user: @if (!trackByIdServerSingleSelected) {
     <em>No user selected.</em>
     } @if (trackByIdServerSingleSelected) {
-    <span class="username">{{trackByIdServerSingleSelected.name}}</span>
+    <span class="username">{{trackByIdServerSingleSelected.id}}</span>
+    <div class="username">Value: {{trackByIdServerSingleSelected | json }}</div>
     }
-  </p>
+  </div>
 </div>
 
 <clr-datagrid
   (clrDgRefresh)="refresh($event)"
   [(clrDgSingleSelected)]="trackByIdServerSingleSelected"
   [clrDgLoading]="loading"
+  [clrDgItemsIdentityFn]="idendityFn"
 >
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
