@@ -40,12 +40,12 @@ export class ClrDatagridSingleSelectionValueAccessor extends DefaultValueAccesso
     this.updateChecked();
   }
 
-  private keyOf = (value: any): unknown => {
+  private keyOf(value: any): unknown {
     if (value && this.clrDgIdentityFn) {
       return this.clrDgIdentityFn(value);
     }
     return value;
-  };
+  }
 
   private updateChecked(): void {
     const model = this.keyOf(this.model);
