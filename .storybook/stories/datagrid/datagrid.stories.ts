@@ -49,7 +49,7 @@ export default {
       action('clrDgCustomSelectAll').apply(this, [selectAllChecked]);
       this.selectedRows = selectAllChecked ? elements.map((element, i) => i).filter(i => i % 2) : [];
     },
-    clrDgItemsIdentityFn: item => item.id,
+    clrDgItemsTrackBy: item => item.id,
     clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     // story helpers
     elements,
@@ -62,6 +62,7 @@ export default {
     showActions: false,
     height: 0,
     selectedRows: [],
+    selectedRow: null,
   },
 };
 
@@ -79,10 +80,10 @@ const DatagridTemplate: StoryFn = args => ({
     </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
-      ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
-      ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
-      ${args.singleSelectable ? '[clrDgItemsIdentityFn]="clrDgItemsIdentityFn"' : ''}
+      ${args.multiSelectable ? '[(clrDgSelected)]="selectedRows"' : ''}
+      ${args.singleSelectable ? '[clrDgSingleSelected]="selectedRow"' : ''}
       [ngClass]="{ 'datagrid-compact': compact, 'datagrid-overflow-ellipsis': overflowEllipsis }"
+      [clrDgItemsTrackBy]="clrDgItemsTrackBy"
       [clrDetailExpandableAriaLabel]="clrDetailExpandableAriaLabel"
       [clrDgDisablePageFocus]="clrDgDisablePageFocus"
       [clrDgLoading]="clrDgLoading"
@@ -119,11 +120,7 @@ const DatagridTemplate: StoryFn = args => ({
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
       </clr-dg-column>
 
-      <clr-dg-row
-        *clrDgItems="let element of elements; let index = index"
-        [clrDgItem]="element"
-        [clrDgSelected]="selectedRows.includes(index)"
-      >
+      <clr-dg-row *clrDgItems="let element of elements; let index = index" [clrDgItem]="element">
         <clr-dg-cell>{{ element.name }}</clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
         <clr-dg-cell>{{ element.number }}</clr-dg-cell>
@@ -168,7 +165,7 @@ export const SingleSelectWithSelection: StoryObj = {
   render: DatagridTemplate,
   args: {
     singleSelectable: true,
-    selectedRows: [1],
+    selectedRow: { ...elements[1] },
   },
 };
 export const MultiSelect: StoryObj = {
@@ -181,7 +178,7 @@ export const MultiSelectWithSelection: StoryObj = {
   render: DatagridTemplate,
   args: {
     multiSelectable: true,
-    selectedRows: [1],
+    selectedRows: [{ ...elements[1] }, { ...elements[2] }],
   },
 };
 
@@ -205,6 +202,15 @@ export const CompactSingleSelect: StoryObj = {
     singleSelectable: true,
   },
 };
+
+export const CompactSingleSelectWithSelection: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    compact: true,
+    singleSelectable: true,
+    selectedRow: { ...elements[1] },
+  },
+};
 export const CompactMultiSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
@@ -217,7 +223,7 @@ export const CompactMultiSelectWithSelection: StoryObj = {
   args: {
     compact: true,
     multiSelectable: true,
-    selectedRows: [1],
+    selectedRows: [{ ...elements[1] }, { ...elements[2] }],
   },
 };
 

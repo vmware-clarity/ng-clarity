@@ -232,6 +232,10 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     return this.wrappedInjector.get(WrappedRow, this.vcr).rowView;
   }
 
+  get trackBy() {
+    return this.items.trackBy;
+  }
+
   ngOnInit() {
     this.wrappedInjector = new HostWrapper(WrappedRow, this.vcr);
     this.selection.lockItem(this.item, this.clrDgSelectable === false);

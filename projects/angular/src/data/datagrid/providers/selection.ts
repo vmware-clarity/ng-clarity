@@ -190,7 +190,7 @@ export class Selection<T = any> {
       return;
     }
     this._selectionType = value;
-    if (value === SelectionType.None) {
+    if ([SelectionType.None, SelectionType.Single].includes(value)) {
       delete this.current;
     } else {
       this.updateCurrent([], false);
@@ -227,6 +227,16 @@ export class Selection<T = any> {
     return this._selectionType === SelectionType.Multi || this._selectionType === SelectionType.Single;
   }
 
+  // Refs of currently selected items
+  private get currentSelectionRefs(): T[] {
+    return this._current?.map(item => this._items.trackBy(item)) || [];
+  }
+
+  // Ref of currently selected item
+  private get currentSingleSelectionRef(): T {
+    return this._currentSingle && this._items.trackBy(this._currentSingle);
+  }
+
   clearSelection(): void {
     this._current = [];
     this.prevSelectionRefs = [];
@@ -244,7 +254,6 @@ export class Selection<T = any> {
 
   updateCurrent(value: T[], emit: boolean) {
     this._current = value;
-
     if (emit) {
       this.valueCollector.next(value);
     }
@@ -254,10 +263,11 @@ export class Selection<T = any> {
    * Checks if an item is currently selected
    */
   isSelected(item: T): boolean {
+    const ref = this._items.trackBy(item);
     if (this._selectionType === SelectionType.Single) {
-      return this.currentSingle === item;
+      return this.currentSingleSelectionRef === ref;
     } else if (this._selectionType === SelectionType.Multi) {
-      return this.current.indexOf(item) >= 0;
+      return this.currentSelectionRefs.indexOf(ref) >= 0;
     }
     return false;
   }
@@ -266,7 +276,8 @@ export class Selection<T = any> {
    * Selects or deselects an item
    */
   setSelected(item: T, selected: boolean) {
-    const index = this.current ? this.current.indexOf(item) : -1;
+    const ref = this._items.trackBy(item);
+    const index = this.currentSelectionRefs ? this.currentSelectionRefs.indexOf(ref) : -1;
 
     switch (this._selectionType) {
       case SelectionType.None:
@@ -305,7 +316,10 @@ export class Selection<T = any> {
     if (nbDisplayed < 1) {
       return false;
     }
-    const temp: T[] = displayedItems.filter(item => this.current.indexOf(item) > -1);
+    const temp: T[] = displayedItems.filter(item => {
+      const ref = this._items.trackBy(item);
+      return this.currentSelectionRefs.indexOf(ref) > -1;
+    });
     return temp.length === displayedItems.length;
   }
 
@@ -354,14 +368,15 @@ export class Selection<T = any> {
      */
     if (this.isAllSelected()) {
       this._items.displayed.forEach(item => {
-        const currentIndex = this.current.indexOf(item);
+        const ref = this._items.trackBy(item);
+        const currentIndex = this.currentSelectionRefs.indexOf(ref);
         if (currentIndex > -1 && this.isLocked(item) === false) {
           this.deselectItem(currentIndex);
         }
       });
     } else {
       this._items.displayed.forEach(item => {
-        if (this.current.indexOf(item) < 0 && this.isLocked(item) === false) {
+        if (!this.isSelected(item) && this.isLocked(item) === false) {
           this.selectItem(item);
         }
       });

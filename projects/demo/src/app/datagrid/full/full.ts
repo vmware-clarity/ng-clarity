@@ -6,7 +6,7 @@
  */
 
 import { Component, TrackByFunction } from '@angular/core';
-import { ClrDatagridStateInterface } from '@clr/angular';
+import { ClrDatagridItemsTrackByFunction, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -27,7 +27,7 @@ export class DatagridFullDemo {
     selectable: true,
     loremIpsum: false,
 
-    server: false,
+    server: true,
     latency: '500',
     nameFilter: 'd',
     loadRowActionsDynamically: false,
@@ -53,6 +53,7 @@ export class DatagridFullDemo {
   }
 
   trackById: TrackByFunction<User> = (_index, item) => item.id;
+  trackByFn: ClrDatagridItemsTrackByFunction<User> = item => item.id;
 
   loadDynamicRowActions() {
     if (!this.options.loadRowActionsDynamically) {
