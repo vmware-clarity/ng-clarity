@@ -67,6 +67,7 @@ export class Selection<T = any> {
   constructor(private _items: Items<T>, filters: FiltersProvider<T>, private differs: IterableDiffers) {
     this.id = 'clr-dg-selection' + nbSelection++;
     this.trackBy = _items.trackBy;
+    this._differ = differs.find(this._current || []).create<T>(this.trackBy as TrackByFunction<T>);
 
     this.subscriptions.push(
       filters.change.subscribe(() => {
@@ -173,7 +174,6 @@ export class Selection<T = any> {
     );
 
     this.subscriptions.push(this.valueCollector.pipe(debounceTime(0)).subscribe(() => this.emitChange()));
-    this._differ = differs.find(this._current || []).create<T>(this.trackBy as TrackByFunction<T>);
   }
 
   get selectionType(): SelectionType {
