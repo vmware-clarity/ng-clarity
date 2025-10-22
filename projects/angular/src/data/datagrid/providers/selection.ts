@@ -396,7 +396,7 @@ export class Selection<T = any> {
    * Deselects an item
    */
   private deselectItem(indexOfItem: number): void {
-    this.current = this.current.filter((_, index) => index !== indexOfItem);
+    this.current = this.current.slice(0, indexOfItem).concat(this.current.slice(indexOfItem + 1));
     if (indexOfItem < this.currentSelectionRefs.length) {
       // Keep selected refs array in sync
       const removedItems = this.currentSelectionRefs[indexOfItem];
