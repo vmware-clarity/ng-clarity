@@ -34,7 +34,7 @@ export class Selection<T = any> {
   rowSelectionMode = false;
 
   private lockedRefs: T[] = []; // Ref of locked items
-  private _currentSelectionRefs: any[] = [];
+  private _currentSelectionRefs: T[] = [];
   private valueCollector = new Subject<T[]>();
   private _selectionType: SelectionType = SelectionType.None;
 
@@ -220,7 +220,7 @@ export class Selection<T = any> {
   }
 
   // Refs of currently selected items
-  private get currentSelectionRefs(): any[] {
+  private get currentSelectionRefs(): T[] {
     return this._currentSelectionRefs;
   }
 
