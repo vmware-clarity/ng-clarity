@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { IterableDiffers } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 import { Subject } from 'rxjs';
 
@@ -38,7 +40,17 @@ export default function (): void {
         itemsInstance = new Items(filtersInstance, sortInstance, pageInstance);
         itemsInstance.smartenUp();
         itemsInstance.all = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        selectionInstance = new Selection(itemsInstance, filtersInstance);
+
+        TestBed.configureTestingModule({
+          providers: [
+            IterableDiffers,
+            { provide: Items, useValue: itemsInstance },
+            { provide: FiltersProvider, useValue: filtersInstance },
+            Selection,
+          ],
+        });
+
+        selectionInstance = TestBed.inject(Selection);
       });
 
       afterEach(function () {
@@ -384,7 +396,17 @@ export default function (): void {
         itemsInstance = new Items(filtersInstance, sortInstance, pageInstance);
         itemsInstance.smartenUp();
         itemsInstance.all = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        selectionInstance = new Selection(itemsInstance, filtersInstance);
+
+        TestBed.configureTestingModule({
+          providers: [
+            IterableDiffers,
+            { provide: Items, useValue: itemsInstance },
+            { provide: FiltersProvider, useValue: filtersInstance },
+            Selection,
+          ],
+        });
+
+        selectionInstance = TestBed.inject(Selection);
         selectionInstance.preserveSelection = true;
       });
 
@@ -478,7 +500,17 @@ export default function (): void {
         itemsInstance.smartenUp();
         itemsInstance.all = items;
         pageInstance.size = 3;
-        selectionInstance = new Selection(itemsInstance, filtersInstance);
+
+        TestBed.configureTestingModule({
+          providers: [
+            IterableDiffers,
+            { provide: Items, useValue: itemsInstance },
+            { provide: FiltersProvider, useValue: filtersInstance },
+            Selection,
+          ],
+        });
+
+        selectionInstance = TestBed.inject(Selection);
       });
 
       afterEach(function () {
@@ -580,7 +612,16 @@ export default function (): void {
         sortInstance = new Sort(stateDebouncer);
         itemsInstance = new Items(filtersInstance, sortInstance, pageInstance);
 
-        selectionInstance = new Selection(itemsInstance, filtersInstance);
+        TestBed.configureTestingModule({
+          providers: [
+            IterableDiffers,
+            { provide: Items, useValue: itemsInstance },
+            { provide: FiltersProvider, useValue: filtersInstance },
+            Selection,
+          ],
+        });
+
+        selectionInstance = TestBed.inject(Selection);
       });
 
       afterEach(function () {
@@ -705,7 +746,17 @@ export default function (): void {
         itemsInstance = new Items(filtersInstance, sortInstance, pageInstance);
         itemsInstance.smartenUp();
         itemsInstance.all = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        selectionInstance = new Selection(itemsInstance, filtersInstance);
+
+        TestBed.configureTestingModule({
+          providers: [
+            IterableDiffers,
+            { provide: Items, useValue: itemsInstance },
+            { provide: FiltersProvider, useValue: filtersInstance },
+            Selection,
+          ],
+        });
+
+        selectionInstance = TestBed.inject(Selection);
       });
 
       afterEach(function () {
