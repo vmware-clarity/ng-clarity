@@ -12,6 +12,7 @@ import {
   Component,
   ContentChild,
   ContentChildren,
+  DoCheck,
   ElementRef,
   EventEmitter,
   Inject,
@@ -81,7 +82,7 @@ import { CellCoordinates, KeyNavigationGridController } from './utils/key-naviga
     '[class.datagrid-virtual-scroll]': '!!virtualScroll',
   },
 })
-export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
+export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy, DoCheck {
   @Input('clrLoadingMoreItems') loadingMoreItems: boolean;
 
   @Input() clrDgSingleSelectionAriaLabel: string = this.commonStrings.keys.singleSelectionAriaLabel;
@@ -422,6 +423,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         })
       );
     });
+  }
+
+  ngDoCheck() {
+    // we track for changes on selection.current because it can happen with pushing items
+    // instead of overriding the variable
+    this.selection.checkForChanges();
   }
 
   ngOnDestroy() {
