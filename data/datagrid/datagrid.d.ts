@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, ElementRef, EventEmitter, NgZone, OnDestroy, QueryList, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
+import { AfterContentInit, AfterViewInit, DoCheck, ElementRef, EventEmitter, NgZone, OnDestroy, QueryList, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridItems } from './datagrid-items';
@@ -18,7 +18,7 @@ import { StateProvider } from './providers/state.provider';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { CellCoordinates, KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 import * as i0 from "@angular/core";
-export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
+export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy, DoCheck {
     private organizer;
     items: Items<T>;
     expandableRows: ExpandableRowsCount;
@@ -125,6 +125,7 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
      * Our setup happens in the view of some of our components, so we wait for it to be done before starting
      */
     ngAfterViewInit(): void;
+    ngDoCheck(): void;
     ngOnDestroy(): void;
     toggleAllSelected($event: any): void;
     resize(): void;

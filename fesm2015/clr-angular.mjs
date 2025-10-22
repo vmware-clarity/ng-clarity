@@ -21157,8 +21157,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 let nbSelection = 0;
 class Selection {
-    constructor(_items, filters) {
+    constructor(_items, filters, differs) {
         this._items = _items;
+        this.differs = differs;
         this.preserveSelection = false;
         /**
          * Shift key state, for use in range selection.
@@ -21166,8 +21167,8 @@ class Selection {
         this.shiftPressed = false;
         /** @deprecated since 2.0, remove in 3.0 */
         this.rowSelectionMode = false;
-        this.prevSelectionRefs = []; // Refs of selected items
         this.lockedRefs = []; // Ref of locked items
+        this._currentSelectionRefs = [];
         this.valueCollector = new Subject();
         this._selectionType = SelectionType.None;
         /**
@@ -21179,6 +21180,8 @@ class Selection {
          */
         this.subscriptions = [];
         this.id = 'clr-dg-selection' + nbSelection++;
+        this.trackBy = _items.trackBy;
+        this._differ = differs.find(this._current || []).create(this.trackBy);
         this.subscriptions.push(filters.change.subscribe(() => {
             if (!this._selectable || this.preserveSelection) {
                 return;
@@ -21195,14 +21198,10 @@ class Selection {
                 case SelectionType.Single: {
                     let newSingle;
                     let selectionUpdated = false;
-                    // if the currentSingle has been set before data was loaded, we look up and save the ref from current data set
-                    if (this.currentSingle && !this.prevSingleSelectionRef) {
-                        this.prevSingleSelectionRef = _items.trackBy(this.currentSingle);
-                    }
                     updatedItems.forEach(item => {
                         const ref = _items.trackBy(item);
                         // If one of the updated items is the previously selectedSingle, set it as the new one
-                        if (this.prevSingleSelectionRef === ref) {
+                        if (this.currentSingleSelectionRef === ref) {
                             newSingle = item;
                             selectionUpdated = true;
                         }
@@ -21225,13 +21224,6 @@ class Selection {
                 case SelectionType.Multi: {
                     let leftOver = this.current.slice();
                     let selectionUpdated = false;
-                    // if the current has been set before data was loaded, we look up and save the ref from current data set
-                    if (this.current.length > 0 && this.prevSelectionRefs.length !== this.current.length) {
-                        this.prevSelectionRefs = [];
-                        this.current.forEach(item => {
-                            this.prevSelectionRefs.push(_items.trackBy(item));
-                        });
-                    }
                     // Duplicate loop, when the issue is issue#2342 is revisited keep in mind that
                     // we need to go over every updated item and check to see if there are valid to be
                     // locked or not and update it. When only add items that are found in the lockedRefs back.
@@ -21250,7 +21242,7 @@ class Selection {
                         updatedItems.forEach(item => {
                             const ref = _items.trackBy(item);
                             // Look in current selected refs array if item is selected, and update actual value
-                            const selectedIndex = this.prevSelectionRefs.indexOf(ref);
+                            const selectedIndex = this.currentSelectionRefs.indexOf(ref);
                             if (selectedIndex > -1) {
                                 leftOver[selectedIndex] = item;
                                 selectionUpdated = true;
@@ -21299,6 +21291,7 @@ class Selection {
     }
     set current(value) {
         this.updateCurrent(value, true);
+        this.updateCurrentSelectionRefs();
     }
     get currentSingle() {
         return this._currentSingle;
@@ -21308,9 +21301,6 @@ class Selection {
             return;
         }
         this._currentSingle = value;
-        if (value) {
-            this.prevSingleSelectionRef = this._items.trackBy(value);
-        }
         this.emitChange();
     }
     // We do not want to expose the Subject itself, but the Observable which is read-only
@@ -21322,17 +21312,25 @@ class Selection {
     }
     // Refs of currently selected items
     get currentSelectionRefs() {
-        var _a;
-        return ((_a = this._current) === null || _a === void 0 ? void 0 : _a.map(item => this._items.trackBy(item))) || [];
+        return this._currentSelectionRefs;
     }
     // Ref of currently selected item
     get currentSingleSelectionRef() {
         return this._currentSingle && this._items.trackBy(this._currentSingle);
     }
+    checkForChanges() {
+        const changes = this._differ.diff(this._current);
+        // @TODO move the trackBy from items to selection as it's used only here and is not needed in items
+        if (this.trackBy !== this._items.trackBy) {
+            this.trackBy = this._items.trackBy;
+        }
+        if (changes) {
+            this.updateCurrentSelectionRefs();
+        }
+    }
     clearSelection() {
         this._current = [];
-        this.prevSelectionRefs = [];
-        this.prevSingleSelectionRef = null;
+        this._currentSelectionRefs = [];
         this._currentSingle = null;
         this.emitChange();
     }
@@ -21472,17 +21470,15 @@ class Selection {
      */
     selectItem(item) {
         this.current = this.current.concat(item);
-        // Push selected ref onto array
-        this.prevSelectionRefs.push(this._items.trackBy(item));
     }
     /**
      * Deselects an item
      */
     deselectItem(indexOfItem) {
         this.current = this.current.slice(0, indexOfItem).concat(this.current.slice(indexOfItem + 1));
-        if (indexOfItem < this.prevSelectionRefs.length) {
+        if (indexOfItem < this.currentSelectionRefs.length) {
             // Keep selected refs array in sync
-            const removedItems = this.prevSelectionRefs.splice(indexOfItem, 1);
+            const removedItems = this.currentSelectionRefs[indexOfItem];
             // locked reference is no longer needed (if any)
             this.lockedRefs = this.lockedRefs.filter(locked => locked !== removedItems[0]);
         }
@@ -21501,12 +21497,16 @@ class Selection {
             this._change.next(this.current);
         }
     }
+    updateCurrentSelectionRefs() {
+        var _a;
+        this._currentSelectionRefs = ((_a = this._current) === null || _a === void 0 ? void 0 : _a.map(item => this._items.trackBy(item))) || [];
+    }
 }
-Selection.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Selection, deps: [{ token: Items }, { token: FiltersProvider }], target: i0.ɵɵFactoryTarget.Injectable });
+Selection.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Selection, deps: [{ token: Items }, { token: FiltersProvider }, { token: i0.IterableDiffers }], target: i0.ɵɵFactoryTarget.Injectable });
 Selection.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Selection });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Selection, decorators: [{
             type: Injectable
-        }], ctorParameters: function () { return [{ type: Items }, { type: FiltersProvider }]; } });
+        }], ctorParameters: function () { return [{ type: Items }, { type: FiltersProvider }, { type: i0.IterableDiffers }]; } });
 
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
@@ -21887,6 +21887,7 @@ class ClrDatagridRow {
             const newSelection = new Set(this.selection.current.concat(items.slice(Math.min(startIx, endIx), Math.max(startIx, endIx) + 1)));
             this.selection.clearSelection();
             this.selection.current.push(...newSelection);
+            this.selection.checkForChanges();
         }
         else {
             // page number has changed or
@@ -22818,6 +22819,11 @@ class ClrDatagrid {
                 }
             }));
         });
+    }
+    ngDoCheck() {
+        // we track for changes on selection.current because it can happen with pushing items
+        // instead of overriding the variable
+        this.selection.checkForChanges();
     }
     ngOnDestroy() {
         this._subscriptions.forEach((sub) => sub.unsubscribe());
