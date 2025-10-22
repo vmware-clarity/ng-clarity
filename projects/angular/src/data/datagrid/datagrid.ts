@@ -424,6 +424,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     });
   }
 
+  ngDoCheck() {
+    // we track for changes on selection.current because it can happen with pushing items
+    // instead of overriding the variable
+    this.selection.checkForChanges();
+  }
+
   ngOnDestroy() {
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
