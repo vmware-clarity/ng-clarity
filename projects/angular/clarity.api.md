@@ -1340,6 +1340,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
     // (undocumented)
+    ngDoCheck(): void;
+    // (undocumented)
     ngOnDestroy(): void;
     placeholder: ClrDatagridPlaceholder<T>;
     // (undocumented)
