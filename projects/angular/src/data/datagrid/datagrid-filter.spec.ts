@@ -18,8 +18,8 @@ import { Page } from './providers/page';
 import { StateDebouncer } from './providers/state-debouncer.provider';
 
 function cleanPopoverDOM(component: ClrDatagridFilter) {
-  const popoverContent = document.querySelectorAll('.clr-popover-content');
-  popoverContent.forEach(content => document.body.removeChild(content));
+  const popoverContent = document.querySelectorAll('.datagrid-filter');
+  popoverContent.forEach(content => content.remove());
   component.ngOnDestroy();
 }
 
@@ -147,18 +147,18 @@ export default function (): void {
         const openBtn: HTMLButtonElement = context.clarityElement.querySelector('.clr-smart-open-close');
         openBtn.click();
         context.detectChanges();
-        const popoverContent = document.querySelector('.clr-popover-content');
+        const popoverContent = document.querySelector('.datagrid-filter');
         expect(popoverContent.getAttribute('role')).toBe('dialog');
         expect(popoverContent.getAttribute('aria-label')).toBe('Filter dialog');
       });
 
       it('projects content into the dropdown', function () {
         const openBtn: HTMLButtonElement = context.clarityElement.querySelector('.clr-smart-open-close');
-        const prePopoverContent = document.querySelector('.clr-popover-content');
+        const prePopoverContent = document.querySelector('.datagrid-filter');
         expect(prePopoverContent).toBeNull();
         openBtn.click();
         context.detectChanges();
-        const popoverContent = document.querySelector('.clr-popover-content');
+        const popoverContent = document.querySelector('.datagrid-filter');
         expect(popoverContent.textContent.trim()).toMatch('Filter content');
       });
 

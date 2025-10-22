@@ -26,23 +26,6 @@ export class FocusService {
     this._current = first;
   }
 
-  listenToArrowKeys(el: HTMLElement) {
-    // The following listeners return false when there was an action to take for the key pressed,
-    // in order to prevent the default behavior of that key.
-    // const unlistenFuncs = [];
-    //
-    //
-    // this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowup', () => !this.move(ArrowKeyDirection.UP)));
-    // this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowdown', () => !this.move(ArrowKeyDirection.DOWN)));
-    // this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowleft', () => !this.move(ArrowKeyDirection.LEFT)));
-    // // this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowright', () => !this.move(ArrowKeyDirection.RIGHT)));
-    //
-    // this._unlistenFuncsMap.set(el, unlistenFuncs);
-    console.log(el);
-
-    // todo remove this func
-  }
-
   registerContainer(el: HTMLElement) {
     // The following listeners return false when there was an action to take for the key pressed,
     // in order to prevent the default behavior of that key.

@@ -118,6 +118,7 @@ export default function (): void {
       // check if the click handler is triggered
       expect(fixture.componentInstance.testCnt).toEqual(1);
       // check if the open class is added
+      console.log(11, compiled.querySelector('.dropdown-item'));
       expect(compiled.querySelector('.dropdown-item')).toBeNull();
 
       // click on the dropdown
@@ -128,10 +129,12 @@ export default function (): void {
 
       // click outside the dropdown
       outsideButton.click();
+      await delay(10);
       fixture.detectChanges();
 
       // check if the click handler is triggered
       expect(fixture.componentInstance.testCnt).toEqual(2);
+
       // check if the open class is added
       expect(compiled.querySelector('.dropdown-item')).toBeNull();
     });

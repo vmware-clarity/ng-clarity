@@ -59,6 +59,13 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
       this._unlistenFuncs.push(
         this.renderer.listen(el, 'keydown.arrowright', event => this.popoverService.toggleWithEvent(event))
       );
+    } else {
+      this._unlistenFuncs.push(
+        this.renderer.listen(el, 'keydown.arrowup', event => this.popoverService.toggleWithEvent(event))
+      );
+      this._unlistenFuncs.push(
+        this.renderer.listen(el, 'keydown.arrowdown', event => this.popoverService.toggleWithEvent(event))
+      );
     }
   }
 

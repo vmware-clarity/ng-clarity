@@ -26,8 +26,8 @@ export default function (): void {
 
     afterEach(function () {
       context.fixture.destroy();
-      const popoverContent = document.querySelectorAll('.clr-popover-content');
-      popoverContent.forEach(content => document.body.removeChild(content));
+      const popoverContent = document.querySelectorAll('.datagrid-action-overflow');
+      popoverContent.forEach(content => content.remove());
     });
 
     it('has a default aria-label for the button', function () {
@@ -80,7 +80,7 @@ export default function (): void {
     it('projects menu content when open', function () {
       toggle.click();
       context.detectChanges();
-      const popoverContent = document.querySelector('.clr-popover-content');
+      const popoverContent = document.querySelector('.datagrid-action-overflow');
       expect(popoverContent.textContent.trim()).toMatch('Hello world');
     });
 
@@ -97,7 +97,7 @@ export default function (): void {
       toggle.click();
       context.detectChanges();
 
-      const actionItem: HTMLElement = document.querySelector('.clr-popover-content .action-item');
+      const actionItem: HTMLElement = document.querySelector('.datagrid-action-overflow .action-item');
       actionItem.click();
       context.detectChanges();
       expect(context.clarityDirective.open).toBe(false);

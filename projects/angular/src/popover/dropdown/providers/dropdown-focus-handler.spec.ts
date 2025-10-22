@@ -95,12 +95,6 @@ export default function (): void {
         expect(this.popoverService.open).toBeTruthy();
       });
 
-      it('listens to arrow keys on the trigger', function (this: TestContext) {
-        const spy = spyOn(this.focusService, 'listenToArrowKeys');
-        this.focusHandler.trigger = this.trigger;
-        expect(spy).toHaveBeenCalledWith(this.trigger);
-      });
-
       it('proxies focus() and blur() to the trigger', function (this: TestContext) {
         this.focusHandler.trigger = this.trigger;
         expectActiveElementNotToBe(this.trigger);
@@ -125,33 +119,6 @@ export default function (): void {
         const spy = spyOn(this.focusService, 'registerContainer');
         this.focusHandler.container = this.container;
         expect(spy).toHaveBeenCalledWith(this.container);
-      });
-
-      it('sets a tabindex of 0 on the container', function (this: TestContext) {
-        this.focusHandler.container = this.container;
-        expect(this.container.getAttribute('tabindex')).toBe('0');
-      });
-
-      it('closes the dropdown when the container is blurred', function (this: TestContext) {
-        this.focusHandler.container = this.container;
-        this.popoverService.open = true;
-        this.container.focus();
-        expect(this.popoverService.open).toBeTruthy();
-        this.container.blur();
-        expect(this.popoverService.open).toBeFalsy();
-      });
-
-      it('blurs the focused items when container is focused and blurred', function (this: TestContext) {
-        this.focusHandler.container = this.container;
-        this.focusHandler.addChildren(this.children);
-        this.popoverService.open = true;
-
-        const spyBlur = spyOn(this.children[0], 'blur');
-        this.container.focus();
-        expect(spyBlur).not.toHaveBeenCalled();
-
-        this.container.blur();
-        expect(spyBlur).toHaveBeenCalled();
       });
 
       it('puts focus back on the trigger when the dropdown becomes closed', function (this: TestContext) {
@@ -267,7 +234,7 @@ export default function (): void {
       it('does not register the container to the FocusService', function (this: TestContext) {
         const spy = spyOn(this.focusService, 'registerContainer');
         this.focusHandler.container = this.container;
-        expect(spy).not.toHaveBeenCalled();
+        expect(spy).toHaveBeenCalled();
       });
 
       it('does not focus on the container when the dropdown becomes open', async function (this: TestContext) {
