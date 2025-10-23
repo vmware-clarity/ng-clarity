@@ -1939,9 +1939,8 @@ declare class Selection<T = any> {
     shiftPressed: boolean;
     /** @deprecated since 2.0, remove in 3.0 */
     rowSelectionMode: boolean;
-    private prevSelectionRefs;
-    private prevSingleSelectionRef;
     private lockedRefs;
+    private _currentSelectionRefs;
     private valueCollector;
     private _selectionType;
     /**
@@ -1960,7 +1959,12 @@ declare class Selection<T = any> {
      * Subscriptions to the other providers changes.
      */
     private subscriptions;
-    constructor(_items: Items<T>, filters: FiltersProvider<T>);
+    /**
+     * Differ to track changes of multi selection.
+     */
+    private _differ;
+    private identifyBy;
+    constructor(_items: Items<T>, filters: FiltersProvider<T>, differs: IterableDiffers);
     get selectionType(): SelectionType;
     set selectionType(value: SelectionType);
     get current(): T[];
@@ -1971,6 +1975,7 @@ declare class Selection<T = any> {
     private get _selectable();
     private get currentSelectionRefs();
     private get currentSingleSelectionRef();
+    checkForChanges(): void;
     clearSelection(): void;
     /**
      * Cleans up our subscriptions to other providers
@@ -2014,6 +2019,7 @@ declare class Selection<T = any> {
      */
     private canItBeLocked;
     private emitChange;
+    private updateCurrentSelectionRefs;
     static ɵfac: i0.ɵɵFactoryDeclaration<Selection<any>, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<Selection<any>>;
 }
@@ -2300,7 +2306,7 @@ declare class KeyNavigationGridController implements OnDestroy {
     static ɵprov: i0.ɵɵInjectableDeclaration<KeyNavigationGridController>;
 }
 
-declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
+declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy, DoCheck {
     private organizer;
     items: Items<T>;
     expandableRows: ExpandableRowsCount;
@@ -2407,6 +2413,7 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
      * Our setup happens in the view of some of our components, so we wait for it to be done before starting
      */
     ngAfterViewInit(): void;
+    ngDoCheck(): void;
     ngOnDestroy(): void;
     toggleAllSelected($event: any): void;
     resize(): void;
