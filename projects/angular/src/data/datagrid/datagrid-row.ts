@@ -369,6 +369,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
       );
       this.selection.clearSelection();
       this.selection.current.push(...newSelection);
+      this.selection.checkForChanges();
     } else {
       // page number has changed or
       // no Shift was pressed or
