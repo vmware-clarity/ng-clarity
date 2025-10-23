@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
+import { hasModifierKey } from '@angular/cdk/keycodes';
 import {
   CdkScrollable,
   ConnectedPosition,
@@ -39,6 +39,8 @@ import { ClrAxis } from './enums/axis.enum';
 import { ClrSide } from './enums/side.enum';
 import { ClrPopoverPosition } from './interfaces/popover-position.interface';
 import { ClrPopoverService } from './providers/popover.service';
+import { Keys } from '../enums/keys.enum';
+import { normalizeKey } from '../focus/key-focus/util';
 
 /** @dynamic */
 @Directive({
@@ -157,7 +159,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     this.subscriptions.push(
       overlay.keydownEvents().subscribe(event => {
-        if (event.keyCode === ESCAPE && !hasModifierKey(event)) {
+        if (event && event.key && normalizeKey(event.key) === Keys.Escape && !hasModifierKey(event)) {
           event.preventDefault();
           this.popoverService.open = false;
           this.popoverService.setOpenedButtonFocus();

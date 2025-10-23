@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
+import { hasModifierKey } from '@angular/cdk/keycodes';
 import {
   CdkScrollable,
   ConnectedPosition,
@@ -20,6 +20,8 @@ import { AfterViewInit, Directive, Inject, NgZone } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
 import { ClrPopoverService } from '../../utils';
+import { Keys } from '../../utils/enums/keys.enum';
+import { normalizeKey } from '../../utils/focus/key-focus/util';
 
 @Directive({
   selector: 'clr-tooltip-content, clr-signpost-content, clr-dropdown-menu',
@@ -226,7 +228,7 @@ export class PopoverDirective implements AfterViewInit {
 
     this.subscriptions.push(
       overlay.keydownEvents().subscribe(event => {
-        if (event.keyCode === ESCAPE && !hasModifierKey(event)) {
+        if (event && event.key && normalizeKey(event.key) === Keys.Escape && !hasModifierKey(event)) {
           event.preventDefault();
           this.popoverService.open = false;
           this.popoverService.setOpenedButtonFocus();

@@ -10,7 +10,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpost } from './signpost';
 import { ClrSignpostModule } from './signpost.module';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
+import { ClrPopoverService } from '../../utils';
 import {
   expectActiveElementNotToBe,
   expectActiveElementToBe,
@@ -18,6 +18,7 @@ import {
   TestContext,
 } from '../../utils/testing/helpers.spec';
 import { delay } from '../../utils/testing/helpers.spec';
+import { PopoverDirective } from '../common/popover.directive';
 
 interface Context extends TestContext<ClrSignpost, TestDefaultSignpost | TestCustomTriggerSignpost> {
   popoverService: ClrPopoverService;
@@ -30,7 +31,7 @@ interface Context extends TestContext<ClrSignpost, TestDefaultSignpost | TestCus
 export default function (): void {
   describe('Signpost', function () {
     describe('default trigger', function () {
-      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule, { imports: [ClrPopoverService] });
+      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule, { imports: [PopoverDirective] });
 
       beforeEach(function (this: Context) {
         this.signpostIdService = this.getClarityProvider(SignpostIdService);
@@ -48,7 +49,7 @@ export default function (): void {
         // Test we have a trigger
         expect(signpostToggle).not.toBeNull();
 
-        // // Test that content shows
+        // Test that content shows
         signpostToggle.click();
         this.detectChanges();
         signpostContent = document.body.querySelector('.clr-signpost-container');
@@ -79,7 +80,7 @@ export default function (): void {
     });
 
     describe('focus management', function () {
-      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule, { imports: [ClrPopoverService] });
+      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule, { imports: [PopoverDirective] });
 
       beforeEach(function (this: Context) {
         this.popoverService = this.getClarityProvider(ClrPopoverService);
@@ -125,7 +126,7 @@ export default function (): void {
         this.popoverService.open = true;
         this.detectChanges();
 
-        const dummyButton: HTMLElement = this.hostElement.querySelector('.dummy-button');
+        const dummyButton: HTMLElement = document.body.querySelector('.dummy-button');
         dummyButton.focus();
 
         this.popoverService.open = false;
@@ -141,7 +142,7 @@ export default function (): void {
 
         const event: KeyboardEvent = new KeyboardEvent('keydown', { key: 'Escape' });
 
-        document.dispatchEvent(event);
+        document.body.dispatchEvent(event);
         this.detectChanges();
 
         expect(document.body.querySelector('.clr-signpost-container')).toBeNull();
@@ -150,7 +151,7 @@ export default function (): void {
     });
 
     describe('custom trigger', function () {
-      spec(ClrSignpost, TestCustomTriggerSignpost, ClrSignpostModule);
+      spec(ClrSignpost, TestCustomTriggerSignpost, ClrSignpostModule, { imports: [PopoverDirective] });
 
       beforeEach(function (this: Context) {
         this.popoverService = this.getClarityProvider(ClrPopoverService);
@@ -197,7 +198,7 @@ export default function (): void {
     });
 
     describe('aria-control values', () => {
-      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule, { imports: [ClrPopoverService] });
+      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule, { imports: [PopoverDirective] });
 
       function checkAriaControlsId(id: string, element: HTMLElement) {
         const triggerControlsValue = element.querySelector('.signpost-action').getAttribute('aria-controls');

@@ -7,6 +7,7 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   DOCUMENT,
   ElementRef,
@@ -17,6 +18,7 @@ import {
   OnDestroy,
   Optional,
   PLATFORM_ID,
+  ViewChild,
 } from '@angular/core';
 
 import { ClrCommonStringsService, ClrPopoverService } from '../../utils';
@@ -71,6 +73,7 @@ export const AvailablePopoverPositions = [
       <div class="signpost-content-header">
         <ng-content select="clr-signpost-title"></ng-content>
         <button
+          #closeButton
           type="button"
           [attr.aria-label]="signpostCloseAriaLabel || commonStrings.keys.signpostClose"
           class="signpost-action close"
@@ -88,8 +91,9 @@ export const AvailablePopoverPositions = [
   host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
   standalone: false,
 })
-export class ClrSignpostContent implements OnDestroy {
+export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;
+  @ViewChild('closeButton', { read: ElementRef }) closeButton: ElementRef<HTMLButtonElement>;
 
   signpostContentId = uniqueIdFactory();
 
@@ -177,6 +181,10 @@ export class ClrSignpostContent implements OnDestroy {
    */
   close() {
     this.popoverService.open = false;
+  }
+
+  ngAfterViewInit(): void {
+    this.popoverService.closeButtonRef = this.closeButton;
   }
 
   ngOnDestroy() {
