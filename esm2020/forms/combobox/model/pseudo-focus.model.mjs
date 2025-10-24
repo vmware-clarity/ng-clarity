@@ -1,0 +1,24 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+import { BehaviorSubject } from 'rxjs';
+import { SingleSelectComboboxModel } from './single-select-combobox.model';
+export class PseudoFocusModel extends SingleSelectComboboxModel {
+    constructor() {
+        super(...arguments);
+        this._focusChanged = new BehaviorSubject(null);
+    }
+    get focusChanged() {
+        return this._focusChanged.asObservable();
+    }
+    select(item) {
+        if (this.model !== item) {
+            this.model = item;
+            this._focusChanged.next(item);
+        }
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHNldWRvLWZvY3VzLm1vZGVsLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvYW5ndWxhci9zcmMvZm9ybXMvY29tYm9ib3gvbW9kZWwvcHNldWRvLWZvY3VzLm1vZGVsLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBOzs7OztHQUtHO0FBRUgsT0FBTyxFQUFFLGVBQWUsRUFBYyxNQUFNLE1BQU0sQ0FBQztBQUVuRCxPQUFPLEVBQUUseUJBQXlCLEVBQUUsTUFBTSxnQ0FBZ0MsQ0FBQztBQUUzRSxNQUFNLE9BQU8sZ0JBQW9CLFNBQVEseUJBQTRCO0lBQXJFOztRQUNVLGtCQUFhLEdBQUcsSUFBSSxlQUFlLENBQUksSUFBSSxDQUFDLENBQUM7SUFXdkQsQ0FBQztJQVZDLElBQUksWUFBWTtRQUNkLE9BQU8sSUFBSSxDQUFDLGFBQWEsQ0FBQyxZQUFZLEVBQUUsQ0FBQztJQUMzQyxDQUFDO0lBRVEsTUFBTSxDQUFDLElBQU87UUFDckIsSUFBSSxJQUFJLENBQUMsS0FBSyxLQUFLLElBQUksRUFBRTtZQUN2QixJQUFJLENBQUMsS0FBSyxHQUFHLElBQUksQ0FBQztZQUNsQixJQUFJLENBQUMsYUFBYSxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsQ0FBQztTQUMvQjtJQUNILENBQUM7Q0FDRiIsInNvdXJjZXNDb250ZW50IjpbIi8qXG4gKiBDb3B5cmlnaHQgKGMpIDIwMTYtMjAyNSBCcm9hZGNvbS4gQWxsIFJpZ2h0cyBSZXNlcnZlZC5cbiAqIFRoZSB0ZXJtIFwiQnJvYWRjb21cIiByZWZlcnMgdG8gQnJvYWRjb20gSW5jLiBhbmQvb3IgaXRzIHN1YnNpZGlhcmllcy5cbiAqIFRoaXMgc29mdHdhcmUgaXMgcmVsZWFzZWQgdW5kZXIgTUlUIGxpY2Vuc2UuXG4gKiBUaGUgZnVsbCBsaWNlbnNlIGluZm9ybWF0aW9uIGNhbiBiZSBmb3VuZCBpbiBMSUNFTlNFIGluIHRoZSByb290IGRpcmVjdG9yeSBvZiB0aGlzIHByb2plY3QuXG4gKi9cblxuaW1wb3J0IHsgQmVoYXZpb3JTdWJqZWN0LCBPYnNlcnZhYmxlIH0gZnJvbSAncnhqcyc7XG5cbmltcG9ydCB7IFNpbmdsZVNlbGVjdENvbWJvYm94TW9kZWwgfSBmcm9tICcuL3NpbmdsZS1zZWxlY3QtY29tYm9ib3gubW9kZWwnO1xuXG5leHBvcnQgY2xhc3MgUHNldWRvRm9jdXNNb2RlbDxUPiBleHRlbmRzIFNpbmdsZVNlbGVjdENvbWJvYm94TW9kZWw8VD4ge1xuICBwcml2YXRlIF9mb2N1c0NoYW5nZWQgPSBuZXcgQmVoYXZpb3JTdWJqZWN0PFQ+KG51bGwpO1xuICBnZXQgZm9jdXNDaGFuZ2VkKCk6IE9ic2VydmFibGU8VD4ge1xuICAgIHJldHVybiB0aGlzLl9mb2N1c0NoYW5nZWQuYXNPYnNlcnZhYmxlKCk7XG4gIH1cblxuICBvdmVycmlkZSBzZWxlY3QoaXRlbTogVCk6IHZvaWQge1xuICAgIGlmICh0aGlzLm1vZGVsICE9PSBpdGVtKSB7XG4gICAgICB0aGlzLm1vZGVsID0gaXRlbTtcbiAgICAgIHRoaXMuX2ZvY3VzQ2hhbmdlZC5uZXh0KGl0ZW0pO1xuICAgIH1cbiAgfVxufVxuIl19
