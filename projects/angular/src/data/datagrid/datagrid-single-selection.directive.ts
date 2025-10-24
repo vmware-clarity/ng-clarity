@@ -6,7 +6,7 @@
  */
 
 import { Directive, ElementRef, forwardRef, Input, Renderer2 } from '@angular/core';
-import { DefaultValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
   selector: 'input[type=radio][clrDgSingleSelectionRadio]',
@@ -23,18 +23,33 @@ import { DefaultValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   },
   standalone: false,
 })
-export class ClrDatagridSingleSelectionValueAccessor extends DefaultValueAccessor {
-  @Input() value: any;
+export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
+  @Input() value;
   @Input() clrDgItemsTrackBy!: (value: any) => unknown;
 
-  private model: any;
+  private state: any;
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef<HTMLInputElement>) {
-    super(renderer, elementRef, null);
+  constructor(private renderer: Renderer2, private elementRef: ElementRef<HTMLInputElement>) {}
+
+  // eslint-disable-next-line  @typescript-eslint/no-empty-function
+  onChange: (value: any) => void = () => {};
+  // eslint-disable-next-line  @typescript-eslint/no-empty-function
+  onTouched: () => void = () => {};
+
+  registerOnChange(fn: (value: any) => void): void {
+    this.onChange = fn;
   }
 
-  override writeValue(value: any): void {
-    this.model = value;
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.renderer.setProperty(this.elementRef.nativeElement, 'disabled', isDisabled);
+  }
+
+  writeValue(value: any): void {
+    this.state = value;
     this.updateChecked();
   }
 
@@ -46,7 +61,7 @@ export class ClrDatagridSingleSelectionValueAccessor extends DefaultValueAccesso
   }
 
   private updateChecked(): void {
-    const model = this.keyOf(this.model);
+    const model = this.keyOf(this.state);
     const value = this.keyOf(this.value);
     this.renderer.setProperty(this.elementRef.nativeElement, 'checked', model === value);
   }
