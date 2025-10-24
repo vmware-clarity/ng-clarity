@@ -21,7 +21,6 @@ import { CdkVirtualForOfContext } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFactoryResolver } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
-import { DefaultValueAccessor } from '@angular/forms';
 import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
 import { DragDrop } from '@angular/cdk/drag-drop';
@@ -5974,10 +5973,20 @@ export class ÇlrDatagridSelectionCellDirective {
 }
 
 // @public (undocumented)
-export class ÇlrDatagridSingleSelectionValueAccessor extends DefaultValueAccessor {
+export class ÇlrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
     constructor(renderer: Renderer2, elementRef: ElementRef<HTMLInputElement>);
     // (undocumented)
     clrDgItemsTrackBy: (value: any) => unknown;
+    // (undocumented)
+    onChange: (value: any) => void;
+    // (undocumented)
+    onTouched: () => void;
+    // (undocumented)
+    registerOnChange(fn: (value: any) => void): void;
+    // (undocumented)
+    registerOnTouched(fn: () => void): void;
+    // (undocumented)
+    setDisabledState(isDisabled: boolean): void;
     // (undocumented)
     value: any;
     // (undocumented)
