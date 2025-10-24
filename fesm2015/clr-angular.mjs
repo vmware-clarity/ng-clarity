@@ -9,7 +9,7 @@ import { Subject, BehaviorSubject, Observable, fromEvent, isObservable, of, shar
 import * as i2 from '@angular/animations';
 import { animation, style, animate, trigger, transition, state, useAnimation, keyframes } from '@angular/animations';
 import * as i1 from '@angular/forms';
-import { FormControl, FormGroup, FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR, SelectMultipleControlValueAccessor, DefaultValueAccessor } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR, SelectMultipleControlValueAccessor } from '@angular/forms';
 import * as i1$1 from '@angular/router';
 import { RouterModule } from '@angular/router';
 import * as i1$2 from '@angular/cdk/a11y';
@@ -21579,14 +21579,26 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class ClrDatagridSingleSelectionValueAccessor extends DefaultValueAccessor {
+class ClrDatagridSingleSelectionValueAccessor {
     constructor(renderer, elementRef) {
-        super(renderer, elementRef, null);
         this.renderer = renderer;
         this.elementRef = elementRef;
+        // eslint-disable-next-line  @typescript-eslint/no-empty-function
+        this.onChange = () => { };
+        // eslint-disable-next-line  @typescript-eslint/no-empty-function
+        this.onTouched = () => { };
+    }
+    registerOnChange(fn) {
+        this.onChange = fn;
+    }
+    registerOnTouched(fn) {
+        this.onTouched = fn;
+    }
+    setDisabledState(isDisabled) {
+        this.renderer.setProperty(this.elementRef.nativeElement, 'disabled', isDisabled);
     }
     writeValue(value) {
-        this.model = value;
+        this.state = value;
         this.updateChecked();
     }
     keyOf(value) {
@@ -21596,7 +21608,7 @@ class ClrDatagridSingleSelectionValueAccessor extends DefaultValueAccessor {
         return value;
     }
     updateChecked() {
-        const model = this.keyOf(this.model);
+        const model = this.keyOf(this.state);
         const value = this.keyOf(this.value);
         this.renderer.setProperty(this.elementRef.nativeElement, 'checked', model === value);
     }
@@ -21608,7 +21620,7 @@ ClrDatagridSingleSelectionValueAccessor.ɵdir = i0.ɵɵngDeclareDirective({ minV
             useExisting: forwardRef(() => ClrDatagridSingleSelectionValueAccessor),
             multi: true,
         },
-    ], usesInheritance: true, ngImport: i0 });
+    ], ngImport: i0 });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridSingleSelectionValueAccessor, decorators: [{
             type: Directive,
             args: [{
