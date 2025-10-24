@@ -11,11 +11,13 @@ import { Observable } from 'rxjs';
 
 import { ClrPopoverService } from './popover.service';
 import { Keys } from '../../enums/keys.enum';
+import { ClrPopoverModuleNext } from '../popover.module';
 
 @Component({
   selector: 'test-host',
   template: '',
   providers: [ClrPopoverService],
+  standalone: false,
 })
 class TestHost {}
 
@@ -28,8 +30,8 @@ export default function (): void {
     describe('API', () => {
       beforeEach(function (this: TestContext) {
         TestBed.configureTestingModule({
+          imports: [ClrPopoverModuleNext],
           declarations: [TestHost],
-          providers: [ClrPopoverService],
         });
         const fixture = TestBed.createComponent(TestHost);
         this.popoverService = fixture.debugElement.injector.get(ClrPopoverService, null);

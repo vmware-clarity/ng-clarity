@@ -23,7 +23,6 @@ export class ClrPopoverService {
   closeButtonRef: ElementRef;
   contentRef: ElementRef;
   templateRef: TemplateRef<any>;
-  openButtonRef: ElementRef;
   position: string;
   defaultPosition: string;
   panelClass: string | string[];
@@ -103,19 +102,13 @@ export class ClrPopoverService {
   }
 
   setOpenedButtonFocus(): void {
-    const shouldNotReturnToTrigger =
-      document.body !== document.activeElement &&
-      (document.activeElement !== this.anchorElementRef?.nativeElement ||
-        document.activeElement !== this.openButtonRef?.nativeElement);
+    const activeEl = document.activeElement;
+    const shouldNotFocusTrigger = activeEl !== document.body && activeEl !== this.anchorElementRef?.nativeElement;
 
-    if (this.noFocus || shouldNotReturnToTrigger) {
+    if (this.noFocus || shouldNotFocusTrigger) {
       return;
     }
 
-    if (this.openButtonRef) {
-      this.openButtonRef?.nativeElement?.focus();
-    } else {
-      this.anchorElementRef?.nativeElement?.focus();
-    }
+    this.anchorElementRef?.nativeElement?.focus();
   }
 }
