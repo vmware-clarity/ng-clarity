@@ -16,10 +16,10 @@ import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.to
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { FocusService } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 
 const OPTION_PROVIDERS = [
-  ClrPopoverToggleService,
+  ClrPopoverService,
   IF_ACTIVE_ID_PROVIDER,
   OptionSelectionService,
   FocusService,
@@ -61,16 +61,16 @@ export default function (): void {
     let context:
       | TestContext<ClrOptions<string>, TestComponent>
       | TestContext<ClrOptions<string>, TestComponentWithChild>;
-    let toggleService: ClrPopoverToggleService;
+    let popoverService: ClrPopoverService;
 
     describe('View Basics', function () {
       beforeEach(function () {
         context = this.createOnly(ClrOptions, TestComponent, []);
-        toggleService = context.getClarityProvider(ClrPopoverToggleService);
+        popoverService = context.getClarityProvider(ClrPopoverService);
       });
 
       afterEach(function () {
-        toggleService.open = false;
+        popoverService.open = false;
         context.detectChanges();
       });
 
@@ -85,11 +85,11 @@ export default function (): void {
       });
 
       it('does not close the menu when you click on the menu', () => {
-        toggleService.open = true;
+        popoverService.open = true;
         const menu = context.testElement.querySelector('clr-options');
         menu.click();
 
-        expect(toggleService.open).toBe(true);
+        expect(popoverService.open).toBe(true);
       });
 
       it('handles loading and no-result states', function () {

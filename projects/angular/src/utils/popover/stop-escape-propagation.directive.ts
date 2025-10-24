@@ -8,7 +8,7 @@
 import { Directive, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverToggleService } from './providers/popover-toggle.service';
+import { ClrPopoverService } from './providers/popover.service';
 
 @Directive({
   standalone: true,
@@ -17,10 +17,10 @@ export class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
   private subscription: Subscription;
   private lastOpenChange: boolean | null = null;
 
-  constructor(private toggleService: ClrPopoverToggleService) {}
+  constructor(private popoverService: ClrPopoverService) {}
 
   ngOnInit() {
-    this.subscription = this.toggleService.openChange.subscribe(open => {
+    this.subscription = this.popoverService.openChange.subscribe(open => {
       this.lastOpenChange = open;
     });
   }

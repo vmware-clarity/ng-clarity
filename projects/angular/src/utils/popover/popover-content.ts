@@ -5,175 +5,369 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { hasModifierKey } from '@angular/cdk/keycodes';
 import {
-  AfterContentChecked,
+  CdkScrollable,
+  ConnectedPosition,
+  Overlay,
+  OverlayConfig,
+  OverlayContainer,
+  OverlayRef,
+  ScrollDispatcher,
+  ScrollStrategy,
+  STANDARD_DROPDOWN_BELOW_POSITIONS,
+} from '@angular/cdk/overlay';
+import { DomPortal } from '@angular/cdk/portal';
+import { DOCUMENT } from '@angular/common';
+import {
+  AfterViewInit,
   Directive,
-  DOCUMENT,
+  ElementRef,
   EmbeddedViewRef,
-  EventEmitter,
   Inject,
   Input,
+  NgZone,
   OnDestroy,
   Renderer2,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { fromEvent, Subscription } from 'rxjs';
 
+import { ClrAlignment } from './enums/alignment.enum';
+import { ClrAxis } from './enums/axis.enum';
+import { ClrSide } from './enums/side.enum';
 import { ClrPopoverPosition } from './interfaces/popover-position.interface';
-import { ClrPopoverEventsService } from './providers/popover-events.service';
-import { ClrPopoverPositionService } from './providers/popover-position.service';
-import { ClrPopoverToggleService } from './providers/popover-toggle.service';
+import { ClrPopoverService } from './providers/popover.service';
+import { Keys } from '../enums/keys.enum';
+import { normalizeKey } from '../focus/key-focus/util';
 
-// https://github.com/angular/angular/issues/20351#issuecomment-344009887
 /** @dynamic */
 @Directive({
   selector: '[clrPopoverContent]',
   standalone: false,
 })
-export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
+export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private view: EmbeddedViewRef<void>;
+  private domPortal: DomPortal;
   private subscriptions: Subscription[] = [];
-  private removeClickListenerFn: VoidFunction | null = null;
+  private overlayRef: OverlayRef = null;
+  private preferredPosition: ConnectedPosition = {
+    originX: 'start',
+    originY: 'top',
+    overlayX: 'end',
+    overlayY: 'top',
+  };
 
-  private shouldRealign = false;
-  private previousContentHeight: number | null = null;
-
-  // Check-collector pattern:
-  // In order to get accurate content height/width values, we cannot calculate alignment offsets until
-  // after the projected content has stabilized.
-  // As multiple check events may happen in the same rendering cycle, we need to collect all events
-  // and only act after the content is really stable. Or we may get wrong intermediate positioning values.
-  // We will channel subsequent content check events through this observable.
-  private checkCollector = new EventEmitter<void>();
+  private scrollableParent: any;
+  private positions: ConnectedPosition[] = STANDARD_DROPDOWN_BELOW_POSITIONS;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private container: ViewContainerRef,
     private template: TemplateRef<any>,
     private renderer: Renderer2,
-    private smartPositionService: ClrPopoverPositionService,
-    private smartEventsService: ClrPopoverEventsService,
-    private smartOpenService: ClrPopoverToggleService
-  ) {}
+    private overlay: Overlay,
+    overlayContainer: OverlayContainer,
+    private scrollDispatcher: ScrollDispatcher,
+    private popoverService: ClrPopoverService,
+    private zone: NgZone
+  ) {
+    overlayContainer.getContainerElement().classList.add('clr-container-element');
+  }
 
   @Input('clrPopoverContent')
   set open(value: boolean) {
-    this.smartOpenService.open = !!value;
+    this.popoverService.open = !!value;
   }
 
   @Input('clrPopoverContentAt')
-  set contentAt(position: ClrPopoverPosition) {
-    this.smartPositionService.position = position;
+  set contentAt(position: ClrPopoverPosition | ConnectedPosition[]) {
+    if (Array.isArray(position)) {
+      this.positions = position;
+    } else {
+      //TODO: remap these positions to something the CDK Overlay can use
+      this.parsePositionObject(position);
+    }
   }
 
   @Input('clrPopoverContentOutsideClickToClose')
   set outsideClickClose(clickToClose: boolean) {
-    this.smartEventsService.outsideClickClose = !!clickToClose;
+    this.popoverService.outsideClickClose = !!clickToClose;
   }
 
   @Input('clrPopoverContentScrollToClose')
   set scrollToClose(scrollToClose: boolean) {
-    this.smartEventsService.scrollToClose = !!scrollToClose;
-  }
+    this.popoverService.scrollToClose = !!scrollToClose;
 
-  ngAfterContentChecked(): void {
-    if (this.smartOpenService.open && this.view) {
-      const rootNodeOffsetHeight = this.view.rootNodes[0].offsetHeight;
-      if (
-        this.shouldRealign ||
-        (this.previousContentHeight !== null && this.previousContentHeight !== rootNodeOffsetHeight)
-      ) {
-        // Channel content-check event through the check-collector
-        this.previousContentHeight = rootNodeOffsetHeight;
-        this.checkCollector.emit();
-      }
+    if (this.overlayRef) {
+      this.overlayRef.updateScrollStrategy(this.getScrollStrategy());
     }
   }
 
   ngAfterViewInit() {
+    if (this.popoverService.open) {
+      this.showOverlay();
+    }
     this.subscriptions.push(
-      this.smartOpenService.openChange.subscribe(change => {
-        if (change) {
-          this.addContent();
-        } else {
-          this.removeContent();
+      this.popoverService.openChange.subscribe(change => {
+        if (!this.scrollableParent) {
+          // Get Scrollable Parent when there is no cdkScrollable directive set
+          this.scrollableParent = this.getScrollParent(this.popoverService.anchorElementRef?.nativeElement);
+          this.listenToMouseEvents();
         }
-      }),
-      this.smartPositionService.shouldRealign.subscribe(() => {
-        this.shouldRealign = true;
-      }),
-      // Here we collect subsequent synchronously received content-check events and only take action
-      // at the end of the cycle. See below for details on the check-collector pattern.
-      this.checkCollector.pipe(debounceTime(0)).subscribe(() => {
-        this.alignContent();
-        this.shouldRealign = false;
-        if (this.view) {
-          this.renderer.setStyle(this.view.rootNodes[0], 'opacity', '1');
-          this.smartOpenService.popoverVisibleEmit(true);
+
+        if (change) {
+          this.showOverlay();
+        } else {
+          this.removeOverlay();
         }
       })
     );
   }
 
   ngOnDestroy() {
-    this.removeContent();
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.removeOverlay();
+    this.subscriptions.forEach(s => s.unsubscribe());
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+      this.popoverService.overlayRef = null;
+      this.overlayRef = null;
+    }
   }
 
-  /**
-   * TODO(matt): investigate why DebugElement retains a reference to the nodes and causes a memory leak.
-   * A note about the use of appendChild/removeChild
-   * The DebugElement is keeping a reference to the detached node and its unclear why.
-   * This does warrant further investigation. But, since it doesn't happen in production mode
-   * it is a low priority issue for now.
-   */
-  private addContent() {
-    // Create the view container
-    this.view = this.container.createEmbeddedView(this.template);
-    const [rootNode] = this.view.rootNodes;
-    this.smartEventsService.contentRef = rootNode; // So we know where/what to set close focus on
-    this.renderer.addClass(rootNode, 'clr-popover-content');
-    // Reset to the begining of the document to be available for sizing/positioning calculations.
-    // If we add new content to the bottom it triggers changes in the layout that may lead to false anchor
-    // coordinates values.
-    this.renderer.setStyle(rootNode, 'top', '0px');
-    this.renderer.setStyle(rootNode, 'left', '0px');
-    // We need to hide it during the calculation phase, while it's not yet finally positioned.
-    this.renderer.setStyle(rootNode, 'opacity', '0');
-    this.removeClickListenerFn = this.renderer.listen(rootNode, 'click', event => {
-      this.smartOpenService.openEvent = event;
-    });
-    this.view.rootNodes.forEach(node => {
-      this.renderer.appendChild(this.document.body, node);
-    });
-    // Mark for realingment on the next content-check cycle.
-    this.shouldRealign = true;
+  private _createOverlayRef(): OverlayRef {
+    //fetch all Scrolling Containers registered with CDK
+    let scrollableAncestors: CdkScrollable[];
+    if (this.popoverService.anchorElementRef) {
+      scrollableAncestors = this.scrollDispatcher.getAncestorScrollContainers(this.popoverService.anchorElementRef);
+    }
+
+    const overlay = this.overlay.create(
+      new OverlayConfig({
+        // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
+        positionStrategy: this.overlay
+          .position()
+          .flexibleConnectedTo(this.popoverService.anchorElementRef)
+          .withPositions([this.preferredPosition, ...this.positions])
+          .withScrollableContainers(scrollableAncestors),
+        scrollStrategy: this.getScrollStrategy(),
+        panelClass: this.popoverService.panelClass,
+        hasBackdrop: false,
+      })
+    );
+
+    this.subscriptions.push(
+      overlay.keydownEvents().subscribe(event => {
+        if (event && event.key && normalizeKey(event.key) === Keys.Escape && !hasModifierKey(event)) {
+          event.preventDefault();
+          this.popoverService.open = false;
+          this.popoverService.setOpenedButtonFocus();
+        }
+      })
+    );
+
+    this.subscriptions.push(
+      overlay.outsidePointerEvents().subscribe(event => {
+        // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
+        if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
+          return;
+        }
+        // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
+        if (this.popoverService.openEvent) {
+          if (
+            (this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
+            (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
+            this.popoverService.openEvent.target === event.target
+          ) {
+            return;
+          }
+        }
+
+        if (this.popoverService.outsideClickClose) {
+          this.popoverService.open = false;
+          this.popoverService.setOpenedButtonFocus();
+        }
+      })
+    );
+
+    this.subscriptions.push(
+      overlay.detachments().subscribe(() => {
+        this.popoverService.open = false;
+        this.popoverService.setOpenedButtonFocus();
+      })
+    );
+
+    return overlay;
   }
 
-  private removeContent(): void {
+  private getScrollStrategy(): ScrollStrategy {
+    return this.popoverService.scrollToClose
+      ? this.overlay.scrollStrategies.close()
+      : this.overlay.scrollStrategies.reposition({ autoClose: true });
+  }
+
+  private showOverlay() {
+    if (!this.overlayRef) {
+      this.overlayRef = this._createOverlayRef();
+      this.popoverService.overlayRef = this.overlayRef;
+    }
+
     if (!this.view) {
-      return;
+      this.view = this.container.createEmbeddedView(this.template);
+      const [rootNode] = this.view.rootNodes;
+      this.popoverService.contentRef = new ElementRef(rootNode); // So we know where/what to set close focus on
+      this.domPortal = new DomPortal<HTMLElement>(this.popoverService.contentRef);
     }
-    if (this.removeClickListenerFn) {
-      this.removeClickListenerFn();
-      this.removeClickListenerFn = null;
-    }
-    this.view.rootNodes.forEach(node => this.renderer.removeChild(this.document.body, node));
-    this.container.clear();
-    delete this.view;
-    this.smartOpenService.popoverVisibleEmit(false);
+    this.overlayRef.attach(this.domPortal);
+
+    setTimeout(() => this.popoverService.popoverVisibleEmit(true));
   }
 
-  private alignContent() {
-    if (!this.view) {
-      return;
+  private removeOverlay(): void {
+    if (this.overlayRef?.hasAttached()) {
+      this.overlayRef.detach();
+    }
+    if (this.domPortal?.isAttached) {
+      this.domPortal.detach();
+      this.domPortal = null;
+    }
+    if (this.view) {
+      this.view.destroy();
+      this.view = null;
     }
 
-    const positionCoords = this.smartPositionService.alignContent(this.view.rootNodes[0]);
-    this.renderer.setStyle(this.view.rootNodes[0], 'top', `${positionCoords.yOffset}px`);
-    this.renderer.setStyle(this.view.rootNodes[0], 'left', `${positionCoords.xOffset}px`);
-    this.smartOpenService.popoverAlignedEmit(this.view.rootNodes[0]);
+    this.popoverService.popoverVisibleEmit(false);
+  }
+
+  private parsePositionObject(position: ClrPopoverPosition) {
+    if (position.axis === ClrAxis.VERTICAL) {
+      // top or bottom
+      if (position.side === ClrSide.BEFORE) {
+        // above
+        this.preferredPosition.originY = 'top';
+        this.preferredPosition.overlayY = 'bottom';
+      } else {
+        // below
+        this.preferredPosition.originY = 'bottom';
+        this.preferredPosition.overlayY = 'top';
+      }
+      switch (position.anchor) {
+        case ClrAlignment.START:
+          this.preferredPosition.originX = 'start';
+          break;
+        case ClrAlignment.CENTER:
+          this.preferredPosition.originX = 'center';
+          break;
+        default: // end
+          this.preferredPosition.originX = 'end';
+      }
+      switch (position.content) {
+        case ClrAlignment.START:
+          this.preferredPosition.overlayX = 'start';
+          break;
+        case ClrAlignment.CENTER:
+          this.preferredPosition.overlayX = 'center';
+          break;
+        default: // end
+          this.preferredPosition.overlayX = 'end';
+      }
+    } else {
+      // Horizontal
+      if (position.side === ClrSide.BEFORE) {
+        // left
+        this.preferredPosition.originX = 'start';
+        this.preferredPosition.overlayX = 'end';
+      } else {
+        // right
+        this.preferredPosition.originX = 'end';
+        this.preferredPosition.overlayX = 'start';
+      }
+      switch (position.anchor) {
+        case ClrAlignment.START:
+          this.preferredPosition.originY = 'top';
+          break;
+        case ClrAlignment.CENTER:
+          this.preferredPosition.originY = 'center';
+          break;
+        default: // end
+          this.preferredPosition.originY = 'bottom';
+      }
+      switch (position.content) {
+        case ClrAlignment.START:
+          this.preferredPosition.overlayY = 'top';
+          break;
+        case ClrAlignment.CENTER:
+          this.preferredPosition.overlayY = 'center';
+          break;
+        default: // end
+          this.preferredPosition.overlayY = 'bottom';
+      }
+    }
+  }
+
+  //The below method is taken from https://gist.github.com/oscarmarina/3a546cff4d106a49a5be417e238d9558
+  private getScrollParent = (node, axis = 'y') => {
+    let el = node;
+    if (!(el instanceof HTMLElement || el instanceof ShadowRoot)) {
+      return null;
+    }
+
+    if (el instanceof ShadowRoot) {
+      el = el.host;
+    }
+    const style = window.getComputedStyle(el);
+    const overflow = axis === 'y' ? style.overflowY : style.overflowX;
+    const scrollSize = axis === 'y' ? el.scrollHeight : el.scrollWidth;
+    const clientSize = axis === 'y' ? el.clientHeight : el.clientWidth;
+    const isScrolled = scrollSize > clientSize;
+
+    if (isScrolled && !overflow.includes('visible') && !overflow.includes('hidden')) {
+      return {
+        scrollParent: el,
+        scrollParentSize: scrollSize,
+        clientParentSize: clientSize,
+      };
+    }
+
+    return this.getScrollParent(el.parentNode, axis) || window.document.body;
+  };
+
+  //Align the popover on scrolling
+  private listenToMouseEvents() {
+    this.zone.runOutsideAngular(() => {
+      this.subscriptions.push(
+        fromEvent(
+          this.scrollableParent?.scrollParent ? this.scrollableParent?.scrollParent : window.document,
+          'scroll'
+        ).subscribe(() => {
+          if (!this.overlayRef) {
+            return;
+          }
+
+          if (
+            !this.elementIsVisibleInViewport(this.popoverService.anchorElementRef?.nativeElement) ||
+            this.popoverService.scrollToClose
+          ) {
+            this.zone.run(() => {
+              this.removeOverlay();
+            });
+            return;
+          }
+
+          this.overlayRef.updatePosition();
+        })
+      );
+    });
+  }
+
+  //Check if element is in ViewPort
+  private elementIsVisibleInViewport(el, partiallyVisible = false) {
+    const { top, left, bottom, right } = el.getBoundingClientRect();
+    const { innerHeight, innerWidth } = window;
+    return partiallyVisible
+      ? ((top > 0 && top < innerHeight) || (bottom > 0 && bottom < innerHeight)) &&
+          ((left > 0 && left < innerWidth) || (right > 0 && right < innerWidth))
+      : top >= 0 && left >= 0 && bottom <= innerHeight && right <= innerWidth;
   }
 }

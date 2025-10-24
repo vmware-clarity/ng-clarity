@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 
 import { DayModel } from './model/day.model';
 import { ClrMonthpicker } from './monthpicker';
+import { ClrPopoverService } from '../../utils';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
@@ -16,7 +17,6 @@ import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { Keys } from '../../utils/enums/keys.enum';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 export default function () {
   describe('Monthpicker Component', () => {
@@ -39,7 +39,7 @@ export default function () {
         context = this.create(ClrMonthpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
-          ClrPopoverToggleService,
+          ClrPopoverService,
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
           DateFormControlService,
@@ -126,7 +126,7 @@ export default function () {
         context = this.create(ClrMonthpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
-          ClrPopoverToggleService,
+          ClrPopoverService,
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
           DateFormControlService,
@@ -196,7 +196,7 @@ export default function () {
         context = scope.create(ClrMonthpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
-          ClrPopoverToggleService,
+          ClrPopoverService,
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
           DateFormControlService,

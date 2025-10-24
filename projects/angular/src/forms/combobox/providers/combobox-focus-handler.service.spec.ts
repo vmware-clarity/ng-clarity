@@ -11,7 +11,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler, OptionData } from './combobox-focus-handler.service';
 import { OptionSelectionService } from './option-selection.service';
 import { Keys } from '../../../utils/enums/keys.enum';
-import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../../utils/popover/providers/popover.service';
 import { SingleSelectComboboxModel } from '../model/single-select-combobox.model';
 
 @Component({
@@ -38,7 +38,7 @@ interface TestContext {
   el: HTMLElement;
   focusHandler: ComboboxFocusHandler<any>;
   selectionService: OptionSelectionService<any>;
-  toggleService: ClrPopoverToggleService;
+  popoverService: ClrPopoverService;
 }
 
 export default function (): void {
@@ -46,13 +46,13 @@ export default function (): void {
     beforeEach(function (this: TestContext) {
       TestBed.configureTestingModule({
         declarations: [SimpleHost],
-        providers: [ClrPopoverToggleService, OptionSelectionService, COMBOBOX_FOCUS_HANDLER_PROVIDER],
+        providers: [ClrPopoverService, OptionSelectionService, COMBOBOX_FOCUS_HANDLER_PROVIDER],
       });
       this.fixture = TestBed.createComponent(SimpleHost);
       this.testComponent = this.fixture.componentInstance;
       this.el = this.fixture.debugElement.nativeElement;
       this.focusHandler = this.fixture.debugElement.injector.get(ComboboxFocusHandler);
-      this.toggleService = this.fixture.debugElement.injector.get(ClrPopoverToggleService);
+      this.popoverService = this.fixture.debugElement.injector.get(ClrPopoverService);
       this.selectionService = this.fixture.debugElement.injector.get(OptionSelectionService);
 
       this.fixture.detectChanges();
@@ -75,13 +75,13 @@ export default function (): void {
     it('has empty pseudoFocus on initialization', function (this: TestContext) {
       expect(this.focusHandler.pseudoFocus).toBeTruthy();
       expect(this.focusHandler.pseudoFocus.isEmpty()).toBeTrue();
-      expect(this.toggleService.open).toBeFalse();
+      expect(this.popoverService.open).toBeFalse();
     });
 
     it('can open a listbox and set focus', function (this: TestContext) {
       const event = new KeyboardEvent('keydown', { key: Keys.ArrowDown });
       this.testComponent.textInput.nativeElement.dispatchEvent(event);
-      expect(this.toggleService.open).toBeTrue();
+      expect(this.popoverService.open).toBeTrue();
       expect(this.focusHandler.pseudoFocus.model).toEqual(new OptionData('1', 'one'));
     });
 
@@ -97,24 +97,24 @@ export default function (): void {
     });
 
     it('closes popover on textInput blur', function (this: TestContext) {
-      this.toggleService.open = true;
+      this.popoverService.open = true;
       const event = new FocusEvent('blur');
       this.testComponent.textInput.nativeElement.dispatchEvent(event);
-      expect(this.toggleService.open).toBeFalse();
+      expect(this.popoverService.open).toBeFalse();
     });
 
     it('closes popover on trigger blur', function (this: TestContext) {
-      this.toggleService.open = true;
+      this.popoverService.open = true;
       const event = new FocusEvent('blur');
       this.testComponent.trigger.nativeElement.dispatchEvent(event);
-      expect(this.toggleService.open).toBeFalse();
+      expect(this.popoverService.open).toBeFalse();
     });
 
     it('closes popover on listbox blur', function (this: TestContext) {
-      this.toggleService.open = true;
+      this.popoverService.open = true;
       const event = new FocusEvent('blur');
       this.testComponent.listbox.nativeElement.dispatchEvent(event);
-      expect(this.toggleService.open).toBeFalse();
+      expect(this.popoverService.open).toBeFalse();
     });
 
     it('can set focus on textInput', function (this: TestContext) {
@@ -155,7 +155,7 @@ export default function (): void {
 
     it('does not submit on Enter when dialog is open', function (this: TestContext) {
       spyOn(this.testComponent, 'onSubmit');
-      this.toggleService.open = true;
+      this.popoverService.open = true;
       const event = new KeyboardEvent('keydown', { key: Keys.Enter });
       this.testComponent.textInput.nativeElement.dispatchEvent(event);
       expect(this.testComponent.onSubmit).not.toHaveBeenCalled();
