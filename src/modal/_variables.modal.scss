@@ -1,0 +1,37 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:color';
+@use '@cds/core/tokens/tokens.scss';
+@use '../utils/variables/variables.density' as density;
+
+// Usage: ../modal/_modal.clarity.scss
+$clr-modal-horizontal-space: density.$clr-base-horizontal-offset-2xl !default;
+$clr-modal-vertical-space: density.$clr-base-vertical-offset-2xl !default;
+$clr-modal-vertical-gap: density.$clr-base-gap-xl !default;
+$clr-modal-horizontal-gap: density.$clr-base-gap-s !default;
+$clr-modal-border-radius: var(--clr-modal-border-radius) !default;
+$clr-modal-icon-size: density.$clr-base-icon-size-l !default;
+
+$clr-modal-close-color: var(--clr-modal-close-color) !default;
+$clr-modal-bg-color: var(--clr-modal-bg-color) !default;
+$clr-modal-content-box-shadow: var(--clr-modal-content-box-shadow) !default;
+$clr-modal-backdrop-color: var(--clr-modal-backdrop-color) !default;
+
+// Usage: ../modal/_modal.clarity.scss
+// Usage: ../wizard/_wizard.clarity.scss
+$clr-modal-sm-width: var(--clr-modal-sm-width) !default;
+$clr-modal-md-width: var(--clr-modal-md-width) !default;
+$clr-modal-lg-width: var(--clr-modal-lg-width) !default;
+$clr-modal-xl-width: var(--clr-modal-xl-width) !default;
+
+// Usage: ../modal/_modal.clarity.scss
+$clr-modal-title-color: var(--clr-modal-title-color) !default;
+$clr-modal-title-font-size: var(--clr-modal-title-font-size) !default;
+$clr-modal-title-font-family: var(--clr-modal-title-font-family) !default;
+$clr-modal-title-font-weight: var(--clr-modal-title-font-weight) !default;
+$clr-modal-title-line-height: var(--clr-modal-title-line-height) !default;
+$clr-modal-title-letter-spacing: var(--clr-modal-title-letter-spacing) !default;

@@ -1,0 +1,629 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../utils/mixins';
+@use 'variables.buttons' as buttons-variables;
+@use '../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+@function getSassButtonColor($type: default, $property: null) {
+  @if not $property {
+    @return null;
+  }
+
+  @if $type == default {
+    @return buttons-variables.lookupFromDefaultButtonColors($property);
+  }
+
+  @if $type == default-outline {
+    @return buttons-variables.lookupFromDefaultOutlineButtonColors($property);
+  }
+
+  @if $type == primary {
+    @return buttons-variables.lookupFromPrimaryButtonColors($property);
+  }
+
+  @if $type == primary-outline {
+    @return buttons-variables.lookupFromPrimaryOutlineButtonColors($property);
+  }
+
+  @if $type == success {
+    @return buttons-variables.lookupFromSuccessButtonColors($property);
+  }
+
+  @if $type == success-outline {
+    @return buttons-variables.lookupFromSuccessOutlineButtonColors($property);
+  }
+
+  @if $type == danger {
+    @return buttons-variables.lookupFromDangerButtonColors($property);
+  }
+
+  @if $type == neutral {
+    @return buttons-variables.lookupFromNeutralButtonColors($property);
+  }
+
+  @if $type == neutral-outline {
+    @return buttons-variables.lookupFromNeutralOutlineButtonColors($property);
+  }
+
+  @if $type == danger-outline {
+    @return buttons-variables.lookupFromDangerOutlineButtonColors($property);
+  }
+
+  @if $type == warning {
+    @return buttons-variables.lookupFromWarningButtonColors($property);
+  }
+
+  @if $type == warning-outline {
+    @return buttons-variables.lookupFromWarningOutlineButtonColors($property);
+  }
+
+  @if $type == link {
+    @return buttons-variables.lookupFromLinkButtonColors($property);
+  }
+
+  @if $type == link-primary {
+    @return buttons-variables.lookupFromLinkPrimaryButtonColors($property);
+  }
+
+  @if $type == link-success {
+    @return buttons-variables.lookupFromLinkSuccessButtonColors($property);
+  }
+
+  @if $type == link-warning {
+    @return buttons-variables.lookupFromLinkWarningButtonColors($property);
+  }
+
+  @if $type == link-danger {
+    @return buttons-variables.lookupFromLinkDangerButtonColors($property);
+  }
+
+  @if $type == link-neutral {
+    @return buttons-variables.lookupFromLinkNeutralButtonColors($property);
+  }
+
+  @if $type == inverse {
+    @return buttons-variables.lookupFromInverseButtonColors($property);
+  }
+
+  @if $type == icon {
+    @return buttons-variables.lookupFromIconButtonColors($property);
+  }
+
+  @return null;
+}
+
+@mixin button-css-var($button-type: default, $style: null, $styleNickname: $style) {
+  @if $style {
+    #{$style}: getSassButtonColor($button-type, $styleNickname);
+  }
+}
+
+@mixin populateButtonProperties($button-type: default) {
+  @include button-css-var($button-type, border-color);
+  @include button-css-var($button-type, background-color, bg-color);
+  @include button-css-var($button-type, color);
+
+  cds-icon,
+  clr-icon {
+    @include button-css-var($button-type, color);
+
+    &:not([size]) {
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+    }
+  }
+
+  &:hover {
+    @include button-css-var($button-type, background-color, hover-bg-color);
+    @include button-css-var($button-type, color, hover-color);
+    cds-icon,
+    clr-icon {
+      @include button-css-var($button-type, color, hover-color);
+    }
+  }
+
+  &:active {
+    @include button-css-var($button-type, background-color, active-bg-color);
+    @include button-css-var($button-type, color, active-color);
+    cds-icon,
+    clr-icon {
+      @include button-css-var($button-type, color, active-color);
+    }
+  }
+
+  &.disabled,
+  &:disabled {
+    @include button-css-var($button-type, color, disabled-color);
+    cursor: not-allowed;
+    @include button-css-var($button-type, background-color, disabled-bg-color);
+    @include button-css-var($button-type, border-color, disabled-border-color);
+    cds-icon,
+    clr-icon {
+      @include button-css-var($button-type, color, disabled-color);
+    }
+  }
+}
+
+@mixin btn-checked-styles($button-type: default, $type: checkbox) {
+  // add semantic prop: group-checked-font-color
+  input[type='#{$type}']:checked + label {
+    @include button-css-var($button-type, background-color, checked-bg-color);
+    @include button-css-var($button-type, color, checked-color);
+
+    // override icon colors on inverted backgrounds
+    & > clr-icon,
+    & > cds-icon {
+      @include button-css-var($button-type, color, checked-color);
+    }
+  }
+
+  input[type='#{$type}']:checked:hover + label {
+    @include button-css-var($button-type, background-color, checked-hover-bg-color);
+    @include button-css-var($button-type, color, checked-hover-color);
+
+    // override icon colors on inverted backgrounds
+    & > clr-icon,
+    & > cds-icon {
+      @include button-css-var($button-type, color, checked-hover-color);
+    }
+  }
+
+  input[type='#{$type}']:checked:active + label {
+    @include button-css-var($button-type, background-color, checked-active-bg-color);
+    @include button-css-var($button-type, color, checked-active-color);
+
+    // override icon colors on inverted backgrounds
+    & > clr-icon,
+    & > cds-icon {
+      @include button-css-var($button-type, color, checked-active-color);
+    }
+  }
+
+  &.disabled input[type='#{$type}']:checked + label,
+  &:disabled input[type='#{$type}']:checked + label {
+    @include button-css-var($button-type, color, checked-disabled-color);
+    @include button-css-var($button-type, background-color, checked-disabled-bg-color);
+    // override icon colors on inverted backgrounds
+    & > clr-icon,
+    & > cds-icon {
+      @include button-css-var($button-type, color, checked-disabled-color);
+    }
+  }
+}
+
+@mixin btn-nowrap() {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@mixin btn-min-max-widths() {
+  min-width: tokens.$cds-global-space-14;
+  max-width: mixins.baselinePx(360);
+}
+
+@mixin btn-text-properties() {
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+@mixin btn-default-border-styles() {
+  border: buttons-variables.$clr-btn-border-width solid;
+  border-radius: buttons-variables.$clr-btn-border-radius;
+}
+
+@mixin btn-appearance() {
+  cursor: pointer;
+
+  display: inline-flex;
+  gap: buttons-variables.$clr-btn-gap;
+  align-items: center;
+  place-content: center;
+
+  // Overrides a Fix for IOS in BS4 _normalize.scss (~ln 330)
+  // `!important` is to override specificity in this instance
+  // But we wanted to preserve the normalize fix in non-Clarity buttons for iOS
+  -webkit-appearance: none !important;
+}
+
+@mixin btn-sm-appearance() {
+  @include mixins.generate-typography-token('BUTTON-11-SMALL');
+
+  height: buttons-variables.$clr-btn-appearance-standard-height;
+  padding: buttons-variables.$clr-btn-appearance-standard-padding;
+}
+
+@mixin generateButton() {
+  @include btn-appearance();
+  @include btn-default-border-styles();
+  @include btn-min-max-widths();
+  @include btn-nowrap();
+  @include btn-text-properties();
+}
+
+@include meta.load-css('properties.buttons');
+
+@include mixins.exports('buttons.clarity') {
+  .btn {
+    @include generateButton();
+    @include populateButtonProperties(default);
+    @include mixins.generate-typography-token('BUTTON-12');
+
+    height: buttons-variables.$clr-btn-appearance-form-height;
+    padding: buttons-variables.$clr-btn-appearance-form-padding;
+
+    .clr-loading-btn-content {
+      display: flex;
+      gap: buttons-variables.$clr-btn-gap;
+      align-items: center;
+    }
+  }
+
+  //Clarity Buttons
+  .btn-group > .btn,
+  .btn {
+    clr-icon {
+      transform: translate3d(0, calc(-1 * #{tokens.$cds-global-space-2}), 0);
+    }
+  }
+
+  //.btn-outline-<state> is the new BS4 naming convention. We are using both for now
+  // TODO: Refactor these classnames when the standard clarity naming convention is set.
+  // This is a breaking change and will need an upgrade path so users know how to easily migrate to the new
+  // version.
+  a.btn,
+  .btn.btn-secondary,
+  .btn-secondary .btn {
+    @include populateButtonProperties(default);
+  }
+
+  .btn.btn-info,
+  .btn-info .btn,
+  .btn.btn-primary,
+  .btn-primary .btn {
+    @include populateButtonProperties(primary);
+  }
+
+  .btn.btn-success,
+  .btn-success .btn {
+    @include populateButtonProperties(success);
+  }
+  .btn.btn-warning,
+  .btn-warning .btn {
+    @include populateButtonProperties(warning);
+  }
+
+  .btn.btn-danger,
+  .btn-danger .btn {
+    @include populateButtonProperties(danger);
+  }
+
+  .btn.btn-neutral,
+  .btn-neutral .btn {
+    @include populateButtonProperties(neutral);
+  }
+
+  .btn.btn-outline,
+  .btn.btn-outline .btn,
+  .btn.btn-secondary-outline,
+  .btn.btn-outline-secondary,
+  .btn-secondary-outline .btn,
+  .btn-outline-secondary .btn,
+  .btn-outline .btn {
+    @include populateButtonProperties(default-outline);
+  }
+
+  .btn.btn-primary-outline,
+  .btn-outline-info .btn,
+  .btn-info-outline .btn,
+  .btn-primary-outline .btn,
+  .btn-outline-primary .btn,
+  .btn.btn-outline-primary,
+  .btn.btn-outline-info,
+  .btn.btn-info-outline,
+  .btn.btn-info-outline {
+    @include populateButtonProperties(primary-outline);
+  }
+
+  .btn.btn-success-outline,
+  .btn.btn-outline-success,
+  .btn-success-outline .btn,
+  .btn-outline-success .btn {
+    @include populateButtonProperties(success-outline);
+  }
+  .btn.btn-warning-outline,
+  .btn.btn-outline-warning,
+  .btn-warning-outline .btn,
+  .btn-outline-warning .btn {
+    @include populateButtonProperties(warning-outline);
+  }
+
+  .btn.btn-danger-outline,
+  .btn.btn-outline-danger,
+  .btn-danger-outline .btn,
+  .btn-outline-danger .btn {
+    @include populateButtonProperties(danger-outline);
+  }
+
+  .btn.btn-neutral-outline,
+  .btn.btn-outline-neutral,
+  .btn-neutral-outline .btn,
+  .btn-outline-neutral .btn {
+    @include populateButtonProperties(neutral-outline);
+  }
+
+  .btn.btn-link,
+  .btn-link .btn {
+    @include populateButtonProperties(link);
+
+    //To override the visited state of anchor links styled as buttons
+    &:visited {
+      @include button-css-var(link, color, visited-color);
+      cds-icon,
+      clr-icon {
+        @include button-css-var(link, color, visited-color);
+      }
+      &:hover {
+        @include button-css-var(link, color, visited-hover-color);
+        cds-icon,
+        clr-icon {
+          @include button-css-var(link, color, visited-hover-color);
+        }
+      }
+    }
+  }
+
+  .btn.btn-link-primary,
+  .btn-link-primary .btn {
+    @include populateButtonProperties(link-primary);
+  }
+
+  .btn.btn-link-success,
+  .btn-link-success .btn {
+    @include populateButtonProperties(link-success);
+  }
+
+  .btn.btn-link-warning,
+  .btn-link-warning .btn {
+    @include populateButtonProperties(link-warning);
+  }
+
+  .btn.btn-link-danger,
+  .btn-link-danger .btn {
+    @include populateButtonProperties(link-danger);
+  }
+
+  .btn.btn-link-neutral,
+  .btn-link-neutral .btn {
+    @include populateButtonProperties(link-neutral);
+  }
+
+  .btn.btn-inverse,
+  .btn-inverse .btn {
+    @include populateButtonProperties(inverse);
+  }
+
+  .btn.btn-sm,
+  .btn-sm .btn {
+    @include btn-sm-appearance();
+  }
+
+  .btn-block {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .btn {
+    margin: buttons-variables.$clr-btn-vertical-margin buttons-variables.$clr-btn-horizontal-margin
+      buttons-variables.$clr-btn-vertical-margin 0;
+
+    &.btn-link {
+      margin-right: 0;
+    }
+
+    &.btn-link.btn-inverse {
+      border-color: transparent;
+    }
+  }
+
+  //Small Icon Button
+  .btn-sm:not(.btn-link) {
+    clr-icon {
+      transform: translate3d(0, calc(-1 * #{tokens.$cds-global-space-1}), 0);
+    }
+
+    clr-icon,
+    cds-icon:not([size]) {
+      height: buttons-variables.$clr-btn-appearance-standard-icon-size;
+      width: buttons-variables.$clr-btn-appearance-standard-icon-size;
+    }
+  }
+
+  .btn-icon {
+    min-width: 0;
+  }
+
+  //Overflow
+  .btn-group {
+    &.btn-link .dropdown-toggle {
+      @include populateButtonProperties(link);
+    }
+
+    &.btn-sm .btn-group-overflow > .dropdown-toggle {
+      @include btn-sm-appearance();
+    }
+  }
+
+  //Checkboxes styled as Buttons
+  //Radio Buttons styled as Buttons
+  .checkbox.btn,
+  .checkbox-inline.btn,
+  .radio.btn,
+  .radio-inline.btn {
+    padding: 0;
+
+    label {
+      @include btn-appearance();
+
+      padding: 0 density.$clr-base-horizontal-offset-l;
+    }
+
+    &.disabled label,
+    &:disabled label {
+      cursor: not-allowed;
+    }
+  }
+
+  .checkbox.btn,
+  .checkbox-inline.btn {
+    input[type='checkbox'] + label::before,
+    input[type='checkbox'] + label::after {
+      content: none;
+    }
+  }
+
+  .radio.btn,
+  .radio-inline.btn {
+    input[type='radio'] + label::before,
+    input[type='radio'] + label::after {
+      content: none;
+    }
+  }
+
+  .checkbox.btn,
+  .checkbox-inline.btn {
+    @include btn-checked-styles();
+
+    label {
+      width: 100%;
+    }
+
+    //.btn-outline-<state> is the new BS4 naming convention
+    //TODO: we support both the previous one and the new one but we will deprecate the old ones from the example in 0.5.0
+    &.btn-secondary,
+    &.btn-info,
+    &.btn-outline,
+    &.btn-primary-outline,
+    &.btn-secondary-outline,
+    &.btn-outline-primary,
+    &.btn-outline-secondary,
+    &.btn-info-outline,
+    &.btn-outline-info {
+      @include btn-checked-styles();
+    }
+
+    &.btn-primary {
+      @include btn-checked-styles(primary);
+    }
+
+    &.btn-success {
+      @include btn-checked-styles(success);
+    }
+
+    &.btn-warning {
+      @include btn-checked-styles(warning);
+    }
+
+    &.btn-danger {
+      @include btn-checked-styles(danger);
+    }
+
+    &.btn-success-outline,
+    &.btn-outline-success {
+      @include btn-checked-styles(outline-success);
+    }
+
+    &.btn-danger-outline,
+    &.btn-outline-danger {
+      @include btn-checked-styles(outline-danger);
+    }
+
+    &.btn-warning-outline,
+    &.btn-outline-warning {
+      @include btn-checked-styles(outline-warning);
+    }
+
+    &.btn-link {
+      @include btn-checked-styles(link);
+    }
+
+    &.btn-inverse {
+      @include btn-checked-styles(inverse);
+    }
+  }
+
+  .radio.btn,
+  .radio.btn {
+    @include btn-checked-styles(default, radio);
+
+    label {
+      width: 100%;
+    }
+
+    //.btn-outline-<state> is the new BS4 naming convention. We are using both for now
+    // TODO: Refactor these classnames when the standard clarity naming convention is set.
+    // This is a breaking change and will need an upgrade path so users know how to easily migrate to the new
+    // version.
+    &.btn-secondary,
+    &.btn-info,
+    &.btn-outline,
+    &.btn-primary-outline,
+    &.btn-secondary-outline,
+    &.btn-outline-primary,
+    &.btn-outline-secondary,
+    &.btn-info-outline,
+    &.btn-outline-info {
+      @include btn-checked-styles(default, radio);
+    }
+
+    &.btn-primary {
+      @include btn-checked-styles(primary, radio);
+    }
+
+    &.btn-success {
+      @include btn-checked-styles(success, radio);
+    }
+
+    &.btn-warning {
+      @include btn-checked-styles(warning, radio);
+    }
+
+    &.btn-danger {
+      @include btn-checked-styles(danger, radio);
+    }
+
+    &.btn-success-outline,
+    &.btn-outline-success {
+      @include btn-checked-styles(success-outline, radio);
+    }
+
+    &.btn-warning-outline,
+    &.btn-outline-warning {
+      @include btn-checked-styles(warning-outline, radio);
+    }
+
+    &.btn-danger-outline,
+    &.btn-outline-danger {
+      @include btn-checked-styles(danger-outline, radio);
+    }
+
+    &.btn-link {
+      @include btn-checked-styles(link, radio);
+    }
+
+    &.btn-inverse {
+      @include btn-checked-styles(inverse, radio);
+    }
+  }
+}

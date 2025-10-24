@@ -1,0 +1,410 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use 'sass:meta';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.signpost' as signpost-variables;
+@use '../../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+@include meta.load-css('properties.signpost');
+
+@include mixins.exports('signpost.clarity') {
+  $clr-signpost-pointer-size-negative: calc(-1 * signpost-variables.$clr-signpost-pointer-size);
+
+  .signpost {
+    display: inline-block;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .signpost-action:not(.close) {
+      margin: 0;
+      padding: 0;
+      border-width: 0;
+      color: signpost-variables.$clr-signpost-action-color;
+
+      cds-icon,
+      clr-icon {
+        &:not([size]) {
+          @include mixins.equilateral(density.$clr-base-icon-size-l);
+        }
+        color: signpost-variables.$clr-signpost-action-color;
+      }
+
+      cds-icon:hover,
+      clr-icon:hover,
+      &:hover {
+        color: signpost-variables.$clr-signpost-action-hover-color;
+      }
+
+      &.active cds-icon,
+      &.active clr-icon,
+      &.active {
+        color: signpost-variables.$clr-signpost-action-active-color;
+      }
+    }
+
+    .signpost-content-header button {
+      line-height: 0;
+
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+
+      cds-icon:not([size]),
+      clr-icon {
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+      }
+    }
+  }
+
+  .signpost-trigger {
+    margin: 0;
+    display: inline-flex;
+  }
+
+  .signpost-content {
+    background-color: transparent;
+    min-width: mixins.baselinePx(216);
+    max-width: mixins.baselinePx(360);
+    min-height: tokens.$cds-global-space-12;
+    max-height: mixins.baselinePx(504);
+    display: inline-block;
+    position: relative;
+    z-index: map.get(variables.$clr-layers, tooltips);
+
+    &:hover {
+      cursor: default;
+    }
+
+    .popover-pointer {
+      @include mixins.equilateral(0);
+      position: absolute;
+
+      &:before {
+        content: '';
+        @include mixins.equilateral(0);
+        position: absolute;
+      }
+    }
+
+    /***
+            The signpost is above the icon top-{HORIZONTAL_POSITION}
+        */
+    /***
+            TODO: Create a general mix-in for the popover-pointer that can
+            1. Accomadate all 12 positions
+            2. Unification for the nomenclature between components
+                (if possible, I know they all use slightly different terms)
+            3. Be used across Tooltips, Signposts (Do we also want it for Dropdowns)
+            4. What's up with the namespacing here? Usually we use `clr-*` to denote
+                Clarity components but we aren't doing that in signposts. We should
+                consider it.
+         */
+
+    /* NOTE: signposts need precise pixels for some measurements due to the design
+            Hence the 1px and 2px values you'll see below.
+
+            I've tested the calcs below while resizing the base font-size for the rem
+            measurements and they appear to hold up well.
+          */
+
+    &.top-left,
+    &.top-middle,
+    &.top-right {
+      .popover-pointer {
+        border-top: signpost-variables.$clr-signpost-pointer-border;
+        bottom: $clr-signpost-pointer-size-negative;
+
+        &:before {
+          border-top: signpost-variables.$clr-signpost-pointer-pseudo-border;
+          bottom: tokens.$cds-global-space-2;
+        }
+      }
+    }
+
+    &.top-left {
+      .signpost-wrap {
+        border-bottom-right-radius: 0; // Turn off rounded corner here
+      }
+
+      .popover-pointer {
+        border-left: signpost-variables.$clr-signpost-pointer-invisible-border;
+        right: calc(-1 * tokens.$cds-global-space-1);
+
+        &:before {
+          border-left: signpost-variables.$clr-signpost-pointer-invisible-border;
+          right: tokens.$cds-global-space-1;
+        }
+      }
+    }
+
+    &.top-middle {
+      .popover-pointer {
+        border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
+        left: 50%;
+
+        &:before {
+          border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
+          left: tokens.$cds-global-space-1;
+        }
+      }
+    }
+
+    &.top-right {
+      .signpost-wrap {
+        border-bottom-left-radius: 0; // Turn off rounded corner here
+      }
+
+      .popover-pointer {
+        border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
+        left: calc(-1 * tokens.$cds-global-space-1);
+
+        &:before {
+          border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
+          left: tokens.$cds-global-space-1;
+        }
+      }
+    }
+    // End top-*
+
+    /***
+             The signpost is below the icon top-{HORIZONTAL_POSITION}
+         */
+
+    &.bottom-left,
+    &.bottom-middle,
+    &.bottom-right {
+      .popover-pointer {
+        border-bottom: signpost-variables.$clr-signpost-pointer-border;
+
+        top: $clr-signpost-pointer-size-negative;
+
+        &:before {
+          border-bottom: signpost-variables.$clr-signpost-pointer-pseudo-border;
+          top: tokens.$cds-global-space-2;
+        }
+      }
+    }
+
+    &.bottom-left {
+      .signpost-wrap {
+        border-top-right-radius: 0; // Turn off rounded corners here
+      }
+
+      .popover-pointer {
+        border-left: signpost-variables.$clr-signpost-pointer-invisible-border;
+        right: calc(-1 * tokens.$cds-global-space-1);
+
+        &:before {
+          border-left: signpost-variables.$clr-signpost-pointer-invisible-border;
+          right: tokens.$cds-global-space-1;
+        }
+      }
+    }
+
+    &.bottom-middle {
+      .popover-pointer {
+        border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
+        left: 50%;
+
+        &:before {
+          border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
+          right: calc($clr-signpost-pointer-size-negative - tokens.$cds-global-space-1);
+        }
+      }
+    }
+
+    &.bottom-right {
+      .signpost-wrap {
+        border-top-left-radius: 0; // Turn off rounded corners here
+      }
+
+      .popover-pointer {
+        border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
+        left: calc(-1 * tokens.$cds-global-space-1);
+
+        &:before {
+          border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
+          left: tokens.$cds-global-space-1;
+        }
+      }
+    }
+    // End bottom-*
+
+    /***
+             The signpost is on the left side of the icon left-{VERTICAL_POSITION}
+          */
+
+    &.left-top,
+    &.left-middle,
+    &.left-bottom {
+      .popover-pointer {
+        border-left: signpost-variables.$clr-signpost-pointer-border;
+
+        right: $clr-signpost-pointer-size-negative;
+
+        &:before {
+          border-left: signpost-variables.$clr-signpost-pointer-pseudo-border;
+        }
+      }
+    }
+
+    &.left-top {
+      .signpost-wrap {
+        border-bottom-right-radius: 0; // Turn off rounded corners here
+      }
+
+      .popover-pointer {
+        border-top: signpost-variables.$clr-signpost-pointer-invisible-border;
+        bottom: calc(-1 * tokens.$cds-global-space-1);
+
+        &:before {
+          border-top: signpost-variables.$clr-signpost-pointer-invisible-border;
+          top: calc($clr-signpost-pointer-size-negative - tokens.$cds-global-space-1);
+          right: tokens.$cds-global-space-2;
+        }
+      }
+    }
+
+    &.left-middle {
+      .popover-pointer {
+        border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
+        top: 50%;
+
+        &:before {
+          border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
+          top: tokens.$cds-global-space-1;
+          left: calc($clr-signpost-pointer-size-negative - tokens.$cds-global-space-2);
+        }
+      }
+    }
+
+    &.left-bottom {
+      .signpost-wrap {
+        border-top-right-radius: 0; // Turn off rounded corners here
+      }
+
+      .popover-pointer {
+        border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
+        top: calc(-1 * tokens.$cds-global-space-1);
+
+        &:before {
+          border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
+          top: tokens.$cds-global-space-1;
+          left: calc($clr-signpost-pointer-size-negative - tokens.$cds-global-space-2);
+        }
+      }
+    }
+    // End left-*
+
+    /***
+             The signpost is on the right side of the icon right-{VERTICAL_POSITION}
+         */
+
+    &.right-top,
+    &.right-middle,
+    &.right-bottom {
+      .popover-pointer {
+        border-right: signpost-variables.$clr-signpost-pointer-border;
+        left: $clr-signpost-pointer-size-negative;
+
+        &:before {
+          border-right: signpost-variables.$clr-signpost-pointer-pseudo-border;
+          left: tokens.$cds-global-space-2;
+        }
+      }
+    }
+
+    &.right-top {
+      .signpost-wrap {
+        border-bottom-left-radius: 0; // turn off rounded corner here
+      }
+
+      .popover-pointer {
+        border-top: signpost-variables.$clr-signpost-pointer-invisible-border;
+        bottom: calc(-1 * tokens.$cds-global-space-1);
+
+        &:before {
+          border-top: signpost-variables.$clr-signpost-pointer-invisible-border;
+          top: calc($clr-signpost-pointer-size-negative - tokens.$cds-global-space-1);
+        }
+      }
+    }
+
+    &.right-middle {
+      .popover-pointer {
+        border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
+        top: 50%;
+
+        &:before {
+          border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
+          top: tokens.$cds-global-space-1;
+        }
+      }
+    }
+
+    &.right-bottom {
+      .signpost-wrap {
+        border-top-left-radius: 0; // turn off rounded corner here
+      }
+
+      .popover-pointer {
+        border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
+        top: calc(-1 * tokens.$cds-global-space-1);
+
+        &:before {
+          border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
+          top: tokens.$cds-global-space-1;
+        }
+      }
+    }
+    // End right-*
+  }
+
+  .signpost-content-header {
+    display: flex;
+    justify-content: flex-end;
+    gap: density.$clr-base-gap-xs;
+    width: 100%;
+    background-color: inherit;
+    top: 0;
+    border-radius: signpost-variables.$clr-signpost-border-radius;
+
+    .signpost-title {
+      @include mixins.generate-typography-token('ColumnHeader-11-SB-CPT');
+      margin-right: auto;
+    }
+  }
+
+  .signpost-wrap {
+    // bottom padding difference split between `wrap` and `content-body` because of #1503 (CDE-2225)
+    // Wrap have (offset-xl - 1px), Body have 1px;
+    $wrap-bottom-padding: calc(density.$clr-base-vertical-offset-xl - tokens.$cds-global-space-1);
+
+    gap: density.$clr-base-gap-s;
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl $wrap-bottom-padding;
+    border: tokens.$cds-alias-object-border-width-100 solid signpost-variables.$clr-signpost-content-border-color;
+    border-radius: signpost-variables.$clr-signpost-border-radius;
+    background-color: signpost-variables.$clr-signpost-content-bg-color;
+    z-index: map.get(variables.$clr-layers, tooltips);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .signpost-content-body {
+    padding-bottom: tokens.$cds-global-space-1;
+    color: signpost-variables.$clr-signpost-content-color;
+    text-align: left;
+    max-height: mixins.baselinePx(450);
+    overflow-y: auto;
+
+    @include mixins.generate-typography-token('BODY-14-RG-CPT');
+  }
+}

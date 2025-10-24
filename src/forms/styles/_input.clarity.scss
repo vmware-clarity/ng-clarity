@@ -1,0 +1,73 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use 'mixins.forms' as forms-mixins;
+@use 'variables.forms' as forms-variables;
+
+@include mixins.exports('forms.input') {
+  .clr-input-wrapper {
+    white-space: nowrap;
+    max-height: forms-variables.$clr-forms-input-wrapper-height;
+  }
+
+  .clr-input {
+    @include forms-mixins.custom-inputs-reset(forms-variables.$clr-forms-input-wrapper-height);
+    @include forms-mixins.form-fields-appearance();
+
+    padding: forms-variables.$clr-forms-input-padding;
+    max-height: forms-variables.$clr-forms-input-wrapper-height;
+    @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
+
+    &[readonly] {
+      border: none;
+    }
+
+    &:not([readonly]) {
+      @include forms-mixins.input-border-bottom-animation();
+    }
+
+    &:disabled {
+      @include forms-mixins.disabled-form-fields();
+      @include mixins.input-placeholder-wrapper() {
+        color: forms-variables.$clr-forms-placeholder-disabled-color;
+      }
+    }
+  }
+
+  .clr-error .clr-input:not([readonly]) {
+    border-bottom-color: forms-variables.$clr-forms-invalid-color;
+    @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-invalid-color);
+  }
+
+  .clr-success .clr-input:not([readonly]) {
+    border-bottom-color: forms-variables.$clr-forms-valid-color;
+    @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-valid-color);
+  }
+
+  .clr-form-control.row .clr-input-wrapper {
+    max-width: calc(100% - #{forms-variables.$clr-forms-icon-size});
+  }
+
+  .clr-form-compact .clr-input {
+    @include forms-mixins.form-flatten-compact-adjustments();
+  }
+
+  .clr-form-control-readonly .clr-input {
+    border: none;
+  }
+
+  .clr-form-control-multi .clr-input {
+    max-width: calc(100% + #{forms-variables.$clr-forms-icon-size});
+  }
+
+  /**
+   Placeholder
+   **/
+  @include mixins.input-placeholder-wrapper() {
+    color: forms-variables.$clr-forms-placeholder-color;
+  }
+}

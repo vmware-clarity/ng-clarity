@@ -1,0 +1,79 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../utils/mixins';
+@use '../utils/variables/variables';
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('lists.clarity') {
+  $left-margin: calc(tokens.$cds-global-space-6 + variables.$clr-base-horizontal-offset-2xs);
+
+  %kill-list-styles {
+    padding-left: 0;
+    margin-left: 0;
+    list-style-position: outside;
+
+    li::marker {
+      color: transparent;
+    }
+  }
+
+  li {
+    color: variables.$clr-list-item-color;
+    @include mixins.generate-typography-token('BODY-14-RG-STD');
+  }
+
+  ul:not([cds-list]),
+  ol:not([cds-list]) {
+    list-style-position: inside;
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+  }
+
+  ul.list:not([cds-list]),
+  ol.list:not([cds-list]) {
+    list-style-position: outside;
+    margin-left: $left-margin;
+
+    &.compact {
+      & > li {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  // right now this causes no problems. but watch out in the future because it may
+  // cause issues with nested tabs
+  // just be aware that this may need to be overridden down the line.
+  ul:not(.list-unstyled):not([cds-list]),
+  ol:not([cds-list]) {
+    & > li > ul.list-unstyled {
+      margin-left: $left-margin;
+    }
+  }
+
+  ul.list-unstyled:not([cds-list]) {
+    @extend %kill-list-styles;
+  }
+
+  li > ul:not([cds-list]) {
+    margin-top: 0;
+    margin-left: $left-margin;
+  }
+
+  ul.list-group:not([cds-list]) {
+    margin-top: 0;
+  }
+
+  ul:not([cds-list]),
+  ol:not([cds-list]) {
+    &.list-spacer {
+      margin-top: variables.$clr-base-vertical-offset-2xl;
+    }
+  }
+}

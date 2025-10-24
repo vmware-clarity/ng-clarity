@@ -1,0 +1,44 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use 'variables.forms' as forms-variables;
+@use '../../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+input[clrDatalistInput] {
+  position: relative;
+  &::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    cursor: text;
+  }
+}
+
+.clr-input-group {
+  input[clrDatalistInput] {
+    //Moves the .clr-datalist-caret (arrow) to the back so that clicking over it activates
+    //the dropdown.
+    z-index: map.get(variables.$clr-layers, datalist-box);
+  }
+
+  .clr-datalist-caret {
+    color: forms-variables.$clr-forms-datalist-caret-color;
+    cursor: text;
+    margin: density.$clr-base-vertical-offset-xs density.$clr-base-horizontal-offset-xs;
+    @include mixins.equilateral(forms-variables.$clr-forms-datalist-caret-icon-size);
+  }
+}
+
+.clr-form-control-disabled .clr-datalist-caret {
+  color: forms-variables.$clr-forms-datalist-caret-disabled-color;
+}
+
+// Keeps the browser added datalist toggle on the right side of the input underline
+clr-datalist-container .clr-input-group {
+  padding-right: 0;
+}

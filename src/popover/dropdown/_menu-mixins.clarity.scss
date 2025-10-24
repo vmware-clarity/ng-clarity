@@ -1,0 +1,128 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use 'variables.dropdown' as dropdown-variables;
+@use '../../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+@mixin generate-dropdown-menu() {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+
+  //Dimensions
+  min-width: mixins.baselinePx(120);
+  max-width: mixins.baselinePx(360);
+
+  //Other
+  background-color: dropdown-variables.$clr-dropdown-bg-color;
+
+  border-width: tokens.$cds-alias-object-border-width-100;
+  border-style: solid;
+  border-color: dropdown-variables.$clr-dropdown-border-color;
+  border-radius: density.$clr-base-border-radius-s;
+
+  box-shadow: tokens.$cds-alias-object-shadow-200;
+
+  margin-top: density.$clr-base-vertical-offset-2xs;
+  padding: density.$clr-base-vertical-offset-l density.$clr-base-layout-space-4xs;
+  visibility: hidden;
+  z-index: map.get(variables.$clr-layers, dropdown-menu);
+}
+
+@mixin generate-dropdown-item() {
+  @include mixins.generate-typography-token(
+    'SECONDARY-13-RG-EXP',
+    (
+      font-weight: dropdown-variables.$clr-dropdown-item-font-weight,
+    )
+  );
+
+  color: dropdown-variables.$clr-dropdown-item-color;
+  background-color: dropdown-variables.$clr-dropdown-item-bg-color;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  gap: density.$clr-base-gap-xs;
+  align-items: center;
+  height: auto;
+  margin: 0;
+  width: 100%;
+  text-transform: none;
+
+  &.active {
+    color: dropdown-variables.$clr-dropdown-item-selected-color;
+    background-color: dropdown-variables.$clr-dropdown-item-selected-bg-color;
+  }
+
+  &:hover {
+    color: dropdown-variables.$clr-dropdown-item-hover-color;
+    background-color: dropdown-variables.$clr-dropdown-item-hover-bg-color;
+    text-decoration: none;
+    &.active {
+      background-color: dropdown-variables.$clr-dropdown-item-selected-hover-bg-color;
+    }
+  }
+
+  &:active {
+    color: dropdown-variables.$clr-dropdown-item-active-color;
+    background-color: dropdown-variables.$clr-dropdown-item-active-bg-color;
+    &.active {
+      background-color: dropdown-variables.$clr-dropdown-item-selected-active-bg-color;
+    }
+  }
+
+  &:focus {
+    z-index: inherit;
+  }
+
+  &.disabled,
+  &:disabled {
+    pointer-events: none;
+    color: dropdown-variables.$clr-dropdown-item-disabled-color;
+    background-color: dropdown-variables.$clr-dropdown-item-disabled-bg-color;
+    user-select: none;
+
+    &:hover {
+      background: none;
+    }
+
+    &:active {
+      background: none;
+      box-shadow: none;
+    }
+  }
+}
+
+@mixin generate-dropdown-header() {
+  display: block;
+  color: dropdown-variables.$clr-dropdown-header-color;
+  @include mixins.overflow-ellipsis(true);
+
+  // Typography
+  @include mixins.generate-typography-token(
+    'SECONDARY-13-MD-EXP',
+    (
+      font-weight: dropdown-variables.$clr-dropdown-header-font-weight,
+    )
+  );
+
+  padding: 0 density.$clr-base-horizontal-offset-l;
+  margin: 0;
+}
+
+@mixin generate-dropdown-item-height() {
+  padding: 0 density.$clr-base-horizontal-offset-2xl 0 density.$clr-base-horizontal-offset-l;
+
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
+    padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-2xl;
+  }
+}

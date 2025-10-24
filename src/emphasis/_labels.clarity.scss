@@ -1,0 +1,151 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../utils/mixins';
+@use 'variables.badges' as badges-variables;
+@use 'variables.label' as label-variables;
+@use '../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+@include meta.load-css('properties.label');
+
+@mixin generateLabelStyles($color: gray, $alias: 1) {
+  &.label-#{'' + $color},
+  &.label-#{$alias} {
+    border: label-variables.$clr-label-borderwidth solid label-variables.getLabelColor($color, border-color);
+    background-color: label-variables.getLabelColor($color, bg-color);
+  }
+
+  &.label-#{'' + $color} > .badge {
+    background: badges-variables.getBadgeColor($color, bg-color);
+    color: badges-variables.getBadgeColor($color, color);
+  }
+}
+
+@mixin generateStatusLabelStyles($status: info) {
+  &.label-#{$status} {
+    background: label-variables.getLabelColor($status, bg-color);
+    color: label-variables.getLabelColor($status, color);
+    border: label-variables.$clr-label-borderwidth solid label-variables.getLabelColor($status, border-color);
+  }
+  &.label-#{'' + $status} > .badge {
+    background: badges-variables.getBadgeColor($status, bg-color);
+    color: badges-variables.getBadgeColor($status, color);
+  }
+}
+
+@include mixins.exports('labels.clarity') {
+  //NOTE: Had to use inline-flex, reset line-height to normal, and had to use change a few values
+  //instead of using our baselineRem function. This was done to achieve the desired look
+  //and to align this with our vertical baseline. Not sure why but aligning inline-blocks within inline-blocks
+  //is a bit tricky. I initially used display: inline-block but I wasn't able to align the labels properly.
+  .label,
+  a.label {
+    //default
+    @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: density.$clr-base-gap-xs;
+    padding: density.$clr-base-vertical-offset-2xs calc(density.$clr-base-horizontal-offset-xs * 2);
+    border: label-variables.$clr-label-borderwidth solid label-variables.$clr-label-default-border-color;
+    border-radius: density.$clr-base-border-radius-xl;
+    min-height: density.$clr-base-row-height-s;
+    margin: 0 density.$clr-base-horizontal-offset-s density.$clr-base-vertical-offset-2xs 0;
+    white-space: nowrap;
+    color: label-variables.$clr-label-font-color-light;
+    text-decoration: none;
+
+    // Set lower padding size if there is a badge or icon in the start / end of a label.
+    &:has(> .badge:first-child),
+    &:has(> cds-icon:first-child) {
+      padding-left: density.$clr-base-horizontal-offset-xs;
+    }
+
+    &:has(> .badge:last-child),
+    &:has(> cds-icon:last-child) {
+      padding-right: density.$clr-base-horizontal-offset-xs;
+    }
+
+    .badge,
+    cds-icon {
+      margin: 0;
+      text-decoration: none;
+    }
+
+    cds-icon:not([size]) {
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+    }
+
+    &.clickable:not(:has(.text)) {
+      text-decoration: underline;
+    }
+
+    &.clickable > .text {
+      text-decoration: underline;
+    }
+
+    &:visited {
+      color: label-variables.$clr-label-font-color-light;
+    }
+
+    &:focus,
+    &:hover,
+    &:active {
+      text-decoration: none;
+    }
+
+    &.clickable:not(.disabled) {
+      &:hover {
+        text-decoration: none;
+        background: label-variables.$clr-label-bg-hover-color;
+        color: label-variables.$clr-label-hover-color;
+      }
+
+      &:active {
+        color: label-variables.$clr-label-active-color;
+        background: label-variables.$clr-label-bg-active-color;
+        transform: translateY(tokens.$cds-global-space-2);
+      }
+    }
+
+    @include generateLabelStyles(gray, 1);
+    @include generateLabelStyles(purple, 2);
+    @include generateLabelStyles(blue, 3);
+    @include generateLabelStyles(orange, 4);
+    @include generateLabelStyles(light-blue, 5);
+
+    @include generateStatusLabelStyles(info);
+    @include generateStatusLabelStyles(success);
+    @include generateStatusLabelStyles(warning);
+    @include generateStatusLabelStyles(danger);
+
+    & > .badge {
+      margin: 0;
+    }
+
+    &.disabled,
+    &:disabled {
+      cursor: not-allowed;
+      pointer-events: none;
+      background: label-variables.$clr-label-bg-disabled-color;
+      color: label-variables.$clr-label-disabled-color;
+      border-color: label-variables.$clr-label-disabled-border-color;
+      .badge {
+        background: label-variables.$clr-label-disabled-color;
+      }
+    }
+  }
+
+  @include mixins.fixForFirefox() {
+    .label,
+    a.label {
+      // properly aligns labels in firefox...
+      vertical-align: bottom;
+    }
+  }
+}

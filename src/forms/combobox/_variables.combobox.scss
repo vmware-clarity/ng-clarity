@@ -1,0 +1,32 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../utils/variables/variables';
+
+$clr-combobox-border-color: var(--clr-combobox-border-color);
+$clr-combobox-trigger-color: var(--clr-combobox-trigger-color);
+$clr-combobox-input-background-color: var(--clr-combobox-input-background-color);
+$clr-combobox-pill-background-color: var(--clr-combobox-pill-background-color);
+$clr-combobox-pill-border-color: var(--clr-combobox-pill-border-color);
+$clr-combobox-pill-font-color: var(--clr-combobox-pill-font-color);
+$clr-combobox-filter-highlight: var(--clr-combobox-filter-highlight);
+$clr-combobox-min-width: var(--clr-combobox-min-width);
+$clr-combobox-multi-min-width: var(--clr-combobox-multi-min-width);
+$clr-combobox-font-size: var(--clr-combobox-font-size);
+$clr-combobox-font-weight: var(--clr-combobox-font-weight);
+$clr-combobox-text-color: var(--clr-combobox-text-color);
+$clr-combobox-border-radius: var(--clr-combobox-border-radius);
+$clr-combobox-trigger-padding-left: var(--clr-combobox-trigger-padding-left);
+$clr-combobox-trigger-padding-right: var(--clr-combobox-trigger-padding-right);
+$clr-combobox-trigger-font-color: var(--clr-combobox-trigger-font-color);
+$clr-combobox-hover-background-color: var(--clr-combobox-hover-background-color);
+$clr-combobox-active-background-color: var(--clr-combobox-active-background-color);
+$clr-combobox-pill-padding: var(--clr-combobox-pill-padding);
+$clr-combobox-pill-height: var(--clr-combobox-pill-height);
+$clr-combobox-pill-remove-icon-color: var(--clr-combobox-pill-remove-icon-color);
+$clr-combobox-caret-icon-size: var(--clr-combobox-caret-icon-size);
+$clr-combobox-pill-border-radius: var(--clr-combobox-pill-border-radius);

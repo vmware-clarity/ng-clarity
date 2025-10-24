@@ -1,0 +1,493 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../../utils/a11y';
+@use '../../utils/mixins';
+@use 'variables.vertical-nav' as vertical-nav-variables;
+@use '@cds/core/tokens/tokens.scss';
+@use '../tabs/tabs.clarity' as tabs;
+@use '../../utils/variables/variables.density' as density;
+
+@mixin vertical-nav-divider($position: 'border-top') {
+  #{$position}: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-width solid
+    vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color;
+}
+
+@mixin vertical-nav-link-colors() {
+  color: vertical-nav-variables.$clr-vertical-nav-item-color;
+
+  &.active {
+    color: vertical-nav-variables.$clr-vertical-nav-item-active-color;
+    background-color: vertical-nav-variables.$clr-vertical-nav-selected-bg-color;
+
+    position: relative;
+
+    @include tabs.nav-link-border-appearence('left');
+
+    .nav-icon {
+      fill: vertical-nav-variables.$clr-vertical-nav-icon-active-color;
+    }
+    &:hover {
+      background-color: vertical-nav-variables.$clr-vertical-nav-selected-hover-bg-color;
+    }
+    &:active {
+      background-color: vertical-nav-variables.$clr-vertical-nav-selected-active-bg-color;
+    }
+  }
+
+  &:hover {
+    color: vertical-nav-variables.$clr-vertical-nav-item-active-color;
+    background-color: vertical-nav-variables.$clr-vertical-nav-hover-bg-color;
+    text-decoration: none;
+  }
+  &:active {
+    color: vertical-nav-variables.$clr-vertical-nav-active-color;
+    background-color: vertical-nav-variables.$clr-vertical-nav-active-bg-color;
+  }
+}
+
+@include meta.load-css('properties.vertical-nav');
+
+@include mixins.exports('vertical-nav.clarity') {
+  .clr-vertical-nav {
+    //Display
+    display: flex;
+    flex-direction: column;
+
+    //Dims
+    width: mixins.baselinePx(240);
+    min-width: density.$clr-base-layout-space-3xl;
+
+    //Others
+    background-color: vertical-nav-variables.$clr-vertical-nav-bg-color;
+    will-change: width;
+    transition: width 0.2s ease-in-out;
+
+    .nav-divider {
+      @include vertical-nav-divider();
+    }
+
+    .nav-content {
+      //display
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+
+      //Others
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .nav-group {
+      //Display
+      display: block;
+      flex: 0 0 auto;
+
+      //Dims
+      height: auto;
+      min-height: vertical-nav-variables.$clr-vertical-nav-item-height;
+    }
+
+    .nav-group-content {
+      //Display
+      display: flex;
+
+      //Others
+      @include vertical-nav-link-colors();
+
+      .nav-link {
+        //Display
+        flex: 1 1 auto;
+
+        //Dims
+        padding-left: 0;
+        min-width: 0; //Chrome nested flex box ellipsis fix
+      }
+
+      .nav-icon {
+        //Dims
+        margin-left: density.$clr-base-horizontal-offset-xl;
+      }
+
+      .nav-text {
+        //Dims
+        padding-left: density.$clr-base-horizontal-offset-l;
+      }
+
+      .nav-icon + .nav-text {
+        //Dims
+        padding-left: 0;
+      }
+
+      .nav-link + .nav-group-text {
+        //Display
+        display: none;
+      }
+
+      > .nav-link {
+        &.active,
+        &:active {
+          font-weight: vertical-nav-variables.$clr-vertical-nav-item-active-font-weight;
+        }
+      }
+    }
+
+    .nav-group-children {
+      overflow-y: hidden;
+    }
+
+    .nav-trigger,
+    .nav-group-trigger {
+      //Display
+      flex: 0 0 vertical-nav-variables.$clr-vertical-nav-toggle-button-size;
+
+      //Dims
+      border: none;
+      height: vertical-nav-variables.$clr-vertical-nav-toggle-button-size;
+      padding: 0;
+
+      //Others
+      cds-icon[shape='angle-double'],
+      clr-icon[shape='angle-double'] {
+        color: vertical-nav-variables.$clr-vertical-nav-toggle-icon-color;
+        &:hover {
+          color: vertical-nav-variables.$clr-vertical-nav-toggle-icon-hover-color;
+        }
+        &:active {
+          color: vertical-nav-variables.$clr-vertical-nav-toggle-icon-active-color;
+        }
+      }
+
+      &:disabled,
+      &.disabled {
+        cds-icon[shape='angle-double'],
+        clr-icon[shape='angle-double'] {
+          color: vertical-nav-variables.$clr-vertical-nav-toggle-icon-disabled-color;
+        }
+      }
+      background-color: transparent;
+      cursor: pointer;
+      outline-offset: calc(-1 * #{mixins.baselinePx(5)});
+    }
+
+    .nav-trigger {
+      //Display
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      //Dims
+      height: vertical-nav-variables.$clr-vertical-nav-item-height;
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-xl;
+
+      cds-icon {
+        margin-right: 0;
+
+        &:not([size]) {
+          @include mixins.equilateral(density.$clr-base-icon-size-s);
+        }
+      }
+
+      &.on-collapse {
+        cds-icon {
+          margin: 0;
+        }
+      }
+    }
+
+    //Parent .nav-group-content
+    .nav-group-trigger {
+      //Display
+      //flex: 0 0 $clr-vertical-nav-item-height;
+      display: flex;
+      flex: 1 1 auto;
+
+      //Others
+      color: inherit;
+      overflow: hidden;
+      text-align: left;
+
+      .nav-group-trigger-icon {
+        //Display
+        flex-shrink: 0;
+
+        //Dims
+        width: vertical-nav-variables.$clr-vertical-nav-icon-size;
+        margin: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
+        align-self: center;
+
+        //Others
+        transition: all 0.2s ease-in-out;
+      }
+    }
+
+    //Parent .nav-trigger
+    .nav-trigger-icon {
+      //Others
+      transition: all 0.2s ease-in-out;
+    }
+
+    .nav-trigger + .nav-content {
+      //Dims
+      @include vertical-nav-divider();
+    }
+
+    .nav-group-text,
+    .nav-link {
+      //Dims
+      height: vertical-nav-variables.$clr-vertical-nav-item-height;
+      padding: vertical-nav-variables.$clr-vertical-nav-item-padding;
+
+      //Others
+      @include mixins.generate-typography-token('BODY-14-RG-CPT');
+      display: flex;
+      align-items: center;
+      outline-offset: calc(-1 * #{mixins.baselinePx(5)});
+    }
+
+    .nav-group-text,
+        /*Parent .nav-link*/
+        .nav-text {
+      //Display
+      flex: 1 1 auto;
+      //Mixins
+      @include mixins.overflow-ellipsis();
+    }
+
+    .nav-link {
+      //Display
+      display: flex;
+      text-decoration: none;
+
+      //Others
+      @include vertical-nav-link-colors();
+    }
+
+    .nav-header {
+      //Dims
+      padding: vertical-nav-variables.$clr-vertical-nav-header-padding;
+      min-height: vertical-nav-variables.$clr-vertical-nav-item-height;
+
+      //Others
+      @include mixins.generate-typography-token(
+        'SECTION-12-SB-CPT',
+        (
+          font-weight: vertical-nav-variables.$clr-vertical-nav-header-font-weight,
+        )
+      );
+    }
+
+    //Parent .nav-text
+    .nav-icon {
+      //Display
+      flex: 0 0 vertical-nav-variables.$clr-vertical-nav-icon-size;
+      align-self: center;
+
+      //Dims
+      @include mixins.min-equilateral(vertical-nav-variables.$clr-vertical-nav-icon-size);
+      margin-right: density.$clr-base-gap-xs;
+
+      //Others
+      vertical-align: middle;
+    }
+
+    clr-vertical-nav-group-children {
+      display: block;
+    }
+
+    .nav-btn {
+      //Display
+      flex: 1 1 auto;
+
+      //Dims
+      padding: 0;
+      margin: 0;
+
+      //Others
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      outline-offset: calc(-1 * #{mixins.baselinePx(5)});
+    }
+
+    & > .nav-link,
+    .nav-content > .nav-link {
+      //Display
+      flex: 0 0 vertical-nav-variables.$clr-vertical-nav-toggle-button-size;
+    }
+
+    .nav-link + .nav-group-trigger {
+      //Display
+      flex: 0 0 vertical-nav-variables.$clr-vertical-nav-toggle-button-size;
+
+      .nav-group-text {
+        display: none;
+      }
+    }
+
+    .nav-icon + .nav-group-text {
+      padding-left: 0;
+    }
+
+    ///////
+    //////
+    ////
+    // Interactions
+    ////
+    //////
+    ///////
+    &.has-nav-groups {
+      .nav-content > .nav-link,
+      .nav-group .nav-group-text,
+      .nav-group .nav-group-trigger {
+        font-weight: vertical-nav-variables.$clr-vertical-nav-item-top-level-font-weight;
+      }
+
+      .nav-group-children .nav-link {
+        padding: vertical-nav-variables.$clr-vertical-nav-item-child-padding;
+      }
+    }
+
+    &.has-icons {
+      .nav-group-children .nav-link {
+        padding: vertical-nav-variables.$clr-vertical-nav-item-child-padding;
+      }
+    }
+
+    .nav-group.active:not(.is-expanded) {
+      .nav-group-content {
+        background-color: vertical-nav-variables.$clr-vertical-nav-selected-bg-color;
+
+        //Horrible Nesting but nothing I can do.
+        .nav-icon {
+          fill: vertical-nav-variables.$clr-vertical-nav-icon-active-color;
+        }
+      }
+    }
+
+    .nav-group-content {
+      .nav-link.active ~ .nav-group-trigger {
+        background-color: vertical-nav-variables.$clr-vertical-nav-selected-bg-color;
+      }
+      .nav-link:hover ~ .nav-group-trigger {
+        background-color: vertical-nav-variables.$clr-vertical-nav-hover-bg-color;
+      }
+      .nav-link:active ~ .nav-group-trigger {
+        background-color: vertical-nav-variables.$clr-vertical-nav-active-bg-color;
+      }
+      .nav-link.active:hover ~ .nav-group-trigger {
+        background-color: vertical-nav-variables.$clr-vertical-nav-selected-hover-bg-color;
+      }
+      .nav-link.active:active ~ .nav-group-trigger {
+        background-color: vertical-nav-variables.$clr-vertical-nav-selected-active-bg-color;
+      }
+    }
+
+    // horizontally center the expand icon
+    &:not(.is-collapsed) .nav-link + .nav-group-trigger {
+      justify-content: center;
+    }
+
+    .main-container:not([class*='open-overflow-menu']):not([class*='open-hamburger-menu']) &.is-collapsed {
+      //Dims
+      width: vertical-nav-variables.$clr-vertical-nav-min-width;
+      min-width: vertical-nav-variables.$clr-vertical-nav-min-width;
+      // ATM - adress scroll when more items are available, otherwise the content gets hidden
+      max-width: calc(#{vertical-nav-variables.$clr-vertical-nav-min-width} + #{mixins.baselinePx(14)});
+
+      //Others
+      cursor: pointer;
+
+      .nav-icon {
+        //Dims
+        margin: density.$clr-base-vertical-offset-m 0 density.$clr-base-vertical-offset-m
+          density.$clr-base-horizontal-offset-xl;
+      }
+
+      .nav-group-content {
+        .nav-link {
+          //Display
+          flex: 0 0 vertical-nav-variables.$clr-vertical-nav-min-width;
+        }
+
+        .nav-link ~ .nav-group-trigger {
+          //Display
+          flex: 0 0
+            calc(
+              #{vertical-nav-variables.$clr-vertical-nav-collapsed-caret-size} + #{vertical-nav-variables.$clr-vertical-nav-icon-right-margin}
+            );
+
+          //Others
+          transform: translateX(calc(-1 * #{vertical-nav-variables.$clr-vertical-nav-icon-size}));
+          pointer-events: none;
+        }
+      }
+
+      .nav-link,
+      .nav-group-trigger {
+        //Dims
+        padding: 0;
+      }
+
+      .nav-group-trigger {
+        //Display
+        //flex: 0 0 $clr-vertical-nav-collapsed-caret-size + $clr-vertical-nav-icon-right-margin;
+
+        //Dims
+        padding-left: 0;
+
+        clr-icon.nav-group-trigger-icon {
+          //Dims
+          height: vertical-nav-variables.$clr-vertical-nav-item-height;
+          width: density.$clr-base-icon-size-s;
+          margin-left: mixins.baselinePx(3);
+          margin-right: 0;
+        }
+
+        cds-icon.nav-group-trigger-icon {
+          width: density.$clr-base-icon-size-s;
+          margin: 0;
+        }
+      }
+
+      //If no icon present then hide the nav-group and nav-links.
+      .nav-group,
+      .nav-link {
+        display: none;
+      }
+
+      //When the nav has icons just hide the nav-text
+      &.has-icons {
+        .nav-group {
+          display: block;
+        }
+
+        .nav-link {
+          display: flex;
+        }
+
+        .nav-group-text,
+        .nav-text {
+          @include a11y.screen-reader-only();
+        }
+      }
+    }
+
+    &.nav-trigger--bottom {
+      .nav-trigger {
+        order: 2;
+        margin-top: 0;
+      }
+
+      .nav-trigger + .nav-content {
+        //Dims
+        border-top: 0;
+        @include vertical-nav-divider('border-bottom');
+      }
+    }
+  }
+}

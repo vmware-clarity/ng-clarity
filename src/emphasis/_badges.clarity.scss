@@ -1,0 +1,74 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../utils/mixins';
+@use 'variables.badges' as badges-variables;
+@use '../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+@include meta.load-css('properties.badges');
+
+@mixin generateBadgeStyles($color: gray, $alias: 1) {
+  &.badge-#{'' + $color},
+  &.badge-#{$alias} {
+    background: badges-variables.getBadgeColor($color, bg-color);
+    color: badges-variables.getBadgeColor($color, color);
+  }
+}
+
+@mixin generateStatusBadgeStyles($status: info) {
+  &.badge-#{$status} {
+    background: badges-variables.getBadgeColor($status, bg-color);
+    color: badges-variables.getBadgeColor($status, color);
+  }
+}
+
+@include mixins.exports('badges.clarity') {
+  //NOTE: Had to use inline-flex, reset line-height to normal, and had to use change a few values
+  //instead of using our baselineRem function. This was done to achieve the desired look
+  //and to align this with our vertical baseline. Not sure why but aligning inline-blocks within inline-blocks
+  //is a bit tricky. I initially used display: inline-block but I wasn't able to align the badges properly.
+  //TODO: I still am unable to align the badges center of the baseline but have managed to aligned it to the
+  //bottom. There are no margins which are influencing this. Need to figure out whats the issue.
+  .badge {
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    min-width: #{tokens.$cds-global-space-7};
+    background-color: badges-variables.$clr-badge-background-color;
+    height: density.$clr-base-row-height-xs;
+    border-radius: density.$clr-base-border-radius-xl;
+    @include mixins.generate-typography-token('CAPTION-SM-10');
+
+    padding: 0 density.$clr-base-horizontal-offset-xs;
+    margin-right: density.$clr-base-horizontal-offset-s;
+    white-space: nowrap;
+    text-align: center;
+    color: badges-variables.$clr-badge-color;
+
+    &:visited {
+      color: badges-variables.$clr-badge-color;
+    }
+
+    // Link badge, default, no color or type specifier. Override a:link setting.
+    &:link {
+      background-color: badges-variables.getBadgeColor(gray, bg-color);
+      color: badges-variables.getBadgeColor(gray, color);
+    }
+
+    @include generateBadgeStyles(gray, 1);
+    @include generateBadgeStyles(purple, 2);
+    @include generateBadgeStyles(blue, 3);
+    @include generateBadgeStyles(orange, 4);
+    @include generateBadgeStyles(light-blue, 5);
+
+    @include generateStatusBadgeStyles(info);
+    @include generateStatusBadgeStyles(success);
+    @include generateStatusBadgeStyles(danger);
+    @include generateStatusBadgeStyles(warning);
+  }
+}
