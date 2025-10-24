@@ -10,7 +10,7 @@ import { Directionality } from '@angular/cdk/bidi';
 import { ListRange } from '@angular/cdk/collections';
 import { CdkVirtualForOfContext, ScrollDispatcher, ViewportRuler, CdkVirtualForOf, CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
 import * as i4 from '@angular/forms';
-import { NgControl, ControlValueAccessor, Validator, AbstractControl, ValidationErrors, SelectMultipleControlValueAccessor, DefaultValueAccessor, FormGroupName, NgModelGroup, FormGroupDirective, NgForm } from '@angular/forms';
+import { NgControl, ControlValueAccessor, Validator, AbstractControl, ValidationErrors, SelectMultipleControlValueAccessor, FormGroupName, NgModelGroup, FormGroupDirective, NgForm } from '@angular/forms';
 import { CdkDrag, DragDropConfig, DragDrop } from '@angular/cdk/drag-drop';
 import { CdkTrapFocus, FocusTrapFactory } from '@angular/cdk/a11y';
 import * as i6 from '@angular/router';
@@ -5532,13 +5532,18 @@ declare class ClrExpandableAnimationModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrExpandableAnimationModule>;
 }
 
-declare class ClrDatagridSingleSelectionValueAccessor extends DefaultValueAccessor {
+declare class ClrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
     private renderer;
     private elementRef;
     value: any;
     clrDgIdentityFn: (value: any) => unknown;
-    private model;
+    private state;
     constructor(renderer: Renderer2, elementRef: ElementRef<HTMLInputElement>);
+    onChange: (value: any) => void;
+    onTouched: () => void;
+    registerOnChange(fn: (value: any) => void): void;
+    registerOnTouched(fn: () => void): void;
+    setDisabledState(isDisabled: boolean): void;
     writeValue(value: any): void;
     private keyOf;
     private updateChecked;
