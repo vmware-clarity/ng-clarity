@@ -44,9 +44,6 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   ) {
     this.resetChildren();
     this.moveToFirstItemWhenOpen();
-    if (!parent) {
-      this.handleRootFocus();
-    }
   }
 
   get trigger() {
@@ -78,7 +75,8 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
 
     // whether root container or not, tab key should always toggle (i.e. close) the container
     this._unlistenFuncs.push(
-      this.renderer.listen(el, 'keydown.tab', event => this.popoverService.toggleWithEvent(event))
+      this.renderer.listen(el, 'keydown.tab', event => this.popoverService.toggleWithEvent(event)),
+      this.renderer.listen(el, 'keydown.shift.tab', event => this.popoverService.toggleWithEvent(event))
     );
 
     // The root container is the only one we register to the focus service, others do not need focus
@@ -120,25 +118,6 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
           }
         });
       }
-    });
-
-    this._unlistenFuncs.push(() => subscription.unsubscribe());
-  }
-
-  /**
-   * Focus on the menu when it opens, and focus back on the root trigger when the whole dropdown becomes closed
-   */
-  handleRootFocus() {
-    const subscription = this.popoverService.openChange.subscribe(open => {
-      if (!open) {
-        // We reset the state of the focus service both on initialization and when closing.
-        this.focusService.reset(this);
-        // But we only actively focus the trigger when closing, not on initialization.
-        if (this.focusBackOnTriggerWhenClosed) {
-          this.focus();
-        }
-      }
-      this.focusBackOnTriggerWhenClosed = open;
     });
 
     this._unlistenFuncs.push(() => subscription.unsubscribe());

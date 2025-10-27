@@ -21,7 +21,7 @@ import { ClrPopoverService } from '../popover';
  *
  * @description
  * A structural directive that controls whether or not the associated TemplateRef is instantiated or not.
- * It makes use of a Component instance level service: ClrPopoverToggleService to maintain state between itself and the component
+ * It makes use of a Component instance level service: ClrPopoverService to maintain state between itself and the component
  * using it in the component template.
  *
  */

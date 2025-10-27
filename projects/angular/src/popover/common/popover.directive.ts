@@ -175,11 +175,12 @@ export class PopoverDirective implements AfterViewInit {
   }
 
   removeOverlay(): void {
-    //Detach Overlay Reference
+    // Detach Overlay Reference
     if (this.overlayRef?.hasAttached()) {
       this.overlayRef.detach();
     }
-    //Detach Dom Portal
+
+    // Detach Dom Portal
     if (this.domPortal?.isAttached) {
       this.domPortal.detach();
     }
@@ -218,7 +219,7 @@ export class PopoverDirective implements AfterViewInit {
       positionStrategy?.positionChanges?.subscribe(change => {
         //Close the overlay when the Origin is clipped
         if (change.scrollableViewProperties.isOriginClipped) {
-          // //Running the zone is essential to invoke HostBinding
+          // Running the zone is essential to invoke HostBinding
           this.zone.run(() => {
             this.popoverService.open = false;
           });
@@ -230,44 +231,47 @@ export class PopoverDirective implements AfterViewInit {
       overlay.keydownEvents().subscribe(event => {
         if (event && event.key && normalizeKey(event.key) === Keys.Escape && !hasModifierKey(event)) {
           event.preventDefault();
-          this.popoverService.open = false;
-          this.popoverService.setOpenedButtonFocus();
+          this.closePopover();
         }
       })
     );
 
     this.subscriptions.push(
       overlay.outsidePointerEvents().subscribe(event => {
+        console.log(this.popoverService.contentRef.nativeElement);
+
         // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
         if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
           return;
         }
-        // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
-        if (this.popoverService.openEvent) {
-          if (
-            (this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
-            (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
-            this.popoverService.openEvent.target === event.target
-          ) {
-            return;
-          }
-        }
 
-        if (this.popoverService.outsideClickClose) {
-          this.popoverService.open = false;
-          this.popoverService.setOpenedButtonFocus();
+        // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
+        const isToggleButton =
+          this.popoverService.openEvent &&
+          ((this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
+            (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
+            this.popoverService.openEvent.target === event.target);
+
+        if (this.popoverService.outsideClickClose || isToggleButton) {
+          event.stopPropagation();
+          this.closePopover();
         }
       })
     );
 
     this.subscriptions.push(
       overlay.detachments().subscribe(() => {
-        this.popoverService.open = false;
-        this.popoverService.setOpenedButtonFocus();
+        this.closePopover();
       })
     );
 
     return overlay;
+  }
+
+  private closePopover() {
+    this.removeOverlay();
+    this.popoverService.open = false;
+    this.popoverService.setOpenedButtonFocus();
   }
 
   private getScrollStrategy(): ScrollStrategy {
