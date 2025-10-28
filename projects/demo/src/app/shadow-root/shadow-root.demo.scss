@@ -4,14 +4,4 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '../../utils/mixins';
-@use '../../utils/variables/variables.density' as density;
-
-@include mixins.exports('breadcrumbs.properties') {
-  @include mixins.root-or-host() {
-    &,
-    [clr-density] {
-      --clr-breadcrumb-item-space: #{density.$clr-base-gap-s};
-    }
-  }
-}
+@use '../../../../angular/src/main.scss';

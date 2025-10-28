@@ -9,7 +9,7 @@
 @use '../../utils/variables/variables.density' as density;
 
 @include mixins.exports('combobox.properties') {
-  :root {
+  @include mixins.root-or-host() {
     --clr-combobox-min-width: #{mixins.baselinePx(168)};
     --clr-combobox-multi-min-width: #{mixins.baselinePx(360)};
 

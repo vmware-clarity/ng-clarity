@@ -9,7 +9,7 @@
 // @cds/core under the hood we are adding this value to clr-ui CSS for the apps
 // that may not be using the core global CSS.
 // https://github.com/vmware/clarity/issues/6198
-:root {
+:where(:root, :host) {
   --cds-global-base: 20;
 }
 

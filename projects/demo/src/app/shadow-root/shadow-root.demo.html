@@ -1,0 +1,21 @@
+<h3>Shadow root</h3>
+<clr-alert [clrAlertClosable]="false">
+  <clr-alert-item>
+    <span class="alert-text">This alert cannot be dismissed.</span>
+    <div class="alert-actions">
+      <a class="alert-action" href="javascript://"><cds-icon shape="user"></cds-icon>Acknowledge</a>
+      <a class="alert-action" href="javascript://">Reset</a>
+      <clr-dropdown>
+        <button class="dropdown-toggle" clrDropdownTrigger>
+          More Actions
+          <cds-icon shape="angle" direction="down"></cds-icon>
+        </button>
+        <clr-dropdown-menu clrPosition="bottom-right">
+          <a href="javascript://" class="dropdown-item" clrDropdownItem>Shutdown</a>
+          <a href="javascript://" class="dropdown-item" clrDropdownItem>Delete</a>
+          <a href="javascript://" class="dropdown-item" clrDropdownItem>Reboot</a>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+    </div>
+  </clr-alert-item>
+</clr-alert>
