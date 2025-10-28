@@ -1114,7 +1114,8 @@ export default function (): void {
           expect(selection.current).toEqual([1, 3]);
         });
 
-        it('updates selection range when Shift key pressed', function () {
+        it('updates selection range when Shift key pressed', fakeAsync(() => {
+          const selectedChange = spyOn(context.clarityDirective.selectedChanged, 'emit').and.callThrough();
           checkboxes[1].click();
           expect(selection.current).toEqual([1]);
           expect(selection.shiftPressed).toBeFalse();
@@ -1122,9 +1123,11 @@ export default function (): void {
           expect(selection.shiftPressed).toBeTrue();
           checkboxes[3].click();
           document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift' }));
+          tick();
           expect(selection.shiftPressed).toBeFalse();
+          expect(selectedChange).toHaveBeenCalledWith([1, 2, 3]);
           expect(selection.current).toEqual([1, 2, 3]);
-        });
+        }));
 
         it('updates selection range in reverse order', function () {
           checkboxes[3].click();

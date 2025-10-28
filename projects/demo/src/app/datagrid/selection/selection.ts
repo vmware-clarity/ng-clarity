@@ -70,4 +70,8 @@ export class DatagridSelectionDemo {
     this.clientTrackByIdSelected = selectedUsers;
     this.serverTrackByIdSelected = selectedUsers;
   }
+
+  selectedChange(event: any) {
+    console.log(event);
+  }
 }

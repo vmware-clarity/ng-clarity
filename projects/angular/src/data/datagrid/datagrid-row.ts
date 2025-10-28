@@ -366,9 +366,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
       const newSelection = new Set(
         this.selection.current.concat(items.slice(Math.min(startIx, endIx), Math.max(startIx, endIx) + 1))
       );
-      this.selection.clearSelection();
-      this.selection.current.push(...newSelection);
-      this.selection.checkForChanges();
+      this.selection.current = [...newSelection];
     } else {
       // page number has changed or
       // no Shift was pressed or
