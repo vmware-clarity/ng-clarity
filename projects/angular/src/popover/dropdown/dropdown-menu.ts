@@ -11,7 +11,6 @@ import {
   ContentChildren,
   ElementRef,
   Inject,
-  Injector,
   Input,
   OnDestroy,
   Optional,
@@ -59,7 +58,6 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
   @ContentChildren(FocusableItem) items: QueryList<FocusableItem>;
 
   constructor(
-    injector: Injector,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef<HTMLElement>,
