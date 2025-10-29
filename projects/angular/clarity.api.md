@@ -3570,45 +3570,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 }
 
 // @public (undocumented)
-export class ClrPopoverEventsService implements OnDestroy {
-    constructor(renderer: Renderer2, smartOpenService: ClrPopoverToggleService, document: HTMLDocument);
-    // (undocumented)
-    addClickListener(): void;
-    // (undocumented)
-    addEscapeListener(): void;
-    // (undocumented)
-    addScrollListener(): void;
-    // (undocumented)
-    anchorButtonRef: ElementRef;
-    // (undocumented)
-    closeButtonRef: ElementRef;
-    // (undocumented)
-    contentRef: ElementRef;
-    // (undocumented)
-    ignoredEvent: any;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    outsideClickClose: boolean;
-    // (undocumented)
-    removeClickListener(): void;
-    // (undocumented)
-    removeEscapeListener(): void;
-    // (undocumented)
-    removeScrollListener(): void;
-    // (undocumented)
-    scrollToClose: boolean;
-    // (undocumented)
-    setAnchorFocus(): void;
-    // (undocumented)
-    setCloseFocus(): void;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverEventsService, never>;
-    // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverEventsService>;
-}
-
-// @public (undocumented)
 export class ClrPopoverHostDirective {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverHostDirective, never, never, {}, {}, never, never, true, [{ directive: typeof ClrStopEscapePropagationDirective; inputs: {}; outputs: {}; }]>;
@@ -3636,27 +3597,6 @@ export interface ClrPopoverPosition {
     content: ClrAlignment;
     // (undocumented)
     side: ClrSide;
-}
-
-// @public (undocumented)
-export class ClrPopoverPositionService {
-    constructor(eventService: ClrPopoverEventsService, platformId: any);
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverContentOffset" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    alignContent(content: HTMLElement): ClrPopoverContentOffset;
-    // (undocumented)
-    platformId: any;
-    // (undocumented)
-    position: ClrPopoverPosition;
-    // (undocumented)
-    realign(): void;
-    // (undocumented)
-    shouldRealign: Observable<void>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverPositionService, never>;
-    // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverPositionService>;
 }
 
 // @public (undocumented)
@@ -3720,35 +3660,6 @@ export class ClrPopoverService {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverService, never>;
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverService>;
-}
-
-// @public (undocumented)
-export class ClrPopoverToggleService {
-    // (undocumented)
-    getEventChange(): Observable<Event>;
-    // (undocumented)
-    get open(): boolean;
-    set open(value: boolean);
-    // (undocumented)
-    get openChange(): Observable<boolean>;
-    // (undocumented)
-    get openEvent(): Event;
-    set openEvent(event: Event);
-    // (undocumented)
-    get originalEvent(): Event;
-    // (undocumented)
-    get popoverAligned(): Observable<HTMLElement>;
-    // (undocumented)
-    popoverAlignedEmit(popoverNode: HTMLElement): void;
-    // (undocumented)
-    get popoverVisible(): Observable<boolean>;
-    // (undocumented)
-    popoverVisibleEmit(visible: boolean): void;
-    toggleWithEvent(event: any): void;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverToggleService, never>;
-    // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverToggleService>;
 }
 
 // @public (undocumented)
