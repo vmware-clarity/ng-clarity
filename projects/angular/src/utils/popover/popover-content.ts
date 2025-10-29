@@ -73,6 +73,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     private popoverService: ClrPopoverService,
     private zone: NgZone
   ) {
+    popoverService.panelClass = 'clr-popover-content';
     overlayContainer.getContainerElement().classList.add('clr-container-element');
   }
 

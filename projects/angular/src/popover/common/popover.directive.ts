@@ -59,7 +59,7 @@ export class PopoverDirective implements AfterViewInit {
         if (change) {
           this.showOverlay();
         } else {
-          this.removeOverlay();
+          this.closePopover();
         }
       })
     );
@@ -268,23 +268,21 @@ export class PopoverDirective implements AfterViewInit {
         }
 
         if (this.popoverService.outsideClickClose || isToggleButton) {
-          this.closePopover(isToggleButton);
+          this.closePopover();
         }
-      })
-    );
-
-    this.subscriptions.push(
-      overlay.detachments().subscribe(() => {
-        this.closePopover();
       })
     );
 
     return overlay;
   }
 
-  private closePopover(shouldFocusTrigger = true) {
+  private closePopover() {
     this.removeOverlay();
     this.popoverService.open = false;
+
+    const shouldFocusTrigger =
+      document.activeElement === document.body ||
+      document.activeElement === this.popoverService.anchorElementRef?.nativeElement;
 
     if (shouldFocusTrigger) {
       this.popoverService.setOpenedButtonFocus();

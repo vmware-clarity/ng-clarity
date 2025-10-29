@@ -157,8 +157,8 @@ export default function (): void {
         this.fixture.detectChanges();
         const content: HTMLCollectionOf<Element> = document.body.getElementsByClassName('clr-popover-content');
         const testElement = content[0] as HTMLElement;
-        expect(testElement.style.top).toMatch(/\d+px/);
-        expect(testElement.style.left).toMatch(/\d+px/);
+        expect(testElement.parentElement.style.top).toMatch(/\d+px/);
+        expect(testElement.parentElement.style.left).toMatch(/\d+px/);
       });
 
       it('does not fail when the popup view is immediately destroyed', async function (this: Context) {
