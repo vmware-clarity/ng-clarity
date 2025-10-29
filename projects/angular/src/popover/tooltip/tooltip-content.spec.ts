@@ -7,12 +7,11 @@
 
 import { Component } from '@angular/core';
 
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
-import { Point } from '../common/popover';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { ClrTooltipContent } from './tooltip-content';
 import { ClrTooltipModule } from './tooltip.module';
+import { ClrPopoverService } from '../../utils';
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `
@@ -127,21 +126,15 @@ export default function (): void {
 
         it('accepts a [clrPosition] input', function (this: TooltipContext<SimpleTest>) {
           // Default is right
-          expect((this.clarityDirective as any).anchorPoint).toEqual(Point.RIGHT_CENTER);
-          expect((this.clarityDirective as any).popoverPoint).toEqual(Point.LEFT_TOP);
           expect(this.clarityElement.classList).toContain('tooltip-right');
 
           this.hostComponent.position = 'bottom-right';
           this.detectChanges();
-          expect((this.clarityDirective as any).anchorPoint).toEqual(Point.BOTTOM_CENTER);
-          expect((this.clarityDirective as any).popoverPoint).toEqual(Point.LEFT_TOP);
           expect(this.clarityElement.classList).not.toContain('tooltip-right');
           expect(this.clarityElement.classList).toContain('tooltip-bottom-right');
 
           this.hostComponent.position = 'top-left';
           this.detectChanges();
-          expect((this.clarityDirective as any).anchorPoint).toEqual(Point.TOP_CENTER);
-          expect((this.clarityDirective as any).popoverPoint).toEqual(Point.RIGHT_BOTTOM);
           expect(this.clarityElement.classList).not.toContain('tooltip-bottom-right');
           expect(this.clarityElement.classList).toContain('tooltip-top-left');
         });

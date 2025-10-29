@@ -110,10 +110,7 @@ export class ClrPopoverService {
   }
 
   setOpenedButtonFocus(): void {
-    const activeEl = document.activeElement;
-    const shouldNotFocusTrigger = activeEl !== document.body && activeEl !== this.anchorElementRef?.nativeElement;
-
-    if (this.noFocus || shouldNotFocusTrigger) {
+    if (this.noFocus) {
       return;
     }
 

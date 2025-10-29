@@ -268,7 +268,7 @@ export class PopoverDirective implements AfterViewInit {
         }
 
         if (this.popoverService.outsideClickClose || isToggleButton) {
-          this.closePopover();
+          this.closePopover(isToggleButton);
         }
       })
     );
@@ -282,10 +282,13 @@ export class PopoverDirective implements AfterViewInit {
     return overlay;
   }
 
-  private closePopover() {
+  private closePopover(shouldFocusTrigger = true) {
     this.removeOverlay();
     this.popoverService.open = false;
-    this.popoverService.setOpenedButtonFocus();
+
+    if (shouldFocusTrigger) {
+      this.popoverService.setOpenedButtonFocus();
+    }
   }
 
   private getScrollStrategy(): ScrollStrategy {
