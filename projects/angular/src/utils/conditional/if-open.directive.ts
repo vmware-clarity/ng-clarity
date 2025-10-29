@@ -45,8 +45,18 @@ export class ClrIfOpen implements OnDestroy {
     private container: ViewContainerRef
   ) {
     this.subscription = popoverService.openChange.subscribe(change => {
-      this.updateView(change);
-      this.openChange.emit(change);
+      // OPEN before overlay is built
+      if (change) {
+        container.createEmbeddedView(template);
+        this.openChange.emit(change);
+      }
+    });
+    this.subscription = popoverService.popoverVisible.subscribe(change => {
+      // CLOSE after overlay is destroyed
+      if (!change) {
+        container.clear();
+        this.openChange.emit(change);
+      }
     });
   }
 

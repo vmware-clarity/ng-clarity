@@ -189,6 +189,16 @@ export class PopoverDirective implements AfterViewInit {
     this.popoverService.popoverVisibleEmit(false);
   }
 
+  // toggleOverlay(change: boolean) {
+  //   if (change) {
+  //     this.popoverService.open = change;
+  //     this.showOverlay();
+  //   } else {
+  //     this.removeOverlay();
+  //     this.popoverService.open = change;
+  //   }
+  // }
+
   private _createOverlayRef(): OverlayRef {
     //fetch all Scrolling Containers registered with CDK
     let scrollableAncestors: CdkScrollable[];
@@ -237,9 +247,10 @@ export class PopoverDirective implements AfterViewInit {
     );
 
     this.subscriptions.push(
+      // this.popoverService.togglePopover.subscribe((change) => {
+      //   this.toggleOverlay(change);
+      // }),
       overlay.outsidePointerEvents().subscribe(event => {
-        console.log(this.popoverService.contentRef.nativeElement);
-
         // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
         if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
           return;
@@ -252,8 +263,11 @@ export class PopoverDirective implements AfterViewInit {
             (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
             this.popoverService.openEvent.target === event.target);
 
-        if (this.popoverService.outsideClickClose || isToggleButton) {
+        if (isToggleButton) {
           event.stopPropagation();
+        }
+
+        if (this.popoverService.outsideClickClose || isToggleButton) {
           this.closePopover();
         }
       })
