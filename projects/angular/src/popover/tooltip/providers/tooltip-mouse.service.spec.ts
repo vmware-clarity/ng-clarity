@@ -14,10 +14,14 @@ export default function (): void {
   describe('Tooltip Mouse Service', () => {
     let popoverService: ClrPopoverService;
     let mouseService: TooltipMouseService;
+    let waitTimeMS: number;
 
     beforeEach(() => {
       popoverService = new ClrPopoverService();
       mouseService = new TooltipMouseService(popoverService);
+
+      // 100 from default hideIfMouseOutTimerInMS + 1 MS extra time
+      waitTimeMS = mouseService.hideIfMouseOutTimerInMS + 1;
     });
 
     it('should show the tooltip when the mouse enters the trigger', () => {
@@ -30,7 +34,7 @@ export default function (): void {
       popoverService.open = true;
 
       mouseService.onMouseLeaveTrigger();
-      await delay();
+      await delay(waitTimeMS);
 
       expect(popoverService.open).toBe(false);
     });
@@ -39,7 +43,7 @@ export default function (): void {
       popoverService.open = true;
 
       mouseService.onMouseLeaveContent();
-      await delay();
+      await delay(waitTimeMS);
 
       expect(popoverService.open).toBe(false);
     });
@@ -49,7 +53,7 @@ export default function (): void {
 
       mouseService.onMouseLeaveTrigger();
       mouseService.onMouseEnterContent();
-      await delay();
+      await delay(waitTimeMS);
 
       expect(popoverService.open).toBe(true);
     });

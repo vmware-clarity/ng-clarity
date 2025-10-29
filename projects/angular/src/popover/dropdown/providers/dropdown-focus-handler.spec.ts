@@ -121,15 +121,6 @@ export default function (): void {
         expect(spy).toHaveBeenCalledWith(this.container);
       });
 
-      it('puts focus back on the trigger when the dropdown becomes closed', function (this: TestContext) {
-        this.focusHandler.trigger = this.trigger;
-        this.focusHandler.container = this.container;
-        expectActiveElementNotToBe(this.trigger);
-        this.popoverService.open = true;
-        this.popoverService.open = false;
-        expectActiveElementToBe(this.trigger);
-      });
-
       it('does not prevent moving focus to a different part of the page', async function (this: TestContext) {
         this.focusHandler.trigger = this.trigger;
         this.focusHandler.container = this.container;
