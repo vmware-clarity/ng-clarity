@@ -18,6 +18,7 @@ import {
   TestContext,
 } from '../../utils/testing/helpers.spec';
 import { delay } from '../../utils/testing/helpers.spec';
+import { PopoverDirective } from '../common/popover.directive';
 
 interface Context extends TestContext<ClrSignpost, TestDefaultSignpost | TestCustomTriggerSignpost> {
   popoverService: ClrPopoverService;
@@ -30,7 +31,7 @@ interface Context extends TestContext<ClrSignpost, TestDefaultSignpost | TestCus
 export default function (): void {
   describe('Signpost', function () {
     describe('default trigger', function () {
-      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule);
+      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule, { imports: [PopoverDirective] });
 
       beforeEach(function (this: Context) {
         this.signpostIdService = this.getClarityProvider(SignpostIdService);
@@ -79,7 +80,7 @@ export default function (): void {
     });
 
     describe('focus management', function () {
-      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule);
+      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule, { imports: [PopoverDirective] });
 
       beforeEach(function (this: Context) {
         this.popoverService = this.getClarityProvider(ClrPopoverService);
@@ -150,7 +151,7 @@ export default function (): void {
     });
 
     describe('custom trigger', function () {
-      spec(ClrSignpost, TestCustomTriggerSignpost, ClrSignpostModule);
+      spec(ClrSignpost, TestCustomTriggerSignpost, ClrSignpostModule, { imports: [PopoverDirective] });
 
       beforeEach(function (this: Context) {
         this.popoverService = this.getClarityProvider(ClrPopoverService);
@@ -197,7 +198,7 @@ export default function (): void {
     });
 
     describe('aria-control values', () => {
-      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule);
+      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule, { imports: [PopoverDirective] });
 
       function checkAriaControlsId(id: string, element: HTMLElement) {
         const triggerControlsValue = element.querySelector('.signpost-action').getAttribute('aria-controls');

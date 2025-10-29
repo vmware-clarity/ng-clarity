@@ -22,6 +22,7 @@ import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { delay } from '../../utils/testing/helpers.spec';
+import { PopoverDirective } from '../common/popover.directive';
 
 export default function (): void {
   describe('Dropdown', () => {
@@ -30,7 +31,7 @@ export default function (): void {
     let subscription: Subscription;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({ imports: [ClrDropdownModule], declarations: [TestComponent] });
+      TestBed.configureTestingModule({ imports: [ClrDropdownModule, PopoverDirective], declarations: [TestComponent] });
 
       fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -90,18 +91,18 @@ export default function (): void {
       // detect the click
       fixture.detectChanges();
 
-      const nestedToggle: HTMLElement = document.body.querySelector('.nested');
-      expect(document.body.textContent.trim()).not.toMatch('Foo');
+      const nestedToggle: HTMLElement = compiled.querySelector('.nested');
+      expect(compiled.textContent.trim()).not.toMatch('Foo');
       nestedToggle.click();
       // detect the click
       fixture.detectChanges();
-      expect(document.body.textContent.trim()).toMatch('Foo');
+      expect(compiled.textContent.trim()).toMatch('Foo');
 
       // click the nested toggle again to close the menu
       nestedToggle.click();
       // detect the click
       fixture.detectChanges();
-      expect(document.body.textContent.trim()).not.toMatch('Foo');
+      expect(compiled.textContent.trim()).not.toMatch('Foo');
     });
 
     it('closes the menu when clicked outside of the host', async () => {
@@ -155,7 +156,6 @@ export default function (): void {
       fixture.detectChanges();
       expect(document.body.querySelector('.dropdown-item')).not.toBeNull();
 
-      dropdownItem = document.body.querySelector('.dropdown-item');
       dropdownItem.click();
       await delay();
       fixture.detectChanges();
@@ -187,18 +187,18 @@ export default function (): void {
       dropdownToggle.click();
       fixture.detectChanges();
 
-      const disabledDropdownItem: HTMLElement = document.body.querySelector('.dropdown-item.disabled');
-      const dropdownItem: HTMLElement = document.body.querySelector('.dropdown-item');
+      const disabledDropdownItem: HTMLElement = compiled.querySelector('.dropdown-item.disabled');
+      const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
 
       disabledDropdownItem.click();
       await delay();
       fixture.detectChanges();
-      expect(dropdownItem).not.toBeNull();
+      expect(compiled.querySelector('.dropdown-item')).not.toBeNull();
 
       dropdownItem.click();
       await delay();
       fixture.detectChanges();
-      expect(document.body.querySelector('.dropdown-item')).toBeNull();
+      expect(compiled.querySelector('.dropdown-item')).toBeNull();
     });
 
     it("doesn't close before custom click events have triggered", async function () {
@@ -208,7 +208,7 @@ export default function (): void {
       dropdownToggle.click();
       fixture.detectChanges();
 
-      const nestedToggle: HTMLElement = document.body.querySelector('.nested');
+      const nestedToggle: HTMLElement = compiled.querySelector('.nested');
       nestedToggle.click();
       fixture.detectChanges();
 
@@ -216,7 +216,7 @@ export default function (): void {
         expect(fixture.componentInstance.customClickHandlerDone).toBe(true);
       });
 
-      const nestedItem: HTMLElement = document.body.querySelector('.nested-item');
+      const nestedItem: HTMLElement = compiled.querySelector('.nested-item');
       nestedItem.click();
       await delay();
       fixture.detectChanges();
@@ -232,7 +232,7 @@ export default function (): void {
       await delay();
       fixture.detectChanges();
 
-      const dropdownItem: HTMLElement = document.body.querySelector('.dropdown-item');
+      const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
       expectActiveElementToBe(dropdownItem);
 
       dropdownItem.click();
@@ -281,7 +281,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrDropdownModule, ClrModalModule, NoopAnimationsModule],
+        imports: [ClrDropdownModule, ClrModalModule, PopoverDirective, NoopAnimationsModule],
         declarations: [DropdownItemThatOpensModalTestComponent],
       });
 
@@ -325,7 +325,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrDropdownModule],
+        imports: [ClrDropdownModule, PopoverDirective],
         declarations: [TestShadowDomComponent],
       });
 
