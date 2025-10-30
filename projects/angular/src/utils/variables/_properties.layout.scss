@@ -9,7 +9,7 @@
 @use '../../utils/variables/variables.density' as density;
 
 @include mixins.exports('layout.properties') {
-  :root {
+  @include mixins.root-or-host() {
     &,
     & [clr-density] {
       --clr-grid-gutter-width: #{density.$clr-base-horizontal-offset-2xl};

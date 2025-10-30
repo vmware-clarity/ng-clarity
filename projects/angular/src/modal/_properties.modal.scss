@@ -13,7 +13,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('modal.properties') {
-  :root {
+  @include mixins.root-or-host() {
     // sizes
     --clr-modal-sm-width: #{mixins.baselinePx(288)};
     --clr-modal-md-width: #{mixins.baselinePx(576)};

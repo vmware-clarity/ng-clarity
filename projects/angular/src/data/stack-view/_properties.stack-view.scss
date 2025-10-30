@@ -9,7 +9,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('stack-view.properties') {
-  :root {
+  @include mixins.root-or-host() {
     // Border dimensions
     --clr-stack-view-border-width: #{tokens.$cds-alias-object-border-width-100};
 

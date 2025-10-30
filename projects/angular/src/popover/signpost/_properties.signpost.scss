@@ -9,7 +9,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('signpost.properties') {
-  :root {
+  @include mixins.root-or-host() {
     &,
     & [clr-density] {
       --clr-signpost-border-radius: #{density.$clr-base-border-radius-s};

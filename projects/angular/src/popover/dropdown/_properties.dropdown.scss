@@ -8,7 +8,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('dropdown.properties') {
-  :root {
+  @include mixins.root-or-host() {
     --clr-dropdown-divider-border-width: #{tokens.$cds-global-space-1};
     --clr-dropdown-header-font-weight: #{tokens.$cds-alias-typography-font-weight-medium};
     --clr-dropdown-item-font-weight: #{tokens.$cds-alias-typography-secondary-font-weight};

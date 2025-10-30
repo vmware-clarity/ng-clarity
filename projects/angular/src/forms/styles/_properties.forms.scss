@@ -9,7 +9,7 @@
 @use '../../utils/variables/variables.density' as density;
 
 @include mixins.exports('forms.properties') {
-  :root {
+  @include mixins.root-or-host() {
     // Legacy CLR form base line (6px). Baked deeply in all form calculations.
     // Don't change it unless you know exactly what you are doing.
     --clr-forms-baseline: #{tokens.$cds-global-space-4};

@@ -9,7 +9,7 @@
 @use '../../utils/variables/variables.density' as density;
 
 @include mixins.exports('alert.properties') {
-  :root {
+  @include mixins.root-or-host() {
     --clr-app-alert-pager-width: #{mixins.baselinePx(144)};
 
     &,

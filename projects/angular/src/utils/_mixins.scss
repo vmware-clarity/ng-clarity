@@ -7,6 +7,7 @@
 @use 'sass:list';
 @use 'sass:map';
 @use 'sass:selector';
+@use 'sass:string';
 @use 'variables/variables';
 @use '../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
@@ -191,6 +192,37 @@ $opp-directions: (
     }
   }
 }
+
+// Declaring CSS in :root or :host depending which is available
+// Enabling tokens to work under Global DOM or Shadow DOM
+@mixin root-or-host() {
+  :where(:root, :host) {
+    @content;
+  }
+}
+
+// @TODO experimental functions to improve property declaration
+// @mixin self-and($descendant) {
+//   @if & {
+//     // & , & <descendant>
+//     @at-root #{&}, #{&} #{string.unquote($descendant)} {
+//       @content;
+//     }
+//   } @else {
+//     // :where(:root,:host) , :where(:root,:host) <descendant>
+//     :where(:root,:host), :where(:root,:host) #{string.unquote($descendant)} {
+//       @content;
+//     }
+//   }
+// }
+
+// @mixin set-properties($component, $properties, $descendant: '') {
+//   @include self-and($descendant) {
+//     @each $name, $value in $properties {
+//       --clr-#{$component}-#{$name}: #{$value};
+//     }
+//   }
+// }
 
 @mixin input-placeholder-wrapper() {
   /* _normalize overwrite */
