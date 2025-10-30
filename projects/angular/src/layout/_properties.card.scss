@@ -10,7 +10,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('card.properties') {
-  :root {
+  @include mixins.root-or-host() {
     --clr-card-title-font-weight: #{tokens.$cds-global-typography-section-font-weight};
     --clr-card-border-width: #{tokens.$cds-alias-object-border-width-100};
 

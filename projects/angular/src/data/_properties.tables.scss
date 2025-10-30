@@ -10,7 +10,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('table.properties') {
-  :root {
+  @include mixins.root-or-host() {
     --clr-table-borderwidth: #{tokens.$cds-alias-object-border-width-100};
     --clr-table-noborder-borderwidth: #{tokens.$cds-global-space-0};
 

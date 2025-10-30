@@ -9,7 +9,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('subnav.properties') {
-  :root {
+  @include mixins.root-or-host() {
     &,
     & [cds-theme] {
       // Usage: ../layout/nav/_subnav.clarity.scss

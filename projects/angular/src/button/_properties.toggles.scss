@@ -9,7 +9,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('toggle.properties') {
-  :root {
+  @include mixins.root-or-host() {
     &,
     [cds-theme] {
       // colors
