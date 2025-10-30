@@ -39,7 +39,6 @@ export class ClrDropdown implements OnDestroy {
     cdr: ChangeDetectorRef,
     dropdownService: RootDropdownService
   ) {
-    // this.subscriptions.push(dropdownService.changes.subscribe(value => popoverService.togglePopover = value));
     this.subscriptions.push(dropdownService.changes.subscribe(value => (popoverService.open = value)));
     this.subscriptions.push(popoverService.openChange.subscribe(() => cdr.markForCheck()));
   }

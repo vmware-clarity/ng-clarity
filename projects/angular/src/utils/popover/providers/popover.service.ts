@@ -37,7 +37,6 @@ export class ClrPopoverService {
   private _openEventChange = new Subject<Event>();
   private _popoverAligned = new Subject<HTMLElement>();
   private _popoverVisible = new Subject<boolean>();
-  // private _togglePopover = new Subject<boolean>();
 
   get openChange(): Observable<boolean> {
     return this._openChange.asObservable();
@@ -54,13 +53,6 @@ export class ClrPopoverService {
     this._openEvent = event;
     this._openEventChange.next(event);
   }
-
-  // get togglePopover(): Observable<boolean> {
-  //   return this._togglePopover.asObservable();
-  // }
-  // set togglePopover(event: boolean) {
-  //   this._togglePopover.next(event);
-  // }
 
   get open(): boolean {
     return this._open;
