@@ -722,8 +722,6 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     openMenu(event: Event, initialFocus: InitialFocus): void;
     // (undocumented)
     popoverId: string;
-    // (undocumented)
-    popoverPosition: ClrPopoverPosition;
     rearrangeButton(button: ClrButton): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "clrToggleButtonAriaLabel": { "alias": "clrToggleButtonAriaLabel"; "required": false; }; "menuPosition": { "alias": "clrMenuPosition"; "required": false; }; }, {}, ["buttons"], never, false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
@@ -950,7 +948,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     setDisabledState(): void;
     // (undocumented)
-    smartPosition: ClrPopoverPosition;
+    smartPosition: string;
     // (undocumented)
     textbox: ElementRef<HTMLInputElement>;
     // (undocumented)
@@ -1422,7 +1420,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     // (undocumented)
     popoverId: string;
     // (undocumented)
-    smartPosition: ClrPopoverPosition;
+    smartPosition: string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "buttonLabel": { "alias": "clrDgActionOverflowButtonLabel"; "required": false; }; "open": { "alias": "clrDgActionOverflowOpen"; "required": false; }; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
@@ -1559,7 +1557,7 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     // (undocumented)
     popoverId: string;
     // (undocumented)
-    smartPosition: ClrPopoverPosition;
+    smartPosition: string;
     // (undocumented)
     toggleColumnState(columnState: ColumnState, event: boolean): void;
     // (undocumented)
@@ -1675,7 +1673,7 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     popoverId: string;
     // (undocumented)
-    smartPosition: ClrPopoverPosition;
+    smartPosition: string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": { "alias": "clrDgFilterOpen"; "required": false; }; "customFilter": { "alias": "clrDgFilter"; "required": false; }; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"], false, never>;
     // (undocumented)
@@ -2148,7 +2146,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     get open(): boolean;
     // (undocumented)
-    get popoverPosition(): ClrPopoverPosition;
+    get popoverPosition(): string;
     // (undocumented)
     set rangeOptions(rangeOptions: any);
     // (undocumented)
@@ -3553,7 +3551,7 @@ export class ClrPopoverAnchor {
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     constructor(document: Document, container: ViewContainerRef, template: TemplateRef<any>, renderer: Renderer2, overlay: Overlay, overlayContainer: OverlayContainer, scrollDispatcher: ScrollDispatcher_2, popoverService: ClrPopoverService, zone: NgZone);
     // (undocumented)
-    set contentAt(position: ClrPopoverPosition | ConnectedPosition[]);
+    set contentAt(position: string);
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -3564,6 +3562,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     set outsideClickClose(clickToClose: boolean);
     // (undocumented)
     set scrollToClose(scrollToClose: boolean);
+    // (undocumented)
+    setPreferredPosition(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
