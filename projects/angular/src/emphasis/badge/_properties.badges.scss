@@ -9,7 +9,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('badge.properties') {
-  :root {
+  @include mixins.root-or-host() {
     &,
     [cds-theme] {
       --clr-badge-background-color: #{tokens.$cds-alias-utility-gray};

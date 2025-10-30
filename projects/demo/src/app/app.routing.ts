@@ -150,6 +150,10 @@ export const APP_ROUTES: Routes = [
   },
   { path: 'wizard', loadChildren: () => import('./wizard/wizard.demo.module').then(m => m.WizardDemoModule) },
   { path: 'z-index', loadChildren: () => import('./z-index/z-index.demo.module').then(m => m.ZIndexDemoModule) },
+  {
+    path: 'shadow-root',
+    loadComponent: () => import('./shadow-root/shadow-root.demo').then(m => m.ShadowRootDemo),
+  },
 ];
 
 export const ROUTING: ModuleWithProviders<RouterModule> = RouterModule.forRoot(APP_ROUTES);

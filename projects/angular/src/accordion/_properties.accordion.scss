@@ -10,7 +10,7 @@
 @use '../utils/variables/variables.density' as density;
 
 @include mixins.exports('accordion.properties') {
-  :root {
+  @include mixins.root-or-host() {
     &,
     [clr-density] {
       --clr-accordion-border-radius: #{density.$clr-base-border-radius-s};
