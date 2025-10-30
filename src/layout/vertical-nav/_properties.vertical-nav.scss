@@ -12,7 +12,7 @@
 @use '../../utils/variables/variables.density' as density;
 
 @include mixins.exports('vertical-nav.properties') {
-  :root {
+  @include mixins.root-or-host() {
     --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
     --clr-vertical-nav-item-top-level-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
     --clr-vertical-nav-header-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};

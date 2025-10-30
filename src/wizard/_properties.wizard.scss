@@ -10,7 +10,7 @@
 @use '../utils/variables/variables.density' as density;
 
 @include mixins.exports('wizard.properties') {
-  :root {
+  @include mixins.root-or-host() {
     --clr-wizard-footer-height: auto;
 
     &,
