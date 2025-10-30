@@ -9,7 +9,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('global.properties') {
-  :root {
+  @include mixins.root-or-host() {
     --clr-basefont-size: #{variables.$clr-basefont-size};
 
     // app borders
@@ -44,7 +44,7 @@
   }
 
   @if variables.$clr-use-custom-properties == true {
-    :root {
+    @include mixins.root-or-host() {
       // global box-shadows
       --clr-popover-box-shadow-color: #{variables.$clr-popover-box-shadow-color};
     }

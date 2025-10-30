@@ -9,7 +9,7 @@
 @use '../../utils/variables/variables.density' as density;
 
 @include mixins.exports('spinner.properties') {
-  :root {
+  @include mixins.root-or-host() {
     --clr-spinner-inside-button-stroke-width: #{tokens.$cds-alias-object-border-width-200};
     --clr-spinner-inside-treeview-stroke-width: #{tokens.$cds-alias-object-border-width-200};
 

@@ -9,7 +9,7 @@
 @use '../../utils/mixins';
 
 @include mixins.exports('density.properties') {
-  :root {
+  @include mixins.root-or-host() {
     --clr-base-typography-font-size-caption-small: #{mixins.baselinePx(10)};
     --clr-base-typography-font-size-caption: #{mixins.baselinePx(11)};
     --clr-base-typography-font-size-button: #{tokens.$cds-global-space-6};

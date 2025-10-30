@@ -14,7 +14,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('datagrid.properties') {
-  :root {
+  @include mixins.root-or-host() {
     --clr-datagrid-placeholder-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
     --clr-datagrid-placeholder-letter-spacing: #{baselinePx(-0.1)};
 

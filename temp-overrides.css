@@ -50,8 +50,8 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-:root,
-:root [cds-theme] {
+:where(:root, :host),
+:where(:root, :host) [cds-theme] {
   --cds-global-typography-font-family: var(--clr-metropolis-font-family);
   --cds-global-typography-header-font-family: var(--clr-metropolis-font-family);
   --cds-alias-utility-gray: var(--cds-global-color-construction-600);
@@ -133,7 +133,7 @@
   --cds-global-typography-smallcaption-font-size: var(--clr-base-typography-font-size-caption-small);
   --cds-global-typography-smallcaption-line-height: var(--clr-base-typography-line-height-12);
 }
-:root [cds-theme~=dark] {
+:where(:root, :host) [cds-theme~=dark] {
   --cds-alias-utility-gray: var(--cds-global-color-construction-300);
   --cds-alias-typography-link-color: var(--cds-global-color-blue-400);
   --cds-alias-typography-link-color-hover: var(--cds-global-color-blue-200);

@@ -9,7 +9,7 @@
 @use '../../utils/variables/variables.density' as density;
 
 @include mixins.exports('datepicker.properties') {
-  :root {
+  @include mixins.root-or-host() {
     // Typography
     --clr-calendar-today-date-cell-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
     --clr-calendar-picker-btn-font-weight: #{tokens.$cds-global-typography-font-weight-medium};
