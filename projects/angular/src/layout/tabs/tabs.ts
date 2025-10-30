@@ -28,11 +28,11 @@ import { ClrTabAction } from './tab-action.directive';
 import { ClrTabLink } from './tab-link.directive';
 import { ClrTabOverflowContent } from './tab-overflow-content';
 import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
+import { ClrPopoverService } from '../../utils';
 import { IfActiveService } from '../../utils/conditional/if-active.service';
 import { ClrKeyFocus } from '../../utils/focus/key-focus/key-focus';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 @Component({
   selector: 'clr-tabs',
@@ -54,16 +54,16 @@ import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-t
         }
       }
       @if (tabsService.overflowTabs.length > 0) {
-        <div class="tabs-overflow bottom-right" role="presentation" [class.open]="toggleService.open">
+        <div class="tabs-overflow bottom-right" role="presentation" [class.open]="popoverService.open">
           <li role="application" class="nav-item">
             <button
               #tabOverflowTrigger
               class="btn btn-link nav-link dropdown-toggle"
               type="button"
               aria-hidden="true"
-              [attr.tabindex]="activeTabInOverflow && !toggleService.open ? 0 : -1"
+              [attr.tabindex]="activeTabInOverflow && !popoverService.open ? 0 : -1"
               [class.active]="activeTabInOverflow"
-              [class.open]="toggleService.open"
+              [class.open]="popoverService.open"
               (mousedown)="_mousedown = true"
               (focus)="openOverflowOnFocus()"
               (click)="toggleOverflowOnClick()"
@@ -71,13 +71,13 @@ import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-t
             >
               <cds-icon
                 shape="ellipsis-horizontal"
-                [attr.status]="toggleService.open ? 'info' : null"
+                [attr.status]="popoverService.open ? 'info' : null"
                 [attr.title]="commonStrings.keys.more"
               ></cds-icon>
             </button>
           </li>
           <!--tab links in overflow menu-->
-          @if (toggleService.open) {
+          @if (popoverService.open) {
             <clr-tab-overflow-content
               (document:keydown.escape)="closeOnEscapeKey()"
               (document:click)="closeOnOutsideClick($event, tabOverflowTrigger)"
@@ -118,7 +118,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
 
   constructor(
     public ifActiveService: IfActiveService,
-    public toggleService: ClrPopoverToggleService,
+    public popoverService: ClrPopoverService,
     public tabsService: TabsService,
     @Inject(TABS_ID) public tabsId: number,
     public commonStrings: ClrCommonStringsService
@@ -164,7 +164,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   @ViewChild(ClrTabOverflowContent, { read: ElementRef })
   set tabOverflowEl(value: ElementRef<HTMLElement>) {
     this._tabOverflowEl = value && value.nativeElement;
-    if (this.toggleService.open && value) {
+    if (this.popoverService.open && value) {
       // only when tab overflow view element is registered,
       // we need to move the focus to the first item
       this.keyFocus.focusCurrent();
@@ -201,7 +201,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   toggleOverflowOnPosition(position: number) {
     // we need to check current position to determine
     // whether we need to open the tab overflow or not
-    this.toggleService.open = position >= this.overflowPosition;
+    this.popoverService.open = position >= this.overflowPosition;
   }
 
   resetKeyFocusCurrentToActive(event: FocusEvent) {
@@ -212,7 +212,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   }
 
   toggleOverflowOnClick() {
-    if (this.isCurrentInOverflow && this.toggleService.open) {
+    if (this.isCurrentInOverflow && this.popoverService.open) {
       this.keyFocus.moveTo(this.overflowPosition - 1);
     } else {
       this.keyFocus.moveTo(this.overflowPosition);
@@ -226,7 +226,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   openOverflowOnFocus() {
     // This method should be called only on keyboard generated focus
     // when the active tab is in the overflow
-    if (!this._mousedown && !this.toggleService.open) {
+    if (!this._mousedown && !this.popoverService.open) {
       this.keyFocus.moveTo(this.activeTabPosition);
     }
   }
@@ -234,10 +234,10 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   closeOnFocusOut(event: FocusEvent) {
     if (
       !this._tabOverflowEl.contains(event.relatedTarget as HTMLElement) &&
-      this.toggleService.open &&
+      this.popoverService.open &&
       !this._mousedown
     ) {
-      this.toggleService.open = false;
+      this.popoverService.open = false;
 
       // if the focus is out of overflow and lands on the active tab link
       // which is currently visible, set the key focus current to activeTabPosition

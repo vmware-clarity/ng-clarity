@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -61,6 +62,7 @@ import { DatagridRowRenderer } from './render/row-renderer';
 import { WrappedCell } from './wrapped-cell';
 import { WrappedColumn } from './wrapped-column';
 import { WrappedRow } from './wrapped-row';
+import { ClrPopoverModule } from '../../popover/popover.module';
 import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
 import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
 import { CdkDragModule } from '../../utils/cdk/cdk-drag.module';
@@ -124,9 +126,11 @@ const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAcces
     CommonModule,
     CdkDragModule,
     CdkTrapFocusModule,
+    ScrollingModule,
     ClrIconModule,
     ClrFormsModule,
     FormsModule,
+    ClrPopoverModule,
     ClrLoadingModule,
     ClrConditionalModule,
     ClrOutsideClickModule,

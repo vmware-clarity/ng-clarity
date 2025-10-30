@@ -8,7 +8,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 
 import { ClrPopoverHostDirective } from '../../../../angular/src/utils/popover/popover-host.directive';
-import { ClrPopoverToggleService } from '../../../../angular/src/utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../../../angular/src/utils/popover/providers/popover.service';
 
 @Component({
   selector: 'clr-dummy-anchor',
@@ -34,10 +34,10 @@ export class DummyAnchor {
 
   @ViewChild('ignore') ignore: ElementRef<HTMLButtonElement>;
 
-  constructor(private toggleService: ClrPopoverToggleService) {}
+  constructor(private popoverService: ClrPopoverService) {}
 
   onFocus(event: FocusEvent) {
-    this.toggleService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
   }
 
   // This needs to be added to handle the case where:
@@ -47,16 +47,16 @@ export class DummyAnchor {
   // Without this, the last step of clicking on the Input while it is focused
   // to open the menu wouldn't work.
   onInputClick(event: MouseEvent) {
-    if (this.toggleService.open === false) {
-      this.toggleService.toggleWithEvent(event);
+    if (this.popoverService.open === false) {
+      this.popoverService.toggleWithEvent(event);
     }
   }
 
   onFocusOut() {
-    this.toggleService.open = false;
+    this.popoverService.open = false;
   }
 
   onClick(event: MouseEvent) {
-    this.toggleService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
   }
 }

@@ -8,7 +8,7 @@
 import { Directive, EventEmitter, HostListener, OnDestroy, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverToggleService } from './providers/popover-toggle.service';
+import { ClrPopoverService } from './providers/popover.service';
 
 @Directive({
   selector: '[clrPopoverOpenCloseButton]',
@@ -22,9 +22,9 @@ export class ClrPopoverOpenCloseButton implements OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private smartOpenService: ClrPopoverToggleService) {
+  constructor(private popoverService: ClrPopoverService) {
     this.subscriptions.push(
-      smartOpenService.openChange.subscribe(change => {
+      popoverService.openChange.subscribe(change => {
         this.openCloseChange.next(change);
       })
     );
@@ -32,7 +32,7 @@ export class ClrPopoverOpenCloseButton implements OnDestroy {
 
   @HostListener('click', ['$event'])
   handleClick(event: MouseEvent) {
-    this.smartOpenService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
   }
 
   ngOnDestroy() {
