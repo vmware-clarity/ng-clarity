@@ -19,8 +19,6 @@ import { MockDatepickerEnabledService } from './providers/datepicker-enabled.ser
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { PopoverPosition } from '../../popover/common/popover-positions';
-import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrCommonFormsModule } from '../common/common.module';
@@ -181,7 +179,7 @@ export default function () {
       it('supports clrPosition option', () => {
         context.testComponent.position = 'top-left';
         context.detectChanges();
-        expect(context.clarityDirective.popoverPosition).toEqual(ClrPopoverPositions['top-left']);
+        expect(context.clarityDirective.popoverPosition).toEqual('top-left');
       });
 
       it('should add/remove success icon and text', () => {
@@ -243,5 +241,5 @@ export default function () {
 class TestComponent {
   model = '';
   disabled = false;
-  position: PopoverPosition;
+  position: string;
 }

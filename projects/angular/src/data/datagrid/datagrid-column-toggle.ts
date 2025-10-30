@@ -9,15 +9,7 @@ import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { columnToggleTrackByFn } from './datagrid-column-toggle-trackby';
-import {
-  ClrAlignment,
-  ClrAxis,
-  ClrCommonStringsService,
-  ClrPopoverHostDirective,
-  ClrPopoverPosition,
-  ClrPopoverService,
-  ClrSide,
-} from '../../utils';
+import { ClrCommonStringsService, ClrPopoverHostDirective, ClrPopoverService } from '../../utils';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnState } from './interfaces/column-state.interface';
 import { ColumnsService } from './providers/columns.service';
@@ -93,12 +85,7 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   openState = false;
 
   // Smart Popover
-  smartPosition: ClrPopoverPosition = {
-    axis: ClrAxis.VERTICAL,
-    side: ClrSide.BEFORE,
-    anchor: ClrAlignment.START,
-    content: ClrAlignment.START,
-  };
+  smartPosition = 'top-left';
 
   // Without tracking the checkboxes get rerendered on model update, which leads
   // to loss of focus after checkbox toggle.

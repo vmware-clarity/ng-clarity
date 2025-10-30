@@ -8,13 +8,9 @@
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { TestContext } from '../testing/helpers.spec';
-import { ClrAlignment } from './enums/alignment.enum';
-import { ClrAxis } from './enums/axis.enum';
-import { ClrSide } from './enums/side.enum';
-import { ClrPopoverPosition } from './interfaces/popover-position.interface';
 import { ClrPopoverContent } from './popover-content';
 import { ClrPopoverModuleNext } from './popover.module';
+import { TestContext } from '../testing/helpers.spec';
 import { ClrPopoverService } from './providers/popover.service';
 
 @Component({
@@ -38,12 +34,7 @@ import { ClrPopoverService } from './providers/popover.service';
 })
 class SimpleContent {
   @ViewChild(ClrPopoverContent, { read: ClrPopoverContent, static: true }) content: ClrPopoverContent;
-  smartPosition: ClrPopoverPosition = {
-    axis: ClrAxis.VERTICAL,
-    side: ClrSide.BEFORE,
-    anchor: ClrAlignment.START,
-    content: ClrAlignment.START,
-  };
+  smartPosition = 'bottom-left';
   openState = false;
   closeClick = true;
   closeScroll = true;
@@ -100,18 +91,6 @@ export default function (): void {
         content = document.body.querySelectorAll('div.clr-popover-content');
         expect(content.length).toBe(0);
       });
-
-      // it('responds to shouldRealign events from the positionService', async function (this: Context) {
-      //   const alignContentSpy = spyOn(this.clarityDirective as any, 'alignContent');
-      //   this.testComponent.openState = true; // Add content to the DOM
-      //   this.fixture.detectChanges();
-      //   expect(alignContentSpy).not.toHaveBeenCalled();
-      //   // this.positionService.realign();
-      //   this.fixture.detectChanges();
-      //   await delay();
-      //   // Make sure it has been called exactly one time
-      //   expect(alignContentSpy).toHaveBeenCalledTimes(1);
-      // });
     });
 
     describe('Template API', () => {
@@ -123,18 +102,13 @@ export default function (): void {
         expect(this.popoverService.open).toBe(false);
       });
 
-      // it('binds to [clrPopoverContentAt] position', function (this: Context) {
-      //   expect(this.testComponent.smartPosition).toEqual(this.positionService.position);
-      //   const newPosition: ClrPopoverPosition = {
-      //     anchor: ClrAlignment.CENTER,
-      //     axis: ClrAxis.HORIZONTAL,
-      //     content: ClrAlignment.CENTER,
-      //     side: ClrSide.AFTER,
-      //   };
-      //   this.testComponent.smartPosition = newPosition;
-      //   this.fixture.detectChanges();
-      //   expect(this.positionService.position).toEqual(newPosition);
-      // });
+      it('binds to [clrPopoverContentAt] position', function (this: Context) {
+        expect(this.testComponent.smartPosition).toEqual(this.popoverService.position);
+        const newPosition = 'top-right';
+        this.testComponent.smartPosition = newPosition;
+        this.fixture.detectChanges();
+        expect(this.popoverService.position).toEqual(newPosition);
+      });
 
       it('binds to [clrPopoverContentOutsideClickToClose]', function (this: Context) {
         expect(this.popoverService.outsideClickClose).toBe(true);

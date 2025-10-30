@@ -15,7 +15,6 @@ import {
   OverlayRef,
   ScrollDispatcher,
   ScrollStrategy,
-  STANDARD_DROPDOWN_BELOW_POSITIONS,
 } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
@@ -34,13 +33,32 @@ import {
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
-import { ClrAlignment } from './enums/alignment.enum';
-import { ClrAxis } from './enums/axis.enum';
-import { ClrSide } from './enums/side.enum';
-import { ClrPopoverPosition } from './interfaces/popover-position.interface';
+import { ClrCDKPopoverPositions } from './enums/cdk-dropdown-position.enum';
 import { ClrPopoverService } from './providers/popover.service';
 import { Keys } from '../enums/keys.enum';
 import { normalizeKey } from '../focus/key-focus/util';
+
+const AvailablePopoverPositions = [
+  ClrCDKPopoverPositions.bottom,
+  ClrCDKPopoverPositions['bottom-left'],
+  ClrCDKPopoverPositions['bottom-middle'],
+  ClrCDKPopoverPositions['bottom-right'],
+  ClrCDKPopoverPositions.left,
+  ClrCDKPopoverPositions['left-bottom'],
+  ClrCDKPopoverPositions['left-middle'],
+  ClrCDKPopoverPositions['left-top'],
+  ClrCDKPopoverPositions['middle-bottom'],
+  ClrCDKPopoverPositions['middle-left'],
+  ClrCDKPopoverPositions['middle-right'],
+  ClrCDKPopoverPositions.right,
+  ClrCDKPopoverPositions['right-bottom'],
+  ClrCDKPopoverPositions['right-middle'],
+  ClrCDKPopoverPositions['right-top'],
+  ClrCDKPopoverPositions.top,
+  ClrCDKPopoverPositions['top-left'],
+  ClrCDKPopoverPositions['top-middle'],
+  ClrCDKPopoverPositions['top-right'],
+];
 
 /** @dynamic */
 @Directive({
@@ -60,7 +78,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   };
 
   private scrollableParent: any;
-  private positions: ConnectedPosition[] = STANDARD_DROPDOWN_BELOW_POSITIONS;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -74,6 +91,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     private zone: NgZone
   ) {
     popoverService.panelClass = 'clr-popover-content';
+    popoverService.defaultPosition = 'bottom-left';
+    popoverService.availablePositions = AvailablePopoverPositions;
+    popoverService.popoverPositions = ClrCDKPopoverPositions;
+
     overlayContainer.getContainerElement().classList.add('clr-container-element');
   }
 
@@ -83,13 +104,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   @Input('clrPopoverContentAt')
-  set contentAt(position: ClrPopoverPosition | ConnectedPosition[]) {
-    if (Array.isArray(position)) {
-      this.positions = position;
-    } else {
-      //TODO: remap these positions to something the CDK Overlay can use
-      this.parsePositionObject(position);
-    }
+  set contentAt(position: string) {
+    // set the popover values based on menu position
+    this.popoverService.position = position || this.popoverService.defaultPosition;
   }
 
   @Input('clrPopoverContentOutsideClickToClose')
@@ -137,6 +154,14 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     }
   }
 
+  setPreferredPosition() {
+    //Set default position to "top-right", if position is not available in the map
+    this.preferredPosition =
+      this.popoverService.position in this.popoverService.popoverPositions
+        ? this.popoverService.popoverPositions[this.popoverService.position]
+        : this.popoverService.popoverPositions[this.popoverService.defaultPosition || 'top-right'];
+  }
+
   private _createOverlayRef(): OverlayRef {
     //fetch all Scrolling Containers registered with CDK
     let scrollableAncestors: CdkScrollable[];
@@ -144,17 +169,34 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       scrollableAncestors = this.scrollDispatcher.getAncestorScrollContainers(this.popoverService.anchorElementRef);
     }
 
+    const positionStrategy = this.overlay
+      .position()
+      .flexibleConnectedTo(this.popoverService.anchorElementRef)
+      .setOrigin(this.popoverService.anchorElementRef)
+      .withPush(true)
+      .withPositions([this.preferredPosition, ...this.popoverService.availablePositions])
+      .withFlexibleDimensions(true)
+      .withScrollableContainers(scrollableAncestors);
+
     const overlay = this.overlay.create(
       new OverlayConfig({
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
-        positionStrategy: this.overlay
-          .position()
-          .flexibleConnectedTo(this.popoverService.anchorElementRef)
-          .withPositions([this.preferredPosition, ...this.positions])
-          .withScrollableContainers(scrollableAncestors),
+        positionStrategy: positionStrategy,
         scrollStrategy: this.getScrollStrategy(),
         panelClass: this.popoverService.panelClass,
-        hasBackdrop: false,
+        hasBackdrop: this.popoverService.hasBackdrop,
+      })
+    );
+
+    this.subscriptions.push(
+      positionStrategy?.positionChanges?.subscribe(change => {
+        //Close the overlay when the Origin is clipped
+        if (change.scrollableViewProperties.isOriginClipped) {
+          // Running the zone is essential to invoke HostBinding
+          this.zone.run(() => {
+            this.popoverService.open = false;
+          });
+        }
       })
     );
 
@@ -209,6 +251,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private showOverlay() {
+    this.setPreferredPosition(); //Preferred position defined by consumer
+
     if (!this.overlayRef) {
       this.overlayRef = this._createOverlayRef();
       this.popoverService.overlayRef = this.overlayRef;
@@ -228,6 +272,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private removeOverlay(): void {
     if (this.overlayRef?.hasAttached()) {
       this.overlayRef.detach();
+      this.overlayRef.dispose();
+      this.overlayRef = null;
     }
     if (this.domPortal?.isAttached) {
       this.domPortal.detach();
@@ -239,72 +285,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     }
 
     this.popoverService.popoverVisibleEmit(false);
-  }
-
-  private parsePositionObject(position: ClrPopoverPosition) {
-    if (position.axis === ClrAxis.VERTICAL) {
-      // top or bottom
-      if (position.side === ClrSide.BEFORE) {
-        // above
-        this.preferredPosition.originY = 'top';
-        this.preferredPosition.overlayY = 'bottom';
-      } else {
-        // below
-        this.preferredPosition.originY = 'bottom';
-        this.preferredPosition.overlayY = 'top';
-      }
-      switch (position.anchor) {
-        case ClrAlignment.START:
-          this.preferredPosition.originX = 'start';
-          break;
-        case ClrAlignment.CENTER:
-          this.preferredPosition.originX = 'center';
-          break;
-        default: // end
-          this.preferredPosition.originX = 'end';
-      }
-      switch (position.content) {
-        case ClrAlignment.START:
-          this.preferredPosition.overlayX = 'start';
-          break;
-        case ClrAlignment.CENTER:
-          this.preferredPosition.overlayX = 'center';
-          break;
-        default: // end
-          this.preferredPosition.overlayX = 'end';
-      }
-    } else {
-      // Horizontal
-      if (position.side === ClrSide.BEFORE) {
-        // left
-        this.preferredPosition.originX = 'start';
-        this.preferredPosition.overlayX = 'end';
-      } else {
-        // right
-        this.preferredPosition.originX = 'end';
-        this.preferredPosition.overlayX = 'start';
-      }
-      switch (position.anchor) {
-        case ClrAlignment.START:
-          this.preferredPosition.originY = 'top';
-          break;
-        case ClrAlignment.CENTER:
-          this.preferredPosition.originY = 'center';
-          break;
-        default: // end
-          this.preferredPosition.originY = 'bottom';
-      }
-      switch (position.content) {
-        case ClrAlignment.START:
-          this.preferredPosition.overlayY = 'top';
-          break;
-        case ClrAlignment.CENTER:
-          this.preferredPosition.overlayY = 'center';
-          break;
-        default: // end
-          this.preferredPosition.overlayY = 'bottom';
-      }
-    }
   }
 
   //The below method is taken from https://gist.github.com/oscarmarina/3a546cff4d106a49a5be417e238d9558

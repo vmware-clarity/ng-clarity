@@ -10,8 +10,6 @@ import { startWith } from 'rxjs/operators';
 
 import { DayModel } from './model/day.model';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
-import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
@@ -158,9 +156,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
 
   @Input('clrPosition')
   set clrPosition(position: string) {
-    if (position && (ClrPopoverPositions as Record<string, any>)[position]) {
-      this.viewManagerService.position = (ClrPopoverPositions as Record<string, any>)[position];
-    }
+    this.viewManagerService.position = position || this.popoverService.defaultPosition;
   }
 
   @Input()
@@ -195,7 +191,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     this.toggleButton = button;
   }
 
-  get popoverPosition(): ClrPopoverPosition {
+  get popoverPosition(): string {
     return this.viewManagerService.position;
   }
 

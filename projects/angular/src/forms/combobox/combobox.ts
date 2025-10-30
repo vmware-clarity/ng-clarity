@@ -34,10 +34,6 @@ import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { LoadingListener } from '../../utils/loading/loading-listener';
-import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
-import { ClrAxis } from '../../utils/popover/enums/axis.enum';
-import { ClrSide } from '../../utils/popover/enums/side.enum';
-import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
@@ -91,12 +87,7 @@ export class ClrCombobox<T>
   focused = false;
   focusedPill: any;
 
-  smartPosition: ClrPopoverPosition = {
-    axis: ClrAxis.VERTICAL,
-    side: ClrSide.AFTER,
-    anchor: ClrAlignment.START,
-    content: ClrAlignment.START,
-  };
+  smartPosition = 'bottom-left';
 
   protected override index = 1;
 

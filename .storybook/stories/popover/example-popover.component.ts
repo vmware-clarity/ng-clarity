@@ -6,9 +6,7 @@
  */
 
 import { Component, Input } from '@angular/core';
-import { ClrAlignment, ClrAxis, ClrPopoverService, ClrSide } from '@clr/angular';
-
-import { ClrPopoverPositions } from '../../../projects/angular/src/utils/popover/enums/positions.enum';
+import { ClarityModule, ClrPopoverService } from '@clr/angular';
 
 @Component({
   selector: 'example-popover',
@@ -21,7 +19,7 @@ import { ClrPopoverPositions } from '../../../projects/angular/src/utils/popover
       [attr.aria-owns]="popoverId"
       clrPopoverAnchor
     >
-      Anchor ({{ _positionKey }})
+      Anchor ({{ _contentPosition }})
     </button>
     <div
       [id]="popoverId"
@@ -35,24 +33,19 @@ import { ClrPopoverPositions } from '../../../projects/angular/src/utils/popover
             margin: var(--cds-global-space-3);
             box-shadow: var(--cds-alias-object-shadow-300);"
     >
-      Popover content {{ _positionKey }}
+      Popover content {{ _contentPosition }}
     </div>
   </ng-container>`,
   providers: [ClrPopoverService],
   standalone: true,
+  imports: [ClarityModule],
 })
 export class ExamplePopoverComponent {
   popoverId = 'hello_world';
 
   _openState = true;
 
-  _contentPosition = {
-    axis: ClrAxis.HORIZONTAL,
-    side: ClrSide.AFTER,
-    anchor: ClrAlignment.CENTER,
-    content: ClrAlignment.END,
-  };
-  _positionKey = 'top-left';
+  _contentPosition = 'top-left';
 
   @Input('open')
   set openState(open: boolean) {
@@ -61,7 +54,6 @@ export class ExamplePopoverComponent {
 
   @Input('popoverPosition')
   set contentPosition(pos: string) {
-    this._positionKey = pos;
-    this._contentPosition = ClrPopoverPositions[pos];
+    this._contentPosition = pos;
   }
 }

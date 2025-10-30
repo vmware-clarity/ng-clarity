@@ -22,8 +22,6 @@ import { ClrDestroyService } from '../../utils/destroy/destroy.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
-import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import {
@@ -52,12 +50,9 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   popoverId = uniqueIdFactory();
   InitialFocus = InitialFocus;
 
-  popoverPosition: ClrPopoverPosition = ClrPopoverPositions['bottom-left'];
   inlineButtons: ClrButton[] = [];
   menuButtons: ClrButton[] = [];
-
-  // Indicates the position of the overflow menu
-  private _menuPosition: string;
+  private _menuPosition = 'bottom-left';
 
   constructor(
     public buttonGroupNewService: ButtonInGroupService,
@@ -65,20 +60,16 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     public commonStrings: ClrCommonStringsService,
     private destroy$: ClrDestroyService,
     private focusHandler: ButtonGroupFocusHandler
-  ) {}
+  ) {
+    popoverService.defaultPosition = this._menuPosition;
+  }
 
   @Input('clrMenuPosition')
   get menuPosition(): string {
     return this._menuPosition;
   }
   set menuPosition(pos: string) {
-    if (pos && (ClrPopoverPositions as Record<string, any>)[pos]) {
-      this._menuPosition = pos;
-    } else {
-      this._menuPosition = 'bottom-left';
-    }
-
-    this.popoverPosition = (ClrPopoverPositions as Record<string, any>)[this._menuPosition];
+    this._menuPosition = pos || this.popoverService.defaultPosition;
   }
 
   get open() {

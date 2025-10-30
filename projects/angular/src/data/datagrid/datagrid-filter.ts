@@ -21,14 +21,7 @@ import {
 import { Subscription } from 'rxjs';
 
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
-import {
-  ClrAlignment,
-  ClrAxis,
-  ClrCommonStringsService,
-  ClrPopoverPosition,
-  ClrPopoverService,
-  ClrSide,
-} from '../../utils';
+import { ClrCommonStringsService, ClrPopoverService } from '../../utils';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from './providers/filters';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
@@ -92,12 +85,7 @@ export class ClrDatagridFilter<T = any>
   popoverId = uniqueIdFactory();
 
   // Smart Popover
-  smartPosition: ClrPopoverPosition = {
-    axis: ClrAxis.VERTICAL,
-    side: ClrSide.AFTER,
-    anchor: ClrAlignment.END,
-    content: ClrAlignment.END,
-  };
+  smartPosition = 'bottom-right';
 
   @ViewChild('anchor', { read: ElementRef }) anchor: ElementRef<HTMLButtonElement>;
 

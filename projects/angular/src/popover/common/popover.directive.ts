@@ -178,26 +178,18 @@ export class PopoverDirective implements AfterViewInit {
     // Detach Overlay Reference
     if (this.overlayRef?.hasAttached()) {
       this.overlayRef.detach();
+      this.overlayRef.dispose();
+      this.overlayRef = null;
     }
 
     // Detach Dom Portal
     if (this.domPortal?.isAttached) {
       this.domPortal.detach();
+      this.domPortal = null;
     }
 
-    this.domPortal = null;
     this.popoverService.popoverVisibleEmit(false);
   }
-
-  // toggleOverlay(change: boolean) {
-  //   if (change) {
-  //     this.popoverService.open = change;
-  //     this.showOverlay();
-  //   } else {
-  //     this.removeOverlay();
-  //     this.popoverService.open = change;
-  //   }
-  // }
 
   private _createOverlayRef(): OverlayRef {
     //fetch all Scrolling Containers registered with CDK
@@ -247,9 +239,6 @@ export class PopoverDirective implements AfterViewInit {
     );
 
     this.subscriptions.push(
-      // this.popoverService.togglePopover.subscribe((change) => {
-      //   this.toggleOverlay(change);
-      // }),
       overlay.outsidePointerEvents().subscribe(event => {
         // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
         if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
