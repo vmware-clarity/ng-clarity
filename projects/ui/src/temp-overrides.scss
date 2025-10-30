@@ -11,7 +11,7 @@
 
 // Some of the tokens are not updated or missing in cds-core.
 // Use the overrides as source of truth.
-:root {
+@include mixins.root-or-host() {
   &,
   [cds-theme] {
     // font family override

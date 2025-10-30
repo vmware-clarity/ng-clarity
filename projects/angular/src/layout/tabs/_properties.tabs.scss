@@ -9,7 +9,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('tab.properties') {
-  :root {
+  @include mixins.root-or-host() {
     &,
     & [cds-theme] {
       --clr-nav-box-shadow-color: #{tokens.$cds-alias-object-border-color};

@@ -10,7 +10,7 @@
 @use '../../utils/variables/variables.density' as density;
 
 @include mixins.exports('tree.properties') {
-  :root {
+  @include mixins.root-or-host() {
     &,
     & [clr-density] {
       // Usage: ../data/tree-view/_tree-view.clarity.scss

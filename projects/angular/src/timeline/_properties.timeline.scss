@@ -10,7 +10,7 @@
 @use '../utils/variables/variables.density' as density;
 
 @include mixins.exports('timeline.properties') {
-  :root {
+  @include mixins.root-or-host() {
     // body (title)
     --clr-timeline-step-title-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
 

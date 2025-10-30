@@ -11,7 +11,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('header.properties') {
-  :root {
+  @include mixins.root-or-host() {
     --clr-header-title-font-weight: #{tokens.$cds-global-typography-subsection-font-weight};
     --clr-header-title-font-family: #{variables.$clr-font};
     --clr-header-search-input-font-color: #{tokens.$cds-global-color-white};

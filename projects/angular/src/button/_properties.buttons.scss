@@ -10,7 +10,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('button.properties') {
-  :root {
+  @include mixins.root-or-host() {
     --clr-btn-group-focus-outline: #{tokens.$cds-alias-object-interaction-outline};
 
     &,

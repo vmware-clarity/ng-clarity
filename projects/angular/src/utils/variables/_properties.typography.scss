@@ -10,7 +10,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('typography.properties') {
-  :root {
+  @include mixins.root-or-host() {
     // Temporal internal use only. Should be removed once CDS token based family is available.
     --clr-metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
     --clr-body-font: var(--clr-metropolis-font-family); // #{tokens.$cds-alias-typography-font-family};
