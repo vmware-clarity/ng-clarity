@@ -22,7 +22,6 @@ import { CdkVirtualForOfContext } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ControlValueAccessor } from '@angular/forms';
-import { DefaultValueAccessor } from '@angular/forms';
 import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
 import { DragDrop } from '@angular/cdk/drag-drop';
@@ -1274,7 +1273,7 @@ export class ClrControlSuccess extends ClrAbstractControl {
 }
 
 // @public (undocumented)
-export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
+export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy, DoCheck {
     // Warning: (ae-forgotten-export) The symbol "DatagridRenderOrganizer" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "StateProvider" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "DisplayModeService" needs to be exported by the entry point index.d.ts
@@ -1345,6 +1344,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
+    // (undocumented)
+    ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
     placeholder: ClrDatagridPlaceholder<T>;
@@ -5800,10 +5801,20 @@ export class ÇlrDatagridSelectionCellDirective {
 }
 
 // @public (undocumented)
-export class ÇlrDatagridSingleSelectionValueAccessor extends DefaultValueAccessor {
+export class ÇlrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
     constructor(renderer: Renderer2, elementRef: ElementRef<HTMLInputElement>);
     // (undocumented)
     clrDgIdentityFn: (value: any) => unknown;
+    // (undocumented)
+    onChange: (value: any) => void;
+    // (undocumented)
+    onTouched: () => void;
+    // (undocumented)
+    registerOnChange(fn: (value: any) => void): void;
+    // (undocumented)
+    registerOnTouched(fn: () => void): void;
+    // (undocumented)
+    setDisabledState(isDisabled: boolean): void;
     // (undocumented)
     value: any;
     // (undocumented)
