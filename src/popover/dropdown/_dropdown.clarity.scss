@@ -123,7 +123,7 @@
     .btn-link,
     .dropdown-item {
       @include menu-mixins.generate-dropdown-item();
-      @include mixins.overflow-ellipsis(true, 'space-between');
+      @include mixins.overflow-ellipsis(true);
 
       &.active {
         position: relative;
