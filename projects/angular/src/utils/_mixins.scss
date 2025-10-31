@@ -53,14 +53,14 @@ $clr-outline-spread: tokens.$cds-global-space-2;
   outline: 0;
   text-decoration: none;
 }
-@mixin overflow-ellipsis($leftAlignment: false, $justifyContent: 'start') {
+@mixin overflow-ellipsis($leftAlignment: false) {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
   @if $leftAlignment == true {
     text-align: left;
-    justify-content: #{$justifyContent};
+    justify-content: start;
   }
 }
 @mixin off-screen-styles() {
