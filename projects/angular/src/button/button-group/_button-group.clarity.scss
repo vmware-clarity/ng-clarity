@@ -31,6 +31,17 @@
           border-bottom-right-radius: buttons-variables.$clr-btn-border-radius;
         }
       }
+
+      &:first-child {
+        .dropdown-toggle {
+          border-top-left-radius: buttons-variables.$clr-btn-border-radius;
+          border-bottom-left-radius: buttons-variables.$clr-btn-border-radius;
+        }
+      }
+
+      &:not(:last-child) .dropdown-toggle {
+        border-right: 0;
+      }
     }
 
     .btn {
@@ -123,6 +134,10 @@
       }
     }
 
+    .btn:not([disabled]) + .dropdown .dropdown-toggle {
+      border-left: none;
+    }
+
     //Flat Buttons
     &.btn-link .dropdown-toggle {
       min-width: 0;
@@ -148,7 +163,7 @@
       text-transform: none;
     }
 
-    .dropdown-toggle {
+    .btn-group-overflow .dropdown-toggle {
       display: block;
       padding: 0 density.$clr-base-horizontal-offset-2xl;
       min-width: unset;
