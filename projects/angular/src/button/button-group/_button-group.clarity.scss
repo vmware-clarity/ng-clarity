@@ -20,6 +20,8 @@
     margin-right: buttons-variables.$clr-btn-horizontal-margin;
 
     clr-dropdown {
+      display: inline-flex;
+
       .dropdown-toggle {
         @include square-off-btngroup-btns(left);
         @include square-off-btngroup-btns(right);
