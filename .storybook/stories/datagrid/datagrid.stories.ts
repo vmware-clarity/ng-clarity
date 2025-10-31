@@ -5,8 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrConditionalModule, ClrDatagrid, ClrDatagridModule, commonStringsDefault } from '@clr/angular';
-import { action } from '@storybook/addon-actions';
+import {
+  ClrConditionalModule,
+  ClrDatagrid,
+  ClrDatagridModule,
+  ClrDropdownModule,
+  commonStringsDefault,
+} from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
@@ -16,7 +21,7 @@ export default {
   component: ClrDatagrid,
   decorators: [
     moduleMetadata({
-      imports: [ClrDatagridModule, ClrConditionalModule],
+      imports: [ClrDatagridModule, ClrConditionalModule, ClrDropdownModule],
     }),
   ],
   argTypes: {
@@ -99,9 +104,50 @@ const DatagridTemplate: StoryFn = args => ({
     >
       <clr-dg-action-bar *ngIf="showActions">
         <div class="btn-group" role="group" aria-label="Available Actions">
-          <button type="button" class="btn btn-sm btn-secondary">Add to group</button>
+          <clr-dropdown>
+            <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
+              Per Page
+              <cds-icon shape="angle" direction="down"></cds-icon>
+            </button>
+            <clr-dropdown-menu *clrIfOpen>
+              <button type="button" clrDropdownItem>10</button>
+              <button type="button" clrDropdownItem>20</button>
+              <button type="button" clrDropdownItem>50</button>
+              <button type="button" clrDropdownItem>100</button>
+            </clr-dropdown-menu>
+          </clr-dropdown>
           <button type="button" class="btn btn-sm btn-secondary">Delete</button>
           <button type="button" class="btn btn-sm btn-secondary">Edit</button>
+        </div>
+        <div class="btn-group" role="group" aria-label="Available Actions">
+          <button type="button" class="btn btn-sm btn-secondary">Add to group</button>
+          <clr-dropdown>
+            <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
+              Per Page
+              <cds-icon shape="angle" direction="down"></cds-icon>
+            </button>
+            <clr-dropdown-menu *clrIfOpen>
+              <button type="button" clrDropdownItem>10</button>
+              <button type="button" clrDropdownItem>20</button>
+              <button type="button" clrDropdownItem>50</button>
+              <button type="button" clrDropdownItem>100</button>
+            </clr-dropdown-menu>
+          </clr-dropdown>
+          <button type="button" class="btn btn-sm btn-secondary">Delete</button>
+        </div>
+        <div class="btn-group" role="group" aria-label="Available Actions">
+          <clr-dropdown>
+            <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
+              Per Page
+              <cds-icon shape="angle" direction="down"></cds-icon>
+            </button>
+            <clr-dropdown-menu *clrIfOpen>
+              <button type="button" clrDropdownItem>10</button>
+              <button type="button" clrDropdownItem>20</button>
+              <button type="button" clrDropdownItem>50</button>
+              <button type="button" clrDropdownItem>100</button>
+            </clr-dropdown-menu>
+          </clr-dropdown>
         </div>
       </clr-dg-action-bar>
       <clr-dg-column [style.width.px]="250">

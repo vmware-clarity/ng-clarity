@@ -19,6 +19,8 @@
     margin-right: buttons-variables.$clr-btn-horizontal-margin;
 
     clr-dropdown {
+      display: inline-flex;
+
       .dropdown-toggle {
         @include square-off-btngroup-btns(left);
         @include square-off-btngroup-btns(right);
@@ -29,6 +31,17 @@
           border-top-right-radius: buttons-variables.$clr-btn-border-radius;
           border-bottom-right-radius: buttons-variables.$clr-btn-border-radius;
         }
+      }
+
+      &:first-child {
+        .dropdown-toggle {
+          border-top-left-radius: buttons-variables.$clr-btn-border-radius;
+          border-bottom-left-radius: buttons-variables.$clr-btn-border-radius;
+        }
+      }
+
+      &:not(:last-child) .dropdown-toggle {
+        border-right: 0;
       }
     }
 
@@ -107,18 +120,11 @@
     }
 
     //To avoid double borders
-    .btn:not([disabled]) + .btn {
+    .btn:not([disabled]) + .btn,
+    .tooltip:not(:first-child) .btn,
+    .btn:not([disabled]) + .btn-group-overflow .btn,
+    .btn:not([disabled]) + .dropdown .dropdown-toggle {
       border-left: none;
-    }
-
-    .tooltip:not(:first-child) .btn {
-      border-left: none;
-    }
-
-    .btn:not([disabled]) + .btn-group-overflow {
-      .btn {
-        border-left: none;
-      }
     }
 
     //Flat Buttons
@@ -146,7 +152,7 @@
       text-transform: none;
     }
 
-    .dropdown-toggle {
+    .btn-group-overflow .dropdown-toggle {
       display: block;
       padding: 0 density.$clr-base-horizontal-offset-2xl;
       min-width: unset;
