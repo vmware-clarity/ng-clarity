@@ -1,0 +1,5 @@
+import { Type } from '@angular/core';
+export declare const CLR_ALERT_DIRECTIVES: Type<any>[];
+export declare class ClrAlertModule {
+    constructor();
+}

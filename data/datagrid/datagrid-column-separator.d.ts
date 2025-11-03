@@ -1,0 +1,33 @@
+import { AfterViewInit, NgZone, OnDestroy, Renderer2 } from '@angular/core';
+import { ColumnResizerService } from './providers/column-resizer.service';
+import { TableSizeService } from './providers/table-size.service';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+export declare class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
+    private columnResizerService;
+    private renderer;
+    private ngZone;
+    private tableSizeService;
+    commonString: ClrCommonStringsService;
+    private document;
+    columnSeparatorId: string;
+    private resizeStartedOnKeyDown;
+    private isWithinMaxResizeRange;
+    private unlisteners;
+    private resizeTrackerRef;
+    private columnHandleRef;
+    constructor(columnResizerService: ColumnResizerService, renderer: Renderer2, ngZone: NgZone, tableSizeService: TableSizeService, commonString: ClrCommonStringsService, document: any);
+    get descriptionId(): string;
+    private get resizeTrackerEl();
+    private get columnHandleEl();
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    showTracker(): void;
+    moveTracker(movedBy: number): void;
+    hideTracker(): void;
+    private showTrackerOnFirstKeyDown;
+    private moveTrackerOnKeyDown;
+    private hideTrackerOnKeyUp;
+    private redFlagTracker;
+    private isArrowLeftKeyEvent;
+    private isArrowRightKeyEvent;
+}

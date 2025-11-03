@@ -1,0 +1,37 @@
+import { ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { AlertIconAndTypesService } from './providers/icon-and-types.service';
+import { MultiAlertService } from './providers/multi-alert.service';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+export declare class ClrAlert implements OnInit, OnDestroy {
+    private iconService;
+    private cdr;
+    private multiAlertService;
+    private commonStrings;
+    private renderer;
+    private hostElement;
+    isSmall: boolean;
+    closable: boolean;
+    isAppLevel: boolean;
+    clrCloseButtonAriaLabel: string;
+    _closedChanged: EventEmitter<boolean>;
+    _closed: boolean;
+    private _hidden;
+    private subscriptions;
+    private _isLightweight;
+    private _origAlertType;
+    constructor(iconService: AlertIconAndTypesService, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService, renderer: Renderer2, hostElement: ElementRef<HTMLElement>);
+    get isLightweight(): boolean;
+    set isLightweight(val: boolean);
+    get alertType(): string;
+    set alertType(val: string);
+    set alertIconShape(value: string);
+    set closed(value: boolean);
+    get alertClass(): string;
+    get hidden(): boolean;
+    set hidden(value: boolean);
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    configAlertType(val: string): void;
+    open(): void;
+    close(): void;
+}

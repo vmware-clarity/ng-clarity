@@ -1,0 +1,37 @@
+import { EventEmitter, TemplateRef } from '@angular/core';
+import { RouterLinkActive } from '@angular/router';
+import { ClrLoadingState } from '../../utils/loading/loading';
+import { LoadingListener } from '../../utils/loading/loading-listener';
+import { ButtonInGroupService } from '../providers/button-in-group.service';
+export declare class ClrButton implements LoadingListener {
+    private readonly routerLinkActive;
+    buttonInGroupService: ButtonInGroupService;
+    _click: EventEmitter<boolean>;
+    routerLinkActiveClasses: string;
+    templateRef: TemplateRef<ClrButton>;
+    loading: boolean;
+    private _inMenu;
+    private _enableService;
+    private _classNames;
+    private _name;
+    private _type;
+    private _disabled;
+    private _id;
+    constructor(routerLinkActive: RouterLinkActive, buttonInGroupService: ButtonInGroupService);
+    get inMenu(): boolean;
+    set inMenu(value: boolean);
+    get classNames(): string;
+    set classNames(value: string);
+    get name(): string;
+    set name(value: string);
+    get type(): string;
+    set type(value: string);
+    get id(): string;
+    set id(value: string);
+    get disabled(): any;
+    set disabled(value: any);
+    get role(): string;
+    ngAfterViewInit(): void;
+    loadingStateChange(state: ClrLoadingState): void;
+    emitClick(): void;
+}

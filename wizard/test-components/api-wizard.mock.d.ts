@@ -1,0 +1,36 @@
+import { HeadingLevel } from '../heading-level';
+import { ClrWizard } from '../wizard';
+export declare class TemplateApiWizardTestComponent {
+    wizard: ClrWizard;
+    mySize: string;
+    stepnavAriaLabel: string;
+    projectedTitle: string;
+    projectedPageTitle: string;
+    titleHeadingLevel: HeadingLevel;
+    pageTitleHeadingLevel: HeadingLevel;
+    open: boolean;
+    lazyLoadContent: string;
+    projectedContent: string;
+    projectedButton: string;
+    projectedCustomButton: string;
+    showExtraPage: boolean;
+    stopCancel: boolean;
+    _openChange: number;
+    _pagesLoaded: number;
+    _firstPageLoaded: number;
+    _currentPageChanged: number;
+    _movedForward: number;
+    _movedBackward: number;
+    _cancelled: number;
+    _finished: number;
+    customFinish(): void;
+    doLazyLoad(): void;
+    onOpenChange(): void;
+    handleOnLoad(): void;
+    firstPageLoad(): void;
+    handleCurrentChange(): void;
+    handleOnNext(): void;
+    handleOnPrevious(): void;
+    handleOnCancel(): void;
+    handleOnFinish(): void;
+}
