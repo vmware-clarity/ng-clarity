@@ -1,0 +1,21 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../variables.progress-bars' as progress-bars-variables;
+
+@mixin clr-progress-color($color: progress-bars-variables.$clr-progress-default-color) {
+  // for IE...
+  color: $color;
+
+  &::-webkit-progress-value {
+    background-color: $color;
+  }
+
+  &::-moz-progress-bar {
+    background-color: $color;
+  }
+}

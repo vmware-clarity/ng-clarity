@@ -1,0 +1,47 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../utils/variables/variables';
+
+$clr-table-borderwidth: var(--clr-table-borderwidth) !default;
+$clr-table-border-radius: var(--clr-table-border-radius) !default;
+$clr-table-cornercellradius: var(--clr-table-cornercellradius) !default;
+$clr-table-cell-padding: var(--clr-table-cell-padding) !default;
+$clr-table-cell-horizontal-padding: var(--clr-table-cell-horizontal-padding) !default;
+$clr-table-cell-vertical-padding: var(--clr-table-cell-vertical-padding) !default;
+$clr-table-noborder-borderwidth: var(--clr-table-noborder-borderwidth) !default;
+
+$clr-table-bgcolor: var(--clr-table-bgcolor) !default;
+$clr-thead-bgcolor: var(--clr-thead-bgcolor) !default;
+
+$clr-table-header-border-bottom-color: var(--clr-table-header-border-bottom-color) !default;
+$clr-table-footer-border-top-color: var(--clr-table-footer-border-top-color) !default;
+$clr-table-border-color: var(--clr-table-border-color) !default;
+
+$clr-tablerow-bordercolor: var(--clr-tablerow-bordercolor) !default;
+
+$clr-table-font-color: var(--clr-table-font-color) !default;
+$clr-table-margin: var(--clr-table-margin) !default;
+
+$clr-thead-color: var(--clr-thead-color) !default;
+
+$clr-table-fontsize: var(--clr-table-fontsize) !default;
+
+$clr-table-cell-height: var(--clr-table-cell-height) !default;
+$clr-table-row-height: var(--clr-table-row-height) !default;
+// @deprecated ALL compact properties in favor of compact mode in density theme
+$clr-table-cell-compact-padding: var(--clr-table-cell-compact-padding) !default;
+$clr-table-compact-cell-height: var(--clr-table-compact-cell-height) !default;
+// @deprecated in v17 in favor of $clr-table-compact-row-height
+$clr-table--compact-rowHeight: var(--clr-table-compact-row-height) !default; // Leaving for backwards compatibility
+$clr-table-compact-row-height: $clr-table--compact-rowHeight;
+// @deprecated in v17 in favor of clr-table-compact-vertical-padding
+$clr-table--compact-verticalPadding: var(
+  --clr-table-compact-vertical-padding
+) !default; // Leaving for backwards compatibility
+$clr-table-compact-vertical-padding: $clr-table--compact-verticalPadding;
+$clr-table-compact-horizontal-padding: var(--clr-table-compact-horizontal-padding);
