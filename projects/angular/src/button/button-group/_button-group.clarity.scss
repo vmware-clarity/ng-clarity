@@ -144,6 +144,9 @@
       .btn {
         min-width: 0;
       }
+      .btn-group-overflow .dropdown-toggle {
+        padding: buttons-variables.$clr-btn-appearance-form-padding;
+      }
     }
 
     //Icons and their corresponding title
