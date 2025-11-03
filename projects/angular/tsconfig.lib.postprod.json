@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.lib.json",
+  "compilerOptions": {
+    "declarationMap": false,
+    "declarationDir": "../../dist/clr-angular",
+    "outDir": "../../dist/clr-angular",
+    "emitDeclarationOnly": true
+  },
+  "angularCompilerOptions": {
+    "compilationMode": "partial"
+  }
+}

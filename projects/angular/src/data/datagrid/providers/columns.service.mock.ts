@@ -13,8 +13,8 @@ import { ColumnsService } from './columns.service';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 
 class MockHideableColumnTemplateRef extends TemplateRef<ClrDatagridHideableColumn> {
-  elementRef = null;
-  createEmbeddedView(): EmbeddedViewRef<any> {
+  override elementRef = null;
+  override createEmbeddedView(): EmbeddedViewRef<any> {
     return null;
   }
 }
