@@ -21,31 +21,9 @@ import {
 
 import { ClrPopoverService } from '../../utils';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-dropdown-position.enum';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 
-const AvailablePopoverPositions = [
-  ClrCDKPopoverPositions.bottom,
-  ClrCDKPopoverPositions['bottom-left'],
-  ClrCDKPopoverPositions['bottom-middle'],
-  ClrCDKPopoverPositions['bottom-right'],
-  ClrCDKPopoverPositions.left,
-  ClrCDKPopoverPositions['left-bottom'],
-  ClrCDKPopoverPositions['left-middle'],
-  ClrCDKPopoverPositions['left-top'],
-  ClrCDKPopoverPositions['middle-bottom'],
-  ClrCDKPopoverPositions['middle-left'],
-  ClrCDKPopoverPositions['middle-right'],
-  ClrCDKPopoverPositions.right,
-  ClrCDKPopoverPositions['right-bottom'],
-  ClrCDKPopoverPositions['right-middle'],
-  ClrCDKPopoverPositions['right-top'],
-  ClrCDKPopoverPositions.top,
-  ClrCDKPopoverPositions['top-left'],
-  ClrCDKPopoverPositions['top-middle'],
-  ClrCDKPopoverPositions['top-right'],
-];
 @Component({
   selector: 'clr-dropdown-menu',
   template: `<ng-content></ng-content>`,
@@ -53,7 +31,18 @@ const AvailablePopoverPositions = [
     '[class.dropdown-menu]': 'true',
     '[attr.role]': '"menu"',
   },
+  // providers: [ClrPopoverContent],
   standalone: false,
+  // hostDirectives:[ClrPopoverContent],
+  // hostDirectives: [{
+  //   directive: ClrPopoverContent,
+  //   inputs: [
+  //     'clrPopoverContent: popoverService.open',
+  //     'clrPopoverContentAt: popoverService.position',
+  //     'clrPopoverContentOutsideClickToClose: true',
+  //     'clrPopoverContentScrollToClose: false',
+  //   ],
+  // }],
 })
 export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
   @ContentChildren(FocusableItem) items: QueryList<FocusableItem>;
@@ -82,9 +71,7 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     } else {
       popoverService.defaultPosition = 'right-top';
     }
-    popoverService.panelClass = 'clr-dropdown-container';
-    popoverService.availablePositions = AvailablePopoverPositions;
-    popoverService.popoverPositions = ClrCDKPopoverPositions;
+    popoverService.panelClass.push('clr-dropdown-container');
   }
 
   @Input('clrPosition')

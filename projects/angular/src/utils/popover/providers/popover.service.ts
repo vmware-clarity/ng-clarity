@@ -25,7 +25,7 @@ export class ClrPopoverService {
   templateRef: TemplateRef<any>;
   position: string;
   defaultPosition: string;
-  panelClass: string | string[];
+  panelClass: string[] = [];
   popoverPositions: ClrCDKPopoverPositions;
   availablePositions: any;
   hasBackdrop: false;
