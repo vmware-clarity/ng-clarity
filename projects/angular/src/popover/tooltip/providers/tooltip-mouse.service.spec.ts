@@ -8,7 +8,7 @@
 import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 
 import { TooltipMouseService } from './tooltip-mouse.service';
-import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverToggleService } from '../../../popover/common/providers/popover-toggle.service';
 
 export default function (): void {
   describe('Tooltip Mouse Service', () => {

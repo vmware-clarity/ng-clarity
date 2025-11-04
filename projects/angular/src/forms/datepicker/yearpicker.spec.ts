@@ -13,9 +13,9 @@ import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { ClrYearpicker } from './yearpicker';
 import { TestContext } from '../../data/datagrid/helpers.spec';
+import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 export default function () {
   describe('Yearpicker Component', () => {

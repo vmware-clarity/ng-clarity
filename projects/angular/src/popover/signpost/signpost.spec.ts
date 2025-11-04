@@ -10,7 +10,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpost } from './signpost';
 import { ClrSignpostModule } from './signpost.module';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import {
   expectActiveElementNotToBe,
   expectActiveElementToBe,

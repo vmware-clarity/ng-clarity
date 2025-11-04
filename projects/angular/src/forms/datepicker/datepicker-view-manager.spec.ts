@@ -15,7 +15,7 @@ import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 
 export default function () {
   describe('Datepicker View Manager Component', () => {

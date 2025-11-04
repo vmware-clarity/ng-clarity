@@ -19,9 +19,9 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { NO_OF_DAYS_IN_A_WEEK } from './utils/constants';
+import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 @Component({
   selector: 'clr-calendar',

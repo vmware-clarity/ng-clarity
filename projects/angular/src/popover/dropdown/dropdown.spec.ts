@@ -17,9 +17,9 @@ import { ClrDropdownTrigger } from './dropdown-trigger';
 import { ClrDropdownModule } from './dropdown.module';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 import { ClrModalModule } from '../../modal/modal.module';
+import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { FocusService } from '../../utils/focus/focus.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { delay } from '../../utils/testing/helpers.spec';
 

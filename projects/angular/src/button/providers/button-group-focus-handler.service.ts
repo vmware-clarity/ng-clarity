@@ -8,7 +8,7 @@
 import { Injectable, Renderer2 } from '@angular/core';
 
 import { InitialFocus } from './button-group-focus.enum';
-import { ClrPopoverToggleService } from '../../utils';
+import { ClrPopoverToggleService } from '../../popover/common';
 import { FocusService } from '../../utils/focus/focus.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { Linkers } from '../../utils/focus/focusable-item/linkers';

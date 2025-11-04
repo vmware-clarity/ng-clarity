@@ -9,11 +9,10 @@ import { AfterViewInit, Component, ElementRef, Input, Optional, Renderer2, ViewC
 import { startWith } from 'rxjs/operators';
 
 import { DayModel } from './model/day.model';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
-import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverPositions } from '../../popover/common/enums/positions.enum';
+import { ClrPopoverPosition } from '../../popover/common/interfaces/popover-position.interface';
+import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
+import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -21,6 +20,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';

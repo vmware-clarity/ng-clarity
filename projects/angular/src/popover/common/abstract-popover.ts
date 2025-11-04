@@ -21,9 +21,9 @@ import { startWith } from 'rxjs/operators';
 
 import { Point, Popover } from './popover';
 import { PopoverOptions } from './popover-options.interface';
+import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 /**
  * Fallback to hide when *clrIfOpen is not being used

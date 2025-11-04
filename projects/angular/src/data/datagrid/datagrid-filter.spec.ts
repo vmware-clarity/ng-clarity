@@ -15,10 +15,10 @@ import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider } from './providers/filters';
 import { Page } from './providers/page';
 import { StateDebouncer } from './providers/state-debouncer.provider';
+import { ClrPopoverEventsService } from '../../popover/common/providers/popover-events.service';
+import { ClrPopoverPositionService } from '../../popover/common/providers/popover-position.service';
+import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 function cleanPopoverDOM(component: ClrDatagridFilter) {
   const popoverContent = document.querySelectorAll('.clr-popover-content');

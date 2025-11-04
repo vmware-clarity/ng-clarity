@@ -61,6 +61,7 @@ import { DatagridRowRenderer } from './render/row-renderer';
 import { WrappedCell } from './wrapped-cell';
 import { WrappedColumn } from './wrapped-column';
 import { WrappedRow } from './wrapped-row';
+import { ClrPopoverModuleNext } from '../../popover/common/popover.module';
 import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
 import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
 import { CdkDragModule } from '../../utils/cdk/cdk-drag.module';
@@ -69,7 +70,6 @@ import { ClrConditionalModule } from '../../utils/conditional/conditional.module
 import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
 import { ClrLoadingModule } from '../../utils/loading/loading.module';
 import { ClrOutsideClickModule } from '../../utils/outside-click/outside-click.module';
-import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
 
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   // Core

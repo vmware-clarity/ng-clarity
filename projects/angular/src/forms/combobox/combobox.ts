@@ -28,21 +28,6 @@ import {
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import { ClrComboboxContainer } from './combobox-container';
-import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
-import { Keys } from '../../utils/enums/keys.enum';
-import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrLoadingState } from '../../utils/loading/loading';
-import { LoadingListener } from '../../utils/loading/loading-listener';
-import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
-import { ClrAxis } from '../../utils/popover/enums/axis.enum';
-import { ClrSide } from '../../utils/popover/enums/side.enum';
-import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
-import { WrappedFormControl } from '../common/wrapped-control';
 import { ComboboxModel } from './model/combobox.model';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
@@ -51,6 +36,21 @@ import { ClrOptions } from './options';
 import { ComboboxContainerService } from './providers/combobox-container.service';
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
+import { ClrAlignment } from '../../popover/common/enums/alignment.enum';
+import { ClrAxis } from '../../popover/common/enums/axis.enum';
+import { ClrSide } from '../../popover/common/enums/side.enum';
+import { ClrPopoverPosition } from '../../popover/common/interfaces/popover-position.interface';
+import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
+import { ClrPopoverPositionService } from '../../popover/common/providers/popover-position.service';
+import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
+import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
+import { Keys } from '../../utils/enums/keys.enum';
+import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrLoadingState } from '../../utils/loading/loading';
+import { LoadingListener } from '../../utils/loading/loading-listener';
+import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { WrappedFormControl } from '../common/wrapped-control';
 
 @Component({
   selector: 'clr-combobox',

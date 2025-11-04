@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 
 @Directive({
   selector: '[clrSignpostTrigger]',
