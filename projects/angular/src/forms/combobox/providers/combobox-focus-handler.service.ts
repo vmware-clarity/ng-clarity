@@ -10,11 +10,11 @@ import { ChangeDetectorRef, Inject, Injectable, PLATFORM_ID, Renderer2, Renderer
 import { take } from 'rxjs/operators';
 
 import { OptionSelectionService } from './option-selection.service';
+import { ClrPopoverToggleService } from '../../../popover/common/providers/popover-toggle.service';
 import { Keys } from '../../../utils/enums/keys.enum';
 import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
 import { customFocusableItemProvider } from '../../../utils/focus/focusable-item/custom-focusable-item-provider';
 import { normalizeKey } from '../../../utils/focus/key-focus/util';
-import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 import { PseudoFocusModel } from '../model/pseudo-focus.model';
 
 @Injectable()
