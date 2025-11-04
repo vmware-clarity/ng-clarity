@@ -39,6 +39,7 @@ export default {
     menuHeader: 'Menus',
     menuItemText: 'Menu',
     clrPosition: 'top-left',
+    showIcon: false,
     // story helpers
     createArray: n => new Array(n),
     menuCount: 3,
@@ -59,6 +60,7 @@ const DropdownMenuTemplate: StoryFn = args => ({
           <label class="dropdown-header" aria-hidden="true">{{ menuHeader }}</label>
           <clr-dropdown *ngFor="let _ of createArray(menuCount); let menuIndex = index">
             <button clrDropdownTrigger>
+              <cds-icon *ngIf="showIcon" shape="user"></cds-icon>
               <div [attr.cds-text]="truncateMenuItemText ? 'truncate' : undefined">
                 {{ menuItemText }} {{ menuIndex + 1 }}
               </div>
@@ -75,6 +77,7 @@ const DropdownMenuTemplate: StoryFn = args => ({
                 [attr.aria-label]="'Action' + (actionIndex + 1)"
                 clrDropdownItem
               >
+                <cds-icon *ngIf="showIcon" shape="user"></cds-icon>
                 Action {{ menuIndex * actionCount + actionIndex + 1 }}
               </div>
             </clr-dropdown-menu>
@@ -123,6 +126,12 @@ const DropdownMenuAllTemplate: StoryFn = args => ({
 
 export const DropdownMenu: StoryObj = {
   render: DropdownMenuTemplate,
+};
+export const DropdownMenuWithIcon: StoryObj = {
+  render: DropdownMenuTemplate,
+  args: {
+    showIcon: true,
+  },
 };
 export const LongItemText: StoryObj = {
   render: DropdownMenuTemplate,
