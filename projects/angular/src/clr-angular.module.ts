@@ -16,7 +16,6 @@ import { ClrIconModule } from './icon/icon.module';
 import { ClrLayoutModule } from './layout/layout.module';
 import { ClrModalModule } from './modal/modal.module';
 import { ClrSidePanelModule } from './modal/side-panel.module';
-import { ClrPopoverModuleNext } from './popover/common/popover.module';
 import { ClrPopoverModule } from './popover/popover.module';
 import { ClrProgressBarModule } from './progress/progress-bars/progress-bar.module';
 import { ClrSpinnerModule } from './progress/spinner/spinner.module';
@@ -24,6 +23,7 @@ import { ClrTimelineModule } from './timeline/timeline.module';
 import { ClrConditionalModule } from './utils/conditional/conditional.module';
 import { ClrFocusOnViewInitModule } from './utils/focus/focus-on-view-init/focus-on-view-init.module';
 import { ClrLoadingModule } from './utils/loading/loading.module';
+import { ClrPopoverModuleNext } from './utils/popover/popover.module';
 import { ClrWizardModule } from './wizard/wizard.module';
 
 // Register the icon library

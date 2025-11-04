@@ -8,9 +8,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 
 import { ClrPopoverAnchor } from './popover-anchor';
+import { spec, TestContext } from '../testing/helpers.spec';
 import { ClrPopoverEventsService } from './providers/popover-events.service';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   selector: 'test-host',

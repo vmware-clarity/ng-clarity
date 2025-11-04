@@ -11,10 +11,10 @@ import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 
 import { DatagridNumericFilter } from './datagrid-numeric-filter';
 import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
-import { ClrPopoverEventsService } from '../../../../popover/common/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../../../popover/common/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../../../popover/common/providers/popover-toggle.service';
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
+import { ClrPopoverEventsService } from '../../../../utils/popover/providers/popover-events.service';
+import { ClrPopoverPositionService } from '../../../../utils/popover/providers/popover-position.service';
+import { ClrPopoverToggleService } from '../../../../utils/popover/providers/popover-toggle.service';
 import { animationFrameTick } from '../../../../utils/testing/helpers.spec';
 import { TestContext } from '../../helpers.spec';
 import { ClrDatagridNumericFilterInterface } from '../../interfaces/numeric-filter.interface';

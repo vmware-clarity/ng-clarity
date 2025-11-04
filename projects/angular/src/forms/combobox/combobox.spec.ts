@@ -18,10 +18,10 @@ import { SingleSelectComboboxModel } from './model/single-select-combobox.model'
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
 import { ClrIconModule } from '../../icon/icon.module';
-import { ClrPopoverContent } from '../../popover/common/popover-content';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
+import { ClrPopoverContent } from '../../utils/popover/popover-content';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { delay } from '../../utils/testing/helpers.spec';
 
 @Component({

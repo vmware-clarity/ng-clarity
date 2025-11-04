@@ -9,12 +9,12 @@ import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-import { ClrPopoverEventsService } from './popover-events.service';
 import { ClrAxis } from '../enums/axis.enum';
 import { ClrViewportViolation } from '../enums/viewport-violation.enum';
 import { ClrPopoverContentOffset } from '../interfaces/popover-content-offset.interface';
 import { ClrPopoverPosition } from '../interfaces/popover-position.interface';
-import { align, flipSides, flipSidesAndNudgeContent, nudgeContent, testVisibility } from '../utils/position-operators';
+import { align, flipSides, flipSidesAndNudgeContent, nudgeContent, testVisibility } from '../position-operators';
+import { ClrPopoverEventsService } from './popover-events.service';
 
 @Injectable()
 export class ClrPopoverPositionService {

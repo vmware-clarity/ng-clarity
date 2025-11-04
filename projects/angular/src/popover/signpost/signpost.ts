@@ -10,8 +10,8 @@ import { Component, ContentChild, Input } from '@angular/core';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostTrigger } from './signpost-trigger';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 
 @Component({
   selector: 'clr-signpost',

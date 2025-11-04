@@ -12,12 +12,12 @@ import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 import { isObservable, Observable } from 'rxjs';
 
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './dropdown-focus-handler.service';
-import { ClrPopoverToggleService } from '../../../popover/common/providers/popover-toggle.service';
 import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
 import { FOCUS_SERVICE_PROVIDER, FocusService } from '../../../utils/focus/focus.service';
 import { FocusableItem } from '../../../utils/focus/focusable-item/focusable-item';
 import { MockFocusableItem } from '../../../utils/focus/focusable-item/focusable-item.mock';
 import { Linkers } from '../../../utils/focus/focusable-item/linkers';
+import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../../utils/testing/helpers.spec';
 
 @Component({

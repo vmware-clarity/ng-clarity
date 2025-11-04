@@ -8,8 +8,8 @@
 import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 
 import { ClrDropdown } from './dropdown';
-import { ClrPopoverToggleService } from '../common';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
+import { ClrPopoverToggleService } from '../../utils';
 @Directive({
   // We support both selectors for legacy reasons
   selector: '[clrDropdownTrigger],[clrDropdownToggle]',

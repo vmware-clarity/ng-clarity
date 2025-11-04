@@ -13,7 +13,7 @@
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 
-import { PopoverOptions } from './interfaces/popover-options.interface';
+import { PopoverOptions } from './popover-options.interface';
 export enum Point {
   RIGHT_CENTER,
   RIGHT_TOP,

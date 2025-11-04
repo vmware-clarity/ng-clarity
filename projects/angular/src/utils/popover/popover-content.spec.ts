@@ -8,6 +8,7 @@
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import { delay, TestContext } from '../testing/helpers.spec';
 import { ClrAlignment } from './enums/alignment.enum';
 import { ClrAxis } from './enums/axis.enum';
 import { ClrSide } from './enums/side.enum';
@@ -17,7 +18,6 @@ import { ClrPopoverModuleNext } from './popover.module';
 import { ClrPopoverEventsService } from './providers/popover-events.service';
 import { ClrPopoverPositionService } from './providers/popover-position.service';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
-import { delay, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   selector: 'test-host',

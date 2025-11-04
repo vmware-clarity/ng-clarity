@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { Point } from '../common/popover';
 import { TooltipIdService } from './providers/tooltip-id.service';

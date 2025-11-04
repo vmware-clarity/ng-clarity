@@ -20,7 +20,7 @@ import {
 import { Subscription } from 'rxjs';
 
 import { OptionSelectionService } from './providers/option-selection.service';
-import { ClrPopoverPositionService } from '../../popover/common/providers/popover-position.service';
+import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 
 @Directive({
   selector: '[clrOptionItems][clrOptionItemsOf]',

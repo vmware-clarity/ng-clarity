@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 @Directive({
   selector: '[clrTooltipTrigger]',

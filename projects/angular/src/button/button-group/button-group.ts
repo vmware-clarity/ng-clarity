@@ -18,14 +18,14 @@ import {
 import { takeUntil } from 'rxjs/operators';
 
 import { ClrButton } from './button';
-import { ClrPopoverPositions } from '../../popover/common/enums/positions.enum';
-import { ClrPopoverPosition } from '../../popover/common/interfaces/popover-position.interface';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { ClrDestroyService } from '../../utils/destroy/destroy.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
+import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
+import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
+import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import {
   BUTTON_GROUP_FOCUS_HANDLER_PROVIDER,
   ButtonGroupFocusHandler,

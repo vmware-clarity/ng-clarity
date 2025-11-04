@@ -19,11 +19,11 @@ import { MockDatepickerEnabledService } from './providers/datepicker-enabled.ser
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverPositions } from '../../popover/common/enums/positions.enum';
-import { ClrPopoverEventsService } from '../../popover/common/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../popover/common/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { PopoverPosition } from '../../popover/common/utils/popover-positions';
+import { PopoverPosition } from '../../popover/common/popover-positions';
+import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
+import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
+import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';

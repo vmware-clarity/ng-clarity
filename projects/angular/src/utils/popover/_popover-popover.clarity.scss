@@ -5,7 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './dropdown/index';
-export * from './popover.module';
-export * from './signpost/index';
-export * from './tooltip/index';
+@use 'sass:map';
+@use '../mixins';
+@use '../variables/variables.global';
+
+@include mixins.exports('smart-popover.clarity') {
+  .clr-popover-content {
+    position: fixed;
+    z-index: map.get(variables.$clr-layers, smart-popover);
+  }
+}

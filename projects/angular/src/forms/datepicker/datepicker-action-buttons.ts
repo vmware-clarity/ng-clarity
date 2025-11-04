@@ -9,8 +9,8 @@ import { Component } from '@angular/core';
 
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 @Component({
   selector: 'clr-datepicker-actions',

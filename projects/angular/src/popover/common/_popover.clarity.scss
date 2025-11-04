@@ -4,16 +4,10 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use 'sass:map';
+
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
 
 @include mixins.exports('popover.clarity') {
-  .clr-popover-content {
-    position: fixed;
-    z-index: map.get(variables.$clr-layers, smart-popover);
-  }
-
   .is-off-screen {
     @include mixins.off-screen-styles();
   }

@@ -25,13 +25,13 @@ import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from './providers/filters';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
-import { ClrAlignment } from '../../popover/common/enums/alignment.enum';
-import { ClrAxis } from '../../popover/common/enums/axis.enum';
-import { ClrSide } from '../../popover/common/enums/side.enum';
-import { ClrPopoverPosition } from '../../popover/common/interfaces/popover-position.interface';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
+import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
+import { ClrAxis } from '../../utils/popover/enums/axis.enum';
+import { ClrSide } from '../../utils/popover/enums/side.enum';
+import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 /**
  * Custom filter that can be added in any column to override the default object property string filter.

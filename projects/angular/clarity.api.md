@@ -5543,20 +5543,6 @@ export class NavDetectionOompaLoompa extends OompaLoompa {
 }
 
 // @public (undocumented)
-export interface PopoverOptions {
-    // (undocumented)
-    allowMultipleOpen?: boolean;
-    // (undocumented)
-    ignoreGlobalESCListener?: boolean;
-    // (undocumented)
-    offsetX?: number;
-    // (undocumented)
-    offsetY?: number;
-    // (undocumented)
-    useAnchorParent?: boolean;
-}
-
-// @public (undocumented)
 export function slide(direction: string): AnimationMetadata[];
 
 // @public (undocumented)

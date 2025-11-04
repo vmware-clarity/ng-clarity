@@ -11,9 +11,9 @@ import { TestBed } from '@angular/core/testing';
 import { ClrComboboxModule } from './combobox.module';
 import { ClrOptionItems } from './option-items.directive';
 import { OptionSelectionService } from './providers/option-selection.service';
-import { ClrPopoverEventsService } from '../../popover/common/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../popover/common/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
+import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 @Component({
   template: `

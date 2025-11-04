@@ -11,7 +11,7 @@ import { NgModule, Type } from '@angular/core';
 import { ClrButton } from './button';
 import { ClrButtonGroup } from './button-group';
 import { ClrIconModule } from '../../icon/icon.module';
-import { ClrPopoverModuleNext } from '../../popover/common/popover.module';
+import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
 
 export const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[] = [ClrButton, ClrButtonGroup];
 

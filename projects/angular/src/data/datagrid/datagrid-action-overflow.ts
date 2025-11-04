@@ -10,15 +10,15 @@ import { Component, EventEmitter, Inject, Input, OnDestroy, Output, PLATFORM_ID,
 import { Subscription } from 'rxjs';
 
 import { RowActionService } from './providers/row-action-service';
-import { ClrAlignment } from '../../popover/common/enums/alignment.enum';
-import { ClrAxis } from '../../popover/common/enums/axis.enum';
-import { ClrSide } from '../../popover/common/enums/side.enum';
-import { ClrPopoverPosition } from '../../popover/common/interfaces/popover-position.interface';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { ClrKeyFocus } from '../../utils/focus/key-focus';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
+import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
+import { ClrAxis } from '../../utils/popover/enums/axis.enum';
+import { ClrSide } from '../../utils/popover/enums/side.enum';
+import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
+import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 let clrDgActionId = 0;
 

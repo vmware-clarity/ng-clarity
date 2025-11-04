@@ -7,8 +7,8 @@
 
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 
-import { ClrPopoverHostDirective } from '../../../../angular/src/popover/common/popover-host.directive';
-import { ClrPopoverToggleService } from '../../../../angular/src/popover/common/providers/popover-toggle.service';
+import { ClrPopoverHostDirective } from '../../../../angular/src/utils/popover/popover-host.directive';
+import { ClrPopoverToggleService } from '../../../../angular/src/utils/popover/providers/popover-toggle.service';
 
 @Component({
   selector: 'clr-dummy-anchor',

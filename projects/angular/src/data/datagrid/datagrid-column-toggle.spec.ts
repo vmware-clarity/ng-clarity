@@ -11,7 +11,7 @@ import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
 import { TestContext } from './helpers.spec';
 import { ColumnsService } from './providers/columns.service';
 import { MOCK_COLUMN_SERVICE_PROVIDER, MockColumnsService } from './providers/columns.service.mock';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { delay } from '../../utils/testing/helpers.spec';
 
 @Component({
