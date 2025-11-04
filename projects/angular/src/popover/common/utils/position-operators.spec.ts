@@ -5,11 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrAlignment } from './enums/alignment.enum';
-import { ClrAxis } from './enums/axis.enum';
-import { ClrSide } from './enums/side.enum';
-import { ClrViewportViolation } from './enums/viewport-violation.enum';
-import { ClrPopoverPosition } from './interfaces/popover-position.interface';
 import {
   align,
   flipAxis,
@@ -18,6 +13,11 @@ import {
   nudgeContent,
   testVisibility,
 } from './position-operators';
+import { ClrAlignment } from '../enums/alignment.enum';
+import { ClrAxis } from '../enums/axis.enum';
+import { ClrSide } from '../enums/side.enum';
+import { ClrViewportViolation } from '../enums/viewport-violation.enum';
+import { ClrPopoverPosition } from '../interfaces/popover-position.interface';
 
 export function ClrPositionTransformSpec(): void {
   describe('Transorm Function', () => {

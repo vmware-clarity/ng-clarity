@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './popover-options.interface';
+export * from './interfaces/popover-options.interface';
 export * from './enums/alignment.enum';
 export * from './enums/axis.enum';
 export * from './enums/side.enum';
