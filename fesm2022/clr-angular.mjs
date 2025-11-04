@@ -1,13 +1,13 @@
 import * as i0 from '@angular/core';
-import { Directive, NgModule, Input, Optional, Injectable, ChangeDetectionStrategy, Component, EventEmitter, ContentChildren, Output, HostBinding, SkipSelf, PLATFORM_ID, ViewChild, Inject, HostListener, Renderer2, DOCUMENT, InjectionToken, ElementRef, NgZone, ChangeDetectorRef, ContentChild, forwardRef, KeyValueDiffers, Self, Attribute, LOCALE_ID, TemplateRef, ViewContainerRef, inject, Injector, runInInjectionContext, EnvironmentInjector, IterableDiffers, ViewChildren } from '@angular/core';
+import { Directive, NgModule, Input, Optional, Injectable, ChangeDetectionStrategy, Component, EventEmitter, ContentChildren, Output, HostBinding, SkipSelf, PLATFORM_ID, ViewChild, Inject, HostListener, DOCUMENT, InjectionToken, ElementRef, Renderer2, NgZone, ChangeDetectorRef, ContentChild, forwardRef, KeyValueDiffers, Self, Attribute, LOCALE_ID, TemplateRef, ViewContainerRef, inject, Injector, runInInjectionContext, EnvironmentInjector, IterableDiffers, ViewChildren } from '@angular/core';
 import * as i5 from '@angular/common';
 import { CommonModule, isPlatformBrowser, NgForOf, getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, getLocaleFirstDayOfWeek, getLocaleDateFormat, FormatWidth } from '@angular/common';
 import { ClarityIcons, angleIcon, exclamationCircleIcon, checkCircleIcon, ellipsisHorizontalIcon, windowCloseIcon, infoCircleIcon, timesIcon, angleDoubleIcon, eventIcon, calendarIcon, folderOpenIcon, minusIcon, plusIcon, eyeHideIcon, eyeIcon, ellipsisVerticalIcon, viewColumnsIcon, arrowIcon, stepForward2Icon, filterGridCircleIcon, filterGridIcon, errorStandardIcon, helpIcon, infoStandardIcon, noteIcon, successStandardIcon, warningStandardIcon, circleIcon, dotCircleIcon } from '@cds/core/icon';
 import { map, tap, startWith, distinctUntilChanged, filter, skipUntil, debounceTime, takeUntil, take, first, delay, switchMap as switchMap$1 } from 'rxjs/operators';
-import * as i2$1 from 'rxjs';
-import { Subject, BehaviorSubject, Observable, isObservable, of, fromEvent, ReplaySubject, shareReplay, combineLatest, startWith as startWith$1, switchMap, merge, map as map$1, EMPTY, tap as tap$1 } from 'rxjs';
-import * as i2 from '@angular/animations';
-import { animation, style, animate, trigger, transition, state, useAnimation, keyframes } from '@angular/animations';
+import * as i2 from 'rxjs';
+import { Subject, BehaviorSubject, Observable, fromEvent, isObservable, of, ReplaySubject, shareReplay, combineLatest, startWith as startWith$1, switchMap, merge, map as map$1, EMPTY, tap as tap$1 } from 'rxjs';
+import * as i2$1 from '@angular/animations';
+import { animation, style, animate, trigger, transition, keyframes, state, useAnimation } from '@angular/animations';
 import * as i1 from '@angular/forms';
 import { FormControl, FormGroup, FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR, SelectMultipleControlValueAccessor } from '@angular/forms';
 import * as i1$1 from '@angular/router';
@@ -1704,153 +1704,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-/**
- * @description
- *
- * Developers should explicitly add this service to providers; it then can be injected
- * into a constructor and used as a notifier for the `takeUntil` operator. This eliminates
- * the need for boilerplates with subscriptions, and we don't need to implement the `OnDestroy`
- * interface and teardown subscriptions there.
- *
- * This can be used as follows:
- * ```ts
- * @Component({
- *   selector: 'clr-button-group',
- *   templateUrl: 'button-group.html',
- *   providers: [ClrDestroyService],
- * })
- * export class ClrButtonGroup {
- *   constructor(public buttonGroupNewService: ButtonInGroupService, private destroy$: ClrDestroyService) {}
- *
- *   ngAfterContentInit() {
- *     this.buttonGroupNewService.changes.pipe(takeUntil(this.destroy$)).subscribe(button => this.rearrangeButton(button));
- *   }
- * }
- * ```
- */
-class ClrDestroyService extends Subject {
-    ngOnDestroy() {
-        this.next();
-        this.complete();
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDestroyService, deps: null, target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDestroyService }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDestroyService, decorators: [{
-            type: Injectable
-        }] });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-var ArrowKeyDirection;
-(function (ArrowKeyDirection) {
-    ArrowKeyDirection["UP"] = "up";
-    ArrowKeyDirection["DOWN"] = "down";
-    ArrowKeyDirection["LEFT"] = "left";
-    ArrowKeyDirection["RIGHT"] = "right";
-})(ArrowKeyDirection || (ArrowKeyDirection = {}));
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-let FocusService$1 = class FocusService {
-    constructor(renderer) {
-        this.renderer = renderer;
-        this._unlistenFuncs = [];
-    }
-    get current() {
-        return this._current;
-    }
-    reset(first) {
-        this._current = first;
-    }
-    listenToArrowKeys(el) {
-        // The following listeners return false when there was an action to take for the key pressed,
-        // in order to prevent the default behavior of that key.
-        this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowup', () => !this.move(ArrowKeyDirection.UP)));
-        this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowdown', () => !this.move(ArrowKeyDirection.DOWN)));
-        this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowleft', () => !this.move(ArrowKeyDirection.LEFT)));
-        this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowright', () => !this.move(ArrowKeyDirection.RIGHT)));
-    }
-    registerContainer(el, tabIndex = '0') {
-        this.renderer.setAttribute(el, 'tabindex', tabIndex);
-        this.listenToArrowKeys(el);
-        // The following listeners return false when there was an action to take for the key pressed,
-        // in order to prevent the default behavior of that key.
-        this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.space', () => !this.activateCurrent()));
-        this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.enter', () => !this.activateCurrent()));
-    }
-    moveTo(item) {
-        /**
-         * Make sure that item is not undefined,
-         * This is safety net in the case that someone sometime decide to
-         * call this method without having FocusableItem.
-         */
-        if (item === undefined) {
-            return;
-        }
-        if (this.current) {
-            this.current.blur();
-        }
-        item.focus();
-        this._current = item;
-    }
-    move(direction) {
-        let moved = false;
-        if (this.current) {
-            const next = this.current[direction];
-            if (next) {
-                // Turning the value into an Observable isn't great, but it's the fastest way to avoid code duplication.
-                // If performance ever matters for this, we can refactor using additional private methods.
-                const nextObs = isObservable(next) ? next : of(next);
-                nextObs.subscribe(item => {
-                    if (item) {
-                        this.moveTo(item);
-                        moved = true;
-                    }
-                });
-            }
-        }
-        return moved;
-    }
-    activateCurrent() {
-        if (this.current && this.current.activate) {
-            this.current.activate();
-            return true;
-        }
-        return false;
-    }
-    detachListeners() {
-        this._unlistenFuncs.forEach(unlisten => unlisten());
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: FocusService, deps: [{ token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: FocusService }); }
-};
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: FocusService$1, decorators: [{
-            type: Injectable
-        }], ctorParameters: () => [{ type: i0.Renderer2 }] });
-function clrFocusServiceFactory(existing, renderer) {
-    return existing || new FocusService$1(renderer);
-}
-const FOCUS_SERVICE_PROVIDER = {
-    provide: FocusService$1,
-    useFactory: clrFocusServiceFactory,
-    deps: [[new Optional(), new SkipSelf(), FocusService$1], Renderer2],
-};
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 var ClrAlignment;
 (function (ClrAlignment) {
     ClrAlignment[ClrAlignment["START"] = 0] = "START";
@@ -2721,6 +2574,153 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/**
+ * @description
+ *
+ * Developers should explicitly add this service to providers; it then can be injected
+ * into a constructor and used as a notifier for the `takeUntil` operator. This eliminates
+ * the need for boilerplates with subscriptions, and we don't need to implement the `OnDestroy`
+ * interface and teardown subscriptions there.
+ *
+ * This can be used as follows:
+ * ```ts
+ * @Component({
+ *   selector: 'clr-button-group',
+ *   templateUrl: 'button-group.html',
+ *   providers: [ClrDestroyService],
+ * })
+ * export class ClrButtonGroup {
+ *   constructor(public buttonGroupNewService: ButtonInGroupService, private destroy$: ClrDestroyService) {}
+ *
+ *   ngAfterContentInit() {
+ *     this.buttonGroupNewService.changes.pipe(takeUntil(this.destroy$)).subscribe(button => this.rearrangeButton(button));
+ *   }
+ * }
+ * ```
+ */
+class ClrDestroyService extends Subject {
+    ngOnDestroy() {
+        this.next();
+        this.complete();
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDestroyService, deps: null, target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDestroyService }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDestroyService, decorators: [{
+            type: Injectable
+        }] });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+var ArrowKeyDirection;
+(function (ArrowKeyDirection) {
+    ArrowKeyDirection["UP"] = "up";
+    ArrowKeyDirection["DOWN"] = "down";
+    ArrowKeyDirection["LEFT"] = "left";
+    ArrowKeyDirection["RIGHT"] = "right";
+})(ArrowKeyDirection || (ArrowKeyDirection = {}));
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+let FocusService$1 = class FocusService {
+    constructor(renderer) {
+        this.renderer = renderer;
+        this._unlistenFuncs = [];
+    }
+    get current() {
+        return this._current;
+    }
+    reset(first) {
+        this._current = first;
+    }
+    listenToArrowKeys(el) {
+        // The following listeners return false when there was an action to take for the key pressed,
+        // in order to prevent the default behavior of that key.
+        this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowup', () => !this.move(ArrowKeyDirection.UP)));
+        this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowdown', () => !this.move(ArrowKeyDirection.DOWN)));
+        this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowleft', () => !this.move(ArrowKeyDirection.LEFT)));
+        this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowright', () => !this.move(ArrowKeyDirection.RIGHT)));
+    }
+    registerContainer(el, tabIndex = '0') {
+        this.renderer.setAttribute(el, 'tabindex', tabIndex);
+        this.listenToArrowKeys(el);
+        // The following listeners return false when there was an action to take for the key pressed,
+        // in order to prevent the default behavior of that key.
+        this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.space', () => !this.activateCurrent()));
+        this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.enter', () => !this.activateCurrent()));
+    }
+    moveTo(item) {
+        /**
+         * Make sure that item is not undefined,
+         * This is safety net in the case that someone sometime decide to
+         * call this method without having FocusableItem.
+         */
+        if (item === undefined) {
+            return;
+        }
+        if (this.current) {
+            this.current.blur();
+        }
+        item.focus();
+        this._current = item;
+    }
+    move(direction) {
+        let moved = false;
+        if (this.current) {
+            const next = this.current[direction];
+            if (next) {
+                // Turning the value into an Observable isn't great, but it's the fastest way to avoid code duplication.
+                // If performance ever matters for this, we can refactor using additional private methods.
+                const nextObs = isObservable(next) ? next : of(next);
+                nextObs.subscribe(item => {
+                    if (item) {
+                        this.moveTo(item);
+                        moved = true;
+                    }
+                });
+            }
+        }
+        return moved;
+    }
+    activateCurrent() {
+        if (this.current && this.current.activate) {
+            this.current.activate();
+            return true;
+        }
+        return false;
+    }
+    detachListeners() {
+        this._unlistenFuncs.forEach(unlisten => unlisten());
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: FocusService, deps: [{ token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: FocusService }); }
+};
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: FocusService$1, decorators: [{
+            type: Injectable
+        }], ctorParameters: () => [{ type: i0.Renderer2 }] });
+function clrFocusServiceFactory(existing, renderer) {
+    return existing || new FocusService$1(renderer);
+}
+const FOCUS_SERVICE_PROVIDER = {
+    provide: FocusService$1,
+    useFactory: clrFocusServiceFactory,
+    deps: [[new Optional(), new SkipSelf(), FocusService$1], Renderer2],
+};
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 var InitialFocus;
 (function (InitialFocus) {
     InitialFocus["FIRST_ITEM"] = "first";
@@ -2761,730 +2761,6 @@ class Linkers {
 // Right now I only need the two linkers above, but we can easily add more linkers. A couple examples:
 // export function linkHorizontal(items: FocusableItem[], loop = true);
 // export function linkTable(items: FocusableItem[][]);
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-function collapse() {
-    'use strict';
-    return [
-        state('true', style({ height: 0, 'overflow-y': 'hidden' })),
-        transition('true => false', [animate(defaultAnimationTiming, style({ height: '*', 'overflow-y': 'hidden' }))]),
-        transition('false => true', [style({ height: '*', 'overflow-y': 'hidden' }), animate(defaultAnimationTiming)]),
-    ];
-}
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-/*
- * If we someday want to be able to render the datagrid in a webworker,
- * this is where we would test if we're in headless mode. Right now it's not testing anything, but any access
- * to native DOM elements' methods and properties in the Datagrid happens here.
- */
-class DomAdapter {
-    /*
-      We clone the element and take its measurements from outside the grid
-      so we don't trigger reflow for the whole datagrid.
-    */
-    userDefinedWidth(element) {
-        const clonedElement = element.cloneNode(true);
-        if (clonedElement.id) {
-            clonedElement.id = clonedElement.id + '-clone';
-        }
-        clonedElement.classList.add('datagrid-cell-width-zero');
-        document.body.appendChild(clonedElement);
-        const userDefinedWidth = this.clientRect(clonedElement).width;
-        clonedElement.remove();
-        return userDefinedWidth;
-    }
-    scrollBarWidth(element) {
-        return element.offsetWidth - element.clientWidth;
-    }
-    scrollWidth(element) {
-        return element.scrollWidth || 0;
-    }
-    computedHeight(element) {
-        return parseInt(getComputedStyle(element).getPropertyValue('height'), 10);
-    }
-    clientRect(element) {
-        const elementClientRect = element.getBoundingClientRect();
-        return {
-            top: parseInt(elementClientRect.top, 10),
-            bottom: parseInt(elementClientRect.bottom, 10),
-            left: parseInt(elementClientRect.left, 10),
-            right: parseInt(elementClientRect.right, 10),
-            width: parseInt(elementClientRect.width, 10),
-            height: parseInt(elementClientRect.height, 10),
-        };
-    }
-    minWidth(element) {
-        return parseInt(getComputedStyle(element).getPropertyValue('min-width'), 10);
-    }
-    focus(element) {
-        element.focus();
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: DomAdapter, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: DomAdapter }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: DomAdapter, decorators: [{
-            type: Injectable
-        }] });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class BaseExpandableAnimation {
-    constructor(element, domAdapter, renderer) {
-        this.element = element;
-        this.domAdapter = domAdapter;
-        this.renderer = renderer;
-        this.startHeight = 0;
-    }
-    updateStartHeight() {
-        this.startHeight = this.domAdapter.computedHeight(this.element.nativeElement) || 0;
-    }
-    initAnimationEffects() {
-        this.renderer.setStyle(this.element.nativeElement, 'overflow', 'hidden');
-    }
-    cleanupAnimationEffects(cancelAnimations = false) {
-        this.renderer.removeStyle(this.element.nativeElement, 'overflow');
-        // A "safe" auto-update of the height ensuring basic OOTB user experience .
-        // Prone to small jumps in initial animation height if data was changed in the meantime, the window was resized, etc.
-        // For optimal behavior call manually updateStartHeight() from the parent component before initiating the update.
-        this.updateStartHeight();
-        if (cancelAnimations) {
-            this.cancelElementAnimations();
-        }
-    }
-    cancelElementAnimations() {
-        this.element.nativeElement.getAnimations().forEach(animation => {
-            if (animation.playState === 'finished') {
-                animation.cancel(); // clears animation-style set on the element
-            }
-        });
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: BaseExpandableAnimation, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: BaseExpandableAnimation, isStandalone: true, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: BaseExpandableAnimation, decorators: [{
-            type: Directive
-        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: DomAdapter }, { type: i0.Renderer2 }] });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrExpandableAnimation extends BaseExpandableAnimation {
-    constructor() {
-        super(...arguments);
-        this.clrExpandTrigger = false;
-    }
-    get expandAnimation() {
-        return { value: this.clrExpandTrigger, params: { startHeight: this.startHeight } };
-    }
-    animationStart(event) {
-        if (event.fromState !== 'void') {
-            this.initAnimationEffects();
-        }
-    }
-    animationDone(event) {
-        if (event.fromState !== 'void') {
-            this.cleanupAnimationEffects();
-        }
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrExpandableAnimation, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrExpandableAnimation, isStandalone: false, selector: "clr-expandable-animation", inputs: { clrExpandTrigger: "clrExpandTrigger" }, host: { listeners: { "@expandAnimation.start": "animationStart($event)", "@expandAnimation.done": "animationDone($event)" }, properties: { "@expandAnimation": "this.expandAnimation" } }, providers: [DomAdapter], usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, styles: [":host{display:block}\n"], animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])] }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrExpandableAnimation, decorators: [{
-            type: Component,
-            args: [{ selector: 'clr-expandable-animation', template: `<ng-content></ng-content>`, animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])], providers: [DomAdapter], standalone: false, styles: [":host{display:block}\n"] }]
-        }], propDecorators: { clrExpandTrigger: [{
-                type: Input
-            }], expandAnimation: [{
-                type: HostBinding,
-                args: ['@expandAnimation']
-            }], animationStart: [{
-                type: HostListener,
-                args: ['@expandAnimation.start', ['$event']]
-            }], animationDone: [{
-                type: HostListener,
-                args: ['@expandAnimation.done', ['$event']]
-            }] } });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrExpandableAnimationDirective extends BaseExpandableAnimation {
-    constructor(element, domAdapter, renderer, builder) {
-        super(element, domAdapter, renderer);
-        this.builder = builder;
-        this.expanded = false;
-    }
-    ngOnChanges(changes) {
-        if (changes['expanded'] && !changes['expanded'].firstChange) {
-            Promise.resolve().then(() => this.playAnimation());
-        }
-    }
-    ngOnDestroy() {
-        this.player?.destroy();
-    }
-    playAnimation() {
-        if (this.player) {
-            this.player.destroy();
-        }
-        this.player = this.builder
-            .build([useAnimation(defaultExpandAnimation, { params: { startHeight: this.startHeight } })])
-            .create(this.element.nativeElement);
-        this.player.onStart(() => this.initAnimationEffects());
-        this.player.onDone(() => this.cleanupAnimationEffects(true));
-        this.player.play();
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrExpandableAnimationDirective, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }, { token: i2.AnimationBuilder }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrExpandableAnimationDirective, isStandalone: false, selector: "[clrExpandableAnimation]", inputs: { expanded: ["clrExpandableAnimation", "expanded"] }, host: { properties: { "class.clr-expandable-animation": "true" } }, providers: [DomAdapter], usesInheritance: true, usesOnChanges: true, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrExpandableAnimationDirective, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: '[clrExpandableAnimation]',
-                    providers: [DomAdapter],
-                    host: {
-                        '[class.clr-expandable-animation]': 'true',
-                    },
-                    standalone: false,
-                }]
-        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: DomAdapter }, { type: i0.Renderer2 }, { type: i2.AnimationBuilder }], propDecorators: { expanded: [{
-                type: Input,
-                args: ['clrExpandableAnimation']
-            }] } });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-const EXPANDABLE_ANIMATION_DIRECTIVES = [ClrExpandableAnimation, ClrExpandableAnimationDirective];
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-function fade(opacity = 1) {
-    return [
-        transition('void => *', [style({ opacity: 0 }), animate(defaultAnimationTiming, style({ opacity: opacity }))]),
-        transition('* => void', [animate(defaultAnimationTiming, style({ opacity: 0 }))]),
-    ];
-}
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-function fadeSlide(direction) {
-    let transform = null;
-    if (direction === 'up') {
-        transform = 'translate(0, 25%)';
-    }
-    else if (direction === 'down') {
-        transform = 'translate(0, -25%)';
-    }
-    else if (direction === 'left') {
-        transform = 'translate(25%, 0)';
-    }
-    else if (direction === 'right') {
-        transform = 'translate(-25%, 0)';
-    }
-    else {
-        throw new Error('Unknown direction ' + direction + ' for slide animation.');
-    }
-    return [
-        transition('void => *', [style({ opacity: 0, transform: transform }), animate(defaultAnimationTiming)]),
-        transition('* => void', [animate(defaultAnimationTiming, style({ opacity: 0, transform: transform }))]),
-    ];
-}
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-function slide(direction) {
-    let transform = null;
-    if (direction === 'up') {
-        transform = 'translate(0, 25%)';
-    }
-    else if (direction === 'down') {
-        transform = 'translate(0, -25%)';
-    }
-    else if (direction === 'left') {
-        transform = 'translate(25%, 0)';
-    }
-    else if (direction === 'right') {
-        transform = 'translate(-25%, 0)';
-    }
-    else {
-        throw new Error('Unknown direction ' + direction + ' for slide animation.');
-    }
-    return [
-        transition('void => *', [style({ transform: transform }), animate(defaultAnimationTiming)]),
-        transition('* => void', [animate(defaultAnimationTiming, style({ transform: transform }))]),
-    ];
-}
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-const CLR_LOADING_DIRECTIVES = [ClrLoading];
-class ClrLoadingModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrLoadingModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.2.2", ngImport: i0, type: ClrLoadingModule, declarations: [ClrLoading], imports: [CommonModule], exports: [ClrLoading] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrLoadingModule, imports: [CommonModule] }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrLoadingModule, decorators: [{
-            type: NgModule,
-            args: [{
-                    imports: [CommonModule],
-                    declarations: [CLR_LOADING_DIRECTIVES],
-                    exports: [CLR_LOADING_DIRECTIVES],
-                }]
-        }] });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-let activeCounter = 0;
-const IF_ACTIVE_ID = new InjectionToken('IF_ACTIVE_ID');
-function tokenFactory$1() {
-    return ++activeCounter;
-}
-const IF_ACTIVE_ID_PROVIDER = {
-    provide: IF_ACTIVE_ID,
-    useFactory: tokenFactory$1,
-};
-/*********
- * @class IfActiveService
- *
- * @description
- * An injectable service used by IfActive structural directives and the components that implement IfActive in their
- * templates. It holds the value of the current state and provides an Observable that both the directive and the
- * implementing component can subscribe to in order to take action on current value changes.
- *
- */
-class IfActiveService {
-    constructor() {
-        /********
-         * @property _currentChange
-         *
-         * @description
-         * A RXJS Subject that updates and provides subscriptions to for the current current state of a component template
-         * implemting the IfActive structural directive.
-         *
-         */
-        this._currentChange = new Subject();
-    }
-    /*********
-     *
-     * @description
-     * A getter function that provides an observable for the _current Subject.
-     *
-     */
-    get currentChange() {
-        return this._currentChange.asObservable();
-    }
-    /*********
-     *
-     * @description
-     * A property that gets/sets the current state of _current for this instance of IfActive structural directive.
-     * And, broadcasts the new value to all subscribers.
-     *
-     */
-    get current() {
-        return this._current;
-    }
-    set current(value) {
-        if (this._current !== value) {
-            this._current = value;
-            this._currentChange.next(value);
-        }
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: IfActiveService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: IfActiveService }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: IfActiveService, decorators: [{
-            type: Injectable
-        }] });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-/**********
- *
- * @class ClrIfActive
- *
- * @description
- * A structural directive that controls whether or not the associated TemplateRef is instantiated or not.
- * It makes use of a Component instance level service: IfActiveService to maintain state between itself and
- * the component using it in the component template.
- *
- */
-class ClrIfActive {
-    constructor(ifActiveService, id, template, container) {
-        this.ifActiveService = ifActiveService;
-        this.id = id;
-        this.template = template;
-        this.container = container;
-        /**********
-         * @property activeChange
-         *
-         * @description
-         * An event emitter that emits when the active property is set to allow for 2way binding when the directive is
-         * used with de-structured / de-sugared syntax.
-         *
-         */
-        this.activeChange = new EventEmitter(false);
-        this.wasActive = false;
-        this.checkAndUpdateView(ifActiveService.current);
-        this.subscription = ifActiveService.currentChange.subscribe(newCurrentId => {
-            this.checkAndUpdateView(newCurrentId);
-        });
-    }
-    /**
-     * @description
-     * A property that gets/sets IfActiveService.active with value.
-     *
-     */
-    get active() {
-        return this.ifActiveService.current === this.id;
-    }
-    set active(value) {
-        if (value) {
-            this.ifActiveService.current = this.id;
-        }
-    }
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
-    /**
-     * @description
-     * Function that takes a any value and either created an embedded view for the associated ViewContainerRef or,
-     * Clears all views from the ViewContainerRef
-     */
-    updateView(value) {
-        if (value) {
-            this.container.createEmbeddedView(this.template);
-        }
-        else {
-            this.container.clear();
-        }
-    }
-    checkAndUpdateView(currentId) {
-        const isNowActive = currentId === this.id;
-        // only emit if the new active state is changed since last time.
-        if (isNowActive !== this.wasActive) {
-            this.updateView(isNowActive);
-            this.activeChange.emit(isNowActive);
-            this.wasActive = isNowActive;
-        }
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfActive, deps: [{ token: IfActiveService }, { token: IF_ACTIVE_ID }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrIfActive, isStandalone: false, selector: "[clrIfActive]", inputs: { active: ["clrIfActive", "active"] }, outputs: { activeChange: "clrIfActiveChange" }, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfActive, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: '[clrIfActive]',
-                    standalone: false,
-                }]
-        }], ctorParameters: () => [{ type: IfActiveService }, { type: undefined, decorators: [{
-                    type: Inject,
-                    args: [IF_ACTIVE_ID]
-                }] }, { type: i0.TemplateRef }, { type: i0.ViewContainerRef }], propDecorators: { activeChange: [{
-                type: Output,
-                args: ['clrIfActiveChange']
-            }], active: [{
-                type: Input,
-                args: ['clrIfActive']
-            }] } });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-/**********
- *
- * @class ClrIfOpen
- *
- * @description
- * A structural directive that controls whether or not the associated TemplateRef is instantiated or not.
- * It makes use of a Component instance level service: ClrPopoverToggleService to maintain state between itself and the component
- * using it in the component template.
- *
- */
-class ClrIfOpen {
-    constructor(toggleService, template, container) {
-        this.toggleService = toggleService;
-        this.template = template;
-        this.container = container;
-        /**********
-         * @property openChange
-         *
-         * @description
-         * An event emitter that emits when the open property is set to allow for 2way binding when the directive is
-         * used with de-structured / de-sugared syntax.
-         */
-        this.openChange = new EventEmitter(false);
-        this.subscription = toggleService.openChange.subscribe(change => {
-            this.updateView(change);
-            this.openChange.emit(change);
-        });
-    }
-    /**
-     * @description
-     * A property that gets/sets ClrPopoverToggleService.open with value.
-     */
-    get open() {
-        return this.toggleService.open;
-    }
-    set open(value) {
-        this.toggleService.open = value;
-    }
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
-    /**
-     * @description
-     * Function that takes a boolean value and either created an embedded view for the associated ViewContainerRef or,
-     * Clears all views from the ViewContainerRef
-     *
-     * @param value
-     */
-    updateView(value) {
-        if (value) {
-            this.container.createEmbeddedView(this.template);
-        }
-        else {
-            this.container.clear();
-        }
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfOpen, deps: [{ token: ClrPopoverToggleService }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrIfOpen, isStandalone: false, selector: "[clrIfOpen]", inputs: { open: ["clrIfOpen", "open"] }, outputs: { openChange: "clrIfOpenChange" }, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfOpen, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: '[clrIfOpen]',
-                    standalone: false,
-                }]
-        }], ctorParameters: () => [{ type: ClrPopoverToggleService }, { type: i0.TemplateRef }, { type: i0.ViewContainerRef }], propDecorators: { openChange: [{
-                type: Output,
-                args: ['clrIfOpenChange']
-            }], open: [{
-                type: Input,
-                args: ['clrIfOpen']
-            }] } });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrIfExpanded {
-    constructor(template, container, el, renderer, expand) {
-        this.template = template;
-        this.container = container;
-        this.el = el;
-        this.renderer = renderer;
-        this.expand = expand;
-        this.expandedChange = new EventEmitter(true);
-        this._expanded = false;
-        /**
-         * Subscriptions to all the services and queries changes
-         */
-        this._subscriptions = [];
-        this._subscriptions.push(expand.expandChange.subscribe(() => {
-            this.updateView();
-            this.expandedChange.emit(expand.expanded);
-        }));
-        expand.hasExpandTemplate = !!template;
-    }
-    get expanded() {
-        return this._expanded;
-    }
-    set expanded(value) {
-        if (typeof value === 'boolean') {
-            this.expand.expanded = value;
-            this._expanded = value;
-        }
-    }
-    ngOnInit() {
-        this.expand.expandable++;
-        this.updateView();
-    }
-    ngOnDestroy() {
-        this.expand.expandable--;
-        this._subscriptions.forEach((sub) => sub.unsubscribe());
-    }
-    updateView() {
-        if (this.expand.expanded && this.container.length !== 0) {
-            return;
-        }
-        if (this.template) {
-            if (this.expand.expanded) {
-                // Should we pass a context? I don't see anything useful to pass right now,
-                // but we can come back to it in the future as a solution for additional features.
-                this.container.createEmbeddedView(this.template);
-            }
-            else {
-                // TODO: Move when we move the animation logic to Datagrid Row Expand
-                // We clear before the animation is over. Not ideal, but doing better would involve a much heavier
-                // process for very little gain. Once Angular animations are dynamic enough, we should be able to
-                // get the optimal behavior.
-                this.container.clear();
-            }
-        }
-        else {
-            try {
-                // If we don't have a template ref, we fallback to a crude display: none for now.
-                if (this.expand.expanded) {
-                    this.renderer.setStyle(this.el.nativeElement, 'display', null);
-                }
-                else {
-                    this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
-                }
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            }
-            catch (e) {
-                // We catch the case where clrIfExpanded was put on a non-DOM element, and we just do nothing
-            }
-        }
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfExpanded, deps: [{ token: i0.TemplateRef, optional: true }, { token: i0.ViewContainerRef }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: IfExpandService }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrIfExpanded, isStandalone: false, selector: "[clrIfExpanded]", inputs: { expanded: ["clrIfExpanded", "expanded"] }, outputs: { expandedChange: "clrIfExpandedChange" }, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfExpanded, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: '[clrIfExpanded]',
-                    standalone: false,
-                }]
-        }], ctorParameters: () => [{ type: i0.TemplateRef, decorators: [{
-                    type: Optional
-                }] }, { type: i0.ViewContainerRef }, { type: i0.ElementRef }, { type: i0.Renderer2 }, { type: IfExpandService }], propDecorators: { expandedChange: [{
-                type: Output,
-                args: ['clrIfExpandedChange']
-            }], expanded: [{
-                type: Input,
-                args: ['clrIfExpanded']
-            }] } });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-const CONDITIONAL_DIRECTIVES = [ClrIfActive, ClrIfOpen, ClrIfExpanded];
-class ClrConditionalModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrConditionalModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.2.2", ngImport: i0, type: ClrConditionalModule, declarations: [ClrIfActive, ClrIfOpen, ClrIfExpanded], imports: [CommonModule], exports: [ClrIfActive, ClrIfOpen, ClrIfExpanded] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrConditionalModule, imports: [CommonModule] }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrConditionalModule, decorators: [{
-            type: NgModule,
-            args: [{
-                    imports: [CommonModule],
-                    declarations: [CONDITIONAL_DIRECTIVES],
-                    exports: [CONDITIONAL_DIRECTIVES],
-                }]
-        }] });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
@@ -3787,185 +3063,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                     exports: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent],
                 }]
         }] });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-const FOCUS_ON_VIEW_INIT = new InjectionToken('FOCUS_ON_VIEW_INIT');
-// This provider holds the default value for clrFocusOnViewInit directive's isEnabled property.
-// So users can interject this provider and set their own value for this provider.
-const FOCUS_ON_VIEW_INIT_PROVIDER = {
-    provide: FOCUS_ON_VIEW_INIT,
-    useValue: true,
-};
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-/*  This directive is for guiding the document focus to the newly added content when its view is initialized
-    so that assistive technologies can read its content. */
-class ClrFocusOnViewInit {
-    constructor(el, platformId, focusOnViewInit, document, renderer, ngZone) {
-        this.el = el;
-        this.platformId = platformId;
-        this.focusOnViewInit = focusOnViewInit;
-        this.renderer = renderer;
-        this.directFocus = true; // true if the element gets focused without need to set tabindex;
-        this.destroy$ = new Subject();
-        this._isEnabled = focusOnViewInit;
-        // Angular compiler doesn't understand the type Document
-        // when working out the metadata for injectable parameters,
-        // even though it understands the injection token DOCUMENT
-        // https://github.com/angular/angular/issues/20351
-        this.document = document;
-        ngZone.runOutsideAngular(() => fromEvent(el.nativeElement, 'focusout')
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-            if (!this.directFocus) {
-                // manually set attributes and styles should be removed
-                renderer.removeAttribute(el.nativeElement, 'tabindex');
-                renderer.setStyle(el.nativeElement, 'outline', null);
-            }
-        }));
-    }
-    set isEnabled(value) {
-        if (this.focusOnViewInit && typeof value === 'boolean') {
-            this._isEnabled = value;
-        }
-    }
-    ngAfterViewInit() {
-        this.focus();
-    }
-    ngOnDestroy() {
-        this.destroy$.next();
-    }
-    focus() {
-        if (!isPlatformBrowser(this.platformId)) {
-            return;
-        }
-        if (!this._isEnabled) {
-            return;
-        }
-        if (this.document && this.document.activeElement !== this.el.nativeElement) {
-            this.el.nativeElement.focus();
-            if (this.document.activeElement !== this.el.nativeElement) {
-                // if it's not directly focused now, it means it was a non-interactive element
-                // so we need to give it a tabindex.
-                this.directFocus = false;
-                this.renderer.setAttribute(this.el.nativeElement, 'tabindex', '-1');
-                this.renderer.setStyle(this.el.nativeElement, 'outline', 'none');
-                this.el.nativeElement.focus();
-            }
-        }
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrFocusOnViewInit, deps: [{ token: i0.ElementRef }, { token: PLATFORM_ID }, { token: FOCUS_ON_VIEW_INIT }, { token: DOCUMENT }, { token: i0.Renderer2 }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrFocusOnViewInit, isStandalone: false, selector: "[clrFocusOnViewInit]", inputs: { isEnabled: ["clrFocusOnViewInit", "isEnabled"] }, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrFocusOnViewInit, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: '[clrFocusOnViewInit]',
-                    standalone: false,
-                }]
-        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: undefined, decorators: [{
-                    type: Inject,
-                    args: [PLATFORM_ID]
-                }] }, { type: undefined, decorators: [{
-                    type: Inject,
-                    args: [FOCUS_ON_VIEW_INIT]
-                }] }, { type: undefined, decorators: [{
-                    type: Inject,
-                    args: [DOCUMENT]
-                }] }, { type: i0.Renderer2 }, { type: i0.NgZone }], propDecorators: { isEnabled: [{
-                type: Input,
-                args: ['clrFocusOnViewInit']
-            }] } });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-const FOCUS_ON_VIEW_INIT_DIRECTIVES = [ClrFocusOnViewInit];
-class ClrFocusOnViewInitModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrFocusOnViewInitModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.2.2", ngImport: i0, type: ClrFocusOnViewInitModule, declarations: [ClrFocusOnViewInit], imports: [CommonModule], exports: [ClrFocusOnViewInit] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrFocusOnViewInitModule, providers: [FOCUS_ON_VIEW_INIT_PROVIDER], imports: [CommonModule] }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrFocusOnViewInitModule, decorators: [{
-            type: NgModule,
-            args: [{
-                    imports: [CommonModule],
-                    declarations: [FOCUS_ON_VIEW_INIT_DIRECTIVES],
-                    providers: [FOCUS_ON_VIEW_INIT_PROVIDER],
-                    exports: [FOCUS_ON_VIEW_INIT_DIRECTIVES],
-                }]
-        }] });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
-    /**
-     * Include the constructor to forward all the dependencies to the base class
-     * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
-     * https://github.com/storybookjs/storybook/issues/23534
-     */
-    constructor(elementRef, focusTrapFactory, document) {
-        super(elementRef, focusTrapFactory, document);
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrStandaloneCdkTrapFocus, deps: [{ token: i0.ElementRef }, { token: i1$2.FocusTrapFactory }, { token: DOCUMENT, optional: true }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrStandaloneCdkTrapFocus, isStandalone: true, usesInheritance: true, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrStandaloneCdkTrapFocus, decorators: [{
-            type: Directive,
-            args: [{
-                    standalone: true,
-                }]
-        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: i1$2.FocusTrapFactory }, { type: undefined, decorators: [{
-                    type: Optional
-                }, {
-                    type: Inject,
-                    args: [DOCUMENT]
-                }] }] });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
@@ -5455,6 +4552,364 @@ const CLR_MENU_POSITIONS = [
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+let activeCounter = 0;
+const IF_ACTIVE_ID = new InjectionToken('IF_ACTIVE_ID');
+function tokenFactory$1() {
+    return ++activeCounter;
+}
+const IF_ACTIVE_ID_PROVIDER = {
+    provide: IF_ACTIVE_ID,
+    useFactory: tokenFactory$1,
+};
+/*********
+ * @class IfActiveService
+ *
+ * @description
+ * An injectable service used by IfActive structural directives and the components that implement IfActive in their
+ * templates. It holds the value of the current state and provides an Observable that both the directive and the
+ * implementing component can subscribe to in order to take action on current value changes.
+ *
+ */
+class IfActiveService {
+    constructor() {
+        /********
+         * @property _currentChange
+         *
+         * @description
+         * A RXJS Subject that updates and provides subscriptions to for the current current state of a component template
+         * implemting the IfActive structural directive.
+         *
+         */
+        this._currentChange = new Subject();
+    }
+    /*********
+     *
+     * @description
+     * A getter function that provides an observable for the _current Subject.
+     *
+     */
+    get currentChange() {
+        return this._currentChange.asObservable();
+    }
+    /*********
+     *
+     * @description
+     * A property that gets/sets the current state of _current for this instance of IfActive structural directive.
+     * And, broadcasts the new value to all subscribers.
+     *
+     */
+    get current() {
+        return this._current;
+    }
+    set current(value) {
+        if (this._current !== value) {
+            this._current = value;
+            this._currentChange.next(value);
+        }
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: IfActiveService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: IfActiveService }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: IfActiveService, decorators: [{
+            type: Injectable
+        }] });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/**********
+ *
+ * @class ClrIfActive
+ *
+ * @description
+ * A structural directive that controls whether or not the associated TemplateRef is instantiated or not.
+ * It makes use of a Component instance level service: IfActiveService to maintain state between itself and
+ * the component using it in the component template.
+ *
+ */
+class ClrIfActive {
+    constructor(ifActiveService, id, template, container) {
+        this.ifActiveService = ifActiveService;
+        this.id = id;
+        this.template = template;
+        this.container = container;
+        /**********
+         * @property activeChange
+         *
+         * @description
+         * An event emitter that emits when the active property is set to allow for 2way binding when the directive is
+         * used with de-structured / de-sugared syntax.
+         *
+         */
+        this.activeChange = new EventEmitter(false);
+        this.wasActive = false;
+        this.checkAndUpdateView(ifActiveService.current);
+        this.subscription = ifActiveService.currentChange.subscribe(newCurrentId => {
+            this.checkAndUpdateView(newCurrentId);
+        });
+    }
+    /**
+     * @description
+     * A property that gets/sets IfActiveService.active with value.
+     *
+     */
+    get active() {
+        return this.ifActiveService.current === this.id;
+    }
+    set active(value) {
+        if (value) {
+            this.ifActiveService.current = this.id;
+        }
+    }
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+    /**
+     * @description
+     * Function that takes a any value and either created an embedded view for the associated ViewContainerRef or,
+     * Clears all views from the ViewContainerRef
+     */
+    updateView(value) {
+        if (value) {
+            this.container.createEmbeddedView(this.template);
+        }
+        else {
+            this.container.clear();
+        }
+    }
+    checkAndUpdateView(currentId) {
+        const isNowActive = currentId === this.id;
+        // only emit if the new active state is changed since last time.
+        if (isNowActive !== this.wasActive) {
+            this.updateView(isNowActive);
+            this.activeChange.emit(isNowActive);
+            this.wasActive = isNowActive;
+        }
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfActive, deps: [{ token: IfActiveService }, { token: IF_ACTIVE_ID }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrIfActive, isStandalone: false, selector: "[clrIfActive]", inputs: { active: ["clrIfActive", "active"] }, outputs: { activeChange: "clrIfActiveChange" }, ngImport: i0 }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfActive, decorators: [{
+            type: Directive,
+            args: [{
+                    selector: '[clrIfActive]',
+                    standalone: false,
+                }]
+        }], ctorParameters: () => [{ type: IfActiveService }, { type: undefined, decorators: [{
+                    type: Inject,
+                    args: [IF_ACTIVE_ID]
+                }] }, { type: i0.TemplateRef }, { type: i0.ViewContainerRef }], propDecorators: { activeChange: [{
+                type: Output,
+                args: ['clrIfActiveChange']
+            }], active: [{
+                type: Input,
+                args: ['clrIfActive']
+            }] } });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrIfExpanded {
+    constructor(template, container, el, renderer, expand) {
+        this.template = template;
+        this.container = container;
+        this.el = el;
+        this.renderer = renderer;
+        this.expand = expand;
+        this.expandedChange = new EventEmitter(true);
+        this._expanded = false;
+        /**
+         * Subscriptions to all the services and queries changes
+         */
+        this._subscriptions = [];
+        this._subscriptions.push(expand.expandChange.subscribe(() => {
+            this.updateView();
+            this.expandedChange.emit(expand.expanded);
+        }));
+        expand.hasExpandTemplate = !!template;
+    }
+    get expanded() {
+        return this._expanded;
+    }
+    set expanded(value) {
+        if (typeof value === 'boolean') {
+            this.expand.expanded = value;
+            this._expanded = value;
+        }
+    }
+    ngOnInit() {
+        this.expand.expandable++;
+        this.updateView();
+    }
+    ngOnDestroy() {
+        this.expand.expandable--;
+        this._subscriptions.forEach((sub) => sub.unsubscribe());
+    }
+    updateView() {
+        if (this.expand.expanded && this.container.length !== 0) {
+            return;
+        }
+        if (this.template) {
+            if (this.expand.expanded) {
+                // Should we pass a context? I don't see anything useful to pass right now,
+                // but we can come back to it in the future as a solution for additional features.
+                this.container.createEmbeddedView(this.template);
+            }
+            else {
+                // TODO: Move when we move the animation logic to Datagrid Row Expand
+                // We clear before the animation is over. Not ideal, but doing better would involve a much heavier
+                // process for very little gain. Once Angular animations are dynamic enough, we should be able to
+                // get the optimal behavior.
+                this.container.clear();
+            }
+        }
+        else {
+            try {
+                // If we don't have a template ref, we fallback to a crude display: none for now.
+                if (this.expand.expanded) {
+                    this.renderer.setStyle(this.el.nativeElement, 'display', null);
+                }
+                else {
+                    this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
+                }
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            }
+            catch (e) {
+                // We catch the case where clrIfExpanded was put on a non-DOM element, and we just do nothing
+            }
+        }
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfExpanded, deps: [{ token: i0.TemplateRef, optional: true }, { token: i0.ViewContainerRef }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: IfExpandService }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrIfExpanded, isStandalone: false, selector: "[clrIfExpanded]", inputs: { expanded: ["clrIfExpanded", "expanded"] }, outputs: { expandedChange: "clrIfExpandedChange" }, ngImport: i0 }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfExpanded, decorators: [{
+            type: Directive,
+            args: [{
+                    selector: '[clrIfExpanded]',
+                    standalone: false,
+                }]
+        }], ctorParameters: () => [{ type: i0.TemplateRef, decorators: [{
+                    type: Optional
+                }] }, { type: i0.ViewContainerRef }, { type: i0.ElementRef }, { type: i0.Renderer2 }, { type: IfExpandService }], propDecorators: { expandedChange: [{
+                type: Output,
+                args: ['clrIfExpandedChange']
+            }], expanded: [{
+                type: Input,
+                args: ['clrIfExpanded']
+            }] } });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/**********
+ *
+ * @class ClrIfOpen
+ *
+ * @description
+ * A structural directive that controls whether or not the associated TemplateRef is instantiated or not.
+ * It makes use of a Component instance level service: ClrPopoverToggleService to maintain state between itself and the component
+ * using it in the component template.
+ *
+ */
+class ClrIfOpen {
+    constructor(toggleService, template, container) {
+        this.toggleService = toggleService;
+        this.template = template;
+        this.container = container;
+        /**********
+         * @property openChange
+         *
+         * @description
+         * An event emitter that emits when the open property is set to allow for 2way binding when the directive is
+         * used with de-structured / de-sugared syntax.
+         */
+        this.openChange = new EventEmitter(false);
+        this.subscription = toggleService.openChange.subscribe(change => {
+            this.updateView(change);
+            this.openChange.emit(change);
+        });
+    }
+    /**
+     * @description
+     * A property that gets/sets ClrPopoverToggleService.open with value.
+     */
+    get open() {
+        return this.toggleService.open;
+    }
+    set open(value) {
+        this.toggleService.open = value;
+    }
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+    /**
+     * @description
+     * Function that takes a boolean value and either created an embedded view for the associated ViewContainerRef or,
+     * Clears all views from the ViewContainerRef
+     *
+     * @param value
+     */
+    updateView(value) {
+        if (value) {
+            this.container.createEmbeddedView(this.template);
+        }
+        else {
+            this.container.clear();
+        }
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfOpen, deps: [{ token: ClrPopoverToggleService }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrIfOpen, isStandalone: false, selector: "[clrIfOpen]", inputs: { open: ["clrIfOpen", "open"] }, outputs: { openChange: "clrIfOpenChange" }, ngImport: i0 }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfOpen, decorators: [{
+            type: Directive,
+            args: [{
+                    selector: '[clrIfOpen]',
+                    standalone: false,
+                }]
+        }], ctorParameters: () => [{ type: ClrPopoverToggleService }, { type: i0.TemplateRef }, { type: i0.ViewContainerRef }], propDecorators: { openChange: [{
+                type: Output,
+                args: ['clrIfOpenChange']
+            }], open: [{
+                type: Input,
+                args: ['clrIfOpen']
+            }] } });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+const CONDITIONAL_DIRECTIVES = [ClrIfActive, ClrIfOpen, ClrIfExpanded];
+class ClrConditionalModule {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrConditionalModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.2.2", ngImport: i0, type: ClrConditionalModule, declarations: [ClrIfActive, ClrIfOpen, ClrIfExpanded], imports: [CommonModule], exports: [ClrIfActive, ClrIfOpen, ClrIfExpanded] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrConditionalModule, imports: [CommonModule] }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrConditionalModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [CommonModule],
+                    declarations: [CONDITIONAL_DIRECTIVES],
+                    exports: [CONDITIONAL_DIRECTIVES],
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 const CLR_DROPDOWN_DIRECTIVES = [ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem];
 class ClrDropdownModule {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDropdownModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
@@ -5899,6 +5354,127 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                     template: `<ng-content></ng-content>`,
                     host: { '[class.signpost-title]': 'true' },
                     standalone: false,
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+const FOCUS_ON_VIEW_INIT = new InjectionToken('FOCUS_ON_VIEW_INIT');
+// This provider holds the default value for clrFocusOnViewInit directive's isEnabled property.
+// So users can interject this provider and set their own value for this provider.
+const FOCUS_ON_VIEW_INIT_PROVIDER = {
+    provide: FOCUS_ON_VIEW_INIT,
+    useValue: true,
+};
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/*  This directive is for guiding the document focus to the newly added content when its view is initialized
+    so that assistive technologies can read its content. */
+class ClrFocusOnViewInit {
+    constructor(el, platformId, focusOnViewInit, document, renderer, ngZone) {
+        this.el = el;
+        this.platformId = platformId;
+        this.focusOnViewInit = focusOnViewInit;
+        this.renderer = renderer;
+        this.directFocus = true; // true if the element gets focused without need to set tabindex;
+        this.destroy$ = new Subject();
+        this._isEnabled = focusOnViewInit;
+        // Angular compiler doesn't understand the type Document
+        // when working out the metadata for injectable parameters,
+        // even though it understands the injection token DOCUMENT
+        // https://github.com/angular/angular/issues/20351
+        this.document = document;
+        ngZone.runOutsideAngular(() => fromEvent(el.nativeElement, 'focusout')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+            if (!this.directFocus) {
+                // manually set attributes and styles should be removed
+                renderer.removeAttribute(el.nativeElement, 'tabindex');
+                renderer.setStyle(el.nativeElement, 'outline', null);
+            }
+        }));
+    }
+    set isEnabled(value) {
+        if (this.focusOnViewInit && typeof value === 'boolean') {
+            this._isEnabled = value;
+        }
+    }
+    ngAfterViewInit() {
+        this.focus();
+    }
+    ngOnDestroy() {
+        this.destroy$.next();
+    }
+    focus() {
+        if (!isPlatformBrowser(this.platformId)) {
+            return;
+        }
+        if (!this._isEnabled) {
+            return;
+        }
+        if (this.document && this.document.activeElement !== this.el.nativeElement) {
+            this.el.nativeElement.focus();
+            if (this.document.activeElement !== this.el.nativeElement) {
+                // if it's not directly focused now, it means it was a non-interactive element
+                // so we need to give it a tabindex.
+                this.directFocus = false;
+                this.renderer.setAttribute(this.el.nativeElement, 'tabindex', '-1');
+                this.renderer.setStyle(this.el.nativeElement, 'outline', 'none');
+                this.el.nativeElement.focus();
+            }
+        }
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrFocusOnViewInit, deps: [{ token: i0.ElementRef }, { token: PLATFORM_ID }, { token: FOCUS_ON_VIEW_INIT }, { token: DOCUMENT }, { token: i0.Renderer2 }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrFocusOnViewInit, isStandalone: false, selector: "[clrFocusOnViewInit]", inputs: { isEnabled: ["clrFocusOnViewInit", "isEnabled"] }, ngImport: i0 }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrFocusOnViewInit, decorators: [{
+            type: Directive,
+            args: [{
+                    selector: '[clrFocusOnViewInit]',
+                    standalone: false,
+                }]
+        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: undefined, decorators: [{
+                    type: Inject,
+                    args: [PLATFORM_ID]
+                }] }, { type: undefined, decorators: [{
+                    type: Inject,
+                    args: [FOCUS_ON_VIEW_INIT]
+                }] }, { type: undefined, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }, { type: i0.Renderer2 }, { type: i0.NgZone }], propDecorators: { isEnabled: [{
+                type: Input,
+                args: ['clrFocusOnViewInit']
+            }] } });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+const FOCUS_ON_VIEW_INIT_DIRECTIVES = [ClrFocusOnViewInit];
+class ClrFocusOnViewInitModule {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrFocusOnViewInitModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.2.2", ngImport: i0, type: ClrFocusOnViewInitModule, declarations: [ClrFocusOnViewInit], imports: [CommonModule], exports: [ClrFocusOnViewInit] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrFocusOnViewInitModule, providers: [FOCUS_ON_VIEW_INIT_PROVIDER], imports: [CommonModule] }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrFocusOnViewInitModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [CommonModule],
+                    declarations: [FOCUS_ON_VIEW_INIT_DIRECTIVES],
+                    providers: [FOCUS_ON_VIEW_INIT_PROVIDER],
+                    exports: [FOCUS_ON_VIEW_INIT_DIRECTIVES],
                 }]
         }] });
 
@@ -6567,7 +6143,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                     providers: [ControlIdService, IS_TOGGLE_PROVIDER],
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i2$1.BehaviorSubject, decorators: [{
+        }], ctorParameters: () => [{ type: i2.BehaviorSubject, decorators: [{
                     type: Inject,
                     args: [IS_TOGGLE]
                 }] }], propDecorators: { label: [{
@@ -11961,6 +11537,437 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+function collapse() {
+    'use strict';
+    return [
+        state('true', style({ height: 0, 'overflow-y': 'hidden' })),
+        transition('true => false', [animate(defaultAnimationTiming, style({ height: '*', 'overflow-y': 'hidden' }))]),
+        transition('false => true', [style({ height: '*', 'overflow-y': 'hidden' }), animate(defaultAnimationTiming)]),
+    ];
+}
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/*
+ * If we someday want to be able to render the datagrid in a webworker,
+ * this is where we would test if we're in headless mode. Right now it's not testing anything, but any access
+ * to native DOM elements' methods and properties in the Datagrid happens here.
+ */
+class DomAdapter {
+    /*
+      We clone the element and take its measurements from outside the grid
+      so we don't trigger reflow for the whole datagrid.
+    */
+    userDefinedWidth(element) {
+        const clonedElement = element.cloneNode(true);
+        if (clonedElement.id) {
+            clonedElement.id = clonedElement.id + '-clone';
+        }
+        clonedElement.classList.add('datagrid-cell-width-zero');
+        document.body.appendChild(clonedElement);
+        const userDefinedWidth = this.clientRect(clonedElement).width;
+        clonedElement.remove();
+        return userDefinedWidth;
+    }
+    scrollBarWidth(element) {
+        return element.offsetWidth - element.clientWidth;
+    }
+    scrollWidth(element) {
+        return element.scrollWidth || 0;
+    }
+    computedHeight(element) {
+        return parseInt(getComputedStyle(element).getPropertyValue('height'), 10);
+    }
+    clientRect(element) {
+        const elementClientRect = element.getBoundingClientRect();
+        return {
+            top: parseInt(elementClientRect.top, 10),
+            bottom: parseInt(elementClientRect.bottom, 10),
+            left: parseInt(elementClientRect.left, 10),
+            right: parseInt(elementClientRect.right, 10),
+            width: parseInt(elementClientRect.width, 10),
+            height: parseInt(elementClientRect.height, 10),
+        };
+    }
+    minWidth(element) {
+        return parseInt(getComputedStyle(element).getPropertyValue('min-width'), 10);
+    }
+    focus(element) {
+        element.focus();
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: DomAdapter, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: DomAdapter }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: DomAdapter, decorators: [{
+            type: Injectable
+        }] });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class BaseExpandableAnimation {
+    constructor(element, domAdapter, renderer) {
+        this.element = element;
+        this.domAdapter = domAdapter;
+        this.renderer = renderer;
+        this.startHeight = 0;
+    }
+    updateStartHeight() {
+        this.startHeight = this.domAdapter.computedHeight(this.element.nativeElement) || 0;
+    }
+    initAnimationEffects() {
+        this.renderer.setStyle(this.element.nativeElement, 'overflow', 'hidden');
+    }
+    cleanupAnimationEffects(cancelAnimations = false) {
+        this.renderer.removeStyle(this.element.nativeElement, 'overflow');
+        // A "safe" auto-update of the height ensuring basic OOTB user experience .
+        // Prone to small jumps in initial animation height if data was changed in the meantime, the window was resized, etc.
+        // For optimal behavior call manually updateStartHeight() from the parent component before initiating the update.
+        this.updateStartHeight();
+        if (cancelAnimations) {
+            this.cancelElementAnimations();
+        }
+    }
+    cancelElementAnimations() {
+        this.element.nativeElement.getAnimations().forEach(animation => {
+            if (animation.playState === 'finished') {
+                animation.cancel(); // clears animation-style set on the element
+            }
+        });
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: BaseExpandableAnimation, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: BaseExpandableAnimation, isStandalone: true, ngImport: i0 }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: BaseExpandableAnimation, decorators: [{
+            type: Directive
+        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: DomAdapter }, { type: i0.Renderer2 }] });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrExpandableAnimation extends BaseExpandableAnimation {
+    constructor() {
+        super(...arguments);
+        this.clrExpandTrigger = false;
+    }
+    get expandAnimation() {
+        return { value: this.clrExpandTrigger, params: { startHeight: this.startHeight } };
+    }
+    animationStart(event) {
+        if (event.fromState !== 'void') {
+            this.initAnimationEffects();
+        }
+    }
+    animationDone(event) {
+        if (event.fromState !== 'void') {
+            this.cleanupAnimationEffects();
+        }
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrExpandableAnimation, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrExpandableAnimation, isStandalone: false, selector: "clr-expandable-animation", inputs: { clrExpandTrigger: "clrExpandTrigger" }, host: { listeners: { "@expandAnimation.start": "animationStart($event)", "@expandAnimation.done": "animationDone($event)" }, properties: { "@expandAnimation": "this.expandAnimation" } }, providers: [DomAdapter], usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, styles: [":host{display:block}\n"], animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])] }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrExpandableAnimation, decorators: [{
+            type: Component,
+            args: [{ selector: 'clr-expandable-animation', template: `<ng-content></ng-content>`, animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])], providers: [DomAdapter], standalone: false, styles: [":host{display:block}\n"] }]
+        }], propDecorators: { clrExpandTrigger: [{
+                type: Input
+            }], expandAnimation: [{
+                type: HostBinding,
+                args: ['@expandAnimation']
+            }], animationStart: [{
+                type: HostListener,
+                args: ['@expandAnimation.start', ['$event']]
+            }], animationDone: [{
+                type: HostListener,
+                args: ['@expandAnimation.done', ['$event']]
+            }] } });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrExpandableAnimationDirective extends BaseExpandableAnimation {
+    constructor(element, domAdapter, renderer, builder) {
+        super(element, domAdapter, renderer);
+        this.builder = builder;
+        this.expanded = false;
+    }
+    ngOnChanges(changes) {
+        if (changes['expanded'] && !changes['expanded'].firstChange) {
+            Promise.resolve().then(() => this.playAnimation());
+        }
+    }
+    ngOnDestroy() {
+        this.player?.destroy();
+    }
+    playAnimation() {
+        if (this.player) {
+            this.player.destroy();
+        }
+        this.player = this.builder
+            .build([useAnimation(defaultExpandAnimation, { params: { startHeight: this.startHeight } })])
+            .create(this.element.nativeElement);
+        this.player.onStart(() => this.initAnimationEffects());
+        this.player.onDone(() => this.cleanupAnimationEffects(true));
+        this.player.play();
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrExpandableAnimationDirective, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }, { token: i2$1.AnimationBuilder }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrExpandableAnimationDirective, isStandalone: false, selector: "[clrExpandableAnimation]", inputs: { expanded: ["clrExpandableAnimation", "expanded"] }, host: { properties: { "class.clr-expandable-animation": "true" } }, providers: [DomAdapter], usesInheritance: true, usesOnChanges: true, ngImport: i0 }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrExpandableAnimationDirective, decorators: [{
+            type: Directive,
+            args: [{
+                    selector: '[clrExpandableAnimation]',
+                    providers: [DomAdapter],
+                    host: {
+                        '[class.clr-expandable-animation]': 'true',
+                    },
+                    standalone: false,
+                }]
+        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: DomAdapter }, { type: i0.Renderer2 }, { type: i2$1.AnimationBuilder }], propDecorators: { expanded: [{
+                type: Input,
+                args: ['clrExpandableAnimation']
+            }] } });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+const EXPANDABLE_ANIMATION_DIRECTIVES = [ClrExpandableAnimation, ClrExpandableAnimationDirective];
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+function fade(opacity = 1) {
+    return [
+        transition('void => *', [style({ opacity: 0 }), animate(defaultAnimationTiming, style({ opacity: opacity }))]),
+        transition('* => void', [animate(defaultAnimationTiming, style({ opacity: 0 }))]),
+    ];
+}
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+function fadeSlide(direction) {
+    let transform = null;
+    if (direction === 'up') {
+        transform = 'translate(0, 25%)';
+    }
+    else if (direction === 'down') {
+        transform = 'translate(0, -25%)';
+    }
+    else if (direction === 'left') {
+        transform = 'translate(25%, 0)';
+    }
+    else if (direction === 'right') {
+        transform = 'translate(-25%, 0)';
+    }
+    else {
+        throw new Error('Unknown direction ' + direction + ' for slide animation.');
+    }
+    return [
+        transition('void => *', [style({ opacity: 0, transform: transform }), animate(defaultAnimationTiming)]),
+        transition('* => void', [animate(defaultAnimationTiming, style({ opacity: 0, transform: transform }))]),
+    ];
+}
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+function slide(direction) {
+    let transform = null;
+    if (direction === 'up') {
+        transform = 'translate(0, 25%)';
+    }
+    else if (direction === 'down') {
+        transform = 'translate(0, -25%)';
+    }
+    else if (direction === 'left') {
+        transform = 'translate(25%, 0)';
+    }
+    else if (direction === 'right') {
+        transform = 'translate(-25%, 0)';
+    }
+    else {
+        throw new Error('Unknown direction ' + direction + ' for slide animation.');
+    }
+    return [
+        transition('void => *', [style({ transform: transform }), animate(defaultAnimationTiming)]),
+        transition('* => void', [animate(defaultAnimationTiming, style({ transform: transform }))]),
+    ];
+}
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+const CLR_LOADING_DIRECTIVES = [ClrLoading];
+class ClrLoadingModule {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrLoadingModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.2.2", ngImport: i0, type: ClrLoadingModule, declarations: [ClrLoading], imports: [CommonModule], exports: [ClrLoading] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrLoadingModule, imports: [CommonModule] }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrLoadingModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [CommonModule],
+                    declarations: [CLR_LOADING_DIRECTIVES],
+                    exports: [CLR_LOADING_DIRECTIVES],
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
+    /**
+     * Include the constructor to forward all the dependencies to the base class
+     * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
+     * https://github.com/storybookjs/storybook/issues/23534
+     */
+    constructor(elementRef, focusTrapFactory, document) {
+        super(elementRef, focusTrapFactory, document);
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrStandaloneCdkTrapFocus, deps: [{ token: i0.ElementRef }, { token: i1$2.FocusTrapFactory }, { token: DOCUMENT, optional: true }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrStandaloneCdkTrapFocus, isStandalone: true, usesInheritance: true, ngImport: i0 }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrStandaloneCdkTrapFocus, decorators: [{
+            type: Directive,
+            args: [{
+                    standalone: true,
+                }]
+        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: i1$2.FocusTrapFactory }, { type: undefined, decorators: [{
+                    type: Optional
+                }, {
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }] });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 class ClrMonthpicker {
     constructor(_localeHelperService, _dateNavigationService, _datepickerFocusService, _elRef, _viewManagerService, commonStrings) {
         this._localeHelperService = _localeHelperService;
@@ -16792,7 +16799,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                 }]
         }], ctorParameters: () => [{ type: IfControlStateService }, { type: LayoutService, decorators: [{
                     type: Optional
-                }] }, { type: ControlClassService }, { type: NgControlService }, { type: FocusService }, { type: i2$1.BehaviorSubject, decorators: [{
+                }] }, { type: ControlClassService }, { type: NgControlService }, { type: FocusService }, { type: i2.BehaviorSubject, decorators: [{
                     type: Inject,
                     args: [TOGGLE_SERVICE]
                 }] }, { type: ClrCommonStringsService }], propDecorators: { clrToggle: [{
@@ -16845,7 +16852,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                     type: Optional
                 }] }, { type: i0.Renderer2 }, { type: i0.ElementRef }, { type: FocusService, decorators: [{
                     type: Optional
-                }] }, { type: i2$1.BehaviorSubject, decorators: [{
+                }] }, { type: i2.BehaviorSubject, decorators: [{
                     type: Optional
                 }, {
                     type: Inject,
@@ -23924,7 +23931,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                     selector: '[clrDgHideableColumn]',
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i0.TemplateRef }, { type: i0.ViewContainerRef }, { type: ColumnsService }, { type: i2$1.BehaviorSubject, decorators: [{
+        }], ctorParameters: () => [{ type: i0.TemplateRef }, { type: i0.ViewContainerRef }, { type: ColumnsService }, { type: i2.BehaviorSubject, decorators: [{
                     type: Optional
                 }, {
                     type: Inject,
@@ -24771,7 +24778,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                     providers: [ColumnResizerService, COLUMN_STATE_PROVIDER],
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: i0.Renderer2 }, { type: DatagridRenderOrganizer }, { type: DomAdapter }, { type: ColumnResizerService }, { type: ColumnsService }, { type: i2$1.BehaviorSubject, decorators: [{
+        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: i0.Renderer2 }, { type: DatagridRenderOrganizer }, { type: DomAdapter }, { type: ColumnResizerService }, { type: ColumnsService }, { type: i2.BehaviorSubject, decorators: [{
                     type: Inject,
                     args: [COLUMN_STATE]
                 }] }], propDecorators: { resizeEmitter: [{

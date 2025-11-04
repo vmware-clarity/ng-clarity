@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { QueryList, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, Renderer2, ElementRef, AfterContentInit, Type, AfterViewChecked, NgZone, Injector, TemplateRef, ViewContainerRef, AfterContentChecked, AfterViewInit, InjectionToken, OnChanges, SimpleChanges, DoCheck, IterableDiffers, TrackByFunction, EnvironmentInjector, RendererFactory2, EmbeddedViewRef, SimpleChange } from '@angular/core';
+import { QueryList, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, Renderer2, ElementRef, AfterContentInit, Type, AfterViewChecked, NgZone, Injector, AfterContentChecked, ViewContainerRef, TemplateRef, AfterViewInit, InjectionToken, OnChanges, SimpleChanges, DoCheck, IterableDiffers, TrackByFunction, EnvironmentInjector, RendererFactory2, EmbeddedViewRef, SimpleChange } from '@angular/core';
 import * as rxjs from 'rxjs';
 import { Observable, Subject, BehaviorSubject, ReplaySubject, Subscription } from 'rxjs';
 import * as i2 from '@angular/common';
@@ -559,6 +559,33 @@ declare class ClrIconModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrIconModule>;
 }
 
+declare class ClrPopoverToggleService {
+    private _open;
+    private _openChange;
+    private _openEvent;
+    private _openEventChange;
+    private _popoverAligned;
+    private _popoverVisible;
+    get openChange(): Observable<boolean>;
+    get popoverVisible(): Observable<boolean>;
+    get openEvent(): Event;
+    set openEvent(event: Event);
+    get open(): boolean;
+    set open(value: boolean);
+    get originalEvent(): Event;
+    get popoverAligned(): Observable<HTMLElement>;
+    getEventChange(): Observable<Event>;
+    /**
+     * Sometimes, we need to remember the event that triggered the toggling to avoid loops.
+     * This is for instance the case of components that open on a click, but close on a click outside.
+     */
+    toggleWithEvent(event: any): void;
+    popoverVisibleEmit(visible: boolean): void;
+    popoverAlignedEmit(popoverNode: HTMLElement): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverToggleService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverToggleService>;
+}
+
 declare enum ArrowKeyDirection {
     UP = "up",
     DOWN = "down",
@@ -593,33 +620,6 @@ declare class FocusService$1 {
     detachListeners(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<FocusService$1, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<FocusService$1>;
-}
-
-declare class ClrPopoverToggleService {
-    private _open;
-    private _openChange;
-    private _openEvent;
-    private _openEventChange;
-    private _popoverAligned;
-    private _popoverVisible;
-    get openChange(): Observable<boolean>;
-    get popoverVisible(): Observable<boolean>;
-    get openEvent(): Event;
-    set openEvent(event: Event);
-    get open(): boolean;
-    set open(value: boolean);
-    get originalEvent(): Event;
-    get popoverAligned(): Observable<HTMLElement>;
-    getEventChange(): Observable<Event>;
-    /**
-     * Sometimes, we need to remember the event that triggered the toggling to avoid loops.
-     * This is for instance the case of components that open on a click, but close on a click outside.
-     */
-    toggleWithEvent(event: any): void;
-    popoverVisibleEmit(visible: boolean): void;
-    popoverAlignedEmit(popoverNode: HTMLElement): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverToggleService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverToggleService>;
 }
 
 declare class DropdownFocusHandler implements OnDestroy, FocusableItem$1 {
@@ -763,244 +763,6 @@ declare class ClrDropdownMenu extends AbstractPopover implements AfterContentIni
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownMenu, [null, { optional: true; }, { optional: true; skipSelf: true; }, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": { "alias": "clrPosition"; "required": false; }; }, {}, ["items"], ["*"], false, never>;
 }
-
-declare function collapse(): AnimationMetadata[];
-
-declare class DomAdapter {
-    userDefinedWidth(element: HTMLElement): number;
-    scrollBarWidth(element: any): number;
-    scrollWidth(element: any): any;
-    computedHeight(element: any): number;
-    clientRect(element: any): DOMRect;
-    minWidth(element: any): number;
-    focus(element: any): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DomAdapter, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<DomAdapter>;
-}
-
-declare class BaseExpandableAnimation {
-    protected element: ElementRef<HTMLElement>;
-    protected domAdapter: DomAdapter;
-    protected renderer: Renderer2;
-    startHeight: number;
-    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
-    updateStartHeight(): void;
-    initAnimationEffects(): void;
-    cleanupAnimationEffects(cancelAnimations?: boolean): void;
-    private cancelElementAnimations;
-    static ɵfac: i0.ɵɵFactoryDeclaration<BaseExpandableAnimation, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<BaseExpandableAnimation, never, never, {}, {}, never, never, true, never>;
-}
-
-declare class ClrExpandableAnimation extends BaseExpandableAnimation {
-    clrExpandTrigger: boolean;
-    get expandAnimation(): {
-        value: boolean;
-        params: {
-            startHeight: number;
-        };
-    };
-    animationStart(event: AnimationEvent): void;
-    animationDone(event: AnimationEvent): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimation, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": { "alias": "clrExpandTrigger"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare const EXPANDABLE_ANIMATION_DIRECTIVES: Type<any>[];
-
-declare function fade(opacity?: number): AnimationMetadata[];
-
-declare function fadeSlide(direction: string): AnimationMetadata[];
-
-declare function slide(direction: string): AnimationMetadata[];
-
-/**
- * This is an abstract class because we need it to still be a valid token for dependency injection after transpiling.
- * This does not mean you should extend it, simply implementing it is fine.
- */
-declare abstract class LoadingListener {
-    abstract loadingStateChange(state: ClrLoadingState | string): void;
-}
-
-declare enum ClrLoadingState {
-    DEFAULT = 0,
-    LOADING = 1,
-    SUCCESS = 2,
-    ERROR = 3
-}
-declare class ClrLoading implements OnDestroy {
-    private listener;
-    static ngAcceptInputType_loadingState: boolean | ClrLoadingState | null | string;
-    private _loadingState;
-    constructor(listener: LoadingListener);
-    get loadingState(): boolean | string | ClrLoadingState;
-    set loadingState(value: boolean | string | ClrLoadingState);
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoading, [{ optional: true; }]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLoading, "[clrLoading]", never, { "loadingState": { "alias": "clrLoading"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare const CLR_LOADING_DIRECTIVES: Type<any>[];
-declare class ClrLoadingModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingModule, [typeof ClrLoading], [typeof i2.CommonModule], [typeof ClrLoading]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLoadingModule>;
-}
-
-declare class IfActiveService {
-    /********
-     * @property _currentChange
-     *
-     * @description
-     * A RXJS Subject that updates and provides subscriptions to for the current current state of a component template
-     * implemting the IfActive structural directive.
-     *
-     */
-    private _currentChange;
-    /*********
-     * @property _current
-     *
-     * @description
-     * A property holding the current value for current/closed state of an IfActive structural directive.
-     */
-    private _current;
-    /*********
-     *
-     * @description
-     * A getter function that provides an observable for the _current Subject.
-     *
-     */
-    get currentChange(): Observable<number>;
-    /*********
-     *
-     * @description
-     * A property that gets/sets the current state of _current for this instance of IfActive structural directive.
-     * And, broadcasts the new value to all subscribers.
-     *
-     */
-    get current(): number;
-    set current(value: number);
-    static ɵfac: i0.ɵɵFactoryDeclaration<IfActiveService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<IfActiveService>;
-}
-
-declare class ClrIfActive implements OnDestroy {
-    private ifActiveService;
-    private id;
-    private template;
-    private container;
-    /**********
-     * @property activeChange
-     *
-     * @description
-     * An event emitter that emits when the active property is set to allow for 2way binding when the directive is
-     * used with de-structured / de-sugared syntax.
-     *
-     */
-    activeChange: EventEmitter<boolean>;
-    private subscription;
-    private wasActive;
-    constructor(ifActiveService: IfActiveService, id: number, template: TemplateRef<any>, container: ViewContainerRef);
-    /**
-     * @description
-     * A property that gets/sets IfActiveService.active with value.
-     *
-     */
-    get active(): boolean | string;
-    set active(value: boolean | string);
-    ngOnDestroy(): void;
-    /**
-     * @description
-     * Function that takes a any value and either created an embedded view for the associated ViewContainerRef or,
-     * Clears all views from the ViewContainerRef
-     */
-    updateView(value: boolean): void;
-    private checkAndUpdateView;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfActive, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfActive, "[clrIfActive]", never, { "active": { "alias": "clrIfActive"; "required": false; }; }, { "activeChange": "clrIfActiveChange"; }, never, never, false, never>;
-}
-
-declare class ClrIfOpen implements OnDestroy {
-    private toggleService;
-    private template;
-    private container;
-    static ngAcceptInputType_open: boolean | '';
-    /**********
-     * @property openChange
-     *
-     * @description
-     * An event emitter that emits when the open property is set to allow for 2way binding when the directive is
-     * used with de-structured / de-sugared syntax.
-     */
-    openChange: EventEmitter<boolean>;
-    private subscription;
-    constructor(toggleService: ClrPopoverToggleService, template: TemplateRef<any>, container: ViewContainerRef);
-    /**
-     * @description
-     * A property that gets/sets ClrPopoverToggleService.open with value.
-     */
-    get open(): boolean | string;
-    set open(value: boolean | string);
-    ngOnDestroy(): void;
-    /**
-     * @description
-     * Function that takes a boolean value and either created an embedded view for the associated ViewContainerRef or,
-     * Clears all views from the ViewContainerRef
-     *
-     * @param value
-     */
-    updateView(value: boolean): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfOpen, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfOpen, "[clrIfOpen]", never, { "open": { "alias": "clrIfOpen"; "required": false; }; }, { "openChange": "clrIfOpenChange"; }, never, never, false, never>;
-}
-
-declare class IfExpandService implements LoadingListener {
-    expandable: number;
-    hasExpandTemplate: boolean;
-    protected _loading: boolean;
-    protected _expanded: boolean;
-    protected _expandChange: Subject<boolean>;
-    get loading(): boolean;
-    set loading(value: boolean);
-    get expanded(): boolean;
-    set expanded(value: boolean);
-    get expandChange(): Observable<boolean>;
-    toggle(): void;
-    loadingStateChange(state: ClrLoadingState): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<IfExpandService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<IfExpandService>;
-}
-
-declare class ClrIfExpanded implements OnInit, OnDestroy {
-    private template;
-    private container;
-    private el;
-    private renderer;
-    private expand;
-    expandedChange: EventEmitter<boolean>;
-    private _expanded;
-    /**
-     * Subscriptions to all the services and queries changes
-     */
-    private _subscriptions;
-    constructor(template: TemplateRef<any>, container: ViewContainerRef, el: ElementRef<HTMLElement>, renderer: Renderer2, expand: IfExpandService);
-    get expanded(): boolean | string;
-    set expanded(value: boolean | string);
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    private updateView;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfExpanded, [{ optional: true; }, null, null, null, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfExpanded, "[clrIfExpanded]", never, { "expanded": { "alias": "clrIfExpanded"; "required": false; }; }, { "expandedChange": "clrIfExpandedChange"; }, never, never, false, never>;
-}
-
-declare const CONDITIONAL_DIRECTIVES: Type<any>[];
-declare class ClrConditionalModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrConditionalModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrConditionalModule, [typeof ClrIfActive, typeof ClrIfOpen, typeof ClrIfExpanded], [typeof i2.CommonModule], [typeof ClrIfActive, typeof ClrIfOpen, typeof ClrIfExpanded]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrConditionalModule>;
-}
-
-declare const commonStringsDefault: ClrCommonStrings;
 
 declare enum ClrAlignment {
     START = 0,
@@ -1163,6 +925,339 @@ declare class ClrPopoverModuleNext {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModuleNext>;
 }
 
+declare class ClrDropdownTrigger {
+    private toggleService;
+    private el;
+    private renderer;
+    isRootLevelToggle: boolean;
+    constructor(dropdown: ClrDropdown, toggleService: ClrPopoverToggleService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler, renderer: Renderer2);
+    get active(): boolean;
+    onDropdownTriggerClick(event: any): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownTrigger, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownTrigger, "[clrDropdownTrigger],[clrDropdownToggle]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrDropdownItem {
+    private dropdown;
+    private _dropdownService;
+    private focusableItem;
+    private el;
+    private renderer;
+    constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem$1, el: ElementRef, renderer: Renderer2);
+    get disabled(): boolean | string;
+    set disabled(value: boolean | string);
+    /**
+     * Let you overwrite the focusable auto increment id.
+     */
+    get dropdownItemId(): string;
+    set dropdownItemId(value: string);
+    private onDropdownItemClick;
+    private onSpaceKeydown;
+    private onEnterKeydown;
+    private stopImmediatePropagationIfDisabled;
+    private findRootDropdown;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownItem, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare class IfActiveService {
+    /********
+     * @property _currentChange
+     *
+     * @description
+     * A RXJS Subject that updates and provides subscriptions to for the current current state of a component template
+     * implemting the IfActive structural directive.
+     *
+     */
+    private _currentChange;
+    /*********
+     * @property _current
+     *
+     * @description
+     * A property holding the current value for current/closed state of an IfActive structural directive.
+     */
+    private _current;
+    /*********
+     *
+     * @description
+     * A getter function that provides an observable for the _current Subject.
+     *
+     */
+    get currentChange(): Observable<number>;
+    /*********
+     *
+     * @description
+     * A property that gets/sets the current state of _current for this instance of IfActive structural directive.
+     * And, broadcasts the new value to all subscribers.
+     *
+     */
+    get current(): number;
+    set current(value: number);
+    static ɵfac: i0.ɵɵFactoryDeclaration<IfActiveService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<IfActiveService>;
+}
+
+declare class ClrIfActive implements OnDestroy {
+    private ifActiveService;
+    private id;
+    private template;
+    private container;
+    /**********
+     * @property activeChange
+     *
+     * @description
+     * An event emitter that emits when the active property is set to allow for 2way binding when the directive is
+     * used with de-structured / de-sugared syntax.
+     *
+     */
+    activeChange: EventEmitter<boolean>;
+    private subscription;
+    private wasActive;
+    constructor(ifActiveService: IfActiveService, id: number, template: TemplateRef<any>, container: ViewContainerRef);
+    /**
+     * @description
+     * A property that gets/sets IfActiveService.active with value.
+     *
+     */
+    get active(): boolean | string;
+    set active(value: boolean | string);
+    ngOnDestroy(): void;
+    /**
+     * @description
+     * Function that takes a any value and either created an embedded view for the associated ViewContainerRef or,
+     * Clears all views from the ViewContainerRef
+     */
+    updateView(value: boolean): void;
+    private checkAndUpdateView;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfActive, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfActive, "[clrIfActive]", never, { "active": { "alias": "clrIfActive"; "required": false; }; }, { "activeChange": "clrIfActiveChange"; }, never, never, false, never>;
+}
+
+declare class ClrIfOpen implements OnDestroy {
+    private toggleService;
+    private template;
+    private container;
+    static ngAcceptInputType_open: boolean | '';
+    /**********
+     * @property openChange
+     *
+     * @description
+     * An event emitter that emits when the open property is set to allow for 2way binding when the directive is
+     * used with de-structured / de-sugared syntax.
+     */
+    openChange: EventEmitter<boolean>;
+    private subscription;
+    constructor(toggleService: ClrPopoverToggleService, template: TemplateRef<any>, container: ViewContainerRef);
+    /**
+     * @description
+     * A property that gets/sets ClrPopoverToggleService.open with value.
+     */
+    get open(): boolean | string;
+    set open(value: boolean | string);
+    ngOnDestroy(): void;
+    /**
+     * @description
+     * Function that takes a boolean value and either created an embedded view for the associated ViewContainerRef or,
+     * Clears all views from the ViewContainerRef
+     *
+     * @param value
+     */
+    updateView(value: boolean): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfOpen, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfOpen, "[clrIfOpen]", never, { "open": { "alias": "clrIfOpen"; "required": false; }; }, { "openChange": "clrIfOpenChange"; }, never, never, false, never>;
+}
+
+/**
+ * This is an abstract class because we need it to still be a valid token for dependency injection after transpiling.
+ * This does not mean you should extend it, simply implementing it is fine.
+ */
+declare abstract class LoadingListener {
+    abstract loadingStateChange(state: ClrLoadingState | string): void;
+}
+
+declare enum ClrLoadingState {
+    DEFAULT = 0,
+    LOADING = 1,
+    SUCCESS = 2,
+    ERROR = 3
+}
+declare class ClrLoading implements OnDestroy {
+    private listener;
+    static ngAcceptInputType_loadingState: boolean | ClrLoadingState | null | string;
+    private _loadingState;
+    constructor(listener: LoadingListener);
+    get loadingState(): boolean | string | ClrLoadingState;
+    set loadingState(value: boolean | string | ClrLoadingState);
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoading, [{ optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLoading, "[clrLoading]", never, { "loadingState": { "alias": "clrLoading"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare class IfExpandService implements LoadingListener {
+    expandable: number;
+    hasExpandTemplate: boolean;
+    protected _loading: boolean;
+    protected _expanded: boolean;
+    protected _expandChange: Subject<boolean>;
+    get loading(): boolean;
+    set loading(value: boolean);
+    get expanded(): boolean;
+    set expanded(value: boolean);
+    get expandChange(): Observable<boolean>;
+    toggle(): void;
+    loadingStateChange(state: ClrLoadingState): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<IfExpandService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<IfExpandService>;
+}
+
+declare class ClrIfExpanded implements OnInit, OnDestroy {
+    private template;
+    private container;
+    private el;
+    private renderer;
+    private expand;
+    expandedChange: EventEmitter<boolean>;
+    private _expanded;
+    /**
+     * Subscriptions to all the services and queries changes
+     */
+    private _subscriptions;
+    constructor(template: TemplateRef<any>, container: ViewContainerRef, el: ElementRef<HTMLElement>, renderer: Renderer2, expand: IfExpandService);
+    get expanded(): boolean | string;
+    set expanded(value: boolean | string);
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    private updateView;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfExpanded, [{ optional: true; }, null, null, null, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfExpanded, "[clrIfExpanded]", never, { "expanded": { "alias": "clrIfExpanded"; "required": false; }; }, { "expandedChange": "clrIfExpandedChange"; }, never, never, false, never>;
+}
+
+declare const CONDITIONAL_DIRECTIVES: Type<any>[];
+declare class ClrConditionalModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrConditionalModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrConditionalModule, [typeof ClrIfActive, typeof ClrIfOpen, typeof ClrIfExpanded], [typeof i2.CommonModule], [typeof ClrIfActive, typeof ClrIfOpen, typeof ClrIfExpanded]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrConditionalModule>;
+}
+
+declare const CLR_DROPDOWN_DIRECTIVES: Type<any>[];
+declare class ClrDropdownModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDropdownModule, [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem], [typeof i2.CommonModule], [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem, typeof ClrConditionalModule, typeof ClrIconModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrDropdownModule>;
+}
+
+declare class ClrSpinner {
+    private _inline;
+    private _inverse;
+    private _small;
+    private _medium;
+    /**
+     * Default class for all spinners. This class is always true
+     */
+    get spinnerClass(): boolean;
+    get inlineClass(): boolean;
+    set clrInline(value: boolean | string);
+    get inverseClass(): boolean;
+    set clrInverse(value: boolean | string);
+    get smallClass(): boolean;
+    set clrSmall(value: boolean | string);
+    /**
+     * When clrSmall & clrMedium are set both to true.
+     * The CSS with high priority will be small - so medium size will be ignored.
+     *
+     * For this reason if clrSmall is set we won't add clrMedium class.
+     *
+     * NOTE: This is dictated by the CSS rules.
+     * DON'T USE clrSmall & clrMedium to toggle classes. This could change without notice.
+     *
+     * Also there is no logical need to have both of them set to TRUE or FALSE.
+     */
+    get mediumClass(): boolean;
+    set clrMedium(value: boolean | string);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinner, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSpinner, "clr-spinner", never, { "clrInline": { "alias": "clrInline"; "required": false; }; "clrInverse": { "alias": "clrInverse"; "required": false; }; "clrSmall": { "alias": "clrSmall"; "required": false; }; "clrMedium": { "alias": "clrMedium"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare const CLR_SPINNER_DIRECTIVES: Type<any>[];
+declare class ClrSpinnerModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinnerModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSpinnerModule, [typeof ClrSpinner], [typeof i2.CommonModule], [typeof ClrSpinner]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSpinnerModule>;
+}
+
+declare const CLR_ALERT_DIRECTIVES: Type<any>[];
+declare class ClrAlertModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAlertModule, [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrDropdownModule, typeof ClrSpinnerModule], [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrAlertModule>;
+}
+
+declare class ClrEmphasisModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrEmphasisModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, [typeof ClrBadge, typeof ClrLabel], [typeof ClrAlertModule, typeof ClrBadge, typeof ClrLabel]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrEmphasisModule>;
+}
+
+declare function collapse(): AnimationMetadata[];
+
+declare class DomAdapter {
+    userDefinedWidth(element: HTMLElement): number;
+    scrollBarWidth(element: any): number;
+    scrollWidth(element: any): any;
+    computedHeight(element: any): number;
+    clientRect(element: any): DOMRect;
+    minWidth(element: any): number;
+    focus(element: any): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DomAdapter, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<DomAdapter>;
+}
+
+declare class BaseExpandableAnimation {
+    protected element: ElementRef<HTMLElement>;
+    protected domAdapter: DomAdapter;
+    protected renderer: Renderer2;
+    startHeight: number;
+    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
+    updateStartHeight(): void;
+    initAnimationEffects(): void;
+    cleanupAnimationEffects(cancelAnimations?: boolean): void;
+    private cancelElementAnimations;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BaseExpandableAnimation, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<BaseExpandableAnimation, never, never, {}, {}, never, never, true, never>;
+}
+
+declare class ClrExpandableAnimation extends BaseExpandableAnimation {
+    clrExpandTrigger: boolean;
+    get expandAnimation(): {
+        value: boolean;
+        params: {
+            startHeight: number;
+        };
+    };
+    animationStart(event: AnimationEvent): void;
+    animationDone(event: AnimationEvent): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimation, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": { "alias": "clrExpandTrigger"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare const EXPANDABLE_ANIMATION_DIRECTIVES: Type<any>[];
+
+declare function fade(opacity?: number): AnimationMetadata[];
+
+declare function fadeSlide(direction: string): AnimationMetadata[];
+
+declare function slide(direction: string): AnimationMetadata[];
+
+declare const CLR_LOADING_DIRECTIVES: Type<any>[];
+declare class ClrLoadingModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingModule, [typeof ClrLoading], [typeof i2.CommonModule], [typeof ClrLoading]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLoadingModule>;
+}
+
+declare const commonStringsDefault: ClrCommonStrings;
+
 declare class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
     private el;
     private platformId;
@@ -1229,101 +1324,6 @@ declare class ClrDestroyService extends Subject<void> implements OnDestroy {
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDestroyService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrDestroyService>;
-}
-
-declare class ClrDropdownTrigger {
-    private toggleService;
-    private el;
-    private renderer;
-    isRootLevelToggle: boolean;
-    constructor(dropdown: ClrDropdown, toggleService: ClrPopoverToggleService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler, renderer: Renderer2);
-    get active(): boolean;
-    onDropdownTriggerClick(event: any): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownTrigger, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownTrigger, "[clrDropdownTrigger],[clrDropdownToggle]", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrDropdownItem {
-    private dropdown;
-    private _dropdownService;
-    private focusableItem;
-    private el;
-    private renderer;
-    constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem$1, el: ElementRef, renderer: Renderer2);
-    get disabled(): boolean | string;
-    set disabled(value: boolean | string);
-    /**
-     * Let you overwrite the focusable auto increment id.
-     */
-    get dropdownItemId(): string;
-    set dropdownItemId(value: string);
-    private onDropdownItemClick;
-    private onSpaceKeydown;
-    private onEnterKeydown;
-    private stopImmediatePropagationIfDisabled;
-    private findRootDropdown;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownItem, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare const CLR_DROPDOWN_DIRECTIVES: Type<any>[];
-declare class ClrDropdownModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDropdownModule, [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem], [typeof i2.CommonModule], [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem, typeof ClrConditionalModule, typeof ClrIconModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrDropdownModule>;
-}
-
-declare class ClrSpinner {
-    private _inline;
-    private _inverse;
-    private _small;
-    private _medium;
-    /**
-     * Default class for all spinners. This class is always true
-     */
-    get spinnerClass(): boolean;
-    get inlineClass(): boolean;
-    set clrInline(value: boolean | string);
-    get inverseClass(): boolean;
-    set clrInverse(value: boolean | string);
-    get smallClass(): boolean;
-    set clrSmall(value: boolean | string);
-    /**
-     * When clrSmall & clrMedium are set both to true.
-     * The CSS with high priority will be small - so medium size will be ignored.
-     *
-     * For this reason if clrSmall is set we won't add clrMedium class.
-     *
-     * NOTE: This is dictated by the CSS rules.
-     * DON'T USE clrSmall & clrMedium to toggle classes. This could change without notice.
-     *
-     * Also there is no logical need to have both of them set to TRUE or FALSE.
-     */
-    get mediumClass(): boolean;
-    set clrMedium(value: boolean | string);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinner, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSpinner, "clr-spinner", never, { "clrInline": { "alias": "clrInline"; "required": false; }; "clrInverse": { "alias": "clrInverse"; "required": false; }; "clrSmall": { "alias": "clrSmall"; "required": false; }; "clrMedium": { "alias": "clrMedium"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare const CLR_SPINNER_DIRECTIVES: Type<any>[];
-declare class ClrSpinnerModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinnerModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSpinnerModule, [typeof ClrSpinner], [typeof i2.CommonModule], [typeof ClrSpinner]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSpinnerModule>;
-}
-
-declare const CLR_ALERT_DIRECTIVES: Type<any>[];
-declare class ClrAlertModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAlertModule, [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrDropdownModule, typeof ClrSpinnerModule], [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrAlertModule>;
-}
-
-declare class ClrEmphasisModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrEmphasisModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, [typeof ClrBadge, typeof ClrLabel], [typeof ClrAlertModule, typeof ClrBadge, typeof ClrLabel]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrEmphasisModule>;
 }
 
 /**
@@ -8513,4 +8513,4 @@ declare class DatagridPropertyComparator<T = any> implements ClrDatagridComparat
 declare const CLR_MENU_POSITIONS: string[];
 
 export { BaseExpandableAnimation, CHANGE_KEYS, CLR_ALERT_DIRECTIVES, CLR_BUTTON_GROUP_DIRECTIVES, CLR_DATAGRID_DIRECTIVES, CLR_DATEPICKER_DIRECTIVES, CLR_DROPDOWN_DIRECTIVES, CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, CLR_ICON_DIRECTIVES, CLR_LAYOUT_DIRECTIVES, CLR_LOADING_BUTTON_DIRECTIVES, CLR_LOADING_DIRECTIVES, CLR_MENU_POSITIONS, CLR_MODAL_DIRECTIVES, CLR_NAVIGATION_DIRECTIVES, CLR_PROGRESS_BAR_DIRECTIVES, CLR_SIDEPANEL_DIRECTIVES, CLR_SIGNPOST_DIRECTIVES, CLR_SPINNER_DIRECTIVES, CLR_STACK_VIEW_DIRECTIVES, CLR_TABS_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, CLR_TREE_VIEW_DIRECTIVES, CLR_VERTICAL_NAV_DIRECTIVES, CLR_WIZARD_DIRECTIVES, CONDITIONAL_DIRECTIVES, CUSTOM_BUTTON_TYPES, CdsIconCustomTag, ClarityModule, ClrAbstractContainer, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle, ClrAlert, ClrAlertItem, ClrAlertModule, ClrAlertText, ClrAlerts, ClrAlertsPager, ClrAlignment, ClrAriaCurrentLink, ClrAxis, ClrBadge, ClrBadgeColors, ClrBreadcrumbItem, ClrBreadcrumbs, ClrBreadcrumbsModule, ClrButton, ClrButtonGroup, ClrButtonGroupModule, ClrButtonModule, ClrCalendar, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxModule, ClrCheckboxWrapper, ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrCommonFormsModule, ClrCommonStringsService, ClrConditionalModule, ClrControl, ClrControlContainer, ClrControlError, ClrControlHelper, ClrControlLabel, ClrControlSuccess, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrDatalist, ClrDatalistContainer, ClrDatalistInput, ClrDatalistModule, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrDestroyService, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrEmphasisModule, ClrEndDateInput, ClrEndDateInputValidator, ClrExpandableAnimation, ClrFileError, ClrFileInfo, ClrFileInput, ClrFileInputContainer, ClrFileInputModule, ClrFileInputValidator, ClrFileInputValueAccessor, ClrFileList, ClrFileMessagesTemplate, ClrFileSuccess, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrForm, ClrFormLayout, ClrFormsModule, ClrHeader, ClrIconCustomTag, ClrIconModule, ClrIfActive, ClrIfDetail, ClrIfError, ClrIfExpanded, ClrIfOpen, ClrIfSuccess, ClrInput, ClrInputContainer, ClrInputModule, ClrLabel, ClrLabelColors, ClrLayout, ClrLayoutModule, ClrLoading, ClrLoadingButton, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState, ClrMainContainer, ClrMainContainerModule, ClrModal, ClrModalBody, ClrModalConfigurationService, ClrModalHostComponent, ClrModalModule, ClrMonthpicker, ClrNavLevel, ClrNavigationModule, ClrNumberInput, ClrNumberInputContainer, ClrNumberInputModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, ClrPassword, ClrPasswordContainer, ClrPasswordModule, ClrPopoverAnchor, ClrPopoverContent, ClrPopoverEventsService, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverPositionService, ClrPopoverToggleService, ClrProgressBar, ClrProgressBarModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrRadioWrapper, ClrRange, ClrRangeContainer, ClrRangeModule, ClrRecursiveForOf, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrSelectedState, ClrSide, ClrSidePanel, ClrSidePanelModule, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrSpinner, ClrSpinnerModule, ClrStackBlock, ClrStackContentInput, ClrStackHeader, ClrStackView, ClrStackViewCustomTags, ClrStackViewLabel, ClrStackViewModule, ClrStandaloneCdkTrapFocus, ClrStartDateInput, ClrStartDateInputValidator, ClrStepButton, ClrStepButtonType, ClrStepper, ClrStepperModule, ClrStepperPanel, ClrStopEscapePropagationDirective, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStep, ClrTimelineStepDescription, ClrTimelineStepHeader, ClrTimelineStepState, ClrTimelineStepTitle, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, ClrVerticalNav, ClrVerticalNavGroup, ClrVerticalNavGroupChildren, ClrVerticalNavIcon, ClrVerticalNavLink, ClrVerticalNavModule, ClrWizard, ClrWizardButton, ClrWizardHeaderAction, ClrWizardModule, ClrWizardPage, ClrWizardPageButtons, ClrWizardPageHeaderActions, ClrWizardPageNavTitle, ClrWizardPageTitle, ClrWizardStepnav, ClrWizardStepnavItem, ClrWizardTitle, ClrYearpicker, DEFAULT_BUTTON_TYPES, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, EXPANDABLE_ANIMATION_DIRECTIVES, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, IS_TOGGLE, IS_TOGGLE_PROVIDER, LoadingListener, MainContainerWillyWonka, NavDetectionOompaLoompa, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, ToggleServiceFactory, WrappedFormControl, collapse, commonStringsDefault, fade, fadeSlide, isToggleFactory, slide, AccordionOompaLoompa as ÇlrAccordionOompaLoompa, AccordionWillyWonka as ÇlrAccordionWillyWonka, ActionableOompaLoompa as ÇlrActionableOompaLoompa, ActiveOompaLoompa as ÇlrActiveOompaLoompa, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka, TabsWillyWonka as ÇlrTabsWillyWonka, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
-export type { BreadcrumbItem, ClrCommonStrings, ClrDatagridComparatorInterface, ClrDatagridFilterInterface, ClrDatagridItemsIdentityFunction, ClrDatagridNumericFilterInterface, ClrDatagridStateInterface, ClrDatagridStringFilterInterface, ClrDatagridVirtualScrollRangeInterface, ClrFileAcceptError, ClrFileInputSelection, ClrFileListValidationErrors, ClrFileMaxFileSizeError, ClrFileMessagesTemplateContext, ClrFileMinFileSizeError, ClrPopoverPosition, ClrRecursiveForOfContext, ClrSingleFileValidationErrors, ClrTabsActionsPosition, HeadingLevel };
+export type { BreadcrumbItem, ClrCommonStrings, ClrDatagridComparatorInterface, ClrDatagridFilterInterface, ClrDatagridItemsIdentityFunction, ClrDatagridNumericFilterInterface, ClrDatagridStateInterface, ClrDatagridStringFilterInterface, ClrDatagridVirtualScrollRangeInterface, ClrFileAcceptError, ClrFileInputSelection, ClrFileListValidationErrors, ClrFileMaxFileSizeError, ClrFileMessagesTemplateContext, ClrFileMinFileSizeError, ClrPopoverPosition, ClrRecursiveForOfContext, ClrSingleFileValidationErrors, ClrTabsActionsPosition, HeadingLevel, PopoverOptions };
