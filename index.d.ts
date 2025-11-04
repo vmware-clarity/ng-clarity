@@ -3224,7 +3224,7 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     inputId(): string;
     loadingStateChange(state: ClrLoadingState): void;
     unselect(item: T): void;
-    onBlur(): void;
+    onBlur(event: any): void;
     onFocus(): void;
     onChange(): void;
     getSelectionAriaLabel(): string;
@@ -3267,7 +3267,7 @@ declare class ClrOption<T> implements OnInit {
 declare class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
     optionSelectionService: OptionSelectionService<T>;
     id: number;
-    private el;
+    el: ElementRef<HTMLElement>;
     commonStrings: ClrCommonStringsService;
     private focusHandler;
     private toggleService;
