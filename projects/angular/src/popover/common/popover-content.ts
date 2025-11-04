@@ -17,7 +17,6 @@ import {
   ScrollStrategy,
 } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
-import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   Directive,
@@ -27,16 +26,16 @@ import {
   Input,
   NgZone,
   OnDestroy,
-  Renderer2,
+  Optional,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
-import { ClrCDKPopoverPositions } from './enums/cdk-dropdown-position.enum';
-import { ClrPopoverService } from './providers/popover.service';
-import { Keys } from '../enums/keys.enum';
-import { normalizeKey } from '../focus/key-focus/util';
+import { ClrPopoverService } from '../../utils';
+import { Keys } from '../../utils/enums/keys.enum';
+import { normalizeKey } from '../../utils/focus/key-focus/util';
+import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-dropdown-position.enum';
 
 const AvailablePopoverPositions = [
   ClrCDKPopoverPositions.bottom,
@@ -63,37 +62,35 @@ const AvailablePopoverPositions = [
 /** @dynamic */
 @Directive({
   selector: '[clrPopoverContent]',
-  standalone: false,
 })
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private view: EmbeddedViewRef<void>;
-  private domPortal: DomPortal;
+
   private subscriptions: Subscription[] = [];
-  private overlayRef: OverlayRef = null;
+  private domPortal: DomPortal;
   private preferredPosition: ConnectedPosition = {
     originX: 'start',
     originY: 'top',
     overlayX: 'end',
     overlayY: 'top',
   };
-
   private scrollableParent: any;
 
   constructor(
-    @Inject(DOCUMENT) private document: Document,
     private container: ViewContainerRef,
-    private template: TemplateRef<any>,
-    private renderer: Renderer2,
-    private overlay: Overlay,
+    @Optional() private template: TemplateRef<any>,
     overlayContainer: OverlayContainer,
+
+    private overlay: Overlay,
+    @Inject(ClrPopoverService) private popoverService: ClrPopoverService,
     private scrollDispatcher: ScrollDispatcher,
-    private popoverService: ClrPopoverService,
     private zone: NgZone
   ) {
-    popoverService.panelClass = 'clr-popover-content';
+    popoverService.panelClass.push('clr-popover-content');
     popoverService.defaultPosition = 'bottom-left';
     popoverService.availablePositions = AvailablePopoverPositions;
     popoverService.popoverPositions = ClrCDKPopoverPositions;
+    popoverService.overlay = overlay;
 
     overlayContainer.getContainerElement().classList.add('clr-container-element');
   }
@@ -118,15 +115,22 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   set scrollToClose(scrollToClose: boolean) {
     this.popoverService.scrollToClose = !!scrollToClose;
 
-    if (this.overlayRef) {
-      this.overlayRef.updateScrollStrategy(this.getScrollStrategy());
+    if (this.popoverService.overlayRef) {
+      this.popoverService.overlayRef.updateScrollStrategy(this.getScrollStrategy());
     }
   }
 
   ngAfterViewInit() {
     if (this.popoverService.open) {
       this.showOverlay();
+
+      this.popoverService.anchorElementRef
+        ? this.showOverlay()
+        : setTimeout(() => {
+            this.showOverlay();
+          }, 0);
     }
+
     this.subscriptions.push(
       this.popoverService.openChange.subscribe(change => {
         if (!this.scrollableParent) {
@@ -138,24 +142,20 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         if (change) {
           this.showOverlay();
         } else {
-          this.removeOverlay();
+          this.closePopover();
         }
       })
     );
   }
 
   ngOnDestroy() {
+    console.log('Directive OnDestroy');
     this.removeOverlay();
     this.subscriptions.forEach(s => s.unsubscribe());
-    if (this.overlayRef) {
-      this.overlayRef.dispose();
-      this.popoverService.overlayRef = null;
-      this.overlayRef = null;
-    }
   }
 
   setPreferredPosition() {
-    //Set default position to "top-right", if position is not available in the map
+    // Set default position to "top-right", if position is not available in the map
     this.preferredPosition =
       this.popoverService.position in this.popoverService.popoverPositions
         ? this.popoverService.popoverPositions[this.popoverService.position]
@@ -163,20 +163,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private _createOverlayRef(): OverlayRef {
-    //fetch all Scrolling Containers registered with CDK
-    let scrollableAncestors: CdkScrollable[];
-    if (this.popoverService.anchorElementRef) {
-      scrollableAncestors = this.scrollDispatcher.getAncestorScrollContainers(this.popoverService.anchorElementRef);
-    }
-
-    const positionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo(this.popoverService.anchorElementRef)
-      .setOrigin(this.popoverService.anchorElementRef)
-      .withPush(true)
-      .withPositions([this.preferredPosition, ...this.popoverService.availablePositions])
-      .withFlexibleDimensions(true)
-      .withScrollableContainers(scrollableAncestors);
+    const positionStrategy = this.getPositionStrategy();
 
     const overlay = this.overlay.create(
       new OverlayConfig({
@@ -189,6 +176,16 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     );
 
     this.subscriptions.push(
+      this.popoverService.getPositionChange().subscribe(position => {
+        console.log('position change', position);
+
+        if (this.popoverService.overlayRef) {
+          const strategy = this.getPositionStrategy();
+
+          this.popoverService.overlayRef.updatePositionStrategy(strategy);
+          this.popoverService.overlayRef.updatePosition();
+        }
+      }),
       positionStrategy?.positionChanges?.subscribe(change => {
         //Close the overlay when the Origin is clipped
         if (change.scrollableViewProperties.isOriginClipped) {
@@ -204,8 +201,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       overlay.keydownEvents().subscribe(event => {
         if (event && event.key && normalizeKey(event.key) === Keys.Escape && !hasModifierKey(event)) {
           event.preventDefault();
-          this.popoverService.open = false;
-          this.popoverService.setOpenedButtonFocus();
+          this.closePopover();
         }
       })
     );
@@ -216,32 +212,57 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
           return;
         }
+
         // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
-        if (this.popoverService.openEvent) {
-          if (
-            (this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
+        const isToggleButton =
+          this.popoverService.openEvent &&
+          ((this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
             (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
-            this.popoverService.openEvent.target === event.target
-          ) {
-            return;
-          }
+            this.popoverService.openEvent.target === event.target);
+
+        if (isToggleButton) {
+          event.stopPropagation();
         }
 
-        if (this.popoverService.outsideClickClose) {
-          this.popoverService.open = false;
-          this.popoverService.setOpenedButtonFocus();
+        if (this.popoverService.outsideClickClose || isToggleButton) {
+          this.closePopover();
         }
-      })
-    );
-
-    this.subscriptions.push(
-      overlay.detachments().subscribe(() => {
-        this.popoverService.open = false;
-        this.popoverService.setOpenedButtonFocus();
       })
     );
 
     return overlay;
+  }
+
+  private getPositionStrategy() {
+    this.setPreferredPosition(); //Preferred position defined by consumer
+
+    //fetch all Scrolling Containers registered with CDK
+    let scrollableAncestors: CdkScrollable[];
+    if (this.popoverService.anchorElementRef) {
+      scrollableAncestors = this.scrollDispatcher.getAncestorScrollContainers(this.popoverService.anchorElementRef);
+    }
+
+    return this.overlay
+      .position()
+      .flexibleConnectedTo(this.popoverService.anchorElementRef)
+      .setOrigin(this.popoverService.anchorElementRef)
+      .withPush(true)
+      .withPositions([this.preferredPosition, ...this.popoverService.availablePositions])
+      .withFlexibleDimensions(true)
+      .withScrollableContainers(scrollableAncestors);
+  }
+
+  private closePopover() {
+    this.removeOverlay();
+    this.popoverService.open = false;
+
+    const shouldFocusTrigger =
+      document.activeElement === document.body ||
+      document.activeElement === this.popoverService.anchorElementRef?.nativeElement;
+
+    if (shouldFocusTrigger) {
+      this.popoverService.setOpenedButtonFocus();
+    }
   }
 
   private getScrollStrategy(): ScrollStrategy {
@@ -251,38 +272,54 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private showOverlay() {
+    console.log('Create Overlay');
     this.setPreferredPosition(); //Preferred position defined by consumer
 
-    if (!this.overlayRef) {
-      this.overlayRef = this._createOverlayRef();
-      this.popoverService.overlayRef = this.overlayRef;
+    if (!this.popoverService.overlayRef) {
+      this.popoverService.overlayRef = this._createOverlayRef();
     }
 
-    if (!this.view) {
+    if (!this.view && this.template) {
       this.view = this.container.createEmbeddedView(this.template);
-      const [rootNode] = this.view.rootNodes;
-      this.popoverService.contentRef = new ElementRef(rootNode); // So we know where/what to set close focus on
-      this.domPortal = new DomPortal<HTMLElement>(this.popoverService.contentRef);
-    }
-    this.overlayRef.attach(this.domPortal);
 
-    setTimeout(() => this.popoverService.popoverVisibleEmit(true));
+      if (!this.popoverService.contentRef) {
+        const [rootNode] = this.view.rootNodes;
+        this.popoverService.contentRef = new ElementRef(rootNode); // So we know where/what to set close focus on
+      }
+    }
+
+    if (!this.domPortal) {
+      this.domPortal = new DomPortal<HTMLElement>(this.popoverService.contentRef);
+      this.popoverService.overlayRef.attach(this.domPortal);
+    }
+
+    setTimeout(() => {
+      this.popoverService.popoverVisibleEmit(true);
+
+      if (this.popoverService.contentRef.nativeElement.focus) {
+        this.popoverService.contentRef.nativeElement.focus();
+      }
+    });
   }
 
   private removeOverlay(): void {
-    if (this.overlayRef?.hasAttached()) {
-      this.overlayRef.detach();
-      this.overlayRef.dispose();
-      this.overlayRef = null;
+    if (this.popoverService.overlayRef?.hasAttached()) {
+      this.popoverService.overlayRef.detach();
+      this.popoverService.overlayRef.dispose();
     }
+
     if (this.domPortal?.isAttached) {
       this.domPortal.detach();
-      this.domPortal = null;
     }
+
     if (this.view) {
       this.view.destroy();
-      this.view = null;
     }
+
+    this.popoverService.overlayRef = null;
+    this.domPortal = null;
+    this.popoverService.contentRef = null;
+    this.view = null;
 
     this.popoverService.popoverVisibleEmit(false);
   }
@@ -322,21 +359,23 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
           this.scrollableParent?.scrollParent ? this.scrollableParent?.scrollParent : window.document,
           'scroll'
         ).subscribe(() => {
-          if (!this.overlayRef) {
-            return;
-          }
-
-          if (
-            !this.elementIsVisibleInViewport(this.popoverService.anchorElementRef?.nativeElement) ||
-            this.popoverService.scrollToClose
-          ) {
+          if (this.popoverService.scrollToClose) {
             this.zone.run(() => {
               this.removeOverlay();
             });
+
             return;
           }
 
-          this.overlayRef.updatePosition();
+          if (this.popoverService.overlayRef) {
+            if (this.elementIsVisibleInViewport(this.popoverService.anchorElementRef?.nativeElement)) {
+              this.popoverService.overlayRef.updatePosition();
+            } else {
+              this.zone.run(() => {
+                this.removeOverlay();
+              });
+            }
+          }
         })
       );
     });

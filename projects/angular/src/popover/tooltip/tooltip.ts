@@ -7,13 +7,18 @@
 
 import { Component } from '@angular/core';
 
+import { ClrPopoverHostDirective } from '../custom';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
-import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 
 @Component({
   selector: 'clr-tooltip',
-  template: `<ng-content></ng-content>`,
+  template: `
+    <ng-content select="[clrTooltipTrigger]"></ng-content>
+    <ng-template [clrPopoverContent]>
+      <ng-content select="clr-tooltip-content"></ng-content>
+    </ng-template>
+  `,
   host: {
     '[class.clr-tooltip-container]': 'true',
   },

@@ -98,7 +98,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   signpostContentId = uniqueIdFactory();
 
   private document: Document;
-  private _position: string;
+  private _position = 'right-middle';
 
   constructor(
     injector: Injector,
@@ -117,7 +117,6 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
       throw new Error('clr-signpost-content should only be used inside of a clr-signpost');
     }
     // Defaults
-    this.position = 'right-middle';
     signpostIdService.setId(this.signpostContentId);
 
     this.document = document;
@@ -158,10 +157,13 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
    */
   @Input('clrPosition')
   get position() {
-    return this._position || 'right-middle';
+    return this._position;
   }
   set position(position: string) {
     this._position = position && POSITIONS.indexOf(position) > -1 ? position : 'right-middle';
+
+    this.popoverService.availablePositions = AvailablePopoverPositions;
+    this.popoverService.popoverPositions = ClrCDKPopoverPositions;
     this.popoverService.position = this._position;
   }
 

@@ -24,7 +24,7 @@ import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
 
 @Directive({
-  selector: 'clr-tooltip-content, clr-signpost-content, clr-dropdown-menu',
+  selector: 'clr-tooldsfsftip-content, clr-signpsdfdsost-content, clr-dropsdfsddown-menu',
 })
 export class PopoverDirective implements AfterViewInit {
   private subscriptions: Subscription[] = [];
@@ -73,6 +73,7 @@ export class PopoverDirective implements AfterViewInit {
     this.subscriptions.forEach(s => s.unsubscribe());
     if (this.overlayRef) {
       this.overlayRef.dispose();
+      this.popoverService.overlayRef = null;
       this.overlayRef = null;
     }
   }
@@ -164,7 +165,6 @@ export class PopoverDirective implements AfterViewInit {
       this.overlayRef.attach(this.domPortal);
     }
 
-    // this.overlayRef.updatePosition();
     setTimeout(() => {
       this.popoverService.popoverVisibleEmit(true);
 

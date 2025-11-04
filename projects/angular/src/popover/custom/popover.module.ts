@@ -9,12 +9,12 @@ import { NgModule } from '@angular/core';
 
 import { ClrPopoverAnchor } from './popover-anchor';
 import { ClrPopoverCloseButton } from './popover-close-button';
-import { ClrPopoverContent } from './popover-content';
 import { ClrPopoverOpenCloseButton } from './popover-open-close-button';
+import { ClrPopoverContent } from '../common/popover-content';
 
 @NgModule({
-  imports: [],
-  declarations: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent],
+  imports: [ClrPopoverContent],
+  declarations: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton],
   exports: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent],
 })
 export class ClrPopoverModuleNext {}

@@ -23,6 +23,29 @@ import { ClrPopoverService } from '../../utils';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
+import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-dropdown-position.enum';
+
+const AvailablePopoverPositions = [
+  ClrCDKPopoverPositions.bottom,
+  ClrCDKPopoverPositions['bottom-left'],
+  ClrCDKPopoverPositions['bottom-middle'],
+  ClrCDKPopoverPositions['bottom-right'],
+  ClrCDKPopoverPositions.left,
+  ClrCDKPopoverPositions['left-bottom'],
+  ClrCDKPopoverPositions['left-middle'],
+  ClrCDKPopoverPositions['left-top'],
+  ClrCDKPopoverPositions['middle-bottom'],
+  ClrCDKPopoverPositions['middle-left'],
+  ClrCDKPopoverPositions['middle-right'],
+  ClrCDKPopoverPositions.right,
+  ClrCDKPopoverPositions['right-bottom'],
+  ClrCDKPopoverPositions['right-middle'],
+  ClrCDKPopoverPositions['right-top'],
+  ClrCDKPopoverPositions.top,
+  ClrCDKPopoverPositions['top-left'],
+  ClrCDKPopoverPositions['top-middle'],
+  ClrCDKPopoverPositions['top-right'],
+];
 
 @Component({
   selector: 'clr-dropdown-menu',
@@ -31,18 +54,7 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
     '[class.dropdown-menu]': 'true',
     '[attr.role]': '"menu"',
   },
-  // providers: [ClrPopoverContent],
   standalone: false,
-  // hostDirectives:[ClrPopoverContent],
-  // hostDirectives: [{
-  //   directive: ClrPopoverContent,
-  //   inputs: [
-  //     'clrPopoverContent: popoverService.open',
-  //     'clrPopoverContentAt: popoverService.position',
-  //     'clrPopoverContentOutsideClickToClose: true',
-  //     'clrPopoverContentScrollToClose: false',
-  //   ],
-  // }],
 })
 export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
   @ContentChildren(FocusableItem) items: QueryList<FocusableItem>;
@@ -65,17 +77,18 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
 
     popoverService.contentRef = elementRef;
     popoverService.scrollToClose = true;
+    popoverService.availablePositions = AvailablePopoverPositions;
+    popoverService.popoverPositions = ClrCDKPopoverPositions;
 
-    if (!nested) {
-      popoverService.defaultPosition = 'bottom-left';
-    } else {
-      popoverService.defaultPosition = 'right-top';
-    }
+    popoverService.position = nested ? 'right-top' : 'bottom-left';
+
     popoverService.panelClass.push('clr-dropdown-container');
   }
 
   @Input('clrPosition')
   set position(position: string) {
+    this.popoverService.availablePositions = AvailablePopoverPositions;
+    this.popoverService.popoverPositions = ClrCDKPopoverPositions;
     // set the popover values based on menu position
     this.popoverService.position = position || this.popoverService.defaultPosition;
   }

@@ -6,3 +6,4 @@
  */
 
 export * from './popover-options.interface';
+export * from './popover-content';

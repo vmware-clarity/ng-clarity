@@ -7,7 +7,7 @@
 
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 
-import { ClrPopoverHostDirective } from '../../../../angular/src/utils/popover/popover-host.directive';
+import { ClrPopoverHostDirective } from '../../../../angular/src/popover/custom/popover-host.directive';
 import { ClrPopoverService } from '../../../../angular/src/utils/popover/providers/popover.service';
 
 @Component({

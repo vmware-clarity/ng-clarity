@@ -14,7 +14,7 @@ import { ClrDropdownMenu } from './dropdown-menu';
 import { ClrDropdownTrigger } from './dropdown-trigger';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
+import { ClrPopoverModuleNext } from '../custom/popover.module';
 
 export const CLR_DROPDOWN_DIRECTIVES: Type<any>[] = [ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem];
 

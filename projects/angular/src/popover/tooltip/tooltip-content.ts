@@ -101,7 +101,11 @@ export class ClrTooltipContent implements OnInit {
     const newPosition = POSITIONS.includes(value as any) ? (value as Position) : defaultPosition;
 
     this._position = newPosition;
+    console.log(this._position);
     this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
+
+    this.popoverService.availablePositions = AvailablePopoverPositions;
+    this.popoverService.popoverPositions = ClrCDKPopoverPositions;
 
     this.popoverService.position = this._position;
   }

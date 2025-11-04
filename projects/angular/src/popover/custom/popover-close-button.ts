@@ -9,7 +9,7 @@ import { AfterViewInit, Directive, ElementRef, EventEmitter, HostListener, OnDes
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { ClrPopoverService } from './providers/popover.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 
 @Directive({
   selector: '[clrPopoverCloseButton]',

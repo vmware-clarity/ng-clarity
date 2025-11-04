@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { OverlayRef } from '@angular/cdk/overlay';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ElementRef, Injectable, TemplateRef } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
@@ -23,20 +23,33 @@ export class ClrPopoverService {
   closeButtonRef: ElementRef;
   contentRef: ElementRef;
   templateRef: TemplateRef<any>;
-  position: string;
   defaultPosition: string;
   panelClass: string[] = [];
   popoverPositions: ClrCDKPopoverPositions;
   availablePositions: any;
   hasBackdrop: false;
   overlayRef: OverlayRef;
+  overlay: Overlay;
   noFocus: boolean;
+  private _position: string;
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;
   private _openEventChange = new Subject<Event>();
+  private _positionChange = new Subject<string>();
   private _popoverAligned = new Subject<HTMLElement>();
   private _popoverVisible = new Subject<boolean>();
+
+  get position(): string {
+    return this._position;
+  }
+  set position(position: string) {
+    this._position = position;
+
+    this._positionChange.next(position);
+
+    // this.overlayRef?.updatePosition();
+  }
 
   get openChange(): Observable<boolean> {
     return this._openChange.asObservable();
@@ -72,6 +85,10 @@ export class ClrPopoverService {
 
   get popoverAligned(): Observable<HTMLElement> {
     return this._popoverAligned.asObservable();
+  }
+
+  getPositionChange(): Observable<string> {
+    return this._positionChange.asObservable();
   }
 
   getEventChange(): Observable<Event> {

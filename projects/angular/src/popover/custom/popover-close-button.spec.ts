@@ -9,8 +9,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 
 import { ClrPopoverCloseButton } from './popover-close-button';
 import { ClrPopoverModuleNext } from './popover.module';
-import { spec, TestContext } from '../testing/helpers.spec';
-import { ClrPopoverService } from './providers/popover.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   selector: 'test-host',

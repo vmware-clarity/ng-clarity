@@ -18,10 +18,10 @@ import { ClrOptionItems } from './option-items.directive';
 import { ClrOptionSelected } from './option-selected.directive';
 import { ClrOptions } from './options';
 import { ClrIconModule } from '../../icon/icon.module';
+import { ClrPopoverModuleNext } from '../../popover';
 import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
 import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
-import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
 import { ClrCommonFormsModule } from '../common/common.module';
 
 @NgModule({

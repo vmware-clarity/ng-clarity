@@ -60,8 +60,8 @@ import { RendererFactory2 } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { RouterLinkActive } from '@angular/router';
 import * as rxjs from 'rxjs';
-import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { ScrollDispatcher as ScrollDispatcher_2 } from '@angular/cdk/overlay';
+import { ScrollDispatcher } from '@angular/cdk/overlay';
+import { ScrollDispatcher as ScrollDispatcher_2 } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
@@ -142,7 +142,7 @@ export class ClarityModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClarityModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof ClrEmphasisModule, typeof ClrDataModule, typeof ClrIconModule, typeof ClrModalModule, typeof ClrLoadingModule, typeof ClrConditionalModule, typeof ClrFocusOnViewInitModule, typeof ClrButtonModule, typeof ClrFormsModule, typeof ClrLayoutModule, typeof ClrPopoverModule, typeof ClrWizardModule, typeof ClrSidePanelModule, typeof ClrStepperModule, typeof ClrSpinnerModule, typeof ClrProgressBarModule, typeof ÇlrClrPopoverModuleNext, typeof ClrTimelineModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof ClrEmphasisModule, typeof ClrDataModule, typeof ClrIconModule, typeof ClrModalModule, typeof ClrLoadingModule, typeof ClrConditionalModule, typeof ClrFocusOnViewInitModule, typeof ClrButtonModule, typeof ClrFormsModule, typeof ClrLayoutModule, typeof ClrPopoverModule, typeof ClrWizardModule, typeof ClrSidePanelModule, typeof ClrStepperModule, typeof ClrSpinnerModule, typeof ClrProgressBarModule, typeof ClrPopoverModuleNext, typeof ClrTimelineModule]>;
 }
 
 // @public (undocumented)
@@ -736,7 +736,7 @@ export class ClrButtonGroupModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrButtonGroupModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof ClrButton, typeof ClrButtonGroup], [typeof i2.CommonModule, typeof ClrIconModule, typeof ÇlrClrPopoverModuleNext], [typeof ClrButton, typeof ClrButtonGroup]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof ClrButton, typeof ClrButtonGroup], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrPopoverModuleNext], [typeof ClrButton, typeof ClrButtonGroup]>;
 }
 
 // @public (undocumented)
@@ -988,7 +988,7 @@ export class ClrComboboxModule {
     // Warning: (ae-forgotten-export) The symbol "ClrKeyFocusModule" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrOptionItems], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIconModule, typeof ClrKeyFocusModule, typeof ClrCommonFormsModule, typeof ClrConditionalModule, typeof ÇlrClrPopoverModuleNext, typeof ClrSpinnerModule], [typeof ClrCommonFormsModule, typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrConditionalModule, typeof ClrOptionItems]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrOptionItems], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIconModule, typeof ClrKeyFocusModule, typeof ClrCommonFormsModule, typeof ClrConditionalModule, typeof ClrPopoverModuleNext, typeof ClrSpinnerModule], [typeof ClrCommonFormsModule, typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrConditionalModule, typeof ClrOptionItems]>;
 }
 
 // @public (undocumented)
@@ -1449,7 +1449,7 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // Warning: (ae-forgotten-export) The symbol "FiltersProvider" needs to be exported by the entry point index.d.ts
     constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService);
     // (undocumented)
-    get ariaSort(): "none" | "ascending" | "descending";
+    get ariaSort(): "ascending" | "descending" | "none";
     // (undocumented)
     get colType(): "string" | "number";
     set colType(value: 'string' | 'number');
@@ -1769,7 +1769,7 @@ export class ClrDatagridModule {
     // Warning: (ae-forgotten-export) The symbol "ClrExpandableAnimationModule" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ÇlrDatagridSelectionCellDirective, typeof ÇlrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof ÇlrDatagridDetailRegisterer, typeof ÇlrWrappedCell, typeof ÇlrWrappedColumn, typeof ÇlrWrappedRow, typeof ÇlrDatagridCellRenderer, typeof ÇlrDatagridHeaderRenderer, typeof ÇlrDatagridMainRenderer, typeof ÇlrDatagridRowDetailRenderer, typeof ÇlrDatagridRowRenderer, typeof ÇlrActionableOompaLoompa, typeof ÇlrDatagridWillyWonka, typeof ÇlrExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i2.CommonModule, typeof CdkDragModule, typeof CdkTrapFocusModule, typeof i41.ScrollingModule, typeof ClrIconModule, typeof ClrFormsModule, typeof i4.FormsModule, typeof ClrPopoverModule, typeof ClrLoadingModule, typeof ClrConditionalModule, typeof ClrOutsideClickModule, typeof ClrExpandableAnimationModule, typeof ClrSpinnerModule, typeof ÇlrClrPopoverModuleNext, typeof ClrKeyFocusModule, typeof ÇlrDatagridSingleSelectionValueAccessor], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ÇlrDatagridSelectionCellDirective, typeof ÇlrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof ÇlrDatagridDetailRegisterer, typeof ÇlrWrappedCell, typeof ÇlrWrappedColumn, typeof ÇlrWrappedRow, typeof ÇlrDatagridCellRenderer, typeof ÇlrDatagridHeaderRenderer, typeof ÇlrDatagridMainRenderer, typeof ÇlrDatagridRowDetailRenderer, typeof ÇlrDatagridRowRenderer, typeof ÇlrActionableOompaLoompa, typeof ÇlrDatagridWillyWonka, typeof ÇlrExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ÇlrDatagridSingleSelectionValueAccessor]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ÇlrDatagridSelectionCellDirective, typeof ÇlrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof ÇlrDatagridDetailRegisterer, typeof ÇlrWrappedCell, typeof ÇlrWrappedColumn, typeof ÇlrWrappedRow, typeof ÇlrDatagridCellRenderer, typeof ÇlrDatagridHeaderRenderer, typeof ÇlrDatagridMainRenderer, typeof ÇlrDatagridRowDetailRenderer, typeof ÇlrDatagridRowRenderer, typeof ÇlrActionableOompaLoompa, typeof ÇlrDatagridWillyWonka, typeof ÇlrExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i2.CommonModule, typeof CdkDragModule, typeof CdkTrapFocusModule, typeof i41.ScrollingModule, typeof ClrIconModule, typeof ClrFormsModule, typeof i4.FormsModule, typeof ClrPopoverModule, typeof ClrLoadingModule, typeof ClrConditionalModule, typeof ClrOutsideClickModule, typeof ClrExpandableAnimationModule, typeof ClrSpinnerModule, typeof ClrPopoverModuleNext, typeof ClrKeyFocusModule, typeof ÇlrDatagridSingleSelectionValueAccessor], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ÇlrDatagridSelectionCellDirective, typeof ÇlrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof ÇlrDatagridDetailRegisterer, typeof ÇlrWrappedCell, typeof ÇlrWrappedColumn, typeof ÇlrWrappedRow, typeof ÇlrDatagridCellRenderer, typeof ÇlrDatagridHeaderRenderer, typeof ÇlrDatagridMainRenderer, typeof ÇlrDatagridRowDetailRenderer, typeof ÇlrDatagridRowRenderer, typeof ÇlrActionableOompaLoompa, typeof ÇlrDatagridWillyWonka, typeof ÇlrExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ÇlrDatagridSingleSelectionValueAccessor]>;
 }
 
 // @public (undocumented)
@@ -2268,7 +2268,7 @@ export class ClrDatepickerModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatepickerModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions], [typeof i2.CommonModule, typeof CdkTrapFocusModule, typeof ClrHostWrappingModule, typeof ClrConditionalModule, typeof ÇlrClrPopoverModuleNext, typeof ClrIconModule, typeof ClrCommonFormsModule, typeof ClrVerticalNavModule], [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions], [typeof i2.CommonModule, typeof CdkTrapFocusModule, typeof ClrHostWrappingModule, typeof ClrConditionalModule, typeof ClrPopoverModuleNext, typeof ClrIconModule, typeof ClrCommonFormsModule, typeof ClrVerticalNavModule], [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions]>;
 }
 
 // @public (undocumented)
@@ -2366,7 +2366,7 @@ export class ClrDropdown implements OnDestroy {
     // (undocumented)
     popoverService: ClrPopoverService;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": { "alias": "clrCloseMenuOnItemClick"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": { "alias": "clrCloseMenuOnItemClick"; "required": false; }; }, {}, never, ["[clrDropdownTrigger]", "clr-dropdown-menu"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdown, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
 }
@@ -2410,7 +2410,7 @@ export class ClrDropdownModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDropdownModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDropdownModule, [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem], [typeof i2.CommonModule], [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem, typeof ClrConditionalModule, typeof ClrIconModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDropdownModule, [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem], [typeof i2.CommonModule, typeof ClrPopoverModuleNext], [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem, typeof ClrConditionalModule, typeof ClrIconModule]>;
 }
 
 // @public (undocumented)
@@ -2892,7 +2892,7 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfExpanded, [{ optional: true; }, null, null, null, null]>;
 }
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export class ClrIfOpen implements OnDestroy {
     constructor(popoverService: ClrPopoverService, template: TemplateRef<any>, container: ViewContainerRef);
     // (undocumented)
@@ -3549,7 +3549,7 @@ export class ClrPopoverAnchor {
 
 // @public (undocumented)
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
-    constructor(document: Document, container: ViewContainerRef, template: TemplateRef<any>, renderer: Renderer2, overlay: Overlay, overlayContainer: OverlayContainer, scrollDispatcher: ScrollDispatcher_2, popoverService: ClrPopoverService, zone: NgZone);
+    constructor(container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, overlay: Overlay, popoverService: ClrPopoverService, scrollDispatcher: ScrollDispatcher, zone: NgZone);
     // (undocumented)
     set contentAt(position: string);
     // (undocumented)
@@ -3565,9 +3565,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     setPreferredPosition(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, { optional: true; }, null, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -3585,8 +3585,20 @@ export class ClrPopoverModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, [typeof PopoverDirective], [typeof PopoverDirective, typeof ClrDropdownModule, typeof ClrSignpostModule, typeof ClrTooltipModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, [typeof ClrPopoverContent], [typeof ClrPopoverContent, typeof ClrDropdownModule, typeof ClrSignpostModule, typeof ClrTooltipModule, typeof ClrPopoverModuleNext]>;
 }
+
+// @public (undocumented)
+class ClrPopoverModuleNext {
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModuleNext, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModuleNext>;
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModuleNext, [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton], [typeof ClrPopoverContent], [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent]>;
+}
+export { ClrPopoverModuleNext }
+export { ClrPopoverModuleNext as ÇlrClrPopoverModuleNext }
 
 // @public
 export interface ClrPopoverPosition {
@@ -3615,6 +3627,8 @@ export class ClrPopoverService {
     // (undocumented)
     getEventChange(): Observable<Event>;
     // (undocumented)
+    getPositionChange(): Observable<string>;
+    // (undocumented)
     hasBackdrop: false;
     // (undocumented)
     noFocus: boolean;
@@ -3631,9 +3645,11 @@ export class ClrPopoverService {
     // (undocumented)
     outsideClickClose: boolean;
     // (undocumented)
+    overlay: Overlay;
+    // (undocumented)
     overlayRef: OverlayRef;
     // (undocumented)
-    panelClass: string | string[];
+    panelClass: string[];
     // (undocumented)
     get popoverAligned(): Observable<HTMLElement>;
     // (undocumented)
@@ -3647,7 +3663,8 @@ export class ClrPopoverService {
     // (undocumented)
     popoverVisibleEmit(visible: boolean): void;
     // (undocumented)
-    position: string;
+    get position(): string;
+    set position(position: string);
     // (undocumented)
     scrollToClose: boolean;
     // (undocumented)
@@ -3996,7 +4013,7 @@ export class ClrSignpost {
     signpostTriggerAriaLabel: string;
     useCustomTrigger: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; }, {}, ["customTrigger"], ["[clrSignpostTrigger]", "clr-signpost-content", "*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
 }
@@ -4037,7 +4054,7 @@ export class ClrSignpostModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSignpostModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrFocusOnViewInitModule], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof ClrConditionalModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrFocusOnViewInitModule, typeof ClrPopoverContent], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof ClrConditionalModule]>;
 }
 
 // @public (undocumented)
@@ -4686,7 +4703,7 @@ export class ClrTimelineStepTitle {
 // @public (undocumented)
 export class ClrTooltip {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltip, "clr-tooltip", never, {}, {}, never, ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltip, "clr-tooltip", never, {}, {}, never, ["[clrTooltipTrigger]", "clr-tooltip-content"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltip, never>;
 }
@@ -4722,7 +4739,7 @@ export class ClrTooltipModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTooltipModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i2.CommonModule], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof ClrConditionalModule, typeof ClrIconModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i2.CommonModule, typeof ClrPopoverContent], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof ClrConditionalModule, typeof ClrIconModule]>;
 }
 
 // @public (undocumented)
@@ -5530,7 +5547,7 @@ export class NavDetectionOompaLoompa extends OompaLoompa {
 
 // @public (undocumented)
 export class PopoverDirective implements AfterViewInit {
-    constructor(overlay: Overlay, popoverService: ClrPopoverService, scrollDispatcher: ScrollDispatcher_2, zone: NgZone);
+    constructor(overlay: Overlay, popoverService: ClrPopoverService, scrollDispatcher: ScrollDispatcher, zone: NgZone);
     // (undocumented)
     elementIsVisibleInViewport(el: any, partiallyVisible?: boolean): boolean;
     // (undocumented)
@@ -5548,7 +5565,7 @@ export class PopoverDirective implements AfterViewInit {
     // (undocumented)
     showOverlay(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<PopoverDirective, "clr-tooltip-content, clr-signpost-content, clr-dropdown-menu", never, {}, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<PopoverDirective, "clr-tooldsfsftip-content, clr-signpsdfdsost-content, clr-dropsdfsddown-menu", never, {}, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<PopoverDirective, never>;
 }
@@ -5664,16 +5681,6 @@ export class ÇlrClrPopoverCloseButton implements OnDestroy, AfterViewInit {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrClrPopoverCloseButton, "[clrPopoverCloseButton]", never, {}, { "closeChange": "clrPopoverOnCloseChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrClrPopoverCloseButton, never>;
-}
-
-// @public (undocumented)
-export class ÇlrClrPopoverModuleNext {
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrClrPopoverModuleNext, never>;
-    // (undocumented)
-    static ɵinj: i0.ɵɵInjectorDeclaration<ÇlrClrPopoverModuleNext>;
-    // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ÇlrClrPopoverModuleNext, [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent], never, [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent]>;
 }
 
 // @public (undocumented)
@@ -5827,7 +5834,7 @@ export class ÇlrDatagridSingleSelectionValueAccessor implements ControlValueAcc
 
 // @public (undocumented)
 export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
-    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
+    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher_2, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
     // Warning: (ae-forgotten-export) The symbol "CdkVirtualForInputs" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)

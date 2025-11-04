@@ -28,13 +28,13 @@ import {
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import { ClrComboboxContainer } from './combobox-container';
+import { ClrPopoverHostDirective } from '../../popover/custom/popover-host.directive';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { LoadingListener } from '../../utils/loading/loading-listener';
-import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { WrappedFormControl } from '../common/wrapped-control';

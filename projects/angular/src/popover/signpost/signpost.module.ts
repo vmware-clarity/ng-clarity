@@ -16,6 +16,7 @@ import { ClrSignpostTrigger } from './signpost-trigger';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
 import { ClrFocusOnViewInitModule } from '../../utils/focus/focus-on-view-init/focus-on-view-init.module';
+import { ClrPopoverContent } from '../common';
 
 export const CLR_SIGNPOST_DIRECTIVES: Type<any>[] = [
   ClrSignpost,
@@ -25,7 +26,7 @@ export const CLR_SIGNPOST_DIRECTIVES: Type<any>[] = [
 ];
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule, ClrFocusOnViewInitModule],
+  imports: [CommonModule, ClrIconModule, ClrFocusOnViewInitModule, ClrPopoverContent],
   declarations: [CLR_SIGNPOST_DIRECTIVES],
   exports: [CLR_SIGNPOST_DIRECTIVES, ClrConditionalModule],
 })

@@ -8,7 +8,7 @@
 import { Directive, EventEmitter, HostListener, OnDestroy, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverService } from './providers/popover.service';
+import { ClrPopoverService } from '../../utils';
 
 @Directive({
   selector: '[clrPopoverOpenCloseButton]',
