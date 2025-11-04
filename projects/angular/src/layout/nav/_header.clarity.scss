@@ -199,17 +199,25 @@
     justify-content: flex-end;
 
     & > *:not(.dropdown)::before,
-    & > .dropdown > .dropdown-toggle::before {
+    & > .dropdown::before {
       @include header-section-divider();
     }
 
     // Reduce nesting from 5 to 3 at the most
     & > .dropdown {
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
+
       & > .dropdown-toggle {
         position: relative;
 
         @include header-nav-appearance();
         @include header-nav-link();
+
+        padding: 0 density.$clr-base-horizontal-offset-m;
+
+        &:focus {
+          outline-offset: initial;
+        }
       }
 
       .dropdown-toggle.nav-icon {

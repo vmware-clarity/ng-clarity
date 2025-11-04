@@ -16,7 +16,7 @@
  *     |         |
  *     |         |
  *  J  ----------- F
- *    I    H    G
+ *     I    H    G
  *
  * TOP_LEFT      = A
  * TOP_CENTER    = B
