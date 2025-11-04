@@ -10,7 +10,8 @@ import { Component, EventEmitter, Inject, Input, OnDestroy, Output, PLATFORM_ID,
 import { Subscription } from 'rxjs';
 
 import { RowActionService } from './providers/row-action-service';
-import { ClrCommonStringsService, ClrPopoverHostDirective, ClrPopoverService } from '../../utils';
+import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
+import { ClrCommonStringsService } from '../../utils';
 import { ClrKeyFocus } from '../../utils/focus/key-focus';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 

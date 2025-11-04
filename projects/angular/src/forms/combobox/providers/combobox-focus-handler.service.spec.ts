@@ -10,8 +10,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler, OptionData } from './combobox-focus-handler.service';
 import { OptionSelectionService } from './option-selection.service';
+import { ClrPopoverService } from '../../../popover/common/providers/popover.service';
 import { Keys } from '../../../utils/enums/keys.enum';
-import { ClrPopoverService } from '../../../utils/popover/providers/popover.service';
 import { SingleSelectComboboxModel } from '../model/single-select-combobox.model';
 
 @Component({

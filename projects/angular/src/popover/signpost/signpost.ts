@@ -11,7 +11,7 @@ import { SignpostFocusManager } from './providers/signpost-focus-manager.service
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostTrigger } from './signpost-trigger';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverHostDirective } from '../custom';
+import { ClrPopoverHostDirective } from '../common';
 
 @Component({
   selector: 'clr-signpost',

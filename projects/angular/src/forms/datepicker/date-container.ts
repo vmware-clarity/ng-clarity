@@ -9,8 +9,8 @@ import { AfterViewInit, Component, ElementRef, Input, Optional, Renderer2, ViewC
 import { startWith } from 'rxjs/operators';
 
 import { DayModel } from './model/day.model';
-import { ClrPopoverHostDirective } from '../../popover/custom/popover-host.directive';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
+import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
+import { ClrPopoverService } from '../../popover/common/providers/popover.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';

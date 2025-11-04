@@ -9,9 +9,9 @@ import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrPopoverContent } from './popover-content';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
+import { ClrPopoverModuleNext } from './popover.module';
+import { ClrPopoverService } from './providers/popover.service';
 import { TestContext } from '../../utils/testing/helpers.spec';
-import { ClrPopoverModuleNext } from '../custom/popover.module';
 
 @Component({
   selector: 'test-host',

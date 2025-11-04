@@ -23,7 +23,7 @@ import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { ClrFormsModule } from '../../forms/forms.module';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
+import { ClrPopoverService } from '../../popover/common/providers/popover.service';
 import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { delay } from '../../utils/testing/helpers.spec';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';

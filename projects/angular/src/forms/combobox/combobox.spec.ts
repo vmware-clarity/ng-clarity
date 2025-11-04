@@ -19,9 +19,9 @@ import { COMBOBOX_FOCUS_HANDLER_PROVIDER } from './providers/combobox-focus-hand
 import { OptionSelectionService } from './providers/option-selection.service';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrPopoverContent } from '../../popover';
+import { ClrPopoverService } from '../../popover/common/providers/popover.service';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { delay } from '../../utils/testing/helpers.spec';
 
 @Component({

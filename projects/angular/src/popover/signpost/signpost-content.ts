@@ -21,9 +21,10 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { ClrCommonStringsService, ClrPopoverService } from '../../utils';
+import { ClrCommonStringsService } from '../../utils';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-signpost-position.enum';
+import { ClrPopoverService } from '../common';
+import { ClrCDKPopoverPositions } from '../common/enums/cdk-signpost-position.enum';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';

@@ -10,7 +10,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
 import { TestContext } from './helpers.spec';
 import { RowActionService } from './providers/row-action-service';
-import { ClrPopoverService } from '../../utils';
+import { ClrPopoverService } from '../../popover';
 import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 

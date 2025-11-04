@@ -21,7 +21,8 @@ import {
 import { Subscription } from 'rxjs';
 
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
-import { ClrCommonStringsService, ClrPopoverService } from '../../utils';
+import { ClrPopoverService } from '../../popover';
+import { ClrCommonStringsService } from '../../utils';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from './providers/filters';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';

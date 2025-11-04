@@ -19,11 +19,11 @@ import {
   SkipSelf,
 } from '@angular/core';
 
-import { ClrPopoverService } from '../../utils';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
+import { ClrPopoverService } from '../common';
+import { ClrCDKPopoverPositions } from '../common/enums/cdk-dropdown-position.enum';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
-import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-dropdown-position.enum';
 
 const AvailablePopoverPositions = [
   ClrCDKPopoverPositions.bottom,

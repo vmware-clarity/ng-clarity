@@ -11,11 +11,11 @@ import { TestBed } from '@angular/core/testing';
 // I'm giving up, I'm using the datagrid ones for now.
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { ClrIconCustomTag } from '../../icon/icon';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostContent } from './signpost-content';
+import { ClrPopoverService } from '../common/providers/popover.service';
 
 export default function (): void {
   describe('ClrSignpostContent', function () {

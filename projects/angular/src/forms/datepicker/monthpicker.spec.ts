@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 
 import { DayModel } from './model/day.model';
 import { ClrMonthpicker } from './monthpicker';
-import { ClrPopoverService } from '../../utils';
+import { ClrPopoverService } from '../../popover';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';

@@ -19,10 +19,10 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
 import { ClrModalModule } from '../../modal/modal.module';
 import { FocusService } from '../../utils/focus/focus.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { delay } from '../../utils/testing/helpers.spec';
 import { PopoverDirective } from '../common/popover.directive';
+import { ClrPopoverService } from '../common/providers/popover.service';
 
 export default function (): void {
   describe('Dropdown', () => {

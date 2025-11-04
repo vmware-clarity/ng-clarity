@@ -12,7 +12,7 @@ import { SignpostFocusManager } from './providers/signpost-focus-manager.service
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostModule } from './signpost.module';
 import { ClrIconModule } from '../../icon/icon.module';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
+import { ClrPopoverService } from '../common/providers/popover.service';
 
 export default function (): void {
   describe('SignpostToggle component', function () {

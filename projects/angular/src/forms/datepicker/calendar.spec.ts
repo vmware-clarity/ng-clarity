@@ -8,7 +8,7 @@
 import { Component } from '@angular/core';
 
 import { ClrCalendar } from './calendar';
-import { ClrPopoverService } from '../../utils';
+import { ClrPopoverService } from '../../popover';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';

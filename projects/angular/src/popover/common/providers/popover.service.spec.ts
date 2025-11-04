@@ -10,8 +10,8 @@ import { TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs';
 
 import { ClrPopoverService } from './popover.service';
-import { ClrPopoverModuleNext } from '../../../popover';
-import { Keys } from '../../enums/keys.enum';
+import { Keys } from '../../../utils/enums/keys.enum';
+import { ClrPopoverModuleNext } from '../../index';
 
 @Component({
   selector: 'test-host',

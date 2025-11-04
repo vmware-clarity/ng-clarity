@@ -28,16 +28,6 @@ import {
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import { ClrComboboxContainer } from './combobox-container';
-import { ClrPopoverHostDirective } from '../../popover/custom/popover-host.directive';
-import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
-import { Keys } from '../../utils/enums/keys.enum';
-import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrLoadingState } from '../../utils/loading/loading';
-import { LoadingListener } from '../../utils/loading/loading-listener';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
-import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
-import { WrappedFormControl } from '../common/wrapped-control';
 import { ComboboxModel } from './model/combobox.model';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
@@ -46,6 +36,16 @@ import { ClrOptions } from './options';
 import { ComboboxContainerService } from './providers/combobox-container.service';
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
+import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
+import { ClrPopoverService } from '../../popover/common/providers/popover.service';
+import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
+import { Keys } from '../../utils/enums/keys.enum';
+import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrLoadingState } from '../../utils/loading/loading';
+import { LoadingListener } from '../../utils/loading/loading-listener';
+import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { WrappedFormControl } from '../common/wrapped-control';
 
 @Component({
   selector: 'clr-combobox',

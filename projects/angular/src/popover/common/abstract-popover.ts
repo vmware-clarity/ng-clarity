@@ -21,7 +21,7 @@ import { startWith } from 'rxjs/operators';
 
 import { Point, Popover } from './popover';
 import { PopoverOptions } from './popover-options.interface';
-import { ClrPopoverService } from '../../utils';
+import { ClrPopoverService } from '../../common';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
 

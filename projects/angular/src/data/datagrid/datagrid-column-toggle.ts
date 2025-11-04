@@ -9,13 +9,14 @@ import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { columnToggleTrackByFn } from './datagrid-column-toggle-trackby';
-import { ClrCommonStringsService, ClrPopoverHostDirective, ClrPopoverService } from '../../utils';
+import { ClrCommonStringsService } from '../../utils';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnState } from './interfaces/column-state.interface';
 import { ColumnsService } from './providers/columns.service';
 import { AvailablePopoverPositions } from '../../popover';
+import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover/common';
+import { ClrCDKPopoverPositions } from '../../popover/common/enums/cdk-dropdown-position.enum';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-dropdown-position.enum';
 
 @Component({
   selector: 'clr-dg-column-toggle',

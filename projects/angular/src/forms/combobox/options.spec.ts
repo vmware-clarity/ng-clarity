@@ -13,10 +13,10 @@ import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service
 import { OptionSelectionService } from './providers/option-selection.service';
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
+import { ClrPopoverService } from '../../popover/common/providers/popover.service';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { FocusService } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 
 const OPTION_PROVIDERS = [
   ClrPopoverService,

@@ -18,10 +18,10 @@ import {
 } from '@angular/core';
 
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-tooltip-position.enum';
+import { ClrPopoverService } from '../common';
+import { ClrCDKPopoverPositions } from '../common/enums/cdk-tooltip-position.enum';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
-import { ClrPopoverService } from '../../utils';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
 
 const POSITIONS = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'] as const;

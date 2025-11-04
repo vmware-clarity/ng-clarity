@@ -9,7 +9,7 @@ import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrIfOpen } from './if-open.directive';
-import { ClrPopoverService } from '../../popover/custom';
+import { ClrPopoverService } from '../../popover/common';
 
 export default function (): void {
   describe('IfOpen Directive', function () {

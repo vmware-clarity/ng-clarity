@@ -16,7 +16,7 @@ import { ClrIconModule } from './icon/icon.module';
 import { ClrLayoutModule } from './layout/layout.module';
 import { ClrModalModule } from './modal/modal.module';
 import { ClrSidePanelModule } from './modal/side-panel.module';
-import { ClrPopoverModuleNext } from './popover/custom/popover.module';
+import { ClrPopoverModuleNext } from './popover/common/popover.module';
 import { ClrPopoverModule } from './popover/popover.module';
 import { ClrProgressBarModule } from './progress/progress-bars/progress-bar.module';
 import { ClrSpinnerModule } from './progress/spinner/spinner.module';

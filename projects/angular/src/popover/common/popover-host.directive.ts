@@ -7,9 +7,9 @@
 
 import { Directive, ElementRef } from '@angular/core';
 
+import { POPOVER_HOST_ANCHOR } from './popover-host-anchor.token';
+import { ClrPopoverService } from './providers/popover.service';
 import { ClrStopEscapePropagationDirective } from './stop-escape-propagation.directive';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
-import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 
 @Directive({
   standalone: true,

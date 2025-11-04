@@ -8,11 +8,10 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, Optional, SkipSelf } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ClrPopoverHostDirective, ClrPopoverService } from '../common';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdown.service';
-import { ClrPopoverService } from '../../utils';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
-import { ClrPopoverHostDirective } from '../custom';
 
 @Component({
   selector: 'clr-dropdown',

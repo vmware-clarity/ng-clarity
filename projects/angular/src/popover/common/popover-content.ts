@@ -32,10 +32,10 @@ import {
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
-import { ClrPopoverService } from '../../utils';
+import { ClrCDKPopoverPositions } from './enums/cdk-dropdown-position.enum';
+import { ClrPopoverService } from './providers/popover.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
-import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-dropdown-position.enum';
 
 const AvailablePopoverPositions = [
   ClrCDKPopoverPositions.bottom,

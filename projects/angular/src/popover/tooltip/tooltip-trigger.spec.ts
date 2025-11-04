@@ -11,8 +11,8 @@ import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
 import { ClrTooltipTrigger } from './tooltip-trigger';
 import { ClrTooltipModule } from './tooltip.module';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
+import { ClrPopoverService } from '../common/providers/popover.service';
 
 @Component({
   template: `<span clrTooltipTrigger [attr.aria-label]="ariaLabel">Hello world</span>`,

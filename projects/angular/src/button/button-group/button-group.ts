@@ -18,12 +18,12 @@ import {
 import { takeUntil } from 'rxjs/operators';
 
 import { ClrButton } from './button';
-import { ClrPopoverHostDirective } from '../../popover/custom/popover-host.directive';
+import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
+import { ClrPopoverService } from '../../popover/common/providers/popover.service';
 import { ClrDestroyService } from '../../utils/destroy/destroy.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import {
   BUTTON_GROUP_FOCUS_HANDLER_PROVIDER,
   ButtonGroupFocusHandler,

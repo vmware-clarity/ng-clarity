@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, ButtonGroupFocusHandler } from './button-group-focus-handler.service';
 import { InitialFocus } from './button-group-focus.enum';
-import { ClrPopoverService } from '../../utils';
+import { ClrPopoverService } from '../../popover';
 import { Keys } from '../../utils/enums/keys.enum';
 import { FocusService } from '../../utils/focus/focus.service';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';

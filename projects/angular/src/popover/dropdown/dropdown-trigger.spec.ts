@@ -11,8 +11,8 @@ import { ClrDropdown } from './dropdown';
 import { ClrDropdownTrigger } from './dropdown-trigger';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 import { FocusService } from '../../utils/focus/focus.service';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
+import { ClrPopoverService } from '../common/providers/popover.service';
 
 @Component({
   template: `<button clrDropdownTrigger>Hello world</button>`,

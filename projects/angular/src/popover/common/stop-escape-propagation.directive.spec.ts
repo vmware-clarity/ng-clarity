@@ -10,9 +10,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrStopEscapePropagationDirective } from './stop-escape-propagation.directive';
+import { ClrPopoverService } from '../../common';
 import { ClrModal } from '../../modal';
 import { ClrModalModule } from '../../modal';
-import { ClrPopoverService } from '../../utils';
 import { Keys } from '../../utils/enums/keys.enum';
 
 export default function (): void {

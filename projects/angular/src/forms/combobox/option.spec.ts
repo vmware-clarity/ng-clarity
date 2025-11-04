@@ -14,7 +14,7 @@ import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service
 import { OptionSelectionService } from './providers/option-selection.service';
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
+import { ClrPopoverService } from '../../popover/common/providers/popover.service';
 
 @Component({
   template: `<clr-option [clrValue]="value" [id]="id" #option>Test</clr-option>`,

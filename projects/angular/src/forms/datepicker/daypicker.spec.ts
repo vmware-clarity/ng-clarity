@@ -8,7 +8,8 @@
 import { Component } from '@angular/core';
 
 import { ClrDaypicker } from './daypicker';
-import { ClrCommonStringsService, ClrPopoverService } from '../../utils';
+import { ClrPopoverService } from '../../popover';
+import { ClrCommonStringsService } from '../../utils';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';

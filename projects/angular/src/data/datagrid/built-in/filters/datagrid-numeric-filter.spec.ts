@@ -11,7 +11,7 @@ import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 
 import { DatagridNumericFilter } from './datagrid-numeric-filter';
 import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
-import { ClrPopoverService } from '../../../../utils';
+import { ClrPopoverService } from '../../../../popover';
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
 import { animationFrameTick } from '../../../../utils/testing/helpers.spec';
 import { TestContext } from '../../helpers.spec';

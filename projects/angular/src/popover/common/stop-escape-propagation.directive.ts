@@ -8,7 +8,7 @@
 import { Directive, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverService } from '../../utils';
+import { ClrPopoverService } from './providers/popover.service';
 
 @Directive({
   standalone: true,

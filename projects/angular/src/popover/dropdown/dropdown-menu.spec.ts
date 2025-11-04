@@ -11,8 +11,8 @@ import { ClrDropdown } from './dropdown';
 import { ClrDropdownMenu } from './dropdown-menu';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
+import { ClrPopoverService } from '../common/providers/popover.service';
 
 @Component({
   template: `

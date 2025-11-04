@@ -8,7 +8,7 @@
 import { Component } from '@angular/core';
 
 import { ClrDatepickerViewManager } from './datepicker-view-manager';
-import { ClrPopoverService } from '../../utils';
+import { ClrPopoverService } from '../../common';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';

@@ -7,7 +7,8 @@
 
 import { Component } from '@angular/core';
 
-import { ClrCommonStringsService, ClrPopoverService } from '../../utils';
+import { ClrPopoverService } from '../../popover';
+import { ClrCommonStringsService } from '../../utils';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 

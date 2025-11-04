@@ -8,7 +8,7 @@
 import { Component, ElementRef, HostListener, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverService } from '../../utils';
+import { ClrPopoverService } from '../../popover';
 import { DateRangeInput } from './interfaces/date-range.interface';
 import { ClrDayOfWeek } from './interfaces/day-of-week.interface';
 import { CalendarViewModel } from './model/calendar-view.model';

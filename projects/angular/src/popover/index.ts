@@ -9,5 +9,4 @@ export * from './dropdown/index';
 export * from './popover.module';
 export * from './signpost/index';
 export * from './tooltip/index';
-export * from './custom/index';
-export * from './common/popover.directive';
+export * from './common';

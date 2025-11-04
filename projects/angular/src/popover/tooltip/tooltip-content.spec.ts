@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { ClrTooltipContent } from './tooltip-content';
 import { ClrTooltipModule } from './tooltip.module';
-import { ClrPopoverService } from '../../utils';
+import { ClrPopoverService } from '../../common';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({

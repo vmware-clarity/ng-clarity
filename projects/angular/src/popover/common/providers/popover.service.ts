@@ -9,7 +9,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ElementRef, Injectable, TemplateRef } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-import { preventArrowKeyScroll } from '../../focus/key-focus/util';
+import { preventArrowKeyScroll } from '../../../utils/focus/key-focus/util';
 import { ClrCDKPopoverPositions } from '../enums/cdk-signpost-position.enum';
 
 // Popovers might need to ignore click events on an element

@@ -8,8 +8,8 @@
 import { Directive, ElementRef, HostListener, NgZone } from '@angular/core';
 
 import { ClrDropdown } from './dropdown';
+import { ClrPopoverService } from '../common';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
-import { ClrPopoverService } from '../../utils';
 
 @Directive({
   // We support both selectors for legacy reasons

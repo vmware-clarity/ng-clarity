@@ -7,7 +7,7 @@
 
 import { Directive, ElementRef } from '@angular/core';
 
-import { ClrPopoverService } from '../../utils';
+import { ClrPopoverService } from './providers/popover.service';
 
 @Directive({
   selector: '[clrPopoverAnchor]',

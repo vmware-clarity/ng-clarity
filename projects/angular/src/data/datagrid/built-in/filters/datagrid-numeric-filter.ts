@@ -9,7 +9,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, Outp
 import { Subscription } from 'rxjs';
 
 import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
-import { ClrPopoverService } from '../../../../utils';
+import { ClrPopoverService } from '../../../../popover';
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
 import { ClrCommonStringsService } from '../../../../utils/i18n/common-strings.service';
 import { ClrDatagridFilter } from '../../datagrid-filter';

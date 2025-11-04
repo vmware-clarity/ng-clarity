@@ -11,8 +11,8 @@ import { By } from '@angular/platform-browser';
 
 import { AbstractPopover } from './abstract-popover';
 import { POPOVER_HOST_ANCHOR } from './popover-host-anchor.token';
+import { ClrPopoverService } from './providers/popover.service';
 import { ClrConditionalModule } from '../../utils';
-import { ClrPopoverService } from '../../utils';
 
 @Component({
   selector: 'test-popover',

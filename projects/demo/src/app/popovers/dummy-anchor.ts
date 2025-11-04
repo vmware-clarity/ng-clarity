@@ -7,8 +7,8 @@
 
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 
-import { ClrPopoverHostDirective } from '../../../../angular/src/popover/custom/popover-host.directive';
-import { ClrPopoverService } from '../../../../angular/src/utils/popover/providers/popover.service';
+import { ClrPopoverHostDirective } from '../../../../angular/src/popover/common/popover-host.directive';
+import { ClrPopoverService } from '../../../../angular/src/popover/common/providers/popover.service';
 
 @Component({
   selector: 'clr-dummy-anchor',
@@ -52,7 +52,8 @@ export class DummyAnchor {
     }
   }
 
-  onFocusOut() {
+  onFocusOut(event: FocusEvent) {
+    console.log(event);
     this.popoverService.open = false;
   }
 

@@ -8,7 +8,7 @@
 import { Directive, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverService } from '../../popover/custom';
+import { ClrPopoverService } from '../../popover/common';
 
 /**
  * @deprecated use *clrPopoverContent structural directive.

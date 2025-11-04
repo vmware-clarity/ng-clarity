@@ -7,8 +7,7 @@
 
 import { NgModule } from '@angular/core';
 
-import { ClrPopoverContent } from './common/popover-content';
-import { ClrPopoverModuleNext } from './custom';
+import { ClrPopoverContent, ClrPopoverModuleNext } from './common';
 import { ClrDropdownModule } from './dropdown';
 import { ClrSignpostModule } from './signpost';
 import { ClrTooltipModule } from './tooltip';

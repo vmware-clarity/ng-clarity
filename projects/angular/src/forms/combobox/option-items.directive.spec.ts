@@ -11,7 +11,7 @@ import { TestBed } from '@angular/core/testing';
 import { ClrComboboxModule } from './combobox.module';
 import { ClrOptionItems } from './option-items.directive';
 import { OptionSelectionService } from './providers/option-selection.service';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
+import { ClrPopoverService } from '../../popover/common/providers/popover.service';
 
 @Component({
   template: `

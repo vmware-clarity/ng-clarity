@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 
 import { ClrCombobox } from './combobox';
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
+import { ClrPopoverService } from '../../popover/common/providers/popover.service';
 
 @Component({
   template: `
