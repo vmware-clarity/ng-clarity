@@ -25,12 +25,6 @@ export class StepperDemo {
   templateForm: any = this.getTemplateForm();
   partiallyCompletedForm: FormGroup = this.getReactiveForm();
 
-  formGroup = new FormGroup({
-    group: new FormGroup({
-      step: new FormControl(null, Validators.required),
-    }),
-  });
-
   stepsExpandedState = {
     name: false,
     contact: false,

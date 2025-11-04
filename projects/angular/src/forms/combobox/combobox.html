@@ -61,7 +61,7 @@ width of the component, after being wrapped to a new line -->
     [id]="inputId()"
     class="clr-input clr-combobox-input"
     [(ngModel)]="searchText"
-    (blur)="onBlur()"
+    (blur)="onBlur($event)"
     (focus)="onFocus()"
     (change)="onChange()"
     [attr.aria-expanded]="openState"
