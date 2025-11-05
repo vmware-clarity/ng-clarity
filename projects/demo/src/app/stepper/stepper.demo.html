@@ -9,8 +9,8 @@
 
 <h2>Stepper with a nested Accordion inside it</h2>
 
-<form clrStepper clrForm [formGroup]="formGroup">
-  <clr-stepper-panel formGroupName="group">
+<form clrStepper clrForm [formGroup]="form">
+  <clr-stepper-panel formGroupName="name">
     <clr-step-title>Nested Accordion</clr-step-title>
     <clr-step-description> Demonstrate Nested accordion issue </clr-step-description>
 
@@ -46,8 +46,8 @@
       The full license information can be found in LICENSE in the root directory.
     </clr-accordion-description>
     <clr-accordion-content>
-      <form clrStepper clrForm [formGroup]="formGroup">
-        <clr-stepper-panel formGroupName="group">
+      <form clrStepper clrForm [formGroup]="form">
+        <clr-stepper-panel formGroupName="name">
           <clr-step-title>Nested Accordion</clr-step-title>
           <clr-step-description> Demonstrate Nested accordion issue </clr-step-description>
           <clr-step-content *clrIfExpanded>

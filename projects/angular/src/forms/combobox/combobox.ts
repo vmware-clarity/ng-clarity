@@ -268,15 +268,12 @@ export class ClrCombobox<T>
     }
   }
 
-  onBlur() {
-    this.onTouchedCallback?.();
-    if (this.control?.control.updateOn === 'change' && this.control.control.errors?.required) {
-      this.updateControlValue();
+  onBlur(event) {
+    if (!event.relatedTarget || !this.options.el?.nativeElement.contains(event.relatedTarget)) {
+      this.onTouchedCallback?.();
+      this.triggerValidation();
+      this.focused = false;
     }
-    if (this.control?.control.updateOn === 'blur') {
-      this.control.control.updateValueAndValidity();
-    }
-    this.focused = false;
   }
 
   onFocus() {

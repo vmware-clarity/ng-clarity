@@ -21,7 +21,6 @@ import { FocusService } from '../../utils/focus/focus.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { delay } from '../../utils/testing/helpers.spec';
-import { PopoverDirective } from '../common/popover.directive';
 import { ClrPopoverService } from '../common/providers/popover.service';
 
 export default function (): void {
@@ -31,7 +30,7 @@ export default function (): void {
     let subscription: Subscription;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({ imports: [ClrDropdownModule, PopoverDirective], declarations: [TestComponent] });
+      TestBed.configureTestingModule({ imports: [ClrDropdownModule], declarations: [TestComponent] });
 
       fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -281,7 +280,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrDropdownModule, ClrModalModule, PopoverDirective, NoopAnimationsModule],
+        imports: [ClrDropdownModule, ClrModalModule, NoopAnimationsModule],
         declarations: [DropdownItemThatOpensModalTestComponent],
       });
 
@@ -325,7 +324,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrDropdownModule, PopoverDirective],
+        imports: [ClrDropdownModule],
         declarations: [TestShadowDomComponent],
       });
 

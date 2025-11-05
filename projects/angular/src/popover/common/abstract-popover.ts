@@ -19,9 +19,9 @@ import {
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
+import { PopoverOptions } from './interfaces/popover-options.interface';
 import { Point, Popover } from './popover';
-import { PopoverOptions } from './popover-options.interface';
-import { ClrPopoverService } from '../../common';
+import { ClrPopoverService } from './providers/popover.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
 
