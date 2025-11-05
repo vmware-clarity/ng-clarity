@@ -81,6 +81,10 @@
       }
     }
 
+    .dropdown-menu {
+      margin-top: density.$clr-base-vertical-offset-2xs;
+    }
+
     button.dropdown-toggle:not(.btn) {
       background: transparent;
       border: none;

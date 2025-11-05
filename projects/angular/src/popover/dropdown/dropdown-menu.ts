@@ -21,31 +21,20 @@ import {
 
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { ClrPopoverService } from '../common';
-import { ClrCDKPopoverPositions } from '../common/enums/cdk-dropdown-position.enum';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
+import { ClrPopoverType, mapPopoverKeyToPosition } from '../common/utils/popover-positions';
 
-const AvailablePopoverPositions = [
-  ClrCDKPopoverPositions.bottom,
-  ClrCDKPopoverPositions['bottom-left'],
-  ClrCDKPopoverPositions['bottom-middle'],
-  ClrCDKPopoverPositions['bottom-right'],
-  ClrCDKPopoverPositions.left,
-  ClrCDKPopoverPositions['left-bottom'],
-  ClrCDKPopoverPositions['left-middle'],
-  ClrCDKPopoverPositions['left-top'],
-  ClrCDKPopoverPositions['middle-bottom'],
-  ClrCDKPopoverPositions['middle-left'],
-  ClrCDKPopoverPositions['middle-right'],
-  ClrCDKPopoverPositions.right,
-  ClrCDKPopoverPositions['right-bottom'],
-  ClrCDKPopoverPositions['right-middle'],
-  ClrCDKPopoverPositions['right-top'],
-  ClrCDKPopoverPositions.top,
-  ClrCDKPopoverPositions['top-left'],
-  ClrCDKPopoverPositions['top-middle'],
-  ClrCDKPopoverPositions['top-right'],
-];
+const POSITIONS: string[] = [
+  'bottom-left',
+  'bottom-right',
+  'top-left',
+  'top-right',
+  'left-bottom',
+  'left-top',
+  'right-bottom',
+  'right-top',
+] as const;
 
 @Component({
   selector: 'clr-dropdown-menu',
@@ -77,8 +66,11 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
 
     popoverService.contentRef = elementRef;
     popoverService.scrollToClose = true;
-    popoverService.availablePositions = AvailablePopoverPositions;
-    popoverService.popoverPositions = ClrCDKPopoverPositions;
+
+    popoverService.popoverType = ClrPopoverType.DROPDOWN;
+    POSITIONS.forEach(position => {
+      popoverService.availablePositions.push(mapPopoverKeyToPosition(position, popoverService.popoverType));
+    });
 
     popoverService.position = nested ? 'right-top' : 'bottom-left';
 
@@ -87,8 +79,6 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
 
   @Input('clrPosition')
   set position(position: string) {
-    this.popoverService.availablePositions = AvailablePopoverPositions;
-    this.popoverService.popoverPositions = ClrCDKPopoverPositions;
     // set the popover values based on menu position
     this.popoverService.position = position || this.popoverService.defaultPosition;
   }

@@ -27,6 +27,7 @@ import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from './providers/filters';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
+import { ClrPopoverType } from '../../popover/common/utils/popover-positions';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 /**
@@ -61,7 +62,7 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
       class="datagrid-filter"
       [id]="popoverId"
       cdkTrapFocus
-      *clrPopoverContent="open; at: smartPosition; outsideClickToClose: true; scrollToClose: true"
+      *clrPopoverContent="open; at: smartPosition; type: popoverType; outsideClickToClose: true; scrollToClose: true"
       role="dialog"
       [attr.aria-label]="commonStrings.keys.datagridFilterDialogAriaLabel"
     >
@@ -87,6 +88,7 @@ export class ClrDatagridFilter<T = any>
 
   // Smart Popover
   smartPosition = 'bottom-right';
+  popoverType = ClrPopoverType.DROPDOWN;
 
   @ViewChild('anchor', { read: ElementRef }) anchor: ElementRef<HTMLButtonElement>;
 

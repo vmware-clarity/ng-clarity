@@ -18,6 +18,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { ClrPopoverType } from '../../popover/common/utils/popover-positions';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
@@ -56,7 +57,13 @@ import { NgControlService } from '../common/providers/ng-control.service';
             </button>
           }
           <clr-datepicker-view-manager
-            *clrPopoverContent="open; at: popoverPosition; outsideClickToClose: true; scrollToClose: true"
+            *clrPopoverContent="
+              open;
+              at: popoverPosition;
+              type: popoverType;
+              outsideClickToClose: true;
+              scrollToClose: true
+            "
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
@@ -103,6 +110,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
 
+  protected popoverType = ClrPopoverType.DROPDOWN;
   private toggleButton: ElementRef<HTMLButtonElement>;
 
   constructor(

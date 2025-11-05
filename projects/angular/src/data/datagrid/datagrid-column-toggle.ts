@@ -13,9 +13,7 @@ import { ClrCommonStringsService } from '../../utils';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnState } from './interfaces/column-state.interface';
 import { ColumnsService } from './providers/columns.service';
-import { AvailablePopoverPositions } from '../../popover';
 import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover/common';
-import { ClrCDKPopoverPositions } from '../../popover/common/enums/cdk-dropdown-position.enum';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Component({
@@ -108,8 +106,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     popoverService.position = 'right-top';
 
     popoverService.panelClass.push('clr-popover-content');
-    popoverService.availablePositions = AvailablePopoverPositions;
-    popoverService.popoverPositions = ClrCDKPopoverPositions;
   }
 
   get allColumnsVisible(): boolean {

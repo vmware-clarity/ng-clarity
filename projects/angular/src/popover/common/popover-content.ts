@@ -32,32 +32,10 @@ import {
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
-import { ClrCDKPopoverPositions } from './enums/cdk-dropdown-position.enum';
 import { ClrPopoverService } from './providers/popover.service';
+import { ClrPopoverType, mapPopoverKeyToPosition } from './utils/popover-positions';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
-
-const AvailablePopoverPositions = [
-  ClrCDKPopoverPositions.bottom,
-  ClrCDKPopoverPositions['bottom-left'],
-  ClrCDKPopoverPositions['bottom-middle'],
-  ClrCDKPopoverPositions['bottom-right'],
-  ClrCDKPopoverPositions.left,
-  ClrCDKPopoverPositions['left-bottom'],
-  ClrCDKPopoverPositions['left-middle'],
-  ClrCDKPopoverPositions['left-top'],
-  ClrCDKPopoverPositions['middle-bottom'],
-  ClrCDKPopoverPositions['middle-left'],
-  ClrCDKPopoverPositions['middle-right'],
-  ClrCDKPopoverPositions.right,
-  ClrCDKPopoverPositions['right-bottom'],
-  ClrCDKPopoverPositions['right-middle'],
-  ClrCDKPopoverPositions['right-top'],
-  ClrCDKPopoverPositions.top,
-  ClrCDKPopoverPositions['top-left'],
-  ClrCDKPopoverPositions['top-middle'],
-  ClrCDKPopoverPositions['top-right'],
-];
 
 /** @dynamic */
 @Directive({
@@ -68,6 +46,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   private subscriptions: Subscription[] = [];
   private domPortal: DomPortal;
+  private preferredPositionIsSet = false;
   private preferredPosition: ConnectedPosition = {
     originX: 'start',
     originY: 'top',
@@ -88,8 +67,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   ) {
     popoverService.panelClass.push('clr-popover-content');
     popoverService.defaultPosition = 'bottom-left';
-    popoverService.availablePositions = AvailablePopoverPositions;
-    popoverService.popoverPositions = ClrCDKPopoverPositions;
     popoverService.overlay = overlay;
 
     overlayContainer.getContainerElement().classList.add('clr-container-element');
@@ -101,9 +78,19 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   @Input('clrPopoverContentAt')
-  set contentAt(position: string) {
-    // set the popover values based on menu position
-    this.popoverService.position = position || this.popoverService.defaultPosition;
+  set contentAt(position: string | ConnectedPosition) {
+    if (typeof position === 'string') {
+      // set the popover values based on menu position
+      this.popoverService.position = position || this.popoverService.defaultPosition;
+    } else {
+      this.preferredPositionIsSet = true;
+      this.preferredPosition = position;
+    }
+  }
+
+  @Input('clrPopoverContentType')
+  set contentType(type: ClrPopoverType) {
+    this.popoverService.popoverType = type;
   }
 
   @Input('clrPopoverContentOutsideClickToClose')
@@ -149,17 +136,22 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    console.log('Directive OnDestroy');
     this.removeOverlay();
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   setPreferredPosition() {
+    if (this.preferredPositionIsSet) {
+      return;
+    }
+
     // Set default position to "top-right", if position is not available in the map
-    this.preferredPosition =
-      this.popoverService.position in this.popoverService.popoverPositions
-        ? this.popoverService.popoverPositions[this.popoverService.position]
-        : this.popoverService.popoverPositions[this.popoverService.defaultPosition || 'top-right'];
+    const positionKey = this.popoverService.position
+      ? this.popoverService.position
+      : this.popoverService.defaultPosition;
+
+    this.preferredPosition = mapPopoverKeyToPosition(positionKey, this.popoverService.popoverType);
+    console.log(this.preferredPosition);
   }
 
   private _createOverlayRef(): OverlayRef {
@@ -236,7 +228,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private getPositionStrategy() {
     this.setPreferredPosition(); //Preferred position defined by consumer
 
-    //fetch all Scrolling Containers registered with CDK
+    // fetch all Scrolling Containers registered with CDK
     let scrollableAncestors: CdkScrollable[];
     if (this.popoverService.anchorElementRef) {
       scrollableAncestors = this.scrollDispatcher.getAncestorScrollContainers(this.popoverService.anchorElementRef);

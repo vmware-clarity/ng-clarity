@@ -13,7 +13,6 @@ import {
   ElementRef,
   HostBinding,
   Inject,
-  Injector,
   Input,
   OnDestroy,
   Optional,
@@ -24,18 +23,18 @@ import {
 import { ClrCommonStringsService } from '../../utils';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverService } from '../common';
-import { ClrCDKPopoverPositions } from '../common/enums/cdk-signpost-position.enum';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
+import { ClrPopoverType, mapPopoverKeyToPosition } from '../common/utils/popover-positions';
 
 // aka where the arrow / pointer is at in relation to the anchor
 const POSITIONS: string[] = [
+  'right-middle', // default
   'top-left',
   'top-middle',
   'top-right',
   'right-top',
-  'right-middle', // default
   'right-bottom',
   'bottom-right',
   'bottom-middle',
@@ -43,27 +42,6 @@ const POSITIONS: string[] = [
   'left-bottom',
   'left-middle',
   'left-top',
-];
-export const AvailablePopoverPositions = [
-  ClrCDKPopoverPositions.bottom,
-  ClrCDKPopoverPositions['bottom-left'],
-  ClrCDKPopoverPositions['bottom-middle'],
-  ClrCDKPopoverPositions['bottom-right'],
-  ClrCDKPopoverPositions.left,
-  ClrCDKPopoverPositions['left-bottom'],
-  ClrCDKPopoverPositions['left-middle'],
-  ClrCDKPopoverPositions['left-top'],
-  ClrCDKPopoverPositions['middle-bottom'],
-  ClrCDKPopoverPositions['middle-left'],
-  ClrCDKPopoverPositions['middle-right'],
-  ClrCDKPopoverPositions.right,
-  ClrCDKPopoverPositions['right-bottom'],
-  ClrCDKPopoverPositions['right-middle'],
-  ClrCDKPopoverPositions['right-top'],
-  ClrCDKPopoverPositions.top,
-  ClrCDKPopoverPositions['top-left'],
-  ClrCDKPopoverPositions['top-middle'],
-  ClrCDKPopoverPositions['top-right'],
 ];
 
 @Component({
@@ -102,7 +80,6 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   private _position = 'right-middle';
 
   constructor(
-    injector: Injector,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef<HTMLElement>,
@@ -123,8 +100,11 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     this.document = document;
     popoverService.contentRef = element;
     popoverService.panelClass.push('clr-signpost-container');
-    popoverService.popoverPositions = ClrCDKPopoverPositions;
-    popoverService.availablePositions = AvailablePopoverPositions;
+    popoverService.popoverType = ClrPopoverType.SIGNPOST;
+
+    POSITIONS.forEach(position => {
+      popoverService.availablePositions.push(mapPopoverKeyToPosition(position, popoverService.popoverType));
+    });
   }
 
   /*********
@@ -163,8 +143,6 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   set position(position: string) {
     this._position = position && POSITIONS.indexOf(position) > -1 ? position : 'right-middle';
 
-    this.popoverService.availablePositions = AvailablePopoverPositions;
-    this.popoverService.popoverPositions = ClrCDKPopoverPositions;
     this.popoverService.position = this._position;
   }
 

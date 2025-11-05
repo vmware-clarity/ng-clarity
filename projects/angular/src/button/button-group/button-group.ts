@@ -18,8 +18,8 @@ import {
 import { takeUntil } from 'rxjs/operators';
 
 import { ClrButton } from './button';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
-import { ClrPopoverService } from '../../popover/common/providers/popover.service';
+import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
+import { ClrPopoverType, mapPopoverKeyToPosition } from '../../popover/common/utils/popover-positions';
 import { ClrDestroyService } from '../../utils/destroy/destroy.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -30,6 +30,17 @@ import {
 } from '../providers/button-group-focus-handler.service';
 import { InitialFocus } from '../providers/button-group-focus.enum';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
+
+const POSITIONS: string[] = [
+  'bottom-left',
+  'bottom-right',
+  'top-left',
+  'top-right',
+  'left-bottom',
+  'left-top',
+  'right-bottom',
+  'right-top',
+] as const;
 
 @Component({
   selector: 'clr-button-group',
@@ -62,6 +73,11 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     private focusHandler: ButtonGroupFocusHandler
   ) {
     popoverService.defaultPosition = this._menuPosition;
+
+    popoverService.popoverType = ClrPopoverType.DROPDOWN;
+    POSITIONS.forEach(position => {
+      popoverService.availablePositions.push(mapPopoverKeyToPosition(position, popoverService.popoverType));
+    });
   }
 
   @Input('clrMenuPosition')

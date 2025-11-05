@@ -9,7 +9,6 @@ import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import * as _angular_cdk_overlay from '@angular/cdk/overlay';
 import { AnimationBuilder } from '@angular/animations';
 import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
 import { AnimationMetadata } from '@angular/animations';
@@ -74,9 +73,6 @@ import { ValidationErrors } from '@angular/forms';
 import { Validator } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
-
-// @public (undocumented)
-export const AvailablePopoverPositions: _angular_cdk_overlay.ConnectedPosition[];
 
 // @public (undocumented)
 export class BaseExpandableAnimation {
@@ -1419,6 +1415,10 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     openChange: EventEmitter<boolean>;
     // (undocumented)
     popoverId: string;
+    // Warning: (ae-forgotten-export) The symbol "ClrPopoverType" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    popoverType: ClrPopoverType;
     // (undocumented)
     smartPosition: string;
     // (undocumented)
@@ -1672,6 +1672,8 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDa
     openChange: EventEmitter<boolean>;
     // (undocumented)
     popoverId: string;
+    // (undocumented)
+    popoverType: ClrPopoverType;
     // (undocumented)
     smartPosition: string;
     // (undocumented)
@@ -2147,6 +2149,8 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     get open(): boolean;
     // (undocumented)
     get popoverPosition(): string;
+    // (undocumented)
+    protected popoverType: ClrPopoverType;
     // (undocumented)
     set rangeOptions(rangeOptions: any);
     // (undocumented)
@@ -3553,7 +3557,9 @@ export class ClrPopoverAnchor {
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     constructor(container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, overlay: Overlay, popoverService: ClrPopoverService, scrollDispatcher: ScrollDispatcher, zone: NgZone);
     // (undocumented)
-    set contentAt(position: string);
+    set contentAt(position: string | ConnectedPosition);
+    // (undocumented)
+    set contentType(type: ClrPopoverType);
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -3567,7 +3573,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     setPreferredPosition(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, { optional: true; }, null, null, null, null, null]>;
 }
@@ -3619,7 +3625,7 @@ export class ClrPopoverService {
     // (undocumented)
     anchorElementRef: ElementRef;
     // (undocumented)
-    availablePositions: any;
+    availablePositions: ConnectedPosition[];
     // (undocumented)
     closeButtonRef: ElementRef;
     // (undocumented)
@@ -3656,10 +3662,8 @@ export class ClrPopoverService {
     get popoverAligned(): Observable<HTMLElement>;
     // (undocumented)
     popoverAlignedEmit(popoverNode: HTMLElement): void;
-    // Warning: (ae-forgotten-export) The symbol "ClrCDKPopoverPositions" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
-    popoverPositions: ClrCDKPopoverPositions;
+    popoverType: ClrPopoverType;
     // (undocumented)
     get popoverVisible(): Observable<boolean>;
     // (undocumented)
@@ -4024,7 +4028,7 @@ export class ClrSignpost {
 export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "SignpostIdService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "SignpostFocusManager" needs to be exported by the entry point index.d.ts
-    constructor(injector: Injector, parentHost: ElementRef<HTMLElement>, element: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: any, popoverService: ClrPopoverService);
+    constructor(parentHost: ElementRef<HTMLElement>, element: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: any, popoverService: ClrPopoverService);
     close(): void;
     // (undocumented)
     closeButton: ElementRef<HTMLButtonElement>;
@@ -4045,7 +4049,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "signpostCloseAriaLabel": { "alias": "clrSignpostCloseAriaLabel"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; }, {}, never, ["clr-signpost-title", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [null, { optional: true; }, null, null, null, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [{ optional: true; }, null, null, null, null, null, null, null]>;
 }
 
 // @public (undocumented)

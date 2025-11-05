@@ -19,22 +19,14 @@ import {
 
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverService } from '../common';
-import { ClrCDKPopoverPositions } from '../common/enums/cdk-tooltip-position.enum';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
+import { ClrPopoverType, mapPopoverKeyToPosition } from '../common/utils/popover-positions';
 
-const POSITIONS = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'] as const;
+const POSITIONS = ['right', 'left', 'bottom-left', 'bottom-right', 'top-left', 'top-right'] as const;
 type Position = (typeof POSITIONS)[number];
 
-const AvailablePopoverPositions = [
-  ClrCDKPopoverPositions['bottom-left'],
-  ClrCDKPopoverPositions['bottom-right'],
-  ClrCDKPopoverPositions['left'],
-  ClrCDKPopoverPositions['right'],
-  ClrCDKPopoverPositions['top-left'],
-  ClrCDKPopoverPositions['top-right'],
-];
 const SIZES = ['xs', 'sm', 'md', 'lg'];
 
 const defaultPosition = 'right';
@@ -68,10 +60,13 @@ export class ClrTooltipContent implements OnInit {
     private tooltipMouseService: TooltipMouseService
   ) {
     popoverService.contentRef = el;
-    popoverService.availablePositions = AvailablePopoverPositions;
-    popoverService.popoverPositions = ClrCDKPopoverPositions;
     popoverService.scrollToClose = true;
     popoverService.panelClass.push('clr-tooltip-container');
+    popoverService.popoverType = ClrPopoverType.TOOLTIP;
+
+    POSITIONS.forEach(position => {
+      popoverService.availablePositions.push(mapPopoverKeyToPosition(position, popoverService.popoverType));
+    });
 
     if (!parentHost) {
       throw new Error('clr-tooltip-content should only be used inside of a clr-tooltip');
@@ -101,11 +96,8 @@ export class ClrTooltipContent implements OnInit {
     const newPosition = POSITIONS.includes(value as any) ? (value as Position) : defaultPosition;
 
     this._position = newPosition;
-    console.log(this._position);
-    this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
 
-    this.popoverService.availablePositions = AvailablePopoverPositions;
-    this.popoverService.popoverPositions = ClrCDKPopoverPositions;
+    this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
 
     this.popoverService.position = this._position;
   }
