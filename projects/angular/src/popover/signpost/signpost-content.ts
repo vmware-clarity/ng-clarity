@@ -26,23 +26,7 @@ import { ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
-import { ClrPopoverType, mapPopoverKeyToPosition } from '../common/utils/popover-positions';
-
-// aka where the arrow / pointer is at in relation to the anchor
-const POSITIONS: string[] = [
-  'right-middle', // default
-  'top-left',
-  'top-middle',
-  'top-right',
-  'right-top',
-  'right-bottom',
-  'bottom-right',
-  'bottom-middle',
-  'bottom-left',
-  'left-bottom',
-  'left-middle',
-  'left-top',
-];
+import { ClrPopoverType, mapPopoverKeyToPosition, SIGNPOST_POSITIONS } from '../common/utils/popover-positions';
 
 @Component({
   selector: 'clr-signpost-content',
@@ -102,7 +86,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     popoverService.panelClass.push('clr-signpost-container');
     popoverService.popoverType = ClrPopoverType.SIGNPOST;
 
-    POSITIONS.forEach(position => {
+    SIGNPOST_POSITIONS.forEach(position => {
       popoverService.availablePositions.push(mapPopoverKeyToPosition(position, popoverService.popoverType));
     });
   }
@@ -141,7 +125,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     return this._position;
   }
   set position(position: string) {
-    this._position = position && POSITIONS.indexOf(position) > -1 ? position : 'right-middle';
+    this._position = position && SIGNPOST_POSITIONS.indexOf(position) > -1 ? position : 'right-middle';
 
     this.popoverService.position = this._position;
   }

@@ -16,6 +16,34 @@ export enum ClrPopoverType {
   DEFAULT,
 }
 
+export const TOOLTIP_POSITIONS: string[] = ['right', 'left', 'bottom-left', 'bottom-right', 'top-left', 'top-right'];
+
+export const DROPDOWN_POSITIONS: string[] = [
+  'bottom-left',
+  'bottom-right',
+  'top-left',
+  'top-right',
+  'left-bottom',
+  'left-top',
+  'right-bottom',
+  'right-top',
+];
+
+export const SIGNPOST_POSITIONS: string[] = [
+  'right-middle', // default. must be at index 0
+  'top-left',
+  'top-middle',
+  'top-right',
+  'right-top',
+  'right-bottom',
+  'bottom-right',
+  'bottom-middle',
+  'bottom-left',
+  'left-bottom',
+  'left-middle',
+  'left-top',
+];
+
 function getOffset(type: ClrPopoverType) {
   switch (type) {
     case ClrPopoverType.SIGNPOST:

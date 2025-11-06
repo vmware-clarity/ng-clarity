@@ -22,10 +22,7 @@ import { ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
-import { ClrPopoverType, mapPopoverKeyToPosition } from '../common/utils/popover-positions';
-
-const POSITIONS = ['right', 'left', 'bottom-left', 'bottom-right', 'top-left', 'top-right'] as const;
-type Position = (typeof POSITIONS)[number];
+import { ClrPopoverType, mapPopoverKeyToPosition, TOOLTIP_POSITIONS } from '../common/utils/popover-positions';
 
 const SIZES = ['xs', 'sm', 'md', 'lg'];
 
@@ -64,7 +61,7 @@ export class ClrTooltipContent implements OnInit {
     popoverService.panelClass.push('clr-tooltip-container');
     popoverService.popoverType = ClrPopoverType.TOOLTIP;
 
-    POSITIONS.forEach(position => {
+    TOOLTIP_POSITIONS.forEach(position => {
       popoverService.availablePositions.push(mapPopoverKeyToPosition(position, popoverService.popoverType));
     });
 
@@ -93,7 +90,7 @@ export class ClrTooltipContent implements OnInit {
   }
   set position(value: string) {
     const oldPosition = this._position;
-    const newPosition = POSITIONS.includes(value as any) ? (value as Position) : defaultPosition;
+    const newPosition = value && TOOLTIP_POSITIONS.indexOf(value) > -1 ? value : defaultPosition;
 
     this._position = newPosition;
 

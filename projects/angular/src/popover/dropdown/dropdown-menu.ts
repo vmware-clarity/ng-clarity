@@ -23,18 +23,7 @@ import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
-import { ClrPopoverType, mapPopoverKeyToPosition } from '../common/utils/popover-positions';
-
-const POSITIONS: string[] = [
-  'bottom-left',
-  'bottom-right',
-  'top-left',
-  'top-right',
-  'left-bottom',
-  'left-top',
-  'right-bottom',
-  'right-top',
-] as const;
+import { ClrPopoverType, DROPDOWN_POSITIONS, mapPopoverKeyToPosition } from '../common/utils/popover-positions';
 
 @Component({
   selector: 'clr-dropdown-menu',
@@ -68,7 +57,7 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     popoverService.scrollToClose = true;
 
     popoverService.popoverType = ClrPopoverType.DROPDOWN;
-    POSITIONS.forEach(position => {
+    DROPDOWN_POSITIONS.forEach(position => {
       popoverService.availablePositions.push(mapPopoverKeyToPosition(position, popoverService.popoverType));
     });
 
