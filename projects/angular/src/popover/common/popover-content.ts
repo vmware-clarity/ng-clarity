@@ -112,11 +112,11 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     if (this.popoverService.open) {
       this.showOverlay();
 
-      this.popoverService.anchorElementRef
-        ? this.showOverlay()
-        : setTimeout(() => {
-            this.showOverlay();
-          }, 0);
+      // this.popoverService.anchorElementRef
+      //   ? this.showOverlay()
+      //   : setTimeout(() => {
+      //       this.showOverlay();
+      //     }, 0);
     }
 
     this.subscriptions.push(
@@ -152,7 +152,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       : this.popoverService.defaultPosition;
 
     this.preferredPosition = mapPopoverKeyToPosition(positionKey, this.popoverService.popoverType);
-    console.log(this.preferredPosition);
   }
 
   private _createOverlayRef(): OverlayRef {
@@ -169,9 +168,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     );
 
     this.subscriptions.push(
-      this.popoverService.getPositionChange().subscribe(position => {
-        console.log('position change', position);
-
+      this.popoverService.getPositionChange().subscribe(() => {
         if (this.popoverService.overlayRef) {
           const strategy = this.getPositionStrategy();
 
@@ -265,7 +262,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private showOverlay() {
-    console.log('Create Overlay');
     this.setPreferredPosition(); //Preferred position defined by consumer
 
     if (!this.popoverService.overlayRef) {
@@ -289,7 +285,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     setTimeout(() => {
       this.popoverService.popoverVisibleEmit(true);
 
-      if (this.popoverService.contentRef.nativeElement.focus) {
+      if (this.popoverService.contentRef?.nativeElement?.focus) {
         this.popoverService.contentRef.nativeElement.focus();
       }
     });

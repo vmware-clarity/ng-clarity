@@ -6,17 +6,20 @@
  */
 
 import { Component } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownMenu } from './dropdown-menu';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
-import { ClrPopoverService } from '../common/providers/popover.service';
+import { ClrPopoverService } from '../common';
+import { ClrDropdownModule } from './dropdown.module';
 
 @Component({
   template: `
     <clr-dropdown>
+      <button class="btn btn-primary" clrDropdownTrigger>Dropdown</button>
       @if (menu) {
         <clr-dropdown-menu [clrPosition]="position">Hello world</clr-dropdown-menu>
       }
@@ -32,44 +35,57 @@ class SimpleTest {
 
 export default function (): void {
   describe('DropdownMenu component', function () {
-    type Context = TestContext<ClrDropdownMenu, SimpleTest>;
-    spec(ClrDropdownMenu, SimpleTest, null, { declarations: [ClrDropdown] });
+    let fixture: ComponentFixture<SimpleTest>;
+    let popoverService: ClrPopoverService;
+    let focusHandler: DropdownFocusHandler;
+    let dropdownMenu: HTMLElement;
 
-    beforeEach(function (this: Context) {
-      this.getClarityProvider(ClrPopoverService).open = true;
-      this.detectChanges();
+    beforeEach(async () => {
+      TestBed.configureTestingModule({ imports: [ClrDropdownModule], declarations: [SimpleTest] });
+
+      fixture = TestBed.createComponent(SimpleTest);
+      popoverService = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(ClrPopoverService);
+      focusHandler = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(DropdownFocusHandler);
+
+      popoverService.open = true;
+      fixture.detectChanges();
+
+      dropdownMenu = document.body.querySelector('.dropdown-menu') as HTMLElement;
     });
 
-    it('projects content', function (this: Context) {
-      expect(this.clarityElement.textContent.trim()).toMatch('Hello world');
+    afterEach(() => {
+      fixture.destroy();
     });
 
-    it('has the correct css classes', function (this: Context) {
-      expect(this.hostElement.querySelector('.dropdown-menu')).not.toBeNull();
+    it('projected content', function () {
+      expect(dropdownMenu.textContent.trim()).toMatch('Hello world');
     });
 
-    it('adds the menu role to the host', function (this: Context) {
-      expect(this.clarityElement.getAttribute('role')).toBe('menu');
+    it('has the correct css classes', function () {
+      expect(dropdownMenu).not.toBeNull();
     });
 
-    it('declares itself to the DropdownFocusHandler', function (this: Context) {
-      expect(this.getClarityProvider(DropdownFocusHandler).container).toBe(this.clarityElement);
+    it('adds the menu role to the host', function () {
+      expect(dropdownMenu.getAttribute('role')).toBe('menu');
     });
 
-    it('adds DropdownItem children to the DropdownFocusHandler', function (this: Context) {
-      const focusHandler = this.getClarityProvider(DropdownFocusHandler);
+    it('declares itself to the DropdownFocusHandler', function () {
+      expect(focusHandler.container).toBe(dropdownMenu);
+    });
+
+    it('adds DropdownItem children to the DropdownFocusHandler', function () {
+      const clrDropdownMenu = fixture.debugElement.query(By.directive(ClrDropdownMenu)).injector.get(ClrDropdownMenu);
       const spy = spyOn(focusHandler, 'addChildren');
       const newChildren = [{ id: '1' }, { id: '2' }, { id: '3' }] as FocusableItem[];
-      this.clarityDirective.items.reset(newChildren);
-      this.clarityDirective.items.notifyOnChanges();
+      clrDropdownMenu.items.reset(newChildren);
+      clrDropdownMenu.items.notifyOnChanges();
       expect(spy).toHaveBeenCalledWith(newChildren);
     });
 
-    it('removes children from the DropdownFocusHandler on destroy', function (this: Context) {
-      const focusHandler = this.getClarityProvider(DropdownFocusHandler);
+    it('removes children from the DropdownFocusHandler on destroy', function () {
       const spy = spyOn(focusHandler, 'resetChildren');
-      this.hostComponent.menu = false;
-      this.detectChanges();
+      fixture.componentInstance.menu = false;
+      fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
     });
   });
