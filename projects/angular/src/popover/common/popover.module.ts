@@ -13,8 +13,7 @@ import { ClrPopoverContent } from './popover-content';
 import { ClrPopoverOpenCloseButton } from './popover-open-close-button';
 
 @NgModule({
-  imports: [ClrPopoverContent],
-  declarations: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton],
+  declarations: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent],
   exports: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent],
 })
 export class ClrPopoverModuleNext {}

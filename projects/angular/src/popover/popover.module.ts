@@ -7,13 +7,12 @@
 
 import { NgModule } from '@angular/core';
 
-import { ClrPopoverContent, ClrPopoverModuleNext } from './common';
+import { ClrPopoverModuleNext } from './common';
 import { ClrDropdownModule } from './dropdown';
 import { ClrSignpostModule } from './signpost';
 import { ClrTooltipModule } from './tooltip';
 
 @NgModule({
-  imports: [ClrPopoverContent],
-  exports: [ClrPopoverContent, ClrDropdownModule, ClrSignpostModule, ClrTooltipModule, ClrPopoverModuleNext],
+  exports: [ClrDropdownModule, ClrSignpostModule, ClrTooltipModule, ClrPopoverModuleNext],
 })
 export class ClrPopoverModule {}

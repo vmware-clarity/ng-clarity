@@ -7,10 +7,10 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 
+import { ClrPopoverService } from '../common';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpost } from './signpost';
 import { ClrSignpostModule } from './signpost.module';
-import { ClrPopoverService } from '../../common';
 import {
   expectActiveElementNotToBe,
   expectActiveElementToBe,
@@ -18,7 +18,6 @@ import {
   TestContext,
 } from '../../utils/testing/helpers.spec';
 import { delay } from '../../utils/testing/helpers.spec';
-import { PopoverDirective } from '../common/popover.directive';
 
 interface Context extends TestContext<ClrSignpost, TestDefaultSignpost | TestCustomTriggerSignpost> {
   popoverService: ClrPopoverService;
@@ -31,7 +30,7 @@ interface Context extends TestContext<ClrSignpost, TestDefaultSignpost | TestCus
 export default function (): void {
   describe('Signpost', function () {
     describe('default trigger', function () {
-      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule, { imports: [PopoverDirective] });
+      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule);
 
       beforeEach(function (this: Context) {
         this.signpostIdService = this.getClarityProvider(SignpostIdService);
@@ -80,7 +79,7 @@ export default function (): void {
     });
 
     describe('focus management', function () {
-      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule, { imports: [PopoverDirective] });
+      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule);
 
       beforeEach(function (this: Context) {
         this.popoverService = this.getClarityProvider(ClrPopoverService);
@@ -151,7 +150,7 @@ export default function (): void {
     });
 
     describe('custom trigger', function () {
-      spec(ClrSignpost, TestCustomTriggerSignpost, ClrSignpostModule, { imports: [PopoverDirective] });
+      spec(ClrSignpost, TestCustomTriggerSignpost, ClrSignpostModule);
 
       beforeEach(function (this: Context) {
         this.popoverService = this.getClarityProvider(ClrPopoverService);
@@ -198,7 +197,7 @@ export default function (): void {
     });
 
     describe('aria-control values', () => {
-      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule, { imports: [PopoverDirective] });
+      spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule);
 
       function checkAriaControlsId(id: string, element: HTMLElement) {
         const triggerControlsValue = element.querySelector('.signpost-action').getAttribute('aria-controls');

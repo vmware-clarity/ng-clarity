@@ -3573,7 +3573,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     setPreferredPosition(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, { optional: true; }, null, null, null, null, null]>;
 }
@@ -3593,7 +3593,7 @@ export class ClrPopoverModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, [typeof ClrPopoverContent], [typeof ClrPopoverContent, typeof ClrDropdownModule, typeof ClrSignpostModule, typeof ClrTooltipModule, typeof ClrPopoverModuleNext]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof ClrDropdownModule, typeof ClrSignpostModule, typeof ClrTooltipModule, typeof ClrPopoverModuleNext]>;
 }
 
 // @public (undocumented)
@@ -3603,7 +3603,7 @@ class ClrPopoverModuleNext {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModuleNext>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModuleNext, [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton], [typeof ClrPopoverContent], [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModuleNext, [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent], never, [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent]>;
 }
 export { ClrPopoverModuleNext }
 export { ClrPopoverModuleNext as ÇlrClrPopoverModuleNext }
@@ -4060,7 +4060,7 @@ export class ClrSignpostModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSignpostModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrFocusOnViewInitModule, typeof ClrPopoverContent], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof ClrConditionalModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrFocusOnViewInitModule, typeof ClrPopoverModuleNext], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof ClrConditionalModule]>;
 }
 
 // @public (undocumented)
@@ -4745,7 +4745,7 @@ export class ClrTooltipModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTooltipModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i2.CommonModule, typeof ClrPopoverContent], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof ClrConditionalModule, typeof ClrIconModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i2.CommonModule, typeof ClrPopoverModuleNext], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof ClrConditionalModule, typeof ClrIconModule]>;
 }
 
 // @public (undocumented)

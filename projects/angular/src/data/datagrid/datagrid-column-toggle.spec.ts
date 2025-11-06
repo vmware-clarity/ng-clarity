@@ -9,7 +9,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 
 import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
 import { TestContext } from './helpers.spec';
-import { ClrPopoverService } from '../../common';
+import { ClrPopoverService } from '../../popover';
 import { ColumnsService } from './providers/columns.service';
 import { MOCK_COLUMN_SERVICE_PROVIDER, MockColumnsService } from './providers/columns.service.mock';
 import { delay } from '../../utils/testing/helpers.spec';

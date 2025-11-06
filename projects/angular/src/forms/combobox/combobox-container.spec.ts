@@ -70,18 +70,8 @@ class ReactiveTest {
 export default function (): void {
   describe('ClrComboboxContainer', () => {
     ContainerNoLabelSpec(ClrComboboxContainer, [ClrCombobox], NoLabelTest);
-    TemplateDrivenSpec(
-      ClrComboboxContainer,
-      [ClrCombobox, ClrPopoverContent],
-      TemplateDrivenTest,
-      '.clr-control-container clr-combobox'
-    );
-    ReactiveSpec(
-      ClrComboboxContainer,
-      [ClrCombobox, ClrPopoverContent],
-      TemplateDrivenTest,
-      '.clr-control-container clr-combobox'
-    );
+    TemplateDrivenSpec(ClrComboboxContainer, [ClrCombobox], TemplateDrivenTest, '.clr-control-container clr-combobox');
+    ReactiveSpec(ClrComboboxContainer, [ClrCombobox], TemplateDrivenTest, '.clr-control-container clr-combobox');
 
     describe('label offset', () => {
       let fixture, containerDE;
