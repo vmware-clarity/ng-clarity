@@ -5,14 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ClrComboboxModule,
-  ClrConditionalModule,
-  ClrDatagridModule,
-  ClrDropdownModule,
-  ClrPopoverModule,
-  ClrSignpostModule,
-} from '@clr/angular';
+import { ClrComboboxModule, ClrConditionalModule, ClrDatagridModule, ClrPopoverModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
@@ -21,14 +14,7 @@ export default {
   title: 'Datagrid/Scrolling',
   decorators: [
     moduleMetadata({
-      imports: [
-        ClrDatagridModule,
-        ClrConditionalModule,
-        ClrComboboxModule,
-        ClrDropdownModule,
-        ClrSignpostModule,
-        ClrPopoverModule,
-      ],
+      imports: [ClrDatagridModule, ClrConditionalModule, ClrComboboxModule, ClrPopoverModule],
     }),
   ],
   argTypes: {
@@ -63,7 +49,7 @@ const NestedPopoverInScrollTemplate: StoryFn = args => ({
         <clr-dg-cell>
           {{ element.name }}
           <clr-tooltip>
-            <cds-icon clrTooltipTrigger shape="info-circle" size="24"></cds-icon>
+            <cds-icon clrTooltipTrigger shape="info-circle"></cds-icon>
             <clr-tooltip-content [clrPosition]="'top-right'" [clrSize]="'sm'">
               This is a basic tooltip
             </clr-tooltip-content>
@@ -73,6 +59,7 @@ const NestedPopoverInScrollTemplate: StoryFn = args => ({
         <clr-dg-cell>
           {{ element.number }}
           <clr-signpost>
+            <cds-icon clrSignpostTrigger shape="info-circle" solid></cds-icon>
             <clr-signpost-content>This is a signpost.</clr-signpost-content>
           </clr-signpost>
         </clr-dg-cell>
@@ -86,6 +73,17 @@ const NestedPopoverInScrollTemplate: StoryFn = args => ({
         <clr-dg-detail-header>{{ element.name }}</clr-dg-detail-header>
         <clr-dg-detail-body>
           Pressing escape on a nested popover should not close the detail pane.
+          <br />
+
+          <clr-tooltip>
+            <cds-icon clrTooltipTrigger shape="info-circle"></cds-icon>
+            <clr-tooltip-content [clrPosition]="'top-right'" [clrSize]="'sm'">
+              This is a basic tooltip. With long text This is a basic tooltip. With long text This is a basic tooltip.
+              With long text This is a basic tooltip. With long text This is a basic tooltip. With long text This is a
+              basic tooltip. With long text
+            </clr-tooltip-content>
+          </clr-tooltip>
+
           <br />
 
           <clr-dropdown>

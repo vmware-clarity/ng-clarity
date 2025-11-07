@@ -51,17 +51,6 @@
         color: signpost-variables.$clr-signpost-action-active-color;
       }
     }
-
-    .signpost-content-header button {
-      line-height: 0;
-
-      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
-
-      cds-icon:not([size]),
-      clr-icon {
-        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
-      }
-    }
   }
 
   .signpost-trigger {
@@ -94,6 +83,17 @@
         @include mixins.equilateral(0);
 
         position: absolute;
+      }
+    }
+
+    .signpost-content-header button {
+      line-height: 0;
+
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+
+      cds-icon:not([size]),
+      clr-icon {
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       }
     }
   }

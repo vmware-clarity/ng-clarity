@@ -8,7 +8,7 @@
 <ng-content select="clr-dg-action-bar"></ng-content>
 <div class="datagrid-outer-wrapper">
   <div class="datagrid-inner-wrapper">
-    <div class="datagrid" #datagrid [attr.aria-hidden]="detailService.isOpen ? true : null" cdkScrollable>
+    <div class="datagrid" #datagrid [attr.aria-hidden]="detailService.isOpen ? true : null">
       <div class="datagrid-table-wrapper">
         <div role="grid" class="datagrid-table" tabindex="-1" #datagridTable>
           <div role="rowgroup" class="datagrid-header" #datagridHeader>
