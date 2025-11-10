@@ -5,11 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { ClrPopoverModule, ClrPopoverService } from '@clr/angular';
+import { argsToTemplate, moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { ExamplePopoverComponent } from './example-popover.component';
-import { CommonModules } from '../../helpers/common';
+import { StorybookPopoverComponent } from './storybook-popover.component';
+import { ClrPopoverType } from '../../../projects/angular/src/popover/common/utils/popover-positions';
 
 const Positions: any = [
   'bottom-right',
@@ -24,40 +24,59 @@ const Positions: any = [
 
 export default {
   title: 'Popover/PopoverNext',
-  component: ExamplePopoverComponent,
+  component: StorybookPopoverComponent,
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ÇlrClrPopoverModuleNext],
+      imports: [ClrPopoverModule],
     }),
   ],
   providers: [ClrPopoverService],
   argTypes: {
+    useConnectedPosition: { control: { type: 'boolean' } },
     positions: { control: { disable: true }, table: { disable: true } },
+    originX: {
+      control: { type: 'radio' },
+      options: ['start', 'center', 'end'],
+      if: { arg: 'useConnectedPosition', eq: true },
+    },
+    originY: {
+      control: { type: 'radio' },
+      options: ['top', 'center', 'bottom'],
+      if: { arg: 'useConnectedPosition', eq: true },
+    },
+    overlayX: {
+      control: { type: 'radio' },
+      options: ['start', 'center', 'end'],
+      if: { arg: 'useConnectedPosition', eq: true },
+    },
+    overlayY: {
+      control: { type: 'radio' },
+      options: ['top', 'center', 'bottom'],
+      if: { arg: 'useConnectedPosition', eq: true },
+    },
+    position: {
+      control: { type: 'radio' },
+      options: Positions,
+      if: { arg: 'useConnectedPosition', eq: false },
+    },
+    type: { control: { type: 'radio' }, options: ClrPopoverType },
   },
   args: {
-    positions: Positions,
+    position: 'bottom-right',
+    useConnectedPosition: false,
+    type: ClrPopoverType.DEFAULT,
     open: true,
+    scrollToClose: false,
+    outsideClickToClose: true,
+    offsetX: 0,
+    offsetY: 0,
   },
 };
 
 const PopoverTemplate: StoryFn = args => ({
   template: `
-    <div style="height: 100vh; width: 100%; display: flex; gap: 50px; justify-content: space-between">
-      <div style="flex-direction: column; align-items: center; display: flex; gap: 50px">
-        @for (pos of positions; track pos) {
-          <example-popover [popoverPosition]="pos" [open]="open"></example-popover>
-        }
-      </div>
-      <div style="flex-direction: column; align-items: center; display: flex; gap: 50px">
-        @for (pos of positions; track pos) {
-          <example-popover [popoverPosition]="pos" [open]="open"></example-popover>
-        }
-      </div>
-      <div style="flex-direction: column; align-items: center; display: flex; gap: 50px">
-        @for (pos of positions; track pos) {
-          <example-popover [popoverPosition]="pos" [open]="open"></example-popover>
-        }
-      </div>
+    <div style="height: 100vh; width: 100%; display: flex; padding: 50px; justify-content: center">
+      <storybook-popover ${argsToTemplate(args)}></storybook-popover>
     </div>
   `,
   props: args,
@@ -65,4 +84,16 @@ const PopoverTemplate: StoryFn = args => ({
 
 export const Popover: StoryObj = {
   render: PopoverTemplate,
+};
+
+export const PopoverCustomPositions: StoryObj = {
+  render: PopoverTemplate,
+  args: {
+    useConnectedPosition: true,
+    position: '',
+    originX: 'end',
+    originY: 'bottom',
+    overlayX: 'start',
+    overlayY: 'top',
+  },
 };

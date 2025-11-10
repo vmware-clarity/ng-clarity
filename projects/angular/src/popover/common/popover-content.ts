@@ -89,6 +89,11 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     }
   }
 
+  @Input('clrPopoverContentAvailablePositions')
+  set availablePositions(positions: ConnectedPosition[]) {
+    this.popoverService.availablePositions = positions;
+  }
+
   @Input('clrPopoverContentType')
   set contentType(type: ClrPopoverType) {
     this.popoverService.popoverType = type;

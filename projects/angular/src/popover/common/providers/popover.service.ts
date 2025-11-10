@@ -19,7 +19,7 @@ import { ClrPopoverType } from '../utils/popover-positions';
 export class ClrPopoverService {
   outsideClickClose = true;
   scrollToClose = false;
-  anchorElementRef: ElementRef;
+  anchorElementRef: ElementRef<HTMLElement>;
   closeButtonRef: ElementRef;
   contentRef: ElementRef;
   templateRef: TemplateRef<any>;
