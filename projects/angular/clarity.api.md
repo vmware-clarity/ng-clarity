@@ -3557,6 +3557,8 @@ export class ClrPopoverAnchor {
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     constructor(container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, overlay: Overlay, popoverService: ClrPopoverService, scrollDispatcher: ScrollDispatcher, zone: NgZone);
     // (undocumented)
+    set availablePositions(positions: ConnectedPosition[]);
+    // (undocumented)
     set contentAt(position: string | ConnectedPosition);
     // (undocumented)
     set contentType(type: ClrPopoverType);
@@ -3573,7 +3575,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     setPreferredPosition(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, { optional: true; }, null, null, null, null, null]>;
 }
@@ -3623,7 +3625,7 @@ export interface ClrPopoverPosition {
 // @public (undocumented)
 export class ClrPopoverService {
     // (undocumented)
-    anchorElementRef: ElementRef;
+    anchorElementRef: ElementRef<HTMLElement>;
     // (undocumented)
     availablePositions: ConnectedPosition[];
     // (undocumented)
