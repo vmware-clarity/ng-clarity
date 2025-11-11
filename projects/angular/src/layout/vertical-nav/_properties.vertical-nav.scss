@@ -5,11 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
+@use '../../styles/mixins';
+@use '../../styles/variables/variables.global';
 @use './variables.vertical-nav' as vertical-nav-variables;
-@use '@cds/core/tokens/tokens.scss';
-@use '../../utils/variables/variables.density' as density;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+@use '../../styles/variables/variables.density' as density;
 
 @include mixins.exports('vertical-nav.properties') {
   @include mixins.root-or-host() {

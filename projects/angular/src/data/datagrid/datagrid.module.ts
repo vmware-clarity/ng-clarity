@@ -8,6 +8,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
+import { ClrFormsModule } from '../../forms/forms.module';
 import {
   angleDoubleIcon,
   arrowIcon,
@@ -19,10 +21,7 @@ import {
   timesIcon,
   viewColumnsIcon,
   windowCloseIcon,
-} from '@cds/core/icon';
-
-import { ClrFormsModule } from '../../forms/forms.module';
-import { ClrIconModule } from '../../icon/icon.module';
+} from '../../icon';
 import { DatagridNumericFilter } from './built-in/filters/datagrid-numeric-filter';
 import { DatagridStringFilter } from './built-in/filters/datagrid-string-filter';
 import { ActionableOompaLoompa } from './chocolate/actionable-oompa-loompa';
@@ -61,6 +60,7 @@ import { DatagridRowRenderer } from './render/row-renderer';
 import { WrappedCell } from './wrapped-cell';
 import { WrappedColumn } from './wrapped-column';
 import { WrappedRow } from './wrapped-row';
+import { ClrIconModule } from '../../icon/icon.module';
 import { ClrPopoverModuleNext } from '../../popover/common/popover.module';
 import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
 import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';

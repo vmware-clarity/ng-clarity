@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../../../../angular/src/utils/variables.clarity';
+@use '../../../../angular/src/styles/variables.clarity';
 
 @function getLineHeightGap($line-height: 1.2) {
   @if ($line-height < 1) {

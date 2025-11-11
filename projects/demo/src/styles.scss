@@ -6,12 +6,12 @@
  */
 
 @use 'sass:map';
-@use '../../../node_modules/@cds/core/styles/module.reset.min.css' as reset;
-@use '../../../node_modules/@cds/core/styles/module.tokens.min.css' as tokens;
-@use '../../../node_modules/@cds/core/styles/module.layout.min.css' as layout;
-@use '../../../node_modules/@cds/core/styles/module.typography.min.css' as typography;
-@use '../../../node_modules/@cds/core/styles/theme.dark.min.css';
-@use '../../angular/src/utils/variables/variables';
+@use '../../angular/src/styles/core/module.reset.scss' as reset;
+@use '../../angular/src/styles/core/tokens/variables.tokens' as tokens;
+@use '../../angular/src/styles/core/module.layout.scss' as layout;
+@use '../../angular/src/styles/core/module.typography.scss' as typography;
+@use '../../angular/src/styles/core/theme.dark.scss';
+@use '../../angular/src/styles/variables/variables';
 @use '../../ui/src/temp-overrides'; // @TODO remove in v18
 
 :root {

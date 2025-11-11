@@ -1,0 +1,17 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { renderIcon } from '../icon.renderer';
+import { IconShapeTuple } from '../interfaces/icon.interfaces';
+
+const icon = {
+  outline:
+    '<path d="M3.99805 10.26C6.82862 5.17851 12.1814 2.02037 17.998 2C25.1475 1.99879 31.4301 6.7409 33.3887 13.6169C35.3472 20.4928 32.5064 27.8337 26.4294 31.5999C20.3523 35.3662 12.5142 34.6437 7.22805 29.83C6.96367 29.5888 6.84803 29.225 6.92469 28.8754C7.00135 28.5259 7.25865 28.2438 7.59969 28.1354C7.94072 28.0271 8.31367 28.1088 8.57805 28.35C13.0467 32.4157 19.6193 33.1563 24.8806 30.187C30.142 27.2176 32.9051 21.2082 31.7342 15.2814C30.5634 9.3545 25.7226 4.84725 19.7274 4.10169C13.7322 3.35613 7.93492 6.54045 5.34805 12H10.798C11.3503 12 11.798 12.4477 11.798 13C11.798 13.5523 11.3503 14 10.798 14H1.99805V5.2C1.99805 4.64772 2.44576 4.2 2.99805 4.2C3.55033 4.2 3.99805 4.64772 3.99805 5.2V10.26Z"/><path d="M16.998 10.83C16.998 10.2777 17.4458 9.83 17.998 9.83C18.5503 9.83 18.998 10.2777 18.998 10.83V18.49L23.998 21.88C24.4488 22.1878 24.5696 22.8001 24.2693 23.256C23.9691 23.7118 23.3588 23.8426 22.898 23.55L16.998 19.55V10.83Z"/>',
+};
+
+export const historyIconName = 'history';
+export const historyIcon: IconShapeTuple = [historyIconName, renderIcon(icon)];

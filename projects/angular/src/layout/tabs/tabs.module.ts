@@ -7,7 +7,6 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { ClarityIcons, ellipsisHorizontalIcon } from '@cds/core/icon';
 
 import { ActiveOompaLoompa } from './chocolate/active-oompa-loompa';
 import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';
@@ -18,6 +17,7 @@ import { ClrTabLink } from './tab-link.directive';
 import { ClrTabOverflowContent } from './tab-overflow-content';
 import { ClrTabs } from './tabs';
 import { ClrTabsActions } from './tabs-actions';
+import { ClarityIcons, ellipsisHorizontalIcon } from '../../icon';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
 import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';

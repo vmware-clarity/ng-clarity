@@ -7,11 +7,11 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '@cds/core/icon';
 
 import { ClrDatalist } from './datalist';
 import { ClrDatalistContainer } from './datalist-container';
 import { ClrDatalistInput } from './datalist-input';
+import { checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '../../icon';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrInputModule } from '../input/input.module';
 

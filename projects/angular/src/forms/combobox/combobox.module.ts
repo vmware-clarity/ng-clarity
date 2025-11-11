@@ -8,7 +8,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { angleIcon, checkCircleIcon, ClarityIcons, exclamationCircleIcon, windowCloseIcon } from '@cds/core/icon';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';
@@ -17,6 +16,7 @@ import { ClrOptionGroup } from './option-group';
 import { ClrOptionItems } from './option-items.directive';
 import { ClrOptionSelected } from './option-selected.directive';
 import { ClrOptions } from './options';
+import { angleIcon, checkCircleIcon, ClarityIcons, exclamationCircleIcon, windowCloseIcon } from '../../icon';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrPopoverModuleNext } from '../../popover/common/popover.module';
 import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';

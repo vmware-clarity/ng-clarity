@@ -7,11 +7,11 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '@cds/core/icon';
 
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxContainer } from './checkbox-container';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
+import { checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '../../icon';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
 import { ClrCommonFormsModule } from '../common/common.module';

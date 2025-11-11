@@ -7,13 +7,13 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { angleIcon, ClarityIcons } from '@cds/core/icon';
 
 import { RecursiveChildren } from './recursive-children';
 import { ClrRecursiveForOf } from './recursive-for-of';
 import { ClrTree } from './tree';
 import { ClrTreeNode } from './tree-node';
 import { ClrTreeNodeLink } from './tree-node-link';
+import { angleIcon, ClarityIcons } from '../../icon';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrLoadingModule } from '../../utils/loading/loading.module';
 

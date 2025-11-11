@@ -6,9 +6,9 @@
  */
 
 @use 'sass:meta';
-@use '@cds/core/tokens/tokens.scss';
-@use '../../utils/mixins';
-@use '../../utils/variables/variables';
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+@use '../../styles/mixins';
+@use '../../styles/variables/variables';
 @use 'variables.subnav' as subnav-variables;
 
 @include meta.load-css('properties.subnav');

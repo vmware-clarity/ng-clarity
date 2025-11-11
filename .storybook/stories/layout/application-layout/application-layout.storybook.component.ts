@@ -19,7 +19,7 @@ import {
   loadTechnologyIconSet,
   loadTextEditIconSet,
   loadTravelIconSet,
-} from '@cds/core/icon';
+} from '@clr/angular';
 import { ClarityModule, ClrIconModule } from '@clr/angular';
 import { elements } from 'helpers/elements.data';
 

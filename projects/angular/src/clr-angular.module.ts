@@ -26,9 +26,6 @@ import { ClrFocusOnViewInitModule } from './utils/focus/focus-on-view-init/focus
 import { ClrLoadingModule } from './utils/loading/loading.module';
 import { ClrWizardModule } from './wizard/wizard.module';
 
-// Register the icon library
-import '@cds/core/icon/register';
-
 @NgModule({
   exports: [
     ClrEmphasisModule,

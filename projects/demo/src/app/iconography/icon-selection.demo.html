@@ -16,7 +16,7 @@
   <clr-radio-container>
     <label>Decoration</label>
     <clr-radio-wrapper>
-      <input type="radio" id="noneRadio" clrRadio name="options" value="none" [(ngModel)]="options" />
+      <input type="radio" id="noneRadio" clrRadio name="options" value="" [(ngModel)]="options" />
       <label>none</label>
     </clr-radio-wrapper>
     <clr-radio-wrapper>
@@ -24,7 +24,7 @@
       <label>badge</label>
     </clr-radio-wrapper>
     <clr-radio-wrapper>
-      <input type="radio" id="alertRadio" clrRadio name="options" value="alert" [(ngModel)]="options" />
+      <input type="radio" id="alertRadio" clrRadio name="options" value="warning-triangle" [(ngModel)]="options" />
       <label>alert</label>
     </clr-radio-wrapper>
   </clr-radio-container>
@@ -36,7 +36,7 @@
   <div class="clr-row cds-icon-collection">
     @for (shape of set.shapes; track shape) {
     <div class="cds-icon-item clr-col-xs-12 clr-col-sm-6 clr-col-md-4 clr-col-lg-3">
-      <cds-icon [attr.shape]="shape" [attr.title]="shape" [attr.solid]="solid" [attr.badge]="options"></cds-icon>
+      <cds-icon [shape]="shape" [attr.title]="shape" [solid]="solid" [badge]="options"></cds-icon>
       <span class="icon-shape-name">{{ shape }}</span>
     </div>
     }

@@ -7,14 +7,6 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import {
-  angleIcon,
-  calendarIcon,
-  checkCircleIcon,
-  ClarityIcons,
-  eventIcon,
-  exclamationCircleIcon,
-} from '@cds/core/icon';
 
 import { ClrCalendar } from './calendar';
 import { ClrDateContainer } from './date-container';
@@ -28,6 +20,7 @@ import { ClrDay } from './day';
 import { ClrDaypicker } from './daypicker';
 import { ClrMonthpicker } from './monthpicker';
 import { ClrYearpicker } from './yearpicker';
+import { angleIcon, calendarIcon, checkCircleIcon, ClarityIcons, eventIcon, exclamationCircleIcon } from '../../icon';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrVerticalNavModule } from '../../layout';
 import { ClrPopoverModuleNext } from '../../popover/common/popover.module';

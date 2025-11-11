@@ -86,7 +86,7 @@ export function getFileTreeNodeMarkup(
   return files
     .map(file => {
       const data = args.hasIcon
-        ? `<cds-icon [attr.shape]="'${file.files ? 'folder' : 'file'}'"></cds-icon> ${file.name}`
+        ? `<cds-icon [shape]="'${file.files ? 'folder' : 'file'}'"></cds-icon> ${file.name}`
         : file.name;
 
       return `

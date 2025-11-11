@@ -7,13 +7,13 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { angleDoubleIcon, angleIcon, ClarityIcons } from '@cds/core/icon';
 
 import { ClrVerticalNav } from './vertical-nav';
 import { ClrVerticalNavGroup } from './vertical-nav-group';
 import { ClrVerticalNavGroupChildren } from './vertical-nav-group-children';
 import { ClrVerticalNavIcon } from './vertical-nav-icon';
 import { ClrVerticalNavLink } from './vertical-nav-link';
+import { angleDoubleIcon, angleIcon, ClarityIcons } from '../../icon';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
 import { ClrFocusOnViewInitModule } from '../../utils/focus/focus-on-view-init/focus-on-view-init.module';

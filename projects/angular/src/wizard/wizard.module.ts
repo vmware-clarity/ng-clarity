@@ -7,7 +7,6 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ClarityIcons, errorStandardIcon, successStandardIcon } from '@cds/core/icon';
 
 import { ClrWizard } from './wizard';
 import { ClrWizardButton } from './wizard-button';
@@ -21,6 +20,7 @@ import { ClrWizardStepnav } from './wizard-stepnav';
 import { ClrWizardStepnavItem } from './wizard-stepnav-item';
 import { ClrWizardTitle } from './wizard-title';
 import { ClrAlertModule } from '../emphasis/alert/alert.module';
+import { ClarityIcons, errorStandardIcon, successStandardIcon } from '../icon';
 import { ClrModalModule } from '../modal/modal.module';
 
 export const CLR_WIZARD_DIRECTIVES: any[] = [

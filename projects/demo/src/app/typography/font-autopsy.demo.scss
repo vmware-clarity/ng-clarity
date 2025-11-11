@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../../../../angular/src/utils/mixins';
-@use '../../../../angular/src/utils/variables.clarity';
+@use '../../../../angular/src/styles/mixins';
+@use '../../../../angular/src/styles/variables.clarity';
 
 $full-lh-block-width: var(--cds-global-space-11);
 $ruler-highlight-width: calc($full-lh-block-width * 0.25);

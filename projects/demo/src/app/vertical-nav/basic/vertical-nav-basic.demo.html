@@ -30,7 +30,7 @@
         @for (item of case.items; track item) { @if (!item['children']) {
         <a clrVerticalNavLink href="javascript:void(0)">
           @if (item['icon']) {
-          <cds-icon [attr.shape]="item.icon" clrVerticalNavIcon></cds-icon>
+          <cds-icon [shape]="item.icon" clrVerticalNavIcon></cds-icon>
           } {{item.label}}
         </a>
         } }

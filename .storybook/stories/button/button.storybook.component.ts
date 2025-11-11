@@ -22,7 +22,7 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
       <!-- Default Button Template -->
       <ng-container *ngSwitchCase="'default'">
         <button class="btn" [ngClass]="getButtonClass({ buttonType, buttonStyle, btnSmallSize })" [disabled]="disabled">
-          <cds-icon *ngIf="iconShape" [attr.shape]="iconShape"></cds-icon>
+          <cds-icon *ngIf="iconShape" [shape]="iconShape"></cds-icon>
           {{ content }}
           <ng-container #renderContainer></ng-container>
         </button>
@@ -36,7 +36,7 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
           [ngClass]="getButtonClass({ buttonType, buttonStyle, btnSmallSize })"
           [disabled]="disabled"
         >
-          <cds-icon *ngIf="iconShape" [attr.shape]="iconShape"></cds-icon>
+          <cds-icon *ngIf="iconShape" [shape]="iconShape"></cds-icon>
           {{ content }}
         </a>
       </ng-container>

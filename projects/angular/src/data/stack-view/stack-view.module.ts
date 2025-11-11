@@ -8,13 +8,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { angleIcon, ClarityIcons } from '@cds/core/icon';
 
 import { ClrStackBlock } from './stack-block';
 import { ClrStackContentInput } from './stack-content-input';
 import { ClrStackHeader } from './stack-header';
 import { ClrStackView } from './stack-view';
 import { ClrStackViewCustomTags, ClrStackViewLabel } from './stack-view-custom-tags';
+import { angleIcon, ClarityIcons } from '../../icon';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
 

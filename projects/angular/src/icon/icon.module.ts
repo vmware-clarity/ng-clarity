@@ -8,13 +8,14 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 
-import { CdsIconCustomTag, ClrIconCustomTag } from './icon';
+import { ClrIcon } from './icon.component';
+import { IconHtmlPipe } from './utils/icon-html.pipe';
 
-export const CLR_ICON_DIRECTIVES: Type<any>[] = [ClrIconCustomTag, CdsIconCustomTag];
+export const CLR_ICON_DIRECTIVES: Type<any>[] = [ClrIcon];
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, IconHtmlPipe],
   declarations: [CLR_ICON_DIRECTIVES],
-  exports: [CLR_ICON_DIRECTIVES],
+  exports: [CLR_ICON_DIRECTIVES, IconHtmlPipe],
 })
 export class ClrIconModule {}
