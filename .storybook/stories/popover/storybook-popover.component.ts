@@ -61,7 +61,10 @@ export class StorybookPopoverComponent {
   @Input() outsideClickToClose = true;
   @Input() scrollToClose = false;
   @Input() type = ClrPopoverType.DEFAULT;
-  @Input() position = '';
+  @Input() defaultPosition: string;
+  @Input() signpostPosition: string;
+  @Input() tooltipPosition: string;
+  @Input() dropdownPosition: string;
   @Input() overlayX = '';
   @Input() overlayY = '';
   @Input() originX = '';
@@ -69,6 +72,7 @@ export class StorybookPopoverComponent {
   @Input() offsetX = 0;
   @Input() offsetY = 0;
   @Input() useConnectedPosition = false;
+  @Input('scrollPositions') availablePositionKeys = [];
 
   get connectedPosition(): ConnectedPosition {
     return {
@@ -89,12 +93,14 @@ export class StorybookPopoverComponent {
     return this.position;
   }
 
+  get position(): string {
+    return this.defaultPosition || this.dropdownPosition || this.signpostPosition || this.tooltipPosition;
+  }
+
   get availablePositions() {
     const result = [];
 
-    const DROPDOWN_POSITIONS: string[] = ['bottom-left', 'right-bottom', 'top-left'];
-
-    DROPDOWN_POSITIONS.forEach(position => {
+    this.availablePositionKeys.forEach(position => {
       result.push(mapPopoverKeyToPosition(position, this.type));
     });
 

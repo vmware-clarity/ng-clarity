@@ -9,7 +9,11 @@ import { ClrPopoverModule, ClrPopoverService } from '@clr/angular';
 import { argsToTemplate, moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { StorybookPopoverComponent } from './storybook-popover.component';
-import { ClrPopoverType } from '../../../projects/angular/src/popover/common/utils/popover-positions';
+import {
+  ClrPopoverType,
+  SIGNPOST_POSITIONS,
+  TOOLTIP_POSITIONS,
+} from '../../../projects/angular/src/popover/common/utils/popover-positions';
 
 const Positions: any = [
   'bottom-right',
@@ -31,46 +35,6 @@ export default {
     }),
   ],
   providers: [ClrPopoverService],
-  argTypes: {
-    useConnectedPosition: { control: { type: 'boolean' } },
-    positions: { control: { disable: true }, table: { disable: true } },
-    originX: {
-      control: { type: 'radio' },
-      options: ['start', 'center', 'end'],
-      if: { arg: 'useConnectedPosition', eq: true },
-    },
-    originY: {
-      control: { type: 'radio' },
-      options: ['top', 'center', 'bottom'],
-      if: { arg: 'useConnectedPosition', eq: true },
-    },
-    overlayX: {
-      control: { type: 'radio' },
-      options: ['start', 'center', 'end'],
-      if: { arg: 'useConnectedPosition', eq: true },
-    },
-    overlayY: {
-      control: { type: 'radio' },
-      options: ['top', 'center', 'bottom'],
-      if: { arg: 'useConnectedPosition', eq: true },
-    },
-    position: {
-      control: { type: 'radio' },
-      options: Positions,
-      if: { arg: 'useConnectedPosition', eq: false },
-    },
-    type: { control: { type: 'radio' }, options: ClrPopoverType },
-  },
-  args: {
-    position: 'bottom-right',
-    useConnectedPosition: false,
-    type: ClrPopoverType.DEFAULT,
-    open: true,
-    scrollToClose: false,
-    outsideClickToClose: true,
-    offsetX: 0,
-    offsetY: 0,
-  },
 };
 
 const PopoverTemplate: StoryFn = args => ({
@@ -79,21 +43,95 @@ const PopoverTemplate: StoryFn = args => ({
       <storybook-popover ${argsToTemplate(args)}></storybook-popover>
     </div>
   `,
-  props: args,
+  props: {
+    ...args,
+    position: args.dropdownPosition || args.tooltipPosition || args.signpostPosition || args.defaultPosition,
+  },
 });
 
 export const Popover: StoryObj = {
   render: PopoverTemplate,
+  argTypes: {
+    position: { control: { disable: true }, table: { disable: true } },
+    dropdownPosition: {
+      name: 'position',
+      control: { type: 'select' },
+      options: Positions,
+      if: { arg: 'type', eq: ClrPopoverType.DROPDOWN },
+    },
+    tooltipPosition: {
+      name: 'position',
+      control: { type: 'select' },
+      options: TOOLTIP_POSITIONS,
+      if: { arg: 'type', eq: ClrPopoverType.TOOLTIP },
+    },
+    signpostPosition: {
+      name: 'position',
+      control: { type: 'select' },
+      options: SIGNPOST_POSITIONS,
+      if: { arg: 'type', eq: ClrPopoverType.SIGNPOST },
+    },
+    defaultPosition: {
+      name: 'position',
+      control: { type: 'select' },
+      options: SIGNPOST_POSITIONS,
+      if: { arg: 'type', eq: ClrPopoverType.DEFAULT },
+    },
+    type: {
+      control: { type: 'select' },
+      options: {
+        // @ts-ignore
+        DEFAULT: ClrPopoverType.DEFAULT,
+        DROPDOWN: ClrPopoverType.DROPDOWN,
+        SIGNPOST: ClrPopoverType.SIGNPOST,
+        TOOLTIP: ClrPopoverType.TOOLTIP,
+      },
+    },
+  },
+  args: {
+    open: true,
+    scrollToClose: false,
+    outsideClickToClose: true,
+    type: ClrPopoverType.DROPDOWN,
+    defaultPosition: 'bottom-right',
+    signpostPosition: 'bottom-right',
+    tooltipPosition: 'right',
+    dropdownPosition: 'bottom-left',
+    scrollPositions: ['bottom-left', 'right-bottom', 'top-left'],
+  },
 };
 
 export const PopoverCustomPositions: StoryObj = {
   render: PopoverTemplate,
+  argTypes: {
+    useConnectedPosition: { control: { disable: true }, table: { disable: true } },
+    originX: {
+      control: { type: 'select' },
+      options: ['start', 'center', 'end'],
+    },
+    originY: {
+      control: { type: 'select' },
+      options: ['top', 'center', 'bottom'],
+    },
+    overlayX: {
+      control: { type: 'select' },
+      options: ['start', 'center', 'end'],
+    },
+    overlayY: {
+      control: { type: 'select' },
+      options: ['top', 'center', 'bottom'],
+    },
+  },
   args: {
+    open: true,
+    scrollToClose: false,
+    outsideClickToClose: true,
     useConnectedPosition: true,
-    position: '',
-    originX: 'end',
+    originX: 'start',
     originY: 'bottom',
     overlayX: 'start',
     overlayY: 'top',
+    offsetX: 0,
+    offsetY: 0,
   },
 };
