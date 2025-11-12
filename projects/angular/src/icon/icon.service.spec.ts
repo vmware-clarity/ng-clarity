@@ -8,9 +8,15 @@
 import { renderIcon } from './icon.renderer.js';
 import { ClarityIcons } from './icon.service.js';
 import { IconAlias, IconShapeTuple } from './interfaces/icon.interfaces.js';
+import { GlobalStateService } from './services/global.service.js';
 import { testIcons } from './utils/test-icons.js';
 
 describe('ClarityIcons service: ', () => {
+  // Before each test, reset the icon registry in the global state
+  beforeEach(() => {
+    GlobalStateService.setValue('iconRegistry', {});
+  });
+
   describe('addIcons: ', () => {
     it('should add icons to the registry using legacy call signature', () => {
       ClarityIcons.addIcons(['test01', 'testing']);

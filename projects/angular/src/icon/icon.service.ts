@@ -30,11 +30,14 @@ export class ClarityIcons {
   }
 
   static addIcons(...shapes: IconShapeTuple[]) {
-    GlobalStateService.state.iconRegistry = {
-      ...GlobalStateService.state.iconRegistry,
-      ...Object.fromEntries(shapes.filter(([name]) => !ClarityIcons.registry[name])),
-    };
-    console.log(GlobalStateService.state.iconRegistry);
+    // Use the static GlobalStateService
+    const currentRegistry = GlobalStateService.state.iconRegistry;
+
+    GlobalStateService.setValue('iconRegistry', {
+      ...currentRegistry,
+      // Filter out any icons that already exist
+      ...Object.fromEntries(shapes.filter(([name]) => !currentRegistry[name])),
+    });
   }
 
   /**
@@ -46,14 +49,17 @@ export class ClarityIcons {
    * The team will revisit this method for possible deprecation.
    */
   static addAliases(...aliases: IconAlias[]) {
-    const updated = aliases
-      .filter(([name]) => ClarityIcons.registry[name])
-      .map(([name, aliases]) => aliases.map(alias => [alias, ClarityIcons.registry[name]]));
+    const currentRegistry = ClarityIcons.registry; // Use the getter to include 'unknown'
+    const currentGlobalRegistry = GlobalStateService.state.iconRegistry;
 
-    GlobalStateService.state.iconRegistry = {
-      ...GlobalStateService.state.iconRegistry,
-      ...Object.fromEntries(updated),
-    };
+    const newAliases = aliases
+      .filter(([name]) => currentRegistry[name]) // Check if the icon to be aliased exists
+      .map(([name, aliasNames]) => aliasNames.map(alias => [alias, currentRegistry[name]])); // Map to [aliasName, iconTemplate]
+
+    GlobalStateService.setValue('iconRegistry', {
+      ...currentGlobalRegistry,
+      ...Object.fromEntries(newAliases.flat()),
+    });
   }
 
   static getIconNameFromShape(iconShape: IconShapeTuple) {

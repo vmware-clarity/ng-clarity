@@ -5,23 +5,25 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import '@cds/core/icon/register.js';
+import { Component, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CdsIcon } from '@cds/core/icon/icon.element.js';
-import { ClarityIcons } from '@cds/core/icon/icon.service.js';
-import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
-import { html } from 'lit';
-
-import { renderIcon } from '../icon.renderer.js';
+import { ClrIcon } from '../icon.component';
+import { ClrIconModule } from '../icon.module';
+import { renderIcon } from '../icon.renderer';
+import { ClarityIcons } from '../icon.service';
 import {
   getIconSizeStylesToUpdate,
   getSizeValue,
   getUpdateSizeStrategy,
   SizeUpdateStrategies,
   updateIconSizeStyle,
-} from './icon.classnames.js';
+} from './icon.classnames';
 
 describe('Icon classname helpers: ', () => {
+  // ---
+  // Pure Unit Tests (No Angular/TestBed needed)
+  // ---
   describe('getSizeValue', () => {
     it('should handle empty strings', () => {
       expect(getSizeValue('')).toEqual('');
@@ -67,134 +69,6 @@ describe('Icon classname helpers: ', () => {
     });
   });
 
-  describe('updateIconSizeStyleOrClassnames', () => {
-    const testIcon = renderIcon('test');
-    let testElement: HTMLElement;
-    let component: CdsIcon;
-
-    beforeAll(() => {
-      ClarityIcons.addIcons(['testing', testIcon]);
-    });
-
-    beforeEach(async () => {
-      testElement = await createTestElement(html`<cds-icon></cds-icon>`);
-      component = testElement.querySelector<CdsIcon>('cds-icon');
-    });
-
-    afterEach(() => {
-      removeTestElement(testElement);
-    });
-
-    it('should update size styles if passed a numeric string', async () => {
-      const expectedSize = 'calc((15 / var(--cds-global-base)) * 1rem)';
-      updateIconSizeStyle(component, '81 fit');
-      await componentIsStable(component);
-      updateIconSizeStyle(component, '15');
-      await componentIsStable(component);
-      expect(component.style.width).toEqual(expectedSize);
-      expect(component.style.minWidth).toEqual(expectedSize);
-      expect(component.style.height).toEqual(expectedSize);
-      expect(component.style.minHeight).toEqual(expectedSize);
-    });
-    it('should update minimum size styles if passed a numeric string (fit sized)', async () => {
-      updateIconSizeStyle(component, '15');
-      await componentIsStable(component);
-      updateIconSizeStyle(component, '81 fit');
-      await componentIsStable(component);
-      expect(component.style.width).toEqual('auto');
-      expect(component.style.height).toEqual('auto');
-      expect(component.style.minWidth).toEqual('calc((81 / var(--cds-global-base)) * 1rem)');
-      expect(component.style.minHeight).toEqual('calc((81 / var(--cds-global-base)) * 1rem)');
-    });
-    it('should remove size styles if passed a t-shirt size', async () => {
-      await componentIsStable(component);
-      component.size = '30';
-      await componentIsStable(component);
-      expect(component.style.height).toEqual('calc((30 / var(--cds-global-base)) * 1rem)');
-      expect(component.style.width).toEqual('calc((30 / var(--cds-global-base)) * 1rem)');
-      updateIconSizeStyle(component, 'xl');
-      await componentIsStable(component);
-      expect(component.style.width).toEqual('');
-      expect(component.style.minWidth).toEqual('');
-      expect(component.style.height).toEqual('');
-      expect(component.style.minHeight).toEqual('');
-    });
-    it('should remove size styles if passed a t-shirt size (fit sized)', async () => {
-      await componentIsStable(component);
-      component.size = '30';
-      await componentIsStable(component);
-      expect(component.style.height).toEqual('calc((30 / var(--cds-global-base)) * 1rem)');
-      expect(component.style.width).toEqual('calc((30 / var(--cds-global-base)) * 1rem)');
-      updateIconSizeStyle(component, 'xl fit');
-      await componentIsStable(component);
-      expect(component.style.width).toEqual('');
-      expect(component.style.minWidth).toEqual('');
-      expect(component.style.height).toEqual('');
-      expect(component.style.minHeight).toEqual('');
-    });
-    it('should remove size styles if passed a nil value', async () => {
-      await componentIsStable(component);
-      updateIconSizeStyle(component, 'lg fit');
-      await componentIsStable(component);
-      updateIconSizeStyle(component, null);
-      await componentIsStable(component);
-      expect(component.style.width).toEqual('');
-      expect(component.style.height).toEqual('');
-      updateIconSizeStyle(component, '48');
-      await componentIsStable(component);
-      const expectedSize = 'calc((48 / var(--cds-global-base)) * 1rem)';
-      expect(component.style.width).toEqual(expectedSize);
-      expect(component.style.minWidth).toEqual(expectedSize);
-      expect(component.style.height).toEqual(expectedSize);
-      expect(component.style.minHeight).toEqual(expectedSize);
-      updateIconSizeStyle(component, void 0);
-      await componentIsStable(component);
-      expect(component.style.width).toEqual('');
-      expect(component.style.minWidth).toEqual('');
-      expect(component.style.height).toEqual('');
-      expect(component.style.minHeight).toEqual('');
-    });
-    it('should remove size styles if passed an empty string value', async () => {
-      await componentIsStable(component);
-      updateIconSizeStyle(component, 'xl');
-      await componentIsStable(component);
-      updateIconSizeStyle(component, '');
-      await componentIsStable(component);
-      expect(component.style.width).toEqual('');
-      expect(component.style.height).toEqual('');
-      updateIconSizeStyle(component, '48 fit');
-      await componentIsStable(component);
-      expect(component.style.width).toEqual('auto');
-      expect(component.style.minWidth).toEqual('calc((48 / var(--cds-global-base)) * 1rem)');
-      expect(component.style.height).toEqual('auto');
-      expect(component.style.minHeight).toEqual('calc((48 / var(--cds-global-base)) * 1rem)');
-      updateIconSizeStyle(component, '');
-      await componentIsStable(component);
-      expect(component.style.width).toEqual('');
-      expect(component.style.height).toEqual('');
-    });
-    it('should do nothing if passed a string that is not a t-shirt size and is non-numeric', async () => {
-      await componentIsStable(component);
-      updateIconSizeStyle(component, 'sm');
-      await componentIsStable(component);
-      updateIconSizeStyle(component, 'jabberwocky');
-      await componentIsStable(component);
-      updateIconSizeStyle(component, '24');
-      await componentIsStable(component);
-      const expectedSize = 'calc((24 / var(--cds-global-base)) * 1rem)';
-      expect(component.style.width).toEqual(expectedSize);
-      expect(component.style.minWidth).toEqual(expectedSize);
-      expect(component.style.height).toEqual(expectedSize);
-      expect(component.style.minHeight).toEqual(expectedSize);
-      updateIconSizeStyle(component, '4d9rs');
-      await componentIsStable(component);
-      expect(component.style.width).toEqual(expectedSize);
-      expect(component.style.minWidth).toEqual(expectedSize);
-      expect(component.style.height).toEqual(expectedSize);
-      expect(component.style.minHeight).toEqual(expectedSize);
-    });
-  });
-
   describe('getIconSizeStylesToUpdate: ', () => {
     const myRem = '4rem';
 
@@ -234,4 +108,147 @@ describe('Icon classname helpers: ', () => {
       testStyles(testme);
     });
   });
+
+  // ---
+  // Integration Tests (Uses TestBed)
+  // ---
+  describe('updateIconSizeStyle', () => {
+    const testIcon = renderIcon('test');
+    let fixture: ComponentFixture<TestComponent>;
+    let component: ClrIcon;
+    let nativeElement: HTMLElement;
+
+    beforeAll(() => {
+      ClarityIcons.addIcons(['testing', testIcon]);
+    });
+
+    beforeEach(async () => {
+      TestBed.configureTestingModule({
+        imports: [ClrIconModule],
+        declarations: [TestComponent],
+      });
+      fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      component = fixture.componentInstance.icon;
+      nativeElement = component.el.nativeElement;
+    });
+
+    it('should update size styles if passed a numeric string', async () => {
+      const expectedSize = 'calc((15 / var(--cds-global-base)) * 1rem)';
+      updateIconSizeStyle(nativeElement, '81 fit');
+      fixture.detectChanges();
+      updateIconSizeStyle(nativeElement, '15');
+      fixture.detectChanges();
+      expect(nativeElement.style.width).toEqual(expectedSize);
+      expect(nativeElement.style.minWidth).toEqual(expectedSize);
+      expect(nativeElement.style.height).toEqual(expectedSize);
+      expect(nativeElement.style.minHeight).toEqual(expectedSize);
+    });
+
+    it('should update minimum size styles if passed a numeric string (fit sized)', async () => {
+      updateIconSizeStyle(nativeElement, '15');
+      fixture.detectChanges();
+      updateIconSizeStyle(nativeElement, '81 fit');
+      fixture.detectChanges();
+      expect(nativeElement.style.width).toEqual('auto');
+      expect(nativeElement.style.height).toEqual('auto');
+      expect(nativeElement.style.minWidth).toEqual('calc((81 / var(--cds-global-base)) * 1rem)');
+      expect(nativeElement.style.minHeight).toEqual('calc((81 / var(--cds-global-base)) * 1rem)');
+    });
+
+    it('should remove size styles if passed a t-shirt size', async () => {
+      component.size = '30';
+      fixture.detectChanges();
+      expect(nativeElement.style.height).toEqual('calc((30 / var(--cds-global-base)) * 1rem)');
+      expect(nativeElement.style.width).toEqual('calc((30 / var(--cds-global-base)) * 1rem)');
+      updateIconSizeStyle(nativeElement, 'xl');
+      fixture.detectChanges();
+      expect(nativeElement.style.width).toEqual('');
+      expect(nativeElement.style.minWidth).toEqual('');
+      expect(nativeElement.style.height).toEqual('');
+      expect(nativeElement.style.minHeight).toEqual('');
+    });
+
+    it('should remove size styles if passed a t-shirt size (fit sized)', async () => {
+      component.size = '30';
+      fixture.detectChanges();
+      expect(nativeElement.style.height).toEqual('calc((30 / var(--cds-global-base)) * 1rem)');
+      expect(nativeElement.style.width).toEqual('calc((30 / var(--cds-global-base)) * 1rem)');
+      updateIconSizeStyle(nativeElement, 'xl fit');
+      fixture.detectChanges();
+      expect(nativeElement.style.width).toEqual('');
+      expect(nativeElement.style.minWidth).toEqual('');
+      expect(nativeElement.style.height).toEqual('');
+      expect(nativeElement.style.minHeight).toEqual('');
+    });
+
+    it('should remove size styles if passed a nil value', async () => {
+      updateIconSizeStyle(nativeElement, 'lg fit');
+      fixture.detectChanges();
+      updateIconSizeStyle(nativeElement, null);
+      fixture.detectChanges();
+      expect(nativeElement.style.width).toEqual('');
+      expect(nativeElement.style.height).toEqual('');
+      updateIconSizeStyle(nativeElement, '48');
+      fixture.detectChanges();
+      const expectedSize = 'calc((48 / var(--cds-global-base)) * 1rem)';
+      expect(nativeElement.style.width).toEqual(expectedSize);
+      expect(nativeElement.style.minWidth).toEqual(expectedSize);
+      expect(nativeElement.style.height).toEqual(expectedSize);
+      expect(nativeElement.style.minHeight).toEqual(expectedSize);
+      updateIconSizeStyle(nativeElement, void 0);
+      fixture.detectChanges();
+      expect(nativeElement.style.width).toEqual('');
+      expect(nativeElement.style.minWidth).toEqual('');
+      expect(nativeElement.style.height).toEqual('');
+      expect(nativeElement.style.minHeight).toEqual('');
+    });
+
+    it('should remove size styles if passed an empty string value', async () => {
+      updateIconSizeStyle(nativeElement, 'xl');
+      fixture.detectChanges();
+      updateIconSizeStyle(nativeElement, '');
+      fixture.detectChanges();
+      expect(nativeElement.style.width).toEqual('');
+      expect(nativeElement.style.height).toEqual('');
+      updateIconSizeStyle(nativeElement, '48 fit');
+      fixture.detectChanges();
+      expect(nativeElement.style.width).toEqual('auto');
+      expect(nativeElement.style.minWidth).toEqual('calc((48 / var(--cds-global-base)) * 1rem)');
+      expect(nativeElement.style.height).toEqual('auto');
+      expect(nativeElement.style.minHeight).toEqual('calc((48 / var(--cds-global-base)) * 1rem)');
+      updateIconSizeStyle(nativeElement, '');
+      fixture.detectChanges();
+      expect(nativeElement.style.width).toEqual('');
+      expect(nativeElement.style.height).toEqual('');
+    });
+
+    it('should do nothing if passed a string that is not a t-shirt size and is non-numeric', async () => {
+      updateIconSizeStyle(nativeElement, 'sm');
+      fixture.detectChanges();
+      updateIconSizeStyle(nativeElement, 'jabberwocky');
+      fixture.detectChanges();
+      updateIconSizeStyle(nativeElement, '24');
+      fixture.detectChanges();
+      const expectedSize = 'calc((24 / var(--cds-global-base)) * 1rem)';
+      expect(nativeElement.style.width).toEqual(expectedSize);
+      expect(nativeElement.style.minWidth).toEqual(expectedSize);
+      expect(nativeElement.style.height).toEqual(expectedSize);
+      expect(nativeElement.style.minHeight).toEqual(expectedSize);
+      updateIconSizeStyle(nativeElement, '4d9rs');
+      fixture.detectChanges();
+      expect(nativeElement.style.width).toEqual(expectedSize);
+      expect(nativeElement.style.minWidth).toEqual(expectedSize);
+      expect(nativeElement.style.height).toEqual(expectedSize);
+      expect(nativeElement.style.minHeight).toEqual(expectedSize);
+    });
+  });
 });
+
+@Component({
+  template: ` <cds-icon></cds-icon> `,
+  standalone: false,
+})
+class TestComponent {
+  @ViewChild(ClrIcon) icon: ClrIcon;
+}

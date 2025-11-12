@@ -6,14 +6,13 @@
  */
 
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges,
-  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -22,16 +21,16 @@ import { ClarityIcons } from './icon.service';
 import { Directions, Orientations, StatusTypes } from './interfaces/icon.interfaces';
 import { GlobalStateService } from './services/global.service';
 import { IconHtmlPipe } from './utils/icon-html.pipe';
-import { updateIconSizeStyle } from './utils/icon.classnames'; // You will need to port this utility
-import { getIconBadgeSVG, getIconSVG } from './utils/icon.svg-helpers'; // You will need to port these utilities
+import { updateIconSizeStyle } from './utils/icon.classnames';
+import { getIconBadgeSVG, getIconSVG } from './utils/icon.svg-helpers';
 
 @Component({
   selector: 'clr-icon, cds-icon',
   templateUrl: './icon.component.html',
   styleUrls: ['./icon.component.scss'],
-  encapsulation: ViewEncapsulation.ShadowDom, // MUST use ShadowDom for :host styles
+  encapsulation: ViewEncapsulation.ShadowDom,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    // Binds inputs directly to host attributes, just like the Lit component
     '[attr.shape]': 'shape',
     '[attr.size]': 'size',
     '[attr.direction]': 'direction',
@@ -42,33 +41,117 @@ import { getIconBadgeSVG, getIconSVG } from './utils/icon.svg-helpers'; // You w
     '[attr.badge]': 'badge',
   },
   standalone: false,
-  providers: [IconHtmlPipe],
+  providers: [IconHtmlPipe], // The pipe is used internally
 })
-export class ClrIcon implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('svgIcon') svgIconElement: HTMLElement;
-  // --- Public Inputs ---
-  @Input() shape = 'unknown';
-  @Input() size: string;
-  @Input() direction: Directions | string;
-  @Input() flip: Orientations;
-  @Input() solid: string | boolean = false;
-  @Input() status: StatusTypes | string;
-  @Input() inverse: string | boolean = false;
-  @Input() badge: string | StatusTypes | 'inherit' | 'warning-triangle' | 'inherit-triangle' | true | false;
+export class ClrIcon implements OnInit, OnDestroy {
+  iconSVG: string;
+  isStringIcon = false;
 
-  // --- Internal State ---
-  iconSVG: string; // The raw SVG <path> content
-  isStringIcon = false; // Flag to render a <span> or <svg>
-
+  private _shape: string = 'unknown';
+  private _size: string;
+  private _direction: Directions | string;
+  private _flip: Orientations;
+  private _solid: string | boolean = false;
+  private _status: StatusTypes | string;
+  private _inverse: string | boolean = false;
+  private _badge: string | StatusTypes | 'inherit' | 'warning-triangle' | 'inherit-triangle' | true | false;
   private subscription: Subscription;
   private _priorShape = 'unknown';
 
-  constructor(private el: ElementRef<HTMLElement>) {}
+  /**
+   * This component version uses static services, so it only
+   * injects ElementRef and ChangeDetectorRef.
+   */
+  constructor(
+    public el: ElementRef<HTMLElement>,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  @Input()
+  get shape() {
+    return this._shape;
+  }
+  set shape(value) {
+    if ((value || (value && value.length)) && this._shape !== value) {
+      this._priorShape = this._shape;
+      this._shape = value;
+      this.updateIcon();
+    }
+  }
+  @Input()
+  get size() {
+    return this._size;
+  }
+  set size(value) {
+    if (value !== this._size) {
+      this._size = value;
+      this.updateIconSize(value);
+    }
+  }
+  @Input()
+  get direction() {
+    return this._direction;
+  }
+  set direction(value) {
+    if (value !== this._direction) {
+      this._direction = value;
+      this.updateIcon();
+    }
+  }
+  @Input()
+  get flip() {
+    return this._flip;
+  }
+  set flip(value) {
+    if (value !== this._flip) {
+      this._flip = value;
+      this.updateIcon();
+    }
+  }
+  @Input()
+  get solid() {
+    return this._solid;
+  }
+  set solid(value) {
+    if (value !== this._solid) {
+      this._solid = value;
+      this.updateIcon();
+    }
+  }
+  @Input()
+  get status() {
+    return this._status;
+  }
+  set status(value) {
+    if (value !== this._status) {
+      this._status = value;
+      this.updateIcon();
+    }
+  }
+  @Input()
+  get inverse() {
+    return this._inverse;
+  }
+  set inverse(value) {
+    if (value !== this._inverse) {
+      this._inverse = value;
+      this.updateIcon();
+    }
+  }
+  @Input()
+  get badge() {
+    return this._badge;
+  }
+  set badge(value) {
+    if (value !== this._badge) {
+      this._badge = value;
+      this.updateIcon();
+    }
+  }
 
   ngOnInit() {
     this.updateIcon(); // Initial render
 
-    // Subscribe to the icon registry for updates
     this.subscription = GlobalStateService.stateUpdates.subscribe(update => {
       if (update.key === 'iconRegistry' && ClarityIcons.registry[this.shape] && this._priorShape !== this.shape) {
         this._priorShape = this.shape;
@@ -77,40 +160,24 @@ export class ClrIcon implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    // Re-render if any inputs change
-    if (changes.shape || changes.solid || changes.status || changes.inverse || changes.badge) {
-      this.updateIcon();
-    }
-
-    // Update dynamic size style if 'size' changes
-    if (changes.size) {
-      // This utility function must be ported from your 'core' project
-      updateIconSizeStyle(this.el.nativeElement, this.size);
-    }
-  }
-
   ngOnDestroy() {
     this.subscription?.unsubscribe();
   }
 
-  /**
-   * Updates the iconSVG content based on the current component state.
-   */
-  private updateIcon() {
+  updateIcon() {
     const shapeTemplate = ClarityIcons.registry[this.shape] || ClarityIcons.registry['unknown'];
+
     if (typeof shapeTemplate === 'string') {
-      // This is a legacy string icon, render in a span
       this.isStringIcon = true;
       this.iconSVG = shapeTemplate as string;
     } else {
-      // This is a modern icon, build the SVG
       this.isStringIcon = false;
-
-      // These two helper functions MUST be ported from your
-      // 'core' project's 'icon.svg-helpers.js' file.
-      // They take the component instance and return SVG strings.
       this.iconSVG = getIconSVG(this) + getIconBadgeSVG(this);
     }
+    this.cdr.markForCheck();
+  }
+
+  updateIconSize(value: string) {
+    updateIconSizeStyle(this.el.nativeElement, value);
   }
 }

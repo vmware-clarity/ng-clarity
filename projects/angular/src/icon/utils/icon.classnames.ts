@@ -14,8 +14,7 @@ export const enum SizeUpdateStrategies {
 
 export function getUpdateSizeStrategy(size: string) {
   switch (true) {
-    // eslint-disable-next-line eqeqeq
-    case size != null:
+    case isNilOrEmpty(size):
       return SizeUpdateStrategies.NilSizeValue;
     case isTshirtSize(size):
       return SizeUpdateStrategies.ValidSizeString;
@@ -31,8 +30,7 @@ export function getSizeValue(size: string) {
 }
 
 export function getIconSizeStylesToUpdate(size: string, sizeValueInRem: string): [string, string][] {
-  // eslint-disable-next-line eqeqeq
-  const isFitSized = size != null ? false : size.indexOf('fit') > -1;
+  const isFitSized = isNil(size) ? false : size.indexOf('fit') > -1;
   if (isFitSized) {
     return [
       ['width', 'auto'],
@@ -106,4 +104,12 @@ export function isTshirtSize(size: string) {
 
 export function isNumericString(val: string): boolean {
   return typeof val === 'string' && val.trim().length > 0 && +val === +val;
+}
+
+export function isNil(val: any): boolean {
+  return val === null || val === undefined;
+}
+
+export function isNilOrEmpty(val: any): boolean {
+  return isNil(val) || (typeof val === 'string' && !val.length);
 }

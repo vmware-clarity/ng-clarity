@@ -5,22 +5,26 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { GlobalStateService } from './global.service';
-import { LogService } from './log.service';
-import { setupCDSGlobal } from '../utils/global';
+import { CDSState, GlobalStateService } from './global.service';
 
-function resetGlobalState() {
-  (window.CDS._state as any) = {
-    focusTrapItems: [],
-    i18nRegistry: {},
-    elementRegistry: {},
+function getMockState(): CDSState {
+  return {
     iconRegistry: {},
   };
 }
 
+function resetGlobalState() {
+  // Directly set the private state on the window object
+  if (window.CDS) {
+    (window.CDS._state as any) = getMockState();
+  }
+}
+
 describe('Global State Service', () => {
-  beforeAll(() => {
-    setupCDSGlobal();
+  beforeEach(() => {
+    // Ensure the global object is set up before each test
+    GlobalStateService.setupCDSGlobal();
+    resetGlobalState();
   });
 
   afterEach(() => {
@@ -28,29 +32,30 @@ describe('Global State Service', () => {
   });
 
   it('.state should return all global state', () => {
-    expect(GlobalStateService.state.focusTrapItems.length).toBe(0);
-    GlobalStateService.state.focusTrapItems = [{ focusTrapId: 'ohai' }];
-    expect(GlobalStateService.state.focusTrapItems[0].focusTrapId).toBe('ohai');
+    expect(Object.keys(GlobalStateService.state.iconRegistry).length).toBe(0);
+    // Use setValue to trigger the proxy
+    GlobalStateService.setValue('iconRegistry', { test: 'ohai' });
+    expect(GlobalStateService.state.iconRegistry['test']).toBe('ohai');
   });
 
   it('getValue should return value of state key', () => {
-    GlobalStateService.state.focusTrapItems = [{ focusTrapId: 'yolo' }, { focusTrapId: 'howdy' }];
-    expect(
-      (GlobalStateService.getValue('focusTrapItems') as { focusTrapId: string }[]).map(i => i.focusTrapId)
-    ).toEqual(['yolo', 'howdy']);
-    expect(GlobalStateService.state.focusTrapItems.map(i => i.focusTrapId)).toEqual(['yolo', 'howdy']);
+    GlobalStateService.setValue('iconRegistry', { yolo: 'howdy' });
+    expect((GlobalStateService.getValue('iconRegistry') as any)['yolo']).toEqual('howdy');
+    expect(GlobalStateService.state.iconRegistry['yolo']).toEqual('howdy');
   });
 
   it('setValue should assign value to key', () => {
-    GlobalStateService.setValue('focusTrapItems', [{ focusTrapId: 'ohai' }]);
-    expect(GlobalStateService.state.focusTrapItems).toEqual([{ focusTrapId: 'ohai' }]);
+    GlobalStateService.setValue('iconRegistry', { test: 'ohai' });
+    expect(GlobalStateService.state.iconRegistry).toEqual({ test: 'ohai' });
 
-    GlobalStateService.state.focusTrapItems = [...GlobalStateService.state.focusTrapItems, { focusTrapId: 'howdy' }];
-    expect(GlobalStateService.state.focusTrapItems.map(i => i.focusTrapId)).toEqual(['ohai', 'howdy']);
+    // Test proxy behavior by adding to the object
+    const currentState = GlobalStateService.state.iconRegistry;
+    GlobalStateService.setValue('iconRegistry', { ...currentState, another: 'howdy' });
+    expect(GlobalStateService.state.iconRegistry).toEqual({ test: 'ohai', another: 'howdy' });
   });
 
   it('.log() should log state to the console', () => {
-    const spy = spyOn(LogService, 'log');
+    const spy = spyOn(console, 'log');
     GlobalStateService.log();
     expect(spy).toHaveBeenCalled();
   });
