@@ -90,7 +90,7 @@
             @if (virtualScroll) {
             <div class="datagrid-content-virtual-spacer" [style.height]="virtualScroll?.totalContentHeight"></div>
             }
-            <div role="presentation" class="datagrid-rows">
+            <div role="presentation" class="datagrid-rows" [class.datagrid-no-visible-scroller]="!isScrollbarVisible">
               @if (loadingMoreItems) {
               <clr-dg-row class="datagrid-row-loading">
                 <clr-dg-cell>
