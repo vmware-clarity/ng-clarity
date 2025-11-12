@@ -18,7 +18,7 @@ import { ClrCommonFormsModule } from '../common/common.module';
 @NgModule({
   imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
   declarations: [ClrSelect, ClrSelectContainer],
-  exports: [ClrCommonFormsModule, ClrSelect, ClrSelectContainer],
+  exports: [ClrCommonFormsModule, ClrSelect, ClrSelectContainer, ClrIconModule],
 })
 export class ClrSelectModule {
   constructor() {

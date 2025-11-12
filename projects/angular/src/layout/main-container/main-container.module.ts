@@ -16,6 +16,6 @@ export const CLR_LAYOUT_DIRECTIVES: Type<any>[] = [ClrMainContainer];
 @NgModule({
   imports: [CommonModule, ClrIconModule],
   declarations: [CLR_LAYOUT_DIRECTIVES],
-  exports: [CLR_LAYOUT_DIRECTIVES],
+  exports: [CLR_LAYOUT_DIRECTIVES, ClrIconModule],
 })
 export class ClrMainContainerModule {}

@@ -19,7 +19,7 @@ import { ClrCommonFormsModule } from '../common/common.module';
 @NgModule({
   imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule],
   declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper],
-  exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper],
+  exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper, ClrIconModule],
 })
 export class ClrRadioModule {
   constructor() {

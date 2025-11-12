@@ -54,6 +54,7 @@ import { ClrCommonFormsModule } from '../common/common.module';
     ClrOptionSelected,
     ClrConditionalModule,
     ClrOptionItems,
+    ClrIconModule,
   ],
 })
 export class ClrComboboxModule {

@@ -509,3 +509,10 @@ $typography-tokens: (
     content: none;
   }
 }
+
+@function getLineHeightGap($line-height-value: 1.2, $line-height-token: null) {
+  @if (not $line-height-token) or ($line-height-value < 1) {
+    @return 0;
+  }
+  @return calc((#{$line-height-token} - 1em) / 2);
+}

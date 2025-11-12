@@ -27,6 +27,6 @@ export const CLR_NAVIGATION_DIRECTIVES: Type<any>[] = [
 @NgModule({
   imports: [CommonModule, ClrIconModule, ClrDropdownModule],
   declarations: [CLR_NAVIGATION_DIRECTIVES],
-  exports: [CLR_NAVIGATION_DIRECTIVES],
+  exports: [CLR_NAVIGATION_DIRECTIVES, ClrIconModule],
 })
 export class ClrNavigationModule {}

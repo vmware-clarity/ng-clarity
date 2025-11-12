@@ -16,7 +16,7 @@ import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.m
 
 @NgModule({
   declarations: [ClrBreadcrumbs, ClrBreadcrumbItem],
-  exports: [ClrBreadcrumbs],
+  exports: [ClrBreadcrumbs, ClrIconModule],
   imports: [CommonModule, ClrIconModule, ClrHostWrappingModule, RouterModule],
 })
 export class ClrBreadcrumbsModule {}

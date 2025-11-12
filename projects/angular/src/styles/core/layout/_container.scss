@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use './mixins/mixins' as *;
+@use './mixins/mixins' as mixins;
 
 [cds-layout='no-scrolling'] {
   overflow: hidden !important;
@@ -21,7 +21,7 @@
   margin-right: auto;
 }
 
-@each $width, $width-value in $cds-layout-widths {
+@each $width, $width-value in mixins.$cds-layout-widths {
   [cds-layout~='container:#{$width}'] {
     width: 100%;
     max-width: $width-value;

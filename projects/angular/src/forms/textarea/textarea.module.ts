@@ -18,7 +18,7 @@ import { ClrCommonFormsModule } from '../common/common.module';
 @NgModule({
   imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
   declarations: [ClrTextarea, ClrTextareaContainer],
-  exports: [ClrCommonFormsModule, ClrTextarea, ClrTextareaContainer],
+  exports: [ClrCommonFormsModule, ClrTextarea, ClrTextareaContainer, ClrIconModule],
 })
 export class ClrTextareaModule {
   constructor() {

@@ -5,130 +5,132 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../tokens/variables.tokens' as *;
-@use './mixins/mixins' as *;
-@use 'optimize' as *;
+@use '../tokens/variables.tokens' as tokens;
+@use './mixins/mixins';
+@use 'optimize';
+
+$columnsNumber: tokens.$cds-global-layout-grid-cols-static;
 
 @mixin generateColumnsAndRows($breakpoint: null) {
-  @for $i from 1 through $cds-global-layout-grid-cols-static {
+  @for $i from 1 through $columnsNumber {
     // implicit columns/rows
-    [#{$layout}*='#{$cols}#{$breakpoint}:#{$i}'] > * {
+    [#{optimize.$layout}*='#{optimize.$cols}#{$breakpoint}:#{$i}'] > * {
       grid-column: span $i / span $i;
     }
 
-    [#{$layout}*='#{$rows}#{$breakpoint}:#{$i}'] > * {
+    [#{optimize.$layout}*='#{optimize.$rows}#{$breakpoint}:#{$i}'] > * {
       grid-row: span $i / span $i;
     }
   }
 }
 @mixin generateExplicitColumnAndRow($breakpoint: null) {
-  @for $i from 1 through $cds-global-layout-grid-cols-static {
+  @for $i from 1 through $columnsNumber {
     // explicit column/row positions
-    [#{$layout}*='#{$col}#{$breakpoint}:#{$i}'] {
+    [#{optimize.$layout}*='#{optimize.$col}#{$breakpoint}:#{$i}'] {
       grid-column: span $i / span $i !important;
     }
 
-    [#{$layout}*='#{$row}#{$breakpoint}:#{$i}'] {
+    [#{optimize.$layout}*='#{optimize.$row}#{$breakpoint}:#{$i}'] {
       grid-row: span $i / span $i !important;
     }
   }
 }
 @mixin generatePositions($breakpoint: null) {
   // +1 for grid cols/rows which end at beginning of next item
-  @for $i from 1 through $cds-global-layout-grid-cols-static + 1 {
-    [#{$layout}*='#{$col}#{$breakpoint}:start-#{$i}'] {
+  @for $i from 1 through $columnsNumber + 1 {
+    [#{optimize.$layout}*='#{optimize.$col}#{$breakpoint}:start-#{$i}'] {
       grid-column-start: $i !important;
     }
 
-    [#{$layout}*='#{$col}#{$breakpoint}:end-#{$i}'] {
+    [#{optimize.$layout}*='#{optimize.$col}#{$breakpoint}:end-#{$i}'] {
       grid-column-end: $i !important;
     }
 
-    [#{$layout}*='#{$row}#{$breakpoint}:start-#{$i}'] {
+    [#{optimize.$layout}*='#{optimize.$row}#{$breakpoint}:start-#{$i}'] {
       grid-row-start: $i !important;
     }
 
-    [#{$layout}*='#{$row}#{$breakpoint}:end-#{$i}'] {
+    [#{optimize.$layout}*='#{optimize.$row}#{$breakpoint}:end-#{$i}'] {
       grid-row-end: $i !important;
     }
   }
 }
 @mixin generateAlignments($breakpoint: null) {
-  [#{$layout}~='#{$grid}'] {
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$top}'] {
+  [#{optimize.$layout}~='#{optimize.$grid}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$top}'] {
       align-content: start;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$right}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$right}'] {
       justify-content: end;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$bottom}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$bottom}'] {
       align-content: end;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$left}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$left}'] {
       justify-content: start;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$vertical-stretch}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-stretch}'] {
       align-items: stretch;
       align-content: stretch;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$horizontal-stretch}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-stretch}'] {
       justify-items: stretch;
       justify-content: stretch;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$stretch}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$stretch}'] {
       place-items: stretch stretch;
       place-content: stretch stretch;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$vertical-center}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-center}'] {
       align-items: center;
       align-content: center;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$horizontal-center}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-center}'] {
       justify-items: center;
       justify-content: center;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$center}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}'] {
       place-items: center center;
       place-content: center center;
     }
   }
 }
 
-[#{$layout}~='#{$grid}'] {
+[#{optimize.$layout}~='#{optimize.$grid}'] {
   display: grid;
   align-items: start;
   align-content: start;
-  grid-template-columns: repeat(#{$cds-global-layout-grid-cols}, 1fr);
+  grid-template-columns: repeat(#{tokens.$cds-global-layout-grid-cols}, 1fr);
   width: 100%;
 
-  &[#{$layout}*='#{$rows}'] {
+  &[#{optimize.$layout}*='#{optimize.$rows}'] {
     grid-template-rows: repeat(12, auto);
   }
 
-  & > [#{$layout}*='#{$row}'] {
+  & > [#{optimize.$layout}*='#{optimize.$row}'] {
     align-self: stretch;
   }
 
-  &[#{$layout}*='#{$cols}:auto'] {
+  &[#{optimize.$layout}*='#{optimize.$cols}:auto'] {
     grid-auto-flow: column;
     grid-template-columns: initial;
   }
 }
 
-[#{$layout}*='#{$cols}\@'] > * {
-  grid-column: span #{$cds-global-layout-grid-cols};
+[#{optimize.$layout}*='#{optimize.$cols}\@'] > * {
+  grid-column: span #{tokens.$cds-global-layout-grid-cols};
 }
 
-[#{$layout}*='#{$col}\@'] {
+[#{optimize.$layout}*='#{optimize.$col}\@'] {
   grid-column: span 12;
 }
 
@@ -137,22 +139,22 @@
 @include generatePositions();
 @include generateAlignments();
 
-@each $breakpoint, $breakpoint-value in $cds-layout-breakpoints {
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
   @media (min-width: $breakpoint-value) {
     @include generateColumnsAndRows($breakpoint);
   }
 }
-@each $breakpoint, $breakpoint-value in $cds-layout-breakpoints {
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
   @media (min-width: $breakpoint-value) {
     @include generateExplicitColumnAndRow($breakpoint);
   }
 }
-@each $breakpoint, $breakpoint-value in $cds-layout-breakpoints {
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
   @media (min-width: $breakpoint-value) {
     @include generatePositions($breakpoint);
   }
 }
-@each $breakpoint, $breakpoint-value in $cds-layout-breakpoints {
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
   @media (min-width: $breakpoint-value) {
     @include generateAlignments($breakpoint);
   }

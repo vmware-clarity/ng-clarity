@@ -5,58 +5,58 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use './mixins/mixins' as *;
-@use 'optimize' as *;
+@use './mixins/mixins';
+@use 'optimize';
 
 @mixin generateHorizontalAxisAlignment($breakpoint: null) {
-  [#{$layout}~='#{$horizontal}'] {
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$top}'] {
+  [#{optimize.$layout}~='#{optimize.$horizontal}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$top}'] {
       align-items: flex-start;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$bottom}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$bottom}'] {
       align-items: flex-end;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$left}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$left}'] {
       justify-content: flex-start;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$right}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$right}'] {
       justify-content: flex-end;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$vertical-center}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-center}'] {
       align-items: center;
       align-content: center;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$horizontal-center}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-center}'] {
       justify-content: center;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$center}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}'] {
       align-items: center;
       place-content: center center;
     }
   }
 }
 @mixin generateHorizontalOrder($breakpoint: null) {
-  [#{$layout}~='#{$horizontal}'] {
-    &[#{$layout}*='order#{$breakpoint}:reverse'] {
+  [#{optimize.$layout}~='#{optimize.$horizontal}'] {
+    &[#{optimize.$layout}*='order#{$breakpoint}:reverse'] {
       flex-direction: row-reverse;
     }
   }
 }
 @mixin generateHorizontalStretch($breakpoint: null) {
-  [#{$layout}~='#{$horizontal}'] {
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$vertical-stretch}'] {
+  [#{optimize.$layout}~='#{optimize.$horizontal}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-stretch}'] {
       align-items: stretch;
       align-content: stretch;
       flex-grow: 1;
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$horizontal-stretch}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-stretch}'] {
       justify-content: stretch;
       flex-grow: 1;
 
@@ -65,7 +65,7 @@
       }
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$stretch}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$stretch}'] {
       align-items: stretch;
       align-content: stretch;
       flex-grow: 1;
@@ -77,31 +77,31 @@
   }
 }
 @mixin generateHorizontalItemAlignment($breakpoint: null) {
-  [#{$layout}~='#{$horizontal}'] {
-    & > [#{$layout}*='#{$align}#{$breakpoint}:#{$center}'],
-    & > [#{$layout}*='#{$align}#{$breakpoint}:#{$vertical-center}'] {
+  [#{optimize.$layout}~='#{optimize.$horizontal}'] {
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}'],
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-center}'] {
       align-self: center;
     }
 
-    & > [#{$layout}*='#{$align}#{$breakpoint}:#{$center}'],
-    & > [#{$layout}*='#{$align}#{$breakpoint}:#{$horizontal-center}'] {
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}'],
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-center}'] {
       margin-left: auto !important;
       margin-right: auto !important;
     }
 
-    & > [#{$layout}*='#{$align}#{$breakpoint}:#{$top}'] {
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$top}'] {
       align-self: flex-start;
     }
 
-    & > [#{$layout}*='#{$align}#{$breakpoint}:#{$bottom}'] {
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$bottom}'] {
       align-self: flex-end;
     }
 
-    & > [#{$layout}*='#{$align}#{$breakpoint}:#{$right}'] {
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$right}'] {
       margin-left: auto !important;
     }
 
-    & > [#{$layout}*='#{$align}#{$breakpoint}:#{$left}'] {
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$left}'] {
       margin-right: auto !important;
     }
   }
@@ -113,7 +113,7 @@
   @include generateHorizontalItemAlignment($breakpoint);
 }
 
-[#{$layout}~='#{$horizontal}'] {
+[#{optimize.$layout}~='#{optimize.$horizontal}'] {
   display: flex;
   flex-flow: row wrap;
   place-items: flex-start flex-start;
@@ -121,8 +121,8 @@
   margin: 0;
   min-height: 0;
 
-  > [#{$layout}~='#{$horizontal}'],
-  > [#{$layout}~='#{$vertical}'],
+  > [#{optimize.$layout}~='#{optimize.$horizontal}'],
+  > [#{optimize.$layout}~='#{optimize.$vertical}'],
   > [cds-text] {
     width: initial !important;
   }
@@ -130,7 +130,7 @@
 
 @include generateHorizontalAlignments();
 
-@each $breakpoint, $breakpoint-value in $cds-layout-breakpoints {
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
   @media (min-width: $breakpoint-value) {
     @include generateHorizontalAlignments($breakpoint);
   }

@@ -4,36 +4,36 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '../../tokens/variables.tokens' as *;
-@use '../optimize' as *;
+@use '../../tokens/variables.tokens' as tokens;
+@use '../optimize';
 
 $cds-layout-sizes: (
   'none': 0,
-  'xxxs': $cds-global-layout-space-xxxs,
-  'xxs': $cds-global-layout-space-xxs,
-  'xs': $cds-global-layout-space-xs,
-  'sm': $cds-global-layout-space-sm,
-  'md': $cds-global-layout-space-md,
-  'lg': $cds-global-layout-space-lg,
-  'xl': $cds-global-layout-space-xl,
-  'xxl': $cds-global-layout-space-xxl,
-  'xxxl': $cds-global-layout-space-xxxl,
+  'xxxs': tokens.$cds-global-layout-space-xxxs,
+  'xxs': tokens.$cds-global-layout-space-xxs,
+  'xs': tokens.$cds-global-layout-space-xs,
+  'sm': tokens.$cds-global-layout-space-sm,
+  'md': tokens.$cds-global-layout-space-md,
+  'lg': tokens.$cds-global-layout-space-lg,
+  'xl': tokens.$cds-global-layout-space-xl,
+  'xxl': tokens.$cds-global-layout-space-xxl,
+  'xxxl': tokens.$cds-global-layout-space-xxxl,
 );
 
 $cds-layout-breakpoints: (
-  '@xs': $cds-global-layout-width-xs-static,
-  '@sm': $cds-global-layout-width-sm-static,
-  '@md': $cds-global-layout-width-md-static,
-  '@lg': $cds-global-layout-width-lg-static,
-  '@xl': $cds-global-layout-width-xl-static,
+  '@xs': tokens.$cds-global-layout-width-xs-static,
+  '@sm': tokens.$cds-global-layout-width-sm-static,
+  '@md': tokens.$cds-global-layout-width-md-static,
+  '@lg': tokens.$cds-global-layout-width-lg-static,
+  '@xl': tokens.$cds-global-layout-width-xl-static,
 );
 
 $cds-layout-widths: (
-  'xs': $cds-global-layout-width-xs,
-  'sm': $cds-global-layout-width-sm,
-  'md': $cds-global-layout-width-md,
-  'lg': $cds-global-layout-width-lg,
-  'xl': $cds-global-layout-width-xl,
+  'xs': tokens.$cds-global-layout-width-xs,
+  'sm': tokens.$cds-global-layout-width-sm,
+  'md': tokens.$cds-global-layout-width-md,
+  'lg': tokens.$cds-global-layout-width-lg,
+  'xl': tokens.$cds-global-layout-width-xl,
 );
 
 $cds-layout-spacing-sides: (
@@ -45,7 +45,7 @@ $cds-layout-spacing-sides: (
 
 @mixin generateGaps($breakpoint: null) {
   @each $size, $sizeValue in $cds-layout-sizes {
-    [#{$layout}*='#{$gap}#{$breakpoint}:#{$size}'] {
+    [#{optimize.$layout}*='#{optimize.$gap}#{$breakpoint}:#{$size}'] {
       gap: $sizeValue;
     }
   }

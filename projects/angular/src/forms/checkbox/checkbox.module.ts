@@ -19,7 +19,7 @@ import { ClrCommonFormsModule } from '../common/common.module';
 @NgModule({
   imports: [CommonModule, ClrIconModule, ClrCommonFormsModule, ClrHostWrappingModule],
   declarations: [ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper],
-  exports: [ClrCommonFormsModule, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper],
+  exports: [ClrCommonFormsModule, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper, ClrIconModule],
 })
 export class ClrCheckboxModule {
   constructor() {

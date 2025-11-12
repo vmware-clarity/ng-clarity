@@ -1,5 +1,5 @@
-@use '../styles/core/tokens/variables.tokens' as *;
-@use '../styles/mixins' as *;
+@use '../styles/core/tokens/variables.tokens' as tokens;
+@use '../styles/mixins';
 
 @mixin flipSVGIcon($direction) {
   @if $direction == 'horizontal' {
@@ -15,8 +15,8 @@
   --color: currentColor;
 
   display: inline-block;
-  @include equilateral(#{$cds-global-space-7});
-  @include min-equilateral(#{$cds-global-space-7});
+  @include mixins.equilateral(#{tokens.$cds-global-space-7});
+  @include mixins.min-equilateral(#{tokens.$cds-global-space-7});
 
   margin: 0;
   vertical-align: middle;
@@ -32,26 +32,26 @@ svg {
 
 // sizing
 :host([size*='xs']) {
-  @include equilateral(#{$cds-global-space-5});
-  @include min-equilateral(#{$cds-global-space-5});
+  @include mixins.equilateral(#{tokens.$cds-global-space-5});
+  @include mixins.min-equilateral(#{tokens.$cds-global-space-5});
 }
 
 :host([size*='sm']) {
   // weirdly, the default... 16px
-  @include equilateral(#{$cds-global-space-7});
-  @include min-equilateral(#{$cds-global-space-7});
+  @include mixins.equilateral(#{tokens.$cds-global-space-7});
+  @include mixins.min-equilateral(#{tokens.$cds-global-space-7});
 }
 
 :host([size*='md']) {
   // 24px
-  @include equilateral(#{$cds-global-space-9});
-  @include min-equilateral(#{$cds-global-space-9});
+  @include mixins.equilateral(#{tokens.$cds-global-space-9});
+  @include mixins.min-equilateral(#{tokens.$cds-global-space-9});
 }
 
 :host([size*='lg']) {
   // 36px
-  @include equilateral(#{$cds-global-space-11});
-  @include min-equilateral(#{$cds-global-space-11});
+  @include mixins.equilateral(#{tokens.$cds-global-space-11});
+  @include mixins.min-equilateral(#{tokens.$cds-global-space-11});
 }
 
 // note: the selectors for `xl` and `xxl` work as expected due to the order in
@@ -60,14 +60,14 @@ svg {
 // likewise if we add an `xxs` it will have to go AFTER `xs`!
 :host([size*='xl']) {
   // 48px
-  @include equilateral(#{$cds-global-space-12});
-  @include min-equilateral(#{$cds-global-space-12});
+  @include mixins.equilateral(#{tokens.$cds-global-space-12});
+  @include mixins.min-equilateral(#{tokens.$cds-global-space-12});
 }
 
 :host([size*='xxl']) {
   // 64px
-  @include equilateral(calc(#{$cds-global-space-13} - #{$cds-global-space-5}));
-  @include min-equilateral(calc(#{$cds-global-space-13} - #{$cds-global-space-5}));
+  @include mixins.equilateral(calc(#{tokens.$cds-global-space-13} - #{tokens.$cds-global-space-5}));
+  @include mixins.min-equilateral(calc(#{tokens.$cds-global-space-13} - #{tokens.$cds-global-space-5}));
 }
 
 :host([size*='fit']) {
@@ -78,27 +78,27 @@ svg {
 
 // colors
 :host([status='success']) {
-  --color: #{$cds-alias-status-success};
+  --color: #{tokens.$cds-alias-status-success};
 }
 
 :host([status='danger']) {
-  --color: #{$cds-alias-status-danger};
+  --color: #{tokens.$cds-alias-status-danger};
 }
 
 :host([status='warning']) {
-  --color: #{$cds-alias-status-warning-dark};
+  --color: #{tokens.$cds-alias-status-warning-dark};
 }
 
 :host([status='info']) {
-  --color: #{$cds-alias-status-info};
+  --color: #{tokens.$cds-alias-status-info};
 }
 
 :host([status='neutral']) {
-  --color: #{$cds-alias-status-neutral};
+  --color: #{tokens.$cds-alias-status-neutral};
 }
 
 :host([inverse]) {
-  --color: #{$cds-global-color-construction-200};
+  --color: #{tokens.$cds-global-color-construction-200};
 }
 
 // directional
@@ -128,21 +128,21 @@ svg {
 
 .badge,
 .alert {
-  fill: var(--badge-color, #{$cds-alias-status-danger});
+  fill: var(--badge-color, #{tokens.$cds-alias-status-danger});
 }
 
 // variant badge colors
 
 :host([badge='success']) {
-  --badge-color: #{$cds-alias-status-success};
+  --badge-color: #{tokens.$cds-alias-status-success};
 }
 
 :host([badge='danger']) {
-  --badge-color: #{$cds-alias-status-danger};
+  --badge-color: #{tokens.$cds-alias-status-danger};
 }
 
 :host([badge*='warning']) {
-  --badge-color: #{$cds-alias-status-warning-dark};
+  --badge-color: #{tokens.$cds-alias-status-warning-dark};
 }
 
 :host([badge='inherit']) {
@@ -150,11 +150,11 @@ svg {
 }
 
 :host([badge='info']) {
-  --badge-color: #{$cds-alias-status-info};
+  --badge-color: #{tokens.$cds-alias-status-info};
 }
 
 :host([badge='neutral']) {
-  --badge-color: #{$cds-alias-status-neutral};
+  --badge-color: #{tokens.$cds-alias-status-neutral};
 }
 
 // alert colors
@@ -164,16 +164,16 @@ svg {
 
 // inverse + variants
 :host([badge][inverse]) {
-  --badge-color: #{$cds-alias-status-danger};
+  --badge-color: #{tokens.$cds-alias-status-danger};
 }
 
 // variant badge colors
 :host([badge='success'][inverse]) {
-  --badge-color: #{$cds-alias-status-success};
+  --badge-color: #{tokens.$cds-alias-status-success};
 }
 
 :host([badge*='warning'][inverse]) {
-  --badge-color: #{$cds-alias-status-warning-dark};
+  --badge-color: #{tokens.$cds-alias-status-warning-dark};
 }
 
 :host([badge*='inherit'][inverse]) {
@@ -181,7 +181,7 @@ svg {
 }
 
 :host([badge='info'][inverse]) {
-  --badge-color: #{$cds-alias-status-info};
+  --badge-color: #{tokens.$cds-alias-status-info};
 }
 
 // unknown icon animation

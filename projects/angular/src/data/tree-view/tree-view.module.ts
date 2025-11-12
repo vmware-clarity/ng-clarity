@@ -22,7 +22,7 @@ export const CLR_TREE_VIEW_DIRECTIVES: Type<any>[] = [ClrTree, ClrTreeNode, ClrR
 @NgModule({
   imports: [CommonModule, ClrIconModule, ClrLoadingModule],
   declarations: [CLR_TREE_VIEW_DIRECTIVES, RecursiveChildren],
-  exports: [CLR_TREE_VIEW_DIRECTIVES],
+  exports: [CLR_TREE_VIEW_DIRECTIVES, ClrIconModule],
 })
 export class ClrTreeViewModule {
   constructor() {

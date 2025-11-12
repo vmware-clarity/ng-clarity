@@ -30,7 +30,7 @@ export const CLR_STACK_VIEW_DIRECTIVES: Type<any>[] = [
 @NgModule({
   imports: [CommonModule, FormsModule, ClrIconModule, ClrExpandableAnimationModule],
   declarations: [CLR_STACK_VIEW_DIRECTIVES],
-  exports: [CLR_STACK_VIEW_DIRECTIVES],
+  exports: [CLR_STACK_VIEW_DIRECTIVES, ClrIconModule],
 })
 export class ClrStackViewModule {
   constructor() {

@@ -38,7 +38,7 @@ export const CLR_TABS_DIRECTIVES: Type<any>[] = [
 @NgModule({
   imports: [CommonModule, ClrConditionalModule, ClrIconModule, ClrTemplateRefModule, ClrKeyFocusModule],
   declarations: [CLR_TABS_DIRECTIVES],
-  exports: [CLR_TABS_DIRECTIVES, ClrConditionalModule],
+  exports: [CLR_TABS_DIRECTIVES, ClrConditionalModule, ClrIconModule],
 })
 export class ClrTabsModule {
   constructor() {

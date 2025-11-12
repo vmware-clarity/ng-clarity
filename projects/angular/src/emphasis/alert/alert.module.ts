@@ -32,7 +32,7 @@ export const CLR_ALERT_DIRECTIVES: Type<any>[] = [ClrAlert, ClrAlertItem, ClrAle
 @NgModule({
   imports: [CommonModule, ClrIconModule, ClrDropdownModule, ClrSpinnerModule],
   declarations: [CLR_ALERT_DIRECTIVES],
-  exports: [CLR_ALERT_DIRECTIVES],
+  exports: [CLR_ALERT_DIRECTIVES, ClrIconModule],
 })
 export class ClrAlertModule {
   constructor() {

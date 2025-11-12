@@ -18,6 +18,6 @@ export const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[] = [ClrButton, ClrButtonGro
 @NgModule({
   imports: [CommonModule, ClrIconModule, ClrPopoverModuleNext],
   declarations: [CLR_BUTTON_GROUP_DIRECTIVES],
-  exports: [CLR_BUTTON_GROUP_DIRECTIVES],
+  exports: [CLR_BUTTON_GROUP_DIRECTIVES, ClrIconModule],
 })
 export class ClrButtonGroupModule {}

@@ -21,6 +21,6 @@ const declarations = [ClrStepper, ClrStepButton, ClrStepperPanel, StepperOompaLo
 @NgModule({
   imports: [CommonModule, ClrIconModule, ClrAccordionModule],
   declarations: [...declarations],
-  exports: [...declarations, ClrAccordionModule],
+  exports: [...declarations, ClrAccordionModule, ClrIconModule],
 })
 export class ClrStepperModule {}

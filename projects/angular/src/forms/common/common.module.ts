@@ -46,6 +46,7 @@ import { ClrIconModule } from '../../icon/icon.module';
     ClrLayout,
     ClrControlContainer,
     ClrControl,
+    ClrIconModule,
   ],
 })
 export class ClrCommonFormsModule {

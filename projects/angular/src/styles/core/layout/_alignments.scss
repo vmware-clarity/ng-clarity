@@ -6,26 +6,26 @@
  */
 
 // common alignment styles shared between vertical and horizontal layouts
-@use './mixins/mixins' as *;
-@use 'optimize' as *;
+@use './mixins/mixins' as mixins;
+@use 'optimize';
 
 @mixin generateHorizontalVerticalAxisFill($breakpoint: null) {
-  [#{$layout}*='#{$align}#{$breakpoint}:#{$fill}'] > * {
+  [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$fill}'] > * {
     flex-grow: 1 !important;
     flex-basis: 0 !important;
   }
 }
 @mixin generateHorizontalVerticalWrap($breakpoint: null) {
-  [#{$layout}~='wrap#{$breakpoint}:none'] {
+  [#{optimize.$layout}~='wrap#{$breakpoint}:none'] {
     flex-wrap: nowrap !important;
   }
 }
 @mixin generateHorizontalVerticalItemStretchShrink($breakpoint: null) {
-  [#{$layout}*='#{$align}#{$breakpoint}:#{$stretch}'] {
+  [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$stretch}'] {
     flex-grow: 1 !important;
   }
 
-  [#{$layout}*='#{$align}#{$breakpoint}:#{$shrink}'] {
+  [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$shrink}'] {
     flex-shrink: 1 !important;
     flex-grow: 0 !important;
   }
@@ -38,7 +38,7 @@
 
 @include generateHorizontalVerticalAlignments();
 
-@each $breakpoint, $breakpoint-value in $cds-layout-breakpoints {
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
   @media (min-width: $breakpoint-value) {
     @include generateHorizontalVerticalAlignments($breakpoint);
   }

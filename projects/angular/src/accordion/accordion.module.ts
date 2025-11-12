@@ -31,7 +31,7 @@ const declarations = [
 @NgModule({
   imports: [CommonModule, ClrIconModule],
   declarations: [...declarations],
-  exports: [...declarations],
+  exports: [...declarations, ClrIconModule],
 })
 export class ClrAccordionModule {
   constructor() {

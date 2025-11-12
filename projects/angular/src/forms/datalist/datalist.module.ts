@@ -18,7 +18,7 @@ import { ClrInputModule } from '../input/input.module';
 @NgModule({
   imports: [CommonModule, ClrInputModule, ClrIconModule],
   declarations: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer],
-  exports: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer],
+  exports: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer, ClrIconModule],
 })
 export class ClrDatalistModule {
   constructor() {

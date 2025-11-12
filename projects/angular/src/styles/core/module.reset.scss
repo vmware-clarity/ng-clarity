@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use './tokens/variables.tokens' as *;
+@use './tokens/variables.tokens' as tokens;
 
 html {
-  font-size: calc((#{$cds-global-base} / 16) * 100%); // convert any base value to a scaled percentage
+  font-size: calc((#{tokens.$cds-global-base} / 16) * 100%); // convert any base value to a scaled percentage
   box-sizing: border-box !important;
 }
 
@@ -23,16 +23,16 @@ html {
 }
 
 [cds-theme] {
-  background: $cds-alias-object-app-background;
-  color: $cds-global-typography-color-500;
+  background: tokens.$cds-alias-object-app-background;
+  color: tokens.$cds-global-typography-color-500;
 }
 
 [cds-control] ::placeholder {
-  color: $cds-global-typography-color-200;
+  color: tokens.$cds-global-typography-color-200;
 }
 
 [cds-control][_disabled] {
-  --cds-global-typography-color-200: #{$cds-alias-status-disabled};
+  --cds-global-typography-color-200: #{tokens.$cds-alias-status-disabled};
 }
 
 html[cds-focus-trap] {

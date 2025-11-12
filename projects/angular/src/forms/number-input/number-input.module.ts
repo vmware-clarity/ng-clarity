@@ -18,7 +18,7 @@ import { ClrCommonFormsModule } from '../common/common.module';
 @NgModule({
   imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
   declarations: [ClrNumberInput, ClrNumberInputContainer],
-  exports: [ClrCommonFormsModule, ClrNumberInput, ClrNumberInputContainer],
+  exports: [ClrCommonFormsModule, ClrNumberInput, ClrNumberInputContainer, ClrIconModule],
 })
 export class ClrNumberInputModule {
   constructor() {

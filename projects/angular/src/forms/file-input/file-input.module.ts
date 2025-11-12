@@ -43,6 +43,7 @@ import { ClrCommonFormsModule } from '../common/common.module';
     ClrFileInfo,
     ClrFileSuccess,
     ClrFileError,
+    ClrIconModule,
   ],
 })
 export class ClrFileInputModule {

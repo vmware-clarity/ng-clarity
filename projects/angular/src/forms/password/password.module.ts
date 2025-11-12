@@ -18,7 +18,7 @@ import { ClrCommonFormsModule } from '../common/common.module';
 @NgModule({
   imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
   declarations: [ClrPassword, ClrPasswordContainer],
-  exports: [ClrCommonFormsModule, ClrPassword, ClrPasswordContainer],
+  exports: [ClrCommonFormsModule, ClrPassword, ClrPasswordContainer, ClrIconModule],
 })
 export class ClrPasswordModule {
   constructor() {

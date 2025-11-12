@@ -4,8 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '../tokens/variables.tokens' as *;
-@use './mixins/mixins' as *;
+@use '../tokens/variables.tokens' as tokens;
 
 @mixin display($breakpoint) {
   [cds-layout~='display\@#{$breakpoint}:none'] {
@@ -45,16 +44,16 @@
   display: inline !important;
 }
 
-@media (min-width: $cds-global-layout-width-sm-static) {
+@media (min-width: tokens.$cds-global-layout-width-sm-static) {
   @include display('sm');
 }
-@media (min-width: $cds-global-layout-width-md-static) {
+@media (min-width: tokens.$cds-global-layout-width-md-static) {
   @include display('md');
 }
-@media (min-width: $cds-global-layout-width-lg-static) {
+@media (min-width: tokens.$cds-global-layout-width-lg-static) {
   @include display('lg');
 }
-@media (min-width: $cds-global-layout-width-xl-static) {
+@media (min-width: tokens.$cds-global-layout-width-xl-static) {
   @include display('xl');
 }
 

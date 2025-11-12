@@ -20,18 +20,18 @@
     <button cds-layout="align:bottom"></button>
   </my-element>
 */
-@use './mixins/mixins' as *;
-@use 'optimize' as *;
+@use './mixins/mixins';
+@use 'optimize';
 
 @mixin generateShadowDomVerticalStretch($breakpoint: null) {
-  [#{$layout}~='#{$vertical}'] {
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$vertical-stretch}'] {
+  [#{optimize.$layout}~='#{optimize.$vertical}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-stretch}'] {
       & > ::slotted(*) {
         flex-grow: 1;
       }
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$stretch}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$stretch}'] {
       & > ::slotted(*) {
         flex-grow: 1;
       }
@@ -39,45 +39,45 @@
   }
 }
 @mixin generateShadowDomVerticalItemAlignment($breakpoint: null) {
-  [#{$layout}~='#{$vertical}'] {
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$center}']),
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$vertical-center}']) {
+  [#{optimize.$layout}~='#{optimize.$vertical}'] {
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}']),
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-center}']) {
       margin-top: auto;
       margin-bottom: auto;
     }
 
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$center}']),
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$horizontal-center}']) {
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}']),
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-center}']) {
       align-self: center;
     }
 
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$top}']) {
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$top}']) {
       margin-bottom: auto !important;
     }
 
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$bottom}']) {
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$bottom}']) {
       margin-top: auto !important;
     }
 
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$right}']) {
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$right}']) {
       margin-left: auto;
     }
 
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$left}']),
-    & > [#{$layout}*='#{$align}#{$breakpoint}:#{$left}'] {
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$left}']),
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$left}'] {
       margin-right: auto;
     }
   }
 }
 @mixin generateShadowDomHorizontalStretch($breakpoint: null) {
-  [#{$layout}~='#{$horizontal}'] {
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$horizontal-stretch}'] {
+  [#{optimize.$layout}~='#{optimize.$horizontal}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-stretch}'] {
       & > ::slotted(*) {
         flex-grow: 1;
       }
     }
 
-    &[#{$layout}*='#{$align}#{$breakpoint}:#{$stretch}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$stretch}'] {
       & > ::slotted(*) {
         flex-grow: 1;
       }
@@ -85,37 +85,37 @@
   }
 }
 @mixin generateShadowDomHorizontalItemAlignment($breakpoint: null) {
-  [#{$layout}~='#{$horizontal}'] {
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$center}']),
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$vertical-center}']) {
+  [#{optimize.$layout}~='#{optimize.$horizontal}'] {
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}']),
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-center}']) {
       align-self: center;
     }
 
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$center}']),
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$horizontal-center}']) {
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}']),
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-center}']) {
       margin-left: auto !important;
       margin-right: auto !important;
     }
 
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$top}']) {
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$top}']) {
       align-self: flex-start;
     }
 
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$bottom}']) {
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$bottom}']) {
       align-self: flex-end;
     }
 
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$right}']) {
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$right}']) {
       margin-left: auto !important;
     }
 
-    ::slotted([#{$layout}*='#{$align}#{$breakpoint}:#{$left}']) {
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$left}']) {
       margin-right: auto !important;
     }
   }
 }
 @mixin generateShadowDomHorizontalVerticalAxisFill($breakpoint: null) {
-  [#{$layout}*='#{$align}#{$breakpoint}:#{$fill}'] > ::slotted(*) {
+  [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$fill}'] > ::slotted(*) {
     flex-grow: 1 !important;
     flex-basis: 0 !important;
   }
