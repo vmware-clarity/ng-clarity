@@ -6,6 +6,7 @@
  */
 
 @forward './tokens/properties.tokens';
+@forward './theme.dark.scss';
 @forward './module.reset';
 @forward './module.typography';
 @forward './module.layout';
