@@ -206,8 +206,6 @@
         }
 
         .signup {
-          @include mixins.generate-typography-token('LINK-14');
-
           text-align: center;
         }
       }
