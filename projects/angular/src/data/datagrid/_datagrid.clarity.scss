@@ -110,10 +110,6 @@
   }
 }
 
-//@keyframes detect-scroll {
-//  from, to { --can-scroll: ; }
-//}
-
 @include meta.load-css('properties.datagrid');
 @include mixins.exports('datagrid.clarity') {
   @include tables.basic-table(
@@ -153,26 +149,8 @@
         }
       }
 
-      .datagrid-content-virtual {
-        //animation: detect-scroll linear;
-        //animation-timeline: scroll(self);
-        //
-        //--bg-if-can-scroll: var(--can-scroll) #{tables-variables.$clr-table-borderwidth} solid #{tables-variables.$clr-table-border-color};
-        //--bg-if-cant-scroll: none;
-
-        .datagrid-row,
-        .datagrid-placeholder-container {
-          border-right: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
-        }
-
-        //.datagrid-row,
-        //.datagrid-placeholder-container {
-        //  border-right: var(--bg-if-can-scroll, var(--bg-if-cant-scroll));
-        //}
-
-        .datagrid-no-visible-scroller {
-          height: 100%;
-        }
+      .datagrid-content-virtual .datagrid-no-visible-scroller {
+        height: 100%;
       }
     }
   }
@@ -483,9 +461,6 @@
         display: block;
         flex: 1 1 100%;
         overflow: auto scroll;
-        @include mixins.scrollbar-colors(tokens.$cds-alias-status-neutral, tables-variables.$clr-thead-bgcolor);
-
-        scrollbar-gutter: stable;
         will-change: scroll-position;
         contain: strict;
         transform: translateZ(0);
@@ -1422,10 +1397,6 @@
     .datagrid-placeholder-container,
     .datagrid-row {
       border-right: tokens.$cds-alias-object-border-width-100 solid tables-variables.$clr-table-border-color;
-    }
-
-    .datagrid-table .datagrid-content-virtual {
-      border-right: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
     }
 
     .datagrid-footer {

@@ -486,9 +486,3 @@ $typography-tokens: (
     margin-bottom: calc(-1 * tokens.$cds-global-space-1);
   }
 }
-@mixin scrollbar-colors(
-  $toggleColor: tokens.$cds-alias-status-neutral,
-  $backgroundColor: tokens.$cds-alias-object-container-background
-) {
-  scrollbar-color: $toggleColor $backgroundColor;
-}

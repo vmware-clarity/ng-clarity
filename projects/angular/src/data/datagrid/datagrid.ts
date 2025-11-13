@@ -154,8 +154,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
 
-  protected isScrollbarVisible = true;
-
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
 
   /**
@@ -288,11 +286,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
     this._subscriptions.push(
       rowItemsChanges.subscribe(all => {
-        if (this.virtualScroll) {
-          this.isScrollbarVisible =
-            this.contentWrapper.nativeElement.scrollHeight > this.contentWrapper.nativeElement.clientHeight;
-        }
-
         if (!this.items.smart) {
           this.items.all = all;
         }
