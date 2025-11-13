@@ -151,6 +151,18 @@
 
       .datagrid-content-virtual .datagrid-no-visible-scroller {
         height: 100%;
+
+        .datagrid-placeholder-container {
+          display: flex;
+        }
+      }
+
+      .datagrid-placeholder-container {
+        display: none;
+
+        &:has(> .datagrid-placeholder.datagrid-empty) {
+          display: flex;
+        }
       }
     }
   }
