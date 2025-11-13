@@ -1318,8 +1318,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     _fixedColumnTemplate: TemplateRef<any>;
     // (undocumented)
     set identityFn(value: ClrDatagridItemsIdentityFunction<T>);
-    // (undocumented)
-    protected isScrollbarVisible: boolean;
     // Warning: (ae-forgotten-export) The symbol "Items" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
