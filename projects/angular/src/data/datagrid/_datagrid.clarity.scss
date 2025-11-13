@@ -157,7 +157,7 @@
         //animation: detect-scroll linear;
         //animation-timeline: scroll(self);
         //
-        //--bg-if-can-scroll: #{tables-variables.$clr-table-borderwidth} solid #{tables-variables.$clr-table-border-color};
+        //--bg-if-can-scroll: var(--can-scroll) #{tables-variables.$clr-table-borderwidth} solid #{tables-variables.$clr-table-border-color};
         //--bg-if-cant-scroll: none;
 
         .datagrid-row,
