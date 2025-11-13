@@ -14,6 +14,7 @@ import {
   angleDoubleIcon,
   arrowIcon,
   ClarityIcons,
+  ClrIcon,
   ellipsisVerticalIcon,
   filterGridCircleIcon,
   filterGridIcon,
@@ -60,7 +61,6 @@ import { DatagridRowRenderer } from './render/row-renderer';
 import { WrappedCell } from './wrapped-cell';
 import { WrappedColumn } from './wrapped-column';
 import { WrappedRow } from './wrapped-row';
-import { ClrIconModule } from '../../icon/icon.module';
 import { ClrPopoverModuleNext } from '../../popover/common/popover.module';
 import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
 import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
@@ -124,7 +124,7 @@ const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAcces
     CommonModule,
     CdkDragModule,
     CdkTrapFocusModule,
-    ClrIconModule,
+    ClrIcon,
     ClrFormsModule,
     FormsModule,
     ClrLoadingModule,
@@ -137,7 +137,7 @@ const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAcces
     CLR_DATAGRID_STANDALONE_DIRECTIVES,
   ],
   declarations: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_INTERNAL_DIRECTIVES],
-  exports: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_STANDALONE_DIRECTIVES, ClrIconModule],
+  exports: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_STANDALONE_DIRECTIVES],
 })
 export class ClrDatagridModule {
   constructor() {

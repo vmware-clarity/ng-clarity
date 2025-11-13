@@ -6,6 +6,7 @@
  */
 
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -35,13 +36,13 @@ import { getIconBadgeSVG, getIconSVG } from './utils/icon.svg-helpers';
     '[attr.size]': 'size',
     '[attr.direction]': 'direction',
     '[attr.flip]': 'flip',
-    '[attr.solid]': 'solid ? true : undefined',
+    '[attr.solid]': 'solid ? true : null',
     '[attr.status]': 'status',
-    '[attr.inverse]': 'inverse ? true : undefined',
+    '[attr.inverse]': 'inverse ? true : null',
     '[attr.badge]': 'badge',
   },
-  standalone: false,
-  providers: [IconHtmlPipe], // The pipe is used internally
+  imports: [IconHtmlPipe],
+  providers: [IconHtmlPipe],
 })
 export class ClrIcon implements OnInit, OnDestroy {
   iconSVG: string;
@@ -51,17 +52,13 @@ export class ClrIcon implements OnInit, OnDestroy {
   private _size: string;
   private _direction: Directions | string;
   private _flip: Orientations;
-  private _solid: string | boolean = false;
+  private _solid: boolean = false;
   private _status: StatusTypes | string;
-  private _inverse: string | boolean = false;
+  private _inverse: boolean = false;
   private _badge: string | StatusTypes | 'inherit' | 'warning-triangle' | 'inherit-triangle' | true | false;
   private subscription: Subscription;
   private _priorShape = 'unknown';
 
-  /**
-   * This component version uses static services, so it only
-   * injects ElementRef and ChangeDetectorRef.
-   */
   constructor(
     public el: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef
@@ -108,11 +105,11 @@ export class ClrIcon implements OnInit, OnDestroy {
       this.updateIcon();
     }
   }
-  @Input()
+  @Input({ transform: booleanAttribute })
   get solid() {
     return this._solid;
   }
-  set solid(value) {
+  set solid(value: boolean) {
     if (value !== this._solid) {
       this._solid = value;
       this.updateIcon();
@@ -128,11 +125,11 @@ export class ClrIcon implements OnInit, OnDestroy {
       this.updateIcon();
     }
   }
-  @Input()
+  @Input({ transform: booleanAttribute })
   get inverse() {
     return this._inverse;
   }
-  set inverse(value) {
+  set inverse(value: boolean) {
     if (value !== this._inverse) {
       this._inverse = value;
       this.updateIcon();

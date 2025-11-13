@@ -8,6 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 
+import { ClarityIcons, ClrIcon, ellipsisHorizontalIcon } from '../../icon';
 import { ActiveOompaLoompa } from './chocolate/active-oompa-loompa';
 import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';
 import { ClrTab } from './tab';
@@ -17,8 +18,6 @@ import { ClrTabLink } from './tab-link.directive';
 import { ClrTabOverflowContent } from './tab-overflow-content';
 import { ClrTabs } from './tabs';
 import { ClrTabsActions } from './tabs-actions';
-import { ClarityIcons, ellipsisHorizontalIcon } from '../../icon';
-import { ClrIconModule } from '../../icon/icon.module';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
 import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
 import { ClrTemplateRefModule } from '../../utils/template-ref/template-ref.module';
@@ -36,9 +35,9 @@ export const CLR_TABS_DIRECTIVES: Type<any>[] = [
 ];
 
 @NgModule({
-  imports: [CommonModule, ClrConditionalModule, ClrIconModule, ClrTemplateRefModule, ClrKeyFocusModule],
+  imports: [CommonModule, ClrConditionalModule, ClrIcon, ClrTemplateRefModule, ClrKeyFocusModule],
   declarations: [CLR_TABS_DIRECTIVES],
-  exports: [CLR_TABS_DIRECTIVES, ClrConditionalModule, ClrIconModule],
+  exports: [CLR_TABS_DIRECTIVES, ClrConditionalModule],
 })
 export class ClrTabsModule {
   constructor() {

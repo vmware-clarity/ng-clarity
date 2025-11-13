@@ -16,8 +16,7 @@ import { ClrOptionGroup } from './option-group';
 import { ClrOptionItems } from './option-items.directive';
 import { ClrOptionSelected } from './option-selected.directive';
 import { ClrOptions } from './options';
-import { angleIcon, checkCircleIcon, ClarityIcons, exclamationCircleIcon, windowCloseIcon } from '../../icon';
-import { ClrIconModule } from '../../icon/icon.module';
+import { angleIcon, checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon, windowCloseIcon } from '../../icon';
 import { ClrPopoverModuleNext } from '../../popover/common/popover.module';
 import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
@@ -28,7 +27,7 @@ import { ClrCommonFormsModule } from '../common/common.module';
   imports: [
     CommonModule,
     FormsModule,
-    ClrIconModule,
+    ClrIcon,
     ClrKeyFocusModule,
     ClrCommonFormsModule,
     ClrConditionalModule,
@@ -54,7 +53,6 @@ import { ClrCommonFormsModule } from '../common/common.module';
     ClrOptionSelected,
     ClrConditionalModule,
     ClrOptionItems,
-    ClrIconModule,
   ],
 })
 export class ClrComboboxModule {

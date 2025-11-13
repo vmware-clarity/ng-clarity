@@ -11,15 +11,14 @@ import { NgModule } from '@angular/core';
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxContainer } from './checkbox-container';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
-import { checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '../../icon';
-import { ClrIconModule } from '../../icon/icon.module';
+import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '../../icon';
 import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
 import { ClrCommonFormsModule } from '../common/common.module';
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule, ClrCommonFormsModule, ClrHostWrappingModule],
+  imports: [CommonModule, ClrIcon, ClrCommonFormsModule, ClrHostWrappingModule],
   declarations: [ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper],
-  exports: [ClrCommonFormsModule, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper, ClrIconModule],
+  exports: [ClrCommonFormsModule, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper],
 })
 export class ClrCheckboxModule {
   constructor() {

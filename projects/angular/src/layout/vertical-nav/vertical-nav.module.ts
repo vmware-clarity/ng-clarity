@@ -13,8 +13,7 @@ import { ClrVerticalNavGroup } from './vertical-nav-group';
 import { ClrVerticalNavGroupChildren } from './vertical-nav-group-children';
 import { ClrVerticalNavIcon } from './vertical-nav-icon';
 import { ClrVerticalNavLink } from './vertical-nav-link';
-import { angleDoubleIcon, angleIcon, ClarityIcons } from '../../icon';
-import { ClrIconModule } from '../../icon/icon.module';
+import { angleDoubleIcon, angleIcon, ClarityIcons, ClrIcon } from '../../icon';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
 import { ClrFocusOnViewInitModule } from '../../utils/focus/focus-on-view-init/focus-on-view-init.module';
 
@@ -27,9 +26,9 @@ export const CLR_VERTICAL_NAV_DIRECTIVES: Type<any>[] = [
 ];
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule, ClrConditionalModule, ClrFocusOnViewInitModule],
+  imports: [CommonModule, ClrIcon, ClrConditionalModule, ClrFocusOnViewInitModule],
   declarations: [CLR_VERTICAL_NAV_DIRECTIVES],
-  exports: [CLR_VERTICAL_NAV_DIRECTIVES, ClrConditionalModule, ClrIconModule, ClrFocusOnViewInitModule],
+  exports: [CLR_VERTICAL_NAV_DIRECTIVES, ClrConditionalModule, ClrIcon, ClrFocusOnViewInitModule],
 })
 export class ClrVerticalNavModule {
   constructor() {

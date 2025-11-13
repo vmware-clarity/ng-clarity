@@ -11,14 +11,13 @@ import { FormsModule } from '@angular/forms';
 
 import { ClrTextarea } from './textarea';
 import { ClrTextareaContainer } from './textarea-container';
-import { checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '../../icon';
-import { ClrIconModule } from '../../icon/icon.module';
+import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '../../icon';
 import { ClrCommonFormsModule } from '../common/common.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
+  imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule],
   declarations: [ClrTextarea, ClrTextareaContainer],
-  exports: [ClrCommonFormsModule, ClrTextarea, ClrTextareaContainer, ClrIconModule],
+  exports: [ClrCommonFormsModule, ClrTextarea, ClrTextareaContainer],
 })
 export class ClrTextareaModule {
   constructor() {

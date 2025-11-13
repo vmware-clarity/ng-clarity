@@ -20,7 +20,7 @@ import { ClrWizardStepnav } from './wizard-stepnav';
 import { ClrWizardStepnavItem } from './wizard-stepnav-item';
 import { ClrWizardTitle } from './wizard-title';
 import { ClrAlertModule } from '../emphasis/alert/alert.module';
-import { ClarityIcons, errorStandardIcon, successStandardIcon } from '../icon';
+import { ClarityIcons, ClrIcon, errorStandardIcon, successStandardIcon } from '../icon';
 import { ClrModalModule } from '../modal/modal.module';
 
 export const CLR_WIZARD_DIRECTIVES: any[] = [
@@ -38,7 +38,7 @@ export const CLR_WIZARD_DIRECTIVES: any[] = [
 ];
 
 @NgModule({
-  imports: [CommonModule, ClrModalModule, ClrAlertModule],
+  imports: [CommonModule, ClrIcon, ClrModalModule, ClrAlertModule],
   declarations: [CLR_WIZARD_DIRECTIVES],
   exports: [CLR_WIZARD_DIRECTIVES],
 })

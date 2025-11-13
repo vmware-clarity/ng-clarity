@@ -11,14 +11,13 @@ import { FormsModule } from '@angular/forms';
 
 import { ClrSelect } from './select';
 import { ClrSelectContainer } from './select-container';
-import { checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '../../icon';
-import { ClrIconModule } from '../../icon/icon.module';
+import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '../../icon';
 import { ClrCommonFormsModule } from '../common/common.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
+  imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule],
   declarations: [ClrSelect, ClrSelectContainer],
-  exports: [ClrCommonFormsModule, ClrSelect, ClrSelectContainer, ClrIconModule],
+  exports: [ClrCommonFormsModule, ClrSelect, ClrSelectContainer],
 })
 export class ClrSelectModule {
   constructor() {

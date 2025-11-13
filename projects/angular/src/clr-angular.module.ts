@@ -12,6 +12,7 @@ import { ClrButtonModule } from './button/button.module';
 import { ClrDataModule } from './data/data.module';
 import { ClrEmphasisModule } from './emphasis/emphasis.module';
 import { ClrFormsModule } from './forms/forms.module';
+import { ClrIcon } from './icon';
 import { ClrIconModule } from './icon/icon.module';
 import { ClrLayoutModule } from './layout/layout.module';
 import { ClrModalModule } from './modal/modal.module';
@@ -27,9 +28,11 @@ import { ClrLoadingModule } from './utils/loading/loading.module';
 import { ClrWizardModule } from './wizard/wizard.module';
 
 @NgModule({
+  imports: [ClrIcon],
   exports: [
     ClrEmphasisModule,
     ClrDataModule,
+    ClrIcon,
     ClrIconModule,
     ClrModalModule,
     ClrLoadingModule,

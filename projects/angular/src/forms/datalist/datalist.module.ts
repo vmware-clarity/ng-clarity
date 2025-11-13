@@ -11,14 +11,13 @@ import { NgModule } from '@angular/core';
 import { ClrDatalist } from './datalist';
 import { ClrDatalistContainer } from './datalist-container';
 import { ClrDatalistInput } from './datalist-input';
-import { checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '../../icon';
-import { ClrIconModule } from '../../icon/icon.module';
+import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '../../icon';
 import { ClrInputModule } from '../input/input.module';
 
 @NgModule({
-  imports: [CommonModule, ClrInputModule, ClrIconModule],
+  imports: [CommonModule, ClrInputModule, ClrIcon],
   declarations: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer],
-  exports: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer, ClrIconModule],
+  exports: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer],
 })
 export class ClrDatalistModule {
   constructor() {

@@ -9,7 +9,6 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrIcon } from './icon.component';
-import { ClrIconModule } from './icon.module';
 import { renderIcon } from './icon.renderer';
 import { ClarityIcons } from './icon.service'; // Static import
 import { GlobalStateService } from './services/global.service'; // Static import
@@ -30,7 +29,7 @@ describe('icon element', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [ClrIconModule],
+      imports: [ClrIcon],
       declarations: [TestComponent],
       // No providers needed for the static services
     });

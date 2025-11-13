@@ -8,10 +8,10 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ClrIcon } from '../../icon';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostModule } from './signpost.module';
-import { ClrIconModule } from '../../icon/icon.module';
 import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 
 export default function (): void {
@@ -23,7 +23,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrSignpostModule, ClrIconModule],
+        imports: [ClrSignpostModule, ClrIcon],
         declarations: [TestTrigger],
         providers: [ClrPopoverToggleService, SignpostIdService, SignpostFocusManager],
       });

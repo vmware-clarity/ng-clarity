@@ -15,12 +15,11 @@ import { ClrFileInputValueAccessor } from './file-input-value-accessor';
 import { ClrFileList } from './file-list';
 import { ClrFileError, ClrFileInfo, ClrFileSuccess } from './file-messages';
 import { ClrFileMessagesTemplate } from './file-messages-template';
-import { ClarityIcons, folderOpenIcon } from '../../icon';
-import { ClrIconModule } from '../../icon/icon.module';
+import { ClarityIcons, ClrIcon, folderOpenIcon } from '../../icon';
 import { ClrCommonFormsModule } from '../common/common.module';
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule, ClrCommonFormsModule],
+  imports: [CommonModule, ClrIcon, ClrCommonFormsModule],
   declarations: [
     ClrFileInput,
     ClrFileInputContainer,
@@ -43,7 +42,6 @@ import { ClrCommonFormsModule } from '../common/common.module';
     ClrFileInfo,
     ClrFileSuccess,
     ClrFileError,
-    ClrIconModule,
   ],
 })
 export class ClrFileInputModule {

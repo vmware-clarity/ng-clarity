@@ -15,6 +15,7 @@ import { ClrAlerts } from './alerts';
 import { ClrAlertsPager } from './alerts-pager';
 import {
   ClarityIcons,
+  ClrIcon,
   errorStandardIcon,
   helpIcon,
   infoStandardIcon,
@@ -23,16 +24,15 @@ import {
   warningStandardIcon,
   windowCloseIcon,
 } from '../../icon';
-import { ClrIconModule } from '../../icon/icon.module';
 import { ClrDropdownModule } from '../../popover/dropdown/dropdown.module';
 import { ClrSpinnerModule } from '../../progress/spinner';
 
 export const CLR_ALERT_DIRECTIVES: Type<any>[] = [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, ClrAlertText];
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule, ClrDropdownModule, ClrSpinnerModule],
+  imports: [CommonModule, ClrIcon, ClrDropdownModule, ClrSpinnerModule],
   declarations: [CLR_ALERT_DIRECTIVES],
-  exports: [CLR_ALERT_DIRECTIVES, ClrIconModule],
+  exports: [CLR_ALERT_DIRECTIVES],
 })
 export class ClrAlertModule {
   constructor() {

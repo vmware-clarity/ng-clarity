@@ -18,11 +18,10 @@ import { ClrIfSuccess } from './if-control-state/if-success';
 import { ClrControlLabel } from './label';
 import { ClrLayout } from './layout';
 import { ClrControlSuccess } from './success';
-import { checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '../../icon';
-import { ClrIconModule } from '../../icon/icon.module';
+import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '../../icon';
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule],
+  imports: [CommonModule, ClrIcon],
   declarations: [
     ClrControlLabel,
     ClrControlError,
@@ -46,7 +45,6 @@ import { ClrIconModule } from '../../icon/icon.module';
     ClrLayout,
     ClrControlContainer,
     ClrControl,
-    ClrIconModule,
   ],
 })
 export class ClrCommonFormsModule {

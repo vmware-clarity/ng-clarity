@@ -9,7 +9,7 @@ import { TestBed } from '@angular/core/testing';
 import { FormsModule, NgControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { ClrIconModule } from '../../icon/icon.module';
+import { ClrIcon } from '../../icon';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { LayoutService } from '../common/providers/layout.service';
@@ -21,7 +21,7 @@ export function WrapperNoLabelSpec(testContainer, testControl, testComponent): v
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],
+        imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
         declarations: [testContainer, testControl, testComponent],
         providers: [IfControlStateService, NgControl, NgControlService, LayoutService],
       });
@@ -45,7 +45,7 @@ export function WrapperFullSpec(testContainer, testControl, testComponent, wrapp
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],
+        imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
         declarations: [testContainer, testControl, testComponent],
         providers: [IfControlStateService, NgControl, NgControlService, LayoutService],
       });
@@ -84,7 +84,7 @@ export function WrapperContainerSpec(testContainer, testWrapper, testControl, te
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],
+        imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
         declarations: [testContainer, testWrapper, testControl, testComponent],
         providers: [IfControlStateService, NgControl, NgControlService, LayoutService],
       });

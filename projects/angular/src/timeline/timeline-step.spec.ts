@@ -9,7 +9,7 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ClrIconModule } from '../icon/icon.module';
+import { ClrIcon } from '../icon';
 import { ClrTimelineStepState } from './enums/timeline-step-state.enum';
 import { TimelineIconAttributeService } from './providers/timeline-icon-attribute.service';
 import { TimelineStepIdService } from './providers/timeline-step-id.service';
@@ -119,7 +119,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           declarations: [ClrTimelineStep, TestTimelineStep],
           providers: [TimelineIconAttributeService, ClrCommonStringsService],
-          imports: [ClrIconModule, ClrSpinnerModule],
+          imports: [ClrIcon, ClrSpinnerModule],
         });
 
         fixture = TestBed.createComponent(TestTimelineStep);

@@ -8,13 +8,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { angleIcon, checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '../icon';
 import { ClrAccordion } from './accordion';
 import { ClrAccordionContent } from './accordion-content';
 import { ClrAccordionDescription } from './accordion-description';
 import { ClrAccordionPanel } from './accordion-panel';
 import { ClrAccordionTitle } from './accordion-title';
-import { angleIcon, checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '../icon';
-import { ClrIconModule } from '../icon/icon.module';
 import { AccordionOompaLoompa } from './chocolate/accordion-oompa-loompa';
 import { AccordionWillyWonka } from './chocolate/accordion-willy-wonka';
 
@@ -29,9 +28,9 @@ const declarations = [
 ];
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule],
+  imports: [CommonModule, ClrIcon],
   declarations: [...declarations],
-  exports: [...declarations, ClrIconModule],
+  exports: [...declarations],
 })
 export class ClrAccordionModule {
   constructor() {

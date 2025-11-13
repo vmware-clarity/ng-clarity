@@ -9,7 +9,6 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrIcon } from '../icon.component';
-import { ClrIconModule } from '../icon.module';
 import { renderIcon } from '../icon.renderer';
 import { ClarityIcons } from '../icon.service';
 import {
@@ -124,7 +123,7 @@ describe('Icon classname helpers: ', () => {
 
     beforeEach(async () => {
       TestBed.configureTestingModule({
-        imports: [ClrIconModule],
+        imports: [ClrIcon],
         declarations: [TestComponent],
       });
       fixture = TestBed.createComponent(TestComponent);

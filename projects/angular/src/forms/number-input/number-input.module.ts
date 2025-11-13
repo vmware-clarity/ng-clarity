@@ -11,14 +11,13 @@ import { FormsModule } from '@angular/forms';
 
 import { ClrNumberInput } from './number-input';
 import { ClrNumberInputContainer } from './number-input-container';
-import { checkCircleIcon, ClarityIcons, exclamationCircleIcon, minusIcon, plusIcon } from '../../icon';
-import { ClrIconModule } from '../../icon/icon.module';
+import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon, minusIcon, plusIcon } from '../../icon';
 import { ClrCommonFormsModule } from '../common/common.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
+  imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule],
   declarations: [ClrNumberInput, ClrNumberInputContainer],
-  exports: [ClrCommonFormsModule, ClrNumberInput, ClrNumberInputContainer, ClrIconModule],
+  exports: [ClrCommonFormsModule, ClrNumberInput, ClrNumberInputContainer],
 })
 export class ClrNumberInputModule {
   constructor() {

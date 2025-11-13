@@ -9,7 +9,6 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrIcon } from '../icon.component';
-import { ClrIconModule } from '../icon.module';
 import { ClarityIcons } from '../icon.service';
 import { hasAlertBadge } from './icon.svg-helpers';
 import { IconShapeCollection } from '../interfaces/icon.interfaces';
@@ -54,7 +53,7 @@ describe('icon svg helpers:', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [ClrIconModule],
+      imports: [ClrIcon],
       declarations: [TestComponent],
     });
     fixture = TestBed.createComponent(TestComponent);
