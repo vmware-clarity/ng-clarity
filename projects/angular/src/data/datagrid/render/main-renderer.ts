@@ -148,6 +148,8 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
         });
       });
     }
+
+    this.datagrid.checkVerticalGap();
   }
 
   ngOnDestroy() {

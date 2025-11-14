@@ -165,6 +165,12 @@
         }
       }
     }
+
+    &.datagrid-no-bottom-gap {
+      .datagrid-rows .datagrid-row:last-of-type {
+        border-bottom: none;
+      }
+    }
   }
 
   .datagrid {
@@ -197,11 +203,10 @@
   }
 
   .datagrid-row {
-    border-top: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
+    border-bottom: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
     min-height: tables-variables.$clr-table-row-height;
 
-    &:first-of-type {
-      border-top: none;
+    &:last-of-type {
       min-height: calc(tables-variables.$clr-table-row-height - tables-variables.$clr-table-borderwidth);
     }
 

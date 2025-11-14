@@ -154,8 +154,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
 
-  protected isScrollbarVisible = true;
-
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
 
   /**
@@ -163,6 +161,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   private _subscriptions: Subscription[] = [];
   private _virtualScrollSubscriptions: Subscription[] = [];
+  private _hasVerticalScrollGap = false;
 
   constructor(
     private organizer: DatagridRenderOrganizer,
@@ -288,11 +287,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
     this._subscriptions.push(
       rowItemsChanges.subscribe(all => {
-        if (this.virtualScroll) {
-          this.isScrollbarVisible =
-            this.contentWrapper.nativeElement.scrollHeight > this.contentWrapper.nativeElement.clientHeight;
-        }
-
         if (!this.items.smart) {
           this.items.all = all;
         }
@@ -453,6 +447,62 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   resize(): void {
     this.organizer.resize();
+  }
+
+  /**
+   * Checks if there is a visual gap between the last row and
+   * the bottom of the viewport.
+   */
+  checkVerticalGap() {
+    // Ensure we are in the browser and elements are ready
+    if (!this.contentWrapper || !this.contentWrapper.nativeElement) {
+      return;
+    }
+
+    const viewportElement = this.contentWrapper.nativeElement;
+    const visibleHeight = viewportElement.clientHeight;
+
+    let totalContentHeight = 0;
+    let hasGap = false;
+
+    if (this.virtualScroll) {
+      // VIRTUAL SCROLL Case
+      // We read the height of the spacer element
+      const spacer = viewportElement.querySelector('.datagrid-content-virtual-spacer') as HTMLElement;
+      if (spacer) {
+        totalContentHeight = spacer.offsetHeight;
+      }
+    } else {
+      // NON-VIRTUAL SCROLL Case
+      // We read the height of the .datagrid-rows container
+      const contentContainer = viewportElement.querySelector('.datagrid-rows') as HTMLElement;
+      if (contentContainer) {
+        totalContentHeight = contentContainer.offsetHeight;
+      }
+    }
+
+    if (totalContentHeight === 0) {
+      // No rows, or not rendered yet. Assume there is a gap.
+      hasGap = true;
+    } else {
+      // The logic: is the visible space taller than the content?
+      // We use a 1px tolerance for sub-pixel rendering issues.
+      hasGap = visibleHeight - totalContentHeight > 1;
+    }
+
+    // Only update the DOM if the state has actually changed
+    if (hasGap !== this._hasVerticalScrollGap) {
+      this._hasVerticalScrollGap = hasGap;
+      if (hasGap) {
+        // There IS a gap. Last row is floating.
+        // We do NOT have the "no gap" state.
+        this.renderer.removeClass(this.el.nativeElement, 'datagrid-no-bottom-gap');
+      } else {
+        // There is NO gap. Last row is touching the bottom.
+        // Add the "no gap" state class.
+        this.renderer.addClass(this.el.nativeElement, 'datagrid-no-bottom-gap');
+      }
+    }
   }
 
   /**
