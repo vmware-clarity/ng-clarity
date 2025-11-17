@@ -165,8 +165,8 @@ export default function (): void {
 
       // Flush the initial fake scroll event.
       // animationFrameScheduler.flush();
-      fixture.detectChanges();
       await delay();
+      fixture.detectChanges();
     }
     async function waitRequiredCycles(fixture: ComponentFixture<any>) {
       await delay(500);
