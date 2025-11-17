@@ -267,7 +267,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   get virtualScroll(): ClrDatagridVirtualScrollDirective<any> {
-    return this._virtualScroll.get(0);
+    return this._virtualScroll?.get(0);
   }
 
   ngAfterContentInit() {
@@ -288,11 +288,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
     this._subscriptions.push(
       rowItemsChanges.subscribe(all => {
-        if (this.virtualScroll) {
-          this.isScrollbarVisible =
-            this.contentWrapper.nativeElement.scrollHeight > this.contentWrapper.nativeElement.clientHeight;
-        }
-
         if (!this.items.smart) {
           this.items.all = all;
         }
@@ -439,6 +434,16 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // we track for changes on selection.current because it can happen with pushing items
     // instead of overriding the variable
     this.selection.checkForChanges();
+
+    if (
+      this.virtualScroll &&
+      this.contentWrapper.nativeElement &&
+      this.isScrollbarVisible !==
+        this.contentWrapper.nativeElement.scrollHeight > this.contentWrapper.nativeElement.clientHeight
+    ) {
+      this.isScrollbarVisible =
+        this.contentWrapper.nativeElement.scrollHeight > this.contentWrapper.nativeElement.clientHeight;
+    }
   }
 
   ngOnDestroy() {

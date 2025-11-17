@@ -149,20 +149,19 @@
         }
       }
 
-      .datagrid-content-virtual .datagrid-no-visible-scroller {
-        height: 100%;
-
-        .datagrid-placeholder-container {
-          display: flex;
+      &.datagrid-detail-open {
+        .datagrid-rows {
+          min-height: 100%;
         }
       }
 
-      .datagrid-placeholder-container {
-        display: none;
+      .datagrid-content-virtual .datagrid-rows.datagrid-no-visible-scroller .datagrid-row:last-of-type {
+        border-bottom: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
+        min-height: tables-variables.$clr-table-row-height;
+      }
 
-        &:has(> .datagrid-placeholder.datagrid-empty) {
-          display: flex;
-        }
+      .datagrid-placeholder-container {
+        border-top: none;
       }
     }
   }
@@ -197,11 +196,11 @@
   }
 
   .datagrid-row {
-    border-top: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
+    border-bottom: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
     min-height: tables-variables.$clr-table-row-height;
 
-    &:first-of-type {
-      border-top: none;
+    &:last-of-type {
+      border-bottom: none;
       min-height: calc(tables-variables.$clr-table-row-height - tables-variables.$clr-table-borderwidth);
     }
 
