@@ -157,7 +157,7 @@
 
       .datagrid-content-virtual .datagrid-rows.datagrid-no-visible-scroller .datagrid-row:last-of-type {
         border-bottom: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
-        min-height: tables-variables.$clr-table-row-height;
+        min-height: calc(tables-variables.$clr-table-row-height + tables-variables.$clr-table-borderwidth);
       }
 
       .datagrid-placeholder-container {
@@ -196,11 +196,11 @@
   }
 
   .datagrid-row {
-    border-bottom: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
+    border-top: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
     min-height: tables-variables.$clr-table-row-height;
 
-    &:last-of-type {
-      border-bottom: none;
+    &:first-of-type {
+      border-top: none;
       min-height: calc(tables-variables.$clr-table-row-height - tables-variables.$clr-table-borderwidth);
     }
 
