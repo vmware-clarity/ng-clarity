@@ -149,17 +149,16 @@
         }
       }
 
-      .datagrid-content-virtual .datagrid-rows.datagrid-no-visible-scroller {
+      .datagrid-content-virtual .datagrid-rows {
         min-height: 100%;
 
-        .datagrid-row:last-of-type {
-          border-bottom: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
-          min-height: calc(tables-variables.$clr-table-row-height + tables-variables.$clr-table-borderwidth);
-        }
-      }
+        &.datagrid-scrollbar-visible {
+          min-height: unset;
 
-      .datagrid-placeholder-container {
-        border-top: none;
+          .datagrid-placeholder-container {
+            border-top: none;
+          }
+        }
       }
     }
   }

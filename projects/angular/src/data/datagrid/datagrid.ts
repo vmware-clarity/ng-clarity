@@ -434,16 +434,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // we track for changes on selection.current because it can happen with pushing items
     // instead of overriding the variable
     this.selection.checkForChanges();
-
-    if (
-      this.virtualScroll &&
-      this.contentWrapper.nativeElement &&
-      this.isScrollbarVisible !==
-        this.contentWrapper.nativeElement.scrollHeight > this.contentWrapper.nativeElement.clientHeight
-    ) {
-      this.isScrollbarVisible =
-        this.contentWrapper.nativeElement.scrollHeight > this.contentWrapper.nativeElement.clientHeight;
-    }
+    this.setIsVirtualScrollbarVisible();
   }
 
   ngOnDestroy() {
@@ -491,6 +482,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   dataChanged() {
     this.items.refresh();
+  }
+
+  private setIsVirtualScrollbarVisible() {
+    if (this.virtualScroll && this.contentWrapper?.nativeElement) {
+      this.isScrollbarVisible =
+        this.contentWrapper.nativeElement.scrollHeight > this.contentWrapper.nativeElement.clientHeight;
+    }
   }
 
   private toggleVirtualScrollSubscriptions() {
