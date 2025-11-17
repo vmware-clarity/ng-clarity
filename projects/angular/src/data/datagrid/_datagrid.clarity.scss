@@ -149,15 +149,13 @@
         }
       }
 
-      &.datagrid-detail-open {
-        .datagrid-rows {
-          min-height: 100%;
-        }
-      }
+      .datagrid-content-virtual .datagrid-rows.datagrid-no-visible-scroller {
+        min-height: 100%;
 
-      .datagrid-content-virtual .datagrid-rows.datagrid-no-visible-scroller .datagrid-row:last-of-type {
-        border-bottom: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
-        min-height: calc(tables-variables.$clr-table-row-height + tables-variables.$clr-table-borderwidth);
+        .datagrid-row:last-of-type {
+          border-bottom: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
+          min-height: calc(tables-variables.$clr-table-row-height + tables-variables.$clr-table-borderwidth);
+        }
       }
 
       .datagrid-placeholder-container {
