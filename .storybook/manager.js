@@ -12,13 +12,23 @@ import styles from './public/manager.css';
 
 addStyles();
 
-addons.setConfig({
-  theme: create({
-    base: 'light',
-    brandTitle: 'Clarity Angular',
-    brandImage: 'https://raw.githubusercontent.com/vmware-clarity/ng-clarity/main/logo.png',
-  }),
-});
+if (window.matchMedia('(prefers-color-scheme: dark)')?.matches) {
+  addons.setConfig({
+    theme: create({
+      base: 'dark',
+      brandTitle: 'Clarity Angular',
+      brandImage: 'https://raw.githubusercontent.com/vmware-clarity/ng-clarity/main/logo.png',
+    }),
+  });
+} else {
+  addons.setConfig({
+    theme: create({
+      base: 'light',
+      brandTitle: 'Clarity Angular',
+      brandImage: 'https://raw.githubusercontent.com/vmware-clarity/ng-clarity/main/logo.png',
+    }),
+  });
+}
 
 function addStyles() {
   const styleElement = document.createElement('style');

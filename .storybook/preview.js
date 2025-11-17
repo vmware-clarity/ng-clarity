@@ -9,6 +9,7 @@ import '@cds/core/icon/register.js';
 
 import { loadCoreIconSet, loadEssentialIconSet } from '@cds/core/icon';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
+import { themes } from 'storybook/theming';
 import { applicationConfig } from '@storybook/angular';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
@@ -69,7 +70,10 @@ const customViewports = {
 };
 
 export const parameters = {
-  docs: { page: AutoDocsTemplate },
+  docs: {
+    page: AutoDocsTemplate,
+    theme: window.matchMedia('(prefers-color-scheme: dark)')?.matches ? themes.dark : themes.light,
+  },
   options: {
     storySort: {
       method: 'alphabetical',

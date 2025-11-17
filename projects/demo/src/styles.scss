@@ -19,6 +19,14 @@
   --clr-test-button-background-color: purple;
   --clr-test-button-text-color: white;
   --clr-test-border-color: magenta;
+
+  [cds-theme] {
+    color-scheme: light;
+  }
+
+  [cds-theme~='dark'] {
+    color-scheme: dark;
+  }
 }
 
 .clr-example {
