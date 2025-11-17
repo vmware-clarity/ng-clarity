@@ -115,6 +115,15 @@
   --cds-alias-object-interaction-inverse-active: #{tokens.$cds-global-color-construction-800};
   --cds-alias-object-interaction-inverse-click: #{tokens.$cds-global-color-construction-800}; // deprecated in favor of active. To be removed in next major release.
 
+  // skeleton loading gradient
+  --cds-alias-object-skeleton-loading-gradient: linear-gradient(
+    90deg,
+    #{tokens.$cds-alias-object-interaction-background} 0%,
+    #{tokens.$cds-global-color-construction-500} 35%,
+    #{tokens.$cds-global-color-construction-400} 65%,
+    #{tokens.$cds-alias-object-interaction-background} 100%
+  );
+
   // status
   --cds-alias-status-tint: transparent;
   --cds-alias-status-info: #{tokens.$cds-global-color-blue-400};

@@ -1,4 +1,5 @@
 @use '../styles/core/tokens/variables.tokens' as tokens;
+@use '../styles/variables/variables.density' as density;
 @use '../styles/mixins';
 
 @mixin flipSVGIcon($direction) {
@@ -32,26 +33,27 @@ svg {
 
 // sizing
 :host([size*='xs']) {
-  @include mixins.equilateral(#{tokens.$cds-global-space-5});
-  @include mixins.min-equilateral(#{tokens.$cds-global-space-5});
+  // 12px
+  @include mixins.equilateral(#{density.$clr-base-icon-size-xs});
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-xs});
 }
 
 :host([size*='sm']) {
   // weirdly, the default... 16px
-  @include mixins.equilateral(#{tokens.$cds-global-space-7});
-  @include mixins.min-equilateral(#{tokens.$cds-global-space-7});
+  @include mixins.equilateral(#{density.$clr-base-icon-size-s});
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-s});
 }
 
 :host([size*='md']) {
-  // 24px
-  @include mixins.equilateral(#{tokens.$cds-global-space-9});
-  @include mixins.min-equilateral(#{tokens.$cds-global-space-9});
+  // 20px
+  @include mixins.equilateral(#{density.$clr-base-icon-size-m});
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-m});
 }
 
 :host([size*='lg']) {
-  // 36px
-  @include mixins.equilateral(#{tokens.$cds-global-space-11});
-  @include mixins.min-equilateral(#{tokens.$cds-global-space-11});
+  // 24px
+  @include mixins.equilateral(#{density.$clr-base-icon-size-l});
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-l});
 }
 
 // note: the selectors for `xl` and `xxl` work as expected due to the order in
@@ -59,15 +61,27 @@ svg {
 // that if their order is switched around, they will break.
 // likewise if we add an `xxs` it will have to go AFTER `xs`!
 :host([size*='xl']) {
-  // 48px
-  @include mixins.equilateral(#{tokens.$cds-global-space-12});
-  @include mixins.min-equilateral(#{tokens.$cds-global-space-12});
+  // 28px
+  @include mixins.equilateral(#{density.$clr-base-icon-size-xl});
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-xl});
 }
 
 :host([size*='xxl']) {
+  // 32px
+  @include mixins.equilateral(#{density.$clr-base-icon-size-2xl});
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-2xl});
+}
+
+:host([size*='3xl']) {
+  // 36px
+  @include mixins.equilateral(density.$clr-base-icon-size-3xl);
+  @include mixins.min-equilateral(density.$clr-base-icon-size-3xl);
+}
+
+:host([size*='4xl']) {
   // 64px
-  @include mixins.equilateral(calc(#{tokens.$cds-global-space-13} - #{tokens.$cds-global-space-5}));
-  @include mixins.min-equilateral(calc(#{tokens.$cds-global-space-13} - #{tokens.$cds-global-space-5}));
+  @include mixins.equilateral(density.$clr-base-icon-size-4xl);
+  @include mixins.min-equilateral(density.$clr-base-icon-size-4xl);
 }
 
 :host([size*='fit']) {

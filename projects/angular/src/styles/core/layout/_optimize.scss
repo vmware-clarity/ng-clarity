@@ -6,18 +6,19 @@
  */
 // This is a performance optimization that aliases the token to a "minified" value to reduce overall bundle size.
 @use '../tokens/variables.tokens' as *;
+@use '../../variables/variables.density' as density;
 
 :root,
 :host {
-  --δ1: #{$cds-global-layout-space-xxxs};
-  --δ2: #{$cds-global-layout-space-xxs};
-  --δ3: #{$cds-global-layout-space-xs};
-  --δ4: #{$cds-global-layout-space-sm};
-  --δ5: #{$cds-global-layout-space-md};
-  --δ6: #{$cds-global-layout-space-lg};
-  --δ7: #{$cds-global-layout-space-xl};
-  --δ8: #{$cds-global-layout-space-xxl};
-  --δ9: #{$cds-global-layout-space-xxxl};
+  --δ1: #{density.$clr-base-layout-space-3xs};
+  --δ2: #{density.$clr-base-layout-space-2xs};
+  --δ3: #{density.$clr-base-layout-space-xs};
+  --δ4: #{density.$clr-base-layout-space-s};
+  --δ5: #{density.$clr-base-layout-space-m};
+  --δ6: #{density.$clr-base-layout-space-l};
+  --δ7: #{density.$clr-base-layout-space-xl};
+  --δ8: #{density.$clr-base-layout-space-2xl};
+  --δ9: #{density.$clr-base-layout-space-3xl};
 }
 
 $cds-global-layout-space-xxxs: var(--δ1);
