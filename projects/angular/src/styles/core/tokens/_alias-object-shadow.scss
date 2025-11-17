@@ -1,0 +1,16 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../mixins';
+
+@include mixins.root-or-host() {
+  --cds-alias-object-shadow-100: 0 calc((1 / var(--cds-global-base, 20)) * 1rem)
+    calc((3 / var(--cds-global-base, 20)) * 1rem) 0 hsl(198deg 30% 15% / 50%);
+  --cds-alias-object-shadow-200: 0 calc((1 / var(--cds-global-base, 20)) * 1rem)
+    calc((3 / var(--cds-global-base, 20)) * 1rem) 0 hsl(198deg 30% 15% / 30%);
+  --cds-alias-object-shadow-300: 0 calc((1 / var(--cds-global-base, 20)) * 1rem)
+    calc((3 / var(--cds-global-base, 20)) * 1rem) 0 hsl(198deg 30% 15% / 20%);
+}
