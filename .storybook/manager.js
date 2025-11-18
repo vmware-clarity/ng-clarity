@@ -12,26 +12,37 @@ import styles from './public/manager.css';
 
 addStyles();
 
-if (window.matchMedia('(prefers-color-scheme: dark)')?.matches) {
-  addons.setConfig({
-    theme: create({
-      base: 'dark',
-      brandTitle: 'Clarity Angular',
-      brandImage: 'https://raw.githubusercontent.com/vmware-clarity/ng-clarity/main/logo.png',
-    }),
-  });
-} else {
-  addons.setConfig({
-    theme: create({
-      base: 'light',
-      brandTitle: 'Clarity Angular',
-      brandImage: 'https://raw.githubusercontent.com/vmware-clarity/ng-clarity/main/logo.png',
-    }),
-  });
-}
+const themeMatcher = window.matchMedia('(prefers-color-scheme: dark)');
+// static initial theme set
+setTheme(themeMatcher?.matches);
+
+// dynamic theme change
+themeMatcher.addListener(e => {
+  setTheme(e.matches);
+});
 
 function addStyles() {
   const styleElement = document.createElement('style');
   styleElement.textContent = styles;
   window.document.head.append(styleElement);
+}
+
+function setTheme(isDark = false) {
+  if (isDark) {
+    addons.setConfig({
+      theme: create({
+        base: 'dark',
+        brandTitle: 'Clarity Angular',
+        brandImage: 'https://raw.githubusercontent.com/vmware-clarity/ng-clarity/main/logo.png',
+      }),
+    });
+  } else {
+    addons.setConfig({
+      theme: create({
+        base: 'light',
+        brandTitle: 'Clarity Angular',
+        brandImage: 'https://raw.githubusercontent.com/vmware-clarity/ng-clarity/main/logo.png',
+      }),
+    });
+  }
 }

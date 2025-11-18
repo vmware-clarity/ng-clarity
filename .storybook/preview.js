@@ -69,10 +69,12 @@ const customViewports = {
   },
 };
 
+const userPreferredTheme = window.matchMedia('(prefers-color-scheme: dark)')?.matches;
+
 export const parameters = {
   docs: {
     page: AutoDocsTemplate,
-    theme: window.matchMedia('(prefers-color-scheme: dark)')?.matches ? themes.dark : themes.light,
+    theme: setTheme(userPreferredTheme),
   },
   options: {
     storySort: {
@@ -118,7 +120,11 @@ export const globalTypes = {
 };
 
 const themeDecorator = (story, { globals }) => {
-  const { theme } = globals;
+  let { theme } = globals;
+
+  if (!theme) {
+    theme = userPreferredTheme ? THEMES.DARK : THEMES.LIGHT;
+  }
 
   document.body.setAttribute(cdsThemeAttribute, theme);
 
@@ -142,6 +148,12 @@ export const decorators = [
     providers: [provideAnimations()],
   }),
 ];
+
+function setTheme(userPreferredTheme) {
+  document.body.setAttribute(cdsThemeAttribute, userPreferredTheme ? THEMES.DARK : THEMES.LIGHT);
+
+  return userPreferredTheme ? themes.dark : themes.light;
+}
 
 function loadIcons() {
   loadCoreIconSet();
