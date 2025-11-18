@@ -6,43 +6,22 @@
  */
 
 import { addons } from 'storybook/manager-api';
-import { create } from 'storybook/theming';
+import { isDarkThemeMatcher, getThemeObj } from './helpers/theme.helper';
 
 import styles from './public/manager.css';
 
 addStyles();
 
-const themeMatcher = window.matchMedia('(prefers-color-scheme: dark)');
-// static initial theme set
-setTheme(themeMatcher?.matches);
+// initial theme set
+addons.setConfig(getThemeObj(isDarkThemeMatcher.matches));
 
 // dynamic theme change
-themeMatcher.addListener(e => {
-  setTheme(e.matches);
+isDarkThemeMatcher.addEventListener('change', change => {
+  addons.setConfig(getThemeObj(change.matches));
 });
 
 function addStyles() {
   const styleElement = document.createElement('style');
   styleElement.textContent = styles;
   window.document.head.append(styleElement);
-}
-
-function setTheme(isDark = false) {
-  if (isDark) {
-    addons.setConfig({
-      theme: create({
-        base: 'dark',
-        brandTitle: 'Clarity Angular',
-        brandImage: 'https://raw.githubusercontent.com/vmware-clarity/ng-clarity/main/logo.png',
-      }),
-    });
-  } else {
-    addons.setConfig({
-      theme: create({
-        base: 'light',
-        brandTitle: 'Clarity Angular',
-        brandImage: 'https://raw.githubusercontent.com/vmware-clarity/ng-clarity/main/logo.png',
-      }),
-    });
-  }
 }

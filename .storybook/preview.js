@@ -9,16 +9,15 @@ import '@cds/core/icon/register.js';
 
 import { loadCoreIconSet, loadEssentialIconSet } from '@cds/core/icon';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
-import { themes } from 'storybook/theming';
 import { applicationConfig } from '@storybook/angular';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import docs from '../documentation.json';
 import { DENSITY, THEMES } from './helpers/constants';
+import { cdsThemeAttribute, isDarkThemeMatcher, setDocsTheme } from './helpers/theme.helper';
 import AutoDocsTemplate from './stories/auto-docs.mdx';
 
 const privateModifier = 121;
-const cdsThemeAttribute = 'cds-theme';
 const clrDensityAttribute = 'clr-density';
 
 loadIcons();
@@ -69,12 +68,15 @@ const customViewports = {
   },
 };
 
-const userPreferredTheme = window.matchMedia('(prefers-color-scheme: dark)')?.matches;
+// dynamic theme change
+isDarkThemeMatcher.addEventListener('change', change => {
+  parameters.docs.theme = setDocsTheme(change.matches);
+});
 
 export const parameters = {
   docs: {
     page: AutoDocsTemplate,
-    theme: setTheme(userPreferredTheme),
+    theme: setDocsTheme(isDarkThemeMatcher.matches),
   },
   options: {
     storySort: {
@@ -123,7 +125,7 @@ const themeDecorator = (story, { globals }) => {
   let { theme } = globals;
 
   if (!theme) {
-    theme = userPreferredTheme ? THEMES.DARK : THEMES.LIGHT;
+    theme = isDarkThemeMatcher.matches ? THEMES.DARK : THEMES.LIGHT;
   }
 
   document.body.setAttribute(cdsThemeAttribute, theme);
@@ -148,12 +150,6 @@ export const decorators = [
     providers: [provideAnimations()],
   }),
 ];
-
-function setTheme(userPreferredTheme) {
-  document.body.setAttribute(cdsThemeAttribute, userPreferredTheme ? THEMES.DARK : THEMES.LIGHT);
-
-  return userPreferredTheme ? themes.dark : themes.light;
-}
 
 function loadIcons() {
   loadCoreIconSet();
