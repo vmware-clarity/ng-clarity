@@ -152,12 +152,8 @@
       .datagrid-content-virtual .datagrid-rows {
         min-height: 100%;
 
-        &.datagrid-scrollbar-visible {
-          min-height: unset;
-
-          .datagrid-placeholder-container {
-            border-top: none;
-          }
+        &.datagrid-scrollbar-visible .datagrid-placeholder-container {
+          border-top: none;
         }
       }
     }

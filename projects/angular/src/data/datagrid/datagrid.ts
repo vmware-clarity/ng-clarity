@@ -140,6 +140,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef<HTMLElement>;
   @ViewChild('datagridHeader', { read: ElementRef }) datagridHeader: ElementRef<HTMLElement>;
   @ViewChild('contentWrapper', { read: ElementRef }) contentWrapper: ElementRef<HTMLElement>;
+  @ViewChild('rowsWrapper', { read: ElementRef }) rowsWrapper: ElementRef<HTMLElement>;
   @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
   @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
   @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
@@ -163,6 +164,14 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   private _subscriptions: Subscription[] = [];
   private _virtualScrollSubscriptions: Subscription[] = [];
+
+  private cachedRowsHeight = 0;
+  private cachedContentHeight = 0;
+  private resizeObserver: ResizeObserver = new ResizeObserver(entries => {
+    requestAnimationFrame(() => {
+      this.handleResizeChanges(entries);
+    });
+  });
 
   constructor(
     private organizer: DatagridRenderOrganizer,
@@ -337,6 +346,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   ngAfterViewInit() {
     this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
 
+    this.resizeObserver.observe(this.contentWrapper.nativeElement);
+    this.resizeObserver.observe(this.rowsWrapper.nativeElement);
+
     this.updateDetailState();
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
     this.refresh.emit(this.stateProvider.state);
@@ -434,7 +446,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // we track for changes on selection.current because it can happen with pushing items
     // instead of overriding the variable
     this.selection.checkForChanges();
-    this.setIsVirtualScrollbarVisible();
   }
 
   ngOnDestroy() {
@@ -484,13 +495,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this.items.refresh();
   }
 
-  private setIsVirtualScrollbarVisible() {
-    if (this.virtualScroll && this.contentWrapper?.nativeElement) {
-      this.isScrollbarVisible =
-        this.contentWrapper.nativeElement.scrollHeight > this.contentWrapper.nativeElement.clientHeight;
-    }
-  }
-
   private toggleVirtualScrollSubscriptions() {
     const hasVirtualScroll = !!this.virtualScroll;
 
@@ -532,5 +536,22 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
       this._virtualScrollSubscriptions = [];
     }
+  }
+
+  private handleResizeChanges(entries: ResizeObserverEntry[]) {
+    if (!this.virtualScroll) {
+      return;
+    }
+
+    for (const entry of entries) {
+      if (entry.target === this.rowsWrapper.nativeElement) {
+        this.cachedRowsHeight = entry.contentRect.height;
+      }
+      if (entry.target === this.contentWrapper.nativeElement) {
+        this.cachedContentHeight = entry.contentRect.height;
+      }
+    }
+
+    this.isScrollbarVisible = this.cachedRowsHeight - this.cachedContentHeight >= 1;
   }
 }
