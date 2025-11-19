@@ -346,9 +346,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   ngAfterViewInit() {
     this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
 
-    this.resizeObserver.observe(this.contentWrapper.nativeElement);
-    this.resizeObserver.observe(this.rowsWrapper.nativeElement);
-
     this.updateDetailState();
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
     this.refresh.emit(this.stateProvider.state);
@@ -451,6 +448,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   ngOnDestroy() {
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this.resizeObserver.disconnect();
   }
 
   toggleAllSelected($event: any) {
@@ -502,6 +500,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this.keyNavigation.preventScrollOnFocus = hasVirtualScroll;
 
     if (hasVirtualScroll && this._virtualScrollSubscriptions.length === 0) {
+      // TODO: use `resizeObserver` for all datagrid variants
+      this.resizeObserver.observe(this.contentWrapper.nativeElement);
+      this.resizeObserver.observe(this.rowsWrapper.nativeElement);
+
       this._virtualScrollSubscriptions.push(
         fromEvent(this.contentWrapper.nativeElement, 'scroll').subscribe(() => {
           if (this.datagridHeader.nativeElement.scrollLeft !== this.contentWrapper.nativeElement.scrollLeft) {
@@ -533,16 +535,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         })
       );
     } else if (!hasVirtualScroll) {
+      this.resizeObserver.disconnect();
       this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
       this._virtualScrollSubscriptions = [];
     }
   }
 
   private handleResizeChanges(entries: ResizeObserverEntry[]) {
-    if (!this.virtualScroll) {
-      return;
-    }
-
     for (const entry of entries) {
       if (entry.target === this.rowsWrapper.nativeElement) {
         this.cachedRowsHeight = entry.contentRect.height;
