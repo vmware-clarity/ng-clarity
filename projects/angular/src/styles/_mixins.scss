@@ -516,3 +516,18 @@ $typography-tokens: (
   }
   @return calc((#{$line-height-token} - 1em) / 2);
 }
+@function pullUp($line-height-gap: 1.2em, $font-top-gap: 0.1475em, $pull-nudge: 0.037em) {
+  @return calc(((#{$font-top-gap} + #{$line-height-gap}) * -1) + #{$pull-nudge});
+}
+@function pushDown(
+  $line-height-gap: 0.6em,
+  $font-top-gap: 0.1475em,
+  $font-ascender-height: 0.1703,
+  $font-x-height: 0.517,
+  $push-nudge: 0.044em
+) {
+  @return calc(
+    (((1em - #{$font-top-gap} - #{$font-ascender-height} - #{$font-x-height}) + #{$line-height-gap}) * -1) -
+      #{$push-nudge}
+  );
+}
