@@ -155,8 +155,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
 
-  protected isScrollbarVisible = false;
-
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
 
   /**
@@ -542,15 +540,23 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   private handleResizeChanges(entries: ResizeObserverEntry[]) {
+    const rowsWrapper = this.rowsWrapper.nativeElement;
+
     for (const entry of entries) {
-      if (entry.target === this.rowsWrapper.nativeElement) {
-        this.cachedRowsHeight = entry.contentRect.height;
-      }
       if (entry.target === this.contentWrapper.nativeElement) {
         this.cachedContentHeight = entry.contentRect.height;
       }
+      if (entry.target === rowsWrapper) {
+        this.cachedRowsHeight = entry.contentRect.height;
+      }
     }
 
-    this.isScrollbarVisible = this.cachedRowsHeight - this.cachedContentHeight >= 1;
+    const scrollClass = 'datagrid-scrollbar-visible';
+
+    if (this.cachedRowsHeight - this.cachedContentHeight >= 1) {
+      this.renderer.addClass(rowsWrapper, scrollClass);
+    } else {
+      this.renderer.removeClass(rowsWrapper, scrollClass);
+    }
   }
 }
