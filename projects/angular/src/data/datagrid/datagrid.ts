@@ -139,8 +139,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef<HTMLElement>;
   @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef<HTMLElement>;
   @ViewChild('datagridHeader', { read: ElementRef }) datagridHeader: ElementRef<HTMLElement>;
-  @ViewChild('contentWrapper', { read: ElementRef }) contentWrapper: ElementRef<HTMLElement>;
-  @ViewChild('rowsWrapper', { read: ElementRef }) rowsWrapper: ElementRef<HTMLElement>;
+  @ViewChild('contentWrapper', { read: ElementRef, static: true }) contentWrapper: ElementRef<HTMLElement>;
+  @ViewChild('rowsWrapper', { read: ElementRef, static: true }) rowsWrapper: ElementRef<HTMLElement>;
   @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
   @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
   @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
@@ -194,6 +194,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
     this.selectAllId = 'clr-dg-select-all-' + datagridId;
     detailService.id = datagridId;
+
+    this.resizeObserver.observe(this.contentWrapper.nativeElement);
+    this.resizeObserver.observe(this.rowsWrapper.nativeElement);
   }
 
   /**
@@ -345,9 +348,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   ngAfterViewInit() {
     this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
-
-    this.resizeObserver.observe(this.contentWrapper.nativeElement);
-    this.resizeObserver.observe(this.rowsWrapper.nativeElement);
 
     this.updateDetailState();
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
