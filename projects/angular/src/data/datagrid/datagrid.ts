@@ -155,7 +155,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
 
-  protected isScrollbarVisible = true;
+  protected isScrollbarVisible = false;
 
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
 
@@ -194,9 +194,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
     this.selectAllId = 'clr-dg-select-all-' + datagridId;
     detailService.id = datagridId;
-
-    this.resizeObserver.observe(this.contentWrapper.nativeElement);
-    this.resizeObserver.observe(this.rowsWrapper.nativeElement);
   }
 
   /**
@@ -348,6 +345,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   ngAfterViewInit() {
     this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
+
+    this.resizeObserver.observe(this.contentWrapper.nativeElement);
+    this.resizeObserver.observe(this.rowsWrapper.nativeElement);
 
     this.updateDetailState();
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
