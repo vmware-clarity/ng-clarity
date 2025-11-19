@@ -1,0 +1,97 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../tokens/variables.tokens' as tokens;
+
+// Every Web Component will need to import a minimal amount of core CSS
+:host {
+  all: initial;
+  display: block;
+  visibility: inherit;
+  font-family: tokens.$cds-global-typography-font-family;
+  contain: layout; // https://developer.mozilla.org/en-US/docs/Web/CSS/contain
+  box-sizing: border-box !important;
+  appearance: none !important;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit !important;
+}
+
+slot {
+  font-family: tokens.$cds-global-typography-font-family;
+  display: contents !important;
+}
+
+::slotted(*) {
+  font-family: inherit;
+  box-sizing: inherit;
+}
+
+::slotted(*)::placeholder {
+  color: tokens.$cds-global-typography-color-200;
+}
+
+:host([role='button']),
+:host([_is-anchor]) {
+  cursor: pointer !important;
+
+  ::slotted(*) {
+    cursor: pointer !important;
+  }
+}
+
+:host([role='button'][disabled]) {
+  cursor: not-allowed !important;
+
+  ::slotted(*) {
+    cursor: not-allowed !important;
+    pointer-events: none;
+  }
+}
+
+// https://developers.google.com/web/fundamentals/web-components/best-practices#add-a-:host-display-style-that-respects-the-hidden-attribute
+// we need the check against hidden='false' here because React is pushing string through instead of adding/removing the boolean attribute
+// https://github.com/lit/lit/issues/3053
+:host([hidden]),
+[hidden] {
+  display: none !important;
+}
+
+:host([hidden*='false']) {
+  display: block !important;
+}
+
+[role='dialog'][hidden],
+[role='dialog'][hidden] > *,
+:host([role='dialog'][hidden]),
+:host([role='dialog'][hidden]) ::slotted(*) {
+  // safari https://www.tpgi.com/the-current-state-of-modal-dialog-accessibility/
+  display: block !important;
+  visibility: hidden !important;
+}
+
+[role='dialog'][hidden*='false'],
+[role='dialog'][hidden*='false'] > *,
+:host([role='dialog'][hidden*='false']),
+:host([role='dialog'][hidden*='false']) ::slotted(*) {
+  visibility: visible !important;
+}
+
+// normalize focus styles
+// https://coryrylan.com/blog/dont-override-css-outline-focus-styles
+:host([tabindex='0']:focus),
+:host([tabindex='0']:focus) [focusable],
+:host([_focused]) [focusable],
+:host([_focused]) .input,
+[tabindex='0'][focusable]:focus {
+  outline: #{tokens.$cds-alias-object-interaction-outline-static};
+  outline: #{tokens.$cds-alias-object-interaction-outline-webkit-static};
+  outline-offset: #{tokens.$cds-alias-object-interaction-outline-offset};
+}

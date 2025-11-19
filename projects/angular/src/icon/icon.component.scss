@@ -1,6 +1,7 @@
 @use '../styles/core/tokens/variables.tokens' as tokens;
 @use '../styles/variables/variables.density' as density;
 @use '../styles/mixins';
+@use '../styles/core/base/base.element.scss';
 
 @mixin flipSVGIcon($direction) {
   @if $direction == 'horizontal' {

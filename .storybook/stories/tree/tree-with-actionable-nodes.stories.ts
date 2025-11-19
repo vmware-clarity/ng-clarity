@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrTree, ClrTreeViewModule } from '@clr/angular';
+import { ClrIcon, ClrTree, ClrTreeViewModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
@@ -13,7 +13,7 @@ export default {
   title: 'Tree/Tree with actionable nodes',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrTreeViewModule],
+      imports: [...CommonModules, ClrTreeViewModule, ClrIcon],
     }),
   ],
   component: ClrTree,
