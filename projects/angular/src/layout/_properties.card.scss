@@ -11,7 +11,7 @@
 
 @include mixins.exports('card.properties') {
   @include mixins.root-or-host() {
-    --clr-card-title-font-weight: #{tokens.$cds-global-typography-section-font-weight};
+    --clr-card-title-font-weight: #{tokens.$cds-alias-typography-section-font-weight};
     --clr-card-border-width: #{tokens.$cds-alias-object-border-width-100};
 
     &,

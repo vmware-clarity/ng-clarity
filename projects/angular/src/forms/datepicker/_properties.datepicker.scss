@@ -12,8 +12,8 @@
 @include mixins.exports('datepicker.properties') {
   @include mixins.root-or-host() {
     // Typography
-    --clr-calendar-today-date-cell-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
-    --clr-calendar-picker-btn-font-weight: #{tokens.$cds-global-typography-font-weight-medium};
+    --clr-calendar-today-date-cell-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
+    --clr-calendar-picker-btn-font-weight: #{tokens.$cds-alias-typography-font-weight-medium};
 
     &,
     & [clr-density] {

@@ -12,7 +12,7 @@
 @include mixins.exports('tooltip.properties') {
   @include mixins.root-or-host() {
     // Usage: ../popover/tooltip/_tooltips.clarity.scss
-    --clr-tooltip-font-weight: #{tokens.$cds-global-typography-body-font-weight};
+    --clr-tooltip-font-weight: #{tokens.$cds-alias-typography-body-font-weight};
 
     &,
     & [clr-density] {

@@ -12,10 +12,10 @@
 
 @include mixins.exports('header.properties') {
   @include mixins.root-or-host() {
-    --clr-header-title-font-weight: #{tokens.$cds-global-typography-subsection-font-weight};
+    --clr-header-title-font-weight: #{tokens.$cds-alias-typography-subsection-font-weight};
     --clr-header-title-font-family: #{variables.$clr-font};
     --clr-header-search-input-font-color: #{tokens.$cds-global-color-white};
-    --clr-header-search-placeholder-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
+    --clr-header-search-placeholder-font-weight: #{tokens.$cds-alias-typography-font-weight-regular};
     --clr-header-search-placeholder-text-color: #{tokens.$cds-global-color-construction-400};
     --clr-header-search-border-active: #{tokens.$cds-alias-object-border-width-100} solid Highlight;
     --clr-header-search-border-hover: #{tokens.$cds-alias-object-border-width-100} solid

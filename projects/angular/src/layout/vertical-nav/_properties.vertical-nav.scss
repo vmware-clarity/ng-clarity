@@ -13,9 +13,9 @@
 
 @include mixins.exports('vertical-nav.properties') {
   @include mixins.root-or-host() {
-    --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
-    --clr-vertical-nav-item-top-level-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
-    --clr-vertical-nav-header-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
+    --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
+    --clr-vertical-nav-item-top-level-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
+    --clr-vertical-nav-header-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
     --clr-vertical-nav-trigger-divider-border-width: #{tokens.$cds-global-space-1};
 
     &,

@@ -13,7 +13,7 @@
   @include mixins.root-or-host() {
     --clr-combobox-min-width: #{mixins.baselinePx(168)};
     --clr-combobox-multi-min-width: #{mixins.baselinePx(360)};
-    --clr-combobox-font-weight: #{tokens.$cds-global-typography-secondary-font-weight};
+    --clr-combobox-font-weight: #{tokens.$cds-alias-typography-secondary-font-weight};
 
     &,
     & [clr-density] {

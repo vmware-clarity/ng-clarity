@@ -257,7 +257,7 @@ $typography-tokens: (
   ),
   'SECTION-12-SB-CPT': (
     font-size: #{variables.$clr-base-typography-font-size-button},
-    font-weight: var(--cds-global-typography-font-weight-semibold),
+    font-weight: var(--cds-alias-typography-font-weight-semibold),
     line-height: #{variables.$clr-base-typography-line-height-16},
     letter-spacing: #{baselinePx(-0.2)},
   ),
@@ -270,7 +270,7 @@ $typography-tokens: (
   ),
   'SUBSECTION-16-SB': (
     font-size: #{variables.$clr-base-typography-font-size-sub-section},
-    font-weight: var(--cds-global-typography-font-weight-semibold),
+    font-weight: var(--cds-alias-typography-font-weight-semibold),
     line-height: #{variables.$clr-base-typography-line-height-24},
     letter-spacing: #{baselinePx(-0.2)},
   ),
@@ -322,7 +322,7 @@ $typography-tokens: (
   ),
   'SECONDARY-14-RG-CPT': (
     font-size: #{variables.$clr-base-typography-font-size-default},
-    font-weight: var(--cds-global-typography-secondary-font-weight),
+    font-weight: var(--cds-alias-typography-secondary-font-weight),
     line-height: #{variables.$clr-base-typography-line-height-16},
     letter-spacing: #{baselinePx(-0.1)},
   ),

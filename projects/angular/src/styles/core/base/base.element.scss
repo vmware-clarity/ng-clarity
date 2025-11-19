@@ -12,7 +12,7 @@
   all: initial;
   display: block;
   visibility: inherit;
-  font-family: tokens.$cds-global-typography-font-family;
+  font-family: tokens.$cds-alias-typography-font-family;
   contain: layout; // https://developer.mozilla.org/en-US/docs/Web/CSS/contain
   box-sizing: border-box !important;
   appearance: none !important;
@@ -25,7 +25,7 @@
 }
 
 slot {
-  font-family: tokens.$cds-global-typography-font-family;
+  font-family: tokens.$cds-alias-typography-font-family;
   display: contents !important;
 }
 
@@ -35,7 +35,7 @@ slot {
 }
 
 ::slotted(*)::placeholder {
-  color: tokens.$cds-global-typography-color-200;
+  color: tokens.$cds-alias-typography-color-200;
 }
 
 :host([role='button']),

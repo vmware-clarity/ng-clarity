@@ -24,15 +24,15 @@ html {
 
 [cds-theme] {
   background: tokens.$cds-alias-object-app-background;
-  color: tokens.$cds-global-typography-color-500;
+  color: tokens.$cds-alias-typography-color-500;
 }
 
 [cds-control] ::placeholder {
-  color: tokens.$cds-global-typography-color-200;
+  color: tokens.$cds-alias-typography-color-200;
 }
 
 [cds-control][_disabled] {
-  --cds-global-typography-color-200: #{tokens.$cds-alias-status-disabled};
+  --cds-alias-typography-color-200: #{tokens.$cds-alias-status-disabled};
 }
 
 html[cds-focus-trap] {
