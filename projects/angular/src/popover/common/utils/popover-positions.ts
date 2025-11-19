@@ -44,6 +44,29 @@ export const SIGNPOST_POSITIONS: string[] = [
   'left-top',
 ];
 
+function getPositionsArray(type: ClrPopoverType) {
+  switch (type) {
+    case ClrPopoverType.TOOLTIP:
+      return TOOLTIP_POSITIONS;
+    case ClrPopoverType.DROPDOWN:
+      return DROPDOWN_POSITIONS;
+    case ClrPopoverType.SIGNPOST:
+    case ClrPopoverType.DEFAULT:
+    default:
+      return SIGNPOST_POSITIONS;
+  }
+}
+
+export function getConnectedPositions(type: ClrPopoverType): ConnectedPosition[] {
+  const result: ConnectedPosition[] = [];
+
+  getPositionsArray(type).forEach(position => {
+    result.push(mapPopoverKeyToPosition(position, type));
+  });
+
+  return result;
+}
+
 function getOffset(type: ClrPopoverType) {
   switch (type) {
     case ClrPopoverType.SIGNPOST:

@@ -5,19 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { isPlatformBrowser } from '@angular/common';
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Inject,
-  Input,
-  OnDestroy,
-  Optional,
-  Output,
-  PLATFORM_ID,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, Optional, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
@@ -27,7 +15,7 @@ import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from './providers/filters';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
-import { ClrPopoverType } from '../../popover/common/utils/popover-positions';
+import { ClrPopoverType, getConnectedPositions } from '../../popover/common/utils/popover-positions';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 /**
@@ -62,7 +50,14 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
       class="datagrid-filter"
       [id]="popoverId"
       cdkTrapFocus
-      *clrPopoverContent="open; at: smartPosition; type: popoverType; outsideClickToClose: true; scrollToClose: true"
+      *clrPopoverContent="
+        open;
+        at: smartPosition;
+        availablePositions: positions;
+        type: popoverType;
+        outsideClickToClose: true;
+        scrollToClose: false
+      "
       role="dialog"
       [attr.aria-label]="commonStrings.keys.datagridFilterDialogAriaLabel"
     >
@@ -89,24 +84,21 @@ export class ClrDatagridFilter<T = any>
   // Smart Popover
   smartPosition = 'bottom-right';
   popoverType = ClrPopoverType.DROPDOWN;
+  positions = getConnectedPositions(this.popoverType);
 
   @ViewChild('anchor', { read: ElementRef }) anchor: ElementRef<HTMLButtonElement>;
 
-  private _open = false;
   private subs: Subscription[] = [];
 
   constructor(
     _filters: FiltersProvider<T>,
     public commonStrings: ClrCommonStringsService,
     private popoverService: ClrPopoverService,
-    @Inject(PLATFORM_ID) private platformId: any,
-    private elementRef: ElementRef<HTMLElement>,
     @Optional() private keyNavigation: KeyNavigationGridController
   ) {
     super(_filters);
     this.subs.push(
       popoverService.openChange.subscribe(change => {
-        this.open = change;
         this.ariaExpanded = change;
       })
     );
@@ -114,21 +106,17 @@ export class ClrDatagridFilter<T = any>
 
   @Input('clrDgFilterOpen')
   get open() {
-    return this._open;
+    return this.popoverService.open;
   }
   set open(open: boolean) {
     open = !!open;
-    if (this.open !== open) {
+    if (this.popoverService.open !== open) {
       this.popoverService.open = open;
       this.openChange.emit(open);
-      if (!open && isPlatformBrowser(this.platformId)) {
-        this.anchor.nativeElement.focus();
-      }
+
       if (this.keyNavigation) {
         this.keyNavigation.skipItemFocus = open;
       }
-      // keep track of the state
-      this._open = open;
     }
   }
 

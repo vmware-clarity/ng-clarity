@@ -62,11 +62,13 @@
   [style.height.px]="datagridHeight"
   [ngClass]="{ 'datagrid-overflow-ellipsis': overflowEllipsis }"
 >
-  <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
-  <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
-  <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
-  <clr-dg-column [clrDgField]="'pokemon'">Pokemon</clr-dg-column>
-  <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column>
+  <clr-dg-column [clrDgField]="'id'"><ng-container *clrDgHideableColumn>User ID</ng-container></clr-dg-column>
+  <clr-dg-column [clrDgField]="'name'"><ng-container *clrDgHideableColumn>Name</ng-container></clr-dg-column>
+  <clr-dg-column [clrDgField]="'creation'"
+    ><ng-container *clrDgHideableColumn>Creation date</ng-container></clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'pokemon'"><ng-container *clrDgHideableColumn>Pokemon</ng-container></clr-dg-column>
+  <clr-dg-column [clrDgField]="'color'"><ng-container *clrDgHideableColumn>Favorite color</ng-container></clr-dg-column>
 
   <ng-template
     *ngIf="showVirtualScroller"

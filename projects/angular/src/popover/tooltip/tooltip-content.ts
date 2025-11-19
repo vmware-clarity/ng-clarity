@@ -22,7 +22,7 @@ import { ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
-import { ClrPopoverType, mapPopoverKeyToPosition, TOOLTIP_POSITIONS } from '../common/utils/popover-positions';
+import { ClrPopoverType, getConnectedPositions, TOOLTIP_POSITIONS } from '../common/utils/popover-positions';
 
 const SIZES = ['xs', 'sm', 'md', 'lg'];
 
@@ -60,10 +60,7 @@ export class ClrTooltipContent implements OnInit {
     popoverService.scrollToClose = true;
     popoverService.panelClass.push('clr-tooltip-container');
     popoverService.popoverType = ClrPopoverType.TOOLTIP;
-
-    TOOLTIP_POSITIONS.forEach(position => {
-      popoverService.availablePositions.push(mapPopoverKeyToPosition(position, popoverService.popoverType));
-    });
+    popoverService.availablePositions = getConnectedPositions(popoverService.popoverType);
 
     if (!parentHost) {
       throw new Error('clr-tooltip-content should only be used inside of a clr-tooltip');

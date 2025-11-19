@@ -14,6 +14,7 @@ import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnState } from './interfaces/column-state.interface';
 import { ColumnsService } from './providers/columns.service';
 import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover/common';
+import { ClrPopoverType } from '../../popover/common/utils/popover-positions';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Component({
@@ -37,13 +38,19 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
       [attr.aria-label]="commonStrings.keys.showColumnsMenuDescription"
       [id]="popoverId"
       cdkTrapFocus
-      *clrPopoverContent="openState; at: smartPosition; outsideClickToClose: true; scrollToClose: true"
+      *clrPopoverContent="
+        openState;
+        at: smartPosition;
+        type: popoverType;
+        outsideClickToClose: true;
+        scrollToClose: true
+      "
     >
       <div class="switch-header">
         <div class="clr-sr-only" tabindex="-1" #allSelected>{{ commonStrings.keys.allColumnsSelected }}</div>
         <h2>{{ commonStrings.keys.showColumns }}</h2>
         <button
-          class="btn btn-sm btn-link toggle-switch-close-button"
+          class="btn btn-sm btn-link-neutral toggle-switch-close-button"
           clrPopoverCloseButton
           type="button"
           [attr.aria-label]="commonStrings.keys.close"
@@ -85,6 +92,7 @@ export class ClrDatagridColumnToggle implements OnDestroy {
 
   // Smart Popover
   smartPosition = 'top-left';
+  popoverType = ClrPopoverType.DROPDOWN;
 
   // Without tracking the checkboxes get rerendered on model update, which leads
   // to loss of focus after checkbox toggle.
@@ -102,8 +110,8 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   ) {
     this.subscription = popoverService.openChange.subscribe(change => (this.openState = change));
 
-    popoverService.defaultPosition = 'right-top';
-    popoverService.position = 'right-top';
+    popoverService.defaultPosition = this.smartPosition;
+    popoverService.position = this.smartPosition;
 
     popoverService.panelClass.push('clr-popover-content');
   }
