@@ -153,7 +153,7 @@
         min-height: 100%;
 
         &.datagrid-scrollbar-visible .datagrid-placeholder-container {
-          border-top: none;
+          border-top-color: tokens.$cds-alias-object-opacity-0;
         }
       }
     }

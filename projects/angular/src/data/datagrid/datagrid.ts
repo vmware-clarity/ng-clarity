@@ -553,7 +553,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
     const scrollClass = 'datagrid-scrollbar-visible';
 
-    if (this.cachedRowsHeight - this.cachedContentHeight >= 1) {
+    if (this.cachedRowsHeight > this.cachedContentHeight) {
       this.renderer.addClass(rowsWrapper, scrollClass);
     } else {
       this.renderer.removeClass(rowsWrapper, scrollClass);
