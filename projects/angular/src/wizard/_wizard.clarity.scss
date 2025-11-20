@@ -516,7 +516,7 @@
     .clr-wizard-title-wrapper {
       display: flex;
       align-items: center;
-      padding: wizard-variables.$clr-wizard-default-space;
+      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space;
 
       .clr-wizard-title {
         flex: 1;
@@ -546,7 +546,7 @@
 
       .clr-wizard-stepnav {
         display: flex;
-        padding: 0 wizard-variables.$clr-wizard-default-space 0 wizard-variables.$clr-wizard-default-space;
+        padding: wizard-variables.$clr-wizard-vertical-space 0;
       }
 
       .clr-wizard-stepnav-nav--with-one-scroll-button {
