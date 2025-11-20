@@ -14,7 +14,6 @@ import {
   OverlayContainer,
   OverlayRef,
   ScrollDispatcher,
-  ScrollStrategy,
 } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
 import {
@@ -107,10 +106,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   @Input('clrPopoverContentScrollToClose')
   set scrollToClose(scrollToClose: boolean) {
     this.popoverService.scrollToClose = !!scrollToClose;
-
-    if (this.popoverService.overlayRef) {
-      this.popoverService.overlayRef.updateScrollStrategy(this.getScrollStrategy());
-    }
   }
 
   ngAfterViewInit() {
@@ -166,7 +161,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       new OverlayConfig({
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
         positionStrategy: positionStrategy,
-        scrollStrategy: this.getScrollStrategy(),
+        // the scrolling behaviour is controlled by this popover content directive
+        scrollStrategy: this.overlay.scrollStrategies.noop(),
         panelClass: this.popoverService.panelClass,
         hasBackdrop: this.popoverService.hasBackdrop,
       })
@@ -260,12 +256,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     }
   }
 
-  private getScrollStrategy(): ScrollStrategy {
-    return this.popoverService.scrollToClose
-      ? this.overlay.scrollStrategies.close()
-      : this.overlay.scrollStrategies.reposition({ autoClose: true });
-  }
-
   private showOverlay() {
     this.setPreferredPosition(); //Preferred position defined by consumer
 
@@ -347,32 +337,34 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   //Align the popover on scrolling
   private listenToMouseEvents() {
-    this.zone.runOutsideAngular(() => {
-      this.subscriptions.push(
-        fromEvent(
-          this.scrollableParent?.scrollParent ? this.scrollableParent?.scrollParent : window.document,
-          'scroll'
-        ).subscribe(() => {
-          if (this.popoverService.scrollToClose) {
-            this.zone.run(() => {
-              this.removeOverlay();
-            });
+    // this.zone.runOutsideAngular(() => {
+    this.subscriptions.push(
+      fromEvent(
+        this.scrollableParent?.scrollParent ? this.scrollableParent?.scrollParent : window.document,
+        'scroll'
+      ).subscribe(() => {
+        if (this.popoverService.scrollToClose) {
+          console.log(1);
+          // this.zone.run(() => {
+          this.closePopover();
+          // });
 
-            return;
-          }
+          return;
+        }
 
-          if (this.popoverService.overlayRef) {
-            if (this.elementIsVisibleInViewport(this.popoverService.anchorElementRef?.nativeElement)) {
-              this.popoverService.overlayRef.updatePosition();
-            } else {
-              this.zone.run(() => {
-                this.removeOverlay();
-              });
-            }
+        if (this.popoverService.overlayRef) {
+          if (this.elementIsVisibleInViewport(this.popoverService.anchorElementRef?.nativeElement)) {
+            this.popoverService.overlayRef.updatePosition();
+          } else {
+            console.log(2);
+            // this.zone.run(() => {
+            this.closePopover();
+            // });
           }
-        })
-      );
-    });
+        }
+      })
+    );
+    // });
   }
 
   //Check if element is in ViewPort
