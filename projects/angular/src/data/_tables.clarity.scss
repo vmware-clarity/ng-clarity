@@ -8,7 +8,7 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
 @use 'variables.tables' as table-variables;
-@use '../layout/density' as density;
+@use '../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 // Mixin for basic table styles to be able to reuse them on non-table elements.
@@ -43,7 +43,7 @@
     }
 
     #{$td} {
-      min-height: density.$clr-base-dg-row-height;
+      min-height: table-variables.$clr-table-cell-height;
       @include mixins.generate-typography-token('BODY-14-RG-CPT');
     }
 
@@ -99,11 +99,18 @@
     }
   }
 
+  // @deprecated CSS rule #{$table}-compact in favor of compact mode in density theme
   #{$table}-compact {
+    --clr-table-margin: #{mixins.baselinePx(20)} 0 0 0;
+    --clr-table-cell-vertical-padding: #{table-variables.$clr-table-compact-vertical-padding};
     #{$th},
     #{$td} {
-      min-height: table-variables.$clr-table-compact-row-height;
+      min-height: table-variables.$clr-table-compact-cell-height;
       padding: table-variables.$clr-table-cell-compact-padding;
+    }
+    #{$td} {
+      font-size: mixins.baselinePx(13);
+      line-height: tokens.$cds-global-space-7;
     }
   }
 }

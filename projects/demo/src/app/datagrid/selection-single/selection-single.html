@@ -25,17 +25,24 @@
   objects, we could perform any operation we want on it.
 </p>
 
+<p>
+  User should be able to dynamically change selection trough datagrid input
+  <code class="clr-code">[(clrDgSingleSelected)]</code>.
+  <button class="btn" (click)="selectItems()">Select items</button>
+</p>
+
 <h3>Client side, no trackBy</h3>
 
 <div class="card card-block">
-  <p class="card-text username-list">
+  <div class="card-text username-list">
     Selected user:
     <em *ngIf="!singleSelected">No user selected.</em>
     <span class="username" *ngIf="singleSelected">{{singleSelected.name}}</span>
-  </p>
+    <div class="username">Value: {{singleSelected | json }}</div>
+  </div>
 </div>
 
-<clr-datagrid [(clrDgSingleSelected)]="singleSelected">
+<clr-datagrid [(clrDgSingleSelected)]="singleSelected" [clrDgItemsTrackBy]="idendityFn">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -63,14 +70,15 @@
 <h3>Client side, trackBy index</h3>
 
 <div class="card card-block">
-  <p class="card-text username-list">
+  <div class="card-text username-list">
     Selected user:
     <em *ngIf="!trackByIndexSingleSelected">No user selected.</em>
     <span class="username" *ngIf="trackByIndexSingleSelected">{{trackByIndexSingleSelected.name}}</span>
-  </p>
+    <div class="username">Value: {{trackByIndexSingleSelected | json }}</div>
+  </div>
 </div>
 
-<clr-datagrid [(clrDgSingleSelected)]="trackByIndexSingleSelected">
+<clr-datagrid [(clrDgSingleSelected)]="trackByIndexSingleSelected" [clrDgItemsTrackBy]="idendityFn">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -98,14 +106,15 @@
 <h3>Client side, trackBy item</h3>
 
 <div class="card card-block">
-  <p class="card-text username-list">
+  <div class="card-text username-list">
     Selected user:
     <em *ngIf="!trackByIdSingleSelected">No user selected.</em>
     <span class="username" *ngIf="trackByIdSingleSelected">{{trackByIdSingleSelected.name}}</span>
-  </p>
+    <div class="username">Value: {{trackByIdSingleSelected | json }}</div>
+  </div>
 </div>
 
-<clr-datagrid [(clrDgSingleSelected)]="trackByIdSingleSelected">
+<clr-datagrid [(clrDgSingleSelected)]="trackByIdSingleSelected" [clrDgItemsTrackBy]="idendityFn">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -133,17 +142,19 @@
 <h3>Server-driven, trackBy item</h3>
 
 <div class="card card-block">
-  <p class="card-text username-list">
+  <div class="card-text username-list">
     Selected user:
     <em *ngIf="!trackByIdServerSingleSelected">No user selected.</em>
     <span class="username" *ngIf="trackByIdServerSingleSelected">{{trackByIdServerSingleSelected.name}}</span>
-  </p>
+    <div class="username">Value: {{trackByIdServerSingleSelected | json }}</div>
+  </div>
 </div>
 
 <clr-datagrid
   (clrDgRefresh)="refresh($event)"
   [(clrDgSingleSelected)]="trackByIdServerSingleSelected"
   [clrDgLoading]="loading"
+  [clrDgItemsTrackBy]="idendityFn"
 >
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
@@ -164,7 +175,7 @@
   </clr-dg-row>
 
   <clr-dg-footer>
-    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{total}} users
     <clr-dg-pagination #pagination [clrDgTotalItems]="total"></clr-dg-pagination>
+    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{total}} users
   </clr-dg-footer>
 </clr-datagrid>

@@ -7,7 +7,7 @@
 @use '../../emphasis/alert/variables.alert' as alert-variables;
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
-@use '../../layout/density';
+@use '../../utils/variables/variables.density' as density;
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
 
@@ -27,6 +27,8 @@
     position: relative;
     display: flex;
     align-items: flex-start;
+
+    @include forms-mixins.checkbox-radio-toggle-control-group-gap();
 
     .clr-control-label {
       @include forms-mixins.checkbox-radio-label-styles(
@@ -169,9 +171,10 @@
   }
 
   .clr-form-compact .clr-checkbox-wrapper {
+    padding-top: 0;
+
     @include forms-mixins.form-flatten-compact-adjustments();
     @include forms-mixins.form-inline-input();
-    min-height: calc(#{forms-variables.$clr-forms-baseline} * 4);
 
     .clr-control-label {
       margin-top: 0;

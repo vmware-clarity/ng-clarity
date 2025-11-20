@@ -15,7 +15,6 @@
       * Also `.btn, .nav-link, .dropdown-item, .label, .alert-action, .badge` doesn't need these styles, so we don't add them in these cases.
       */
     &:not(.btn, .nav-link, .dropdown-item, .label, .alert-action, .badge, .clr-treenode-link) {
-      @include mixins.generate-typography-token('LINK-13');
       &:link {
         color: nav-variables.$clr-link-color;
         &:hover {
@@ -23,13 +22,6 @@
           cds-icon,
           clr-icon {
             color: nav-variables.$clr-link-hover-color;
-          }
-        }
-        &:active {
-          color: nav-variables.$clr-link-active-color;
-          cds-icon,
-          clr-icon {
-            color: nav-variables.$clr-link-active-color;
           }
         }
       }
@@ -44,6 +36,16 @@
           cds-icon,
           clr-icon {
             color: nav-variables.$clr-link-visited-color-hover;
+          }
+        }
+      }
+      &:visited,
+      &:link {
+        &:active {
+          color: nav-variables.$clr-link-active-color;
+          cds-icon,
+          clr-icon {
+            color: nav-variables.$clr-link-active-color;
           }
         }
       }

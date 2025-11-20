@@ -8,7 +8,7 @@
 @use '../utils/mixins';
 @use 'variables.badges' as badges-variables;
 @use 'variables.label' as label-variables;
-@use '../layout/density' as density;
+@use '../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.label');
@@ -46,16 +46,16 @@
   .label,
   a.label {
     //default
-    @include mixins.generate-typography-token('CAPTION-LG-11');
+    @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
     display: inline-flex;
     justify-content: center;
     align-items: center;
     gap: density.$clr-base-gap-xs;
-    padding: 0 calc(density.$clr-base-horizontal-offset-xs * 2);
+    padding: density.$clr-base-vertical-offset-2xs calc(density.$clr-base-horizontal-offset-xs * 2);
     border: label-variables.$clr-label-borderwidth solid label-variables.$clr-label-default-border-color;
     border-radius: density.$clr-base-border-radius-xl;
     min-height: density.$clr-base-row-height-s;
-    margin: 0 tokens.$cds-global-space-4 tokens.$cds-global-space-1 0;
+    margin: 0 density.$clr-base-horizontal-offset-s density.$clr-base-vertical-offset-2xs 0;
     white-space: nowrap;
     color: label-variables.$clr-label-font-color-light;
     text-decoration: none;
@@ -77,7 +77,7 @@
       text-decoration: none;
     }
 
-    cds-icon {
+    cds-icon:not([size]) {
       @include mixins.min-equilateral(density.$clr-base-icon-size-s);
     }
 

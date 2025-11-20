@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../layout/density';
+@use '../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 // Usage: ../button/_toggles.clarity.scss
@@ -17,14 +17,6 @@ $clr-toggle-switch-base-width: #{tokens.$cds-global-space-10} !default;
 // @deprecated in v17 in favor of clr-toggle-dot-diameter
 $clr-toggle-switch-height: #{$clr-toggle-switch-base-height} !default;
 $clr-toggle-dot-diameter: #{$clr-toggle-switch-height} !default;
-
-// @deprecated in v17 in favor of $clr-toggle-switch-base-spacing
-$clr-toggle-switch-base-left-spacing: #{tokens.$cds-global-space-5} !default;
-$clr-toggle-switch-base-spacing: #{$clr-toggle-switch-base-left-spacing} !default;
-
-// @deprecated in v17 in favor of $clr-toggle-switch-spacing
-$clr-toggle-switch-left-spacing: calc(#{$clr-toggle-switch-base-width} - #{$clr-toggle-switch-base-spacing}) !default;
-$clr-toggle-switch-spacing: #{$clr-toggle-switch-left-spacing} !default;
 
 $clr-toggle-transition-time: 0.15s !default;
 $clr-toggle-transition-animation: ease-in !default;

@@ -42,8 +42,26 @@ export class KeyNavigationUtils {
     return coordinates;
   }
 
+  get averageRowHeight() {
+    const heightSum = Array.from(this.rows.values()).reduce((sum, row) => {
+      return sum + row.clientHeight;
+    }, 0);
+
+    return Math.round(heightSum / this.rows.length);
+  }
+
   get itemsPerPage() {
-    return Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
+    return Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.averageRowHeight) - 1 || 0;
+  }
+
+  setAriaRowIndexTo(cellCoords: CellCoordinates) {
+    let ariaRowIndex = this.rows[cellCoords.y].getAttribute('aria-rowindex');
+
+    if (!ariaRowIndex) {
+      ariaRowIndex = this.rows[cellCoords.y - 1].getAttribute('aria-rowindex');
+    }
+
+    cellCoords.ariaRowIndex = ariaRowIndex;
   }
 
   getNextItemCoordinate(e: KeyboardEvent) {

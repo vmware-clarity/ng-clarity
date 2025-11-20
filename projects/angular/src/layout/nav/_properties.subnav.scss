@@ -8,8 +8,11 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('subnav.properties') {
-  :root [cds-theme] {
-    // Usage: ../layout/nav/_subnav.clarity.scss
-    --clr-subnav-bg-color: #{tokens.$cds-alias-object-container-background};
+  @include mixins.root-or-host() {
+    &,
+    & [cds-theme] {
+      // Usage: ../layout/nav/_subnav.clarity.scss
+      --clr-subnav-bg-color: #{tokens.$cds-alias-object-container-background};
+    }
   }
 }

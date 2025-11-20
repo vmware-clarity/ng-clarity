@@ -57,7 +57,7 @@ export interface Cells {
         [clrVirtualRowsOf]="data.rows"
         [clrVirtualDataRange]="dataRange"
         [clrVirtualPersistItems]="persistItems"
-        [clrVirtualRowsItemSize]="24"
+        [clrVirtualRowsItemSize]="25"
         [clrVirtualRowsMinBufferPx]="200"
         [clrVirtualRowsMaxBufferPx]="400"
         [clrVirtualRowsTemplateCacheSize]="4000"
@@ -216,7 +216,7 @@ export default function (): void {
         instance.virtualScroll.minBufferPx = 300;
         expect(instance.virtualScroll.minBufferPx).toBe(300);
 
-        expect(instance.virtualScroll.itemSize).toBe(24);
+        expect(instance.virtualScroll.itemSize).toBe(25);
         instance.virtualScroll.itemSize = 20;
         expect(instance.virtualScroll.itemSize).toBe(20);
 
@@ -237,7 +237,7 @@ export default function (): void {
         fixture.destroy();
       });
 
-      it('Spy on Scroll to index', fakeAsync(() => {
+      it('Spy on Scroll to index', function () {
         fixture.detectChanges();
         const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');
 
@@ -250,9 +250,9 @@ export default function (): void {
         expect(spyVirtualScroll).toHaveBeenCalledWith(0);
 
         fixture.destroy();
-      }));
+      });
 
-      it('Spy on update data range', fakeAsync(() => {
+      it('Spy on update data range', function () {
         fixture.detectChanges();
         const spyVirtualScroll = spyOn(instance.virtualScroll, 'updateDataRange');
 
@@ -277,7 +277,7 @@ export default function (): void {
         expect(spyVirtualScroll).toHaveBeenCalledWith(dataRange.skip, dataRange.data);
 
         fixture.destroy();
-      }));
+      });
 
       it('Moves focus on PageDown and PageUp', fakeAsync(() => {
         finishInit(fixture);
@@ -296,22 +296,22 @@ export default function (): void {
         expectActiveElementToBe(headerCheckboxCell);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        // active checkbox input with ID clr-dg-row-cb364
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[22]);
+        // active checkbox input with ID clr-dg-row-cb365
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[14], 'PageDown, cells[14]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
-        // active checkbox input with ID clr-dg-row-cb383
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[41]);
+        // active checkbox input with ID clr-dg-row-cb382
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[29], 'PageDown, cells[29]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
-        // active checkbox input with ID clr-dg-row-cb360
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[19]);
+        // active checkbox input with ID clr-dg-row-cb358
+        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[15], 'PageUp, cells[15]');
 
         flush();
         flushMicrotasks();

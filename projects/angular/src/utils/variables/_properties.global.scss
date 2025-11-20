@@ -9,38 +9,42 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('global.properties') {
-  :root [cds-theme] {
-    // component close icon colors
-    --clr-close-color: #{tokens.$cds-alias-object-interaction-color};
-    --clr-close-color-hover: #{tokens.$cds-alias-object-interaction-color-hover};
-    --clr-close-color-active: #{tokens.$cds-alias-object-interaction-color-active};
-
+  @include mixins.root-or-host() {
     --clr-basefont-size: #{variables.$clr-basefont-size};
+
     // app borders
     --clr-global-borderradius: #{tokens.$cds-alias-object-border-radius-100};
     --clr-global-borderwidth: #{tokens.$cds-alias-object-border-width-100};
 
-    // app background
-    --clr-global-app-background: #{tokens.$cds-alias-object-app-background};
+    &,
+    & [cds-theme] {
+      // component close icon colors
+      --clr-close-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-close-color-hover: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-close-color-active: #{tokens.$cds-alias-object-interaction-color-active};
 
-    // app selection colors
-    --clr-global-selection-color: #{tokens.$cds-alias-object-interaction-background-selected};
-    --clr-global-on-selection-color: #{tokens.$cds-alias-object-interaction-color-selected};
+      // app background
+      --clr-global-app-background: #{tokens.$cds-alias-object-app-background};
 
-    // app hover colors
-    --clr-global-hover-color: #{tokens.$cds-global-typography-link-color-hover};
+      // app selection colors
+      --clr-global-selection-color: #{tokens.$cds-alias-object-interaction-background-selected};
+      --clr-global-on-selection-color: #{tokens.$cds-alias-object-interaction-color-selected};
 
-    // app font colors
-    --clr-global-content-header-font-color: #{tokens.$cds-alias-typography-color-400};
-    --clr-global-font-color: #{tokens.$cds-alias-typography-color-500};
+      // app hover colors
+      --clr-global-hover-color: #{tokens.$cds-global-typography-link-color-hover};
 
-    // app success/error colors
-    --clr-global-success-color: #{tokens.$cds-alias-status-success};
-    --clr-global-error-color: #{tokens.$cds-alias-status-danger};
+      // app font colors
+      --clr-global-content-header-font-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-global-font-color: #{tokens.$cds-alias-typography-color-500};
+
+      // app success/error colors
+      --clr-global-success-color: #{tokens.$cds-alias-status-success};
+      --clr-global-error-color: #{tokens.$cds-alias-status-danger};
+    }
   }
 
   @if variables.$clr-use-custom-properties == true {
-    :root {
+    @include mixins.root-or-host() {
       // global box-shadows
       --clr-popover-box-shadow-color: #{variables.$clr-popover-box-shadow-color};
     }

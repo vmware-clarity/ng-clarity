@@ -43,7 +43,6 @@
   [clrDgCustomSelectAllEnabled]="true"
   (clrDgCustomSelectAll)="toggleSelectAllRows($event)"
   style="height: 32rem"
-  class="datagrid-compact"
 >
   <clr-dg-column *ngFor="let col of cols trackBy: colByIndex">
     <ng-container>{{col.name}}</ng-container>
@@ -54,9 +53,6 @@
     clrVirtualScroll
     let-row
     [clrVirtualRowsOf]="data.rows"
-    [clrVirtualRowsItemSize]="24"
-    [clrVirtualRowsMinBufferPx]="200"
-    [clrVirtualRowsMaxBufferPx]="400"
     [clrVirtualRowsTrackBy]="rowByIndex"
     (renderedRangeChange)="renderRangeChange($event)"
   >
@@ -146,7 +142,6 @@
     clrVirtualScroll
     let-user
     [clrVirtualRowsOf]="data.users"
-    [clrVirtualRowsItemSize]="32"
     [clrVirtualRowsMinBufferPx]="200"
     [clrVirtualRowsMaxBufferPx]="400"
     [clrVirtualRowsTemplateCacheSize]="400"

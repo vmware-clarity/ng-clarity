@@ -4,10 +4,16 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '../../utils/variables/variables';
 @use '../variables.tables' as tables-variables;
+@use '../../progress/spinner/variables.spinner' as spinner-variables;
+@use '../../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
 
 // Usage: ../data/datagrid/_datagrid.clarity.scss
+$clr-datagrid-margin-top: var(--clr-datagrid-margin-top);
+$clr-datagrid-compact-margin-top: var(--clr-datagrid-compact-margin-top);
+$clr-datagrid-action-bar-offset: var(--clr-datagrid-action-bar-offset);
+$clr-datagrid-compact-action-bar-offset: var(--clr-datagrid-compact-action-bar-offset);
 $clr-datagrid-font-color: var(--clr-datagrid-font-color) !default;
 $clr-datagrid-default-border-color: var(--clr-datagrid-default-border-color) !default;
 $clr-datagrid-icon-color: var(--clr-datagrid-icon-color) !default;
@@ -43,7 +49,6 @@ $clr-datagrid-placeholder-color: var(--clr-datagrid-placeholder-color) !default;
 
 $clr-datagrid-loading-background: var(--clr-datagrid-loading-background) !default;
 
-$clr-datagrid-column-toggle-gap: var(--clr-datagrid-column-toggle-gap) !default;
 $clr-datagrid-column-toggle-padding: var(--clr-datagrid-column-toggle-padding) !default;
 $clr-datagrid-column-toggle-border-color: var(--clr-datagrid-column-toggle-border-color) !default;
 $clr-datagrid-column-toggle-fill-color: var(--clr-datagrid-column-toggle-fill-color) !default;
@@ -84,3 +89,14 @@ $clr-datagrid-column-separator-expandby: var(--clr-datagrid-column-separator-exp
 
 $clr-datagrid-icon-size: var(--clr-datagrid-icon-size) !default;
 $clr-datagrid-action-arrow-size: var(--clr-datagrid-action-arrow-size) !default;
+$clr-datagrid-expandable-row-spinner-margin: calc(
+  (tables-variables.$clr-table-cell-height - spinner-variables.$clr-spinner-small-size) / 2
+);
+// @deprecated in favor of compact mode in density theme
+// using the compact value of spinner-variables.$clr-spinner-small-size as cds-global-space-7
+$clr-datagrid-compact-expandable-row-spinner-margin: calc(
+  (tables-variables.$clr-table-compact-cell-height - #{tokens.$cds-global-space-7}) / 2
+);
+$clr-datagrid-compact-fixed-column-size: calc(
+  #{tokens.$cds-global-space-7} + (#{tables-variables.$clr-table-compact-horizontal-padding} * 2)
+);

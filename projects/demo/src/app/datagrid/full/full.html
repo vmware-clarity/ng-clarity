@@ -77,7 +77,7 @@
     </p>
   </div>
 
-  <clr-datagrid *ngIf="!isServerDriven" [(clrDgSelected)]="selected">
+  <clr-datagrid *ngIf="!isServerDriven" [(clrDgSelected)]="selected" [clrDgItemsTrackBy]="trackByFn">
     <clr-dg-column>
       <ng-container *clrDgHideableColumn>User ID</ng-container>
     </clr-dg-column>
@@ -136,6 +136,7 @@
   <clr-datagrid
     *ngIf="isServerDriven"
     [(clrDgSelected)]="selected"
+    [clrDgItemsTrackBy]="trackByFn"
     (clrDgRefresh)="refresh($event)"
     [clrDgLoading]="loading"
   >

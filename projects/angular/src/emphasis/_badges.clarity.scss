@@ -7,7 +7,7 @@
 @use 'sass:meta';
 @use '../utils/mixins';
 @use 'variables.badges' as badges-variables;
-@use '../layout/density' as density;
+@use '../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 @include meta.load-css('properties.badges');
 
@@ -45,7 +45,7 @@
     @include mixins.generate-typography-token('CAPTION-SM-10');
 
     padding: 0 density.$clr-base-horizontal-offset-xs;
-    margin-right: #{tokens.$cds-global-space-4};
+    margin-right: density.$clr-base-horizontal-offset-s;
     white-space: nowrap;
     text-align: center;
     color: badges-variables.$clr-badge-color;
@@ -70,17 +70,5 @@
     @include generateStatusBadgeStyles(success);
     @include generateStatusBadgeStyles(danger);
     @include generateStatusBadgeStyles(warning);
-  }
-
-  @include mixins.fixForIE10AndUp {
-    .badge {
-      padding: #{tokens.$cds-global-space-2} #{mixins.baselinePx(3)} 0;
-    }
-  }
-
-  @include mixins.fixForMsEdge {
-    .badge {
-      padding: #{tokens.$cds-global-space-2} #{mixins.baselinePx(3)} 0;
-    }
   }
 }

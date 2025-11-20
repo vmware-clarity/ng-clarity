@@ -6,9 +6,9 @@
  */
 @use 'sass:meta';
 @use '../../utils/mixins';
-@use '../../layout/density' as density;
 @use 'variables.tree-view' as tree-view-variables;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
 
 @include meta.load-css('properties.tree-view');
 
@@ -55,7 +55,7 @@
   .clr-tree-node-content-container {
     //Display
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 
     @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
 
@@ -70,6 +70,17 @@
         width: 100%;
         padding: tree-view-variables.$clr-tree-node-content-padding;
         padding-left: 0;
+
+        // Add touch area to label that covers the checkbox, so we don't need to resize the
+        // checkbox itself, which leads to undesired side effects.
+        &::before {
+          content: '';
+          position: absolute;
+          left: calc(-1 * tree-view-variables.$clr-tree-node-checkbox-input-size);
+          top: 0;
+          height: 100%;
+          width: tree-view-variables.$clr-tree-node-checkbox-input-size;
+        }
       }
     }
 
@@ -101,19 +112,25 @@
 
     padding: tree-view-variables.$clr-tree-node-content-padding;
 
+    &:has(.clr-treenode-link) {
+      padding: 0;
+    }
+
     //Others
     border-radius: tree-view-variables.$clr-tree-border-radius;
 
     cds-icon,
     clr-icon {
-      @include mixins.min-equilateral(tree-view-variables.$clr-tree-caret-size);
+      &:not([size]) {
+        @include mixins.min-equilateral(tree-view-variables.$clr-tree-caret-size);
+      }
       color: tree-view-variables.$clr-tree-node-content-text-only-color;
       vertical-align: middle;
     }
   }
 
   // selected
-  .clr-treenode-content .clr-treenode-link.active,
+  .clr-treenode-content:has(.clr-treenode-link.active),
   .clr-treenode-checkbox:has(input[type='checkbox']:not(:disabled):checked) {
     color: tree-view-variables.$clr-tree-node-content-selected-color;
     background-color: tree-view-variables.$clr-tree-node-content-bg-selected-color;
@@ -134,17 +151,18 @@
   }
 
   .clr-treenode-checkbox input[type='checkbox'] {
-    padding: density.$clr-base-layout-space-xs 0;
-    min-height: tree-view-variables.$clr-tree-node-touch-target;
-    width: density.$clr-base-icon-size-s;
-    min-width: density.$clr-base-icon-size-s;
-    margin-left: density.$clr-base-horizontal-offset-m;
-    margin-right: density.$clr-base-gap-s;
+    @include mixins.min-equilateral(tree-view-variables.$clr-tree-checkbox-size);
+    padding: 0;
+    // Using margin instead of gap due to checkbox implementation specifics.
+    margin: density.$clr-base-vertical-offset-multi-row-inline-m tree-view-variables.$clr-tree-node-content-gap
+      density.$clr-base-vertical-offset-multi-row-inline-m tree-view-variables.$clr-tree-node-horizontal-offset;
   }
 
   .clr-treenode-content .clr-treenode-link,
   .clr-treenode-checkbox input[type='checkbox'] + .clr-control-label {
     color: tree-view-variables.$clr-tree-node-content-color;
+    background-color: tree-view-variables.$clr-tree-node-content-bg-color;
+    padding: tree-view-variables.$clr-tree-node-content-padding;
 
     cds-icon,
     clr-icon {
@@ -168,20 +186,10 @@
         color: tree-view-variables.$clr-tree-node-content-active-color;
       }
     }
-
-    // Add touch area to label that covers the checkbox, so we don't need to resize the
-    // checkbox itself, which leads to undesired side effects.
-    &::before {
-      content: '';
-      position: absolute;
-      left: calc(-1 * tree-view-variables.$clr-tree-node-touch-target);
-      top: 0;
-      @include mixins.equilateral(tree-view-variables.$clr-tree-node-touch-target);
-    }
   }
 
   // selected
-  .clr-treenode-content .clr-treenode-link.active,
+  .clr-treenode-content:has(.clr-treenode-link.active),
   .clr-treenode-checkbox:has(input[type='checkbox']:not(:disabled):checked) {
     &:hover {
       background-color: tree-view-variables.$clr-tree-node-content-bg-selected-hover-color;

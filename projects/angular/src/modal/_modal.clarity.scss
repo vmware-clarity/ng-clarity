@@ -10,6 +10,7 @@
 @use '../utils/variables/variables';
 @use 'variables.modal' as modal-variables;
 @use '@cds/core/tokens/tokens.scss';
+@use '../utils/variables/variables.density' as density;
 
 @include meta.load-css('properties.modal');
 
@@ -74,19 +75,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: calc(modal-variables.$clr-modal-default-space * 2);
+    padding: calc(modal-variables.$clr-modal-vertical-space * 2) calc(modal-variables.$clr-modal-horizontal-space * 2);
     max-width: 100%;
 
-    .alert + .modal-header {
-      margin-top: tokens.$cds-global-space-6;
-    }
-
     @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
-      padding: calc(modal-variables.$clr-modal-default-space / 2);
+      padding: calc(modal-variables.$clr-modal-vertical-space / 2) calc(modal-variables.$clr-modal-horizontal-space / 2);
     }
 
     .modal-body {
-      padding: modal-variables.$clr-modal-default-space;
+      padding: modal-variables.$clr-modal-vertical-gap modal-variables.$clr-modal-horizontal-space;
     }
   }
 
@@ -179,10 +176,10 @@
 
   .modal-header {
     border-bottom: none;
-    padding: modal-variables.$clr-modal-default-space modal-variables.$clr-modal-default-space 0;
+    padding: modal-variables.$clr-modal-vertical-space modal-variables.$clr-modal-horizontal-space 0;
 
     & + .modal-footer {
-      padding-top: modal-variables.$clr-modal-default-space;
+      padding-top: modal-variables.$clr-modal-vertical-gap;
     }
 
     // TODO: This class is used only in the clr-modal template.
@@ -198,17 +195,22 @@
     .modal-title,
     .side-panel-title {
       color: modal-variables.$clr-modal-title-color;
-      @include mixins.generate-typography-token('SECTION-20-STD');
       margin: 0;
-    }
 
-    .modal-title:not([cds-text]),
-    .side-panel-title:not([cds-text]) {
-      font-family: modal-variables.$clr-modal-title-font-family;
-      font-size: modal-variables.$clr-modal-title-font-size;
-      font-weight: modal-variables.$clr-modal-title-font-weight;
-      line-height: modal-variables.$clr-modal-title-line-height;
-      letter-spacing: modal-variables.$clr-modal-title-letter-spacing;
+      &:not([cds-text]) {
+        //cds-text do not have color, margin
+        font-family: modal-variables.$clr-modal-title-font-family; //TODO remove line and PI tokens in GA 17+
+        //TODO remove API tokens overrides in GA 17+
+        @include mixins.generate-typography-token(
+          'SECTION-20-STD',
+          (
+            font-size: modal-variables.$clr-modal-title-font-size,
+            font-weight: modal-variables.$clr-modal-title-font-weight,
+            line-height: modal-variables.$clr-modal-title-line-height,
+            letter-spacing: modal-variables.$clr-modal-title-letter-spacing,
+          )
+        );
+      }
     }
 
     @at-root .clr-wizard.wizard-horizontal .clr-wizard-title-wrapper .close, // the close button is located differently in horizontal wizards
@@ -221,8 +223,10 @@
       clr-icon {
         fill: modal-variables.$clr-modal-close-color;
 
-        // per measurement, this results in an icon that is 24x24...
-        @include mixins.equilateral(modal-variables.$clr-modal-default-space);
+        &:not([size]) {
+          // per measurement, this results in an icon that is 24x24...
+          @include mixins.equilateral(modal-variables.$clr-modal-icon-size);
+        }
       }
 
       &:hover {
@@ -245,7 +249,7 @@
       cursor: pointer;
       background: transparent;
       border: 0;
-      margin-right: tokens.$cds-global-space-6;
+      margin-right: modal-variables.$clr-modal-horizontal-gap;
       appearance: none;
       -webkit-appearance: none;
     }
@@ -284,14 +288,14 @@
   }
 
   .modal-footer {
-    padding: 0 modal-variables.$clr-modal-default-space modal-variables.$clr-modal-default-space;
+    padding: 0 modal-variables.$clr-modal-horizontal-space modal-variables.$clr-modal-vertical-space;
   }
 
   .modal-footer,
   .side-panel-footer {
     display: flex;
     justify-content: flex-end;
-    gap: tokens.$cds-global-space-5;
+    gap: modal-variables.$clr-modal-horizontal-gap;
 
     .btn {
       //switched right margin to left because footer is right aligned
@@ -313,17 +317,17 @@
 
   .modal-backdrop {
     position: fixed;
-    top: 0;
+    top: -100vh;
     bottom: 0;
     right: 0;
-    left: 0;
+    left: -100vw;
     background-color: modal-variables.$clr-modal-backdrop-color;
     z-index: map.get(variables.$clr-layers, modal-bg);
   }
 
   // full-screen modals
   .modal.modal-full-screen {
-    padding: modal-variables.$clr-modal-default-space;
+    padding: modal-variables.$clr-modal-vertical-space modal-variables.$clr-modal-horizontal-space;
     height: 100%;
 
     .modal-dialog {

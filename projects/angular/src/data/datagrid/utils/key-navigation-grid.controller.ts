@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, NgZone, OnDestroy } from '@angular/core';
+import { EventEmitter, Injectable, NgZone, OnDestroy } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { Keys } from '../../../utils/enums/keys.enum';
 import { KeyNavigationUtils } from './key-navigation-utils';
@@ -46,26 +46,27 @@ export interface KeyNavigationGridConfig {
 export interface CellCoordinates {
   x: number;
   y: number;
+  ariaRowIndex?: string;
 }
 
 @Injectable()
 export class KeyNavigationGridController implements OnDestroy {
-  skipItemFocus = false;
+  nextCellCoordsEmitter = new EventEmitter<CellCoordinates>(false);
 
+  skipItemFocus = false;
+  preventScrollOnFocus = false;
+
+  config: KeyNavigationGridConfig = {
+    keyGridRows: '[role=row]:not(.datagrid-placeholder):not([style*="display: none"])',
+    keyGridCells:
+      '[role=gridcell]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), [role=columnheader]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), .datagrid-detail-caret',
+    keyGrid: '[role=grid]',
+  };
   private keyNavUtils: KeyNavigationUtils;
-  private config: KeyNavigationGridConfig;
   private listenersAdded = false;
   private destroy$ = new Subject<void>();
-  private _activeCell: HTMLElement = null;
 
-  constructor(private zone: NgZone) {
-    this.config = {
-      keyGridRows: '[role=row]:not(.datagrid-placeholder):not([style*="display: none"])',
-      keyGridCells:
-        '[role=gridcell]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), [role=columnheader]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), .datagrid-detail-caret',
-      keyGrid: '[role=grid]',
-    };
-  }
+  constructor(private zone: NgZone) {}
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -89,7 +90,11 @@ export class KeyNavigationGridController implements OnDestroy {
                 )
               : null;
             if (activeCell) {
-              this.setActiveCell(activeCell, { keepFocus: isActionableItem(e.target as HTMLElement) });
+              this.setActiveCell(activeCell);
+
+              if (!isActionableItem(e.target as HTMLElement)) {
+                this.focusElement(activeCell);
+              }
             }
           }
         });
@@ -97,17 +102,7 @@ export class KeyNavigationGridController implements OnDestroy {
       fromEvent(this.keyNavUtils.grid, 'wheel')
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          this.removeActiveCell();
-        });
-
-      fromEvent(this.keyNavUtils.grid, 'focusout')
-        .pipe(debounceTime(0), takeUntil(this.destroy$))
-        .subscribe(() => {
-          if (this.keyNavUtils.grid.contains(document.activeElement)) {
-            return;
-          }
-
-          this.removeActiveCell();
+          this.nextCellCoordsEmitter.emit(null);
         });
 
       fromEvent(this.keyNavUtils.grid, 'keydown')
@@ -132,12 +127,24 @@ export class KeyNavigationGridController implements OnDestroy {
           ) {
             const nextCellCoords = this.keyNavUtils.getNextItemCoordinate(e);
 
+            if (
+              nextCellCoords.y > 0 &&
+              (e.key === Keys.ArrowUp || e.key === Keys.ArrowDown || e.key === Keys.PageUp || e.key === Keys.PageDown)
+            ) {
+              this.keyNavUtils.setAriaRowIndexTo(nextCellCoords);
+
+              this.nextCellCoordsEmitter.emit(nextCellCoords);
+            }
+
             const activeItem = this.keyNavUtils.rows
               ? (Array.from(this.keyNavUtils.getCellsForRow(nextCellCoords.y))[nextCellCoords.x] as HTMLElement)
               : null;
 
             if (activeItem) {
               this.setActiveCell(activeItem);
+              this.focusElement(activeItem, {
+                preventScroll: this.preventScrollOnFocus && !!nextCellCoords.ariaRowIndex,
+              });
             }
 
             e.preventDefault();
@@ -159,15 +166,7 @@ export class KeyNavigationGridController implements OnDestroy {
     firstCell?.setAttribute('tabindex', '0');
   }
 
-  removeActiveCell() {
-    this._activeCell = null;
-  }
-
-  getActiveCell() {
-    return this._activeCell;
-  }
-
-  setActiveCell(activeCell: HTMLElement, { keepFocus } = { keepFocus: false }) {
+  setActiveCell(activeCell: HTMLElement) {
     const prior = this.keyNavUtils.cells
       ? Array.from(this.keyNavUtils.cells).find(c => c.getAttribute('tabindex') === '0')
       : null;
@@ -177,19 +176,22 @@ export class KeyNavigationGridController implements OnDestroy {
     }
 
     activeCell.setAttribute('tabindex', '0');
-    this._activeCell = activeCell;
+  }
 
-    if (!this.skipItemFocus && !keepFocus) {
-      let elementToFocus: HTMLElement;
-
-      if (activeCell.getAttribute('role') === 'columnheader') {
-        elementToFocus = activeCell;
-      } else {
-        const tabbableElements = getTabbableItems(activeCell);
-        elementToFocus = tabbableElements.length ? tabbableElements[0] : activeCell;
-      }
-
-      elementToFocus.focus();
+  focusElement(activeCell: HTMLElement, options: FocusOptions = { preventScroll: false }) {
+    if (this.skipItemFocus) {
+      return;
     }
+
+    let elementToFocus: HTMLElement;
+
+    if (activeCell.getAttribute('role') === 'columnheader') {
+      elementToFocus = activeCell;
+    } else {
+      const tabbableElements = getTabbableItems(activeCell);
+      elementToFocus = tabbableElements.length ? tabbableElements[0] : activeCell;
+    }
+
+    elementToFocus.focus(options);
   }
 }

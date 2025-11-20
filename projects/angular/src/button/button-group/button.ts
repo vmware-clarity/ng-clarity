@@ -27,16 +27,8 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
         [attr.id]="id"
       >
         <span class="spinner spinner-inline" *ngIf="loading"></span>
-        <ng-container *ngIf="inMenu; then inMenuTemplate; else defaultTemplate"></ng-container>
+        <ng-content></ng-content>
       </button>
-    </ng-template>
-    <ng-template #defaultTemplate>
-      <ng-content></ng-content>
-    </ng-template>
-    <ng-template #inMenuTemplate>
-      <span class="dropdown-item-content">
-        <ng-container [ngTemplateOutlet]="defaultTemplate"></ng-container>
-      </span>
     </ng-template>
   `,
   providers: [{ provide: LoadingListener, useExisting: ClrButton }],

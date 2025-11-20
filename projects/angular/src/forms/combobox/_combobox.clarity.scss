@@ -9,18 +9,11 @@
 @use '../../utils/mixins';
 @use '../styles/mixins.forms' as styles-mixins;
 @use '../styles/variables.forms' as forms-variables;
+@use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use 'variables.combobox' as combobox-variables;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
 @include meta.load-css('properties.combobox');
-
-@function caret-gap() {
-  // ATM Rework the DOM to remove absolute positioning from the icon.
-  // May also remove function then.
-  $clr-caret-icon-size: tokens.$cds-global-space-6;
-  @return calc(
-    #{combobox-variables.$clr-combobox-trigger-gap} + #{$clr-caret-icon-size} + #{combobox-variables.$clr-combobox-trigger-padding-right}
-  );
-}
 
 @include mixins.exports('combobox.clarity') {
   // needed for the proper calculation of popover offset that we do to keep label always visible
@@ -53,15 +46,22 @@
 
   .clr-combobox-wrapper {
     position: relative;
+    flex-wrap: wrap;
+    gap: density.$clr-base-gap-xs;
 
     //Dimensions
-    padding: 0 caret-gap() 0 combobox-variables.$clr-combobox-trigger-left-padding;
+    padding-top: calc(density.$clr-base-vertical-offset-xs - tokens.$cds-alias-object-border-width-100);
+    padding-bottom: calc(density.$clr-base-vertical-offset-xs - tokens.$cds-alias-object-border-width-100);
+    padding-left: combobox-variables.$clr-combobox-trigger-padding-left;
+    padding-right: calc(
+      combobox-variables.$clr-combobox-caret-icon-size + combobox-variables.$clr-combobox-trigger-padding-left +
+        combobox-variables.$clr-combobox-trigger-padding-right
+    );
 
-    min-height: combobox-variables.$clr-combobox-min-height;
     min-width: combobox-variables.$clr-combobox-min-width;
     .clr-input {
       padding: 0;
-      max-height: tokens.$cds-global-space-7;
+      max-height: density.$clr-base-row-height-xs;
 
       &:not(:disabled) {
         color: combobox-variables.$clr-combobox-text-color;
@@ -69,11 +69,15 @@
     }
     font-size: combobox-variables.$clr-combobox-font-size;
     font-weight: combobox-variables.$clr-combobox-font-weight;
-    line-height: mixins.baselinePx(20);
+
+    .clr-combobox-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: density.$clr-base-gap-xs;
+    }
 
     &.multi {
       min-width: calc(min(combobox-variables.$clr-combobox-multi-min-width, 100%));
-      padding-bottom: mixins.baselinePx(3);
     }
 
     //Mixins
@@ -102,6 +106,8 @@
       background: none;
       border-bottom: none;
       vertical-align: middle;
+      height: density.$clr-base-row-height-xs;
+      line-height: density.$clr-base-typography-line-height-16;
     }
 
     .clr-combobox-remove-btn {
@@ -114,11 +120,11 @@
     }
 
     .label-combobox-pill {
-      @include mixins.generate-typography-token('CAPTION-LG-11');
       min-height: combobox-variables.$clr-combobox-pill-height;
-      margin: combobox-variables.$clr-combobox-pill-margin;
+      height: combobox-variables.$clr-combobox-pill-height;
+      margin: 0;
       background-color: combobox-variables.$clr-combobox-pill-background-color;
-      border-width: tokens.$cds-global-space-1;
+      border-width: tokens.$cds-alias-object-border-width-100;
       border-style: solid;
       align-items: center;
 
@@ -126,28 +132,18 @@
       border-color: combobox-variables.$clr-combobox-pill-border-color;
 
       padding: combobox-variables.$clr-combobox-pill-padding;
+      gap: density.$clr-base-gap-xs;
 
       .clr-combobox-pill-content {
-        font-size: tokens.$cds-alias-typography-caption-font-size;
-        font-weight: tokens.$cds-alias-typography-caption-font-weight;
+        @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
         color: combobox-variables.$clr-combobox-pill-font-color;
         padding: 0;
-      }
-
-      cds-icon,
-      clr-icon {
-        margin-top: calc(-1 * #{tokens.$cds-global-space-1});
       }
 
       cds-icon[shape='window-close'],
       clr-icon[shape='window-close'] {
         color: combobox-variables.$clr-combobox-pill-font-color;
       }
-    }
-
-    .clr-combobox-input-wrapper {
-      border: none;
-      background: none;
     }
 
     &:not(.disabled):hover,
@@ -165,11 +161,13 @@
       }
     }
     //Dimensions
-    padding-left: combobox-variables.$clr-combobox-trigger-left-padding;
+    padding-left: combobox-variables.$clr-combobox-trigger-padding-left;
     padding-right: combobox-variables.$clr-combobox-trigger-padding-right;
 
     margin: auto;
     position: absolute;
+    display: flex;
+    align-items: center;
     top: 0;
     bottom: 0;
     right: 0;
@@ -185,7 +183,9 @@
     clr-icon[shape='angle'] {
       color: combobox-variables.$clr-combobox-trigger-font-color;
 
-      @include mixins.min-equilateral(combobox-variables.$clr-combobox-caret-icon-size);
+      &:not([size]) {
+        @include mixins.min-equilateral(combobox-variables.$clr-combobox-caret-icon-size);
+      }
     }
   }
 
@@ -199,15 +199,31 @@
     visibility: visible;
 
     .clr-combobox-options-loading {
-      padding: mixins.baselinePx(3) tokens.$cds-global-space-1;
+      padding: 0 density.$clr-base-horizontal-offset-m;
+      display: flex;
+      gap: density.$clr-base-gap-s;
 
-      .clr-combobox-options-loading-text {
-        padding-left: tokens.$cds-global-space-4;
+      .spinner.spinner-inline {
+        margin-right: 0;
+      }
+
+      .clr-combobox-options-text {
+        word-break: break-word;
       }
     }
 
     .clr-combobox-options-empty-text {
-      padding-left: tokens.$cds-global-space-6;
+      padding: 0 density.$clr-base-horizontal-offset-l;
+    }
+
+    clr-option-group {
+      .clr-option-group-label {
+        @include menu-mixins.generate-dropdown-header();
+      }
+
+      & > .clr-combobox-option {
+        padding-left: density.$clr-base-horizontal-offset-2xl;
+      }
     }
   }
 
@@ -231,6 +247,11 @@
     .clr-combobox-remove-btn,
     .clr-combobox-trigger {
       cursor: not-allowed;
+    }
+
+    .label-combobox-pill .clr-combobox-pill-content,
+    .clr-combobox-remove-btn > cds-icon {
+      color: tokens.$cds-alias-typography-disabled;
     }
   }
 

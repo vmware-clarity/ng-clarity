@@ -17,7 +17,9 @@
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use '../variables.tables' as tables-variables;
 @use 'variables.datagrid' as datagrid-variables;
+@use '../../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../utils/animations/animations.clarity' as animations;
 
 @mixin clr-datagrid-header-bg {
   background-color: tables-variables.$clr-thead-bgcolor;
@@ -28,15 +30,14 @@
 }
 
 @mixin datagrid-action-overflow-appearance {
-  position: absolute;
   background: datagrid-variables.$clr-datagrid-popover-bg-color;
-  padding: tokens.$cds-global-space-5;
+  padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
   margin-left: tokens.$cds-global-space-4;
   border-style: solid;
   border-width: tokens.$cds-alias-object-border-width-100;
   border-color: datagrid-variables.$clr-datagrid-popover-border-color;
   @include clr-datagrid-popover-shadows;
-  border-radius: tokens.$cds-alias-object-border-radius-100;
+  border-radius: density.$clr-base-border-radius-s;
   font-weight: normal;
   white-space: nowrap;
 
@@ -71,20 +72,39 @@
 
   .action-item {
     @include menu-mixins.generate-dropdown-item();
+    @include menu-mixins.generate-dropdown-item-height();
   }
 }
 
-@mixin datagrid-action-button-styles($height: tokens.$cds-global-space-10) {
+@mixin datagrid-action-button-styles(
+  $height: tables-variables.$clr-table-cell-height,
+  $columnWidth: datagrid-variables.$clr-datagrid-fixed-column-size,
+  $iconSize: datagrid-variables.$clr-datagrid-icon-size
+) {
   // Calculates how much padding to set on top/bottom and left/right by dividing the height by the icon size
-  $verticalPadding: calc(($height - datagrid-variables.$clr-datagrid-icon-size) / 2);
-  $horizontalPadding: calc(
-    (datagrid-variables.$clr-datagrid-fixed-column-size - datagrid-variables.$clr-datagrid-icon-size) / 2
-  );
+  $verticalPadding: calc(($height - $iconSize) / 2);
+  $horizontalPadding: calc(($columnWidth - $iconSize) / 2);
   cursor: pointer;
   width: 100%;
   height: $height;
   padding: $verticalPadding $horizontalPadding;
   display: inline-flex;
+}
+
+@mixin datagrid-column-separator($position: right, $selector: 'after', $alignTop: true) {
+  &#{':' + $selector} {
+    content: '';
+    width: datagrid-variables.$clr-datagrid-column-separator-width;
+    height: datagrid-variables.$clr-datagrid-column-separator-height;
+    position: absolute;
+    #{$position}: 0;
+    background-color: tables-variables.$clr-table-border-color;
+    @if $alignTop == true {
+      top: tokens.$cds-global-space-3;
+    } @else {
+      align-self: center;
+    }
+  }
 }
 
 @include meta.load-css('properties.datagrid');
@@ -103,6 +123,37 @@
     display: flex;
     flex-flow: column nowrap;
     position: relative;
+
+    &.datagrid-virtual-scroll {
+      .datagrid {
+        display: flex;
+      }
+      .datagrid-table-wrapper,
+      .datagrid-table {
+        overflow: auto;
+      }
+
+      .datagrid-header {
+        position: static;
+        display: flex;
+        flex: 0 0 auto;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: none;
+        .datagrid-row {
+          display: flex;
+          flex: 1 1 auto;
+        }
+      }
+
+      .datagrid-placeholder-container {
+        display: none;
+
+        &:has(> .datagrid-placeholder.datagrid-empty) {
+          display: flex;
+        }
+      }
+    }
   }
 
   .datagrid {
@@ -112,8 +163,7 @@
     -ms-overflow-style: -ms-autohiding-scrollbar;
     overflow: auto;
     flex: 1 1 auto;
-    margin-top: tokens.$cds-global-space-6;
-    display: flex;
+    margin-top: datagrid-variables.$clr-datagrid-margin-top;
 
     &.cdk-virtual-scrollable .datagrid-rows {
       flex-grow: 0;
@@ -124,32 +174,6 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-  }
-
-  .datagrid-expandable-caret {
-    text-align: center;
-
-    .datagrid-expandable-caret-button {
-      @include mixins.clr-no-styles-button();
-      @include datagrid-action-button-styles();
-    }
-
-    .datagrid-expandable-caret-icon {
-      color: datagrid-variables.$clr-datagrid-icon-color;
-
-      svg {
-        transition: transform 0.2s ease-in-out;
-      }
-    }
-
-    .spinner {
-      margin-top: tokens.$cds-global-space-4;
-    }
-
-    &.datagrid-column {
-      padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-        tables-variables.$clr-table-bottomcellpadding;
-    }
   }
 
   .datagrid-header,
@@ -165,9 +189,12 @@
     border-top-style: solid;
     border-top-width: tables-variables.$clr-table-borderwidth;
     border-top-color: tables-variables.$clr-table-border-color;
+    min-height: tables-variables.$clr-table-row-height;
 
     &:first-of-type {
       border-top: none;
+
+      min-height: calc(tables-variables.$clr-table-row-height - tables-variables.$clr-table-borderwidth);
     }
 
     &:hover,
@@ -200,9 +227,21 @@
     &.datagrid-row-skeleton {
       background-color: unset;
 
-      .datagrid-row-scrollable,
-      .datagrid-row-sticky {
-        display: none;
+      .datagrid-row-master {
+        position: relative;
+        @include animations.skeleton-loading();
+        &:before {
+          position: absolute;
+          top: tables-variables.$clr-table-cell-vertical-padding;
+          left: tables-variables.$clr-table-cell-horizontal-padding;
+          height: calc(100% - (2 * tables-variables.$clr-table-cell-vertical-padding));
+          width: calc(100% - (2 * tables-variables.$clr-table-cell-horizontal-padding));
+          z-index: map.get(variables.$clr-layers, datagrid-row-skeleton);
+        }
+        .datagrid-row-sticky,
+        .datagrid-row-scrollable {
+          opacity: 0;
+        }
       }
     }
 
@@ -230,11 +269,21 @@
     }
 
     .datagrid-select {
-      min-width: calc(
-        tokens.$cds-global-space-5 - tables-variables.$clr-table-borderwidth
-      ); // This fixed an issue that made the cell too wide.
-      align-items: center;
-      padding: tokens.$cds-global-space-3 tokens.$cds-global-space-7;
+      input {
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+        padding: 0;
+      }
+
+      .clr-checkbox-wrapper,
+      .clr-radio-wrapper {
+        @include mixins.max-equilateral(density.$clr-base-icon-size-s);
+
+        .clr-control-label:has(.clr-sr-only) {
+          padding: 0;
+          min-height: tokens.$cds-global-space-1;
+          min-width: tokens.$cds-global-space-1;
+        }
+      }
 
       &,
       input {
@@ -250,12 +299,12 @@
     }
 
     .datagrid-signpost-trigger .signpost {
-      margin: calc(-1 * tokens.$cds-global-space-5) 0;
-      height: tokens.$cds-global-space-9;
+      margin: calc(-1 * density.$clr-base-vertical-offset-multi-row-inline-m) 0;
+      height: tables-variables.$clr-table-cell-height;
 
       .signpost-trigger {
         height: inherit;
-        line-height: tokens.$cds-global-space-9;
+        line-height: tables-variables.$clr-table-cell-height;
       }
     }
 
@@ -266,9 +315,9 @@
 
       .datagrid-cell {
         display: flex;
-        padding: tokens.$cds-global-space-9;
+        padding: density.$clr-base-vertical-offset-2xl density.$clr-base-horizontal-offset-2xl;
         align-items: center;
-        gap: tokens.$cds-global-space-6;
+        gap: density.$clr-base-gap-m;
         justify-content: center;
       }
     }
@@ -282,16 +331,17 @@
     left: 0;
     z-index: map.get(variables.$clr-layers, datagrid-row-sticky);
 
-    .datagrid-cell:last-child {
-      &:after {
-        content: '';
-        width: datagrid-variables.$clr-datagrid-column-separator-width;
-        height: datagrid-variables.$clr-datagrid-column-separator-height;
-        position: absolute;
-        right: 0;
-        top: tokens.$cds-global-space-3;
-        background-color: tables-variables.$clr-table-border-color;
+    &-scroll {
+      right: 0;
+      > div.datagrid-column {
+        min-width: tokens.$cds-global-space-7;
+        padding: 0;
+        @include datagrid-column-separator('left', 'before');
       }
+    }
+
+    .datagrid-cell:last-child {
+      @include datagrid-column-separator();
     }
   }
 
@@ -340,13 +390,13 @@
   }
 
   .datagrid-action-bar {
-    margin-top: tokens.$cds-global-space-9;
+    margin-top: datagrid-variables.$clr-datagrid-action-bar-offset;
 
     // This changes the height and position of the datagrid-spinner when there is an action-bar
     // Allows us to cover the action-bar with the spinner backgdrop and prevent user interactions.
-    & ~ .datagrid-spinner {
-      height: calc(100% - #{tokens.$cds-global-space-9});
-      top: tokens.$cds-global-space-9; // Account for the margin above the datagrid-action-bar
+    & ~ .datagrid-outer-wrapper .datagrid-spinner {
+      height: calc(100% - #{datagrid-variables.$clr-datagrid-action-bar-offset});
+      top: datagrid-variables.$clr-datagrid-action-bar-offset; // Account for the margin above the datagrid-action-bar
     }
   }
 
@@ -363,7 +413,6 @@
     }
 
     .datagrid-row {
-      display: flex;
       @include clr-datagrid-header-bg;
 
       border-top: none;
@@ -402,6 +451,31 @@
     flex-direction: column;
     flex: 1 1 auto;
 
+    .datagrid-content {
+      display: contents;
+      &-virtual {
+        position: relative;
+        display: block;
+        flex: 1 1 100%;
+        overflow-x: auto;
+        overflow-y: scroll;
+        will-change: scroll-position;
+        contain: strict;
+        transform: translateZ(0);
+        &-spacer {
+          flex: 0 0 auto;
+          transform-origin: 0 0;
+        }
+        .datagrid-rows {
+          position: absolute;
+          top: 0;
+          left: 0;
+          contain: content;
+          min-width: 100%;
+        }
+      }
+    }
+
     .datagrid-rows {
       display: flex;
       flex-direction: column;
@@ -437,7 +511,7 @@
       }
 
       .datagrid-numeric-filter-input {
-        width: tokens.$cds-global-space-14;
+        width: density.$clr-base-layout-space-5xl;
         .clr-form-control {
           margin-top: 0;
         }
@@ -449,7 +523,7 @@
         float: right;
         vertical-align: middle;
         @include mixins.min-equilateral(datagrid-variables.$clr-datagrid-filter-toggle-size);
-        margin-left: tokens.$cds-global-space-4;
+        margin-left: density.$clr-base-horizontal-offset-s;
         background-repeat: no-repeat;
         background-size: contain;
 
@@ -538,24 +612,16 @@
         order: 100;
         margin-left: auto;
         height: 100%;
-
-        &::after {
-          content: '';
-          position: absolute;
-          height: datagrid-variables.$clr-datagrid-column-separator-height;
-          width: datagrid-variables.$clr-datagrid-column-separator-width;
-          right: 0;
-          background-color: tables-variables.$clr-table-border-color;
-        }
+        @include datagrid-column-separator($alignTop: false);
 
         .datagrid-column-handle {
           @include mixins.clr-no-styles-button();
           position: absolute;
           width: calc(tokens.$cds-global-space-6 + tokens.$cds-global-space-1);
           right: calc(-1 * tokens.$cds-global-space-4);
-          top: calc(-1 * tokens.$cds-global-space-4);
+          top: 0;
           cursor: col-resize;
-          height: calc(100% + #{tokens.$cds-global-space-6} - #{tokens.$cds-alias-object-border-width-100});
+          height: 100%;
           z-index: map.get(variables.$clr-layers, datagrid-header);
         }
 
@@ -584,11 +650,11 @@
 
       .datagrid-signpost-trigger .signpost {
         margin: calc(-1 * tokens.$cds-global-space-5) 0;
-        height: tokens.$cds-global-space-9;
+        height: tables-variables.$clr-table-cell-height;
 
         .signpost-trigger {
           height: inherit;
-          line-height: tokens.$cds-global-space-9;
+          line-height: tables-variables.$clr-table-cell-height;
         }
       }
 
@@ -597,6 +663,10 @@
       &.datagrid-row-actions {
         max-width: datagrid-variables.$clr-datagrid-fixed-column-size;
         min-width: datagrid-variables.$clr-datagrid-fixed-column-size;
+      }
+
+      &.datagrid-select {
+        align-items: center;
       }
     }
 
@@ -665,8 +735,8 @@
 
       // align toggle input to row hight
       .clr-toggle-wrapper {
-        margin-top: calc(-1 * tokens.$cds-global-space-6);
-        padding-top: tokens.$cds-global-space-5;
+        padding: 0;
+        min-height: auto;
       }
     }
 
@@ -710,10 +780,10 @@
         flex-flow: column nowrap;
         align-items: center;
         justify-content: flex-start;
-        gap: tokens.$cds-global-space-9;
-        padding: tokens.$cds-global-space-9;
+        gap: density.$clr-base-gap-m;
+        padding: density.$clr-base-vertical-offset-2xl density.$clr-base-horizontal-offset-2xl;
         @include mixins.generate-typography-token(
-          'SECTION-20-STD',
+          'BODY-14-SB-STD',
           (
             font-size: datagrid-variables.$clr-datagrid-placeholder-font-size,
             font-weight: datagrid-variables.$clr-datagrid-placeholder-font-weight,
@@ -725,7 +795,7 @@
       }
 
       .datagrid-placeholder-image {
-        @include mixins.equilateral(tokens.$cds-global-space-13);
+        @include mixins.equilateral(density.$clr-base-layout-space-2xl);
         background-repeat: no-repeat;
         background-size: contain;
         background-position: center;
@@ -769,30 +839,28 @@
           display: none;
         }
       }
-
-      .datagrid-expandable-caret {
-        padding-top: tokens.$cds-global-space-2;
-      }
     }
   }
 
   .datagrid-footer {
+    @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
     flex: 0 0 auto;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: stretch;
-    padding: tokens.$cds-global-space-5 tokens.$cds-global-space-7;
+    gap: density.$clr-base-gap-m;
+    min-height: density.$clr-base-row-height-l;
+    padding: 0 density.$clr-base-horizontal-offset-xl;
     // Account for borders
-    @include mixins.generate-typography-token('CAPTION-LG-11');
     background-color: tables-variables.$clr-thead-bgcolor;
     border-style: solid;
     border-color: tables-variables.$clr-table-footer-border-top-color;
     border-width: tokens.$cds-alias-object-border-width-100;
     border-top: none;
     border-radius: 0;
-    border-bottom-right-radius: tokens.$cds-alias-object-border-radius-100;
-    border-bottom-left-radius: tokens.$cds-alias-object-border-radius-100;
+    border-bottom-right-radius: tables-variables.$clr-table-border-radius;
+    border-bottom-left-radius: tables-variables.$clr-table-border-radius;
 
     .pagination {
       display: flex;
@@ -807,21 +875,22 @@
         white-space: nowrap;
         text-align: right;
 
+        clr-dg-page-size {
+          display: flex;
+          align-items: center;
+          gap: density.$clr-base-gap-m;
+        }
+
         .clr-page-size-select {
-          @include mixins.generate-typography-token('CAPTION-SM-10');
-          margin-left: tokens.$cds-global-space-6;
-          height: tokens.$cds-global-space-9;
+          @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
+          height: auto;
+          min-height: density.$clr-base-row-height-s;
           vertical-align: middle;
         }
       }
 
       &-description {
         white-space: nowrap;
-      }
-
-      &-list {
-        display: flex;
-        align-items: center;
       }
     }
 
@@ -878,8 +947,6 @@
   .clr-form-control-disabled .datagrid-footer-select.clr-checkbox-wrapper input[type='checkbox']:checked + label {
     cursor: default;
 
-    margin-right: tokens.$cds-global-space-5;
-
     &::before {
       background-color: forms-variables.$clr-forms-label-disabled-color;
     }
@@ -891,13 +958,92 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    top: tokens.$cds-global-space-6;
-    height: calc(100% - #{tokens.$cds-global-space-6}); // Account for the margin above the datagrid-action-bar
+    top: datagrid-variables.$clr-datagrid-margin-top;
+    height: calc(100% - datagrid-variables.$clr-datagrid-margin-top);
     background-color: datagrid-variables.$clr-datagrid-loading-background;
     z-index: map.get(variables.$clr-layers, datagrid-host); // Keeps the spinner above the datagrid header.
   }
 
+  // @deprecated CSS rule `.datagrid-compact { ... }` in favor of compact mode in density theme
   .datagrid-compact {
+    .datagrid {
+      margin-top: datagrid-variables.$clr-datagrid-compact-margin-top;
+    }
+
+    .datagrid-spinner {
+      height: calc(100% - #{datagrid-variables.$clr-datagrid-compact-margin-top});
+      top: datagrid-variables.$clr-datagrid-compact-margin-top;
+    }
+
+    .datagrid-action-bar {
+      margin-top: datagrid-variables.$clr-datagrid-compact-action-bar-offset;
+
+      & ~ .datagrid-outer-wrapper .datagrid-spinner {
+        height: calc(100% - #{datagrid-variables.$clr-datagrid-compact-action-bar-offset});
+        top: datagrid-variables.$clr-datagrid-compact-action-bar-offset;
+      }
+    }
+
+    .datagrid-detail-pane {
+      margin-top: datagrid-variables.$clr-datagrid-compact-margin-top;
+
+      &-content {
+        padding: tokens.$cds-global-space-6;
+        .datagrid-detail-header {
+          gap: mixins.baselinePx(10);
+          font-size: tokens.$cds-global-space-7;
+          line-height: mixins.baselinePx(20);
+          .datagrid-detail-pane-close {
+            flex-basis: mixins.baselinePx(20);
+            button cds-icon:not([size]) {
+              @include mixins.min-equilateral(mixins.baselinePx(20));
+            }
+          }
+        }
+        .datagrid-detail-body {
+          padding: tokens.$cds-global-space-6 0;
+        }
+      }
+    }
+
+    .datagrid-column {
+      &.datagrid-select,
+      &.datagrid-expandable-caret,
+      &.datagrid-row-actions {
+        max-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
+        min-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
+      }
+    }
+
+    .datagrid-cell.datagrid-fixed-column {
+      flex: 0 0 datagrid-variables.$clr-datagrid-compact-fixed-column-size;
+      max-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
+      min-width: datagrid-variables.$clr-datagrid-compact-fixed-column-size;
+    }
+
+    .datagrid-row {
+      min-height: tables-variables.$clr-table-compact-row-height;
+
+      &:first-of-type {
+        min-height: calc(tables-variables.$clr-table-compact-row-height - tables-variables.$clr-table-borderwidth);
+      }
+
+      .datagrid-row-detail .datagrid-cell.datagrid-container {
+        font-size: mixins.baselinePx(13);
+        line-height: tokens.$cds-global-space-8;
+      }
+      &.datagrid-row-skeleton {
+        .datagrid-row-master {
+          &:before {
+            top: tables-variables.$clr-table-compact-vertical-padding;
+            left: tables-variables.$clr-table-compact-horizontal-padding;
+            height: calc(100% - (2 * tables-variables.$clr-table-compact-vertical-padding));
+            width: calc(100% - (2 * tables-variables.$clr-table-compact-horizontal-padding));
+          }
+        }
+      }
+    }
+
     .datagrid-row-replaced .datagrid-row-detail .datagrid-cell {
       padding: tables-variables.$clr-table-cell-compact-padding;
     }
@@ -908,43 +1054,36 @@
       }
     }
 
-    .datagrid-row {
-      .datagrid-select {
-        padding: 0 tokens.$cds-global-space-7;
+    .datagrid-detail-caret {
+      .datagrid-detail-caret-button {
+        @include datagrid-action-button-styles(
+          tables-variables.$clr-table-compact-cell-height,
+          datagrid-variables.$clr-datagrid-compact-fixed-column-size,
+          tokens.$cds-global-space-7
+        );
       }
-    }
-
-    .datagrid-detail-caret .datagrid-detail-caret-button {
-      @include datagrid-action-button-styles(tables-variables.$clr-table-compact-row-height);
+      .spinner {
+        margin-top: datagrid-variables.$clr-datagrid-compact-expandable-row-spinner-margin;
+      }
     }
 
     .datagrid-cell:not(.datagrid-detail-caret, .datagrid-expandable-caret, .datagrid-row-actions) {
-      clr-icon {
-        margin-top: calc((-1 * tokens.$cds-global-space-3) - tokens.$cds-global-space-1);
-        margin-bottom: calc(-1 * tokens.$cds-global-space-3);
-        transform: translateY(calc(-1 * tokens.$cds-global-space-1));
-      }
-
-      cds-icon {
-        margin-top: calc((-1 * tokens.$cds-global-space-3) - tokens.$cds-global-space-1);
-        margin-bottom: calc(-1 * tokens.$cds-global-space-3);
-      }
-
-      .badge {
-        margin-top: calc(-1 * tokens.$cds-global-space-3);
-        margin-bottom: calc(-1 * tokens.$cds-global-space-1);
-      }
+      @include mixins.cell-children-aligment();
     }
 
     .datagrid-expandable-caret {
       text-align: center;
 
       .spinner {
-        margin-top: tokens.$cds-global-space-3;
+        margin-top: datagrid-variables.$clr-datagrid-compact-expandable-row-spinner-margin;
       }
 
       .datagrid-expandable-caret-button {
-        @include datagrid-action-button-styles(tables-variables.$clr-table-compact-row-height);
+        @include datagrid-action-button-styles(
+          tables-variables.$clr-table-compact-cell-height,
+          datagrid-variables.$clr-datagrid-compact-fixed-column-size,
+          tokens.$cds-global-space-7
+        );
       }
 
       .datagrid-expandable-caret-icon {
@@ -959,28 +1098,90 @@
 
     .datagrid-row-actions {
       .datagrid-action-toggle {
-        @include datagrid-action-button-styles(tables-variables.$clr-table-compact-row-height);
+        @include datagrid-action-button-styles(
+          tables-variables.$clr-table-compact-cell-height,
+          datagrid-variables.$clr-datagrid-compact-fixed-column-size,
+          tokens.$cds-global-space-7
+        );
       }
     }
 
     .datagrid-signpost-trigger .signpost .signpost-trigger {
-      cds-icon:not([shape='info-circle'], [shape='exclamation-triangle'], [shape='exclamation-circle'], [shape='check-circle'], [shape='info'], [shape='error']),
+      cds-icon:not([size], [shape='info-circle'], [shape='exclamation-triangle'], [shape='exclamation-circle'], [shape='check-circle'], [shape='info'], [shape='error']),
       clr-icon:not([shape='info-circle'], [shape='exclamation-triangle'], [shape='exclamation-circle'], [shape='check-circle'], [shape='info'], [shape='error']) {
-        @include mixins.equilateral(tokens.$cds-global-space-9);
+        @include mixins.equilateral(tables-variables.$clr-table-compact-cell-height);
       }
     }
 
     .datagrid-footer {
-      padding: 0 tokens.$cds-global-space-7;
-      min-height: tables-variables.$clr-table-compact-row-height;
-      line-height: tokens.$cds-global-space-9 - tokens.$cds-global-space-1;
+      min-height: mixins.baselinePx(28);
+      line-height: tokens.$cds-global-space-7;
+      padding: 0 tokens.$cds-global-space-6;
 
       .pagination {
-        line-height: tokens.$cds-global-space-9;
+        &,
+        clr-dg-page-size {
+          gap: mixins.baselinePx(10);
+        }
+
+        .clr-select-wrapper {
+          max-height: mixins.baselinePx(20);
+          &::after {
+            --clr-forms-select-caret-size: #{tokens.$cds-global-space-6};
+            right: tokens.$cds-global-space-2;
+          }
+          .clr-page-size-select {
+            min-height: mixins.baselinePx(20);
+            padding: 0 mixins.baselinePx(20) 0 tokens.$cds-global-space-2;
+          }
+        }
       }
 
       .clr-form-control-disabled .datagrid-footer-select.clr-checkbox-wrapper input[type='checkbox']:checked + label {
         top: 0;
+      }
+
+      .column-switch-wrapper .column-toggle--action {
+        border-radius: tokens.$cds-global-space-2;
+        padding: 0 tokens.$cds-global-space-4;
+        height: mixins.baselinePx(20);
+      }
+    }
+
+    .pagination-list {
+      gap: tokens.$cds-global-space-4;
+
+      .pagination-current {
+        // @include mixins.generate-typography-token('CAPTION-LG-11');
+        padding: tokens.$cds-global-space-2 0;
+      }
+
+      .pagination-pages {
+        gap: tokens.$cds-global-space-2;
+      }
+
+      .pagination-current,
+      button {
+        border-radius: tokens.$cds-global-space-2;
+        @include mixins.min-equilateral(mixins.baselinePx(20));
+      }
+    }
+
+    .datagrid-action-overflow .action-item {
+      font-size: tokens.$cds-global-space-6;
+      line-height: mixins.baselinePx(20);
+      gap: tokens.$cds-global-space-2;
+      height: mixins.baselinePx(20);
+      padding: 0 mixins.baselinePx(20) 0 tokens.$cds-global-space-5;
+    }
+
+    .datagrid-placeholder.datagrid-empty {
+      font-size: mixins.baselinePx(13);
+      line-height: tokens.$cds-global-space-8;
+      padding: mixins.baselinePx(20);
+      gap: mixins.baselinePx(10);
+      .datagrid-placeholder-image {
+        @include mixins.equilateral(tokens.$cds-global-space-10);
       }
     }
   }
@@ -1001,19 +1202,21 @@
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
-    align-items: stretch;
+    align-items: center;
+    gap: density.$clr-base-gap-s;
 
     .pagination-current {
-      @include mixins.generate-typography-token('CAPTION-SM-10');
+      @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
       background: none;
       background-color: forms-variables.$clr-forms-textarea-background-color;
       border-color: datagrid-variables.$clr-datagrid-pagination-input-border-color;
       border-width: tokens.$cds-alias-object-border-width-100;
       border-style: solid;
-      border-radius: tokens.$cds-alias-object-border-radius-100;
-      min-width: tokens.$cds-global-space-9;
+      border-radius: density.$clr-base-border-radius-s;
+      @include mixins.min-equilateral(density.$clr-base-layout-space-l);
       text-align: center;
       transition: none !important;
+      padding: density.$clr-base-vertical-offset-xs 0;
 
       &:focus,
       &.clr-focus {
@@ -1023,11 +1226,11 @@
       }
     }
 
-    > * {
-      padding: 0 tokens.$cds-global-space-2;
+    .pagination-pages {
+      display: flex;
+      align-items: center;
+      gap: density.$clr-base-gap-xs;
     }
-
-    $clr-pagination-extra-margin: tokens.$cds-global-space-6;
 
     .pagination-first,
     .pagination-last,
@@ -1048,18 +1251,10 @@
       opacity: datagrid-variables.$clr-datagrid-pagination-btn-disabled-opacity;
     }
 
-    .pagination-first,
-    .pagination-previous {
-      margin-right: tokens.$cds-global-space-6;
-    }
-
-    .pagination-last,
-    .pagination-next {
-      margin-left: tokens.$cds-global-space-6;
-    }
-
     button {
       @include mixins.clr-no-styles-button();
+      @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+      justify-content: center;
       color: datagrid-variables.$clr-datagrid-pagination-btn-color;
       // FIXME: this should be in the general reboot
       cursor: pointer;
@@ -1182,7 +1377,7 @@
       position: absolute;
       border: tokens.$cds-global-space-5 solid transparent;
       border-right-color: tables-variables.$clr-table-border-color;
-      top: mixins.baselinePx(10);
+      top: tables-variables.$clr-table-cell-vertical-padding;
       right: 0;
     }
 
@@ -1192,19 +1387,19 @@
       position: absolute;
       border: tokens.$cds-global-space-5 solid transparent;
       border-right-color: datagrid-variables.$clr-datagrid-popover-bg-color;
-      top: mixins.baselinePx(11);
-      right: calc(-1 * tokens.$cds-global-space-1);
+      top: tables-variables.$clr-table-cell-vertical-padding;
+      right: calc(-1 * tokens.$cds-global-space-2);
     }
   }
 
   .datagrid-detail-pane {
-    margin-top: tokens.$cds-global-space-6;
+    margin-top: datagrid-variables.$clr-datagrid-margin-top;
     border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
     border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
     border-left: none;
-    border-top-right-radius: tokens.$cds-alias-object-border-radius-100;
-    border-bottom-right-radius: tokens.$cds-alias-object-border-radius-100;
+    border-top-right-radius: density.$clr-base-border-radius-s;
+    border-bottom-right-radius: density.$clr-base-border-radius-s;
     background: datagrid-variables.$clr-datagrid-detail-pane-bg-color;
     overflow: hidden;
     display: block;
@@ -1222,37 +1417,66 @@
 
   .datagrid-detail-body {
     flex: 1 1 auto;
-    padding: tokens.$cds-global-space-7 0;
+    padding: density.$clr-base-vertical-offset-xl 0;
     color: datagrid-variables.$clr-datagrid-detail-body-text-color;
   }
 
   .datagrid-detail-header {
     flex: 0 0 auto;
+    //TODO Fix figma font sizes in next GA 17+
     @include mixins.generate-typography-token('SECTION-20-STD');
     margin-top: 0;
     display: flex;
     flex-direction: row;
+    gap: density.$clr-base-gap-m;
 
     .datagrid-detail-header-title {
       flex: 1 1 auto;
       color: datagrid-variables.$clr-datagrid-detail-header-title-color;
+      overflow-wrap: anywhere;
+      padding: #{tokens.$cds-global-space-1} 0; // outline header needs this to keep the shape correct
     }
 
     .datagrid-detail-pane-close {
-      flex: 1 1 tokens.$cds-global-space-11;
+      flex: 1 1 datagrid-variables.$clr-datagrid-detail-pane-close-icon-size;
       display: flex;
       justify-content: flex-end;
 
       .btn.btn-link {
+        align-items: start;
         min-width: auto;
+        height: auto;
         margin: 0;
-        padding-right: 0;
+        padding: 0;
+        border: 0;
 
         cds-icon {
           @include mixins.min-equilateral(datagrid-variables.$clr-datagrid-detail-pane-close-icon-size);
           color: modal-variables.$clr-modal-close-color;
         }
       }
+    }
+  }
+
+  .datagrid-expandable-caret {
+    display: flex;
+    justify-content: center;
+
+    .datagrid-expandable-caret-button {
+      @include mixins.clr-no-styles-button();
+      @include datagrid-action-button-styles();
+    }
+
+    .datagrid-expandable-caret-icon {
+      color: datagrid-variables.$clr-datagrid-icon-color;
+
+      svg {
+        transition: transform 0.2s ease-in-out;
+      }
+    }
+
+    .spinner {
+      margin-top: datagrid-variables.$clr-datagrid-expandable-row-spinner-margin;
     }
   }
 
@@ -1269,7 +1493,7 @@
       }
 
       &.is-open .datagrid-detail-caret-icon {
-        border-radius: tokens.$cds-alias-object-border-radius-100;
+        border-radius: density.$clr-base-border-radius-s;
         background-color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-bg-color;
         color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-icon-color;
       }
@@ -1280,12 +1504,7 @@
     }
 
     .spinner {
-      margin-top: tokens.$cds-global-space-4;
-    }
-
-    &.datagrid-column {
-      padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-        tables-variables.$clr-table-bottomcellpadding;
+      margin-top: datagrid-variables.$clr-datagrid-expandable-row-spinner-margin;
     }
   }
 
@@ -1300,7 +1519,7 @@
     .datagrid-detail-pane {
       border-left: tokens.$cds-alias-object-border-width-100 solid;
       border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
-      border-radius: tokens.$cds-alias-object-border-radius-100;
+      border-radius: density.$clr-base-border-radius-s;
       width: 100%;
     }
   }
@@ -1314,7 +1533,7 @@
     .datagrid-detail-pane {
       border-left: tokens.$cds-alias-object-border-width-100 solid;
       border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
-      border-radius: tokens.$cds-alias-object-border-radius-100;
+      border-radius: density.$clr-base-border-radius-s;
     }
   }
 
@@ -1322,8 +1541,7 @@
    * Smart popover contents
    */
   .column-switch {
-    border-radius: tokens.$cds-alias-object-border-radius-100;
-    padding: tokens.$cds-global-space-8;
+    border-radius: density.$clr-base-border-radius-s;
     background-color: datagrid-variables.$clr-datagrid-popover-bg-color;
     border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
@@ -1338,6 +1556,8 @@
       display: flex;
       justify-content: space-between;
       @include mixins.generate-typography-token('SUBSECTION-16-EXP');
+      padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl 0
+        density.$clr-base-horizontal-offset-xl;
 
       // From accessibility perspective we let use of header tags inside the switch header,
       // but want not to be affected from the global header styles so this is a workaround.
@@ -1353,7 +1573,7 @@
       }
 
       button {
-        min-width: tokens.$cds-global-space-8;
+        min-width: density.$clr-base-icon-size-s;
         margin: 0;
         padding: 0;
 
@@ -1370,20 +1590,28 @@
       }
     }
 
-    .switch-content {
+    ul.switch-content {
+      display: flex;
+      flex-direction: column;
+      gap: density.$clr-base-gap-xs;
       max-height: mixins.baselinePx(300);
       overflow-y: auto;
-      min-height: calc(
-        tokens.$cds-global-space-9 + tokens.$cds-alias-object-border-width-100
-      ); // prevents scrollbars in IE.
+      min-height: tables-variables.$clr-table-row-height; // prevents scrollbars in IE.
+
+      // Increase specificity
+      &.list-unstyled {
+        padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-xl;
+      }
 
       li {
-        line-height: tokens.$cds-global-space-9;
-        padding-left: tokens.$cds-global-space-2;
+        line-height: unset;
+        padding-left: density.$clr-base-horizontal-offset-xs;
       }
     }
 
     .switch-footer {
+      padding: 0 density.$clr-base-horizontal-offset-xl density.$clr-base-vertical-offset-xl
+        density.$clr-base-horizontal-offset-xl;
       .btn {
         margin: 0;
         padding: 0;
@@ -1402,9 +1630,9 @@
     border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
     border-color: datagrid-variables.$clr-datagrid-popover-border-color;
-    padding: tokens.$cds-global-space-8;
+    padding: density.$clr-base-vertical-offset-xl;
     @include clr-datagrid-popover-shadows;
-    border-radius: tokens.$cds-alias-object-border-radius-100;
+    border-radius: density.$clr-base-border-radius-s;
     font-weight: normal;
 
     .datagrid-filter-close-wrapper {
@@ -1423,10 +1651,10 @@
 
     .datagrid-numeric-filter-form {
       display: flex;
-      gap: tokens.$cds-global-space-6;
+      gap: density.$clr-base-gap-m;
 
       input.datagrid-numeric-filter-input {
-        width: tokens.$cds-global-space-15;
+        width: density.$clr-base-layout-space-5xl;
       }
     }
 
@@ -1481,12 +1709,9 @@
           border-color: tables-variables.$clr-tablerow-bordercolor;
           border-width: tables-variables.$clr-table-borderwidth;
           border-style: solid;
-          padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-            tables-variables.$clr-table-bottomcellpadding;
+          padding: tables-variables.$clr-table-cell-padding;
           vertical-align: top;
-          @include mixins.generate-typography-token('CAPTION-LG-11');
-          margin-top: tokens.$cds-global-space-9;
-          margin-bottom: 0;
+          @include mixins.generate-typography-token('CAPTION-LG-11-STD');
         }
       }
 
@@ -1499,8 +1724,7 @@
           display: table-cell;
           min-width: tokens.$cds-global-space-15;
           @include mixins.generate-typography-token('BODY-14-RG-CPT');
-          padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
-            tables-variables.$clr-table-bottomcellpadding;
+          padding: tables-variables.$clr-table-cell-padding;
           vertical-align: top;
         }
       }

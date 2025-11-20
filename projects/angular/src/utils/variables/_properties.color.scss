@@ -10,7 +10,7 @@
 
 @include mixins.exports('color.properties') {
   @if global-variables.$clr-use-custom-properties == true {
-    :root {
+    @include mixins.root-or-host() {
       // global color variables
 
       // until SASS variables are deprecated we have to apply them. after SASS variables are

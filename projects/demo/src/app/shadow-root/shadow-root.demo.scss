@@ -1,0 +1,28 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../../../angular/src/emphasis/alert/properties.alert';
+
+.alert-info-background-test {
+  background-color: var(--clr-alert-info-bg-color);
+  height: 100px;
+  width: 500px;
+}
+.alert-warning-background-test {
+  background-color: var(--clr-alert-warning-bg-color);
+  height: 100px;
+  width: 500px;
+}
+.alert-danger-background-test {
+  background-color: var(--clr-alert-danger-bg-color);
+  height: 100px;
+  width: 500px;
+}
+.alert-success-background-test {
+  background-color: var(--clr-alert-success-bg-color);
+  height: 100px;
+  width: 500px;
+}

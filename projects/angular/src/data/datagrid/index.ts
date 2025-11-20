@@ -47,6 +47,7 @@ export { ClrDatagridItemsTrackByFunction } from './providers/items';
 
 export { ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
 export { ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
+export { ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor } from './datagrid-single-selection.directive';
 export { DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer } from './datagrid-detail-registerer';
 export { WrappedCell as ÇlrWrappedCell } from './wrapped-cell';
 export { WrappedColumn as ÇlrWrappedColumn } from './wrapped-column';
@@ -55,6 +56,7 @@ export { DatagridMainRenderer as ÇlrDatagridMainRenderer } from './render/main-
 export { DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer } from './render/header-renderer';
 export { DatagridCellRenderer as ÇlrDatagridCellRenderer } from './render/cell-renderer';
 export { DatagridRowRenderer as ÇlrDatagridRowRenderer } from './render/row-renderer';
+export { DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer } from './render/row-detail-renderer';
 export { ExpandableOompaLoompa as ÇlrExpandableOompaLoompa } from './chocolate/expandable-oompa-loompa';
 export { ActionableOompaLoompa as ÇlrActionableOompaLoompa } from './chocolate/actionable-oompa-loompa';
 export { DatagridWillyWonka as ÇlrDatagridWillyWonka } from './chocolate/datagrid-willy-wonka';

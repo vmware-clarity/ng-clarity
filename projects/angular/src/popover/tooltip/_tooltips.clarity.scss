@@ -11,12 +11,13 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.tooltip' as tooltip-variables;
+@use '../../utils/variables/variables.density' as density;
 
 @mixin common-tooltip-styles {
   margin: 0; //Resetting any margin that might be applied to span/div elements inside forms
   width: mixins.baselinePx(240);
   border-radius: tooltip-variables.$clr-tooltip-border-radius;
-  padding: tokens.$cds-global-space-6;
+  padding: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-l;
 
   color: tooltip-variables.$clr-tooltip-color;
   background-color: tooltip-variables.$clr-tooltip-background-color;
@@ -51,7 +52,7 @@
     #{$oppB}: 0;
     #{$dirA}: auto;
     #{$dirB}: auto;
-    #{$oppA}: calc(-1 * #{tokens.$cds-global-space-6});
+    #{$oppA}: calc(-1 * #{tooltip-variables.$clr-tooltip-arrow-height});
 
     border-#{$oppB}: tooltip-variables.$clr-tooltip-arrow-height solid tooltip-variables.$clr-tooltip-background-color;
     border-#{$dirA}: tooltip-variables.$clr-tooltip-arrow-width solid tooltip-variables.$clr-tooltip-background-color;
@@ -81,7 +82,7 @@
     top: 0;
     bottom: auto;
     #{$dirA}: auto;
-    #{$oppA}: calc(-1 * #{tokens.$cds-global-space-6});
+    #{$oppA}: calc(-1 * #{tooltip-variables.$clr-tooltip-arrow-width});
 
     border-top: tooltip-variables.$clr-tooltip-arrow-height solid tooltip-variables.$clr-tooltip-background-color;
     border-#{$dirA}: tooltip-variables.$clr-tooltip-arrow-width solid tooltip-variables.$clr-tooltip-background-color;

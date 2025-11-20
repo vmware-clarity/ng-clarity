@@ -8,7 +8,7 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @use '../../utils/variables/variables.global';
-@use '../../layout/density';
+@use '../../utils/variables/variables.density' as density;
 @use 'variables.forms' as forms-variables;
 
 // Flatten the error icon and message to be inline for certain input types
@@ -35,7 +35,7 @@
 
   .clr-control-label {
     display: inline-block;
-    margin-right: calc(2 * #{forms-variables.$clr-forms-baseline});
+    margin-right: density.$clr-base-gap-m;
     width: auto;
   }
 }
@@ -45,7 +45,7 @@
   max-width: 100%;
 
   & ~ .clr-subtext {
-    margin-left: forms-variables.$clr-forms-baseline;
+    margin-left: density.$clr-base-horizontal-offset-xs;
   }
 }
 
@@ -94,6 +94,17 @@
 @mixin disabled-form-fields() {
   color: forms-variables.$clr-forms-text-disabled-color;
   cursor: not-allowed;
+}
+
+@mixin checkbox-radio-toggle-control-group-gap() {
+  & + .clr-checkbox-wrapper,
+  & + .clr-radio-wrapper {
+    padding-top: density.$clr-base-control-group-gap;
+  }
+
+  & + .clr-toggle-wrapper {
+    margin-top: density.$clr-base-control-group-gap;
+  }
 }
 
 @mixin checkbox-radio-input-styles($size) {

@@ -7,8 +7,10 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use '@cds/core/tokens/tokens.scss';
+@use '../utils/variables/variables.density' as density;
 
-$clr-wizard-default-space: var(--clr-wizard-default-space) !default;
+$clr-wizard-vertical-space: density.$clr-base-vertical-offset-2xl !default;
+$clr-wizard-horizontal-space: density.$clr-base-horizontal-offset-2xl !default;
 $clr-wizard-footer-vertical-space: var(--clr-wizard-footer-vertical-space) !default;
 
 $clr-wizard-main-bgcolor: var(--clr-wizard-main-bgcolor) !default;

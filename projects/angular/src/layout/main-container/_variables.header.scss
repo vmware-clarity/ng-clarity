@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+@use '../../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 // @deprecated in v17 in favor or $clr-header-bg-color
@@ -13,9 +14,7 @@ $clr-logo-width: tokens.$cds-global-space-11 !default;
 // @deprecated in v17 in favor or $clr-header-search-icon-size
 $clr-search-icon-width: var(--clr-header-search-icon-size) !default;
 $clr-header-outline-offset: calc(-1 * #{tokens.$cds-global-space-4}) !default;
-$clr-header-clarity-icons-size: tokens.$cds-global-space-9 !default;
-$clr-header-nav-text-horizontal-padding: tokens.$cds-global-space-9 !default;
-$clr-header-nav-text-vertical-padding: tokens.$cds-global-space-8 !default;
+$clr-header-clarity-icons-size: #{density.$clr-base-icon-size-l} !default;
 
 $clr-header-height: var(--clr-header-height) !default;
 $clr-header-divider-color: var(--clr-header-divider-color) !default;

@@ -30,6 +30,18 @@ export const screenshotOptions: ScreenshotOptions = {
   'headers-static--header-static': {
     fullPageScreenshot: true,
   },
+  'combobox--loading': {
+    fullPageScreenshot: true,
+  },
+  'combobox--no-results': {
+    fullPageScreenshot: true,
+  },
+  'combobox--opened': {
+    fullPageScreenshot: true,
+  },
+  'combobox--opened-multi-line-items': {
+    fullPageScreenshot: true,
+  },
   'header--collapsed': {
     viewport: { width: 500, height: 300 },
   },
@@ -58,6 +70,30 @@ export const screenshotOptions: ScreenshotOptions = {
     fullPageScreenshot: true,
   },
   wizard: {
+    fullPageScreenshot: true,
+  },
+  'opened--datepicker': {
+    fullPageScreenshot: true,
+  },
+  'opened--default-date': {
+    fullPageScreenshot: true,
+  },
+  'opened--min-date': {
+    fullPageScreenshot: true,
+  },
+  'opened--max-date': {
+    fullPageScreenshot: true,
+  },
+  'opened--action-buttons': {
+    fullPageScreenshot: true,
+  },
+  'opened--month-view': {
+    fullPageScreenshot: true,
+  },
+  'opened--year-view': {
+    fullPageScreenshot: true,
+  },
+  'opened--predefined-date-ranges-open': {
     fullPageScreenshot: true,
   },
 };

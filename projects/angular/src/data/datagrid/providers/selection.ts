@@ -5,13 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, IterableDiffer, IterableDiffers, TrackByFunction } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, delay } from 'rxjs/operators';
 
 import { SelectionType } from '../enums/selection-type';
 import { FiltersProvider } from './filters';
-import { Items } from './items';
+import { ClrDatagridItemsTrackByFunction, Items } from './items';
 
 let nbSelection = 0;
 
@@ -33,9 +33,8 @@ export class Selection<T = any> {
   /** @deprecated since 2.0, remove in 3.0 */
   rowSelectionMode = false;
 
-  private prevSelectionRefs: T[] = []; // Refs of selected items
-  private prevSingleSelectionRef: T; // Ref of single selected item
   private lockedRefs: T[] = []; // Ref of locked items
+  private _currentSelectionRefs: T[] = [];
   private valueCollector = new Subject<T[]>();
   private _selectionType: SelectionType = SelectionType.None;
 
@@ -59,8 +58,16 @@ export class Selection<T = any> {
    */
   private subscriptions: Subscription[] = [];
 
-  constructor(private _items: Items<T>, filters: FiltersProvider<T>) {
+  /**
+   * Differ to track changes of multi selection.
+   */
+  private _differ!: IterableDiffer<T>;
+  private trackBy: ClrDatagridItemsTrackByFunction<T>;
+
+  constructor(private _items: Items<T>, filters: FiltersProvider<T>, private differs: IterableDiffers) {
     this.id = 'clr-dg-selection' + nbSelection++;
+    this.trackBy = _items.trackBy;
+    this._differ = differs.find(this._current || []).create<T>(this.trackBy as TrackByFunction<T>);
 
     this.subscriptions.push(
       filters.change.subscribe(() => {
@@ -72,7 +79,7 @@ export class Selection<T = any> {
     );
 
     this.subscriptions.push(
-      _items.allChanges.subscribe(updatedItems => {
+      _items.allChanges.pipe(delay(0)).subscribe(updatedItems => {
         // Reset the lockedRefs;
         const updateLockedRef: T[] = [];
 
@@ -85,15 +92,10 @@ export class Selection<T = any> {
             let newSingle: any;
             let selectionUpdated = false;
 
-            // if the currentSingle has been set before data was loaded, we look up and save the ref from current data set
-            if (this.currentSingle && !this.prevSingleSelectionRef) {
-              this.prevSingleSelectionRef = _items.trackBy(this.currentSingle);
-            }
-
             updatedItems.forEach(item => {
               const ref = _items.trackBy(item);
               // If one of the updated items is the previously selectedSingle, set it as the new one
-              if (this.prevSingleSelectionRef === ref) {
+              if (this.currentSingleSelectionRef === ref) {
                 newSingle = item;
                 selectionUpdated = true;
               }
@@ -110,29 +112,15 @@ export class Selection<T = any> {
               selectionUpdated = true;
             }
 
-            // TODO: Discussed this with Eudes and this is fine for now.
-            // But we need to figure out a different pattern for the
-            // child triggering the parent change detection problem.
-            // Using setTimeout for now to fix this.
-            setTimeout(() => {
-              if (selectionUpdated) {
-                this.currentSingle = newSingle;
-              }
-            }, 0);
+            if (selectionUpdated) {
+              this.currentSingle = newSingle;
+            }
             break;
           }
 
           case SelectionType.Multi: {
             let leftOver: any[] = this.current.slice();
             let selectionUpdated = false;
-
-            // if the current has been set before data was loaded, we look up and save the ref from current data set
-            if (this.current.length > 0 && this.prevSelectionRefs.length !== this.current.length) {
-              this.prevSelectionRefs = [];
-              this.current.forEach(item => {
-                this.prevSelectionRefs.push(_items.trackBy(item));
-              });
-            }
 
             // Duplicate loop, when the issue is issue#2342 is revisited keep in mind that
             // we need to go over every updated item and check to see if there are valid to be
@@ -153,7 +141,7 @@ export class Selection<T = any> {
               updatedItems.forEach(item => {
                 const ref = _items.trackBy(item);
                 // Look in current selected refs array if item is selected, and update actual value
-                const selectedIndex = this.prevSelectionRefs.indexOf(ref);
+                const selectedIndex = this.currentSelectionRefs.indexOf(ref);
                 if (selectedIndex > -1) {
                   leftOver[selectedIndex] = item;
                   selectionUpdated = true;
@@ -169,15 +157,9 @@ export class Selection<T = any> {
                 }
               }
 
-              // TODO: Discussed this with Eudes and this is fine for now.
-              // But we need to figure out a different pattern for the
-              // child triggering the parent change detection problem.
-              // Using setTimeout for now to fix this.
-              setTimeout(() => {
-                if (selectionUpdated) {
-                  this.current = leftOver;
-                }
-              }, 0);
+              if (selectionUpdated) {
+                this.current = leftOver;
+              }
             }
             break;
           }
@@ -202,7 +184,7 @@ export class Selection<T = any> {
       return;
     }
     this._selectionType = value;
-    if (value === SelectionType.None) {
+    if ([SelectionType.None, SelectionType.Single].includes(value)) {
       delete this.current;
     } else {
       this.updateCurrent([], false);
@@ -214,6 +196,7 @@ export class Selection<T = any> {
   }
   set current(value: T[]) {
     this.updateCurrent(value, true);
+    this.updateCurrentSelectionRefs();
   }
 
   get currentSingle(): T {
@@ -223,11 +206,7 @@ export class Selection<T = any> {
     if (value === this._currentSingle) {
       return;
     }
-
     this._currentSingle = value;
-    if (value) {
-      this.prevSingleSelectionRef = this._items.trackBy(value);
-    }
     this.emitChange();
   }
 
@@ -240,10 +219,30 @@ export class Selection<T = any> {
     return this._selectionType === SelectionType.Multi || this._selectionType === SelectionType.Single;
   }
 
+  // Refs of currently selected items
+  private get currentSelectionRefs(): T[] {
+    return this._currentSelectionRefs;
+  }
+
+  // Ref of currently selected item
+  private get currentSingleSelectionRef(): T {
+    return this._currentSingle && this._items.trackBy(this._currentSingle);
+  }
+
+  checkForChanges(): void {
+    const changes = this._differ.diff(this._current);
+    // @TODO move the trackBy from items to selection as it's used only here and is not needed in items
+    if (this.trackBy !== this._items.trackBy) {
+      this.trackBy = this._items.trackBy;
+    }
+    if (changes) {
+      this.updateCurrentSelectionRefs();
+    }
+  }
+
   clearSelection(): void {
     this._current = [];
-    this.prevSelectionRefs = [];
-    this.prevSingleSelectionRef = null;
+    this._currentSelectionRefs = [];
     this._currentSingle = null;
     this.emitChange();
   }
@@ -257,7 +256,6 @@ export class Selection<T = any> {
 
   updateCurrent(value: T[], emit: boolean) {
     this._current = value;
-
     if (emit) {
       this.valueCollector.next(value);
     }
@@ -267,10 +265,11 @@ export class Selection<T = any> {
    * Checks if an item is currently selected
    */
   isSelected(item: T): boolean {
+    const ref = this._items.trackBy(item);
     if (this._selectionType === SelectionType.Single) {
-      return this.currentSingle === item;
+      return this.currentSingleSelectionRef === ref;
     } else if (this._selectionType === SelectionType.Multi) {
-      return this.current.indexOf(item) >= 0;
+      return this.currentSelectionRefs.indexOf(ref) >= 0;
     }
     return false;
   }
@@ -279,12 +278,16 @@ export class Selection<T = any> {
    * Selects or deselects an item
    */
   setSelected(item: T, selected: boolean) {
-    const index = this.current ? this.current.indexOf(item) : -1;
+    const ref = this._items.trackBy(item);
+    const index = this.currentSelectionRefs ? this.currentSelectionRefs.indexOf(ref) : -1;
 
     switch (this._selectionType) {
       case SelectionType.None:
         break;
       case SelectionType.Single:
+        if (selected) {
+          this.currentSingle = item;
+        }
         // in single selection, set currentSingle method should be used
         break;
       case SelectionType.Multi:
@@ -315,7 +318,10 @@ export class Selection<T = any> {
     if (nbDisplayed < 1) {
       return false;
     }
-    const temp: T[] = displayedItems.filter(item => this.current.indexOf(item) > -1);
+    const temp: T[] = displayedItems.filter(item => {
+      const ref = this._items.trackBy(item);
+      return this.currentSelectionRefs.indexOf(ref) > -1;
+    });
     return temp.length === displayedItems.length;
   }
 
@@ -364,14 +370,15 @@ export class Selection<T = any> {
      */
     if (this.isAllSelected()) {
       this._items.displayed.forEach(item => {
-        const currentIndex = this.current.indexOf(item);
+        const ref = this._items.trackBy(item);
+        const currentIndex = this.currentSelectionRefs.indexOf(ref);
         if (currentIndex > -1 && this.isLocked(item) === false) {
           this.deselectItem(currentIndex);
         }
       });
     } else {
       this._items.displayed.forEach(item => {
-        if (this.current.indexOf(item) < 0 && this.isLocked(item) === false) {
+        if (!this.isSelected(item) && this.isLocked(item) === false) {
           this.selectItem(item);
         }
       });
@@ -383,8 +390,6 @@ export class Selection<T = any> {
    */
   private selectItem(item: T): void {
     this.current = this.current.concat(item);
-    // Push selected ref onto array
-    this.prevSelectionRefs.push(this._items.trackBy(item));
   }
 
   /**
@@ -392,9 +397,9 @@ export class Selection<T = any> {
    */
   private deselectItem(indexOfItem: number): void {
     this.current = this.current.slice(0, indexOfItem).concat(this.current.slice(indexOfItem + 1));
-    if (indexOfItem < this.prevSelectionRefs.length) {
+    if (indexOfItem < this.currentSelectionRefs.length) {
       // Keep selected refs array in sync
-      const removedItems = this.prevSelectionRefs.splice(indexOfItem, 1);
+      const removedItems = this.currentSelectionRefs[indexOfItem];
       // locked reference is no longer needed (if any)
       this.lockedRefs = this.lockedRefs.filter(locked => locked !== removedItems[0]);
     }
@@ -413,5 +418,9 @@ export class Selection<T = any> {
     } else if (this._selectionType === SelectionType.Multi) {
       this._change.next(this.current);
     }
+  }
+
+  private updateCurrentSelectionRefs() {
+    this._currentSelectionRefs = this._current?.map(item => this._items.trackBy(item)) || [];
   }
 }

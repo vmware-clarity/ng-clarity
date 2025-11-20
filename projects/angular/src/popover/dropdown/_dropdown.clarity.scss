@@ -13,16 +13,9 @@
 @use 'variables.dropdown' as dropdown-variables;
 @use '@cds/core/tokens/tokens.scss';
 @use '../../layout/tabs/tabs.clarity' as tabs;
-@use '../../layout/density/' as density;
+@use '../../utils/variables/variables.density' as density;
 
 @include meta.load-css('properties.dropdown');
-
-%dropdown-content {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
-  justify-content: start;
-}
 
 @include mixins.exports('dropdown.clarity') {
   .dropdown {
@@ -40,7 +33,7 @@
       clr-icon[shape^='caret'],
       clr-icon[shape^='angle'] {
         color: inherit;
-        @include mixins.min-equilateral(tokens.$cds-global-space-7);
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       }
 
       // NOTE: cds-icon handles direction internally.
@@ -50,10 +43,12 @@
       cds-icon[shape^='angle'] {
         margin-top: unset;
         color: inherit;
-        @include mixins.equilateral(tokens.$cds-global-space-7);
+
+        &:not([size]) {
+          @include mixins.equilateral(density.$clr-base-icon-size-s);
+        }
       }
 
-      $clr-dropdown-caret-left-margin: tokens.$cds-global-space-2;
       &.btn {
         text-overflow: unset;
 
@@ -103,25 +98,11 @@
     @include menu-mixins.generate-dropdown-menu();
 
     .dropdown-header {
-      color: dropdown-variables.$clr-dropdown-header-color;
-
-      // Typography
-      @include mixins.generate-typography-token(
-        'SECONDARY-13-MD-EXP',
-        (
-          font-weight: dropdown-variables.$clr-dropdown-header-font-weight,
-        )
-      );
-
-      padding: 0 density.$clr-base-horizontal-offset-l;
-      margin: 0;
-
+      @include menu-mixins.generate-dropdown-header();
       & ~ .dropdown-item,
       & ~ .dropdown > .dropdown-item {
         padding-left: density.$clr-base-horizontal-offset-2xl;
       }
-
-      @extend %dropdown-content;
     }
 
     .btn,
@@ -140,8 +121,7 @@
     .btn-link,
     .dropdown-item {
       @include menu-mixins.generate-dropdown-item();
-
-      @extend %dropdown-content;
+      @include mixins.overflow-ellipsis(true);
 
       &.active {
         position: relative;
@@ -161,7 +141,7 @@
           background-color: dropdown-variables.$clr-dropdown-item-color;
           @include mixins.equilateral(density.$clr-base-icon-size-xs);
           transform: rotate(-90deg);
-          flex: 0 0 auto;
+          margin-left: auto;
         }
 
         &.active:after {
@@ -186,10 +166,6 @@
       &:focus {
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
-      &-content {
-        @extend %dropdown-content;
-        flex: 1 1 auto;
-      }
     }
 
     .btn,
@@ -205,7 +181,7 @@
       border-bottom-width: dropdown-variables.$clr-dropdown-divider-border-width;
       border-bottom-style: solid;
       border-bottom-color: dropdown-variables.$clr-dropdown-divider-color;
-      margin: tokens.$cds-global-space-6;
+      margin: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-l;
     }
   }
 
@@ -213,7 +189,7 @@
   .btn-group-overflow,
   .tabs-overflow,
   .dropdown {
-    $dropdown-menu-positional-nudge: tokens.$cds-global-space-2;
+    $dropdown-menu-positional-nudge: density.$clr-base-vertical-offset-2xs;
 
     &.open > .dropdown-menu,
     &.open > .dropdown-menu-wrapper > .dropdown-menu {
@@ -290,8 +266,8 @@
 
     // nested dropdown (submenu)
     .dropdown {
-      $clr-dropdown-submenu-overlap-margin: calc(-1 * #{tokens.$cds-global-space-3});
-      $clr-dropdown-submenu-vertical-margin: calc((-1 * #{tokens.$cds-global-space-8}) - #{tokens.$cds-global-space-1});
+      $clr-dropdown-submenu-overlap-margin: #{tokens.$cds-global-space-1};
+      $clr-dropdown-submenu-vertical-margin: calc(-1 * #{density.$clr-base-vertical-offset-2xl});
       // -1 is to account for the border that shifts the menu down by 1 pixel
 
       .dropdown-menu {

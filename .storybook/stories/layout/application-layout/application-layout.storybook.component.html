@@ -1,0 +1,343 @@
+<clr-main-container>
+  <clr-alerts>
+    <clr-alert [clrAlertType]="'info'" [clrAlertAppLevel]="true">
+      <clr-alert-item>
+        <span class="alert-text">This is the first app level alert.</span>
+        <div class="alert-actions">
+          <button class="btn alert-action">Fix</button>
+        </div>
+      </clr-alert-item>
+    </clr-alert>
+    <clr-alert [clrAlertType]="'danger'" [clrAlertAppLevel]="true">
+      <clr-alert-item>
+        <span class="alert-text">This is a second app level alert.</span>
+        <div class="alert-actions">
+          <button class="btn alert-action">Fix</button>
+        </div>
+      </clr-alert-item>
+    </clr-alert>
+  </clr-alerts>
+  <clr-header class="header">
+    <div class="branding">
+      <a href="..." class="nav-link">
+        <cds-icon shape="vm-bug-new"></cds-icon>
+        <span class="title">Clarity Design</span>
+      </a>
+    </div>
+    <form class="search">
+      <label for="search_input">
+        <input id="search_input" type="text" placeholder="Search for keywords..." />
+      </label>
+    </form>
+    <div class="header-actions">
+      <a class="nav-link nav-icon" aria-label="refresh">
+        <cds-icon shape="refresh"></cds-icon>
+      </a>
+      <a class="nav-link nav-icon" aria-label="feedback">
+        <cds-icon shape="happy-face"></cds-icon>
+      </a>
+      <a class="nav-link nav-icon" aria-label="notifications">
+        <cds-icon shape="bell"></cds-icon>
+      </a>
+      <clr-dropdown>
+        <button class="nav-text" clrDropdownTrigger aria-label="open user profile">
+          <cds-icon shape="user" size="md"></cds-icon>
+          john.doe&#64;vmware.com
+          <cds-icon shape="angle" direction="down"></cds-icon>
+        </button>
+        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+          <a clrDropdownItem>Preferences</a>
+          <a clrDropdownItem>Log out</a>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+      <a class="nav-link nav-icon" aria-label="help">
+        <cds-icon shape="help"></cds-icon>
+      </a>
+    </div>
+  </clr-header>
+  <div class="content-container">
+    <clr-vertical-nav *ngIf="level1Navigation" [clrVerticalNavCollapsible]="true">
+      <a clrVerticalNavLink>
+        <cds-icon clrVerticalNavIcon shape="user"></cds-icon>
+        Normal
+      </a>
+      <a clrVerticalNavLink>
+        <cds-icon clrVerticalNavIcon shape="bolt"></cds-icon>
+        Electric
+      </a>
+      <a clrVerticalNavLink>
+        <cds-icon clrVerticalNavIcon shape="sad-face"></cds-icon>
+        Poison
+      </a>
+      <a clrVerticalNavLink>
+        <cds-icon clrVerticalNavIcon shape="bug"></cds-icon>
+        Grass
+      </a>
+      <a clrVerticalNavLink>
+        <cds-icon clrVerticalNavIcon shape="shield"></cds-icon>
+        Fighting
+      </a>
+      <a clrVerticalNavLink>
+        <cds-icon clrVerticalNavIcon shape="certificate"></cds-icon>
+        Credit
+      </a>
+      <div class="nav-divider"></div>
+      <a clrVerticalNavLink>
+        <cds-icon clrVerticalNavIcon shape="user"></cds-icon>
+        Normal
+      </a>
+      <a clrVerticalNavLink>
+        <cds-icon clrVerticalNavIcon shape="bolt"></cds-icon>
+        Electric
+      </a>
+      <a clrVerticalNavLink>
+        <cds-icon clrVerticalNavIcon shape="sad-face"></cds-icon>
+        Poison
+      </a>
+      <a clrVerticalNavLink>
+        <cds-icon clrVerticalNavIcon shape="bug"></cds-icon>
+        Grass
+      </a>
+      <a clrVerticalNavLink>
+        <cds-icon clrVerticalNavIcon shape="shield"></cds-icon>
+        Fighting
+      </a>
+      <a clrVerticalNavLink>
+        <cds-icon clrVerticalNavIcon shape="certificate"></cds-icon>
+        Credit
+      </a>
+    </clr-vertical-nav>
+    <clr-vertical-nav *ngIf="level2Navigation" class="tree-nav" [clrVerticalNavCollapsible]="true">
+      <clr-tree>
+        <clr-tree-node *ngFor="let directory of rootDirectory" [(clrExpanded)]="directory.expanded">
+          <cds-icon [attr.shape]="directory.icon"></cds-icon>
+          {{ directory.name }}
+          <clr-tree-node *ngFor="let file of directory.files">
+            <button class="clr-treenode-link" [class.active]="file.active">
+              <cds-icon [attr.shape]="file.icon"></cds-icon>
+              {{ file.name }}
+            </button>
+          </clr-tree-node>
+        </clr-tree-node>
+      </clr-tree>
+    </clr-vertical-nav>
+    <div class="content-area">
+      <clr-breadcrumbs [items]="breadcrumbs"></clr-breadcrumbs>
+      <div class="page-heading">
+        <cds-icon shape="cluster"></cds-icon>
+        <h5>H5 Title</h5>
+        <span class="divider"></span>
+        <clr-dropdown>
+          <button class="btn btn-sm btn-link" clrDropdownTrigger>
+            Actions
+            <cds-icon shape="angle" direction="down"></cds-icon>
+          </button>
+          <clr-dropdown-menu clrPosition="bottom-left" *clrIfOpen>
+            <label class="dropdown-header" aria-hidden="true">Dropdown header</label>
+            <div aria-label="Dropdown header Action 1" clrDropdownItem>Action 1</div>
+            <div aria-label="Dropdown header Disabled Action" [clrDisabled]="true" clrDropdownItem>Disabled Action</div>
+            <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
+            <clr-dropdown>
+              <button clrDropdownTrigger>Link 1</button>
+              <clr-dropdown-menu>
+                <button clrDropdownItem>Foo</button>
+                <clr-dropdown>
+                  <button clrDropdownTrigger>Bar</button>
+                  <clr-dropdown-menu clrPosition="left-top">
+                    <button clrDropdownItem>Baz</button>
+                  </clr-dropdown-menu>
+                </clr-dropdown>
+              </clr-dropdown-menu>
+            </clr-dropdown>
+            <div clrDropdownItem>Link 2</div>
+          </clr-dropdown-menu>
+        </clr-dropdown>
+      </div>
+      <clr-tabs *ngIf="level3Navigation; else tabContent">
+        <clr-tab>
+          <button clrTabLink>Dashboard</button>
+          <clr-tab-content>
+            <ng-container *ngTemplateOutlet="tabContent"></ng-container>
+          </clr-tab-content>
+        </clr-tab>
+
+        <clr-tab>
+          <button clrTabLink>Management</button>
+          <clr-tab-content>
+            <ng-container *ngTemplateOutlet="tabContent"></ng-container>
+          </clr-tab-content>
+        </clr-tab>
+
+        <clr-tab>
+          <button clrTabLink>Cloud</button>
+          <clr-tab-content>
+            <ng-container *ngTemplateOutlet="tabContent"></ng-container>
+          </clr-tab-content>
+        </clr-tab>
+
+        <clr-tab>
+          <button clrTabLink>Infrastructure</button>
+          <clr-tab-content>
+            <ng-container *ngTemplateOutlet="tabContent"></ng-container>
+          </clr-tab-content>
+        </clr-tab>
+      </clr-tabs>
+    </div>
+  </div>
+</clr-main-container>
+
+<ng-template #tabContent>
+  <div class="tab-content-navigation">
+    <div cds-layout="p-y:md">
+      <clr-vertical-nav *ngIf="level4Navigation">
+        <clr-vertical-nav-group>
+          Normal
+          <clr-vertical-nav-group-children *clrIfExpanded="true">
+            <a clrVerticalNavLink>Pidgey</a>
+            <a clrVerticalNavLink>Snorlax</a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <clr-vertical-nav-group>
+          Fire
+          <clr-vertical-nav-group-children *clrIfExpanded="true">
+            <a clrVerticalNavLink>Charmander</a>
+            <a clrVerticalNavLink>Charizard</a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <clr-vertical-nav-group>
+          Electric
+          <clr-vertical-nav-group-children *clrIfExpanded="true">
+            <a clrVerticalNavLink>Pikachu</a>
+            <a clrVerticalNavLink>Raichu</a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <a clrVerticalNavLink> Credit </a>
+      </clr-vertical-nav>
+    </div>
+    <div class="tab-content-navigation-content-area" cds-layout="p-y:md">
+      <h4 cds-layout="m-t:none">General</h4>
+      <div cds-layout="m-t:none m-b:lg">Below are the general settings for supporting namespaces on Supervisor</div>
+
+      <ul class="clr-timeline" cds-layout="m-t:md">
+        <li class="clr-timeline-step disabled">
+          <div class="clr-timeline-step-header">11:59 am</div>
+          <cds-icon role="img" shape="circle" aria-label="Not started"></cds-icon>
+          <div class="clr-timeline-step-body">
+            <span class="clr-timeline-step-title">Add KMS</span>
+            <span class="clr-timeline-step-description">Root CA certificate requested.</span>
+          </div>
+        </li>
+        <li class="clr-timeline-step">
+          <div class="clr-timeline-step-header">11:59 am</div>
+          <cds-icon role="img" shape="dot-circle" aria-label="Current"></cds-icon>
+          <div class="clr-timeline-step-body">
+            <span class="clr-timeline-step-title">Add KMS</span>
+            <span class="clr-timeline-step-description">
+              Root CA certificate requested. Upload it to the KMS to complete the connection.
+              <button class="btn btn-sm">Upload Certificate</button>
+            </span>
+          </div>
+        </li>
+        <li class="clr-timeline-step">
+          <div class="clr-timeline-step-header">11:59 am</div>
+          <clr-spinner clrMedium aria-label="In progress">Fetching data</clr-spinner>
+          <div class="clr-timeline-step-body">
+            <span class="clr-timeline-step-title">Make vCenter trust KMS</span>
+            <span class="clr-timeline-step-description">
+              Root CA certificate requested. Upload it to the KMS to complete the connection. Third sentence is very
+              long and very long.
+            </span>
+          </div>
+        </li>
+        <li class="clr-timeline-step">
+          <div class="clr-timeline-step-header">11:59 am</div>
+          <cds-icon role="img" shape="success-standard" aria-label="Completed"></cds-icon>
+          <div class="clr-timeline-step-body">
+            <span class="clr-timeline-step-title">Make KMS trust vCenter</span>
+            <span class="clr-timeline-step-description"
+              >Upload it to the KMS to complete the connection. Third sentence.
+              <button class="btn btn-sm btn-link">Authorize</button>
+            </span>
+          </div>
+        </li>
+        <li class="clr-timeline-step">
+          <div class="clr-timeline-step-header">11:59 am</div>
+          <cds-icon role="img" shape="error-standard" aria-label="Error"></cds-icon>
+          <div class="clr-timeline-step-body">
+            <span class="clr-timeline-step-title">Connected</span>
+            <span class="clr-timeline-step-description">No. It's not connected.</span>
+          </div>
+        </li>
+      </ul>
+
+      <clr-accordion cds-layout="m-t:md">
+        <clr-accordion-panel>
+          <clr-accordion-title>Item 1</clr-accordion-title>
+          <clr-accordion-content *clrIfExpanded>Content 1</clr-accordion-content>
+        </clr-accordion-panel>
+
+        <clr-accordion-panel>
+          <clr-accordion-title>Item 2</clr-accordion-title>
+          <clr-accordion-content *clrIfExpanded>Content 2</clr-accordion-content>
+        </clr-accordion-panel>
+
+        <clr-accordion-panel>
+          <clr-accordion-title>Item 3</clr-accordion-title>
+          <clr-accordion-content *clrIfExpanded>Content 3</clr-accordion-content>
+        </clr-accordion-panel>
+      </clr-accordion>
+
+      <clr-button-group class="btn-primary">
+        <clr-button>Action 1</clr-button>
+        <clr-button>Action 2</clr-button>
+        <clr-button [clrInMenu]="true">Action 3</clr-button>
+        <clr-button [clrInMenu]="true">Action 4</clr-button>
+        <clr-button [clrInMenu]="true">Action 5</clr-button>
+      </clr-button-group>
+
+      <clr-date-range-container>
+        <label>Date Range</label>
+        <input type="date" autocomplete="off" clrStartDate name="startDate" />
+        <input type="date" autocomplete="off" clrEndDate name="endDate" />
+      </clr-date-range-container>
+
+      <clr-datagrid [(clrDgSelected)]="selected">
+        <clr-dg-column>
+          <ng-container *clrDgHideableColumn>Name</ng-container>
+        </clr-dg-column>
+        <clr-dg-column>
+          <ng-container *clrDgHideableColumn>Symbol</ng-container>
+        </clr-dg-column>
+        <clr-dg-column>
+          <ng-container *clrDgHideableColumn>Number</ng-container>
+        </clr-dg-column>
+        <clr-dg-column>
+          <ng-container *clrDgHideableColumn>Long text width 250px</ng-container>
+        </clr-dg-column>
+        <clr-dg-column>
+          <ng-container *clrDgHideableColumn>Electronegativity</ng-container>
+        </clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let element of elements; let index = index" [clrDgItem]="element">
+          <clr-dg-cell>{{ element.name }}</clr-dg-cell>
+          <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
+          <clr-dg-cell>{{ element.number }}</clr-dg-cell>
+          <clr-dg-cell> Lorem ipsum dolor sit amet </clr-dg-cell>
+          <clr-dg-cell>
+            {{ element.electronegativity }}
+          </clr-dg-cell>
+          <ng-container ngProjectAs="clr-dg-row-detail">
+            <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
+          </ng-container>
+        </clr-dg-row>
+
+        <clr-dg-footer>
+          <clr-dg-pagination #pagination>
+            <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Elements per page</clr-dg-page-size>
+            {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} elements
+          </clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
+    </div>
+  </div>
+</ng-template>

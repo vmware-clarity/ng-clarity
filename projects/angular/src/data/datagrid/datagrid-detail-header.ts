@@ -22,7 +22,7 @@ import { DetailService } from './providers/detail.service';
     <div class="datagrid-detail-pane-close">
       <button
         type="button"
-        class="btn btn-link"
+        class="btn btn-icon btn-link"
         (click)="detailService.close()"
         [attr.aria-label]="commonStrings.keys.close"
       >

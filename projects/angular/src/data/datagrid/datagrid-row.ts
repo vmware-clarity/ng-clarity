@@ -119,7 +119,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     private displayMode: DisplayModeService,
     private vcr: ViewContainerRef,
     renderer: Renderer2,
-    el: ElementRef<HTMLElement>,
+    public el: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     private items: Items,
     @Inject(DOCUMENT) private document: any
@@ -232,6 +232,10 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     return this.wrappedInjector.get(WrappedRow, this.vcr).rowView;
   }
 
+  get trackBy() {
+    return this.items.trackBy;
+  }
+
   ngOnInit() {
     this.wrappedInjector = new HostWrapper(WrappedRow, this.vcr);
     this.selection.lockItem(this.item, this.clrDgSelectable === false);
@@ -335,7 +339,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   protected selectRow(selected = !this.selected, $event) {
     // The label also captures clicks that bubble up to the row event listener, causing
     // this handler to run twice. This exits early to prevent toggling the checkbox twice.
-    if (!this.selection.rowSelectionMode || $event.target.tagName === 'LABEL') {
+    if (!this.selection.rowSelectionMode || $event.target.tagName === 'LABEL' || !this._selectable) {
       return;
     }
     if (this.selection.selectionType === this.SELECTION_TYPE.Single) {
@@ -362,8 +366,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
       const newSelection = new Set(
         this.selection.current.concat(items.slice(Math.min(startIx, endIx), Math.max(startIx, endIx) + 1))
       );
-      this.selection.clearSelection();
-      this.selection.current.push(...newSelection);
+      this.selection.current = [...newSelection];
     } else {
       // page number has changed or
       // no Shift was pressed or

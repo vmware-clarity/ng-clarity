@@ -8,6 +8,7 @@
 @use '../../image/icons.clarity';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables.density' as density;
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
 @use '@cds/core/tokens/tokens.scss';
@@ -19,7 +20,7 @@
     white-space: nowrap;
 
     select {
-      @include forms-mixins.custom-inputs(tokens.$cds-global-space-9);
+      @include forms-mixins.custom-inputs(forms-variables.$clr-forms-input-wrapper-height);
       @include forms-mixins.form-fields-appearance();
       @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
 
@@ -30,7 +31,7 @@
         @include mixins.include-slim-outline-style-form-fields();
       }
       position: relative;
-      padding: 0 calc(#{forms-variables.$clr-forms-select-caret-size} + #{forms-variables.$clr-forms-baseline} * 2) 0 #{forms-variables.$clr-forms-baseline};
+      padding: 0 density.$clr-base-icon-size-l 0 #{density.$clr-base-horizontal-offset-s};
       cursor: pointer;
 
       //Moves the :after pseudo element (arrow) to the back so that clicking over it activates
@@ -67,18 +68,15 @@
   }
 
   .clr-select-wrapper {
-    max-height: calc(4 * #{forms-variables.$clr-forms-baseline});
+    max-height: forms-variables.$clr-forms-input-wrapper-height;
     display: inline-block;
 
     &::after {
       position: absolute;
       content: '';
       @include mixins.equilateral(forms-variables.$clr-forms-select-caret-size);
-      top: calc(
-        0.5 * calc(4 * #{forms-variables.$clr-forms-baseline} - #{forms-variables.$clr-forms-select-caret-size})
-      );
-      right: forms-variables.$clr-forms-baseline;
-      margin: 0;
+      top: calc((100% - forms-variables.$clr-forms-select-caret-size) / 2);
+      right: density.$clr-base-horizontal-offset-s;
       // Using mask instead of background-image so we can use the CSS properties
       // and support both light / dark themes.
       -webkit-mask: icons.generateCaretIcon();
@@ -95,7 +93,7 @@
 
   .clr-error .clr-select-wrapper::after,
   .clr-success .clr-select-wrapper::after {
-    right: calc(#{forms-variables.$clr-forms-icon-size} + #{forms-variables.$clr-forms-baseline});
+    right: calc(#{forms-variables.$clr-forms-icon-size} + #{density.$clr-base-horizontal-offset-s});
   }
 
   .clr-multiselect-wrapper {
@@ -112,7 +110,7 @@
     padding: 0;
     border: tokens.$cds-alias-object-border-width-100 solid forms-variables.$clr-forms-select-multiple-border-color;
     background: forms-variables.$clr-forms-select-multiple-background-color;
-    border-radius: tokens.$cds-alias-object-border-radius-100;
+    border-radius: density.$clr-base-border-radius-s;
     height: auto;
     min-width: mixins.baselinePx(120);
 
@@ -121,8 +119,11 @@
       background: forms-variables.$clr-forms-select-multiple-background-color;
       border-color: forms-variables.$clr-forms-select-multiple-border-color;
     }
+
     option {
-      padding: calc(#{forms-variables.$clr-forms-baseline} * 0.5) forms-variables.$clr-forms-baseline;
+      @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+      padding: density.$clr-base-vertical-offset-xs density.$clr-base-horizontal-offset-2xl
+        density.$clr-base-vertical-offset-xs density.$clr-base-horizontal-offset-l;
       color: forms-variables.$clr-forms-select-multiple-option-color;
 
       &:checked {

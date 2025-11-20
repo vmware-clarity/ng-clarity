@@ -59,7 +59,7 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
           [attr.aria-label]="fileInput?.selection?.clearFilesButtonLabel"
           (click)="clearSelectedFiles()"
         >
-          <cds-icon shape="times" status="neutral" size="md"></cds-icon>
+          <cds-icon shape="times" status="neutral"></cds-icon>
         </button>
         <cds-icon
           *ngIf="showInvalid"
@@ -118,7 +118,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
   }
 
   protected get disabled() {
-    return this.fileInput.elementRef.nativeElement.disabled;
+    return this.fileInput.elementRef.nativeElement.disabled || (this.control && this.control.disabled);
   }
 
   protected get browseButtonText() {

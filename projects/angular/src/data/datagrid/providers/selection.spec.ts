@@ -5,7 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { fakeAsync, tick } from '@angular/core/testing';
+import { IterableDiffers } from '@angular/core';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
 import { SelectionType } from '../enums/selection-type';
@@ -38,7 +39,17 @@ export default function (): void {
         itemsInstance = new Items(filtersInstance, sortInstance, pageInstance);
         itemsInstance.smartenUp();
         itemsInstance.all = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        selectionInstance = new Selection(itemsInstance, filtersInstance);
+
+        TestBed.configureTestingModule({
+          providers: [
+            IterableDiffers,
+            { provide: Items, useValue: itemsInstance },
+            { provide: FiltersProvider, useValue: filtersInstance },
+            Selection,
+          ],
+        });
+
+        selectionInstance = TestBed.inject(Selection);
       });
 
       afterEach(function () {
@@ -184,7 +195,7 @@ export default function (): void {
         let currentSelection: number[];
         selectionInstance.change.subscribe((items: any) => {
           nbChanges++;
-          currentSelection = items;
+          currentSelection = [...items];
         });
         selectionInstance.setSelected(4, true);
         tick();
@@ -390,7 +401,17 @@ export default function (): void {
         itemsInstance = new Items(filtersInstance, sortInstance, pageInstance);
         itemsInstance.smartenUp();
         itemsInstance.all = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        selectionInstance = new Selection(itemsInstance, filtersInstance);
+
+        TestBed.configureTestingModule({
+          providers: [
+            IterableDiffers,
+            { provide: Items, useValue: itemsInstance },
+            { provide: FiltersProvider, useValue: filtersInstance },
+            Selection,
+          ],
+        });
+
+        selectionInstance = TestBed.inject(Selection);
         selectionInstance.preserveSelection = true;
       });
 
@@ -484,7 +505,17 @@ export default function (): void {
         itemsInstance.smartenUp();
         itemsInstance.all = items;
         pageInstance.size = 3;
-        selectionInstance = new Selection(itemsInstance, filtersInstance);
+
+        TestBed.configureTestingModule({
+          providers: [
+            IterableDiffers,
+            { provide: Items, useValue: itemsInstance },
+            { provide: FiltersProvider, useValue: filtersInstance },
+            Selection,
+          ],
+        });
+
+        selectionInstance = TestBed.inject(Selection);
       });
 
       afterEach(function () {
@@ -545,7 +576,7 @@ export default function (): void {
           const clones = cloneItems();
           itemsInstance.all = clones;
           tick();
-          testSelectedItems(clones, [2]);
+          expect(itemsInstance.trackBy(selectionInstance.currentSingle)).toEqual(3);
         }));
       });
     });
@@ -586,7 +617,16 @@ export default function (): void {
         sortInstance = new Sort(stateDebouncer);
         itemsInstance = new Items(filtersInstance, sortInstance, pageInstance);
 
-        selectionInstance = new Selection(itemsInstance, filtersInstance);
+        TestBed.configureTestingModule({
+          providers: [
+            IterableDiffers,
+            { provide: Items, useValue: itemsInstance },
+            { provide: FiltersProvider, useValue: filtersInstance },
+            Selection,
+          ],
+        });
+
+        selectionInstance = TestBed.inject(Selection);
       });
 
       afterEach(function () {
@@ -603,15 +643,15 @@ export default function (): void {
         it('should support trackBy item id', fakeAsync(() => {
           itemsInstance.trackBy = item => item.id;
           itemsInstance.all = itemsA;
-          tick();
           selectionInstance.setSelected(itemsA[0], true);
-          testSelection(true, false, false);
+          tick();
+          testSelection(true, false, true);
           itemsInstance.all = itemsB;
           tick();
-          testSelection(true, false, false);
+          testSelection(true, false, true);
           itemsInstance.all = itemsC;
           tick();
-          testSelection(false, false, true);
+          testSelection(true, false, true);
           expect(selectionInstance.current[0].modified).toEqual(true);
         }));
 
@@ -633,15 +673,15 @@ export default function (): void {
           pageInstance.current = 1;
           tick();
           selectionInstance.toggleAll();
-          testToggleAllSelection(true, false, false);
+          testToggleAllSelection(true, false, true);
           itemsInstance.all = itemsB;
           pageInstance.current = 2;
           tick();
-          testToggleAllSelection(true, false, false);
+          testToggleAllSelection(true, false, true);
           itemsInstance.all = itemsC;
           pageInstance.current = 1;
           tick();
-          testToggleAllSelection(false, false, true);
+          testToggleAllSelection(true, false, true);
           expect(selectionInstance.current[0].modified).toEqual(true);
         }));
 
@@ -673,10 +713,10 @@ export default function (): void {
           itemsInstance.all = itemsA;
           tick();
           selectionInstance.currentSingle = itemsA[0];
-          testSelection(true, false, false);
+          testSelection(true, false, true);
           itemsInstance.all = itemsB;
           tick();
-          testSelection(true, false, false);
+          testSelection(true, false, true);
           // itemsInstance.all = itemsC;
           // tick();
           // testSelection(false, false, true);
@@ -711,7 +751,17 @@ export default function (): void {
         itemsInstance = new Items(filtersInstance, sortInstance, pageInstance);
         itemsInstance.smartenUp();
         itemsInstance.all = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        selectionInstance = new Selection(itemsInstance, filtersInstance);
+
+        TestBed.configureTestingModule({
+          providers: [
+            IterableDiffers,
+            { provide: Items, useValue: itemsInstance },
+            { provide: FiltersProvider, useValue: filtersInstance },
+            Selection,
+          ],
+        });
+
+        selectionInstance = TestBed.inject(Selection);
       });
 
       afterEach(function () {
@@ -776,19 +826,21 @@ export default function (): void {
         expect(selectionInstance.isLocked(4)).toBe(true);
       });
 
-      it('should remove locked item when is no longer part from the items list and type is Single', function () {
+      it('should remove locked item when is no longer part from the items list and type is Single', fakeAsync(() => {
         selectionInstance.selectionType = SelectionType.Single;
         selectionInstance.lockItem(4, true);
         itemsInstance.all = [5, 6, 7];
+        tick(0);
         expect(selectionInstance.isLocked(4)).toBe(false);
-      });
+      }));
 
-      it('should remove locked item when is no longer part from the items list and type is Multi', function () {
+      it('should remove locked item when is no longer part from the items list and type is Multi', fakeAsync(() => {
         selectionInstance.selectionType = SelectionType.Multi;
         selectionInstance.lockItem(6, true);
         itemsInstance.all = [5, 7, 8];
+        tick(0);
         expect(selectionInstance.isLocked(6)).toBe(false);
-      });
+      }));
 
       it('should use trackBy to find already locked items when the list is replaced (integer)', function () {
         selectionInstance.selectionType = SelectionType.Multi;

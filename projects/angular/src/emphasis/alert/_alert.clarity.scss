@@ -11,6 +11,8 @@
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use 'variables.alert' as alert-variables;
 @use '../../button/buttons.clarity';
+@use '../../utils/variables/variables.density' as density;
+
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.alert');
@@ -105,27 +107,26 @@
   $alertTypes: info, warning, danger, success, neutral;
 
   .alert-icon {
-    @include mixins.min-equilateral(tokens.$cds-global-space-9);
+    @include mixins.min-equilateral(density.$clr-base-icon-size-l);
   }
 
   .alert-icon-wrapper {
     display: inline-flex;
-    flex: 0 0 tokens.$cds-global-space-9;
+    flex: 0 0 density.$clr-base-icon-size-l;
   }
 
   .alert-item {
     flex: 1 1 auto;
     display: flex;
     flex-wrap: nowrap;
-    gap: tokens.$cds-global-space-5;
+    gap: density.$clr-base-gap-s;
     min-height: alert-variables.$clr-alert-item-min-height;
   }
 
   .alert-items {
     flex: 1 1 auto;
     flex-flow: column nowrap;
-    padding: tokens.$cds-global-space-5 0;
-    gap: tokens.$cds-global-space-5;
+    gap: density.$clr-base-gap-s;
     display: flex;
   }
 
@@ -137,20 +138,14 @@
   }
 
   .alert {
-    @include mixins.generate-typography-token(
-      'SECONDARY-13-RG-STD',
-      (
-        font-size: alert-variables.$clr-alert-font-size,
-        letter-spacing: alert-variables.$clr-alert-letter-spacing,
-      )
-    );
+    @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
     width: auto;
     border-radius: alert-variables.$clr-alert-borderradius;
-    padding: 0 tokens.$cds-global-space-5;
-    gap: tokens.$cds-global-space-6;
+    padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
+    gap: density.$clr-base-horizontal-offset-m;
 
     // To be deleted with refactoring task
     margin-top: alert-variables.$clr-alert-top-margin;
@@ -181,7 +176,7 @@
       > span,
       .alert-text,
       .alert-actions {
-        padding: tokens.$cds-global-space-2 0;
+        padding: density.$clr-base-vertical-offset-multi-row-inline-s 0;
       }
 
       .clr-icon {
@@ -201,15 +196,8 @@
     .alert-actions {
       flex: 0 0 auto;
       white-space: nowrap;
-
-      > {
-        .alert-action,
-        .dropdown {
-          &:not(:last-child) {
-            margin-right: tokens.$cds-global-space-5;
-          }
-        }
-      }
+      display: flex;
+      gap: density.$clr-base-gap-s;
 
       .dropdown-item {
         color: dropdown-variables.$clr-dropdown-text-color;
@@ -235,50 +223,42 @@
 
     .close {
       order: 100;
-      flex: 0 0 tokens.$cds-global-space-9;
-      @include mixins.equilateral(tokens.$cds-global-space-9);
-      margin: tokens.$cds-global-space-5 0;
+      flex: 0 0 density.$clr-base-icon-size-l;
+      @include mixins.equilateral(density.$clr-base-icon-size-l);
 
-      cds-icon,
+      cds-icon:not([size]),
       clr-icon {
-        @include mixins.min-equilateral(tokens.$cds-global-space-9);
+        @include mixins.min-equilateral(density.$clr-base-icon-size-l);
       }
     }
 
     .alert-spinner.spinner-inline {
-      @include mixins.min-equilateral(tokens.$cds-global-space-9);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-l);
       margin: 0;
 
       &::before,
       &::after {
-        @include mixins.min-equilateral(tokens.$cds-global-space-9);
-      }
-    }
-
-    .close ~ .alert-item > .alert-actions {
-      padding-right: tokens.$cds-global-space-6;
-
-      & > .alert-action:last-child {
-        margin-right: tokens.$cds-global-space-6;
+        @include mixins.min-equilateral(density.$clr-base-icon-size-l);
       }
     }
 
     &.alert-lightweight {
       background: none;
       border: none;
-      .alert-items {
-        padding: 0;
-        .alert-item {
-          min-height: 0;
-          margin: 0;
+      padding-top: 0;
+      padding-bottom: 0;
 
-          > span,
-          .alert-actions,
-          .alert-text {
-            @include mixins.generate-typography-token('BODY-14-RG-STD');
-          }
+      .alert-items .alert-item {
+        margin: 0;
+
+        > span,
+        .alert-actions,
+        .alert-text {
+          padding: 0;
+          @include mixins.generate-typography-token('BODY-14-RG-STD');
         }
       }
+
       .close {
         display: none;
       }
@@ -300,6 +280,13 @@
     border: none;
     border-radius: 0;
     overflow-y: auto;
+    min-height: alert-variables.$clr-alert-min-height;
+    padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-m;
+
+    .alert-actions {
+      align-self: center;
+      align-items: center;
+    }
 
     @include generateAlertType(app-info);
 
@@ -351,56 +338,54 @@
 
     .alert-items {
       align-items: center;
-      padding: tokens.$cds-global-space-4;
     }
 
     .alert-item {
       justify-content: center;
       align-items: center;
-      min-height: tokens.$cds-global-space-9;
 
+      > span,
+      .alert-text,
       .alert-actions {
+        @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
         padding: 0;
       }
-    }
-
-    .close {
-      margin: var(--cds-global-space-4) 0;
     }
   }
 
   .alert-sm {
-    .alert-items .alert-item {
-      min-height: tokens.$cds-global-space-7;
+    padding-top: density.$clr-base-vertical-offset-xs;
+    padding-bottom: density.$clr-base-vertical-offset-xs;
+
+    .alert-items {
+      gap: 0;
+
+      .alert-item {
+        min-height: density.$clr-base-row-height-xs;
+      }
     }
 
     .alert-icon-wrapper {
-      display: flex;
-      flex-basis: tokens.$cds-global-space-7;
-      height: tokens.$cds-global-space-7;
+      flex-basis: density.$clr-base-icon-size-s;
+      padding: density.$clr-base-vertical-offset-multi-row-inline-s 0;
     }
 
     .alert-icon {
-      @include mixins.min-equilateral(tokens.$cds-global-space-7);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
     }
 
     .alert-item > span,
     .alert-item .alert-text,
     .alert-item .alert-actions {
       @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
-      padding: 0;
-    }
-
-    .close {
-      margin: tokens.$cds-global-space-3 0;
     }
 
     .alert-spinner.spinner-inline {
-      @include mixins.min-equilateral(tokens.$cds-global-space-7);
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
 
       &::before,
       &::after {
-        @include mixins.min-equilateral(tokens.$cds-global-space-7);
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       }
     }
 
@@ -409,20 +394,23 @@
       border: none;
 
       .alert-items {
-        gap: tokens.$cds-global-space-3;
+        gap: density.$clr-base-gap-xs;
 
         .alert-item {
-          padding: tokens.$cds-global-space-3 0;
+          align-items: center;
+          min-height: density.$clr-base-row-height-s;
+          gap: density.$clr-base-gap-xs;
 
           > span,
           .alert-actions,
           .alert-text {
-            @include mixins.generate-typography-token('CAPTION-LG-11');
+            @include mixins.generate-typography-token('CAPTION-LG-11-STD');
           }
 
           .alert-icon-wrapper {
-            flex-basis: tokens.$cds-global-space-7;
-            height: tokens.$cds-global-space-7;
+            flex-basis: density.$clr-base-icon-size-s;
+            height: density.$clr-base-icon-size-s;
+            padding: 0;
           }
         }
       }
@@ -454,7 +442,7 @@
 
     .alert-app-level {
       .alert-actions {
-        margin-left: tokens.$cds-global-space-12;
+        margin-left: density.$clr-base-horizontal-offset-2xl;
       }
     }
   }
@@ -497,6 +485,8 @@
 
     min-height: alert-variables.$clr-alert-min-height;
     flex: 1 0 var(--clr-app-alert-pager-width);
+    display: flex;
+    justify-content: center;
   }
 
   .alerts-pager-button {
@@ -505,11 +495,16 @@
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    height: var(--clr-btn-appearance-standard-height);
+    justify-content: center;
+    @include mixins.equilateral(density.$clr-base-icon-size-l);
 
     cds-icon,
     clr-icon {
       color: var(--clr-app-alert-pager-text-color);
+
+      &:not([size]) {
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+      }
 
       @each $alertType in $alertTypes {
         .alert-#{$alertType} & {
@@ -525,12 +520,19 @@
     height: 100%;
     align-items: center;
     text-align: center;
-    padding: 0 tokens.$cds-global-space-9;
+    gap: density.$clr-base-gap-s;
+    justify-content: space-between;
+    padding: 0 density.$clr-base-horizontal-offset-l;
+
+    > .alerts-pager-text {
+      @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
+      min-width: mixins.baselinePx(40);
+    }
 
     > * {
       display: inline-flex;
       justify-content: center;
-      flex: 1 1 auto;
+      flex: 0 1 auto;
     }
   }
 }

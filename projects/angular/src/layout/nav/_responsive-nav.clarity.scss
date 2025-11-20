@@ -17,6 +17,7 @@
 @use '../tabs/tabs.clarity' as tabs;
 @use 'variables.subnav' as nav-variables;
 @use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
 
 @mixin sliding-nav-positioning($top: 0, $right: auto, $bottom: 0, $left: 0) {
   display: flex;
@@ -99,7 +100,7 @@
 
 @include mixins.exports('responsive-nav.clarity') {
   .clr-nav-close {
-    margin: tokens.$cds-global-space-7;
+    margin: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-l;
     background: none;
     border: none;
     color: var(--color);
@@ -201,10 +202,12 @@
         border: none;
         background: none;
         cursor: pointer;
-        font-size: tokens.$cds-global-space-9;
         @include mixins.equilateral(header-variables.$clr-header-height);
-        padding: 0 0 tokens.$cds-global-space-3 0;
-        //4px to vertically align the trigger lines. display flex was not working on all browsers.
+
+        // TODO: replace `hamburger` and `dots` to use CDS-ICON `bars` and `ellipsis-vertical` respectively.
+        // 2px to vertically align the trigger lines. display flex was not working on all browsers.
+        padding: 0 0 tokens.$cds-global-space-2 0;
+
         text-align: center;
         white-space: nowrap;
 
@@ -254,10 +257,10 @@
         // TODO: more specificity in classname is preferable to nesting...
         .nav {
           padding-left: 0;
-          gap: tokens.$cds-global-space-5;
+          gap: density.$clr-base-gap-s;
 
           .nav-item {
-            height: tokens.$cds-global-space-11;
+            height: density.$clr-base-row-height-m;
             margin-right: 0;
           }
 
@@ -296,10 +299,7 @@
         position: relative;
 
         &::after {
-          position: absolute;
-          content: '';
           @include header.header-section-divider();
-          left: 0;
         }
       }
 
@@ -312,7 +312,7 @@
 
         .header-hamburger-trigger + .branding {
           padding-left: 0;
-          margin-left: calc(-1 * tokens.$cds-global-space-5);
+          margin-left: calc(-1 * density.$clr-base-horizontal-offset-m);
 
           //TODO: deprecate .clr-icon, .logo
           .clr-icon,
@@ -350,6 +350,8 @@
           .header-nav.clr-nav-level-2 {
             .nav-link {
               flex: 0 0 auto;
+              height: unset;
+              width: 100%;
 
               .nav-icon,
               .fa {
@@ -358,12 +360,9 @@
 
               .nav-text {
                 display: inline-block;
-                padding: tokens.$cds-global-space-4 0 tokens.$cds-global-space-4 tokens.$cds-global-space-9;
                 white-space: normal;
                 // color, line-height and font-weight should be removed or refactored in separate JIRA
                 color: responsive-nav-variables.$clr-sliding-panel-text-color;
-                line-height: tokens.$cds-global-space-9;
-                font-weight: normal;
               }
 
               opacity: 1;
@@ -396,7 +395,7 @@
             width: responsive-nav-variables.$clr-sliding-panel-width;
             max-width: responsive-nav-variables.$clr-sliding-panel-width;
             z-index: responsive-nav-variables.$clr-sliding-panel-z-index + 1;
-            padding-left: tokens.$cds-global-space-9;
+            padding-left: density.$clr-base-horizontal-offset-2xl;
 
             & > .nav-link {
               overflow: hidden;
@@ -434,7 +433,7 @@
         .subnav.clr-nav-level-1,
         .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
-          padding-top: calc(header-variables.$clr-header-height + tokens.$cds-global-space-9);
+          padding-top: calc(header-variables.$clr-header-height + density.$clr-base-gap-xl);
           transform: translateX(0);
           transition: responsive-nav-variables.$clr-sliding-panel-animation;
         }
@@ -452,7 +451,7 @@
         .header-nav.clr-nav-level-2,
         .subnav.clr-nav-level-2,
         .sub-nav.clr-nav-level-2 {
-          padding-top: tokens.$cds-global-space-9;
+          padding-top: density.$clr-base-vertical-offset-2xl;
         }
 
         .clr-nav-close {

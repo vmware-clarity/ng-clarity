@@ -8,7 +8,7 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
 @use 'variables.dropdown' as dropdown-variables;
-@use '../../layout/density/' as density;
+@use '../../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @mixin generate-dropdown-menu() {
@@ -32,7 +32,7 @@
 
   box-shadow: tokens.$cds-alias-object-shadow-200;
 
-  margin-top: tokens.$cds-global-space-2;
+  margin-top: density.$clr-base-vertical-offset-2xs;
   padding: density.$clr-base-vertical-offset-l density.$clr-base-layout-space-4xs;
   visibility: hidden;
   z-index: map.get(variables.$clr-layers, dropdown-menu);
@@ -53,7 +53,7 @@
   display: flex;
   gap: density.$clr-base-gap-xs;
   align-items: center;
-  height: density.$clr-base-row-height-s;
+  height: auto;
   margin: 0;
   width: 100%;
   text-transform: none;
@@ -102,10 +102,27 @@
   }
 }
 
+@mixin generate-dropdown-header() {
+  display: block;
+  color: dropdown-variables.$clr-dropdown-header-color;
+  @include mixins.overflow-ellipsis(true);
+
+  // Typography
+  @include mixins.generate-typography-token(
+    'SECONDARY-13-MD-EXP',
+    (
+      font-weight: dropdown-variables.$clr-dropdown-header-font-weight,
+    )
+  );
+
+  padding: 0 density.$clr-base-horizontal-offset-l;
+  margin: 0;
+}
+
 @mixin generate-dropdown-item-height() {
   padding: 0 density.$clr-base-horizontal-offset-2xl 0 density.$clr-base-horizontal-offset-l;
 
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
-    padding: density.$clr-base-horizontal-offset-s density.$clr-base-horizontal-offset-2xl;
+    padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-2xl;
   }
 }
