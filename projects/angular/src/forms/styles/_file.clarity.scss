@@ -10,8 +10,8 @@
  * The file input component uses .clr-file-input-wrapper instead due to differences from these styles.
  */
 
-@use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
+@use '../../styles/mixins';
+@use '../../styles/variables/variables.global';
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
 

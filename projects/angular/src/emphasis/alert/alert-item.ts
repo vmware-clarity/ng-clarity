@@ -20,7 +20,7 @@ import { AlertIconAndTypesService } from './providers/icon-and-types.service';
         <cds-icon
           class="alert-icon"
           role="img"
-          [attr.shape]="iconService.alertIconShape"
+          [shape]="iconService.alertIconShape"
           [attr.aria-label]="iconService.alertIconTitle"
         ></cds-icon>
       }

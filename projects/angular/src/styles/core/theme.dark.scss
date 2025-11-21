@@ -1,0 +1,266 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use './tokens/variables.tokens' as tokens;
+
+[cds-theme~='dark'] {
+  // typography
+  --cds-alias-typography-color-100: #{tokens.$cds-global-color-black};
+  --cds-alias-typography-color-200: #{tokens.$cds-global-color-construction-300};
+  --cds-alias-typography-color-300: #{tokens.$cds-global-color-construction-200};
+  --cds-alias-typography-color-400: #{tokens.$cds-global-color-construction-100};
+  --cds-alias-typography-color-450: #{tokens.$cds-global-color-construction-50};
+  --cds-alias-typography-color-500: #{tokens.$cds-global-color-white};
+  --cds-alias-typography-disabled-button: #{tokens.$cds-global-color-construction-900};
+  --cds-alias-typography-disabled: #{tokens.$cds-global-color-construction-500};
+  --cds-alias-typography-info-hover: #{tokens.$cds-global-color-blue-200};
+  --cds-alias-typography-success-hover: #{tokens.$cds-global-color-green-400};
+  --cds-alias-typography-warning-hover: #{tokens.$cds-global-color-yellow-600};
+  --cds-alias-typography-danger-hover: #{tokens.$cds-global-color-red-400};
+  --cds-alias-typography-neutral-hover: #{tokens.$cds-global-color-construction-200};
+  --cds-alias-typography-link-on-colorbg: #{tokens.$cds-global-color-construction-1000};
+  --cds-alias-typography-link-color: #{tokens.$cds-global-color-blue-400};
+  --cds-alias-typography-link-color-hover: #{tokens.$cds-global-color-blue-200};
+  --cds-alias-typography-link-color-visited: #{tokens.$cds-global-color-violet-300};
+  --cds-alias-typography-link-color-visited-hover: #{tokens.$cds-global-color-violet-200};
+  --cds-alias-typography-link-color-active: #{tokens.$cds-global-color-red-600};
+
+  // object
+  --cds-alias-object-app-background: #{tokens.$cds-global-color-construction-1000};
+  --cds-alias-object-container-backdrop-background: #{tokens.$cds-alias-object-opacity-300};
+  --cds-alias-object-container-background: #{tokens.$cds-global-color-construction-900};
+  --cds-alias-object-container-background-tint: #{tokens.$cds-global-color-construction-1000};
+  --cds-alias-object-container-background-shade: #{tokens.$cds-global-color-construction-800};
+  --cds-alias-object-container-background-dark: #{tokens.$cds-global-color-construction-1100};
+  --cds-alias-object-container-background-inverse: #{tokens.$cds-global-color-construction-200};
+  --cds-alias-object-container-background-inverse-tint: #{tokens.$cds-global-color-construction-100};
+  --cds-alias-object-container-background-inverse-shade: #{tokens.$cds-global-color-construction-300};
+  --cds-alias-object-container-border-color: #{tokens.$cds-global-color-black};
+  --cds-alias-object-overlay-background: #{tokens.$cds-global-color-construction-900};
+  --cds-alias-object-border-color: #{tokens.$cds-global-color-construction-500};
+  --cds-alias-object-border-color-tint: #{tokens.$cds-global-color-construction-400};
+  --cds-alias-object-border-color-shade: #{tokens.$cds-global-color-construction-600};
+  --cds-alias-object-shadow-100: 0 #{tokens.$cds-global-space-1} #{tokens.$cds-global-space-2} 0
+    #{tokens.$cds-alias-object-opacity-300};
+  --cds-alias-object-shadow-200: 0 #{tokens.$cds-global-space-1} #{tokens.$cds-global-space-2} 0
+    #{tokens.$cds-alias-object-opacity-200};
+  --cds-alias-object-shadow-300: 0 #{tokens.$cds-global-space-1} #{tokens.$cds-global-space-2} 0
+    #{tokens.$cds-alias-object-opacity-100};
+  --cds-alias-object-interaction-color: #{tokens.$cds-global-color-construction-200};
+  --cds-alias-object-interaction-color-hover: #{tokens.$cds-global-color-construction-50};
+  --cds-alias-object-interaction-color-active: #{tokens.$cds-global-color-construction-100};
+  --cds-alias-object-interaction-color-selected: #{tokens.$cds-global-color-construction-200};
+  --cds-alias-object-interaction-color-disabled: #{tokens.$cds-global-color-construction-600};
+  --cds-alias-object-interaction-background: #{tokens.$cds-global-color-construction-1000};
+  --cds-alias-object-interaction-background-hover: #{tokens.$cds-global-color-construction-800};
+  --cds-alias-object-interaction-background-active: #{tokens.$cds-global-color-construction-600};
+  --cds-alias-object-interaction-background-selected: #{tokens.$cds-global-color-blue-900};
+  --cds-alias-object-interaction-background-selected-active: #{tokens.$cds-global-color-construction-600};
+  --cds-alias-object-interaction-background-selected-hover: #{tokens.$cds-global-color-construction-700};
+  --cds-alias-object-interaction-background-disabled: #{tokens.$cds-global-color-construction-700};
+  --cds-alias-object-interaction-background-highlight: #{tokens.$cds-global-color-blue-400};
+  --cds-alias-object-interaction-background-shade: #{tokens.$cds-global-color-construction-1100};
+  --cds-alias-object-interaction-background-shade-hover: #{tokens.$cds-global-color-construction-600};
+  --cds-alias-object-interaction-background-shade-active: #{tokens.$cds-global-color-construction-800};
+  --cds-alias-object-interaction-background-shade-selected: #{tokens.$cds-global-color-construction-700};
+  --cds-alias-object-interaction-background-shade-selected-hover: #{tokens.$cds-global-color-construction-800};
+  --cds-alias-object-interaction-background-shade-selected-active: #{tokens.$cds-global-color-construction-600};
+  --cds-alias-object-interaction-border-color: #{tokens.$cds-global-color-construction-300};
+  --cds-alias-object-interaction-info-hover: #{tokens.$cds-global-color-blue-300};
+  --cds-alias-object-interaction-info-active: #{tokens.$cds-global-color-blue-500};
+  --cds-alias-object-interaction-info-selected: #{tokens.$cds-global-color-blue-500};
+  --cds-alias-object-interaction-info-click: #{tokens.$cds-global-color-blue-500}; // deprecated in favor of active. To be removed in next major release.
+  --cds-alias-object-interaction-info-secondary-hover: #{tokens.$cds-global-color-blue-1000};
+  --cds-alias-object-interaction-success-hover: #{tokens.$cds-global-color-green-400};
+  --cds-alias-object-interaction-success-active: #{tokens.$cds-global-color-green-600};
+  --cds-alias-object-interaction-success-click: #{tokens.$cds-global-color-green-600}; // deprecated in favor of active. To be removed in next major release.
+  --cds-alias-object-interaction-success-secondary-hover: #{tokens.$cds-global-color-green-1000};
+  --cds-alias-object-interaction-warning-hover: #{tokens.$cds-global-color-yellow-300};
+  --cds-alias-object-interaction-warning-active: #{tokens.$cds-global-color-yellow-500};
+  --cds-alias-object-interaction-warning-click: #{tokens.$cds-global-color-yellow-500}; // deprecated in favor of active. To be removed in next major release.
+  --cds-alias-object-interaction-warning-secondary-hover: #{tokens.$cds-global-color-yellow-1000};
+  --cds-alias-object-interaction-danger-hover: #{tokens.$cds-global-color-red-400};
+  --cds-alias-object-interaction-danger-active: #{tokens.$cds-global-color-red-600};
+  --cds-alias-object-interaction-danger-click: #{tokens.$cds-global-color-red-600}; // deprecated in favor of active. To be removed in next major release.
+  --cds-alias-object-interaction-danger-secondary-hover: #{tokens.$cds-global-color-red-1000};
+  --cds-alias-object-interaction-neutral-hover: #{tokens.$cds-global-color-construction-200};
+  --cds-alias-object-interaction-neutral-active: #{tokens.$cds-global-color-construction-400};
+  --cds-alias-object-interaction-neutral-click: #{tokens.$cds-global-color-construction-400}; // deprecated in favor of active. To be removed in next major release.
+  --cds-alias-object-interaction-neutral-secondary-hover: #{tokens.$cds-global-color-construction-800};
+  --cds-alias-object-interaction-inverse-hover: #{tokens.$cds-global-color-construction-700};
+  --cds-alias-object-interaction-inverse-active: #{tokens.$cds-global-color-construction-800};
+  --cds-alias-object-interaction-inverse-click: #{tokens.$cds-global-color-construction-800}; // deprecated in favor of active. To be removed in next major release.
+
+  // skeleton loading gradient
+  --cds-alias-object-skeleton-loading-gradient: linear-gradient(
+    90deg,
+    #{tokens.$cds-alias-object-interaction-background} 0%,
+    #{tokens.$cds-global-color-construction-500} 35%,
+    #{tokens.$cds-global-color-construction-400} 65%,
+    #{tokens.$cds-alias-object-interaction-background} 100%
+  );
+
+  // status
+  --cds-alias-status-tint: transparent;
+  --cds-alias-status-info: #{tokens.$cds-global-color-blue-400};
+  --cds-alias-status-info-tint: #{tokens.$cds-global-color-blue-800};
+  --cds-alias-status-info-shade: #{tokens.$cds-global-color-blue-500};
+  --cds-alias-status-success: #{tokens.$cds-global-color-green-500};
+  --cds-alias-status-success-tint: #{tokens.$cds-global-color-green-800};
+  --cds-alias-status-success-shade: #{tokens.$cds-global-color-green-600};
+  --cds-alias-status-warning: #{tokens.$cds-global-color-ochre-400};
+  --cds-alias-status-warning-tint: #{tokens.$cds-global-color-ochre-900};
+  --cds-alias-status-warning-shade: #{tokens.$cds-global-color-ochre-500};
+  --cds-alias-status-warning-dark: #{tokens.$cds-global-color-ochre-600};
+  --cds-alias-status-danger: #{tokens.$cds-global-color-red-500};
+  --cds-alias-status-danger-tint: #{tokens.$cds-global-color-red-900};
+  --cds-alias-status-danger-shade: #{tokens.$cds-global-color-red-600};
+  --cds-alias-status-danger-dark: #{tokens.$cds-global-color-red-900};
+  --cds-alias-status-neutral: #{tokens.$cds-global-color-construction-300};
+  --cds-alias-status-neutral-tint: #{tokens.$cds-global-color-construction-700};
+  --cds-alias-status-neutral-shade: #{tokens.$cds-global-color-construction-400};
+  --cds-alias-status-disabled: #{tokens.$cds-global-color-construction-600};
+  --cds-alias-status-disabled-tint: #{tokens.$cds-global-color-construction-700};
+  --cds-alias-status-disabled-shade: #{tokens.$cds-global-color-construction-500};
+
+  //utility
+  --cds-alias-utility-gray: #{tokens.$cds-global-color-construction-300};
+  --cds-alias-utility-gray-tint: #{tokens.$cds-global-color-construction-1000};
+  --cds-alias-utility-gray-shade: #{tokens.$cds-global-color-construction-200};
+  --cds-alias-utility-blue: #{tokens.$cds-global-color-blue-300};
+  --cds-alias-utility-blue-tint: #{tokens.$cds-global-color-blue-1000};
+  --cds-alias-utility-blue-shade: #{tokens.$cds-global-color-blue-200};
+  --cds-alias-utility-light-blue: #{tokens.$cds-global-color-blue-700};
+  --cds-alias-utility-light-blue-tint: #{tokens.$cds-global-color-blue-1000};
+  --cds-alias-utility-light-blue-shade: #{tokens.$cds-global-color-blue-500};
+  --cds-alias-utility-dark-blue: #{tokens.$cds-global-color-azure-200};
+  --cds-alias-utility-dark-blue-tint: #{tokens.$cds-global-color-azure-1000};
+  --cds-alias-utility-dark-blue-shade: #{tokens.$cds-global-color-azure-50};
+  --cds-alias-utility-green: #{tokens.$cds-global-color-green-400};
+  --cds-alias-utility-green-tint: #{tokens.$cds-global-color-green-1000};
+  --cds-alias-utility-green-shade: #{tokens.$cds-global-color-green-200};
+  --cds-alias-utility-yellow: #{tokens.$cds-global-color-ochre-400};
+  --cds-alias-utility-yellow-tint: #{tokens.$cds-global-color-ochre-900};
+  --cds-alias-utility-yellow-shade: #{tokens.$cds-global-color-ochre-300};
+  --cds-alias-utility-red: #{tokens.$cds-global-color-red-500};
+  --cds-alias-utility-red-tint: #{tokens.$cds-global-color-red-1000};
+  --cds-alias-utility-red-shade: #{tokens.$cds-global-color-red-200};
+  --cds-alias-utility-tangerine: #{tokens.$cds-global-color-tangerine-600};
+  --cds-alias-utility-tangerine-tint: #{tokens.$cds-global-color-tangerine-1000};
+  --cds-alias-utility-tangerine-shade: #{tokens.$cds-global-color-tangerine-400};
+  --cds-alias-utility-violet: #{tokens.$cds-global-color-violet-400};
+  --cds-alias-utility-violet-tint: #{tokens.$cds-global-color-violet-1000};
+  --cds-alias-utility-violet-shade: #{tokens.$cds-global-color-violet-200};
+
+  // viz
+  --cds-alias-viz-border: #{tokens.$cds-global-color-cool-gray-50};
+  --cds-alias-viz-general-1: #{tokens.$cds-global-color-blue-400};
+  --cds-alias-viz-general-1-blue: #{tokens.$cds-global-color-blue-400};
+  --cds-alias-viz-general-2: #{tokens.$cds-global-color-violet-500};
+  --cds-alias-viz-general-2-violet: #{tokens.$cds-global-color-violet-400};
+  --cds-alias-viz-general-3: #{tokens.$cds-global-color-aqua-200};
+  --cds-alias-viz-general-3-aqua: #{tokens.$cds-global-color-aqua-200};
+  --cds-alias-viz-general-4: #{tokens.$cds-global-color-lavender-400};
+  --cds-alias-viz-general-4-lime: #{tokens.$cds-global-color-lime-300};
+  --cds-alias-viz-general-5: #{tokens.$cds-global-color-pink-400};
+  --cds-alias-viz-general-5-blue: #{tokens.$cds-global-color-blue-200};
+  --cds-alias-viz-general-6: #{tokens.$cds-global-color-lime-400};
+  --cds-alias-viz-general-6-aqua: #{tokens.$cds-global-color-aqua-50};
+  --cds-alias-viz-general-7: #{tokens.$cds-global-color-lavender-300};
+  --cds-alias-viz-general-7-violet: #{tokens.$cds-global-color-violet-200};
+  --cds-alias-viz-general-8: #{tokens.$cds-global-color-aqua-400};
+  --cds-alias-viz-general-8-lime: #{tokens.$cds-global-color-lime-100};
+  --cds-alias-viz-general-9: #{tokens.$cds-global-color-lime-200};
+  --cds-alias-viz-general-9-blue: #{tokens.$cds-global-color-blue-300};
+  --cds-alias-viz-general-10: #{tokens.$cds-global-color-violet-300};
+  --cds-alias-viz-general-10-lime: #{tokens.$cds-global-color-lime-50};
+  --cds-alias-viz-general-11: #{tokens.$cds-global-color-jade-400};
+  --cds-alias-viz-general-11-aqua: #{tokens.$cds-global-color-aqua-400};
+  --cds-alias-viz-general-12: #{tokens.$cds-global-color-azure-100};
+  --cds-alias-viz-general-12-violet: #{tokens.$cds-global-color-violet-50};
+  --cds-alias-viz-general-13: #{tokens.$cds-global-color-violet-400};
+  --cds-alias-viz-general-13-violet: #{tokens.$cds-global-color-violet-300};
+  --cds-alias-viz-general-14: #{tokens.$cds-global-color-green-200};
+  --cds-alias-viz-general-14-blue: #{tokens.$cds-global-color-blue-50};
+  --cds-alias-viz-general-15: #{tokens.$cds-global-color-pink-300};
+  --cds-alias-viz-general-15-aqua: #{tokens.$cds-global-color-aqua-300};
+  --cds-alias-viz-general-16: #{tokens.$cds-global-color-azure-300};
+  --cds-alias-viz-general-16-lime: #{tokens.$cds-global-color-lime-200};
+  --cds-alias-viz-severity-neutral: #{tokens.$cds-global-color-construction-300};
+  --cds-alias-viz-severity-success: #{tokens.$cds-global-color-green-500};
+  --cds-alias-viz-severity-warning: #{tokens.$cds-global-color-yellow-300};
+  --cds-alias-viz-severity-warning-light: #{tokens.$cds-global-color-yellow-300};
+  --cds-alias-viz-severity-immediate: #{tokens.$cds-global-color-tangerine-400};
+  --cds-alias-viz-severity-critical: #{tokens.$cds-global-color-red-700};
+  --cds-alias-viz-severity-free-space-fill: #{tokens.$cds-global-color-construction-800};
+  --cds-alias-viz-sequential-blue-50: #{tokens.$cds-global-color-blue-1000};
+  --cds-alias-viz-sequential-blue-100: #{tokens.$cds-global-color-blue-900};
+  --cds-alias-viz-sequential-blue-200: #{tokens.$cds-global-color-blue-800};
+  --cds-alias-viz-sequential-blue-300: #{tokens.$cds-global-color-blue-700};
+  --cds-alias-viz-sequential-blue-400: #{tokens.$cds-global-color-blue-600};
+  --cds-alias-viz-sequential-blue-500: #{tokens.$cds-global-color-blue-500};
+  --cds-alias-viz-sequential-blue-600: #{tokens.$cds-global-color-blue-400};
+  --cds-alias-viz-sequential-blue-700: #{tokens.$cds-global-color-blue-300};
+  --cds-alias-viz-sequential-blue-800: #{tokens.$cds-global-color-blue-200};
+  --cds-alias-viz-sequential-blue-900: #{tokens.$cds-global-color-blue-100};
+  --cds-alias-viz-sequential-blue-1000: #{tokens.$cds-global-color-blue-50};
+  --cds-alias-viz-sequential-violet-50: #{tokens.$cds-global-color-violet-1000};
+  --cds-alias-viz-sequential-violet-100: #{tokens.$cds-global-color-violet-900};
+  --cds-alias-viz-sequential-violet-200: #{tokens.$cds-global-color-violet-800};
+  --cds-alias-viz-sequential-violet-300: #{tokens.$cds-global-color-violet-700};
+  --cds-alias-viz-sequential-violet-400: #{tokens.$cds-global-color-violet-600};
+  --cds-alias-viz-sequential-violet-500: #{tokens.$cds-global-color-violet-500};
+  --cds-alias-viz-sequential-violet-600: #{tokens.$cds-global-color-violet-400};
+  --cds-alias-viz-sequential-violet-700: #{tokens.$cds-global-color-violet-300};
+  --cds-alias-viz-sequential-violet-800: #{tokens.$cds-global-color-violet-200};
+  --cds-alias-viz-sequential-violet-900: #{tokens.$cds-global-color-violet-100};
+  --cds-alias-viz-sequential-violet-1000: #{tokens.$cds-global-color-violet-50};
+  --cds-alias-viz-sequential-ochre-50: #{tokens.$cds-global-color-ochre-1000};
+  --cds-alias-viz-sequential-ochre-100: #{tokens.$cds-global-color-ochre-900};
+  --cds-alias-viz-sequential-ochre-200: #{tokens.$cds-global-color-ochre-800};
+  --cds-alias-viz-sequential-ochre-300: #{tokens.$cds-global-color-ochre-700};
+  --cds-alias-viz-sequential-ochre-400: #{tokens.$cds-global-color-ochre-600};
+  --cds-alias-viz-sequential-ochre-500: #{tokens.$cds-global-color-ochre-500};
+  --cds-alias-viz-sequential-ochre-600: #{tokens.$cds-global-color-ochre-400};
+  --cds-alias-viz-sequential-ochre-700: #{tokens.$cds-global-color-ochre-300};
+  --cds-alias-viz-sequential-ochre-800: #{tokens.$cds-global-color-ochre-200};
+  --cds-alias-viz-sequential-ochre-900: #{tokens.$cds-global-color-ochre-100};
+  --cds-alias-viz-sequential-ochre-1000: #{tokens.$cds-global-color-ochre-50};
+  --cds-alias-viz-sequential-aqua-50: #{tokens.$cds-global-color-aqua-1000};
+  --cds-alias-viz-sequential-aqua-100: #{tokens.$cds-global-color-aqua-900};
+  --cds-alias-viz-sequential-aqua-200: #{tokens.$cds-global-color-aqua-800};
+  --cds-alias-viz-sequential-aqua-300: #{tokens.$cds-global-color-aqua-700};
+  --cds-alias-viz-sequential-aqua-400: #{tokens.$cds-global-color-aqua-600};
+  --cds-alias-viz-sequential-aqua-500: #{tokens.$cds-global-color-aqua-500};
+  --cds-alias-viz-sequential-aqua-600: #{tokens.$cds-global-color-aqua-400};
+  --cds-alias-viz-sequential-aqua-700: #{tokens.$cds-global-color-aqua-300};
+  --cds-alias-viz-sequential-aqua-800: #{tokens.$cds-global-color-aqua-200};
+  --cds-alias-viz-sequential-aqua-900: #{tokens.$cds-global-color-aqua-100};
+  --cds-alias-viz-sequential-aqua-1000: #{tokens.$cds-global-color-aqua-50};
+  --cds-alias-viz-sequential-green-50: #{tokens.$cds-global-color-green-1000};
+  --cds-alias-viz-sequential-green-100: #{tokens.$cds-global-color-green-900};
+  --cds-alias-viz-sequential-green-200: #{tokens.$cds-global-color-green-800};
+  --cds-alias-viz-sequential-green-300: #{tokens.$cds-global-color-green-700};
+  --cds-alias-viz-sequential-green-400: #{tokens.$cds-global-color-green-600};
+  --cds-alias-viz-sequential-green-500: #{tokens.$cds-global-color-green-500};
+  --cds-alias-viz-sequential-green-600: #{tokens.$cds-global-color-green-400};
+  --cds-alias-viz-sequential-green-700: #{tokens.$cds-global-color-green-300};
+  --cds-alias-viz-sequential-green-800: #{tokens.$cds-global-color-green-200};
+  --cds-alias-viz-sequential-green-900: #{tokens.$cds-global-color-green-100};
+  --cds-alias-viz-sequential-green-1000: #{tokens.$cds-global-color-green-50};
+  --cds-alias-viz-sequential-red-50: #{tokens.$cds-global-color-red-1000};
+  --cds-alias-viz-sequential-red-100: #{tokens.$cds-global-color-red-900};
+  --cds-alias-viz-sequential-red-200: #{tokens.$cds-global-color-red-800};
+  --cds-alias-viz-sequential-red-300: #{tokens.$cds-global-color-red-700};
+  --cds-alias-viz-sequential-red-400: #{tokens.$cds-global-color-red-600};
+  --cds-alias-viz-sequential-red-500: #{tokens.$cds-global-color-red-500};
+  --cds-alias-viz-sequential-red-600: #{tokens.$cds-global-color-red-400};
+  --cds-alias-viz-sequential-red-700: #{tokens.$cds-global-color-red-300};
+  --cds-alias-viz-sequential-red-800: #{tokens.$cds-global-color-red-200};
+  --cds-alias-viz-sequential-red-900: #{tokens.$cds-global-color-red-100};
+  --cds-alias-viz-sequential-red-1000: #{tokens.$cds-global-color-red-50};
+}

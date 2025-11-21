@@ -13,11 +13,11 @@
 @use 'sass:string';
 @use 'sass:meta';
 @use '../modal/variables.modal' as modal-variables;
-@use '../utils/mixins';
-@use '../utils/variables/variables.global';
+@use '../styles/mixins';
+@use '../styles/variables/variables.global';
 @use 'variables.wizard' as wizard-variables;
-@use '../utils/variables/variables.density' as density;
-@use '@cds/core/tokens/tokens.scss';
+@use '../styles/variables/variables.density' as density;
+@use '../styles/core/tokens/variables.tokens' as tokens;
 
 @include meta.load-css('properties.wizard');
 @include mixins.exports('wizard.clarity') {

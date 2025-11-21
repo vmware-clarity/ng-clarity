@@ -15,7 +15,7 @@
   [attr.aria-label]="toggleLabel || commonStrings.keys.verticalNavToggle"
   (click)="toggleByButton()"
 >
-  <cds-icon shape="angle-double" class="nav-trigger-icon" [attr.direction]="(collapsed) ? 'right' : 'left'"></cds-icon>
+  <cds-icon shape="angle-double" class="nav-trigger-icon" [direction]="(collapsed) ? 'right' : 'left'"></cds-icon>
 </button>
 }
 <div [id]="contentId" class="nav-content">

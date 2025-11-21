@@ -8,11 +8,11 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
-import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 
 import { IfControlStateService } from './if-control-state.service';
 import { ClrIfError } from './if-error';
-import { ClrIconModule } from '../../../icon/icon.module';
+import { ClrIcon } from '../../../icon/icon.component';
+import { delay } from '../../../utils/testing/helpers.spec';
 import { ClrInput } from '../../input/input';
 import { ClrInputContainer } from '../../input/input-container';
 import { ClrControlError } from '../error';
@@ -65,7 +65,7 @@ export default function (): void {
 
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrIconModule, FormsModule],
+          imports: [ClrIcon, FormsModule],
           declarations: [ClrInput, ClrControlError, ClrInputContainer, ClrIfError, GeneralErrorTest],
         });
         fixture = TestBed.createComponent(GeneralErrorTest);
@@ -95,7 +95,7 @@ export default function (): void {
 
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrIconModule, FormsModule],
+          imports: [ClrIcon, FormsModule],
           declarations: [ClrInput, ClrControlError, ClrInputContainer, ClrIfError, SpecificErrorTest],
         });
         fixture = TestBed.createComponent(SpecificErrorTest);

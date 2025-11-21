@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../../utils/mixins';
+@use '../../styles/mixins';
 @use 'variables.nav' as nav-variables;
 
 @include mixins.exports('links.clarity') {

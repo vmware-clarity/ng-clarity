@@ -8,11 +8,9 @@
     npm install @clr/ui
     ```
 
-2.  Include @cds/core/global.min.css, @cds/core/styles/theme.dark.min.css and clr-ui.min.css in your HTML file:
+2.  Include clr-ui.min.css in your HTML file:
 
     ```
-    <link rel="stylesheet" href="path/to/node_modules/@cds/core/global.min.css">
-    <link rel="stylesheet" href="path/to/node_modules/@cds/core/styles/theme.dark.min.css">
     <link rel="stylesheet" href="path/to/node_modules/@clr/ui/clr-ui.min.css">
     ```
 
@@ -23,7 +21,7 @@
 1.  Install Clarity packages through npm:
 
     ```
-    npm install @clr/ui @clr/angular @cds/core
+    npm install @clr/ui @clr/angular
     ```
 
 2.  Import the ClarityModule into your Angular application's module. Your application's main module might look like this:

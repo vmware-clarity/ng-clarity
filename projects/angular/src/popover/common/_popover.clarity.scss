@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use 'sass:map';
-@use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
+@use '../../styles/mixins';
+@use '../../styles/variables/variables.global';
 
 @include mixins.exports('popover.clarity') {
   .clr-popover-content {

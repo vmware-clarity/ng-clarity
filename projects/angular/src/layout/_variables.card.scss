@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../utils/variables/variables';
+@use '../styles/variables/variables';
 
 // Usage: ../layout/_card.clarity.scss
 $clr-card-bg-color: var(--clr-card-bg-color);

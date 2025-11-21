@@ -1,0 +1,14 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../mixins';
+
+@include mixins.root-or-host() {
+  --cds-alias-object-opacity-0: hsl(0deg 0% 0% / 0%);
+  --cds-alias-object-opacity-100: hsl(0deg 0% 0% / 20%);
+  --cds-alias-object-opacity-200: hsl(0deg 0% 0% / 40%);
+  --cds-alias-object-opacity-300: hsl(0deg 0% 0% / 60%);
+}

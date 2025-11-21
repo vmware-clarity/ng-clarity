@@ -45,8 +45,8 @@ import { NgControlService } from '../common/providers/ng-control.service';
             </span>
             <cds-icon
               class="clr-validate-icon"
-              [attr.shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
-              [attr.status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
+              [shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
+              [status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
               aria-hidden="true"
             ></cds-icon>
           </div>

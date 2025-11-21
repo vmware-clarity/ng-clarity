@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { ClrIconModule } from '../../icon/icon.module';
+import { ClrIcon } from '../../icon';
 import { ClrAccordionModule } from '../accordion.module';
 import { ClrStepButton } from '../stepper/step-button';
 import { ClrStepper } from '../stepper/stepper';
@@ -19,8 +19,8 @@ import { ClrStepperPanel } from './stepper-panel';
 const declarations = [ClrStepper, ClrStepButton, ClrStepperPanel, StepperOompaLoompa, StepperWillyWonka];
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule, ClrAccordionModule],
+  imports: [CommonModule, ClrIcon, ClrAccordionModule],
   declarations: [...declarations],
-  exports: [...declarations, ClrAccordionModule],
+  exports: [...declarations, ClrAccordionModule, ClrIcon],
 })
 export class ClrStepperModule {}

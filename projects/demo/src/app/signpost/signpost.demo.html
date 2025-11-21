@@ -21,7 +21,7 @@
               @if (position.useCustomTrigger) {
               <button [id]="position.id" type="button" class="btn btn-sm btn-link" clrSignpostTrigger>
                 {{ position.text }}
-                <cds-icon [attr.shape]="position.icon"></cds-icon>
+                <cds-icon [shape]="position.icon"></cds-icon>
               </button>
               }
               <clr-signpost-content *clrIfOpen [clrPosition]="position.position">

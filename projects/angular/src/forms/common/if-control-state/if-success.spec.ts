@@ -8,8 +8,8 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
+import { ClrIcon } from 'projects/angular/src/icon';
 
-import { ClrIconModule } from '../../../icon/icon.module';
 import { ClrInput } from '../../input/input';
 import { ClrInputContainer } from '../../input/input-container';
 import { NgControlService } from '../providers/ng-control.service';
@@ -49,7 +49,7 @@ export default function (): void {
 
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrIconModule, FormsModule],
+          imports: [ClrIcon, FormsModule],
           declarations: [ClrInput, ClrControlSuccess, ClrInputContainer, ClrIfSuccess, GeneralSuccessTest],
         });
         fixture = TestBed.createComponent(GeneralSuccessTest);

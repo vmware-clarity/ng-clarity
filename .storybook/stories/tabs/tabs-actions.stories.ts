@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrTabs, ClrTabsModule } from '@clr/angular';
+import { ClrIcon, ClrTabs, ClrTabsModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { TabsLayout } from '../../../projects/angular/src/layout/tabs/enums/tabs-layout.enum';
@@ -14,7 +14,7 @@ export default {
   title: 'Tabs/Tabs Actions',
   decorators: [
     moduleMetadata({
-      imports: [ClrTabsModule],
+      imports: [ClrTabsModule, ClrIcon],
     }),
   ],
   component: ClrTabs,

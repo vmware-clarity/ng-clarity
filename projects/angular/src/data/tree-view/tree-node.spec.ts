@@ -15,7 +15,7 @@ import { TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNode } from './tree-node';
 import { ClrTreeViewModule } from './tree-view.module';
-import { ClrIconModule } from '../../icon/icon.module';
+import { ClrIcon } from '../../icon/icon.component';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -67,7 +67,7 @@ export default function (): void {
 
     describe('Providers', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIconModule],
+        imports: [NoopAnimationsModule, ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -219,7 +219,7 @@ export default function (): void {
 
     describe('Template API', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIconModule],
+        imports: [NoopAnimationsModule, ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -251,7 +251,7 @@ export default function (): void {
 
     describe('View', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIconModule],
+        imports: [NoopAnimationsModule, ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -356,7 +356,7 @@ export default function (): void {
 
     describe('A11y and Focus Management', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIconModule],
+        imports: [NoopAnimationsModule, ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -538,7 +538,7 @@ export default function (): void {
       type Context = TestContext<ClrTreeNode<void>, LinkTestComponent>;
 
       spec(ClrTreeNode, LinkTestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIconModule],
+        imports: [NoopAnimationsModule, ClrIcon],
         providers: [TreeFocusManagerService],
       });
 

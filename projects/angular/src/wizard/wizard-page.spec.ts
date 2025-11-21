@@ -12,7 +12,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrAlert } from '../emphasis/alert/alert';
 import { ClrAlertModule } from '../emphasis/alert/alert.module';
-import { ClrIconModule } from '../icon/icon.module';
+import { ClrIcon } from '../icon';
 import { ButtonHubService } from './providers/button-hub.service';
 import { PageCollectionService } from './providers/page-collection.service';
 import { PageCollectionMock } from './providers/page-collection.service.mock';
@@ -928,7 +928,7 @@ export default function (): void {
     describe('View and Behavior', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrWizardModule, ClrIconModule, ClrAlertModule, NoopAnimationsModule],
+          imports: [ClrWizardModule, ClrIcon, ClrAlertModule, NoopAnimationsModule],
           declarations: [ViewTestComponent],
           providers: [WizardNavigationService, PageCollectionService, ButtonHubService],
         });

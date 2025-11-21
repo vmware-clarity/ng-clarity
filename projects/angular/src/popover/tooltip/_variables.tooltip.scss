@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '@cds/core/tokens/tokens.scss';
-@use '../../utils/variables/variables.density' as density;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+@use '../../styles/variables/variables.density' as density;
 
 // Usage: ../popover/tooltip/_tooltips.clarity.scss
 $clr-tooltip-arrow-height: #{density.$clr-base-icon-size-xs} !default;

@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../../utils/variables/variables.density' as density;
-@use '@cds/core/tokens/tokens.scss';
+@use '../../styles/variables/variables.density' as density;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
 
 // @deprecated in v17 in favor or $clr-header-bg-color
 $clr-header-bgColor: var(--clr-header-bg-color) !default;

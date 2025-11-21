@@ -6,10 +6,10 @@
  */
 
 @use 'sass:meta';
-@use '../../utils/mixins';
+@use '../../styles/mixins';
 @use 'variables.breadcrumbs' as breadcrumb-variables;
 @use '../nav/variables.nav' as nav-variables;
-@use '../../utils/variables/variables.density' as density;
+@use '../../styles/variables/variables.density' as density;
 
 @include meta.load-css('properties.breadcrumbs');
 @include mixins.exports('breadcrumbs.clarity') {

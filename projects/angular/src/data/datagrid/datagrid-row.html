@@ -77,7 +77,7 @@
           <cds-icon
             shape="angle"
             class="datagrid-expandable-caret-icon"
-            [attr.direction]="expand.expanded ? 'down' : 'right'"
+            [direction]="expand.expanded ? 'down' : 'right'"
             [attr.title]="expand.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand"
           ></cds-icon>
         </button>
@@ -103,7 +103,7 @@
         >
           <cds-icon
             shape="angle-double"
-            [attr.direction]="detailService.isRowOpen(item) ? 'left' : 'right'"
+            [direction]="detailService.isRowOpen(item) ? 'left' : 'right'"
             class="datagrid-detail-caret-icon"
             [attr.title]="detailService.isRowOpen(item) ? commonStrings.keys.close: commonStrings.keys.open"
           ></cds-icon>

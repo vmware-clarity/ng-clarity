@@ -7,20 +7,19 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { angleIcon, ClarityIcons } from '@cds/core/icon';
 
 import { RecursiveChildren } from './recursive-children';
 import { ClrRecursiveForOf } from './recursive-for-of';
 import { ClrTree } from './tree';
 import { ClrTreeNode } from './tree-node';
 import { ClrTreeNodeLink } from './tree-node-link';
-import { ClrIconModule } from '../../icon/icon.module';
+import { angleIcon, ClarityIcons, ClrIcon } from '../../icon';
 import { ClrLoadingModule } from '../../utils/loading/loading.module';
 
 export const CLR_TREE_VIEW_DIRECTIVES: Type<any>[] = [ClrTree, ClrTreeNode, ClrRecursiveForOf, ClrTreeNodeLink];
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule, ClrLoadingModule],
+  imports: [CommonModule, ClrIcon, ClrLoadingModule],
   declarations: [CLR_TREE_VIEW_DIRECTIVES, RecursiveChildren],
   exports: [CLR_TREE_VIEW_DIRECTIVES],
 })

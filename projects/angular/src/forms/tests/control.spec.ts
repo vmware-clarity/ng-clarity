@@ -9,7 +9,7 @@ import { TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { ClrIconModule } from '../../icon/icon.module';
+import { ClrIcon } from '../../icon';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
@@ -25,7 +25,7 @@ export function ControlStandaloneSpec(testComponent): void {
   describe('standalone use', () => {
     it('should not throw an error when used without a form control', () => {
       TestBed.configureTestingModule({
-        imports: [ClrIconModule, ClrCommonFormsModule],
+        imports: [ClrIcon, ClrCommonFormsModule],
         declarations: [testComponent],
       });
       expect(() => {
@@ -58,7 +58,7 @@ function fullTest(description, testContainer, testControl, testComponent, contro
       spyOn(WrappedFormControl.prototype, 'ngOnInit').and.callThrough();
       spyOn(ControlClassService.prototype, 'initControlClass').and.callThrough();
       TestBed.configureTestingModule({
-        imports: [FormsModule, ClrIconModule, ClrCommonFormsModule, ReactiveFormsModule],
+        imports: [FormsModule, ClrIcon, ClrCommonFormsModule, ReactiveFormsModule],
         declarations: [testContainer, testControl, testComponent],
         providers: [
           IfControlStateService,

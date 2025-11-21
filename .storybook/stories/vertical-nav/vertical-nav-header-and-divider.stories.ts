@@ -5,9 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { bellIcon, calendarIcon, folderIcon, homeIcon, searchIcon, userIcon } from '@cds/core/icon';
-import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
-import { ClrVerticalNav, ClrVerticalNavModule } from '@clr/angular';
+import {
+  bellIcon,
+  calendarIcon,
+  ClrVerticalNav,
+  ClrVerticalNavModule,
+  folderIcon,
+  homeIcon,
+  IconShapeTuple,
+  searchIcon,
+  userIcon,
+} from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';

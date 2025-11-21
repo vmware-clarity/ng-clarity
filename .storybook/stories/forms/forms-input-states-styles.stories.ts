@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
+import { ClrFormLayout, ClrIcon } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
@@ -14,7 +14,7 @@ export default {
   title: 'Forms/Input States (Styles only)',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
+      imports: [...CommonModules, ClrIcon],
     }),
   ],
   argTypes: {

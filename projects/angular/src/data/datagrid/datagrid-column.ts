@@ -51,8 +51,8 @@ import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
         <button class="datagrid-column-title" (click)="sort()" type="button" #titleContainer>
           <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
           <cds-icon
-            [attr.shape]="sortDirection ? 'arrow' : 'two-way-arrows'"
-            [attr.direction]="sortDirection ? sortDirection : 'left'"
+            [shape]="sortDirection ? 'arrow' : 'two-way-arrows'"
+            [direction]="sortDirection ? sortDirection : 'left'"
             aria-hidden="true"
             class="sort-icon"
           ></cds-icon>

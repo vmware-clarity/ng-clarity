@@ -6,6 +6,7 @@
  */
 
 import {
+  ClrIcon,
   ClrMainContainerModule,
   ClrNavigationModule,
   ClrWizard,
@@ -20,7 +21,7 @@ export default {
   component: ClrWizard,
   decorators: [
     moduleMetadata({
-      imports: [ClrMainContainerModule, ClrNavigationModule, ClrWizardModule],
+      imports: [ClrMainContainerModule, ClrNavigationModule, ClrWizardModule, ClrIcon],
     }),
   ],
   argTypes: {

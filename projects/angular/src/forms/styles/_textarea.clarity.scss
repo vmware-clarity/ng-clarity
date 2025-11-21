@@ -5,11 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../../utils/mixins';
+@use '../../styles/mixins';
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
-@use '../../utils/variables/variables.density' as density;
-@use '@cds/core/tokens/tokens.scss';
+@use '../../styles/variables/variables.density' as density;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
 
 @include mixins.exports('forms.textarea') {
   // @TODO Fix selectors when old forms are removed to allow better defaults

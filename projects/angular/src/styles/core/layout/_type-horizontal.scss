@@ -1,0 +1,137 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use './mixins/mixins';
+@use 'optimize';
+
+@mixin generateHorizontalAxisAlignment($breakpoint: null) {
+  [#{optimize.$layout}~='#{optimize.$horizontal}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$top}'] {
+      align-items: flex-start;
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$bottom}'] {
+      align-items: flex-end;
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$left}'] {
+      justify-content: flex-start;
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$right}'] {
+      justify-content: flex-end;
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-center}'] {
+      align-items: center;
+      align-content: center;
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-center}'] {
+      justify-content: center;
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}'] {
+      align-items: center;
+      place-content: center center;
+    }
+  }
+}
+@mixin generateHorizontalOrder($breakpoint: null) {
+  [#{optimize.$layout}~='#{optimize.$horizontal}'] {
+    &[#{optimize.$layout}*='order#{$breakpoint}:reverse'] {
+      flex-direction: row-reverse;
+    }
+  }
+}
+@mixin generateHorizontalStretch($breakpoint: null) {
+  [#{optimize.$layout}~='#{optimize.$horizontal}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-stretch}'] {
+      align-items: stretch;
+      align-content: stretch;
+      flex-grow: 1;
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-stretch}'] {
+      justify-content: stretch;
+      flex-grow: 1;
+
+      & > * {
+        flex-grow: 1;
+      }
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$stretch}'] {
+      align-items: stretch;
+      align-content: stretch;
+      flex-grow: 1;
+
+      & > * {
+        flex-grow: 1;
+      }
+    }
+  }
+}
+@mixin generateHorizontalItemAlignment($breakpoint: null) {
+  [#{optimize.$layout}~='#{optimize.$horizontal}'] {
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}'],
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-center}'] {
+      align-self: center;
+    }
+
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}'],
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-center}'] {
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$top}'] {
+      align-self: flex-start;
+    }
+
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$bottom}'] {
+      align-self: flex-end;
+    }
+
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$right}'] {
+      margin-left: auto !important;
+    }
+
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$left}'] {
+      margin-right: auto !important;
+    }
+  }
+}
+@mixin generateHorizontalAlignments($breakpoint: null) {
+  @include generateHorizontalAxisAlignment($breakpoint);
+  @include generateHorizontalOrder($breakpoint);
+  @include generateHorizontalStretch($breakpoint);
+  @include generateHorizontalItemAlignment($breakpoint);
+}
+
+[#{optimize.$layout}~='#{optimize.$horizontal}'] {
+  display: flex;
+  flex-flow: row wrap;
+  place-items: flex-start flex-start;
+  width: 100%;
+  margin: 0;
+  min-height: 0;
+
+  > [#{optimize.$layout}~='#{optimize.$horizontal}'],
+  > [#{optimize.$layout}~='#{optimize.$vertical}'],
+  > [cds-text] {
+    width: initial !important;
+  }
+}
+
+@include generateHorizontalAlignments();
+
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @include generateHorizontalAlignments($breakpoint);
+  }
+}

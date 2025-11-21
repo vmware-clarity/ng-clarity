@@ -6,11 +6,11 @@
  */
 
 @use 'sass:meta';
-@use '../utils/a11y';
-@use '../utils/mixins';
-@use '@cds/core/tokens/tokens.scss';
+@use '../styles/a11y';
+@use '../styles/mixins';
+@use '../styles/core/tokens/variables.tokens' as tokens;
 @use 'variables.accordion' as accordion-variables;
-@use '../utils/variables/variables.density' as density;
+@use '../styles/variables/variables.density' as density;
 
 @include meta.load-css('properties.accordion');
 @include mixins.exports('accordion.clarity') {

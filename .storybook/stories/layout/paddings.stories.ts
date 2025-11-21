@@ -43,7 +43,7 @@ import { CommonModules } from '../../helpers/common';
         align-items: center;
         background: var(--cds-global-color-cool-gray-700);
         color: var(--cds-global-color-gray-0);
-        font-size: var(--cds-global-typography-body-font-size);
+        font-size: var(--cds-alias-typography-body-font-size);
         min-width: 50px;
         min-height: 50px;
       }

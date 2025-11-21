@@ -7,14 +7,13 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { circleIcon, ClarityIcons, dotCircleIcon, errorStandardIcon, successStandardIcon } from '@cds/core/icon';
 
+import { circleIcon, ClarityIcons, ClrIcon, dotCircleIcon, errorStandardIcon, successStandardIcon } from '../icon';
 import { ClrTimeline } from './timeline';
 import { ClrTimelineStep } from './timeline-step';
 import { ClrTimelineStepDescription } from './timeline-step-description';
 import { ClrTimelineStepHeader } from './timeline-step-header';
 import { ClrTimelineStepTitle } from './timeline-step-title';
-import { ClrIconModule } from '../icon/icon.module';
 import { ClrSpinnerModule } from '../progress/spinner/spinner.module';
 
 const CLR_TIMELINE_DIRECTIVES: Type<any>[] = [
@@ -26,8 +25,8 @@ const CLR_TIMELINE_DIRECTIVES: Type<any>[] = [
 ];
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule, ClrSpinnerModule],
-  exports: [...CLR_TIMELINE_DIRECTIVES, ClrIconModule, ClrSpinnerModule],
+  imports: [CommonModule, ClrIcon, ClrSpinnerModule],
+  exports: [...CLR_TIMELINE_DIRECTIVES, ClrIcon, ClrSpinnerModule],
   declarations: [CLR_TIMELINE_DIRECTIVES],
 })
 export class ClrTimelineModule {

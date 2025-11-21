@@ -5,14 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../../utils/mixins';
-@use '@cds/core/tokens/tokens.scss';
+@use '../../styles/mixins';
+@use '../../styles/core/tokens/variables.tokens' as tokens;
 
 @include mixins.exports('nav.properties') {
   @include mixins.root-or-host() {
     &,
     & [cds-theme] {
-      // Usage: ../utils/_reboot.scss
+      // Usage: ../styles/_reboot.scss
       // Usage: ./_links.scss
       // Link colors
 

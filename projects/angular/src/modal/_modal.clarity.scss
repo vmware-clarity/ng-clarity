@@ -7,11 +7,11 @@
 
 @use 'sass:map';
 @use 'sass:meta';
-@use '../utils/mixins';
-@use '../utils/variables/variables';
+@use '../styles/mixins';
+@use '../styles/variables/variables';
 @use 'variables.modal' as modal-variables;
-@use '@cds/core/tokens/tokens.scss';
-@use '../utils/variables/variables.density' as density;
+@use '../styles/core/tokens/variables.tokens' as tokens;
+@use '../styles/variables/variables.density' as density;
 
 @include meta.load-css('properties.modal');
 @include mixins.exports('modal.clarity') {

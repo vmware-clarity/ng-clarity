@@ -5,9 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { bellIcon, calendarIcon, folderIcon, homeIcon, searchIcon, userIcon } from '@cds/core/icon';
-import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
-import { ClrVerticalNavGroup, ClrVerticalNavModule } from '@clr/angular';
+import {
+  bellIcon,
+  calendarIcon,
+  ClrVerticalNavGroup,
+  ClrVerticalNavModule,
+  folderIcon,
+  homeIcon,
+  IconShapeTuple,
+  searchIcon,
+  userIcon,
+} from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
 
@@ -72,7 +80,7 @@ const NavGroupTemplate: StoryFn = args => ({
                 href="javascript:void(0)"
                 (click)="activeIndex = index"
               >
-                <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+                <cds-icon *ngIf="includeIcons" [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
                 {{ navLink.text }}
               </a>
             </clr-vertical-nav-group-children>

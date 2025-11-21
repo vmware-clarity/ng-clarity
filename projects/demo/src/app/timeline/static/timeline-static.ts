@@ -6,7 +6,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ClarityIcons } from '@cds/core/icon';
+import { ClarityIcons } from '@clr/angular';
 
 @Component({
   selector: 'clr-timeline-demo-static',

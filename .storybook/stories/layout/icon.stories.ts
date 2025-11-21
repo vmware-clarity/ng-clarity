@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrIconModule } from '@clr/angular';
+import { ClrIcon } from '@clr/angular';
 import { moduleMetadata, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
@@ -79,7 +79,7 @@ import { CommonModules } from '../../helpers/common';
     `,
   ],
   standalone: true,
-  imports: [ClrIconModule],
+  imports: [ClrIcon],
 })
 export class IconSizeStorybookComponent {}
 

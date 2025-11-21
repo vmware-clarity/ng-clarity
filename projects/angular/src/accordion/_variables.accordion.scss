@@ -6,8 +6,8 @@
  */
 
 @use 'sass:map';
-@use '@cds/core/tokens/tokens.scss';
-@use '../utils/variables/variables';
+@use '../styles/core/tokens/variables.tokens' as tokens;
+@use '../styles/variables/variables';
 
 $clr-accordion-text-color: var(--clr-accordion-text-color) !default;
 $clr-accordion-text-color-hover: var(--clr-accordion-text-color-hover) !default;

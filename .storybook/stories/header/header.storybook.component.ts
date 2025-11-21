@@ -7,12 +7,12 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ClrIconModule, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
+import { ClrIcon, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
 
 @Component({
   selector: 'storybook-header',
   standalone: true,
-  imports: [CommonModule, ClrMainContainerModule, ClrNavigationModule, ClrIconModule],
+  imports: [CommonModule, ClrMainContainerModule, ClrNavigationModule, ClrIcon],
   template: `
     <clr-main-container>
       <clr-header [role]="role">

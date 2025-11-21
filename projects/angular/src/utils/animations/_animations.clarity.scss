@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../mixins';
-@use '../variables/variables.density' as density;
-@use '@cds/core/tokens/tokens.scss';
+@use '../../styles/mixins';
+@use '../../styles/variables/variables.density' as density;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
 
 /**
  * TODO: figure out if we want to include animate.css or if we prefer sticking to a few,

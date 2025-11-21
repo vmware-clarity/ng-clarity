@@ -7,7 +7,7 @@
 
 @use 'sass:list';
 @use 'sass:map';
-@use '../../../utils/variables/variables.layout';
+@use '../../../styles/variables/variables.layout';
 
 @function clr-breakpoint-next(
   $name,

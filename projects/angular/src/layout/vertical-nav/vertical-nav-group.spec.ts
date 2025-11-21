@@ -10,11 +10,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ClrIcon } from '../../icon';
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNavGroup } from './vertical-nav-group';
 import { ClrVerticalNavModule } from './vertical-nav.module';
-import { ClrIconModule } from '../../icon/icon.module';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { delay } from '../../utils/testing/helpers.spec';
 
@@ -25,7 +25,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrVerticalNavModule, ClrIconModule, NoopAnimationsModule],
+        imports: [ClrVerticalNavModule, ClrIcon, NoopAnimationsModule],
         declarations: [GroupInternalsTestComponent, IfExpandedTestComponent, TemplateAPITestComponent],
         providers: [VerticalNavService, VerticalNavGroupRegistrationService],
       });
