@@ -28,6 +28,7 @@ export default {
   argTypes: {
     // inputs
     clrDgSelected: { control: { disable: true } },
+    detailsOpened: { control: { disable: true }, table: { disable: true } },
     clrDgSingleSelected: { control: { disable: true } },
     // outputs
     clrDgRefresh: { control: { disable: true } },
@@ -46,6 +47,7 @@ export default {
   args: {
     // inputs
     clrDgActionOverflowOpen: false,
+    detailsOpened: false,
     clrDgActionOverflowButtonLabel: commonStringsDefault.rowActions,
     clrDetailExpandableAriaLabel: commonStringsDefault.detailExpandableAriaLabel,
     clrDgLoading: false,
@@ -142,7 +144,7 @@ const DatagridDetailsTemplate: StoryFn = args => ({
         clrVirtualScroll
         let-element
         let-index="index"
-        [clrVirtualRowsOf]="data.elements"
+        [clrVirtualRowsOf]="detailsOpened ? data.elements.slice(0, 10) : data.elements"
         [clrVirtualRowsTemplateCacheSize]="400"
         (renderedRangeChange)="clrRenderRangeChange($event)"
       >
@@ -230,6 +232,16 @@ function setExpanded($event, element) {
 
 export const Datagrid: StoryObj = {
   render: DatagridDetailsTemplate,
+};
+
+export const DetailsOpened: StoryObj = {
+  render: DatagridDetailsTemplate,
+  args: {
+    detailsOpened: true,
+  },
+  play({ canvasElement }) {
+    (canvasElement.querySelector('button.datagrid-detail-caret-button') as HTMLButtonElement)?.click();
+  },
 };
 
 export const SkeletonLoading: StoryObj = {

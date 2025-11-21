@@ -89,7 +89,7 @@
               class="datagrid-content-virtual-spacer"
               [style.height]="virtualScroll?.totalContentHeight"
             ></div>
-            <div role="presentation" class="datagrid-rows">
+            <div role="presentation" #rowsWrapper class="datagrid-rows">
               <clr-dg-row class="datagrid-row-loading" *ngIf="loadingMoreItems">
                 <clr-dg-cell>
                   <clr-spinner clrMedium></clr-spinner>
