@@ -1354,6 +1354,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // @deprecated (undocumented)
     set rowSelectionMode(value: boolean);
     // (undocumented)
+    rowsWrapper: ElementRef<HTMLElement>;
+    // (undocumented)
     scrollableColumns: ViewContainerRef;
     // (undocumented)
     selectAllId: string;
