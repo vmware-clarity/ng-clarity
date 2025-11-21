@@ -68,7 +68,7 @@ export declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContai
     inputId(): string;
     loadingStateChange(state: ClrLoadingState): void;
     unselect(item: T): void;
-    onBlur(): void;
+    onBlur(event: any): void;
     onFocus(): void;
     getSelectionAriaLabel(): string;
     focusFirstActive(): void;

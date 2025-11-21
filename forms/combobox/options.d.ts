@@ -10,7 +10,7 @@ import * as i0 from "@angular/core";
 export declare class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
     optionSelectionService: OptionSelectionService<T>;
     id: number;
-    private el;
+    el: ElementRef<HTMLElement>;
     commonStrings: ClrCommonStringsService;
     private focusHandler;
     private toggleService;
