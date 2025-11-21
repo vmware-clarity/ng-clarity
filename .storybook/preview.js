@@ -14,10 +14,10 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import docs from '../documentation.json';
 import { DENSITY, THEMES } from './helpers/constants';
+import { cdsThemeAttribute, isDarkThemeMatcher, setDocsTheme } from './helpers/theme.helper';
 import AutoDocsTemplate from './stories/auto-docs.mdx';
 
 const privateModifier = 121;
-const cdsThemeAttribute = 'cds-theme';
 const clrDensityAttribute = 'clr-density';
 
 loadIcons();
@@ -68,8 +68,16 @@ const customViewports = {
   },
 };
 
+// dynamic theme change
+isDarkThemeMatcher.addEventListener('change', change => {
+  parameters.docs.theme = setDocsTheme(change.matches);
+});
+
 export const parameters = {
-  docs: { page: AutoDocsTemplate },
+  docs: {
+    page: AutoDocsTemplate,
+    theme: setDocsTheme(isDarkThemeMatcher.matches),
+  },
   options: {
     storySort: {
       method: 'alphabetical',
@@ -114,7 +122,11 @@ export const globalTypes = {
 };
 
 const themeDecorator = (story, { globals }) => {
-  const { theme } = globals;
+  let { theme } = globals;
+
+  if (!theme) {
+    theme = isDarkThemeMatcher.matches ? THEMES.DARK : THEMES.LIGHT;
+  }
 
   document.body.setAttribute(cdsThemeAttribute, theme);
 
