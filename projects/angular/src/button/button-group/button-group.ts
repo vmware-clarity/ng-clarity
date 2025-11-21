@@ -18,10 +18,8 @@ import {
 import { takeUntil } from 'rxjs/operators';
 
 import { ClrButton } from './button';
-import { ClrPopoverPositions } from '../../popover/common/enums/positions.enum';
-import { ClrPopoverPosition } from '../../popover/common/interfaces/popover-position.interface';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
+import { ClrPopoverType, getConnectedPositions } from '../../popover/common/utils/popover-positions';
 import { ClrDestroyService } from '../../utils/destroy/destroy.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -52,37 +50,34 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   popoverId = uniqueIdFactory();
   InitialFocus = InitialFocus;
 
-  popoverPosition: ClrPopoverPosition = ClrPopoverPositions['bottom-left'];
   inlineButtons: ClrButton[] = [];
   menuButtons: ClrButton[] = [];
-
-  // Indicates the position of the overflow menu
-  private _menuPosition: string;
+  private _menuPosition = 'bottom-left';
 
   constructor(
     public buttonGroupNewService: ButtonInGroupService,
-    private toggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     public commonStrings: ClrCommonStringsService,
     private destroy$: ClrDestroyService,
     private focusHandler: ButtonGroupFocusHandler
-  ) {}
+  ) {
+    popoverService.defaultPosition = this._menuPosition;
+
+    popoverService.popoverType = ClrPopoverType.DROPDOWN;
+
+    popoverService.availablePositions = getConnectedPositions(popoverService.popoverType);
+  }
 
   @Input('clrMenuPosition')
   get menuPosition(): string {
     return this._menuPosition;
   }
   set menuPosition(pos: string) {
-    if (pos && (ClrPopoverPositions as Record<string, any>)[pos]) {
-      this._menuPosition = pos;
-    } else {
-      this._menuPosition = 'bottom-left';
-    }
-
-    this.popoverPosition = (ClrPopoverPositions as Record<string, any>)[this._menuPosition];
+    this._menuPosition = pos || this.popoverService.defaultPosition;
   }
 
   get open() {
-    return this.toggleService.open;
+    return this.popoverService.open;
   }
 
   /**
@@ -130,8 +125,8 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
 
   openMenu(event: Event, initialFocus: InitialFocus) {
     this.focusHandler.initialFocus = initialFocus;
-    if (!this.toggleService.open) {
-      this.toggleService.toggleWithEvent(event);
+    if (!this.popoverService.open) {
+      this.popoverService.toggleWithEvent(event);
     }
   }
 
@@ -163,7 +158,7 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   }
 
   private handleFocusOnMenuOpen() {
-    this.toggleService.popoverVisible.pipe(takeUntil(this.destroy$)).subscribe(visible => {
+    this.popoverService.popoverVisible.pipe(takeUntil(this.destroy$)).subscribe(visible => {
       if (visible) {
         this.focusHandler.initialize({
           menu: this.menu.nativeElement,

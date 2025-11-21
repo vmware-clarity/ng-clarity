@@ -10,8 +10,8 @@ import { Component, ContentChild, Input } from '@angular/core';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostTrigger } from './signpost-trigger';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrPopoverHostDirective } from '../common';
 
 @Component({
   selector: 'clr-signpost',
@@ -25,7 +25,13 @@ import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service
       >
         <cds-icon shape="info-circle" [attr.title]="commonStrings.keys.info"></cds-icon>
       </button>
+    } @else {
+      <ng-content select="[clrSignpostTrigger]"></ng-content>
     }
+
+    <ng-template [clrPopoverContent]>
+      <ng-content select="clr-signpost-content"></ng-content>
+    </ng-template>
 
     <ng-content></ng-content>
   `,

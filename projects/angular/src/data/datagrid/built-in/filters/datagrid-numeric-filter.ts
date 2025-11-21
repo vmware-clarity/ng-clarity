@@ -9,7 +9,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, Outp
 import { Subscription } from 'rxjs';
 
 import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
-import { ClrPopoverToggleService } from '../../../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../../../popover';
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
 import { ClrCommonStringsService } from '../../../../utils/i18n/common-strings.service';
 import { ClrDatagridFilter } from '../../datagrid-filter';
@@ -90,7 +90,7 @@ export class DatagridNumericFilter<T = any>
     filters: FiltersProvider<T>,
     private domAdapter: DomAdapter,
     public commonStrings: ClrCommonStringsService,
-    private popoverToggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     private ngZone: NgZone
   ) {
     super(filters);
@@ -198,7 +198,7 @@ export class DatagridNumericFilter<T = any>
 
   ngAfterViewInit() {
     this.subscriptions.push(
-      this.popoverToggleService.openChange.subscribe(openChange => {
+      this.popoverService.openChange.subscribe(openChange => {
         this.open = openChange;
         // Note: this is being run outside of the Angular zone because `element.focus()` doesn't require
         // running change detection.

@@ -8,18 +8,22 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, Optional, SkipSelf } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ClrPopoverHostDirective, ClrPopoverService } from '../common';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdown.service';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 
 @Component({
   selector: 'clr-dropdown',
-  template: '<ng-content></ng-content>',
+  template: `
+    <ng-content select="[clrDropdownTrigger]"></ng-content>
+    <ng-template [clrPopoverContent]>
+      <ng-content select="clr-dropdown-menu"></ng-content>
+    </ng-template>
+  `,
   host: {
     '[class.dropdown]': 'true',
-    '[class.open]': 'toggleService.open',
+    '[class.open]': 'popoverService.open',
   },
   providers: [ROOT_DROPDOWN_PROVIDER, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
   hostDirectives: [ClrPopoverHostDirective],
@@ -34,13 +38,13 @@ export class ClrDropdown implements OnDestroy {
     @SkipSelf()
     @Optional()
     public parent: ClrDropdown,
-    public toggleService: ClrPopoverToggleService,
+    public popoverService: ClrPopoverService,
     public focusHandler: DropdownFocusHandler,
     cdr: ChangeDetectorRef,
     dropdownService: RootDropdownService
   ) {
-    this.subscriptions.push(dropdownService.changes.subscribe(value => (toggleService.open = value)));
-    this.subscriptions.push(toggleService.openChange.subscribe(() => cdr.markForCheck()));
+    this.subscriptions.push(dropdownService.changes.subscribe(value => (popoverService.open = value)));
+    this.subscriptions.push(popoverService.openChange.subscribe(() => cdr.markForCheck()));
   }
 
   ngOnDestroy() {

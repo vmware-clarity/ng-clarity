@@ -30,7 +30,7 @@ import { ClrMonthpicker } from './monthpicker';
 import { ClrYearpicker } from './yearpicker';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrVerticalNavModule } from '../../layout';
-import { ClrPopoverModuleNext } from '../../popover/common/popover.module';
+import { ClrPopoverModuleNext } from '../../popover';
 import { CdkTrapFocusModule } from '../../utils/cdk/cdk-trap-focus.module';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
 import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';

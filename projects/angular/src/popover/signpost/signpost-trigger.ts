@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverService } from '../common/providers/popover.service';
 
 @Directive({
   selector: '[clrSignpostTrigger]',
@@ -40,7 +40,7 @@ export class ClrSignpostTrigger implements OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private toggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     private el: ElementRef<HTMLElement>,
     private signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
@@ -51,9 +51,10 @@ export class ClrSignpostTrigger implements OnDestroy {
   }
 
   ngOnInit() {
+    this.popoverService.anchorElementRef = this.el;
     this.signpostFocusManager.triggerEl = this.el.nativeElement;
     this.subscriptions.push(
-      this.toggleService.openChange.subscribe((isOpen: boolean) => {
+      this.popoverService.openChange.subscribe((isOpen: boolean) => {
         this.ariaExpanded = isOpen;
 
         const prevIsOpen = this.isOpen;
@@ -81,7 +82,7 @@ export class ClrSignpostTrigger implements OnDestroy {
    */
   @HostListener('click', ['$event'])
   onSignpostTriggerClick(event: Event): void {
-    this.toggleService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
   }
 
   private focusOnClose() {

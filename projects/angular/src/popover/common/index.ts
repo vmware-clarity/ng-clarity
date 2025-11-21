@@ -6,17 +6,17 @@
  */
 
 export * from './interfaces/popover-options.interface';
+export * from './popover-content';
 export * from './enums/alignment.enum';
 export * from './enums/axis.enum';
 export * from './enums/side.enum';
 export * from './interfaces/popover-position.interface';
-export * from './providers/popover-events.service';
-export * from './providers/popover-position.service';
-export * from './providers/popover-toggle.service';
+export * from './providers/popover.service';
 export * from './popover-anchor';
-export * from './popover-content';
+export * from '../common/popover-content';
 export * from './popover-host.directive';
 export * from './stop-escape-propagation.directive';
+export * from './popover.module';
 
 export { ClrPopoverModuleNext as ÇlrClrPopoverModuleNext } from './popover.module';
 export { ClrPopoverCloseButton as ÇlrClrPopoverCloseButton } from './popover-close-button';

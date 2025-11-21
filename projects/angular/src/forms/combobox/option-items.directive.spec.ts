@@ -11,9 +11,7 @@ import { TestBed } from '@angular/core/testing';
 import { ClrComboboxModule } from './combobox.module';
 import { ClrOptionItems } from './option-items.directive';
 import { OptionSelectionService } from './providers/option-selection.service';
-import { ClrPopoverEventsService } from '../../popover/common/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../popover/common/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../popover/common/providers/popover.service';
 
 @Component({
   template: `
@@ -21,7 +19,7 @@ import { ClrPopoverToggleService } from '../../popover/common/providers/popover-
       <li *clrOptionItems="let n of numbers; trackBy: trackBy">{{ n }}</li>
     </ul>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  providers: [ClrPopoverService],
   standalone: false,
 })
 class FullTest {
@@ -36,7 +34,7 @@ class FullTest {
       <li *clrOptionItems="let n of numbers; trackBy: trackBy">{{ n }}</li>
     </ul>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  providers: [ClrPopoverService],
   standalone: false,
 })
 class TrackByIndexTest {
@@ -51,7 +49,7 @@ class TrackByIndexTest {
       <li *clrOptionItems="let n of numbers; field: 'a'">{{ n.a }}</li>
     </ul>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  providers: [ClrPopoverService],
   standalone: false,
 })
 class ObjectDataTest {
@@ -60,7 +58,7 @@ class ObjectDataTest {
   trackBy: TrackByFunction<number> = index => index;
 }
 
-const OPTION_ITEM_PROVIDERS = [OptionSelectionService, ClrPopoverToggleService];
+const OPTION_ITEM_PROVIDERS = [OptionSelectionService, ClrPopoverService];
 
 export default function (): void {
   describe('ClrOptionItems directive', function () {
