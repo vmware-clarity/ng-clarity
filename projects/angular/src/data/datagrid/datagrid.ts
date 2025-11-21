@@ -139,7 +139,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef<HTMLElement>;
   @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef<HTMLElement>;
   @ViewChild('datagridHeader', { read: ElementRef }) datagridHeader: ElementRef<HTMLElement>;
-  @ViewChild('contentWrapper', { read: ElementRef }) contentWrapper: ElementRef<HTMLElement>;
+  @ViewChild('contentWrapper', { read: ElementRef, static: true }) contentWrapper: ElementRef<HTMLElement>;
+  @ViewChild('rowsWrapper', { read: ElementRef, static: true }) rowsWrapper: ElementRef<HTMLElement>;
   @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
   @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
   @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
@@ -161,6 +162,14 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   private _subscriptions: Subscription[] = [];
   private _virtualScrollSubscriptions: Subscription[] = [];
+
+  private cachedRowsHeight = 0;
+  private cachedContentHeight = 0;
+  private resizeObserver: ResizeObserver = new ResizeObserver(entries => {
+    requestAnimationFrame(() => {
+      this.handleResizeChanges(entries);
+    });
+  });
 
   constructor(
     private organizer: DatagridRenderOrganizer,
@@ -265,7 +274,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   get virtualScroll(): ClrDatagridVirtualScrollDirective<any> {
-    return this._virtualScroll.get(0);
+    return this._virtualScroll?.get(0);
   }
 
   ngAfterContentInit() {
@@ -437,6 +446,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   ngOnDestroy() {
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this.resizeObserver.disconnect();
   }
 
   toggleAllSelected($event: any) {
@@ -488,6 +498,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this.keyNavigation.preventScrollOnFocus = hasVirtualScroll;
 
     if (hasVirtualScroll && this._virtualScrollSubscriptions.length === 0) {
+      // TODO: use `resizeObserver` for all datagrid variants
+      this.resizeObserver.observe(this.contentWrapper.nativeElement);
+      this.resizeObserver.observe(this.rowsWrapper.nativeElement);
+
       this._virtualScrollSubscriptions.push(
         fromEvent(this.contentWrapper.nativeElement, 'scroll').subscribe(() => {
           if (this.datagridHeader.nativeElement.scrollLeft !== this.contentWrapper.nativeElement.scrollLeft) {
@@ -519,8 +533,30 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         })
       );
     } else if (!hasVirtualScroll) {
+      this.resizeObserver.disconnect();
       this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
       this._virtualScrollSubscriptions = [];
+    }
+  }
+
+  private handleResizeChanges(entries: ResizeObserverEntry[]) {
+    const rowsWrapper = this.rowsWrapper.nativeElement;
+
+    for (const entry of entries) {
+      if (entry.target === this.contentWrapper.nativeElement) {
+        this.cachedContentHeight = entry.contentRect.height;
+      }
+      if (entry.target === rowsWrapper) {
+        this.cachedRowsHeight = entry.contentRect.height;
+      }
+    }
+
+    const scrollClass = 'datagrid-scrollbar-visible';
+
+    if (this.cachedRowsHeight > this.cachedContentHeight) {
+      this.renderer.addClass(rowsWrapper, scrollClass);
+    } else {
+      this.renderer.removeClass(rowsWrapper, scrollClass);
     }
   }
 }
