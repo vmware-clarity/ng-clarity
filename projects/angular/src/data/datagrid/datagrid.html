@@ -16,6 +16,7 @@
               <div class="datagrid-row-master datagrid-row-flex">
                 <div class="datagrid-row-sticky">
                   <!--header for datagrid where you can select multiple rows -->
+                  @if (selection.selectionType === SELECTION_TYPE.Multi) {
                   <div
                     #stickyHeader
                     role="columnheader"
@@ -89,7 +90,7 @@
               class="datagrid-content-virtual-spacer"
               [style.height]="virtualScroll?.totalContentHeight"
             ></div>
-            <div role="presentation" class="datagrid-rows">
+            <div role="presentation" #rowsWrapper class="datagrid-rows">
               <clr-dg-row class="datagrid-row-loading" *ngIf="loadingMoreItems">
                 <clr-dg-cell>
                   <clr-spinner clrMedium></clr-spinner>
