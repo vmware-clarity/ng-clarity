@@ -14,5 +14,5 @@
   "peerDependencies": {
     "@cds/core": "^6.16.1"
   },
-  "version": "0.0.0-preview.e82381d"
+  "version": "0.0.0-preview.16e92ff"
 }
