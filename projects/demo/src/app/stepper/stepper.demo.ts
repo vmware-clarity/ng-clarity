@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrLoadingState } from '@clr/angular';
 
 @Component({
@@ -21,16 +21,7 @@ export class StepperDemo {
   form: FormGroup = this.getReactiveForm();
   templateForm: any = this.getTemplateForm();
   partiallyCompletedForm: FormGroup = this.getReactiveForm();
-
-  #fb = inject(FormBuilder);
   expanded = false;
-  formGroup = this.#fb.group({
-    group: this.#fb.group({
-      step: new FormControl(null, Validators.required),
-    }),
-  });
-
-  @ViewChild('nextBtn') nxtBtn?: ElementRef<HTMLElement>;
 
   stepsExpandedState = {
     name: false,

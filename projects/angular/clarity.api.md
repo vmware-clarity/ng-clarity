@@ -920,7 +920,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
-    onBlur(): void;
+    onBlur(event: any): void;
     // (undocumented)
     onFocus(): void;
     // (undocumented)
@@ -3531,6 +3531,8 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     constructor(optionSelectionService: OptionSelectionService<T>, id: number, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, toggleService: ClrPopoverToggleService, parentHost: ElementRef<HTMLElement>, document: any);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
+    // (undocumented)
+    el: ElementRef<HTMLElement>;
     get emptyOptions(): boolean;
     // (undocumented)
     id: number;
