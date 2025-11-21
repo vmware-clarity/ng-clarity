@@ -146,11 +146,11 @@
         }
       }
 
-      .datagrid-placeholder-container {
-        display: none;
+      .datagrid-content-virtual .datagrid-rows {
+        min-height: 100%;
 
-        &:has(> .datagrid-placeholder.datagrid-empty) {
-          display: flex;
+        &.datagrid-scrollbar-visible .datagrid-placeholder-container {
+          border-top-color: tokens.$cds-alias-object-opacity-0;
         }
       }
     }
