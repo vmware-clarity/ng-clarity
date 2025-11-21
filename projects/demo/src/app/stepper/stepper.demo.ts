@@ -21,6 +21,7 @@ export class StepperDemo {
   form: FormGroup = this.getReactiveForm();
   templateForm: any = this.getTemplateForm();
   partiallyCompletedForm: FormGroup = this.getReactiveForm();
+  expanded = false;
 
   stepsExpandedState = {
     name: false,
