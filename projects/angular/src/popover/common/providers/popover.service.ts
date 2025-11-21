@@ -121,6 +121,6 @@ export class ClrPopoverService {
       return;
     }
 
-    this.anchorElementRef?.nativeElement?.focus();
+    this.anchorElementRef?.nativeElement?.focus({ preventScroll: true });
   }
 }

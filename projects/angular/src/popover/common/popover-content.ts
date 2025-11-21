@@ -53,7 +53,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     overlayX: 'end',
     overlayY: 'top',
   };
-  private scrollableParent: any;
+  private scrollableParents: HTMLElement[];
 
   constructor(
     private container: ViewContainerRef,
@@ -121,12 +121,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     this.subscriptions.push(
       this.popoverService.openChange.subscribe(change => {
-        if (!this.scrollableParent) {
-          // Get Scrollable Parent when there is no cdkScrollable directive set
-          this.scrollableParent = this.getScrollParent(this.popoverService.anchorElementRef?.nativeElement);
-          this.listenToMouseEvents();
-        }
-
         if (change) {
           this.showOverlay();
         } else {
@@ -244,6 +238,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private closePopover() {
+    if (!this.popoverService.overlayRef) {
+      return;
+    }
+
     this.removeOverlay();
     this.popoverService.open = false;
 
@@ -257,7 +255,12 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private showOverlay() {
-    this.setPreferredPosition(); //Preferred position defined by consumer
+    // Get Scrollable Parents
+    this.scrollableParents = this.getScrollParents(this.popoverService.anchorElementRef?.nativeElement);
+    this.listenToMouseEvents();
+
+    //Preferred position defined by consumer
+    this.setPreferredPosition();
 
     if (!this.popoverService.overlayRef) {
       this.popoverService.overlayRef = this._createOverlayRef();
@@ -304,20 +307,32 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.domPortal = null;
     this.popoverService.contentRef = null;
     this.view = null;
+    this.scrollableParents = null;
 
     this.popoverService.popoverVisibleEmit(false);
   }
 
-  //The below method is taken from https://gist.github.com/oscarmarina/3a546cff4d106a49a5be417e238d9558
-  private getScrollParent = (node, axis = 'y') => {
-    let el = node;
-    if (!(el instanceof HTMLElement || el instanceof ShadowRoot)) {
-      return null;
+  private getScrollParents(node: HTMLElement, axis = 'y'): HTMLElement[] {
+    let parent = node;
+    const scrollableParents: HTMLElement[] = [];
+
+    while (parent && !(parent instanceof HTMLBodyElement)) {
+      parent = this.getScrollParent(parent.parentNode as HTMLElement, axis);
+
+      scrollableParents.push(parent);
     }
 
-    if (el instanceof ShadowRoot) {
-      el = el.host;
+    return scrollableParents;
+  }
+
+  // The below method is taken from https://gist.github.com/oscarmarina/3a546cff4d106a49a5be417e238d9558
+  private getScrollParent(node: HTMLElement | ShadowRoot, axis = 'y'): HTMLElement {
+    if (node instanceof HTMLHtmlElement) {
+      return node;
     }
+
+    const el = node instanceof ShadowRoot ? (node.host as HTMLElement) : node;
+
     const style = window.getComputedStyle(el);
     const overflow = axis === 'y' ? style.overflowY : style.overflowX;
     const scrollSize = axis === 'y' ? el.scrollHeight : el.scrollWidth;
@@ -325,46 +340,33 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     const isScrolled = scrollSize > clientSize;
 
     if (isScrolled && !overflow.includes('visible') && !overflow.includes('hidden')) {
-      return {
-        scrollParent: el,
-        scrollParentSize: scrollSize,
-        clientParentSize: clientSize,
-      };
+      return el;
     }
 
-    return this.getScrollParent(el.parentNode, axis) || window.document.body;
-  };
+    return this.getScrollParent(el.parentNode as HTMLElement, axis);
+  }
 
   //Align the popover on scrolling
   private listenToMouseEvents() {
-    // this.zone.runOutsideAngular(() => {
-    this.subscriptions.push(
-      fromEvent(
-        this.scrollableParent?.scrollParent ? this.scrollableParent?.scrollParent : window.document,
-        'scroll'
-      ).subscribe(() => {
-        if (this.popoverService.scrollToClose) {
-          console.log(1);
-          // this.zone.run(() => {
-          this.closePopover();
-          // });
-
-          return;
-        }
-
-        if (this.popoverService.overlayRef) {
-          if (this.elementIsVisibleInViewport(this.popoverService.anchorElementRef?.nativeElement)) {
-            this.popoverService.overlayRef.updatePosition();
-          } else {
-            console.log(2);
-            // this.zone.run(() => {
+    this.scrollableParents.forEach(parent => {
+      this.subscriptions.push(
+        fromEvent(parent, 'scroll').subscribe(() => {
+          if (this.popoverService.scrollToClose) {
             this.closePopover();
-            // });
+
+            return;
           }
-        }
-      })
-    );
-    // });
+
+          if (this.popoverService.overlayRef) {
+            if (this.elementIsVisibleInViewport(this.popoverService.anchorElementRef?.nativeElement)) {
+              this.popoverService.overlayRef.updatePosition();
+            } else {
+              this.closePopover();
+            }
+          }
+        })
+      );
+    });
   }
 
   //Check if element is in ViewPort
