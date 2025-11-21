@@ -76,6 +76,7 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
     datagridTable: ElementRef<HTMLElement>;
     datagridHeader: ElementRef<HTMLElement>;
     contentWrapper: ElementRef<HTMLElement>;
+    rowsWrapper: ElementRef<HTMLElement>;
     scrollableColumns: ViewContainerRef;
     _projectedDisplayColumns: ViewContainerRef;
     _projectedCalculationColumns: ViewContainerRef;
@@ -92,6 +93,9 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
      */
     private _subscriptions;
     private _virtualScrollSubscriptions;
+    private cachedRowsHeight;
+    private cachedContentHeight;
+    private resizeObserver;
     constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
     /**
      * Freezes the datagrid while data is loading
@@ -139,6 +143,7 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
      */
     dataChanged(): void;
     private toggleVirtualScrollSubscriptions;
+    private handleResizeChanges;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagrid<any>, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": "clrLoadingMoreItems"; "clrDgSingleSelectionAriaLabel": "clrDgSingleSelectionAriaLabel"; "clrDgSingleActionableAriaLabel": "clrDgSingleActionableAriaLabel"; "clrDetailExpandableAriaLabel": "clrDetailExpandableAriaLabel"; "clrDgDisablePageFocus": "clrDgDisablePageFocus"; "customSelectAllEnabled": "clrDgCustomSelectAllEnabled"; "loading": "clrDgLoading"; "selected": "clrDgSelected"; "singleSelected": "clrDgSingleSelected"; "clrDgPreserveSelection": "clrDgPreserveSelection"; "rowSelectionMode": "clrDgRowSelection"; "trackBy": "clrDgItemsTrackBy"; }, { "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
 }
