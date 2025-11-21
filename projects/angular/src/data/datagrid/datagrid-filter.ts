@@ -100,6 +100,7 @@ export class ClrDatagridFilter<T = any>
     this.subs.push(
       popoverService.openChange.subscribe(change => {
         this.ariaExpanded = change;
+        this.openChange.emit(change);
       })
     );
   }
@@ -110,6 +111,7 @@ export class ClrDatagridFilter<T = any>
   }
   set open(open: boolean) {
     open = !!open;
+
     if (this.popoverService.open !== open) {
       this.popoverService.open = open;
       this.openChange.emit(open);

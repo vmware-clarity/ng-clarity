@@ -37,14 +37,7 @@ export default function (): void {
         filterService = new FiltersProvider(new Page(stateDebouncer), stateDebouncer);
         popoverService = new ClrPopoverService();
         filter = new TestFilter();
-        component = new ClrDatagridFilter(
-          filterService,
-          new ClrCommonStringsService(),
-          popoverService,
-          'browser' as any,
-          undefined,
-          undefined
-        );
+        component = new ClrDatagridFilter(filterService, new ClrCommonStringsService(), popoverService, undefined);
       });
 
       afterEach(function () {

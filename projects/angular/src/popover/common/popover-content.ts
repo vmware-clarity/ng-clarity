@@ -327,8 +327,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   // The below method is taken from https://gist.github.com/oscarmarina/3a546cff4d106a49a5be417e238d9558
   private getScrollParent(node: HTMLElement | ShadowRoot, axis = 'y'): HTMLElement {
-    if (node instanceof HTMLHtmlElement) {
-      return node;
+    if (!node || node instanceof HTMLBodyElement) {
+      return window.document.body;
     }
 
     const el = node instanceof ShadowRoot ? (node.host as HTMLElement) : node;
