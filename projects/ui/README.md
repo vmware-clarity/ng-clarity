@@ -9,8 +9,6 @@
 2.  Include @cds/core/global.min.css, @cds/core/styles/theme.dark.min.css, and clr-ui.min.css in your HTML file and add the cds-theme attribute to your body tag:
 
     ```
-    <link rel="stylesheet" href="path/to/node_modules/@cds/core/global.min.css">
-    <link rel="stylesheet" href="path/to/node_modules/@cds/core/styles/theme.dark.min.css">
     <link rel="stylesheet" href="path/to/node_modules/@clr/ui/clr-ui.min.css">
     ```
 
