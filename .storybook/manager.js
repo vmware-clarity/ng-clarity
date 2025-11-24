@@ -6,18 +6,18 @@
  */
 
 import { addons } from 'storybook/manager-api';
-import { create } from 'storybook/theming';
+import { isDarkThemeMatcher, getThemeObj } from './helpers/theme.helper';
 
 import styles from './public/manager.css';
 
 addStyles();
 
-addons.setConfig({
-  theme: create({
-    base: 'light',
-    brandTitle: 'Clarity Angular',
-    brandImage: 'https://raw.githubusercontent.com/vmware-clarity/ng-clarity/main/logo.png',
-  }),
+// initial theme set
+addons.setConfig(getThemeObj(isDarkThemeMatcher.matches));
+
+// dynamic theme change
+isDarkThemeMatcher.addEventListener('change', change => {
+  addons.setConfig(getThemeObj(change.matches));
 });
 
 function addStyles() {

@@ -6,7 +6,7 @@
  */
 
 export const THEMES = {
-  LIGHT: '',
+  LIGHT: 'light',
   DARK: 'dark',
 };
 
