@@ -90,10 +90,10 @@ export class StorybookPopoverComponent {
       return this.connectedPosition;
     }
 
-    return this.position;
+    return this.positionString;
   }
 
-  get position(): string {
+  get positionString(): string {
     return this.defaultPosition || this.dropdownPosition || this.signpostPosition || this.tooltipPosition;
   }
 
