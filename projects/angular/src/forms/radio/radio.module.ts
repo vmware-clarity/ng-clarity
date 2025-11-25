@@ -7,17 +7,16 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '@cds/core/icon';
 
 import { ClrRadio } from './radio';
 import { ClrRadioContainer } from './radio-container';
 import { ClrRadioWrapper } from './radio-wrapper';
-import { ClrIconModule } from '../../icon/icon.module';
+import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '../../icon';
 import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
 import { ClrCommonFormsModule } from '../common/common.module';
 
 @NgModule({
-  imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule],
+  imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIcon],
   declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper],
   exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper],
 })

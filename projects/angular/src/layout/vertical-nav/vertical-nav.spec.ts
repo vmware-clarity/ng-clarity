@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ClrIconModule } from '../../icon/icon.module';
+import { ClrIcon } from '../../icon';
 import { commonStringsDefault } from '../../utils';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNav } from './vertical-nav';
@@ -24,7 +24,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrVerticalNavModule, ClrIconModule, NoopAnimationsModule],
+        imports: [ClrVerticalNavModule, ClrIcon, NoopAnimationsModule],
         declarations: [
           NoIconsNoNavGroupTestComponent,
           IconsButNoNavGroupTestComponent,

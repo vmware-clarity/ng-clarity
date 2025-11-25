@@ -40,8 +40,8 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
       [class.datagrid-filtered]="active"
     >
       <cds-icon
-        [attr.status]="active ? 'info' : null"
-        [attr.shape]="active ? 'filter-grid-circle' : 'filter-grid'"
+        [status]="active ? 'info' : null"
+        [shape]="active ? 'filter-grid-circle' : 'filter-grid'"
         solid
       ></cds-icon>
     </button>

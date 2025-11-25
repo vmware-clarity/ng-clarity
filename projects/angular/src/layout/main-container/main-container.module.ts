@@ -9,12 +9,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 
 import { ClrMainContainer } from './main-container';
-import { ClrIconModule } from '../../icon/icon.module';
+import { ClrIcon } from '../../icon';
 
 export const CLR_LAYOUT_DIRECTIVES: Type<any>[] = [ClrMainContainer];
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule],
+  imports: [CommonModule, ClrIcon],
   declarations: [CLR_LAYOUT_DIRECTIVES],
   exports: [CLR_LAYOUT_DIRECTIVES],
 })

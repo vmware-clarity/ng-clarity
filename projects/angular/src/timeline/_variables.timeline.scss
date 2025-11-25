@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '@cds/core/tokens/tokens.scss';
-@use '../utils/variables/variables.density' as density;
+@use '../styles/core/tokens/variables.tokens' as tokens;
+@use '../styles/variables/variables.density' as density;
 
 $clr-timeline-line-color: var(--clr-timeline-line-color) !default;
 $clr-timeline-step-header-color: var(--clr-timeline-step-header-color) !default;

@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../../utils/mixins';
+@use '../../styles/mixins';
 @use '../variables.buttons' as buttons-variables;
-@use '../../utils/variables/variables.density' as density;
+@use '../../styles/variables/variables.density' as density;
 
 @mixin square-off-btngroup-btns($dir: left) {
   border-top-#{$dir}-radius: 0;

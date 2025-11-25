@@ -7,7 +7,6 @@
 
 import { Component, Input } from '@angular/core';
 
-import { ClrIconModule } from '../../icon';
 import { ClrBadge } from '../badge';
 
 export enum ClrLabelColors {
@@ -40,7 +39,7 @@ export enum ClrLabelColors {
     '[class.disabled]': 'disabled',
     '[class]': 'colorClass',
   },
-  imports: [ClrBadge, ClrIconModule],
+  imports: [ClrBadge],
 })
 export class ClrLabel {
   @Input('clrColor') color: ClrLabelColors | string = ClrLabelColors.None;

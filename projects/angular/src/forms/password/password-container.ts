@@ -36,7 +36,7 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
           <ng-content select="[clrPassword]"></ng-content>
           @if (clrToggle) {
             <button (click)="toggle()" [disabled]="control?.disabled" class="clr-input-group-icon-action" type="button">
-              <cds-icon class="clr-password-eye-icon" [attr.shape]="show ? 'eye-hide' : 'eye'"></cds-icon>
+              <cds-icon class="clr-password-eye-icon" [shape]="show ? 'eye-hide' : 'eye'"></cds-icon>
               <span class="clr-sr-only">
                 {{ show ? hidePasswordText(label?.labelText) : showPasswordText(label?.labelText) }}
               </span>

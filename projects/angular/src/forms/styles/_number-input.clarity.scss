@@ -5,11 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../../utils/mixins';
+@use '../../styles/mixins';
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
-@use '@cds/core/tokens/tokens.scss' as tokens;
-@use '../../utils/variables/variables.density' as density;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+@use '../../styles/variables/variables.density' as density;
 @use 'sass:selector';
 
 @include mixins.exports('forms.number-input') {

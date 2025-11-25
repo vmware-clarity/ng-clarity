@@ -24,6 +24,7 @@ import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ControlValueAccessor } from '@angular/forms';
 import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { DragDrop } from '@angular/cdk/drag-drop';
 import { DragDropConfig } from '@angular/cdk/drag-drop';
 import { ElementRef } from '@angular/core';
@@ -54,6 +55,7 @@ import { OnInit } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { OverlayRef } from '@angular/cdk/overlay';
+import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
@@ -62,6 +64,7 @@ import { RouterLinkActive } from '@angular/router';
 import * as rxjs from 'rxjs';
 import { ScrollDispatcher } from '@angular/cdk/overlay';
 import { ScrollDispatcher as ScrollDispatcher_2 } from '@angular/cdk/scrolling';
+import { SafeHtml } from '@angular/platform-browser';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
@@ -74,6 +77,216 @@ import { ValidationErrors } from '@angular/forms';
 import { Validator } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
+
+// @public (undocumented)
+export const accessibility1Icon: IconShapeTuple;
+
+// @public (undocumented)
+export const accessibility1IconName = "accessibility-1";
+
+// @public (undocumented)
+export const accessibility2Icon: IconShapeTuple;
+
+// @public (undocumented)
+export const accessibility2IconName = "accessibility-2";
+
+// @public (undocumented)
+export const addTextIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const addTextIconName = "add-text";
+
+// @public (undocumented)
+export const administratorIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const administratorIconName = "administrator";
+
+// @public (undocumented)
+export const airplaneIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const airplaneIconName = "airplane";
+
+// @public (undocumented)
+export const alarmClockIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const alarmClockIconName = "alarm-clock";
+
+// @public (undocumented)
+export const alarmOffIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const alarmOffIconName = "alarm-off";
+
+// @public (undocumented)
+export const alignBottomIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const alignBottomIconName = "align-bottom";
+
+// @public (undocumented)
+export const alignCenterIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const alignCenterIconName = "align-center";
+
+// @public (undocumented)
+export const alignLeftIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const alignLeftIconName = "align-left";
+
+// @public (undocumented)
+export const alignLeftTextIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const alignLeftTextIconName = "align-left-text";
+
+// @public (undocumented)
+export const alignMiddleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const alignMiddleIconName = "align-middle";
+
+// @public (undocumented)
+export const alignRightIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const alignRightIconName = "align-right";
+
+// @public (undocumented)
+export const alignRightTextIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const alignRightTextIconName = "align-right-text";
+
+// @public (undocumented)
+export const alignTopIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const alignTopIconName = "align-top";
+
+// @public (undocumented)
+export const angleDoubleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const angleDoubleIconName = "angle-double";
+
+// @public (undocumented)
+export const angleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const angleIconName = "angle";
+
+// @public (undocumented)
+export const animationIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const animationIconName = "animation";
+
+// @public (undocumented)
+export const announcementIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const announcementIconName = "announcement";
+
+// @public (undocumented)
+export const applicationIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const applicationIconName = "application";
+
+// @public (undocumented)
+export const applicationsIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const applicationsIconName = "applications";
+
+// @public (undocumented)
+export const archiveIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const archiveIconName = "archive";
+
+// @public (undocumented)
+export const arrowIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const arrowIconName = "arrow";
+
+// @public (undocumented)
+export const arrowMiniIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const arrowMiniIconName = "arrow-mini";
+
+// @public (undocumented)
+export const assignUserIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const assignUserIconName = "assign-user";
+
+// @public (undocumented)
+export const asteriskIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const asteriskIconName = "asterisk";
+
+// @public (undocumented)
+export const atomIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const atomIconName = "atom";
+
+// @public (undocumented)
+export const axisChartIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const axisChartIconName = "axis-chart";
+
+// @public (undocumented)
+export const backupIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const backupIconName = "backup";
+
+// @public (undocumented)
+export const backupRestoreIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const backupRestoreIconName = "backup-restore";
+
+// @public (undocumented)
+export const banIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const banIconName = "ban";
+
+// @public (undocumented)
+export const bankIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bankIconName = "bank";
+
+// @public (undocumented)
+export const barChartIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const barChartIconName = "bar-chart";
+
+// @public (undocumented)
+export const barCodeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const barCodeIconName = "bar-code";
+
+// @public (undocumented)
+export const barsIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const barsIconName = "bars";
 
 // @public (undocumented)
 export class BaseExpandableAnimation {
@@ -101,6 +314,114 @@ export class BaseExpandableAnimation {
 }
 
 // @public (undocumented)
+export const batteryIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const batteryIconName = "battery";
+
+// @public (undocumented)
+export const bellCurveIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bellCurveIconName = "bell-curve";
+
+// @public (undocumented)
+export const bellIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bellIconName = "bell";
+
+// @public (undocumented)
+export const betaIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const betaIconName = "beta";
+
+// @public (undocumented)
+export const bicycleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bicycleIconName = "bicycle";
+
+// @public (undocumented)
+export const birthdayCakeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const birthdayCakeIconName = "birthday-cake";
+
+// @public (undocumented)
+export const bitcoinIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bitcoinIconName = "bitcoin";
+
+// @public (undocumented)
+export const blockIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const blockIconName = "block";
+
+// @public (undocumented)
+export const blockQuoteIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const blockQuoteIconName = "block-quote";
+
+// @public (undocumented)
+export const blocksGroupIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const blocksGroupIconName = "blocks-group";
+
+// @public (undocumented)
+export const bluetoothIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bluetoothIconName = "bluetooth";
+
+// @public (undocumented)
+export const bluetoothOffIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bluetoothOffIconName = "bluetooth-off";
+
+// @public (undocumented)
+export const boatIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const boatIconName = "boat";
+
+// @public (undocumented)
+export const boldIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const boldIconName = "bold";
+
+// @public (undocumented)
+export const boltIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const boltIconName = "bolt";
+
+// @public (undocumented)
+export const bookIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bookIconName = "book";
+
+// @public (undocumented)
+export const bookmarkIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bookmarkIconName = "bookmark";
+
+// @public (undocumented)
+export const boxPlotIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const boxPlotIconName = "box-plot";
+
+// @public (undocumented)
 export interface BreadcrumbItem {
     // (undocumented)
     href?: string;
@@ -117,20 +438,10 @@ export interface BreadcrumbItem {
 }
 
 // @public (undocumented)
-export class CdsIconCustomTag {
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<CdsIconCustomTag, "cds-icon", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<CdsIconCustomTag, never>;
-}
+export const briefcaseIcon: IconShapeTuple;
 
 // @public (undocumented)
-export enum CHANGE_KEYS {
-    // (undocumented)
-    FORM = "form",
-    // (undocumented)
-    MODEL = "model"
-}
+export const briefcaseIconName = "briefcase";
 
 // @public (undocumented)
 export class ClarityModule {
@@ -141,6 +452,262 @@ export class ClarityModule {
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof ClrEmphasisModule, typeof ClrDataModule, typeof ClrIconModule, typeof ClrModalModule, typeof ClrLoadingModule, typeof ClrConditionalModule, typeof ClrFocusOnViewInitModule, typeof ClrButtonModule, typeof ClrFormsModule, typeof ClrLayoutModule, typeof ClrPopoverModule, typeof ClrWizardModule, typeof ClrSidePanelModule, typeof ClrStepperModule, typeof ClrSpinnerModule, typeof ClrProgressBarModule, typeof ClrPopoverModuleNext, typeof ClrTimelineModule]>;
 }
+export const bubbleChartIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bubbleChartIconName = "bubble-chart";
+
+// @public (undocumented)
+export const bubbleExclamationIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bubbleExclamationIconName = "bubble-exclamation";
+
+// @public (undocumented)
+export const bugIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bugIconName = "bug";
+
+// @public (undocumented)
+export const buildingIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const buildingIconName = "building";
+
+// @public (undocumented)
+export const bulletListIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bulletListIconName = "bullet-list";
+
+// @public (undocumented)
+export const bullseyeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bullseyeIconName = "bullseye";
+
+// @public (undocumented)
+export const bundleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const bundleIconName = "bundle";
+
+// @public (undocumented)
+export const calculatorIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const calculatorIconName = "calculator";
+
+// @public (undocumented)
+export const calendarIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const calendarIconName = "calendar";
+
+// @public (undocumented)
+export const calendarMiniIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const calendarMiniIconName = "calendar-mini";
+
+// @public (undocumented)
+export const cameraIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cameraIconName = "camera";
+
+// @public (undocumented)
+export const campervanIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const campervanIconName = "campervan";
+
+// @public (undocumented)
+export const capacitorIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const capacitorIconName = "capacitor";
+
+// @public (undocumented)
+export const caravanIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const caravanIconName = "caravan";
+
+// @public (undocumented)
+export const carIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const carIconName = "car";
+
+// @public (undocumented)
+export const cdDvdIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cdDvdIconName = "cd-dvd";
+
+// @public @deprecated (undocumented)
+export class CdsIconCustomTag {
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<CdsIconCustomTag, "cds-icon", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<CdsIconCustomTag, never>;
+}
+
+// @public (undocumented)
+export const centerTextIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const centerTextIconName = "center-text";
+
+// @public (undocumented)
+export const certificateIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const certificateIconName = "certificate";
+
+// @public (undocumented)
+export enum CHANGE_KEYS {
+    // (undocumented)
+    FORM = "form",
+    // (undocumented)
+    MODEL = "model"
+}
+
+// @public (undocumented)
+export const chartCollectionAliases: IconAlias[];
+
+// @public (undocumented)
+export const chartCollectionIcons: IconShapeTuple[];
+
+// @public (undocumented)
+export const chatBubbleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const chatBubbleIconName = "chat-bubble";
+
+// @public (undocumented)
+export const checkboxListIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const checkboxListIconName = "checkbox-list";
+
+// @public (undocumented)
+export const checkCircleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const checkCircleIconName = "check-circle";
+
+// @public (undocumented)
+export const checkCircleMiniIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const checkCircleMiniIconName = "check-circle-mini";
+
+// @public (undocumented)
+export const checkIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const checkIconName = "check";
+
+// @public (undocumented)
+export const checkMiniIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const checkMiniIconName = "check-mini";
+
+// @public (undocumented)
+export const childArrowIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const childArrowIconName = "child-arrow";
+
+// @public (undocumented)
+export const ciCdIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const ciCdIconName = "ci-cd";
+
+// @public (undocumented)
+export const circleArrowIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const circleArrowIconName = "circle-arrow";
+
+// @public (undocumented)
+export const circleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const circleIconName = "circle";
+
+// @public
+export class ClarityIcons {
+    static addAliases(...aliases: IconAlias[]): void;
+    // (undocumented)
+    static addIcons(...shapes: IconShapeTuple[]): void;
+    // (undocumented)
+    static getIconNameFromShape(iconShape: IconShapeTuple): string;
+    static get registry(): Readonly<IconRegistry>;
+}
+
+// @public (undocumented)
+export class ClarityModule {
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClarityModule, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClarityModule>;
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof ClrIcon], [typeof ClrEmphasisModule, typeof ClrDataModule, typeof ClrIcon, typeof ClrIconModule, typeof ClrModalModule, typeof ClrLoadingModule, typeof ClrConditionalModule, typeof ClrFocusOnViewInitModule, typeof ClrButtonModule, typeof ClrFormsModule, typeof ClrLayoutModule, typeof ClrPopoverModule, typeof ClrWizardModule, typeof ClrSidePanelModule, typeof ClrStepperModule, typeof ClrSpinnerModule, typeof ClrProgressBarModule, typeof ÇlrClrPopoverModuleNext, typeof ClrTimelineModule]>;
+}
+
+// @public (undocumented)
+export const clipboardIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const clipboardIconName = "clipboard";
+
+// @public (undocumented)
+export const clockIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const clockIconName = "clock";
+
+// @public (undocumented)
+export const cloneIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cloneIconName = "clone";
+
+// @public (undocumented)
+export const cloudChartIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cloudChartIconName = "cloud-chart";
+
+// @public (undocumented)
+export const cloudIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cloudIconName = "cloud";
+
+// @public (undocumented)
+export const cloudNetworkIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cloudNetworkIconName = "cloud-network";
+
+// @public (undocumented)
+export const cloudScaleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cloudScaleIconName = "cloud-scale";
+
+// @public (undocumented)
+export const cloudTrafficIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cloudTrafficIconName = "cloud-traffic";
 
 // @public (undocumented)
 export const CLR_ALERT_DIRECTIVES: Type<any>[];
@@ -315,7 +882,7 @@ export class ClrAccordionModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrAccordionModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof ÇlrAccordionOompaLoompa, typeof ÇlrAccordionWillyWonka], [typeof i2.CommonModule, typeof ClrIconModule], [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof ÇlrAccordionOompaLoompa, typeof ÇlrAccordionWillyWonka]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof ÇlrAccordionOompaLoompa, typeof ÇlrAccordionWillyWonka], [typeof i2.CommonModule, typeof ClrIcon], [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof ÇlrAccordionOompaLoompa, typeof ÇlrAccordionWillyWonka]>;
 }
 
 // @public (undocumented)
@@ -445,7 +1012,7 @@ export class ClrAlertModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrAlertModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAlertModule, [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrDropdownModule, typeof ClrSpinnerModule], [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAlertModule, [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrDropdownModule, typeof ClrSpinnerModule], [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText]>;
 }
 
 // @public (undocumented)
@@ -630,7 +1197,7 @@ export class ClrBreadcrumbsModule {
     // Warning: (ae-forgotten-export) The symbol "ClrHostWrappingModule" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBreadcrumbsModule, [typeof ClrBreadcrumbs, typeof ClrBreadcrumbItem], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrHostWrappingModule, typeof i6.RouterModule], [typeof ClrBreadcrumbs]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBreadcrumbsModule, [typeof ClrBreadcrumbs, typeof ClrBreadcrumbItem], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrHostWrappingModule, typeof i6.RouterModule], [typeof ClrBreadcrumbs, typeof ClrIcon]>;
 }
 
 // @public (undocumented)
@@ -833,7 +1400,7 @@ export class ClrCheckboxModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrCheckboxModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCheckboxModule, [typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrCommonFormsModule, typeof ClrHostWrappingModule], [typeof ClrCommonFormsModule, typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCheckboxModule, [typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrCommonFormsModule, typeof ClrHostWrappingModule], [typeof ClrCommonFormsModule, typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper]>;
 }
 
 // @public (undocumented)
@@ -996,7 +1563,7 @@ export class ClrCommonFormsModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrCommonFormsModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCommonFormsModule, [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl], [typeof i2.CommonModule, typeof ClrIconModule], [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCommonFormsModule, [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl], [typeof i2.CommonModule, typeof ClrIcon], [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl]>;
 }
 
 // @public (undocumented)
@@ -2106,7 +2673,7 @@ export class ClrDatalistModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatalistModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatalistModule, [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer], [typeof i2.CommonModule, typeof ClrInputModule, typeof ClrIconModule], [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatalistModule, [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer], [typeof i2.CommonModule, typeof ClrInputModule, typeof ClrIcon], [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer]>;
 }
 
 // @public (undocumented)
@@ -2586,7 +3153,7 @@ export class ClrFileInputModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrFileInputModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFileInputModule, [typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFileInputModule, [typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError]>;
 }
 
 // @public (undocumented)
@@ -2814,6 +3381,57 @@ export class ClrHeader implements OnDestroy {
 }
 
 // @public (undocumented)
+export class ClrIcon implements OnInit, OnDestroy {
+    constructor(el: ElementRef<HTMLElement>, cdr: ChangeDetectorRef);
+    // (undocumented)
+    get badge(): string | boolean;
+    set badge(value: string | boolean);
+    // (undocumented)
+    get direction(): string;
+    set direction(value: string);
+    // (undocumented)
+    el: ElementRef<HTMLElement>;
+    // (undocumented)
+    get flip(): Orientations;
+    set flip(value: Orientations);
+    // (undocumented)
+    iconSVG: string;
+    // (undocumented)
+    get inverse(): boolean;
+    set inverse(value: boolean);
+    // (undocumented)
+    isStringIcon: boolean;
+    // (undocumented)
+    static ngAcceptInputType_inverse: unknown;
+    // (undocumented)
+    static ngAcceptInputType_solid: unknown;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    get shape(): string;
+    set shape(value: string);
+    // (undocumented)
+    get size(): string;
+    set size(value: string);
+    // (undocumented)
+    get solid(): boolean;
+    set solid(value: boolean);
+    // (undocumented)
+    get status(): string;
+    set status(value: string);
+    // (undocumented)
+    updateIcon(): void;
+    // (undocumented)
+    updateIconSize(value: string): void;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrIcon, "clr-icon, cds-icon", never, { "shape": { "alias": "shape"; "required": false; }; "size": { "alias": "size"; "required": false; }; "direction": { "alias": "direction"; "required": false; }; "flip": { "alias": "flip"; "required": false; }; "solid": { "alias": "solid"; "required": false; }; "status": { "alias": "status"; "required": false; }; "inverse": { "alias": "inverse"; "required": false; }; "badge": { "alias": "badge"; "required": false; }; }, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIcon, never>;
+}
+
+// @public @deprecated (undocumented)
 export class ClrIconCustomTag {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIconCustomTag, "clr-icon", never, {}, {}, never, never, false, never>;
@@ -2821,7 +3439,7 @@ export class ClrIconCustomTag {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIconCustomTag, never>;
 }
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export class ClrIconModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIconModule, never>;
@@ -2958,7 +3576,7 @@ export class ClrInputModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrInputModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof ClrInput, typeof ClrInputContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIconModule, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrInput, typeof ClrInputContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof ClrInput, typeof ClrInputContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrInput, typeof ClrInputContainer]>;
 }
 
 // @public (undocumented)
@@ -3125,7 +3743,7 @@ export class ClrMainContainerModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrMainContainerModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrMainContainerModule, [typeof ClrMainContainer], [typeof i2.CommonModule, typeof ClrIconModule], [typeof ClrMainContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrMainContainerModule, [typeof ClrMainContainer], [typeof i2.CommonModule, typeof ClrIcon], [typeof ClrMainContainer]>;
 }
 
 // @public (undocumented)
@@ -3229,7 +3847,7 @@ export class ClrModalModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrModalModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent], [typeof i2.CommonModule, typeof CdkTrapFocusModule, typeof ClrIconModule], [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent, typeof ClrIconModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent], [typeof i2.CommonModule, typeof CdkTrapFocusModule, typeof ClrIcon], [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent, typeof ClrIcon]>;
 }
 
 // @public (undocumented)
@@ -3276,7 +3894,7 @@ export class ClrNavigationModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrNavigationModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka]>;
 }
 
 // @public (undocumented)
@@ -3372,7 +3990,7 @@ export class ClrNumberInputModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrNumberInputModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNumberInputModule, [typeof ClrNumberInput, typeof ClrNumberInputContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIconModule, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrNumberInput, typeof ClrNumberInputContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNumberInputModule, [typeof ClrNumberInput, typeof ClrNumberInputContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrNumberInput, typeof ClrNumberInputContainer]>;
 }
 
 // @public (undocumented)
@@ -3548,7 +4166,7 @@ export class ClrPasswordModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPasswordModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof ClrPassword, typeof ClrPasswordContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIconModule, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrPassword, typeof ClrPasswordContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof ClrPassword, typeof ClrPasswordContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrPassword, typeof ClrPasswordContainer]>;
 }
 
 // @public (undocumented)
@@ -3809,7 +4427,7 @@ export class ClrRadioModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrRadioModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRadioModule, [typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper], [typeof i2.CommonModule, typeof ClrCommonFormsModule, typeof ClrHostWrappingModule, typeof ClrIconModule], [typeof ClrCommonFormsModule, typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRadioModule, [typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper], [typeof i2.CommonModule, typeof ClrCommonFormsModule, typeof ClrHostWrappingModule, typeof ClrIcon], [typeof ClrCommonFormsModule, typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper]>;
 }
 
 // @public (undocumented)
@@ -3857,7 +4475,7 @@ export class ClrRangeModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrRangeModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRangeModule, [typeof ClrRange, typeof ClrRangeContainer], [typeof i2.CommonModule, typeof ClrCommonFormsModule, typeof ClrHostWrappingModule, typeof ClrIconModule], [typeof ClrCommonFormsModule, typeof ClrRange, typeof ClrRangeContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRangeModule, [typeof ClrRange, typeof ClrRangeContainer], [typeof i2.CommonModule, typeof ClrCommonFormsModule, typeof ClrHostWrappingModule, typeof ClrIcon], [typeof ClrCommonFormsModule, typeof ClrRange, typeof ClrRangeContainer]>;
 }
 
 // @public (undocumented)
@@ -3942,7 +4560,7 @@ export class ClrSelectModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSelectModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof ClrSelect, typeof ClrSelectContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIconModule, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrSelect, typeof ClrSelectContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof ClrSelect, typeof ClrSelectContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrSelect, typeof ClrSelectContainer]>;
 }
 
 // @public (undocumented)
@@ -4017,7 +4635,7 @@ export class ClrSidePanelModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSidePanelModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSidePanelModule, [typeof ClrSidePanel], [typeof i2.CommonModule, typeof CdkTrapFocusModule, typeof ClrIconModule, typeof ClrModalModule], [typeof ClrSidePanel, typeof ClrModalModule, typeof ClrIconModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSidePanelModule, [typeof ClrSidePanel], [typeof i2.CommonModule, typeof CdkTrapFocusModule, typeof ClrIcon, typeof ClrModalModule], [typeof ClrSidePanel, typeof ClrModalModule, typeof ClrIcon]>;
 }
 
 // @public (undocumented)
@@ -4257,7 +4875,7 @@ export class ClrStackViewModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStackViewModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIconModule, typeof ClrExpandableAnimationModule], [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrExpandableAnimationModule], [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags]>;
 }
 
 // @public (undocumented)
@@ -4364,7 +4982,7 @@ export class ClrStepperModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStepperModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrAccordionModule], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka, typeof ClrAccordionModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrAccordionModule], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka, typeof ClrAccordionModule, typeof ClrIcon]>;
 }
 
 // @public (undocumented)
@@ -4590,7 +5208,7 @@ export class ClrTabsModule {
     // Warning: (ae-forgotten-export) The symbol "ClrTemplateRefModule" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa], [typeof i2.CommonModule, typeof ClrConditionalModule, typeof ClrIconModule, typeof ClrTemplateRefModule, typeof ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa, typeof ClrConditionalModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa], [typeof i2.CommonModule, typeof ClrConditionalModule, typeof ClrIcon, typeof ClrTemplateRefModule, typeof ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa, typeof ClrConditionalModule]>;
 }
 
 // @public (undocumented)
@@ -4620,7 +5238,7 @@ export class ClrTextareaModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTextareaModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof ClrTextarea, typeof ClrTextareaContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIconModule, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrTextarea, typeof ClrTextareaContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof ClrTextarea, typeof ClrTextareaContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrTextarea, typeof ClrTextareaContainer]>;
 }
 
 // @public (undocumented)
@@ -4651,7 +5269,7 @@ export class ClrTimelineModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTimelineModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTimelineModule, [typeof ClrTimeline, typeof ClrTimelineStep, typeof ClrTimelineStepDescription, typeof ClrTimelineStepHeader, typeof ClrTimelineStepTitle], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrSpinnerModule], [typeof ClrTimeline, typeof ClrTimelineStep, typeof ClrTimelineStepDescription, typeof ClrTimelineStepHeader, typeof ClrTimelineStepTitle, typeof ClrIconModule, typeof ClrSpinnerModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTimelineModule, [typeof ClrTimeline, typeof ClrTimelineStep, typeof ClrTimelineStepDescription, typeof ClrTimelineStepHeader, typeof ClrTimelineStepTitle], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrSpinnerModule], [typeof ClrTimeline, typeof ClrTimelineStep, typeof ClrTimelineStepDescription, typeof ClrTimelineStepHeader, typeof ClrTimelineStepTitle, typeof ClrIcon, typeof ClrSpinnerModule]>;
 }
 
 // @public (undocumented)
@@ -4884,7 +5502,7 @@ export class ClrTreeViewModule {
     // Warning: (ae-forgotten-export) The symbol "RecursiveChildren" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
 }
 
 // @public (undocumented)
@@ -4993,7 +5611,7 @@ export class ClrVerticalNavModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrVerticalNavModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrVerticalNavModule, [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon], [typeof i2.CommonModule, typeof ClrIconModule, typeof ClrConditionalModule, typeof ClrFocusOnViewInitModule], [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon, typeof ClrConditionalModule, typeof ClrIconModule, typeof ClrFocusOnViewInitModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrVerticalNavModule, [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrConditionalModule, typeof ClrFocusOnViewInitModule], [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon, typeof ClrConditionalModule, typeof ClrIcon, typeof ClrFocusOnViewInitModule]>;
 }
 
 // @public (undocumented)
@@ -5158,7 +5776,7 @@ export class ClrWizardModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrWizardModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions], [typeof i2.CommonModule, typeof ClrModalModule, typeof ClrAlertModule], [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrModalModule, typeof ClrAlertModule], [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions]>;
 }
 
 // @public
@@ -5378,22 +5996,214 @@ export class ClrYearpicker implements AfterViewInit {
 }
 
 // @public (undocumented)
+export const clusterIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const clusterIconName = "cluster";
+
+// @public (undocumented)
+export const codeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const codeIconName = "code";
+
+// @public (undocumented)
+export const cogIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cogIconName = "cog";
+
+// @public (undocumented)
+export const coinBagIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const coinBagIconName = "coin-bag";
+
+// @public (undocumented)
 export function collapse(): AnimationMetadata[];
+
+// @public (undocumented)
+export const collapseCardIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const collapseCardIconName = "collapse-card";
+
+// @public (undocumented)
+export const colorPaletteIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const colorPaletteIconName = "color-palette";
+
+// @public (undocumented)
+export const colorPickerIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const colorPickerIconName = "color-picker";
+
+// @public (undocumented)
+export const commerceCollectionAliases: IconAlias[];
+
+// @public (undocumented)
+export const commerceCollectionIcons: IconShapeTuple[];
 
 // @public (undocumented)
 export const commonStringsDefault: ClrCommonStrings;
 
 // @public (undocumented)
+export const compassIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const compassIconName = "compass";
+
+// @public (undocumented)
+export const computerIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const computerIconName = "computer";
+
+// @public (undocumented)
 export const CONDITIONAL_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
+export const connectIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const connectIconName = "connect";
+
+// @public (undocumented)
+export const containerGroupIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const containerGroupIconName = "container-group";
+
+// @public (undocumented)
+export const containerIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const containerIconName = "container";
+
+// @public (undocumented)
+export const containerVolumeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const containerVolumeIconName = "container-volume";
+
+// @public (undocumented)
+export const contractIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const contractIconName = "contract";
+
+// @public (undocumented)
+export const controlLunIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const controlLunIconName = "control-lun";
+
+// @public (undocumented)
+export const copyIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const copyIconName = "copy";
+
+// @public (undocumented)
+export const copyToClipboardIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const copyToClipboardIconName = "copy-to-clipboard";
+
+// @public (undocumented)
+export const coreCollectionAliases: IconAlias[];
+
+// @public (undocumented)
+export const coreCollectionIcons: IconShapeTuple[];
+
+// @public (undocumented)
+export const cpuIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cpuIconName = "cpu";
+
+// @public (undocumented)
+export const creditCardIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const creditCardIconName = "credit-card";
+
+// @public (undocumented)
+export const crosshairsIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const crosshairsIconName = "crosshairs";
+
+// @public (undocumented)
+export const crownIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const crownIconName = "crown";
+
+// @public (undocumented)
+export const cursorArrowIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cursorArrowIconName = "cursor-arrow";
+
+// @public (undocumented)
+export const cursorHandClickIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cursorHandClickIconName = "cursor-hand-click";
+
+// @public (undocumented)
+export const cursorHandGrabIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cursorHandGrabIconName = "cursor-hand-grab";
+
+// @public (undocumented)
+export const cursorHandIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cursorHandIconName = "cursor-hand";
+
+// @public (undocumented)
+export const cursorHandOpenIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cursorHandOpenIconName = "cursor-hand-open";
+
+// @public (undocumented)
+export const cursorMoveIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const cursorMoveIconName = "cursor-move";
+
+// @public (undocumented)
+export const curveChartIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const curveChartIconName = "curve-chart";
+
+// @public (undocumented)
 export const CUSTOM_BUTTON_TYPES: any;
+
+// @public (undocumented)
+export const dashboardIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const dashboardIconName = "dashboard";
+
+// @public (undocumented)
+export const dataClusterIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const dataClusterIconName = "data-cluster";
 
 // Warning: (ae-forgotten-export) The symbol "DatagridNumericFilterImpl" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
 export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>> implements CustomFilter, AfterViewInit {
-    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, ngZone: NgZone);
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverToggleService: ClrPopoverToggleService, ngZone: NgZone);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     set customNumericFilter(value: ClrDatagridNumericFilterInterface<T> | RegisteredFilter<T, DatagridNumericFilterImpl<T>>);
@@ -5471,7 +6281,7 @@ export class DatagridPropertyStringFilter<T = any> implements ClrDatagridStringF
 //
 // @public (undocumented)
 export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements CustomFilter, AfterViewInit, OnChanges, OnDestroy {
-    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, smartToggleService: ClrPopoverToggleService, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     set customStringFilter(value: ClrDatagridStringFilterInterface<T> | RegisteredFilter<T, DatagridStringFilterImpl<T>>);
@@ -5505,7 +6315,220 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, Da
 export const DEFAULT_BUTTON_TYPES: any;
 
 // @public (undocumented)
+export const deployIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const deployIconName = "deploy";
+
+// @public (undocumented)
+export const detailCollapseIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const detailCollapseIconName = "detail-collapse";
+
+// @public (undocumented)
+export const detailExpandIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const detailExpandIconName = "detail-expand";
+
+// @public (undocumented)
+export const detailsIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const detailsIconName = "details";
+
+// @public (undocumented)
+export const devicesIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const devicesIconName = "devices";
+
+// @public (undocumented)
+export const digitalSignatureIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const digitalSignatureIconName = "digital-signature";
+
+// @public (undocumented)
+export type Directions = 'up' | 'down' | 'left' | 'right';
+
+// @public (undocumented)
+export const disconnectIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const disconnectIconName = "disconnect";
+
+// @public (undocumented)
+export const displayIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const displayIconName = "display";
+
+// @public (undocumented)
+export const dollarBillIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const dollarBillIconName = "dollar-bill";
+
+// @public (undocumented)
+export const dollarIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const dollarIconName = "dollar";
+
+// @public (undocumented)
+export const dotCircleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const dotCircleIconName = "dot-circle";
+
+// @public (undocumented)
+export const downloadCloudIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const downloadCloudIconName = "download-cloud";
+
+// @public (undocumented)
+export const downloadIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const downloadIconName = "download";
+
+// @public (undocumented)
+export const dragHandleCornerIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const dragHandleCornerIconName = "drag-handle-corner";
+
+// @public (undocumented)
+export const dragHandleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const dragHandleIconName = "drag-handle";
+
+// @public (undocumented)
+export const eCheckIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const eCheckIconName = "e-check";
+
+// @public (undocumented)
+export const ellipsisHorizontalIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const ellipsisHorizontalIconName = "ellipsis-horizontal";
+
+// @public (undocumented)
+export const ellipsisVerticalIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const ellipsisVerticalIconName = "ellipsis-vertical";
+
+// @public (undocumented)
+export const employeeGroupIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const employeeGroupIconName = "employee-group";
+
+// @public (undocumented)
+export const employeeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const employeeIconName = "employee";
+
+// @public (undocumented)
+export const envelopeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const envelopeIconName = "envelope";
+
+// @public (undocumented)
+export const eraserIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const eraserIconName = "eraser";
+
+// @public (undocumented)
+export const errorMiniIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const errorMiniIconName = "error-mini";
+
+// @public (undocumented)
+export const errorStandardIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const errorStandardIconName = "error-standard";
+
+// @public (undocumented)
+export const essentialCollectionAliases: IconAlias[];
+
+// @public (undocumented)
+export const essentialCollectionIcons: IconShapeTuple[];
+
+// @public (undocumented)
+export const euroIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const euroIconName = "euro";
+
+// @public (undocumented)
+export const eventIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const eventIconName = "event";
+
+// @public (undocumented)
+export const eventMiniIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const eventMiniIconName = "event-mini";
+
+// @public (undocumented)
+export const exclamationCircleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const exclamationCircleIconName = "exclamation-circle";
+
+// @public (undocumented)
+export const exclamationTriangleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const exclamationTriangleIconName = "exclamation-triangle";
+
+// @public (undocumented)
 export const EXPANDABLE_ANIMATION_DIRECTIVES: Type<any>[];
+
+// @public (undocumented)
+export const expandCardIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const expandCardIconName = "expand-card";
+
+// @public (undocumented)
+export const exportIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const exportIconName = "export";
+
+// @public (undocumented)
+export const eyeHideIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const eyeHideIconName = "eye-hide";
+
+// @public (undocumented)
+export const eyeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const eyeIconName = "eye";
+
+// @public (undocumented)
+export const factoryIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const factoryIconName = "factory";
 
 // @public (undocumented)
 export function fade(opacity?: number): AnimationMetadata[];
@@ -5514,13 +6537,446 @@ export function fade(opacity?: number): AnimationMetadata[];
 export function fadeSlide(direction: string): AnimationMetadata[];
 
 // @public (undocumented)
+export const fastForwardIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const fastForwardIconName = "fast-forward";
+
+// @public (undocumented)
+export const ferryIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const ferryIconName = "ferry";
+
+// @public (undocumented)
+export const fileGroupIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const fileGroupIconName = "file-group";
+
+// @public (undocumented)
+export const fileIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const fileIconName = "file";
+
+// @public (undocumented)
+export const fileSettingsIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const fileSettingsIconName = "file-settings";
+
+// @public (undocumented)
+export const fileShare2Icon: IconShapeTuple;
+
+// @public (undocumented)
+export const fileShare2IconName = "file-share-2";
+
+// @public (undocumented)
+export const fileShareIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const fileShareIconName = "file-share";
+
+// @public (undocumented)
+export const fileZipIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const fileZipIconName = "file-zip";
+
+// @public (undocumented)
+export const filmStripIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const filmStripIconName = "film-strip";
+
+// @public (undocumented)
+export const filter2Icon: IconShapeTuple;
+
+// @public (undocumented)
+export const filter2IconName = "filter-2";
+
+// @public (undocumented)
+export const filterGridCircleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const filterGridCircleIconName = "filter-grid-circle";
+
+// @public (undocumented)
+export const filterGridCircleMiniIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const filterGridCircleMiniIconName = "filter-grid-circle-mini";
+
+// @public (undocumented)
+export const filterGridIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const filterGridIconName = "filter-grid";
+
+// @public (undocumented)
+export const filterGridMiniIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const filterGridMiniIconName = "filter-grid-mini";
+
+// @public (undocumented)
+export const filterIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const filterIconName = "filter";
+
+// @public (undocumented)
+export const filterOffIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const filterOffIconName = "filter-off";
+
+// @public (undocumented)
+export const firewallIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const firewallIconName = "firewall";
+
+// @public (undocumented)
+export const firstAidIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const firstAidIconName = "first-aid";
+
+// @public (undocumented)
+export const fishIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const fishIconName = "fish";
+
+// @public (undocumented)
+export const flagIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const flagIconName = "flag";
+
+// @public (undocumented)
+export const flameIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const flameIconName = "flame";
+
+// @public (undocumented)
+export const flaskIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const flaskIconName = "flask";
+
+// @public (undocumented)
+export const floppyIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const floppyIconName = "floppy";
+
+// @public (undocumented)
 export const FOCUS_ON_VIEW_INIT: InjectionToken<boolean>;
 
 // @public (undocumented)
 export const FOCUS_ON_VIEW_INIT_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
+export const folderIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const folderIconName = "folder";
+
+// @public (undocumented)
+export const folderOpenIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const folderOpenIconName = "folder-open";
+
+// @public (undocumented)
+export const fontSizeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const fontSizeIconName = "font-size";
+
+// @public (undocumented)
+export const forkingIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const forkingIconName = "forking";
+
+// @public (undocumented)
+export const formIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const formIconName = "form";
+
+// @public (undocumented)
+export const fuelIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const fuelIconName = "fuel";
+
+// @public (undocumented)
+export const gavelIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const gavelIconName = "gavel";
+
+// @public (undocumented)
+export const gridChartIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const gridChartIconName = "grid-chart";
+
+// @public (undocumented)
+export const gridViewIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const gridViewIconName = "grid-view";
+
+// @public (undocumented)
+export const halfStarIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const halfStarIconName = "half-star";
+
+// @public (undocumented)
+export const happyFaceIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const happyFaceIconName = "happy-face";
+
+// @public (undocumented)
+export const hardDiskIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const hardDiskIconName = "hard-disk";
+
+// @public (undocumented)
+export const hardDriveDisksIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const hardDriveDisksIconName = "hard-drive-disks";
+
+// @public (undocumented)
+export const hardDriveIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const hardDriveIconName = "hard-drive";
+
+// @public (undocumented)
+export const hashtagIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const hashtagIconName = "hashtag";
+
+// @public (undocumented)
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
+
+// @public (undocumented)
+export const headphonesIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const headphonesIconName = "headphones";
+
+// @public (undocumented)
+export const heartBrokenIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const heartBrokenIconName = "heart-broken";
+
+// @public (undocumented)
+export const heartIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const heartIconName = "heart";
+
+// @public (undocumented)
+export const heatMapIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const heatMapIconName = "heat-map";
+
+// @public (undocumented)
+export const helixIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const helixIconName = "helix";
+
+// @public (undocumented)
+export const helpIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const helpIconName = "help";
+
+// @public (undocumented)
+export const helpInfoIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const helpInfoIconName = "help-info";
+
+// @public (undocumented)
+export const highlighterIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const highlighterIconName = "highlighter";
+
+// @public (undocumented)
+export const historyIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const historyIconName = "history";
+
+// @public (undocumented)
+export const homeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const homeIconName = "home";
+
+// @public (undocumented)
+export const hostGroupIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const hostGroupIconName = "host-group";
+
+// @public (undocumented)
+export const hostIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const hostIconName = "host";
+
+// @public (undocumented)
+export const hourglassIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const hourglassIconName = "hourglass";
+
+// Warning: (ae-forgotten-export) The symbol "NameOfIconToAlias" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "IconAliases" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type IconAlias = [NameOfIconToAlias, IconAliases];
+
+// @public (undocumented)
+export class IconHtmlPipe implements PipeTransform {
+    constructor(sanitizer: DomSanitizer);
+    // (undocumented)
+    transform(value: string): SafeHtml;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<IconHtmlPipe, never>;
+    // (undocumented)
+    static ɵpipe: i0.ɵɵPipeDeclaration<IconHtmlPipe, "iconHtml", true>;
+}
+
+// @public (undocumented)
+export type IconRegistry = Partial<IconRegistrySources>;
+
+// @public (undocumented)
+export interface IconRegistrySources {
+    // Warning: (ae-forgotten-export) The symbol "IconSvgString" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    [key: string]: IconSvgString | IconShapeCollection;
+}
+
+// @public (undocumented)
+export interface IconShapeCollection {
+    // (undocumented)
+    outline?: IconSvgString;
+    // (undocumented)
+    outlineAlerted?: IconSvgString;
+    // (undocumented)
+    outlineBadged?: IconSvgString;
+    // (undocumented)
+    solid?: IconSvgString;
+    // (undocumented)
+    solidAlerted?: IconSvgString;
+    // (undocumented)
+    solidBadged?: IconSvgString;
+}
+
+// @public (undocumented)
+export interface IconShapeSources {
+    // (undocumented)
+    [key: string]: IconShapeTuple;
+}
+
+// Warning: (ae-forgotten-export) The symbol "IconNameString" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type IconShapeTuple = [IconNameString, IconSvgString | IconShapeCollection];
+
+// @public (undocumented)
+export const idBadgeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const idBadgeIconName = "id-badge";
+
+// @public (undocumented)
+export const imageGalleryIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const imageGalleryIconName = "image-gallery";
+
+// @public (undocumented)
+export const imageIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const imageIconName = "image";
+
+// @public (undocumented)
+export const importIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const importIconName = "import";
+
+// @public (undocumented)
+export const inboxIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const inboxIconName = "inbox";
+
+// @public (undocumented)
+export const indentIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const indentIconName = "indent";
+
+// @public (undocumented)
+export const inductorIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const inductorIconName = "inductor";
+
+// @public (undocumented)
+export const infoCircleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const infoCircleIconName = "info-circle";
+
+// @public (undocumented)
+export const infoCircleMiniIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const infoCircleMiniIconName = "info-circle-mini";
+
+// @public (undocumented)
+export const infoStandardIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const infoStandardIconName = "info-standard";
+
+// @public (undocumented)
+export const installIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const installIconName = "install";
+
+// @public (undocumented)
+export const internetOfThingsIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const internetOfThingsIconName = "internet-of-things";
 
 // @public (undocumented)
 export const IS_TOGGLE: InjectionToken<BehaviorSubject<boolean>>;
@@ -5534,11 +6990,137 @@ export const IS_TOGGLE_PROVIDER: {
 // @public (undocumented)
 export function isToggleFactory(): BehaviorSubject<boolean>;
 
+// @public (undocumented)
+export const italicIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const italicIconName = "italic";
+
+// @public (undocumented)
+export const justifyTextIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const justifyTextIconName = "justify-text";
+
+// @public (undocumented)
+export const keyboardIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const keyboardIconName = "keyboard";
+
+// @public (undocumented)
+export const keyIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const keyIconName = "key";
+
+// @public (undocumented)
+export const landscapeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const landscapeIconName = "landscape";
+
+// @public (undocumented)
+export const languageIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const languageIconName = "language";
+
+// @public (undocumented)
+export const launchpadIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const launchpadIconName = "launchpad";
+
+// @public (undocumented)
+export const layersIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const layersIconName = "layers";
+
+// @public (undocumented)
+export const libraryIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const libraryIconName = "library";
+
+// @public (undocumented)
+export const lightbulbIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const lightbulbIconName = "lightbulb";
+
+// @public (undocumented)
+export const lineChartIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const lineChartIconName = "line-chart";
+
+// @public (undocumented)
+export const linkIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const linkIconName = "link";
+
+// @public (undocumented)
+export const listIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const listIconName = "list";
+
+// @public
+export function loadChartIconSet(): void;
+
+// @public
+export function loadCommerceIconSet(): void;
+
+// @public
+export function loadCoreIconSet(): void;
+
+// @public
+export function loadEssentialIconSet(): void;
+
 // @public
 export abstract class LoadingListener {
     // (undocumented)
     abstract loadingStateChange(state: ClrLoadingState | string): void;
 }
+
+// @public
+export function loadMediaIconSet(): void;
+
+// @public
+export function loadMiniIconSet(): void;
+
+// @public
+export function loadSocialIconSet(): void;
+
+// @public
+export function loadTechnologyIconSet(): void;
+
+// @public
+export function loadTextEditIconSet(): void;
+
+// @public
+export function loadTravelIconSet(): void;
+
+// @public (undocumented)
+export const lockIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const lockIconName = "lock";
+
+// @public (undocumented)
+export const loginIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const loginIconName = "login";
+
+// @public (undocumented)
+export const logoutIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const logoutIconName = "logout";
 
 // Warning: (ae-forgotten-export) The symbol "WillyWonka" needs to be exported by the entry point index.d.ts
 //
@@ -5549,6 +7131,96 @@ export class MainContainerWillyWonka extends WillyWonka {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MainContainerWillyWonka, never>;
 }
+
+// @public (undocumented)
+export const mapIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const mapIconName = "map";
+
+// @public (undocumented)
+export const mapMarkerIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const mapMarkerIconName = "map-marker";
+
+// @public (undocumented)
+export const mediaChangerIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const mediaChangerIconName = "media-changer";
+
+// @public (undocumented)
+export const mediaCollectionAliases: IconAlias[];
+
+// @public (undocumented)
+export const mediaCollectionIcons: IconShapeTuple[];
+
+// @public (undocumented)
+export const memoryIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const memoryIconName = "memory";
+
+// @public (undocumented)
+export const microphoneIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const microphoneIconName = "microphone";
+
+// @public (undocumented)
+export const microphoneMuteIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const microphoneMuteIconName = "microphone-mute";
+
+// @public (undocumented)
+export const miniCollectionAliases: IconAlias[];
+
+// @public (undocumented)
+export const miniCollectionIcons: IconShapeTuple[];
+
+// @public (undocumented)
+export const minusCircleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const minusCircleIconName = "minus-circle";
+
+// @public (undocumented)
+export const minusIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const minusIconName = "minus";
+
+// @public (undocumented)
+export const mobileIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const mobileIconName = "mobile";
+
+// @public (undocumented)
+export const moonIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const moonIconName = "moon";
+
+// @public (undocumented)
+export const mouseIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const mouseIconName = "mouse";
+
+// @public (undocumented)
+export const musicNoteIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const musicNoteIconName = "music-note";
+
+// @public (undocumented)
+export const namespaceIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const namespaceIconName = "namespace";
 
 // Warning: (ae-forgotten-export) The symbol "OompaLoompa" needs to be exported by the entry point index.d.ts
 //
@@ -5562,6 +7234,225 @@ export class NavDetectionOompaLoompa extends OompaLoompa {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<NavDetectionOompaLoompa, [null, { optional: true; }, null]>;
 }
+
+// @public (undocumented)
+export const networkGlobeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const networkGlobeIconName = "network-globe";
+
+// @public (undocumented)
+export const networkSettingsIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const networkSettingsIconName = "network-settings";
+
+// @public (undocumented)
+export const networkSwitchIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const networkSwitchIconName = "network-switch";
+
+// @public (undocumented)
+export const neutralFaceIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const neutralFaceIconName = "neutral-face";
+
+// @public (undocumented)
+export const newIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const newIconName = "new";
+
+// @public (undocumented)
+export const noAccessIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const noAccessIconName = "no-access";
+
+// @public (undocumented)
+export const nodeGroupIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const nodeGroupIconName = "node-group";
+
+// @public (undocumented)
+export const nodeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const nodeIconName = "node";
+
+// @public (undocumented)
+export const nodesIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const nodesIconName = "nodes";
+
+// @public (undocumented)
+export const noteIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const noteIconName = "note";
+
+// @public (undocumented)
+export const noWifiIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const noWifiIconName = "no-wifi";
+
+// @public (undocumented)
+export const numberListIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const numberListIconName = "number-list";
+
+// @public (undocumented)
+export const nvmeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const nvmeIconName = "nvme";
+
+// @public (undocumented)
+export const objectsIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const objectsIconName = "objects";
+
+// @public (undocumented)
+export const onHolidayIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const onHolidayIconName = "on-holiday";
+
+// @public (undocumented)
+export const organizationIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const organizationIconName = "organization";
+
+// @public (undocumented)
+export type Orientations = 'horizontal' | 'vertical';
+
+// @public (undocumented)
+export const outdentIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const outdentIconName = "outdent";
+
+// @public (undocumented)
+export const paintRollerIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const paintRollerIconName = "paint-roller";
+
+// @public (undocumented)
+export const paperclipIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const paperclipIconName = "paperclip";
+
+// @public (undocumented)
+export const pasteIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const pasteIconName = "paste";
+
+// @public (undocumented)
+export const pauseIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const pauseIconName = "pause";
+
+// @public (undocumented)
+export const pdfFileIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const pdfFileIconName = "pdf-file";
+
+// @public (undocumented)
+export const pencilIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const pencilIconName = "pencil";
+
+// @public (undocumented)
+export const pesoIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const pesoIconName = "peso";
+
+// @public (undocumented)
+export const phoneHandsetIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const phoneHandsetIconName = "phone-handset";
+
+// @public (undocumented)
+export const pictureIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const pictureIconName = "picture";
+
+// @public (undocumented)
+export const pieChartIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const pieChartIconName = "pie-chart";
+
+// @public (undocumented)
+export const piggyBankIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const piggyBankIconName = "piggy-bank";
+
+// @public (undocumented)
+export const pinboardIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const pinboardIconName = "pinboard";
+
+// @public (undocumented)
+export const pinIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const pinIconName = "pin";
+
+// @public (undocumented)
+export const playIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const playIconName = "play";
+
+// @public (undocumented)
+export const pluginIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const pluginIconName = "plugin";
+
+// @public (undocumented)
+export const plusCircleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const plusCircleIconName = "plus-circle";
+
+// @public (undocumented)
+export const plusIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const plusIconName = "plus";
+
+// @public (undocumented)
+export const podIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const podIconName = "pod";
+
+// @public (undocumented)
+export const popOutIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const popOutIconName = "pop-out";
 
 // @public (undocumented)
 export interface PopoverOptions {
@@ -5578,7 +7469,487 @@ export interface PopoverOptions {
 }
 
 // @public (undocumented)
+export const portraitIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const portraitIconName = "portrait";
+
+// @public (undocumented)
+export const poundIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const poundIconName = "pound";
+
+// @public (undocumented)
+export const powerIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const powerIconName = "power";
+
+// @public (undocumented)
+export const printerIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const printerIconName = "printer";
+
+// @public (undocumented)
+export const processOnVmIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const processOnVmIconName = "process-on-vm";
+
+// @public (undocumented)
+export const qrCodeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const qrCodeIconName = "qr-code";
+
+// @public (undocumented)
+export const rackServerIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const rackServerIconName = "rack-server";
+
+// @public (undocumented)
+export const radarIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const radarIconName = "radar";
+
+// @public (undocumented)
+export const recycleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const recycleIconName = "recycle";
+
+// @public (undocumented)
+export const redoIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const redoIconName = "redo";
+
+// @public (undocumented)
+export const refreshIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const refreshIconName = "refresh";
+
+// @public (undocumented)
+export function renderIcon(shapeOrStringIcon: IconShapeCollection | string): string | IconShapeCollection;
+
+// @public (undocumented)
+export const repeatIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const repeatIconName = "repeat";
+
+// @public (undocumented)
+export const replayAllIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const replayAllIconName = "replay-all";
+
+// @public (undocumented)
+export const replayOneIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const replayOneIconName = "replay-one";
+
+// @public (undocumented)
+export const resistorIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const resistorIconName = "resistor";
+
+// @public (undocumented)
+export const resizeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const resizeIconName = "resize";
+
+// @public (undocumented)
+export const resourcePoolIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const resourcePoolIconName = "resource-pool";
+
+// @public (undocumented)
+export const rewindIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const rewindIconName = "rewind";
+
+// @public (undocumented)
+export const routerIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const routerIconName = "router";
+
+// @public (undocumented)
+export const rubleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const rubleIconName = "ruble";
+
+// @public (undocumented)
+export const rulerPencilIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const rulerPencilIconName = "ruler-pencil";
+
+// @public (undocumented)
+export const rupeeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const rupeeIconName = "rupee";
+
+// @public (undocumented)
+export const sadFaceIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const sadFaceIconName = "sad-face";
+
+// @public (undocumented)
+export const scatterPlotIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const scatterPlotIconName = "scatter-plot";
+
+// @public (undocumented)
+export const scissorsIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const scissorsIconName = "scissors";
+
+// @public (undocumented)
+export const scriptExecuteIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const scriptExecuteIconName = "script-execute";
+
+// @public (undocumented)
+export const scriptScheduleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const scriptScheduleIconName = "script-schedule";
+
+// @public (undocumented)
+export const scrollIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const scrollIconName = "scroll";
+
+// @public (undocumented)
+export const searchIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const searchIconName = "search";
+
+// @public (undocumented)
+export const shareIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const shareIconName = "share";
+
+// @public (undocumented)
+export const shieldCheckIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const shieldCheckIconName = "shield-check";
+
+// @public (undocumented)
+export const shieldIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const shieldIconName = "shield";
+
+// @public (undocumented)
+export const shieldXIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const shieldXIconName = "shield-x";
+
+// @public (undocumented)
+export const shoppingBagIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const shoppingBagIconName = "shopping-bag";
+
+// @public (undocumented)
+export const shoppingCartIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const shoppingCartIconName = "shopping-cart";
+
+// @public (undocumented)
+export const shrinkIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const shrinkIconName = "shrink";
+
+// @public (undocumented)
+export const shuffleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const shuffleIconName = "shuffle";
+
+// @public (undocumented)
 export function slide(direction: string): AnimationMetadata[];
+
+// @public (undocumented)
+export const sliderIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const sliderIconName = "slider";
+
+// @public (undocumented)
+export const snowflakeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const snowflakeIconName = "snowflake";
+
+// @public (undocumented)
+export const socialCollectionAliases: IconAlias[];
+
+// @public (undocumented)
+export const socialCollectionIcons: IconShapeTuple[];
+
+// @public (undocumented)
+export const sortByIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const sortByIconName = "sort-by";
+
+// @public (undocumented)
+export const squidIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const squidIconName = "squid";
+
+// @public (undocumented)
+export const ssdIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const ssdIconName = "ssd";
+
+// @public (undocumented)
+export const starIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const starIconName = "star";
+
+// @public (undocumented)
+export type StatusTypes = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
+
+// @public (undocumented)
+export const stepForward2Icon: IconShapeTuple;
+
+// @public (undocumented)
+export const stepForward2IconName = "step-forward-2";
+
+// @public (undocumented)
+export const stepForwardIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const stepForwardIconName = "step-forward";
+
+// @public (undocumented)
+export const stopIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const stopIconName = "stop";
+
+// @public (undocumented)
+export const storageAdapterIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const storageAdapterIconName = "storage-adapter";
+
+// @public (undocumented)
+export const storageIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const storageIconName = "storage";
+
+// @public (undocumented)
+export const storeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const storeIconName = "store";
+
+// @public (undocumented)
+export const strikethroughIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const strikethroughIconName = "strikethrough";
+
+// @public (undocumented)
+export const subscriptIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const subscriptIconName = "subscript";
+
+// @public (undocumented)
+export const successStandardIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const successStandardIconName = "success-standard";
+
+// @public (undocumented)
+export const sunIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const sunIconName = "sun";
+
+// @public (undocumented)
+export const superscriptIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const superscriptIconName = "superscript";
+
+// @public (undocumented)
+export const switchIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const switchIconName = "switch";
+
+// @public (undocumented)
+export const syncIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const syncIconName = "sync";
+
+// @public (undocumented)
+export const tableIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const tableIconName = "table";
+
+// @public (undocumented)
+export const tabletIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const tabletIconName = "tablet";
+
+// @public (undocumented)
+export const tagIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const tagIconName = "tag";
+
+// @public (undocumented)
+export const tagsIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const tagsIconName = "tags";
+
+// @public (undocumented)
+export const talkBubblesIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const talkBubblesIconName = "talk-bubbles";
+
+// @public (undocumented)
+export const tapeDriveIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const tapeDriveIconName = "tape-drive";
+
+// @public (undocumented)
+export const targetIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const targetIconName = "target";
+
+// @public (undocumented)
+export const tasksIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const tasksIconName = "tasks";
+
+// @public (undocumented)
+export const technologyCollectionAliases: IconAlias[];
+
+// @public (undocumented)
+export const technologyCollectionIcons: IconShapeTuple[];
+
+// @public (undocumented)
+export const terminalIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const terminalIconName = "terminal";
+
+// @public (undocumented)
+export const textColorIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const textColorIconName = "text-color";
+
+// @public (undocumented)
+export const textEditCollectionAliases: IconAlias[];
+
+// @public (undocumented)
+export const textEditCollectionIcons: IconShapeTuple[];
+
+// @public (undocumented)
+export const textIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const textIconName = "text";
+
+// @public (undocumented)
+export const thermometerIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const thermometerIconName = "thermometer";
+
+// @public (undocumented)
+export const thinClientIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const thinClientIconName = "thin-client";
+
+// @public (undocumented)
+export const thumbsDownIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const thumbsDownIconName = "thumbs-down";
+
+// @public (undocumented)
+export const thumbsUpIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const thumbsUpIconName = "thumbs-up";
+
+// @public (undocumented)
+export const tickChartIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const tickChartIconName = "tick-chart";
+
+// @public (undocumented)
+export const timelineIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const timelineIconName = "timeline";
+
+// @public (undocumented)
+export const timesCircleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const timesCircleIconName = "times-circle";
+
+// @public (undocumented)
+export const timesIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const timesIconName = "times";
+
+// @public (undocumented)
+export const timesMiniIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const timesMiniIconName = "times-mini";
 
 // @public (undocumented)
 export const TOGGLE_SERVICE: InjectionToken<BehaviorSubject<boolean>>;
@@ -5591,6 +7962,359 @@ export const TOGGLE_SERVICE_PROVIDER: {
 
 // @public (undocumented)
 export function ToggleServiceFactory(): BehaviorSubject<boolean>;
+
+// @public (undocumented)
+export const toolsIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const toolsIconName = "tools";
+
+// @public (undocumented)
+export const trailerIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const trailerIconName = "trailer";
+
+// @public (undocumented)
+export const trashIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const trashIconName = "trash";
+
+// @public (undocumented)
+export const travelCollectionAliases: IconAlias[];
+
+// @public (undocumented)
+export const travelCollectionIcons: IconShapeTuple[];
+
+// @public (undocumented)
+export const treeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const treeIconName = "tree";
+
+// @public (undocumented)
+export const treeViewIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const treeViewIconName = "tree-view";
+
+// @public (undocumented)
+export const truckIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const truckIconName = "truck";
+
+// @public (undocumented)
+export const twoWayArrowsIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const twoWayArrowsIconName = "two-way-arrows";
+
+// @public (undocumented)
+export const unarchiveIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const unarchiveIconName = "unarchive";
+
+// @public (undocumented)
+export const underlineIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const underlineIconName = "underline";
+
+// @public (undocumented)
+export const undoIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const undoIconName = "undo";
+
+// @public (undocumented)
+export const uninstallIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const uninstallIconName = "uninstall";
+
+// @public (undocumented)
+export const unknownIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const unknownIconName = "unknown";
+
+// @public (undocumented)
+export const unknownStatusIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const unknownStatusIconName = "unknown-status";
+
+// @public (undocumented)
+export const unlinkIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const unlinkIconName = "unlink";
+
+// @public (undocumented)
+export const unlockIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const unlockIconName = "unlock";
+
+// @public (undocumented)
+export const unpinIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const unpinIconName = "unpin";
+
+// @public (undocumented)
+export const updateIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const updateIconName = "update";
+
+// @public (undocumented)
+export const uploadCloudIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const uploadCloudIconName = "upload-cloud";
+
+// @public (undocumented)
+export const uploadIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const uploadIconName = "upload";
+
+// @public (undocumented)
+export const usbIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const usbIconName = "usb";
+
+// @public (undocumented)
+export const userIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const userIconName = "user";
+
+// @public (undocumented)
+export const usersIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const usersIconName = "users";
+
+// @public (undocumented)
+export const videoCameraIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const videoCameraIconName = "video-camera";
+
+// @public (undocumented)
+export const videoGalleryIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const videoGalleryIconName = "video-gallery";
+
+// @public (undocumented)
+export const viewCardsIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const viewCardsIconName = "view-cards";
+
+// @public (undocumented)
+export const viewColumnsIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const viewColumnsIconName = "view-columns";
+
+// @public (undocumented)
+export const viewListIcon: IconShapeTuple;
+
+// @public (undocumented)
+export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>> implements CustomFilter, AfterViewInit {
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, ngZone: NgZone);
+    // (undocumented)
+    commonStrings: ClrCommonStringsService;
+    set customNumericFilter(value: ClrDatagridNumericFilterInterface<T> | RegisteredFilter<T, DatagridNumericFilterImpl<T>>);
+    filterContainer: ClrDatagridFilter<T>;
+    // (undocumented)
+    filterValueChange: EventEmitter<any>;
+    // (undocumented)
+    fromLabel: string;
+    // (undocumented)
+    get fromLabelValue(): string;
+    // (undocumented)
+    get high(): number | string;
+    set high(high: number | string);
+    input: ElementRef<HTMLInputElement>;
+    // (undocumented)
+    get low(): number | string;
+    set low(low: number | string);
+    // (undocumented)
+    maxPlaceholder: string;
+    // (undocumented)
+    get maxPlaceholderValue(): string;
+    // (undocumented)
+    minPlaceholder: string;
+    // (undocumented)
+    get minPlaceholderValue(): string;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    open: boolean;
+    // (undocumented)
+    toLabel: string;
+    // (undocumented)
+    get toLabelValue(): string;
+    get value(): [number, number];
+    set value(values: [number, number]);
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": { "alias": "clrFilterMinPlaceholder"; "required": false; }; "maxPlaceholder": { "alias": "clrFilterMaxPlaceholder"; "required": false; }; "fromLabel": { "alias": "clrFilterFromLabel"; "required": false; }; "toLabel": { "alias": "clrFilterToLabel"; "required": false; }; "value": { "alias": "clrFilterValue"; "required": false; }; "customNumericFilter": { "alias": "clrDgNumericFilter"; "required": false; }; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridNumericFilter<any>, never>;
+}
+
+// @public (undocumented)
+export const vmBugIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const vmBugIconName = "vm-bug";
+
+// @public (undocumented)
+export const vmBugInverseIcon: IconShapeTuple;
+
+// @public (undocumented)
+export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements CustomFilter, AfterViewInit, OnChanges, OnDestroy {
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
+    // (undocumented)
+    commonStrings: ClrCommonStringsService;
+    set customStringFilter(value: ClrDatagridStringFilterInterface<T> | RegisteredFilter<T, DatagridStringFilterImpl<T>>);
+    filterContainer: ClrDatagridFilter<T>;
+    // (undocumented)
+    filterValueChange: EventEmitter<any>;
+    input: ElementRef<HTMLInputElement>;
+    // (undocumented)
+    label: string;
+    // (undocumented)
+    labelValue: string;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnChanges(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    open: boolean;
+    placeholder: string;
+    // (undocumented)
+    get placeholderValue(): string;
+    get value(): string;
+    set value(value: string);
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridStringFilter<any>, "clr-dg-string-filter", never, { "placeholder": { "alias": "clrFilterPlaceholder"; "required": false; }; "label": { "alias": "clrFilterLabel"; "required": false; }; "customStringFilter": { "alias": "clrDgStringFilter"; "required": false; }; "value": { "alias": "clrFilterValue"; "required": false; }; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridStringFilter<any>, never>;
+}
+
+// @public (undocumented)
+export const vmIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const vmIconName = "vm";
+
+// @public (undocumented)
+export const vmwAppIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const vmwAppIconName = "vmw-app";
+
+// @public (undocumented)
+export const volumeDownIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const volumeDownIconName = "volume-down";
+
+// @public (undocumented)
+export const volumeIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const volumeIconName = "volume";
+
+// @public (undocumented)
+export const volumeMuteIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const volumeMuteIconName = "volume-mute";
+
+// @public (undocumented)
+export const volumeUpIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const volumeUpIconName = "volume-up";
+
+// @public (undocumented)
+export const walletIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const walletIconName = "wallet";
+
+// @public (undocumented)
+export const wandIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const wandIconName = "wand";
+
+// @public (undocumented)
+export const warningMiniIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const warningMiniIconName = "warning-mini";
+
+// @public (undocumented)
+export const warningStandardIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const warningStandardIconName = "warning-standard";
+
+// @public (undocumented)
+export const wifiIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const wifiIconName = "wifi";
+
+// @public (undocumented)
+export const windowCloseIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const windowCloseIconName = "window-close";
+
+// @public (undocumented)
+export const windowMaxIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const windowMaxIconName = "window-max";
+
+// @public (undocumented)
+export const windowMinIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const windowMinIconName = "window-min";
+
+// @public (undocumented)
+export const windowRestoreIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const windowRestoreIconName = "window-restore";
+
+// @public (undocumented)
+export const wonIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const wonIconName = "won";
+
+// @public (undocumented)
+export const worldIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const worldIconName = "world";
 
 // @public (undocumented)
 export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
@@ -5631,6 +8355,36 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<WrappedFormControl<any>, never>;
 }
+
+// @public (undocumented)
+export const wrenchIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const wrenchIconName = "wrench";
+
+// @public (undocumented)
+export const xlsFileIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const xlsFileIconName = "xls-file";
+
+// @public (undocumented)
+export const yenIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const yenIconName = "yen";
+
+// @public (undocumented)
+export const zoomInIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const zoomInIconName = "zoom-in";
+
+// @public (undocumented)
+export const zoomOutIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const zoomOutIconName = "zoom-out";
 
 // @public (undocumented)
 export class ÇlrAccordionOompaLoompa extends OompaLoompa {

@@ -1,0 +1,46 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../mixins';
+
+@include mixins.root-or-host() {
+  --cds-global-base: 20;
+  --cds-global-scale-space: 1;
+  --cds-global-scale-layout-space: 1;
+  --cds-global-scale-typography: 1;
+  --cds-global-layout-grid-cols: 12;
+  --cds-global-layout-width-xs: 576px;
+  --cds-global-layout-width-sm: 768px;
+  --cds-global-layout-width-md: 992px;
+  --cds-global-layout-width-lg: 1200px;
+  --cds-global-layout-width-xl: 1440px;
+  --cds-global-layout-space-xxxs: calc(2 * var(--cds-internal-scale-1));
+  --cds-global-layout-space-xxs: calc(4 * var(--cds-internal-scale-1));
+  --cds-global-layout-space-xs: calc(8 * var(--cds-internal-scale-1));
+  --cds-global-layout-space-sm: calc(12 * var(--cds-internal-scale-1));
+  --cds-global-layout-space-md: calc(16 * var(--cds-internal-scale-1));
+  --cds-global-layout-space-lg: calc(24 * var(--cds-internal-scale-1));
+  --cds-global-layout-space-xl: calc(32 * var(--cds-internal-scale-1));
+  --cds-global-layout-space-xxl: calc(48 * var(--cds-internal-scale-1));
+  --cds-global-layout-space-xxxl: calc(64 * var(--cds-internal-scale-1));
+  --cds-global-space-0: calc(0 * var(--cds-internal-scale-2));
+  --cds-global-space-1: calc(1 * var(--cds-internal-scale-2));
+  --cds-global-space-2: calc(2 * var(--cds-internal-scale-2));
+  --cds-global-space-3: calc(4 * var(--cds-internal-scale-2));
+  --cds-global-space-4: calc(6 * var(--cds-internal-scale-2));
+  --cds-global-space-5: calc(8 * var(--cds-internal-scale-2));
+  --cds-global-space-6: calc(12 * var(--cds-internal-scale-2));
+  --cds-global-space-7: calc(16 * var(--cds-internal-scale-2));
+  --cds-global-space-8: calc(18 * var(--cds-internal-scale-2));
+  --cds-global-space-9: calc(24 * var(--cds-internal-scale-2));
+  --cds-global-space-10: calc(32 * var(--cds-internal-scale-2));
+  --cds-global-space-11: calc(36 * var(--cds-internal-scale-2));
+  --cds-global-space-12: calc(48 * var(--cds-internal-scale-2));
+  --cds-global-space-13: calc(64 * var(--cds-internal-scale-2));
+  --cds-global-space-14: calc(72 * var(--cds-internal-scale-2));
+  --cds-global-space-15: calc(96 * var(--cds-internal-scale-2));
+}

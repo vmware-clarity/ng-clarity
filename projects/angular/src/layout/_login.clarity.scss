@@ -8,13 +8,13 @@
 @use 'sass:map';
 @use 'sass:meta';
 @use '../image/icons.clarity';
-@use '../utils/mixins';
-@use '../utils/variables/variables';
+@use '../styles/mixins';
+@use '../styles/variables/variables';
 @use 'variables.login' as login-variables;
 @use '../forms/styles/variables.forms' as forms-variables;
 @use '../emphasis/alert/variables.alert' as alert-variables;
-@use '@cds/core/tokens/tokens.scss';
-@use '../utils/variables/variables.density' as density;
+@use '../styles/core/tokens/variables.tokens' as tokens;
+@use '../styles/variables/variables.density' as density;
 
 @include meta.load-css('properties.login');
 @include mixins.exports('login.clarity') {

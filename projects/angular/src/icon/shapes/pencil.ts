@@ -1,0 +1,19 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { renderIcon } from '../icon.renderer';
+import { IconShapeTuple } from '../interfaces/icon.interfaces';
+
+const icon = {
+  outline:
+    '<path fill-rule="evenodd" clip-rule="evenodd" d="M33.7227 9.30104L27.8801 3.41822C27.0764 2.61711 25.7775 2.61711 24.9738 3.41822L4.26098 24.1377L2.36985 32.3139C2.23773 32.9192 2.38544 33.5519 2.77183 34.0357C3.15822 34.5196 3.742 34.8028 4.36051 34.8066C4.50281 34.821 4.6462 34.821 4.7885 34.8066L13.0398 32.9121L33.7227 12.2125C34.5224 11.4074 34.5224 10.1062 33.7227 9.30104ZM12.0444 31.1174L4.31073 32.7426L6.07246 25.1448L21.5697 9.67993L27.5417 15.6625L12.0444 31.1174ZM22.9035 8.23415L28.8755 14.2167L32.2397 10.7668L26.3673 4.78422L22.9035 8.23415Z"/>',
+  solid:
+    '<path d="M27.7923 3.41822L33.6629 9.30104C34.0513 9.68689 34.2706 10.2117 34.2725 10.7597C34.2743 11.3077 34.0586 11.834 33.6729 12.2225L30.4092 15.493L21.6232 6.68867L24.8868 3.41822C25.6904 2.61711 26.9888 2.61711 27.7923 3.41822Z"/><path d="M2.31979 32.3139L4.21033 24.1377L19.9117 8.38371L28.7077 17.178L12.9466 32.9121L4.73769 34.8066C4.59543 34.821 4.45209 34.821 4.30983 34.8066C3.69151 34.8028 3.10791 34.5196 2.72164 34.0357C2.33537 33.5519 2.18771 32.9192 2.31979 32.3139Z"/>',
+};
+
+export const pencilIconName = 'pencil';
+export const pencilIcon: IconShapeTuple = [pencilIconName, renderIcon(icon)];

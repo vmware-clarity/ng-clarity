@@ -8,16 +8,16 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 
+import { ClrIcon } from '../icon';
 import { ClrModalModule } from './modal.module';
 import { ClrSidePanel } from './side-panel';
-import { ClrIconModule } from '../icon/icon.module';
 import { CdkTrapFocusModule } from '../utils/cdk/cdk-trap-focus.module';
 
 export const CLR_SIDEPANEL_DIRECTIVES: Type<any>[] = [ClrSidePanel];
 
 @NgModule({
-  imports: [CommonModule, CdkTrapFocusModule, ClrIconModule, ClrModalModule],
+  imports: [CommonModule, CdkTrapFocusModule, ClrIcon, ClrModalModule],
   declarations: [CLR_SIDEPANEL_DIRECTIVES],
-  exports: [CLR_SIDEPANEL_DIRECTIVES, ClrModalModule, ClrIconModule],
+  exports: [CLR_SIDEPANEL_DIRECTIVES, ClrModalModule, ClrIcon],
 })
 export class ClrSidePanelModule {}

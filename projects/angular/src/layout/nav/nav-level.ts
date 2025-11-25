@@ -18,13 +18,13 @@ import {
   PLATFORM_ID,
   Renderer2,
 } from '@angular/core';
-import { ClarityIcons, timesIcon } from '@cds/core/icon';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { commonStringsDefault } from '../../utils';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
+import { ClarityIcons, timesIcon } from '../../icon';
 import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
 import { ClrStandaloneCdkTrapFocus } from '../../utils/focus/focus-trap';
 

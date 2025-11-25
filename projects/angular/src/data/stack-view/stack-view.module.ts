@@ -8,14 +8,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { angleIcon, ClarityIcons } from '@cds/core/icon';
 
 import { ClrStackBlock } from './stack-block';
 import { ClrStackContentInput } from './stack-content-input';
 import { ClrStackHeader } from './stack-header';
 import { ClrStackView } from './stack-view';
 import { ClrStackViewCustomTags, ClrStackViewLabel } from './stack-view-custom-tags';
-import { ClrIconModule } from '../../icon/icon.module';
+import { angleIcon, ClarityIcons, ClrIcon } from '../../icon';
 import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
 
 export const CLR_STACK_VIEW_DIRECTIVES: Type<any>[] = [
@@ -28,7 +27,7 @@ export const CLR_STACK_VIEW_DIRECTIVES: Type<any>[] = [
 ];
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ClrIconModule, ClrExpandableAnimationModule],
+  imports: [CommonModule, FormsModule, ClrIcon, ClrExpandableAnimationModule],
   declarations: [CLR_STACK_VIEW_DIRECTIVES],
   exports: [CLR_STACK_VIEW_DIRECTIVES],
 })
