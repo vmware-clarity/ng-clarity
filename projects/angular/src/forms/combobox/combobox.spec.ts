@@ -18,7 +18,6 @@ import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
-import { ClrIconModule } from '../../icon/icon.module';
 import { ClrPopoverContent } from '../../popover';
 import { ClrPopoverService } from '../../popover/common/providers/popover.service';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';

@@ -71,7 +71,7 @@ import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service
             >
               <cds-icon
                 shape="ellipsis-horizontal"
-                [status]="toggleService.open ? 'info' : null"
+                [status]="popoverService.open ? 'info' : null"
                 [attr.title]="commonStrings.keys.more"
               ></cds-icon>
             </button>
