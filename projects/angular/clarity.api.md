@@ -3648,6 +3648,8 @@ export class ClrPopoverService {
     // (undocumented)
     hasBackdrop: false;
     // (undocumented)
+    lastKeydownEvent: KeyboardEvent;
+    // (undocumented)
     noFocus: boolean;
     // (undocumented)
     get open(): boolean;
@@ -4094,6 +4096,7 @@ export class ClrSignpostTrigger implements OnDestroy {
     // (undocumented)
     ngOnInit(): void;
     onSignpostTriggerClick(event: Event): void;
+    onSignpostTriggerFocus(event: FocusEvent): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSignpostTrigger, "[clrSignpostTrigger]", never, {}, {}, never, never, false, never>;
     // (undocumented)

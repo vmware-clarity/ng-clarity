@@ -31,6 +31,7 @@ export class ClrPopoverService {
   overlayRef: OverlayRef;
   overlay: Overlay;
   noFocus: boolean;
+  lastKeydownEvent: KeyboardEvent;
   private _position: string;
   private _open = false;
   private _openChange = new Subject<boolean>();

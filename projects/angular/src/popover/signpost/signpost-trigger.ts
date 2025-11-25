@@ -5,12 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { hasModifierKey } from '@angular/cdk/keycodes';
 import { isPlatformBrowser } from '@angular/common';
 import { Directive, DOCUMENT, ElementRef, HostListener, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
+import { Keys } from '../../utils/enums/keys.enum';
+import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { ClrPopoverService } from '../common/providers/popover.service';
 
 @Directive({
@@ -84,6 +87,28 @@ export class ClrSignpostTrigger implements OnDestroy {
   onSignpostTriggerClick(event: Event): void {
     this.popoverService.toggleWithEvent(event);
   }
+  /**********
+   *
+   * @description
+   * click handler for the ClrSignpost trigger button used to hide/show ClrSignpostContent.
+   */
+  @HostListener('focus', ['$event'])
+  onSignpostTriggerFocus(event: FocusEvent): void {
+    // Enter Signpost from outside. Step 1
+    // Part 2. Use remembered Shift+Tab event to focus the content if visible.
+    if (
+      this.isOpen &&
+      this.isShiftTabEvent(this.popoverService.lastKeydownEvent) &&
+      event.relatedTarget === this.popoverService.lastKeydownEvent.target
+      // && event.relatedTarget !== this.popoverService.contentRef.nativeElement.querySelector('.signpost-content-body[tabindex]')
+    ) {
+      event.preventDefault();
+      this.popoverService.contentRef.nativeElement.querySelector('.signpost-content-body[tabindex]').focus();
+
+      // Delete the event after use for not to confuse future focuses.
+      this.popoverService.lastKeydownEvent = null;
+    }
+  }
 
   private focusOnClose() {
     if (!isPlatformBrowser(this.platformId)) {
@@ -94,5 +119,11 @@ export class ClrSignpostTrigger implements OnDestroy {
     if (!this.isOpen && this.document.activeElement === this.document.body) {
       this.signpostFocusManager.focusTrigger();
     }
+  }
+
+  private isShiftTabEvent(event: KeyboardEvent): boolean {
+    return (
+      event && event.key && normalizeKey(event.key) === Keys.Tab && hasModifierKey(event, 'shiftKey') && event.shiftKey
+    );
   }
 }
