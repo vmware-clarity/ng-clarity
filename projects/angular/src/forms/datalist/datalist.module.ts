@@ -7,12 +7,12 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ClrInputModule } from '@clr/angular/src/forms/input';
+import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '@clr/angular/src/icon';
 
 import { ClrDatalist } from './datalist';
 import { ClrDatalistContainer } from './datalist-container';
 import { ClrDatalistInput } from './datalist-input';
-import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '../../icon';
-import { ClrInputModule } from '../input/input.module';
 
 @NgModule({
   imports: [CommonModule, ClrInputModule, ClrIcon],

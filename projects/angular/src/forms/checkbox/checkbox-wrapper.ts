@@ -6,11 +6,10 @@
  */
 
 import { Component, ContentChild, forwardRef, Inject, InjectionToken, OnDestroy, OnInit } from '@angular/core';
+import { ClrControlLabel, ControlIdService } from '@clr/angular/src/forms/common';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { ClrCheckbox } from './checkbox';
-import { ClrControlLabel } from '../common/label';
-import { ControlIdService } from '../common/providers/control-id.service';
 
 export const IS_TOGGLE = new InjectionToken<BehaviorSubject<boolean>>('IS_TOGGLE');
 export function isToggleFactory() {

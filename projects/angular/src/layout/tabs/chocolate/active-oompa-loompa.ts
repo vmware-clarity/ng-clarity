@@ -6,10 +6,9 @@
  */
 
 import { ChangeDetectorRef, Directive, Inject, Optional } from '@angular/core';
+import { IF_ACTIVE_ID, IfActiveService, OompaLoompa } from '@clr/angular/src/utils';
 
 import { TabsWillyWonka } from './tabs-willy-wonka';
-import { OompaLoompa } from '../../../utils/chocolate/oompa-loompa';
-import { IF_ACTIVE_ID, IfActiveService } from '../../../utils/conditional/if-active.service';
 
 @Directive({
   selector: '[clrTabLink], clr-tab-content',

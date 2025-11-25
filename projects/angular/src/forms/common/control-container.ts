@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 
-import { ClrAbstractContainer } from '../common/abstract-container';
+import { ClrAbstractContainer } from './abstract-container';
 import { ControlClassService } from './providers/control-class.service';
 import { ControlIdService } from './providers/control-id.service';
 import { NgControlService } from './providers/ng-control.service';

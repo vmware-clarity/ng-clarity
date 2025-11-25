@@ -26,6 +26,16 @@ import {
   SkipSelf,
   ViewChild,
 } from '@angular/core';
+import {
+  ClrCommonStringsService,
+  IfExpandService,
+  isKeyEitherLetterOrNumber,
+  Keys,
+  LoadingListener,
+  normalizeKey,
+  preventArrowKeyScroll,
+  uniqueIdFactory,
+} from '@clr/angular/src/utils';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 
@@ -35,12 +45,6 @@ import { TreeNodeModel } from './models/tree-node.model';
 import { TREE_FEATURES_PROVIDER, TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNodeLink } from './tree-node-link';
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { Keys } from '../../utils/enums/keys.enum';
-import { isKeyEitherLetterOrNumber, normalizeKey, preventArrowKeyScroll } from '../../utils/focus/key-focus/util';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { LoadingListener } from '../../utils/loading/loading-listener';
 
 const LVIEW_CONTEXT_INDEX = 8;
 

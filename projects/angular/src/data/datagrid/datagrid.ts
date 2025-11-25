@@ -28,6 +28,7 @@ import {
   ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
+import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/src/utils';
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 
@@ -54,8 +55,6 @@ import { StateProvider } from './providers/state.provider';
 import { TableSizeService } from './providers/table-size.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { CellCoordinates, KeyNavigationGridController } from './utils/key-navigation-grid.controller';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Component({
   selector: 'clr-datagrid',

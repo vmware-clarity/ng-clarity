@@ -6,6 +6,7 @@
  */
 
 export * from './if-active.directive';
-export * from './if-open.directive';
+export * from './if-active.service';
 export * from './if-expanded.directive';
+export * from './if-expanded.service';
 export * from './conditional.module';

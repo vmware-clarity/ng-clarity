@@ -6,16 +6,19 @@
  */
 
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import {
+  ClrPopoverHostDirective,
+  ClrPopoverPosition,
+  ClrPopoverService,
+  ClrPopoverType,
+} from '@clr/angular/src/popover/common';
+import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 
 import { columnToggleTrackByFn } from './datagrid-column-toggle-trackby';
-import { ClrCommonStringsService } from '../../utils';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnState } from './interfaces/column-state.interface';
 import { ColumnsService } from './providers/columns.service';
-import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover/common';
-import { ClrPopoverPosition, ClrPopoverType } from '../../popover/common/utils/popover-positions';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Component({
   selector: 'clr-dg-column-toggle',

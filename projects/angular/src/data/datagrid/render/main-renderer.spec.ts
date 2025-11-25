@@ -9,7 +9,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Needed to recreate issue #1084
-import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
+import { delay } from '@clr/angular/src/utils/testing/helpers.spec';
 
 import { ClrDatagridColumn } from '../datagrid-column';
 import { ClrDatagridModule } from '../datagrid.module';

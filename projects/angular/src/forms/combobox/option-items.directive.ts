@@ -20,7 +20,6 @@ import {
 import { Subscription } from 'rxjs';
 
 import { OptionSelectionService } from './providers/option-selection.service';
-
 @Directive({
   selector: '[clrOptionItems][clrOptionItemsOf]',
   standalone: false,

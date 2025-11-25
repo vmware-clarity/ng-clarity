@@ -6,11 +6,11 @@
  */
 
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
 import { DateNavigationService } from './providers/date-navigation.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-day',

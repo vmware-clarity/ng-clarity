@@ -6,11 +6,11 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrPopoverCloseButton } from './popover-close-button';
 import { ClrPopoverModuleNext } from './popover.module';
 import { ClrPopoverService } from './providers/popover.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   selector: 'test-host',

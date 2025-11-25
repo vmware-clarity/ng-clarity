@@ -11,6 +11,7 @@ import ClrPopoverContentSpec from './popover-content.spec';
 import ClrPopoverOpenCloseButtonSpec from './popover-open-close-button.spec';
 import PopoverServiceSpec from './providers/popover.service.spec';
 import ClrStopEscapePropagationDirectiveSpec from './stop-escape-propagation.directive.spec';
+import IfOpenDirectiveSpecs from './utils/if-open.directive.spec';
 
 describe('ClrPopover', () => {
   describe('Service', () => {
@@ -23,5 +24,9 @@ describe('ClrPopover', () => {
     ClrPopoverCloseButtonSpec();
     ClrPopoverContentSpec();
     ClrStopEscapePropagationDirectiveSpec();
+  });
+
+  describe('clrIfOpen', function () {
+    IfOpenDirectiveSpecs();
   });
 });

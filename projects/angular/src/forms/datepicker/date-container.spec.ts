@@ -8,6 +8,18 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import {
+  ClrCommonFormsModule,
+  ClrFormLayout,
+  ControlClassService,
+  ControlIdService,
+  FormsFocusService,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/src/forms/common';
+import { ClrPopoverPosition, ClrPopoverService } from '@clr/angular/src/popover/common';
+import { expectActiveElementToBe } from '@clr/angular/src/utils';
+import { TestContext } from '@clr/angular/testing';
 
 import { ClrDateContainer } from './date-container';
 import { DayModel } from './model/day.model';
@@ -18,16 +30,6 @@ import { DatepickerEnabledService } from './providers/datepicker-enabled.service
 import { MockDatepickerEnabledService } from './providers/datepicker-enabled.service.mock';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverService } from '../../popover/common/providers/popover.service';
-import { ClrPopoverPosition } from '../../popover/common/utils/popover-positions';
-import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
-import { ClrCommonFormsModule } from '../common/common.module';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { FocusService } from '../common/providers/focus.service';
-import { ClrFormLayout, LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 
 const DATEPICKER_PROVIDERS: any[] = [
   ClrPopoverService,
@@ -240,7 +242,7 @@ export default function () {
       <clr-control-success>Valid</clr-control-success>
     </clr-date-container>
   `,
-  providers: [FocusService],
+  providers: [FormsFocusService],
   standalone: false,
 })
 class TestComponent {

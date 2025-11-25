@@ -6,9 +6,7 @@
  */
 
 import { Component, ContentChild, OnInit } from '@angular/core';
-
-import { ClrControlLabel } from '../common/label';
-import { ControlIdService } from '../common/providers/control-id.service';
+import { ClrControlLabel, ControlIdService } from '@clr/angular/src/forms/common';
 
 @Component({
   selector: 'clr-radio-wrapper',

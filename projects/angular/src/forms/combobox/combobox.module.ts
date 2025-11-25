@@ -8,6 +8,18 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClrCommonFormsModule } from '@clr/angular/src/forms/common';
+import {
+  angleIcon,
+  checkCircleIcon,
+  ClarityIcons,
+  ClrIcon,
+  exclamationCircleIcon,
+  windowCloseIcon,
+} from '@clr/angular/src/icon';
+import { ÇlrClrPopoverModuleNext } from '@clr/angular/src/popover/common';
+import { ClrSpinnerModule } from '@clr/angular/src/progress/spinner';
+import { ClrConditionalModule, ClrKeyFocusModule } from '@clr/angular/src/utils';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';
@@ -16,12 +28,6 @@ import { ClrOptionGroup } from './option-group';
 import { ClrOptionItems } from './option-items.directive';
 import { ClrOptionSelected } from './option-selected.directive';
 import { ClrOptions } from './options';
-import { angleIcon, checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon, windowCloseIcon } from '../../icon';
-import { ClrPopoverModuleNext } from '../../popover/common/popover.module';
-import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
-import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
-import { ClrCommonFormsModule } from '../common/common.module';
 
 @NgModule({
   imports: [
@@ -31,7 +37,7 @@ import { ClrCommonFormsModule } from '../common/common.module';
     ClrKeyFocusModule,
     ClrCommonFormsModule,
     ClrConditionalModule,
-    ClrPopoverModuleNext,
+    ÇlrClrPopoverModuleNext,
     ClrSpinnerModule,
   ],
   declarations: [

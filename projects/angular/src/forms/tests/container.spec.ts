@@ -8,15 +8,17 @@
 import { TestBed } from '@angular/core/testing';
 import { FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-
-import { ClrIcon } from '../../icon';
-import { ClrPopoverContent } from '../../popover';
-import { ClrCommonFormsModule } from '../common/common.module';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { ClrFormLayout, LayoutService } from '../common/providers/layout.service';
-import { MarkControlService } from '../common/providers/mark-control.service';
-import { NgControlService } from '../common/providers/ng-control.service';
-import { DatalistIdService } from '../datalist/providers/datalist-id.service';
+import { ClrPopoverContent } from '@clr/angular/popover';
+import {
+  ClrCommonFormsModule,
+  ClrFormLayout,
+  ControlIdService,
+  LayoutService,
+  MarkControlService,
+  NgControlService,
+} from '@clr/angular/src/forms/common';
+import { DatalistIdService } from '@clr/angular/src/forms/datalist';
+import { ClrIcon } from '@clr/angular/src/icon';
 
 export function ContainerNoLabelSpec(testContainer, testControl, testComponent): void {
   describe('no label', () => {

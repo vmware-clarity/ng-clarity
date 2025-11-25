@@ -7,6 +7,19 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
+import { ClrCommonFormsModule } from '@clr/angular/src/forms/common';
+import {
+  angleIcon,
+  calendarIcon,
+  checkCircleIcon,
+  ClarityIcons,
+  ClrIcon,
+  eventIcon,
+  exclamationCircleIcon,
+} from '@clr/angular/src/icon';
+import { ClrVerticalNavModule } from '@clr/angular/src/layout/vertical-nav';
+import { ÇlrClrPopoverModuleNext } from '@clr/angular/src/popover/common';
+import { CdkTrapFocusModule, ClrConditionalModule, ClrHostWrappingModule } from '@clr/angular/src/utils';
 
 import { ClrCalendar } from './calendar';
 import { ClrDateContainer } from './date-container';
@@ -20,21 +33,6 @@ import { ClrDay } from './day';
 import { ClrDaypicker } from './daypicker';
 import { ClrMonthpicker } from './monthpicker';
 import { ClrYearpicker } from './yearpicker';
-import {
-  angleIcon,
-  calendarIcon,
-  checkCircleIcon,
-  ClarityIcons,
-  ClrIcon,
-  eventIcon,
-  exclamationCircleIcon,
-} from '../../icon';
-import { ClrVerticalNavModule } from '../../layout';
-import { ClrPopoverModuleNext } from '../../popover/common/popover.module';
-import { CdkTrapFocusModule } from '../../utils/cdk/cdk-trap-focus.module';
-import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
-import { ClrCommonFormsModule } from '../common/common.module';
 
 export const CLR_DATEPICKER_DIRECTIVES: Type<any>[] = [
   ClrDateInput,
@@ -59,7 +57,7 @@ export const CLR_DATEPICKER_DIRECTIVES: Type<any>[] = [
     CdkTrapFocusModule,
     ClrHostWrappingModule,
     ClrConditionalModule,
-    ClrPopoverModuleNext,
+    ÇlrClrPopoverModuleNext,
     ClrIcon,
     ClrCommonFormsModule,
     ClrVerticalNavModule,

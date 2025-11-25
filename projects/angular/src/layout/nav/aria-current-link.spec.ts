@@ -10,11 +10,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { delay } from '@clr/angular/testing';
 
 import { ClrAriaCurrentLink } from './aria-current-link';
 import { MainContainerWillyWonka } from './chocolate/main-container-willy-wonka';
 import { ClrNavigationModule } from './navigation.module';
-import { delay } from '../../utils/testing/helpers.spec';
 @Component({
   template: `
     <clr-header class="header">

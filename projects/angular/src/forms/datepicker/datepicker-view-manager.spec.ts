@@ -6,6 +6,7 @@
  */
 
 import { Component } from '@angular/core';
+import { TestContext } from '@clr/angular/testing';
 
 import { ClrDatepickerViewManager } from './datepicker-view-manager';
 import { ClrPopoverService } from '../../popover';
@@ -15,7 +16,6 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { TestContext } from '../../data/datagrid/helpers.spec';
 
 export default function () {
   describe('Datepicker View Manager Component', () => {

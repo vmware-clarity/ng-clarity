@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDatagrid } from './data/datagrid/datagrid';
+import { ClrDatagrid } from '@clr/angular/src/data/datagrid';
 
 describe('Deprecations', () => {
   // When we deprecate some code, we should write a test to verify it is still in the bundle

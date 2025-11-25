@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { StatusTypes } from '../../icon/interfaces/icon.interfaces';
+import { StatusTypes } from '@clr/angular/src/icon';
 
 export interface IconAttributes {
   iconShape: string | undefined;

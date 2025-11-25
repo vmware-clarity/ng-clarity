@@ -6,13 +6,12 @@
  */
 
 import { Component } from '@angular/core';
+import { LARGE_BREAKPOINT, spec } from '@clr/angular/src/utils';
 
 import { ClrNavLevel } from './nav-level';
 import { ClrNavigationModule } from './navigation.module';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
-import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
-import { spec } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `

@@ -9,6 +9,7 @@ import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/cor
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { delay, spec, TestContext } from '@clr/angular/testing';
 
 import { RecursiveChildren } from './recursive-children';
 import { ClrTree } from './tree';
@@ -16,8 +17,6 @@ import { TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNode } from './tree-node';
 import { ClrTreeViewModule } from './tree-view.module';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
-import { delay } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `

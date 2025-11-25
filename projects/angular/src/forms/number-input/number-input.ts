@@ -16,10 +16,9 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
+import { FormsFocusService, WrappedFormControl } from '@clr/angular/src/forms/common';
 
 import { ClrNumberInputContainer } from './number-input-container';
-import { FocusService } from '../common/providers/focus.service';
-import { WrappedFormControl } from '../common/wrapped-control';
 
 @Directive({
   selector: 'input[type="number"][clrNumberInput]',
@@ -30,7 +29,7 @@ export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> 
   protected override index = 1;
 
   constructor(
-    @Optional() private focusService: FocusService,
+    @Optional() private focusService: FormsFocusService,
     vcr: ViewContainerRef,
     injector: Injector,
     @Self()

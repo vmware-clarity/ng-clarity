@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
+import { ClrPopoverService } from '@clr/angular/src/popover/common';
+import { delay } from '@clr/angular/testing';
 
 import { TooltipMouseService } from './tooltip-mouse.service';
-import { ClrPopoverService } from '../../common';
 
 export default function (): void {
   describe('Tooltip Mouse Service', () => {

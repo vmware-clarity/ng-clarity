@@ -6,6 +6,7 @@
  */
 
 import { Component, ElementRef, HostListener, OnDestroy } from '@angular/core';
+import { Keys, normalizeKey } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 
 import { ClrPopoverService } from '../../popover';
@@ -20,8 +21,6 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { NO_OF_DAYS_IN_A_WEEK } from './utils/constants';
-import { Keys } from '../../utils/enums/keys.enum';
-import { normalizeKey } from '../../utils/focus/key-focus/util';
 
 @Component({
   selector: 'clr-calendar',

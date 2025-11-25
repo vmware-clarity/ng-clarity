@@ -9,13 +9,15 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import {
+  ClrCommonFormsModule,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/src/forms/common';
+import { ClrIcon } from '@clr/angular/src/icon';
 
 import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
-import { ClrIcon } from '../../icon';
-import { ClrCommonFormsModule } from '../common/common.module';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 
 @Component({

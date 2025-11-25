@@ -5,11 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, HostListener, Inject, Input, OnInit, Optional, Renderer2 } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, Input, OnInit, Optional } from '@angular/core';
+import { ClrPopoverContent, ClrPopoverService, POPOVER_HOST_ANCHOR } from '@clr/angular/src/popover/common';
+import { uniqueIdFactory } from '@clr/angular/src/utils';
 
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrPopoverContent, ClrPopoverService } from '../common';
-import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
 import { ClrPopoverPosition, ClrPopoverType, TOOLTIP_POSITIONS } from '../common/utils/popover-positions';

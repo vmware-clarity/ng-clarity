@@ -7,12 +7,12 @@
 
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { TestContext } from '@clr/angular/testing';
 
 import { ClrPopoverContent } from './popover-content';
 import { ClrPopoverModuleNext } from './popover.module';
 import { ClrPopoverService } from './providers/popover.service';
 import { ClrPopoverPosition } from './utils/popover-positions';
-import { TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   selector: 'test-host',

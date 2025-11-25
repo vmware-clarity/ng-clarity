@@ -6,19 +6,13 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ClrPopoverPosition, SIGNPOST_POSITIONS } from '@clr/angular/src/popover/common';
+import { delay, expectActiveElementNotToBe, expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
 
 import { ClrPopoverService } from '../common';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpost } from './signpost';
 import { ClrSignpostModule } from './signpost.module';
-import {
-  expectActiveElementNotToBe,
-  expectActiveElementToBe,
-  spec,
-  TestContext,
-} from '../../utils/testing/helpers.spec';
-import { delay } from '../../utils/testing/helpers.spec';
-import { ClrPopoverPosition, SIGNPOST_POSITIONS } from '../common/utils/popover-positions';
 
 interface Context extends TestContext<ClrSignpost, TestDefaultSignpost | TestCustomTriggerSignpost> {
   popoverService: ClrPopoverService;

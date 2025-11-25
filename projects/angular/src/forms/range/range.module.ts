@@ -7,12 +7,12 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ClrCommonFormsModule } from '@clr/angular/src/forms/common';
+import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '@clr/angular/src/icon';
+import { ClrHostWrappingModule } from '@clr/angular/src/utils';
 
 import { ClrRange } from './range';
 import { ClrRangeContainer } from './range-container';
-import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '../../icon';
-import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
-import { ClrCommonFormsModule } from '../common/common.module';
 
 @NgModule({
   imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIcon],

@@ -10,5 +10,6 @@ import { Type } from '@angular/core';
 import { TemplateRefContainer } from './template-ref-container';
 
 export * from './template-ref-container';
+export * from './template-ref.module';
 
 export const TEMPLATE_REF_DIRECTIVES: Type<any>[] = [TemplateRefContainer];

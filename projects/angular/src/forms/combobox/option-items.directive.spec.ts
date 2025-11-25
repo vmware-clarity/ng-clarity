@@ -7,11 +7,11 @@
 
 import { Component, TrackByFunction, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { ClrPopoverService } from '@clr/angular/src/popover/common';
 
 import { ClrComboboxModule } from './combobox.module';
 import { ClrOptionItems } from './option-items.directive';
 import { OptionSelectionService } from './providers/option-selection.service';
-import { ClrPopoverService } from '../../popover/common/providers/popover.service';
 
 @Component({
   template: `

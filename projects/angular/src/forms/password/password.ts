@@ -19,11 +19,10 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
+import { FormsFocusService, WrappedFormControl } from '@clr/angular/src/forms/common';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClrPasswordContainer, TOGGLE_SERVICE } from './password-container';
-import { FocusService } from '../common/providers/focus.service';
-import { WrappedFormControl } from '../common/wrapped-control';
 
 @Directive({
   selector: '[clrPassword]',
@@ -41,7 +40,7 @@ export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implem
     control: NgControl,
     renderer: Renderer2,
     el: ElementRef<HTMLInputElement>,
-    @Optional() private focusService: FocusService,
+    @Optional() private focusService: FormsFocusService,
     @Optional()
     @Inject(TOGGLE_SERVICE)
     toggleService: BehaviorSubject<boolean>
