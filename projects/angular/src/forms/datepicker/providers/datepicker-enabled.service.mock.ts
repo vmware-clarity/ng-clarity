@@ -13,7 +13,7 @@ import { DatepickerEnabledService } from './datepicker-enabled.service';
 export class MockDatepickerEnabledService extends DatepickerEnabledService {
   fakeIsEnabled = true;
 
-  get isEnabled(): boolean {
+  override get isEnabled(): boolean {
     return this.fakeIsEnabled;
   }
 }
