@@ -4,7 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '../utils/variables/variables';
+@use '../styles/variables/variables';
 @use '../emphasis/alert/variables.alert' as alert-variables;
 
 $clr-login-title-color: var(--clr-login-title-color) !default;

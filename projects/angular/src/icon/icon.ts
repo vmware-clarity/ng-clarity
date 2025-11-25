@@ -7,6 +7,7 @@
 
 import { Directive } from '@angular/core';
 
+/** @deprecated since v18 in favor of ClrIcon, remove in v19 */
 @Directive({
   selector: 'clr-icon',
   standalone: false,
@@ -16,6 +17,7 @@ export class ClrIconCustomTag {
   // The only purpose is to "declare" the tag in Angular
 }
 
+/** @deprecated since v18 in favor of ClrIcon, remove in v19 */
 @Directive({
   selector: 'cds-icon',
   standalone: false,

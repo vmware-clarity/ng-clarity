@@ -16,7 +16,7 @@ import {
   technologyCollectionIcons as TechnologyShapes,
   textEditCollectionIcons as TextEditShapes,
   travelCollectionIcons as TravelShapes,
-} from '@cds/core/icon';
+} from '@clr/angular';
 
 @Component({
   selector: 'clr-icon-selection-demo',
@@ -25,7 +25,7 @@ import {
   standalone: false,
 })
 export class IconSelectionDemo {
-  options = 'none';
+  options = '';
   solid = false;
 
   allShapeSets = [

@@ -9,10 +9,13 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
+import { ClrFormsModule } from '../../forms/forms.module';
 import {
   angleDoubleIcon,
   arrowIcon,
   ClarityIcons,
+  ClrIcon,
   ellipsisVerticalIcon,
   filterGridCircleIcon,
   filterGridIcon,
@@ -20,10 +23,7 @@ import {
   timesIcon,
   viewColumnsIcon,
   windowCloseIcon,
-} from '@cds/core/icon';
-
-import { ClrFormsModule } from '../../forms/forms.module';
-import { ClrIconModule } from '../../icon/icon.module';
+} from '../../icon';
 import { DatagridNumericFilter } from './built-in/filters/datagrid-numeric-filter';
 import { DatagridStringFilter } from './built-in/filters/datagrid-string-filter';
 import { ActionableOompaLoompa } from './chocolate/actionable-oompa-loompa';
@@ -127,7 +127,7 @@ const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAcces
     CdkDragModule,
     CdkTrapFocusModule,
     ScrollingModule,
-    ClrIconModule,
+    ClrIcon,
     ClrFormsModule,
     FormsModule,
     ClrPopoverModule,

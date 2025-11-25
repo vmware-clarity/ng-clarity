@@ -6,7 +6,7 @@
  */
 
 @use 'sass:math';
-@use '../../../utils/variables/variables.layout';
+@use '../../../styles/variables/variables.layout';
 
 @mixin clr-make-container() {
   width: 100%;

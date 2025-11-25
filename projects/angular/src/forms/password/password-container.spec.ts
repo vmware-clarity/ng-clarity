@@ -12,7 +12,7 @@ import { By } from '@angular/platform-browser';
 
 import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
-import { ClrIconModule } from '../../icon/icon.module';
+import { ClrIcon } from '../../icon';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { LayoutService } from '../common/providers/layout.service';
@@ -80,7 +80,7 @@ export default function (): void {
 
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],
+          imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrPasswordContainer, ClrPassword, TemplateDrivenTest],
           providers: [IfControlStateService, NgControl, NgControlService, LayoutService],
         });

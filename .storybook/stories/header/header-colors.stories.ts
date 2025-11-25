@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
+import { ClrHeader, ClrIcon, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
@@ -25,7 +25,7 @@ export default {
   title: 'Header/Header Colors',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule],
+      imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule, ClrIcon],
     }),
   ],
   component: ClrHeader,

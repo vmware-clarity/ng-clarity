@@ -10,7 +10,7 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { ClrControlLabel } from './label';
-import { ClrIconModule } from '../../icon/icon.module';
+import { ClrIcon } from '../../icon';
 import { ClrSignpostModule, ClrSignpostTrigger } from '../../popover';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrInput } from '../input/input';
@@ -130,7 +130,7 @@ export default function (): void {
 
     it('does set the the class when its inside of a container', function () {
       TestBed.configureTestingModule({
-        imports: [ClrIconModule],
+        imports: [ClrIcon],
         declarations: [ClrControlLabel, ContainerizedTest],
       });
       const fixture = TestBed.createComponent(ContainerizedTest);
@@ -142,7 +142,7 @@ export default function (): void {
 
     it('does set the class when its inside of a wrapper', function () {
       TestBed.configureTestingModule({
-        imports: [ClrIconModule],
+        imports: [ClrIcon],
         declarations: [ClrControlLabel, WrapperTest],
       });
       const fixture = TestBed.createComponent(WrapperTest);
@@ -166,7 +166,7 @@ export default function (): void {
 
     it('adds the grid classes for non-vertical layouts', function () {
       TestBed.configureTestingModule({
-        imports: [ClrIconModule],
+        imports: [ClrIcon],
         declarations: [ClrControlLabel, ClrInputContainer, ContainerizedTest],
         providers: [LayoutService],
       });
@@ -181,7 +181,7 @@ export default function (): void {
 
     it('adds the grid classes for non-vertical non-default layouts', function () {
       TestBed.configureTestingModule({
-        imports: [ClrIconModule],
+        imports: [ClrIcon],
         declarations: [ClrControlLabel, ClrInputContainer, ContainerizedTest],
         providers: [LayoutService],
       });
@@ -197,7 +197,7 @@ export default function (): void {
 
     it('disables adding the grid classes when manually disabled', function () {
       TestBed.configureTestingModule({
-        imports: [ClrIconModule],
+        imports: [ClrIcon],
         declarations: [ClrControlLabel, ClrInputContainer, ContainerizedTest],
         providers: [LayoutService],
       });
@@ -288,7 +288,7 @@ export default function (): void {
 
     it('signposts work inside labels', function () {
       TestBed.configureTestingModule({
-        imports: [ClrSignpostModule, ClrIconModule],
+        imports: [ClrSignpostModule, ClrIcon],
         declarations: [ClrControlLabel, SignpostTest],
       });
       const fixture = TestBed.createComponent(SignpostTest);

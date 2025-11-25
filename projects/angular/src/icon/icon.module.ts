@@ -12,6 +12,7 @@ import { CdsIconCustomTag, ClrIconCustomTag } from './icon';
 
 export const CLR_ICON_DIRECTIVES: Type<any>[] = [ClrIconCustomTag, CdsIconCustomTag];
 
+/** @deprecated since v18 in favor of ClrIcon, remove in v19 */
 @NgModule({
   imports: [CommonModule],
   declarations: [CLR_ICON_DIRECTIVES],

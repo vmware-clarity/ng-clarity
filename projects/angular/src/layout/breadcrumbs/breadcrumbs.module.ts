@@ -11,12 +11,12 @@ import { RouterModule } from '@angular/router';
 
 import { ClrBreadcrumbItem } from './breadcrumb-item';
 import { ClrBreadcrumbs } from './breadcrumbs';
-import { ClrIconModule } from '../../icon/icon.module';
+import { ClrIcon } from '../../icon';
 import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
 
 @NgModule({
   declarations: [ClrBreadcrumbs, ClrBreadcrumbItem],
-  exports: [ClrBreadcrumbs],
-  imports: [CommonModule, ClrIconModule, ClrHostWrappingModule, RouterModule],
+  exports: [ClrBreadcrumbs, ClrIcon],
+  imports: [CommonModule, ClrIcon, ClrHostWrappingModule, RouterModule],
 })
 export class ClrBreadcrumbsModule {}

@@ -31,7 +31,7 @@
         @for (item of case.items; track item) { @if (item['children']) {
         <clr-vertical-nav-group>
           @if (item['icon']) {
-          <cds-icon [attr.shape]="item.icon" clrVerticalNavIcon></cds-icon>
+          <cds-icon [shape]="item.icon" clrVerticalNavIcon></cds-icon>
           } {{item.label}}
           <clr-vertical-nav-group-children *clrIfExpanded>
             @for (childItem of item.children; track childItem) {
@@ -86,7 +86,7 @@
         <clr-vertical-nav-group>
           <a href="javascript://" clrVerticalNavLink>
             @if (item['icon']) {
-            <cds-icon [attr.shape]="item.icon" clrVerticalNavIcon></cds-icon>
+            <cds-icon [shape]="item.icon" clrVerticalNavIcon></cds-icon>
             } {{item.label}}
           </a>
           <clr-vertical-nav-group-children *clrIfExpanded>

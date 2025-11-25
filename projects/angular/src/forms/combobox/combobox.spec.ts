@@ -13,6 +13,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxModule } from './combobox.module';
+import { ClrIcon } from '../../icon';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER } from './providers/combobox-focus-handler.service';
@@ -70,7 +71,7 @@ export default function (): void {
 
     beforeEach(function () {
       TestBed.configureTestingModule({
-        imports: [ClrComboboxModule, ClrIconModule, FormsModule, NoopAnimationsModule],
+        imports: [ClrComboboxModule, ClrIcon, FormsModule, NoopAnimationsModule],
         declarations: [TestComponent, ClrPopoverContent],
         providers: [
           OptionSelectionService,

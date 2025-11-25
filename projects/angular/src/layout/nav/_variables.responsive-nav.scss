@@ -6,9 +6,9 @@
  */
 
 @use 'sass:map';
-@use '../../utils/mixins';
-@use '../../utils/variables/variables';
-@use '@cds/core/tokens/tokens.scss';
+@use '../../styles/mixins';
+@use '../../styles/variables/variables';
+@use '../../styles/core/tokens/variables.tokens' as tokens;
 
 $clr-sliding-panel-text-color: var(--clr-sliding-panel-text-color) !default;
 
