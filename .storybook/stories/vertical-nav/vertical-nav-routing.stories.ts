@@ -5,9 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { bellIcon, calendarIcon, folderIcon, homeIcon, searchIcon, userIcon } from '@cds/core/icon';
-import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
-import { ClrVerticalNav, ClrVerticalNavModule } from '@clr/angular';
+import {
+  bellIcon,
+  calendarIcon,
+  ClrVerticalNav,
+  ClrVerticalNavModule,
+  folderIcon,
+  homeIcon,
+  IconShapeTuple,
+  searchIcon,
+  userIcon,
+} from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
 
@@ -125,7 +133,7 @@ const NavRoutingTemplate: StoryFn = args => ({
             [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
             (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
           >
-            <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+            <cds-icon *ngIf="includeIcons" [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
             {{ navLink.text }}
             <clr-vertical-nav-group-children>
               <a
@@ -160,11 +168,7 @@ const NavRoutingAllTemplate: StoryFn = args => ({
               [clrVerticalNavGroupExpanded]="state?.clrVerticalNavGroupExpanded"
               (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
             >
-              <cds-icon
-                *ngIf="state?.includeIcons"
-                [attr.shape]="navLink.iconShapeTuple[0]"
-                clrVerticalNavIcon
-              ></cds-icon>
+              <cds-icon *ngIf="state?.includeIcons" [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
               {{ navLink.text }}
               <clr-vertical-nav-group-children>
                 <a

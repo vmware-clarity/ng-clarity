@@ -7,13 +7,12 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { ClarityIcons, infoCircleIcon, windowCloseIcon } from '@cds/core/icon';
 
 import { ClrSignpost } from './signpost';
 import { ClrSignpostContent } from './signpost-content';
 import { ClrSignpostTitle } from './signpost-title';
 import { ClrSignpostTrigger } from './signpost-trigger';
-import { ClrIconModule } from '../../icon/icon.module';
+import { ClarityIcons, ClrIcon, infoCircleIcon, windowCloseIcon } from '../../icon';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
 import { ClrFocusOnViewInitModule } from '../../utils/focus/focus-on-view-init/focus-on-view-init.module';
 
@@ -25,7 +24,7 @@ export const CLR_SIGNPOST_DIRECTIVES: Type<any>[] = [
 ];
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule, ClrFocusOnViewInitModule],
+  imports: [CommonModule, ClrIcon, ClrFocusOnViewInitModule],
   declarations: [CLR_SIGNPOST_DIRECTIVES],
   exports: [CLR_SIGNPOST_DIRECTIVES, ClrConditionalModule],
 })

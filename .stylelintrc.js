@@ -27,6 +27,7 @@ module.exports = {
     'media-query-no-invalid': null,
     'custom-property-pattern': null,
     'no-invalid-position-declaration': null,
+    'number-max-precision': null,
     'selector-type-no-unknown': [
       true,
       {

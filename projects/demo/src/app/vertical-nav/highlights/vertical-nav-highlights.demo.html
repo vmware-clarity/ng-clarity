@@ -35,14 +35,14 @@
           [class.active]="item.active"
         >
           @if (item['icon']) {
-          <cds-icon [attr.shape]="item.icon" clrVerticalNavIcon></cds-icon>
+          <cds-icon [shape]="item.icon" clrVerticalNavIcon></cds-icon>
           } {{item.label}}
         </a>
         } @if (item['children']) { @if (item['children']) {
         <clr-vertical-nav-group>
           <a href="javascript://" clrVerticalNavLink [ngClass]="item.label.toLowerCase()" [class.active]="item.active">
             @if (item['icon']) {
-            <cds-icon [attr.shape]="item.icon" clrVerticalNavIcon></cds-icon>
+            <cds-icon [shape]="item.icon" clrVerticalNavIcon></cds-icon>
             } {{item.label}}
           </a>
           <clr-vertical-nav-group-children *clrIfExpanded>

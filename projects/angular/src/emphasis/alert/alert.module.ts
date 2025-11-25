@@ -7,8 +7,15 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
+
+import { ClrAlert } from './alert';
+import { ClrAlertItem } from './alert-item';
+import { ClrAlertText } from './alert-text';
+import { ClrAlerts } from './alerts';
+import { ClrAlertsPager } from './alerts-pager';
 import {
   ClarityIcons,
+  ClrIcon,
   errorStandardIcon,
   helpIcon,
   infoStandardIcon,
@@ -16,21 +23,14 @@ import {
   successStandardIcon,
   warningStandardIcon,
   windowCloseIcon,
-} from '@cds/core/icon';
-
-import { ClrAlert } from './alert';
-import { ClrAlertItem } from './alert-item';
-import { ClrAlertText } from './alert-text';
-import { ClrAlerts } from './alerts';
-import { ClrAlertsPager } from './alerts-pager';
-import { ClrIconModule } from '../../icon/icon.module';
+} from '../../icon';
 import { ClrDropdownModule } from '../../popover/dropdown/dropdown.module';
 import { ClrSpinnerModule } from '../../progress/spinner';
 
 export const CLR_ALERT_DIRECTIVES: Type<any>[] = [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, ClrAlertText];
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule, ClrDropdownModule, ClrSpinnerModule],
+  imports: [CommonModule, ClrIcon, ClrDropdownModule, ClrSpinnerModule],
   declarations: [CLR_ALERT_DIRECTIVES],
   exports: [CLR_ALERT_DIRECTIVES],
 })

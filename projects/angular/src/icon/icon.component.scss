@@ -1,0 +1,242 @@
+@use '../styles/core/tokens/variables.tokens' as tokens;
+@use '../styles/variables/variables.density' as density;
+@use '../styles/mixins';
+@use '../styles/core/base/base.element.scss';
+
+@mixin flipSVGIcon($direction) {
+  @if $direction == 'horizontal' {
+    transform: scale(-1) rotateX(180deg);
+    /* stylelint-disable */
+  } @else if $direction == 'vertical' {
+    /* stylelint-enable */
+    transform: scale(-1) rotateY(180deg);
+  }
+}
+
+:host {
+  --color: currentColor;
+
+  display: inline-block;
+  @include mixins.equilateral(#{tokens.$cds-global-space-7});
+  @include mixins.min-equilateral(#{tokens.$cds-global-space-7});
+
+  margin: 0;
+  vertical-align: middle;
+  fill: var(--color);
+  color: var(--color); // See https://github.com/vmware/clarity/issues/5332
+  contain: strict;
+  cursor: inherit;
+}
+
+svg {
+  display: block;
+}
+
+// sizing
+:host([size*='xs']) {
+  // 12px
+  @include mixins.equilateral(#{density.$clr-base-icon-size-xs});
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-xs});
+}
+
+:host([size*='sm']) {
+  // weirdly, the default... 16px
+  @include mixins.equilateral(#{density.$clr-base-icon-size-s});
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-s});
+}
+
+:host([size*='md']) {
+  // 20px
+  @include mixins.equilateral(#{density.$clr-base-icon-size-m});
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-m});
+}
+
+:host([size*='lg']) {
+  // 24px
+  @include mixins.equilateral(#{density.$clr-base-icon-size-l});
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-l});
+}
+
+// note: the selectors for `xl` and `xxl` work as expected due to the order in
+// which they are listed here. this is fine and expected for CSS. just know
+// that if their order is switched around, they will break.
+// likewise if we add an `xxs` it will have to go AFTER `xs`!
+:host([size*='xl']) {
+  // 28px
+  @include mixins.equilateral(#{density.$clr-base-icon-size-xl});
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-xl});
+}
+
+:host([size*='xxl']) {
+  // 32px
+  @include mixins.equilateral(#{density.$clr-base-icon-size-2xl});
+  @include mixins.min-equilateral(#{density.$clr-base-icon-size-2xl});
+}
+
+:host([size*='3xl']) {
+  // 36px
+  @include mixins.equilateral(density.$clr-base-icon-size-3xl);
+  @include mixins.min-equilateral(density.$clr-base-icon-size-3xl);
+}
+
+:host([size*='4xl']) {
+  // 64px
+  @include mixins.equilateral(density.$clr-base-icon-size-4xl);
+  @include mixins.min-equilateral(density.$clr-base-icon-size-4xl);
+}
+
+:host([size*='fit']) {
+  height: auto;
+  width: auto;
+  contain: layout;
+}
+
+// colors
+:host([status='success']) {
+  --color: #{tokens.$cds-alias-status-success};
+}
+
+:host([status='danger']) {
+  --color: #{tokens.$cds-alias-status-danger};
+}
+
+:host([status='warning']) {
+  --color: #{tokens.$cds-alias-status-warning-dark};
+}
+
+:host([status='info']) {
+  --color: #{tokens.$cds-alias-status-info};
+}
+
+:host([status='neutral']) {
+  --color: #{tokens.$cds-alias-status-neutral};
+}
+
+:host([inverse]) {
+  --color: #{tokens.$cds-global-color-construction-200};
+}
+
+// directional
+:host([direction='up']) {
+  transform: rotate(0deg);
+}
+
+:host([direction='down']) {
+  transform: rotate(180deg);
+}
+
+:host([direction='right']) {
+  transform: rotate(90deg);
+}
+
+:host([direction='left']) {
+  transform: rotate(270deg);
+}
+
+:host([flip='horizontal']) {
+  @include flipSVGIcon('horizontal');
+}
+
+:host([flip='vertical']) {
+  @include flipSVGIcon('vertical');
+}
+
+.badge,
+.alert {
+  fill: var(--badge-color, #{tokens.$cds-alias-status-danger});
+}
+
+// variant badge colors
+
+:host([badge='success']) {
+  --badge-color: #{tokens.$cds-alias-status-success};
+}
+
+:host([badge='danger']) {
+  --badge-color: #{tokens.$cds-alias-status-danger};
+}
+
+:host([badge*='warning']) {
+  --badge-color: #{tokens.$cds-alias-status-warning-dark};
+}
+
+:host([badge='inherit']) {
+  --badge-color: currentColor;
+}
+
+:host([badge='info']) {
+  --badge-color: #{tokens.$cds-alias-status-info};
+}
+
+:host([badge='neutral']) {
+  --badge-color: #{tokens.$cds-alias-status-neutral};
+}
+
+// alert colors
+:host([badge='inherit-triangle']) {
+  --badge-color: currentColor;
+}
+
+// inverse + variants
+:host([badge][inverse]) {
+  --badge-color: #{tokens.$cds-alias-status-danger};
+}
+
+// variant badge colors
+:host([badge='success'][inverse]) {
+  --badge-color: #{tokens.$cds-alias-status-success};
+}
+
+:host([badge*='warning'][inverse]) {
+  --badge-color: #{tokens.$cds-alias-status-warning-dark};
+}
+
+:host([badge*='inherit'][inverse]) {
+  --badge-color: currentColor;
+}
+
+:host([badge='info'][inverse]) {
+  --badge-color: #{tokens.$cds-alias-status-info};
+}
+
+// unknown icon animation
+
+.cds-internal-dot-1 {
+  animation: fade-in-and-out 1.8s ease-in 0s infinite;
+}
+
+.cds-internal-dot-2 {
+  animation: fade-in-and-out 1.8s ease-out 0.422s infinite;
+}
+
+.cds-internal-dot-3 {
+  animation: fade-in-and-out 1.8s ease-out 0.675s infinite;
+}
+
+@keyframes fade-in-and-out {
+  0% {
+    opacity: 0;
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion) {
+  .cds-internal-dot-1 {
+    animation: none;
+  }
+
+  .cds-internal-dot-2 {
+    animation: none;
+  }
+
+  .cds-internal-dot-3 {
+    animation: none;
+  }
+}

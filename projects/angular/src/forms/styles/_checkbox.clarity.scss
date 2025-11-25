@@ -6,12 +6,12 @@
  */
 
 @use '../../emphasis/alert/variables.alert' as alert-variables;
-@use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
-@use '../../utils/variables/variables.density' as density;
+@use '../../styles/mixins';
+@use '../../styles/variables/variables.global';
+@use '../../styles/variables/variables.density' as density;
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
-@use '@cds/core/tokens/tokens.scss';
+@use '../../styles/core/tokens/variables.tokens' as tokens;
 
 @include mixins.exports('forms.checkbox') {
   $mark-half-size: calc(#{forms-variables.$clr-forms-checkbox-mark-size} * 0.5);

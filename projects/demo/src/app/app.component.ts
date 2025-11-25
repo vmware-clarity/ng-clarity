@@ -5,8 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import '@cds/core/icon/register.js';
-
 import { Component } from '@angular/core';
 import { Route } from '@angular/router';
 import {
@@ -20,7 +18,7 @@ import {
   loadTechnologyIconSet,
   loadTextEditIconSet,
   loadTravelIconSet,
-} from '@cds/core/icon';
+} from '@clr/angular';
 
 import { APP_ROUTES } from './app.routing';
 

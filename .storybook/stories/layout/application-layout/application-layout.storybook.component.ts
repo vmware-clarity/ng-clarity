@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import {
   ClarityIcons,
+  ClarityModule,
+  ClrIcon,
   loadChartIconSet,
   loadCommerceIconSet,
   loadCoreIconSet,
@@ -19,8 +21,7 @@ import {
   loadTechnologyIconSet,
   loadTextEditIconSet,
   loadTravelIconSet,
-} from '@cds/core/icon';
-import { ClarityModule, ClrIconModule } from '@clr/angular';
+} from '@clr/angular';
 import { elements } from 'helpers/elements.data';
 
 import { organization } from './organization';
@@ -31,7 +32,7 @@ import { VerticalNavIconService } from '../../../../projects/angular/src/layout/
   templateUrl: './application-layout.storybook.component.html',
   styleUrls: ['./application-layout.storybook.component.scss'],
   standalone: true,
-  imports: [CommonModule, ClarityModule, ClrIconModule],
+  imports: [CommonModule, ClarityModule, ClrIcon],
   providers: [VerticalNavIconService],
 })
 export class ApplicationLayoutStorybookComponent {

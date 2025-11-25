@@ -9,13 +9,13 @@
   <clr-tree>
     @for (directory of rootDirectory; track directory) {
     <clr-tree-node>
-      <cds-icon [attr.shape]="directory.icon"></cds-icon>
+      <cds-icon [shape]="directory.icon"></cds-icon>
       {{directory.name}}
       <ng-template [(clrIfExpanded)]="directory.expanded">
         @for (file of directory.files; track file) {
         <clr-tree-node>
           <button (click)="openFile(directory.name, file.name)" class="clr-treenode-link" [class.active]="file.active">
-            <cds-icon [attr.shape]="file.icon"></cds-icon>
+            <cds-icon [shape]="file.icon"></cds-icon>
             {{file.name}}
           </button>
         </clr-tree-node>

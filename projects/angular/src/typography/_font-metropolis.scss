@@ -6,7 +6,7 @@
  */
 //Metropolis Font Version that we use: r8 https://github.com/chrismsimpson/Metropolis/releases/tag/r8
 
-@use '../utils/variables/variables.typography';
+@use '../styles/variables/variables.typography';
 
 @if variables.$clr-fontSkipBase64 == false {
   @font-face {

@@ -1,0 +1,20 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use './tokens/properties.tokens';
+
+[cds-theme~='low-motion'] {
+  --cds-global-animation-duration-instant: 0;
+  --cds-global-animation-duration-quickest: 0;
+  --cds-global-animation-duration-quicker: 0;
+  --cds-global-animation-duration-quick: 0;
+  --cds-global-animation-duration-secondary: 0;
+  --cds-global-animation-duration-primary: 0;
+  --cds-global-animation-duration-slow: 2s;
+  --cds-global-animation-duration-slower: 2s;
+  --cds-global-animation-duration-slowest: 2s;
+}

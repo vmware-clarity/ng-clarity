@@ -5,15 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../../utils/mixins';
-@use '@cds/core/tokens/tokens.scss';
-@use '../../utils/variables/variables.density' as density;
+@use '../../styles/mixins';
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+@use '../../styles/variables/variables.density' as density;
 
 @include mixins.exports('datepicker.properties') {
   @include mixins.root-or-host() {
     // Typography
-    --clr-calendar-today-date-cell-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
-    --clr-calendar-picker-btn-font-weight: #{tokens.$cds-global-typography-font-weight-medium};
+    --clr-calendar-today-date-cell-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
+    --clr-calendar-picker-btn-font-weight: #{tokens.$cds-alias-typography-font-weight-medium};
 
     &,
     & [clr-density] {

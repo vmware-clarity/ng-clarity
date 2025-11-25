@@ -7,7 +7,7 @@
 
 import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ClrAlertModule, ClrDropdownModule, ClrIconModule } from '@clr/angular';
+import { ClrAlertModule, ClrDropdownModule, ClrIcon } from '@clr/angular';
 import { createArray } from 'helpers/common';
 
 import { RenderComponentStorybook } from '../../helpers/render-component';
@@ -75,7 +75,7 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
     </ng-template>
   `,
   standalone: true,
-  imports: [ClrAlertModule, ClrIconModule, NgFor, NgIf, NgTemplateOutlet, ClrDropdownModule],
+  imports: [ClrAlertModule, ClrIcon, NgFor, NgIf, NgTemplateOutlet, ClrDropdownModule],
 })
 export class AppLevelAlertStorybookComponent extends RenderComponentStorybook {
   // Story inputs matching the original story args

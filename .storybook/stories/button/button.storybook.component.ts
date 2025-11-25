@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ClrIconModule, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
+import { ClrIcon, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
 import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from 'helpers/button-class.helper';
 import { createArray } from 'helpers/common';
 
@@ -16,13 +16,13 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
 @Component({
   selector: 'storybook-button',
   standalone: true,
-  imports: [CommonModule, ClrIconModule, ClrLoadingButtonModule, ClrLoadingModule],
+  imports: [CommonModule, ClrIcon, ClrLoadingButtonModule, ClrLoadingModule],
   template: `
     <ng-container [ngSwitch]="templateMode">
       <!-- Default Button Template -->
       <ng-container *ngSwitchCase="'default'">
         <button class="btn" [ngClass]="getButtonClass({ buttonType, buttonStyle, btnSmallSize })" [disabled]="disabled">
-          <cds-icon *ngIf="iconShape" [attr.shape]="iconShape"></cds-icon>
+          <cds-icon *ngIf="iconShape" [shape]="iconShape"></cds-icon>
           {{ content }}
           <ng-container #renderContainer></ng-container>
         </button>
@@ -36,7 +36,7 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
           [ngClass]="getButtonClass({ buttonType, buttonStyle, btnSmallSize })"
           [disabled]="disabled"
         >
-          <cds-icon *ngIf="iconShape" [attr.shape]="iconShape"></cds-icon>
+          <cds-icon *ngIf="iconShape" [shape]="iconShape"></cds-icon>
           {{ content }}
         </a>
       </ng-container>

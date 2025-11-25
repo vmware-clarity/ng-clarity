@@ -1,0 +1,142 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+// The following styles are the layout alignment utilities adapted for Shadow DOM
+// support. This enables alignments to be used for sloted content. This is limited
+// to only layout alignment utils to prevent excessive code bloat and duplication between
+// global and component stylesheets. Example:
+
+/*
+  <div cds-layout="horizontal gap:lg">
+    <slot></slot>
+  </div>
+
+  <my-element>
+    <button></button>
+    <button></button>
+    <button cds-layout="align:bottom"></button>
+  </my-element>
+*/
+@use './mixins/mixins';
+@use 'optimize';
+
+@mixin generateShadowDomVerticalStretch($breakpoint: null) {
+  [#{optimize.$layout}~='#{optimize.$vertical}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-stretch}'] {
+      & > ::slotted(*) {
+        flex-grow: 1;
+      }
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$stretch}'] {
+      & > ::slotted(*) {
+        flex-grow: 1;
+      }
+    }
+  }
+}
+@mixin generateShadowDomVerticalItemAlignment($breakpoint: null) {
+  [#{optimize.$layout}~='#{optimize.$vertical}'] {
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}']),
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-center}']) {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}']),
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-center}']) {
+      align-self: center;
+    }
+
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$top}']) {
+      margin-bottom: auto !important;
+    }
+
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$bottom}']) {
+      margin-top: auto !important;
+    }
+
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$right}']) {
+      margin-left: auto;
+    }
+
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$left}']),
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$left}'] {
+      margin-right: auto;
+    }
+  }
+}
+@mixin generateShadowDomHorizontalStretch($breakpoint: null) {
+  [#{optimize.$layout}~='#{optimize.$horizontal}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-stretch}'] {
+      & > ::slotted(*) {
+        flex-grow: 1;
+      }
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$stretch}'] {
+      & > ::slotted(*) {
+        flex-grow: 1;
+      }
+    }
+  }
+}
+@mixin generateShadowDomHorizontalItemAlignment($breakpoint: null) {
+  [#{optimize.$layout}~='#{optimize.$horizontal}'] {
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}']),
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-center}']) {
+      align-self: center;
+    }
+
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}']),
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-center}']) {
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$top}']) {
+      align-self: flex-start;
+    }
+
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$bottom}']) {
+      align-self: flex-end;
+    }
+
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$right}']) {
+      margin-left: auto !important;
+    }
+
+    ::slotted([#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$left}']) {
+      margin-right: auto !important;
+    }
+  }
+}
+@mixin generateShadowDomHorizontalVerticalAxisFill($breakpoint: null) {
+  [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$fill}'] > ::slotted(*) {
+    flex-grow: 1 !important;
+    flex-basis: 0 !important;
+  }
+}
+
+@include generateShadowDomVerticalStretch();
+@include generateShadowDomVerticalItemAlignment();
+
+@each $breakpoint, $breakpoint-value in $cds-layout-breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @include generateShadowDomVerticalStretch($breakpoint);
+    @include generateShadowDomVerticalItemAlignment($breakpoint);
+  }
+}
+
+@include generateShadowDomHorizontalStretch();
+@include generateShadowDomHorizontalItemAlignment();
+
+@each $breakpoint, $breakpoint-value in $cds-layout-breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @include generateShadowDomHorizontalStretch($breakpoint);
+    @include generateShadowDomHorizontalItemAlignment($breakpoint);
+  }
+}

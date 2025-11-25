@@ -103,11 +103,7 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "styles": [
-              "node_modules/@cds/core/global.min.css",
-              "node_modules/@cds/core/styles/theme.dark.min.css",
-              "projects/ui/src/clr-ui.scss"
-            ],
+            "styles": ["projects/ui/src/clr-ui.scss"],
             "main": "projects/angular/src/test.ts",
             "tsConfig": "projects/angular/tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
@@ -122,13 +118,7 @@
             "compodoc": true,
             "compodocArgs": ["-p", "./projects/angular/tsconfig.lib.json", "-e", "json", "-d", "."],
             "port": 6006,
-            "styles": [
-              ".storybook/public/preview.css",
-              "node_modules/@cds/core/styles/module.reset.min.css",
-              "node_modules/@cds/core/global.min.css",
-              "node_modules/@cds/core/styles/theme.dark.min.css",
-              "projects/ui/src/clr-ui.scss"
-            ]
+            "styles": [".storybook/public/preview.css", "projects/ui/src/clr-ui.scss"]
           }
         },
         "build-storybook": {
@@ -139,13 +129,7 @@
             "outputDir": "./dist/docs",
             "compodoc": true,
             "compodocArgs": ["-p", "./projects/angular/tsconfig.lib.json", "-e", "json", "-d", "."],
-            "styles": [
-              ".storybook/public/preview.css",
-              "node_modules/@cds/core/styles/module.reset.min.css",
-              "node_modules/@cds/core/global.min.css",
-              "node_modules/@cds/core/styles/theme.dark.min.css",
-              "projects/ui/src/clr-ui.scss"
-            ]
+            "styles": [".storybook/public/preview.css", "projects/ui/src/clr-ui.scss"]
           }
         }
       }

@@ -12,7 +12,7 @@ import { By } from '@angular/platform-browser';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';
-import { ClrIconModule } from '../../icon/icon.module';
+import { ClrIcon } from '../../icon';
 import { ClrPopoverContent } from '../../popover/common/popover-content';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
@@ -89,7 +89,7 @@ export default function (): void {
 
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],
+          imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrComboboxContainer, ClrCombobox, ReactiveTest, ClrPopoverContent, TemplateDrivenTest],
         });
         fixture = TestBed.createComponent(TemplateDrivenTest);

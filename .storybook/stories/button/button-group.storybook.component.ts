@@ -7,14 +7,14 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ClrButtonGroupModule, ClrLoadingModule, commonStringsDefault } from '@clr/angular';
+import { ClrButtonGroupModule, ClrIcon, ClrLoadingModule, commonStringsDefault } from '@clr/angular';
 import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from 'helpers/button-class.helper';
 import { createArray } from 'helpers/common';
 
 @Component({
   selector: 'storybook-button-group',
   standalone: true,
-  imports: [CommonModule, ClrButtonGroupModule, ClrLoadingModule],
+  imports: [CommonModule, ClrButtonGroupModule, ClrLoadingModule, ClrIcon],
   template: `
     <!-- Default Template -->
     <div

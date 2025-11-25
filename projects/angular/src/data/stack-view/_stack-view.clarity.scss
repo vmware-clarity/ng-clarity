@@ -9,10 +9,10 @@
 @use '../../accordion/variables.accordion' as accordion-variables;
 @use '../../image/icons.clarity';
 @use '../../image/images.clarity';
-@use '../../utils/mixins';
+@use '../../styles/mixins';
 @use 'variables.stack-view' as stack-view-variables;
-@use '@cds/core/tokens/tokens.scss';
-@use '../../utils/variables/variables.density' as density;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+@use '../../styles/variables/variables.density' as density;
 
 @include meta.load-css('properties.stack-view');
 @include mixins.exports('stack-view.clarity') {

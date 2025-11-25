@@ -1,0 +1,14 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../mixins';
+
+@include mixins.root-or-host() {
+  --cds-internal-scale-1: calc((1rem / var(--cds-global-base)) * var(--cds-global-scale-layout-space));
+  --cds-internal-scale-2: calc((1rem / var(--cds-global-base)) * var(--cds-global-scale-space));
+  --cds-internal-scale-3: calc((1rem / var(--cds-global-base)) * var(--cds-global-scale-typography));
+}

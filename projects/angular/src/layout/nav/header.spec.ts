@@ -8,9 +8,9 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ClrIcon } from '../../icon';
 import { MainContainerWillyWonka } from './chocolate/main-container-willy-wonka';
 import { ClrNavigationModule } from './navigation.module';
-import { ClrIconModule } from '../../icon/icon.module';
 
 @Component({
   template: `
@@ -39,7 +39,7 @@ describe('Header', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrNavigationModule, ClrIconModule],
+      imports: [ClrNavigationModule, ClrIcon],
       declarations: [TestComponent],
       providers: [MainContainerWillyWonka],
     });
@@ -90,7 +90,7 @@ describe('Header with custom role', () => {
     });
 
     TestBed.configureTestingModule({
-      imports: [ClrNavigationModule, ClrIconModule],
+      imports: [ClrNavigationModule, ClrIcon],
       declarations: [TestComponent],
       providers: [MainContainerWillyWonka],
     });
@@ -116,7 +116,7 @@ describe('Header without role', () => {
     });
 
     TestBed.configureTestingModule({
-      imports: [ClrNavigationModule, ClrIconModule],
+      imports: [ClrNavigationModule, ClrIcon],
       declarations: [TestComponent],
       providers: [MainContainerWillyWonka],
     });
