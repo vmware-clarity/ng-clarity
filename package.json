@@ -20,8 +20,7 @@
   "peerDependencies": {
     "@angular/cdk": "20",
     "@angular/common": "20",
-    "@angular/core": "20",
-    "@cds/core": ">= 6.16.1"
+    "@angular/core": "20"
   },
   "module": "fesm2022/clr-angular.mjs",
   "typings": "index.d.ts",
@@ -38,5 +37,5 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.e4617fb"
+  "version": "0.0.0-preview.9c8cbc0"
 }
