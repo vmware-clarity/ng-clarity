@@ -7,12 +7,12 @@
 
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { Keys } from '@clr/angular/src/utils';
 import { Observable } from 'rxjs';
 
 import { ClrPopoverEventsService } from './popover-events.service';
 import { ClrPopoverPositionService } from './popover-position.service';
 import { ClrPopoverToggleService } from './popover-toggle.service';
-import { Keys } from '../../../utils/enums/keys.enum';
 
 @Component({
   selector: 'test-host',

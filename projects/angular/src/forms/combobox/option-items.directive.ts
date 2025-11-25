@@ -17,11 +17,10 @@ import {
   TrackByFunction,
   ViewContainerRef,
 } from '@angular/core';
+import { ClrPopoverPositionService } from '@clr/angular/src/popover/common';
 import { Subscription } from 'rxjs';
 
 import { OptionSelectionService } from './providers/option-selection.service';
-import { ClrPopoverPositionService } from '../../popover/common/providers/popover-position.service';
-
 @Directive({
   selector: '[clrOptionItems][clrOptionItemsOf]',
   standalone: false,

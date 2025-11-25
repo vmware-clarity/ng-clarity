@@ -6,4 +6,7 @@
  */
 
 export * from './key-focus';
+export * from './util';
 export * from './key-focus-item';
+export * from './key-focus.module';
+export * from './roving-tabindex';

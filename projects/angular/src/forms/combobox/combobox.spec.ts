@@ -10,19 +10,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ClrIcon } from '@clr/angular/src/icon';
+import { ClrPopoverContent, ClrPopoverToggleService } from '@clr/angular/src/popover/common';
+import { FOCUS_SERVICE_PROVIDER, IF_ACTIVE_ID_PROVIDER } from '@clr/angular/src/utils';
+import { delay } from '@clr/angular/testing';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxModule } from './combobox.module';
-import { ClrIcon } from '../../icon';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
-import { ClrPopoverContent } from '../../popover/common/popover-content';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
-import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
-import { delay } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `

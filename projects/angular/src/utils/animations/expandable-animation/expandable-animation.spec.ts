@@ -9,7 +9,7 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
+import { delay } from '@clr/angular/testing';
 
 import { ClrExpandableAnimationDirective } from './expandable-animation.directive';
 import { ClrExpandableAnimationModule } from './expandable-animation.module';

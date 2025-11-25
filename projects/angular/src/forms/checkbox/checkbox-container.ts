@@ -6,14 +6,16 @@
  */
 
 import { AfterContentInit, Component, ContentChildren, Input, Optional, QueryList } from '@angular/core';
+import {
+  ClrAbstractContainer,
+  ContainerIdService,
+  ControlClassService,
+  IfControlStateService,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/src/forms/common';
 
 import { ClrCheckbox } from './checkbox';
-import { ClrAbstractContainer } from '../common/abstract-container';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
-import { ContainerIdService } from '../common/providers/container-id.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 
 @Component({
   selector: 'clr-checkbox-container,clr-toggle-container',

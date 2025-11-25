@@ -6,20 +6,21 @@
  */
 
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import {
+  ClrAlignment,
+  ClrAxis,
+  ClrPopoverHostDirective,
+  ClrPopoverPosition,
+  ClrPopoverToggleService,
+  ClrSide,
+} from '@clr/angular/src/popover/common';
+import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 
 import { columnToggleTrackByFn } from './datagrid-column-toggle-trackby';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnState } from './interfaces/column-state.interface';
 import { ColumnsService } from './providers/columns.service';
-import { ClrAlignment } from '../../popover/common/enums/alignment.enum';
-import { ClrAxis } from '../../popover/common/enums/axis.enum';
-import { ClrSide } from '../../popover/common/enums/side.enum';
-import { ClrPopoverPosition } from '../../popover/common/interfaces/popover-position.interface';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Component({
   selector: 'clr-dg-column-toggle',

@@ -8,6 +8,7 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { DomAdapter } from '@clr/angular/src/utils';
 
 import { ClrDatagridModule } from './datagrid.module';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
@@ -20,7 +21,6 @@ import { StateDebouncer } from './providers/state-debouncer.provider';
 import { TableSizeService } from './providers/table-size.service';
 import { DatagridHeaderRenderer } from './render/header-renderer';
 import { DatagridRenderOrganizer } from './render/render-organizer';
-import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
 
 const PROVIDERS_NEEDED = [
   Sort,

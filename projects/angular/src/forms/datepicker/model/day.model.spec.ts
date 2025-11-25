@@ -5,8 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { assertEqualDates } from '@clr/angular/src/utils';
+
 import { DayModel } from './day.model';
-import { assertEqualDates } from '../../../utils/testing/helpers.spec';
 
 export default function (): void {
   describe('DayModel', function () {

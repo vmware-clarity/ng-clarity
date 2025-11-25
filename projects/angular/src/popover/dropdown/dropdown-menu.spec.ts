@@ -6,13 +6,12 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrPopoverToggleService, Point } from '@clr/angular/src/popover/common';
+import { FocusableItem } from '@clr/angular/src/utils';
+import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownMenu } from './dropdown-menu';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
-import { Point } from '../common/popover';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 
 @Component({

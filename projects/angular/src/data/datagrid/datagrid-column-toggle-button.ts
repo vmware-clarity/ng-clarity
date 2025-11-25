@@ -6,12 +6,12 @@
  */
 
 import { Component, EventEmitter, Output } from '@angular/core';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnState } from './interfaces/column-state.interface';
 import { ColumnsService } from './providers/columns.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-dg-column-toggle-button',

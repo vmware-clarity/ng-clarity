@@ -8,8 +8,8 @@
 import { Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ClrCommonFormsModule } from '@clr/angular/src/forms/common';
 
-import { ClrCommonFormsModule } from '../common';
 import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';
 import { selectFiles } from './file-input.helpers';

@@ -9,8 +9,8 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { ClrCommonFormsModule } from '@clr/angular/src/forms/common';
 
-import { ClrCommonFormsModule } from '../common';
 import { ClrNumberInput } from './number-input';
 import { ClrNumberInputContainer } from './number-input-container';
 import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';

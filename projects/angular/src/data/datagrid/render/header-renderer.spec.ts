@@ -7,11 +7,10 @@
 
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
+import { DomAdapter, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter } from '@clr/angular/src/utils';
+import { delay } from '@clr/angular/src/utils/testing/helpers.spec';
 import { BehaviorSubject } from 'rxjs';
 
-import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
-import { MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter } from '../../../utils/dom-adapter/dom-adapter.mock';
 import { ClrDatagrid } from '../datagrid';
 import { ClrDatagridColumnSeparator } from '../datagrid-column-separator';
 import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';

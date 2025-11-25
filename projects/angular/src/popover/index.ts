@@ -6,6 +6,7 @@
  */
 
 export * from './dropdown/index';
+export * from './common';
 export * from './popover.module';
 export * from './signpost/index';
 export * from './tooltip/index';

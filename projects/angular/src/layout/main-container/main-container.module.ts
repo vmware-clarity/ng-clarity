@@ -7,9 +7,9 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
+import { ClrIcon } from '@clr/angular/src/icon';
 
 import { ClrMainContainer } from './main-container';
-import { ClrIcon } from '../../icon';
 
 export const CLR_LAYOUT_DIRECTIVES: Type<any>[] = [ClrMainContainer];
 

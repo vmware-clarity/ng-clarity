@@ -12,3 +12,4 @@ export * from './modal-host.component';
 export * from './side-panel.module';
 export * from './modal-body';
 export * from './side-panel';
+export * from './modal-stack.service';

@@ -17,11 +17,11 @@ import {
   Output,
   Renderer2,
 } from '@angular/core';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 import { MultiAlertService } from './providers/multi-alert.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-alert',

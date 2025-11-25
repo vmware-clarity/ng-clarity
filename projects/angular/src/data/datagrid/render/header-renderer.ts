@@ -6,11 +6,11 @@
  */
 
 import { Directive, ElementRef, EventEmitter, Inject, OnDestroy, Output, Renderer2 } from '@angular/core';
+import { DomAdapter } from '@clr/angular/src/utils';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRenderOrganizer } from './render-organizer';
-import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnState } from '../interfaces/column-state.interface';
 import { ColumnResizerService } from '../providers/column-resizer.service';

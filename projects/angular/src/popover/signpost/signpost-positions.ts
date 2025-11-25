@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Point } from '../common/popover';
+import { Point } from '@clr/angular/src/popover/common';
 
 export interface Position {
   anchorPoint: Point;

@@ -18,11 +18,9 @@ import {
   QueryList,
   SkipSelf,
 } from '@angular/core';
+import { AbstractPopover, Point, POPOVER_HOST_ANCHOR } from '@clr/angular/src/popover/common';
+import { FocusableItem } from '@clr/angular/src/utils';
 
-import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { AbstractPopover } from '../common/abstract-popover';
-import { Point } from '../common/popover';
-import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 
 @Component({

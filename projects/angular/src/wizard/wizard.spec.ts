@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { delay, TestContext } from '@clr/angular/testing';
+
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { TemplateApiWizardTestComponent } from './test-components/api-wizard.mock';
@@ -13,8 +15,6 @@ import { DynamicEmptyWizardTestComponent } from './test-components/dynamic-empty
 import { DynamicWizardTestComponent } from './test-components/dynamic-wizard.mock';
 import { UnopenedWizardTestComponent } from './test-components/unopened-wizard.mock';
 import { ClrWizard } from './wizard';
-import { TestContext } from '../utils/testing/helpers.spec';
-import { delay } from '../utils/testing/helpers.spec';
 
 export default function (): void {
   describe('Wizard', () => {

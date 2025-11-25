@@ -5,11 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ModalStackService } from '@clr/angular/src/modal';
+import { expectActiveElementToBe } from '@clr/angular/testing';
 import { Subscription } from 'rxjs';
 
 import { DetailService } from './detail.service';
-import { ModalStackService } from '../../../modal/modal-stack.service';
-import { expectActiveElementToBe } from '../../../utils/testing/helpers.spec';
 
 // Prevent ModalStackService from adding event handlers.
 const PLATFORM_SERVER_ID = 'server';

@@ -7,14 +7,11 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectorRef, Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from '@angular/core';
+import { ClrPopoverToggleService } from '@clr/angular/src/popover/common';
+import { ArrowKeyDirection, customFocusableItemProvider, Keys, normalizeKey } from '@clr/angular/src/utils';
 import { take } from 'rxjs/operators';
 
 import { OptionSelectionService } from './option-selection.service';
-import { ClrPopoverToggleService } from '../../../popover/common/providers/popover-toggle.service';
-import { Keys } from '../../../utils/enums/keys.enum';
-import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
-import { customFocusableItemProvider } from '../../../utils/focus/focusable-item/custom-focusable-item-provider';
-import { normalizeKey } from '../../../utils/focus/key-focus/util';
 import { PseudoFocusModel } from '../model/pseudo-focus.model';
 
 @Injectable()

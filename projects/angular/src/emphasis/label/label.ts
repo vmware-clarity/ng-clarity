@@ -6,8 +6,7 @@
  */
 
 import { Component, Input } from '@angular/core';
-
-import { ClrBadge } from '../badge';
+import { ClrBadge } from '@clr/angular/src/emphasis/badge';
 
 export enum ClrLabelColors {
   None = '',

@@ -14,6 +14,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, InjectionToken, Type } from '@ang
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { DomAdapter, IfExpandService } from '@clr/angular/src/utils';
 
 import { ClarityModule } from '../../clr-angular.module';
 import { DatagridWillyWonka } from './chocolate/datagrid-willy-wonka';
@@ -35,8 +36,6 @@ import { TableSizeService } from './providers/table-size.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { DatagridRowRenderer } from './render/row-renderer';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
 
 // Reusable list of providers used in a number of tests
 export const DATAGRID_SPEC_PROVIDERS = [

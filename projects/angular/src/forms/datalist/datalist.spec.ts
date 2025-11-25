@@ -6,10 +6,10 @@
  */
 
 import { Component } from '@angular/core';
+import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrDatalist } from './datalist';
 import { DatalistIdService } from './providers/datalist-id.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `

@@ -7,6 +7,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ClrCommonFormsModule } from '@clr/angular/src/forms/common';
+import { ClarityIcons, ClrIcon, folderOpenIcon } from '@clr/angular/src/icon';
 
 import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';
@@ -15,8 +17,6 @@ import { ClrFileInputValueAccessor } from './file-input-value-accessor';
 import { ClrFileList } from './file-list';
 import { ClrFileError, ClrFileInfo, ClrFileSuccess } from './file-messages';
 import { ClrFileMessagesTemplate } from './file-messages-template';
-import { ClarityIcons, ClrIcon, folderOpenIcon } from '../../icon';
-import { ClrCommonFormsModule } from '../common/common.module';
 
 @NgModule({
   imports: [CommonModule, ClrIcon, ClrCommonFormsModule],

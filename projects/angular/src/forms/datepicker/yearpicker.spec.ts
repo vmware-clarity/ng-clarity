@@ -6,16 +6,15 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrPopoverToggleService } from '@clr/angular/src/popover/common';
+import { ClrCommonStringsService, Keys } from '@clr/angular/src/utils';
+import { TestContext } from '@clr/angular/testing';
 
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { ClrYearpicker } from './yearpicker';
-import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { Keys } from '../../utils/enums/keys.enum';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 export default function () {
   describe('Yearpicker Component', () => {

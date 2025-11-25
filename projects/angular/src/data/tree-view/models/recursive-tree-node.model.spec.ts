@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
+import { delay } from '@clr/angular/src/utils/testing/helpers.spec';
 import { Observable, of } from 'rxjs';
 import { delay as rxDelay } from 'rxjs/operators';
 

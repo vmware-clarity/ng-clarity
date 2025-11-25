@@ -6,13 +6,13 @@
  */
 
 import { Component, Input, Optional } from '@angular/core';
+import { IfExpandService } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { TreeNodeModel } from './models/tree-node.model';
 import { ClrRecursiveForOfContext } from './recursive-for-of';
 import { TreeFeaturesService } from './tree-features.service';
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 
 @Component({
   selector: 'clr-recursive-children',

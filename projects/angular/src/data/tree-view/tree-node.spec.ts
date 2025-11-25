@@ -7,6 +7,9 @@
 
 import { Component, PLATFORM_ID, ViewChild } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ClrIcon } from '@clr/angular/src/icon';
+import { ClrCommonStringsService, IfExpandService, Keys } from '@clr/angular/src/utils';
+import { expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
 
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
@@ -15,11 +18,6 @@ import { TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNode } from './tree-node';
 import { ClrTreeViewModule } from './tree-view.module';
-import { ClrIcon } from '../../icon/icon.component';
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { Keys } from '../../utils/enums/keys.enum';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { expectActiveElementToBe, spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `

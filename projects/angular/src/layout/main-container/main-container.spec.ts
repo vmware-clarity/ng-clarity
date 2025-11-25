@@ -7,12 +7,10 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClrNavigationModule, ResponsiveNavCodes, ResponsiveNavControlMessage } from '@clr/angular/src/layout/nav';
 
 import { ClrMainContainer } from './main-container';
 import { ClrMainContainerModule } from './main-container.module';
-import { ClrNavigationModule } from '../nav/navigation.module';
-import { ResponsiveNavCodes } from '../nav/responsive-nav-codes';
-import { ResponsiveNavControlMessage } from '../nav/responsive-nav-control-message';
 
 @Component({
   template: `<clr-main-container>Test</clr-main-container>`,

@@ -8,11 +8,11 @@
 import { ChangeDetectorRef, Component, ElementRef, Injector, Optional, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ClrConditionalModule } from '@clr/angular/src/utils';
 
 import { AbstractPopover } from './abstract-popover';
 import { POPOVER_HOST_ANCHOR } from './popover-host-anchor.token';
 import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
 
 @Component({
   selector: 'test-popover',

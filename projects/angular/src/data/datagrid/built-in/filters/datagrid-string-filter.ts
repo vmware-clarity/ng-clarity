@@ -18,12 +18,11 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { ClrPopoverToggleService } from '@clr/angular/src/popover/common';
+import { ClrCommonStringsService, DomAdapter } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 
 import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
-import { ClrPopoverToggleService } from '../../../../popover/common/providers/popover-toggle.service';
-import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
-import { ClrCommonStringsService } from '../../../../utils/i18n/common-strings.service';
 import { ClrDatagridFilter } from '../../datagrid-filter';
 import { ClrDatagridStringFilterInterface } from '../../interfaces/string-filter.interface';
 import { CustomFilter } from '../../providers/custom-filter';

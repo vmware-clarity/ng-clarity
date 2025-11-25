@@ -6,12 +6,11 @@
  */
 
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, Output, ViewChild } from '@angular/core';
+import { ClrPopoverToggleService } from '@clr/angular/src/popover/common';
+import { ClrCommonStringsService, DomAdapter } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 
 import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
-import { ClrPopoverToggleService } from '../../../../popover/common/providers/popover-toggle.service';
-import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
-import { ClrCommonStringsService } from '../../../../utils/i18n/common-strings.service';
 import { ClrDatagridFilter } from '../../datagrid-filter';
 import { ClrDatagridNumericFilterInterface } from '../../interfaces/numeric-filter.interface';
 import { CustomFilter } from '../../providers/custom-filter';

@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './dynamic-wrapper';
 export * from './empty-anchor';
 export * from './host-wrapper';
 export * from './host-wrapping.module';

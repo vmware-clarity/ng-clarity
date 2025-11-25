@@ -6,11 +6,11 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrPopoverToggleService } from '@clr/angular/src/popover/common';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-datepicker-actions',

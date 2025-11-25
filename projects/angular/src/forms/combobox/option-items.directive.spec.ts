@@ -7,13 +7,15 @@
 
 import { Component, TrackByFunction, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import {
+  ClrPopoverEventsService,
+  ClrPopoverPositionService,
+  ClrPopoverToggleService,
+} from '@clr/angular/src/popover/common';
 
 import { ClrComboboxModule } from './combobox.module';
 import { ClrOptionItems } from './option-items.directive';
 import { OptionSelectionService } from './providers/option-selection.service';
-import { ClrPopoverEventsService } from '../../popover/common/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../popover/common/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 
 @Component({
   template: `

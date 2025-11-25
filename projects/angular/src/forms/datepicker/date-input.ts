@@ -26,11 +26,12 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
+import { FormsFocusService, WrappedFormControl } from '@clr/angular/src/forms/common';
+import { isBooleanAttributeSet } from '@clr/angular/src/utils';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { ClrDateContainer } from './date-container';
-import { WrappedFormControl } from '../common/wrapped-control';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -38,8 +39,6 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { datesAreEqual } from './utils/date-utils';
-import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribute-set';
-import { FocusService } from '../common/providers/focus.service';
 
 // There are four ways the datepicker value is set
 // 1. Value set by user typing into text input as a string ex: '01/28/2015'
@@ -77,7 +76,7 @@ export abstract class ClrDateInputBase
     @Optional() private datepickerEnabledService: DatepickerEnabledService,
     @Optional() private dateFormControlService: DateFormControlService,
     @Inject(PLATFORM_ID) private platformId: any,
-    @Optional() private focusService: FocusService,
+    @Optional() private focusService: FormsFocusService,
     protected datepickerFocusService: DatepickerFocusService
   ) {
     super(viewContainerRef, ClrDateContainer, injector, control, renderer, el);

@@ -22,9 +22,10 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
+import { ClrPopoverHostDirective } from '@clr/angular/src/popover/common';
+import { ClrCommonStringsService, HostWrapper } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 
-import { ClrCommonStringsService } from '../../utils';
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
 import { DatagridNumericFilterImpl } from './built-in/filters/datagrid-numeric-filter-impl';
 import { DatagridPropertyNumericFilter } from './built-in/filters/datagrid-property-numeric-filter';
@@ -40,8 +41,6 @@ import { Sort } from './providers/sort';
 import { HIDDEN_COLUMN_CLASS } from './render/constants';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { WrappedColumn } from './wrapped-column';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
-import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 
 @Component({
   selector: 'clr-dg-column',

@@ -6,6 +6,8 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrPopoverToggleService } from '@clr/angular/src/popover/common';
+import { TestContext } from '@clr/angular/testing';
 
 import { ClrDatepickerViewManager } from './datepicker-view-manager';
 import { DateFormControlService } from './providers/date-form-control.service';
@@ -14,8 +16,6 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 
 export default function () {
   describe('Datepicker View Manager Component', () => {

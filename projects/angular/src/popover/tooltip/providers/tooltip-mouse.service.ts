@@ -6,8 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
-
-import { ClrPopoverToggleService } from '../../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverToggleService } from '@clr/angular/src/popover/common';
 
 @Injectable()
 export class TooltipMouseService {

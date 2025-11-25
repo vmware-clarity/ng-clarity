@@ -6,12 +6,12 @@
  */
 
 import { Component, HostBinding, Input, OnDestroy } from '@angular/core';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-header',

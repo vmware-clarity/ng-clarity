@@ -7,8 +7,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ClrIcon } from '@clr/angular/src/icon';
 
-import { ClrIcon } from '../../icon';
 import { ClrAccordionModule } from '../accordion.module';
 import { ClrStepButton } from '../stepper/step-button';
 import { ClrStepper } from '../stepper/stepper';

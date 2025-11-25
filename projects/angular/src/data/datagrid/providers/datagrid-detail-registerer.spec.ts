@@ -6,8 +6,8 @@
  */
 
 import { Component } from '@angular/core';
+import { IfExpandService } from '@clr/angular/src/utils';
 
-import { IfExpandService } from '../../../utils/conditional/if-expanded.service';
 import { ClrDatagrid } from '../datagrid';
 import { DatagridDetailRegisterer } from '../datagrid-detail-registerer';
 import { DatagridIfExpandService } from '../datagrid-if-expanded.service';

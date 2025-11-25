@@ -20,12 +20,10 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
+import { ClrCommonStringsService, ScrollingService, uniqueIdFactory } from '@clr/angular/src/utils';
 
 import { ClrModalConfigurationService } from './modal-configuration.service';
 import { ModalStackService } from './modal-stack.service';
-import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
-import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
-import { ScrollingService } from '../utils/scrolling/scrolling-service';
 
 @Component({
   selector: 'clr-modal',

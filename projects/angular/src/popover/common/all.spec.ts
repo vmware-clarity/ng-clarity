@@ -13,6 +13,7 @@ import EventServiceSpec from './providers/popover-events.service.spec';
 import PositionServiceSpec from './providers/popover-position.service.spec';
 import ToggleServiceSpec from './providers/popover-toggle.service.spec';
 import ClrStopEscapePropagationDirectiveSpec from './stop-escape-propagation.directive.spec';
+import IfOpenDirectiveSpecs from './utils/if-open.directive.spec';
 import { ClrAlignmentSpec, ClrPositionTransformSpec, ClrViewportValidationSpec } from './utils/position-operators.spec';
 
 describe('ClrPopover', () => {
@@ -34,5 +35,9 @@ describe('ClrPopover', () => {
     ClrPopoverCloseButtonSpec();
     ClrPopoverContentSpec();
     ClrStopEscapePropagationDirectiveSpec();
+  });
+
+  describe('clrIfOpen', function () {
+    IfOpenDirectiveSpecs();
   });
 });

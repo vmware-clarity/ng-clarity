@@ -6,6 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
+import { delay, expectActiveElementNotToBe, expectActiveElementToBe } from '@clr/angular/testing';
 import { Subject } from 'rxjs';
 
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
@@ -30,8 +31,6 @@ import { Selection } from './providers/selection';
 import { Sort } from './providers/sort';
 import { HIDDEN_COLUMN_CLASS } from './render/constants';
 import { DatagridRenderOrganizer } from './render/render-organizer';
-import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
-import { delay } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `

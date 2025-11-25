@@ -9,6 +9,20 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import {
+  ControlClassService,
+  ControlIdService,
+  FormsFocusService,
+  IfControlStateService,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/src/forms/common';
+import {
+  ClrPopoverEventsService,
+  ClrPopoverPositionService,
+  ClrPopoverToggleService,
+} from '@clr/angular/src/popover/common';
+import { delay, expectActiveElementNotToBe, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 
 import { ClrDateContainer } from './date-container';
 import { ClrDateInput } from './date-single-input';
@@ -21,19 +35,7 @@ import { MockDatepickerEnabledService } from './providers/datepicker-enabled.ser
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { TestContext } from '../../data/datagrid/helpers.spec';
 import { ClrFormsModule } from '../../forms/forms.module';
-import { ClrPopoverEventsService } from '../../popover/common/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../popover/common/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
-import { delay } from '../../utils/testing/helpers.spec';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { FocusService } from '../common/providers/focus.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 
 export default function () {
   describe('Date Input Component', () => {
@@ -42,7 +44,7 @@ export default function () {
     let dateIOService: DateIOService;
     let dateNavigationService: DateNavigationService;
     let dateFormControlService: DateFormControlService;
-    let focusService: FocusService;
+    let focusService: FormsFocusService;
     let controlClassService: ControlClassService;
     let datepickerFocusService: DatepickerFocusService;
     let ifControlStateService: IfControlStateService;
@@ -80,7 +82,7 @@ export default function () {
           .query(By.directive(ClrDateContainer))
           .injector.get(DateNavigationService);
         ifControlStateService = context.fixture.debugElement.injector.get(IfControlStateService);
-        focusService = context.fixture.debugElement.injector.get(FocusService);
+        focusService = context.fixture.debugElement.injector.get(FormsFocusService);
         controlClassService = context.fixture.debugElement.injector.get(ControlClassService);
         datepickerFocusService = context.fixture.debugElement.injector.get(DatepickerFocusService);
 
@@ -787,7 +789,7 @@ export default function () {
       (clrDateChange)="dateChanged($event)"
     />
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FormsFocusService],
   standalone: false,
 })
 class TestComponent {
@@ -827,7 +829,7 @@ class TestComponentWithClrDate {
       <input id="dateControl" type="date" clrDate (clrDateChange)="dateChanged($event)" formControlName="date" />
     </form>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FormsFocusService],
   standalone: false,
 })
 class TestComponentWithReactiveForms {

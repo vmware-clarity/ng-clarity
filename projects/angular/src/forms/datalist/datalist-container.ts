@@ -6,15 +6,17 @@
  */
 
 import { Component, Optional } from '@angular/core';
+import {
+  ClrAbstractContainer,
+  ControlClassService,
+  ControlIdService,
+  FormsFocusService,
+  IfControlStateService,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/src/forms/common';
 
-import { ClrAbstractContainer } from '../common/abstract-container';
 import { DatalistIdService } from './providers/datalist-id.service';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { FocusService } from '../common/providers/focus.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 
 @Component({
   selector: 'clr-datalist-container',
@@ -56,7 +58,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
   providers: [
     ControlClassService,
     ControlIdService,
-    FocusService,
+    FormsFocusService,
     NgControlService,
     DatalistIdService,
     IfControlStateService,
@@ -70,7 +72,7 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
     controlClassService: ControlClassService,
     @Optional() layoutService: LayoutService,
     ngControlService: NgControlService,
-    focusService: FocusService,
+    focusService: FormsFocusService,
     protected override ifControlStateService: IfControlStateService
   ) {
     super(ifControlStateService, layoutService, controlClassService, ngControlService);

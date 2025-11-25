@@ -9,13 +9,13 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ClrIcon } from '@clr/angular/src/icon';
+import { commonStringsDefault } from '@clr/angular/src/utils';
+import { delay } from '@clr/angular/testing';
 
-import { ClrIcon } from '../../icon';
-import { commonStringsDefault } from '../../utils';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNav } from './vertical-nav';
 import { ClrVerticalNavModule } from './vertical-nav.module';
-import { delay } from '../../utils/testing/helpers.spec';
 
 export default function (): void {
   describe('Vertical Nav', () => {

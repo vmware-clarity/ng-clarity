@@ -6,9 +6,9 @@
  */
 
 import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 import { startWith, Subscription, tap } from 'rxjs';
 
-import { ClrCommonStringsService } from '../utils';
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { ClrWizardPage } from './wizard-page';

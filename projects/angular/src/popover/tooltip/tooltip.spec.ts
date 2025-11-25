@@ -6,11 +6,11 @@
  */
 
 import { Component } from '@angular/core';
+import { spec, TestContext } from '@clr/angular/testing';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { ClrTooltip } from './tooltip';
 import { ClrTooltipModule } from './tooltip.module';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `

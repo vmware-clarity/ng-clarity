@@ -6,18 +6,12 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ClrPopoverToggleService } from '@clr/angular/src/popover/common';
+import { delay, expectActiveElementNotToBe, expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
 
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpost } from './signpost';
 import { ClrSignpostModule } from './signpost.module';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import {
-  expectActiveElementNotToBe,
-  expectActiveElementToBe,
-  spec,
-  TestContext,
-} from '../../utils/testing/helpers.spec';
-import { delay } from '../../utils/testing/helpers.spec';
 
 interface Context extends TestContext<ClrSignpost, TestDefaultSignpost | TestCustomTriggerSignpost> {
   toggleService: ClrPopoverToggleService;

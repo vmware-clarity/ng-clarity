@@ -7,14 +7,14 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
+import { ClrIcon } from '@clr/angular/src/icon';
+import { ClrDropdownModule } from '@clr/angular/src/popover/dropdown';
 
 import { ClrAriaCurrentLink } from './aria-current-link';
-import { ClrIcon } from '../../icon';
 import { MainContainerWillyWonka } from './chocolate/main-container-willy-wonka';
 import { NavDetectionOompaLoompa } from './chocolate/nav-detection-oompa-loompa';
 import { ClrHeader } from './header';
 import { ClrNavLevel } from './nav-level';
-import { ClrDropdownModule } from '../../popover/dropdown/dropdown.module';
 
 export const CLR_NAVIGATION_DIRECTIVES: Type<any>[] = [
   ClrHeader,

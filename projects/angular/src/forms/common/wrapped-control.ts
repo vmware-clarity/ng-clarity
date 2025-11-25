@@ -23,6 +23,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
+import { HostWrapper } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 
 import { CONTROL_SUFFIX } from './abstract-control';
@@ -32,7 +33,6 @@ import { ControlClassService } from './providers/control-class.service';
 import { ControlIdService } from './providers/control-id.service';
 import { MarkControlService } from './providers/mark-control.service';
 import { Helpers, NgControlService } from './providers/ng-control.service';
-import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 
 export enum CHANGE_KEYS {
   FORM = 'form',

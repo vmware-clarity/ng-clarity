@@ -17,9 +17,9 @@ import {
   Optional,
   Renderer2,
 } from '@angular/core';
+import { ClrSignpost } from '@clr/angular/src/popover/signpost';
 import { Subscription } from 'rxjs';
 
-import { ClrSignpost } from '../../popover';
 import { ControlIdService } from './providers/control-id.service';
 import { LayoutService } from './providers/layout.service';
 import { NgControlService } from './providers/ng-control.service';

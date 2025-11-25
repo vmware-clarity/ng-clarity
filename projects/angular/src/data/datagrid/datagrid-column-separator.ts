@@ -16,13 +16,10 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
+import { ClrCommonStringsService, Keys, normalizeKey, uniqueIdFactory } from '@clr/angular/src/utils';
 
 import { ColumnResizerService } from './providers/column-resizer.service';
 import { TableSizeService } from './providers/table-size.service';
-import { Keys } from '../../utils/enums/keys.enum';
-import { normalizeKey } from '../../utils/focus/key-focus/util';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 // Default resize length on each keyboard move event
 const KEYBOARD_RESIZE_LENGTH = 12;

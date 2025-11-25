@@ -7,15 +7,16 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
+import {
+  ClrPopoverEventsService,
+  ClrPopoverPositionService,
+  ClrPopoverToggleService,
+} from '@clr/angular/src/popover/common';
+import { DomAdapter } from '@clr/angular/src/utils';
+import { animationFrameTick, delay } from '@clr/angular/testing';
 
 import { DatagridNumericFilter } from './datagrid-numeric-filter';
 import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
-import { ClrPopoverEventsService } from '../../../../popover/common/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../../../popover/common/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../../../popover/common/providers/popover-toggle.service';
-import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
-import { animationFrameTick } from '../../../../utils/testing/helpers.spec';
 import { TestContext } from '../../helpers.spec';
 import { ClrDatagridNumericFilterInterface } from '../../interfaces/numeric-filter.interface';
 import { CustomFilter } from '../../providers/custom-filter';
