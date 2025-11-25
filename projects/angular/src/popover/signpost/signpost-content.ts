@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { hasModifierKey } from '@angular/cdk/keycodes';
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
@@ -21,6 +22,8 @@ import {
 } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils';
+import { Keys } from '../../utils/enums/keys.enum';
+import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
@@ -148,6 +151,48 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.popoverService.closeButtonRef = this.closeButton;
+
+    if (!this.popoverService.overlayRef) {
+      return;
+    }
+
+    this.popoverService.overlayRef.keydownEvents().subscribe(event => {
+      if (event && event.key && normalizeKey(event.key) === Keys.Tab) {
+        // GO back with Tab+Shift
+        if (hasModifierKey(event) && event.shiftKey) {
+          // move focus from close button to trigger. Step 3.
+          if (event.target === this.popoverService.closeButtonRef.nativeElement) {
+            event.preventDefault();
+            this.popoverService.setOpenedButtonFocus();
+          }
+
+          // Move focus from content to close button. Step 2. Default behaviour (NO changes).
+          // Enter Signpost from outside. Step 1
+          // Part 1 Remember the event. Part 2 is in signpost trigger.
+          else {
+            this.popoverService.lastKeydownEvent = event;
+          }
+
+          return;
+        }
+
+        // GO forward with Tab
+        // Enter Signpost from trigger element. Focusing the close button. Step 1
+        if (event.target === this.popoverService.anchorElementRef.nativeElement) {
+          event.preventDefault();
+
+          this.popoverService.setCloseFocus();
+        }
+        // move focus from close button to content. Step 2. Default behaviour (NO changes).
+        // move focus from content to trigger. Step 3.
+        else if (
+          event.target ===
+          this.popoverService.contentRef.nativeElement.querySelector('.signpost-content-body[tabindex]')
+        ) {
+          this.popoverService.setOpenedButtonFocus();
+        }
+      }
+    });
   }
 
   ngOnDestroy() {
