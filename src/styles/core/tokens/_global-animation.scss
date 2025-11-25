@@ -1,0 +1,32 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../mixins';
+
+@include mixins.root-or-host() {
+  --cds-global-animation-duration-instant: 0s;
+  --cds-global-animation-duration-quickest: 0.1s;
+  --cds-global-animation-duration-quicker: 0.15s;
+  --cds-global-animation-duration-quick: 0.2s;
+  --cds-global-animation-duration-secondary: 0.3s;
+  --cds-global-animation-duration-primary: 0.4s;
+  --cds-global-animation-duration-slow: 0.5s;
+  --cds-global-animation-duration-slower: 0.7s;
+  --cds-global-animation-duration-slowest: 0.8s;
+  --cds-global-animation-easing-primary: cubic-bezier(0, 0.99, 0, 0.99);
+  --cds-global-animation-easing-secondary: cubic-bezier(0, 1.5, 0.5, 1);
+  --cds-global-animation-easing-loop: cubic-bezier(0.17, 0.4, 0.8, 0.79);
+  --cds-global-animation-skeleton-duration: 4s;
+  --cds-global-animation-easing-in-out: cubic-bezier(0.42, 0.01, 0.58, 1); // ease-in-out;
+  --cds-alias-object-skeleton-loading-gradient: linear-gradient(
+    90deg,
+    var(--cds-alias-object-interaction-background) 0%,
+    var(--cds-global-color-construction-200) 35%,
+    var(--cds-global-color-construction-300) 65%,
+    var(--cds-alias-object-interaction-background) 100%
+  );
+}

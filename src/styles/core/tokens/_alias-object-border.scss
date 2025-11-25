@@ -1,0 +1,20 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../mixins';
+
+@include mixins.root-or-host() {
+  --cds-alias-object-border-radius-100: calc(4 * (1rem / var(--cds-global-base)));
+  --cds-alias-object-border-radius-200: calc(12 * (1rem / var(--cds-global-base)));
+  --cds-alias-object-border-radius-300: 50%;
+  --cds-alias-object-border-width-100: calc(1 * (1rem / var(--cds-global-base)));
+  --cds-alias-object-border-width-200: calc(2 * (1rem / var(--cds-global-base)));
+  --cds-alias-object-border-width-300: calc(3 * (1rem / var(--cds-global-base)));
+  --cds-alias-object-border-width-400: calc(4 * (1rem / var(--cds-global-base)));
+  --cds-alias-object-border-color: var(--cds-global-color-construction-200);
+  --cds-alias-object-border-color-tint: var(--cds-global-color-construction-100);
+  --cds-alias-object-border-color-shade: var(--cds-global-color-construction-300);
+}

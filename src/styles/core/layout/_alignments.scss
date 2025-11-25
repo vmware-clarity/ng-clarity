@@ -1,0 +1,45 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+// common alignment styles shared between vertical and horizontal layouts
+@use './mixins/mixins' as mixins;
+@use 'optimize';
+
+@mixin generateHorizontalVerticalAxisFill($breakpoint: null) {
+  [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$fill}'] > * {
+    flex-grow: 1 !important;
+    flex-basis: 0 !important;
+  }
+}
+@mixin generateHorizontalVerticalWrap($breakpoint: null) {
+  [#{optimize.$layout}~='wrap#{$breakpoint}:none'] {
+    flex-wrap: nowrap !important;
+  }
+}
+@mixin generateHorizontalVerticalItemStretchShrink($breakpoint: null) {
+  [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$stretch}'] {
+    flex-grow: 1 !important;
+  }
+
+  [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$shrink}'] {
+    flex-shrink: 1 !important;
+    flex-grow: 0 !important;
+  }
+}
+@mixin generateHorizontalVerticalAlignments($breakpoint: null) {
+  @include generateHorizontalVerticalAxisFill($breakpoint);
+  @include generateHorizontalVerticalWrap($breakpoint);
+  @include generateHorizontalVerticalItemStretchShrink($breakpoint);
+}
+
+@include generateHorizontalVerticalAlignments();
+
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @include generateHorizontalVerticalAlignments($breakpoint);
+  }
+}

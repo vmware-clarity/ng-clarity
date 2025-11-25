@@ -7,7 +7,7 @@
 
 @use '../mixins';
 @use 'variables.global';
-@use '@cds/core/tokens/tokens.scss';
+@use '../core/tokens/variables.tokens' as tokens;
 
 @include mixins.exports('global.properties') {
   @include mixins.root-or-host() {
@@ -32,7 +32,7 @@
       --clr-global-on-selection-color: #{tokens.$cds-alias-object-interaction-color-selected};
 
       // app hover colors
-      --clr-global-hover-color: #{tokens.$cds-global-typography-link-color-hover};
+      --clr-global-hover-color: #{tokens.$cds-alias-typography-link-color-hover};
 
       // app font colors
       --clr-global-content-header-font-color: #{tokens.$cds-alias-typography-color-400};

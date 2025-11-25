@@ -6,12 +6,12 @@
  */
 
 @use 'sass:meta';
-@use '../../utils/a11y';
-@use '../../utils/mixins';
+@use '../../styles/a11y';
+@use '../../styles/mixins';
 @use 'variables.vertical-nav' as vertical-nav-variables;
-@use '@cds/core/tokens/tokens.scss';
+@use '../../styles/core/tokens/variables.tokens' as tokens;
 @use '../tabs/tabs.clarity' as tabs;
-@use '../../utils/variables/variables.density' as density;
+@use '../../styles/variables/variables.density' as density;
 
 @mixin vertical-nav-divider($position: 'border-top') {
   #{$position}: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-width solid

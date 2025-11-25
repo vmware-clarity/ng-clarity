@@ -1,0 +1,20 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../mixins';
+
+@include mixins.root-or-host() {
+  --cds-alias-object-container-background: var(--cds-global-color-white);
+  --cds-alias-object-container-background-tint: var(--cds-global-color-construction-50);
+  --cds-alias-object-container-background-shade: var(--cds-global-color-construction-100);
+  --cds-alias-object-container-background-dark: var(--cds-global-color-cool-gray-50);
+  --cds-alias-object-container-background-inverse: var(--cds-global-color-construction-600);
+  --cds-alias-object-container-background-inverse-tint: var(--cds-global-color-construction-800);
+  --cds-alias-object-container-background-inverse-shade: var(--cds-global-color-construction-500);
+  --cds-alias-object-container-backdrop-background: hsl(0deg 0% 100% / 60%);
+  --cds-alias-object-container-border-color: var(--cds-global-color-construction-200);
+}

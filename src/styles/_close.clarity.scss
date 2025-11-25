@@ -7,7 +7,7 @@
 
 @use 'sass:string';
 @use 'mixins';
-@use '@cds/core/tokens/tokens.scss';
+@use './core/tokens/variables.tokens' as tokens;
 @use 'variables/variables.global';
 
 @include mixins.exports('close.clarity') {

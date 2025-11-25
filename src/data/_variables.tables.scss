@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../utils/variables/variables';
+@use '../styles/variables/variables';
 
 $clr-table-borderwidth: var(--clr-table-borderwidth) !default;
 $clr-table-border-radius: var(--clr-table-border-radius) !default;

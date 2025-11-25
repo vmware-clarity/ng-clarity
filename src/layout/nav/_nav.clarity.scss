@@ -5,12 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../../utils/mixins';
+@use '../../styles/mixins';
 @use '../tabs/variables.tabs' as tabs-variables;
 @use 'variables.subnav' as subnav-variables;
 @use '../tabs/tabs.clarity' as tabs;
-@use '@cds/core/tokens/tokens.scss';
-@use '../../utils/variables/variables.density' as density;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+@use '../../styles/variables/variables.density' as density;
 
 @include mixins.exports('nav.clarity') {
   .nav {

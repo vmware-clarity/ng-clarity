@@ -6,10 +6,11 @@
  */
 // Clarity Internal Dependencies
 
-@forward '../utils/normalize'; // TODO: upgrade to latest normalize, once updated clr-ui can import core as is.
-@forward '../utils/mixins';
-@forward '../utils/variables/variables';
-@forward '../utils/variables/properties';
+@forward '../styles/normalize'; // TODO: upgrade to latest normalize, once updated clr-ui can import core as is.
+@forward '../styles/mixins';
+@forward '../styles/variables/variables';
+@forward '../styles/variables/properties';
+@forward '../styles/core/global.scss';
 
 // Layout/Grid
 
@@ -18,12 +19,12 @@
 
 // Component variables
 
-@forward '../utils/variables.clarity';
+@forward '../styles/variables.clarity';
 
 //Reboot
 
-@forward '../utils/reboot.clarity'; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
-@forward '../utils/a11y';
+@forward '../styles/reboot.clarity'; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
+@forward '../styles/a11y';
 
 //Icons & Images
 
@@ -38,7 +39,7 @@
 
 @forward '../button/buttons.clarity'; // depends on variables.clarity, mixins.clarity, color.clarity
 @forward '../button/button-group/button-group.clarity'; // depends on variables.clarity, mixins.clarity
-@forward '../utils/close.clarity'; //depends on variables.clarity, mixins.clarity
+@forward '../styles/close.clarity'; //depends on variables.clarity, mixins.clarity
 
 //Alerts
 //depends on variables.clarity, mixins.clarity, color.clarity, icons.clarity, buttons.clarity

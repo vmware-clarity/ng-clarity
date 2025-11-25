@@ -1,0 +1,38 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../mixins';
+
+@include mixins.root-or-host() {
+  --cds-alias-utility-gray: var(--cds-global-color-construction-600);
+  --cds-alias-utility-gray-tint: var(--cds-global-color-construction-50);
+  --cds-alias-utility-gray-shade: var(--cds-global-color-construction-700);
+  --cds-alias-utility-blue: var(--cds-global-color-blue-700);
+  --cds-alias-utility-blue-tint: var(--cds-global-color-blue-50);
+  --cds-alias-utility-blue-shade: var(--cds-global-color-blue-800);
+  --cds-alias-utility-light-blue: var(--cds-global-color-blue-300);
+  --cds-alias-utility-light-blue-tint: var(--cds-global-color-blue-50);
+  --cds-alias-utility-light-blue-shade: var(--cds-global-color-blue-600);
+  --cds-alias-utility-dark-blue: var(--cds-global-color-azure-800);
+  --cds-alias-utility-dark-blue-tint: var(--cds-global-color-azure-50);
+  --cds-alias-utility-dark-blue-shade: var(--cds-global-color-azure-1000);
+  --cds-alias-utility-green: var(--cds-global-color-green-700);
+  --cds-alias-utility-green-tint: var(--cds-global-color-green-50);
+  --cds-alias-utility-green-shade: var(--cds-global-color-green-800);
+  --cds-alias-utility-yellow: var(--cds-global-color-ochre-500);
+  --cds-alias-utility-yellow-tint: var(--cds-global-color-ochre-100);
+  --cds-alias-utility-yellow-shade: var(--cds-global-color-ochre-700);
+  --cds-alias-utility-red: var(--cds-global-color-red-700);
+  --cds-alias-utility-red-tint: var(--cds-global-color-red-50);
+  --cds-alias-utility-red-shade: var(--cds-global-color-red-800);
+  --cds-alias-utility-tangerine: var(--cds-global-color-tangerine-400);
+  --cds-alias-utility-tangerine-tint: var(--cds-global-color-tangerine-50);
+  --cds-alias-utility-tangerine-shade: var(--cds-global-color-tangerine-600);
+  --cds-alias-utility-violet: var(--cds-global-color-violet-600);
+  --cds-alias-utility-violet-tint: var(--cds-global-color-violet-50);
+  --cds-alias-utility-violet-shade: var(--cds-global-color-violet-800);
+}

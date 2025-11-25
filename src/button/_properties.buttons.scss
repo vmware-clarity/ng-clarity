@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../utils/mixins';
-@use '../utils/variables/variables.density' as density;
-@use '@cds/core/tokens/tokens.scss';
+@use '../styles/mixins';
+@use '../styles/variables/variables.density' as density;
+@use '../styles/core/tokens/variables.tokens' as tokens;
 
 @include mixins.exports('button.properties') {
   @include mixins.root-or-host() {

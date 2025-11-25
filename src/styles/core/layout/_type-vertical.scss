@@ -1,0 +1,125 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use './mixins/mixins' as mixins;
+@use 'optimize';
+
+@mixin generateVerticalAxisAlignment($breakpoint: null) {
+  [#{optimize.$layout}~='#{optimize.$vertical}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$top}'] {
+      justify-content: flex-start;
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$bottom}'] {
+      justify-content: flex-end;
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$left}'] {
+      align-items: flex-start;
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$right}'] {
+      align-items: flex-end;
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-center}'] {
+      justify-content: center;
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-center}'] {
+      align-items: center;
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}'] {
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+@mixin generateVerticalOrder($breakpoint: null) {
+  [#{optimize.$layout}~='#{optimize.$vertical}'] {
+    &[#{optimize.$layout}*='order#{$breakpoint}:reverse'] {
+      flex-direction: column-reverse;
+    }
+  }
+}
+@mixin generateVerticalStretch($breakpoint: null) {
+  [#{optimize.$layout}~='#{optimize.$vertical}'] {
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-stretch}'] {
+      justify-content: stretch;
+
+      & > * {
+        flex-grow: 1;
+      }
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-stretch}'] {
+      align-items: stretch;
+    }
+
+    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$stretch}'] {
+      align-items: stretch;
+      justify-content: stretch;
+
+      & > * {
+        flex-grow: 1;
+      }
+    }
+  }
+}
+@mixin generateVerticalItemAlignment($breakpoint: null) {
+  [#{optimize.$layout}~='#{optimize.$vertical}'] {
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}'],
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-center}'] {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}'],
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-center}'] {
+      align-self: center;
+    }
+
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$top}'] {
+      margin-bottom: auto !important;
+    }
+
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$bottom}'] {
+      margin-top: auto !important;
+    }
+
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$right}'] {
+      margin-left: auto;
+    }
+
+    & > [#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$left}'] {
+      margin-right: auto;
+    }
+  }
+}
+@mixin generateVerticalAlignments($breakpoint: null) {
+  @include generateVerticalAxisAlignment($breakpoint);
+  @include generateVerticalOrder($breakpoint);
+  @include generateVerticalStretch($breakpoint);
+  @include generateVerticalItemAlignment($breakpoint);
+}
+
+[#{optimize.$layout}~='#{optimize.$vertical}'] {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+@include generateVerticalAlignments();
+
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @include generateVerticalAlignments($breakpoint);
+  }
+}

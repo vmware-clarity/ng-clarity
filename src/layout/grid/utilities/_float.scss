@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use 'sass:map';
-@use '../../../utils/variables/variables.layout';
+@use '../../../styles/variables/variables.layout';
 @use '../mixins/breakpoint';
 
 @each $breakpoint in map.keys(variables.$clr-grid-breakpoints) {

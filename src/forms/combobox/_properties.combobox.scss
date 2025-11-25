@@ -5,15 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../../utils/mixins';
-@use '@cds/core/tokens/tokens.scss';
-@use '../../utils/variables/variables.density' as density;
+@use '../../styles/mixins';
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+@use '../../styles/variables/variables.density' as density;
 
 @include mixins.exports('combobox.properties') {
   @include mixins.root-or-host() {
     --clr-combobox-min-width: #{mixins.baselinePx(168)};
     --clr-combobox-multi-min-width: #{mixins.baselinePx(360)};
-    --clr-combobox-font-weight: #{tokens.$cds-global-typography-secondary-font-weight};
+    --clr-combobox-font-weight: #{tokens.$cds-alias-typography-secondary-font-weight};
 
     &,
     & [clr-density] {

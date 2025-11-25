@@ -1,0 +1,339 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../tokens/variables.tokens' as tokens;
+@use '../../mixins';
+
+@mixin LHE($lh-gap: 0.5em) {
+  @include mixins.line-height-eraser(
+    $lh-gap,
+    tokens.$cds-alias-typography-top-gap-height,
+    tokens.$cds-alias-typography-ascender-height,
+    tokens.$cds-alias-typography-x-height
+  );
+}
+
+[cds-text] {
+  font-family: tokens.$cds-alias-typography-font-family;
+  margin-top: 0;
+  margin-bottom: 0;
+
+  // remove as they cause excess gap when combined with cds-layout on the same element
+  &[cds-layout~='vertical'],
+  &[cds-layout~='horizontal'],
+  &[cds-layout~='grid'] {
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+}
+
+[cds-text*='display'],
+[cds-text*='heading'], // TODO(CDE-821): Remove heading in v7
+[cds-text*='headline'],
+[cds-text*='title'],
+[cds-text*='section'],
+[cds-text*='subsection'] {
+  font-family: tokens.$cds-alias-typography-header-font-family;
+  color: tokens.$cds-alias-typography-color-400;
+}
+
+[cds-text*='body'],
+[cds-text*='message'],
+[cds-text*='secondary'],
+[cds-text*='caption'],
+[cds-text*='smallcaption'] {
+  color: tokens.$cds-alias-typography-color-500;
+}
+
+[cds-text*='inline'] {
+  width: auto !important;
+  display: inline-block !important;
+}
+
+[cds-text*='display'] {
+  $lh-gap: mixins.getLineHeightGap(
+    tokens.$cds-alias-typography-display-line-height-static,
+    tokens.$cds-alias-typography-display-line-height
+  );
+  @include LHE($lh-gap);
+
+  font-size: tokens.$cds-alias-typography-display-font-size;
+  font-weight: tokens.$cds-alias-typography-display-font-weight;
+  line-height: tokens.$cds-alias-typography-display-line-height;
+  letter-spacing: tokens.$cds-alias-typography-display-letter-spacing;
+}
+
+[cds-text*='heading'], // TODO(CDE-821): Remove heading in v7
+[cds-text*='headline'] {
+  $lh-gap: mixins.getLineHeightGap(
+    tokens.$cds-alias-typography-heading-line-height-static,
+    tokens.$cds-alias-typography-heading-line-height
+  );
+  @include LHE($lh-gap);
+
+  font-size: tokens.$cds-alias-typography-heading-font-size;
+  font-weight: tokens.$cds-alias-typography-heading-font-weight;
+  line-height: tokens.$cds-alias-typography-heading-line-height;
+  letter-spacing: tokens.$cds-alias-typography-heading-letter-spacing;
+}
+
+[cds-text*='title'] {
+  $lh-gap: mixins.getLineHeightGap(
+    tokens.$cds-alias-typography-title-line-height-static,
+    tokens.$cds-alias-typography-title-line-height
+  );
+  @include LHE($lh-gap);
+
+  font-size: tokens.$cds-alias-typography-title-font-size;
+  font-weight: tokens.$cds-alias-typography-title-font-weight;
+  line-height: tokens.$cds-alias-typography-title-line-height;
+  letter-spacing: tokens.$cds-alias-typography-title-letter-spacing;
+}
+
+[cds-text*='section'] {
+  $lh-gap: mixins.getLineHeightGap(
+    tokens.$cds-alias-typography-section-line-height-static,
+    tokens.$cds-alias-typography-section-line-height
+  );
+  @include LHE($lh-gap);
+
+  font-size: tokens.$cds-alias-typography-section-font-size;
+  font-weight: tokens.$cds-alias-typography-section-font-weight;
+  line-height: tokens.$cds-alias-typography-section-line-height;
+  letter-spacing: tokens.$cds-alias-typography-section-letter-spacing;
+}
+
+[cds-text*='subsection'] {
+  $lh-gap: mixins.getLineHeightGap(
+    tokens.$cds-alias-typography-subsection-line-height-static,
+    tokens.$cds-alias-typography-subsection-line-height
+  );
+  @include LHE($lh-gap);
+
+  font-size: tokens.$cds-alias-typography-subsection-font-size;
+  font-weight: tokens.$cds-alias-typography-subsection-font-weight;
+  line-height: tokens.$cds-alias-typography-subsection-line-height;
+  letter-spacing: tokens.$cds-alias-typography-subsection-letter-spacing;
+}
+
+[cds-text*='body'] {
+  $lh-gap: mixins.getLineHeightGap(
+    tokens.$cds-alias-typography-body-line-height-static,
+    tokens.$cds-alias-typography-body-line-height
+  );
+  @include mixins.line-height-eraser(
+    $lh-gap,
+    tokens.$cds-alias-typography-top-gap-height,
+    tokens.$cds-alias-typography-ascender-height,
+    tokens.$cds-alias-typography-x-height,
+    0.1em
+  );
+
+  font-weight: tokens.$cds-alias-typography-body-font-weight;
+  font-size: tokens.$cds-alias-typography-body-font-size;
+  letter-spacing: tokens.$cds-alias-typography-body-letter-spacing;
+  line-height: tokens.$cds-alias-typography-body-line-height;
+}
+
+// remove extra margin on the body tag to avoid an unnecessary scrollbar
+body[cds-text*='body'] {
+  @include mixins.remove-line-height-erasers;
+}
+
+[cds-text*='message'] {
+  $lh-gap: mixins.getLineHeightGap(
+    tokens.$cds-alias-typography-message-line-height-static,
+    tokens.$cds-alias-typography-message-line-height
+  );
+  @include LHE($lh-gap);
+
+  font-size: tokens.$cds-alias-typography-message-font-size;
+  font-weight: tokens.$cds-alias-typography-message-font-weight;
+  line-height: tokens.$cds-alias-typography-message-line-height;
+  letter-spacing: tokens.$cds-alias-typography-message-letter-spacing;
+}
+
+[cds-text*='secondary'] {
+  $lh-gap: mixins.getLineHeightGap(
+    tokens.$cds-alias-typography-secondary-line-height-static,
+    tokens.$cds-alias-typography-secondary-line-height
+  );
+  @include LHE($lh-gap);
+
+  font-size: tokens.$cds-alias-typography-secondary-font-size;
+  font-weight: tokens.$cds-alias-typography-secondary-font-weight;
+  line-height: tokens.$cds-alias-typography-secondary-line-height;
+  letter-spacing: tokens.$cds-alias-typography-secondary-letter-spacing;
+}
+
+[cds-text*='caption'] {
+  $lh-gap: mixins.getLineHeightGap(
+    tokens.$cds-alias-typography-caption-line-height-static,
+    tokens.$cds-alias-typography-caption-line-height
+  );
+  @include LHE($lh-gap);
+
+  font-size: tokens.$cds-alias-typography-caption-font-size;
+  font-weight: tokens.$cds-alias-typography-caption-font-weight;
+  line-height: tokens.$cds-alias-typography-caption-line-height;
+  letter-spacing: tokens.$cds-alias-typography-caption-letter-spacing;
+}
+
+[cds-text*='smallcaption'] {
+  $lh-gap: mixins.getLineHeightGap(
+    tokens.$cds-alias-typography-smallcaption-line-height-static,
+    tokens.$cds-alias-typography-smallcaption-line-height
+  );
+  @include LHE($lh-gap);
+
+  font-size: tokens.$cds-alias-typography-smallcaption-font-size;
+  font-weight: tokens.$cds-alias-typography-smallcaption-font-weight;
+  line-height: tokens.$cds-alias-typography-smallcaption-line-height;
+  letter-spacing: tokens.$cds-alias-typography-smallcaption-letter-spacing;
+}
+
+[cds-text~='link'] {
+  color: tokens.$cds-alias-typography-link-color !important;
+  text-decoration: underline !important;
+  line-height: inherit !important;
+  font-size: inherit !important;
+
+  &:focus {
+    outline: #{tokens.$cds-alias-object-interaction-outline};
+    outline-offset: #{tokens.$cds-alias-object-interaction-outline-offset};
+  }
+
+  &:hover {
+    color: tokens.$cds-alias-typography-link-color-hover !important;
+  }
+
+  &:visited:not([cds-text~='static']),
+  &[cds-text~='visited'] {
+    color: tokens.$cds-alias-typography-link-color-visited !important;
+
+    &:hover {
+      color: tokens.$cds-alias-typography-link-color-visited-hover !important;
+    }
+  }
+}
+
+[cds-text='link']:focus {
+  outline: #{tokens.$cds-alias-object-interaction-outline-webkit};
+}
+
+[cds-text~='code'] {
+  color: tokens.$cds-alias-status-danger;
+  font-family: monospace;
+}
+
+// hr
+[cds-divider] {
+  display: block;
+  height: tokens.$cds-alias-object-border-width-100;
+  overflow: hidden;
+  box-shadow: tokens.$cds-alias-object-border-color 0 0 0 tokens.$cds-alias-object-border-width-100 inset;
+}
+
+// font-weight
+
+[cds-text~='extrabold'] {
+  font-weight: tokens.$cds-alias-typography-font-weight-extrabold !important;
+}
+
+[cds-text~='bold'] {
+  font-weight: tokens.$cds-alias-typography-font-weight-bold !important;
+}
+
+[cds-text~='semibold'] {
+  font-weight: tokens.$cds-alias-typography-font-weight-semibold !important;
+}
+
+[cds-text~='medium'] {
+  font-weight: tokens.$cds-alias-typography-font-weight-medium !important;
+}
+
+[cds-text~='regular'] {
+  font-weight: tokens.$cds-alias-typography-font-weight-regular !important;
+}
+
+[cds-text~='light'] {
+  font-weight: tokens.$cds-alias-typography-font-weight-light !important;
+}
+
+// transforms
+
+[cds-text~='capitalize'] {
+  text-transform: capitalize !important;
+}
+
+[cds-text~='uppercase'] {
+  text-transform: uppercase !important;
+}
+
+[cds-text~='lowercase'] {
+  text-transform: lowercase !important;
+}
+
+// truncation
+
+[cds-text~='truncate'] {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  @include mixins.remove-line-height-erasers;
+}
+
+// alignment
+
+[cds-text~='justify'] {
+  text-align: justify !important;
+}
+
+[cds-text~='left'] {
+  text-align: left !important;
+}
+
+[cds-text~='right'] {
+  text-align: right !important;
+}
+
+[cds-text~='center'] {
+  text-align: center !important;
+}
+
+// monospace
+[cds-text~='monospace'] {
+  font-family: tokens.$cds-alias-typography-monospace-font-family;
+}
+
+// https://seek-oss.github.io/capsize/
+[cds-text~='lhe'] {
+  /* stylelint-disable-next-line meowtec/no-px */
+  padding: 0.05px 0;
+
+  &::before {
+    content: '';
+    margin-top: -0.124em;
+    display: block;
+    height: 0;
+  }
+
+  &::after {
+    content: '';
+    margin-bottom: -0.221em;
+    display: block;
+    height: 0;
+  }
+}
+
+// remove line-height eraser from element
+[cds-layout~='disable-lhe'],
+[cds-text~='disable-lhe'] {
+  @include mixins.remove-line-height-erasers;
+}
