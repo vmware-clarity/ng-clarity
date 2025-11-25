@@ -23,6 +23,13 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
+import {
+  ClrCommonStringsService,
+  ClrExpandableAnimationDirective,
+  HostWrapper,
+  IfExpandService,
+  LoadingListener,
+} from '@clr/angular/src/utils';
 import { combineLatest, ReplaySubject, Subscription } from 'rxjs';
 
 import { ClrDatagridCell } from './datagrid-cell';
@@ -36,11 +43,6 @@ import { Items } from './providers/items';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
 import { WrappedRow } from './wrapped-row';
-import { ClrExpandableAnimationDirective } from '../../utils/animations/expandable-animation/expandable-animation.directive';
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { LoadingListener } from '../../utils/loading/loading-listener';
 
 let nbRow = 0;
 

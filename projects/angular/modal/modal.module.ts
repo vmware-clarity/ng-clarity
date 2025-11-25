@@ -7,12 +7,12 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
+import { ClarityIcons, ClrIcon, windowCloseIcon } from '@clr/angular/src/icon';
+import { CdkTrapFocusModule } from '@clr/angular/src/utils';
 
-import { ClarityIcons, ClrIcon, windowCloseIcon } from '../icon';
 import { ClrModal } from './modal';
 import { ClrModalBody } from './modal-body';
 import { ClrModalHostComponent } from './modal-host.component';
-import { CdkTrapFocusModule } from '../utils/cdk/cdk-trap-focus.module';
 
 export const CLR_MODAL_DIRECTIVES: Type<any>[] = [ClrModal, ClrModalBody, ClrModalHostComponent];
 

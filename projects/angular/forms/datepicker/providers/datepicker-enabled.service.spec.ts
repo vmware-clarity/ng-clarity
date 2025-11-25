@@ -5,8 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { DATEPICKER_ENABLE_BREAKPOINT } from '@clr/angular/src/utils';
+
 import { DatepickerEnabledService } from './datepicker-enabled.service';
-import { DATEPICKER_ENABLE_BREAKPOINT } from '../../../utils/breakpoints/breakpoints';
 
 export default function () {
   describe('Datepicker Enabled Service', () => {

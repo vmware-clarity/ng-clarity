@@ -60,7 +60,6 @@ import KeyNavigationSpec from './utils/key-navigation-grid.controller.spec';
 import WrappedCellSpec from './wrapped-cell.spec';
 import WrappedColumnSpec from './wrapped-column.spec';
 import WrappedRowSpec from './wrapped-row.spec';
-import DomAdapterSpecs from '../../utils/dom-adapter/dom-adapter.spec';
 
 describe('Datagrid', function () {
   addHelpers();
@@ -105,7 +104,6 @@ describe('Datagrid', function () {
   });
 
   describe('Render', function () {
-    DomAdapterSpecs();
     NoopDomAdapterSpecs();
     DatagridRenderOrganizerSpecs();
     DatagridCellRendererSpecs();

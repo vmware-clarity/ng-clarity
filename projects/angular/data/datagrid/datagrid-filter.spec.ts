@@ -6,6 +6,12 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
+import {
+  ClrPopoverEventsService,
+  ClrPopoverPositionService,
+  ClrPopoverToggleService,
+} from '@clr/angular/src/popover/common';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 import { Subject } from 'rxjs';
 
 import { ClrDatagridFilter } from './datagrid-filter';

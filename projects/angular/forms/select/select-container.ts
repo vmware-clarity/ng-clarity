@@ -7,12 +7,13 @@
 
 import { Component, ContentChild, Optional } from '@angular/core';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
-
-import { ClrAbstractContainer } from '../common/abstract-container';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
+import {
+  ClrAbstractContainer,
+  ControlClassService,
+  ControlIdService,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/src/forms/common';
 
 @Component({
   selector: 'clr-select-container',

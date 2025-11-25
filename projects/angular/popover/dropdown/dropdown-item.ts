@@ -6,11 +6,10 @@
  */
 
 import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
+import { BASIC_FOCUSABLE_ITEM_PROVIDER, FocusableItem } from '@clr/angular/src/utils';
 
 import { ClrDropdown } from './dropdown';
 import { RootDropdownService } from './providers/dropdown.service';
-import { BASIC_FOCUSABLE_ITEM_PROVIDER } from '../../utils/focus/focusable-item/basic-focusable-item.service';
-import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 
 @Directive({
   selector: '[clrDropdownItem]',

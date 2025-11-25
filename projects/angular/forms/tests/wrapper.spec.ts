@@ -8,11 +8,12 @@
 import { TestBed } from '@angular/core/testing';
 import { FormsModule, NgControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-
-import { ClrIcon } from '../../icon';
-import { ClrCommonFormsModule } from '../common/common.module';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
+import {
+  ClrCommonFormsModule,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/src/forms/common';
+import { ClrIcon } from '@clr/angular/src/icon';
 
 export function WrapperNoLabelSpec(testContainer, testControl, testComponent): void {
   describe('no label', () => {

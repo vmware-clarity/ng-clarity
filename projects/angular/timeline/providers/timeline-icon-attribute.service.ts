@@ -6,8 +6,8 @@
  */
 
 import { Injectable } from '@angular/core';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrTimelineStepState } from '../enums/timeline-step-state.enum';
 import { IconAttributes } from '../interface/icon-attribute.interface';
 

@@ -9,14 +9,14 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ClrIcon } from '@clr/angular/src/icon';
+import { IfExpandService } from '@clr/angular/src/utils';
+import { delay } from '@clr/angular/testing';
 
-import { ClrIcon } from '../../icon';
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNavGroup } from './vertical-nav-group';
 import { ClrVerticalNavModule } from './vertical-nav.module';
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { delay } from '../../utils/testing/helpers.spec';
 
 export default function (): void {
   describe('Vertical Nav Group', () => {

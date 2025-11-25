@@ -6,15 +6,17 @@
  */
 
 import { Component, Inject, InjectionToken, Input, Optional } from '@angular/core';
+import {
+  ClrAbstractContainer,
+  ControlClassService,
+  ControlIdService,
+  FormsFocusService,
+  IfControlStateService,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/src/forms/common';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 import { BehaviorSubject } from 'rxjs';
-
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrAbstractContainer } from '../common/abstract-container';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { FocusService } from '../common/providers/focus.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 
 export const TOGGLE_SERVICE = new InjectionToken<BehaviorSubject<boolean>>(undefined);
 export function ToggleServiceFactory() {
@@ -65,7 +67,14 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [NgControlService, ControlIdService, ControlClassService, FocusService, TOGGLE_SERVICE_PROVIDER],
+  providers: [
+    NgControlService,
+    ControlIdService,
+    ControlClassService,
+    FormsFocusService,
+    TOGGLE_SERVICE_PROVIDER,
+    IfControlStateService,
+  ],
   standalone: false,
 })
 export class ClrPasswordContainer extends ClrAbstractContainer {
@@ -78,7 +87,7 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     @Optional() layoutService: LayoutService,
     controlClassService: ControlClassService,
     ngControlService: NgControlService,
-    public focusService: FocusService,
+    public focusService: FormsFocusService,
     @Inject(TOGGLE_SERVICE) private toggleService: BehaviorSubject<boolean>,
     public commonStrings: ClrCommonStringsService
   ) {

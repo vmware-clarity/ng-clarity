@@ -6,6 +6,7 @@
  */
 
 import { Component } from '@angular/core';
+import { TestContext } from '@clr/angular/testing';
 
 import { ClrDay } from './day';
 import { ClrPopoverService } from '../../popover';
@@ -16,7 +17,6 @@ import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { TestContext } from '../../data/datagrid/helpers.spec';
 
 export default function () {
   describe('Day Component', () => {

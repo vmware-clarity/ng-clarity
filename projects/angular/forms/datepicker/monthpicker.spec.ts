@@ -6,6 +6,8 @@
  */
 
 import { Component } from '@angular/core';
+import { Keys } from '@clr/angular/src/utils';
+import { TestContext } from '@clr/angular/testing';
 
 import { DayModel } from './model/day.model';
 import { ClrMonthpicker } from './monthpicker';
@@ -15,8 +17,6 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { TestContext } from '../../data/datagrid/helpers.spec';
-import { Keys } from '../../utils/enums/keys.enum';
 
 export default function () {
   describe('Monthpicker Component', () => {

@@ -18,12 +18,10 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
+import { ClrCommonStringsService, IfExpandService, triggerAllFormControlValidation } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, skipUntil, tap } from 'rxjs/operators';
 
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { triggerAllFormControlValidation } from '../../utils/forms/validation';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrAccordionPanel } from '../accordion-panel';
 import { AccordionStatus } from '../enums/accordion-status.enum';
 import { AccordionPanelModel } from '../models/accordion.model';

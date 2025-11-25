@@ -16,11 +16,9 @@ import {
   Output,
   SkipSelf,
 } from '@angular/core';
+import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 
 import { ClrStackViewLabel } from './stack-view-custom-tags';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { HeadingLevel } from '../../utils/types/heading-level';
 
 @Component({
   selector: 'clr-stack-block',

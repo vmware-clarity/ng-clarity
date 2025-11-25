@@ -6,8 +6,7 @@
  */
 
 import { Directive } from '@angular/core';
-
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '@clr/angular/src/utils';
 
 @Directive({
   selector: '[clrStackInput]',

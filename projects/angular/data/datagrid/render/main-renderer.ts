@@ -20,9 +20,9 @@ import {
   QueryList,
   Renderer2,
 } from '@angular/core';
+import { DomAdapter } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 
-import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { ClrDatagrid } from '../datagrid';
 import { DatagridHeaderRenderer } from './header-renderer';
 import { NoopDomAdapter } from './noop-dom-adapter';

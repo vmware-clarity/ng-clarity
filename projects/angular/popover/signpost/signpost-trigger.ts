@@ -7,11 +7,11 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { Directive, DOCUMENT, ElementRef, HostListener, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { ClrPopoverService } from '@clr/angular/src/popover/common';
 import { Subscription } from 'rxjs';
 
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
-import { ClrPopoverService } from '../common/providers/popover.service';
 
 @Directive({
   selector: '[clrSignpostTrigger]',

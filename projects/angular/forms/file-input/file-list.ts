@@ -6,6 +6,8 @@
  */
 
 import { Component, ContentChild, inject, Injector } from '@angular/core';
+import { NgControlService } from '@clr/angular/src/forms/common';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 
 import { ClrFileInputContainer } from './file-input-container';
 import { ClrFileListValidationErrors } from './file-input-validator-errors';
@@ -16,8 +18,6 @@ import {
   ClrFileMessagesTemplateContext,
   ClrSingleFileValidationErrors,
 } from './file-messages-template';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 
 @Component({
   selector: 'clr-file-list',

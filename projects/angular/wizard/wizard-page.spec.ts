@@ -9,10 +9,10 @@ import { Component, DebugElement, QueryList, ViewChild, ViewChildren } from '@an
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ClrAlert, ClrAlertModule } from '@clr/angular/src/emphasis/alert';
+import { ClrIcon } from '@clr/angular/src/icon';
+import { delay } from '@clr/angular/testing';
 
-import { ClrAlert } from '../emphasis/alert/alert';
-import { ClrAlertModule } from '../emphasis/alert/alert.module';
-import { ClrIcon } from '../icon';
 import { ButtonHubService } from './providers/button-hub.service';
 import { PageCollectionService } from './providers/page-collection.service';
 import { PageCollectionMock } from './providers/page-collection.service.mock';
@@ -22,7 +22,6 @@ import { ClrWizardButton } from './wizard-button';
 import { ClrWizardPage } from './wizard-page';
 import { MockPage } from './wizard-page.mock';
 import { ClrWizardModule } from './wizard.module';
-import { delay } from '../utils/testing/helpers.spec';
 
 class MyPageCollectionMock extends PageCollectionMock {
   previousPage: MockPage;

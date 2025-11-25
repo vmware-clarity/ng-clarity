@@ -20,11 +20,9 @@ import {
   PLATFORM_ID,
   ViewChild,
 } from '@angular/core';
+import { ClrPopoverContent, ClrPopoverService, POPOVER_HOST_ANCHOR } from '@clr/angular/src/popover/common';
+import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/src/utils';
 
-import { ClrCommonStringsService } from '../../utils';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrPopoverContent, ClrPopoverService } from '../common';
-import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrPopoverPosition, ClrPopoverType, SIGNPOST_POSITIONS } from '../common/utils/popover-positions';

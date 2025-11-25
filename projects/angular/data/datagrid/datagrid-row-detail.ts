@@ -6,6 +6,7 @@
  */
 
 import { AfterContentInit, Component, ContentChildren, Input, OnDestroy, QueryList } from '@angular/core';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 
 import { ClrDatagridCell } from './datagrid-cell';
@@ -14,7 +15,6 @@ import { SelectionType } from './enums/selection-type';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 /**
  * Generic bland container serving various purposes for Datagrid.

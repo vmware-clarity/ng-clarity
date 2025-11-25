@@ -6,8 +6,8 @@
  */
 
 import { DOCUMENT, Inject, Injectable } from '@angular/core';
+import { DATEPICKER_ENABLE_BREAKPOINT } from '@clr/angular/src/utils';
 
-import { DATEPICKER_ENABLE_BREAKPOINT } from '../../../utils/breakpoints/breakpoints';
 import { MOBILE_USERAGENT_REGEX } from '../utils/constants';
 
 @Injectable()

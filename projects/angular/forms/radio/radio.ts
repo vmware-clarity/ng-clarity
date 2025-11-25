@@ -7,9 +7,9 @@
 
 import { Directive, ElementRef, Injector, Optional, Renderer2, Self, ViewContainerRef } from '@angular/core';
 import { NgControl } from '@angular/forms';
+import { WrappedFormControl } from '@clr/angular/forms/common';
 
 import { ClrRadioWrapper } from './radio-wrapper';
-import { WrappedFormControl } from '../common/wrapped-control';
 
 @Directive({
   selector: '[clrRadio]',

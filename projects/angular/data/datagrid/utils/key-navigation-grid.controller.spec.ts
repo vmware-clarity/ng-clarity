@@ -6,9 +6,9 @@
  */
 
 import { Component } from '@angular/core';
+import { Keys } from '@clr/angular/src/utils';
+import { expectActiveElementToBe } from '@clr/angular/testing';
 
-import { Keys } from '../../../utils/enums/keys.enum';
-import { expectActiveElementToBe } from '../../../utils/testing/helpers.spec';
 import { ClrDatagrid } from '../datagrid';
 import { TestContext } from '../helpers.spec';
 import { Selection } from '../providers/selection';

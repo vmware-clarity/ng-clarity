@@ -6,10 +6,10 @@
  */
 
 import { Component, ContentChildren, Injector, OnInit, QueryList, ViewContainerRef } from '@angular/core';
+import { ClrSignpost } from '@clr/angular/src/popover/signpost';
+import { HostWrapper } from '@clr/angular/src/utils';
 
 import { WrappedCell } from './wrapped-cell';
-import { ClrSignpost } from '../../popover/signpost/signpost';
-import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 
 @Component({
   selector: 'clr-dg-cell',

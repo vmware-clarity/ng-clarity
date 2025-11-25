@@ -7,11 +7,11 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClrPopoverService } from '@clr/angular/src/popover/common';
+import { Keys } from '@clr/angular/src/utils';
 
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler, OptionData } from './combobox-focus-handler.service';
 import { OptionSelectionService } from './option-selection.service';
-import { ClrPopoverService } from '../../../popover/common/providers/popover.service';
-import { Keys } from '../../../utils/enums/keys.enum';
 import { SingleSelectComboboxModel } from '../model/single-select-combobox.model';
 
 @Component({

@@ -6,14 +6,16 @@
  */
 
 import { Component, ContentChild, forwardRef, Optional } from '@angular/core';
+import {
+  ClrAbstractContainer,
+  ControlClassService,
+  ControlIdService,
+  FormsFocusService,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/src/forms/common';
 
 import { ClrNumberInput } from './number-input';
-import { ClrAbstractContainer } from '../common/abstract-container';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { FocusService } from '../common/providers/focus.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 
 @Component({
   selector: 'clr-number-input-container',
@@ -70,7 +72,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
     '[class.clr-form-control-readonly]': 'input.readonly',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [FocusService, NgControlService, ControlIdService, ControlClassService],
+  providers: [FormsFocusService, NgControlService, ControlIdService, ControlClassService],
   standalone: false,
 })
 export class ClrNumberInputContainer extends ClrAbstractContainer {
@@ -82,7 +84,7 @@ export class ClrNumberInputContainer extends ClrAbstractContainer {
     controlClassService: ControlClassService,
     @Optional() layoutService: LayoutService,
     ngControlService: NgControlService,
-    focusService: FocusService
+    focusService: FormsFocusService,
   ) {
     super(layoutService, controlClassService, ngControlService);
 
