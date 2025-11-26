@@ -16036,7 +16036,7 @@ class ClrFileInput extends WrappedFormControl {
         this.selection = undefined;
     }
     get disabled() {
-        return this.control && this.control.disabled;
+        return this.elementRef.nativeElement.disabled || (this.control && this.control.disabled);
     }
     handleChange() {
         this.updateSelection();
