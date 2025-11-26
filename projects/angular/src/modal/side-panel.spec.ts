@@ -9,12 +9,11 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '@clr/angular/src/utils';
+import { delay, expectActiveElementToBe } from '@clr/angular/testing';
 
 import { ClrSidePanel } from './side-panel';
 import { ClrSidePanelModule } from './side-panel.module';
-import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '../utils/cdk/cdk-trap-focus.module';
-import { delay } from '../utils/testing/helpers.spec';
-import { expectActiveElementToBe } from '../utils/testing/helpers.spec';
 
 @Component({
   template: `

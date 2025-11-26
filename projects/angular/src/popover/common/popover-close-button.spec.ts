@@ -6,12 +6,12 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrPopoverCloseButton } from './popover-close-button';
 import { ClrPopoverModuleNext } from './popover.module';
 import { ClrPopoverEventsService } from './providers/popover-events.service';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   selector: 'test-host',
@@ -59,7 +59,7 @@ export default function (): void {
       });
 
       it('sets the close button ref in the events service', function (this: Context) {
-        expect(this.hostComponent.closeButton).toEqual(this.eventService.closeButtonRef);
+        expect(this.testComponent.closeButton).toEqual(this.eventService.closeButtonRef);
       });
     });
 
@@ -78,16 +78,16 @@ export default function (): void {
         this.toggleService.open = true;
         this.detectChanges();
         expect(this.fixture.componentInstance.openState).toBeUndefined();
-        const closeBtn: HTMLButtonElement = this.hostElement.querySelector('.clr-smart-close-button');
+        const closeBtn: HTMLButtonElement = this.testElement.querySelector('.clr-smart-close-button');
         closeBtn.click();
         this.detectChanges();
-        expect(this.hostComponent.openState).toBe(this.toggleService.open);
+        expect(this.testComponent.openState).toBe(this.toggleService.open);
       });
 
       it('focuses on the toggle/anchor element when clicked', function (this: Context) {
         const clickSpy = spyOn(this.toggleService, 'toggleWithEvent');
-        const closeBtn: HTMLButtonElement = this.hostElement.querySelector('.clr-smart-close-button');
-        const focusSpy = spyOn(this.hostComponent.toggleButton.nativeElement, 'focus');
+        const closeBtn: HTMLButtonElement = this.testElement.querySelector('.clr-smart-close-button');
+        const focusSpy = spyOn(this.testComponent.toggleButton.nativeElement, 'focus');
         closeBtn.click();
         expect(clickSpy.calls.count()).toEqual(1);
         expect(focusSpy.calls.count()).toEqual(1);

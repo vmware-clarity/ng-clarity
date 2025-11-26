@@ -6,9 +6,9 @@
  */
 
 import { Component } from '@angular/core';
+import { TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridDetail } from './datagrid-detail';
-import { TestContext } from './helpers.spec';
 import { DetailService } from './providers/detail.service';
 
 const content = 'Detail Pane';

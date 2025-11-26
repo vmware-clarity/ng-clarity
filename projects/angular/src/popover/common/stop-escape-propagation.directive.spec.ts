@@ -8,12 +8,11 @@
 import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ClrModal, ClrModalModule } from '@clr/angular/src/modal';
+import { Keys } from '@clr/angular/src/utils';
 
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 import { ClrStopEscapePropagationDirective } from './stop-escape-propagation.directive';
-import { ClrModal } from '../../modal/modal';
-import { ClrModalModule } from '../../modal/modal.module';
-import { Keys } from '../../utils/enums/keys.enum';
 
 export default function (): void {
   describe('ClrStopEscapePropagationDirective', function () {

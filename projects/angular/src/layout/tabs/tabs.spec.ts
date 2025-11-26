@@ -7,16 +7,14 @@
 
 import { Component, DebugElement, ElementRef, Type, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { ClrKeyFocus, IfActiveService } from '@clr/angular/src/utils';
+import { addHelpers, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 
 import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';
 import { ClrTab } from './tab';
 import { ClrTabLink } from './tab-link.directive';
 import { ClrTabs } from './tabs';
-import { addHelpers, TestContext } from '../../data/datagrid/helpers.spec';
-import { IfActiveService } from '../../utils/conditional/if-active.service';
-import { ClrKeyFocus } from '../../utils/focus/key-focus/key-focus';
-import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `

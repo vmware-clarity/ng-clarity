@@ -8,14 +8,14 @@
 import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Keys } from '@clr/angular/src/utils';
+import { delay, expectActiveElementToBe } from '@clr/angular/testing';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 import { ClarityModule } from '../../clr-angular.module';
 import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
-import { Keys } from '../../utils/enums/keys.enum';
-import { delay, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 
 export interface Column {
   index: number;

@@ -6,11 +6,11 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { spec, TestContext } from '@clr/angular/testing';
 import { Subscription } from 'rxjs';
 
 import { ClrPopoverOpenCloseButton } from './popover-open-close-button';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   selector: 'test-host',
@@ -78,11 +78,11 @@ export default function (): void {
       it('emits events when the open state changes', function (this: Context) {
         expect(this.fixture.componentInstance.openState).toBeUndefined(); // inital state
         this.clarityElement.click();
-        expect(this.hostComponent.openState).toEqual(this.toggleService.open);
-        expect(this.hostComponent.openState).toBe(true); // opened state
+        expect(this.testComponent.openState).toEqual(this.toggleService.open);
+        expect(this.testComponent.openState).toBe(true); // opened state
         this.clarityElement.click();
-        expect(this.hostComponent.openState).toEqual(this.toggleService.open);
-        expect(this.hostComponent.openState).toBe(false); // closed state
+        expect(this.testComponent.openState).toEqual(this.toggleService.open);
+        expect(this.testComponent.openState).toBe(false); // closed state
       });
 
       it('handles click events', function (this: Context) {

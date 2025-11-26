@@ -17,11 +17,9 @@ import {
   Optional,
   PLATFORM_ID,
 } from '@angular/core';
+import { AbstractPopover, POPOVER_HOST_ANCHOR } from '@clr/angular/src/popover/common';
+import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/src/utils';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { AbstractPopover } from '../common/abstract-popover';
-import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { SIGNPOST_POSITIONS } from './signpost-positions';

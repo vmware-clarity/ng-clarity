@@ -6,13 +6,14 @@
  */
 
 import { Component, Input, Optional, Renderer2 } from '@angular/core';
-
-import { ClrAbstractContainer } from '../common/abstract-container';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
+import {
+  ClrAbstractContainer,
+  ControlClassService,
+  ControlIdService,
+  IfControlStateService,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/src/forms/common';
 
 @Component({
   selector: 'clr-range-container',

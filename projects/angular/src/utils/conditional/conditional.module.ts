@@ -12,7 +12,7 @@ import { ClrIfActive } from './if-active.directive';
 import { ClrIfExpanded } from './if-expanded.directive';
 import { ClrIfOpen } from './if-open.directive';
 
-export const CONDITIONAL_DIRECTIVES: Type<any>[] = [ClrIfActive, ClrIfOpen, ClrIfExpanded];
+export const CONDITIONAL_DIRECTIVES: Type<any>[] = [ClrIfActive, ClrIfExpanded, ClrIfOpen];
 
 @NgModule({
   imports: [CommonModule],

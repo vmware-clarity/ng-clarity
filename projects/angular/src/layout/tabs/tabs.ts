@@ -18,6 +18,8 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
+import { ClrPopoverHostDirective, ClrPopoverToggleService } from '@clr/angular/src/popover/common';
+import { ClrCommonStringsService, ClrKeyFocus, IfActiveService } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
@@ -28,11 +30,6 @@ import { ClrTabAction } from './tab-action.directive';
 import { ClrTabLink } from './tab-link.directive';
 import { ClrTabOverflowContent } from './tab-overflow-content';
 import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { IfActiveService } from '../../utils/conditional/if-active.service';
-import { ClrKeyFocus } from '../../utils/focus/key-focus/key-focus';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-tabs',

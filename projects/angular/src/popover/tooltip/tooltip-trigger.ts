@@ -6,11 +6,11 @@
  */
 
 import { Directive, HostListener } from '@angular/core';
+import { ClrPopoverToggleService } from '@clr/angular/src/popover/common';
 import { Subscription } from 'rxjs';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 
 @Directive({
   selector: '[clrTooltipTrigger]',

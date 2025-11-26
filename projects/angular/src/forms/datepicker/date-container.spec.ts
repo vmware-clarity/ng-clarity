@@ -8,6 +8,25 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import {
+  ClrCommonFormsModule,
+  ClrFormLayout,
+  CONTROL_STATE,
+  ControlClassService,
+  ControlIdService,
+  FormsFocusService,
+  IfControlStateService,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/src/forms/common';
+import {
+  ClrPopoverEventsService,
+  ClrPopoverPositions,
+  ClrPopoverPositionService,
+  ClrPopoverToggleService,
+  PopoverPosition,
+} from '@clr/angular/src/popover/common';
+import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 
 import { ClrDateContainer } from './date-container';
 import { DayModel } from './model/day.model';
@@ -18,20 +37,6 @@ import { DatepickerEnabledService } from './providers/datepicker-enabled.service
 import { MockDatepickerEnabledService } from './providers/datepicker-enabled.service.mock';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverPositions } from '../../popover/common/enums/positions.enum';
-import { ClrPopoverEventsService } from '../../popover/common/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../popover/common/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { PopoverPosition } from '../../popover/common/utils/popover-positions';
-import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
-import { ClrCommonFormsModule } from '../common/common.module';
-import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { FocusService } from '../common/providers/focus.service';
-import { ClrFormLayout, LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 
 const DATEPICKER_PROVIDERS: any[] = [
   ClrPopoverToggleService,
@@ -239,7 +244,7 @@ export default function () {
       <clr-control-success>Valid</clr-control-success>
     </clr-date-container>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FormsFocusService],
   standalone: false,
 })
 class TestComponent {

@@ -7,11 +7,10 @@
 
 import { Component, ElementRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-
 // I'm giving up, I'm using the datagrid ones for now.
-import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
+import { ClrPopoverToggleService, POPOVER_HOST_ANCHOR } from '@clr/angular/src/popover/common';
+import { TestContext } from '@clr/angular/testing';
+
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostContent } from './signpost-content';

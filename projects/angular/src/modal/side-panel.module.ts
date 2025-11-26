@@ -7,11 +7,11 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
+import { ClrIcon } from '@clr/angular/src/icon';
+import { CdkTrapFocusModule } from '@clr/angular/src/utils';
 
-import { ClrIcon } from '../icon';
 import { ClrModalModule } from './modal.module';
 import { ClrSidePanel } from './side-panel';
-import { CdkTrapFocusModule } from '../utils/cdk/cdk-trap-focus.module';
 
 export const CLR_SIDEPANEL_DIRECTIVES: Type<any>[] = [ClrSidePanel];
 

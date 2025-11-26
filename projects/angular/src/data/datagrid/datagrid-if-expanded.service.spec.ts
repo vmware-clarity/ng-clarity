@@ -5,8 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ClrLoadingState } from '@clr/angular/src/utils';
+
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
-import { ClrLoadingState } from '../../utils/loading/loading';
 
 export default function (): void {
   describe('Expand provider', function () {

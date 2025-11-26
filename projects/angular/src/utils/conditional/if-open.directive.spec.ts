@@ -7,9 +7,9 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { ClrPopoverToggleService } from '@clr/angular/src/popover/common';
 
 import { ClrIfOpen } from './if-open.directive';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 
 export default function (): void {
   describe('IfOpen Directive', function () {

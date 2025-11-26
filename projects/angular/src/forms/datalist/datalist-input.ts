@@ -17,10 +17,9 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
+import { FormsFocusService, WrappedFormControl } from '@clr/angular/src/forms/common';
 
 import { ClrDatalistContainer } from './datalist-container';
-import { FocusService } from '../common/providers/focus.service';
-import { WrappedFormControl } from '../common/wrapped-control';
 import { DatalistIdService } from './providers/datalist-id.service';
 
 @Directive({
@@ -35,7 +34,7 @@ export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> i
   listValue: string;
 
   constructor(
-    @Optional() private focusService: FocusService,
+    @Optional() private focusService: FormsFocusService,
     vcr: ViewContainerRef,
     injector: Injector,
     @Self()

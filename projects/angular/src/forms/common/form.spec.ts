@@ -9,12 +9,12 @@ import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { ClrInputModule } from '@clr/angular/src/forms/input';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 
 import { ClrForm } from './form';
-import { ClrInputModule } from '../input/input.module';
 import { LayoutService } from './providers/layout.service';
 import { MarkControlService } from './providers/mark-control.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   template: `

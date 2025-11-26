@@ -6,12 +6,9 @@
  */
 
 import { Component, ElementRef, HostListener, Inject, Injector, Input, OnInit, Optional } from '@angular/core';
+import { AbstractPopover, Point, POPOVER_HOST_ANCHOR } from '@clr/angular/src/popover/common';
+import { assertNever, uniqueIdFactory } from '@clr/angular/src/utils';
 
-import { assertNever } from '../../utils/assert/assert.helpers';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { AbstractPopover } from '../common/abstract-popover';
-import { Point } from '../common/popover';
-import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
 

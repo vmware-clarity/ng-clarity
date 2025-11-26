@@ -6,9 +6,9 @@
  */
 
 import { Component } from '@angular/core';
+import { TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridPageSize } from './datagrid-page-size';
-import { TestContext } from './helpers.spec';
 import { Page } from './providers/page';
 import { StateDebouncer } from './providers/state-debouncer.provider';
 

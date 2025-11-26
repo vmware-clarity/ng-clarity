@@ -6,11 +6,11 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 
 import { DateNavigationService } from './providers/date-navigation.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-daypicker',

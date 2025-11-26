@@ -14,3 +14,4 @@ export * from './file-list';
 export * from './file-messages-template';
 export * from './file-messages';
 export * from './file-input.module';
+export * from './file-input.helpers';

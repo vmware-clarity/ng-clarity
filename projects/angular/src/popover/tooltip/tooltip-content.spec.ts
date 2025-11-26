@@ -6,10 +6,9 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrPopoverToggleService, Point } from '@clr/angular/src/popover/common';
+import { spec, TestContext } from '@clr/angular/testing';
 
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
-import { Point } from '../common/popover';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { ClrTooltipContent } from './tooltip-content';
 import { ClrTooltipModule } from './tooltip.module';
@@ -92,19 +91,19 @@ export default function (): void {
         });
 
         it('accepts an [id] when a null id is provided', function (this: TooltipContext<IdTest>) {
-          this.hostComponent.idValue = null;
+          this.testComponent.idValue = null;
           this.detectChanges();
           expect(this.clarityElement.getAttribute('id')).toEqual('');
         });
 
         it('accepts an [id] when an empty string id is provided', function (this: TooltipContext<IdTest>) {
-          this.hostComponent.idValue = '';
+          this.testComponent.idValue = '';
           this.detectChanges();
           expect(this.clarityElement.getAttribute('id')).toEqual('');
         });
 
         it('accepts an [id] when an custom string id is provided', function (this: TooltipContext<IdTest>) {
-          this.hostComponent.idValue = 'custom-id';
+          this.testComponent.idValue = 'custom-id';
           this.detectChanges();
           expect(this.clarityElement.getAttribute('id')).toEqual('custom-id');
         });
@@ -131,14 +130,14 @@ export default function (): void {
           expect((this.clarityDirective as any).popoverPoint).toEqual(Point.LEFT_TOP);
           expect(this.clarityElement.classList).toContain('tooltip-right');
 
-          this.hostComponent.position = 'bottom-right';
+          this.testComponent.position = 'bottom-right';
           this.detectChanges();
           expect((this.clarityDirective as any).anchorPoint).toEqual(Point.BOTTOM_CENTER);
           expect((this.clarityDirective as any).popoverPoint).toEqual(Point.LEFT_TOP);
           expect(this.clarityElement.classList).not.toContain('tooltip-right');
           expect(this.clarityElement.classList).toContain('tooltip-bottom-right');
 
-          this.hostComponent.position = 'top-left';
+          this.testComponent.position = 'top-left';
           this.detectChanges();
           expect((this.clarityDirective as any).anchorPoint).toEqual(Point.TOP_CENTER);
           expect((this.clarityDirective as any).popoverPoint).toEqual(Point.RIGHT_BOTTOM);
@@ -151,7 +150,7 @@ export default function (): void {
           expect(this.clarityDirective.size).toEqual('sm');
           expect(this.clarityElement.classList).toContain('tooltip-sm');
 
-          this.hostComponent.size = 'lg';
+          this.testComponent.size = 'lg';
           this.detectChanges();
           expect(this.clarityDirective.size).toEqual('lg');
           expect(this.clarityElement.classList).not.toContain('tooltip-sm');

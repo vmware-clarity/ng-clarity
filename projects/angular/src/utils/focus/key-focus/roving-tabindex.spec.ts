@@ -8,12 +8,12 @@
 import { Component, DebugElement, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { expectActiveElementNotToBe } from '@clr/angular/testing';
 
 import { ClrKeyFocusItem } from './key-focus-item';
 import { ClrKeyFocusModule } from './key-focus.module';
 import { ClrRovingTabindex } from './roving-tabindex';
 import { Keys } from '../../../utils/enums/keys.enum';
-import { expectActiveElementNotToBe } from '../../testing/helpers.spec';
 
 @Component({
   template: `

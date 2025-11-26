@@ -6,12 +6,12 @@
  */
 
 import { Component } from '@angular/core';
+import { FocusableItem } from '@clr/angular/src/utils';
+import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownItem } from './dropdown-item';
 import { ROOT_DROPDOWN_PROVIDER } from './providers/dropdown.service';
-import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `<button clrDropdownItem [disabled]="disabledDeprecated" [clrDisabled]="disabled">Hello world</button>`,
@@ -52,23 +52,23 @@ export default function (): void {
 
     it('adds the disabled class if set by input', function (this: Context) {
       expect(this.clarityElement.classList.contains('disabled')).toBe(false);
-      this.hostComponent.disabled = true;
+      this.testComponent.disabled = true;
       this.detectChanges();
       expect(this.clarityElement.classList.contains('disabled')).toBe(true);
     });
 
     it('sets aria-disabled to true if the FocusableItem is disabled', function (this: Context) {
       expect(this.clarityElement.getAttribute('aria-disabled')).toBe('false');
-      this.hostComponent.disabled = true;
+      this.testComponent.disabled = true;
       this.detectChanges();
       expect(this.clarityElement.getAttribute('aria-disabled')).toBe('true');
     });
 
     it('updates the disabled property of the FocusableItem', function (this: Context) {
-      this.hostComponent.disabled = true;
+      this.testComponent.disabled = true;
       this.detectChanges();
       expect(this.getClarityProvider(FocusableItem).disabled).toBe(true);
-      this.hostComponent.disabled = false;
+      this.testComponent.disabled = false;
       this.detectChanges();
       expect(this.getClarityProvider(FocusableItem).disabled).toBe(false);
     });

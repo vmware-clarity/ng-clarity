@@ -8,13 +8,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ClrInput, ClrInputContainer } from '@clr/angular/src/forms/input';
+import { ClrIcon } from '@clr/angular/src/icon';
+import { expectActiveElementToBe } from '@clr/angular/testing';
 
 import { ClrControlLabel } from './label';
-import { ClrIcon } from '../../icon';
 import { ClrSignpostModule, ClrSignpostTrigger } from '../../popover';
-import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
-import { ClrInput } from '../input/input';
-import { ClrInputContainer } from '../input/input-container';
 import { ControlIdService } from './providers/control-id.service';
 import { ClrFormLayout, LayoutService } from './providers/layout.service';
 import { NgControlService } from './providers/ng-control.service';

@@ -8,18 +8,19 @@
 import { TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-
-import { ClrIcon } from '../../icon';
-import { ClrCommonFormsModule } from '../common/common.module';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { MarkControlService } from '../common/providers/mark-control.service';
-import { NgControlService } from '../common/providers/ng-control.service';
-import { WrappedFormControl } from '../common/wrapped-control';
-import { DatalistIdService } from '../datalist/providers/datalist-id.service';
-import { selectFiles } from '../file-input/file-input.helpers';
+import {
+  ClrCommonFormsModule,
+  ControlClassService,
+  ControlIdService,
+  IfControlStateService,
+  LayoutService,
+  MarkControlService,
+  NgControlService,
+  WrappedFormControl,
+} from '@clr/angular/src/forms/common';
+import { DatalistIdService } from '@clr/angular/src/forms/datalist';
+import { selectFiles } from '@clr/angular/src/forms/file-input';
+import { ClrIcon } from '@clr/angular/src/icon';
 
 export function ControlStandaloneSpec(testComponent): void {
   describe('standalone use', () => {

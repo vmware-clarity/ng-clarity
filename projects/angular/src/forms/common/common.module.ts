@@ -7,6 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '@clr/angular/src/icon';
 
 import { ClrControl } from './control';
 import { ClrControlContainer } from './control-container';
@@ -18,7 +19,6 @@ import { ClrIfSuccess } from './if-control-state/if-success';
 import { ClrControlLabel } from './label';
 import { ClrLayout } from './layout';
 import { ClrControlSuccess } from './success';
-import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '../../icon';
 
 @NgModule({
   imports: [CommonModule, ClrIcon],

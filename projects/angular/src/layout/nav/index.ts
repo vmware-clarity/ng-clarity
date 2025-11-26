@@ -10,3 +10,6 @@ export * from './header';
 export * from './nav-level';
 export * from './aria-current-link';
 export * from './navigation.module';
+export * from './providers/responsive-navigation.service';
+export * from './responsive-nav-codes';
+export * from './responsive-nav-control-message';

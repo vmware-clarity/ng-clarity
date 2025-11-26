@@ -8,8 +8,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
-import { ClrFormsModule } from '../../forms/forms.module';
+import { ClrCheckboxModule } from '@clr/angular/src/forms/checkbox';
+import { ClrInputModule } from '@clr/angular/src/forms/input';
+import { ClrNumberInputModule } from '@clr/angular/src/forms/number-input';
+import { ClrRadioModule } from '@clr/angular/src/forms/radio';
+import { ClrSelectModule } from '@clr/angular/src/forms/select';
 import {
   angleDoubleIcon,
   arrowIcon,
@@ -22,7 +25,19 @@ import {
   timesIcon,
   viewColumnsIcon,
   windowCloseIcon,
-} from '../../icon';
+} from '@clr/angular/src/icon';
+import { ÇlrClrPopoverModuleNext } from '@clr/angular/src/popover/common';
+import { ClrSpinnerModule } from '@clr/angular/src/progress/spinner';
+import {
+  CdkDragModule,
+  CdkTrapFocusModule,
+  ClrConditionalModule,
+  ClrExpandableAnimationModule,
+  ClrKeyFocusModule,
+  ClrLoadingModule,
+  ClrOutsideClickModule,
+} from '@clr/angular/src/utils';
+
 import { DatagridNumericFilter } from './built-in/filters/datagrid-numeric-filter';
 import { DatagridStringFilter } from './built-in/filters/datagrid-string-filter';
 import { ActionableOompaLoompa } from './chocolate/actionable-oompa-loompa';
@@ -61,15 +76,6 @@ import { DatagridRowRenderer } from './render/row-renderer';
 import { WrappedCell } from './wrapped-cell';
 import { WrappedColumn } from './wrapped-column';
 import { WrappedRow } from './wrapped-row';
-import { ClrPopoverModuleNext } from '../../popover/common/popover.module';
-import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
-import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
-import { CdkDragModule } from '../../utils/cdk/cdk-drag.module';
-import { CdkTrapFocusModule } from '../../utils/cdk/cdk-trap-focus.module';
-import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
-import { ClrLoadingModule } from '../../utils/loading/loading.module';
-import { ClrOutsideClickModule } from '../../utils/outside-click/outside-click.module';
 
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   // Core
@@ -125,14 +131,18 @@ const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAcces
     CdkDragModule,
     CdkTrapFocusModule,
     ClrIcon,
-    ClrFormsModule,
+    ClrInputModule,
+    ClrRadioModule,
+    ClrCheckboxModule,
+    ClrNumberInputModule,
+    ClrSelectModule,
     FormsModule,
     ClrLoadingModule,
     ClrConditionalModule,
     ClrOutsideClickModule,
     ClrExpandableAnimationModule,
     ClrSpinnerModule,
-    ClrPopoverModuleNext,
+    ÇlrClrPopoverModuleNext,
     ClrKeyFocusModule,
     CLR_DATAGRID_STANDALONE_DIRECTIVES,
   ],

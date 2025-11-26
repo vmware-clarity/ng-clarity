@@ -6,19 +6,22 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
+import {
+  ClrPopoverEventsService,
+  ClrPopoverPositionService,
+  ClrPopoverToggleService,
+} from '@clr/angular/src/popover/common';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
+import { TestContext } from '@clr/angular/testing';
 import { Subject } from 'rxjs';
 
 import { ClrDatagridFilter } from './datagrid-filter';
-import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider } from './providers/filters';
 import { Page } from './providers/page';
 import { StateDebouncer } from './providers/state-debouncer.provider';
-import { ClrPopoverEventsService } from '../../popover/common/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../popover/common/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 function cleanPopoverDOM(component: ClrDatagridFilter) {
   const popoverContent = document.querySelectorAll('.clr-popover-content');

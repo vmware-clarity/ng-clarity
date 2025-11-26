@@ -6,12 +6,12 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-datepicker-view-manager',

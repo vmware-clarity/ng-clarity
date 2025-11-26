@@ -6,11 +6,12 @@
  */
 
 import { Directive, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import {
+  ResponsiveNavCodes,
+  ResponsiveNavControlMessage,
+  ResponsiveNavigationService,
+} from '@clr/angular/src/layout/nav';
 import { Subscription } from 'rxjs';
-
-import { ResponsiveNavigationService } from '../nav/providers/responsive-navigation.service';
-import { ResponsiveNavCodes } from '../nav/responsive-nav-codes';
-import { ResponsiveNavControlMessage } from '../nav/responsive-nav-control-message';
 
 @Directive({
   selector: 'clr-main-container',

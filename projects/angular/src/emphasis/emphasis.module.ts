@@ -6,10 +6,9 @@
  */
 
 import { NgModule } from '@angular/core';
-
-import { ClrAlertModule } from './alert';
-import { ClrBadge } from './badge';
-import { ClrLabel } from './label';
+import { ClrAlertModule } from '@clr/angular/src/emphasis/alert';
+import { ClrBadge } from '@clr/angular/src/emphasis/badge';
+import { ClrLabel } from '@clr/angular/src/emphasis/label';
 
 @NgModule({
   imports: [ClrBadge, ClrLabel],

@@ -9,12 +9,12 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Needed to recreate issue #1084
-import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
+import { delay, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridColumn } from '../datagrid-column';
 import { ClrDatagridModule } from '../datagrid.module';
-import { DATAGRID_SPEC_PROVIDERS, TestContext } from '../helpers.spec';
 import { DatagridHeaderRenderer } from './header-renderer';
+import { DATAGRID_SPEC_PROVIDERS } from '../helpers.spec';
 import { DatagridMainRenderer } from './main-renderer';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { MockDatagridRenderOrganizer } from './render-organizer.mock';

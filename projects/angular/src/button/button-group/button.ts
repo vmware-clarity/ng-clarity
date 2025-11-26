@@ -7,10 +7,8 @@
 
 import { Component, EventEmitter, Input, Optional, Output, SkipSelf, TemplateRef, ViewChild } from '@angular/core';
 import { RouterLinkActive } from '@angular/router';
+import { ClrLoadingState, LoadingListener, uniqueIdFactory } from '@clr/angular/src/utils';
 
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrLoadingState } from '../../utils/loading/loading';
-import { LoadingListener } from '../../utils/loading/loading-listener';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
 
 @Component({

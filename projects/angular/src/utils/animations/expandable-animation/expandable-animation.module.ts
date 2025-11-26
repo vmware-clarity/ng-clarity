@@ -6,9 +6,12 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, Type } from '@angular/core';
 
-import { EXPANDABLE_ANIMATION_DIRECTIVES } from './index';
+import { ClrExpandableAnimation } from './expandable-animation';
+import { ClrExpandableAnimationDirective } from './expandable-animation.directive';
+
+export const EXPANDABLE_ANIMATION_DIRECTIVES: Type<any>[] = [ClrExpandableAnimation, ClrExpandableAnimationDirective];
 
 @NgModule({
   imports: [CommonModule],

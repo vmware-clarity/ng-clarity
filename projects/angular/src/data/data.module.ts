@@ -6,10 +6,9 @@
  */
 
 import { NgModule } from '@angular/core';
-
-import { ClrDatagridModule } from './datagrid/datagrid.module';
-import { ClrStackViewModule } from './stack-view/stack-view.module';
-import { ClrTreeViewModule } from './tree-view/tree-view.module';
+import { ClrDatagridModule } from '@clr/angular/src/data/datagrid';
+import { ClrStackViewModule } from '@clr/angular/src/data/stack-view';
+import { ClrTreeViewModule } from '@clr/angular/src/data/tree-view';
 
 @NgModule({
   exports: [ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule],

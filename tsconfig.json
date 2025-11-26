@@ -16,7 +16,12 @@
     "sourceMap": true,
     "strict": false,
     "target": "es2022",
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "paths": {
+      "@clr/angular": ["projects/angular/src/index.ts"],
+      "@clr/angular/*": ["projects/angular/*"],
+      "@clr/angular/testing": ["projects/angular/src/utils/testing"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

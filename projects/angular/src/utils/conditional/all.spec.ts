@@ -21,7 +21,6 @@ describe('Conditional Utils', function () {
     IfActiveServiceSpecs();
     IfActiveDirectiveSpecs();
   });
-
   describe('clrIfOpen', function () {
     IfOpenDirectiveSpecs();
   });

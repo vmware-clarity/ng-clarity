@@ -6,10 +6,8 @@
  */
 
 import { Injectable } from '@angular/core';
+import { ClrLoadingState, IfExpandService } from '@clr/angular/src/utils';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-
-import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { ClrLoadingState } from '../../utils/loading/loading';
 
 let nbRow = 0;
 

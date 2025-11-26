@@ -6,13 +6,12 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrPopoverToggleService, Point } from '@clr/angular/src/popover/common';
+import { FocusableItem } from '@clr/angular/src/utils';
+import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownMenu } from './dropdown-menu';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
-import { Point } from '../common/popover';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 
 @Component({
@@ -46,7 +45,7 @@ export default function (): void {
     });
 
     it('has the correct css classes', function (this: Context) {
-      expect(this.hostElement.querySelector('.dropdown-menu')).not.toBeNull();
+      expect(this.testElement.querySelector('.dropdown-menu')).not.toBeNull();
     });
 
     it('supports clrPosition option', function (this: Context) {
@@ -85,7 +84,7 @@ export default function (): void {
     it('removes children from the DropdownFocusHandler on destroy', function (this: Context) {
       const focusHandler = this.getClarityProvider(DropdownFocusHandler);
       const spy = spyOn(focusHandler, 'resetChildren');
-      this.hostComponent.menu = false;
+      this.testComponent.menu = false;
       this.detectChanges();
       expect(spy).toHaveBeenCalled();
     });

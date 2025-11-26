@@ -9,6 +9,8 @@ import { Component, Directive, ElementRef, Injector, NgModule, Renderer2, Type, 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { ClrHostWrappingModule, HostWrapper } from '@clr/angular/src/utils';
+import { delay } from '@clr/angular/testing';
 
 import { ClrAbstractContainer } from './abstract-container';
 import { ClrControlError } from './error';
@@ -21,9 +23,6 @@ import { MarkControlService } from './providers/mark-control.service';
 import { NgControlService } from './providers/ng-control.service';
 import { ClrControlSuccess } from './success';
 import { WrappedFormControl } from './wrapped-control';
-import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
-import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
-import { delay } from '../../utils/testing/helpers.spec';
 
 /*
  * Components using the WrappedFormControl we want to test.

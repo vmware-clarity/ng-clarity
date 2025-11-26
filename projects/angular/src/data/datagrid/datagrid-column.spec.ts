@@ -8,6 +8,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { TestContext } from '@clr/angular/testing';
 import { Subject } from 'rxjs';
 
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
@@ -16,7 +17,7 @@ import { DatagridStringFilter } from './built-in/filters/datagrid-string-filter'
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
-import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { ClrDatagridStringFilterInterface } from './interfaces/string-filter.interface';

@@ -102,6 +102,7 @@ module.exports = [
       // import plugin
       'import/no-absolute-path': 'error',
       'import/no-useless-path-segments': 'error',
+      'import/no-duplicates': 'error',
       'import/order': [
         'error',
         {

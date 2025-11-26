@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class FocusService {
+export class FormsFocusService {
   private _focused = new BehaviorSubject(false);
   get focusChange(): Observable<boolean> {
     return this._focused.asObservable();

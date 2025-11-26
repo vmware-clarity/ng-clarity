@@ -8,15 +8,15 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ClrIcon } from '@clr/angular/src/icon';
+import { ClrSpinnerModule } from '@clr/angular/src/progress/spinner';
+import { ClrCommonStringsService } from '@clr/angular/src/utils';
 
-import { ClrIcon } from '../icon';
 import { ClrTimelineStepState } from './enums/timeline-step-state.enum';
 import { TimelineIconAttributeService } from './providers/timeline-icon-attribute.service';
 import { TimelineStepIdService } from './providers/timeline-step-id.service';
 import { ClrTimelineStep } from './timeline-step';
 import { ClrTimelineModule } from './timeline.module';
-import { ClrSpinnerModule } from '../progress/spinner/spinner.module';
-import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 
 @Component({
   template: `<clr-timeline-step [clrState]="state"><clr-timeline-step></clr-timeline-step></clr-timeline-step>`,
@@ -110,7 +110,7 @@ export default function (): void {
 
     describe('Template API', () => {
       let fixture: ComponentFixture<TestTimelineStep>;
-      let hostComponent: TestTimelineStep;
+      let testComponent: TestTimelineStep;
       let debugElement: DebugElement;
       let nativeComponent: ClrTimelineStep;
       let nativeElement: HTMLElement;
@@ -126,9 +126,9 @@ export default function (): void {
         fixture.detectChanges();
         nativeElement = fixture.nativeElement.querySelector('clr-timeline-step');
 
-        hostComponent = fixture.componentInstance;
+        testComponent = fixture.componentInstance;
         debugElement = fixture.debugElement;
-        nativeComponent = hostComponent.step;
+        nativeComponent = testComponent.step;
       });
 
       it('should add host classes', () => {
@@ -136,25 +136,25 @@ export default function (): void {
       });
 
       it('accepts a [clrState] input', () => {
-        hostComponent.state = ClrTimelineStepState.NOT_STARTED;
+        testComponent.state = ClrTimelineStepState.NOT_STARTED;
         fixture.detectChanges();
-        expect(nativeComponent.state).toBe(hostComponent.state);
+        expect(nativeComponent.state).toBe(testComponent.state);
 
-        hostComponent.state = ClrTimelineStepState.CURRENT;
+        testComponent.state = ClrTimelineStepState.CURRENT;
         fixture.detectChanges();
-        expect(nativeComponent.state).toBe(hostComponent.state);
+        expect(nativeComponent.state).toBe(testComponent.state);
 
-        hostComponent.state = ClrTimelineStepState.SUCCESS;
+        testComponent.state = ClrTimelineStepState.SUCCESS;
         fixture.detectChanges();
-        expect(nativeComponent.state).toBe(hostComponent.state);
+        expect(nativeComponent.state).toBe(testComponent.state);
 
-        hostComponent.state = ClrTimelineStepState.ERROR;
+        testComponent.state = ClrTimelineStepState.ERROR;
         fixture.detectChanges();
-        expect(nativeComponent.state).toBe(hostComponent.state);
+        expect(nativeComponent.state).toBe(testComponent.state);
 
-        hostComponent.state = ClrTimelineStepState.PROCESSING;
+        testComponent.state = ClrTimelineStepState.PROCESSING;
         fixture.detectChanges();
-        expect(nativeComponent.state).toBe(hostComponent.state);
+        expect(nativeComponent.state).toBe(testComponent.state);
       });
 
       [
@@ -164,7 +164,7 @@ export default function (): void {
         ClrTimelineStepState.ERROR,
       ].forEach(stepState => {
         it(`renders icon when the state is "${stepState}"`, () => {
-          hostComponent.state = stepState;
+          testComponent.state = stepState;
           fixture.detectChanges();
 
           const icon = debugElement.query(By.css('cds-icon'));
@@ -176,7 +176,7 @@ export default function (): void {
       });
 
       it('renders spinner when the state is "processing"', () => {
-        hostComponent.state = ClrTimelineStepState.PROCESSING;
+        testComponent.state = ClrTimelineStepState.PROCESSING;
         fixture.detectChanges();
 
         const icon = debugElement.query(By.css('cds-icon'));

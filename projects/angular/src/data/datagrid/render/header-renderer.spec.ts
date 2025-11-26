@@ -7,20 +7,18 @@
 
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
+import { DomAdapter, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter } from '@clr/angular/src/utils';
+import { delay, TestContext } from '@clr/angular/testing';
 import { BehaviorSubject } from 'rxjs';
 
-import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
-import { MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter } from '../../../utils/dom-adapter/dom-adapter.mock';
 import { ClrDatagrid } from '../datagrid';
 import { ClrDatagridColumnSeparator } from '../datagrid-column-separator';
 import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
 import { DatagridHeaderRenderer } from './header-renderer';
 import { DatagridRenderOrganizer } from './render-organizer';
+import { MOCK_ORGANIZER_PROVIDER, MockDatagridRenderOrganizer } from './render-organizer.mock';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
-import { TestContext } from '../helpers.spec';
-import { MOCK_ORGANIZER_PROVIDER, MockDatagridRenderOrganizer } from './render-organizer.mock';
 import { ColumnState } from '../interfaces/column-state.interface';
 import { ColumnResizerService } from '../providers/column-resizer.service';
 import { ColumnsService } from '../providers/columns.service';

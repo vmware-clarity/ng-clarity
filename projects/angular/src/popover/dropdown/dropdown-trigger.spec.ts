@@ -6,13 +6,13 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrPopoverToggleService } from '@clr/angular/src/popover/common';
+import { FocusService } from '@clr/angular/src/utils';
+import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownTrigger } from './dropdown-trigger';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { FocusService } from '../../utils/focus/focus.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `<button clrDropdownTrigger>Hello world</button>`,
@@ -39,7 +39,7 @@ export default function (): void {
     });
 
     it('adds the aria-expanded attribute to the host', function (this: Context) {
-      const toggleService = this.getProvider(ClrPopoverToggleService);
+      const toggleService = this.getClarityProvider(ClrPopoverToggleService);
       toggleService.open = false;
       this.detectChanges();
       expect(this.clarityElement.getAttribute('aria-expanded')).toBe('false');

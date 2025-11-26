@@ -6,9 +6,9 @@
  */
 
 import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { ClrPopoverToggleService } from '@clr/angular/src/popover/common';
 
 import { ClrDropdown } from './dropdown';
-import { ClrPopoverToggleService } from '../common';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 @Directive({
   // We support both selectors for legacy reasons

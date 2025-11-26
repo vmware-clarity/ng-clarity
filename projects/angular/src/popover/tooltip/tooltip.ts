@@ -6,10 +6,10 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrPopoverHostDirective } from '@clr/angular/src/popover/common';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
 
 @Component({
   selector: 'clr-tooltip',

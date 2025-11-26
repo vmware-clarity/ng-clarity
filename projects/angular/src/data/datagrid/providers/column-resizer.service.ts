@@ -6,8 +6,8 @@
  */
 
 import { ElementRef, Injectable } from '@angular/core';
+import { DomAdapter } from '@clr/angular/src/utils';
 
-import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { DatagridRenderOrganizer } from '../render/render-organizer';
 
 const MIN_COLUMN_WIDTH = 96;

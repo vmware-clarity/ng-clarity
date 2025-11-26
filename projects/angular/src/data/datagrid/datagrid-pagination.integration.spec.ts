@@ -7,11 +7,11 @@
 
 import { Component, Directive } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridPagination } from './datagrid-pagination';
 import { ClrDatagridModule } from './datagrid.module';
 import { Page } from './providers/page';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `

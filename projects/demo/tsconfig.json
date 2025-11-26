@@ -4,7 +4,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@clr/angular": ["./../angular/src/index.ts"]
+      "@clr/angular": ["./../angular/src/index.ts"],
+      "@clr/angular/*": ["./../angular/*"]
     }
   },
   "exclude": ["dist", "node_modules"]

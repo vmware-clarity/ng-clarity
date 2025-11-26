@@ -6,11 +6,11 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrPopoverAnchor } from './popover-anchor';
 import { ClrPopoverEventsService } from './providers/popover-events.service';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   selector: 'test-host',
@@ -37,7 +37,7 @@ export default function (): void {
       });
 
       it('registers the anchor element with the event service', function (this: Context) {
-        expect(this.eventService.anchorButtonRef).toEqual(this.hostComponent.anchor);
+        expect(this.eventService.anchorButtonRef).toEqual(this.testComponent.anchor);
       });
     });
 

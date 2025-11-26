@@ -16,14 +16,13 @@ import {
   Renderer2,
   SkipSelf,
 } from '@angular/core';
+import { Keys, normalizeKey } from '@clr/angular/src/utils';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 import { PopoverOptions } from './interfaces/popover-options.interface';
 import { Point, Popover } from './popover';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { Keys } from '../../utils/enums/keys.enum';
-import { normalizeKey } from '../../utils/focus/key-focus/util';
+import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 /**
  * Fallback to hide when *clrIfOpen is not being used

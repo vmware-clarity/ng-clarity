@@ -7,13 +7,13 @@
 
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { IfActiveService } from '@clr/angular/src/utils';
 
 import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';
 import { TabsService } from './providers/tabs.service';
 import { ClrTab } from './tab';
 import { TABS_ID_PROVIDER } from './tabs-id.provider';
 import { ClrTabsModule } from './tabs.module';
-import { IfActiveService } from '../../utils/conditional/if-active.service';
 
 @Component({
   selector: 'test-wrapper',

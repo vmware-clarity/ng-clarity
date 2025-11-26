@@ -17,17 +17,13 @@ import {
   Optional,
   QueryList,
 } from '@angular/core';
+import { ClrPopoverToggleService, POPOVER_HOST_ANCHOR } from '@clr/angular/src/popover/common';
+import { ClrCommonStringsService, ClrLoadingState, IF_ACTIVE_ID, LoadingListener } from '@clr/angular/src/utils';
 import { fromEvent, Subscription } from 'rxjs';
 
 import { ClrOption } from './option';
 import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
-import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { IF_ACTIVE_ID } from '../../utils/conditional/if-active.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrLoadingState } from '../../utils/loading/loading';
-import { LoadingListener } from '../../utils/loading/loading-listener';
 
 let nbOptionsComponents = 0;
 

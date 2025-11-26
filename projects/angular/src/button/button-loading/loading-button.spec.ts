@@ -8,12 +8,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ClrLoadingModule, ClrLoadingState } from '@clr/angular/src/utils';
+import { delay } from '@clr/angular/testing';
 
 import { ClrLoadingButton } from './loading-button';
 import { ClrLoadingButtonModule } from './loading-button.module';
-import { ClrLoadingState } from '../../utils/loading/loading';
-import { ClrLoadingModule } from '../../utils/loading/loading.module';
-import { delay } from '../../utils/testing/helpers.spec';
 
 describe('Loading Buttons', () => {
   let fixture: ComponentFixture<TestLoadingButtonComponent>;
