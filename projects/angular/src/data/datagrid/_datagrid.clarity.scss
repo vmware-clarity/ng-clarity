@@ -1360,6 +1360,13 @@
         max-width: 100%;
       }
 
+      .datagrid-rows {
+        /**
+         * To get rid of detail-pane overlapping the content inside the rows
+         */
+        overflow-x: hidden;
+      }
+
       & > .cdk-virtual-scrollable div.datagrid-table {
         overflow: unset;
       }
@@ -1396,11 +1403,6 @@
     .datagrid-placeholder-container,
     .datagrid-row {
       border-right: tokens.$cds-alias-object-border-width-100 solid tables-variables.$clr-table-border-color;
-
-      /**
-       * To get rid of detail-pane overlapping the content inside the rows
-       */
-      overflow: hidden;
     }
 
     .datagrid-footer {
