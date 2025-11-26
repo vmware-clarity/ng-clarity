@@ -6,7 +6,6 @@
  */
 
 export * from './interfaces/popover-options.interface';
-export * from './utils/if-open.directive';
 export * from './enums/alignment.enum';
 export * from './enums/axis.enum';
 export * from './enums/side.enum';

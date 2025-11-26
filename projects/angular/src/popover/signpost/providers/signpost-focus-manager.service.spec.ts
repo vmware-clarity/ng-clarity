@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { expectActiveElementNotToBe, expectActiveElementToBe } from '@clr/angular/src/utils';
+import { expectActiveElementNotToBe, expectActiveElementToBe } from '@clr/angular/testing';
 
 import { SignpostFocusManager } from './signpost-focus-manager.service';
 

@@ -6,7 +6,7 @@
  */
 
 import { FormControl } from '@angular/forms';
-import { delay } from '@clr/angular/src/utils/testing/helpers.spec';
+import { delay } from '@clr/angular/testing';
 import { EMPTY } from 'rxjs';
 
 import { CONTROL_STATE, IfControlStateService } from './if-control-state.service';

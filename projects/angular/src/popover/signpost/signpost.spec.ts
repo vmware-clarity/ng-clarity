@@ -36,7 +36,7 @@ export default function (): void {
       });
 
       it('has a default trigger that can hide/show content', function (this: Context) {
-        const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+        const signpostToggle: HTMLElement = this.testElement.querySelector('.signpost-action');
         let signpostContent: HTMLElement;
 
         // Test we have a trigger
@@ -45,20 +45,20 @@ export default function (): void {
         // // Test that content shows
         signpostToggle.click();
         this.detectChanges();
-        signpostContent = this.hostElement.querySelector('.signpost-content');
+        signpostContent = this.testElement.querySelector('.signpost-content');
         expect(signpostContent).not.toBeNull();
         expect(this.toggleService.open).toBe(true);
 
         // Test that content hides again
         signpostToggle.click();
         this.detectChanges();
-        signpostContent = this.hostElement.querySelector('.signpost-content');
+        signpostContent = this.testElement.querySelector('.signpost-content');
         expect(signpostContent).toBeNull();
         expect(this.toggleService.open).toBe(false);
       });
 
       it('has a default aria-label on the default trigger', function (this: Context) {
-        const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+        const signpostToggle: HTMLElement = this.testElement.querySelector('.signpost-action');
 
         expect(signpostToggle.getAttribute('aria-label')).toEqual('Signpost Toggle');
       });
@@ -66,7 +66,7 @@ export default function (): void {
       it('allows a custom aria-label for the default trigger', function (this: Context) {
         this.fixture.componentInstance.signpost.signpostTriggerAriaLabel = 'custom label';
         this.detectChanges();
-        const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+        const signpostToggle: HTMLElement = this.testElement.querySelector('.signpost-action');
 
         expect(signpostToggle.getAttribute('aria-label')).toBe('custom label');
       });
@@ -80,7 +80,7 @@ export default function (): void {
       });
 
       it('should not get focus on trigger initially', function (this: Context) {
-        const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+        const signpostToggle: HTMLElement = this.testElement.querySelector('.signpost-action');
         this.toggleService.open = false;
         this.detectChanges();
         expect(signpostToggle).not.toBeNull();
@@ -91,55 +91,55 @@ export default function (): void {
         this.toggleService.open = true;
         await delay();
         this.detectChanges();
-        expect(this.hostElement.querySelector('.signpost-content')).not.toBeNull();
+        expect(this.testElement.querySelector('.signpost-content')).not.toBeNull();
 
         // dynamic click doesn't set the focus so here manually focusing first
-        this.hostComponent.outsideClickBtn.nativeElement.focus();
-        this.hostComponent.outsideClickBtn.nativeElement.click();
+        this.testComponent.outsideClickBtn.nativeElement.focus();
+        this.testComponent.outsideClickBtn.nativeElement.click();
         this.detectChanges();
 
-        expect(this.hostElement.querySelector('.signpost-content')).toBeNull();
-        expectActiveElementToBe(this.hostComponent.outsideClickBtn.nativeElement);
+        expect(this.testElement.querySelector('.signpost-content')).toBeNull();
+        expectActiveElementToBe(this.testComponent.outsideClickBtn.nativeElement);
       });
 
       it('should get focus back on trigger if signpost gets closed with outside click on non-interactive element', async function (this: Context) {
         this.toggleService.open = true;
         await delay();
         this.detectChanges();
-        expect(this.hostElement.querySelector('.signpost-content')).not.toBeNull();
+        expect(this.testElement.querySelector('.signpost-content')).not.toBeNull();
 
         document.body.click();
         this.detectChanges();
 
-        expect(this.hostElement.querySelector('.signpost-content')).toBeNull();
-        expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
+        expect(this.testElement.querySelector('.signpost-content')).toBeNull();
+        expectActiveElementToBe(this.testElement.querySelector('.signpost-action'));
       });
 
       it('should get focus back on trigger if signpost gets closed while focused element inside content', function (this: Context) {
         this.toggleService.open = true;
         this.detectChanges();
 
-        const dummyButton: HTMLElement = this.hostElement.querySelector('.dummy-button');
+        const dummyButton: HTMLElement = this.testElement.querySelector('.dummy-button');
         dummyButton.focus();
 
         this.toggleService.open = false;
         this.detectChanges();
 
-        expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
+        expectActiveElementToBe(this.testElement.querySelector('.signpost-action'));
       });
 
       it('should get focus back on trigger if signpost gets closed with ESC key', function (this: Context) {
         this.toggleService.open = true;
         this.detectChanges();
-        expect(this.hostElement.querySelector('.signpost-content')).not.toBeNull();
+        expect(this.testElement.querySelector('.signpost-content')).not.toBeNull();
 
         const event: KeyboardEvent = new KeyboardEvent('keydown', { key: 'Escape' });
 
         document.dispatchEvent(event);
         this.detectChanges();
 
-        expect(this.hostElement.querySelector('.signpost-content')).toBeNull();
-        expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
+        expect(this.testElement.querySelector('.signpost-content')).toBeNull();
+        expectActiveElementToBe(this.testElement.querySelector('.signpost-action'));
       });
     });
 
@@ -154,7 +154,7 @@ export default function (): void {
        * This test assumes that if
        */
       it('does not display the default trigger', function (this: Context) {
-        const triggerIcon: HTMLElement = this.hostElement.querySelector('cds-icon');
+        const triggerIcon: HTMLElement = this.testElement.querySelector('cds-icon');
 
         /**********
          * If there is a cds-icon we are testing that it is not the same shape
@@ -166,7 +166,7 @@ export default function (): void {
       });
 
       it('projects a custom trigger element to hide/show content', function (this: Context) {
-        const signpostTrigger: HTMLElement = this.hostElement.querySelector('.signpost-action');
+        const signpostTrigger: HTMLElement = this.testElement.querySelector('.signpost-action');
         let signpostContent: HTMLElement;
 
         expect(signpostTrigger.textContent.trim()).toBe('Custom trigger');
@@ -177,14 +177,14 @@ export default function (): void {
         // Test it shows after changes
         signpostTrigger.click();
         this.detectChanges();
-        signpostContent = this.hostElement.querySelector('.signpost-content');
+        signpostContent = this.testElement.querySelector('.signpost-content');
         expect(signpostContent).not.toBeNull();
         expect(this.toggleService.open).toBe(true);
 
         // Test it hide when clicked again
         signpostTrigger.click();
         this.detectChanges();
-        signpostContent = this.hostElement.querySelector('.signpost-content');
+        signpostContent = this.testElement.querySelector('.signpost-content');
         expect(signpostContent).toBeNull();
         expect(this.toggleService.open).toBe(false);
       });
@@ -216,7 +216,7 @@ export default function (): void {
 
       beforeEach(function (this: Context) {
         this.signpostIdService = this.getClarityProvider(SignpostIdService);
-        this.triggerButton = this.hostElement.querySelector('.signpost-action');
+        this.triggerButton = this.testElement.querySelector('.signpost-action');
       });
 
       it('are correct when content is opened', function (this: Context) {

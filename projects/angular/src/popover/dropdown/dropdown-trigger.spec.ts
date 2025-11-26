@@ -39,7 +39,7 @@ export default function (): void {
     });
 
     it('adds the aria-expanded attribute to the host', function (this: Context) {
-      const toggleService = this.getProvider(ClrPopoverToggleService);
+      const toggleService = this.getClarityProvider(ClrPopoverToggleService);
       toggleService.open = false;
       this.detectChanges();
       expect(this.clarityElement.getAttribute('aria-expanded')).toBe('false');

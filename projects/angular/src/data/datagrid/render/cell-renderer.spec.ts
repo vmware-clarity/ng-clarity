@@ -6,14 +6,14 @@
  */
 
 import { Component } from '@angular/core';
+import { TestContext } from '@clr/angular/testing';
 
-import { DatagridColumnChanges } from '../enums/column-changes.enum';
-import { DatagridRenderStep } from '../enums/render-step.enum';
-import { TestContext } from '../helpers.spec';
 import { DatagridCellRenderer } from './cell-renderer';
 import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { MOCK_ORGANIZER_PROVIDER, MockDatagridRenderOrganizer } from './render-organizer.mock';
+import { DatagridColumnChanges } from '../enums/column-changes.enum';
+import { DatagridRenderStep } from '../enums/render-step.enum';
 
 @Component({
   template: `<clr-dg-cell>Hello world</clr-dg-cell>`,

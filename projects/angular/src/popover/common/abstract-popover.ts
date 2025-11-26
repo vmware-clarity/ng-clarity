@@ -22,7 +22,7 @@ import { startWith } from 'rxjs/operators';
 
 import { PopoverOptions } from './interfaces/popover-options.interface';
 import { Point, Popover } from './popover';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 /**
  * Fallback to hide when *clrIfOpen is not being used

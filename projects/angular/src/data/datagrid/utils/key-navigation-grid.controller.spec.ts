@@ -7,10 +7,9 @@
 
 import { Component } from '@angular/core';
 import { Keys } from '@clr/angular/src/utils';
-import { expectActiveElementToBe } from '@clr/angular/testing';
+import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagrid } from '../datagrid';
-import { TestContext } from '../helpers.spec';
 import { Selection } from '../providers/selection';
 
 @Component({

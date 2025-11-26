@@ -27,7 +27,7 @@ export default function (): void {
         beforeEach(async function () {
           context = this.create(ClrWizard, UnopenedWizardTestComponent);
           wizard = context.clarityDirective;
-          component = context.hostComponent;
+          component = context.testComponent;
           context.detectChanges();
 
           await context.fixture.whenStable();
@@ -250,115 +250,115 @@ export default function (): void {
       describe('Current page onchange', () => {
         it('should emit pageOnLoad when wizard is created', () => {
           context.detectChanges();
-          expect(context.hostComponent._firstPageLoaded).toBe(1, 'only once when created');
+          expect(context.testComponent._firstPageLoaded).toBe(1, 'only once when created');
         });
 
         it('should emit page on load when navigating', () => {
           wizard.next();
           wizard.next();
-          expect(context.hostComponent._pagesLoaded).toBe(1);
+          expect(context.testComponent._pagesLoaded).toBe(1);
         });
 
         it('should notify clrWizardCurrentPageChanged output', () => {
-          expect(context.hostComponent._currentPageChanged).toBe(1, 'only initial load');
+          expect(context.testComponent._currentPageChanged).toBe(1, 'only initial load');
           wizard.next();
-          expect(context.hostComponent._currentPageChanged).toBe(2, 'increases with move forward');
+          expect(context.testComponent._currentPageChanged).toBe(2, 'increases with move forward');
           wizard.next();
-          expect(context.hostComponent._currentPageChanged).toBe(3, 'increases with move forward');
+          expect(context.testComponent._currentPageChanged).toBe(3, 'increases with move forward');
           wizard.previous();
-          expect(context.hostComponent._currentPageChanged).toBe(4, 'increases with move backward');
+          expect(context.testComponent._currentPageChanged).toBe(4, 'increases with move backward');
         });
 
         it('should notify clrWizardOnNext output', () => {
-          expect(context.hostComponent._movedForward).toBe(0, 'initial load');
+          expect(context.testComponent._movedForward).toBe(0, 'initial load');
           // need to do event emissions here, so passing false
           wizard.next(false);
-          expect(context.hostComponent._movedForward).toBe(1, 'increases with move forward');
+          expect(context.testComponent._movedForward).toBe(1, 'increases with move forward');
           // need to do event emissions here, so passing false
           wizard.next(false);
-          expect(context.hostComponent._movedForward).toBe(2, 'increases with move forward');
+          expect(context.testComponent._movedForward).toBe(2, 'increases with move forward');
           wizard.previous();
-          expect(context.hostComponent._movedForward).toBe(2, 'stays put with move backward');
+          expect(context.testComponent._movedForward).toBe(2, 'stays put with move backward');
         });
 
         it('should notify clrWizardOnPrevious output', () => {
-          expect(context.hostComponent._movedBackward).toBe(0, 'initial load');
+          expect(context.testComponent._movedBackward).toBe(0, 'initial load');
           wizard.next();
-          expect(context.hostComponent._movedBackward).toBe(0, 'stays put with move forward');
+          expect(context.testComponent._movedBackward).toBe(0, 'stays put with move forward');
           wizard.next();
-          expect(context.hostComponent._movedBackward).toBe(0, 'stays put with move forward');
+          expect(context.testComponent._movedBackward).toBe(0, 'stays put with move forward');
           wizard.previous();
-          expect(context.hostComponent._movedBackward).toBe(1, 'increases with move backward');
+          expect(context.testComponent._movedBackward).toBe(1, 'increases with move backward');
           wizard.previous();
-          expect(context.hostComponent._movedBackward).toBe(2, 'increases with move backward');
+          expect(context.testComponent._movedBackward).toBe(2, 'increases with move backward');
         });
       });
 
       describe('Projection', () => {
         it('wizard title is projected', () => {
-          let val = context.hostElement.querySelector('.clr-wizard-title').textContent.trim();
-          expect(val).toBe(context.hostComponent.projectedTitle, 'projects as expected');
-          context.hostComponent.projectedTitle = 'OHAI';
+          let val = context.testElement.querySelector('.clr-wizard-title').textContent.trim();
+          expect(val).toBe(context.testComponent.projectedTitle, 'projects as expected');
+          context.testComponent.projectedTitle = 'OHAI';
           context.detectChanges();
-          val = context.hostElement.querySelector('.clr-wizard-title').textContent.trim();
+          val = context.testElement.querySelector('.clr-wizard-title').textContent.trim();
           expect(val).toBe('OHAI', 'updates as expected');
         });
 
         it('wizard title has default heading level', () => {
-          const wizardTitleElement = context.hostElement.querySelector('.clr-wizard-title');
+          const wizardTitleElement = context.testElement.querySelector('.clr-wizard-title');
           expect(wizardTitleElement.getAttribute('role')).toBe('heading');
           expect(wizardTitleElement.getAttribute('aria-level')).toBe('1');
         });
 
         it('wizard title has customizable heading level', () => {
-          context.hostComponent.titleHeadingLevel = 2;
+          context.testComponent.titleHeadingLevel = 2;
           context.detectChanges();
 
-          const wizardTitleElement = context.hostElement.querySelector('.clr-wizard-title');
+          const wizardTitleElement = context.testElement.querySelector('.clr-wizard-title');
           expect(wizardTitleElement.getAttribute('role')).toBe('heading');
           expect(wizardTitleElement.getAttribute('aria-level')).toBe('2');
         });
 
         it('wizard page title has default heading level', () => {
-          const pageTitleElement = context.hostElement.querySelector('.modal-title');
+          const pageTitleElement = context.testElement.querySelector('.modal-title');
           expect(pageTitleElement.getAttribute('role')).toBe('heading');
           expect(pageTitleElement.getAttribute('aria-level')).toBe('2');
         });
 
         it('wizard page title has customizable heading level', () => {
-          context.hostComponent.pageTitleHeadingLevel = 3;
+          context.testComponent.pageTitleHeadingLevel = 3;
           context.detectChanges();
 
-          const pageTitleElement = context.hostElement.querySelector('.modal-title');
+          const pageTitleElement = context.testElement.querySelector('.modal-title');
           expect(pageTitleElement.getAttribute('role')).toBe('heading');
           expect(pageTitleElement.getAttribute('aria-level')).toBe('3');
         });
 
         it('stepnav is present', () => {
-          const val = context.hostElement.querySelector('.clr-wizard-stepnav');
+          const val = context.testElement.querySelector('.clr-wizard-stepnav');
           expect(val).toBeTruthy();
         });
 
         it('content title should reflect current page and changes with it', () => {
-          let val = context.hostElement.querySelector('.modal-title-text').textContent.trim();
+          let val = context.testElement.querySelector('.modal-title-text').textContent.trim();
           expect(val).toBe('Longer Title for Page 1', 'inits as expected');
 
           wizard.next();
           context.detectChanges();
 
-          val = context.hostElement.querySelector('.modal-title-text').textContent.trim();
-          expect(val).toBe(context.hostComponent.projectedPageTitle, 'projects as expected');
+          val = context.testElement.querySelector('.modal-title-text').textContent.trim();
+          expect(val).toBe(context.testComponent.projectedPageTitle, 'projects as expected');
 
-          context.hostComponent.projectedPageTitle = 'OHAI';
+          context.testComponent.projectedPageTitle = 'OHAI';
           context.detectChanges();
 
-          val = context.hostElement.querySelector('.modal-title-text').textContent.trim();
+          val = context.testElement.querySelector('.modal-title-text').textContent.trim();
           expect(val).toBe('OHAI', 'updates as expected');
         });
 
         describe('Content', () => {
           it('content shows up', () => {
-            const val = context.hostElement.querySelector('.clr-wizard-page.active').textContent.trim();
+            const val = context.testElement.querySelector('.clr-wizard-page.active').textContent.trim();
             expect(val).toBe('Content for step 1');
           });
 
@@ -369,13 +369,13 @@ export default function (): void {
             context.detectChanges();
 
             // page 3 has projected content
-            val = context.hostElement.querySelector('.clr-wizard-page.active').textContent.trim();
-            expect(val).toBe(context.hostComponent.projectedContent, 'projects as expected');
+            val = context.testElement.querySelector('.clr-wizard-page.active').textContent.trim();
+            expect(val).toBe(context.testComponent.projectedContent, 'projects as expected');
 
-            context.hostComponent.projectedContent = 'OHAI';
+            context.testComponent.projectedContent = 'OHAI';
             context.detectChanges();
 
-            val = context.hostElement.querySelector('.clr-wizard-page.active').textContent.trim();
+            val = context.testElement.querySelector('.clr-wizard-page.active').textContent.trim();
             expect(val).toBe('OHAI', 'updates as expected');
           });
 
@@ -385,24 +385,24 @@ export default function (): void {
             wizard.next();
             context.detectChanges();
 
-            val = context.hostElement.querySelector('.clr-wizard-page.active').textContent.trim();
-            expect(val).toBe(context.hostComponent.lazyLoadContent, 'projects as expected');
+            val = context.testElement.querySelector('.clr-wizard-page.active').textContent.trim();
+            expect(val).toBe(context.testComponent.lazyLoadContent, 'projects as expected');
 
-            context.hostComponent.doLazyLoad();
+            context.testComponent.doLazyLoad();
             await delay();
             context.detectChanges();
 
-            val = context.hostElement.querySelector('.clr-wizard-page.active').textContent.trim();
+            val = context.testElement.querySelector('.clr-wizard-page.active').textContent.trim();
             expect(val).toBe('Content loaded!', 'updates as expected');
           });
         });
 
         describe('Buttons', () => {
           it('buttons show up', () => {
-            const cancel = context.hostElement.querySelector('.clr-wizard-btn--tertiary');
-            const previous = context.hostElement.querySelector('.clr-wizard-btn--secondary');
-            const next = context.hostElement.querySelector('.clr-wizard-btn--primary:not(.disabled)');
-            const finish = context.hostElement.querySelector('.clr-wizard-btn--primary.disabled');
+            const cancel = context.testElement.querySelector('.clr-wizard-btn--tertiary');
+            const previous = context.testElement.querySelector('.clr-wizard-btn--secondary');
+            const next = context.testElement.querySelector('.clr-wizard-btn--primary:not(.disabled)');
+            const finish = context.testElement.querySelector('.clr-wizard-btn--primary.disabled');
 
             expect(cancel).toBeTruthy();
             expect(previous).toBeTruthy();
@@ -411,13 +411,13 @@ export default function (): void {
           });
 
           it('previous button is hidden on first page', () => {
-            const previous = context.hostElement.querySelector('.clr-wizard-btn--secondary');
+            const previous = context.testElement.querySelector('.clr-wizard-btn--secondary');
             const val = previous.parentElement.attributes['aria-hidden'].value;
             expect(val).toBe('true');
           });
 
           it('next button is visible on every page except the last page', () => {
-            const next = context.hostElement.querySelector('.clr-wizard-btn--primary:not(.disabled)');
+            const next = context.testElement.querySelector('.clr-wizard-btn--primary:not(.disabled)');
             let val = next.parentElement.attributes['aria-hidden'].value;
             expect(val).toBe('false');
 
@@ -429,7 +429,7 @@ export default function (): void {
           });
 
           it('finish button is hidden on every page except the last one', () => {
-            const finish = context.hostElement.querySelector('.clr-wizard-btn--primary.disabled');
+            const finish = context.testElement.querySelector('.clr-wizard-btn--primary.disabled');
             let val = finish.parentElement.attributes['aria-hidden'].value;
             expect(val).toBe('true');
 
@@ -441,11 +441,11 @@ export default function (): void {
           });
 
           it('button text is projected as expected', () => {
-            const previous = context.hostElement.querySelector('.clr-wizard-btn--secondary');
+            const previous = context.testElement.querySelector('.clr-wizard-btn--secondary');
             let val = previous.textContent.trim();
-            expect(val).toBe(context.hostComponent.projectedButton, 'projects as expected');
+            expect(val).toBe(context.testComponent.projectedButton, 'projects as expected');
 
-            context.hostComponent.projectedButton = 'OHAI';
+            context.testComponent.projectedButton = 'OHAI';
             context.detectChanges();
 
             val = previous.textContent.trim();
@@ -456,19 +456,19 @@ export default function (): void {
             wizard.pageCollection.lastPage.makeCurrent();
             context.detectChanges();
 
-            const cancel = context.hostElement.querySelector('.clr-wizard-btn--tertiary');
-            const previous = context.hostElement.querySelector('.clr-wizard-btn--secondary');
-            const next = context.hostElement.querySelector('.clr-wizard-btn--primary.disabled');
-            const finish = context.hostElement.querySelector('.clr-wizard-btn--primary:not(.disabled)');
+            const cancel = context.testElement.querySelector('.clr-wizard-btn--tertiary');
+            const previous = context.testElement.querySelector('.clr-wizard-btn--secondary');
+            const next = context.testElement.querySelector('.clr-wizard-btn--primary.disabled');
+            const finish = context.testElement.querySelector('.clr-wizard-btn--primary:not(.disabled)');
 
             // custom buttons can omit expected buttons if they want
             expect(cancel).toBeNull();
             expect(previous).toBeNull();
             expect(next).toBeNull();
             expect(finish).toBeTruthy();
-            expect(finish.textContent.trim()).toBe(context.hostComponent.projectedCustomButton);
+            expect(finish.textContent.trim()).toBe(context.testComponent.projectedCustomButton);
 
-            context.hostComponent.projectedCustomButton = 'Ohai';
+            context.testComponent.projectedCustomButton = 'Ohai';
             context.detectChanges();
             expect(finish.textContent.trim()).toBe('Ohai');
           });
@@ -477,48 +477,48 @@ export default function (): void {
 
       describe('Misc Observables', () => {
         it('clrWizardOnCancel output is fired when cancel button is clicked', () => {
-          const cancel: HTMLElement = context.hostElement.querySelector('.clr-wizard-btn--tertiary');
+          const cancel: HTMLElement = context.testElement.querySelector('.clr-wizard-btn--tertiary');
 
-          expect(context.hostComponent._cancelled).toBe(0, 'verify initial state');
+          expect(context.testComponent._cancelled).toBe(0, 'verify initial state');
           cancel.click();
           context.detectChanges();
-          expect(context.hostComponent._cancelled).toBe(1, 'cancel button worked');
+          expect(context.testComponent._cancelled).toBe(1, 'cancel button worked');
         });
 
         it('clrWizardOnCancel output is fired when close X is clicked', () => {
-          const closeBtn: HTMLElement = context.hostElement.querySelector('button.close');
-          expect(context.hostComponent._cancelled).toBe(0, 'verify initial state');
+          const closeBtn: HTMLElement = context.testElement.querySelector('button.close');
+          expect(context.testComponent._cancelled).toBe(0, 'verify initial state');
 
           closeBtn.click();
           context.detectChanges();
-          expect(context.hostComponent._cancelled).toBe(1, 'close X worked');
+          expect(context.testComponent._cancelled).toBe(1, 'close X worked');
         });
 
         it('clrWizardOnCancel output is not fired when wizard is closed by finish button', () => {
-          expect(context.hostComponent._cancelled).toBe(0, 'verify initial state');
+          expect(context.testComponent._cancelled).toBe(0, 'verify initial state');
 
           wizard.pageCollection.lastPage.makeCurrent();
           context.detectChanges();
-          const finish = context.hostElement.querySelector('.clr-wizard-btn--primary:not(.disabled)') as HTMLElement;
+          const finish = context.testElement.querySelector('.clr-wizard-btn--primary:not(.disabled)') as HTMLElement;
           finish.click();
           context.detectChanges();
 
           // also validates that custom button worked...
-          expect(context.hostComponent._cancelled).toBe(0, 'finish button did not fire cancel');
+          expect(context.testComponent._cancelled).toBe(0, 'finish button did not fire cancel');
           expect(wizard._open).toBe(false, 'custom finish closed the wizard');
         });
 
         it('clrWizardOnFinish output is fired', () => {
-          expect(context.hostComponent._finished).toBe(0, 'verify initial state');
+          expect(context.testComponent._finished).toBe(0, 'verify initial state');
 
           wizard.pageCollection.lastPage.makeCurrent();
           context.detectChanges();
-          const finish = context.hostElement.querySelector('.clr-wizard-btn--primary:not(.disabled)') as HTMLElement;
+          const finish = context.testElement.querySelector('.clr-wizard-btn--primary:not(.disabled)') as HTMLElement;
           finish.click();
           context.detectChanges();
 
           // also validates that custom button worked...
-          expect(context.hostComponent._finished).toBe(1, 'finish button fired event');
+          expect(context.testComponent._finished).toBe(1, 'finish button fired event');
         });
       });
 
@@ -537,7 +537,7 @@ export default function (): void {
           const origPageCount = wizard.pageCollection.pagesCount + 0;
 
           expect(expected).toBe(true, 'inits as the same');
-          context.hostComponent.showExtraPage = true;
+          context.testComponent.showExtraPage = true;
           context.detectChanges();
 
           expected = wizpages === pagecollection;
@@ -608,9 +608,9 @@ export default function (): void {
 
       describe('Sizing', () => {
         it('can be set and updates via the clrWizardSize input', () => {
-          const wizardModal = context.hostElement.querySelector('.modal-dialog');
-          expect(context.hostComponent.mySize).toBeUndefined();
-          context.hostComponent.mySize = 'lg';
+          const wizardModal = context.testElement.querySelector('.modal-dialog');
+          expect(context.testComponent.mySize).toBeUndefined();
+          context.testComponent.mySize = 'lg';
           context.detectChanges();
           expect(wizard.size).toBe('lg');
           expect(wizardModal.classList.contains('modal-lg')).toBeTrue();
@@ -621,28 +621,28 @@ export default function (): void {
         it('emits clrWizardOpenChange output', () => {
           wizard.close();
           context.detectChanges();
-          context.hostComponent._openChange = 0;
-          expect(context.hostComponent._openChange).toBe(0, 'make sure we have reset');
+          context.testComponent._openChange = 0;
+          expect(context.testComponent._openChange).toBe(0, 'make sure we have reset');
           wizard.open();
           context.detectChanges();
-          expect(context.hostComponent._openChange).toBe(1, 'make sure we have reset');
+          expect(context.testComponent._openChange).toBe(1, 'make sure we have reset');
         });
       });
 
       describe('Closing', () => {
         it('emits clrWizardOpenChange output', () => {
-          context.hostComponent._openChange = 0;
-          expect(context.hostComponent._openChange).toBe(0, 'make sure we have reset');
+          context.testComponent._openChange = 0;
+          expect(context.testComponent._openChange).toBe(0, 'make sure we have reset');
           wizard.close();
           context.detectChanges();
-          expect(context.hostComponent._openChange).toBe(1, 'make sure we have reset');
+          expect(context.testComponent._openChange).toBe(1, 'make sure we have reset');
         });
       });
 
       describe('Alt Cancel Override', () => {
         it('clrWizardPreventDefaultCancel input sets and updates stopCancel', () => {
-          expect(wizard.stopCancel).toBe(context.hostComponent.stopCancel);
-          context.hostComponent.stopCancel = true;
+          expect(wizard.stopCancel).toBe(context.testComponent.stopCancel);
+          context.testComponent.stopCancel = true;
           context.detectChanges();
           expect(wizard.stopCancel).toBe(true);
         });
@@ -650,9 +650,9 @@ export default function (): void {
 
       describe('Aria-label', () => {
         it('clrWizardStepnavAriaLabel input sets and updates aria-label for the stepnav', () => {
-          const stepnav = context.hostElement.querySelector('.clr-wizard-stepnav nav');
+          const stepnav = context.testElement.querySelector('.clr-wizard-stepnav nav');
           expect(stepnav.getAttribute('aria-label')).toBe('Label for stepnav');
-          context.hostComponent.stepnavAriaLabel = 'Updated step navigation label';
+          context.testComponent.stepnavAriaLabel = 'Updated step navigation label';
           context.detectChanges();
           expect(stepnav.getAttribute('aria-label')).toBe('Updated step navigation label');
         });
@@ -685,23 +685,23 @@ export default function (): void {
 
         expect(wizard.pageCollection.pagesCount).toBe(3);
 
-        checkme = context.hostElement.querySelector('#clr-wizard-page-1');
+        checkme = context.testElement.querySelector('#clr-wizard-page-1');
         expect(checkme.textContent.trim()).toBe('Content for page 1', 'page 1 content ok');
 
-        checkme = context.hostElement.querySelector('#clr-wizard-page-2');
+        checkme = context.testElement.querySelector('#clr-wizard-page-2');
         expect(checkme.textContent.trim()).toBe('Content for page 2', 'page 2 content ok');
 
-        checkme = context.hostElement.querySelector('#clr-wizard-page-4');
+        checkme = context.testElement.querySelector('#clr-wizard-page-4');
         expect(checkme.textContent.trim()).toBe('Content for page 4', 'page 4 content ok');
 
         // NOW THE STEPNAV
-        checkme = context.hostElement.querySelector('#clr-wizard-step-1 .clr-wizard-stepnav-link-title');
+        checkme = context.testElement.querySelector('#clr-wizard-step-1 .clr-wizard-stepnav-link-title');
         expect(checkme.textContent.trim()).toBe('Page 1', 'step 1 ok');
 
-        checkme = context.hostElement.querySelector('#clr-wizard-step-2 .clr-wizard-stepnav-link-title');
+        checkme = context.testElement.querySelector('#clr-wizard-step-2 .clr-wizard-stepnav-link-title');
         expect(checkme.textContent.trim()).toBe('Page 2', 'step 2 ok');
 
-        checkme = context.hostElement.querySelector('#clr-wizard-step-4 .clr-wizard-stepnav-link-title');
+        checkme = context.testElement.querySelector('#clr-wizard-step-4 .clr-wizard-stepnav-link-title');
         expect(checkme.textContent.trim()).toBe('Page 4', 'step 4 ok');
       });
 
@@ -710,70 +710,70 @@ export default function (): void {
         expect(wizard.pageCollection.pagesCount).toBe(3);
 
         // adding an element to my array
-        context.hostComponent.pages.splice(2, 0, 3);
+        context.testComponent.pages.splice(2, 0, 3);
         context.detectChanges();
 
         expect(wizard.pageCollection.pagesCount).toBe(4);
-        checkme = context.hostElement.querySelector('#clr-wizard-page-1');
+        checkme = context.testElement.querySelector('#clr-wizard-page-1');
         expect(checkme.textContent.trim()).toBe('Content for page 1', 'page 1 content ok');
 
-        checkme = context.hostElement.querySelector('#clr-wizard-page-2');
+        checkme = context.testElement.querySelector('#clr-wizard-page-2');
         expect(checkme.textContent.trim()).toBe('Content for page 2', 'page 2 content ok');
 
-        checkme = context.hostElement.querySelector('#clr-wizard-page-3');
+        checkme = context.testElement.querySelector('#clr-wizard-page-3');
         expect(checkme.textContent.trim()).toBe('Content for page 3', 'page 3 content ok');
 
-        checkme = context.hostElement.querySelector('#clr-wizard-page-4');
+        checkme = context.testElement.querySelector('#clr-wizard-page-4');
         expect(checkme.textContent.trim()).toBe('Content for page 4', 'page 4 content ok');
 
         // NOW THE STEPNAV
-        checkme = context.hostElement.querySelector('#clr-wizard-step-1 .clr-wizard-stepnav-link-title');
+        checkme = context.testElement.querySelector('#clr-wizard-step-1 .clr-wizard-stepnav-link-title');
         expect(checkme.textContent.trim()).toBe('Page 1', 'step 1 ok');
 
-        checkme = context.hostElement.querySelector('#clr-wizard-step-2 .clr-wizard-stepnav-link-title');
+        checkme = context.testElement.querySelector('#clr-wizard-step-2 .clr-wizard-stepnav-link-title');
         expect(checkme.textContent.trim()).toBe('Page 2', 'step 2 ok');
 
-        checkme = context.hostElement.querySelector('#clr-wizard-step-3 .clr-wizard-stepnav-link-title');
+        checkme = context.testElement.querySelector('#clr-wizard-step-3 .clr-wizard-stepnav-link-title');
         expect(checkme.textContent.trim()).toBe('Page 3', 'step 3 ok');
 
-        checkme = context.hostElement.querySelector('#clr-wizard-step-4 .clr-wizard-stepnav-link-title');
+        checkme = context.testElement.querySelector('#clr-wizard-step-4 .clr-wizard-stepnav-link-title');
         expect(checkme.textContent.trim()).toBe('Page 4', 'step 4 ok');
 
         // dynamically hiding a page
-        context.hostComponent.showSecondPage = false;
+        context.testComponent.showSecondPage = false;
         context.detectChanges();
 
         expect(wizard.pageCollection.pagesCount).toBe(3);
-        checkme = context.hostElement.querySelector('#clr-wizard-page-1');
+        checkme = context.testElement.querySelector('#clr-wizard-page-1');
         expect(checkme.textContent.trim()).toBe('Content for page 1', 'page 1 content ok');
 
-        checkme = context.hostElement.querySelector('#clr-wizard-page-2');
+        checkme = context.testElement.querySelector('#clr-wizard-page-2');
         expect(checkme).toBeNull();
 
-        checkme = context.hostElement.querySelector('#clr-wizard-page-3');
+        checkme = context.testElement.querySelector('#clr-wizard-page-3');
         expect(checkme.textContent.trim()).toBe('Content for page 3', 'page 3 content ok');
 
-        checkme = context.hostElement.querySelector('#clr-wizard-page-4');
+        checkme = context.testElement.querySelector('#clr-wizard-page-4');
         expect(checkme.textContent.trim()).toBe('Content for page 4', 'page 4 content ok');
 
         // NOW THE STEPNAV
-        checkme = context.hostElement.querySelector('#clr-wizard-step-1 .clr-wizard-stepnav-link-title');
+        checkme = context.testElement.querySelector('#clr-wizard-step-1 .clr-wizard-stepnav-link-title');
         expect(checkme.textContent.trim()).toBe('Page 1', 'step 1 ok');
 
-        checkme = context.hostElement.querySelector('#clr-wizard-step-2 .clr-wizard-stepnav-link-title');
+        checkme = context.testElement.querySelector('#clr-wizard-step-2 .clr-wizard-stepnav-link-title');
         expect(checkme).toBeNull();
 
-        checkme = context.hostElement.querySelector('#clr-wizard-step-3 .clr-wizard-stepnav-link-title');
+        checkme = context.testElement.querySelector('#clr-wizard-step-3 .clr-wizard-stepnav-link-title');
         expect(checkme.textContent.trim()).toBe('Page 3', 'step 3 ok');
 
-        checkme = context.hostElement.querySelector('#clr-wizard-step-4 .clr-wizard-stepnav-link-title');
+        checkme = context.testElement.querySelector('#clr-wizard-step-4 .clr-wizard-stepnav-link-title');
         expect(checkme.textContent.trim()).toBe('Page 4', 'step 4 ok');
       });
 
       it('should survive if there are no pages', () => {
         expect(wizard.pageCollection.pagesCount).toBe(3);
         expect(function () {
-          context.hostComponent.pages = [];
+          context.testComponent.pages = [];
           context.detectChanges();
         }).not.toThrowError();
         expect(wizard.pageCollection.pagesCount).toBe(0);
@@ -796,7 +796,7 @@ export default function (): void {
         it('should be placed on the page title after page change', () => {
           wizard.pageCollection.lastPage.makeCurrent();
           context.detectChanges();
-          const titleString = context.hostElement.querySelector('.modal-title').textContent.trim();
+          const titleString = context.testElement.querySelector('.modal-title').textContent.trim();
           expect(document.activeElement.textContent.trim()).toBe(titleString);
         });
       });
@@ -818,7 +818,7 @@ export default function (): void {
         it('should be placed on the page title after page change', () => {
           wizard.pageCollection.lastPage.makeCurrent();
           context.detectChanges();
-          const modalWrapper = context.hostElement.querySelector('.modal-dialog');
+          const modalWrapper = context.testElement.querySelector('.modal-dialog');
           const wizardId = wizard.wizardId;
           expect(modalWrapper.getAttribute('aria-labelledby')).toBe(wizardId);
         });

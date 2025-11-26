@@ -8,10 +8,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ClrPopoverToggleService } from '@clr/angular/src/popover/common';
 import { commonStringsDefault } from '@clr/angular/src/utils';
-import { expectActiveElementToBe } from '@clr/angular/testing';
+import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
-import { TestContext } from './helpers.spec';
 import { RowActionService } from './providers/row-action-service';
 
 export default function (): void {

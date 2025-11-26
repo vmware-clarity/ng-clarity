@@ -26,8 +26,7 @@ import {
   ClrPopoverToggleService,
   PopoverPosition,
 } from '@clr/angular/src/popover/common';
-import { expectActiveElementToBe } from '@clr/angular/src/utils';
-import { TestContext } from '@clr/angular/testing';
+import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 
 import { ClrDateContainer } from './date-container';
 import { DayModel } from './model/day.model';

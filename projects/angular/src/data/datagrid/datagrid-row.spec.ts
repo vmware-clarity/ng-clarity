@@ -9,7 +9,7 @@ import { AnimationBuilder } from '@angular/animations';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoadingListener } from '@clr/angular/src/utils';
-import { delay } from '@clr/angular/testing';
+import { delay, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagrid } from './datagrid';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
@@ -17,7 +17,7 @@ import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridModule } from './datagrid.module';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType } from './enums/selection-type';
-import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 import { MockDisplayModeService } from './providers/display-mode.mock';
 import { DisplayModeService } from './providers/display-mode.service';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';

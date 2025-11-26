@@ -11,7 +11,8 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrModalModule } from '@clr/angular/src/modal';
 import { ClrPopoverToggleService } from '@clr/angular/src/popover/common';
-import { delay, expectActiveElementToBe, FocusableItem, FocusService } from '@clr/angular/src/utils';
+import { FocusableItem, FocusService } from '@clr/angular/src/utils';
+import { delay, expectActiveElementToBe } from '@clr/angular/testing';
 import { Subscription } from 'rxjs';
 
 import { ClrDropdown } from './dropdown';

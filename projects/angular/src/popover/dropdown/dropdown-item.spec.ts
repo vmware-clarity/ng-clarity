@@ -52,23 +52,23 @@ export default function (): void {
 
     it('adds the disabled class if set by input', function (this: Context) {
       expect(this.clarityElement.classList.contains('disabled')).toBe(false);
-      this.hostComponent.disabled = true;
+      this.testComponent.disabled = true;
       this.detectChanges();
       expect(this.clarityElement.classList.contains('disabled')).toBe(true);
     });
 
     it('sets aria-disabled to true if the FocusableItem is disabled', function (this: Context) {
       expect(this.clarityElement.getAttribute('aria-disabled')).toBe('false');
-      this.hostComponent.disabled = true;
+      this.testComponent.disabled = true;
       this.detectChanges();
       expect(this.clarityElement.getAttribute('aria-disabled')).toBe('true');
     });
 
     it('updates the disabled property of the FocusableItem', function (this: Context) {
-      this.hostComponent.disabled = true;
+      this.testComponent.disabled = true;
       this.detectChanges();
       expect(this.getClarityProvider(FocusableItem).disabled).toBe(true);
-      this.hostComponent.disabled = false;
+      this.testComponent.disabled = false;
       this.detectChanges();
       expect(this.getClarityProvider(FocusableItem).disabled).toBe(false);
     });

@@ -12,6 +12,8 @@
  * over the place because we load them asynchronously.
  */
 
+import { addHelpers } from '@clr/angular/testing';
+
 import DatagridPropertyComparatorSpecs from './built-in/comparators/datagrid-property-comparator.spec';
 import DatagridNumericFilterImplSpecs from './built-in/filters/datagrid-numeric-filter-impl.spec';
 import DatagridNumericFilterSpecs from './built-in/filters/datagrid-numeric-filter.spec';
@@ -40,7 +42,6 @@ import DatagridRowDetailSpecs from './datagrid-row-detail.spec';
 import DatagridRowSpecs from './datagrid-row.spec';
 import DatagridVirtualScrollSpec from './datagrid-virtual-scroll.directive.spec';
 import DatagridSpecs from './datagrid.spec';
-import { addHelpers } from './helpers.spec';
 import ColumnResizerServiceSpecs from './providers/column-resizer.service.spec';
 import DisplayModeServiceSpecs from './providers/display-mode.service.spec';
 import FiltersProviderSpecs from './providers/filters.spec';

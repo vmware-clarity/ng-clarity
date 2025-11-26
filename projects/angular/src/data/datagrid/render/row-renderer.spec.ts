@@ -7,13 +7,14 @@
 
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { TestContext } from '@clr/angular/testing';
 import { BehaviorSubject } from 'rxjs';
 
-import { DatagridCellRenderer } from './cell-renderer';
-import { STRICT_WIDTH_CLASS } from './constants';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridDisplayMode } from '../enums/display-mode.enum';
-import { DATAGRID_SPEC_PROVIDERS, TestContext } from '../helpers.spec';
+import { DATAGRID_SPEC_PROVIDERS } from '../helpers.spec';
+import { DatagridCellRenderer } from './cell-renderer';
+import { STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRowRenderer } from './row-renderer';
 import { ColumnState } from '../interfaces/column-state.interface';
 import { ColumnsService } from '../providers/columns.service';

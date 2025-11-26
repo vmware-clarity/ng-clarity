@@ -8,11 +8,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { TEMPLATE_REF_DIRECTIVES } from './index';
+import { TemplateRefContainer } from './template-ref-container';
 
 @NgModule({
   imports: [CommonModule],
-  declarations: [TEMPLATE_REF_DIRECTIVES],
-  exports: [TEMPLATE_REF_DIRECTIVES],
+  declarations: [TemplateRefContainer],
+  exports: [TemplateRefContainer],
 })
 export class ClrTemplateRefModule {}

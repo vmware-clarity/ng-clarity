@@ -18,7 +18,7 @@ export default function (): void {
   describe('ClrTimeline component', () => {
     describe('Template API', () => {
       let fixture: ComponentFixture<TestTimeline>;
-      let hostComponent: TestTimeline;
+      let testComponent: TestTimeline;
 
       let nativeElement: HTMLElement;
       let nativeComponent: ClrTimeline;
@@ -31,9 +31,9 @@ export default function (): void {
         fixture = TestBed.createComponent(TestTimeline);
         fixture.detectChanges();
 
-        hostComponent = fixture.componentInstance;
+        testComponent = fixture.componentInstance;
         nativeElement = fixture.nativeElement.querySelector('#timeline');
-        nativeComponent = hostComponent.timeline;
+        nativeComponent = testComponent.timeline;
       });
 
       it('should add host classes', () => {
@@ -41,13 +41,13 @@ export default function (): void {
       });
 
       it('has the right default layout', () => {
-        expect(hostComponent.noLayout.layout).toBe(ClrTimelineLayout.HORIZONTAL);
+        expect(testComponent.noLayout.layout).toBe(ClrTimelineLayout.HORIZONTAL);
       });
 
       it('accepts a [clrLayout] input', () => {
         expect(nativeComponent.layout).toBe(ClrTimelineLayout.HORIZONTAL);
 
-        hostComponent.layout = ClrTimelineLayout.VERTICAL;
+        testComponent.layout = ClrTimelineLayout.VERTICAL;
         fixture.detectChanges();
         expect(nativeComponent.layout).toBe(ClrTimelineLayout.VERTICAL);
       });
@@ -55,11 +55,11 @@ export default function (): void {
       it('renders correctly the layout', () => {
         expect(nativeElement.className).toContain('clr-timeline');
 
-        hostComponent.layout = ClrTimelineLayout.HORIZONTAL;
+        testComponent.layout = ClrTimelineLayout.HORIZONTAL;
         fixture.detectChanges();
         expect(nativeElement.className).not.toContain('clr-timeline-vertical');
 
-        hostComponent.layout = ClrTimelineLayout.VERTICAL;
+        testComponent.layout = ClrTimelineLayout.VERTICAL;
         fixture.detectChanges();
         expect(nativeElement.className).toContain('clr-timeline-vertical');
       });

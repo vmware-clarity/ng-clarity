@@ -78,11 +78,11 @@ export default function (): void {
       it('emits events when the open state changes', function (this: Context) {
         expect(this.fixture.componentInstance.openState).toBeUndefined(); // inital state
         this.clarityElement.click();
-        expect(this.hostComponent.openState).toEqual(this.toggleService.open);
-        expect(this.hostComponent.openState).toBe(true); // opened state
+        expect(this.testComponent.openState).toEqual(this.toggleService.open);
+        expect(this.testComponent.openState).toBe(true); // opened state
         this.clarityElement.click();
-        expect(this.hostComponent.openState).toEqual(this.toggleService.open);
-        expect(this.hostComponent.openState).toBe(false); // closed state
+        expect(this.testComponent.openState).toEqual(this.toggleService.open);
+        expect(this.testComponent.openState).toBe(false); // closed state
       });
 
       it('handles click events', function (this: Context) {

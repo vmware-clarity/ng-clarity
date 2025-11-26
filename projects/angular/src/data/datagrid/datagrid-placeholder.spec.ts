@@ -7,9 +7,9 @@
 
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridPlaceholder } from './datagrid-placeholder';
-import { TestContext } from './helpers.spec';
 import { FiltersProvider } from './providers/filters';
 import { Items } from './providers/items';
 import { Page } from './providers/page';

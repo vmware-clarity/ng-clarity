@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+export * from './if-open.directive';
 export * from './if-active.directive';
 export * from './if-active.service';
 export * from './if-expanded.directive';

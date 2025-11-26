@@ -12,7 +12,7 @@
  * over the place because we load them asynchronously.
  */
 
-import { addHelpers } from '@clr/angular/src/data/datagrid';
+import { addHelpers } from '@clr/angular/testing';
 
 import ComboboxContainerSpecs from './combobox-container.spec';
 import ComboboxOptionIntegrationSpecs from './combobox-with-option.integration.spec';
