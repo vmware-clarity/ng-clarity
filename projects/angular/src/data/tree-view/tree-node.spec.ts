@@ -222,7 +222,7 @@ export default function (): void {
       });
 
       it('offers a [(clrSelected)] two-way binding, but skips emitting output when setting input', function (this: Context) {
-        this.hostComponent.selected = ClrSelectedState.SELECTED;
+        this.testComponent.selected = ClrSelectedState.SELECTED;
         this.detectChanges();
         expect(this.clarityDirective.selected).toBe(ClrSelectedState.SELECTED);
         this.clarityDirective.selected = ClrSelectedState.UNSELECTED;
@@ -231,19 +231,19 @@ export default function (): void {
         // We don't want to emit the change in this case, or it can get confused.
         // Here we are expecting that the output has not emitted.
         // See https://github.com/vmware/clarity/issues/3073
-        expect<ClrSelectedState>(this.hostComponent.selected).toBe(ClrSelectedState.SELECTED);
+        expect<ClrSelectedState>(this.testComponent.selected).toBe(ClrSelectedState.SELECTED);
         // By setting the model here, we will emit the binding since it's not through the input
         this.clarityDirective._model.setSelected(ClrSelectedState.INDETERMINATE, true, true);
         this.detectChanges();
-        expect<ClrSelectedState>(this.hostComponent.selected).toBe(ClrSelectedState.INDETERMINATE);
+        expect<ClrSelectedState>(this.testComponent.selected).toBe(ClrSelectedState.INDETERMINATE);
       });
 
       it('offers a [(clrExpanded)] two-way binding', function (this: Context) {
-        this.hostComponent.expanded = true;
+        this.testComponent.expanded = true;
         this.detectChanges();
         expect(this.clarityDirective.expanded).toBeTrue();
         this.clarityDirective.expanded = false;
-        expect(this.hostComponent.expanded).toBeFalse();
+        expect(this.testComponent.expanded).toBeFalse();
       });
     });
 
@@ -271,7 +271,7 @@ export default function (): void {
 
       it('displays a caret when expandable', function (this: Context) {
         expect(this.clarityElement.querySelector('.clr-treenode-caret')).not.toBeNull();
-        this.hostComponent.withChild = false;
+        this.testComponent.withChild = false;
         this.detectChanges();
         expect(this.clarityElement.querySelector('.clr-treenode-caret')).toBeNull();
       });
@@ -346,7 +346,7 @@ export default function (): void {
         this.detectChanges();
         const childrenContainer = this.clarityElement.querySelector('.clr-treenode-children');
         expect(childrenContainer.getAttribute('role')).toBe('group');
-        this.hostComponent.withChild = false;
+        this.testComponent.withChild = false;
         this.detectChanges();
         expect(childrenContainer.getAttribute('role')).toBeNull();
       });
@@ -362,7 +362,7 @@ export default function (): void {
       let focusManager: TreeFocusManagerService<void>;
 
       beforeEach(function () {
-        focusManager = this.getProvider(TreeFocusManagerService);
+        focusManager = this.getClarityProvider(TreeFocusManagerService);
         contentContainer = this.clarityElement.querySelector('.clr-tree-node-content-container');
       });
 
@@ -415,14 +415,14 @@ export default function (): void {
       });
 
       it('focuses node content container if focus is requested', function (this: Context) {
-        this.getProvider<TreeFocusManagerService<void>>(TreeFocusManagerService).focusNode(
+        this.getClarityProvider<TreeFocusManagerService<void>>(TreeFocusManagerService).focusNode(
           this.clarityDirective._model
         );
         expectActiveElementToBe(contentContainer);
       });
 
       it('assigns tabindex of 0 to content container if focus is requested', function (this: Context) {
-        this.getProvider<TreeFocusManagerService<void>>(TreeFocusManagerService).focusNode(
+        this.getClarityProvider<TreeFocusManagerService<void>>(TreeFocusManagerService).focusNode(
           this.clarityDirective._model
         );
         this.detectChanges();
@@ -433,7 +433,7 @@ export default function (): void {
       it('assigns tabindex of -1 to content container if focus is requested on another node', function (this: Context) {
         // the child node model requests focus here
         const anotherNodeModel = this.clarityDirective._model.children[0];
-        this.getProvider<TreeFocusManagerService<void>>(TreeFocusManagerService).focusNode(anotherNodeModel);
+        this.getClarityProvider<TreeFocusManagerService<void>>(TreeFocusManagerService).focusNode(anotherNodeModel);
         expect(this.clarityDirective.contentContainerTabindex).toBe(-1);
         this.detectChanges();
         expect(contentContainer.getAttribute('tabindex')).toBe('-1');
@@ -547,14 +547,14 @@ export default function (): void {
       });
 
       it('adds the aria-selected attribute and screen reader text for active tree node links', function (this: Context) {
-        this.hostComponent.active = true;
+        this.testComponent.active = true;
         this.detectChanges();
         expect(contentContainer.getAttribute('aria-selected')).toBe('true');
         expect(contentContainer.textContent.trim().replace(/\s+/g, ' ')).toBe('Hello world selected');
       });
 
       it('does not add the aria-selected attribute or screen reader text for inactive tree node links', function (this: Context) {
-        this.hostComponent.active = false;
+        this.testComponent.active = false;
         this.detectChanges();
         expect(contentContainer.getAttribute('aria-selected')).toBeNull();
         expect(contentContainer.textContent.trim()).toBe('Hello world');

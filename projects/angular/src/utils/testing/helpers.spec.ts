@@ -5,41 +5,40 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DebugElement, InjectionToken, ModuleWithProviders, Type } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, InjectionToken, Type } from '@angular/core';
 import { ComponentFixture, TestBed, TestModuleMetadata } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ClarityModule } from '@clr/angular';
 // import { reportSlowSpecs } from "./slow-specs.spec";
 
-export class TestContext<C, H> {
-  /*
-   * Spec config
-   */
-  clarityDirectiveType: Type<C>;
-  hostType: Type<H>;
+export class TestContext<D, C> {
+  fixture: ComponentFixture<C>;
+  testComponentType: Type<C>;
+  clarityDirectiveType: Type<D>;
   testingModule: TestBed;
-
-  /*
-   * Objects instantiated for one test
-   */
-  fixture: ComponentFixture<H>;
-  hostComponent: H;
-  hostElement: HTMLElement;
-  clarityDirective: C;
-  clarityElement: HTMLElement;
+  testComponent: C;
+  testElement: any;
+  clarityDirective: D;
+  clarityElement: any;
 
   private clarityDebugElement: DebugElement;
 
-  // Initialization logic can be manually called to allow for overrides before instantiation
+  constructor(directiveType: Type<D>, componentType: Type<C>) {
+    this.clarityDirectiveType = directiveType;
+    this.testComponentType = componentType;
+    this.init();
+  }
+
   init() {
-    this.fixture = TestBed.createComponent(this.hostType);
+    this.fixture = TestBed.createComponent(this.testComponentType);
     this.fixture.detectChanges();
-    this.hostComponent = this.fixture.componentInstance;
-    this.hostElement = this.fixture.nativeElement;
+    this.testComponent = this.fixture.componentInstance;
+    this.testElement = this.fixture.nativeElement;
     this.clarityDebugElement = this.fixture.debugElement.query(By.directive(this.clarityDirectiveType));
     if (!this.clarityDebugElement) {
-      const componentName = this.hostType.name;
-      const clarityDirectiveName = this.clarityDirectiveType.name;
+      const componentName = (this.testComponentType as any).name;
+      const clarityDirectiveName = (this.clarityDirectiveType as any).name;
       throw new Error(`Test component ${componentName} doesn't contain a ${clarityDirectiveName}`);
     }
     this.clarityDirective = this.clarityDebugElement.injector.get(this.clarityDirectiveType);
@@ -51,7 +50,6 @@ export class TestContext<C, H> {
   }
 
   // The Function type here is just to tell Typescript to be nice with abstract classes. Weird.
-
   getClarityProvider<T>(token: Type<T> | InjectionToken<T> | Function, notFoundValue?: T): T {
     return this.clarityDebugElement.injector.get(token, notFoundValue);
   }
@@ -63,10 +61,9 @@ export class TestContext<C, H> {
     this.fixture.detectChanges();
   }
 }
-
 /**
  * @param clarityDirectiveType - the Clarity directive/component class being tested
- * @param hostType - the host test component used to run the specs
+ * @param testComponentType - the host test component used to run the specs
  * @param claritySubmodule - If you need a whole Clarity component submodule to test the component, provide it here
  * @param moduleMetadata - custom additional metadata for the testing module: extra imports, extra declarations, etc.
  * @param autoInit - the host test component is instantiated by default when the test starts. If you need to override
@@ -75,7 +72,7 @@ export class TestContext<C, H> {
  */
 export function spec<C, H>(
   clarityDirectiveType: Type<C>,
-  hostType: Type<H>,
+  testComponentType: Type<H>,
   claritySubmodule?: any,
   moduleMetadata: TestModuleMetadata = {},
   autoInit = true
@@ -102,7 +99,7 @@ export function spec<C, H>(
     if (moduleMetadata && moduleMetadata.imports) {
       imports.push(...moduleMetadata.imports);
     }
-    const declarations: Type<any>[] = [hostType];
+    const declarations: Type<any>[] = [testComponentType];
     if (!claritySubmodule) {
       declarations.push(clarityDirectiveType);
     }
@@ -111,7 +108,7 @@ export function spec<C, H>(
     }
     this.testingModule = TestBed.configureTestingModule({ ...moduleMetadata, imports, declarations });
     this.clarityDirectiveType = clarityDirectiveType;
-    this.hostType = hostType;
+    this.testComponentType = testComponentType;
     if (autoInit) {
       this.init();
     }
@@ -125,28 +122,79 @@ export function spec<C, H>(
   });
 }
 
-/**
- * This was initially a copy-paste of the datagrid helpers, but when we modularized Clarity, it got updated to
- * something that's way too rigid and doesn't help for complex specs anymore. Deprecating for now, I'm going
- * to create a temporary new one until we can take some time to finally, one day, if ever, hopefully, maybe,
- * unify our test helpers across all of our code base.
- * @deprecated
- */
-export function addHelpersDeprecated(
-  modulesToImport?: Array<Type<any> | ModuleWithProviders<RouterModule> | any[]>
-): void {
+export function addHelpers(): void {
   beforeEach(function () {
     /*
      * Ideally we would just make "this" a TestContext, but typing "this" in typescript
      * is a bit too new for all IDEs to correctly process it.
      */
-    this.create = <D, C>(clarityDirective: Type<D>, testComponent: Type<C>, providers: any[] = []) => {
-      TestBed.configureTestingModule({ imports: modulesToImport, declarations: [testComponent], providers: providers });
-      this._context = new TestContext<D, C>();
-      this._context.clarityDirectiveType = clarityDirective;
-      this._context.hostType = testComponent;
-      this._context.init();
-      return this._context;
+    this.create = <D, C>(
+      clarityDirective: Type<D>,
+      testComponent: Type<C>,
+      providers: any[] = [],
+      extraDirectives: Type<any>[] = []
+    ) => {
+      TestBed.configureTestingModule({
+        imports: [ClarityModule, NoopAnimationsModule],
+        declarations: [testComponent, ...extraDirectives],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        providers: providers,
+      });
+      return (this._context = new TestContext<D, C>(clarityDirective, testComponent));
+    };
+
+    this.createOnly = <D, C>(
+      clarityDirective: Type<D>,
+      testComponent: Type<C>,
+      providers: any[] = [],
+      extraDirectives: Type<any>[] = []
+    ) => {
+      TestBed.configureTestingModule({
+        declarations: [clarityDirective, testComponent, ...extraDirectives],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        providers: providers,
+      });
+      return (this._context = new TestContext<D, C>(clarityDirective, testComponent));
+    };
+
+    this.createWithOverrideComponent = <D, C>(
+      clarityDirective: Type<D>,
+      testComponent: Type<C>,
+      providers: any[] = [],
+      extraDirectives: Type<any>[] = [],
+      serviceOverrides: any[]
+    ) => {
+      TestBed.configureTestingModule({
+        imports: [ClarityModule, NoopAnimationsModule],
+        declarations: [testComponent, ...extraDirectives],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        providers: providers,
+      }).overrideComponent(clarityDirective, {
+        set: {
+          providers: serviceOverrides,
+        },
+      });
+      return (this._context = new TestContext<D, C>(clarityDirective, testComponent));
+    };
+
+    this.createWithOverrideDirective = <D, C>(
+      clarityDirective: Type<D>,
+      testComponent: Type<C>,
+      providers: any[] = [],
+      extraDirectives: Type<any>[] = [],
+      serviceOverrides: any[]
+    ) => {
+      TestBed.configureTestingModule({
+        imports: [ClarityModule, NoopAnimationsModule],
+        declarations: [testComponent, ...extraDirectives],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        providers: providers,
+      }).overrideDirective(clarityDirective, {
+        set: {
+          providers: serviceOverrides,
+        },
+      });
+      return (this._context = new TestContext<D, C>(clarityDirective, testComponent));
     };
   });
 

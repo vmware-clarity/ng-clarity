@@ -70,7 +70,7 @@ export default function (): void {
     it('accepts a [clrLazy] input and forwards it to the TreeFeaturesService', function (this: Context) {
       const featuresService = this.getClarityProvider(TreeFeaturesService);
       expect(featuresService.eager).toBe(true);
-      this.hostComponent.lazy = true;
+      this.testComponent.lazy = true;
       this.detectChanges();
       expect(featuresService.eager).toBe(false);
     });
@@ -82,7 +82,7 @@ export default function (): void {
     it('adds the aria-multiselectable if tree is selectable and has children', function (this: Context) {
       expect(this.clarityElement.getAttribute('aria-multiselectable')).toBeNull();
       this.getClarityProvider(TreeFeaturesService).selectable = true;
-      this.hostComponent.hasChild = true;
+      this.testComponent.hasChild = true;
       this.detectChanges();
       expect(this.clarityElement.getAttribute('aria-multiselectable')).toBe('true');
     });

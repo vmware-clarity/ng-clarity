@@ -6,11 +6,10 @@
  */
 
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { delay } from '@clr/angular/testing';
+import { ClrPopoverService } from '@clr/angular/src/popover/common';
+import { delay, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
-import { TestContext } from './helpers.spec';
-import { ClrPopoverService } from '../../popover';
 import { ColumnsService } from './providers/columns.service';
 import { MOCK_COLUMN_SERVICE_PROVIDER, MockColumnsService } from './providers/columns.service.mock';
 

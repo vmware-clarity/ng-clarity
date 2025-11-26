@@ -10,7 +10,7 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrInput, ClrInputContainer } from '@clr/angular/src/forms/input';
 import { ClrIcon } from '@clr/angular/src/icon';
-import { expectActiveElementToBe } from '@clr/angular/src/utils';
+import { expectActiveElementToBe } from '@clr/angular/testing';
 
 import { ClrControlLabel } from './label';
 import { ClrSignpostModule, ClrSignpostTrigger } from '../../popover';

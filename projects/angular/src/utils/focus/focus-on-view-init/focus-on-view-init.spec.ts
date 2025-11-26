@@ -7,11 +7,11 @@
 
 import { ApplicationRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { expectActiveElementToBe } from '@clr/angular/testing';
 
 import { ClrFocusOnViewInit } from './focus-on-view-init';
 import { ClrFocusOnViewInitModule } from './focus-on-view-init.module';
 import { FOCUS_ON_VIEW_INIT } from './focus-on-view-init.provider';
-import { expectActiveElementToBe } from '../../testing/helpers.spec';
 
 const focusOnViewInitProvider = { provide: FOCUS_ON_VIEW_INIT, useValue: true };
 

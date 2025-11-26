@@ -6,9 +6,9 @@
  */
 
 import { Component } from '@angular/core';
+import { TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridCell } from './datagrid-cell';
-import { TestContext } from './helpers.spec';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 
 export default function (): void {

@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
-import { delay, expectActiveElementNotToBe, expectActiveElementToBe } from '@clr/angular/testing';
+import { delay, expectActiveElementNotToBe, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 import { Subject } from 'rxjs';
 
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
@@ -14,7 +14,7 @@ import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-fil
 import { ClrDatagrid } from './datagrid';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType } from './enums/selection-type';
-import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';

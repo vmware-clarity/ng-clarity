@@ -24,7 +24,7 @@ export default function () {
     let dateNavigationService: DateNavigationService;
     let dateIOService: DateIOService;
 
-    let hostElement;
+    let testElement;
 
     beforeEach(function () {
       context = this.create(ClrDatepickerViewManager, TestComponent, [
@@ -45,17 +45,17 @@ export default function () {
       dateNavigationService.isRangePicker = true;
       dateIOService.setRangeOptions([{ label: 'Today', value: [new Date(), new Date()] }]);
       context.fixture.detectChanges();
-      hostElement = context.clarityElement.querySelector('.datepicker-view-manager');
+      testElement = context.clarityElement.querySelector('.datepicker-view-manager');
       expect(context.clarityDirective.isDayView).toBe(true);
-      expect(hostElement.children.length).toBe(1);
-      expect(hostElement.children[0].tagName).toBe('CLR-DAYPICKER');
+      expect(testElement.children.length).toBe(1);
+      expect(testElement.children[0].tagName).toBe('CLR-DAYPICKER');
     });
 
     it('shows the daypicker when dayView is set to true', () => {
       expect(context.clarityDirective.isDayView).toBe(true);
-      hostElement = context.clarityElement.querySelector('.datepicker-view-manager');
-      expect(hostElement.children.length).toBe(1);
-      expect(hostElement.children[0].tagName).toBe('CLR-DAYPICKER');
+      testElement = context.clarityElement.querySelector('.datepicker-view-manager');
+      expect(testElement.children.length).toBe(1);
+      expect(testElement.children[0].tagName).toBe('CLR-DAYPICKER');
     });
 
     it('shows the monthpicker when monthView is set to true', () => {
@@ -63,9 +63,9 @@ export default function () {
       context.detectChanges();
 
       expect(context.clarityDirective.isMonthView).toBe(true);
-      hostElement = context.clarityElement.querySelector('.datepicker-view-manager');
-      expect(hostElement.children.length).toBe(1);
-      expect(hostElement.children[0].tagName).toBe('CLR-MONTHPICKER');
+      testElement = context.clarityElement.querySelector('.datepicker-view-manager');
+      expect(testElement.children.length).toBe(1);
+      expect(testElement.children[0].tagName).toBe('CLR-MONTHPICKER');
     });
 
     it('shows the yearpicker when monthView is set to true', () => {
@@ -73,9 +73,9 @@ export default function () {
       context.detectChanges();
 
       expect(context.clarityDirective.isYearView).toBe(true);
-      hostElement = context.clarityElement.querySelector('.datepicker-view-manager');
-      expect(hostElement.children.length).toBe(1);
-      expect(hostElement.children[0].tagName).toBe('CLR-YEARPICKER');
+      testElement = context.clarityElement.querySelector('.datepicker-view-manager');
+      expect(testElement.children.length).toBe(1);
+      expect(testElement.children[0].tagName).toBe('CLR-YEARPICKER');
     });
 
     it('has the .datepicker class added to the host', () => {
