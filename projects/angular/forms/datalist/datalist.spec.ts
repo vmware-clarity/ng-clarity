@@ -53,7 +53,7 @@ export default function (): void {
     });
 
     it('id attribute is used when provided on the element', function (this: Context) {
-      this.hostComponent.testId = 'custom-id';
+      this.testComponent.testId = 'custom-id';
       this.detectChanges();
       expect(datalistIdService.id).toEqual(this.clarityElement.id);
       expect(this.clarityElement.id).toEqual('custom-id');

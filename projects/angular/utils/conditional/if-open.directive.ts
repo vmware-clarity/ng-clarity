@@ -6,9 +6,8 @@
  */
 
 import { Directive, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+import { ClrPopoverService } from '@clr/angular/popover/common';
 import { Subscription } from 'rxjs';
-
-import { ClrPopoverService } from '../providers/popover.service';
 
 @Directive({
   selector: '[clrIfOpen]',

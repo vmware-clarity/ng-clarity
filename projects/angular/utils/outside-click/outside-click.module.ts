@@ -6,10 +6,11 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, Type } from '@angular/core';
 
-import { OUSTIDE_CLICK_DIRECTIVES } from './index';
+import { OutsideClick } from './outside-click';
 
+export const OUSTIDE_CLICK_DIRECTIVES: Type<any>[] = [OutsideClick];
 @NgModule({
   imports: [CommonModule],
   declarations: [OUSTIDE_CLICK_DIRECTIVES],

@@ -70,7 +70,7 @@ export default function (): void {
         this.popoverService.open = true;
         this.detectChanges();
         expect(this.fixture.componentInstance.openState).toBeUndefined();
-        const closeBtn: HTMLButtonElement = this.hostElement.querySelector('.clr-smart-close-button');
+        const closeBtn: HTMLButtonElement = this.testElement.querySelector('.clr-smart-close-button');
         closeBtn.click();
         this.detectChanges();
         expect(this.hostComponent.openState).toBe(this.popoverService.open);

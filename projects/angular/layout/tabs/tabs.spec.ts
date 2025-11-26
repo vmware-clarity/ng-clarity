@@ -7,8 +7,8 @@
 
 import { Component, DebugElement, ElementRef, Type, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { addHelpers, TestContext } from '@clr/angular/src/data/datagrid';
-import { ClrKeyFocus, expectActiveElementToBe, IfActiveService } from '@clr/angular/src/utils';
+import { ClrKeyFocus, IfActiveService } from '@clr/angular/src/utils';
+import { addHelpers, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 
 import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';

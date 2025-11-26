@@ -9,11 +9,10 @@ import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ClrPopoverService } from '@clr/angular/src/popover/common';
 import { DomAdapter } from '@clr/angular/src/utils';
-import { animationFrameTick, delay } from '@clr/angular/testing';
+import { animationFrameTick, delay, TestContext } from '@clr/angular/testing';
 
 import { DatagridStringFilter } from './datagrid-string-filter';
 import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
-import { TestContext } from '../../helpers.spec';
 import { ClrDatagridStringFilterInterface } from '../../interfaces/string-filter.interface';
 import { CustomFilter } from '../../providers/custom-filter';
 import { FiltersProvider } from '../../providers/filters';
