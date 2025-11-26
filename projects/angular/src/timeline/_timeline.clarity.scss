@@ -25,27 +25,27 @@
     min-width: mixins.baselinePx(175);
     gap: timeline-variables.$clr-timeline-step-internal-spacing;
 
-    > cds-icon.clr-timeline-step-icon:not([size]),
+    > cds-icon:not([size]),
     > clr-icon {
       @include mixins.min-equilateral(timeline-variables.$clr-timeline-icon-size);
     }
 
-    > cds-icon.clr-timeline-step-icon[shape='circle'],
+    > cds-icon[shape='circle'],
     > clr-icon[shape='circle'] {
       color: timeline-variables.$clr-timeline-incomplete-step-color;
     }
 
-    > cds-icon.clr-timeline-step-icon[shape='dot-circle'],
+    > cds-icon[shape='dot-circle'],
     > clr-icon[shape='dot-circle'] {
       color: timeline-variables.$clr-timeline-current-step-color;
     }
 
-    > cds-icon.clr-timeline-step-icon[shape='success-standard'],
+    > cds-icon[shape='success-standard'],
     > clr-icon[shape='success-standard'] {
       color: timeline-variables.$clr-timeline-success-step-color;
     }
 
-    > cds-icon.clr-timeline-step-icon[shape='error-standard'],
+    > cds-icon[shape='error-standard'],
     > clr-icon[shape='error-standard'] {
       color: timeline-variables.$clr-timeline-error-step-color;
     }
