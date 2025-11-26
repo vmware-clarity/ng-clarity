@@ -25,32 +25,32 @@
     min-width: mixins.baselinePx(175);
     gap: timeline-variables.$clr-timeline-step-internal-spacing;
 
-    cds-icon:not([size]),
-    clr-icon {
+    > cds-icon.clr-timeline-step-icon:not([size]),
+    > clr-icon {
       @include mixins.min-equilateral(timeline-variables.$clr-timeline-icon-size);
     }
 
-    cds-icon[shape='circle'],
-    clr-icon[shape='circle'] {
+    > cds-icon.clr-timeline-step-icon[shape='circle'],
+    > clr-icon[shape='circle'] {
       color: timeline-variables.$clr-timeline-incomplete-step-color;
     }
 
-    cds-icon[shape='dot-circle'],
-    clr-icon[shape='dot-circle'] {
+    > cds-icon.clr-timeline-step-icon[shape='dot-circle'],
+    > clr-icon[shape='dot-circle'] {
       color: timeline-variables.$clr-timeline-current-step-color;
     }
 
-    cds-icon[shape='success-standard'],
-    clr-icon[shape='success-standard'] {
+    > cds-icon.clr-timeline-step-icon[shape='success-standard'],
+    > clr-icon[shape='success-standard'] {
       color: timeline-variables.$clr-timeline-success-step-color;
     }
 
-    cds-icon[shape='error-standard'],
-    clr-icon[shape='error-standard'] {
+    > cds-icon.clr-timeline-step-icon[shape='error-standard'],
+    > clr-icon[shape='error-standard'] {
       color: timeline-variables.$clr-timeline-error-step-color;
     }
 
-    clr-spinner.spinner {
+    > clr-spinner.spinner {
       margin: tokens.$cds-global-space-2; // Simulates the padding in CDS-ICONs
       &,
       &::after,
@@ -90,23 +90,6 @@
   .clr-timeline-step-body {
     display: flex;
     flex-direction: column;
-
-    cds-icon,
-    clr-icon {
-      &:not([size]) {
-        @include mixins.equilateral(timeline-variables.$clr-timeline-default-icon-size);
-      }
-
-      min-width: initial;
-      min-height: initial;
-
-      &[shape='circle'],
-      &[shape='dot-circle'],
-      &[shape='success-standard'],
-      &[shape='error-standard'] {
-        color: inherit;
-      }
-    }
   }
 
   .clr-timeline-step-title {
