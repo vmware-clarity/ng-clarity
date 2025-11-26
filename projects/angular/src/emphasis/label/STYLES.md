@@ -4,8 +4,7 @@
 
 | CSS Property Name                | Description                            |
 | -------------------------------- | -------------------------------------- |
-| --clr-label-font-color-light     | Font color for light labels            |
-| --clr-label-font-color-dark      | Font color for dark labels             |
+| --clr-label-font-color           | Font color for labels                  |
 | --clr-label-default-border-color | Default border color for labels        |
 | --clr-label-bg-hover-color       | Background color on hover for labels   |
 | --clr-label-gray-bg-color        | Background color for gray labels       |
