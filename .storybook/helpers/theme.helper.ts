@@ -23,7 +23,10 @@ export function getThemeObj(isDark = false) {
 }
 
 export function setDocsTheme(isDark = false) {
-  document.body.setAttribute(cdsThemeAttribute, isDark ? THEMES.DARK : THEMES.LIGHT);
+  const theme = isDark ? THEMES.DARK : THEMES.LIGHT;
+  document.body.setAttribute(cdsThemeAttribute, theme);
 
-  return isDark ? themes.dark : themes.light;
+  document.documentElement.style.colorScheme = theme;
+
+  return themes[theme];
 }
