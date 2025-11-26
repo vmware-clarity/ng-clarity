@@ -15,8 +15,7 @@
     &,
     & [cds-theme] {
       // COLOR
-      --clr-label-font-color-light: #{tokens.$cds-alias-typography-color-500};
-      --clr-label-font-color-dark: var(--clr-color-neutral-1000);
+      --clr-label-font-color: #{tokens.$cds-alias-typography-color-500};
       --clr-label-default-border-color: #{tokens.$cds-alias-utility-gray};
       --clr-label-default-bg-color: #{tokens.$cds-alias-object-opacity-0};
       --clr-label-bg-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
