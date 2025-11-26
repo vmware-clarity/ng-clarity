@@ -52,7 +52,7 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
 
   @HostBinding('disabled')
   protected get disabled() {
-    return this.control && this.control.disabled;
+    return this.elementRef.nativeElement.disabled || (this.control && this.control.disabled);
   }
 
   @HostListener('change')
