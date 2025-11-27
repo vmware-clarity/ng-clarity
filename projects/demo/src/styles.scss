@@ -18,6 +18,7 @@
   --clr-test-button-text-color: white;
   --clr-test-border-color: magenta;
 
+  // `:has` selector will force the HTML DOM element to follow respective cds-theme
   &:has(body[cds-theme]) {
     color-scheme: light;
   }
