@@ -17,8 +17,12 @@
   </clr-timeline-step>
   <clr-timeline-step [clrState]="stateCurrent">
     <clr-timeline-step-header>11:59 am</clr-timeline-step-header>
-    <clr-timeline-step-title>Add KMS</clr-timeline-step-title>
+    <clr-timeline-step-title>
+      <cds-icon status="warning" shape="success-standard" aria-label="Completed"></cds-icon>
+      Add KMS</clr-timeline-step-title
+    >
     <clr-timeline-step-description>
+      <cds-icon status="danger" shape="success-standard" aria-label="Completed"></cds-icon>
       Root CA certificate requested. Upload it to the KMS to complete the connection.
       <button class="btn btn-sm">Action</button>
     </clr-timeline-step-description>
