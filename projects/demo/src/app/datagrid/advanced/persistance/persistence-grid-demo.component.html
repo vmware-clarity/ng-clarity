@@ -1,0 +1,21 @@
+<clr-alert [clrAlertClosable]="false" clrAlertType="info">
+  <clr-alert-item>
+    <span class="alert-text">
+      This datagrid uses 'appfxPersistDatagridSettings' directive for saving datagrid state.
+    </span>
+  </clr-alert-item>
+</clr-alert>
+
+<appfx-datagrid
+  [gridItems]="allItems"
+  [columns]="columns"
+  [layoutModel]="{
+    stretchToParentHeight: false,
+    compact: false
+  }"
+  [selectionType]="0"
+  [pageSize]="10"
+  [pageSizeOptions]="[10, 20, 50, 100]"
+  [appfxPersistDatagridSettings]="'appfx-datagrid-persistence-demo'"
+>
+</appfx-datagrid>
