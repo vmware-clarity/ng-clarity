@@ -1306,10 +1306,13 @@
          * e.g. Helloworldthisisaveryveryveryveryverylongcontent
          */
         max-width: 100%;
+      }
+
+      .datagrid-rows {
         /**
          * To get rid of detail-pane overlapping the content inside the rows
          */
-        overflow: hidden;
+        overflow-x: hidden;
       }
 
       & > .cdk-virtual-scrollable div.datagrid-table {
