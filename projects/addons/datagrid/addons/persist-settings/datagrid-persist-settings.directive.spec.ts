@@ -84,12 +84,7 @@ describe('DatagridPersistSettingsDirective', () => {
   beforeEach(function (this: any) {
     TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, DragDropModule, OverlayModule, DatagridHostComponent],
-      declarations: [
-        DatagridPersistSettingsDirective,
-        MockDatagridColumnToggleComponent,
-        MockDatagridCellContainerComponent,
-        MockIsRowSelectablePipe,
-      ],
+      declarations: [MockDatagridColumnToggleComponent, MockDatagridCellContainerComponent, MockIsRowSelectablePipe],
       providers: [
         {
           provide: ZoomLevelService,
