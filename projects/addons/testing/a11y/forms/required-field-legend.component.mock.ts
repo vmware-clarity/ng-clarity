@@ -8,15 +8,15 @@
 import { Component } from '@angular/core';
 
 @Component({
-   selector: 'appfx-required-field-legend',
-   standalone: false,
-   template: ``,
+  selector: 'appfx-required-field-legend',
+  standalone: false,
+  template: ``,
 })
 export class MockRequiredFieldLegendComponent {}
 
 @Component({
-   selector: 'appfx-required-field-legend',
-   standalone: true,
-   template: ``,
+  selector: 'appfx-required-field-legend',
+  standalone: true,
+  template: ``,
 })
 export class MockRequiredFieldLegendStandaloneComponent extends MockRequiredFieldLegendComponent {}

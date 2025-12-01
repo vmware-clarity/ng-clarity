@@ -33,6 +33,6 @@
     "skipMetadataEmit": false,
     "fullTemplateTypeCheck": true
   },
-   "include": ["**/*.ts"],
-   "exclude": ["test.ts", "**/*.spec.ts"]
+  "include": ["**/*.ts"],
+  "exclude": ["test.ts", "**/*.spec.ts"]
 }
