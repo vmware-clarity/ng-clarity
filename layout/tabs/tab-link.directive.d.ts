@@ -18,7 +18,7 @@ export declare class ClrTabLink {
     get addLinkClasses(): boolean;
     get ariaControls(): string;
     get active(): boolean;
-    get tabindex(): 0 | -1;
+    get tabindex(): -1 | 0;
     activate(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabLink, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabLink, "[clrTabLink]", never, { "tabLinkId": "id"; "inOverflow": "clrTabLinkInOverflow"; }, {}, never, never, false, never>;
