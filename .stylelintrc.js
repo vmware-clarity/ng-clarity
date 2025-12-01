@@ -24,7 +24,7 @@ module.exports = {
     'selector-type-no-unknown': [
       true,
       {
-        ignoreTypes: ['/^clr-/', '/^cds-/', '_'],
+        ignoreTypes: ['/^clr-/', '/^cds-/', '_', '/^appfx-/'],
       },
     ],
     'selector-pseudo-element-no-unknown': [

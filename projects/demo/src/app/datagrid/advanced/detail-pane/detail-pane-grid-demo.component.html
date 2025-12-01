@@ -1,0 +1,19 @@
+<appfx-datagrid
+  [gridItems]="allItems"
+  [columns]="columns"
+  [layoutModel]="{
+    compact: false,
+    stretchToParentHeight: false
+  }"
+  [pageSize]="10"
+  [selectionType]="selectionType"
+  [detailHeader]="detailHeader"
+  [detailBody]="detailBody"
+  [rowSelectionMode]="false"
+>
+  <ng-template #detailHeader let-context>
+    <h3>Detail header for VM {{ context.name }}</h3>
+  </ng-template>
+
+  <ng-template #detailBody let-context> Property viewer </ng-template>
+</appfx-datagrid>

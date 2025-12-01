@@ -1,0 +1,39 @@
+<grid-confirm-form [(options)]="options"> </grid-confirm-form>
+
+<button class="btn btn-primary" (click)="reset()">Render</button>
+<button class="btn btn-primary" (click)="refresh()">Refresh data</button>
+
+<div *ngIf="options.selectionType !== 0" class="card card-block">
+  <p class="card-text">
+    Selected VMs:
+    <em *ngIf="selectedVms?.length == 0">No vm selected.</em>
+    <span *ngFor="let vm of selectedVms">{{ vm.name + ' ' }}</span>
+  </p>
+</div>
+
+<hr />
+
+<appfx-datagrid
+  *ngIf="!resetting"
+  [gridItems]="filteredVms"
+  [selectedItems]="selectedVms"
+  [columns]="columns"
+  [layoutModel]="{
+    stretchToParentHeight: false,
+    compact: options.compactDatagrid,
+    disabled: options.disabled
+  }"
+  [footerModel]="{
+    clientSideExportConfig: options.enableExport ? exportConfig : undefined,
+    showFooter: options.showFooter,
+    hideColumnToggle: !options.showColumnToggle
+  }"
+  [loading]="options.loading"
+  [selectionType]="options.selectionType"
+  [pageSize]="options.pageSize"
+  [pageSizeOptions]="options.pageSizeOptions"
+  [rowSelectionMode]="options.enableRowSelection"
+  (selectedItemsChange)="onSelectedItemsChange($event)"
+  (searchTermChange)="onSearchTermChange($event)"
+>
+</appfx-datagrid>

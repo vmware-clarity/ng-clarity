@@ -2,13 +2,13 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
-    "lib": ["es2018", "dom", "dom.iterable"],
+    "lib": ["es2020", "dom", "dom.iterable"],
     "module": "es2020",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
@@ -17,7 +17,13 @@
     "sourceMap": true,
     "strict": false, // TURN BACK ON
     "target": "es2022",
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "paths": {
+      "@clr/angular": ["projects/angular/src/index.ts"],
+      "@clr/angular/*": ["projects/angular/src/*"],
+      "@clr/addons": ["projects/addons/index.ts"],
+      "@clr/addons/*": ["projects/addons/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

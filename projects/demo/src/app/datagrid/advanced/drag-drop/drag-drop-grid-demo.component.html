@@ -1,0 +1,30 @@
+<div
+  cdkDropList
+  [cdkDropListData]="receivedItems"
+  (cdkDropListDropped)="drop($event)"
+  class="dropzone"
+  [cdkDropListConnectedTo]="dropGroup(dragConfig.dragGroup)"
+>
+  <h4 *ngIf="receivedItems.length === 0">Drop VM items here</h4>
+  <div *ngFor="let item of receivedItems" cdkDrag class="draggable-item">
+    {{ item }}
+  </div>
+</div>
+
+<button class="btn btn-primary" (click)="receivedItems = []">Reset</button>
+
+<hr />
+
+<appfx-datagrid
+  [gridItems]="allItems"
+  [columns]="columns"
+  [dragConfig]="dragConfig"
+  [layoutModel]="{
+    compact: false,
+    stretchToParentHeight: false
+  }"
+  [selectionType]="selectionType"
+  [pageSize]="10"
+  [rowSelectionMode]="false"
+>
+</appfx-datagrid>

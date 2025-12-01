@@ -1,0 +1,40 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.filter-remove-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.text-lower {
+  text-transform: lowercase;
+}
+
+:host-context(body[data-theme='light']) {
+  :host-context(.user-tabbing) {
+    .edit-filter:focus,
+    .remove-filter:focus {
+      outline: 2px solid #000000;
+    }
+    .edit-filter:focus {
+      outline-offset: 1px;
+    }
+  }
+}
+
+:host-context(body[data-theme='dark']) {
+  :host-context(.user-tabbing) {
+    .edit-filter:focus,
+    .remove-filter:focus {
+      outline: 2px solid #fafafa;
+    }
+    .edit-filter:focus {
+      outline-offset: 1px;
+    }
+  }
+}
