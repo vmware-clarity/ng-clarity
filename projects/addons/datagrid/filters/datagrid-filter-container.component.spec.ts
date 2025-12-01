@@ -34,6 +34,7 @@ describe('DatagridFilterContainer', () => {
         {
           provide: ClrDatagridFilter,
           useValue: {
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             setFilter: () => {},
           },
         },

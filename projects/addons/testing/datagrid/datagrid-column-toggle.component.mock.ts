@@ -15,6 +15,7 @@ import { Component, Input } from '@angular/core';
 export class MockDatagridColumnToggleComponent {
   @Input() columns: unknown[];
 
+  /* eslint-disable @typescript-eslint/no-empty-function */
   showColumn(): void {}
 
   hideColumn(): void {}

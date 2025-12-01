@@ -105,6 +105,7 @@ describe('ExportProviderService', () => {
         {
           provide: appfxDatagridErrorNotifiableToken,
           useValue: {
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             notifyError: () => {},
           },
         },
