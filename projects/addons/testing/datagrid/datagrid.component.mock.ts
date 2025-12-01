@@ -58,6 +58,7 @@ export class MockAppfxDatagridComponent {
   @Output() detailStateChange = new EventEmitter<any>(true);
 
   clrDatagridPagination: any;
+  /* eslint-disable @typescript-eslint/no-empty-function */
   onModelChange(): void {}
   setSelectedItems(): void {}
 }
