@@ -22,9 +22,7 @@
       "@clr/angular": ["projects/angular/src/index.ts"],
       "@clr/angular/*": ["projects/angular/src/*"],
       "@clr/addons": ["projects/addons/index.ts"],
-      "@clr/addons/*": [
-        "projects/addons/*"
-      ]
+      "@clr/addons/*": ["projects/addons/*"]
     }
   },
   "angularCompilerOptions": {
