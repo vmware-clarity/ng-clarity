@@ -26,7 +26,6 @@ import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { CONTROL_SUFFIX } from './abstract-control';
-import { IfControlStateService } from './if-control-state/if-control-state.service';
 import { ContainerIdService } from './providers/container-id.service';
 import { ControlClassService } from './providers/control-class.service';
 import { ControlIdService } from './providers/control-id.service';
@@ -48,7 +47,6 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   protected index = 0;
   protected subscriptions: Subscription[] = [];
 
-  private ifControlStateService: IfControlStateService;
   private controlClassService: ControlClassService;
   private markControlService: MarkControlService;
   private containerIdService: ContainerIdService;
@@ -70,7 +68,6 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   ) {
     if (injector) {
       this.ngControlService = injector.get(NgControlService, null);
-      this.ifControlStateService = injector.get(IfControlStateService, null);
       this.markControlService = injector.get(MarkControlService, null);
       this.differs = injector.get(KeyValueDiffers, null);
     }
@@ -153,9 +150,9 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
 
   @HostListener('blur')
   triggerValidation() {
-    if (this.ifControlStateService) {
-      this.ifControlStateService.triggerStatusChange();
-    }
+    // if (this.ifControlStateService) {
+    //   this.ifControlStateService.triggerStatusChange();
+    // }
   }
 
   // @TODO This method has a try/catch due to an unknown issue that came when building the clrToggle feature

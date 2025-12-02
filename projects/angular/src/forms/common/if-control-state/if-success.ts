@@ -8,7 +8,7 @@
 import { Directive, Optional, TemplateRef, ViewContainerRef } from '@angular/core';
 
 import { AbstractIfState } from './abstract-if-state';
-import { CONTROL_STATE, IfControlStateService } from './if-control-state.service';
+import { CONTROL_STATE } from './if-control-state.service';
 import { NgControlService } from '../providers/ng-control.service';
 
 @Directive({
@@ -17,16 +17,11 @@ import { NgControlService } from '../providers/ng-control.service';
 })
 export class ClrIfSuccess extends AbstractIfState {
   constructor(
-    @Optional() ifControlStateService: IfControlStateService,
     @Optional() ngControlService: NgControlService,
     private template: TemplateRef<any>,
     private container: ViewContainerRef
   ) {
-    super(ifControlStateService, ngControlService);
-
-    if (!ifControlStateService) {
-      throw new Error('ClrIfSuccess can only be used within a form control container element like clr-input-container');
-    }
+    super(ngControlService);
   }
 
   /**

@@ -19,7 +19,7 @@ export class ControlClassService {
 
   constructor(@Optional() private layoutService: LayoutService) {}
 
-  controlClass(state: CONTROL_STATE = CONTROL_STATE.NONE, grid = false, additional = '') {
+  controlClass(state: string, grid = false, additional = '') {
     const controlClasses = [this.className, additional];
 
     switch (state) {

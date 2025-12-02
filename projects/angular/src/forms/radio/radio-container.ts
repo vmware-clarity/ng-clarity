@@ -20,7 +20,6 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrControlLabel } from '../common';
 import { ClrRadio } from './radio';
 import { ClrAbstractContainer } from '../common/abstract-container';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ContainerIdService } from '../common/providers/container-id.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { LayoutService } from '../common/providers/layout.service';
@@ -70,7 +69,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
     '[attr.role]': 'role',
     '[attr.aria-labelledby]': 'ariaLabelledBy',
   },
-  providers: [NgControlService, IfControlStateService, ControlClassService, ContainerIdService],
+  providers: [NgControlService, ControlClassService, ContainerIdService],
   standalone: false,
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
@@ -86,10 +85,9 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
   constructor(
     @Optional() protected override layoutService: LayoutService,
     protected override controlClassService: ControlClassService,
-    protected override ngControlService: NgControlService,
-    protected override ifControlStateService: IfControlStateService
+    protected override ngControlService: NgControlService
   ) {
-    super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    super(layoutService, controlClassService, ngControlService);
   }
 
   /*

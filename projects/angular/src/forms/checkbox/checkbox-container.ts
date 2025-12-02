@@ -9,7 +9,6 @@ import { AfterContentInit, Component, ContentChildren, Input, Optional, QueryLis
 
 import { ClrCheckbox } from './checkbox';
 import { ClrAbstractContainer } from '../common/abstract-container';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ContainerIdService } from '../common/providers/container-id.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { LayoutService } from '../common/providers/layout.service';
@@ -58,7 +57,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
     '[class.clr-row]': 'addGrid()',
     '[attr.role]': 'role',
   },
-  providers: [IfControlStateService, NgControlService, ControlClassService, ContainerIdService],
+  providers: [NgControlService, ControlClassService, ContainerIdService],
   standalone: false,
 })
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
@@ -71,10 +70,9 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
   constructor(
     @Optional() protected override layoutService: LayoutService,
     protected override controlClassService: ControlClassService,
-    protected override ngControlService: NgControlService,
-    protected override ifControlStateService: IfControlStateService
+    protected override ngControlService: NgControlService
   ) {
-    super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    super(layoutService, controlClassService, ngControlService);
   }
 
   /*

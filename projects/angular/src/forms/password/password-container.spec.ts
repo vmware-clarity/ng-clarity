@@ -14,7 +14,6 @@ import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
 import { ClrIcon } from '../../icon';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
@@ -82,7 +81,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrPasswordContainer, ClrPassword, TemplateDrivenTest],
-          providers: [IfControlStateService, NgControl, NgControlService, LayoutService],
+          providers: [NgControl, NgControlService, LayoutService],
         });
         fixture = TestBed.createComponent(TemplateDrivenTest);
 

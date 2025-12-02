@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 
 import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
-import { CONTROL_STATE, IfControlStateService } from './if-control-state/if-control-state.service';
+import { CONTROL_STATE } from './if-control-state/if-control-state.service';
 import { ClrControlLabel } from './label';
 import { ControlClassService } from './providers/control-class.service';
 import { LayoutService } from './providers/layout.service';
@@ -33,27 +33,31 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
   private state: CONTROL_STATE;
 
   constructor(
-    protected ifControlStateService: IfControlStateService,
     @Optional() protected layoutService: LayoutService,
     protected controlClassService: ControlClassService,
     protected ngControlService: NgControlService
   ) {
     this.subscriptions.push(
-      ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
-        this.state = state;
-        // Make sure everything is updated before dispatching the values for helpers
-        setTimeout(() => {
-          this.updateHelpers();
-        });
-      })
-    );
-
-    this.subscriptions.push(
       ngControlService.controlChanges.subscribe(control => {
         this.control = control;
+
+        this.subscriptions.push(
+          control.statusChanges.subscribe(status => {
+            this.state = status;
+            this.updateHelpers();
+          })
+        );
       }),
       ngControlService.additionalControlsChanges.subscribe(controls => {
         this.additionalControls = controls;
+        this.additionalControls.forEach(control => {
+          this.subscriptions.push(
+            control.statusChanges.subscribe(status => {
+              this.state = status;
+              this.updateHelpers();
+            })
+          );
+        });
       })
     );
   }
@@ -122,8 +126,8 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
      *   - container is valid but no success component is implemented - use helper class
      *   - container is valid and success component is implemented - use success class
      */
-    if ((!this.controlSuccessComponent && this.state === CONTROL_STATE.VALID) || !this.touched) {
-      return this.controlClassService.controlClass(CONTROL_STATE.NONE, this.addGrid());
+    if (!this.touched) {
+      return this.controlClassService.controlClass(null, this.addGrid());
     }
     /**
      * Pass form control state and return string of classes to be applied to the container.
