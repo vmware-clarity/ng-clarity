@@ -23,7 +23,12 @@ import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
-import { ClrPopoverType, DROPDOWN_POSITIONS, mapPopoverKeyToPosition } from '../common/utils/popover-positions';
+import {
+  ClrPopoverPosition,
+  ClrPopoverType,
+  DROPDOWN_POSITIONS,
+  mapPopoverKeyToPosition,
+} from '../common/utils/popover-positions';
 
 @Component({
   selector: 'clr-dropdown-menu',
@@ -61,15 +66,18 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
       popoverService.availablePositions.push(mapPopoverKeyToPosition(position, popoverService.popoverType));
     });
 
-    popoverService.position = nested ? 'right-top' : 'bottom-left';
+    popoverService.position = nested ? ClrPopoverPosition.RIGHT_TOP : ClrPopoverPosition.BOTTOM_LEFT;
 
     popoverService.panelClass.push('clr-dropdown-container');
   }
 
   @Input('clrPosition')
-  set position(position: string) {
+  set position(position: string | ClrPopoverPosition) {
+    const posIndex = DROPDOWN_POSITIONS.indexOf(position as ClrPopoverPosition);
+
     // set the popover values based on menu position
-    this.popoverService.position = position || this.popoverService.defaultPosition;
+    this.popoverService.position =
+      position && posIndex > -1 ? DROPDOWN_POSITIONS[posIndex] : this.popoverService.defaultPosition;
   }
 
   ngAfterContentInit() {

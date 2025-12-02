@@ -19,7 +19,12 @@ import { takeUntil } from 'rxjs/operators';
 
 import { ClrButton } from './button';
 import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
-import { ClrPopoverType, getConnectedPositions } from '../../popover/common/utils/popover-positions';
+import {
+  ClrPopoverPosition,
+  ClrPopoverType,
+  DROPDOWN_POSITIONS,
+  getConnectedPositions,
+} from '../../popover/common/utils/popover-positions';
 import { ClrDestroyService } from '../../utils/destroy/destroy.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -52,7 +57,7 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
 
   inlineButtons: ClrButton[] = [];
   menuButtons: ClrButton[] = [];
-  private _menuPosition = 'bottom-left';
+  private _menuPosition = ClrPopoverPosition.BOTTOM_LEFT;
 
   constructor(
     public buttonGroupNewService: ButtonInGroupService,
@@ -69,11 +74,12 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   }
 
   @Input('clrMenuPosition')
-  get menuPosition(): string {
+  get menuPosition(): ClrPopoverPosition {
     return this._menuPosition;
   }
-  set menuPosition(pos: string) {
-    this._menuPosition = pos || this.popoverService.defaultPosition;
+  set menuPosition(pos: ClrPopoverPosition | string) {
+    const posIndex = DROPDOWN_POSITIONS.indexOf(pos as ClrPopoverPosition);
+    this._menuPosition = pos && posIndex > -1 ? DROPDOWN_POSITIONS[posIndex] : this.popoverService.defaultPosition;
   }
 
   get open() {

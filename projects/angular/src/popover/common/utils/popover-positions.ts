@@ -16,32 +16,56 @@ export enum ClrPopoverType {
   DEFAULT,
 }
 
-export const TOOLTIP_POSITIONS: string[] = ['right', 'left', 'bottom-left', 'bottom-right', 'top-left', 'top-right'];
+export enum ClrPopoverPosition {
+  TOP_RIGHT = 'top-right',
+  TOP_MIDDLE = 'top-middle',
+  TOP_LEFT = 'top-left',
+  RIGHT = 'right',
+  RIGHT_TOP = 'right-top',
+  RIGHT_MIDDLE = 'right-middle',
+  RIGHT_BOTTOM = 'right-bottom',
+  LEFT = 'left',
+  LEFT_TOP = 'left-top',
+  LEFT_MIDDLE = 'left-middle',
+  LEFT_BOTTOM = 'left-bottom',
+  BOTTOM_RIGHT = 'bottom-right',
+  BOTTOM_MIDDLE = 'bottom-middle',
+  BOTTOM_LEFT = 'bottom-left',
+}
 
-export const DROPDOWN_POSITIONS: string[] = [
-  'bottom-left',
-  'bottom-right',
-  'top-left',
-  'top-right',
-  'left-bottom',
-  'left-top',
-  'right-bottom',
-  'right-top',
+export const TOOLTIP_POSITIONS: ClrPopoverPosition[] = [
+  ClrPopoverPosition.RIGHT,
+  ClrPopoverPosition.LEFT,
+  ClrPopoverPosition.BOTTOM_LEFT,
+  ClrPopoverPosition.BOTTOM_RIGHT,
+  ClrPopoverPosition.TOP_LEFT,
+  ClrPopoverPosition.TOP_RIGHT,
 ];
 
-export const SIGNPOST_POSITIONS: string[] = [
-  'right-middle', // default. must be at index 0
-  'top-left',
-  'top-middle',
-  'top-right',
-  'right-top',
-  'right-bottom',
-  'bottom-right',
-  'bottom-middle',
-  'bottom-left',
-  'left-bottom',
-  'left-middle',
-  'left-top',
+export const DROPDOWN_POSITIONS: ClrPopoverPosition[] = [
+  ClrPopoverPosition.BOTTOM_LEFT,
+  ClrPopoverPosition.BOTTOM_RIGHT,
+  ClrPopoverPosition.TOP_LEFT,
+  ClrPopoverPosition.TOP_RIGHT,
+  ClrPopoverPosition.LEFT_BOTTOM,
+  ClrPopoverPosition.LEFT_TOP,
+  ClrPopoverPosition.RIGHT_BOTTOM,
+  ClrPopoverPosition.RIGHT_TOP,
+];
+
+export const SIGNPOST_POSITIONS: ClrPopoverPosition[] = [
+  ClrPopoverPosition.RIGHT_MIDDLE, // default. must be at index 0
+  ClrPopoverPosition.TOP_LEFT,
+  ClrPopoverPosition.TOP_MIDDLE,
+  ClrPopoverPosition.TOP_RIGHT,
+  ClrPopoverPosition.RIGHT_TOP,
+  ClrPopoverPosition.RIGHT_BOTTOM,
+  ClrPopoverPosition.BOTTOM_RIGHT,
+  ClrPopoverPosition.BOTTOM_MIDDLE,
+  ClrPopoverPosition.BOTTOM_LEFT,
+  ClrPopoverPosition.LEFT_BOTTOM,
+  ClrPopoverPosition.LEFT_MIDDLE,
+  ClrPopoverPosition.LEFT_TOP,
 ];
 
 function getPositionsArray(type: ClrPopoverType) {
@@ -81,12 +105,12 @@ function getOffset(type: ClrPopoverType) {
   }
 }
 
-export function mapPopoverKeyToPosition(key: string, type: ClrPopoverType): ConnectedPosition {
+export function mapPopoverKeyToPosition(key: ClrPopoverPosition, type: ClrPopoverType): ConnectedPosition {
   let offset = getOffset(type);
 
   switch (key) {
     // TOP LEFT
-    case 'top-left':
+    case ClrPopoverPosition.TOP_LEFT:
       return {
         ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.TOP_LEFT : ClrPosition.TOP_CENTER),
         ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.BOTTOM_LEFT : ClrPosition.BOTTOM_RIGHT),
@@ -96,9 +120,7 @@ export function mapPopoverKeyToPosition(key: string, type: ClrPopoverType): Conn
       } as ConnectedPosition;
 
     // TOP CENTER (middle)
-    case 'top':
-    case 'top-middle':
-    case 'top-center':
+    case ClrPopoverPosition.TOP_MIDDLE:
       return {
         ...getAnchorPosition(ClrPosition.TOP_CENTER),
         ...getContentPosition(ClrPosition.BOTTOM_CENTER),
@@ -108,7 +130,7 @@ export function mapPopoverKeyToPosition(key: string, type: ClrPopoverType): Conn
       } as ConnectedPosition;
 
     // TOP RIGHT
-    case 'top-right':
+    case ClrPopoverPosition.TOP_RIGHT:
       return {
         ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.TOP_RIGHT : ClrPosition.TOP_CENTER),
         ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.BOTTOM_RIGHT : ClrPosition.BOTTOM_LEFT),
@@ -118,7 +140,7 @@ export function mapPopoverKeyToPosition(key: string, type: ClrPopoverType): Conn
       } as ConnectedPosition;
 
     // LEFT TOP
-    case 'left-top':
+    case ClrPopoverPosition.LEFT_TOP:
       return {
         ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.LEFT_TOP : ClrPosition.LEFT_CENTER),
         ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.TOP_RIGHT : ClrPosition.RIGHT_BOTTOM),
@@ -128,8 +150,7 @@ export function mapPopoverKeyToPosition(key: string, type: ClrPopoverType): Conn
       } as ConnectedPosition;
 
     // LEFT CENTER (middle)
-    case 'left-middle':
-    case 'left-center':
+    case ClrPopoverPosition.LEFT_MIDDLE:
       return {
         ...getAnchorPosition(ClrPosition.LEFT_CENTER),
         ...getContentPosition(ClrPosition.RIGHT_CENTER),
@@ -139,8 +160,8 @@ export function mapPopoverKeyToPosition(key: string, type: ClrPopoverType): Conn
       } as ConnectedPosition;
 
     // LEFT BOTTOM
-    case 'left':
-    case 'left-bottom':
+    case ClrPopoverPosition.LEFT:
+    case ClrPopoverPosition.LEFT_BOTTOM:
       return {
         ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.LEFT_BOTTOM : ClrPosition.LEFT_CENTER),
         ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.BOTTOM_RIGHT : ClrPosition.RIGHT_TOP),
@@ -150,7 +171,7 @@ export function mapPopoverKeyToPosition(key: string, type: ClrPopoverType): Conn
       } as ConnectedPosition;
 
     // RIGHT TOP
-    case 'right-top':
+    case ClrPopoverPosition.RIGHT_TOP:
       return {
         ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.RIGHT_TOP : ClrPosition.RIGHT_CENTER),
         ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.LEFT_TOP : ClrPosition.LEFT_BOTTOM),
@@ -160,8 +181,7 @@ export function mapPopoverKeyToPosition(key: string, type: ClrPopoverType): Conn
       } as ConnectedPosition;
 
     // RIGHT CENTER (middle)
-    case 'right-middle':
-    case 'right-center':
+    case ClrPopoverPosition.RIGHT_MIDDLE:
       return {
         ...getAnchorPosition(ClrPosition.RIGHT_CENTER),
         ...getContentPosition(ClrPosition.LEFT_CENTER),
@@ -171,8 +191,8 @@ export function mapPopoverKeyToPosition(key: string, type: ClrPopoverType): Conn
       } as ConnectedPosition;
 
     // RIGHT BOTTOM
-    case 'right':
-    case 'right-bottom':
+    case ClrPopoverPosition.RIGHT:
+    case ClrPopoverPosition.RIGHT_BOTTOM:
       return {
         ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.RIGHT_BOTTOM : ClrPosition.RIGHT_CENTER),
         ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.LEFT_BOTTOM : ClrPosition.LEFT_TOP),
@@ -182,7 +202,7 @@ export function mapPopoverKeyToPosition(key: string, type: ClrPopoverType): Conn
       } as ConnectedPosition;
 
     // BOTTOM RIGHT
-    case 'bottom-right':
+    case ClrPopoverPosition.BOTTOM_RIGHT:
       return {
         ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.BOTTOM_LEFT : ClrPosition.BOTTOM_CENTER),
         ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.TOP_RIGHT : ClrPosition.TOP_LEFT),
@@ -192,9 +212,7 @@ export function mapPopoverKeyToPosition(key: string, type: ClrPopoverType): Conn
       } as ConnectedPosition;
 
     // BOTTOM CENTER (middle)
-    case 'bottom-middle':
-    case 'bottom':
-    case 'bottom-center':
+    case ClrPopoverPosition.BOTTOM_MIDDLE:
       return {
         ...getAnchorPosition(ClrPosition.BOTTOM_CENTER),
         ...getContentPosition(ClrPosition.TOP_CENTER),
@@ -204,7 +222,7 @@ export function mapPopoverKeyToPosition(key: string, type: ClrPopoverType): Conn
       } as ConnectedPosition;
 
     // BOTTOM LEFT
-    case 'bottom-left':
+    case ClrPopoverPosition.BOTTOM_LEFT:
       return {
         ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.BOTTOM_RIGHT : ClrPosition.BOTTOM_CENTER),
         ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.TOP_LEFT : ClrPosition.TOP_RIGHT),

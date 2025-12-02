@@ -11,6 +11,8 @@ import { ClrButtonGroupModule, ClrIcon, ClrLoadingModule, commonStringsDefault }
 import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from 'helpers/button-class.helper';
 import { createArray } from 'helpers/common';
 
+import { ClrPopoverPosition } from '../../../projects/angular/src/popover/common/utils/popover-positions';
+
 @Component({
   selector: 'storybook-button-group',
   standalone: true,
@@ -75,7 +77,7 @@ export class ButtonGroupStorybookComponent {
 
   // Inputs from the story args
   @Input() btnSmallSize = false; //btn-sm
-  @Input() clrMenuPosition = 'bottom-left';
+  @Input() clrMenuPosition = ClrPopoverPosition.BOTTOM_LEFT;
   @Input() loading = false;
   @Input() clrToggleButtonAriaLabel: string = commonStringsDefault.rowActions;
   @Input() buttonCount = 3;

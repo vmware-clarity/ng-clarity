@@ -26,7 +26,12 @@ import { ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
-import { ClrPopoverType, getConnectedPositions, SIGNPOST_POSITIONS } from '../common/utils/popover-positions';
+import {
+  ClrPopoverPosition,
+  ClrPopoverType,
+  getConnectedPositions,
+  SIGNPOST_POSITIONS,
+} from '../common/utils/popover-positions';
 
 @Component({
   selector: 'clr-signpost-content',
@@ -61,7 +66,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   signpostContentId = uniqueIdFactory();
 
   private document: Document;
-  private _position = 'right-middle';
+  private _position = ClrPopoverPosition.RIGHT_MIDDLE;
 
   constructor(
     @Optional()
@@ -122,8 +127,9 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   get position() {
     return this._position;
   }
-  set position(position: string) {
-    this._position = position && SIGNPOST_POSITIONS.indexOf(position) > -1 ? position : 'right-middle';
+  set position(position: string | ClrPopoverPosition) {
+    const posIndex = SIGNPOST_POSITIONS.indexOf(position as ClrPopoverPosition);
+    this._position = position && posIndex > -1 ? SIGNPOST_POSITIONS[posIndex] : ClrPopoverPosition.RIGHT_MIDDLE;
 
     this.popoverService.position = this._position;
   }

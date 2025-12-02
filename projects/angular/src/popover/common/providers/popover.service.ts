@@ -10,7 +10,7 @@ import { ElementRef, Injectable, TemplateRef } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { preventArrowKeyScroll } from '../../../utils/focus/key-focus/util';
-import { ClrPopoverType } from '../utils/popover-positions';
+import { ClrPopoverPosition, ClrPopoverType } from '../utils/popover-positions';
 
 // Popovers might need to ignore click events on an element
 // (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
@@ -23,7 +23,7 @@ export class ClrPopoverService {
   closeButtonRef: ElementRef;
   contentRef: ElementRef;
   templateRef: TemplateRef<any>;
-  defaultPosition: string;
+  defaultPosition: ClrPopoverPosition;
   panelClass: string[] = [];
   popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
   availablePositions: ConnectedPosition[] = [];
@@ -31,7 +31,7 @@ export class ClrPopoverService {
   overlayRef: OverlayRef;
   overlay: Overlay;
   noFocus: boolean;
-  private _position: string;
+  private _position: ClrPopoverPosition;
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;
@@ -40,10 +40,10 @@ export class ClrPopoverService {
   private _popoverAligned = new Subject<HTMLElement>();
   private _popoverVisible = new Subject<boolean>();
 
-  get position(): string {
+  get position(): ClrPopoverPosition {
     return this._position;
   }
-  set position(position: string) {
+  set position(position: ClrPopoverPosition) {
     this._position = position;
 
     this._positionChange.next(position);

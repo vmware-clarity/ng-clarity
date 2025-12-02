@@ -7,6 +7,8 @@
 
 import { Injectable } from '@angular/core';
 
+import { ClrPopoverPosition } from '../../../popover/common/utils/popover-positions';
+
 const enum DatepickerViewEnum {
   MONTHVIEW = 'MONTHVIEW',
   YEARVIEW = 'YEARVIEW',
@@ -18,7 +20,7 @@ const enum DatepickerViewEnum {
  */
 @Injectable()
 export class ViewManagerService {
-  position = 'bottom-left';
+  position = ClrPopoverPosition.BOTTOM_LEFT;
 
   private _currentView: DatepickerViewEnum = DatepickerViewEnum.DAYVIEW;
 

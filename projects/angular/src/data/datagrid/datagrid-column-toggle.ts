@@ -14,7 +14,7 @@ import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnState } from './interfaces/column-state.interface';
 import { ColumnsService } from './providers/columns.service';
 import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover/common';
-import { ClrPopoverType } from '../../popover/common/utils/popover-positions';
+import { ClrPopoverPosition, ClrPopoverType } from '../../popover/common/utils/popover-positions';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Component({
@@ -40,7 +40,7 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
       cdkTrapFocus
       *clrPopoverContent="
         openState;
-        at: smartPosition;
+        at: popoverPosition;
         type: popoverType;
         outsideClickToClose: true;
         scrollToClose: true
@@ -91,7 +91,7 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   openState = false;
 
   // Smart Popover
-  smartPosition = 'top-left';
+  popoverPosition = ClrPopoverPosition.TOP_LEFT;
   popoverType = ClrPopoverType.DROPDOWN;
 
   // Without tracking the checkboxes get rerendered on model update, which leads
@@ -110,8 +110,8 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   ) {
     this.subscription = popoverService.openChange.subscribe(change => (this.openState = change));
 
-    popoverService.defaultPosition = this.smartPosition;
-    popoverService.position = this.smartPosition;
+    popoverService.defaultPosition = this.popoverPosition;
+    popoverService.position = this.popoverPosition;
 
     popoverService.panelClass.push('clr-popover-content');
   }

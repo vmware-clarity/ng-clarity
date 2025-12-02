@@ -15,7 +15,11 @@ import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from './providers/filters';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
-import { ClrPopoverType, getConnectedPositions } from '../../popover/common/utils/popover-positions';
+import {
+  ClrPopoverPosition,
+  ClrPopoverType,
+  getConnectedPositions,
+} from '../../popover/common/utils/popover-positions';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 /**
@@ -52,7 +56,7 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
       cdkTrapFocus
       *clrPopoverContent="
         open;
-        at: smartPosition;
+        at: popoverPosition;
         availablePositions: positions;
         type: popoverType;
         outsideClickToClose: true;
@@ -82,7 +86,7 @@ export class ClrDatagridFilter<T = any>
   popoverId = uniqueIdFactory();
 
   // Smart Popover
-  smartPosition = 'bottom-right';
+  popoverPosition = ClrPopoverPosition.BOTTOM_RIGHT;
   popoverType = ClrPopoverType.DROPDOWN;
   positions = getConnectedPositions(this.popoverType);
 

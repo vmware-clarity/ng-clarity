@@ -37,7 +37,11 @@ import { ComboboxContainerService } from './providers/combobox-container.service
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
 import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
-import { ClrPopoverType, getConnectedPositions } from '../../popover/common/utils/popover-positions';
+import {
+  ClrPopoverPosition,
+  ClrPopoverType,
+  getConnectedPositions,
+} from '../../popover/common/utils/popover-positions';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
@@ -87,7 +91,7 @@ export class ClrCombobox<T>
   focused = false;
   focusedPill: any;
 
-  smartPosition = 'bottom-left';
+  popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
 
   protected override index = 1;
 

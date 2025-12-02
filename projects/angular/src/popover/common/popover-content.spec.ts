@@ -11,6 +11,7 @@ import { TestBed } from '@angular/core/testing';
 import { ClrPopoverContent } from './popover-content';
 import { ClrPopoverModuleNext } from './popover.module';
 import { ClrPopoverService } from './providers/popover.service';
+import { ClrPopoverPosition } from './utils/popover-positions';
 import { TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
@@ -18,7 +19,7 @@ import { TestContext } from '../../utils/testing/helpers.spec';
   template: `
     <button #anchor clrPopoverAnchor clrPopoverOpenCloseButton>Popover Toggle</button>
     <div
-      *clrPopoverContent="openState; at: smartPosition; outsideClickToClose: closeClick; scrollToClose: closeScroll"
+      *clrPopoverContent="openState; at: popoverPosition; outsideClickToClose: closeClick; scrollToClose: closeScroll"
       (clrPopoverContentChange)="changeCounter()"
     >
       Popover content
@@ -34,7 +35,7 @@ import { TestContext } from '../../utils/testing/helpers.spec';
 })
 class SimpleContent {
   @ViewChild(ClrPopoverContent, { read: ClrPopoverContent, static: true }) content: ClrPopoverContent;
-  smartPosition = 'bottom-left';
+  popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
   openState = false;
   closeClick = true;
   closeScroll = true;
@@ -103,9 +104,9 @@ export default function (): void {
       });
 
       it('binds to [clrPopoverContentAt] position', function (this: Context) {
-        expect(this.testComponent.smartPosition).toEqual(this.popoverService.position);
-        const newPosition = 'top-right';
-        this.testComponent.smartPosition = newPosition;
+        expect(this.testComponent.popoverPosition).toEqual(this.popoverService.position);
+        const newPosition = ClrPopoverPosition.TOP_RIGHT;
+        this.testComponent.popoverPosition = newPosition;
         this.fixture.detectChanges();
         expect(this.popoverService.position).toEqual(newPosition);
       });

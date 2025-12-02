@@ -18,7 +18,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { ClrPopoverType } from '../../popover/common/utils/popover-positions';
+import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS } from '../../popover/common/utils/popover-positions';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
@@ -163,8 +163,11 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   }
 
   @Input('clrPosition')
-  set clrPosition(position: string) {
-    this.viewManagerService.position = position || this.popoverService.defaultPosition;
+  set clrPosition(position: string | ClrPopoverPosition) {
+    const posIndex = DROPDOWN_POSITIONS.indexOf(position as ClrPopoverPosition);
+
+    this.viewManagerService.position =
+      position && posIndex > -1 ? DROPDOWN_POSITIONS[posIndex] : this.popoverService.defaultPosition;
   }
 
   @Input()
@@ -199,7 +202,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     this.toggleButton = button;
   }
 
-  get popoverPosition(): string {
+  get popoverPosition(): ClrPopoverPosition {
     return this.viewManagerService.position;
   }
 

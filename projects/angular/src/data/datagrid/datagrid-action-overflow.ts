@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 
 import { RowActionService } from './providers/row-action-service';
 import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
-import { ClrPopoverType } from '../../popover/common/utils/popover-positions';
+import { ClrPopoverPosition, ClrPopoverType } from '../../popover/common/utils/popover-positions';
 import { ClrCommonStringsService } from '../../utils';
 import { ClrKeyFocus } from '../../utils/focus/key-focus';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
@@ -60,7 +60,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
 
   popoverId = uniqueIdFactory();
 
-  smartPosition = 'right-middle';
+  smartPosition = ClrPopoverPosition.RIGHT_MIDDLE;
   popoverType = ClrPopoverType.DEFAULT;
 
   @ViewChild(ClrKeyFocus) private readonly keyFocus: ClrKeyFocus;

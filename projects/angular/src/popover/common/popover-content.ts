@@ -32,7 +32,7 @@ import {
 import { fromEvent, Subscription } from 'rxjs';
 
 import { ClrPopoverService } from './providers/popover.service';
-import { ClrPopoverType, mapPopoverKeyToPosition } from './utils/popover-positions';
+import { ClrPopoverPosition, ClrPopoverType, mapPopoverKeyToPosition } from './utils/popover-positions';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
 
@@ -66,7 +66,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     private zone: NgZone
   ) {
     popoverService.panelClass.push('clr-popover-content');
-    popoverService.defaultPosition = 'bottom-left';
+    popoverService.defaultPosition = ClrPopoverPosition.BOTTOM_LEFT;
     popoverService.overlay = overlay;
 
     overlayContainer.getContainerElement().classList.add('clr-container-element');
@@ -78,10 +78,13 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   @Input('clrPopoverContentAt')
-  set contentAt(position: string | ConnectedPosition) {
+  set contentAt(position: string | ClrPopoverPosition | ConnectedPosition) {
     if (typeof position === 'string') {
+      const posIndex = Object.values(ClrPopoverPosition).indexOf(position as ClrPopoverPosition);
+
       // set the popover values based on menu position
-      this.popoverService.position = position || this.popoverService.defaultPosition;
+      this.popoverService.position =
+        posIndex > -1 ? (position as ClrPopoverPosition) : this.popoverService.defaultPosition;
     } else {
       this.preferredPositionIsSet = true;
       this.preferredPosition = position;
