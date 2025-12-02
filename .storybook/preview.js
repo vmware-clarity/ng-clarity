@@ -128,6 +128,8 @@ const themeDecorator = (story, { globals }) => {
 
   document.body.setAttribute(cdsThemeAttribute, theme);
 
+  document.documentElement.style.colorScheme = theme;
+
   return story();
 };
 const densityDecorator = (story, { globals }) => {
