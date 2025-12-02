@@ -13,10 +13,8 @@ export * from './enums/side.enum';
 export * from './interfaces/popover-position.interface';
 export * from './providers/popover.service';
 export * from './popover-anchor';
-export * from '../common/popover-content';
 export * from './popover-host.directive';
 export * from './stop-escape-propagation.directive';
-export * from './popover.module';
 
 export { ClrPopoverModuleNext as ÇlrClrPopoverModuleNext } from './popover.module';
 export { ClrPopoverCloseButton as ÇlrClrPopoverCloseButton } from './popover-close-button';

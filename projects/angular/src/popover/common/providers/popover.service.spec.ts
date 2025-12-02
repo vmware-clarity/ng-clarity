@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 
 import { ClrPopoverService } from './popover.service';
 import { Keys } from '../../../utils/enums/keys.enum';
-import { ClrPopoverModuleNext } from '../../index';
+import { ClrPopoverModuleNext } from '../popover.module';
 
 @Component({
   selector: 'test-host',

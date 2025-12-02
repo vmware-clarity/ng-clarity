@@ -17,7 +17,7 @@ import { ClrOptionItems } from './option-items.directive';
 import { ClrOptionSelected } from './option-selected.directive';
 import { ClrOptions } from './options';
 import { angleIcon, checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon, windowCloseIcon } from '../../icon';
-import { ClrPopoverModuleNext } from '../../popover';
+import { ClrPopoverModuleNext } from '../../popover/common/popover.module';
 import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
 import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';

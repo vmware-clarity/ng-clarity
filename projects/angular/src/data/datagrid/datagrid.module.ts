@@ -62,7 +62,7 @@ import { DatagridRowRenderer } from './render/row-renderer';
 import { WrappedCell } from './wrapped-cell';
 import { WrappedColumn } from './wrapped-column';
 import { WrappedRow } from './wrapped-row';
-import { ClrPopoverModuleNext } from '../../popover';
+import { ClrPopoverModuleNext } from '../../popover/common/popover.module';
 import { ClrPopoverModule } from '../../popover/popover.module';
 import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
 import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';

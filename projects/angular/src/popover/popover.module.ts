@@ -7,12 +7,11 @@
 
 import { NgModule } from '@angular/core';
 
-import { ClrPopoverModuleNext } from './common';
 import { ClrDropdownModule } from './dropdown';
 import { ClrSignpostModule } from './signpost';
 import { ClrTooltipModule } from './tooltip';
 
 @NgModule({
-  exports: [ClrDropdownModule, ClrSignpostModule, ClrTooltipModule, ClrPopoverModuleNext],
+  exports: [ClrDropdownModule, ClrSignpostModule, ClrTooltipModule],
 })
 export class ClrPopoverModule {}
