@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrPopoverService } from '../common';
+import { ClrPopoverContent, ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
@@ -44,6 +44,7 @@ const defaultSize = 'sm';
     '[id]': 'id',
   },
   standalone: false,
+  hostDirectives: [ClrPopoverContent],
 })
 export class ClrTooltipContent implements OnInit {
   private _id: string;

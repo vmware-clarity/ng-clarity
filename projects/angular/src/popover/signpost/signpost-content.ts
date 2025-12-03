@@ -22,7 +22,7 @@ import {
 
 import { ClrCommonStringsService } from '../../utils';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrPopoverService } from '../common';
+import { ClrPopoverContent, ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
@@ -58,6 +58,7 @@ import {
   `,
   host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
   standalone: false,
+  hostDirectives: [ClrPopoverContent],
 })
 export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;

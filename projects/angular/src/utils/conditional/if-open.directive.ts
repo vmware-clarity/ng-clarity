@@ -10,9 +10,6 @@ import { Subscription } from 'rxjs';
 
 import { ClrPopoverService } from '../../popover/common';
 
-/**
- * @deprecated use *clrPopoverContent structural directive.
- */
 @Directive({
   selector: '[clrIfOpen]',
   standalone: false,

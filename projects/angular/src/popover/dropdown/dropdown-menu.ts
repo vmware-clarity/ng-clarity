@@ -20,7 +20,7 @@ import {
 } from '@angular/core';
 
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { ClrPopoverService } from '../common';
+import { ClrPopoverContent, ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 import {
@@ -38,6 +38,7 @@ import {
     '[attr.role]': '"menu"',
   },
   standalone: false,
+  hostDirectives: [ClrPopoverContent],
 })
 export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
   @ContentChildren(FocusableItem) items: QueryList<FocusableItem>;

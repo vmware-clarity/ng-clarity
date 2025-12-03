@@ -2938,7 +2938,7 @@ export class ClrDropdown implements OnDestroy {
     // (undocumented)
     popoverService: ClrPopoverService;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": { "alias": "clrCloseMenuOnItemClick"; "required": false; }; }, {}, never, ["[clrDropdownTrigger]", "clr-dropdown-menu"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": { "alias": "clrCloseMenuOnItemClick"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdown, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
 }
@@ -2970,7 +2970,7 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     // (undocumented)
     set position(position: string | ClrPopoverPosition$1);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": { "alias": "clrPosition"; "required": false; }; }, {}, ["items"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": { "alias": "clrPosition"; "required": false; }; }, {}, ["items"], ["*"], false, [{ directive: typeof ClrPopoverContent; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownMenu, [null, { optional: true; }, { optional: true; skipSelf: true; }, null, null, null]>;
 }
@@ -3515,7 +3515,7 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfExpanded, [{ optional: true; }, null, null, null, null]>;
 }
 
-// @public @deprecated (undocumented)
+// @public (undocumented)
 export class ClrIfOpen implements OnDestroy {
     constructor(popoverService: ClrPopoverService, template: TemplateRef<any>, container: ViewContainerRef);
     // (undocumented)
@@ -4194,7 +4194,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     setPreferredPosition(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, { optional: true; }, null, null, null, null, null]>;
 }
@@ -4628,7 +4628,7 @@ export class ClrSignpost {
     signpostTriggerAriaLabel: string;
     useCustomTrigger: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; }, {}, ["customTrigger"], ["[clrSignpostTrigger]", "clr-signpost-content", "*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
 }
@@ -4656,7 +4656,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     signpostContentId: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "signpostCloseAriaLabel": { "alias": "clrSignpostCloseAriaLabel"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; }, {}, never, ["clr-signpost-title", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "signpostCloseAriaLabel": { "alias": "clrSignpostCloseAriaLabel"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; }, {}, never, ["clr-signpost-title", "*"], false, [{ directive: typeof ClrPopoverContent; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [{ optional: true; }, null, null, null, null, null, null, null]>;
 }
@@ -5077,7 +5077,7 @@ export class ClrTabLink {
     get inOverflow(): boolean;
     set inOverflow(inOverflow: boolean);
     // (undocumented)
-    get tabindex(): 0 | -1;
+    get tabindex(): -1 | 0;
     // (undocumented)
     tabLinkId: string;
     // (undocumented)
@@ -5318,7 +5318,7 @@ export class ClrTimelineStepTitle {
 // @public (undocumented)
 export class ClrTooltip {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltip, "clr-tooltip", never, {}, {}, never, ["[clrTooltipTrigger]", "clr-tooltip-content"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltip, "clr-tooltip", never, {}, {}, never, ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltip, never>;
 }
@@ -5342,7 +5342,7 @@ export class ClrTooltipContent implements OnInit {
     get size(): string;
     set size(value: string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltipContent, "clr-tooltip-content", never, { "id": { "alias": "id"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; "size": { "alias": "clrSize"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltipContent, "clr-tooltip-content", never, { "id": { "alias": "id"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; "size": { "alias": "clrSize"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof ClrPopoverContent; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipContent, [null, { optional: true; }, null, null, null, null, null]>;
 }
@@ -8359,7 +8359,7 @@ export class ÇlrClrPopoverModuleNext {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ÇlrClrPopoverModuleNext>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ÇlrClrPopoverModuleNext, [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent], never, [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ÇlrClrPopoverModuleNext, [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton], [typeof ClrPopoverContent], [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent]>;
 }
 
 // @public (undocumented)

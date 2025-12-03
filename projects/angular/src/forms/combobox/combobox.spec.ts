@@ -70,8 +70,8 @@ export default function (): void {
 
     beforeEach(function () {
       TestBed.configureTestingModule({
-        imports: [ClrComboboxModule, ClrIcon, FormsModule, NoopAnimationsModule],
-        declarations: [TestComponent, ClrPopoverContent],
+        imports: [ClrComboboxModule, ClrIcon, FormsModule, NoopAnimationsModule, ClrPopoverContent],
+        declarations: [TestComponent],
         providers: [
           OptionSelectionService,
           IF_ACTIVE_ID_PROVIDER,

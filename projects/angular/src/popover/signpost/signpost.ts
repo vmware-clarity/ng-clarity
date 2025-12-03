@@ -25,13 +25,7 @@ import { ClrPopoverHostDirective } from '../common';
       >
         <cds-icon shape="info-circle" [attr.title]="commonStrings.keys.info"></cds-icon>
       </button>
-    } @else {
-      <ng-content select="[clrSignpostTrigger]"></ng-content>
     }
-
-    <ng-template [clrPopoverContent]>
-      <ng-content select="clr-signpost-content"></ng-content>
-    </ng-template>
 
     <ng-content></ng-content>
   `,

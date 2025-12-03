@@ -13,12 +13,7 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
 
 @Component({
   selector: 'clr-tooltip',
-  template: `
-    <ng-content select="[clrTooltipTrigger]"></ng-content>
-    <ng-template [clrPopoverContent]>
-      <ng-content select="clr-tooltip-content"></ng-content>
-    </ng-template>
-  `,
+  template: `<ng-content></ng-content>`,
   host: {
     '[class.clr-tooltip-container]': 'true',
   },

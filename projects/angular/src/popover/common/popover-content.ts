@@ -39,7 +39,6 @@ import { normalizeKey } from '../../utils/focus/key-focus/util';
 /** @dynamic */
 @Directive({
   selector: '[clrPopoverContent]',
-  standalone: false,
 })
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private view: EmbeddedViewRef<void>;
@@ -308,7 +307,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     this.popoverService.overlayRef = null;
     this.domPortal = null;
-    this.popoverService.contentRef = null;
+    if (this.template) {
+      this.popoverService.contentRef = null;
+    }
     this.view = null;
     this.scrollableParents = null;
 
