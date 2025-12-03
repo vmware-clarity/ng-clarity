@@ -264,7 +264,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   private showOverlay() {
     // Get Scrollable Parents
-    this.scrollableParents = this.getScrollParents(this.popoverService.anchorElementRef?.nativeElement);
+    this.scrollableParents = [
+      ...this.getScrollParents(this.popoverService.anchorElementRef?.nativeElement),
+      ...this.getScrollParents(this.popoverService.anchorElementRef?.nativeElement, 'x'),
+    ];
     this.listenToMouseEvents();
 
     //Preferred position defined by consumer
@@ -387,6 +390,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private elementIsVisibleInViewport(el, partiallyVisible = false) {
     const { top, left, bottom, right } = el.getBoundingClientRect();
     const { innerHeight, innerWidth } = window;
+
     return partiallyVisible
       ? ((top > 0 && top < innerHeight) || (bottom > 0 && bottom < innerHeight)) &&
           ((left > 0 && left < innerWidth) || (right > 0 && right < innerWidth))

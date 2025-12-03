@@ -68,7 +68,7 @@ export class ComboboxFocusHandler<T> {
 
   focusInput() {
     if (this.textInput && isPlatformBrowser(this.platformId)) {
-      this.textInput.focus();
+      this.textInput.focus({ preventScroll: true });
     }
   }
 
