@@ -4174,7 +4174,7 @@ export class ClrPopoverAnchor {
 
 // @public (undocumented)
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
-    constructor(container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, overlay: Overlay, popoverService: ClrPopoverService, scrollDispatcher: ScrollDispatcher, zone: NgZone);
+    constructor(element: ElementRef, container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, overlay: Overlay, popoverService: ClrPopoverService, scrollDispatcher: ScrollDispatcher, zone: NgZone);
     // (undocumented)
     set availablePositions(positions: ConnectedPosition[]);
     // (undocumented)
@@ -4196,7 +4196,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, { optional: true; }, null, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, null, { optional: true; }, null, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -4237,8 +4237,6 @@ export class ClrPopoverService {
     availablePositions: ConnectedPosition[];
     // (undocumented)
     closeButtonRef: ElementRef;
-    // (undocumented)
-    contentRef: ElementRef;
     // (undocumented)
     defaultPosition: ClrPopoverPosition$1;
     // (undocumented)
@@ -4286,8 +4284,6 @@ export class ClrPopoverService {
     setCloseFocus(): void;
     // (undocumented)
     setOpenedButtonFocus(): void;
-    // (undocumented)
-    templateRef: TemplateRef<any>;
     toggleWithEvent(event: any): void;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverService, never>;

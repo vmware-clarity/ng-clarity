@@ -42,6 +42,7 @@ import { normalizeKey } from '../../utils/focus/key-focus/util';
 })
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private view: EmbeddedViewRef<void>;
+  private elementRef: ElementRef;
 
   private subscriptions: Subscription[] = [];
   private domPortal: DomPortal;
@@ -55,6 +56,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private scrollableParents: HTMLElement[];
 
   constructor(
+    element: ElementRef,
     private container: ViewContainerRef,
     @Optional() private template: TemplateRef<any>,
     overlayContainer: OverlayContainer,
@@ -69,6 +71,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     popoverService.overlay = overlay;
 
     overlayContainer.getContainerElement().classList.add('clr-container-element');
+
+    if (!template) {
+      this.elementRef = element;
+    }
   }
 
   @Input('clrPopoverContent')
@@ -196,7 +202,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.subscriptions.push(
       overlay.outsidePointerEvents().subscribe(event => {
         // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
-        if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
+        if (this.elementRef && this.elementRef.nativeElement.contains(event.target)) {
           return;
         }
 
@@ -271,22 +277,22 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     if (!this.view && this.template) {
       this.view = this.container.createEmbeddedView(this.template);
 
-      if (!this.popoverService.contentRef) {
+      if (!this.elementRef) {
         const [rootNode] = this.view.rootNodes;
-        this.popoverService.contentRef = new ElementRef(rootNode); // So we know where/what to set close focus on
+        this.elementRef = new ElementRef(rootNode); // So we know where/what to set close focus on
       }
     }
 
     if (!this.domPortal) {
-      this.domPortal = new DomPortal<HTMLElement>(this.popoverService.contentRef);
+      this.domPortal = new DomPortal<HTMLElement>(this.elementRef);
       this.popoverService.overlayRef.attach(this.domPortal);
     }
 
     setTimeout(() => {
       this.popoverService.popoverVisibleEmit(true);
 
-      if (this.popoverService.contentRef?.nativeElement?.focus) {
-        this.popoverService.contentRef.nativeElement.focus();
+      if (this.elementRef?.nativeElement?.focus) {
+        this.elementRef.nativeElement.focus();
       }
     });
   }
@@ -308,7 +314,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.popoverService.overlayRef = null;
     this.domPortal = null;
     if (this.template) {
-      this.popoverService.contentRef = null;
+      this.elementRef = null;
     }
     this.view = null;
     this.scrollableParents = null;

@@ -62,7 +62,6 @@ export class ClrTooltipContent implements OnInit {
     private popoverService: ClrPopoverService,
     private tooltipMouseService: TooltipMouseService
   ) {
-    popoverService.contentRef = el;
     popoverService.scrollToClose = true;
     popoverService.panelClass.push('clr-tooltip-container');
     popoverService.popoverType = ClrPopoverType.TOOLTIP;

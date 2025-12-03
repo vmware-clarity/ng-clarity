@@ -88,7 +88,6 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     signpostIdService.setId(this.signpostContentId);
 
     this.document = document;
-    popoverService.contentRef = element;
     popoverService.panelClass.push('clr-signpost-container');
     popoverService.popoverType = ClrPopoverType.SIGNPOST;
 

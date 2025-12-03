@@ -6,7 +6,7 @@
  */
 
 import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { ElementRef, Injectable, TemplateRef } from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { preventArrowKeyScroll } from '../../../utils/focus/key-focus/util';
@@ -21,8 +21,6 @@ export class ClrPopoverService {
   scrollToClose = false;
   anchorElementRef: ElementRef<HTMLElement>;
   closeButtonRef: ElementRef;
-  contentRef: ElementRef;
-  templateRef: TemplateRef<any>;
   defaultPosition: ClrPopoverPosition;
   panelClass: string[] = [];
   popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
