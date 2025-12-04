@@ -19,7 +19,6 @@ import { MarkControlService } from '../common/providers/mark-control.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { DatalistIdService } from '../datalist/providers/datalist-id.service';
-import { selectFiles } from '../file-input/file-input.helpers';
 
 export function ControlStandaloneSpec(testComponent): void {
   describe('standalone use', () => {
@@ -112,19 +111,19 @@ function fullTest(description, testContainer, testControl, testComponent, contro
       expect(controlClassService.className).toEqual('');
     });
 
-    it('should handle blur events', () => {
-      // control must be both invalid and blurred to register the validity
-      if (control.nativeElement.type === 'file') {
-        selectFiles(control.nativeElement, [new File([''], 'test.txt')]);
-      } else {
-        control.nativeElement.value = 'abc';
-        control.nativeElement.dispatchEvent(new Event('input'));
-      }
-
-      control.nativeElement.dispatchEvent(new Event('blur'));
-      fixture.detectChanges();
-      expect(ifControlStateService.triggerStatusChange).toHaveBeenCalled();
-    });
+    // it('should handle blur events', () => {
+    //   // control must be both invalid and blurred to register the validity
+    //   if (control.nativeElement.type === 'file') {
+    //     selectFiles(control.nativeElement, [new File([''], 'test.txt')]);
+    //   } else {
+    //     control.nativeElement.value = 'abc';
+    //     control.nativeElement.dispatchEvent(new Event('input'));
+    //   }
+    //
+    //   control.nativeElement.dispatchEvent(new Event('blur'));
+    //   fixture.detectChanges();
+    //   expect(ifControlStateService.triggerStatusChange).toHaveBeenCalled();
+    // });
 
     it('should have the MarkControlService', () => {
       expect(markControlService.markAsTouched).toBeTruthy();

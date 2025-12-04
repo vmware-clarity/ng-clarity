@@ -14,6 +14,24 @@
   <li>3. Control should be valid and in success state.</li>
 </ul>
 
+<h2>Mark as touched</h2>
+<button class="btn" type="button" (click)="angularMarkAsTouched()">Angular mark as touched</button>
+<br />
+<button class="btn" type="button" (click)="clarityMarkAsTouched()">Clarity mark as touched</button>
+<br />
+<button class="btn" type="button" (click)="reset()">Reset</button>
+
+<form clrForm [formGroup]="exampleForm">
+  <clr-input-container>
+    <label>Field 1 label</label>
+    <input clrInput formControlName="sample" />
+
+    <clr-control-success>Successful</clr-control-success>
+    <clr-control-helper>Helper Message</clr-control-helper>
+    <clr-control-error>Field is required</clr-control-error>
+  </clr-input-container>
+</form>
+
 <h2>Reactive form</h2>
 <form [formGroup]="form">
   <clr-select-container>

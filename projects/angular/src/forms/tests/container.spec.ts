@@ -11,7 +11,7 @@ import { By } from '@angular/platform-browser';
 
 import { ClrIcon } from '../../icon';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { CONTROL_STATE } from '../common/if-control-state/if-control-state.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { ClrFormLayout, LayoutService } from '../common/providers/layout.service';
 import { MarkControlService } from '../common/providers/mark-control.service';
@@ -26,7 +26,7 @@ export function ContainerNoLabelSpec(testContainer, testControl, testComponent):
       TestBed.configureTestingModule({
         imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
         declarations: [testContainer, testControl, testComponent],
-        providers: [NgControl, NgControlService, IfControlStateService, LayoutService, MarkControlService],
+        providers: [NgControl, NgControlService, LayoutService, MarkControlService],
       });
       fixture = TestBed.createComponent(testComponent);
 
@@ -49,6 +49,7 @@ export function ContainerNoLabelSpec(testContainer, testControl, testComponent):
       expect(Array.prototype.filter.call(labels, label => label.textContent === '').length).toBe(0);
     });
 
+    // working with private `state` which is now removed
     it('should display helper text when both error and success text are not implemented', () => {
       fixture.detectChanges();
       expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
@@ -72,13 +73,7 @@ export function ReactiveSpec(testContainer, testControl, testComponent, wrapperC
 
 function fullSpec(description, testContainer, directives: any | any[], testComponent, wrapperClass) {
   describe(description, () => {
-    let fixture,
-      containerDE,
-      container,
-      containerEl,
-      ifControlStateService: IfControlStateService,
-      layoutService,
-      markControlService;
+    let fixture, containerDE, container, containerEl, layoutService, markControlService;
     if (!Array.isArray(directives)) {
       directives = [directives];
     }
@@ -93,7 +88,6 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
           MarkControlService,
           ControlIdService,
           DatalistIdService,
-          IfControlStateService,
         ],
       });
       fixture = TestBed.createComponent(testComponent);
@@ -101,12 +95,12 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       containerDE = fixture.debugElement.query(By.directive(testContainer));
       container = containerDE.componentInstance;
       containerEl = containerDE.nativeElement;
-      ifControlStateService = containerDE.injector.get(IfControlStateService);
       markControlService = containerDE.injector.get(MarkControlService);
       layoutService = containerDE.injector.get(LayoutService);
       fixture.detectChanges();
     });
 
+    // working with private `state` which is now removed
     function setValid(valid: boolean) {
       // NOTE The order of these two events should in theory be insignificant, but it's not.
       // The scenarios were additionally verified by manual testing in a patched Stackblitz demo:
@@ -121,7 +115,6 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     });
 
     it('injects the IfControlStateService and subscribes', () => {
-      expect(ifControlStateService).toBeTruthy();
       expect(container.subscriptions[0]).toBeTruthy();
     });
 

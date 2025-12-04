@@ -9,7 +9,6 @@ import { Directive, Optional } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { CONTROL_STATE, IfControlStateService } from './if-control-state.service';
 import { NgControlService } from '../providers/ng-control.service';
 
 @Directive()
@@ -19,25 +18,29 @@ export abstract class AbstractIfState {
   protected control: NgControl;
   protected additionalControls: NgControl[];
 
-  protected constructor(
-    @Optional() protected ifControlStateService: IfControlStateService,
-    @Optional() protected ngControlService: NgControlService
-  ) {
+  protected constructor(@Optional() protected ngControlService: NgControlService) {
     if (ngControlService) {
       this.subscriptions.push(
         ngControlService.controlChanges.subscribe(control => {
           this.control = control;
+          this.handleState(control.status);
+          this.subscriptions.push(
+            control.statusChanges.subscribe(status => {
+              this.handleState(status);
+            })
+          );
         }),
         ngControlService.additionalControlsChanges.subscribe(controls => {
           this.additionalControls = controls;
-        })
-      );
-    }
 
-    if (ifControlStateService) {
-      this.subscriptions.push(
-        ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
-          this.handleState(state);
+          this.additionalControls.forEach(control => {
+            this.handleState(control.status);
+            this.subscriptions.push(
+              control.statusChanges.subscribe(status => {
+                this.handleState(status);
+              })
+            );
+          });
         })
       );
     }
@@ -47,7 +50,7 @@ export abstract class AbstractIfState {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  protected handleState(_state: CONTROL_STATE): void {
+  protected handleState(_state: any): void {
     /* overwrite in implementation to handle status change */
   }
 }

@@ -20,7 +20,7 @@ export default function (): void {
     });
 
     it('should return no classes when no grid or invalid', function () {
-      expect(controlClassService.controlClass()).toBe('');
+      expect(controlClassService.controlClass('')).toBe('');
     });
 
     it('should return clr-error when invalid', function () {
