@@ -88,7 +88,7 @@ const ReactiveFormTemplate: StoryFn = args => ({
         <clr-control-error *clrIfError="'required'">Password is required</clr-control-error>
         <clr-control-error *clrIfError="'minlength'">Must be at least 8 characters</clr-control-error>
         <clr-control-error *clrIfError="'pattern'; error as error">
-          <ng-container [ngSwitch]="error.requiredPattern">
+          <ng-container [ngSwitch]="error?.requiredPattern">
             <ng-container *ngSwitchCase="patterns.alphaNumeric.toString()">
               Must contain only letters and numbers
             </ng-container>
