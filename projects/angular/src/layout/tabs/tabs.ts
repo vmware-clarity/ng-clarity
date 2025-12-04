@@ -276,7 +276,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   private setTabLinkElements() {
     this._tabLinkDirectives = this.tabs.map(tab => tab.tabLink);
     this.tabLinkElements = this._tabLinkDirectives.map(tab => tab.el.nativeElement);
-    if (this.tabsActions && this.tabsActions) {
+    if (this.tabsActions) {
       this.tabLinkElements.push(...this.tabsActions.map(action => action.nativeElement));
     }
   }
