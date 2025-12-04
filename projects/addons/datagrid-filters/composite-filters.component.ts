@@ -66,10 +66,7 @@ export class CompositeFiltersComponent implements OnInit {
   showHideFiltersLabel: string;
   showHideFiltersAriaLabel: string;
 
-  constructor(
-    public filterStrings: DatagridFiltersStrings,
-    private cdr: ChangeDetectorRef
-  ) {
+  constructor(public filterStrings: DatagridFiltersStrings, private cdr: ChangeDetectorRef) {
     this.showHideFiltersLabel = filterStrings.hideButtonLabel;
     this.showHideFiltersAriaLabel = filterStrings.hideButtonAriaLabel;
   }
