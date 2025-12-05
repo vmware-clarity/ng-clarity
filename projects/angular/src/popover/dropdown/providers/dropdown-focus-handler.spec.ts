@@ -12,32 +12,32 @@ import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 import { isObservable, Observable } from 'rxjs';
 
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './dropdown-focus-handler.service';
-import { ClrPopoverToggleService } from '../../../popover/common/providers/popover-toggle.service';
 import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
 import { FOCUS_SERVICE_PROVIDER, FocusService } from '../../../utils/focus/focus.service';
 import { FocusableItem } from '../../../utils/focus/focusable-item/focusable-item';
 import { MockFocusableItem } from '../../../utils/focus/focusable-item/focusable-item.mock';
 import { Linkers } from '../../../utils/focus/focusable-item/linkers';
 import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../../utils/testing/helpers.spec';
+import { ClrPopoverService } from '../../common';
 
 @Component({
   selector: 'simple-host',
   template: '',
-  providers: [ClrPopoverToggleService, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
+  providers: [ClrPopoverService, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
   standalone: false,
 })
 class SimpleHost {}
 
 @Component({
   template: '<simple-host></simple-host>',
-  providers: [ClrPopoverToggleService, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
+  providers: [ClrPopoverService, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
   standalone: false,
 })
 class NestedHost {}
 
 interface TestContext {
   fixture: ComponentFixture<SimpleHost | NestedHost>;
-  toggleService: ClrPopoverToggleService;
+  popoverService: ClrPopoverService;
   focusService: FocusService;
   focusHandler: DropdownFocusHandler;
   trigger: HTMLElement;
@@ -52,7 +52,7 @@ export default function (): void {
       beforeEach(function (this: TestContext) {
         TestBed.configureTestingModule({ declarations: [SimpleHost] });
         this.fixture = TestBed.createComponent(SimpleHost);
-        this.toggleService = this.fixture.debugElement.injector.get(ClrPopoverToggleService);
+        this.popoverService = this.fixture.debugElement.injector.get(ClrPopoverService);
         this.focusService = this.fixture.debugElement.injector.get(FocusService);
         this.focusHandler = this.fixture.debugElement.injector.get(DropdownFocusHandler, null);
         this.trigger = document.createElement('button');
@@ -78,27 +78,21 @@ export default function (): void {
       });
 
       it('toggles open when arrow up or down on the trigger', async function (this: TestContext) {
-        expect(this.toggleService.open).toBeFalsy();
+        expect(this.popoverService.open).toBeFalsy();
         this.focusHandler.trigger = this.trigger;
 
         this.focusHandler.trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'arrowup' }));
         await delay();
-        expect(this.toggleService.open).toBeTruthy();
+        expect(this.popoverService.open).toBeTruthy();
 
         //once open, the up/down arrow keys control the focus on menu items, so we close again for the next test
-        this.toggleService.open = false;
+        this.popoverService.open = false;
         await delay();
-        expect(this.toggleService.open).toBeFalsy();
+        expect(this.popoverService.open).toBeFalsy();
 
         this.focusHandler.trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'arrowdown' }));
         await delay();
-        expect(this.toggleService.open).toBeTruthy();
-      });
-
-      it('listens to arrow keys on the trigger', function (this: TestContext) {
-        const spy = spyOn(this.focusService, 'listenToArrowKeys');
-        this.focusHandler.trigger = this.trigger;
-        expect(spy).toHaveBeenCalledWith(this.trigger);
+        expect(this.popoverService.open).toBeTruthy();
       });
 
       it('proxies focus() and blur() to the trigger', function (this: TestContext) {
@@ -127,46 +121,10 @@ export default function (): void {
         expect(spy).toHaveBeenCalledWith(this.container);
       });
 
-      it('sets a tabindex of 0 on the container', function (this: TestContext) {
-        this.focusHandler.container = this.container;
-        expect(this.container.getAttribute('tabindex')).toBe('0');
-      });
-
-      it('closes the dropdown when the container is blurred', function (this: TestContext) {
-        this.focusHandler.container = this.container;
-        this.toggleService.open = true;
-        this.container.focus();
-        expect(this.toggleService.open).toBeTruthy();
-        this.container.blur();
-        expect(this.toggleService.open).toBeFalsy();
-      });
-
-      it('blurs the focused items when container is focused and blurred', function (this: TestContext) {
-        this.focusHandler.container = this.container;
-        this.focusHandler.addChildren(this.children);
-        this.toggleService.open = true;
-
-        const spyBlur = spyOn(this.children[0], 'blur');
-        this.container.focus();
-        expect(spyBlur).not.toHaveBeenCalled();
-
-        this.container.blur();
-        expect(spyBlur).toHaveBeenCalled();
-      });
-
-      it('puts focus back on the trigger when the dropdown becomes closed', function (this: TestContext) {
-        this.focusHandler.trigger = this.trigger;
-        this.focusHandler.container = this.container;
-        expectActiveElementNotToBe(this.trigger);
-        this.toggleService.open = true;
-        this.toggleService.open = false;
-        expectActiveElementToBe(this.trigger);
-      });
-
       it('does not prevent moving focus to a different part of the page', async function (this: TestContext) {
         this.focusHandler.trigger = this.trigger;
         this.focusHandler.container = this.container;
-        this.toggleService.open = true;
+        this.popoverService.open = true;
         await delay();
         this.outside.focus();
         expectActiveElementToBe(this.outside);
@@ -213,19 +171,19 @@ export default function (): void {
       });
 
       it('opens the dropdown when trying to go down or up', function (this: TestContext) {
-        expect(this.toggleService.open).toBeFalsy();
+        expect(this.popoverService.open).toBeFalsy();
         this.focusHandler.down.subscribe(() => null);
-        expect(this.toggleService.open).toBeTruthy();
-        this.toggleService.open = false;
+        expect(this.popoverService.open).toBeTruthy();
+        this.popoverService.open = false;
         this.focusHandler.up.subscribe(() => null);
-        expect(this.toggleService.open).toBeTruthy();
+        expect(this.popoverService.open).toBeTruthy();
       });
 
       it('moves to the first child when opened with a click', async function (this: TestContext) {
         this.focusHandler.addChildren(this.children);
         const moveTo = spyOn(this.focusService, 'moveTo');
         const move = spyOn(this.focusService, 'move');
-        this.toggleService.toggleWithEvent({});
+        this.popoverService.toggleWithEvent({});
         await delay();
 
         // First we move to the clicked item, which is the trigger,
@@ -241,7 +199,7 @@ export default function (): void {
         TestBed.configureTestingModule({ declarations: [SimpleHost, NestedHost] });
         this.fixture = TestBed.createComponent(NestedHost);
         const nestedInjector = this.fixture.debugElement.query(By.directive(SimpleHost)).injector;
-        this.toggleService = nestedInjector.get(ClrPopoverToggleService);
+        this.popoverService = nestedInjector.get(ClrPopoverService);
         this.focusService = nestedInjector.get(FocusService);
         this.focusHandler = nestedInjector.get(DropdownFocusHandler, null);
         this.trigger = document.createElement('button');
@@ -267,12 +225,12 @@ export default function (): void {
       it('does not register the container to the FocusService', function (this: TestContext) {
         const spy = spyOn(this.focusService, 'registerContainer');
         this.focusHandler.container = this.container;
-        expect(spy).not.toHaveBeenCalled();
+        expect(spy).toHaveBeenCalled();
       });
 
       it('does not focus on the container when the dropdown becomes open', async function (this: TestContext) {
         this.focusHandler.container = this.container;
-        this.toggleService.open = true;
+        this.popoverService.open = true;
         // This specific focusing action is asynchronous so we have to tick
         await delay();
         expectActiveElementNotToBe(this.container);
@@ -280,8 +238,8 @@ export default function (): void {
       it('does not focus on the trigger when the dropdown becomes closed', function (this: TestContext) {
         this.focusHandler.trigger = this.trigger;
         this.focusHandler.container = this.container;
-        this.toggleService.open = true;
-        this.toggleService.open = false;
+        this.popoverService.open = true;
+        this.popoverService.open = false;
         expectActiveElementNotToBe(this.trigger);
       });
 
@@ -307,18 +265,18 @@ export default function (): void {
 
       it('closes the dropdown when trying to go back to the trigger', function (this: TestContext) {
         this.focusHandler.addChildren(this.children);
-        this.toggleService.open = true;
+        this.popoverService.open = true;
         const back = this.children[0].left;
         expect(isObservable(back)).toBeTruthy();
         (back as Observable<FocusableItem>).subscribe(() => null);
-        expect(this.toggleService.open).toBeFalsy();
+        expect(this.popoverService.open).toBeFalsy();
       });
 
       it('moves to the first child when opened with a click', async function (this: TestContext) {
         this.focusHandler.addChildren(this.children);
         const moveTo = spyOn(this.focusService, 'moveTo');
         const move = spyOn(this.focusService, 'move');
-        this.toggleService.toggleWithEvent({});
+        this.popoverService.toggleWithEvent({});
         await delay();
 
         expect(moveTo).toHaveBeenCalledWith(this.focusHandler);

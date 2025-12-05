@@ -13,7 +13,7 @@ import { By } from '@angular/platform-browser';
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';
 import { ClrIcon } from '../../icon';
-import { ClrPopoverContent } from '../../popover/common/popover-content';
+import { ClrPopoverContent } from '../../popover';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 import { ComboboxContainerService } from './providers/combobox-container.service';
@@ -70,18 +70,8 @@ class ReactiveTest {
 export default function (): void {
   describe('ClrComboboxContainer', () => {
     ContainerNoLabelSpec(ClrComboboxContainer, [ClrCombobox], NoLabelTest);
-    TemplateDrivenSpec(
-      ClrComboboxContainer,
-      [ClrCombobox, ClrPopoverContent],
-      TemplateDrivenTest,
-      '.clr-control-container clr-combobox'
-    );
-    ReactiveSpec(
-      ClrComboboxContainer,
-      [ClrCombobox, ClrPopoverContent],
-      TemplateDrivenTest,
-      '.clr-control-container clr-combobox'
-    );
+    TemplateDrivenSpec(ClrComboboxContainer, [ClrCombobox], TemplateDrivenTest, '.clr-control-container clr-combobox');
+    ReactiveSpec(ClrComboboxContainer, [ClrCombobox], TemplateDrivenTest, '.clr-control-container clr-combobox');
 
     describe('label offset', () => {
       let fixture, containerDE;
@@ -89,8 +79,8 @@ export default function (): void {
 
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
-          declarations: [ClrComboboxContainer, ClrCombobox, ReactiveTest, ClrPopoverContent, TemplateDrivenTest],
+          imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ClrPopoverContent],
+          declarations: [ClrComboboxContainer, ClrCombobox, ReactiveTest, TemplateDrivenTest],
         });
         fixture = TestBed.createComponent(TemplateDrivenTest);
         containerDE = fixture.debugElement.query(By.directive(ClrComboboxContainer));

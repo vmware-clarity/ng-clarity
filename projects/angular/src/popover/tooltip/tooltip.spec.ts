@@ -15,7 +15,7 @@ import { spec, TestContext } from '../../utils/testing/helpers.spec';
 @Component({
   template: `
     <clr-tooltip>
-      <span class="tooltip-anchor">Hello</span>
+      <span clrTooltipTrigger>Hello</span>
       <clr-tooltip-content>
         <span>World</span>
       </clr-tooltip-content>

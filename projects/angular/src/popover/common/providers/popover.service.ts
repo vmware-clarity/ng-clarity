@@ -5,22 +5,47 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ElementRef, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { preventArrowKeyScroll } from '../../../utils/focus/key-focus/util';
+import { ClrPopoverPosition, ClrPopoverType } from '../utils/popover-positions';
 
 // Popovers might need to ignore click events on an element
 // (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
 
 @Injectable()
-export class ClrPopoverToggleService {
+export class ClrPopoverService {
+  outsideClickClose = true;
+  scrollToClose = false;
+  anchorElementRef: ElementRef<HTMLElement>;
+  closeButtonRef: ElementRef;
+  defaultPosition: ClrPopoverPosition;
+  panelClass: string[] = [];
+  popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
+  availablePositions: ConnectedPosition[] = [];
+  hasBackdrop: false;
+  overlayRef: OverlayRef;
+  overlay: Overlay;
+  noFocus: boolean;
+  private _position: ClrPopoverPosition;
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;
   private _openEventChange = new Subject<Event>();
+  private _positionChange = new Subject<string>();
   private _popoverAligned = new Subject<HTMLElement>();
   private _popoverVisible = new Subject<boolean>();
+
+  get position(): ClrPopoverPosition {
+    return this._position;
+  }
+  set position(position: ClrPopoverPosition) {
+    this._position = position;
+
+    this._positionChange.next(position);
+  }
 
   get openChange(): Observable<boolean> {
     return this._openChange.asObservable();
@@ -58,6 +83,10 @@ export class ClrPopoverToggleService {
     return this._popoverAligned.asObservable();
   }
 
+  getPositionChange(): Observable<string> {
+    return this._positionChange.asObservable();
+  }
+
   getEventChange(): Observable<Event> {
     return this._openEventChange.asObservable();
   }
@@ -79,5 +108,17 @@ export class ClrPopoverToggleService {
 
   popoverAlignedEmit(popoverNode: HTMLElement) {
     this._popoverAligned.next(popoverNode);
+  }
+
+  setCloseFocus(): void {
+    this.closeButtonRef.nativeElement?.focus();
+  }
+
+  setOpenedButtonFocus(): void {
+    if (this.noFocus) {
+      return;
+    }
+
+    this.anchorElementRef?.nativeElement?.focus({ preventScroll: true });
   }
 }

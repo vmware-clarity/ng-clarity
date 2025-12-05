@@ -19,7 +19,7 @@
 <h5>Modal</h5>
 <clr-modal [(clrModalOpen)]="open">
   <h3 class="modal-title">I have a nice title</h3>
-  <div class="modal-body">
+  <div class="modal-body" style="overflow-x: auto; width: 500px" cdkScrollable>
     <z-index-various-content></z-index-various-content>
   </div>
   <div class="modal-footer">
