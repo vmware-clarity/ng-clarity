@@ -10,6 +10,7 @@ import { argsToTemplate, moduleMetadata, StoryFn, StoryObj } from '@storybook/an
 
 import { StorybookPopoverComponent } from './storybook-popover.component';
 import {
+  ClrPopoverPosition,
   ClrPopoverType,
   SIGNPOST_POSITIONS,
   TOOLTIP_POSITIONS,
@@ -93,11 +94,11 @@ export const Popover: StoryObj = {
     scrollToClose: false,
     outsideClickToClose: true,
     type: ClrPopoverType.DROPDOWN,
-    defaultPosition: 'bottom-right',
-    signpostPosition: 'bottom-right',
-    tooltipPosition: 'right',
-    dropdownPosition: 'bottom-left',
-    scrollPositions: ['bottom-left', 'right-bottom', 'top-left'],
+    defaultPosition: ClrPopoverPosition.BOTTOM_RIGHT,
+    signpostPosition: ClrPopoverPosition.BOTTOM_RIGHT,
+    tooltipPosition: ClrPopoverPosition.RIGHT,
+    dropdownPosition: ClrPopoverPosition.BOTTOM_LEFT,
+    scrollPositions: [ClrPopoverPosition.BOTTOM_LEFT, ClrPopoverPosition.RIGHT_BOTTOM, ClrPopoverPosition.TOP_LEFT],
   },
 };
 

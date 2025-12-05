@@ -45,6 +45,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private elementRef: ElementRef;
 
   private subscriptions: Subscription[] = [];
+  private openCloseSubscription: Subscription;
   private domPortal: DomPortal;
   private preferredPositionIsSet = false;
   private preferredPosition: ConnectedPosition = {
@@ -54,6 +55,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     overlayY: 'top',
   };
   private scrollableParents: HTMLElement[];
+  private intersectionObserver: IntersectionObserver;
 
   constructor(
     element: ElementRef,
@@ -119,28 +121,20 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     if (this.popoverService.open) {
       this.showOverlay();
-
-      // this.popoverService.anchorElementRef
-      //   ? this.showOverlay()
-      //   : setTimeout(() => {
-      //       this.showOverlay();
-      //     }, 0);
     }
 
-    this.subscriptions.push(
-      this.popoverService.openChange.subscribe(change => {
-        if (change) {
-          this.showOverlay();
-        } else {
-          this.closePopover();
-        }
-      })
-    );
+    this.openCloseSubscription = this.popoverService.openChange.subscribe(change => {
+      if (change) {
+        this.showOverlay();
+      } else {
+        this.closePopover();
+      }
+    });
   }
 
   ngOnDestroy() {
     this.removeOverlay();
-    this.subscriptions.forEach(s => s.unsubscribe());
+    this.openCloseSubscription?.unsubscribe();
   }
 
   setPreferredPosition() {
@@ -179,27 +173,23 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
           this.popoverService.overlayRef.updatePosition();
         }
       }),
-      positionStrategy?.positionChanges?.subscribe(change => {
-        //Close the overlay when the Origin is clipped
-        if (change.scrollableViewProperties.isOriginClipped) {
-          // Running the zone is essential to invoke HostBinding
-          this.zone.run(() => {
-            this.popoverService.open = false;
-          });
-        }
-      })
-    );
-
-    this.subscriptions.push(
+      // handles cdkScrollable positionChanges. We don't need it Since IntersectionObserver is running.
+      // commenting for now
+      // positionStrategy?.positionChanges?.subscribe(change => {
+      //   // Close the overlay when the Origin is clipped
+      //   if (change.scrollableViewProperties.isOriginClipped) {
+      //     // Running the zone is essential to invoke HostBinding
+      //     this.zone.run(() => {
+      //       this.popoverService.open = false;
+      //     });
+      //   }
+      // }),
       overlay.keydownEvents().subscribe(event => {
         if (event && event.key && normalizeKey(event.key) === Keys.Escape && !hasModifierKey(event)) {
           event.preventDefault();
           this.closePopover();
         }
-      })
-    );
-
-    this.subscriptions.push(
+      }),
       overlay.outsidePointerEvents().subscribe(event => {
         // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
         if (this.elementRef && this.elementRef.nativeElement.contains(event.target)) {
@@ -291,6 +281,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.popoverService.overlayRef.attach(this.domPortal);
     }
 
+    this.setupIntersectionObserver();
+
     setTimeout(() => {
       this.popoverService.popoverVisibleEmit(true);
 
@@ -301,6 +293,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private removeOverlay(): void {
+    this.subscriptions.forEach(s => s.unsubscribe());
+    this.subscriptions = [];
+
     if (this.popoverService.overlayRef?.hasAttached()) {
       this.popoverService.overlayRef.detach();
       this.popoverService.overlayRef.dispose();
@@ -321,6 +316,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     }
     this.view = null;
     this.scrollableParents = null;
+
+    this.intersectionObserver?.disconnect();
+    this.intersectionObserver = null;
 
     this.popoverService.popoverVisibleEmit(false);
   }
@@ -363,6 +361,32 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     return this.getScrollParent(el.parentNode as HTMLElement, axis);
   }
 
+  /**
+   * Uses IntersectionObserver to detect when the anchor leaves the screen.
+   * This handles the "Close on Scroll" logic much cheaper than getBoundingClientRect.
+   */
+  private setupIntersectionObserver() {
+    if (!this.popoverService.anchorElementRef || this.intersectionObserver) {
+      return;
+    }
+
+    this.intersectionObserver = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          // If the anchor is no longer visible (scrolled out of view)
+          if (!entry.isIntersecting && this.popoverService.open) {
+            this.zone.run(() => this.closePopover());
+          } else {
+            this.popoverService.overlayRef.updatePosition();
+          }
+        });
+      },
+      { root: null, threshold: 0.8 }
+    );
+
+    this.intersectionObserver.observe(this.popoverService.anchorElementRef.nativeElement);
+  }
+
   //Align the popover on scrolling
   private listenToMouseEvents() {
     this.scrollableParents.forEach(parent => {
@@ -375,25 +399,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
           }
 
           if (this.popoverService.overlayRef) {
-            if (this.elementIsVisibleInViewport(this.popoverService.anchorElementRef?.nativeElement)) {
-              this.popoverService.overlayRef.updatePosition();
-            } else {
-              this.closePopover();
-            }
+            this.popoverService.overlayRef.updatePosition();
           }
         })
       );
     });
-  }
-
-  //Check if element is in ViewPort
-  private elementIsVisibleInViewport(el, partiallyVisible = false) {
-    const { top, left, bottom, right } = el.getBoundingClientRect();
-    const { innerHeight, innerWidth } = window;
-
-    return partiallyVisible
-      ? ((top > 0 && top < innerHeight) || (bottom > 0 && bottom < innerHeight)) &&
-          ((left > 0 && left < innerWidth) || (right > 0 && right < innerWidth))
-      : top >= 0 && left >= 0 && bottom <= innerHeight && right <= innerWidth;
   }
 }

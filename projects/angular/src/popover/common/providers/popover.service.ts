@@ -18,7 +18,7 @@ import { ClrPopoverPosition, ClrPopoverType } from '../utils/popover-positions';
 @Injectable()
 export class ClrPopoverService {
   outsideClickClose = true;
-  scrollToClose = true;
+  scrollToClose = false;
   anchorElementRef: ElementRef<HTMLElement>;
   closeButtonRef: ElementRef;
   defaultPosition: ClrPopoverPosition;

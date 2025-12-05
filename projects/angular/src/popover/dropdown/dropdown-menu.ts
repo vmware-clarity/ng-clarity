@@ -11,7 +11,6 @@ import {
   ContentChildren,
   ElementRef,
   Inject,
-  Injector,
   Input,
   OnDestroy,
   Optional,
@@ -44,7 +43,6 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
   @ContentChildren(FocusableItem) items: QueryList<FocusableItem>;
 
   constructor(
-    injector: Injector,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef<HTMLElement>,
@@ -59,7 +57,7 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
       throw new Error('clr-dropdown-menu should only be used inside of a clr-dropdown');
     }
 
-    popoverService.scrollToClose = true;
+    // popoverService.scrollToClose = true;
 
     popoverService.popoverType = ClrPopoverType.DROPDOWN;
     DROPDOWN_POSITIONS.forEach(position => {
