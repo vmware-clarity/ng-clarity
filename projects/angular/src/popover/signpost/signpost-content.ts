@@ -119,7 +119,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
    * I think of it as follows for 'top-left' -> CONTAINER_SIDE-SIDE_POSITION. In this case CONTAINER_SIDE is 'top'
    * meaning the top of the trigger icon (above the icon that hides/shows) the ClrSignpostContent. And, SIDE_POSITION
    * is 'left' meaning two things: 1) the ClrSignpostContent container extends to the left and 2) the 'arrow/pointer'
-   * linking the SingpostContent to the trigger points down at the horizontal center of the trigger icon.
+   * linking the SignpostContent to the trigger points down at the horizontal center of the trigger icon.
    *
    * @param newPosition
    */

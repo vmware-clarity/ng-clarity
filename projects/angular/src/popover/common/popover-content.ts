@@ -160,7 +160,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         // the scrolling behaviour is controlled by this popover content directive
         scrollStrategy: this.overlay.scrollStrategies.noop(),
         panelClass: this.popoverService.panelClass,
-        hasBackdrop: this.popoverService.hasBackdrop,
+        hasBackdrop: false,
       })
     );
 
@@ -248,7 +248,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       document.activeElement === this.popoverService.anchorElementRef?.nativeElement;
 
     if (shouldFocusTrigger) {
-      this.popoverService.setOpenedButtonFocus();
+      this.popoverService.focusAnchor();
     }
   }
 

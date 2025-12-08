@@ -25,7 +25,6 @@ export class ClrPopoverService {
   panelClass: string[] = [];
   popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
   availablePositions: ConnectedPosition[] = [];
-  hasBackdrop: false;
   overlayRef: OverlayRef;
   overlay: Overlay;
   noFocus: boolean;
@@ -110,11 +109,11 @@ export class ClrPopoverService {
     this._popoverAligned.next(popoverNode);
   }
 
-  setCloseFocus(): void {
+  focusCloseButton(): void {
     this.closeButtonRef.nativeElement?.focus();
   }
 
-  setOpenedButtonFocus(): void {
+  focusAnchor(): void {
     if (this.noFocus) {
       return;
     }
