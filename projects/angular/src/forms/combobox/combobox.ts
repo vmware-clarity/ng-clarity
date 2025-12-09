@@ -155,7 +155,7 @@ export class ClrCombobox<T>
   }
 
   // Override the id of WrappedFormControl, as we want to move it to the embedded input.
-  // Otherwise the label/component connection does not work and screen readers do not read the label.
+  // Otherwise, the label/component connection does not work and screen readers do not read the label.
   override get id() {
     return this.controlIdService.id + '-combobox';
   }
@@ -264,8 +264,11 @@ export class ClrCombobox<T>
 
   loadingStateChange(state: ClrLoadingState): void {
     this.optionSelectionService.loading = state === ClrLoadingState.LOADING;
-    // this.positionService.realign();
+
     if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.popoverService?.updatePositionEmit(true);
+      });
       this.focusFirstActive();
     }
   }
@@ -377,20 +380,6 @@ export class ClrCombobox<T>
           this.searchText = '';
         } else {
           this.searchText = this.getDisplayNames(this.optionSelectionService.selectionModel.model)[0] || '';
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.popoverService.popoverAligned.subscribe(popoverNode => {
-        // When used outside a combobox container
-        if (!this.containerService) {
-          return;
-        }
-        const popover: HTMLElement = popoverNode as HTMLElement;
-        // Update position if popover hides the label
-        if (popover.getBoundingClientRect().top < this.el.nativeElement.getBoundingClientRect().top) {
-          this.renderer.setStyle(popoverNode, 'top', `${popover.offsetTop + this.containerService.labelOffset}px`);
         }
       })
     );

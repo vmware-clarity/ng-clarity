@@ -4267,10 +4267,6 @@ export class ClrPopoverService {
     // (undocumented)
     panelClass: string[];
     // (undocumented)
-    get popoverAligned(): Observable<HTMLElement>;
-    // (undocumented)
-    popoverAlignedEmit(popoverNode: HTMLElement): void;
-    // (undocumented)
     popoverType: ClrPopoverType;
     // (undocumented)
     get popoverVisible(): Observable<boolean>;
@@ -4282,6 +4278,10 @@ export class ClrPopoverService {
     // (undocumented)
     scrollToClose: boolean;
     toggleWithEvent(event: any): void;
+    // (undocumented)
+    updatePositionEmit(status: boolean): void;
+    // (undocumented)
+    updatePositonChange(): Observable<boolean>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverService, never>;
     // (undocumented)

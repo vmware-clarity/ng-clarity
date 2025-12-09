@@ -151,12 +151,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private _createOverlayRef(): OverlayRef {
-    const positionStrategy = this.getPositionStrategy();
-
     const overlay = this.overlay.create(
       new OverlayConfig({
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
-        positionStrategy: positionStrategy,
+        positionStrategy: this.getPositionStrategy(),
         // the scrolling behaviour is controlled by this popover content directive
         scrollStrategy: this.overlay.scrollStrategies.noop(),
         panelClass: this.popoverService.panelClass,
@@ -165,13 +163,11 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     );
 
     this.subscriptions.push(
+      this.popoverService.updatePositonChange().subscribe(() => {
+        this.updatePosition();
+      }),
       this.popoverService.getPositionChange().subscribe(() => {
-        if (this.popoverService.overlayRef) {
-          const strategy = this.getPositionStrategy();
-
-          this.popoverService.overlayRef.updatePositionStrategy(strategy);
-          this.popoverService.overlayRef.updatePosition();
-        }
+        this.updatePosition();
       }),
       // handles cdkScrollable positionChanges. We don't need it Since IntersectionObserver is running.
       // commenting for now
@@ -214,6 +210,13 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     );
 
     return overlay;
+  }
+
+  private updatePosition() {
+    if (this.popoverService.overlayRef) {
+      this.popoverService.overlayRef.updatePositionStrategy(this.getPositionStrategy());
+      this.popoverService.overlayRef.updatePosition();
+    }
   }
 
   private getPositionStrategy() {
@@ -376,8 +379,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
           // If the anchor is no longer visible (scrolled out of view)
           if (!entry.isIntersecting && this.popoverService.open) {
             this.zone.run(() => this.closePopover());
-          } else {
-            this.popoverService.overlayRef.updatePosition();
           }
         });
       },

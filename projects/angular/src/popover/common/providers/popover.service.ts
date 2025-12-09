@@ -34,7 +34,7 @@ export class ClrPopoverService {
   private _openEvent: Event;
   private _openEventChange = new Subject<Event>();
   private _positionChange = new Subject<string>();
-  private _popoverAligned = new Subject<HTMLElement>();
+  private _positionUpdate = new Subject<boolean>();
   private _popoverVisible = new Subject<boolean>();
 
   get position(): ClrPopoverPosition {
@@ -78,8 +78,8 @@ export class ClrPopoverService {
     return this._openEvent;
   }
 
-  get popoverAligned(): Observable<HTMLElement> {
-    return this._popoverAligned.asObservable();
+  updatePositonChange(): Observable<boolean> {
+    return this._positionUpdate.asObservable();
   }
 
   getPositionChange(): Observable<string> {
@@ -105,8 +105,8 @@ export class ClrPopoverService {
     this._popoverVisible.next(visible);
   }
 
-  popoverAlignedEmit(popoverNode: HTMLElement) {
-    this._popoverAligned.next(popoverNode);
+  updatePositionEmit(status: boolean) {
+    this._positionUpdate.next(status);
   }
 
   focusCloseButton(): void {

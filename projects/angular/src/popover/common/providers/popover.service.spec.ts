@@ -49,19 +49,6 @@ export default function (): void {
         expect(eventObservable instanceof Observable).toBe(true);
       });
 
-      it('exposes an observable for the alignment events', function (this: TestContext) {
-        const alignedObservable: Observable<HTMLElement> = this.popoverService.popoverAligned;
-        expect(alignedObservable).toBeDefined();
-        expect(alignedObservable instanceof Observable).toBe(true);
-        let aligned = false;
-        const subscription = alignedObservable.subscribe(() => {
-          aligned = true;
-        });
-        this.popoverService.popoverAlignedEmit(null);
-        expect(aligned).toBeTrue();
-        subscription.unsubscribe();
-      });
-
       it('exposes an observable for the popover visible change events', function (this: TestContext) {
         const visibleObservable: Observable<boolean> = this.popoverService.popoverVisible;
         expect(visibleObservable).toBeDefined();
