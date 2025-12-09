@@ -2986,7 +2986,7 @@ export class ClrDropdownModule {
 
 // @public (undocumented)
 export class ClrDropdownTrigger {
-    constructor(dropdown: ClrDropdown, popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler, zone: NgZone);
+    constructor(dropdown: ClrDropdown, popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler);
     // (undocumented)
     get active(): boolean;
     // (undocumented)

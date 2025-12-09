@@ -26,7 +26,7 @@ import {
   ClrPopoverPosition,
   ClrPopoverType,
   DROPDOWN_POSITIONS,
-  mapPopoverKeyToPosition,
+  getConnectedPositions,
 } from '../common/utils/popover-positions';
 
 @Component({
@@ -60,9 +60,7 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     // popoverService.scrollToClose = true;
 
     popoverService.popoverType = ClrPopoverType.DROPDOWN;
-    DROPDOWN_POSITIONS.forEach(position => {
-      popoverService.availablePositions.push(mapPopoverKeyToPosition(position, popoverService.popoverType));
-    });
+    popoverService.availablePositions = getConnectedPositions(popoverService.popoverType);
 
     popoverService.position = nested ? ClrPopoverPosition.RIGHT_TOP : ClrPopoverPosition.BOTTOM_LEFT;
 
