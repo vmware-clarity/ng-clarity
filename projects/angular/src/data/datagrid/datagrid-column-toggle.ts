@@ -110,7 +110,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   ) {
     this.subscription = popoverService.openChange.subscribe(change => (this.openState = change));
 
-    popoverService.defaultPosition = this.popoverPosition;
     popoverService.position = this.popoverPosition;
 
     popoverService.panelClass.push('clr-popover-content');

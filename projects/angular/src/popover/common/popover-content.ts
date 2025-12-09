@@ -41,6 +41,8 @@ import { normalizeKey } from '../../utils/focus/key-focus/util';
   selector: '[clrPopoverContent]',
 })
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
+  private _outsideClickClose = true;
+  private _scrollToClose = false;
   private view: EmbeddedViewRef<void>;
   private elementRef: ElementRef;
 
@@ -69,7 +71,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     private zone: NgZone
   ) {
     popoverService.panelClass.push('clr-popover-content');
-    popoverService.defaultPosition = ClrPopoverPosition.BOTTOM_LEFT;
     popoverService.overlay = overlay;
 
     overlayContainer.getContainerElement().classList.add('clr-container-element');
@@ -87,11 +88,12 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   @Input('clrPopoverContentAt')
   set contentAt(position: string | ClrPopoverPosition | ConnectedPosition) {
     if (typeof position === 'string') {
-      const posIndex = Object.values(ClrPopoverPosition).indexOf(position as ClrPopoverPosition);
+      if (!position || Object.values(ClrPopoverPosition).indexOf(position as ClrPopoverPosition) === -1) {
+        return;
+      }
 
       // set the popover values based on menu position
-      this.popoverService.position =
-        posIndex > -1 ? (position as ClrPopoverPosition) : this.popoverService.defaultPosition;
+      this.popoverService.position = position as ClrPopoverPosition;
     } else {
       this.preferredPositionIsSet = true;
       this.preferredPosition = position;
@@ -109,13 +111,19 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   @Input('clrPopoverContentOutsideClickToClose')
+  get outsideClickClose() {
+    return this._outsideClickClose;
+  }
   set outsideClickClose(clickToClose: boolean) {
-    this.popoverService.outsideClickClose = !!clickToClose;
+    this._outsideClickClose = !!clickToClose;
   }
 
   @Input('clrPopoverContentScrollToClose')
+  get scrollToClose() {
+    return this._scrollToClose;
+  }
   set scrollToClose(scrollToClose: boolean) {
-    this.popoverService.scrollToClose = !!scrollToClose;
+    this._scrollToClose = !!scrollToClose;
   }
 
   ngAfterViewInit() {
@@ -142,12 +150,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    // Set default position to "top-right", if position is not available in the map
-    const positionKey = this.popoverService.position
-      ? this.popoverService.position
-      : this.popoverService.defaultPosition;
-
-    this.preferredPosition = mapPopoverKeyToPosition(positionKey, this.popoverService.popoverType);
+    // Set default position to "bottom-left", if position is not available in the map
+    this.preferredPosition = mapPopoverKeyToPosition(this.popoverService.position, this.popoverService.popoverType);
   }
 
   private _createOverlayRef(): OverlayRef {
@@ -203,7 +207,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
           event.stopPropagation();
         }
 
-        if (this.popoverService.outsideClickClose || isToggleButton) {
+        if (this._outsideClickClose || isToggleButton) {
           this.closePopover();
         }
       })
@@ -247,8 +251,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.popoverService.open = false;
 
     const shouldFocusTrigger =
-      document.activeElement === document.body ||
-      document.activeElement === this.popoverService.anchorElementRef?.nativeElement;
+      this.popoverService.popoverType !== ClrPopoverType.TOOLTIP &&
+      (document.activeElement === document.body ||
+        document.activeElement === this.popoverService.anchorElementRef?.nativeElement);
 
     if (shouldFocusTrigger) {
       this.popoverService.focusAnchor();
@@ -393,7 +398,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.scrollableParents.forEach(parent => {
       this.subscriptions.push(
         fromEvent(parent, 'scroll').subscribe(() => {
-          if (this.popoverService.scrollToClose) {
+          if (this._scrollToClose) {
             this.closePopover();
 
             return;

@@ -112,17 +112,17 @@ export default function (): void {
       });
 
       it('binds to [clrPopoverContentOutsideClickToClose]', function (this: Context) {
-        expect(this.popoverService.outsideClickClose).toBe(true);
+        expect(this.testComponent.content.outsideClickClose).toBe(true);
         this.testComponent.closeClick = false;
         this.fixture.detectChanges();
-        expect(this.popoverService.outsideClickClose).toBe(false);
+        expect(this.testComponent.content.outsideClickClose).toBe(false);
       });
 
       it('binds to [clrPopoverContentScrollToClose]', function (this: Context) {
-        expect(this.testComponent.closeScroll).toBe(this.popoverService.scrollToClose);
+        expect(this.testComponent.closeScroll).toBe(this.testComponent.content.scrollToClose);
         this.testComponent.closeScroll = false;
         this.fixture.detectChanges();
-        expect(this.popoverService.scrollToClose).toBe(false);
+        expect(this.testComponent.content.scrollToClose).toBe(false);
       });
     });
 

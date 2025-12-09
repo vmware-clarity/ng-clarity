@@ -69,11 +69,18 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
 
   @Input('clrPosition')
   set position(position: string | ClrPopoverPosition) {
+    if (!position) {
+      return;
+    }
+
     const posIndex = DROPDOWN_POSITIONS.indexOf(position as ClrPopoverPosition);
 
+    if (posIndex === -1) {
+      return;
+    }
+
     // set the popover values based on menu position
-    this.popoverService.position =
-      position && posIndex > -1 ? DROPDOWN_POSITIONS[posIndex] : this.popoverService.defaultPosition;
+    this.popoverService.position = DROPDOWN_POSITIONS[posIndex];
   }
 
   ngAfterContentInit() {

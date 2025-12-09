@@ -89,7 +89,6 @@ export class ClrCombobox<T>
 
   invalid = false;
   focused = false;
-  focusedPill: any;
 
   popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
 

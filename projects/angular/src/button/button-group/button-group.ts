@@ -66,7 +66,7 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     private destroy$: ClrDestroyService,
     private focusHandler: ButtonGroupFocusHandler
   ) {
-    popoverService.defaultPosition = this._menuPosition;
+    popoverService.position = this._menuPosition;
 
     popoverService.popoverType = ClrPopoverType.DROPDOWN;
 
@@ -78,8 +78,17 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     return this._menuPosition;
   }
   set menuPosition(pos: ClrPopoverPosition | string) {
+    if (!pos) {
+      return;
+    }
+
     const posIndex = DROPDOWN_POSITIONS.indexOf(pos as ClrPopoverPosition);
-    this._menuPosition = pos && posIndex > -1 ? DROPDOWN_POSITIONS[posIndex] : this.popoverService.defaultPosition;
+
+    if (posIndex === -1) {
+      return;
+    }
+
+    this._menuPosition = DROPDOWN_POSITIONS[posIndex];
   }
 
   get open() {

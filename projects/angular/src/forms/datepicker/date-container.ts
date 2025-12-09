@@ -164,10 +164,17 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
 
   @Input('clrPosition')
   set clrPosition(position: string | ClrPopoverPosition) {
+    if (!position) {
+      return;
+    }
+
     const posIndex = DROPDOWN_POSITIONS.indexOf(position as ClrPopoverPosition);
 
-    this.viewManagerService.position =
-      position && posIndex > -1 ? DROPDOWN_POSITIONS[posIndex] : this.popoverService.defaultPosition;
+    if (posIndex === -1) {
+      return;
+    }
+
+    this.viewManagerService.position = DROPDOWN_POSITIONS[posIndex];
   }
 
   @Input()

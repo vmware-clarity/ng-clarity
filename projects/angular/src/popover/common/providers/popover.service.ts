@@ -17,18 +17,15 @@ import { ClrPopoverPosition, ClrPopoverType } from '../utils/popover-positions';
 
 @Injectable()
 export class ClrPopoverService {
-  outsideClickClose = true;
   scrollToClose = false;
   anchorElementRef: ElementRef<HTMLElement>;
   closeButtonRef: ElementRef;
-  defaultPosition: ClrPopoverPosition;
   panelClass: string[] = [];
   popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
   availablePositions: ConnectedPosition[] = [];
   overlayRef: OverlayRef;
   overlay: Overlay;
-  noFocus: boolean;
-  private _position: ClrPopoverPosition;
+  private _position = ClrPopoverPosition.BOTTOM_LEFT;
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;
@@ -114,10 +111,6 @@ export class ClrPopoverService {
   }
 
   focusAnchor(): void {
-    if (this.noFocus) {
-      return;
-    }
-
     this.anchorElementRef?.nativeElement?.focus({ preventScroll: true });
   }
 }

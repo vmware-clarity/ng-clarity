@@ -5,17 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  Inject,
-  Injector,
-  Input,
-  OnInit,
-  Optional,
-  Renderer2,
-} from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, Input, OnInit, Optional, Renderer2 } from '@angular/core';
 
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverContent, ClrPopoverService } from '../common';
@@ -52,7 +42,6 @@ export class ClrTooltipContent implements OnInit {
   private _size: string;
 
   constructor(
-    injector: Injector,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef<HTMLElement>,
@@ -60,12 +49,14 @@ export class ClrTooltipContent implements OnInit {
     public el: ElementRef,
     private renderer: Renderer2,
     private popoverService: ClrPopoverService,
-    private tooltipMouseService: TooltipMouseService
+    private tooltipMouseService: TooltipMouseService,
+    popoverContent: ClrPopoverContent
   ) {
-    popoverService.scrollToClose = true;
     popoverService.panelClass.push('clr-tooltip-container');
     popoverService.popoverType = ClrPopoverType.TOOLTIP;
     popoverService.availablePositions = getConnectedPositions(popoverService.popoverType);
+
+    popoverContent.scrollToClose = true;
 
     if (!parentHost) {
       throw new Error('clr-tooltip-content should only be used inside of a clr-tooltip');

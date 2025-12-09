@@ -35,7 +35,6 @@ export class ClrTooltipTrigger {
     // The aria-described by comes from the id of content. It
     this.subs.push(tooltipIdService.id.subscribe(tooltipId => (this.ariaDescribedBy = tooltipId)));
     popoverService.anchorElementRef = element;
-    popoverService.noFocus = true;
   }
 
   ngOnDestroy() {
