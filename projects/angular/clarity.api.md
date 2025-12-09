@@ -1263,11 +1263,11 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     menu: ElementRef<HTMLElement>;
     // (undocumented)
     menuButtons: ClrButton[];
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverPosition$1" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ClrPopoverPosition" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    get menuPosition(): ClrPopoverPosition$1;
-    set menuPosition(pos: ClrPopoverPosition$1 | string);
+    get menuPosition(): ClrPopoverPosition;
+    set menuPosition(pos: ClrPopoverPosition | string);
     // (undocumented)
     menuToggle: ElementRef<HTMLElement>;
     ngAfterContentInit(): void;
@@ -1446,8 +1446,6 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     focused: boolean;
     // (undocumented)
-    focusedPill: any;
-    // (undocumented)
     focusFirstActive(): void;
     // (undocumented)
     getActiveDescendant(): string;
@@ -1494,7 +1492,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     placeholder: string;
     // (undocumented)
-    popoverPosition: ClrPopoverPosition$1;
+    popoverPosition: ClrPopoverPosition;
     // (undocumented)
     registerOnChange(onChange: any): void;
     // (undocumented)
@@ -1978,12 +1976,8 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     openChange: EventEmitter<boolean>;
     // (undocumented)
     popoverId: string;
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverType" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
-    popoverType: ClrPopoverType;
-    // (undocumented)
-    smartPosition: ClrPopoverPosition$1;
+    smartPosition: ClrPopoverPosition;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "buttonLabel": { "alias": "clrDgActionOverflowButtonLabel"; "required": false; }; "open": { "alias": "clrDgActionOverflowOpen"; "required": false; }; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
@@ -2120,7 +2114,9 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     // (undocumented)
     popoverId: string;
     // (undocumented)
-    popoverPosition: ClrPopoverPosition$1;
+    popoverPosition: ClrPopoverPosition;
+    // Warning: (ae-forgotten-export) The symbol "ClrPopoverType" needs to be exported by the entry point index.d.ts
+    //
     // (undocumented)
     popoverType: ClrPopoverType;
     // (undocumented)
@@ -2238,7 +2234,7 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     popoverId: string;
     // (undocumented)
-    popoverPosition: ClrPopoverPosition$1;
+    popoverPosition: ClrPopoverPosition;
     // (undocumented)
     popoverType: ClrPopoverType;
     // (undocumented)
@@ -2687,7 +2683,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     set actionButton(button: ElementRef<HTMLButtonElement>);
     // (undocumented)
-    set clrPosition(position: string | ClrPopoverPosition$1);
+    set clrPosition(position: string | ClrPopoverPosition);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -2715,7 +2711,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     get open(): boolean;
     // (undocumented)
-    get popoverPosition(): ClrPopoverPosition$1;
+    get popoverPosition(): ClrPopoverPosition;
     // (undocumented)
     protected popoverType: ClrPopoverType;
     // (undocumented)
@@ -2967,7 +2963,7 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    set position(position: string | ClrPopoverPosition$1);
+    set position(position: string | ClrPopoverPosition);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": { "alias": "clrPosition"; "required": false; }; }, {}, ["items"], ["*"], false, [{ directive: typeof ClrPopoverContent; inputs: {}; outputs: {}; }]>;
     // (undocumented)
@@ -4177,7 +4173,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     set availablePositions(positions: ConnectedPosition[]);
     // (undocumented)
-    set contentAt(position: string | ClrPopoverPosition$1 | ConnectedPosition);
+    set contentAt(position: string | ClrPopoverPosition | ConnectedPosition);
     // (undocumented)
     set contentType(type: ClrPopoverType);
     // (undocumented)
@@ -4187,8 +4183,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     set open(value: boolean);
     // (undocumented)
+    get outsideClickClose(): boolean;
     set outsideClickClose(clickToClose: boolean);
     // (undocumented)
+    get scrollToClose(): boolean;
     set scrollToClose(scrollToClose: boolean);
     // (undocumented)
     setPreferredPosition(): void;
@@ -4216,18 +4214,6 @@ export class ClrPopoverModule {
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof ClrDropdownModule, typeof ClrSignpostModule, typeof ClrTooltipModule]>;
 }
 
-// @public
-export interface ClrPopoverPosition {
-    // (undocumented)
-    anchor: ClrAlignment;
-    // (undocumented)
-    axis: ClrAxis;
-    // (undocumented)
-    content: ClrAlignment;
-    // (undocumented)
-    side: ClrSide;
-}
-
 // @public (undocumented)
 export class ClrPopoverService {
     // (undocumented)
@@ -4237,8 +4223,6 @@ export class ClrPopoverService {
     // (undocumented)
     closeButtonRef: ElementRef;
     // (undocumented)
-    defaultPosition: ClrPopoverPosition$1;
-    // (undocumented)
     focusAnchor(): void;
     // (undocumented)
     focusCloseButton(): void;
@@ -4246,8 +4230,6 @@ export class ClrPopoverService {
     getEventChange(): Observable<Event>;
     // (undocumented)
     getPositionChange(): Observable<string>;
-    // (undocumented)
-    noFocus: boolean;
     // (undocumented)
     get open(): boolean;
     set open(value: boolean);
@@ -4258,8 +4240,6 @@ export class ClrPopoverService {
     set openEvent(event: Event);
     // (undocumented)
     get originalEvent(): Event;
-    // (undocumented)
-    outsideClickClose: boolean;
     // (undocumented)
     overlay: Overlay;
     // (undocumented)
@@ -4273,8 +4253,8 @@ export class ClrPopoverService {
     // (undocumented)
     popoverVisibleEmit(visible: boolean): void;
     // (undocumented)
-    get position(): ClrPopoverPosition$1;
-    set position(position: ClrPopoverPosition$1);
+    get position(): ClrPopoverPosition;
+    set position(position: ClrPopoverPosition);
     // (undocumented)
     scrollToClose: boolean;
     toggleWithEvent(event: any): void;
@@ -4642,8 +4622,8 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
-    get position(): string | ClrPopoverPosition$1;
-    set position(position: string | ClrPopoverPosition$1);
+    get position(): string | ClrPopoverPosition;
+    set position(position: string | ClrPopoverPosition);
     // (undocumented)
     signpostCloseAriaLabel: string;
     // (undocumented)
@@ -5320,7 +5300,7 @@ export class ClrTooltip {
 export class ClrTooltipContent implements OnInit {
     // Warning: (ae-forgotten-export) The symbol "TooltipIdService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "TooltipMouseService" needs to be exported by the entry point index.d.ts
-    constructor(injector: Injector, parentHost: ElementRef<HTMLElement>, tooltipIdService: TooltipIdService, el: ElementRef, renderer: Renderer2, popoverService: ClrPopoverService, tooltipMouseService: TooltipMouseService);
+    constructor(parentHost: ElementRef<HTMLElement>, tooltipIdService: TooltipIdService, el: ElementRef, renderer: Renderer2, popoverService: ClrPopoverService, tooltipMouseService: TooltipMouseService, popoverContent: ClrPopoverContent);
     // (undocumented)
     el: ElementRef;
     // (undocumented)
@@ -5329,15 +5309,15 @@ export class ClrTooltipContent implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    get position(): string | ClrPopoverPosition$1;
-    set position(value: string | ClrPopoverPosition$1);
+    get position(): string | ClrPopoverPosition;
+    set position(value: string | ClrPopoverPosition);
     // (undocumented)
     get size(): string;
     set size(value: string);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltipContent, "clr-tooltip-content", never, { "id": { "alias": "id"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; "size": { "alias": "clrSize"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof ClrPopoverContent; inputs: {}; outputs: {}; }]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipContent, [null, { optional: true; }, null, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipContent, [{ optional: true; }, null, null, null, null, null, null]>;
 }
 
 // @public (undocumented)
