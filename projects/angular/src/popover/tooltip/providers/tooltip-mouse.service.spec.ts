@@ -20,8 +20,8 @@ export default function (): void {
       popoverService = new ClrPopoverService();
       mouseService = new TooltipMouseService(popoverService);
 
-      // 100 from default hideIfMouseOutTimerInMS + 1 MS extra time
-      waitTimeMS = mouseService.hideIfMouseOutTimerInMS + 1;
+      // 100 from default mouseOutDelay + 1 MS extra time
+      waitTimeMS = mouseService['mouseOutDelay'] + 1;
     });
 
     it('should show the tooltip when the mouse enters the trigger', () => {

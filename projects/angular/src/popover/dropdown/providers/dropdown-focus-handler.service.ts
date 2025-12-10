@@ -79,7 +79,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
       this.renderer.listen(el, 'keydown.shift.tab', event => this.popoverService.toggleWithEvent(event))
     );
 
-    // The root container is the only one we register to the focus service, others do not need focus
+    // All containers are registered to the focus service.
     this.focusService.registerContainer(el);
 
     if (this.parent) {
