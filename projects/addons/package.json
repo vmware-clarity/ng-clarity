@@ -25,7 +25,6 @@
     "@angular/forms": "^19",
     "@angular/platform-browser": "^19",
     "@angular/router": "^19",
-    "@cds/core": "^6.7.0",
     "@clr/angular": ">= 17.11.10",
     "rxjs": "^7.4.0"
   }

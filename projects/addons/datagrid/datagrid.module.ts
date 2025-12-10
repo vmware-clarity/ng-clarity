@@ -11,17 +11,16 @@ import { OverlayModule as CdkOverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule, Optional, SkipSelf, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ClarityIcons, dragHandleIcon } from '@cds/core/icon';
 import { AppfxA11yModule } from '@clr/addons/a11y';
 import { AppfxDatagridFiltersModule } from '@clr/addons/datagrid-filters';
 import {
   ClrCheckboxModule,
   ClrDatagridModule,
   ClrDropdownModule,
-  ClrIconModule,
   ClrInputModule,
   ClrLoadingModule,
 } from '@clr/angular';
+import { ClarityIcons, ClrIcon, dragHandleIcon } from '@clr/angular';
 
 import { DatagridActionBarDropdownRepositionDirective } from './addons/action-bar/datagrid-action-bar-dropdown-reposition.directive';
 import { DatagridActionBarComponent } from './addons/action-bar/datagrid-action-bar.component';
@@ -75,7 +74,7 @@ const exportedDirectives: Array<Type<any>> = [
     ClrCheckboxModule,
     ClrDatagridModule,
     ClrDropdownModule,
-    ClrIconModule,
+    ClrIcon,
     ClrInputModule,
     ClrLoadingModule,
     CommonModule,

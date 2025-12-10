@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { angleIcon, ClarityIcons, filterGridIcon, plusIcon, windowCloseIcon } from '@cds/core/icon';
+import { angleIcon, ClarityIcons, filterGridIcon, plusIcon, windowCloseIcon } from '@clr/angular';
 
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
 import { AppfxDatagridFiltersModule, datagridFiltersStringsServiceFactory } from './datagrid-filters.module';

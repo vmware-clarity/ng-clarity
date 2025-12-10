@@ -8,15 +8,8 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { angleIcon, ClarityIcons, filterGridIcon, plusIcon, windowCloseIcon } from '@cds/core/icon';
-import {
-  ClrCheckboxModule,
-  ClrIconModule,
-  ClrInputModule,
-  ClrRadioModule,
-  ClrSelectModule,
-  ClrSignpostModule,
-} from '@clr/angular';
+import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule, ClrSignpostModule } from '@clr/angular';
+import { angleIcon, ClarityIcons, ClrIcon, filterGridIcon, plusIcon, windowCloseIcon } from '@clr/angular';
 
 import { DateTimeFilterComponent } from './advanced-filters/date-time-filter.component';
 import { EnumFilterComponent } from './advanced-filters/enum-filter.component';
@@ -49,7 +42,7 @@ export function datagridFiltersStringsServiceFactory(existing: DatagridFiltersSt
   ],
   imports: [
     ClrCheckboxModule,
-    ClrIconModule,
+    ClrIcon,
     ClrInputModule,
     ClrRadioModule,
     ClrSelectModule,

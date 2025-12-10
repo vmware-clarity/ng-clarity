@@ -1922,7 +1922,7 @@ class DatagridHostComponent {
   template: `
     <div ng-non-bindable class="object">
       <span [attr.title]="label">
-        <cds-icon [attr.shape]="icon" class="is-solid"></cds-icon>
+        <cds-icon [shape]="icon" class="is-solid"></cds-icon>
         {{ label }}</span
       >
     </div>

@@ -42,9 +42,9 @@ export * from './built-in/filters/datagrid-property-numeric-filter';
 export * from './built-in/comparators/datagrid-property-comparator';
 
 export * from './datagrid.module';
+export * from './providers/selection'; // exported specifically for appfx datagrid;
 
 export { ClrDatagridItemsIdentityFunction } from './providers/items';
-
 export { ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
 export { ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 export { ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor } from './datagrid-single-selection.directive';
