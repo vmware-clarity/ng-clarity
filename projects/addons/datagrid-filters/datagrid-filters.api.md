@@ -19,11 +19,11 @@ import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { CdkVirtualForOf } from '@angular/cdk/scrolling';
 import { CdkVirtualForOfContext } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
-import { ComponentFactoryResolver } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { DragDrop } from '@angular/cdk/drag-drop';
 import { DragDropConfig } from '@angular/cdk/drag-drop';
 import { ElementRef } from '@angular/core';
@@ -38,8 +38,8 @@ import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i12 from '@angular/common';
-import * as i13_2 from '@angular/forms';
-import * as i6_10 from '@angular/router';
+import * as i13 from '@angular/forms';
+import * as i6 from '@angular/router';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
@@ -59,6 +59,8 @@ import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { RouterLinkActive } from '@angular/router';
+import * as rxjs from 'rxjs';
+import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { SimpleChange } from '@angular/core';
@@ -80,20 +82,17 @@ class AppfxDatagridFiltersModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxDatagridFiltersModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<AppfxDatagridFiltersModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i5" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i6" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i7" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i8" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i9" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i10" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DateTimeFilterComponent" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DismissableDirective" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "EnumFilterComponent" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "FilterPopoverRepositionDirective" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "GeneralFilterComponent" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ManageFilterComponent" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "SkipFiltersPipe" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof i1.CompositeFiltersComponent, typeof i2.DataGridFiltersComponent, typeof i3.DateTimeFilterComponent, typeof i4.DismissableDirective, typeof i5.EnumFilterComponent, typeof i6.FilterFormComponent, typeof i7.FilterPopoverRepositionDirective, typeof i8.GeneralFilterComponent, typeof i9.ManageFilterComponent, typeof i10.SkipFiltersPipe], [typeof i11.ClrCheckboxModule, typeof i11.ClrIconModule, typeof i11.ClrInputModule, typeof i11.ClrRadioModule, typeof i11.ClrSelectModule, typeof i11.ClrSignpostModule, typeof i12.CommonModule, typeof i13_2.FormsModule, typeof i13_2.ReactiveFormsModule], [typeof i1.CompositeFiltersComponent, typeof i2.DataGridFiltersComponent, typeof i6.FilterFormComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe], [typeof i11.ClrCheckboxModule, typeof i11.ClrIcon, typeof i11.ClrInputModule, typeof i11.ClrRadioModule, typeof i11.ClrSelectModule, typeof i11.ClrSignpostModule, typeof i12.CommonModule, typeof i13.FormsModule, typeof i13.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
 }
 export { AppfxDatagridFiltersModule }
 export { AppfxDatagridFiltersModule as DatagridFiltersModule }
@@ -198,7 +197,7 @@ export class CompositeFiltersComponent implements OnInit {
     // (undocumented)
     readonly stringPropertyType: PropertyType;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": "filterableProperties"; }, { "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; }, { "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CompositeFiltersComponent, never>;
 }
@@ -238,7 +237,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     // (undocumented)
     selectedFilterMode: FilterMode;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": "filterableProperties"; "filterMode": "filterMode"; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DataGridFiltersComponent, never>;
 }
@@ -401,7 +400,7 @@ export class FilterFormComponent {
     onCancelButtonClick(): void;
     valid: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<FilterFormComponent, "appfx-filter-form", never, { "valid": "valid"; }, { "cancel": "cancel"; "apply": "apply"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<FilterFormComponent, "appfx-filter-form", never, { "valid": { "alias": "valid"; "required": false; }; }, { "cancel": "cancel"; "apply": "apply"; }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<FilterFormComponent, never>;
 }

@@ -4,26 +4,49 @@
 
 ```ts
 
+import { AbstractControl } from '@angular/forms';
+import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
+import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import { AnimationBuilder } from '@angular/animations';
+import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
+import { AnimationMetadata } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs';
+import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { CdkVirtualForOf } from '@angular/cdk/scrolling';
 import { CdkVirtualForOfContext } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFactoryResolver } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
+import { ControlValueAccessor } from '@angular/forms';
 import { DebugElement } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { DragDrop } from '@angular/cdk/drag-drop';
+import { DragDropConfig } from '@angular/cdk/drag-drop';
 import { ElementRef } from '@angular/core';
+import { EmbeddedViewRef } from '@angular/core';
 import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { FocusTrapFactory } from '@angular/cdk/a11y';
+import { FormGroupDirective } from '@angular/forms';
+import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
+import * as i2 from '@angular/common';
+import * as i4 from '@angular/forms';
+import * as i6 from '@angular/router';
+import { InjectionToken } from '@angular/core';
+import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
 import { ListRange } from '@angular/cdk/collections';
+import { NgControl } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { NgForOfContext } from '@angular/common';
+import { NgModelGroup } from '@angular/forms';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OnChanges } from '@angular/core';
@@ -32,12 +55,22 @@ import { OnInit } from '@angular/core';
 import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
+import { RendererFactory2 } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
+import { RouterLinkActive } from '@angular/router';
+import * as rxjs from 'rxjs';
+import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
+import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { TemplateRef } from '@angular/core';
 import { TrackByFunction } from '@angular/core';
+import { Type } from '@angular/core';
+import { ValidationErrors } from '@angular/forms';
+import { Validator } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 
@@ -304,7 +337,7 @@ export class MockAppfxDatagridComponent {
     // (undocumented)
     vscPersistDatagridSettings: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDatagridComponent, "appfx-datagrid", never, { "gridItems": "gridItems"; "columns": "columns"; "layoutModel": "layoutModel"; "footerModel": "footerModel"; "pageSize": "pageSize"; "pageSizeOptions": "pageSizeOptions"; "totalItems": "totalItems"; "selectionType": "selectionType"; "selectedItems": "selectedItems"; "datagridLabels": "datagridLabels"; "preSelectFirstItem": "preSelectFirstItem"; "rowSelectionMode": "rowSelectionMode"; "actionBarActions": "actionBarActions"; "showFooter": "showFooter"; "singleRowActions": "singleRowActions"; "noItemsFoundPlaceholder": "noItemsFoundPlaceholder"; "loading": "loading"; "serverDrivenDatagrid": "serverDrivenDatagrid"; "filterMode": "filterMode"; "listItemsCount": "listItemsCount"; "trackByGridItemProperty": "trackByGridItemProperty"; "isRowLocked": "isRowLocked"; "detailHeader": "detailHeader"; "detailBody": "detailBody"; "rowDetailContent": "rowDetailContent"; "rowsExpandedByDefault": "rowsExpandedByDefault"; "vscPersistDatagridSettings": "vscPersistDatagridSettings"; "detailState": "detailState"; "trackByFunction": "trackByFunction"; "virtualScrolling": "virtualScrolling"; "dataRange": "dataRange"; }, { "selectedItemsChange": "selectedItemsChange"; "gridItemsChange": "gridItemsChange"; "selectionChange": "selectionChange"; "searchTermChange": "searchTermChange"; "refreshGridData": "refreshGridData"; "refreshVirtualGridData": "refreshVirtualGridData"; "actionClick": "actionClick"; "rowActionMenuOpenChange": "rowActionMenuOpenChange"; "exportDataEvent": "exportDataEvent"; "detailStateChange": "detailStateChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDatagridComponent, "appfx-datagrid", never, { "gridItems": { "alias": "gridItems"; "required": false; }; "columns": { "alias": "columns"; "required": false; }; "layoutModel": { "alias": "layoutModel"; "required": false; }; "footerModel": { "alias": "footerModel"; "required": false; }; "pageSize": { "alias": "pageSize"; "required": false; }; "pageSizeOptions": { "alias": "pageSizeOptions"; "required": false; }; "totalItems": { "alias": "totalItems"; "required": false; }; "selectionType": { "alias": "selectionType"; "required": false; }; "selectedItems": { "alias": "selectedItems"; "required": false; }; "datagridLabels": { "alias": "datagridLabels"; "required": false; }; "preSelectFirstItem": { "alias": "preSelectFirstItem"; "required": false; }; "rowSelectionMode": { "alias": "rowSelectionMode"; "required": false; }; "actionBarActions": { "alias": "actionBarActions"; "required": false; }; "showFooter": { "alias": "showFooter"; "required": false; }; "singleRowActions": { "alias": "singleRowActions"; "required": false; }; "noItemsFoundPlaceholder": { "alias": "noItemsFoundPlaceholder"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "serverDrivenDatagrid": { "alias": "serverDrivenDatagrid"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; "listItemsCount": { "alias": "listItemsCount"; "required": false; }; "trackByGridItemProperty": { "alias": "trackByGridItemProperty"; "required": false; }; "isRowLocked": { "alias": "isRowLocked"; "required": false; }; "detailHeader": { "alias": "detailHeader"; "required": false; }; "detailBody": { "alias": "detailBody"; "required": false; }; "rowDetailContent": { "alias": "rowDetailContent"; "required": false; }; "rowsExpandedByDefault": { "alias": "rowsExpandedByDefault"; "required": false; }; "vscPersistDatagridSettings": { "alias": "vscPersistDatagridSettings"; "required": false; }; "detailState": { "alias": "detailState"; "required": false; }; "trackByFunction": { "alias": "trackByFunction"; "required": false; }; "virtualScrolling": { "alias": "virtualScrolling"; "required": false; }; "dataRange": { "alias": "dataRange"; "required": false; }; }, { "selectedItemsChange": "selectedItemsChange"; "gridItemsChange": "gridItemsChange"; "selectionChange": "selectionChange"; "searchTermChange": "searchTermChange"; "refreshGridData": "refreshGridData"; "refreshVirtualGridData": "refreshVirtualGridData"; "actionClick": "actionClick"; "rowActionMenuOpenChange": "rowActionMenuOpenChange"; "exportDataEvent": "exportDataEvent"; "detailStateChange": "detailStateChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDatagridComponent, never>;
 }
@@ -318,7 +351,7 @@ export class MockDatagridActionBarComponent {
     // (undocumented)
     onActionClick(action: unknown): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridActionBarComponent, "appfx-datagrid-action-bar", never, { "actions": "actions"; }, { "invokeAction": "invokeAction"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridActionBarComponent, "appfx-datagrid-action-bar", never, { "actions": { "alias": "actions"; "required": false; }; }, { "invokeAction": "invokeAction"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridActionBarComponent, never>;
 }
@@ -335,7 +368,7 @@ export class MockDatagridCellContainerComponent implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridCellContainerComponent, "appfx-dg-cell-container", never, { "column": "column"; "item": "item"; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridCellContainerComponent, "appfx-dg-cell-container", never, { "column": { "alias": "column"; "required": false; }; "item": { "alias": "item"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridCellContainerComponent, never>;
 }
@@ -349,7 +382,7 @@ export class MockDatagridColumnToggleComponent {
     // (undocumented)
     showColumn(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridColumnToggleComponent, "appfx-dg-column-toggle", never, { "columns": "columns"; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridColumnToggleComponent, "appfx-dg-column-toggle", never, { "columns": { "alias": "columns"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridColumnToggleComponent, never>;
 }
@@ -371,7 +404,7 @@ export class MockDatagridFiltersComponent {
     // (undocumented)
     searchTermChange: EventEmitter<string>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersComponent, "appfx-datagrid-filters", never, { "filterMode": "filterMode"; "filterableProperties": "filterableProperties"; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersComponent, "appfx-datagrid-filters", never, { "filterMode": { "alias": "filterMode"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridFiltersComponent, never>;
 }
@@ -393,7 +426,7 @@ export class MockDatagridPersistSettingsDirective {
     // (undocumented)
     persistSortOrder: boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MockDatagridPersistSettingsDirective, "appfx-datagrid[appfxPersistDatagridSettings]", never, { "appfxPersistDatagridSettings": "appfxPersistDatagridSettings"; "persistPageSize": "persistPageSize"; "persistSortOrder": "persistSortOrder"; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<MockDatagridPersistSettingsDirective, "appfx-datagrid[appfxPersistDatagridSettings]", never, { "appfxPersistDatagridSettings": { "alias": "appfxPersistDatagridSettings"; "required": false; }; "persistPageSize": { "alias": "persistPageSize"; "required": false; }; "persistSortOrder": { "alias": "persistSortOrder"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridPersistSettingsDirective, never>;
 }
@@ -403,7 +436,7 @@ export class MockDatagridPreserveSelectionDirective {
     // (undocumented)
     preserveExistingSelection: boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MockDatagridPreserveSelectionDirective, "[appfxPreserveSelection]", never, { "preserveExistingSelection": "preserveExistingSelection"; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<MockDatagridPreserveSelectionDirective, "[appfxPreserveSelection]", never, { "preserveExistingSelection": { "alias": "preserveExistingSelection"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridPreserveSelectionDirective, never>;
 }
@@ -445,7 +478,7 @@ export class MockStandaloneDatagridComponent extends MockAppfxDatagridComponent 
 // @public (undocumented)
 export class ZoomLevelServiceMock {
     // (undocumented)
-    onChange: Observable<ZoomLevel>;
+    onChange: rxjs.Observable<ZoomLevel>;
     // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)

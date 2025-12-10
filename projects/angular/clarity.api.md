@@ -1921,8 +1921,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     set selected(value: T[] | undefined);
     // (undocumented)
     selectedChanged: EventEmitter<T[]>;
-    // Warning: (ae-forgotten-export) The symbol "Selection_2" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     selection: Selection_2<T>;
     // Warning: (ae-forgotten-export) The symbol "SelectionType" needs to be exported by the entry point index.d.ts
@@ -5073,7 +5071,7 @@ export class ClrTabLink {
     get inOverflow(): boolean;
     set inOverflow(inOverflow: boolean);
     // (undocumented)
-    get tabindex(): -1 | 0;
+    get tabindex(): 0 | -1;
     // (undocumented)
     tabLinkId: string;
     // (undocumented)
@@ -7617,6 +7615,48 @@ export const searchIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const searchIconName = "search";
+
+// @public (undocumented)
+class Selection_2<T = any> {
+    constructor(_items: Items<T>, filters: FiltersProvider<T>, differs: IterableDiffers);
+    // (undocumented)
+    get change(): Observable<T[] | T>;
+    // (undocumented)
+    checkForChanges(): void;
+    // (undocumented)
+    clearSelection(): void;
+    // (undocumented)
+    get current(): T[];
+    set current(value: T[]);
+    // (undocumented)
+    get currentSingle(): T;
+    set currentSingle(value: T);
+    destroy(): void;
+    // (undocumented)
+    id: string;
+    isAllSelected(): boolean;
+    isLocked(item: T): boolean;
+    isSelected(item: T): boolean;
+    lockItem(item: T, lock: boolean): void;
+    // (undocumented)
+    preserveSelection: boolean;
+    rangeStart: T;
+    // @deprecated (undocumented)
+    rowSelectionMode: boolean;
+    // (undocumented)
+    get selectionType(): SelectionType;
+    set selectionType(value: SelectionType);
+    setSelected(item: T, selected: boolean): void;
+    shiftPressed: boolean;
+    toggleAll(): void;
+    // (undocumented)
+    updateCurrent(value: T[], emit: boolean): void;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<Selection_2<any>, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<Selection_2<any>>;
+}
+export { Selection_2 as Selection }
 
 // @public (undocumented)
 export const shareIcon: IconShapeTuple;

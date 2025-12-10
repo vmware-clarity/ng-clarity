@@ -33,11 +33,8 @@ class AppfxTranslateModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxTranslateModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<AppfxTranslateModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxTranslateModule, [typeof i1.DateTimePipe, typeof i2.TranslatePipe], [typeof i3.CommonModule], [typeof i1.DateTimePipe, typeof i2.TranslatePipe]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxTranslateModule, [typeof DateTimePipe, typeof TranslatePipe], [typeof i3.CommonModule], [typeof DateTimePipe, typeof TranslatePipe]>;
 }
 export { AppfxTranslateModule }
 export { AppfxTranslateModule as TranslateModule }

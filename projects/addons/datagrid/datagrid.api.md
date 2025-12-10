@@ -21,12 +21,12 @@ import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { CdkVirtualForOf } from '@angular/cdk/scrolling';
 import { CdkVirtualForOfContext } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
-import { ComponentFactoryResolver } from '@angular/core';
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
 import { ControlValueAccessor } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { DragDrop } from '@angular/cdk/drag-drop';
 import { DragDropConfig } from '@angular/cdk/drag-drop';
 import { ElementRef } from '@angular/core';
@@ -40,12 +40,12 @@ import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i16_3 from '@angular/cdk/a11y';
-import * as i17_3 from '@angular/cdk/drag-drop';
-import * as i18_3 from '@angular/cdk/overlay';
-import * as i20 from '@angular/common';
-import * as i22_2 from '@angular/forms';
-import * as i6_11 from '@angular/router';
+import * as i16 from '@angular/cdk/a11y';
+import * as i18 from '@angular/cdk/overlay';
+import * as i22 from '@angular/forms';
+import * as i4 from '@angular/common';
+import * as i5_2 from '@angular/cdk/drag-drop';
+import * as i6 from '@angular/router';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
@@ -66,6 +66,8 @@ import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { RouterLinkActive } from '@angular/router';
+import * as rxjs from 'rxjs';
+import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { SimpleChange } from '@angular/core';
@@ -126,26 +128,19 @@ export class AppfxDatagridModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxDatagridModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<AppfxDatagridModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i5" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i6" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i7" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i8" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i9" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i10" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i12" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i13" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DatagridActionBarDropdownRepositionDirective" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DatagridCellContainerComponent" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DatagridColumnToggleComponent" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DatagridFilterContainerComponent" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ExportDatagridComponent" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "IsRowSelectablePipe" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i19" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i21_2" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DatagridColumnsOrderModule" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof i1.DatagridComponent, typeof i2.DatagridActionBarComponent, typeof i3.DatagridFilterComponent, typeof i4.DatagridPageDirective, typeof i5.DatagridPersistSettingsDirective, typeof i6.DatagridPreserveSelectionDirective, typeof i7.DatagridContentNoWrapDirective, typeof i8.DatagridActionBarDropdownRepositionDirective, typeof i9.DatagridCellContainerComponent, typeof i10.DatagridColumnToggleComponent, typeof i11.DatagridFilterContainerComponent, typeof i12.ExportDatagridComponent, typeof i13.IsRowSelectablePipe], [typeof i14.AppfxA11yModule, typeof i15.AppfxDatagridFiltersModule, typeof i16_3.A11yModule, typeof i17_3.DragDropModule, typeof i18_3.OverlayModule, typeof i19.ClrCheckboxModule, typeof i19.ClrDatagridModule, typeof i19.ClrDropdownModule, typeof i19.ClrIconModule, typeof i19.ClrInputModule, typeof i19.ClrLoadingModule, typeof i20.CommonModule, typeof i21_2.DatagridColumnsOrderModule, typeof i22_2.FormsModule], [typeof i1.DatagridComponent, typeof i2.DatagridActionBarComponent, typeof i3.DatagridFilterComponent, typeof i4.DatagridPageDirective, typeof i5.DatagridPersistSettingsDirective, typeof i6.DatagridPreserveSelectionDirective, typeof i7.DatagridContentNoWrapDirective]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridActionBarDropdownRepositionDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i14.AppfxA11yModule, typeof i15.AppfxDatagridFiltersModule, typeof i16.A11yModule, typeof i5_2.DragDropModule, typeof i18.OverlayModule, typeof i19.ClrCheckboxModule, typeof i19.ClrDatagridModule, typeof i19.ClrDropdownModule, typeof i19.ClrIcon, typeof i19.ClrInputModule, typeof i19.ClrLoadingModule, typeof i4.CommonModule, typeof DatagridColumnsOrderModule, typeof i22.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "PersistDatagridSettingsService" needs to be exported by the entry point index.d.ts
@@ -282,7 +277,7 @@ export class DatagridActionBarComponent implements OnInit, OnChanges, AfterViewI
     // Warning: (ae-forgotten-export) The symbol "ElementResizeService" needs to be exported by the entry point index.d.ts
     constructor(cdr: ChangeDetectorRef, el: ElementRef<HTMLElement>, elementResizeService: ElementResizeService);
     // (undocumented)
-    readonly actions$: Observable<ActionDefinition<string>[]>;
+    readonly actions$: rxjs.Observable<ActionDefinition<string>[]>;
     // (undocumented)
     actions: ActionDefinition[];
     // (undocumented)
@@ -313,7 +308,7 @@ export class DatagridActionBarComponent implements OnInit, OnChanges, AfterViewI
     // (undocumented)
     queryActionBtnElementList: QueryList<ElementRef<HTMLButtonElement>>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridActionBarComponent, "appfx-datagrid-action-bar", never, { "actions": "actions"; "btnLayout": "btnLayout"; "dropdownOrientation": "dropdownOrientation"; }, { "invokeAction": "invokeAction"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridActionBarComponent, "appfx-datagrid-action-bar", never, { "actions": { "alias": "actions"; "required": false; }; "btnLayout": { "alias": "btnLayout"; "required": false; }; "dropdownOrientation": { "alias": "dropdownOrientation"; "required": false; }; }, { "invokeAction": "invokeAction"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridActionBarComponent, never>;
 }
@@ -500,7 +495,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     // (undocumented)
     protected zoomLevel: ZoomLevel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridComponent<any>, "appfx-datagrid", never, { "loading": "loading"; "preSelectFirstItem": "preSelectFirstItem"; "pageSizeOptions": "pageSizeOptions"; "totalItems": "totalItems"; "showCustomPagination": "showCustomPagination"; "serverDrivenDatagrid": "serverDrivenDatagrid"; "listItemsCount": "listItemsCount"; "rowDetailContent": "rowDetailContent"; "rowsExpandedByDefault": "rowsExpandedByDefault"; "trackByFunction": "trackByFunction"; "trackByGridItemProperty": "trackByGridItemProperty"; "detailHeader": "detailHeader"; "detailBody": "detailBody"; "detailState": "detailState"; "isRowLocked": "isRowLocked"; "dragConfig": "dragConfig"; "filterableProperties": "filterableProperties"; "filterMode": "filterMode"; "singleRowActions": "singleRowActions"; "preserveExistingSelectionOnFilter": "preserveExistingSelectionOnFilter"; "virtualScrolling": "virtualScrolling"; "dataRange": "dataRange"; "gridItems": "gridItems"; "layoutModel": "layoutModel"; "footerModel": "footerModel"; "columns": "columns"; "selectionType": "selectionType"; "selectedItems": "selectedItems"; "rowSelectionMode": "rowSelectionMode"; "actionBarActions": "actionBarActions"; "pageSize": "pageSize"; "datagridLabels": "datagridLabels"; }, { "detailStateChange": "detailStateChange"; "pageSizeChange": "pageSizeChange"; "gridItemsChange": "gridItemsChange"; "advancedFilterChange": "advancedFilterChange"; "columnDefsChange": "columnDefsChange"; "selectedItemsChange": "selectedItemsChange"; "exportDataEvent": "exportDataEvent"; "searchTermChange": "searchTermChange"; "columnResize": "columnResize"; "columnSortOrderChange": "columnSortOrderChange"; "columnHiddenStateChange": "columnHiddenStateChange"; "columnFilterChange": "columnFilterChange"; "refreshGridData": "refreshGridData"; "refreshVirtualGridData": "refreshVirtualGridData"; "actionClick": "actionClick"; "rowActionMenuOpenChange": "rowActionMenuOpenChange"; "openContextMenu": "openContextMenu"; "columnOrderChange": "columnOrderChange"; }, never, [".custom-placeholder-content", ".custom-footer-content", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridComponent<any>, "appfx-datagrid", never, { "loading": { "alias": "loading"; "required": false; }; "preSelectFirstItem": { "alias": "preSelectFirstItem"; "required": false; }; "pageSizeOptions": { "alias": "pageSizeOptions"; "required": false; }; "totalItems": { "alias": "totalItems"; "required": false; }; "showCustomPagination": { "alias": "showCustomPagination"; "required": false; }; "serverDrivenDatagrid": { "alias": "serverDrivenDatagrid"; "required": false; }; "listItemsCount": { "alias": "listItemsCount"; "required": false; }; "rowDetailContent": { "alias": "rowDetailContent"; "required": false; }; "rowsExpandedByDefault": { "alias": "rowsExpandedByDefault"; "required": false; }; "trackByFunction": { "alias": "trackByFunction"; "required": false; }; "trackByGridItemProperty": { "alias": "trackByGridItemProperty"; "required": false; }; "detailHeader": { "alias": "detailHeader"; "required": false; }; "detailBody": { "alias": "detailBody"; "required": false; }; "detailState": { "alias": "detailState"; "required": false; }; "isRowLocked": { "alias": "isRowLocked"; "required": false; }; "dragConfig": { "alias": "dragConfig"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; "singleRowActions": { "alias": "singleRowActions"; "required": false; }; "preserveExistingSelectionOnFilter": { "alias": "preserveExistingSelectionOnFilter"; "required": false; }; "virtualScrolling": { "alias": "virtualScrolling"; "required": false; }; "dataRange": { "alias": "dataRange"; "required": false; }; "gridItems": { "alias": "gridItems"; "required": false; }; "layoutModel": { "alias": "layoutModel"; "required": false; }; "footerModel": { "alias": "footerModel"; "required": false; }; "columns": { "alias": "columns"; "required": false; }; "selectionType": { "alias": "selectionType"; "required": false; }; "selectedItems": { "alias": "selectedItems"; "required": false; }; "rowSelectionMode": { "alias": "rowSelectionMode"; "required": false; }; "actionBarActions": { "alias": "actionBarActions"; "required": false; }; "pageSize": { "alias": "pageSize"; "required": false; }; "datagridLabels": { "alias": "datagridLabels"; "required": false; }; }, { "detailStateChange": "detailStateChange"; "pageSizeChange": "pageSizeChange"; "gridItemsChange": "gridItemsChange"; "advancedFilterChange": "advancedFilterChange"; "columnDefsChange": "columnDefsChange"; "selectedItemsChange": "selectedItemsChange"; "exportDataEvent": "exportDataEvent"; "searchTermChange": "searchTermChange"; "columnResize": "columnResize"; "columnSortOrderChange": "columnSortOrderChange"; "columnHiddenStateChange": "columnHiddenStateChange"; "columnFilterChange": "columnFilterChange"; "refreshGridData": "refreshGridData"; "refreshVirtualGridData": "refreshVirtualGridData"; "actionClick": "actionClick"; "rowActionMenuOpenChange": "rowActionMenuOpenChange"; "openContextMenu": "openContextMenu"; "columnOrderChange": "columnOrderChange"; }, never, [".custom-placeholder-content", ".custom-footer-content", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridComponent<any>, [null, null, null, null, { optional: true; }, { optional: true; }]>;
 }
@@ -561,7 +556,7 @@ export class DatagridFilterComponent implements ClrDatagridFilterInterface<any>,
     // (undocumented)
     value: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridFilterComponent, "appfx-datagrid-filter", never, { "filterValue": "filterValue"; "stringFilterType": "stringFilterType"; "fieldName": "fieldName"; }, { "filterValueChange": "filterValueChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridFilterComponent, "appfx-datagrid-filter", never, { "filterValue": { "alias": "filterValue"; "required": false; }; "stringFilterType": { "alias": "stringFilterType"; "required": false; }; "fieldName": { "alias": "fieldName"; "required": false; }; }, { "filterValueChange": "filterValueChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridFilterComponent, never>;
 }
@@ -588,7 +583,7 @@ export class DatagridPageDirective implements AfterViewInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridPageDirective, "[datagridPage]", never, { "datagridPage": "datagridPage"; }, { "datagridPageChange": "datagridPageChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridPageDirective, "[datagridPage]", never, { "datagridPage": { "alias": "datagridPage"; "required": false; }; }, { "datagridPageChange": "datagridPageChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridPageDirective, [{ host: true; }]>;
 }
@@ -604,7 +599,7 @@ export class DatagridPersistSettingsDirective implements OnDestroy, AfterViewIni
     set persistPageSize(value: boolean);
     set persistSortOrder(value: boolean);
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridPersistSettingsDirective, "appfx-datagrid[appfxPersistDatagridSettings]", never, { "appfxPersistDatagridSettings": "appfxPersistDatagridSettings"; "persistPageSize": "persistPageSize"; "persistSortOrder": "persistSortOrder"; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridPersistSettingsDirective, "appfx-datagrid[appfxPersistDatagridSettings]", never, { "appfxPersistDatagridSettings": { "alias": "appfxPersistDatagridSettings"; "required": false; }; "persistPageSize": { "alias": "persistPageSize"; "required": false; }; "persistSortOrder": { "alias": "persistSortOrder"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridPersistSettingsDirective, [{ host: true; }, { optional: true; }]>;
 }
@@ -624,7 +619,7 @@ export class DatagridPreserveSelectionDirective implements AfterViewInit, OnDest
     // (undocumented)
     updateSelectedItems(items: any[]): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridPreserveSelectionDirective, "[appfxPreserveSelection]", never, { "preserveExistingSelection": "preserveExistingSelection"; }, { "selectedItemsUpdated": "selectedItemsUpdated"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridPreserveSelectionDirective, "[appfxPreserveSelection]", never, { "preserveExistingSelection": { "alias": "preserveExistingSelection"; "required": false; }; }, { "selectedItemsUpdated": "selectedItemsUpdated"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridPreserveSelectionDirective, [{ host: true; }]>;
 }
