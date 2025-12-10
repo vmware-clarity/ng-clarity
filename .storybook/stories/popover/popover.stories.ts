@@ -6,7 +6,7 @@
  */
 
 import { ClrPopoverModule, ClrPopoverService } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 
 import { StorybookPopoverComponent } from './storybook-popover.component';
 import {
@@ -36,22 +36,20 @@ export default {
     }),
   ],
   providers: [ClrPopoverService],
+  render: (args: StorybookPopoverComponent) => ({
+    template: `
+      <div style="height: 100vh; width: 100%; display: flex; padding: 50px; justify-content: center">
+        <storybook-popover ${argsToTemplate(args)}></storybook-popover>
+      </div>
+    `,
+    props: {
+      ...args,
+      position: args.dropdownPosition || args.tooltipPosition || args.signpostPosition || args.defaultPosition,
+    },
+  }),
 };
 
-const PopoverTemplate: StoryFn = args => ({
-  template: `
-    <div style="height: 100vh; width: 100%; display: flex; padding: 50px; justify-content: center">
-      <storybook-popover ${argsToTemplate(args)}></storybook-popover>
-    </div>
-  `,
-  props: {
-    ...args,
-    position: args.dropdownPosition || args.tooltipPosition || args.signpostPosition || args.defaultPosition,
-  },
-});
-
 export const Popover: StoryObj = {
-  render: PopoverTemplate,
   argTypes: {
     position: { control: { disable: true }, table: { disable: true } },
     dropdownPosition: {
@@ -103,7 +101,6 @@ export const Popover: StoryObj = {
 };
 
 export const PopoverCustomPositions: StoryObj = {
-  render: PopoverTemplate,
   argTypes: {
     useConnectedPosition: { control: { disable: true }, table: { disable: true } },
     originX: {

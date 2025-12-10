@@ -15,13 +15,14 @@
     @include mixins.off-screen-styles();
   }
 
-  //.clr-popover-content {
-  //  position: fixed;
-  //  z-index: map.get(variables.$clr-layers, smart-popover);
-  //}
-
-  .clr-container-element {
-    // position: absolute;
+  .clr-popover-content {
     z-index: map.get(variables.$clr-layers, smart-popover);
+  }
+
+  .clr-overlay-container {
+    &,
+    .cdk-overlay-connected-position-bounding-box {
+      z-index: map.get(variables.$clr-layers, smart-popover);
+    }
   }
 }

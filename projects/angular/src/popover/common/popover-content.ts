@@ -73,7 +73,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     popoverService.panelClass.push('clr-popover-content');
     popoverService.overlay = overlay;
 
-    overlayContainer.getContainerElement().classList.add('clr-container-element');
+    overlayContainer.getContainerElement().classList.add('clr-overlay-container');
 
     if (!template) {
       this.elementRef = element;
