@@ -1,0 +1,300 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+$zoom-4x-action-bar-padding: 10px;
+
+%draggable-column {
+  $draggable-column-width: 20px;
+
+  min-width: $draggable-column-width;
+  width: $draggable-column-width;
+  padding-left: 0 !important; // this is done as per specs https://github.com/vmware/clarity/issues/1826
+  order: -1;
+  flex: 0;
+}
+
+:host {
+  min-height: 3.6rem; // standard min height from clarity (see .datagrid-table)
+  ::ng-deep clr-datagrid {
+    min-height: 0; // We need this for the grid to shrink and the scroller to be in the grid's body
+  }
+}
+
+:host(.zoom2x),
+:host(.zoom4x) {
+  ::ng-deep clr-datagrid.flex-clr-datagrid {
+    // overriding flexible and fluid grid layout styles coming from
+    // _mixins.scss that is why `important` is added
+    height: auto !important;
+    flex: 1 0 auto !important;
+  }
+}
+
+:host(.zoom4x) {
+  min-height: 7.2rem;
+}
+
+clr-datagrid {
+  &.flex-clr-datagrid {
+    flex-basis: auto;
+    height: 100%;
+  }
+
+  .custom-preview {
+    width: 200px;
+    overflow: hidden;
+  }
+
+  clr-dg-cell.fixed-cell-height {
+    // Fixed cell height for datagrids with virtual scrolling.
+    // Considering padding and border row height will be 25px
+    height: 16px;
+  }
+
+  .grid-ghost {
+    border: 1px solid var(--clr-table-border-color);
+    border-left: 2px solid var(--cds-alias-object-interaction-background-highlight);
+    border-radius: 3px 0 0 3px;
+    background-color: var(--cds-global-color-white);
+    padding: 5px;
+    width: 90%;
+    max-height: 60px;
+    color: var(--cds-global-color-gray-400);
+    white-space: normal;
+  }
+
+  .single-ghost {
+    box-shadow: 0 3px 4px rgb(116 116 116 / 30%);
+  }
+
+  .multiple-ghost {
+    box-shadow:
+      8px 7px var(--clr-table-bgcolor),
+      8px 7px var(--clr-table-border-color),
+      8px 8px 4px rgb(116 116 116 / 30%);
+  }
+
+  .selection-ghost {
+    color: var(--cds-global-color-gray-400);
+    background-color: var(--clr-table-bgcolor);
+  }
+
+  .ghost-badge {
+    float: right;
+  }
+
+  &.disabled-grid {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .draggableCell {
+    @extend %draggable-column;
+
+    .draggableIcon {
+      // by default this style comes from clarity with value
+      // translateY(-0.05rem) which breaks the positioning of the ghost
+      // element
+      transform: unset;
+    }
+  }
+
+  clr-dg-footer {
+    ::ng-deep .export-link {
+      margin-left: 10px;
+      display: flex;
+      align-items: center;
+
+      // ~~~~~~~ user interactions ~~~~~~~~~~~
+      &:not(:disabled) {
+        &:hover,
+        &:active {
+          cursor: pointer;
+          text-decoration: none;
+        }
+      }
+    }
+
+    ::ng-deep .datagrid-footer-description {
+      display: flex;
+      text-align: left;
+    }
+
+    ::ng-deep li {
+      white-space: normal;
+    }
+
+    clr-dg-pagination {
+      display: inline-flex;
+      align-items: center;
+
+      ::ng-deep > ul {
+        height: auto;
+      }
+    }
+
+    //end show hide menu related scss
+  }
+
+  clr-dg-column ::ng-deep .datagrid-column-flex {
+    width: 100%;
+  }
+
+  // CSS applied when the user drag column
+  clr-dg-column {
+    &.grabbed:not(.cdk-drag-placeholder, .cdk-drag-preview) {
+      &::ng-deep .datagrid-column-title {
+        background-color: var(--clr-datagrid-row-selected-background-color);
+        color: var(--clr-datagrid-row-selected);
+      }
+
+      background-color: var(--clr-datagrid-row-selected-background-color);
+      color: var(--clr-datagrid-row-selected);
+    }
+
+    &.cdk-drag-placeholder {
+      outline: var(--cds-alias-object-interaction-outline);
+      outline-color: -webkit-focus-ring-color;
+      outline-offset: var(--clr-datagrid-cell-outline-offset);
+      z-index: 100;
+    }
+
+    &.cdk-drag-preview {
+      opacity: 0.75;
+    }
+  }
+
+  clr-dg-action-bar {
+    // our placeholder container for customization of actionable items above the grid.
+    // Clarity simply mirrors content
+    .appfx-datagrid-actions-container {
+      display: flex;
+      justify-content: space-between;
+
+      .filter-input {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        cds-icon {
+          cursor: pointer;
+        }
+      }
+
+      .action-bar {
+        flex: 1 0 auto;
+        width: 0.05rem; // if width is not specified, width of element becomes
+        // auto and content will overflow parent width
+      }
+    }
+  }
+
+  clr-dg-row-detail {
+    appfx-dg-cell-container {
+      width: 100%;
+    }
+
+    // fixed the nested datagrid header overflow issue with its parent
+    &::ng-deep appfx-datagrid {
+      div.datagrid-header {
+        z-index: 500;
+      }
+    }
+  }
+
+  &.zoom4x {
+    min-height: 7.2rem;
+
+    clr-dg-action-bar {
+      .appfx-datagrid-actions-container {
+        /* make the action and filter on separate rows on 4x zoom */
+        flex-direction: column;
+
+        .action-bar {
+          flex: 1 0 auto;
+
+          /*
+                       action bar width correction,
+                       because 1px does not fit the shish-kebab button
+                    */
+          width: 100%;
+          max-width: 100%;
+          min-width: 1px;
+
+          ::ng-deep .btn-group {
+            button:first-child {
+              padding-left: $zoom-4x-action-bar-padding;
+            }
+          }
+        }
+
+        .filter-input {
+          padding-left: $zoom-4x-action-bar-padding;
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+
+          cds-icon {
+            flex: 0 1 auto;
+          }
+
+          clr-input-container {
+            flex: 1 0 auto;
+
+            ::ng-deep {
+              .clr-control-container {
+                width: 100%;
+
+                input {
+                  width: 100%;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    ::ng-deep .column-switch-wrapper {
+      clr-dropdown-menu {
+        /*
+                 make the column selector menu
+                 take full screen covering the header
+                */
+        position: fixed !important;
+        transform: none !important;
+        width: 100%;
+        min-width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  // Remove the placeholder item so it prevents the item rearrangement during drag.
+  .custom-placeholder {
+    height: 0;
+    width: 0;
+  }
+
+  cds-icon[shape='drag-handle'] {
+    cursor: grab;
+  }
+}
+
+// Dark theme
+:host-context([data-theme='dark']) {
+  clr-datagrid {
+    .custom-preview {
+      .grid-ghost {
+        background-color: var(--clr-table-bgcolor);
+      }
+    }
+  }
+}

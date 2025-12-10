@@ -156,7 +156,7 @@ module.exports = [
     '.angular',
     '**/node_modules',
     'dist',
-    'projects/angular/clarity.api.md',
+    '/projects/**/*.api.md',
     '.storybook/preview.js',
     'documentation.json',
   ]),
