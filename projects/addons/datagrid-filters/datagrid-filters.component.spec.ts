@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrInputModule, ClrSelectModule, ClrSignpostModule } from '@clr/angular';
+import { ClrIcon, ClrInputModule, ClrSelectModule, ClrSignpostModule } from '@clr/angular';
 
 import { CompositeFiltersComponent } from './composite-filters.component';
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
@@ -26,7 +26,15 @@ export interface ThisTest {
 describe('DataGridFiltersComponent', () => {
   beforeEach(function (this: ThisTest) {
     TestBed.configureTestingModule({
-      imports: [ClrInputModule, ClrSelectModule, ClrSignpostModule, CommonModule, FormsModule, ReactiveFormsModule],
+      imports: [
+        ClrInputModule,
+        ClrSelectModule,
+        ClrSignpostModule,
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ClrIcon,
+      ],
       declarations: [DataGridFiltersComponent, CompositeFiltersComponent],
       providers: [DatagridFiltersStrings, DismissableDirective],
     });

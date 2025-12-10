@@ -11,7 +11,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { ElementResizeService } from '@clr/addons/a11y';
-import { ClrDropdownModule, ClrIconModule, ClrTooltipModule } from '@clr/angular';
+import { ClrDropdownModule, ClrIcon, ClrTooltipModule } from '@clr/angular';
 import { Observable, of, Subject } from 'rxjs';
 
 import { DatagridActionBarComponent } from './datagrid-action-bar.component';
@@ -22,7 +22,7 @@ const last = (array: any[]) => array[array.length - 1];
 
 @Component({
   selector: 'test-container-component',
-  imports: [AppfxDatagridModule, ClrDropdownModule, ClrIconModule, ClrTooltipModule],
+  imports: [AppfxDatagridModule, ClrDropdownModule, ClrIcon, ClrTooltipModule],
   template: `
     <appfx-datagrid-action-bar (invokeAction)="onActionClick($event)" [actions]="actions"> </appfx-datagrid-action-bar>
   `,
@@ -78,7 +78,7 @@ interface ThisTest {
 describe('DatagridActionBarComponent', function () {
   beforeEach(function () {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, ClrIconModule, ClrTooltipModule, ClrDropdownModule, TestContainerComponent],
+      imports: [NoopAnimationsModule, ClrIcon, ClrTooltipModule, ClrDropdownModule, TestContainerComponent],
       providers: [
         {
           provide: ElementResizeService,

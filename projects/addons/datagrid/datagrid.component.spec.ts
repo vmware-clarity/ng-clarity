@@ -35,7 +35,7 @@ import {
   ClrDatagridStateInterface,
   ClrDatagridStringFilterInterface,
   ClrDatagridVirtualScrollRangeInterface,
-  ClrIconModule,
+  ClrIcon,
   ClrInputModule,
   ClrSelectModule,
 } from '@clr/angular';
@@ -1697,16 +1697,15 @@ describe('DatagridComponent', () => {
       expect(detailPane).toBeTruthy();
     });
 
-    it('after hiding, "detailState" should be null in the hosting component', function (this: any) {
+    it('after hiding, "detailState" should be null in the hosting component', async function (this: any) {
       this.component.detailState = this.component.data[0];
       this.fixture.detectChanges(true);
       const detailPaneCloseBtn: DebugElement = this.fixture.debugElement.query(
         By.css('clr-datagrid clr-dg-detail clr-dg-detail-header button')
       );
       detailPaneCloseBtn.nativeElement.click();
-      this.fixture.whenStable().then(() => {
-        expect(this.component.detailState).toBeNull();
-      });
+      await this.fixture.whenStable();
+      expect(this.component.detailState).toBeNull();
     });
   });
 
@@ -2074,7 +2073,7 @@ class PowerStateFilterComponent implements ClrDatagridFilterInterface<PowerState
 
 @NgModule({
   declarations: [PowerStateFilterComponent, RowDetailRendererComponent, StatusRendererComponent],
-  imports: [ClrCheckboxModule, ClrIconModule, CommonModule, FormsModule],
+  imports: [ClrCheckboxModule, ClrIcon, CommonModule, FormsModule],
   exports: [PowerStateFilterComponent, RowDetailRendererComponent, StatusRendererComponent],
 })
 class TestModule {}

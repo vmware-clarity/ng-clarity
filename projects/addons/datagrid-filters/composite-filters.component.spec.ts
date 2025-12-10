@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrCheckboxModule, ClrInputModule, ClrSelectModule, ClrSignpostModule } from '@clr/angular';
+import { ClrCheckboxModule, ClrIcon, ClrInputModule, ClrSelectModule, ClrSignpostModule } from '@clr/angular';
 
 import { EnumFilterComponent } from './advanced-filters/enum-filter.component';
 import { FilterFormComponent } from './advanced-filters/filter-form.component';
@@ -90,6 +90,7 @@ describe('CompositeFiltersComponent', () => {
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        ClrIcon,
       ],
       declarations: [
         CompositeFiltersComponent,

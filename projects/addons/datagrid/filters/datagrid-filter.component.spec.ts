@@ -166,7 +166,6 @@ describe('DatagridFilterComponent', () => {
     const input: HTMLElement = this.fixture.nativeElement.querySelector('input');
 
     spyOn(input, 'focus');
-    spyOn(this.clrPopoverToggleService, 'openChange').and.returnValue(of(true));
 
     expect(input).toBeTruthy();
 

@@ -141,7 +141,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "tsConfig": "projects/addons/tsconfig.lib.json",
             "project": "projects/addons/ng-package.json"
@@ -153,7 +153,7 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:karma",
           "options": {
             "styles": ["projects/ui/src/clr-ui.scss"],
             "main": "projects/addons/test.ts",

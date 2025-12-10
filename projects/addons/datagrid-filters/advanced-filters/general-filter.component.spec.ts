@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular';
+import { ClrIcon, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { FilterFormComponent } from './filter-form.component';
@@ -97,7 +97,15 @@ export interface ThisTest {
 describe('GeneralFilterComponent', () => {
   beforeEach(function (this: ThisTest) {
     TestBed.configureTestingModule({
-      imports: [ClrInputModule, ClrRadioModule, ClrSelectModule, CommonModule, FormsModule, ReactiveFormsModule],
+      imports: [
+        ClrInputModule,
+        ClrRadioModule,
+        ClrSelectModule,
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ClrIcon,
+      ],
       declarations: [FilterFormComponent, GeneralFilterComponent],
       providers: [DatagridFiltersStrings],
     });

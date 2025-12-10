@@ -8,7 +8,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrInputModule, ClrSelectModule } from '@clr/angular';
+import { ClrIcon, ClrInputModule, ClrSelectModule } from '@clr/angular';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { DateTimeFilterComponent } from './date-time-filter.component';
@@ -160,7 +160,7 @@ function mockCurrentTime(): void {
 describe('DateTimeFilterComponent', () => {
   beforeEach(function (this: ThisTest) {
     TestBed.configureTestingModule({
-      imports: [ClrInputModule, ClrSelectModule, CommonModule, FormsModule, ReactiveFormsModule],
+      imports: [ClrInputModule, ClrSelectModule, CommonModule, FormsModule, ReactiveFormsModule, ClrIcon],
       declarations: [DateTimeFilterComponent, FilterFormComponent],
       providers: [DatagridFiltersStrings, DatePipe],
     });

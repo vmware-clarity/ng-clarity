@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrInputModule, ClrRadioModule, ClrSelectModule, ClrSignpostModule } from '@clr/angular';
+import { ClrIcon, ClrInputModule, ClrRadioModule, ClrSelectModule, ClrSignpostModule } from '@clr/angular';
 
 import { FilterFormComponent } from '../advanced-filters/filter-form.component';
 import { GeneralFilterComponent } from '../advanced-filters/general-filter.component';
@@ -138,6 +138,7 @@ describe('ManageFilterComponent', () => {
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        ClrIcon,
       ],
       declarations: [DismissableDirective, FilterFormComponent, ManageFilterComponent, GeneralFilterComponent],
       providers: [DatagridFiltersStrings],
