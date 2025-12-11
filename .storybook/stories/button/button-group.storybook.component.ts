@@ -19,11 +19,7 @@ import { ClrPopoverPosition } from '../../../projects/angular/src/popover/common
   imports: [CommonModule, ClrButtonGroupModule, ClrLoadingModule, ClrIcon],
   template: `
     <!-- Default Template -->
-    <div
-      *ngIf="templateMode !== 'showcase'"
-      style="text-align: center"
-      [ngStyle]="{ 'margin-top': clrMenuPosition.includes('top') ? '200px' : '20px' }"
-    >
+    <div *ngIf="templateMode !== 'showcase'" style="text-align: center; margin-top: 100px;">
       <ng-container
         *ngTemplateOutlet="buttonGroupTemplate; context: { buttonType: buttonType, buttonStyle: buttonStyle }"
       ></ng-container>

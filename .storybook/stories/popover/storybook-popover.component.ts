@@ -18,16 +18,7 @@ import {
 @Component({
   selector: 'storybook-popover',
   template: `<ng-container>
-    <button
-      class="btn"
-      clrPopoverOpenCloseButton
-      role="button"
-      type="button"
-      [attr.aria-owns]="popoverId"
-      clrPopoverAnchor
-    >
-      Origin
-    </button>
+    <button class="btn" clrPopoverAnchor clrPopoverOpenCloseButton [attr.aria-owns]="popoverId">Origin</button>
     <div
       [id]="popoverId"
       role="dialog"
