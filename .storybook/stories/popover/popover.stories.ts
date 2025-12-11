@@ -91,6 +91,7 @@ export const Popover: StoryObj = {
     open: true,
     scrollToClose: false,
     outsideClickToClose: true,
+    showCloseButton: true,
     type: ClrPopoverType.DROPDOWN,
     defaultPosition: ClrPopoverPosition.BOTTOM_RIGHT,
     signpostPosition: ClrPopoverPosition.BOTTOM_RIGHT,

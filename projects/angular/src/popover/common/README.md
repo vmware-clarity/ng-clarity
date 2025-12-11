@@ -14,43 +14,38 @@ the overlay state as well.
 
 ## EXAMPLE POPOVER
 
-Components will need to provide either a [ConnectedPosition](https://material.angular.io/cdk/overlay/api#ConnectedPosition)
-list (ordered from most to least preferred position) or a ClrPopoverPosition to describe the default/preferred position
-(`contentPosition`). Optionally you can choose to add the scrollToClose and outsideClickToClose event listeners.
+Components will need to provide either or both a [ConnectedPosition](https://material.angular.io/cdk/overlay/api#ConnectedPosition)
+list (ordered from most to least preferred position) to `availablePositions` and/or a `ClrPopoverPosition` to `at` to describe the default/preferred `contentPosition`.
+Optionally you can choose to add the `scrollToClose` and `outsideClickToClose` event listeners.
+
 This is what it looks like from the implementing component perspective:
 
 ```html
-<button class="btn" clrPopoverOpenCloseButton role="button" type="button" [attr.aria-owns]="popoverId" clrPopoverAnchor>
+<button class="btn" clrPopoverOpenCloseButton clrPopoverAnchor [attr.aria-owns]="popoverId">
   <cds-icon shape="home"></cds-icon> Popover Anchor
 </button>
 <div
   [id]="popoverId"
   role="dialog"
   cdkTrapFocus
-  *clrPopoverContent="openState at contentPosition; outsideClickToClose: true; scrollToClose: true"
+  *clrPopoverContent="open;
+    at: position; availablePositions: [...]; outsideClickToClose: true; scrollToClose: true"
 >
-  <header class="header-4" role="heading">
-    Header
-    <button role="button" class="btn btn-link" clrPopoverCloseButton>
-      <cds-icon shape="window-close" size="36"></cds-icon>
+  <div role="heading">
+    Overlay Header
+    <button class="btn btn-sm btn-outline-neutral btn-icon" clrPopoverCloseButton>
+      <cds-icon shape="times"></cds-icon>
     </button>
-  </header>
-  <section role="region">
-    <!-- body -->
-  </section>
-  <footer>
-    <!-- footer -->
-  </footer>
+  </div>
+  <div>Overlay Content</div>
 </div>
 ```
 
-Notice that the Popover Anchor element has two directives on it, the clrPopoverOpenCloseButton and the clrPopoverAnchor
-directive that tells our popover complex which element is the anchor. Since the open/close button of a popover may not
-be the element you want to anchor the popover adjacent to, separate directives are used.
+Notice that the Popover Anchor element has two directives on it, the `clrPopoverOpenCloseButton` and the `clrPopoverAnchor` directive that tells our popover complex which element is the anchor. Since the open/close button of a popover may not be the element you want to anchor the popover adjacent to, separate directives are used.
 
 The content div also has two directives on it. First, we use the existing focus trap to make sure the users focus
 stays on the popover until they dismiss it. And, the workhorse of the ClrPopover utility the structural
-directive \*clrPopoverContent which takes an input for open state, an input that takes an instance of
+directive `*clrPopoverContent` which takes an input for open state, an input that takes an instance of
 ClrPopoverPosition **for the content position**
 
 ## ARCHITECTURE
@@ -74,17 +69,7 @@ used for either anchoring or to ensure the appropriate element receives focus af
 
 ### Enums
 
-1.  **ClrAlignment**: this is the description of the where point of contact is on both the anchor and the content
-    element when they are pushed together. START, MIDDLE, END.
-2.  **ClrAxis**: This is a description of the orientation for the popover complex and \**the direction that anchor and
-    content elements push into each other on. For example if ClrAxis is VERTICAL then pushing occurs along the *Y* axis. If
-    ClrAxis is HORIZONTAL then pushing occurs along the *X\* axis.
-3.  **ClrSide**: The location that content will orient to BEFORE or AFTER in relation to the anchor. When ClrAxis is
-    VERTICAL, BEFORE is _above_ the anchor and AFTER is *below the anchor. When ClrAxis is HORIZONTAL, BEFORE is *left*
-    of the anchor and AFTER is *right\* of the anchor.
-
-### Interfaces
-
-**ClrPopoverPosition**: An object that can describe the relationship between anchor to content positions. It
-eliminates any invalid positions for content and based on the enum values it makes the math needed to determine howF
-viewport violations are handled as simple as possible.
+1.  **ClrPopoverType**: this is the description of the popover variations SIGNPOST, TOOLTIP, DROPDOWN and DEFAULT.
+2.  **ClrPopoverPosition**: This is a description of the popover position around the anchor and the direction that anchor and content elements push into each other on. `[clrPosition]` input of component will use this as key. Examples: `top-left`, `bottom-right`.
+3.  **ClrPosition**: this is the description of the where point of contact is on both the anchor and the content
+    element when they are pushed together. There are 3 position per rectangular side.
