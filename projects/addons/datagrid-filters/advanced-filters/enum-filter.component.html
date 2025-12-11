@@ -1,0 +1,27 @@
+<!-- Copyright 2022-2023 Broadcom. All rights reserved. -->
+<appfx-filter-form
+  [formGroup]="enumFilterForm"
+  [valid]="enumFilterForm.valid"
+  (cancel)="onCancelButtonClick()"
+  (apply)="onApplyButtonClick()"
+>
+  <label class="clr-control-label text-left mt-compact">
+    {{ filterStrings.valueLabel }}
+  </label>
+  <clr-checkbox-container *ngIf="!filterProperty.singleSelect" class="enum-options">
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />
+      <label> {{ filterStrings.selectAll }} </label>
+    </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper formArrayName="options" *ngFor="let option of optionsFormArray.controls; let i = index">
+      <input type="checkbox" clrCheckbox [formControlName]="i" (change)="onOptionChange($event)" />
+      <label> {{ optionsData[i].value }} </label>
+    </clr-checkbox-wrapper>
+  </clr-checkbox-container>
+  <clr-radio-container *ngIf="filterProperty.singleSelect" class="enum-options">
+    <clr-radio-wrapper *ngFor="let option of optionsFormArray.controls; let j = index">
+      <input type="radio" clrRadio formControlName="singleSelectOption" [value]="optionsData[j].key" />
+      <label> {{ optionsData[j].value }} </label>
+    </clr-radio-wrapper>
+  </clr-radio-container>
+</appfx-filter-form>

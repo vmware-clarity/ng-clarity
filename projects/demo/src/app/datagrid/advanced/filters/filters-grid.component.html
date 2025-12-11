@@ -1,0 +1,28 @@
+<form clrForm>
+  <clr-select-container cds-layout="m-t:xs">
+    <label>Filter mode</label>
+    <select clrSelect name="filter-mode" [ngModel]="selectedFilterMode" (ngModelChange)="onFilterModeChange($event)">
+      <option [value]="FilterMode.AdvancedOnly" selected>Advanced Only Filter</option>
+      <option [value]="FilterMode.Advanced">Advanced Filter</option>
+      <option [value]="FilterMode.Quick">Quick Filter</option>
+      <option [value]="undefined">No filter</option>
+    </select>
+  </clr-select-container>
+</form>
+
+<appfx-datagrid
+  [gridItems]="filteredItems"
+  [columns]="columns"
+  [layoutModel]="{
+    compact: false,
+    stretchToParentHeight: false,
+  }"
+  [filterableProperties]="filterableProperties"
+  [filterMode]="selectedFilterMode"
+  [selectionType]="selectionType"
+  [pageSize]="10"
+  [rowSelectionMode]="false"
+  (searchTermChange)="onSearchTermChange($event)"
+  (advancedFilterChange)="onAdvancedFilterChange($event)"
+>
+</appfx-datagrid>

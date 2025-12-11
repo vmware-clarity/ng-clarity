@@ -1,0 +1,81 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+:host {
+  .dropdown-container {
+    margin-left: auto;
+  }
+
+  div.btn-group {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  div.btn-group.btn-inline {
+    display: inline-block;
+  }
+
+  button {
+    flex: 0 0 auto; // need to override to avoid the label cut effect - 'button lab...'
+
+    /*
+        as of Clarity 5 buttons have max-width: 18 rem
+        this causes long text truncation
+        Bugzilla: 2889705
+         */
+    max-width: unset;
+  }
+
+  clr-dropdown {
+    button.dropdown-toggle {
+      color: var(--clr-btn-default-color);
+    }
+  }
+
+  clr-dropdown.has-border-left {
+    button.dropdown-toggle {
+      border-left-style: solid !important;
+      border-left-width: 1px !important;
+    }
+  }
+
+  clr-dropdown-menu {
+    max-width: 18rem;
+
+    button {
+      overflow-wrap: break-word;
+      word-break: normal;
+      white-space: normal;
+    }
+  }
+}
+
+:host-context(.zoom4x) {
+  clr-dropdown-menu {
+    margin-right: 0.8rem;
+  }
+
+  .dropdown-container {
+    margin-left: 0;
+  }
+
+  div.btn-group {
+    .btn-flex {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+
+    .btn-inline {
+      display: inline-block;
+    }
+
+    button {
+      padding-left: 10px;
+    }
+  }
+}
