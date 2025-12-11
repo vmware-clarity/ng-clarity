@@ -11,7 +11,7 @@ import { ClrPopoverService } from '../../common';
 
 @Injectable()
 export class TooltipMouseService {
-  hideIfMouseOutTimerInMS = 100;
+  private mouseOutDelay = 100;
   private mouseOverTrigger: boolean;
   private mouseOverContent: boolean;
 
@@ -43,6 +43,6 @@ export class TooltipMouseService {
       if (!this.mouseOverTrigger && !this.mouseOverContent) {
         this.popoverService.open = false;
       }
-    }, this.hideIfMouseOutTimerInMS);
+    }, this.mouseOutDelay);
   }
 }

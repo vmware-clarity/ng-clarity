@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -16,7 +17,7 @@ import { ZIndexDemo } from './z-index.demo';
 import { ROUTING } from './z-index.routing';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ClarityModule, ROUTING],
+  imports: [CommonModule, FormsModule, ClarityModule, ROUTING, CdkScrollable],
   declarations: [ZIndexDemo, ZIndexVariousContent, ZIndexCustomFilter],
   exports: [ZIndexDemo],
 })

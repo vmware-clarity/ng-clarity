@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, HostListener, NgZone } from '@angular/core';
+import { Directive, ElementRef, HostListener } from '@angular/core';
 
 import { ClrDropdown } from './dropdown';
 import { ClrPopoverService } from '../common';
@@ -30,9 +30,8 @@ export class ClrDropdownTrigger {
   constructor(
     dropdown: ClrDropdown,
     private popoverService: ClrPopoverService,
-    private el: ElementRef<HTMLElement>,
-    focusHandler: DropdownFocusHandler,
-    private zone: NgZone
+    el: ElementRef<HTMLElement>,
+    focusHandler: DropdownFocusHandler
   ) {
     // if the containing dropdown has a parent, then this is not the root level one
     if (dropdown.parent) {

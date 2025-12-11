@@ -5,28 +5,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  Inject,
-  Injector,
-  Input,
-  OnInit,
-  Optional,
-  Renderer2,
-} from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, Input, OnInit, Optional, Renderer2 } from '@angular/core';
 
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrPopoverService } from '../common';
+import { ClrPopoverContent, ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
-import { ClrPopoverType, getConnectedPositions, TOOLTIP_POSITIONS } from '../common/utils/popover-positions';
+import {
+  ClrPopoverPosition,
+  ClrPopoverType,
+  getConnectedPositions,
+  TOOLTIP_POSITIONS,
+} from '../common/utils/popover-positions';
 
 const SIZES = ['xs', 'sm', 'md', 'lg'];
 
-const defaultPosition = 'right';
+const defaultPosition = ClrPopoverPosition.RIGHT;
 const defaultSize = 'sm';
 
 @Component({
@@ -39,14 +34,14 @@ const defaultSize = 'sm';
     '[id]': 'id',
   },
   standalone: false,
+  hostDirectives: [ClrPopoverContent],
 })
 export class ClrTooltipContent implements OnInit {
   private _id: string;
-  private _position: string;
+  private _position: ClrPopoverPosition;
   private _size: string;
 
   constructor(
-    injector: Injector,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef<HTMLElement>,
@@ -54,13 +49,14 @@ export class ClrTooltipContent implements OnInit {
     public el: ElementRef,
     private renderer: Renderer2,
     private popoverService: ClrPopoverService,
-    private tooltipMouseService: TooltipMouseService
+    private tooltipMouseService: TooltipMouseService,
+    popoverContent: ClrPopoverContent
   ) {
-    popoverService.contentRef = el;
-    popoverService.scrollToClose = true;
     popoverService.panelClass.push('clr-tooltip-container');
     popoverService.popoverType = ClrPopoverType.TOOLTIP;
     popoverService.availablePositions = getConnectedPositions(popoverService.popoverType);
+
+    popoverContent.scrollToClose = true;
 
     if (!parentHost) {
       throw new Error('clr-tooltip-content should only be used inside of a clr-tooltip');
@@ -85,9 +81,11 @@ export class ClrTooltipContent implements OnInit {
   get position() {
     return this._position;
   }
-  set position(value: string) {
+  set position(value: string | ClrPopoverPosition) {
     const oldPosition = this._position;
-    const newPosition = value && TOOLTIP_POSITIONS.indexOf(value) > -1 ? value : defaultPosition;
+
+    const posIndex = TOOLTIP_POSITIONS.indexOf(value as ClrPopoverPosition);
+    const newPosition = value && posIndex > -1 ? TOOLTIP_POSITIONS[posIndex] : defaultPosition;
 
     this._position = newPosition;
 

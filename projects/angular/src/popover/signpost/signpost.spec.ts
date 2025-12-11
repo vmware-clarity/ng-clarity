@@ -18,6 +18,7 @@ import {
   TestContext,
 } from '../../utils/testing/helpers.spec';
 import { delay } from '../../utils/testing/helpers.spec';
+import { ClrPopoverPosition, SIGNPOST_POSITIONS } from '../common/utils/popover-positions';
 
 interface Context extends TestContext<ClrSignpost, TestDefaultSignpost | TestCustomTriggerSignpost> {
   popoverService: ClrPopoverService;
@@ -76,6 +77,31 @@ export default function (): void {
 
         expect(signpostToggle.getAttribute('aria-label')).toBe('custom label');
       });
+
+      // Iterating here on purpose.
+      SIGNPOST_POSITIONS.forEach(signpost => {
+        testPosition(signpost);
+      });
+
+      function testPosition(name: ClrPopoverPosition): void {
+        it('has a ' + name + ' signpost content position', function () {
+          this.hostComponent.position = name;
+          this.detectChanges();
+
+          const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+
+          // Test we have a trigger
+          expect(signpostToggle).not.toBeNull();
+
+          // Test that content shows
+          signpostToggle.click();
+          this.detectChanges();
+
+          const signpostContent = document.body.querySelector('.clr-signpost-container');
+          expect(signpostContent).not.toBeNull();
+          expect(signpostContent.classList).toContain(name);
+        });
+      }
     });
 
     describe('focus management', function () {
@@ -267,18 +293,20 @@ class TestCustomTriggerSignpost {
 
   @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn: ElementRef<HTMLButtonElement>;
 
-  position = 'right-middle';
+  position = ClrPopoverPosition.RIGHT_MIDDLE;
 }
 
 @Component({
   template: `
-    <button #outsideClick type="button">Button to test clicks outside of the dropdown component</button>
-    <clr-signpost [clrSignpostTriggerAriaLabel]="signpostTriggerAriaLabel">
-      <clr-signpost-content *clrIfOpen="openState">
-        <button class="dummy-button" type="button">dummy button</button>
-        Signpost content
-      </clr-signpost-content>
-    </clr-signpost>
+    <button #outsideClick class="btn">Button to test clicks outside of the dropdown component</button>
+    <div style="padding: 150px 350px; width: 700px; height: 300px">
+      <clr-signpost [clrSignpostTriggerAriaLabel]="signpostTriggerAriaLabel">
+        <clr-signpost-content *clrIfOpen="openState" [clrPosition]="position">
+          <button class="dummy-button btn btn-sm btn-link">dummy button</button>
+          Signpost content
+        </clr-signpost-content>
+      </clr-signpost>
+    </div>
   `,
   standalone: false,
 })
@@ -287,6 +315,7 @@ class TestDefaultSignpost {
 
   openState = false;
   signpostTriggerAriaLabel: string;
+  position = ClrPopoverPosition.RIGHT_MIDDLE;
 
   @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn: ElementRef<HTMLButtonElement>;
 }

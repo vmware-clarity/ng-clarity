@@ -15,7 +15,7 @@ import { ClrSignpostTrigger } from './signpost-trigger';
 import { ClarityIcons, ClrIcon, infoCircleIcon, windowCloseIcon } from '../../icon';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
 import { ClrFocusOnViewInitModule } from '../../utils/focus/focus-on-view-init/focus-on-view-init.module';
-import { ClrPopoverModuleNext } from '../common';
+import { ClrPopoverModuleNext } from '../common/popover.module';
 
 export const CLR_SIGNPOST_DIRECTIVES: Type<any>[] = [
   ClrSignpost,

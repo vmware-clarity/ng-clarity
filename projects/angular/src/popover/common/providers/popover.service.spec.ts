@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 
 import { ClrPopoverService } from './popover.service';
 import { Keys } from '../../../utils/enums/keys.enum';
-import { ClrPopoverModuleNext } from '../../index';
+import { ClrPopoverModuleNext } from '../popover.module';
 
 @Component({
   selector: 'test-host',
@@ -47,19 +47,6 @@ export default function (): void {
         const eventObservable: Observable<Event> = this.popoverService.getEventChange();
         expect(eventObservable).toBeDefined();
         expect(eventObservable instanceof Observable).toBe(true);
-      });
-
-      it('exposes an observable for the alignment events', function (this: TestContext) {
-        const alignedObservable: Observable<HTMLElement> = this.popoverService.popoverAligned;
-        expect(alignedObservable).toBeDefined();
-        expect(alignedObservable instanceof Observable).toBe(true);
-        let aligned = false;
-        const subscription = alignedObservable.subscribe(() => {
-          aligned = true;
-        });
-        this.popoverService.popoverAlignedEmit(null);
-        expect(aligned).toBeTrue();
-        subscription.unsubscribe();
       });
 
       it('exposes an observable for the popover visible change events', function (this: TestContext) {

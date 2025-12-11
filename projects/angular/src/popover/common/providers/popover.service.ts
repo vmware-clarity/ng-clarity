@@ -6,45 +6,38 @@
  */
 
 import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { ElementRef, Injectable, TemplateRef } from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { preventArrowKeyScroll } from '../../../utils/focus/key-focus/util';
-import { ClrPopoverType } from '../utils/popover-positions';
+import { ClrPopoverPosition, ClrPopoverType } from '../utils/popover-positions';
 
 // Popovers might need to ignore click events on an element
 // (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
 
 @Injectable()
 export class ClrPopoverService {
-  outsideClickClose = true;
   scrollToClose = false;
   anchorElementRef: ElementRef<HTMLElement>;
   closeButtonRef: ElementRef;
-  contentRef: ElementRef;
-  templateRef: TemplateRef<any>;
-  defaultPosition: string;
   panelClass: string[] = [];
   popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
   availablePositions: ConnectedPosition[] = [];
-  hasBackdrop: false;
   overlayRef: OverlayRef;
   overlay: Overlay;
-  noFocus: boolean;
-  lastKeydownEvent: KeyboardEvent;
-  private _position: string;
+  private _position = ClrPopoverPosition.BOTTOM_LEFT;
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;
   private _openEventChange = new Subject<Event>();
   private _positionChange = new Subject<string>();
-  private _popoverAligned = new Subject<HTMLElement>();
+  private _positionUpdate = new Subject<boolean>();
   private _popoverVisible = new Subject<boolean>();
 
-  get position(): string {
+  get position(): ClrPopoverPosition {
     return this._position;
   }
-  set position(position: string) {
+  set position(position: ClrPopoverPosition) {
     this._position = position;
 
     this._positionChange.next(position);
@@ -82,8 +75,8 @@ export class ClrPopoverService {
     return this._openEvent;
   }
 
-  get popoverAligned(): Observable<HTMLElement> {
-    return this._popoverAligned.asObservable();
+  updatePositonChange(): Observable<boolean> {
+    return this._positionUpdate.asObservable();
   }
 
   getPositionChange(): Observable<string> {
@@ -109,19 +102,15 @@ export class ClrPopoverService {
     this._popoverVisible.next(visible);
   }
 
-  popoverAlignedEmit(popoverNode: HTMLElement) {
-    this._popoverAligned.next(popoverNode);
+  updatePositionEmit(status: boolean) {
+    this._positionUpdate.next(status);
   }
 
-  setCloseFocus(): void {
+  focusCloseButton(): void {
     this.closeButtonRef.nativeElement?.focus();
   }
 
-  setOpenedButtonFocus(): void {
-    if (this.noFocus) {
-      return;
-    }
-
+  focusAnchor(): void {
     this.anchorElementRef?.nativeElement?.focus({ preventScroll: true });
   }
 }

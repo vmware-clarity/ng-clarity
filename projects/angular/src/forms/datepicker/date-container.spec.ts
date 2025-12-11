@@ -20,6 +20,7 @@ import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { ClrPopoverService } from '../../popover/common/providers/popover.service';
+import { ClrPopoverPosition } from '../../popover/common/utils/popover-positions';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
@@ -177,9 +178,9 @@ export default function () {
       });
 
       it('supports clrPosition option', () => {
-        context.testComponent.position = 'top-left';
+        context.testComponent.position = ClrPopoverPosition.TOP_LEFT;
         context.detectChanges();
-        expect(context.clarityDirective.popoverPosition).toEqual('top-left');
+        expect(context.clarityDirective.popoverPosition).toEqual(ClrPopoverPosition.TOP_LEFT);
       });
 
       it('should add/remove success icon and text', () => {
@@ -241,5 +242,5 @@ export default function () {
 class TestComponent {
   model = '';
   disabled = false;
-  position: string;
+  position: ClrPopoverPosition;
 }

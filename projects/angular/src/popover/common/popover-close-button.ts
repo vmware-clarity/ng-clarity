@@ -37,12 +37,12 @@ export class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
   @HostListener('click', ['$event'])
   handleClick(event: MouseEvent) {
     this.popoverService.toggleWithEvent(event);
-    this.popoverService.setOpenedButtonFocus();
+    this.popoverService.focusAnchor();
   }
 
   ngAfterViewInit() {
     this.popoverService.closeButtonRef = this.elementRef;
-    this.popoverService.setCloseFocus();
+    this.popoverService.focusCloseButton();
   }
 
   ngOnDestroy() {

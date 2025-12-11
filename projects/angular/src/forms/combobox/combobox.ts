@@ -37,7 +37,11 @@ import { ComboboxContainerService } from './providers/combobox-container.service
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
 import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
-import { ClrPopoverType, getConnectedPositions } from '../../popover/common/utils/popover-positions';
+import {
+  ClrPopoverPosition,
+  ClrPopoverType,
+  getConnectedPositions,
+} from '../../popover/common/utils/popover-positions';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
@@ -85,9 +89,8 @@ export class ClrCombobox<T>
 
   invalid = false;
   focused = false;
-  focusedPill: any;
 
-  smartPosition = 'bottom-left';
+  popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
 
   protected override index = 1;
 
@@ -151,7 +154,7 @@ export class ClrCombobox<T>
   }
 
   // Override the id of WrappedFormControl, as we want to move it to the embedded input.
-  // Otherwise the label/component connection does not work and screen readers do not read the label.
+  // Otherwise, the label/component connection does not work and screen readers do not read the label.
   override get id() {
     return this.controlIdService.id + '-combobox';
   }
@@ -260,8 +263,11 @@ export class ClrCombobox<T>
 
   loadingStateChange(state: ClrLoadingState): void {
     this.optionSelectionService.loading = state === ClrLoadingState.LOADING;
-    // this.positionService.realign();
+
     if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.popoverService?.updatePositionEmit(true);
+      });
       this.focusFirstActive();
     }
   }
@@ -373,20 +379,6 @@ export class ClrCombobox<T>
           this.searchText = '';
         } else {
           this.searchText = this.getDisplayNames(this.optionSelectionService.selectionModel.model)[0] || '';
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.popoverService.popoverAligned.subscribe(popoverNode => {
-        // When used outside a combobox container
-        if (!this.containerService) {
-          return;
-        }
-        const popover: HTMLElement = popoverNode as HTMLElement;
-        // Update position if popover hides the label
-        if (popover.getBoundingClientRect().top < this.el.nativeElement.getBoundingClientRect().top) {
-          this.renderer.setStyle(popoverNode, 'top', `${popover.offsetTop + this.containerService.labelOffset}px`);
         }
       })
     );

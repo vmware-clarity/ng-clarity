@@ -25,11 +25,16 @@ import { ClrCommonStringsService } from '../../utils';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrPopoverService } from '../common';
+import { ClrPopoverContent, ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
-import { ClrPopoverType, getConnectedPositions, SIGNPOST_POSITIONS } from '../common/utils/popover-positions';
+import {
+  ClrPopoverPosition,
+  ClrPopoverType,
+  getConnectedPositions,
+  SIGNPOST_POSITIONS,
+} from '../common/utils/popover-positions';
 
 @Component({
   selector: 'clr-signpost-content',
@@ -56,6 +61,7 @@ import { ClrPopoverType, getConnectedPositions, SIGNPOST_POSITIONS } from '../co
   `,
   host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
   standalone: false,
+  hostDirectives: [ClrPopoverContent],
 })
 export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;
@@ -64,7 +70,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   signpostContentId = uniqueIdFactory();
 
   private document: Document;
-  private _position = 'right-middle';
+  private _position = ClrPopoverPosition.RIGHT_MIDDLE;
 
   constructor(
     @Optional()
@@ -85,7 +91,6 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     signpostIdService.setId(this.signpostContentId);
 
     this.document = document;
-    popoverService.contentRef = element;
     popoverService.panelClass.push('clr-signpost-container');
     popoverService.popoverType = ClrPopoverType.SIGNPOST;
 
@@ -117,7 +122,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
    * I think of it as follows for 'top-left' -> CONTAINER_SIDE-SIDE_POSITION. In this case CONTAINER_SIDE is 'top'
    * meaning the top of the trigger icon (above the icon that hides/shows) the ClrSignpostContent. And, SIDE_POSITION
    * is 'left' meaning two things: 1) the ClrSignpostContent container extends to the left and 2) the 'arrow/pointer'
-   * linking the SingpostContent to the trigger points down at the horizontal center of the trigger icon.
+   * linking the SignpostContent to the trigger points down at the horizontal center of the trigger icon.
    *
    * @param newPosition
    */
@@ -125,8 +130,9 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   get position() {
     return this._position;
   }
-  set position(position: string) {
-    this._position = position && SIGNPOST_POSITIONS.indexOf(position) > -1 ? position : 'right-middle';
+  set position(position: string | ClrPopoverPosition) {
+    const posIndex = SIGNPOST_POSITIONS.indexOf(position as ClrPopoverPosition);
+    this._position = position && posIndex > -1 ? SIGNPOST_POSITIONS[posIndex] : ClrPopoverPosition.RIGHT_MIDDLE;
 
     this.popoverService.position = this._position;
   }

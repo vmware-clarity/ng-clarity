@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { JsonPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
@@ -18,16 +19,7 @@ import {
 @Component({
   selector: 'storybook-popover',
   template: `<ng-container>
-    <button
-      class="btn"
-      clrPopoverOpenCloseButton
-      role="button"
-      type="button"
-      [attr.aria-owns]="popoverId"
-      clrPopoverAnchor
-    >
-      Origin
-    </button>
+    <button class="btn" clrPopoverAnchor clrPopoverOpenCloseButton [attr.aria-owns]="popoverId">Origin</button>
     <div
       [id]="popoverId"
       role="dialog"
@@ -46,13 +38,20 @@ import {
             padding: var(--cds-global-space-4);
             box-shadow: var(--cds-alias-object-shadow-300);"
     >
+      @if (showCloseButton) {
+        <button class="btn btn-sm btn-link-neutral btn-icon" clrPopoverCloseButton>
+          The close button
+          <cds-icon shape="times"></cds-icon>
+        </button>
+        <br />
+      }
       Overlay/Content <br />
       {{ contentPosition | json }}
     </div>
   </ng-container>`,
   providers: [ClrPopoverService],
   standalone: true,
-  imports: [ClarityModule, JsonPipe],
+  imports: [ClarityModule, JsonPipe, CdkTrapFocus],
 })
 export class StorybookPopoverComponent {
   popoverId = 'hello_world';
@@ -60,6 +59,7 @@ export class StorybookPopoverComponent {
   @Input() open = true;
   @Input() outsideClickToClose = true;
   @Input() scrollToClose = false;
+  @Input() showCloseButton = true;
   @Input() type = ClrPopoverType.DEFAULT;
   @Input() defaultPosition: string;
   @Input() signpostPosition: string;

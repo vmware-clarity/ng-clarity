@@ -15,6 +15,7 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { ClrPopoverService } from '../common';
 import { ClrDropdownModule } from './dropdown.module';
+import { ClrPopoverPosition } from '../common/utils/popover-positions';
 
 @Component({
   template: `
@@ -28,7 +29,7 @@ import { ClrDropdownModule } from './dropdown.module';
   standalone: false,
 })
 class SimpleTest {
-  position: string;
+  position: ClrPopoverPosition;
 
   menu = true;
 }
@@ -63,6 +64,19 @@ export default function (): void {
 
     it('has the correct css classes', function () {
       expect(dropdownMenu).not.toBeNull();
+    });
+
+    it('supports clrPosition option', function () {
+      // Default is bottom-left since menuPosition is set to ""
+      expect(popoverService.position).toEqual(ClrPopoverPosition.BOTTOM_LEFT);
+
+      fixture.componentInstance.position = ClrPopoverPosition.BOTTOM_RIGHT;
+      fixture.detectChanges();
+      expect(popoverService.position).toEqual(ClrPopoverPosition.BOTTOM_RIGHT);
+
+      fixture.componentInstance.position = ClrPopoverPosition.TOP_RIGHT;
+      fixture.detectChanges();
+      expect(popoverService.position).toEqual(ClrPopoverPosition.TOP_RIGHT);
     });
 
     it('adds the menu role to the host', function () {

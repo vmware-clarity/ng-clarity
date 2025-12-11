@@ -5,11 +5,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-.dummy-menu {
-  border: var(--cds-global-space-1) solid;
-  padding: var(--cds-global-space-6);
-  background: hsl(0deg 0% 100%);
+.container {
+  display: flex;
+  justify-content: center;
+
+  .btn {
+    margin: 0;
+  }
+}
+
+.popover-content {
+  background-color: var(--cds-alias-object-container-background);
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
   border-radius: var(--cds-alias-object-border-radius-100);
-  margin-top: var(--cds-global-space-8);
-  z-index: 1000;
+  padding: var(--cds-global-space-5);
+  box-shadow: var(--cds-alias-object-shadow-300);
+
+  .btn {
+    margin: 0;
+  }
 }

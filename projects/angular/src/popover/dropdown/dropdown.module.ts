@@ -14,12 +14,11 @@ import { ClrDropdownMenu } from './dropdown-menu';
 import { ClrDropdownTrigger } from './dropdown-trigger';
 import { ClrIcon } from '../../icon';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-import { ClrPopoverModuleNext } from '../common/popover.module';
 
 export const CLR_DROPDOWN_DIRECTIVES: Type<any>[] = [ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem];
 
 @NgModule({
-  imports: [CommonModule, ClrPopoverModuleNext, ClrIcon],
+  imports: [CommonModule, ClrIcon],
   declarations: [CLR_DROPDOWN_DIRECTIVES],
   exports: [CLR_DROPDOWN_DIRECTIVES, ClrConditionalModule, ClrIcon],
 })

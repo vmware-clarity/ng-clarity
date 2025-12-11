@@ -10,9 +10,6 @@ import { Subscription } from 'rxjs';
 
 import { ClrPopoverService } from '../../popover/common';
 
-/**
- * @deprecated use *clrPopoverContent structural directive.
- */
 @Directive({
   selector: '[clrIfOpen]',
   standalone: false,
@@ -40,27 +37,29 @@ export class ClrIfOpen implements OnDestroy {
    */
   @Output('clrIfOpenChange') openChange = new EventEmitter<boolean>(false);
 
-  private subscription: Subscription;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private popoverService: ClrPopoverService,
     private template: TemplateRef<any>,
     private container: ViewContainerRef
   ) {
-    this.subscription = popoverService.openChange.subscribe(change => {
-      // OPEN before overlay is built
-      if (change) {
-        container.createEmbeddedView(template);
-        this.openChange.emit(change);
-      }
-    });
-    this.subscription = popoverService.popoverVisible.subscribe(change => {
-      // CLOSE after overlay is destroyed
-      if (!change) {
-        container.clear();
-        this.openChange.emit(change);
-      }
-    });
+    this.subscriptions.push(
+      popoverService.openChange.subscribe(change => {
+        // OPEN before overlay is built
+        if (change) {
+          container.createEmbeddedView(template);
+          this.openChange.emit(change);
+        }
+      }),
+      popoverService.popoverVisible.subscribe(change => {
+        // CLOSE after overlay is destroyed
+        if (!change) {
+          container.clear();
+          this.openChange.emit(change);
+        }
+      })
+    );
   }
 
   /**
@@ -76,7 +75,7 @@ export class ClrIfOpen implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   /**

@@ -11,17 +11,15 @@ import { ClrButtonGroupModule, ClrIcon, ClrLoadingModule, commonStringsDefault }
 import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from 'helpers/button-class.helper';
 import { createArray } from 'helpers/common';
 
+import { ClrPopoverPosition } from '../../../projects/angular/src/popover/common/utils/popover-positions';
+
 @Component({
   selector: 'storybook-button-group',
   standalone: true,
   imports: [CommonModule, ClrButtonGroupModule, ClrLoadingModule, ClrIcon],
   template: `
     <!-- Default Template -->
-    <div
-      *ngIf="templateMode !== 'showcase'"
-      style="text-align: center"
-      [ngStyle]="{ 'margin-top': clrMenuPosition.includes('top') ? '200px' : '20px' }"
-    >
+    <div *ngIf="templateMode !== 'showcase'" style="text-align: center; margin-top: 100px;">
       <ng-container
         *ngTemplateOutlet="buttonGroupTemplate; context: { buttonType: buttonType, buttonStyle: buttonStyle }"
       ></ng-container>
@@ -75,7 +73,7 @@ export class ButtonGroupStorybookComponent {
 
   // Inputs from the story args
   @Input() btnSmallSize = false; //btn-sm
-  @Input() clrMenuPosition = 'bottom-left';
+  @Input() clrMenuPosition = ClrPopoverPosition.BOTTOM_LEFT;
   @Input() loading = false;
   @Input() clrToggleButtonAriaLabel: string = commonStringsDefault.rowActions;
   @Input() buttonCount = 3;

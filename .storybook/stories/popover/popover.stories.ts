@@ -6,10 +6,11 @@
  */
 
 import { ClrPopoverModule, ClrPopoverService } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 
 import { StorybookPopoverComponent } from './storybook-popover.component';
 import {
+  ClrPopoverPosition,
   ClrPopoverType,
   SIGNPOST_POSITIONS,
   TOOLTIP_POSITIONS,
@@ -35,22 +36,20 @@ export default {
     }),
   ],
   providers: [ClrPopoverService],
+  render: (args: StorybookPopoverComponent) => ({
+    template: `
+      <div style="height: 100vh; width: 100%; display: flex; padding: 50px; justify-content: center">
+        <storybook-popover ${argsToTemplate(args)}></storybook-popover>
+      </div>
+    `,
+    props: {
+      ...args,
+      position: args.dropdownPosition || args.tooltipPosition || args.signpostPosition || args.defaultPosition,
+    },
+  }),
 };
 
-const PopoverTemplate: StoryFn = args => ({
-  template: `
-    <div style="height: 100vh; width: 100%; display: flex; padding: 50px; justify-content: center">
-      <storybook-popover ${argsToTemplate(args)}></storybook-popover>
-    </div>
-  `,
-  props: {
-    ...args,
-    position: args.dropdownPosition || args.tooltipPosition || args.signpostPosition || args.defaultPosition,
-  },
-});
-
 export const Popover: StoryObj = {
-  render: PopoverTemplate,
   argTypes: {
     position: { control: { disable: true }, table: { disable: true } },
     dropdownPosition: {
@@ -92,17 +91,17 @@ export const Popover: StoryObj = {
     open: true,
     scrollToClose: false,
     outsideClickToClose: true,
+    showCloseButton: true,
     type: ClrPopoverType.DROPDOWN,
-    defaultPosition: 'bottom-right',
-    signpostPosition: 'bottom-right',
-    tooltipPosition: 'right',
-    dropdownPosition: 'bottom-left',
-    scrollPositions: ['bottom-left', 'right-bottom', 'top-left'],
+    defaultPosition: ClrPopoverPosition.BOTTOM_RIGHT,
+    signpostPosition: ClrPopoverPosition.BOTTOM_RIGHT,
+    tooltipPosition: ClrPopoverPosition.RIGHT,
+    dropdownPosition: ClrPopoverPosition.BOTTOM_LEFT,
+    scrollPositions: [ClrPopoverPosition.BOTTOM_LEFT, ClrPopoverPosition.RIGHT_BOTTOM, ClrPopoverPosition.TOP_LEFT],
   },
 };
 
 export const PopoverCustomPositions: StoryObj = {
-  render: PopoverTemplate,
   argTypes: {
     useConnectedPosition: { control: { disable: true }, table: { disable: true } },
     originX: {

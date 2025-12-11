@@ -15,12 +15,7 @@ import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 
 @Component({
   selector: 'clr-dropdown',
-  template: `
-    <ng-content select="[clrDropdownTrigger]"></ng-content>
-    <ng-template [clrPopoverContent]>
-      <ng-content select="clr-dropdown-menu"></ng-content>
-    </ng-template>
-  `,
+  template: `<ng-content></ng-content>`,
   host: {
     '[class.dropdown]': 'true',
     '[class.open]': 'popoverService.open',

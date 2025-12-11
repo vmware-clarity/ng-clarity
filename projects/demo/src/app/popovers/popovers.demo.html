@@ -4,22 +4,82 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
-<div class="clr-row">
-  <div class="clr-col-12 clr-col-md-6">
-    <h6>1. Open Popover on focus</h6>
-    <div>
-      <clr-dummy-anchor [openOnFocus]="true">
-        <clr-dummy-menu *clrIfOpen>Dummy Menu</clr-dummy-menu>
-      </clr-dummy-anchor>
-    </div>
-  </div>
 
-  <div class="clr-col-12 clr-col-md-6">
-    <h6>2. Open Popover on click</h6>
-    <div>
-      <clr-dummy-anchor [openOnFocus]="false">
-        <clr-dummy-menu *clrIfOpen>Dummy Menu</clr-dummy-menu>
-      </clr-dummy-anchor>
+<form clrForm class="clr-form-compact">
+  <!--  <clr-number-input-container>-->
+  <!--    <label>Total Rows</label>-->
+  <!--    <input clrNumberInput type="number" name="rows" [(ngModel)]="totalRows" />-->
+  <!--    <clr-control-helper-->
+  <!--    >Total Virtual scroll height in PX (RowHeight * TotalRows): {{totalRows * virtualScrollRowHeight}}-->
+  <!--    </clr-control-helper>-->
+  <!--  </clr-number-input-container>-->
+  <!--  <clr-number-input-container>-->
+  <!--    <label>Datagrid height in PX</label>-->
+  <!--    <input clrNumberInput type="number" name="datagridHeight" [(ngModel)]="datagridHeight" />-->
+  <!--  </clr-number-input-container>-->
+  <!--  <clr-number-input-container>-->
+  <!--    <label>ROW height in PX</label>-->
+  <!--    <input clrNumberInput type="number" name="virtualScrollRowHeight" [(ngModel)]="virtualScrollRowHeight" />-->
+  <!--  </clr-number-input-container>-->
+
+  <clr-select-container>
+    <label>Type</label>
+    <select clrSelect name="type" [(ngModel)]="type">
+      <option [value]="clrPopoverType.DEFAULT">DEFAULT</option>
+      <option [value]="clrPopoverType.DROPDOWN">DROPDOWN</option>
+      <option [value]="clrPopoverType.SIGNPOST">SIGNPOST</option>
+      <option [value]="clrPopoverType.TOOLTIP">TOOLTIP</option>
+    </select>
+  </clr-select-container>
+  <clr-toggle-container>
+    <label>Open</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle name="open" [(ngModel)]="open" />
+      <label>{{open ? 'ON' : 'OFF' }}</label>
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
+  <clr-toggle-container>
+    <label>Scroll To Close</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle name="scrollToClose" [(ngModel)]="scrollToClose" />
+      <label>{{scrollToClose ? 'ON' : 'OFF' }}</label>
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
+  <clr-toggle-container>
+    <label>Outside Click To Close</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle name="outsideClickToClose" [(ngModel)]="outsideClickToClose" />
+      <label>{{outsideClickToClose ? 'ON' : 'OFF' }}</label>
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
+</form>
+
+<div class="clr-row">
+  <div class="clr-col-12 container">
+    <button class="btn" clrPopoverOpenCloseButton clrPopoverAnchor [attr.aria-owns]="popoverId">
+      <cds-icon shape="home"></cds-icon> Popover Anchor
+    </button>
+    <div
+      [id]="popoverId"
+      class="popover-content"
+      role="dialog"
+      cdkTrapFocus
+      *clrPopoverContent="
+      open;
+      at: contentPosition;
+      availablePositions: []
+      type: type;
+      outsideClickToClose: outsideClickToClose;
+      scrollToClose: scrollToClose"
+    >
+      <div role="heading">
+        Overlay Header
+        <button class="btn btn-sm btn-outline-neutral btn-icon" clrPopoverCloseButton>
+          The close button
+          <cds-icon shape="times"></cds-icon>
+        </button>
+      </div>
+      <div>Overlay Content</div>
     </div>
   </div>
 </div>

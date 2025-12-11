@@ -22,7 +22,7 @@
 
     cds-icon,
     clr-icon {
-      color: label-variables.$clr-label-font-color-light;
+      color: label-variables.$clr-label-font-color;
     }
   }
 
@@ -69,7 +69,7 @@
     min-height: density.$clr-base-row-height-s;
     margin: 0 density.$clr-base-horizontal-offset-s density.$clr-base-vertical-offset-2xs 0;
     white-space: nowrap;
-    color: label-variables.$clr-label-font-color-light;
+    color: label-variables.$clr-label-font-color;
     text-decoration: none;
 
     // Set lower padding size if there is a badge or icon in the start / end of a label.
@@ -102,11 +102,11 @@
     }
 
     &:visited {
-      color: label-variables.$clr-label-font-color-light;
+      color: label-variables.$clr-label-font-color;
 
       cds-icon,
       clr-icon {
-        color: label-variables.$clr-label-font-color-light;
+        color: label-variables.$clr-label-font-color;
       }
     }
 

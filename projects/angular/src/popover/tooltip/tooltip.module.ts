@@ -13,7 +13,7 @@ import { ClrTooltipContent } from './tooltip-content';
 import { ClrTooltipTrigger } from './tooltip-trigger';
 import { ClrIcon } from '../../icon';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-import { ClrPopoverModuleNext } from '../common';
+import { ClrPopoverModuleNext } from '../common/popover.module';
 
 export const CLR_TOOLTIP_DIRECTIVES: Type<any>[] = [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent];
 

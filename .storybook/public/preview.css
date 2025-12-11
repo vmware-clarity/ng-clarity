@@ -7,11 +7,3 @@
 body.sb-main-padded.sb-main-padded {
   padding: 24px;
 }
-
-[cds-theme~='light'] {
-  color-scheme: light;
-}
-
-[cds-theme~='dark'] {
-  color-scheme: dark;
-}

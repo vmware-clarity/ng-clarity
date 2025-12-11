@@ -16,32 +16,56 @@ export enum ClrPopoverType {
   DEFAULT,
 }
 
-export const TOOLTIP_POSITIONS: string[] = ['right', 'left', 'bottom-left', 'bottom-right', 'top-left', 'top-right'];
+export enum ClrPopoverPosition {
+  TOP_RIGHT = 'top-right',
+  TOP_MIDDLE = 'top-middle',
+  TOP_LEFT = 'top-left',
+  RIGHT = 'right',
+  RIGHT_TOP = 'right-top',
+  RIGHT_MIDDLE = 'right-middle',
+  RIGHT_BOTTOM = 'right-bottom',
+  LEFT = 'left',
+  LEFT_TOP = 'left-top',
+  LEFT_MIDDLE = 'left-middle',
+  LEFT_BOTTOM = 'left-bottom',
+  BOTTOM_RIGHT = 'bottom-right',
+  BOTTOM_MIDDLE = 'bottom-middle',
+  BOTTOM_LEFT = 'bottom-left',
+}
 
-export const DROPDOWN_POSITIONS: string[] = [
-  'bottom-left',
-  'bottom-right',
-  'top-left',
-  'top-right',
-  'left-bottom',
-  'left-top',
-  'right-bottom',
-  'right-top',
+export const TOOLTIP_POSITIONS: ClrPopoverPosition[] = [
+  ClrPopoverPosition.RIGHT,
+  ClrPopoverPosition.LEFT,
+  ClrPopoverPosition.BOTTOM_LEFT,
+  ClrPopoverPosition.BOTTOM_RIGHT,
+  ClrPopoverPosition.TOP_LEFT,
+  ClrPopoverPosition.TOP_RIGHT,
 ];
 
-export const SIGNPOST_POSITIONS: string[] = [
-  'right-middle', // default. must be at index 0
-  'top-left',
-  'top-middle',
-  'top-right',
-  'right-top',
-  'right-bottom',
-  'bottom-right',
-  'bottom-middle',
-  'bottom-left',
-  'left-bottom',
-  'left-middle',
-  'left-top',
+export const DROPDOWN_POSITIONS: ClrPopoverPosition[] = [
+  ClrPopoverPosition.BOTTOM_LEFT,
+  ClrPopoverPosition.BOTTOM_RIGHT,
+  ClrPopoverPosition.TOP_LEFT,
+  ClrPopoverPosition.TOP_RIGHT,
+  ClrPopoverPosition.LEFT_BOTTOM,
+  ClrPopoverPosition.LEFT_TOP,
+  ClrPopoverPosition.RIGHT_BOTTOM,
+  ClrPopoverPosition.RIGHT_TOP,
+];
+
+export const SIGNPOST_POSITIONS: ClrPopoverPosition[] = [
+  ClrPopoverPosition.RIGHT_MIDDLE, // default. must be at index 0
+  ClrPopoverPosition.TOP_LEFT,
+  ClrPopoverPosition.TOP_MIDDLE,
+  ClrPopoverPosition.TOP_RIGHT,
+  ClrPopoverPosition.RIGHT_TOP,
+  ClrPopoverPosition.RIGHT_BOTTOM,
+  ClrPopoverPosition.BOTTOM_RIGHT,
+  ClrPopoverPosition.BOTTOM_MIDDLE,
+  ClrPopoverPosition.BOTTOM_LEFT,
+  ClrPopoverPosition.LEFT_BOTTOM,
+  ClrPopoverPosition.LEFT_MIDDLE,
+  ClrPopoverPosition.LEFT_TOP,
 ];
 
 function getPositionsArray(type: ClrPopoverType) {
@@ -67,159 +91,113 @@ export function getConnectedPositions(type: ClrPopoverType): ConnectedPosition[]
   return result;
 }
 
-function getOffset(type: ClrPopoverType) {
-  switch (type) {
-    case ClrPopoverType.SIGNPOST:
-      return 16;
-    case ClrPopoverType.TOOLTIP:
-      return 21;
-    case ClrPopoverType.DROPDOWN:
-      return 2;
-    case ClrPopoverType.DEFAULT:
+const POPOVER_OFFSETS: Record<ClrPopoverType, number> = {
+  [ClrPopoverType.SIGNPOST]: 16,
+  [ClrPopoverType.TOOLTIP]: 21,
+  [ClrPopoverType.DROPDOWN]: 2,
+  [ClrPopoverType.DEFAULT]: 0,
+};
+
+function getOffset(key: ClrPopoverPosition, type: ClrPopoverType): Partial<ConnectedPosition> {
+  const offset = POPOVER_OFFSETS[type] || 0;
+
+  switch (key) {
+    // TOP
+    case ClrPopoverPosition.TOP_LEFT:
+    case ClrPopoverPosition.TOP_MIDDLE:
+    case ClrPopoverPosition.TOP_RIGHT:
+      return {
+        offsetY: -offset,
+        offsetX: 0,
+      } as ConnectedPosition;
+
+    // LEFT
+    case ClrPopoverPosition.LEFT_TOP:
+    case ClrPopoverPosition.LEFT_MIDDLE:
+    case ClrPopoverPosition.LEFT:
+    case ClrPopoverPosition.LEFT_BOTTOM:
+      return {
+        offsetY: 0,
+        offsetX: -offset,
+      } as ConnectedPosition;
+
+    // RIGHT
+    case ClrPopoverPosition.RIGHT_TOP:
+    case ClrPopoverPosition.RIGHT_MIDDLE:
+    case ClrPopoverPosition.RIGHT:
+    case ClrPopoverPosition.RIGHT_BOTTOM:
+      return {
+        offsetY: 0,
+        offsetX: offset,
+      } as ConnectedPosition;
+
+    // BOTTOM and DEFAULT
+    case ClrPopoverPosition.BOTTOM_RIGHT:
+    case ClrPopoverPosition.BOTTOM_MIDDLE:
+    case ClrPopoverPosition.BOTTOM_LEFT:
     default:
-      return 0;
+      return {
+        offsetY: offset,
+        offsetX: 0,
+      } as ConnectedPosition;
   }
 }
 
-export function mapPopoverKeyToPosition(key: string, type: ClrPopoverType): ConnectedPosition {
-  let offset = getOffset(type);
+const STANDARD_ANCHORS = {
+  // TOP
+  [ClrPopoverPosition.TOP_RIGHT]: { anchor: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_LEFT },
+  [ClrPopoverPosition.TOP_MIDDLE]: { anchor: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_CENTER },
+  [ClrPopoverPosition.TOP_LEFT]: { anchor: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_RIGHT },
 
-  switch (key) {
-    // TOP LEFT
-    case 'top-left':
-      return {
-        ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.TOP_LEFT : ClrPosition.TOP_CENTER),
-        ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.BOTTOM_LEFT : ClrPosition.BOTTOM_RIGHT),
-        panelClass: key,
-        offsetY: -offset,
-        offsetX: 0,
-      } as ConnectedPosition;
+  // LEFT
+  [ClrPopoverPosition.LEFT]: { anchor: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_TOP },
+  [ClrPopoverPosition.LEFT_TOP]: { anchor: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_BOTTOM },
+  [ClrPopoverPosition.LEFT_MIDDLE]: { anchor: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_CENTER },
+  [ClrPopoverPosition.LEFT_BOTTOM]: { anchor: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_TOP },
 
-    // TOP CENTER (middle)
-    case 'top':
-    case 'top-middle':
-    case 'top-center':
-      return {
-        ...getAnchorPosition(ClrPosition.TOP_CENTER),
-        ...getContentPosition(ClrPosition.BOTTOM_CENTER),
-        panelClass: key,
-        offsetY: -offset,
-        offsetX: 0,
-      } as ConnectedPosition;
+  // RIGHT
+  [ClrPopoverPosition.RIGHT]: { anchor: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_TOP },
+  [ClrPopoverPosition.RIGHT_TOP]: { anchor: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_BOTTOM },
+  [ClrPopoverPosition.RIGHT_MIDDLE]: { anchor: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_CENTER },
+  [ClrPopoverPosition.RIGHT_BOTTOM]: { anchor: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_TOP },
 
-    // TOP RIGHT
-    case 'top-right':
-      return {
-        ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.TOP_RIGHT : ClrPosition.TOP_CENTER),
-        ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.BOTTOM_RIGHT : ClrPosition.BOTTOM_LEFT),
-        panelClass: key,
-        offsetY: -offset,
-        offsetX: 0,
-      } as ConnectedPosition;
+  // BOTTOM
+  [ClrPopoverPosition.BOTTOM_RIGHT]: { anchor: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_LEFT },
+  [ClrPopoverPosition.BOTTOM_MIDDLE]: { anchor: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_CENTER },
+  [ClrPopoverPosition.BOTTOM_LEFT]: { anchor: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_RIGHT },
+};
 
-    // LEFT TOP
-    case 'left-top':
-      return {
-        ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.LEFT_TOP : ClrPosition.LEFT_CENTER),
-        ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.TOP_RIGHT : ClrPosition.RIGHT_BOTTOM),
-        panelClass: key,
-        offsetY: 0,
-        offsetX: -offset,
-      } as ConnectedPosition;
+const DROPDOWN_ANCHORS = {
+  // TOP
+  [ClrPopoverPosition.TOP_RIGHT]: { anchor: ClrPosition.TOP_RIGHT, content: ClrPosition.BOTTOM_RIGHT },
+  [ClrPopoverPosition.TOP_LEFT]: { anchor: ClrPosition.TOP_LEFT, content: ClrPosition.BOTTOM_LEFT },
 
-    // LEFT CENTER (middle)
-    case 'left-middle':
-    case 'left-center':
-      return {
-        ...getAnchorPosition(ClrPosition.LEFT_CENTER),
-        ...getContentPosition(ClrPosition.RIGHT_CENTER),
-        panelClass: key,
-        offsetY: 0,
-        offsetX: -offset,
-      } as ConnectedPosition;
+  // LEFT
+  [ClrPopoverPosition.LEFT_TOP]: { anchor: ClrPosition.LEFT_TOP, content: ClrPosition.TOP_RIGHT },
+  [ClrPopoverPosition.LEFT_BOTTOM]: { anchor: ClrPosition.LEFT_BOTTOM, content: ClrPosition.BOTTOM_RIGHT },
 
-    // LEFT BOTTOM
-    case 'left':
-    case 'left-bottom':
-      return {
-        ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.LEFT_BOTTOM : ClrPosition.LEFT_CENTER),
-        ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.BOTTOM_RIGHT : ClrPosition.RIGHT_TOP),
-        panelClass: key,
-        offsetY: 0,
-        offsetX: -offset,
-      } as ConnectedPosition;
+  // RIGHT
+  [ClrPopoverPosition.RIGHT_TOP]: { anchor: ClrPosition.RIGHT_TOP, content: ClrPosition.LEFT_TOP },
+  [ClrPopoverPosition.RIGHT_BOTTOM]: { anchor: ClrPosition.RIGHT_BOTTOM, content: ClrPosition.LEFT_BOTTOM },
 
-    // RIGHT TOP
-    case 'right-top':
-      return {
-        ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.RIGHT_TOP : ClrPosition.RIGHT_CENTER),
-        ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.LEFT_TOP : ClrPosition.LEFT_BOTTOM),
-        panelClass: key,
-        offsetY: 0,
-        offsetX: offset,
-      } as ConnectedPosition;
+  // BOTTOM
+  [ClrPopoverPosition.BOTTOM_RIGHT]: { anchor: ClrPosition.BOTTOM_LEFT, content: ClrPosition.TOP_RIGHT },
+  [ClrPopoverPosition.BOTTOM_LEFT]: { anchor: ClrPosition.BOTTOM_RIGHT, content: ClrPosition.TOP_LEFT },
+};
 
-    // RIGHT CENTER (middle)
-    case 'right-middle':
-    case 'right-center':
-      return {
-        ...getAnchorPosition(ClrPosition.RIGHT_CENTER),
-        ...getContentPosition(ClrPosition.LEFT_CENTER),
-        panelClass: key,
-        offsetY: 0,
-        offsetX: offset,
-      } as ConnectedPosition;
+export function mapPopoverKeyToPosition(key: ClrPopoverPosition, type: ClrPopoverType): ConnectedPosition {
+  let offset = getOffset(key, type);
 
-    // RIGHT BOTTOM
-    case 'right':
-    case 'right-bottom':
-      return {
-        ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.RIGHT_BOTTOM : ClrPosition.RIGHT_CENTER),
-        ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.LEFT_BOTTOM : ClrPosition.LEFT_TOP),
-        panelClass: key,
-        offsetY: 0,
-        offsetX: offset,
-      } as ConnectedPosition;
+  const defaultPosition = { anchor: ClrPosition.BOTTOM_LEFT, content: ClrPosition.TOP_LEFT };
+  const { anchor, content } =
+    (type === ClrPopoverType.DROPDOWN ? DROPDOWN_ANCHORS[key] : STANDARD_ANCHORS[key]) ?? defaultPosition;
 
-    // BOTTOM RIGHT
-    case 'bottom-right':
-      return {
-        ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.BOTTOM_LEFT : ClrPosition.BOTTOM_CENTER),
-        ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.TOP_RIGHT : ClrPosition.TOP_LEFT),
-        panelClass: key,
-        offsetY: offset,
-        offsetX: 0,
-      } as ConnectedPosition;
-
-    // BOTTOM CENTER (middle)
-    case 'bottom-middle':
-    case 'bottom':
-    case 'bottom-center':
-      return {
-        ...getAnchorPosition(ClrPosition.BOTTOM_CENTER),
-        ...getContentPosition(ClrPosition.TOP_CENTER),
-        panelClass: key,
-        offsetY: offset,
-        offsetX: 0,
-      } as ConnectedPosition;
-
-    // BOTTOM LEFT
-    case 'bottom-left':
-      return {
-        ...getAnchorPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.BOTTOM_RIGHT : ClrPosition.BOTTOM_CENTER),
-        ...getContentPosition(type === ClrPopoverType.DROPDOWN ? ClrPosition.TOP_LEFT : ClrPosition.TOP_RIGHT),
-        panelClass: key,
-        offsetY: offset,
-        offsetX: 0,
-      } as ConnectedPosition;
-    default:
-      return {
-        ...getAnchorPosition(ClrPosition.BOTTOM_LEFT),
-        ...getContentPosition(ClrPosition.TOP_LEFT),
-        offsetY: offset,
-        offsetX: 0,
-      } as ConnectedPosition;
-  }
+  return {
+    ...getAnchorPosition(anchor),
+    ...getContentPosition(content),
+    ...offset,
+    panelClass: key,
+  } as ConnectedPosition;
 }
 
 export function getAnchorPosition(key: ClrPosition): Partial<ConnectedPosition> {
@@ -310,6 +288,7 @@ export function getContentPosition(key: ClrPosition): Partial<ConnectedPosition>
         overlayX: 'end',
         overlayY: 'top',
       };
+
     // LEFT Positions
     case ClrPosition.LEFT_TOP:
       return {
@@ -326,6 +305,7 @@ export function getContentPosition(key: ClrPosition): Partial<ConnectedPosition>
         overlayX: 'start',
         overlayY: 'bottom',
       };
+
     // RIGHT Positions
     case ClrPosition.RIGHT_TOP:
       return {
@@ -342,6 +322,7 @@ export function getContentPosition(key: ClrPosition): Partial<ConnectedPosition>
         overlayX: 'end',
         overlayY: 'bottom',
       };
+
     // BOTTOM positions and default
     case ClrPosition.BOTTOM_LEFT:
       return {

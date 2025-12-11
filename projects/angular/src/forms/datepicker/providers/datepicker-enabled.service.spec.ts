@@ -21,6 +21,11 @@ export default function () {
       expect(service.isEnabled).toBe(false);
     });
 
+    it("sets isEnabled to false if the user agent has 'mobi' and inner width is less than DATEPICKER_ENABLE_BREAKPOINT", () => {
+      const service1: DatepickerEnabledService = initializeSpies('mobi', DATEPICKER_ENABLE_BREAKPOINT - 10);
+      expect(service1.isEnabled).toBe(false);
+    });
+
     it("sets isEnabled to true if the user agent does not have 'Mobi' and inner width is less than DATEPICKER_ENABLE_BREAKPOINT", () => {
       const service: DatepickerEnabledService = initializeSpies('Test', DATEPICKER_ENABLE_BREAKPOINT - 10);
       expect(service.isEnabled).toBe(true);
