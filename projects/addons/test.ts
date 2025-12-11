@@ -8,17 +8,10 @@
 import 'zone.js';
 import 'zone.js/testing';
 
-import { getTestBed, TestEnvironmentOptions } from '@angular/core/testing';
-import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
+import { getTestBed } from '@angular/core/testing';
+import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
 
-// // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
-// declare let __karma__: any;
-
-const testConfig: TestEnvironmentOptions = {
-  // Enable more strict rules, which are disabled by default.
-  // See: https://github.com/angular/angular/issues/36430
-  errorOnUnknownElements: true,
-  errorOnUnknownProperties: true,
-};
-
-getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting(), testConfig);
+// First, initialize the Angular testing environment.
+getTestBed().initTestEnvironment(BrowserTestingModule, platformBrowserTesting(), {
+  teardown: { destroyAfterEach: false },
+});

@@ -107,7 +107,16 @@
             "main": "projects/angular/src/test.ts",
             "tsConfig": "projects/angular/tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "codeCoverage": true
+            "codeCoverage": true,
+            "watch": true,
+            "sourceMap": true
+          },
+          "configurations": {
+            "ci": {
+              "watch": false,
+              "sourceMap": false,
+              "browsers": "ChromeHeadless"
+            }
           }
         },
         "start-storybook": {
@@ -159,7 +168,17 @@
             "main": "projects/addons/test.ts",
             "tsConfig": "projects/addons/tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "codeCoverage": true
+            "codeCoverage": true,
+            "watch": true,
+            "sourceMap": true,
+            "codeCoverageExclude": ["projects/addons/**/*.mock.ts", "projects/addons/testing/datagrid/grid-helper.ts"]
+          },
+          "configurations": {
+            "ci": {
+              "watch": false,
+              "sourceMap": false,
+              "browsers": "ChromeHeadless"
+            }
           }
         }
       }
