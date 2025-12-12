@@ -8,6 +8,7 @@
 import { Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ClrIcon } from '@clr/angular';
 
 import { ClrCommonFormsModule } from '../common';
 import { ClrFileInput } from './file-input';
@@ -101,7 +102,7 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule],
+      imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrIcon],
       declarations: [ClrFileInputContainer, ClrFileInput, testComponent],
     });
 

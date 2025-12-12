@@ -5,13 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-const yargs = require('yargs/yargs');
-const { hideBin } = require('yargs/helpers');
-const argv = yargs(hideBin(process.argv));
-
-const isWatch = argv.strict(false).option('watch', { type: 'boolean', default: false }).parse().watch;
-const browser = isWatch ? 'Chrome' : 'ChromeHeadless';
-
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -22,6 +15,7 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
+      // Keep your custom reporter
       require('./scripts/clean-progress-reporter'),
     ],
     client: {
@@ -54,9 +48,15 @@ module.exports = function (config) {
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
+
+    // Angular's builder will override these based on 'watch' setting in angular.json
     autoWatch: true,
-    browsers: [browser],
     singleRun: false,
+
+    // Default to Chrome for local dev.
+    // The "ci" configuration in angular.json will override this to 'ChromeHeadless'.
+    browsers: ['Chrome'],
+
     restartOnFileChange: true,
   });
 };

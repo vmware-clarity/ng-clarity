@@ -1,0 +1,31 @@
+{
+  "name": "@clr/addons",
+  "description": "Addons for Clarity",
+  "homepage": "https://clarity.design",
+  "keywords": [
+    "ng-add",
+    "clarity",
+    "angular",
+    "components"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vmware-clarity/ng-clarity.git"
+  },
+  "author": "Clarity Design System",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vmware-clarity/ng-clarity/issues"
+  },
+  "peerDependencies": {
+    "@angular/animations": "^19",
+    "@angular/cdk": "^19",
+    "@angular/common": "^19",
+    "@angular/core": "^19",
+    "@angular/forms": "^19",
+    "@angular/platform-browser": "^19",
+    "@angular/router": "^19",
+    "@clr/angular": ">= 17.11.10",
+    "rxjs": "^7.4.0"
+  }
+}

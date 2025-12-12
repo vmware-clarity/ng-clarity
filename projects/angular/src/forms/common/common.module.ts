@@ -45,6 +45,7 @@ import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '.
     ClrLayout,
     ClrControlContainer,
     ClrControl,
+    ClrIcon,
   ],
 })
 export class ClrCommonFormsModule {

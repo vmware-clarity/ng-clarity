@@ -107,7 +107,16 @@
             "main": "projects/angular/src/test.ts",
             "tsConfig": "projects/angular/tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "codeCoverage": true
+            "codeCoverage": true,
+            "watch": true,
+            "sourceMap": true
+          },
+          "configurations": {
+            "ci": {
+              "watch": false,
+              "sourceMap": false,
+              "browsers": "ChromeHeadless"
+            }
           }
         },
         "start-storybook": {
@@ -130,6 +139,46 @@
             "compodoc": true,
             "compodocArgs": ["-p", "./projects/angular/tsconfig.lib.json", "-e", "json", "-d", "."],
             "styles": [".storybook/public/preview.css", "projects/ui/src/clr-ui.scss"]
+          }
+        }
+      }
+    },
+    "clr-addons": {
+      "projectType": "library",
+      "root": "projects/addons",
+      "sourceRoot": "projects/addons",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "options": {
+            "tsConfig": "projects/addons/tsconfig.lib.json",
+            "project": "projects/addons/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/addons/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "styles": ["projects/ui/src/clr-ui.scss"],
+            "main": "projects/addons/test.ts",
+            "tsConfig": "projects/addons/tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "codeCoverage": true,
+            "watch": true,
+            "sourceMap": true,
+            "codeCoverageExclude": ["projects/addons/**/*.mock.ts", "projects/addons/testing/datagrid/grid-helper.ts"]
+          },
+          "configurations": {
+            "ci": {
+              "watch": false,
+              "sourceMap": false,
+              "browsers": "ChromeHeadless"
+            }
           }
         }
       }
