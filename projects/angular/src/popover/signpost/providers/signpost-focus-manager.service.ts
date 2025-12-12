@@ -10,14 +10,29 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class SignpostFocusManager {
   private _triggerEl: HTMLElement;
+  private _contentEl: HTMLElement;
 
   set triggerEl(value: HTMLElement) {
     this._triggerEl = value;
   }
 
+  get contentEl() {
+    return this._contentEl;
+  }
+  set contentEl(value: HTMLElement) {
+    this._contentEl = value;
+  }
+
   focusTrigger() {
+    console.log('focusTrigger');
     if (this._triggerEl) {
       this._triggerEl.focus();
+    }
+  }
+
+  focusContent() {
+    if (this._contentEl) {
+      this._contentEl.focus();
     }
   }
 }

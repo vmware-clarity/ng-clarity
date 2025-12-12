@@ -24,7 +24,6 @@ export class ClrPopoverService {
   popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
   availablePositions: ConnectedPosition[] = [];
   overlayRef: OverlayRef;
-  contentRef: ElementRef;
   lastKeydownEvent: KeyboardEvent;
   private _position = ClrPopoverPosition.BOTTOM_LEFT;
   private _open = false;

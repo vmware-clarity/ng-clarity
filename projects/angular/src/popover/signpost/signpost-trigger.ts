@@ -87,14 +87,15 @@ export class ClrSignpostTrigger implements OnDestroy {
   onSignpostTriggerClick(event: Event): void {
     this.popoverService.toggleWithEvent(event);
   }
+
   /**********
    *
    * @description
-   * click handler for the ClrSignpost trigger button used to hide/show ClrSignpostContent.
+   * focus handler for the ClrSignpost trigger button used to focus ClrSignpostContent when Shift+Tab.
    */
   @HostListener('focus', ['$event'])
   onSignpostTriggerFocus(event: FocusEvent): void {
-    // Enter Signpost from outside. Step 1
+    // Step 1. Enter Signpost from outside.
     // Part 2. Use remembered Shift+Tab event to focus the content if visible.
     if (
       this.isOpen &&
@@ -102,7 +103,8 @@ export class ClrSignpostTrigger implements OnDestroy {
       event.relatedTarget === this.popoverService.lastKeydownEvent.target
     ) {
       event.preventDefault();
-      this.popoverService.contentRef.nativeElement.querySelector('.signpost-content-body[tabindex]').focus();
+      this.signpostFocusManager.contentEl.setAttribute('tabindex', '0');
+      this.signpostFocusManager.focusContent();
 
       // Delete the event after use for not to confuse future focuses.
       this.popoverService.lastKeydownEvent = null;

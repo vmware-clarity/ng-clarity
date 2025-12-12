@@ -4231,6 +4231,8 @@ export class ClrPopoverService {
     // (undocumented)
     getPositionChange(): Observable<string>;
     // (undocumented)
+    lastKeydownEvent: KeyboardEvent;
+    // (undocumented)
     get open(): boolean;
     set open(value: boolean);
     // (undocumented)
@@ -4240,8 +4242,6 @@ export class ClrPopoverService {
     set openEvent(event: Event);
     // (undocumented)
     get originalEvent(): Event;
-    // (undocumented)
-    overlay: Overlay;
     // (undocumented)
     overlayRef: OverlayRef;
     // (undocumented)
@@ -4616,6 +4616,8 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     closeButton: ElementRef<HTMLButtonElement>;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
+    // (undocumented)
+    contentBody: ElementRef<HTMLDivElement>;
     // (undocumented)
     get isOffScreen(): boolean;
     // (undocumented)
