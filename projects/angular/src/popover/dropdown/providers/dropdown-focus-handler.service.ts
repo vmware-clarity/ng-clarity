@@ -22,7 +22,6 @@ import { ClrPopoverService } from '../../common';
 @Injectable()
 export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   id = uniqueIdFactory();
-  focusBackOnTriggerWhenClosed = false;
 
   right?: Observable<FocusableItem>;
   down?: Observable<FocusableItem>;
