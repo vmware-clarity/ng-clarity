@@ -117,7 +117,7 @@ describe('Abstract Popover', function () {
       fixture.detectChanges();
     });
 
-    it('opens the abstract popover only after ClrPopoverToggleService is in open state', () => {
+    it('opens the abstract popover only after ClrPopoverService is in open state', () => {
       expect(popoverService.open).toBe(false);
       expect(fixture.componentInstance.testPopover).toBeUndefined();
 

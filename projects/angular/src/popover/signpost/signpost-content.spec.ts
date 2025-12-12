@@ -43,7 +43,7 @@ export default function (): void {
       expect(context.clarityElement.textContent).toContain('Signpost content');
     });
 
-    it('has a close button that updates the ClrPopoverToggleService.open value', function () {
+    it('has a close button that updates the ClrPopoverService.open value', function () {
       const closer: HTMLElement = context.clarityElement.querySelector('.signpost-action');
       expect(closer).toBeDefined();
       const service = TestBed.inject(ClrPopoverService);

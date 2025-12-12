@@ -21,6 +21,7 @@ import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { CdkVirtualForOf } from '@angular/cdk/scrolling';
 import { CdkVirtualForOfContext } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
 import { ControlValueAccessor } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -60,6 +61,9 @@ import { Observable } from 'rxjs';
 import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
+import { Overlay } from '@angular/cdk/overlay';
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { OverlayRef } from '@angular/cdk/overlay';
 import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
@@ -68,7 +72,8 @@ import { ReplaySubject } from 'rxjs';
 import { RouterLinkActive } from '@angular/router';
 import * as rxjs from 'rxjs';
 import { SafeHtml } from '@angular/platform-browser';
-import { ScrollDispatcher } from '@angular/cdk/scrolling';
+import { ScrollDispatcher } from '@angular/cdk/overlay';
+import { ScrollDispatcher as ScrollDispatcher_2 } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
@@ -527,8 +532,8 @@ export class DatagridFeatureStates {
 
 // @public (undocumented)
 export class DatagridFilterComponent implements ClrDatagridFilterInterface<any>, OnInit, AfterViewInit {
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverToggleService" needs to be exported by the entry point index.d.ts
-    constructor(dgStrings: DatagridStrings, smartToggleService: ClrPopoverToggleService);
+    // Warning: (ae-forgotten-export) The symbol "ClrPopoverService" needs to be exported by the entry point index.d.ts
+    constructor(dgStrings: DatagridStrings, popoverService: ClrPopoverService);
     // (undocumented)
     accepts(item: any): boolean;
     // (undocumented)
