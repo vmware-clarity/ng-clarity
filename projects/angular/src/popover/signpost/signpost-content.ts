@@ -54,7 +54,7 @@ import {
           <cds-icon shape="window-close" [attr.title]="commonStrings.keys.close"></cds-icon>
         </button>
       </div>
-      <div class="signpost-content-body" tabindex="0">
+      <div #contentBody class="signpost-content-body" tabindex="0">
         <ng-content></ng-content>
       </div>
     </div>
@@ -66,6 +66,7 @@ import {
 export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;
   @ViewChild('closeButton', { read: ElementRef }) closeButton: ElementRef<HTMLButtonElement>;
+  @ViewChild('contentBody', { read: ElementRef }) contentBody: ElementRef<HTMLDivElement>;
 
   signpostContentId = uniqueIdFactory();
 
@@ -166,36 +167,36 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
       if (event && event.key && normalizeKey(event.key) === Keys.Tab) {
         // GO back with Tab+Shift
         if (hasModifierKey(event) && event.shiftKey) {
-          // move focus from close button to trigger. Step 3.
-          if (event.target === this.popoverService.closeButtonRef.nativeElement) {
-            event.preventDefault();
-            this.popoverService.setOpenedButtonFocus();
+          // Step 1. Enter Signpost from outside.
+          // Part 1 Remember the event. Part 2 is in signpost trigger.
+          if (event.target !== this.closeButton.nativeElement) {
+            this.popoverService.lastKeydownEvent = event;
           }
 
-          // Move focus from content to close button. Step 2. Default behaviour (NO changes).
-          // Enter Signpost from outside. Step 1
-          // Part 1 Remember the event. Part 2 is in signpost trigger.
+          // Step 2. Move focus from content to close button. Default behavior (NO changes).
+
+          // Step 3. Move focus from close button to trigger.
           else {
-            this.popoverService.lastKeydownEvent = event;
+            event.preventDefault();
+            this.popoverService.focusAnchor();
           }
 
           return;
         }
 
         // GO forward with Tab
-        // Enter Signpost from trigger element. Focusing the close button. Step 1
+        // Step 1. Enter Signpost from trigger element. Focusing the close button.
         if (event.target === this.popoverService.anchorElementRef.nativeElement) {
           event.preventDefault();
 
-          this.popoverService.setCloseFocus();
+          this.popoverService.focusCloseButton();
         }
-        // move focus from close button to content. Step 2. Default behaviour (NO changes).
-        // move focus from content to trigger. Step 3.
-        else if (
-          event.target ===
-          this.popoverService.contentRef.nativeElement.querySelector('.signpost-content-body[tabindex]')
-        ) {
-          this.popoverService.setOpenedButtonFocus();
+
+        // Step 2. Move focus from close button to content. Default behavior (NO changes).
+
+        // Step 3. Move focus from content to trigger.
+        else if (event.target === this.contentBody.nativeElement) {
+          this.popoverService.focusAnchor();
         }
       }
     });

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ConnectedPosition, OverlayRef } from '@angular/cdk/overlay';
 import { ElementRef, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
@@ -24,7 +24,8 @@ export class ClrPopoverService {
   popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
   availablePositions: ConnectedPosition[] = [];
   overlayRef: OverlayRef;
-  overlay: Overlay;
+  contentRef: ElementRef;
+  lastKeydownEvent: KeyboardEvent;
   private _position = ClrPopoverPosition.BOTTOM_LEFT;
   private _open = false;
   private _openChange = new Subject<boolean>();

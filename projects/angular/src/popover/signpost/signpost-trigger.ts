@@ -100,7 +100,6 @@ export class ClrSignpostTrigger implements OnDestroy {
       this.isOpen &&
       this.isShiftTabEvent(this.popoverService.lastKeydownEvent) &&
       event.relatedTarget === this.popoverService.lastKeydownEvent.target
-      // && event.relatedTarget !== this.popoverService.contentRef.nativeElement.querySelector('.signpost-content-body[tabindex]')
     ) {
       event.preventDefault();
       this.popoverService.contentRef.nativeElement.querySelector('.signpost-content-body[tabindex]').focus();
