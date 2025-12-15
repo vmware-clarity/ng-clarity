@@ -126,7 +126,7 @@ describe('CompositeFiltersComponent', () => {
     addNewButton.click();
     this.fixture.detectChanges();
     expect(this.component.signPostOpened).toBeTruthy();
-    const propertySelect: HTMLSelectElement = this.fixture.debugElement.nativeElement.querySelector('select');
+    const propertySelect: HTMLSelectElement = document.body.querySelector('select');
     expect(propertySelect).toBeTruthy();
     expect(propertySelect.options.length).toEqual(2);
 
