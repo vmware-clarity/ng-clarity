@@ -266,7 +266,7 @@ export class ClrCombobox<T>
 
     if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
       setTimeout(() => {
-        this.popoverService?.updatePositionEmit(true);
+        this.popoverService?.emitResetPositions();
       });
       this.focusFirstActive();
     }

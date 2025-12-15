@@ -166,7 +166,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     );
 
     this.subscriptions.push(
-      this.popoverService.updatePositonChange().subscribe(() => {
+      this.popoverService.resetPositions.subscribe(() => {
         this.updatePosition();
       }),
       this.popoverService.getPositionChange().subscribe(() => {

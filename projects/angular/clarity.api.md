@@ -4203,6 +4203,8 @@ export class ClrPopoverService {
     // (undocumented)
     closeButtonRef: ElementRef;
     // (undocumented)
+    emitResetPositions(): void;
+    // (undocumented)
     focusAnchor(): void;
     // (undocumented)
     focusCloseButton(): void;
@@ -4234,12 +4236,10 @@ export class ClrPopoverService {
     get position(): ClrPopoverPosition;
     set position(position: ClrPopoverPosition);
     // (undocumented)
+    get resetPositions(): Observable<void>;
+    // (undocumented)
     scrollToClose: boolean;
     toggleWithEvent(event: any): void;
-    // (undocumented)
-    updatePositionEmit(status: boolean): void;
-    // (undocumented)
-    updatePositonChange(): Observable<boolean>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverService, never>;
     // (undocumented)
