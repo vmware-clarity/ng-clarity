@@ -1078,16 +1078,6 @@ export class ClrAlertText {
 }
 
 // @public (undocumented)
-export enum ClrAlignment {
-    // (undocumented)
-    CENTER = 0.5,
-    // (undocumented)
-    END = 1,
-    // (undocumented)
-    START = 0
-}
-
-// @public (undocumented)
 export class ClrAriaCurrentLink implements OnInit, OnDestroy {
     constructor(rla: RouterLinkActive);
     // (undocumented)
@@ -1100,14 +1090,6 @@ export class ClrAriaCurrentLink implements OnInit, OnDestroy {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAriaCurrentLink, "[clrAriaCurrentLink]", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAriaCurrentLink, never>;
-}
-
-// @public (undocumented)
-export enum ClrAxis {
-    // (undocumented)
-    HORIZONTAL = 1,
-    // (undocumented)
-    VERTICAL = 0
 }
 
 // @public (undocumented)
@@ -4239,8 +4221,6 @@ export class ClrPopoverService {
     // (undocumented)
     get originalEvent(): Event;
     // (undocumented)
-    overlay: Overlay;
-    // (undocumented)
     overlayRef: OverlayRef;
     // (undocumented)
     panelClass: string[];
@@ -4512,14 +4492,6 @@ export class ClrSelectModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSelectModule>;
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof ClrSelect, typeof ClrSelectContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrSelect, typeof ClrSelectContainer]>;
-}
-
-// @public (undocumented)
-export enum ClrSide {
-    // (undocumented)
-    AFTER = 1,
-    // (undocumented)
-    BEFORE = -1
 }
 
 // @public (undocumented)
@@ -7403,20 +7375,6 @@ export const popOutIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const popOutIconName = "pop-out";
-
-// @public (undocumented)
-export interface PopoverOptions {
-    // (undocumented)
-    allowMultipleOpen?: boolean;
-    // (undocumented)
-    ignoreGlobalESCListener?: boolean;
-    // (undocumented)
-    offsetX?: number;
-    // (undocumented)
-    offsetY?: number;
-    // (undocumented)
-    useAnchorParent?: boolean;
-}
 
 // @public (undocumented)
 export const portraitIcon: IconShapeTuple;
