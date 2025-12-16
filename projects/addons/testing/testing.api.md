@@ -66,7 +66,6 @@ import { RouterLinkActive } from '@angular/router';
 import * as rxjs from 'rxjs';
 import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { ScrollDispatcher as ScrollDispatcher_2 } from '@angular/cdk/overlay';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';

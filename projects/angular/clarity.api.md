@@ -62,8 +62,7 @@ import { ReplaySubject } from 'rxjs';
 import { RouterLinkActive } from '@angular/router';
 import * as rxjs from 'rxjs';
 import { SafeHtml } from '@angular/platform-browser';
-import { ScrollDispatcher } from '@angular/cdk/overlay';
-import { ScrollDispatcher as ScrollDispatcher_2 } from '@angular/cdk/scrolling';
+import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
@@ -4149,7 +4148,7 @@ export class ClrPopoverAnchor {
 
 // @public (undocumented)
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
-    constructor(element: ElementRef, container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, overlay: Overlay, popoverService: ClrPopoverService, scrollDispatcher: ScrollDispatcher, zone: NgZone);
+    constructor(element: ElementRef, container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, overlay: Overlay, popoverService: ClrPopoverService, zone: NgZone);
     // (undocumented)
     set availablePositions(positions: ConnectedPosition[]);
     // (undocumented)
@@ -4173,7 +4172,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, null, { optional: true; }, null, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, null, { optional: true; }, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -5020,7 +5019,7 @@ export class ClrTabLink {
     get inOverflow(): boolean;
     set inOverflow(inOverflow: boolean);
     // (undocumented)
-    get tabindex(): 0 | -1;
+    get tabindex(): -1 | 0;
     // (undocumented)
     tabLinkId: string;
     // (undocumented)
@@ -8484,7 +8483,7 @@ export class ÇlrDatagridSingleSelectionValueAccessor implements ControlValueAcc
 
 // @public (undocumented)
 export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
-    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher_2, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
+    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
     // Warning: (ae-forgotten-export) The symbol "CdkVirtualForInputs" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)

@@ -6,15 +6,7 @@
  */
 
 import { hasModifierKey } from '@angular/cdk/keycodes';
-import {
-  CdkScrollable,
-  ConnectedPosition,
-  Overlay,
-  OverlayConfig,
-  OverlayContainer,
-  OverlayRef,
-  ScrollDispatcher,
-} from '@angular/cdk/overlay';
+import { ConnectedPosition, Overlay, OverlayConfig, OverlayContainer, OverlayRef } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
 import {
   AfterViewInit,
@@ -66,7 +58,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     private overlay: Overlay,
     @Inject(ClrPopoverService) private popoverService: ClrPopoverService,
-    private scrollDispatcher: ScrollDispatcher,
     private zone: NgZone
   ) {
     popoverService.panelClass.push('clr-popover-content');
@@ -221,20 +212,13 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private getPositionStrategy() {
     this.setPreferredPosition(); //Preferred position defined by consumer
 
-    // fetch all Scrolling Containers registered with CDK
-    let scrollableAncestors: CdkScrollable[];
-    if (this.popoverService.anchorElementRef) {
-      scrollableAncestors = this.scrollDispatcher.getAncestorScrollContainers(this.popoverService.anchorElementRef);
-    }
-
     return this.overlay
       .position()
       .flexibleConnectedTo(this.popoverService.anchorElementRef)
       .setOrigin(this.popoverService.anchorElementRef)
       .withPush(true)
       .withPositions([this.preferredPosition, ...this.popoverService.availablePositions])
-      .withFlexibleDimensions(true)
-      .withScrollableContainers(scrollableAncestors);
+      .withFlexibleDimensions(true);
   }
 
   private closePopover() {
