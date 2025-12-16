@@ -53,8 +53,8 @@ export class ClrTooltipContent implements OnInit {
     popoverContent: ClrPopoverContent
   ) {
     popoverService.panelClass.push('clr-tooltip-container');
-    popoverService.popoverType = ClrPopoverType.TOOLTIP;
-    popoverService.availablePositions = getConnectedPositions(popoverService.popoverType);
+    popoverContent.contentType = ClrPopoverType.TOOLTIP;
+    popoverContent.availablePositions = getConnectedPositions(popoverContent.contentType);
 
     popoverContent.scrollToClose = true;
 

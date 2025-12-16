@@ -1,6 +1,6 @@
 # ClrPopover
 
-The ClrPopover implementation is based on the Angular Overlay and Portals implementation provided in the Angular CDK.
+Clarity Popovers implementation is based on Overlay and Portals from @angular/cdk.
 The goal is to provide a straightforward utility to use within the Clarity library that allows for popover like elements
 to use a consistent and straightforward API. It offloads all positioning and layering logic to the CDK, which is better
 equipped and better tested to handle complex rendering situations of component libraries.

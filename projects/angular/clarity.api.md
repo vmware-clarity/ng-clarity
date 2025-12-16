@@ -4217,8 +4217,6 @@ export class ClrPopoverService {
     get openEvent(): Event;
     set openEvent(event: Event);
     // (undocumented)
-    get originalEvent(): Event;
-    // (undocumented)
     panelClass: string[];
     // (undocumented)
     popoverType: ClrPopoverType;

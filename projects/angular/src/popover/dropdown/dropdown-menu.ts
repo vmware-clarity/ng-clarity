@@ -60,10 +60,10 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
 
     popoverContent.scrollToClose = true;
 
-    popoverService.popoverType = ClrPopoverType.DROPDOWN;
-    popoverService.availablePositions = getConnectedPositions(popoverService.popoverType);
+    popoverContent.contentType = ClrPopoverType.DROPDOWN;
+    popoverContent.availablePositions = getConnectedPositions(popoverService.popoverType);
 
-    popoverService.position = nested ? ClrPopoverPosition.RIGHT_TOP : ClrPopoverPosition.BOTTOM_LEFT;
+    popoverContent.contentAt = nested ? ClrPopoverPosition.RIGHT_TOP : ClrPopoverPosition.BOTTOM_LEFT;
 
     popoverService.panelClass.push('clr-dropdown-container');
   }

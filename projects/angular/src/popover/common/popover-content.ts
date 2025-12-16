@@ -144,8 +144,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.preferredPosition = mapPopoverKeyToPosition(this.popoverService.position, this.popoverService.popoverType);
   }
 
-  private _createOverlayRef(): OverlayRef {
-    const overlay = this.overlay.create(
+  private _createOverlayRef() {
+    this.overlayRef = this.overlay.create(
       new OverlayConfig({
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
         positionStrategy: this.getPositionStrategy(),
@@ -163,13 +163,13 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.popoverService.updatePositionChange().subscribe(() => {
         this.overlayRef?.updatePosition();
       }),
-      overlay.keydownEvents().subscribe(event => {
+      this.overlayRef.keydownEvents().subscribe(event => {
         if (event && event.key && normalizeKey(event.key) === Keys.Escape && !hasModifierKey(event)) {
           event.preventDefault();
           this.closePopover();
         }
       }),
-      overlay.outsidePointerEvents().subscribe(event => {
+      this.overlayRef.outsidePointerEvents().subscribe(event => {
         // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
         if (this.elementRef && this.elementRef.nativeElement.contains(event.target)) {
           return;
@@ -191,8 +191,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         }
       })
     );
-
-    return overlay;
   }
 
   private resetPosition() {
@@ -240,7 +238,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.setPreferredPosition();
 
     if (!this.overlayRef) {
-      this.overlayRef = this._createOverlayRef();
+      this._createOverlayRef();
     }
 
     if (!this.view && this.template) {

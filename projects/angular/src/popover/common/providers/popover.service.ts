@@ -68,11 +68,6 @@ export class ClrPopoverService {
     }
   }
 
-  // For compatibility with legacy IfOpenService based implementations
-  get originalEvent(): Event {
-    return this._openEvent;
-  }
-
   get resetPositionsChange(): Observable<void> {
     return this._resetPositions.asObservable();
   }
