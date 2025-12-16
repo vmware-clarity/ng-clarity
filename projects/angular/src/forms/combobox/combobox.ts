@@ -266,7 +266,7 @@ export class ClrCombobox<T>
 
     if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
       setTimeout(() => {
-        this.popoverService?.emitResetPositions();
+        this.popoverService?.resetPositions();
       });
       this.focusFirstActive();
     }
@@ -356,7 +356,7 @@ export class ClrCombobox<T>
         this.updateControlValue();
 
         setTimeout(() => {
-          this.popoverService?.overlayRef?.updatePosition();
+          this.popoverService?.updatePosition();
         });
       })
     );

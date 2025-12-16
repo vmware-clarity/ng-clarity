@@ -53,7 +53,6 @@ import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { OverlayRef } from '@angular/cdk/overlay';
 import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
@@ -4202,8 +4201,6 @@ export class ClrPopoverService {
     // (undocumented)
     closeButtonRef: ElementRef;
     // (undocumented)
-    emitResetPositions(): void;
-    // (undocumented)
     focusAnchor(): void;
     // (undocumented)
     focusCloseButton(): void;
@@ -4222,8 +4219,6 @@ export class ClrPopoverService {
     // (undocumented)
     get originalEvent(): Event;
     // (undocumented)
-    overlayRef: OverlayRef;
-    // (undocumented)
     panelClass: string[];
     // (undocumented)
     popoverType: ClrPopoverType;
@@ -4235,8 +4230,14 @@ export class ClrPopoverService {
     get position(): ClrPopoverPosition;
     set position(position: ClrPopoverPosition);
     // (undocumented)
-    get resetPositions(): Observable<void>;
+    resetPositions(): void;
+    // (undocumented)
+    get resetPositionsChange(): Observable<void>;
     toggleWithEvent(event: any): void;
+    // (undocumented)
+    updatePosition(): void;
+    // (undocumented)
+    updatePositionChange(): Observable<void>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverService, never>;
     // (undocumented)

@@ -37,6 +37,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private _scrollToClose = false;
   private view: EmbeddedViewRef<void>;
   private elementRef: ElementRef;
+  private overlayRef: OverlayRef;
 
   private subscriptions: Subscription[] = [];
   private openCloseSubscription: Subscription;
@@ -156,8 +157,11 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     );
 
     this.subscriptions.push(
-      merge(this.popoverService.resetPositions, this.popoverService.getPositionChange()).subscribe(() => {
-        this.updatePosition();
+      merge(this.popoverService.resetPositionsChange, this.popoverService.getPositionChange()).subscribe(() => {
+        this.resetPosition();
+      }),
+      this.popoverService.updatePositionChange().subscribe(() => {
+        this.overlayRef?.updatePosition();
       }),
       overlay.keydownEvents().subscribe(event => {
         if (event && event.key && normalizeKey(event.key) === Keys.Escape && !hasModifierKey(event)) {
@@ -191,10 +195,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     return overlay;
   }
 
-  private updatePosition() {
-    if (this.popoverService.overlayRef) {
-      this.popoverService.overlayRef.updatePositionStrategy(this.getPositionStrategy());
-      this.popoverService.overlayRef.updatePosition();
+  private resetPosition() {
+    if (this.overlayRef) {
+      this.overlayRef.updatePositionStrategy(this.getPositionStrategy());
+      this.overlayRef.updatePosition();
     }
   }
 
@@ -211,7 +215,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private closePopover() {
-    if (!this.popoverService.overlayRef) {
+    if (!this.overlayRef) {
       return;
     }
 
@@ -235,8 +239,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     //Preferred position defined by consumer
     this.setPreferredPosition();
 
-    if (!this.popoverService.overlayRef) {
-      this.popoverService.overlayRef = this._createOverlayRef();
+    if (!this.overlayRef) {
+      this.overlayRef = this._createOverlayRef();
     }
 
     if (!this.view && this.template) {
@@ -250,7 +254,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     if (!this.domPortal) {
       this.domPortal = new DomPortal<HTMLElement>(this.elementRef);
-      this.popoverService.overlayRef.attach(this.domPortal);
+      this.overlayRef.attach(this.domPortal);
     }
 
     this.setupIntersectionObserver();
@@ -268,9 +272,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.subscriptions.forEach(s => s.unsubscribe());
     this.subscriptions = [];
 
-    if (this.popoverService.overlayRef?.hasAttached()) {
-      this.popoverService.overlayRef.detach();
-      this.popoverService.overlayRef.dispose();
+    if (this.overlayRef?.hasAttached()) {
+      this.overlayRef.detach();
+      this.overlayRef.dispose();
     }
 
     if (this.domPortal?.isAttached) {
@@ -281,7 +285,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.view.destroy();
     }
 
-    this.popoverService.overlayRef = null;
+    this.overlayRef = null;
     this.domPortal = null;
     if (this.template) {
       this.elementRef = null;
@@ -352,9 +356,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
             return;
           }
 
-          if (this.popoverService.overlayRef) {
-            this.popoverService.overlayRef.updatePosition();
-          }
+          this.overlayRef?.updatePosition();
         })
       );
     });

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ConnectedPosition, OverlayRef } from '@angular/cdk/overlay';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ElementRef, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
@@ -22,7 +22,6 @@ export class ClrPopoverService {
   panelClass: string[] = [];
   popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
   availablePositions: ConnectedPosition[] = [];
-  overlayRef: OverlayRef;
   private _position = ClrPopoverPosition.BOTTOM_LEFT;
   private _open = false;
   private _openChange = new Subject<boolean>();
@@ -30,6 +29,7 @@ export class ClrPopoverService {
   private _openEventChange = new Subject<Event>();
   private _positionChange = new Subject<string>();
   private _resetPositions = new Subject<void>();
+  private _updatePosition = new Subject<void>();
   private _popoverVisible = new Subject<boolean>();
 
   get position(): ClrPopoverPosition {
@@ -73,8 +73,12 @@ export class ClrPopoverService {
     return this._openEvent;
   }
 
-  get resetPositions(): Observable<void> {
+  get resetPositionsChange(): Observable<void> {
     return this._resetPositions.asObservable();
+  }
+
+  updatePositionChange(): Observable<void> {
+    return this._updatePosition.asObservable();
   }
 
   getPositionChange(): Observable<string> {
@@ -100,8 +104,12 @@ export class ClrPopoverService {
     this._popoverVisible.next(visible);
   }
 
-  emitResetPositions() {
+  resetPositions() {
     this._resetPositions.next();
+  }
+
+  updatePosition() {
+    this._updatePosition.next();
   }
 
   focusCloseButton(): void {
