@@ -29,7 +29,7 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
+import { fromEvent, merge, Subscription } from 'rxjs';
 
 import { ClrPopoverService } from './providers/popover.service';
 import { ClrPopoverPosition, ClrPopoverType, mapPopoverKeyToPosition } from './utils/popover-positions';
@@ -56,7 +56,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     overlayX: 'end',
     overlayY: 'top',
   };
-  private scrollableParents: HTMLElement[];
   private intersectionObserver: IntersectionObserver;
 
   constructor(
@@ -166,10 +165,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     );
 
     this.subscriptions.push(
-      this.popoverService.resetPositions.subscribe(() => {
-        this.updatePosition();
-      }),
-      this.popoverService.getPositionChange().subscribe(() => {
+      merge(this.popoverService.resetPositions, this.popoverService.getPositionChange()).subscribe(() => {
         this.updatePosition();
       }),
       // handles cdkScrollable positionChanges. We don't need it Since IntersectionObserver is running.
@@ -261,10 +257,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   private showOverlay() {
     // Get Scrollable Parents
-    this.scrollableParents = [
-      ...this.getScrollParents(this.popoverService.anchorElementRef?.nativeElement),
-      ...this.getScrollParents(this.popoverService.anchorElementRef?.nativeElement, 'x'),
-    ];
     this.listenToMouseEvents();
 
     //Preferred position defined by consumer
@@ -322,7 +314,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.elementRef = null;
     }
     this.view = null;
-    this.scrollableParents = null;
 
     this.intersectionObserver?.disconnect();
     this.intersectionObserver = null;
@@ -330,42 +321,26 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.popoverService.popoverVisibleEmit(false);
   }
 
-  private getScrollParents(node: HTMLElement, axis = 'y'): HTMLElement[] {
+  private getScrollableParents(node: HTMLElement) {
     let parent = node;
-    const scrollableParents: HTMLElement[] = [];
+    const overflowScrollKeys = ['auto', 'scroll', 'clip'];
+    const scrollableParents: (HTMLDocument | HTMLElement)[] = [window.document];
 
-    while (parent && !(parent instanceof HTMLBodyElement)) {
-      parent = this.getScrollParent(parent.parentNode as HTMLElement, axis);
+    while (parent && !(parent instanceof HTMLHtmlElement)) {
+      if (parent instanceof ShadowRoot) {
+        parent = parent.host as HTMLElement;
+      }
 
-      scrollableParents.push(parent);
+      const { overflowY, overflowX } = window.getComputedStyle(parent);
+
+      if (overflowScrollKeys.includes(overflowY) || overflowScrollKeys.includes(overflowX)) {
+        scrollableParents.push(parent);
+      }
+
+      parent = parent.parentNode as HTMLElement;
     }
 
     return scrollableParents;
-  }
-
-  // The below method is taken from https://gist.github.com/oscarmarina/3a546cff4d106a49a5be417e238d9558
-  private getScrollParent(node: HTMLElement | ShadowRoot, axis = 'y'): HTMLElement {
-    if (!node) {
-      return window.document.body;
-    }
-
-    if (node instanceof HTMLDocument) {
-      return node;
-    }
-
-    const el = node instanceof ShadowRoot ? (node.host as HTMLElement) : node;
-
-    const style = window.getComputedStyle(el);
-    const overflow = axis === 'y' ? style.overflowY : style.overflowX;
-    const scrollSize = axis === 'y' ? el.scrollHeight : el.scrollWidth;
-    const clientSize = axis === 'y' ? el.clientHeight : el.clientWidth;
-    const isScrolled = scrollSize > clientSize;
-
-    if (isScrolled && !overflow.includes('visible') && !overflow.includes('hidden')) {
-      return el;
-    }
-
-    return this.getScrollParent(el.parentNode as HTMLElement, axis);
   }
 
   /**
@@ -394,12 +369,13 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   //Align the popover on scrolling
   private listenToMouseEvents() {
-    this.scrollableParents.forEach(parent => {
-      this.subscriptions.push(
-        fromEvent(parent, 'scroll').subscribe(() => {
-          if (this._scrollToClose) {
-            this.closePopover();
+    const scrollableParents = this.getScrollableParents(this.popoverService.anchorElementRef?.nativeElement);
 
+    this.zone.runOutsideAngular(() => {
+      this.subscriptions.push(
+        merge(...scrollableParents.map(parent => fromEvent(parent, 'scroll', { passive: true }))).subscribe(() => {
+          if (this._scrollToClose) {
+            this.zone.run(() => this.closePopover());
             return;
           }
 

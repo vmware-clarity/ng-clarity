@@ -140,9 +140,9 @@
     @include mixins.generate-typography-token('BODY-14-RG-CPT');
   }
 
-  .cdk-overlay-pane.top-left,
-  .cdk-overlay-pane.top-middle,
-  .cdk-overlay-pane.top-right {
+  .clr-signpost-container.top-left,
+  .clr-signpost-container.top-middle,
+  .clr-signpost-container.top-right {
     .popover-pointer {
       border-top: signpost-variables.$clr-signpost-pointer-border;
       bottom: $clr-signpost-pointer-size-negative;
@@ -154,7 +154,7 @@
     }
   }
 
-  .cdk-overlay-pane.top-left {
+  .clr-signpost-container.top-left {
     .signpost-wrap {
       border-bottom-right-radius: 0; // Turn off rounded corner here
     }
@@ -170,7 +170,7 @@
     }
   }
 
-  .cdk-overlay-pane.top-middle {
+  .clr-signpost-container.top-middle {
     .popover-pointer {
       border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
       left: 50%;
@@ -182,7 +182,7 @@
     }
   }
 
-  .cdk-overlay-pane.top-right {
+  .clr-signpost-container.top-right {
     .signpost-wrap {
       border-bottom-left-radius: 0; // Turn off rounded corner here
     }
@@ -203,10 +203,10 @@
     The signpost is below the icon top-{HORIZONTAL_POSITION}
   */
 
-  .cdk-overlay-pane.bottom-left,
-  .cdk-overlay-pane.bottom-middle,
-  .cdk-overlay-pane.bottom,
-  .cdk-overlay-pane.bottom-right {
+  .clr-signpost-container.bottom-left,
+  .clr-signpost-container.bottom-middle,
+  .clr-signpost-container.bottom,
+  .clr-signpost-container.bottom-right {
     .popover-pointer {
       border-bottom: signpost-variables.$clr-signpost-pointer-border;
       top: $clr-signpost-pointer-size-negative;
@@ -218,7 +218,7 @@
     }
   }
 
-  .cdk-overlay-pane.bottom-left {
+  .clr-signpost-container.bottom-left {
     .signpost-wrap {
       border-top-right-radius: 0; // Turn off rounded corners here
     }
@@ -234,8 +234,8 @@
     }
   }
 
-  .cdk-overlay-pane.bottom,
-  .cdk-overlay-pane.bottom-middle {
+  .clr-signpost-container.bottom,
+  .clr-signpost-container.bottom-middle {
     .popover-pointer {
       border-right: signpost-variables.$clr-signpost-pointer-invisible-border;
       left: 50%;
@@ -247,7 +247,7 @@
     }
   }
 
-  .cdk-overlay-pane.bottom-right {
+  .clr-signpost-container.bottom-right {
     .signpost-wrap {
       border-top-left-radius: 0; // Turn off rounded corners here
     }
@@ -268,10 +268,10 @@
      The signpost is on the left side of the icon left-{VERTICAL_POSITION}
   */
 
-  .cdk-overlay-pane.left-top,
-  .cdk-overlay-pane.left-middle,
-  .cdk-overlay-pane.left,
-  .cdk-overlay-pane.left-bottom {
+  .clr-signpost-container.left-top,
+  .clr-signpost-container.left-middle,
+  .clr-signpost-container.left,
+  .clr-signpost-container.left-bottom {
     .popover-pointer {
       border-left: signpost-variables.$clr-signpost-pointer-border;
       right: $clr-signpost-pointer-size-negative;
@@ -282,7 +282,7 @@
     }
   }
 
-  .cdk-overlay-pane.left-top {
+  .clr-signpost-container.left-top {
     .signpost-wrap {
       border-bottom-right-radius: 0; // Turn off rounded corners here
     }
@@ -299,8 +299,8 @@
     }
   }
 
-  .cdk-overlay-pane.left-middle,
-  .cdk-overlay-pane.left {
+  .clr-signpost-container.left-middle,
+  .clr-signpost-container.left {
     .popover-pointer {
       border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
       top: 50%;
@@ -313,7 +313,7 @@
     }
   }
 
-  .cdk-overlay-pane.left-bottom {
+  .clr-signpost-container.left-bottom {
     .signpost-wrap {
       border-top-right-radius: 0; // Turn off rounded corners here
     }
@@ -335,9 +335,9 @@
     The signpost is on the right side of the icon right-{VERTICAL_POSITION}
   */
 
-  .cdk-overlay-pane.right-top,
-  .cdk-overlay-pane.right-middle,
-  .cdk-overlay-pane.right-bottom {
+  .clr-signpost-container.right-top,
+  .clr-signpost-container.right-middle,
+  .clr-signpost-container.right-bottom {
     .popover-pointer {
       border-right: signpost-variables.$clr-signpost-pointer-border;
       left: $clr-signpost-pointer-size-negative;
@@ -349,7 +349,7 @@
     }
   }
 
-  .cdk-overlay-pane.right-top {
+  .clr-signpost-container.right-top {
     .signpost-wrap {
       border-bottom-left-radius: 0; // turn off rounded corner here
     }
@@ -365,7 +365,7 @@
     }
   }
 
-  .cdk-overlay-pane.right-middle {
+  .clr-signpost-container.right-middle {
     .popover-pointer {
       border-bottom: signpost-variables.$clr-signpost-pointer-invisible-border;
       top: 50%;
@@ -377,7 +377,7 @@
     }
   }
 
-  .cdk-overlay-pane.right-bottom {
+  .clr-signpost-container.right-bottom {
     .signpost-wrap {
       border-top-left-radius: 0; // turn off rounded corner here
     }

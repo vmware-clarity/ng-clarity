@@ -288,22 +288,18 @@
     }
 
     //Tooltips Size
-    &.tooltip-xs > .tooltip-content,
     .tooltip-content.tooltip-xs {
       width: tokens.$cds-global-space-14;
     }
 
-    &.tooltip-sm > .tooltip-content,
     .tooltip-content.tooltip-sm {
       width: mixins.baselinePx(120);
     }
 
-    &.tooltip-md > .tooltip-content,
     .tooltip-content.tooltip-md {
       width: mixins.baselinePx(240);
     }
 
-    &.tooltip-lg > .tooltip-content,
     .tooltip-content.tooltip-lg {
       width: mixins.baselinePx(360);
     }

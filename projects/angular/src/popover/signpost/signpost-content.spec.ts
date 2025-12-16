@@ -10,7 +10,7 @@ import { TestBed } from '@angular/core/testing';
 
 // I'm giving up, I'm using the datagrid ones for now.
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrIconCustomTag } from '../../icon/icon';
+import { ClrIcon } from '../../icon';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
@@ -27,7 +27,7 @@ export default function (): void {
         ClrSignpostContent,
         SimpleTest,
         [SignpostIdService, ClrPopoverService, SignpostFocusManager],
-        [ClrIconCustomTag]
+        [ClrIcon]
       );
     });
 
