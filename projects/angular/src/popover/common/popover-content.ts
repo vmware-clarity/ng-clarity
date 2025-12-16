@@ -159,17 +159,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       merge(this.popoverService.resetPositions, this.popoverService.getPositionChange()).subscribe(() => {
         this.updatePosition();
       }),
-      // handles cdkScrollable positionChanges. We don't need it Since IntersectionObserver is running.
-      // commenting for now
-      // positionStrategy?.positionChanges?.subscribe(change => {
-      //   // Close the overlay when the Origin is clipped
-      //   if (change.scrollableViewProperties.isOriginClipped) {
-      //     // Running the zone is essential to invoke HostBinding
-      //     this.zone.run(() => {
-      //       this.popoverService.open = false;
-      //     });
-      //   }
-      // }),
       overlay.keydownEvents().subscribe(event => {
         if (event && event.key && normalizeKey(event.key) === Keys.Escape && !hasModifierKey(event)) {
           event.preventDefault();

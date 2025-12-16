@@ -6,6 +6,7 @@
  */
 @use 'sass:map';
 @use 'sass:meta';
+@use 'sass:list';
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 @use '../../button/variables.buttons' as button-variables;
 @use '../../styles/mixins';
@@ -45,8 +46,8 @@ $tooltip-configs: (
 
   @each $name, $args in $tooltip-configs {
     // Destructure arguments
-    $dirA: nth($args, 1);
-    $dirB: nth($args, 2);
+    $dirA: list.nth($args, 1);
+    $dirB: list.nth($args, 2);
 
     // Generate Selector
     &.#{$prefix}#{$name} > .tooltip-content {
