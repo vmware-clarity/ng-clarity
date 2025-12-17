@@ -23,12 +23,12 @@ export default function (): void {
     let context: TestContext<ClrSignpostContent, SimpleTest>;
 
     beforeEach(function () {
-      context = this.createOnly(
-        ClrSignpostContent,
-        SimpleTest,
-        [SignpostIdService, ClrPopoverService, SignpostFocusManager],
-        [ClrIcon]
-      );
+      context = this.createOnly(ClrSignpostContent, SimpleTest, [
+        SignpostIdService,
+        ClrPopoverService,
+        SignpostFocusManager,
+        ClrIcon,
+      ]);
     });
 
     afterEach(() => {
