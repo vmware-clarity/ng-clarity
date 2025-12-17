@@ -4159,6 +4159,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     set availablePositions(positions: ConnectedPosition[]);
     // (undocumented)
+    get contentAt(): string | ClrPopoverPosition | ConnectedPosition;
     set contentAt(position: string | ClrPopoverPosition | ConnectedPosition);
     // (undocumented)
     set contentType(type: ClrPopoverType);
@@ -5017,7 +5018,7 @@ export class ClrTabLink {
     get inOverflow(): boolean;
     set inOverflow(inOverflow: boolean);
     // (undocumented)
-    get tabindex(): 0 | -1;
+    get tabindex(): -1 | 0;
     // (undocumented)
     tabLinkId: string;
     // (undocumented)
