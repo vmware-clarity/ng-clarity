@@ -6,6 +6,7 @@
  */
 @use 'sass:map';
 @use 'sass:meta';
+@use 'sass:list';
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 @use '../../button/variables.buttons' as button-variables;
 @use '../../styles/mixins';
@@ -13,6 +14,73 @@
 @use 'variables.tooltip' as tooltip-variables;
 @use '../../styles/variables/variables.density' as density;
 
+$tooltip-configs: (
+  'top-right': (
+    top,
+    right,
+  ),
+  'top-left': (
+    top,
+    left,
+  ),
+  'bottom-right': (
+    bottom,
+    right,
+  ),
+  'bottom-left': (
+    bottom,
+    left,
+  ),
+  'right': (
+    right,
+    null,
+  ),
+  'left': (
+    left,
+    null,
+  ),
+);
+
+@mixin generate-tooltip-styles($isCss: true) {
+  $prefix: if($isCss, 'tooltip-', '');
+
+  @each $name, $args in $tooltip-configs {
+    // Destructure arguments
+    $dirA: list.nth($args, 1);
+    $dirB: list.nth($args, 2);
+
+    // Generate Selector
+    &.#{$prefix}#{$name} > .tooltip-content {
+      // Logic: If second direction exists, it's vertical. Otherwise, horizontal.
+      @if $dirB {
+        @include vertical-tooltip-generator($dirA, $dirB, $isCss);
+      } @else {
+        @include horizontal-tooltip-generator($dirA, $isCss);
+      }
+    }
+  }
+}
+@mixin tooltip-sizes {
+  &.tooltip-xs > .tooltip-content,
+  .tooltip-content.tooltip-xs {
+    width: tokens.$cds-global-space-14;
+  }
+
+  &.tooltip-sm > .tooltip-content,
+  .tooltip-content.tooltip-sm {
+    width: mixins.baselinePx(120);
+  }
+
+  &.tooltip-md > .tooltip-content,
+  .tooltip-content.tooltip-md {
+    width: mixins.baselinePx(240);
+  }
+
+  &.tooltip-lg > .tooltip-content,
+  .tooltip-content.tooltip-lg {
+    width: mixins.baselinePx(360);
+  }
+}
 @mixin common-tooltip-styles {
   margin: 0; //Resetting any margin that might be applied to span/div elements inside forms
   width: mixins.baselinePx(240);
@@ -124,6 +192,9 @@
 
     & > .tooltip-content {
       @include common-tooltip-content-styles;
+
+      //Default Tooltip direction - Top Right
+      @include vertical-tooltip-generator(top, right, true);
     }
 
     &:hover > .tooltip-content,
@@ -148,58 +219,10 @@
     }
 
     //Tooltip directions
-    //Default Tooltip - Top Right
-    & > .tooltip-content,
-    &.tooltip-top-right > .tooltip-content,
-    .tooltip-content.tooltip-top-right {
-      @include vertical-tooltip-generator(top, right, true);
-    }
-
-    &.tooltip-top-left > .tooltip-content,
-    .tooltip-content.tooltip-top-left {
-      @include vertical-tooltip-generator(top, left, true);
-    }
-
-    &.tooltip-bottom-right > .tooltip-content,
-    .tooltip-content.tooltip-bottom-right {
-      @include vertical-tooltip-generator(bottom, right, true);
-    }
-
-    &.tooltip-bottom-left > .tooltip-content,
-    .tooltip-content.tooltip-bottom-left {
-      @include vertical-tooltip-generator(bottom, left, true);
-    }
-
-    &.tooltip-right > .tooltip-content,
-    .tooltip-content.tooltip-right {
-      @include horizontal-tooltip-generator(right, true);
-    }
-
-    &.tooltip-left > .tooltip-content,
-    .tooltip-content.tooltip-left {
-      @include horizontal-tooltip-generator(left, true);
-    }
+    @include generate-tooltip-styles();
 
     //Tooltips Size
-    &.tooltip-xs > .tooltip-content,
-    .tooltip-content.tooltip-xs {
-      width: tokens.$cds-global-space-14;
-    }
-
-    &.tooltip-sm > .tooltip-content,
-    .tooltip-content.tooltip-sm {
-      width: mixins.baselinePx(120);
-    }
-
-    &.tooltip-md > .tooltip-content,
-    .tooltip-content.tooltip-md {
-      width: mixins.baselinePx(240);
-    }
-
-    &.tooltip-lg > .tooltip-content,
-    .tooltip-content.tooltip-lg {
-      width: mixins.baselinePx(360);
-    }
+    @include tooltip-sizes();
   }
 
   //Override tooltip margins values for different components.
@@ -243,7 +266,6 @@
   }
 
   //Angular Tooltip Moved to new container.
-
   .clr-tooltip-container {
     text-align: left;
     overflow: visible;
@@ -256,56 +278,15 @@
       visibility: visible;
     }
 
-    &.cdk-overlay-pane {
-      .tooltip-content {
-        display: block;
-        opacity: 1;
-      }
+    &.cdk-overlay-pane > .tooltip-content {
+      display: block;
+      opacity: 1;
     }
 
-    &.top-right > .tooltip-content {
-      @include vertical-tooltip-generator(top, right, false);
-    }
-
-    &.top-left > .tooltip-content {
-      @include vertical-tooltip-generator(top, left, false);
-    }
-
-    &.bottom-right > .tooltip-content {
-      @include vertical-tooltip-generator(bottom, right, false);
-    }
-
-    &.bottom-left > .tooltip-content {
-      @include vertical-tooltip-generator(bottom, left, false);
-    }
-
-    &.right > .tooltip-content {
-      @include horizontal-tooltip-generator(right, false);
-    }
-
-    &.left > .tooltip-content {
-      @include horizontal-tooltip-generator(left, false);
-    }
+    //Tooltip directions
+    @include generate-tooltip-styles(false);
 
     //Tooltips Size
-    &.tooltip-xs > .tooltip-content,
-    .tooltip-content.tooltip-xs {
-      width: tokens.$cds-global-space-14;
-    }
-
-    &.tooltip-sm > .tooltip-content,
-    .tooltip-content.tooltip-sm {
-      width: mixins.baselinePx(120);
-    }
-
-    &.tooltip-md > .tooltip-content,
-    .tooltip-content.tooltip-md {
-      width: mixins.baselinePx(240);
-    }
-
-    &.tooltip-lg > .tooltip-content,
-    .tooltip-content.tooltip-lg {
-      width: mixins.baselinePx(360);
-    }
+    @include tooltip-sizes();
   }
 }

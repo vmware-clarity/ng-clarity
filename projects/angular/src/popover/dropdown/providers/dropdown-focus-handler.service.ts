@@ -22,7 +22,6 @@ import { ClrPopoverService } from '../../common';
 @Injectable()
 export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   id = uniqueIdFactory();
-  focusBackOnTriggerWhenClosed = false;
 
   right?: Observable<FocusableItem>;
   down?: Observable<FocusableItem>;
@@ -106,7 +105,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
    */
   moveToFirstItemWhenOpen() {
     const subscription = this.popoverService.openChange.subscribe(open => {
-      if (open && this.popoverService.originalEvent) {
+      if (open && this.popoverService.openEvent) {
         // Even if we properly waited for ngAfterViewInit, the container still wouldn't be attached to the DOM.
         // So setTimeout is the only way to wait for the container to be ready to move focus to first item.
         setTimeout(() => {

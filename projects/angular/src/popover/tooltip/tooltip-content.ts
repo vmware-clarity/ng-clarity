@@ -53,8 +53,8 @@ export class ClrTooltipContent implements OnInit {
     popoverContent: ClrPopoverContent
   ) {
     popoverService.panelClass.push('clr-tooltip-container');
-    popoverService.popoverType = ClrPopoverType.TOOLTIP;
-    popoverService.availablePositions = getConnectedPositions(popoverService.popoverType);
+    popoverContent.contentType = ClrPopoverType.TOOLTIP;
+    popoverContent.availablePositions = getConnectedPositions(popoverContent.contentType);
 
     popoverContent.scrollToClose = true;
 
@@ -82,14 +82,9 @@ export class ClrTooltipContent implements OnInit {
     return this._position;
   }
   set position(value: string | ClrPopoverPosition) {
-    const oldPosition = this._position;
-
     const posIndex = TOOLTIP_POSITIONS.indexOf(value as ClrPopoverPosition);
-    const newPosition = value && posIndex > -1 ? TOOLTIP_POSITIONS[posIndex] : defaultPosition;
 
-    this._position = newPosition;
-
-    this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
+    this._position = value && posIndex > -1 ? TOOLTIP_POSITIONS[posIndex] : defaultPosition;
 
     this.popoverService.position = this._position;
   }

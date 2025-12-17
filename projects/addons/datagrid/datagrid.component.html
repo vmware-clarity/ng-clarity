@@ -1,0 +1,320 @@
+<!--
+   Copyright (c) 2022-2025 Broadcom. All Rights Reserved.
+   Broadcom Confidential. The term "Broadcom" refers to Broadcom Inc.
+   and/or its subsidiaries.
+-->
+<clr-datagrid
+  zoomLevelIndicator
+  [clrDgDisablePageFocus]="true"
+  [clrDgPreserveSelection]="preserveExistingSelectionOnFilter"
+  (clrDgRefresh)="refreshGrid($event)"
+  [clrDgLoading]="loading"
+  [clrDgRowSelection]="rowSelectionMode"
+  [ngClass]="{
+    'disabled-grid': gridLayoutModel.disabled,
+    'datagrid-compact': gridLayoutModel.compact,
+    'flex-clr-datagrid': gridLayoutModel.stretchToParentHeight,
+    'datagrid-overflow-ellipsis': virtualScrolling || !wrapText,
+  }"
+  cdkDropList
+  [cdkDropListAutoScrollStep]="5"
+  appfxDgColumnsOrder
+  [clrDgCustomSelectAllEnabled]="virtualScrolling"
+  (clrDgCustomSelectAll)="onSelectAllInVirtualGrid($event)"
+  [dgColumnsOrderColumns]="columns"
+  [dgColumnsVirtualScrolling]="virtualScrolling"
+  (dgColumnsOrderChange)="onColumnOrderChange($event)"
+>
+  <clr-dg-action-bar *ngIf="enableToolBar">
+    <div class="appfx-datagrid-actions-container" *ngIf="!!actionBarActions.length">
+      <appfx-datagrid-action-bar class="action-bar" (invokeAction)="onActionClick($event)" [actions]="actionBarActions">
+      </appfx-datagrid-action-bar>
+    </div>
+    <appfx-datagrid-filters
+      *ngIf="filterMode !== undefined && filterMode !== null"
+      [filterMode]="filterMode"
+      [filterableProperties]="filterableProperties"
+      (searchTermChange)="onAdvancedSearchTermChange($event)"
+      (propertyFiltersChange)="onAdvancedFilterCriteriaChange($event)"
+    >
+    </appfx-datagrid-filters>
+  </clr-dg-action-bar>
+  <clr-dg-column *ngIf="dragConfig" class="draggableCell" style="width: 20px"></clr-dg-column>
+  <clr-dg-column
+    *ngFor="let column of visibleColumns; trackBy: trackByColumnId; let index = index"
+    cdkDrag
+    [cdkDragLockAxis]="'x'"
+    [cdkDragData]="column"
+    appfxColumnOrder
+    [columnData]="column"
+    [columnIndex]="index"
+    [style]="column.width ? { width: column.width } : null"
+    (clrDgColumnResize)="onColumnResize($event, column)"
+    [clrDgField]="column.sortAndFilterByField || defaultUnsetValue"
+    [clrDgSortBy]="column.sortComparator || defaultUnsetValue"
+    [clrDgSortOrder]="column.defaultSortOrder || defaultUnsortedOrder"
+    (clrDgSortOrderChange)="onSortOrderChange($event, column)"
+  >
+    <clr-dg-filter *ngIf="column.stringFilter || column.sortAndFilterByField" [clrDgFilter]="appfxDatagridStringFilter">
+      <appfx-datagrid-filter
+        #appfxDatagridStringFilter
+        [stringFilterType]="column.stringFilter"
+        [filterValue]="column.defaultFilterValue"
+        [fieldName]="column.sortAndFilterByField"
+        (filterValueChange)="onFilterChange($event, column)"
+      ></appfx-datagrid-filter>
+    </clr-dg-filter>
+    <clr-dg-filter *ngIf="column.filter">
+      <appfx-dg-filter-container
+        [filterType]="column.filter"
+        [filterValue]="column.defaultFilterValue"
+        (filterValueChange)="onFilterChange($event, column)"
+      ></appfx-dg-filter-container>
+    </clr-dg-filter>
+    {{ column.displayName }}
+  </clr-dg-column>
+  <clr-dg-placeholder>
+    {{ dgStrings.noItemsFound }}
+    <ng-content select=".custom-placeholder-content"></ng-content>
+  </clr-dg-placeholder>
+
+  <!-- Server driven datagrid with virtual scrolling -->
+  <ng-template [ngIf]="serverDrivenDatagrid && virtualScrolling">
+    <ng-template
+      ClrVirtualScroll
+      let-item
+      let-i="index"
+      [clrVirtualDataRange]="dataRange"
+      [clrVirtualRowsItemSize]="25"
+      [clrVirtualRowsMinBufferPx]="400"
+      [clrVirtualRowsMaxBufferPx]="800"
+      [clrVirtualRowsTemplateCacheSize]="400"
+      [clrVirtualPersistItems]="false"
+      [clrVirtualRowsTrackBy]="trackByFunction"
+      (renderedRangeChange)="renderedRangeChange($event)"
+    >
+      <clr-dg-row
+        [clrDgItem]="item"
+        [clrDgSelectable]="item | isRowSelectable: isRowLocked : rowsDisabled"
+        [clrDgRowSelectionLabel]="$any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1]"
+        (contextmenu)="onContextMenu($event, item)"
+        [clrDgSkeletonLoading]="!item"
+      >
+        <clr-dg-cell *ngIf="dragConfig" class="draggableCell" style="width: 20px">
+          <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
+        </clr-dg-cell>
+        <clr-dg-cell *ngFor="let column of visibleColumns" class="fixed-cell-height">
+          <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
+        </clr-dg-cell>
+      </clr-dg-row>
+    </ng-template>
+  </ng-template>
+
+  <!--  Server driven datagrid with paging -->
+  <ng-template [ngIf]="serverDrivenDatagrid && !virtualScrolling">
+    <clr-dg-row
+      *ngFor="let item of gridItems; trackBy: trackByFn.bind(this); index as i"
+      [clrDgItem]="item"
+      [clrDgDetailOpenLabel]="getExpandDetailsLabel(item)"
+      [clrDgDetailCloseLabel]="getCollapseDetailsLabel(item)"
+      [clrDgSelectable]="item | isRowSelectable: isRowLocked : rowsDisabled"
+      [clrDgRowSelectionLabel]="$any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1]"
+      (contextmenu)="onContextMenu($event, item)"
+    >
+      <clr-dg-action-overflow
+        *ngIf="enableSingleRowActions"
+        (clrDgActionOverflowOpenChange)="onRowActionOverflowOpen($event, singleRowActions, item)"
+      >
+        <button
+          *ngFor="let action of singleRowActions"
+          class="action-item"
+          (click)="onActionClick(action, item)"
+          [title]="action.tooltip"
+          [disabled]="!action.enabled"
+        >
+          {{ action.label }}
+        </button>
+      </clr-dg-action-overflow>
+      <clr-dg-cell *ngIf="dragConfig" class="draggableCell" style="width: 20px">
+        <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
+      </clr-dg-cell>
+      <clr-dg-cell *ngFor="let column of visibleColumns">
+        <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
+      </clr-dg-cell>
+      <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="rowDetailContent">
+        <ng-container *ngIf="{ id: buildRowDetailContentId(i) } as detailData">
+          <clr-dg-row-detail
+            *clrIfExpanded="rowsExpandedByDefault"
+            tabindex="0"
+            [attr.aria-describedby]="detailData.id"
+          >
+            <div [id]="detailData.id" class="datagrid-row-flex">
+              <ng-container *ngTemplateOutlet="rowDetailContent; context: { item: item }"> </ng-container>
+            </div>
+          </clr-dg-row-detail>
+        </ng-container>
+      </ng-container>
+    </clr-dg-row>
+  </ng-template>
+
+  <!-- Client side datagrid with paging -->
+  <ng-template [ngIf]="!serverDrivenDatagrid">
+    <clr-dg-row
+      *clrDgItems="let item of gridItems; trackBy: trackByFn.bind(this); index as i"
+      [clrDgItem]="item"
+      [clrDgDetailOpenLabel]="getExpandDetailsLabel(item)"
+      [clrDgDetailCloseLabel]="getCollapseDetailsLabel(item)"
+      [clrDgSelectable]="item | isRowSelectable: isRowLocked : rowsDisabled"
+      [clrDgRowSelectionLabel]="$any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1]"
+      (contextmenu)="onContextMenu($event, item)"
+    >
+      <clr-dg-action-overflow
+        *ngIf="enableSingleRowActions"
+        (clrDgActionOverflowOpenChange)="onRowActionOverflowOpen($event, singleRowActions, item)"
+      >
+        <button
+          *ngFor="let action of singleRowActions"
+          class="action-item"
+          (click)="onActionClick(action, item)"
+          [title]="action.tooltip"
+          [disabled]="!action.enabled"
+        >
+          {{ action.label }}
+        </button>
+      </clr-dg-action-overflow>
+      <clr-dg-cell *ngIf="dragConfig" class="draggableCell">
+        <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
+      </clr-dg-cell>
+      <clr-dg-cell *ngFor="let column of visibleColumns">
+        <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
+      </clr-dg-cell>
+      <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="$any(item).rowDetailRenderer">
+        <ng-container *ngIf="{ id: buildRowDetailContentId(i) } as detailData">
+          <clr-dg-row-detail *clrIfExpanded tabindex="0" [attr.aria-describedby]="detailData.id">
+            <appfx-dg-cell-container
+              [id]="detailData.id"
+              [column]="{
+                displayName: '',
+                field: '',
+                columnRenderer: $any(item).rowDetailRenderer,
+              }"
+              [item]="item"
+            ></appfx-dg-cell-container>
+          </clr-dg-row-detail>
+        </ng-container>
+      </ng-container>
+      <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="rowDetailContent">
+        <ng-container *ngIf="{ id: buildRowDetailContentId(i) } as detailData">
+          <clr-dg-row-detail
+            *clrIfExpanded="rowsExpandedByDefault"
+            tabindex="0"
+            [attr.aria-describedby]="detailData.id"
+          >
+            <div [id]="detailData.id" class="datagrid-row-flex">
+              <ng-container *ngTemplateOutlet="rowDetailContent; context: { item: item }"> </ng-container>
+            </div>
+          </clr-dg-row-detail>
+        </ng-container>
+      </ng-container>
+    </clr-dg-row>
+  </ng-template>
+  <ng-container *ngIf="detailHeader || detailBody" ngProjectAs="clr-dg-detail">
+    <ng-template [clrIfDetail]="detailState" (clrIfDetailChange)="onDetailStateChange($event)" let-detail>
+      <clr-dg-detail>
+        <clr-dg-detail-header *ngIf="detailHeader">
+          <ng-container *ngTemplateOutlet="detailHeader; context: { $implicit: detail }"></ng-container>
+        </clr-dg-detail-header>
+        <clr-dg-detail-body *ngIf="detailBody">
+          <ng-container *ngTemplateOutlet="detailBody; context: { $implicit: detail }"></ng-container>
+        </clr-dg-detail-body>
+      </clr-dg-detail>
+    </ng-template>
+  </ng-container>
+  <clr-dg-footer *ngIf="gridFooterModel.showFooter">
+    <appfx-dg-column-toggle
+      *ngIf="!gridFooterModel.hideColumnToggle"
+      [(columns)]="columns"
+      (columnHiddenStateChange)="onColumnHiddenStateChange($event)"
+    >
+    </appfx-dg-column-toggle>
+    <appfx-dg-export
+      *ngIf="enableExportButton"
+      [allItemsCount]="gridFooterModel.clientSideExportConfig?.allItemsCount || listItemsCount"
+      [selectedItemsCount]="selectedItemsCount"
+      [filteredItemsCount]="filteredItemsCount"
+      (exportEventEmitter)="onExportEvent($event)"
+      class="export-link"
+    >
+    </appfx-dg-export>
+    <div *ngIf="showDeselectAll" class="column-switch-wrapper export-link">
+      <button class="btn btn-sm column-toggle-action" [disabled]="deselectAllDisabled" (click)="onDeselectAllClick()">
+        {{ dgStrings.deselectAll }}
+      </button>
+    </div>
+    <ng-content select=".custom-footer-content"></ng-content>
+    <ng-container *ngIf="pageSize > 0; else missingPageConfig" ngProjectAs="clr-dg-pagination">
+      <clr-dg-pagination #pagination [clrDgPageSize]="pageSize" [clrDgTotalItems]="totalItems">
+        <clr-dg-page-size #clrDgPageSize *ngIf="pageSizeOptions?.length" [clrPageSizeOptions]="pageSizeOptions">
+          <label [for]="clrDgPageSize.pageSizeOptionsId"> {{ dgStrings.itemsPerPage }} </label>
+        </clr-dg-page-size>
+
+        {{
+          getFooterMessage(
+            pagination.totalItems,
+            pagination.pageSize,
+            pagination.firstItem + 1,
+            pagination.lastItem + 1
+          )
+        }}
+      </clr-dg-pagination>
+    </ng-container>
+    <ng-template #missingPageConfig>
+      <span *ngIf="!showCustomPagination" class="pagination">
+        {{ getFooterMessage(totalItems, undefined, dataRange.skip + 1, dataRange.skip + dataRange.data.length) }}
+      </span>
+      <div *ngIf="showCustomPagination">
+        <ng-container *ngTemplateOutlet="customPagination"></ng-container>
+      </div>
+      <ng-template #customPagination>
+        <ng-content></ng-content>
+      </ng-template>
+    </ng-template>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<ng-template #draggableCell let-item>
+  <div cdkDropList [cdkDropListAutoScrollStep]="0" [cdkDropListConnectedTo]="dropGroup(dragConfig.dragGroup || '')">
+    <div
+      cdkDrag
+      cdkDragPreviewContainer="parent"
+      [cdkDragData]="draggedItems"
+      (cdkDragStarted)="onDragStart(item)"
+      (cdkDragMoved)="onDragMove()"
+    >
+      <cds-icon shape="drag-handle" size="22" cdkDragHandle> </cds-icon>
+      <div class="custom-placeholder" *cdkDragPlaceholder></div>
+      <div class="custom-preview" *cdkDragPreview>
+        <div
+          *ngIf="draggedItems.length === 1; else multiSelect"
+          class="grid-ghost text-truncate single-ghost"
+          [ngClass]="{ 'selection-ghost': isItemSelected(item) }"
+        >
+          <ng-container *ngTemplateOutlet="draggableGhostContent; context: { $implicit: item }"> </ng-container>
+        </div>
+        <ng-template #multiSelect>
+          <div class="grid-ghost text-truncate multiple-ghost selection-ghost">
+            <ng-container *ngTemplateOutlet="draggableGhostContent; context: { $implicit: item }"> </ng-container>
+          </div>
+          <span class="badge badge-purple ghost-badge">
+            {{ draggedItems.length }}
+          </span>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #draggableGhostContent let-item>
+  <i class="{{ item.primaryIconId }}"></i>
+  <span>{{ item[dragConfig.fieldName] }}</span>
+</ng-template>

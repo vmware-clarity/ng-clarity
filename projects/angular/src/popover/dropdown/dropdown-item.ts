@@ -61,9 +61,6 @@ export class ClrDropdownItem {
       const rootDropdown = this.findRootDropdown();
 
       rootDropdown.focusHandler.focus();
-      // Prevent moving focus back to the trigger when the dropdown menu is closed.
-      // Without this line, focus could be "stolen" from a modal that was opened from a dropdown item.
-      rootDropdown.focusHandler.focusBackOnTriggerWhenClosed = false;
     }
 
     // Ensure that the dropdown is closed after custom dropdown item click event handlers have run.

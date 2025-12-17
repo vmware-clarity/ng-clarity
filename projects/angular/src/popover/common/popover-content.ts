@@ -6,15 +6,7 @@
  */
 
 import { hasModifierKey } from '@angular/cdk/keycodes';
-import {
-  CdkScrollable,
-  ConnectedPosition,
-  Overlay,
-  OverlayConfig,
-  OverlayContainer,
-  OverlayRef,
-  ScrollDispatcher,
-} from '@angular/cdk/overlay';
+import { ConnectedPosition, Overlay, OverlayConfig, OverlayContainer, OverlayRef } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
 import {
   AfterViewInit,
@@ -29,7 +21,7 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
+import { fromEvent, merge, Subscription } from 'rxjs';
 
 import { ClrPopoverService } from './providers/popover.service';
 import { ClrPopoverPosition, ClrPopoverType, mapPopoverKeyToPosition } from './utils/popover-positions';
@@ -45,6 +37,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private _scrollToClose = false;
   private view: EmbeddedViewRef<void>;
   private elementRef: ElementRef;
+  private overlayRef: OverlayRef;
 
   private subscriptions: Subscription[] = [];
   private openCloseSubscription: Subscription;
@@ -56,7 +49,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     overlayX: 'end',
     overlayY: 'top',
   };
-  private scrollableParents: HTMLElement[];
   private intersectionObserver: IntersectionObserver;
 
   constructor(
@@ -67,7 +59,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     private overlay: Overlay,
     @Inject(ClrPopoverService) private popoverService: ClrPopoverService,
-    private scrollDispatcher: ScrollDispatcher,
     private zone: NgZone
   ) {
     popoverService.panelClass.push('clr-popover-content');
@@ -153,8 +144,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.preferredPosition = mapPopoverKeyToPosition(this.popoverService.position, this.popoverService.popoverType);
   }
 
-  private _createOverlayRef(): OverlayRef {
-    const overlay = this.overlay.create(
+  private _createOverlayRef() {
+    this.overlayRef = this.overlay.create(
       new OverlayConfig({
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
         positionStrategy: this.getPositionStrategy(),
@@ -166,30 +157,19 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     );
 
     this.subscriptions.push(
-      this.popoverService.updatePositonChange().subscribe(() => {
-        this.updatePosition();
+      merge(this.popoverService.resetPositionsChange, this.popoverService.getPositionChange()).subscribe(() => {
+        this.resetPosition();
       }),
-      this.popoverService.getPositionChange().subscribe(() => {
-        this.updatePosition();
+      this.popoverService.updatePositionChange().subscribe(() => {
+        this.overlayRef?.updatePosition();
       }),
-      // handles cdkScrollable positionChanges. We don't need it Since IntersectionObserver is running.
-      // commenting for now
-      // positionStrategy?.positionChanges?.subscribe(change => {
-      //   // Close the overlay when the Origin is clipped
-      //   if (change.scrollableViewProperties.isOriginClipped) {
-      //     // Running the zone is essential to invoke HostBinding
-      //     this.zone.run(() => {
-      //       this.popoverService.open = false;
-      //     });
-      //   }
-      // }),
-      overlay.keydownEvents().subscribe(event => {
+      this.overlayRef.keydownEvents().subscribe(event => {
         if (event && event.key && normalizeKey(event.key) === Keys.Escape && !hasModifierKey(event)) {
           event.preventDefault();
           this.closePopover();
         }
       }),
-      overlay.outsidePointerEvents().subscribe(event => {
+      this.overlayRef.outsidePointerEvents().subscribe(event => {
         // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
         if (this.elementRef && this.elementRef.nativeElement.contains(event.target)) {
           return;
@@ -211,25 +191,17 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         }
       })
     );
-
-    return overlay;
   }
 
-  private updatePosition() {
-    if (this.popoverService.overlayRef) {
-      this.popoverService.overlayRef.updatePositionStrategy(this.getPositionStrategy());
-      this.popoverService.overlayRef.updatePosition();
+  private resetPosition() {
+    if (this.overlayRef) {
+      this.overlayRef.updatePositionStrategy(this.getPositionStrategy());
+      this.overlayRef.updatePosition();
     }
   }
 
   private getPositionStrategy() {
     this.setPreferredPosition(); //Preferred position defined by consumer
-
-    // fetch all Scrolling Containers registered with CDK
-    let scrollableAncestors: CdkScrollable[];
-    if (this.popoverService.anchorElementRef) {
-      scrollableAncestors = this.scrollDispatcher.getAncestorScrollContainers(this.popoverService.anchorElementRef);
-    }
 
     return this.overlay
       .position()
@@ -237,12 +209,11 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       .setOrigin(this.popoverService.anchorElementRef)
       .withPush(true)
       .withPositions([this.preferredPosition, ...this.popoverService.availablePositions])
-      .withFlexibleDimensions(true)
-      .withScrollableContainers(scrollableAncestors);
+      .withFlexibleDimensions(true);
   }
 
   private closePopover() {
-    if (!this.popoverService.overlayRef) {
+    if (!this.overlayRef) {
       return;
     }
 
@@ -261,17 +232,13 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   private showOverlay() {
     // Get Scrollable Parents
-    this.scrollableParents = [
-      ...this.getScrollParents(this.popoverService.anchorElementRef?.nativeElement),
-      ...this.getScrollParents(this.popoverService.anchorElementRef?.nativeElement, 'x'),
-    ];
     this.listenToMouseEvents();
 
     //Preferred position defined by consumer
     this.setPreferredPosition();
 
-    if (!this.popoverService.overlayRef) {
-      this.popoverService.overlayRef = this._createOverlayRef();
+    if (!this.overlayRef) {
+      this._createOverlayRef();
     }
 
     if (!this.view && this.template) {
@@ -285,7 +252,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     if (!this.domPortal) {
       this.domPortal = new DomPortal<HTMLElement>(this.elementRef);
-      this.popoverService.overlayRef.attach(this.domPortal);
+      this.overlayRef.attach(this.domPortal);
     }
 
     this.setupIntersectionObserver();
@@ -303,9 +270,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.subscriptions.forEach(s => s.unsubscribe());
     this.subscriptions = [];
 
-    if (this.popoverService.overlayRef?.hasAttached()) {
-      this.popoverService.overlayRef.detach();
-      this.popoverService.overlayRef.dispose();
+    if (this.overlayRef?.hasAttached()) {
+      this.overlayRef.detach();
+      this.overlayRef.dispose();
     }
 
     if (this.domPortal?.isAttached) {
@@ -316,13 +283,12 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.view.destroy();
     }
 
-    this.popoverService.overlayRef = null;
+    this.overlayRef = null;
     this.domPortal = null;
     if (this.template) {
       this.elementRef = null;
     }
     this.view = null;
-    this.scrollableParents = null;
 
     this.intersectionObserver?.disconnect();
     this.intersectionObserver = null;
@@ -330,42 +296,26 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.popoverService.popoverVisibleEmit(false);
   }
 
-  private getScrollParents(node: HTMLElement, axis = 'y'): HTMLElement[] {
+  private getScrollableParents(node: HTMLElement) {
     let parent = node;
-    const scrollableParents: HTMLElement[] = [];
+    const overflowScrollKeys = ['auto', 'scroll', 'clip'];
+    const scrollableParents: (HTMLDocument | HTMLElement)[] = [window.document];
 
-    while (parent && !(parent instanceof HTMLBodyElement)) {
-      parent = this.getScrollParent(parent.parentNode as HTMLElement, axis);
+    while (parent && !(parent instanceof HTMLHtmlElement)) {
+      if (parent instanceof ShadowRoot) {
+        parent = parent.host as HTMLElement;
+      }
 
-      scrollableParents.push(parent);
+      const { overflowY, overflowX } = window.getComputedStyle(parent);
+
+      if (overflowScrollKeys.includes(overflowY) || overflowScrollKeys.includes(overflowX)) {
+        scrollableParents.push(parent);
+      }
+
+      parent = parent.parentNode as HTMLElement;
     }
 
     return scrollableParents;
-  }
-
-  // The below method is taken from https://gist.github.com/oscarmarina/3a546cff4d106a49a5be417e238d9558
-  private getScrollParent(node: HTMLElement | ShadowRoot, axis = 'y'): HTMLElement {
-    if (!node) {
-      return window.document.body;
-    }
-
-    if (node instanceof HTMLDocument) {
-      return node;
-    }
-
-    const el = node instanceof ShadowRoot ? (node.host as HTMLElement) : node;
-
-    const style = window.getComputedStyle(el);
-    const overflow = axis === 'y' ? style.overflowY : style.overflowX;
-    const scrollSize = axis === 'y' ? el.scrollHeight : el.scrollWidth;
-    const clientSize = axis === 'y' ? el.clientHeight : el.clientWidth;
-    const isScrolled = scrollSize > clientSize;
-
-    if (isScrolled && !overflow.includes('visible') && !overflow.includes('hidden')) {
-      return el;
-    }
-
-    return this.getScrollParent(el.parentNode as HTMLElement, axis);
   }
 
   /**
@@ -394,18 +344,17 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   //Align the popover on scrolling
   private listenToMouseEvents() {
-    this.scrollableParents.forEach(parent => {
-      this.subscriptions.push(
-        fromEvent(parent, 'scroll').subscribe(() => {
-          if (this._scrollToClose) {
-            this.closePopover();
+    const scrollableParents = this.getScrollableParents(this.popoverService.anchorElementRef?.nativeElement);
 
+    this.zone.runOutsideAngular(() => {
+      this.subscriptions.push(
+        merge(...scrollableParents.map(parent => fromEvent(parent, 'scroll', { passive: true }))).subscribe(() => {
+          if (this._scrollToClose) {
+            this.zone.run(() => this.closePopover());
             return;
           }
 
-          if (this.popoverService.overlayRef) {
-            this.popoverService.overlayRef.updatePosition();
-          }
+          this.overlayRef?.updatePosition();
         })
       );
     });

@@ -1,0 +1,81 @@
+<!--
+     Copyright (c) 2020-2024 Broadcom. All Rights Reserved.
+     Broadcom Confidential. The term "Broadcom" refers to Broadcom Inc.
+     and/or its subsidiaries.
+-->
+<button
+  cdkOverlayOrigin
+  #trigger="cdkOverlayOrigin"
+  role="button"
+  type="button"
+  class="btn btn-sm btn-link column-toggle-action"
+  (click)="openState = !openState"
+  [attr.aria-owns]="viewId"
+  [attr.aria-controls]="viewId"
+  [attr.aria-expanded]="openState"
+>
+  {{ dgStrings.pickColumns }}
+</button>
+<ng-template
+  cdkConnectedOverlay
+  #overlay="cdkConnectedOverlay"
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="openState"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  [cdkConnectedOverlayPositions]="positions"
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  (detach)="onDetach()"
+  (attach)="onAttach(overlay)"
+  (backdropClick)="openState = false"
+>
+  <div
+    class="column-switch"
+    role="dialog"
+    cdkTrapFocus
+    [cdkTrapFocusAutoCapture]="true"
+    [attr.aria-label]="dgStrings.showColumnsMenuDescription"
+    tabindex="-1"
+  >
+    <div class="switch-header">
+      <div class="clr-sr-only">
+        {{ dgStrings.allColumnsSelected }}
+      </div>
+      <span role="heading" aria-level="3">{{ dgStrings.showColumns }}</span>
+      <button
+        class="btn btn-sm btn-link"
+        cdkFocusInitial
+        cdkFocusRegionStart
+        (click)="openState = false"
+        #closeColumnButton
+      >
+        <span class="clr-sr-only">{{ dgStrings.closeColumnTogglerText }}</span>
+        <cds-icon shape="window-close"></cds-icon>
+      </button>
+    </div>
+    <ul class="switch-content list-unstyled" tabindex="-1">
+      <li *ngFor="let column of hideableColumns()">
+        <clr-checkbox-wrapper>
+          <input
+            type="checkbox"
+            clrCheckbox
+            [disabled]="hasOnlyOneVisibleColumn && !column.hidden"
+            [checked]="!column.hidden"
+            (change)="toggleColumnState(column, $event)"
+          />
+          <label>{{ column.displayName }}</label>
+        </clr-checkbox-wrapper>
+      </li>
+    </ul>
+    <div class="switch-footer">
+      <button
+        class="btn btn-sm btn-link switch-button export-link"
+        type="button"
+        cdkFocusRegionEnd
+        [disabled]="allColumnsSelected()"
+        (click)="onSelectAll()"
+      >
+        {{ dgStrings.selectAll }}
+      </button>
+    </div>
+  </div>
+</ng-template>

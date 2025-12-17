@@ -51,18 +51,19 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     nested: ClrDropdownMenu,
     private focusHandler: DropdownFocusHandler,
     private elementRef: ElementRef,
-    private popoverService: ClrPopoverService
+    private popoverService: ClrPopoverService,
+    popoverContent: ClrPopoverContent
   ) {
     if (!parentHost) {
       throw new Error('clr-dropdown-menu should only be used inside of a clr-dropdown');
     }
 
-    // popoverService.scrollToClose = true;
+    popoverContent.scrollToClose = true;
 
-    popoverService.popoverType = ClrPopoverType.DROPDOWN;
-    popoverService.availablePositions = getConnectedPositions(popoverService.popoverType);
+    popoverContent.contentType = ClrPopoverType.DROPDOWN;
+    popoverContent.availablePositions = getConnectedPositions(popoverService.popoverType);
 
-    popoverService.position = nested ? ClrPopoverPosition.RIGHT_TOP : ClrPopoverPosition.BOTTOM_LEFT;
+    popoverContent.contentAt = nested ? ClrPopoverPosition.RIGHT_TOP : ClrPopoverPosition.BOTTOM_LEFT;
 
     popoverService.panelClass.push('clr-dropdown-container');
   }

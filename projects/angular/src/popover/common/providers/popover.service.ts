@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ConnectedPosition, OverlayRef } from '@angular/cdk/overlay';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ElementRef, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
@@ -17,21 +17,19 @@ import { ClrPopoverPosition, ClrPopoverType } from '../utils/popover-positions';
 
 @Injectable()
 export class ClrPopoverService {
-  scrollToClose = false;
   anchorElementRef: ElementRef<HTMLElement>;
   closeButtonRef: ElementRef;
   panelClass: string[] = [];
   popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
   availablePositions: ConnectedPosition[] = [];
-  overlayRef: OverlayRef;
-  lastKeydownEvent: KeyboardEvent;
   private _position = ClrPopoverPosition.BOTTOM_LEFT;
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;
   private _openEventChange = new Subject<Event>();
   private _positionChange = new Subject<string>();
-  private _positionUpdate = new Subject<boolean>();
+  private _resetPositions = new Subject<void>();
+  private _updatePosition = new Subject<void>();
   private _popoverVisible = new Subject<boolean>();
 
   get position(): ClrPopoverPosition {
@@ -70,13 +68,12 @@ export class ClrPopoverService {
     }
   }
 
-  // For compatibility with legacy IfOpenService based implementations
-  get originalEvent(): Event {
-    return this._openEvent;
+  get resetPositionsChange(): Observable<void> {
+    return this._resetPositions.asObservable();
   }
 
-  updatePositonChange(): Observable<boolean> {
-    return this._positionUpdate.asObservable();
+  updatePositionChange(): Observable<void> {
+    return this._updatePosition.asObservable();
   }
 
   getPositionChange(): Observable<string> {
@@ -102,8 +99,12 @@ export class ClrPopoverService {
     this._popoverVisible.next(visible);
   }
 
-  updatePositionEmit(status: boolean) {
-    this._positionUpdate.next(status);
+  resetPositions() {
+    this._resetPositions.next();
+  }
+
+  updatePosition() {
+    this._updatePosition.next();
   }
 
   focusCloseButton(): void {
