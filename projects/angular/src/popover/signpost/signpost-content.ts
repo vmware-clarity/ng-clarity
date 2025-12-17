@@ -79,7 +79,8 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     private signpostFocusManager: SignpostFocusManager,
     @Inject(PLATFORM_ID) private platformId: any,
     @Inject(DOCUMENT) document: any,
-    private popoverService: ClrPopoverService
+    private popoverService: ClrPopoverService,
+    private popoverContent: ClrPopoverContent
   ) {
     if (!parentHost) {
       throw new Error('clr-signpost-content should only be used inside of a clr-signpost');
@@ -89,9 +90,9 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
 
     this.document = document;
     popoverService.panelClass.push('clr-signpost-container');
-    popoverService.popoverType = ClrPopoverType.SIGNPOST;
+    popoverContent.contentType = ClrPopoverType.SIGNPOST;
 
-    popoverService.availablePositions = getConnectedPositions(popoverService.popoverType);
+    popoverContent.availablePositions = getConnectedPositions(ClrPopoverType.SIGNPOST);
   }
 
   /*********
@@ -131,7 +132,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     const posIndex = SIGNPOST_POSITIONS.indexOf(position as ClrPopoverPosition);
     this._position = position && posIndex > -1 ? SIGNPOST_POSITIONS[posIndex] : ClrPopoverPosition.RIGHT_MIDDLE;
 
-    this.popoverService.position = this._position;
+    this.popoverContent.contentAt = this._position;
   }
 
   /*

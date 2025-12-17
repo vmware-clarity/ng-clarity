@@ -5,12 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ElementRef, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { preventArrowKeyScroll } from '../../../utils/focus/key-focus/util';
-import { ClrPopoverPosition, ClrPopoverType } from '../utils/popover-positions';
+import { ClrPopoverPosition } from '../utils/popover-positions';
 
 // Popovers might need to ignore click events on an element
 // (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
@@ -20,9 +19,6 @@ export class ClrPopoverService {
   anchorElementRef: ElementRef<HTMLElement>;
   closeButtonRef: ElementRef;
   panelClass: string[] = [];
-  popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
-  availablePositions: ConnectedPosition[] = [];
-  private _position = ClrPopoverPosition.BOTTOM_LEFT;
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;
@@ -31,15 +27,6 @@ export class ClrPopoverService {
   private _resetPositions = new Subject<void>();
   private _updatePosition = new Subject<void>();
   private _popoverVisible = new Subject<boolean>();
-
-  get position(): ClrPopoverPosition {
-    return this._position;
-  }
-  set position(position: ClrPopoverPosition) {
-    this._position = position;
-
-    this._positionChange.next(position);
-  }
 
   get openChange(): Observable<boolean> {
     return this._openChange.asObservable();
@@ -70,6 +57,10 @@ export class ClrPopoverService {
 
   get resetPositionsChange(): Observable<void> {
     return this._resetPositions.asObservable();
+  }
+
+  positionChange(position: ClrPopoverPosition) {
+    this._positionChange.next(position);
   }
 
   updatePositionChange(): Observable<void> {

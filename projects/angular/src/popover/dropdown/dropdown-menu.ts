@@ -51,8 +51,8 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     nested: ClrDropdownMenu,
     private focusHandler: DropdownFocusHandler,
     private elementRef: ElementRef,
-    private popoverService: ClrPopoverService,
-    popoverContent: ClrPopoverContent
+    popoverService: ClrPopoverService,
+    private popoverContent: ClrPopoverContent
   ) {
     if (!parentHost) {
       throw new Error('clr-dropdown-menu should only be used inside of a clr-dropdown');
@@ -61,7 +61,7 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     popoverContent.scrollToClose = true;
 
     popoverContent.contentType = ClrPopoverType.DROPDOWN;
-    popoverContent.availablePositions = getConnectedPositions(popoverService.popoverType);
+    popoverContent.availablePositions = getConnectedPositions(ClrPopoverType.DROPDOWN);
 
     popoverContent.contentAt = nested ? ClrPopoverPosition.RIGHT_TOP : ClrPopoverPosition.BOTTOM_LEFT;
 
@@ -81,7 +81,7 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     }
 
     // set the popover values based on menu position
-    this.popoverService.position = DROPDOWN_POSITIONS[posIndex];
+    this.popoverContent.contentAt = DROPDOWN_POSITIONS[posIndex];
   }
 
   ngAfterContentInit() {

@@ -185,7 +185,6 @@ export default function (): void {
           fixture.componentInstance.position = ClrPopoverPosition.TOP_LEFT;
           fixture.detectChanges();
 
-          console.log(tooltipContainer.classList);
           expect(tooltipContainer.classList).not.toContain(ClrPopoverPosition.BOTTOM_RIGHT);
           expect(tooltipContainer.classList).toContain(ClrPopoverPosition.TOP_LEFT);
         });

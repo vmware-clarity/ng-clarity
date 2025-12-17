@@ -50,11 +50,11 @@ export class ClrTooltipContent implements OnInit {
     private renderer: Renderer2,
     private popoverService: ClrPopoverService,
     private tooltipMouseService: TooltipMouseService,
-    popoverContent: ClrPopoverContent
+    private popoverContent: ClrPopoverContent
   ) {
     popoverService.panelClass.push('clr-tooltip-container');
     popoverContent.contentType = ClrPopoverType.TOOLTIP;
-    popoverContent.availablePositions = getConnectedPositions(popoverService.popoverType);
+    popoverContent.availablePositions = getConnectedPositions(ClrPopoverType.TOOLTIP);
 
     popoverContent.scrollToClose = true;
 
@@ -86,7 +86,7 @@ export class ClrTooltipContent implements OnInit {
 
     this._position = value && posIndex > -1 ? TOOLTIP_POSITIONS[posIndex] : defaultPosition;
 
-    this.popoverService.position = this._position;
+    this.popoverContent.contentAt = this._position;
   }
 
   @Input('clrSize')

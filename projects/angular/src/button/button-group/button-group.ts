@@ -57,6 +57,8 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
 
   inlineButtons: ClrButton[] = [];
   menuButtons: ClrButton[] = [];
+  protected popoverType = ClrPopoverType.DROPDOWN;
+  protected availablePositions = getConnectedPositions(ClrPopoverType.DROPDOWN);
   private _menuPosition = ClrPopoverPosition.BOTTOM_LEFT;
 
   constructor(
@@ -65,13 +67,7 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     public commonStrings: ClrCommonStringsService,
     private destroy$: ClrDestroyService,
     private focusHandler: ButtonGroupFocusHandler
-  ) {
-    popoverService.position = this._menuPosition;
-
-    popoverService.popoverType = ClrPopoverType.DROPDOWN;
-
-    popoverService.availablePositions = getConnectedPositions(popoverService.popoverType);
-  }
+  ) {}
 
   @Input('clrMenuPosition')
   get menuPosition(): ClrPopoverPosition {
