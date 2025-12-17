@@ -28,7 +28,7 @@ const Positions: any = [
 ];
 
 export default {
-  title: 'Popover/PopoverNext',
+  title: 'Popover/Popover',
   component: StorybookPopoverComponent,
   decorators: [
     moduleMetadata({
