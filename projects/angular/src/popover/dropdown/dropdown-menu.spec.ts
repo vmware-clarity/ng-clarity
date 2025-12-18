@@ -13,7 +13,7 @@ import { ClrDropdown } from './dropdown';
 import { ClrDropdownMenu } from './dropdown-menu';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { ClrPopoverService } from '../common';
+import { ClrPopoverContent, ClrPopoverService } from '../common';
 import { ClrDropdownModule } from './dropdown.module';
 import { ClrPopoverPosition } from '../common/utils/popover-positions';
 
@@ -38,11 +38,12 @@ export default function (): void {
   describe('DropdownMenu component', function () {
     let fixture: ComponentFixture<SimpleTest>;
     let popoverService: ClrPopoverService;
+    let popoverContent: ClrPopoverContent;
     let focusHandler: DropdownFocusHandler;
     let dropdownMenu: HTMLElement;
 
     beforeEach(async () => {
-      TestBed.configureTestingModule({ imports: [ClrDropdownModule], declarations: [SimpleTest] });
+      TestBed.configureTestingModule({ imports: [ClrDropdownModule, ClrPopoverContent], declarations: [SimpleTest] });
 
       fixture = TestBed.createComponent(SimpleTest);
       popoverService = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(ClrPopoverService);
@@ -50,6 +51,9 @@ export default function (): void {
 
       popoverService.open = true;
       fixture.detectChanges();
+
+      // ClrPopoverContent is only available after open
+      popoverContent = fixture.debugElement.query(By.directive(ClrDropdownMenu)).injector.get(ClrPopoverContent);
 
       dropdownMenu = document.body.querySelector('.dropdown-menu') as HTMLElement;
     });
@@ -68,15 +72,15 @@ export default function (): void {
 
     it('supports clrPosition option', function () {
       // Default is bottom-left since menuPosition is set to ""
-      expect(popoverService.position).toEqual(ClrPopoverPosition.BOTTOM_LEFT);
+      expect(popoverContent.contentAt as ClrPopoverPosition).toEqual(ClrPopoverPosition.BOTTOM_LEFT);
 
       fixture.componentInstance.position = ClrPopoverPosition.BOTTOM_RIGHT;
       fixture.detectChanges();
-      expect(popoverService.position).toEqual(ClrPopoverPosition.BOTTOM_RIGHT);
+      expect(popoverContent.contentAt as ClrPopoverPosition).toEqual(ClrPopoverPosition.BOTTOM_RIGHT);
 
       fixture.componentInstance.position = ClrPopoverPosition.TOP_RIGHT;
       fixture.detectChanges();
-      expect(popoverService.position).toEqual(ClrPopoverPosition.TOP_RIGHT);
+      expect(popoverContent.contentAt as ClrPopoverPosition).toEqual(ClrPopoverPosition.TOP_RIGHT);
     });
 
     it('adds the menu role to the host', function () {

@@ -1737,6 +1737,28 @@
     @include datagrid-action-overflow-appearance();
   }
 
+  .right-bottom .datagrid-action-overflow {
+    &::before {
+      top: auto;
+      bottom: tokens.$cds-global-space-4;
+    }
+
+    &::after {
+      top: auto;
+      bottom: calc(tokens.$cds-global-space-4 + tokens.$cds-global-space-1);
+    }
+  }
+
+  .right-top .datagrid-action-overflow {
+    &::before {
+      top: tokens.$cds-global-space-6;
+    }
+
+    &::after {
+      top: tokens.$cds-global-space-6;
+    }
+  }
+
   /* END Datagrid Smart Popover Content Styles
 
   /**

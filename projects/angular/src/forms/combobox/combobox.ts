@@ -94,6 +94,9 @@ export class ClrCombobox<T>
 
   protected override index = 1;
 
+  protected popoverType = ClrPopoverType.DROPDOWN;
+  protected availablePositions = getConnectedPositions(ClrPopoverType.DROPDOWN);
+
   @ContentChild(ClrOptions) private options: ClrOptions<T>;
 
   private _searchText = '';
@@ -121,9 +124,6 @@ export class ClrCombobox<T>
     if (control) {
       control.valueAccessor = this;
     }
-
-    popoverService.popoverType = ClrPopoverType.DROPDOWN;
-    popoverService.availablePositions = getConnectedPositions(popoverService.popoverType);
 
     // default to SingleSelectComboboxModel, in case the optional input [ClrMulti] isn't used
     optionSelectionService.selectionModel = new SingleSelectComboboxModel<T>();
@@ -355,9 +355,11 @@ export class ClrCombobox<T>
         }
         this.updateControlValue();
 
-        setTimeout(() => {
-          this.popoverService?.updatePosition();
-        });
+        if (this.multiSelect) {
+          setTimeout(() => {
+            this.popoverService?.updatePosition();
+          });
+        }
       })
     );
 

@@ -6,22 +6,6 @@
   -->
 
 <form clrForm class="clr-form-compact">
-  <!--  <clr-number-input-container>-->
-  <!--    <label>Total Rows</label>-->
-  <!--    <input clrNumberInput type="number" name="rows" [(ngModel)]="totalRows" />-->
-  <!--    <clr-control-helper-->
-  <!--    >Total Virtual scroll height in PX (RowHeight * TotalRows): {{totalRows * virtualScrollRowHeight}}-->
-  <!--    </clr-control-helper>-->
-  <!--  </clr-number-input-container>-->
-  <!--  <clr-number-input-container>-->
-  <!--    <label>Datagrid height in PX</label>-->
-  <!--    <input clrNumberInput type="number" name="datagridHeight" [(ngModel)]="datagridHeight" />-->
-  <!--  </clr-number-input-container>-->
-  <!--  <clr-number-input-container>-->
-  <!--    <label>ROW height in PX</label>-->
-  <!--    <input clrNumberInput type="number" name="virtualScrollRowHeight" [(ngModel)]="virtualScrollRowHeight" />-->
-  <!--  </clr-number-input-container>-->
-
   <clr-select-container>
     <label>Type</label>
     <select clrSelect name="type" [(ngModel)]="type">
@@ -29,6 +13,14 @@
       <option [value]="clrPopoverType.DROPDOWN">DROPDOWN</option>
       <option [value]="clrPopoverType.SIGNPOST">SIGNPOST</option>
       <option [value]="clrPopoverType.TOOLTIP">TOOLTIP</option>
+    </select>
+  </clr-select-container>
+  <clr-select-container>
+    <label>Position</label>
+    <select clrSelect name="position" [(ngModel)]="contentPosition">
+      @for (position of positions; track position) {
+      <option [value]="position">{{position}}</option>
+      }
     </select>
   </clr-select-container>
   <clr-toggle-container>
@@ -67,7 +59,7 @@
       *clrPopoverContent="
       open;
       at: contentPosition;
-      availablePositions: []
+      availablePositions: availablePositions;
       type: type;
       outsideClickToClose: outsideClickToClose;
       scrollToClose: scrollToClose"

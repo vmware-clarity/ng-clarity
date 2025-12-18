@@ -15,6 +15,7 @@ import { ClrTooltipModule } from './tooltip.module';
 import { TestContext } from '../../utils/testing/helpers.spec';
 import { ClrPopoverService } from '../common';
 import { ClrTooltipTrigger } from './tooltip-trigger';
+import { ClrPopoverPosition } from '../common/utils/popover-positions';
 
 @Component({
   template: `
@@ -42,15 +43,18 @@ class IdTest {
 
 @Component({
   template: `
-    <clr-tooltip>
-      <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
-      <clr-tooltip-content [clrPosition]="position" [clrSize]="size">Hello world</clr-tooltip-content>
-    </clr-tooltip>
+    <div style="padding: 150px">
+      For top spacing
+      <clr-tooltip>
+        <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
+        <clr-tooltip-content [clrPosition]="position" [clrSize]="size">Hello world</clr-tooltip-content>
+      </clr-tooltip>
+    </div>
   `,
   standalone: false,
 })
 class SimpleTest {
-  position: string;
+  position: ClrPopoverPosition;
   size: string;
 }
 
@@ -90,7 +94,7 @@ export default function (): void {
         it('sets the correct default classes', function (this: TooltipContext<DefaultTest>) {
           expect(tooltipContent.classList).toContain('tooltip-content');
           expect(tooltipContent.classList).toContain('tooltip-sm');
-          expect(tooltipContent.classList).toContain('tooltip-right');
+          expect(tooltipContent.parentElement.classList).toContain('right');
         });
       });
 
@@ -168,20 +172,21 @@ export default function (): void {
         });
 
         it('accepts a [clrPosition] input', function () {
+          const tooltipContainer = tooltipContent.parentElement;
           // Default is right
-          expect(tooltipContent.classList).toContain('tooltip-right');
+          expect(tooltipContainer.classList).toContain(ClrPopoverPosition.RIGHT);
 
-          fixture.componentInstance.position = 'bottom-right';
+          fixture.componentInstance.position = ClrPopoverPosition.BOTTOM_RIGHT;
           fixture.detectChanges();
 
-          expect(tooltipContent.classList).not.toContain('tooltip-right');
-          expect(tooltipContent.classList).toContain('tooltip-bottom-right');
+          expect(tooltipContainer.classList).not.toContain(ClrPopoverPosition.RIGHT);
+          expect(tooltipContainer.classList).toContain(ClrPopoverPosition.BOTTOM_RIGHT);
 
-          fixture.componentInstance.position = 'top-left';
+          fixture.componentInstance.position = ClrPopoverPosition.TOP_LEFT;
           fixture.detectChanges();
 
-          expect(tooltipContent.classList).not.toContain('tooltip-bottom-right');
-          expect(tooltipContent.classList).toContain('tooltip-top-left');
+          expect(tooltipContainer.classList).not.toContain(ClrPopoverPosition.BOTTOM_RIGHT);
+          expect(tooltipContainer.classList).toContain(ClrPopoverPosition.TOP_LEFT);
         });
 
         it('accepts a [clrSize] input', function () {

@@ -104,11 +104,11 @@ export default function (): void {
       });
 
       it('binds to [clrPopoverContentAt] position', function (this: Context) {
-        expect(this.testComponent.popoverPosition).toEqual(this.popoverService.position);
+        expect(this.testComponent.popoverPosition).toEqual(this.testComponent.content.contentAt as ClrPopoverPosition);
         const newPosition = ClrPopoverPosition.TOP_RIGHT;
         this.testComponent.popoverPosition = newPosition;
         this.fixture.detectChanges();
-        expect(this.popoverService.position).toEqual(newPosition);
+        expect(this.testComponent.content.contentAt as ClrPopoverPosition).toEqual(newPosition);
       });
 
       it('binds to [clrPopoverContentOutsideClickToClose]', function (this: Context) {

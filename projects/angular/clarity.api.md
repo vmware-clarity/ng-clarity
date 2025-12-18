@@ -1223,6 +1223,8 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "ButtonGroupFocusHandler" needs to be exported by the entry point index.d.ts
     constructor(buttonGroupNewService: ButtonInGroupService, popoverService: ClrPopoverService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
     // (undocumented)
+    protected availablePositions: _angular_cdk_overlay.ConnectedPosition[];
+    // (undocumented)
     buttonGroupNewService: ButtonInGroupService;
     // (undocumented)
     buttons: QueryList<ClrButton>;
@@ -1259,6 +1261,10 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     openMenu(event: Event, initialFocus: InitialFocus): void;
     // (undocumented)
     popoverId: string;
+    // Warning: (ae-forgotten-export) The symbol "ClrPopoverType" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    protected popoverType: ClrPopoverType;
     rearrangeButton(button: ClrButton): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "clrToggleButtonAriaLabel": { "alias": "clrToggleButtonAriaLabel"; "required": false; }; "menuPosition": { "alias": "clrMenuPosition"; "required": false; }; }, {}, ["buttons"], never, false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
@@ -1407,6 +1413,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     get ariaOwns(): string;
     // (undocumented)
+    protected availablePositions: _angular_cdk_overlay.ConnectedPosition[];
+    // (undocumented)
     clrInputChange: EventEmitter<string>;
     // (undocumented)
     clrOpenChange: rxjs.Observable<boolean>;
@@ -1473,6 +1481,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     placeholder: string;
     // (undocumented)
     popoverPosition: ClrPopoverPosition;
+    // (undocumented)
+    protected popoverType: ClrPopoverType;
     // (undocumented)
     registerOnChange(onChange: any): void;
     // (undocumented)
@@ -1955,6 +1965,8 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     // (undocumented)
     popoverId: string;
     // (undocumented)
+    protected positions: _angular_cdk_overlay.ConnectedPosition[];
+    // (undocumented)
     smartPosition: ClrPopoverPosition;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "buttonLabel": { "alias": "clrDgActionOverflowButtonLabel"; "required": false; }; "open": { "alias": "clrDgActionOverflowOpen"; "required": false; }; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
@@ -2093,8 +2105,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     popoverId: string;
     // (undocumented)
     popoverPosition: ClrPopoverPosition;
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverType" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     popoverType: ClrPopoverType;
     // (undocumented)
@@ -4147,10 +4157,11 @@ export class ClrPopoverAnchor {
 
 // @public (undocumented)
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
-    constructor(element: ElementRef, container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, overlay: Overlay, popoverService: ClrPopoverService, zone: NgZone);
+    constructor(element: ElementRef, container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, overlay: Overlay, popoverService: ClrPopoverService, zone: NgZone, platformId: any);
     // (undocumented)
     set availablePositions(positions: ConnectedPosition[]);
     // (undocumented)
+    get contentAt(): string | ClrPopoverPosition | ConnectedPosition;
     set contentAt(position: string | ClrPopoverPosition | ConnectedPosition);
     // (undocumented)
     set contentType(type: ClrPopoverType);
@@ -4167,11 +4178,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     get scrollToClose(): boolean;
     set scrollToClose(scrollToClose: boolean);
     // (undocumented)
-    setPreferredPosition(): void;
-    // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, null, { optional: true; }, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, null, { optional: true; }, null, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -4197,8 +4206,6 @@ export class ClrPopoverService {
     // (undocumented)
     anchorElementRef: ElementRef<HTMLElement>;
     // (undocumented)
-    availablePositions: ConnectedPosition[];
-    // (undocumented)
     closeButtonRef: ElementRef;
     // (undocumented)
     focusAnchor(): void;
@@ -4221,14 +4228,11 @@ export class ClrPopoverService {
     // (undocumented)
     panelClass: string[];
     // (undocumented)
-    popoverType: ClrPopoverType;
-    // (undocumented)
     get popoverVisible(): Observable<boolean>;
     // (undocumented)
     popoverVisibleEmit(visible: boolean): void;
     // (undocumented)
-    get position(): ClrPopoverPosition;
-    set position(position: ClrPopoverPosition);
+    positionChange(position: ClrPopoverPosition): void;
     // (undocumented)
     resetPositions(): void;
     // (undocumented)
@@ -4578,7 +4582,7 @@ export class ClrSignpost {
 export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "SignpostIdService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "SignpostFocusManager" needs to be exported by the entry point index.d.ts
-    constructor(parentHost: ElementRef<HTMLElement>, element: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: any, popoverService: ClrPopoverService);
+    constructor(parentHost: ElementRef<HTMLElement>, element: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: any, popoverService: ClrPopoverService, popoverContent: ClrPopoverContent);
     close(): void;
     // (undocumented)
     closeButton: ElementRef<HTMLButtonElement>;
@@ -4601,7 +4605,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "signpostCloseAriaLabel": { "alias": "clrSignpostCloseAriaLabel"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; }, {}, never, ["clr-signpost-title", "*"], false, [{ directive: typeof ClrPopoverContent; inputs: {}; outputs: {}; }]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [{ optional: true; }, null, null, null, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [{ optional: true; }, null, null, null, null, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -5021,7 +5025,7 @@ export class ClrTabLink {
     get inOverflow(): boolean;
     set inOverflow(inOverflow: boolean);
     // (undocumented)
-    get tabindex(): -1 | 0;
+    get tabindex(): 0 | -1;
     // (undocumented)
     tabLinkId: string;
     // (undocumented)

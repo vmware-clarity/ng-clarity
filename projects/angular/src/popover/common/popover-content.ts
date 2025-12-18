@@ -8,6 +8,7 @@
 import { hasModifierKey } from '@angular/cdk/keycodes';
 import { ConnectedPosition, Overlay, OverlayConfig, OverlayContainer, OverlayRef } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
+import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   Directive,
@@ -18,6 +19,7 @@ import {
   NgZone,
   OnDestroy,
   Optional,
+  PLATFORM_ID,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
@@ -38,16 +40,20 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private view: EmbeddedViewRef<void>;
   private elementRef: ElementRef;
   private overlayRef: OverlayRef;
+  private popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
+  private _availablePositions: ConnectedPosition[] = [];
+  private _position = ClrPopoverPosition.BOTTOM_LEFT;
 
   private subscriptions: Subscription[] = [];
   private openCloseSubscription: Subscription;
   private domPortal: DomPortal;
   private preferredPositionIsSet = false;
-  private preferredPosition: ConnectedPosition = {
+  private _preferredPosition: ConnectedPosition = {
     originX: 'start',
     originY: 'top',
     overlayX: 'end',
     overlayY: 'top',
+    panelClass: ClrPopoverPosition.LEFT_TOP,
   };
   private intersectionObserver: IntersectionObserver;
 
@@ -59,7 +65,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     private overlay: Overlay,
     @Inject(ClrPopoverService) private popoverService: ClrPopoverService,
-    private zone: NgZone
+    private zone: NgZone,
+    @Inject(PLATFORM_ID) private platformId: any
   ) {
     popoverService.panelClass.push('clr-popover-content');
 
@@ -76,6 +83,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   @Input('clrPopoverContentAt')
+  get contentAt(): string | ClrPopoverPosition | ConnectedPosition {
+    return this.preferredPositionIsSet ? this._preferredPosition : this._position;
+  }
   set contentAt(position: string | ClrPopoverPosition | ConnectedPosition) {
     if (typeof position === 'string') {
       if (!position || Object.values(ClrPopoverPosition).indexOf(position as ClrPopoverPosition) === -1) {
@@ -83,21 +93,22 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       }
 
       // set the popover values based on menu position
-      this.popoverService.position = position as ClrPopoverPosition;
+      this._position = position as ClrPopoverPosition;
+      this.popoverService.positionChange(this._position);
     } else {
       this.preferredPositionIsSet = true;
-      this.preferredPosition = position;
+      this._preferredPosition = position;
     }
   }
 
   @Input('clrPopoverContentAvailablePositions')
   set availablePositions(positions: ConnectedPosition[]) {
-    this.popoverService.availablePositions = positions;
+    this._availablePositions = positions;
   }
 
   @Input('clrPopoverContentType')
   set contentType(type: ClrPopoverType) {
-    this.popoverService.popoverType = type;
+    this.popoverType = type;
   }
 
   @Input('clrPopoverContentOutsideClickToClose')
@@ -135,13 +146,13 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.openCloseSubscription?.unsubscribe();
   }
 
-  setPreferredPosition() {
+  private getPreferredPosition(): ConnectedPosition {
     if (this.preferredPositionIsSet) {
-      return;
+      return this._preferredPosition;
     }
 
-    // Set default position to "bottom-left", if position is not available in the map
-    this.preferredPosition = mapPopoverKeyToPosition(this.popoverService.position, this.popoverService.popoverType);
+    // Default position is "bottom-left"
+    return mapPopoverKeyToPosition(this._position, this.popoverType);
   }
 
   private _createOverlayRef() {
@@ -201,14 +212,12 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private getPositionStrategy() {
-    this.setPreferredPosition(); //Preferred position defined by consumer
-
     return this.overlay
       .position()
       .flexibleConnectedTo(this.popoverService.anchorElementRef)
       .setOrigin(this.popoverService.anchorElementRef)
       .withPush(true)
-      .withPositions([this.preferredPosition, ...this.popoverService.availablePositions])
+      .withPositions([this.getPreferredPosition(), ...this._availablePositions])
       .withFlexibleDimensions(true);
   }
 
@@ -221,7 +230,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.popoverService.open = false;
 
     const shouldFocusTrigger =
-      this.popoverService.popoverType !== ClrPopoverType.TOOLTIP &&
+      this.popoverType !== ClrPopoverType.TOOLTIP &&
       (document.activeElement === document.body ||
         document.activeElement === this.popoverService.anchorElementRef?.nativeElement);
 
@@ -233,9 +242,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private showOverlay() {
     // Get Scrollable Parents
     this.listenToMouseEvents();
-
-    //Preferred position defined by consumer
-    this.setPreferredPosition();
 
     if (!this.overlayRef) {
       this._createOverlayRef();
@@ -344,6 +350,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   //Align the popover on scrolling
   private listenToMouseEvents() {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     const scrollableParents = this.getScrollableParents(this.popoverService.anchorElementRef?.nativeElement);
 
     this.zone.runOutsideAngular(() => {

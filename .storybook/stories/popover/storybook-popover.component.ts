@@ -40,7 +40,6 @@ import {
     >
       @if (showCloseButton) {
         <button class="btn btn-sm btn-link-neutral btn-icon" clrPopoverCloseButton>
-          The close button
           <cds-icon shape="times"></cds-icon>
         </button>
         <br />

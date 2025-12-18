@@ -11,7 +11,11 @@ import { Subscription } from 'rxjs';
 
 import { RowActionService } from './providers/row-action-service';
 import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
-import { ClrPopoverPosition } from '../../popover/common/utils/popover-positions';
+import {
+  ClrPopoverPosition,
+  ClrPopoverType,
+  mapPopoverKeyToPosition,
+} from '../../popover/common/utils/popover-positions';
 import { ClrCommonStringsService } from '../../utils';
 import { ClrKeyFocus } from '../../utils/focus/key-focus';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
@@ -46,7 +50,13 @@ let clrDgActionId = 0;
       clrKeyFocus
       cdkTrapFocus
       (click)="closeOverflowContent($event)"
-      *clrPopoverContent="open; at: smartPosition; outsideClickToClose: true; scrollToClose: true"
+      *clrPopoverContent="
+        open;
+        at: smartPosition;
+        availablePositions: positions;
+        outsideClickToClose: true;
+        scrollToClose: true
+      "
     >
       <ng-content></ng-content>
     </div>
@@ -61,6 +71,10 @@ export class ClrDatagridActionOverflow implements OnDestroy {
   popoverId = uniqueIdFactory();
 
   smartPosition = ClrPopoverPosition.RIGHT_MIDDLE;
+  protected positions = [
+    mapPopoverKeyToPosition(ClrPopoverPosition.RIGHT_BOTTOM, ClrPopoverType.DROPDOWN),
+    mapPopoverKeyToPosition(ClrPopoverPosition.RIGHT_TOP, ClrPopoverType.DROPDOWN),
+  ];
 
   @ViewChild(ClrKeyFocus) private readonly keyFocus: ClrKeyFocus;
 
