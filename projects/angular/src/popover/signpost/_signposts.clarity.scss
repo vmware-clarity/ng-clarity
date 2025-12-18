@@ -394,26 +394,21 @@
   }
 
   /***
-    The signpost is above the icon top-{HORIZONTAL_POSITION}
+    TODO: Create a general mix-in for the popover-pointer that can
+    1. Accomadate all 12 positions
+    2. Unification for the nomenclature between components
+        (if possible, I know they all use slightly different terms)
+    3. Be used across Tooltips, Signposts (Do we also want it for Dropdowns)
+    4. What's up with the namespacing here? Usually we use `clr-*` to denote
+        Clarity components but we aren't doing that in signposts. We should
+        consider it.
   */
 
-  /***
-          TODO: Create a general mix-in for the popover-pointer that can
-          1. Accomadate all 12 positions
-          2. Unification for the nomenclature between components
-              (if possible, I know they all use slightly different terms)
-          3. Be used across Tooltips, Signposts (Do we also want it for Dropdowns)
-          4. What's up with the namespacing here? Usually we use `clr-*` to denote
-              Clarity components but we aren't doing that in signposts. We should
-              consider it.
-       */
+  /* NOTE:
+    signposts need precise pixels for some measurements due to the design
+    Hence the 1px and 2px values you'll see.
 
-  /* NOTE: signposts need precise pixels for some measurements due to the design
-          Hence the 1px and 2px values you'll see below.
-
-          I've tested the calcs below while resizing the base font-size for the rem
-          measurements and they appear to hold up well.
-        */
-
-  // End right-*
+    I've tested the calcs while resizing the base font-size for the rem
+    measurements and they appear to hold up well.
+  */
 }
