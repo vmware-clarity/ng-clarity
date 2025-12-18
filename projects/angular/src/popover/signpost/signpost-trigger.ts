@@ -5,15 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { hasModifierKey } from '@angular/cdk/keycodes';
 import { isPlatformBrowser } from '@angular/common';
 import { Directive, DOCUMENT, ElementRef, HostListener, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
-import { Keys } from '../../utils/enums/keys.enum';
-import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { ClrPopoverService } from '../common/providers/popover.service';
 
 @Directive({
@@ -97,11 +94,5 @@ export class ClrSignpostTrigger implements OnDestroy {
     if (!this.isOpen && this.document.activeElement === this.document.body) {
       this.signpostFocusManager.focusTrigger();
     }
-  }
-
-  private isShiftTabEvent(event: KeyboardEvent): boolean {
-    return (
-      event && event.key && normalizeKey(event.key) === Keys.Tab && hasModifierKey(event, 'shiftKey') && event.shiftKey
-    );
   }
 }
