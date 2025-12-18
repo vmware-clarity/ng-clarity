@@ -355,9 +355,11 @@ export class ClrCombobox<T>
         }
         this.updateControlValue();
 
-        setTimeout(() => {
-          this.popoverService?.updatePosition();
-        });
+        if (this.multiSelect) {
+          setTimeout(() => {
+            this.popoverService?.updatePosition();
+          });
+        }
       })
     );
 
