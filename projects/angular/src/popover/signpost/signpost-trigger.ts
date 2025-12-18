@@ -88,29 +88,6 @@ export class ClrSignpostTrigger implements OnDestroy {
     this.popoverService.toggleWithEvent(event);
   }
 
-  /**********
-   *
-   * @description
-   * focus handler for the ClrSignpost trigger button used to focus ClrSignpostContent when Shift+Tab.
-   */
-  @HostListener('focus', ['$event'])
-  onSignpostTriggerFocus(event: FocusEvent): void {
-    // Step 1. Enter Signpost from outside.
-    // Part 2. Use remembered Shift+Tab event to focus the content if visible.
-    if (
-      this.isOpen &&
-      this.isShiftTabEvent(this.popoverService.lastKeydownEvent) &&
-      event.relatedTarget === this.popoverService.lastKeydownEvent.target
-    ) {
-      event.preventDefault();
-      this.signpostFocusManager.contentEl.setAttribute('tabindex', '0');
-      this.signpostFocusManager.focusContent();
-
-      // Delete the event after use for not to confuse future focuses.
-      this.popoverService.lastKeydownEvent = null;
-    }
-  }
-
   private focusOnClose() {
     if (!isPlatformBrowser(this.platformId)) {
       return;

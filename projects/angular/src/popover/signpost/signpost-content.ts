@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { hasModifierKey } from '@angular/cdk/keycodes';
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
@@ -13,6 +12,7 @@ import {
   DOCUMENT,
   ElementRef,
   HostBinding,
+  HostListener,
   Inject,
   Input,
   OnDestroy,
@@ -22,8 +22,6 @@ import {
 } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils';
-import { Keys } from '../../utils/enums/keys.enum';
-import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverContent, ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
@@ -45,7 +43,6 @@ import {
         <ng-content select="clr-signpost-title"></ng-content>
         <button
           #closeButton
-          tabindex="-1"
           type="button"
           [attr.aria-label]="signpostCloseAriaLabel || commonStrings.keys.signpostClose"
           class="signpost-action close"
@@ -55,23 +52,25 @@ import {
           <cds-icon shape="window-close" [attr.title]="commonStrings.keys.close"></cds-icon>
         </button>
       </div>
-      <div #contentBody class="signpost-content-body" tabindex="-1">
+      <div class="signpost-content-body" tabindex="0">
         <ng-content></ng-content>
       </div>
     </div>
   `,
-  host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
+  host: {
+    '[class.signpost-content]': 'true',
+    '[id]': 'signpostContentId',
+    role: 'dialog',
+  },
   standalone: false,
   hostDirectives: [ClrPopoverContent],
 })
 export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;
   @ViewChild('closeButton', { read: ElementRef }) closeButton: ElementRef<HTMLButtonElement>;
-  @ViewChild('contentBody', { read: ElementRef }) contentBody: ElementRef<HTMLDivElement>;
 
   signpostContentId = uniqueIdFactory();
 
-  private document: Document;
   private _position = ClrPopoverPosition.RIGHT_MIDDLE;
 
   constructor(
@@ -83,7 +82,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
     @Inject(PLATFORM_ID) private platformId: any,
-    @Inject(DOCUMENT) document: any,
+    @Inject(DOCUMENT) private document: Document,
     private popoverService: ClrPopoverService,
     private popoverContent: ClrPopoverContent
   ) {
@@ -93,7 +92,6 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     // Defaults
     signpostIdService.setId(this.signpostContentId);
 
-    this.document = document;
     popoverService.panelClass.push('clr-signpost-container');
     popoverContent.contentType = ClrPopoverType.SIGNPOST;
 
@@ -160,65 +158,33 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.popoverService.closeButtonRef = this.closeButton;
-    this.signpostFocusManager.contentEl = this.contentBody.nativeElement;
+    this.closeButton.nativeElement.focus();
+  }
 
-    if (!this.popoverService.overlayRef) {
-      return;
-    }
+  @HostListener('keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Tab') {
+      const focusableElements = this.getFocusableElements(this.element.nativeElement);
 
-    this.popoverService.overlayRef.keydownEvents().subscribe(event => {
-      if (event && event.key && normalizeKey(event.key) === Keys.Tab) {
-        console.log(event.target);
-        // GO back with Tab+Shift
-        if (hasModifierKey(event) && event.shiftKey) {
-          // Step 3. Move focus from close button to trigger.
-          if (event.target === this.closeButton.nativeElement) {
-            event.preventDefault();
-            this.signpostFocusManager.contentEl.setAttribute('tabindex', '-1');
-            this.popoverService.focusAnchor();
-          }
+      // take the first element when SHIFT+TAB or last when only TAB
+      const focusableElementIndex = event.shiftKey ? 0 : focusableElements.length - 1;
 
-          // Step 2. Move focus from content to close button. Default behavior (NO changes).
-          else if (event.target === this.contentBody.nativeElement) {
-            event.preventDefault();
-            this.popoverService.focusCloseButton();
-          }
-          // Step 1. Enter Signpost from outside.
-          // Part 1 Remember the event. Part 2 is in signpost trigger.
-          else {
-            // prepare signpost content to be focusable for Part 2.
-            this.signpostFocusManager.contentEl.setAttribute('tabindex', '0');
-            this.popoverService.lastKeydownEvent = event;
-          }
-
-          return;
-        }
-
-        // GO forward with Tab
-        // Step 1. Enter Signpost from trigger element. Focusing the close button.
-        if (event.target === this.popoverService.anchorElementRef.nativeElement) {
-          event.preventDefault();
-
-          // prepare signpost content to be focusable for Step 2.
-          this.signpostFocusManager.contentEl.setAttribute('tabindex', '0');
-
-          this.popoverService.focusCloseButton();
-        }
-
-        // Step 2. Move focus from close button to content. Default behavior (NO changes).
-
-        // Step 3. Move focus from content to trigger.
-        else if (event.target === this.contentBody.nativeElement) {
-          this.signpostFocusManager.contentEl.setAttribute('tabindex', '-1');
-          this.signpostFocusManager.focusTrigger();
-        }
+      if (document.activeElement === focusableElements[focusableElementIndex]) {
+        event.preventDefault();
+        this.popoverService.open = false;
       }
-    });
+    }
   }
 
   ngOnDestroy() {
     if (isPlatformBrowser(this.platformId) && this.element.nativeElement.contains(this.document.activeElement)) {
       this.signpostFocusManager.focusTrigger();
     }
+  }
+
+  private getFocusableElements(element: HTMLElement): HTMLElement[] {
+    return Array.from(
+      element.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+    ) as HTMLElement[];
   }
 }

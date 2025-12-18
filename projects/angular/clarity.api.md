@@ -4216,8 +4216,6 @@ export class ClrPopoverService {
     // (undocumented)
     getPositionChange(): Observable<string>;
     // (undocumented)
-    lastKeydownEvent: KeyboardEvent;
-    // (undocumented)
     get open(): boolean;
     set open(value: boolean);
     // (undocumented)
@@ -4582,20 +4580,20 @@ export class ClrSignpost {
 export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "SignpostIdService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "SignpostFocusManager" needs to be exported by the entry point index.d.ts
-    constructor(parentHost: ElementRef<HTMLElement>, element: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: any, popoverService: ClrPopoverService, popoverContent: ClrPopoverContent);
+    constructor(parentHost: ElementRef<HTMLElement>, element: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: Document, popoverService: ClrPopoverService, popoverContent: ClrPopoverContent);
     close(): void;
     // (undocumented)
     closeButton: ElementRef<HTMLButtonElement>;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    contentBody: ElementRef<HTMLDivElement>;
-    // (undocumented)
     get isOffScreen(): boolean;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
+    // (undocumented)
+    onKeyDown(event: KeyboardEvent): void;
     get position(): string | ClrPopoverPosition;
     set position(position: string | ClrPopoverPosition);
     // (undocumented)
@@ -4641,7 +4639,6 @@ export class ClrSignpostTrigger implements OnDestroy {
     // (undocumented)
     ngOnInit(): void;
     onSignpostTriggerClick(event: Event): void;
-    onSignpostTriggerFocus(event: FocusEvent): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSignpostTrigger, "[clrSignpostTrigger]", never, {}, {}, never, never, false, never>;
     // (undocumented)
