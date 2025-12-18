@@ -1965,6 +1965,8 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     // (undocumented)
     popoverId: string;
     // (undocumented)
+    protected positions: _angular_cdk_overlay.ConnectedPosition[];
+    // (undocumented)
     smartPosition: ClrPopoverPosition;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "buttonLabel": { "alias": "clrDgActionOverflowButtonLabel"; "required": false; }; "open": { "alias": "clrDgActionOverflowOpen"; "required": false; }; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;

@@ -68,7 +68,7 @@ export const SIGNPOST_POSITIONS: ClrPopoverPosition[] = [
   ClrPopoverPosition.LEFT_TOP,
 ];
 
-function getPositionsArray(type: ClrPopoverType) {
+export function getPositionsArray(type: ClrPopoverType) {
   switch (type) {
     case ClrPopoverType.TOOLTIP:
       return TOOLTIP_POSITIONS;

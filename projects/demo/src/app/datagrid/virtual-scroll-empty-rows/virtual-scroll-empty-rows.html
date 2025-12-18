@@ -63,7 +63,21 @@
   [ngClass]="{ 'datagrid-overflow-ellipsis': overflowEllipsis }"
 >
   <clr-dg-column [clrDgField]="'id'"><ng-container *clrDgHideableColumn>User ID</ng-container></clr-dg-column>
-  <clr-dg-column [clrDgField]="'name'"><ng-container *clrDgHideableColumn>Name</ng-container></clr-dg-column>
+  <clr-dg-column [clrDgField]="'name'">
+    <ng-container *clrDgHideableColumn>
+      Name
+      <clr-tooltip>
+        <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
+        <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+          Proin rhoncus lacus et tempor di gnissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
+          sed arcu. Vivamus in dui lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in
+          ante placerat mattis id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque
+          aliquet suscipit eget, pellentesque sed arcu. Vivamus in dui lectus.
+        </clr-tooltip-content>
+      </clr-tooltip>
+    </ng-container>
+  </clr-dg-column>
   <clr-dg-column [clrDgField]="'creation'"
     ><ng-container *clrDgHideableColumn>Creation date</ng-container></clr-dg-column
   >
