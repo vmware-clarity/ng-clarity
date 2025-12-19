@@ -34,7 +34,7 @@ export enum ClrPopoverPosition {
 }
 
 export const TOOLTIP_POSITIONS: ClrPopoverPosition[] = [
-  ClrPopoverPosition.RIGHT,
+  ClrPopoverPosition.RIGHT, // default. must be at index 0
   ClrPopoverPosition.LEFT,
   ClrPopoverPosition.BOTTOM_RIGHT,
   ClrPopoverPosition.BOTTOM_LEFT,
@@ -43,7 +43,7 @@ export const TOOLTIP_POSITIONS: ClrPopoverPosition[] = [
 ];
 
 export const DROPDOWN_POSITIONS: ClrPopoverPosition[] = [
-  ClrPopoverPosition.BOTTOM_LEFT,
+  ClrPopoverPosition.BOTTOM_LEFT, // default. must be at index 0
   ClrPopoverPosition.BOTTOM_RIGHT,
   ClrPopoverPosition.TOP_LEFT,
   ClrPopoverPosition.TOP_RIGHT,
