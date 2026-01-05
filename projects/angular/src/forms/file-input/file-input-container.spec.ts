@@ -23,7 +23,7 @@ interface TestComponent {
 @Component({
   template: `
     <clr-file-input-container>
-      <input type="file" name="model" [(ngModel)]="model" clrFileInput required required />
+      <input type="file" name="model" [(ngModel)]="model" clrFileInput required />
       <clr-control-helper>Helper text</clr-control-helper>
       <clr-control-success>Success message</clr-control-success>
       <clr-control-error>Error message</clr-control-error>
