@@ -146,7 +146,7 @@ export enum ComparisonOperator {
 
 // @public
 export class CompositeFiltersComponent implements OnInit {
-    constructor(filterStrings: DatagridFiltersStrings);
+    constructor(filterStrings: DatagridFiltersStrings, cdr: ChangeDetectorRef);
     activeFilters(): FilterablePropertyDefinition[];
     // (undocumented)
     clearAllFilters(): void;
