@@ -92,7 +92,7 @@
     "eslint-plugin-json": "3.1.0",
     "eslint-plugin-license-header": "0.4.0",
     "eslint-plugin-ng-clarity-eslint-rules": "file:./eslint-rules",
-    "eslint-plugin-storybook": "0.8.0",
+    "eslint-plugin-storybook": "0.12.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "glob": "9.3.1",
     "husky": "7.0.4",
