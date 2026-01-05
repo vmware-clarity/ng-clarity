@@ -76,7 +76,7 @@
     "@storybook/addon-a11y": "8.0.8",
     "@storybook/addon-docs": "8.0.8",
     "@storybook/addon-essentials": "8.0.8",
-    "@storybook/angular": "8.0.8",
+    "@storybook/angular": "8.6.15",
     "@storybook/blocks": "8.0.8",
     "@types/jasmine": "3.6.11",
     "@types/node-static": "0.7.7",
