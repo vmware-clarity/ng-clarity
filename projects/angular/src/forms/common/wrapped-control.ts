@@ -150,9 +150,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
 
   @HostListener('blur')
   triggerValidation() {
-    // if (this.ifControlStateService) {
-    //   this.ifControlStateService.triggerStatusChange();
-    // }
+    this.markAsTouched();
   }
 
   // @TODO This method has a try/catch due to an unknown issue that came when building the clrToggle feature

@@ -87,7 +87,6 @@ export class ClrCombobox<T>
   @ViewChild('trigger') trigger: ElementRef<HTMLButtonElement>;
   @ContentChild(ClrOptionSelected) optionSelected: ClrOptionSelected<T>;
 
-  invalid = false;
   focused = false;
   focusedPill: any;
 
@@ -394,14 +393,6 @@ export class ClrCombobox<T>
         }
       })
     );
-
-    // if (this.controlStateService) {
-    //   this.subscriptions.push(
-    //     this.controlStateService.statusChanges.subscribe(invalid => {
-    //       this.invalid = this.control?.control.touched && invalid === CONTROL_STATE.INVALID;
-    //     })
-    //   );
-    // }
   }
 
   private updateInputValue(model: ComboboxModel<T>) {

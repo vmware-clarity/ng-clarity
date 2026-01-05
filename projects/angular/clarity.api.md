@@ -1449,8 +1449,6 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     inputId(): string;
     // (undocumented)
-    invalid: boolean;
-    // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
     get multiSelect(): boolean | string;
