@@ -8,7 +8,7 @@
 import { Directive, EmbeddedViewRef, Input, Optional, TemplateRef, ViewContainerRef } from '@angular/core';
 
 import { AbstractIfState } from './abstract-if-state';
-import { CONTROL_STATE } from './if-control-state.service';
+import { CONTROL_STATE } from './control-state.enum';
 import { NgControlService } from '../providers/ng-control.service';
 
 @Directive({

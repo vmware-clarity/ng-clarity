@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 
 import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
-import { CONTROL_STATE } from './if-control-state/if-control-state.service';
+import { CONTROL_STATE } from './if-control-state/control-state.enum';
 import { ClrControlLabel } from './label';
 import { ControlClassService } from './providers/control-class.service';
 import { LayoutService } from './providers/layout.service';

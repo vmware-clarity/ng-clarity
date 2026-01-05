@@ -28,7 +28,6 @@ import { ClrPopoverPositionService } from '../../popover/common/providers/popove
 import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { delay } from '../../utils/testing/helpers.spec';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
@@ -45,14 +44,12 @@ export default function () {
     let focusService: FocusService;
     let controlClassService: ControlClassService;
     let datepickerFocusService: DatepickerFocusService;
-    let ifControlStateService: IfControlStateService;
 
     const DATEPICKER_PROVIDERS: any[] = [
       ControlClassService,
       NgControlService,
       NgControl,
       LayoutService,
-      IfControlStateService,
       ClrPopoverToggleService,
       DatepickerFocusService,
       DateNavigationService,
@@ -79,12 +76,10 @@ export default function () {
         dateNavigationService = context.fixture.debugElement
           .query(By.directive(ClrDateContainer))
           .injector.get(DateNavigationService);
-        ifControlStateService = context.fixture.debugElement.injector.get(IfControlStateService);
         focusService = context.fixture.debugElement.injector.get(FocusService);
         controlClassService = context.fixture.debugElement.injector.get(ControlClassService);
         datepickerFocusService = context.fixture.debugElement.injector.get(DatepickerFocusService);
 
-        spyOn(ifControlStateService, 'triggerStatusChange');
         spyOn(datepickerFocusService, 'focusInput');
       });
 
@@ -114,7 +109,6 @@ export default function () {
           context.clarityElement.dispatchEvent(new Event('input'));
           context.clarityElement.dispatchEvent(new Event('blur'));
           context.detectChanges();
-          // expect(ifControlStateService.triggerStatusChange).toHaveBeenCalled();
           expect(focusState).toEqual(false);
           sub.unsubscribe();
         });

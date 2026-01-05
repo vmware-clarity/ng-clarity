@@ -11,7 +11,7 @@ import { By } from '@angular/platform-browser';
 
 import { ClrIcon } from '../../icon';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { CONTROL_STATE } from '../common/if-control-state/if-control-state.service';
+import { CONTROL_STATE } from '../common/if-control-state/control-state.enum';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { ClrFormLayout, LayoutService } from '../common/providers/layout.service';
 import { MarkControlService } from '../common/providers/mark-control.service';
@@ -114,7 +114,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       expect(layoutService.layout).toEqual(ClrFormLayout.HORIZONTAL);
     });
 
-    it('injects the IfControlStateService and subscribes', () => {
+    it('injects the container subscribes', () => {
       expect(container.subscriptions[0]).toBeTruthy();
     });
 

@@ -7,7 +7,7 @@
 
 import { ControlClassService } from './control-class.service';
 import { LayoutService } from './layout.service';
-import { CONTROL_STATE } from '../if-control-state/if-control-state.service';
+import { CONTROL_STATE } from '../if-control-state/control-state.enum';
 
 export default function (): void {
   describe('ControlClassService', function () {

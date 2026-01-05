@@ -11,7 +11,6 @@ import { By } from '@angular/platform-browser';
 
 import { ClrIcon } from '../../icon';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { LayoutService } from '../common/providers/layout.service';
@@ -45,13 +44,7 @@ export function ReactiveSpec(testContainer, testControl, testComponent, controlC
 
 function fullTest(description, testContainer, testControl, testComponent, controlClass) {
   describe(description, () => {
-    let control,
-      fixture,
-      ifControlStateService,
-      controlClassService,
-      markControlService,
-      controlIdService,
-      datalistIdService;
+    let control, fixture, controlClassService, markControlService, controlIdService, datalistIdService;
 
     beforeEach(() => {
       spyOn(WrappedFormControl.prototype, 'ngOnInit').and.callThrough();
@@ -60,7 +53,6 @@ function fullTest(description, testContainer, testControl, testComponent, contro
         imports: [FormsModule, ClrIcon, ClrCommonFormsModule, ReactiveFormsModule],
         declarations: [testContainer, testControl, testComponent],
         providers: [
-          IfControlStateService,
           NgControlService,
           ControlIdService,
           ControlClassService,
@@ -72,11 +64,9 @@ function fullTest(description, testContainer, testControl, testComponent, contro
       fixture = TestBed.createComponent(testComponent);
       control = fixture.debugElement.query(By.directive(testControl));
       controlClassService = control.injector.get(ControlClassService);
-      ifControlStateService = control.injector.get(IfControlStateService);
       markControlService = control.injector.get(MarkControlService);
       controlIdService = control.injector.get(ControlIdService);
       datalistIdService = control.injector.get(DatalistIdService);
-      spyOn(ifControlStateService, 'triggerStatusChange');
       fixture.detectChanges();
     });
 
@@ -92,9 +82,9 @@ function fullTest(description, testContainer, testControl, testComponent, contro
       expect(control.nativeElement.classList.contains(controlClass));
     });
 
-    it('should have the IfControlStateService', () => {
-      expect(ifControlStateService).toBeTruthy();
-    });
+    // it('should have the IfControlStateService', () => {
+    //   expect(ifControlStateService).toBeTruthy();
+    // });
 
     it('should have the MarkControlService', () => {
       expect(markControlService.markAsTouched).toBeTruthy();

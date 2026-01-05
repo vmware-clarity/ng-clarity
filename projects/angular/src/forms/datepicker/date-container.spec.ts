@@ -26,7 +26,7 @@ import { ClrPopoverToggleService } from '../../popover/common/providers/popover-
 import { PopoverPosition } from '../../popover/common/utils/popover-positions';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { CONTROL_STATE } from '../common/if-control-state/control-state.enum';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
@@ -39,7 +39,6 @@ const DATEPICKER_PROVIDERS: any[] = [
   ViewManagerService,
   LocaleHelperService,
   ControlClassService,
-  IfControlStateService,
   LayoutService,
   NgControlService,
   DateIOService,
