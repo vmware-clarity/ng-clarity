@@ -117,7 +117,7 @@
     "rxjs": "7.8.1",
     "semantic-release": "19.0.3",
     "stylelint": "14.6.1",
-    "stylelint-config-prettier": "9.0.3",
+    "stylelint-config-prettier": "9.0.5",
     "stylelint-config-recommended-scss": "5.0.2",
     "stylelint-plugin-license-header": "1.0.3",
     "ts-node": "10.9.1",
