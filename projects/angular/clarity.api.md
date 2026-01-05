@@ -4122,8 +4122,6 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     // (undocumented)
     hidePasswordText(label: string): string;
     // (undocumented)
-    protected readonly isNaN: typeof isNaN;
-    // (undocumented)
     passStrength: number;
     // (undocumented)
     get passStrengthColor(): string;
