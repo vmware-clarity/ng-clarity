@@ -8,6 +8,14 @@
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { ClientSideDatagridDemoComponent } from './advanced/client-side/client-side-grid-demo.component';
+import { CustomColumnDefinitionsDemoComponent } from './advanced/custom-column-definitions/custom-column-definitions-demo.component';
+import { DetailPaneGridDemoComponent } from './advanced/detail-pane/detail-pane-grid-demo.component';
+import { DragDropGridDemoComponent } from './advanced/drag-drop/drag-drop-grid-demo.component';
+import { FiltersGridComponent } from './advanced/filters/filters-grid.component';
+import { PersistenceGridDemoComponent } from './advanced/persistance/persistence-grid-demo.component';
+import { ServerDrivenGridDemoComponent } from './advanced/server-driven/server-driven-grid-demo.component';
+import { VirtualScrollGridDemoComponent } from './advanced/virtual-scroll/virtual-scroll-grid-demo.component';
 import { DatagridBasicStructureDemo } from './basic-structure/basic-structure';
 import { DatagridBasicOnPushDemo } from './basic-with-on-push/basic-on-push';
 import { DatagridBindingPropertiesDemo } from './binding-properties/binding-properties';
@@ -84,6 +92,14 @@ const ROUTES: Routes = [
       { path: 'hide-show', component: DatagridHideShowDemo },
       { path: 'responsive-footer', component: DatagridResponsiveFooterDemo },
       { path: 'conditional-selections', component: DatagridConditionalSelectionsDemo },
+      { path: 'advanced-client-side', component: ClientSideDatagridDemoComponent },
+      { path: 'advanced-custom-column-definitions', component: CustomColumnDefinitionsDemoComponent },
+      { path: 'advanced-detail-pane', component: DetailPaneGridDemoComponent },
+      { path: 'advanced-drag-drop', component: DragDropGridDemoComponent },
+      { path: 'advanced-filters', component: FiltersGridComponent },
+      { path: 'advanced-persistance', component: PersistenceGridDemoComponent },
+      { path: 'advanced-server-drivern', component: ServerDrivenGridDemoComponent },
+      { path: 'advanced-virtual-scroll', component: VirtualScrollGridDemoComponent },
     ],
   },
 ];

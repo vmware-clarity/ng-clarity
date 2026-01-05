@@ -6,7 +6,7 @@
     npm install @clr/ui
     ```
 
-2.  Include @cds/core/global.min.css, @cds/core/styles/theme.dark.min.css, and clr-ui.min.css in your HTML file and add the cds-theme attribute to your body tag:
+2.  Include clr-ui.min.css in your HTML file and add the cds-theme attribute to your body tag:
 
     ```
     <link rel="stylesheet" href="path/to/node_modules/@clr/ui/clr-ui.min.css">

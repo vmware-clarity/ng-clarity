@@ -1,0 +1,65 @@
+<form clrForm>
+  <clr-input-container cds-layout="m-t:xs">
+    <label>Display name</label>
+    <input clrInput type="text" name="displayName" [(ngModel)]="columnConfig.displayName" />
+  </clr-input-container>
+
+  <clr-input-container cds-layout="m-t:xs">
+    <label>Row content text</label>
+    <input clrInput type="text" name="contentText" [(ngModel)]="contentText" />
+  </clr-input-container>
+
+  <clr-input-container cds-layout="m-t:xs">
+    <label>Width of column</label>
+    <input clrInput type="text" name="width" placeholder="e.g. 100px or 20rem" [(ngModel)]="columnConfig.width" />
+  </clr-input-container>
+
+  <clr-toggle-container clrInline cds-layout="m-t:xs">
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrToggle [(ngModel)]="columnConfig.hideable" name="hideable" />
+      <label>Column hideable by column toggle</label>
+    </clr-checkbox-wrapper>
+
+    <clr-checkbox-wrapper>
+      <input
+        type="checkbox"
+        clrToggle
+        [(ngModel)]="columnConfig.hidden"
+        name="hidden"
+        [disabled]="!columnConfig.hideable"
+      />
+      <label>Whether the column is initially hidden</label>
+    </clr-checkbox-wrapper>
+
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrToggle [(ngModel)]="sortingEnabled" name="stringFilter" />
+      <label>Enable string sort</label>
+    </clr-checkbox-wrapper>
+  </clr-toggle-container>
+
+  <clr-toggle-container clrInline cds-layout="m-t:xs">
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrToggle [(ngModel)]="stringFilterEnabled" name="stringFilter" />
+      <label>Enable string filter</label>
+    </clr-checkbox-wrapper>
+  </clr-toggle-container>
+
+  <clr-input-container cds-layout="m-t:xs" *ngIf="stringFilterEnabled">
+    <label>Default filter value</label>
+    <input clrInput type="text" name="defaultFilter" [(ngModel)]="columnConfig.defaultFilterValue" />
+  </clr-input-container>
+</form>
+
+<button class="btn btn-primary" (click)="addNewColumn()">Add new column</button>
+<button class="btn btn-primary" (click)="removeLastColumn()" [disabled]="columns.length <= 1">
+  Remove last column
+</button>
+<hr />
+
+<appfx-datagrid
+  [layoutModel]="{ stretchToParentHeight: false }"
+  [pageSize]="10"
+  [columns]="columns"
+  [gridItems]="allItems"
+>
+</appfx-datagrid>

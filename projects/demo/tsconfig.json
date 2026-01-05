@@ -4,7 +4,10 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@clr/angular": ["./../angular/src/index.ts"]
+      "@clr/angular": ["../angular/src/index.ts"],
+      "@clr/angular/*": ["../angular/src/*"],
+      "@clr/addons": ["../addons/index.ts"],
+      "@clr/addons/*": ["../addons/*"]
     }
   },
   "exclude": ["dist", "node_modules"]

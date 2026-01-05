@@ -8,6 +8,7 @@
 import { Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ClrIcon } from '@clr/angular';
 
 import { ClrCommonFormsModule } from '../common';
 import { ClrFileInput } from './file-input';
@@ -22,7 +23,7 @@ interface TestComponent {
 @Component({
   template: `
     <clr-file-input-container>
-      <input type="file" name="model" [(ngModel)]="model" clrFileInput required required />
+      <input type="file" name="model" [(ngModel)]="model" clrFileInput required />
       <clr-control-helper>Helper text</clr-control-helper>
       <clr-control-success>Success message</clr-control-success>
       <clr-control-error>Error message</clr-control-error>
@@ -101,7 +102,7 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule],
+      imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrIcon],
       declarations: [ClrFileInputContainer, ClrFileInput, testComponent],
     });
 
