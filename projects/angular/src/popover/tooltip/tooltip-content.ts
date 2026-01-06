@@ -43,7 +43,7 @@ export class ClrTooltipContent implements OnInit {
     private tooltipIdService: TooltipIdService,
     public el: ElementRef,
     private renderer: Renderer2,
-    private popoverService: ClrPopoverService,
+    popoverService: ClrPopoverService,
     private tooltipMouseService: TooltipMouseService,
     private popoverContent: ClrPopoverContent
   ) {

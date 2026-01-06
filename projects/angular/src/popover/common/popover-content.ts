@@ -252,9 +252,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private showOverlay() {
-    // Get Scrollable Parents
-    this.listenToMouseEvents();
-
     if (!this.overlayRef) {
       this._createOverlayRef();
     }
@@ -273,11 +270,18 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.overlayRef.attach(this.domPortal);
     }
 
-    // this.popoverService.anchorElementRef.nativeElement.scrollIntoView({ top: 100, left: 100, behavior: 'instant' });
+    this.popoverService.anchorElementRef.nativeElement.scrollIntoView({
+      behavior: 'instant',
+      block: 'nearest',
+      inline: 'nearest',
+    });
 
     this.setupIntersectionObserver();
 
     setTimeout(() => {
+      // Get Scrollable Parents
+      this.listenToMouseEvents();
+
       this.popoverService.popoverVisibleEmit(true);
 
       if (this.elementRef?.nativeElement?.focus) {
@@ -344,7 +348,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    */
   private setupIntersectionObserver() {
     if (!this.popoverService.anchorElementRef || this.intersectionObserver) {
-      console.log(1);
       return;
     }
 
@@ -358,7 +361,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
           }
         });
       },
-      { root: null, threshold: 0 }
+      { root: null, threshold: 0.8 }
     );
 
     this.intersectionObserver.observe(this.popoverService.anchorElementRef.nativeElement);
