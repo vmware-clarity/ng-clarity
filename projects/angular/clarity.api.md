@@ -1223,8 +1223,6 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "ButtonGroupFocusHandler" needs to be exported by the entry point index.d.ts
     constructor(buttonGroupNewService: ButtonInGroupService, popoverService: ClrPopoverService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
     // (undocumented)
-    protected availablePositions: _angular_cdk_overlay.ConnectedPosition[];
-    // (undocumented)
     buttonGroupNewService: ButtonInGroupService;
     // (undocumented)
     buttons: QueryList<ClrButton>;
@@ -1412,8 +1410,6 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     get ariaDescribedBySelection(): string;
     // (undocumented)
     get ariaOwns(): string;
-    // (undocumented)
-    protected availablePositions: _angular_cdk_overlay.ConnectedPosition[];
     // (undocumented)
     clrInputChange: EventEmitter<string>;
     // (undocumented)
@@ -2225,8 +2221,6 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDa
     popoverPosition: ClrPopoverPosition;
     // (undocumented)
     popoverType: ClrPopoverType;
-    // (undocumented)
-    positions: _angular_cdk_overlay.ConnectedPosition[];
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": { "alias": "clrDgFilterOpen"; "required": false; }; "customFilter": { "alias": "clrDgFilter"; "required": false; }; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"], false, never>;
     // (undocumented)
@@ -5020,7 +5014,7 @@ export class ClrTabLink {
     get inOverflow(): boolean;
     set inOverflow(inOverflow: boolean);
     // (undocumented)
-    get tabindex(): 0 | -1;
+    get tabindex(): -1 | 0;
     // (undocumented)
     tabLinkId: string;
     // (undocumented)

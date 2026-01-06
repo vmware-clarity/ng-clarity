@@ -19,12 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { ClrButton } from './button';
 import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
-import {
-  ClrPopoverPosition,
-  ClrPopoverType,
-  DROPDOWN_POSITIONS,
-  getConnectedPositions,
-} from '../../popover/common/utils/popover-positions';
+import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS } from '../../popover/common/utils/popover-positions';
 import { ClrDestroyService } from '../../utils/destroy/destroy.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -58,7 +53,6 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   inlineButtons: ClrButton[] = [];
   menuButtons: ClrButton[] = [];
   protected popoverType = ClrPopoverType.DROPDOWN;
-  protected availablePositions = getConnectedPositions(ClrPopoverType.DROPDOWN);
   private _menuPosition = ClrPopoverPosition.BOTTOM_LEFT;
 
   constructor(

@@ -26,12 +26,7 @@ import { ClrPopoverContent, ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
-import {
-  ClrPopoverPosition,
-  ClrPopoverType,
-  getConnectedPositions,
-  SIGNPOST_POSITIONS,
-} from '../common/utils/popover-positions';
+import { ClrPopoverPosition, ClrPopoverType, SIGNPOST_POSITIONS } from '../common/utils/popover-positions';
 
 @Component({
   selector: 'clr-signpost-content',
@@ -91,8 +86,6 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     this.document = document;
     popoverService.panelClass.push('clr-signpost-container');
     popoverContent.contentType = ClrPopoverType.SIGNPOST;
-
-    popoverContent.availablePositions = getConnectedPositions(ClrPopoverType.SIGNPOST);
   }
 
   /*********

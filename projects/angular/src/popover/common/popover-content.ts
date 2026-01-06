@@ -26,7 +26,12 @@ import {
 import { fromEvent, merge, Subscription } from 'rxjs';
 
 import { ClrPopoverService } from './providers/popover.service';
-import { ClrPopoverPosition, ClrPopoverType, mapPopoverKeyToPosition } from './utils/popover-positions';
+import {
+  ClrPopoverPosition,
+  ClrPopoverType,
+  getConnectedPositions,
+  mapPopoverKeyToPosition,
+} from './utils/popover-positions';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
 
@@ -48,6 +53,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private openCloseSubscription: Subscription;
   private domPortal: DomPortal;
   private preferredPositionIsSet = false;
+  private availablePositionsAreSet = false;
   private _preferredPosition: ConnectedPosition = {
     originX: 'start',
     originY: 'top',
@@ -103,12 +109,18 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   @Input('clrPopoverContentAvailablePositions')
   set availablePositions(positions: ConnectedPosition[]) {
+    this.availablePositionsAreSet = true;
+
     this._availablePositions = positions;
   }
 
   @Input('clrPopoverContentType')
   set contentType(type: ClrPopoverType) {
     this.popoverType = type;
+
+    if (!this.availablePositionsAreSet) {
+      this._availablePositions = getConnectedPositions(type);
+    }
   }
 
   @Input('clrPopoverContentOutsideClickToClose')
@@ -261,6 +273,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.overlayRef.attach(this.domPortal);
     }
 
+    // this.popoverService.anchorElementRef.nativeElement.scrollIntoView({ top: 100, left: 100, behavior: 'instant' });
+
     this.setupIntersectionObserver();
 
     setTimeout(() => {
@@ -339,11 +353,12 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         entries.forEach(entry => {
           // If the anchor is no longer visible (scrolled out of view)
           if (!entry.isIntersecting && this.popoverService.open) {
+            console.log(entry);
             this.zone.run(() => this.closePopover());
           }
         });
       },
-      { root: null, threshold: 0.8 }
+      { root: null, threshold: 0 }
     );
 
     this.intersectionObserver.observe(this.popoverService.anchorElementRef.nativeElement);
