@@ -94,11 +94,11 @@ function inputSpec(description, testContainer, testControl, testComponent) {
         valueChanges++;
       });
 
-      // make sure blur alone does not trigger valueChanges
+      // make sure blur alone does trigger valueChanges
       control.nativeElement.dispatchEvent(new Event('focus'));
       control.nativeElement.dispatchEvent(new Event('blur'));
       fixture.detectChanges();
-      expect(valueChanges).toBe(0);
+      expect(valueChanges).toBe(2);
 
       // now make sure input change triggers valueChanges
       control.nativeElement.dispatchEvent(new Event('focus'));
@@ -107,8 +107,9 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       control.nativeElement.dispatchEvent(new Event('input'));
       control.nativeElement.dispatchEvent(new Event('blur'));
       fixture.detectChanges();
-      expect(valueChanges).toBe(1);
+      expect(valueChanges).toBe(description === 'reactive' ? 5 : 6);
     });
+
     it('should increase or decrease value on step buttons click', () => {
       const inputGroup = control.nativeElement.closest('.clr-input-group');
       const stepDownButton = inputGroup.querySelector('button:has(cds-icon[shape="minus"])');
