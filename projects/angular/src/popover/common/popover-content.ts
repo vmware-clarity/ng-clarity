@@ -127,6 +127,25 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this._scrollToClose = !!scrollToClose;
   }
 
+  private get positionStrategy() {
+    return this.overlay
+      .position()
+      .flexibleConnectedTo(this.popoverService.anchorElementRef)
+      .setOrigin(this.popoverService.anchorElementRef)
+      .withPush(true)
+      .withPositions([this.preferredPosition, ...this._availablePositions])
+      .withFlexibleDimensions(true);
+  }
+
+  private get preferredPosition(): ConnectedPosition {
+    if (this.preferredPositionIsSet) {
+      return this._preferredPosition;
+    }
+
+    // Default position is "bottom-left"
+    return mapPopoverKeyToPosition(this._position, this.popoverType);
+  }
+
   ngAfterViewInit() {
     if (this.popoverService.open) {
       this.showOverlay();
@@ -146,20 +165,11 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.openCloseSubscription?.unsubscribe();
   }
 
-  private getPreferredPosition(): ConnectedPosition {
-    if (this.preferredPositionIsSet) {
-      return this._preferredPosition;
-    }
-
-    // Default position is "bottom-left"
-    return mapPopoverKeyToPosition(this._position, this.popoverType);
-  }
-
   private _createOverlayRef() {
     this.overlayRef = this.overlay.create(
       new OverlayConfig({
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
-        positionStrategy: this.getPositionStrategy(),
+        positionStrategy: this.positionStrategy,
         // the scrolling behaviour is controlled by this popover content directive
         scrollStrategy: this.overlay.scrollStrategies.noop(),
         panelClass: this.popoverService.panelClass,
@@ -206,19 +216,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   private resetPosition() {
     if (this.overlayRef) {
-      this.overlayRef.updatePositionStrategy(this.getPositionStrategy());
+      this.overlayRef.updatePositionStrategy(this.positionStrategy);
       this.overlayRef.updatePosition();
     }
-  }
-
-  private getPositionStrategy() {
-    return this.overlay
-      .position()
-      .flexibleConnectedTo(this.popoverService.anchorElementRef)
-      .setOrigin(this.popoverService.anchorElementRef)
-      .withPush(true)
-      .withPositions([this.getPreferredPosition(), ...this._availablePositions])
-      .withFlexibleDimensions(true);
   }
 
   private closePopover() {
@@ -330,6 +330,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    */
   private setupIntersectionObserver() {
     if (!this.popoverService.anchorElementRef || this.intersectionObserver) {
+      console.log(1);
       return;
     }
 
