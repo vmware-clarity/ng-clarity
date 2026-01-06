@@ -48,6 +48,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
   private _availablePositions: ConnectedPosition[] = [];
   private _position = ClrPopoverPosition.BOTTOM_LEFT;
+  private scrollableParents: (HTMLDocument | HTMLElement)[] = [];
 
   private subscriptions: Subscription[] = [];
   private openCloseSubscription: Subscription;
@@ -159,6 +160,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.scrollableParents = this.getScrollableParents(this.popoverService.anchorElementRef?.nativeElement);
+
     if (this.popoverService.open) {
       this.showOverlay();
     }
@@ -270,7 +273,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.overlayRef.attach(this.domPortal);
     }
 
-    this.popoverService.anchorElementRef.nativeElement.scrollIntoView({
+    this.popoverService?.anchorElementRef?.nativeElement.scrollIntoView({
       behavior: 'instant',
       block: 'nearest',
       inline: 'nearest',
@@ -356,7 +359,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         entries.forEach(entry => {
           // If the anchor is no longer visible (scrolled out of view)
           if (!entry.isIntersecting && this.popoverService.open) {
-            console.log(entry);
             this.zone.run(() => this.closePopover());
           }
         });
@@ -373,11 +375,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    const scrollableParents = this.getScrollableParents(this.popoverService.anchorElementRef?.nativeElement);
-
     this.zone.runOutsideAngular(() => {
       this.subscriptions.push(
-        merge(...scrollableParents.map(parent => fromEvent(parent, 'scroll', { passive: true }))).subscribe(() => {
+        merge(...this.scrollableParents.map(parent => fromEvent(parent, 'scroll', { passive: true }))).subscribe(() => {
           if (this._scrollToClose) {
             this.zone.run(() => this.closePopover());
             return;
