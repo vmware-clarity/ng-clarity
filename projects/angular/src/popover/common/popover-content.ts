@@ -375,6 +375,15 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       return;
     }
 
+    // All, but possible duplicated, parents
+    const duplicatedParents = [
+      ...this.scrollableParents,
+      ...this.getScrollableParents(this.popoverService.anchorElementRef?.nativeElement),
+    ];
+
+    // Filter duplicates
+    this.scrollableParents = [...new Set(duplicatedParents)];
+
     this.zone.runOutsideAngular(() => {
       this.subscriptions.push(
         merge(...this.scrollableParents.map(parent => fromEvent(parent, 'scroll', { passive: true }))).subscribe(() => {
