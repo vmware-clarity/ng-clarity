@@ -12,6 +12,7 @@ import {
   DOCUMENT,
   ElementRef,
   HostBinding,
+  HostListener,
   Inject,
   Input,
   OnDestroy,
@@ -51,7 +52,11 @@ import { ClrPopoverPosition, ClrPopoverType, SIGNPOST_POSITIONS } from '../commo
       </div>
     </div>
   `,
-  host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
+  host: {
+    '[class.signpost-content]': 'true',
+    '[id]': 'signpostContentId',
+    role: 'dialog',
+  },
   standalone: false,
   hostDirectives: [ClrPopoverContent],
 })
@@ -61,7 +66,6 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
 
   signpostContentId = uniqueIdFactory();
 
-  private document: Document;
   private _position = ClrPopoverPosition.RIGHT_MIDDLE;
 
   constructor(
@@ -73,7 +77,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
     @Inject(PLATFORM_ID) private platformId: any,
-    @Inject(DOCUMENT) document: any,
+    @Inject(DOCUMENT) private document: Document,
     private popoverService: ClrPopoverService,
     private popoverContent: ClrPopoverContent
   ) {
@@ -83,7 +87,6 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     // Defaults
     signpostIdService.setId(this.signpostContentId);
 
-    this.document = document;
     popoverService.panelClass.push('clr-signpost-container');
     popoverContent.contentType = ClrPopoverType.SIGNPOST;
   }
@@ -148,11 +151,33 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.popoverService.closeButtonRef = this.closeButton;
+    this.closeButton.nativeElement.focus();
+  }
+
+  @HostListener('keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Tab') {
+      const focusableElements = this.getFocusableElements(this.element.nativeElement);
+
+      // take the first element when SHIFT+TAB or last when only TAB
+      const focusableElementIndex = event.shiftKey ? 0 : focusableElements.length - 1;
+
+      if (document.activeElement === focusableElements[focusableElementIndex]) {
+        event.preventDefault();
+        this.popoverService.open = false;
+      }
+    }
   }
 
   ngOnDestroy() {
     if (isPlatformBrowser(this.platformId) && this.element.nativeElement.contains(this.document.activeElement)) {
       this.signpostFocusManager.focusTrigger();
     }
+  }
+
+  private getFocusableElements(element: HTMLElement): HTMLElement[] {
+    return Array.from(
+      element.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+    ) as HTMLElement[];
   }
 }
