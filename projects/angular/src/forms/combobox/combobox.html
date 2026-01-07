@@ -12,7 +12,7 @@ width of the component, after being wrapped to a new line -->
   clrPopoverAnchor
   (click)="onWrapperClick($event)"
   [class.multi]="multiSelect"
-  [class.invalid]="control?.invalid"
+  [class.invalid]="(control?.control.touched && control?.invalid)"
   [class.disabled]="control?.disabled"
 >
   @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {
