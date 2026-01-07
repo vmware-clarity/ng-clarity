@@ -10,6 +10,7 @@ import {
   Component,
   ContentChildren,
   ElementRef,
+  HostBinding,
   Inject,
   Input,
   OnDestroy,
@@ -46,7 +47,7 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     nested: ClrDropdownMenu,
     private focusHandler: DropdownFocusHandler,
     private elementRef: ElementRef,
-    popoverService: ClrPopoverService,
+    private popoverService: ClrPopoverService,
     private popoverContent: ClrPopoverContent
   ) {
     if (!parentHost) {
@@ -60,6 +61,14 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     popoverContent.contentAt = nested ? ClrPopoverPosition.RIGHT_TOP : ClrPopoverPosition.BOTTOM_LEFT;
 
     popoverService.panelClass.push('clr-dropdown-container');
+  }
+
+  /*
+   * Fallback to hide when *clrIfOpen is not being used
+   */
+  @HostBinding('class.is-off-screen')
+  get isOffScreen() {
+    return !this.popoverService.open;
   }
 
   @Input('clrPosition')
