@@ -375,7 +375,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    const anchor = this.getRootPopover(this)?.popoverService?.anchorElementRef.nativeElement;
+    const anchor = this.getRootPopover(this)?.popoverService?.anchorElementRef?.nativeElement;
 
     const scrollableParents = this.getScrollableParents(anchor);
 
