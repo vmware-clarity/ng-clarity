@@ -22,12 +22,7 @@ import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { ClrPopoverContent, ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
-import {
-  ClrPopoverPosition,
-  ClrPopoverType,
-  DROPDOWN_POSITIONS,
-  getConnectedPositions,
-} from '../common/utils/popover-positions';
+import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS } from '../common/utils/popover-positions';
 
 @Component({
   selector: 'clr-dropdown-menu',
@@ -61,7 +56,6 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     popoverContent.scrollToClose = true;
 
     popoverContent.contentType = ClrPopoverType.DROPDOWN;
-    popoverContent.availablePositions = getConnectedPositions(ClrPopoverType.DROPDOWN);
 
     popoverContent.contentAt = nested ? ClrPopoverPosition.RIGHT_TOP : ClrPopoverPosition.BOTTOM_LEFT;
 

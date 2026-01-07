@@ -34,32 +34,32 @@ export enum ClrPopoverPosition {
 }
 
 export const TOOLTIP_POSITIONS: ClrPopoverPosition[] = [
-  ClrPopoverPosition.RIGHT,
+  ClrPopoverPosition.RIGHT, // default. must be at index 0
   ClrPopoverPosition.LEFT,
-  ClrPopoverPosition.BOTTOM_LEFT,
   ClrPopoverPosition.BOTTOM_RIGHT,
-  ClrPopoverPosition.TOP_LEFT,
+  ClrPopoverPosition.BOTTOM_LEFT,
   ClrPopoverPosition.TOP_RIGHT,
+  ClrPopoverPosition.TOP_LEFT,
 ];
 
 export const DROPDOWN_POSITIONS: ClrPopoverPosition[] = [
-  ClrPopoverPosition.BOTTOM_LEFT,
+  ClrPopoverPosition.BOTTOM_LEFT, // default. must be at index 0
   ClrPopoverPosition.BOTTOM_RIGHT,
   ClrPopoverPosition.TOP_LEFT,
   ClrPopoverPosition.TOP_RIGHT,
-  ClrPopoverPosition.LEFT_BOTTOM,
-  ClrPopoverPosition.LEFT_TOP,
-  ClrPopoverPosition.RIGHT_BOTTOM,
   ClrPopoverPosition.RIGHT_TOP,
+  ClrPopoverPosition.RIGHT_BOTTOM,
+  ClrPopoverPosition.LEFT_TOP,
+  ClrPopoverPosition.LEFT_BOTTOM,
 ];
 
 export const SIGNPOST_POSITIONS: ClrPopoverPosition[] = [
   ClrPopoverPosition.RIGHT_MIDDLE, // default. must be at index 0
-  ClrPopoverPosition.TOP_LEFT,
-  ClrPopoverPosition.TOP_MIDDLE,
-  ClrPopoverPosition.TOP_RIGHT,
   ClrPopoverPosition.RIGHT_TOP,
   ClrPopoverPosition.RIGHT_BOTTOM,
+  ClrPopoverPosition.TOP_RIGHT,
+  ClrPopoverPosition.TOP_LEFT,
+  ClrPopoverPosition.TOP_MIDDLE,
   ClrPopoverPosition.BOTTOM_RIGHT,
   ClrPopoverPosition.BOTTOM_MIDDLE,
   ClrPopoverPosition.BOTTOM_LEFT,

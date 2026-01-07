@@ -29,7 +29,7 @@
     [id]="popoverId"
     [attr.id]="popoverId"
     [attr.aria-hidden]="!open"
-    *clrPopoverContent="open; at menuPosition; type: popoverType; availablePositions: availablePositions; outsideClickToClose: true; scrollToClose: true"
+    *clrPopoverContent="open; at menuPosition; type: popoverType; outsideClickToClose: true; scrollToClose: true"
   >
     @for (menuButton of menuButtons; track menuButton) {
     <ng-template [ngTemplateOutlet]="menuButton.templateRef"></ng-template>
