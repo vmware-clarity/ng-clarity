@@ -20,6 +20,7 @@ import {
   OnDestroy,
   Optional,
   PLATFORM_ID,
+  SkipSelf,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
@@ -70,6 +71,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     @Optional() private template: TemplateRef<any>,
     overlayContainer: OverlayContainer,
 
+    @Optional() @SkipSelf() private parent: ClrPopoverContent,
     private overlay: Overlay,
     @Inject(ClrPopoverService) private popoverService: ClrPopoverService,
     private zone: NgZone,
@@ -160,8 +162,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.scrollableParents = this.getScrollableParents(this.popoverService.anchorElementRef?.nativeElement);
-
     if (this.popoverService.open) {
       this.showOverlay();
     }
@@ -375,18 +375,13 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    // All, but possible duplicated, parents
-    const duplicatedParents = [
-      ...this.scrollableParents,
-      ...this.getScrollableParents(this.popoverService.anchorElementRef?.nativeElement),
-    ];
+    const anchor = this.getRootPopover(this)?.popoverService?.anchorElementRef.nativeElement;
 
-    // Filter duplicates
-    this.scrollableParents = [...new Set(duplicatedParents)];
+    const scrollableParents = this.getScrollableParents(anchor);
 
     this.zone.runOutsideAngular(() => {
       this.subscriptions.push(
-        merge(...this.scrollableParents.map(parent => fromEvent(parent, 'scroll', { passive: true }))).subscribe(() => {
+        merge(...scrollableParents.map(parent => fromEvent(parent, 'scroll', { passive: true }))).subscribe(() => {
           if (this._scrollToClose) {
             this.zone.run(() => this.closePopover());
             return;
@@ -396,5 +391,13 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         })
       );
     });
+  }
+
+  private getRootPopover(popover: ClrPopoverContent): ClrPopoverContent {
+    if (popover && popover.parent) {
+      return this.getRootPopover(popover.parent);
+    }
+
+    return popover;
   }
 }
