@@ -30,7 +30,7 @@ input[clrDatalistInput] {
 
   .clr-datalist-caret {
     color: forms-variables.$clr-forms-datalist-caret-color;
-    cursor: text;
+    cursor: pointer;
     margin: density.$clr-base-vertical-offset-xs density.$clr-base-horizontal-offset-xs;
 
     @include mixins.equilateral(forms-variables.$clr-forms-datalist-caret-icon-size);
