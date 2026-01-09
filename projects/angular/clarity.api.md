@@ -2939,6 +2939,8 @@ export class ClrDropdownItem {
 export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     constructor(parentHost: ElementRef<HTMLElement>, nested: ClrDropdownMenu, focusHandler: DropdownFocusHandler, elementRef: ElementRef, popoverService: ClrPopoverService, popoverContent: ClrPopoverContent);
     // (undocumented)
+    get isOffScreen(): boolean;
+    // (undocumented)
     items: QueryList<FocusableItem$1>;
     // (undocumented)
     ngAfterContentInit(): void;
@@ -4151,7 +4153,7 @@ export class ClrPopoverAnchor {
 
 // @public (undocumented)
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
-    constructor(element: ElementRef, container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, overlay: Overlay, popoverService: ClrPopoverService, zone: NgZone, platformId: any);
+    constructor(element: ElementRef, container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, parent: ClrPopoverContent, overlay: Overlay, popoverService: ClrPopoverService, zone: NgZone, platformId: any);
     // (undocumented)
     set availablePositions(positions: ConnectedPosition[]);
     // (undocumented)
@@ -4174,7 +4176,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, null, { optional: true; }, null, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, null, { optional: true; }, null, { optional: true; skipSelf: true; }, null, null, null, null]>;
 }
 
 // @public (undocumented)
