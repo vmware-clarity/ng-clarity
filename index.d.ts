@@ -3506,6 +3506,7 @@ declare class ClrDatalistContainer extends ClrAbstractContainer {
     protected ifControlStateService: IfControlStateService;
     focus: boolean;
     constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FocusService, ifControlStateService: IfControlStateService);
+    showPicker(datalist: HTMLElement): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalistContainer, [null, { optional: true; }, null, null, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatalistContainer, "clr-datalist-container", never, {}, {}, never, ["label", "[clrDatalistInput]", "datalist", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
 }

@@ -16836,6 +16836,13 @@ class ClrDatalistContainer extends ClrAbstractContainer {
         this.focus = false;
         this.subscriptions.push(focusService.focusChange.subscribe(state => (this.focus = state)));
     }
+    showPicker(datalist) {
+        const datalistInput = datalist.querySelector('input[clrDatalistInput]');
+        if (datalistInput) {
+            datalistInput.focus();
+            datalistInput.showPicker();
+        }
+    }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDatalistContainer, deps: [{ token: ControlClassService }, { token: LayoutService, optional: true }, { token: NgControlService }, { token: FocusService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrDatalistContainer, isStandalone: false, selector: "clr-datalist-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [
             ControlClassService,
@@ -16851,10 +16858,10 @@ class ClrDatalistContainer extends ClrAbstractContainer {
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
-        <div class="clr-input-group" [class.clr-focus]="focus">
+        <div class="clr-input-group" [class.clr-focus]="focus" #datalist>
           <ng-content select="[clrDatalistInput]"></ng-content>
           <ng-content select="datalist"></ng-content>
-          <cds-icon shape="angle" class="clr-datalist-caret" direction="down"></cds-icon>
+          <cds-icon shape="angle" class="clr-datalist-caret" direction="down" (click)="showPicker(datalist)"></cds-icon>
         </div>
         @if (showInvalid) {
           <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
@@ -16886,10 +16893,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
-        <div class="clr-input-group" [class.clr-focus]="focus">
+        <div class="clr-input-group" [class.clr-focus]="focus" #datalist>
           <ng-content select="[clrDatalistInput]"></ng-content>
           <ng-content select="datalist"></ng-content>
-          <cds-icon shape="angle" class="clr-datalist-caret" direction="down"></cds-icon>
+          <cds-icon shape="angle" class="clr-datalist-caret" direction="down" (click)="showPicker(datalist)"></cds-icon>
         </div>
         @if (showInvalid) {
           <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
