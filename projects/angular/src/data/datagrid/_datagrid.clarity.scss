@@ -1426,24 +1426,12 @@
   .datagrid-row-detail-open {
     position: relative;
 
-    &::before {
-      content: '';
-      display: inline-block;
-      position: absolute;
-      border: tokens.$cds-global-space-5 solid transparent;
-      border-right-color: tables-variables.$clr-table-border-color;
-      top: tables-variables.$clr-table-cell-vertical-padding;
-      right: 0;
-    }
+    &:not(:hover) {
+      background-color: datagrid-variables.$clr-datagrid-detail-pane-open-row-bg-color;
 
-    &::after {
-      content: '';
-      display: inline-block;
-      position: absolute;
-      border: tokens.$cds-global-space-5 solid transparent;
-      border-right-color: datagrid-variables.$clr-datagrid-popover-bg-color;
-      top: tables-variables.$clr-table-cell-vertical-padding;
-      right: calc(-1 * tokens.$cds-global-space-2);
+      .datagrid-row-sticky {
+        background-color: datagrid-variables.$clr-datagrid-detail-pane-open-row-bg-color;
+      }
     }
   }
 
