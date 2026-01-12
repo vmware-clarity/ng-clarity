@@ -21,11 +21,11 @@ const errorMessage = 'ERROR_MESSAGE';
 const minLengthMessage = 'MIN_LENGTH_MESSAGE';
 const maxLengthMessage = 'MAX_LENGTH_MESSAGE';
 
-// @Component({
-//   template: `<div *clrIfError></div>`,
-//   standalone: false,
-// })
-// class InvalidUseTest {}
+@Component({
+  template: `<div *clrIfError></div>`,
+  standalone: false,
+})
+class InvalidUseTest {}
 
 @Component({
   template: `<clr-control-error *clrIfError>${errorMessage}</clr-control-error>`,
@@ -49,15 +49,15 @@ class SpecificErrorTest {}
 
 export default function (): void {
   describe('ClrIfError', () => {
-    // describe('invalid use', () => {
-    //   it('throws error when used outside of a control container', () => {
-    //     TestBed.configureTestingModule({ declarations: [ClrIfError, InvalidUseTest] });
-    //     expect(() => {
-    //       const fixture = TestBed.createComponent(InvalidUseTest);
-    //       fixture.detectChanges();
-    //     }).toThrow();
-    //   });
-    // });
+    describe('invalid use', () => {
+      it('throws error when used outside of a control container', () => {
+        TestBed.configureTestingModule({ declarations: [ClrIfError, InvalidUseTest] });
+        expect(() => {
+          const fixture = TestBed.createComponent(InvalidUseTest);
+          fixture.detectChanges();
+        }).toThrow();
+      });
+    });
 
     describe('general error', () => {
       let fixture, ngControlService;
@@ -108,7 +108,6 @@ export default function (): void {
       it('displays the error when the specific error is defined', async () => {
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         const control = new FormControl('', [Validators.required, Validators.minLength(5)]);
-        // control.markAsTouched();
         ngControlService.setControl(control);
         control.markAsTouched();
         await delay();

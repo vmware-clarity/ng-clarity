@@ -49,7 +49,7 @@ export function ContainerNoLabelSpec(testContainer, testControl, testComponent):
       expect(Array.prototype.filter.call(labels, label => label.textContent === '').length).toBe(0);
     });
 
-    // working with private `state` which is now removed
+    // working with private fiel`state`
     it('should display helper text when both error and success text are not implemented', () => {
       fixture.detectChanges();
       expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
@@ -100,7 +100,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       fixture.detectChanges();
     });
 
-    // working with private `state` which is now removed
+    // working with private field `state`
     function setValid(valid: boolean) {
       // NOTE The order of these two events should in theory be insignificant, but it's not.
       // The scenarios were additionally verified by manual testing in a patched Stackblitz demo:

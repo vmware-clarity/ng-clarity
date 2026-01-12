@@ -7,7 +7,7 @@
 
 import { Component, Directive, ElementRef, Injector, NgModule, Renderer2, Type, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { ClrAbstractContainer } from './abstract-container';
@@ -165,20 +165,20 @@ class WithNumberControl {
   model = '';
 }
 
-// @Component({
-//   template: `
-//     <form-wrapper>
-//       <test-wrapper3>
-//         <input testControl3 [(ngModel)]="model" required />
-//         <clr-control-helper>Helper</clr-control-helper>
-//       </test-wrapper3>
-//     </form-wrapper>
-//   `,
-//   standalone: false,
-// })
-// class WithControlAndHelper {
-//   model = '';
-// }
+@Component({
+  template: `
+    <form-wrapper>
+      <test-wrapper3>
+        <input testControl3 [(ngModel)]="model" required />
+        <clr-control-helper>Helper</clr-control-helper>
+      </test-wrapper3>
+    </form-wrapper>
+  `,
+  standalone: false,
+})
+class WithControlAndHelper {
+  model = '';
+}
 
 @Component({
   template: `
@@ -210,46 +210,46 @@ class WithControlAndSuccess {
   model = '';
 }
 
-// @Component({
-//   template: `
-//     <form-wrapper>
-//       <test-wrapper3>
-//         <label> Label </label>
-//         <textarea testControl3 [formControl]="form.get('control') || form.get('alternative')"></textarea>
-//         <clr-control-success>Successful!</clr-control-success>
-//       </test-wrapper3>
-//     </form-wrapper>
-//   `,
-//   standalone: false,
-// })
-// class WithDynamicFormControl {
-//   form = new FormGroup<any>({
-//     alternative: new FormControl(),
-//   });
-//
-//   addControl() {
-//     this.form.addControl('control', new FormControl('TEST'));
-//   }
-// }
-//
-// @Component({
-//   template: `
-//     <form-wrapper>
-//       <test-wrapper3>
-//         <label> Label </label>
-//         <textarea testControl3 [(ngModel)]="form['control']"></textarea>
-//         <clr-control-success>Successful!</clr-control-success>
-//       </test-wrapper3>
-//     </form-wrapper>
-//   `,
-//   standalone: false,
-// })
-// class WithDynamicNgControl {
-//   form = {};
-//   addControl() {
-//     this.form['control'] = 'TEST';
-//   }
-// }
+@Component({
+  template: `
+    <form-wrapper>
+      <test-wrapper3>
+        <label> Label </label>
+        <textarea testControl3 [formControl]="form.get('control') || form.get('alternative')"></textarea>
+        <clr-control-success>Successful!</clr-control-success>
+      </test-wrapper3>
+    </form-wrapper>
+  `,
+  standalone: false,
+})
+class WithDynamicFormControl {
+  form = new FormGroup<any>({
+    alternative: new FormControl(),
+  });
+
+  addControl() {
+    this.form.addControl('control', new FormControl('TEST'));
+  }
+}
+
+@Component({
+  template: `
+    <form-wrapper>
+      <test-wrapper3>
+        <label> Label </label>
+        <textarea testControl3 [(ngModel)]="form['control']"></textarea>
+        <clr-control-success>Successful!</clr-control-success>
+      </test-wrapper3>
+    </form-wrapper>
+  `,
+  standalone: false,
+})
+class WithDynamicNgControl {
+  form = {};
+  addControl() {
+    this.form['control'] = 'TEST';
+  }
+}
 
 interface TestContext {
   fixture: ComponentFixture<any>;
@@ -372,14 +372,14 @@ export default function (): void {
         expect(NgControlService.prototype.setControl).toHaveBeenCalled();
       });
 
-      // it('triggers status changes on blur', function (this: TestContext) {
-      //   spyOn(IfControlStateService.prototype, 'triggerStatusChange').and.callThrough();
-      //   setupTest(this, WithControl, TestControl3);
-      //   this.input.focus();
-      //   this.input.blur();
-      //   this.fixture.detectChanges();
-      //   expect(IfControlStateService.prototype.triggerStatusChange).toHaveBeenCalled();
-      // });
+      it('triggers status changes on blur', function (this: TestContext) {
+        setupTest(this, WithControl, TestControl3);
+        spyOn(TestControl3.prototype, 'triggerValidation').and.callThrough();
+        this.input.focus();
+        this.input.blur();
+        this.fixture.detectChanges();
+        expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
+      });
 
       it('blur marks the control as touched', function (this: TestContext) {
         setupTest(this, WithNumberControl, TestControl3);
@@ -396,42 +396,36 @@ export default function (): void {
       });
     });
 
-    // describe('with dynamic controls', function () {
-    //   it('with form-control directive', function (this: TestContext) {
-    //     setupTest(this, WithDynamicFormControl, TestControl3);
-    //     const cb = jasmine.createSpy('cb');
-    //     const sub = this.ifControlStateService.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
-    //     expect(cb).toHaveBeenCalledWith(CONTROL_STATE.NONE);
-    //     this.fixture.componentInstance.addControl();
-    //     this.fixture.detectChanges();
-    //     expect(cb).toHaveBeenCalledWith(CONTROL_STATE.VALID);
-    //     sub.unsubscribe();
-    //   });
-    //
-    //   it('with ng-control directive', function (this: TestContext) {
-    //     setupTest(this, WithDynamicNgControl, TestControl3);
-    //     const cb = jasmine.createSpy('cb');
-    //     const sub = this.ifControlStateService.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
-    //     expect(cb).toHaveBeenCalledWith(CONTROL_STATE.NONE);
-    //     this.fixture.componentInstance.addControl();
-    //     this.fixture.detectChanges();
-    //     expect(cb).toHaveBeenCalledWith(CONTROL_STATE.VALID);
-    //     sub.unsubscribe();
-    //   });
-    // });
+    describe('with dynamic controls', function () {
+      it('with form-control directive', function (this: TestContext) {
+        setupTest(this, WithDynamicFormControl, TestControl3);
+        spyOn<any>(TestControl3.prototype, 'triggerValidation').and.callThrough();
+        this.fixture.componentInstance.addControl();
+        this.fixture.detectChanges();
+        expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
+      });
+
+      it('with ng-control directive', function (this: TestContext) {
+        setupTest(this, WithDynamicNgControl, TestControl3);
+        spyOn<any>(TestControl3.prototype, 'triggerValidation').and.callThrough();
+        this.fixture.componentInstance.addControl();
+        this.fixture.detectChanges();
+        expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
+      });
+    });
 
     describe('aria roles', function () {
-      // it('adds the aria-describedby for helper', function () {
-      //   setupTest(this, WithControlAndHelper, TestControl3);
-      //   this.ifControlStateService.triggerStatusChange(); // Manually trigger ngModel to sync which doesn't want to do because internal async
-      //   expect(this.input.getAttribute('aria-describedby')).toContain('-helper');
-      // });
-      //
-      // it('does not set aria-describedby unless helper is present', function () {
-      //   setupTest(this, WithControl, TestControl3);
-      //   this.ifControlStateService.triggerStatusChange(); // Manually trigger ngModel to sync which doesn't want to do because internal async
-      //   expect(this.input.getAttribute('aria-describedby')).toBe(null);
-      // });
+      it('adds the aria-describedby for helper', function () {
+        setupTest(this, WithControlAndHelper, TestControl3);
+        this.control.triggerValidation();
+        expect(this.input.getAttribute('aria-describedby')).toContain('-helper');
+      });
+
+      it('does not set aria-describedby unless helper is present', function () {
+        setupTest(this, WithControl, TestControl3);
+        this.control.triggerValidation();
+        expect(this.input.getAttribute('aria-describedby')).toBe(null);
+      });
 
       it('adds the aria-describedby with helper and error ids', async function (this: TestContext) {
         setupTest(this, WithControlAndError, TestControl3);

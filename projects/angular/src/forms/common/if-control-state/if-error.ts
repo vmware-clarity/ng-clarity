@@ -26,6 +26,10 @@ export class ClrIfError extends AbstractIfState {
     private container: ViewContainerRef
   ) {
     super(ngControlService);
+
+    if (!ngControlService) {
+      throw new Error('clrIfError can only be used within a form control container element like clr-input-container');
+    }
   }
   /**
    * @param state CONTROL_STATE
