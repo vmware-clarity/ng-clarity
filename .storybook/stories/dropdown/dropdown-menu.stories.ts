@@ -92,7 +92,7 @@ const DropdownMenuTemplate: StoryFn = args => ({
 const DropdownMenuAllTemplate: StoryFn = args => ({
   template: `
     <div *ngFor="let position of CLR_MENU_POSITIONS" style="display: inline-block">
-      <div style="margin: 100px">
+      <div style="margin: 100px 65px">
         <clr-dropdown [clrCloseMenuOnItemClick]="false">
           <button class="btn btn-outline-primary" clrDropdownTrigger>
             {{ position }}
