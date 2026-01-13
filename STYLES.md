@@ -676,6 +676,7 @@
 | --clr-datagrid-detail-body-text-color                | Font color for detail body                                                              |
 | --clr-datagrid-detail-header-title-color             | Font color for detail header title                                                      |
 | --clr-datagrid-detail-pane-bg-color                  | Background color for detail panel                                                       |
+| --clr-datagrid-detail-pane-open-row-bg-color         | Background color for the row associated with the open detail panel.                     |
 | --clr-datagrid-detail-pane-border-color              | Border color for detail panel                                                           |
 | --clr-datagrid-placeholder-color                     | Deprecated in v17 and will be removed in v18.Font color for empty datagrid placeholder. |
 | --clr-datagrid-placeholder-font-size                 | Deprecated in v17 and will be removed in v18. Font size for empty datagrid placeholder. |
