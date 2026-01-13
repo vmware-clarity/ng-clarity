@@ -24,10 +24,10 @@ import { NgControlService } from '../common/providers/ng-control.service';
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
-        <div class="clr-input-group" [class.clr-focus]="focus">
+        <div class="clr-input-group" [class.clr-focus]="focus" #datalist>
           <ng-content select="[clrDatalistInput]"></ng-content>
           <ng-content select="datalist"></ng-content>
-          <cds-icon shape="angle" class="clr-datalist-caret" direction="down"></cds-icon>
+          <cds-icon shape="angle" class="clr-datalist-caret" direction="down" (click)="showPicker(datalist)"></cds-icon>
         </div>
         @if (showInvalid) {
           <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
@@ -67,5 +67,13 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
     super(layoutService, controlClassService, ngControlService);
 
     this.subscriptions.push(focusService.focusChange.subscribe(state => (this.focus = state)));
+  }
+
+  showPicker(datalist: HTMLElement) {
+    const datalistInput = datalist.querySelector('input[clrDatalistInput]') as HTMLInputElement;
+    if (datalistInput) {
+      datalistInput.focus();
+      datalistInput.showPicker();
+    }
   }
 }

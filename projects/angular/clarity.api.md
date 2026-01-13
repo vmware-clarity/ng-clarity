@@ -2608,6 +2608,8 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
     // (undocumented)
     focus: boolean;
     // (undocumented)
+    showPicker(datalist: HTMLElement): void;
+    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatalistContainer, "clr-datalist-container", never, {}, {}, never, ["label", "[clrDatalistInput]", "datalist", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalistContainer, [null, { optional: true; }, null, null]>;
