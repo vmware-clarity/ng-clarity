@@ -407,7 +407,7 @@ export default function (): void {
 
       it('with ng-control directive', function (this: TestContext) {
         setupTest(this, WithDynamicNgControl, TestControl3);
-        spyOn<any>(TestControl3.prototype, 'triggerValidation').and.callThrough();
+        spyOn(TestControl3.prototype, 'triggerValidation').and.callThrough();
         this.fixture.componentInstance.addControl();
         this.fixture.detectChanges();
         expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
