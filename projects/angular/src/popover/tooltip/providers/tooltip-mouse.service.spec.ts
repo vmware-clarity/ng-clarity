@@ -8,50 +8,54 @@
 import { delay } from 'projects/angular/src/utils/testing/helpers.spec';
 
 import { TooltipMouseService } from './tooltip-mouse.service';
-import { ClrPopoverToggleService } from '../../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../common';
 
 export default function (): void {
   describe('Tooltip Mouse Service', () => {
-    let toggleService: ClrPopoverToggleService;
+    let popoverService: ClrPopoverService;
     let mouseService: TooltipMouseService;
+    let waitTimeMS: number;
 
     beforeEach(() => {
-      toggleService = new ClrPopoverToggleService();
-      mouseService = new TooltipMouseService(toggleService);
+      popoverService = new ClrPopoverService();
+      mouseService = new TooltipMouseService(popoverService);
+
+      // 100 from default mouseOutDelay + 1 MS extra time
+      waitTimeMS = mouseService['mouseOutDelay'] + 1;
     });
 
     it('should show the tooltip when the mouse enters the trigger', () => {
       mouseService.onMouseEnterTrigger();
 
-      expect(toggleService.open).toBe(true);
+      expect(popoverService.open).toBe(true);
     });
 
     it('should hide the tooltip if the mouse leaves the trigger and does not enter the content', async () => {
-      toggleService.open = true;
+      popoverService.open = true;
 
       mouseService.onMouseLeaveTrigger();
-      await delay();
+      await delay(waitTimeMS);
 
-      expect(toggleService.open).toBe(false);
+      expect(popoverService.open).toBe(false);
     });
 
     it('should hide the tooltip if the mouse leaves the content and does not enter the trigger', async () => {
-      toggleService.open = true;
+      popoverService.open = true;
 
       mouseService.onMouseLeaveContent();
-      await delay();
+      await delay(waitTimeMS);
 
-      expect(toggleService.open).toBe(false);
+      expect(popoverService.open).toBe(false);
     });
 
     it('should not hide the tooltip as the mouse moves from the trigger to the content', async () => {
-      toggleService.open = true;
+      popoverService.open = true;
 
       mouseService.onMouseLeaveTrigger();
       mouseService.onMouseEnterContent();
-      await delay();
+      await delay(waitTimeMS);
 
-      expect(toggleService.open).toBe(true);
+      expect(popoverService.open).toBe(true);
     });
   });
 }

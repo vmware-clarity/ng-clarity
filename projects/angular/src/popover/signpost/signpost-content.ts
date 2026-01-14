@@ -7,40 +7,27 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   DOCUMENT,
   ElementRef,
+  HostBinding,
+  HostListener,
   Inject,
-  Injector,
   Input,
   OnDestroy,
   Optional,
   PLATFORM_ID,
+  ViewChild,
 } from '@angular/core';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrCommonStringsService } from '../../utils';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { AbstractPopover } from '../common/abstract-popover';
+import { ClrPopoverContent, ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
-import { SIGNPOST_POSITIONS } from './signpost-positions';
-
-// aka where the arrow / pointer is at in relation to the anchor
-const POSITIONS: string[] = [
-  'top-left',
-  'top-middle',
-  'top-right',
-  'right-top',
-  'right-middle', // default
-  'right-bottom',
-  'bottom-right',
-  'bottom-middle',
-  'bottom-left',
-  'left-bottom',
-  'left-middle',
-  'left-top',
-];
+import { ClrPopoverPosition, ClrPopoverType, SIGNPOST_POSITIONS } from '../common/utils/popover-positions';
 
 @Component({
   selector: 'clr-signpost-content',
@@ -50,6 +37,7 @@ const POSITIONS: string[] = [
       <div class="signpost-content-header">
         <ng-content select="clr-signpost-title"></ng-content>
         <button
+          #closeButton
           type="button"
           [attr.aria-label]="signpostCloseAriaLabel || commonStrings.keys.signpostClose"
           class="signpost-action close"
@@ -64,38 +52,43 @@ const POSITIONS: string[] = [
       </div>
     </div>
   `,
-  host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
+  host: {
+    '[class.signpost-content]': 'true',
+    '[id]': 'signpostContentId',
+    role: 'dialog',
+  },
   standalone: false,
+  hostDirectives: [ClrPopoverContent],
 })
-export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
+export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;
+  @ViewChild('closeButton', { read: ElementRef }) closeButton: ElementRef<HTMLButtonElement>;
 
   signpostContentId = uniqueIdFactory();
 
-  private document: Document;
-  private _position: string;
+  private _position = ClrPopoverPosition.RIGHT_MIDDLE;
 
   constructor(
-    injector: Injector,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef<HTMLElement>,
+    private element: ElementRef,
     public commonStrings: ClrCommonStringsService,
     signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
     @Inject(PLATFORM_ID) private platformId: any,
-    @Inject(DOCUMENT) document: any
+    @Inject(DOCUMENT) private document: Document,
+    private popoverService: ClrPopoverService,
+    private popoverContent: ClrPopoverContent
   ) {
-    super(injector, parentHost);
     if (!parentHost) {
       throw new Error('clr-signpost-content should only be used inside of a clr-signpost');
     }
     // Defaults
-    this.position = 'right-middle';
-    this.closeOnOutsideClick = true;
     signpostIdService.setId(this.signpostContentId);
 
-    this.document = document;
+    popoverService.panelClass.push('clr-signpost-container');
+    popoverContent.contentType = ClrPopoverType.SIGNPOST;
   }
 
   /*********
@@ -123,7 +116,7 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
    * I think of it as follows for 'top-left' -> CONTAINER_SIDE-SIDE_POSITION. In this case CONTAINER_SIDE is 'top'
    * meaning the top of the trigger icon (above the icon that hides/shows) the ClrSignpostContent. And, SIDE_POSITION
    * is 'left' meaning two things: 1) the ClrSignpostContent container extends to the left and 2) the 'arrow/pointer'
-   * linking the SingpostContent to the trigger points down at the horizontal center of the trigger icon.
+   * linking the SignpostContent to the trigger points down at the horizontal center of the trigger icon.
    *
    * @param newPosition
    */
@@ -131,22 +124,19 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
   get position() {
     return this._position;
   }
-  set position(position: string) {
-    // Ugh
-    this.renderer.removeClass(this.el.nativeElement, this.position);
-    if (position && POSITIONS.indexOf(position) > -1) {
-      this._position = position;
-    } else {
-      this._position = 'right-middle';
-    }
-    // Ugh
-    this.renderer.addClass(this.el.nativeElement, this.position);
+  set position(position: string | ClrPopoverPosition) {
+    const posIndex = SIGNPOST_POSITIONS.indexOf(position as ClrPopoverPosition);
+    this._position = position && posIndex > -1 ? SIGNPOST_POSITIONS[posIndex] : ClrPopoverPosition.RIGHT_MIDDLE;
 
-    const setPosition = SIGNPOST_POSITIONS[this.position];
-    this.anchorPoint = setPosition.anchorPoint;
-    this.popoverPoint = setPosition.popoverPoint;
-    this.popoverOptions.offsetY = setPosition.offsetY;
-    this.popoverOptions.offsetX = setPosition.offsetX;
+    this.popoverContent.contentAt = this._position;
+  }
+
+  /*
+   * Fallback to hide when *clrIfOpen is not being used
+   */
+  @HostBinding('class.is-off-screen')
+  get isOffScreen() {
+    return !this.popoverService.open;
   }
 
   /**********
@@ -156,14 +146,38 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
    *
    */
   close() {
-    this.toggleService.open = false;
+    this.popoverService.open = false;
   }
 
-  override ngOnDestroy() {
-    super.ngOnDestroy();
+  ngAfterViewInit(): void {
+    this.popoverService.closeButtonRef = this.closeButton;
+    this.closeButton.nativeElement.focus();
+  }
 
-    if (isPlatformBrowser(this.platformId) && this.el.nativeElement.contains(this.document.activeElement)) {
+  @HostListener('keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Tab') {
+      const focusableElements = this.getFocusableElements(this.element.nativeElement);
+
+      // take the first element when SHIFT+TAB or last when only TAB
+      const focusableElementIndex = event.shiftKey ? 0 : focusableElements.length - 1;
+
+      if (document.activeElement === focusableElements[focusableElementIndex]) {
+        event.preventDefault();
+        this.popoverService.open = false;
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    if (isPlatformBrowser(this.platformId) && this.element.nativeElement.contains(this.document.activeElement)) {
       this.signpostFocusManager.focusTrigger();
     }
+  }
+
+  private getFocusableElements(element: HTMLElement): HTMLElement[] {
+    return Array.from(
+      element.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+    ) as HTMLElement[];
   }
 }

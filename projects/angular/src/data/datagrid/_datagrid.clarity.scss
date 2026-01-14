@@ -29,6 +29,7 @@
   box-shadow: datagrid-variables.$clr-datagrid-popovers-box-shadow;
 }
 @mixin datagrid-action-overflow-appearance {
+  position: relative;
   background: datagrid-variables.$clr-datagrid-popover-bg-color;
   padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
   margin-left: tokens.$cds-global-space-4;
@@ -1426,24 +1427,12 @@
   .datagrid-row-detail-open {
     position: relative;
 
-    &::before {
-      content: '';
-      display: inline-block;
-      position: absolute;
-      border: tokens.$cds-global-space-5 solid transparent;
-      border-right-color: tables-variables.$clr-table-border-color;
-      top: tables-variables.$clr-table-cell-vertical-padding;
-      right: 0;
-    }
+    &:not(:hover) {
+      background-color: datagrid-variables.$clr-datagrid-detail-pane-open-row-bg-color;
 
-    &::after {
-      content: '';
-      display: inline-block;
-      position: absolute;
-      border: tokens.$cds-global-space-5 solid transparent;
-      border-right-color: datagrid-variables.$clr-datagrid-popover-bg-color;
-      top: tables-variables.$clr-table-cell-vertical-padding;
-      right: calc(-1 * tokens.$cds-global-space-2);
+      .datagrid-row-sticky {
+        background-color: datagrid-variables.$clr-datagrid-detail-pane-open-row-bg-color;
+      }
     }
   }
 
@@ -1733,6 +1722,28 @@
 
   .datagrid-action-overflow {
     @include datagrid-action-overflow-appearance();
+  }
+
+  .right-bottom .datagrid-action-overflow {
+    &::before {
+      top: auto;
+      bottom: tokens.$cds-global-space-4;
+    }
+
+    &::after {
+      top: auto;
+      bottom: calc(tokens.$cds-global-space-4 + tokens.$cds-global-space-1);
+    }
+  }
+
+  .right-top .datagrid-action-overflow {
+    &::before {
+      top: tokens.$cds-global-space-6;
+    }
+
+    &::after {
+      top: tokens.$cds-global-space-6;
+    }
   }
 
   /* END Datagrid Smart Popover Content Styles

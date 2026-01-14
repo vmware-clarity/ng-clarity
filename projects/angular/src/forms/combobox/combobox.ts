@@ -36,13 +36,8 @@ import { ClrOptions } from './options';
 import { ComboboxContainerService } from './providers/combobox-container.service';
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
-import { ClrAlignment } from '../../popover/common/enums/alignment.enum';
-import { ClrAxis } from '../../popover/common/enums/axis.enum';
-import { ClrSide } from '../../popover/common/enums/side.enum';
-import { ClrPopoverPosition } from '../../popover/common/interfaces/popover-position.interface';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
-import { ClrPopoverPositionService } from '../../popover/common/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
+import { ClrPopoverPosition, ClrPopoverType } from '../../popover/common/utils/popover-positions';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
@@ -76,7 +71,7 @@ export class ClrCombobox<T>
   @Input('placeholder') placeholder = '';
 
   @Output('clrInputChange') clrInputChange = new EventEmitter<string>(false);
-  @Output('clrOpenChange') clrOpenChange = this.toggleService.openChange;
+  @Output('clrOpenChange') clrOpenChange = this.popoverService.openChange;
 
   /**
    * This output should be used to set up a live region using aria-live and populate it with updates that reflect each combobox change.
@@ -88,16 +83,12 @@ export class ClrCombobox<T>
   @ContentChild(ClrOptionSelected) optionSelected: ClrOptionSelected<T>;
 
   focused = false;
-  focusedPill: any;
 
-  smartPosition: ClrPopoverPosition = {
-    axis: ClrAxis.VERTICAL,
-    side: ClrSide.AFTER,
-    anchor: ClrAlignment.START,
-    content: ClrAlignment.START,
-  };
+  popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
 
   protected override index = 1;
+
+  protected popoverType = ClrPopoverType.DROPDOWN;
 
   @ContentChild(ClrOptions) private options: ClrOptions<T>;
 
@@ -115,8 +106,7 @@ export class ClrCombobox<T>
     protected override el: ElementRef<HTMLElement>,
     public optionSelectionService: OptionSelectionService<T>,
     public commonStrings: ClrCommonStringsService,
-    private toggleService: ClrPopoverToggleService,
-    private positionService: ClrPopoverPositionService,
+    private popoverService: ClrPopoverService,
     @Optional() private containerService: ComboboxContainerService,
     @Inject(PLATFORM_ID) private platformId: any,
     private focusHandler: ComboboxFocusHandler<T>,
@@ -126,6 +116,7 @@ export class ClrCombobox<T>
     if (control) {
       control.valueAccessor = this;
     }
+
     // default to SingleSelectComboboxModel, in case the optional input [ClrMulti] isn't used
     optionSelectionService.selectionModel = new SingleSelectComboboxModel<T>();
     this.updateControlValue();
@@ -155,7 +146,7 @@ export class ClrCombobox<T>
   }
 
   // Override the id of WrappedFormControl, as we want to move it to the embedded input.
-  // Otherwise the label/component connection does not work and screen readers do not read the label.
+  // Otherwise, the label/component connection does not work and screen readers do not read the label.
   override get id() {
     return this.controlIdService.id + '-combobox';
   }
@@ -169,7 +160,7 @@ export class ClrCombobox<T>
   set searchText(text: string) {
     // if input text has changed since last time, fire a change event so application can react to it
     if (text !== this._searchText) {
-      if (this.toggleService.open) {
+      if (this.popoverService.open) {
         this.optionSelectionService.showAllOptions = false;
       }
       this._searchText = text;
@@ -182,7 +173,7 @@ export class ClrCombobox<T>
   }
 
   get openState(): boolean {
-    return this.toggleService.open;
+    return this.popoverService.open;
   }
 
   get multiSelectModel(): T[] {
@@ -264,8 +255,11 @@ export class ClrCombobox<T>
 
   loadingStateChange(state: ClrLoadingState): void {
     this.optionSelectionService.loading = state === ClrLoadingState.LOADING;
-    this.positionService.realign();
+
     if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.popoverService?.resetPositions();
+      });
       this.focusFirstActive();
     }
   }
@@ -340,7 +334,7 @@ export class ClrCombobox<T>
     }
     this.focusHandler.focusInput();
     if (this.editable || (!this.editable && this.trigger.nativeElement.contains(event.target))) {
-      this.toggleService.toggleWithEvent(event);
+      this.popoverService.toggleWithEvent(event);
     }
   }
 
@@ -348,18 +342,21 @@ export class ClrCombobox<T>
     this.subscriptions.push(
       this.optionSelectionService.selectionChanged.subscribe((newSelection: ComboboxModel<T>) => {
         this.updateInputValue(newSelection);
-        if (this.multiSelect) {
-          this.positionService.realign();
-        }
         if (!this.multiSelect && newSelection && !newSelection.isEmpty()) {
-          this.toggleService.open = false;
+          this.popoverService.open = false;
         }
         this.updateControlValue();
+
+        if (this.multiSelect) {
+          setTimeout(() => {
+            this.popoverService?.updatePosition();
+          });
+        }
       })
     );
 
     this.subscriptions.push(
-      this.toggleService.openChange.subscribe(open => {
+      this.popoverService.openChange.subscribe(open => {
         if (this.editable && !this.multiSelect) {
           if (this.searchText) {
             this.optionSelectionService.showAllOptions = false;
@@ -376,20 +373,6 @@ export class ClrCombobox<T>
           this.searchText = '';
         } else {
           this.searchText = this.getDisplayNames(this.optionSelectionService.selectionModel.model)[0] || '';
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.toggleService.popoverAligned.subscribe(popoverNode => {
-        // When used outside a combobox container
-        if (!this.containerService) {
-          return;
-        }
-        const popover: HTMLElement = popoverNode as HTMLElement;
-        // Update position if popover hides the label
-        if (popover.getBoundingClientRect().top < this.el.nativeElement.getBoundingClientRect().top) {
-          this.renderer.setStyle(popoverNode, 'top', `${popover.offsetTop + this.containerService.labelOffset}px`);
         }
       })
     );

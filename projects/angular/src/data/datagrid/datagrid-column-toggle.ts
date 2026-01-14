@@ -9,16 +9,12 @@ import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { columnToggleTrackByFn } from './datagrid-column-toggle-trackby';
+import { ClrCommonStringsService } from '../../utils';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnState } from './interfaces/column-state.interface';
 import { ColumnsService } from './providers/columns.service';
-import { ClrAlignment } from '../../popover/common/enums/alignment.enum';
-import { ClrAxis } from '../../popover/common/enums/axis.enum';
-import { ClrSide } from '../../popover/common/enums/side.enum';
-import { ClrPopoverPosition } from '../../popover/common/interfaces/popover-position.interface';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover/common';
+import { ClrPopoverPosition, ClrPopoverType } from '../../popover/common/utils/popover-positions';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Component({
@@ -42,13 +38,19 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
       [attr.aria-label]="commonStrings.keys.showColumnsMenuDescription"
       [id]="popoverId"
       cdkTrapFocus
-      *clrPopoverContent="openState; at: smartPosition; outsideClickToClose: true; scrollToClose: true"
+      *clrPopoverContent="
+        openState;
+        at: popoverPosition;
+        type: popoverType;
+        outsideClickToClose: true;
+        scrollToClose: true
+      "
     >
       <div class="switch-header">
         <div class="clr-sr-only" tabindex="-1" #allSelected>{{ commonStrings.keys.allColumnsSelected }}</div>
         <h2>{{ commonStrings.keys.showColumns }}</h2>
         <button
-          class="btn btn-sm btn-link toggle-switch-close-button"
+          class="btn btn-sm btn-link-neutral toggle-switch-close-button"
           clrPopoverCloseButton
           type="button"
           [attr.aria-label]="commonStrings.keys.close"
@@ -89,12 +91,8 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   openState = false;
 
   // Smart Popover
-  smartPosition: ClrPopoverPosition = {
-    axis: ClrAxis.VERTICAL,
-    side: ClrSide.BEFORE,
-    anchor: ClrAlignment.START,
-    content: ClrAlignment.START,
-  };
+  popoverPosition = ClrPopoverPosition.TOP_LEFT;
+  popoverType = ClrPopoverType.DROPDOWN;
 
   // Without tracking the checkboxes get rerendered on model update, which leads
   // to loss of focus after checkbox toggle.
@@ -108,9 +106,9 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   constructor(
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
-    popoverToggleService: ClrPopoverToggleService
+    popoverService: ClrPopoverService
   ) {
-    this.subscription = popoverToggleService.openChange.subscribe(change => (this.openState = change));
+    this.subscription = popoverService.openChange.subscribe(change => (this.openState = change));
   }
 
   get allColumnsVisible(): boolean {

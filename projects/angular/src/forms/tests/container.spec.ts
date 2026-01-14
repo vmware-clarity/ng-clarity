@@ -10,6 +10,7 @@ import { FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { ClrIcon } from '../../icon';
+import { ClrPopoverContent } from '../../popover';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { CONTROL_STATE } from '../common/if-control-state/control-state.enum';
 import { ControlIdService } from '../common/providers/control-id.service';
@@ -24,7 +25,7 @@ export function ContainerNoLabelSpec(testContainer, testControl, testComponent):
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
+        imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ClrPopoverContent],
         declarations: [testContainer, testControl, testComponent],
         providers: [NgControl, NgControlService, LayoutService, MarkControlService],
       });
@@ -79,7 +80,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     }
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ReactiveFormsModule],
+        imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ReactiveFormsModule, ClrPopoverContent],
         declarations: [testContainer, ...directives, testComponent],
         providers: [
           NgControl,

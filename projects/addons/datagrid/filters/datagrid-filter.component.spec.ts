@@ -6,14 +6,14 @@
  */
 
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { ClrInputModule, ClrPopoverToggleService } from '@clr/angular';
+import { ClrInputModule, ClrPopoverService } from '@clr/angular';
 import { Observable, of } from 'rxjs';
 
 import { DatagridFilterComponent } from './datagrid-filter.component';
 import { CaseInsensitiveContainsStringFilter } from './string-filters';
 import { DatagridStrings } from '../i18n/datagrid-strings.service';
 
-class ClrPopoverToggleServiceMock {
+class ClrPopoverServiceMock {
   get openChange(): Observable<boolean> {
     return of(true);
   }
@@ -39,8 +39,8 @@ describe('DatagridFilterComponent', () => {
       providers: [
         { provide: DatagridStrings, useValue: {} },
         {
-          provide: ClrPopoverToggleService,
-          useClass: ClrPopoverToggleServiceMock,
+          provide: ClrPopoverService,
+          useClass: ClrPopoverServiceMock,
         },
         {
           provide: CaseInsensitiveContainsStringFilter,
@@ -52,7 +52,7 @@ describe('DatagridFilterComponent', () => {
 
   beforeEach(function (this: any) {
     this.fixture = TestBed.createComponent(DatagridFilterComponent);
-    this.clrPopoverToggleService = TestBed.inject(ClrPopoverToggleService);
+    this.clrPopoverService = TestBed.inject(ClrPopoverService);
     this.caseInsensitiveContainsStringFilter = TestBed.inject(CaseInsensitiveContainsStringFilter);
   });
 

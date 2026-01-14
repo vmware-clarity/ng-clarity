@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDatagridModule, ClrModalModule } from '@clr/angular';
+import { ClrDatagridModule, ClrModalModule, ClrSignpostModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
@@ -15,7 +15,7 @@ export default {
   title: 'Modal/Nested Datagrid Detail',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrModalModule, ClrDatagridModule],
+      imports: [...CommonModules, ClrModalModule, ClrSignpostModule, ClrDatagridModule],
     }),
   ],
   argTypes: {
@@ -50,6 +50,9 @@ const NestedDatagridTemplate: StoryFn = args => ({
       <clr-modal [(clrModalOpen)]="modalOpen">
         <h3 class="modal-title">Modal</h3>
         <div class="modal-body">
+          <clr-signpost>
+            <clr-signpost-content>Lorem Ipsum Outside datagrid signpost</clr-signpost-content>
+          </clr-signpost>
           <clr-datagrid *ngIf="modalOpen">
             <clr-dg-column [style.width.px]="250">Name</clr-dg-column>
             <clr-dg-column [style.width.px]="250">Symbol</clr-dg-column>
@@ -63,7 +66,14 @@ const NestedDatagridTemplate: StoryFn = args => ({
               </clr-dg-action-overflow>
               <clr-dg-cell>{{ element.name }}</clr-dg-cell>
               <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
-              <clr-dg-cell>{{ element.number }}</clr-dg-cell>
+              <clr-dg-cell>
+                {{ element.number }}
+                @if (index === 3) {
+                  <clr-signpost>
+                    <clr-signpost-content>Lorem Ipsum Inside datagrid signpost</clr-signpost-content>
+                  </clr-signpost>
+                }
+              </clr-dg-cell>
               <clr-dg-cell class="electronegativity-container">
                 {{ element.electronegativity }}
                 <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>

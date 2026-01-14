@@ -11,6 +11,7 @@ import { ComboboxFocusHandler, OptionData as OptionProxy } from './providers/com
 import { OptionSelectionService } from './providers/option-selection.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
+
 @Component({
   selector: 'clr-option',
   template: `

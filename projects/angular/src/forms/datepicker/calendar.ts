@@ -8,6 +8,7 @@
 import { Component, ElementRef, HostListener, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ClrPopoverService } from '../../popover';
 import { DateRangeInput } from './interfaces/date-range.interface';
 import { ClrDayOfWeek } from './interfaces/day-of-week.interface';
 import { CalendarViewModel } from './model/calendar-view.model';
@@ -19,7 +20,6 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { NO_OF_DAYS_IN_A_WEEK } from './utils/constants';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
 
@@ -43,7 +43,7 @@ export class ClrCalendar implements OnDestroy {
     private _dateIOService: DateIOService,
     private _elRef: ElementRef<HTMLElement>,
     private _dateFormControlService: DateFormControlService,
-    private _toggleService: ClrPopoverToggleService
+    private _popoverService: ClrPopoverService
   ) {
     this.generateCalendarView();
     this.initializeSubscriptions();
@@ -168,7 +168,7 @@ export class ClrCalendar implements OnDestroy {
         this._dateNavigationService.selectedEndDay) ||
       (!this._dateNavigationService.isRangePicker && this._dateNavigationService.selectedDay)
     ) {
-      this._toggleService.open = false;
+      this._popoverService.open = false;
     }
   }
 

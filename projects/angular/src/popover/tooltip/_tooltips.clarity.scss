@@ -4,9 +4,9 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
 @use 'sass:map';
 @use 'sass:meta';
+@use 'sass:list';
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 @use '../../button/variables.buttons' as button-variables;
 @use '../../styles/mixins';
@@ -14,6 +14,73 @@
 @use 'variables.tooltip' as tooltip-variables;
 @use '../../styles/variables/variables.density' as density;
 
+$tooltip-configs: (
+  'top-right': (
+    top,
+    right,
+  ),
+  'top-left': (
+    top,
+    left,
+  ),
+  'bottom-right': (
+    bottom,
+    right,
+  ),
+  'bottom-left': (
+    bottom,
+    left,
+  ),
+  'right': (
+    right,
+    null,
+  ),
+  'left': (
+    left,
+    null,
+  ),
+);
+
+@mixin generate-tooltip-styles($isCss: true) {
+  $prefix: if($isCss, 'tooltip-', '');
+
+  @each $name, $args in $tooltip-configs {
+    // Destructure arguments
+    $dirA: list.nth($args, 1);
+    $dirB: list.nth($args, 2);
+
+    // Generate Selector
+    &.#{$prefix}#{$name} > .tooltip-content {
+      // Logic: If second direction exists, it's vertical. Otherwise, horizontal.
+      @if $dirB {
+        @include vertical-tooltip-generator($dirA, $dirB, $isCss);
+      } @else {
+        @include horizontal-tooltip-generator($dirA, $isCss);
+      }
+    }
+  }
+}
+@mixin tooltip-sizes {
+  &.tooltip-xs > .tooltip-content,
+  .tooltip-content.tooltip-xs {
+    width: tokens.$cds-global-space-14;
+  }
+
+  &.tooltip-sm > .tooltip-content,
+  .tooltip-content.tooltip-sm {
+    width: mixins.baselinePx(120);
+  }
+
+  &.tooltip-md > .tooltip-content,
+  .tooltip-content.tooltip-md {
+    width: mixins.baselinePx(240);
+  }
+
+  &.tooltip-lg > .tooltip-content,
+  .tooltip-content.tooltip-lg {
+    width: mixins.baselinePx(360);
+  }
+}
 @mixin common-tooltip-styles {
   margin: 0; //Resetting any margin that might be applied to span/div elements inside forms
   width: mixins.baselinePx(240);
@@ -29,19 +96,46 @@
     )
   );
 }
-@mixin vertical-tooltip-generator($dirA: top, $dirB: right) {
+@mixin common-tooltip-content-styles {
+  //Both visibility and opacity are needed. Opacity handles the transition.
+  //And visibility makes sure that the user cant select the text in the tooltip-content
+  //when hidden
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s linear;
+  white-space: normal;
+  z-index: map.get(variables.$clr-layers, tooltips);
+
+  // This allows a user to hover their mouse over the tooltip to stop it from hiding
+  &::after {
+    position: absolute;
+    inset: -20px;
+    content: '';
+    // make sure this is underneath the tooltip so that user can use their mouse to select text
+    z-index: -1;
+  }
+
+  // color overrides for components and HTML elements
+  li {
+    color: inherit;
+  }
+}
+@mixin vertical-tooltip-generator($dirA: top, $dirB: right, $plain: false) {
   $oppA: map.get(mixins.$opp-directions, $dirA);
   $oppB: map.get(mixins.$opp-directions, $dirB);
 
   @include common-tooltip-styles;
 
-  position: absolute;
-  #{$dirA}: auto;
-  #{$oppA}: 100%;
-  #{$oppB}: 50%;
-  #{$dirB}: auto;
+  @if $plain {
+    position: absolute;
+    #{$dirA}: auto;
+    #{$oppA}: 100%;
+    #{$oppB}: 50%;
+    #{$dirB}: auto;
+    margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
+  }
+
   border-#{$oppA}-#{$oppB}-radius: 0;
-  margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
 
   &::before {
     content: '';
@@ -57,19 +151,21 @@
     border-#{$dirB}: tooltip-variables.$clr-tooltip-arrow-width solid transparent;
   }
 }
-@mixin horizontal-tooltip-generator($dirA: right) {
+@mixin horizontal-tooltip-generator($dirA: right, $plain: false) {
   $oppA: map.get(mixins.$opp-directions, $dirA);
-
-  position: absolute;
-  #{$dirA}: auto;
-  #{$oppA}: 100%;
-  top: 50%;
-  bottom: auto;
 
   @include common-tooltip-styles;
 
+  @if $plain {
+    position: absolute;
+    #{$dirA}: auto;
+    #{$oppA}: 100%;
+    top: 50%;
+    bottom: auto;
+    margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
+  }
+
   border-top-#{$oppA}-radius: 0;
-  margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
 
   &::before {
     content: '';
@@ -95,28 +191,10 @@
     overflow: visible;
 
     & > .tooltip-content {
-      //Both visibility and opacity are needed. Opacity handles the transition.
-      //And visibility makes sure that the user cant select the text in the tooltip-content
-      //when hidden
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.3s linear;
-      white-space: normal;
-      z-index: map.get(variables.$clr-layers, tooltips);
+      @include common-tooltip-content-styles;
 
-      // This allows a user to hover their mouse over the tooltip to stop it from hiding
-      &::after {
-        position: absolute;
-        inset: -20px;
-        content: '';
-        // make sure this is underneath the tooltip so that user can use their mouse to select text
-        z-index: -1;
-      }
-
-      // color overrides for components and HTML elements
-      li {
-        color: inherit;
-      }
+      //Default Tooltip direction - Top Right
+      @include vertical-tooltip-generator(top, right, true);
     }
 
     &:hover > .tooltip-content,
@@ -141,58 +219,10 @@
     }
 
     //Tooltip directions
-    //Default Tooltip - Top Right
-    & > .tooltip-content,
-    &.tooltip-top-right > .tooltip-content,
-    .tooltip-content.tooltip-top-right {
-      @include vertical-tooltip-generator(top, right);
-    }
-
-    &.tooltip-top-left > .tooltip-content,
-    .tooltip-content.tooltip-top-left {
-      @include vertical-tooltip-generator(top, left);
-    }
-
-    &.tooltip-bottom-right > .tooltip-content,
-    .tooltip-content.tooltip-bottom-right {
-      @include vertical-tooltip-generator(bottom, right);
-    }
-
-    &.tooltip-bottom-left > .tooltip-content,
-    .tooltip-content.tooltip-bottom-left {
-      @include vertical-tooltip-generator(bottom, left);
-    }
-
-    &.tooltip-right > .tooltip-content,
-    .tooltip-content.tooltip-right {
-      @include horizontal-tooltip-generator(right);
-    }
-
-    &.tooltip-left > .tooltip-content,
-    .tooltip-content.tooltip-left {
-      @include horizontal-tooltip-generator(left);
-    }
+    @include generate-tooltip-styles();
 
     //Tooltips Size
-    &.tooltip-xs > .tooltip-content,
-    .tooltip-content.tooltip-xs {
-      width: tokens.$cds-global-space-14;
-    }
-
-    &.tooltip-sm > .tooltip-content,
-    .tooltip-content.tooltip-sm {
-      width: mixins.baselinePx(120);
-    }
-
-    &.tooltip-md > .tooltip-content,
-    .tooltip-content.tooltip-md {
-      width: mixins.baselinePx(240);
-    }
-
-    &.tooltip-lg > .tooltip-content,
-    .tooltip-content.tooltip-lg {
-      width: mixins.baselinePx(360);
-    }
+    @include tooltip-sizes();
   }
 
   //Override tooltip margins values for different components.
@@ -233,5 +263,30 @@
   //the tooltip component faces.
   .tooltip-trigger:focus + .tooltip-content {
     visibility: visible;
+  }
+
+  //Angular Tooltip Moved to new container.
+  .clr-tooltip-container {
+    text-align: left;
+    overflow: visible;
+    display: inline-block;
+
+    & > .tooltip-content {
+      @include common-tooltip-content-styles;
+
+      display: none;
+      visibility: visible;
+    }
+
+    &.cdk-overlay-pane > .tooltip-content {
+      display: block;
+      opacity: 1;
+    }
+
+    //Tooltip directions
+    @include generate-tooltip-styles(false);
+
+    //Tooltips Size
+    @include tooltip-sizes();
   }
 }

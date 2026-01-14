@@ -9,10 +9,10 @@ import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 import { ClrStopEscapePropagationDirective } from './stop-escape-propagation.directive';
-import { ClrModal } from '../../modal/modal';
-import { ClrModalModule } from '../../modal/modal.module';
+import { ClrModal } from '../../modal';
+import { ClrModalModule } from '../../modal';
+import { ClrPopoverService } from './providers/popover.service';
 import { Keys } from '../../utils/enums/keys.enum';
 
 export default function (): void {
@@ -40,17 +40,17 @@ export default function (): void {
 
     it('should allow a nested popover to be closed via the escape key', async () => {
       fixture.componentInstance.modalOpen = true;
-      fixture.componentInstance.popoverHostComponent.toggleService.open = true;
+      fixture.componentInstance.popoverHostComponent.popoverService.open = true;
       fixture.detectChanges();
 
       await pressEscapeKey(fixture, fixture.componentInstance.popoverHostComponent.elementRef.nativeElement);
 
-      expect(fixture.componentInstance.popoverHostComponent.toggleService.open).toBe(false);
+      expect(fixture.componentInstance.popoverHostComponent.popoverService.open).toBe(false);
     });
 
     it('should prevent a modal from being closed when escape is pressed on a nested popover', async () => {
       fixture.componentInstance.modalOpen = true;
-      fixture.componentInstance.popoverHostComponent.toggleService.open = true;
+      fixture.componentInstance.popoverHostComponent.popoverService.open = true;
       fixture.detectChanges();
 
       await pressEscapeKey(fixture, fixture.componentInstance.popoverHostComponent.elementRef.nativeElement);
@@ -71,19 +71,19 @@ async function pressEscapeKey(fixture: ComponentFixture<TestComponent>, element:
 @Component({
   selector: 'app-test-popover-host',
   template: '',
-  providers: [ClrPopoverToggleService],
+  providers: [ClrPopoverService],
   hostDirectives: [ClrStopEscapePropagationDirective],
   standalone: false,
 })
 class TestPopoverHostComponent {
   constructor(
     readonly elementRef: ElementRef<HTMLElement>,
-    readonly toggleService: ClrPopoverToggleService
+    readonly popoverService: ClrPopoverService
   ) {}
 
   @HostListener('keydown.escape', ['$event'])
   onEscapeKey(event) {
-    this.toggleService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
   }
 }
 
