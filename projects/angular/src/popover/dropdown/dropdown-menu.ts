@@ -10,8 +10,8 @@ import {
   Component,
   ContentChildren,
   ElementRef,
+  HostBinding,
   Inject,
-  Injector,
   Input,
   OnDestroy,
   Optional,
@@ -20,10 +20,10 @@ import {
 } from '@angular/core';
 
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { AbstractPopover } from '../common/abstract-popover';
-import { Point } from '../common/popover';
+import { ClrPopoverContent, ClrPopoverService } from '../common';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
+import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS } from '../common/utils/popover-positions';
 
 @Component({
   selector: 'clr-dropdown-menu',
@@ -33,93 +33,68 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
     '[attr.role]': '"menu"',
   },
   standalone: false,
+  hostDirectives: [ClrPopoverContent],
 })
-export class ClrDropdownMenu extends AbstractPopover implements AfterContentInit, OnDestroy {
+export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
   @ContentChildren(FocusableItem) items: QueryList<FocusableItem>;
 
-  private focusHandler: DropdownFocusHandler;
-
   constructor(
-    injector: Injector,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef<HTMLElement>,
     @Optional()
     @SkipSelf()
     nested: ClrDropdownMenu,
-    focusHandler: DropdownFocusHandler
+    private focusHandler: DropdownFocusHandler,
+    private elementRef: ElementRef,
+    private popoverService: ClrPopoverService,
+    private popoverContent: ClrPopoverContent
   ) {
     if (!parentHost) {
       throw new Error('clr-dropdown-menu should only be used inside of a clr-dropdown');
     }
-    super(injector, parentHost);
-    if (!nested) {
-      // Default positioning for normal dropdown is bottom-left
-      this.anchorPoint = Point.BOTTOM_LEFT;
-      this.popoverPoint = Point.LEFT_TOP;
-    } else {
-      // Default positioning for nested dropdown is right-top
-      this.anchorPoint = Point.RIGHT_TOP;
-      this.popoverPoint = Point.LEFT_TOP;
-    }
-    this.popoverOptions.allowMultipleOpen = true;
-    this.popoverOptions.ignoreGlobalESCListener = true;
-    this.closeOnOutsideClick = true;
-    this.focusHandler = focusHandler;
+
+    popoverContent.scrollToClose = true;
+
+    popoverContent.contentType = ClrPopoverType.DROPDOWN;
+
+    popoverContent.contentAt = nested ? ClrPopoverPosition.RIGHT_TOP : ClrPopoverPosition.BOTTOM_LEFT;
+
+    popoverService.panelClass.push('clr-dropdown-container');
+  }
+
+  /*
+   * Fallback to hide when *clrIfOpen is not being used
+   */
+  @HostBinding('class.is-off-screen')
+  get isOffScreen() {
+    return !this.popoverService.open;
   }
 
   @Input('clrPosition')
-  set position(position: string) {
-    // set the popover values based on menu position
-    switch (position) {
-      case 'top-right':
-        this.anchorPoint = Point.TOP_RIGHT;
-        this.popoverPoint = Point.RIGHT_BOTTOM;
-        break;
-      case 'top-left':
-        this.anchorPoint = Point.TOP_LEFT;
-        this.popoverPoint = Point.LEFT_BOTTOM;
-        break;
-      case 'bottom-right':
-        this.anchorPoint = Point.BOTTOM_RIGHT;
-        this.popoverPoint = Point.RIGHT_TOP;
-        break;
-      case 'bottom-left':
-        this.anchorPoint = Point.BOTTOM_LEFT;
-        this.popoverPoint = Point.LEFT_TOP;
-        break;
-      case 'right-top':
-        this.anchorPoint = Point.RIGHT_TOP;
-        this.popoverPoint = Point.LEFT_TOP;
-        break;
-      case 'right-bottom':
-        this.anchorPoint = Point.RIGHT_BOTTOM;
-        this.popoverPoint = Point.LEFT_BOTTOM;
-        break;
-      case 'left-top':
-        this.anchorPoint = Point.LEFT_TOP;
-        this.popoverPoint = Point.RIGHT_TOP;
-        break;
-      case 'left-bottom':
-        this.anchorPoint = Point.LEFT_BOTTOM;
-        this.popoverPoint = Point.RIGHT_BOTTOM;
-        break;
-      default:
-        this.anchorPoint = Point.BOTTOM_LEFT;
-        this.popoverPoint = Point.LEFT_TOP;
-        break;
+  set position(position: string | ClrPopoverPosition) {
+    if (!position) {
+      return;
     }
+
+    const posIndex = DROPDOWN_POSITIONS.indexOf(position as ClrPopoverPosition);
+
+    if (posIndex === -1) {
+      return;
+    }
+
+    // set the popover values based on menu position
+    this.popoverContent.contentAt = DROPDOWN_POSITIONS[posIndex];
   }
 
   ngAfterContentInit() {
-    this.focusHandler.container = this.el.nativeElement;
+    this.focusHandler.container = this.elementRef.nativeElement;
     this.items.changes.subscribe(() => this.focusHandler.addChildren(this.items.toArray()));
     // I saw this on GitHub as a solution to avoid code duplication because of missed QueryList changes
     this.items.notifyOnChanges();
   }
 
-  override ngOnDestroy() {
-    super.ngOnDestroy();
+  ngOnDestroy() {
     this.focusHandler.resetChildren();
   }
 }

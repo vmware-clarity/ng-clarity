@@ -46,7 +46,7 @@
 >
   @for (col of cols; track colByIndex($index, col)) {
   <clr-dg-column>
-    <ng-container>{{col.name}}</ng-container>
+    <ng-container *clrDgHideableColumn>{{col.name}}</ng-container>
   </clr-dg-column>
   } @if (data.rows; as row) {
   <ng-template
@@ -131,11 +131,16 @@
   class="datagrid-compact"
   style="height: 30rem"
 >
-  <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
-  <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
-  <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
-  <clr-dg-column [clrDgField]="'pokemon.name'" [clrDgSortBy]="pokemonComparator">Pokemon</clr-dg-column>
-  <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column>
+  <clr-dg-column [clrDgField]="'id'"><ng-container *clrDgHideableColumn>User ID</ng-container></clr-dg-column>
+  <clr-dg-column [clrDgField]="'name'"><ng-container *clrDgHideableColumn>Name</ng-container></clr-dg-column>
+  <clr-dg-column [clrDgField]="'creation'"
+    ><ng-container *clrDgHideableColumn>Creation date</ng-container></clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'pokemon'" [clrDgSortBy]="pokemonComparator"
+    ><ng-container *clrDgHideableColumn>Pokemon</ng-container></clr-dg-column
+  >
+  <clr-dg-column [clrDgField]="'color'"><ng-container *clrDgHideableColumn>Favorite color</ng-container></clr-dg-column>
+
   @if (data.users; as user) {
   <ng-template
     clrVirtualScroll

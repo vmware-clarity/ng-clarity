@@ -40,7 +40,7 @@ import { Sort } from './providers/sort';
 import { HIDDEN_COLUMN_CLASS } from './render/constants';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { WrappedColumn } from './wrapped-column';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
+import { ClrPopoverHostDirective } from '../../popover';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 
 @Component({

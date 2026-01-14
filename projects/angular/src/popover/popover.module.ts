@@ -7,9 +7,9 @@
 
 import { NgModule } from '@angular/core';
 
-import { ClrDropdownModule } from './dropdown/dropdown.module';
-import { ClrSignpostModule } from './signpost/signpost.module';
-import { ClrTooltipModule } from './tooltip/tooltip.module';
+import { ClrDropdownModule } from './dropdown';
+import { ClrSignpostModule } from './signpost';
+import { ClrTooltipModule } from './tooltip';
 
 @NgModule({
   exports: [ClrDropdownModule, ClrSignpostModule, ClrTooltipModule],

@@ -10,19 +10,17 @@ import { Subject } from 'rxjs';
 
 import { ClrDatagridFilter } from './datagrid-filter';
 import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
+import { ClrPopoverService } from '../../popover';
+import { ClrCommonStringsService } from '../../utils';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider } from './providers/filters';
 import { Page } from './providers/page';
 import { StateDebouncer } from './providers/state-debouncer.provider';
-import { ClrPopoverEventsService } from '../../popover/common/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../popover/common/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 function cleanPopoverDOM(component: ClrDatagridFilter) {
-  const popoverContent = document.querySelectorAll('.clr-popover-content');
-  popoverContent.forEach(content => document.body.removeChild(content));
+  const popoverContent = document.querySelectorAll('.datagrid-filter');
+  popoverContent.forEach(content => content.remove());
   component.ngOnDestroy();
 }
 
@@ -32,21 +30,14 @@ export default function (): void {
       let filterService: FiltersProvider<number>;
       let filter: TestFilter;
       let component: ClrDatagridFilter<number>;
-      let toggleService: ClrPopoverToggleService;
+      let popoverService: ClrPopoverService;
 
       beforeEach(function () {
         const stateDebouncer = new StateDebouncer();
         filterService = new FiltersProvider(new Page(stateDebouncer), stateDebouncer);
-        toggleService = new ClrPopoverToggleService();
+        popoverService = new ClrPopoverService();
         filter = new TestFilter();
-        component = new ClrDatagridFilter(
-          filterService,
-          new ClrCommonStringsService(),
-          toggleService,
-          'browser' as any,
-          undefined,
-          undefined
-        );
+        component = new ClrDatagridFilter(filterService, new ClrCommonStringsService(), popoverService, undefined);
       });
 
       afterEach(function () {
@@ -79,12 +70,12 @@ export default function (): void {
       // Until we can properly type "this"
       let context: TestContext<ClrDatagridFilter<number>, FullTest>;
       let filter: TestFilter;
-      let toggleService: ClrPopoverToggleService;
+      let popoverService: ClrPopoverService;
 
       beforeEach(function (this: any) {
         filter = new TestFilter();
         context = this.create(ClrDatagridFilter, FullTest, DATAGRID_SPEC_PROVIDERS);
-        toggleService = context.getClarityProvider(ClrPopoverToggleService);
+        popoverService = context.getClarityProvider(ClrPopoverService);
       });
 
       it('receives an input for the filter logic', function () {
@@ -97,10 +88,10 @@ export default function (): void {
         context.testComponent.filter = filter;
         context.testComponent.open = true;
         context.detectChanges();
-        expect(toggleService.open).toBe(true);
+        expect(popoverService.open).toBe(true);
         context.clarityDirective.open = false;
         context.detectChanges();
-        expect(toggleService.open).toBe(false);
+        expect(popoverService.open).toBe(false);
       });
 
       it('registers itself as a CustomFilter provider', function () {
@@ -150,18 +141,18 @@ export default function (): void {
         const openBtn: HTMLButtonElement = context.clarityElement.querySelector('.clr-smart-open-close');
         openBtn.click();
         context.detectChanges();
-        const popoverContent = document.querySelector('.clr-popover-content');
+        const popoverContent = document.querySelector('.datagrid-filter');
         expect(popoverContent.getAttribute('role')).toBe('dialog');
         expect(popoverContent.getAttribute('aria-label')).toBe('Filter dialog');
       });
 
       it('projects content into the dropdown', function () {
         const openBtn: HTMLButtonElement = context.clarityElement.querySelector('.clr-smart-open-close');
-        const prePopoverContent = document.querySelector('.clr-popover-content');
+        const prePopoverContent = document.querySelector('.datagrid-filter');
         expect(prePopoverContent).toBeNull();
         openBtn.click();
         context.detectChanges();
-        const popoverContent = document.querySelector('.clr-popover-content');
+        const popoverContent = document.querySelector('.datagrid-filter');
         expect(popoverContent.textContent.trim()).toMatch('Filter content');
       });
 
@@ -214,7 +205,6 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
       </clr-dg-filter>
     </clr-dg-column>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
   standalone: false,
 })
 class FullTest {

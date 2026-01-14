@@ -7,10 +7,10 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 
+import { ClrPopoverService } from '../common';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpost } from './signpost';
 import { ClrSignpostModule } from './signpost.module';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import {
   expectActiveElementNotToBe,
   expectActiveElementToBe,
@@ -18,9 +18,10 @@ import {
   TestContext,
 } from '../../utils/testing/helpers.spec';
 import { delay } from '../../utils/testing/helpers.spec';
+import { ClrPopoverPosition, SIGNPOST_POSITIONS } from '../common/utils/popover-positions';
 
 interface Context extends TestContext<ClrSignpost, TestDefaultSignpost | TestCustomTriggerSignpost> {
-  toggleService: ClrPopoverToggleService;
+  popoverService: ClrPopoverService;
   triggerButton: HTMLButtonElement;
   contentCloseButton: HTMLButtonElement;
   content: HTMLDivElement;
@@ -34,7 +35,7 @@ export default function (): void {
 
       beforeEach(function (this: Context) {
         this.signpostIdService = this.getClarityProvider(SignpostIdService);
-        this.toggleService = this.getClarityProvider(ClrPopoverToggleService);
+        this.popoverService = this.getClarityProvider(ClrPopoverService);
       });
 
       it('adds the .signpost class to clr-signpost', function (this: Context) {
@@ -48,19 +49,19 @@ export default function (): void {
         // Test we have a trigger
         expect(signpostToggle).not.toBeNull();
 
-        // // Test that content shows
+        // Test that content shows
         signpostToggle.click();
         this.detectChanges();
-        signpostContent = this.hostElement.querySelector('.signpost-content');
+        signpostContent = document.body.querySelector('.clr-signpost-container');
         expect(signpostContent).not.toBeNull();
-        expect(this.toggleService.open).toBe(true);
+        expect(this.popoverService.open).toBe(true);
 
         // Test that content hides again
         signpostToggle.click();
         this.detectChanges();
-        signpostContent = this.hostElement.querySelector('.signpost-content');
+        signpostContent = document.body.querySelector('.clr-signpost-container');
         expect(signpostContent).toBeNull();
-        expect(this.toggleService.open).toBe(false);
+        expect(this.popoverService.open).toBe(false);
       });
 
       it('has a default aria-label on the default trigger', function (this: Context) {
@@ -76,75 +77,100 @@ export default function (): void {
 
         expect(signpostToggle.getAttribute('aria-label')).toBe('custom label');
       });
+
+      // Iterating here on purpose.
+      SIGNPOST_POSITIONS.forEach(signpost => {
+        testPosition(signpost);
+      });
+
+      function testPosition(name: ClrPopoverPosition): void {
+        it('has a ' + name + ' signpost content position', function () {
+          this.hostComponent.position = name;
+          this.detectChanges();
+
+          const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+
+          // Test we have a trigger
+          expect(signpostToggle).not.toBeNull();
+
+          // Test that content shows
+          signpostToggle.click();
+          this.detectChanges();
+
+          const signpostContent = document.body.querySelector('.clr-signpost-container');
+          expect(signpostContent).not.toBeNull();
+          expect(signpostContent.classList).toContain(name);
+        });
+      }
     });
 
     describe('focus management', function () {
       spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule);
 
       beforeEach(function (this: Context) {
-        this.toggleService = this.getClarityProvider(ClrPopoverToggleService);
+        this.popoverService = this.getClarityProvider(ClrPopoverService);
       });
 
       it('should not get focus on trigger initially', function (this: Context) {
         const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
-        this.toggleService.open = false;
+        this.popoverService.open = false;
         this.detectChanges();
         expect(signpostToggle).not.toBeNull();
         expectActiveElementNotToBe(signpostToggle);
       });
 
       it('should not get focus back on trigger if signpost gets closed with outside click on another interactive element', async function (this: Context) {
-        this.toggleService.open = true;
+        this.popoverService.open = true;
         await delay();
         this.detectChanges();
-        expect(this.hostElement.querySelector('.signpost-content')).not.toBeNull();
+        expect(document.body.querySelector('.clr-signpost-container')).not.toBeNull();
 
         // dynamic click doesn't set the focus so here manually focusing first
         this.hostComponent.outsideClickBtn.nativeElement.focus();
         this.hostComponent.outsideClickBtn.nativeElement.click();
         this.detectChanges();
 
-        expect(this.hostElement.querySelector('.signpost-content')).toBeNull();
+        expect(document.body.querySelector('.clr-signpost-container')).toBeNull();
         expectActiveElementToBe(this.hostComponent.outsideClickBtn.nativeElement);
       });
 
       it('should get focus back on trigger if signpost gets closed with outside click on non-interactive element', async function (this: Context) {
-        this.toggleService.open = true;
+        this.popoverService.open = true;
         await delay();
         this.detectChanges();
-        expect(this.hostElement.querySelector('.signpost-content')).not.toBeNull();
+        expect(document.body.querySelector('.clr-signpost-container')).not.toBeNull();
 
         document.body.click();
         this.detectChanges();
 
-        expect(this.hostElement.querySelector('.signpost-content')).toBeNull();
+        expect(document.body.querySelector('.clr-signpost-container')).toBeNull();
         expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
       });
 
       it('should get focus back on trigger if signpost gets closed while focused element inside content', function (this: Context) {
-        this.toggleService.open = true;
+        this.popoverService.open = true;
         this.detectChanges();
 
-        const dummyButton: HTMLElement = this.hostElement.querySelector('.dummy-button');
+        const dummyButton: HTMLElement = document.body.querySelector('.dummy-button');
         dummyButton.focus();
 
-        this.toggleService.open = false;
+        this.popoverService.open = false;
         this.detectChanges();
 
         expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
       });
 
       it('should get focus back on trigger if signpost gets closed with ESC key', function (this: Context) {
-        this.toggleService.open = true;
+        this.popoverService.open = true;
         this.detectChanges();
-        expect(this.hostElement.querySelector('.signpost-content')).not.toBeNull();
+        expect(document.body.querySelector('.clr-signpost-container')).not.toBeNull();
 
         const event: KeyboardEvent = new KeyboardEvent('keydown', { key: 'Escape' });
 
-        document.dispatchEvent(event);
+        document.body.dispatchEvent(event);
         this.detectChanges();
 
-        expect(this.hostElement.querySelector('.signpost-content')).toBeNull();
+        expect(document.body.querySelector('.clr-signpost-container')).toBeNull();
         expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
       });
     });
@@ -153,7 +179,7 @@ export default function (): void {
       spec(ClrSignpost, TestCustomTriggerSignpost, ClrSignpostModule);
 
       beforeEach(function (this: Context) {
-        this.toggleService = this.getClarityProvider(ClrPopoverToggleService);
+        this.popoverService = this.getClarityProvider(ClrPopoverService);
       });
 
       /********
@@ -183,16 +209,16 @@ export default function (): void {
         // Test it shows after changes
         signpostTrigger.click();
         this.detectChanges();
-        signpostContent = this.hostElement.querySelector('.signpost-content');
+        signpostContent = document.body.querySelector('.clr-signpost-container');
         expect(signpostContent).not.toBeNull();
-        expect(this.toggleService.open).toBe(true);
+        expect(this.popoverService.open).toBe(true);
 
         // Test it hide when clicked again
         signpostTrigger.click();
         this.detectChanges();
-        signpostContent = this.hostElement.querySelector('.signpost-content');
+        signpostContent = document.body.querySelector('.clr-signpost-container');
         expect(signpostContent).toBeNull();
-        expect(this.toggleService.open).toBe(false);
+        expect(this.popoverService.open).toBe(false);
       });
     });
 
@@ -235,7 +261,7 @@ export default function (): void {
         this.triggerButton.click();
         this.fixture.detectChanges();
 
-        checkAriaControlsId(currentId, this.clarityElement);
+        checkAriaControlsId(currentId, document.body.querySelector('.clr-signpost-container'));
 
         // Close it
         this.triggerButton.click();
@@ -245,7 +271,7 @@ export default function (): void {
         this.triggerButton.click();
         this.fixture.detectChanges();
 
-        checkAriaControlsId(currentId, this.clarityElement);
+        checkAriaControlsId(currentId, document.body.querySelector('.clr-signpost-container'));
       });
     });
   });
@@ -267,18 +293,20 @@ class TestCustomTriggerSignpost {
 
   @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn: ElementRef<HTMLButtonElement>;
 
-  position = 'right-middle';
+  position = ClrPopoverPosition.RIGHT_MIDDLE;
 }
 
 @Component({
   template: `
-    <button #outsideClick type="button">Button to test clicks outside of the dropdown component</button>
-    <clr-signpost [clrSignpostTriggerAriaLabel]="signpostTriggerAriaLabel">
-      <clr-signpost-content *clrIfOpen="openState">
-        <button class="dummy-button" type="button">dummy button</button>
-        Signpost content
-      </clr-signpost-content>
-    </clr-signpost>
+    <button #outsideClick class="btn">Button to test clicks outside of the dropdown component</button>
+    <div style="padding: 150px 350px; width: 700px; height: 300px">
+      <clr-signpost [clrSignpostTriggerAriaLabel]="signpostTriggerAriaLabel">
+        <clr-signpost-content *clrIfOpen="openState" [clrPosition]="position">
+          <button class="dummy-button btn btn-sm btn-link">dummy button</button>
+          Signpost content
+        </clr-signpost-content>
+      </clr-signpost>
+    </div>
   `,
   standalone: false,
 })
@@ -287,6 +315,7 @@ class TestDefaultSignpost {
 
   openState = false;
   signpostTriggerAriaLabel: string;
+  position = ClrPopoverPosition.RIGHT_MIDDLE;
 
   @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn: ElementRef<HTMLButtonElement>;
 }

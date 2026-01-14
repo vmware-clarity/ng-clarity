@@ -23,9 +23,7 @@ import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { ClrFormsModule } from '../../forms/forms.module';
-import { ClrPopoverEventsService } from '../../popover/common/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../popover/common/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../popover/common/providers/popover.service';
 import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { delay } from '../../utils/testing/helpers.spec';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
@@ -53,7 +51,7 @@ export default function () {
       NgControl,
       LayoutService,
       IfControlStateService,
-      ClrPopoverToggleService,
+      ClrPopoverService,
       DatepickerFocusService,
       DateNavigationService,
       LocaleHelperService,
@@ -787,7 +785,7 @@ export default function () {
       (clrDateChange)="dateChanged($event)"
     />
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  providers: [FocusService],
   standalone: false,
 })
 class TestComponent {
@@ -827,7 +825,7 @@ class TestComponentWithClrDate {
       <input id="dateControl" type="date" clrDate (clrDateChange)="dateChanged($event)" formControlName="date" />
     </form>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  providers: [FocusService],
   standalone: false,
 })
 class TestComponentWithReactiveForms {
