@@ -1,9 +1,11 @@
 import * as i0 from '@angular/core';
-import { OnInit, OnDestroy, ElementRef, ChangeDetectorRef, QueryList, EventEmitter, Renderer2, AfterContentInit, AfterViewChecked, NgZone, Injector, AfterContentChecked, ViewContainerRef, TemplateRef, AfterViewInit, Type, InjectionToken, OnChanges, SimpleChanges, DoCheck, IterableDiffers, TrackByFunction, EnvironmentInjector, RendererFactory2, EmbeddedViewRef, SimpleChange, PipeTransform } from '@angular/core';
+import { OnInit, OnDestroy, ElementRef, ChangeDetectorRef, QueryList, EventEmitter, Renderer2, AfterContentInit, AfterViewInit, ViewContainerRef, TemplateRef, NgZone, Type, InjectionToken, OnChanges, SimpleChanges, DoCheck, IterableDiffers, TrackByFunction, EnvironmentInjector, Injector, RendererFactory2, EmbeddedViewRef, AfterViewChecked, AfterContentChecked, SimpleChange, PipeTransform } from '@angular/core';
 import * as rxjs from 'rxjs';
 import { Observable, Subject, BehaviorSubject, ReplaySubject, Subscription } from 'rxjs';
 import * as i2 from '@angular/common';
 import { NgForOfContext } from '@angular/common';
+import * as _angular_cdk_overlay from '@angular/cdk/overlay';
+import { OverlayContainer, Overlay, ConnectedPosition } from '@angular/cdk/overlay';
 import * as _clr_angular from '@clr/angular';
 import { AnimationMetadata, AnimationEvent, AnimationBuilder } from '@angular/animations';
 import { Directionality } from '@angular/cdk/bidi';
@@ -611,12 +613,40 @@ declare class ClrAlertText {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAlertText, ".alert-text", never, {}, {}, never, never, false, never>;
 }
 
-declare class ClrPopoverToggleService {
+declare enum ClrPopoverType {
+    SIGNPOST = 0,
+    TOOLTIP = 1,
+    DROPDOWN = 2,
+    DEFAULT = 3
+}
+declare enum ClrPopoverPosition {
+    TOP_RIGHT = "top-right",
+    TOP_MIDDLE = "top-middle",
+    TOP_LEFT = "top-left",
+    RIGHT = "right",
+    RIGHT_TOP = "right-top",
+    RIGHT_MIDDLE = "right-middle",
+    RIGHT_BOTTOM = "right-bottom",
+    LEFT = "left",
+    LEFT_TOP = "left-top",
+    LEFT_MIDDLE = "left-middle",
+    LEFT_BOTTOM = "left-bottom",
+    BOTTOM_RIGHT = "bottom-right",
+    BOTTOM_MIDDLE = "bottom-middle",
+    BOTTOM_LEFT = "bottom-left"
+}
+
+declare class ClrPopoverService {
+    anchorElementRef: ElementRef<HTMLElement>;
+    closeButtonRef: ElementRef;
+    panelClass: string[];
     private _open;
     private _openChange;
     private _openEvent;
     private _openEventChange;
-    private _popoverAligned;
+    private _positionChange;
+    private _resetPositions;
+    private _updatePosition;
     private _popoverVisible;
     get openChange(): Observable<boolean>;
     get popoverVisible(): Observable<boolean>;
@@ -624,8 +654,10 @@ declare class ClrPopoverToggleService {
     set openEvent(event: Event);
     get open(): boolean;
     set open(value: boolean);
-    get originalEvent(): Event;
-    get popoverAligned(): Observable<HTMLElement>;
+    get resetPositionsChange(): Observable<void>;
+    positionChange(position: ClrPopoverPosition): void;
+    updatePositionChange(): Observable<void>;
+    getPositionChange(): Observable<string>;
     getEventChange(): Observable<Event>;
     /**
      * Sometimes, we need to remember the event that triggered the toggling to avoid loops.
@@ -633,9 +665,121 @@ declare class ClrPopoverToggleService {
      */
     toggleWithEvent(event: any): void;
     popoverVisibleEmit(visible: boolean): void;
-    popoverAlignedEmit(popoverNode: HTMLElement): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverToggleService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverToggleService>;
+    resetPositions(): void;
+    updatePosition(): void;
+    focusCloseButton(): void;
+    focusAnchor(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverService>;
+}
+
+/** @dynamic */
+declare class ClrPopoverContent implements OnDestroy, AfterViewInit {
+    private container;
+    private template;
+    private parent;
+    private overlay;
+    private popoverService;
+    private zone;
+    private platformId;
+    private _outsideClickClose;
+    private _scrollToClose;
+    private view;
+    private elementRef;
+    private overlayRef;
+    private popoverType;
+    private _availablePositions;
+    private _position;
+    private scrollableParents;
+    private subscriptions;
+    private openCloseSubscription;
+    private domPortal;
+    private preferredPositionIsSet;
+    private availablePositionsAreSet;
+    private _preferredPosition;
+    private intersectionObserver;
+    constructor(element: ElementRef, container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, parent: ClrPopoverContent, overlay: Overlay, popoverService: ClrPopoverService, zone: NgZone, platformId: any);
+    set open(value: boolean);
+    get contentAt(): string | ClrPopoverPosition | ConnectedPosition;
+    set contentAt(position: string | ClrPopoverPosition | ConnectedPosition);
+    set availablePositions(positions: ConnectedPosition[]);
+    set contentType(type: ClrPopoverType);
+    get outsideClickClose(): boolean;
+    set outsideClickClose(clickToClose: boolean);
+    get scrollToClose(): boolean;
+    set scrollToClose(scrollToClose: boolean);
+    private get positionStrategy();
+    private get preferredPosition();
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    private _createOverlayRef;
+    private resetPosition;
+    private closePopover;
+    private showOverlay;
+    private removeOverlay;
+    private getScrollableParents;
+    /**
+     * Uses IntersectionObserver to detect when the anchor leaves the screen.
+     * This handles the "Close on Scroll" logic much cheaper than getBoundingClientRect.
+     */
+    private setupIntersectionObserver;
+    private listenToMouseEvents;
+    private getRootPopover;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, null, { optional: true; }, null, { optional: true; skipSelf: true; }, null, null, null, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
+}
+
+declare class ClrPopoverAnchor {
+    constructor(popoverService: ClrPopoverService, element: ElementRef<HTMLButtonElement>);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverAnchor, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverAnchor, "[clrPopoverAnchor]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
+    private popoverService;
+    private subscription;
+    private lastOpenChange;
+    constructor(popoverService: ClrPopoverService);
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    onEscapeKey(event: KeyboardEvent): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStopEscapePropagationDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStopEscapePropagationDirective, never, never, {}, {}, never, never, true, never>;
+}
+
+declare class ClrPopoverHostDirective {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverHostDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverHostDirective, never, never, {}, {}, never, never, true, [{ directive: typeof ClrStopEscapePropagationDirective; inputs: {}; outputs: {}; }]>;
+}
+
+declare class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
+    private elementRef;
+    private popoverService;
+    closeChange: EventEmitter<void>;
+    private subscriptions;
+    constructor(elementRef: ElementRef<HTMLButtonElement>, popoverService: ClrPopoverService);
+    handleClick(event: MouseEvent): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverCloseButton, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverCloseButton, "[clrPopoverCloseButton]", never, {}, { "closeChange": "clrPopoverOnCloseChange"; }, never, never, false, never>;
+}
+
+declare class ClrPopoverOpenCloseButton implements OnDestroy {
+    private popoverService;
+    openCloseChange: EventEmitter<boolean>;
+    private subscriptions;
+    constructor(popoverService: ClrPopoverService);
+    handleClick(event: MouseEvent): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverOpenCloseButton, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverOpenCloseButton, "[clrPopoverOpenCloseButton]", never, {}, { "openCloseChange": "clrPopoverOpenCloseChange"; }, never, never, false, never>;
+}
+
+declare class ClrPopoverModuleNext {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModuleNext, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModuleNext, [typeof ClrPopoverAnchor, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton], [typeof ClrPopoverContent], [typeof ClrPopoverAnchor, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton, typeof ClrPopoverContent]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModuleNext>;
 }
 
 declare enum ArrowKeyDirection {
@@ -660,16 +804,15 @@ declare abstract class FocusableItem$1 {
 declare class FocusService$1 {
     private renderer;
     private _current;
-    private _unlistenFuncs;
+    private _unlistenFuncsMap;
     constructor(renderer: Renderer2);
     get current(): FocusableItem$1;
     reset(first: FocusableItem$1): void;
-    listenToArrowKeys(el: HTMLElement): void;
-    registerContainer(el: HTMLElement, tabIndex?: string): void;
+    registerContainer(el: HTMLElement): void;
     moveTo(item: FocusableItem$1): void;
     move(direction: ArrowKeyDirection): boolean;
     activateCurrent(): boolean;
-    detachListeners(): void;
+    detachListeners(el: HTMLElement): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<FocusService$1, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<FocusService$1>;
 }
@@ -677,11 +820,10 @@ declare class FocusService$1 {
 declare class DropdownFocusHandler implements OnDestroy, FocusableItem$1 {
     private renderer;
     private parent;
-    private toggleService;
+    private popoverService;
     private focusService;
     private platformId;
     id: string;
-    focusBackOnTriggerWhenClosed: boolean;
     right?: Observable<FocusableItem$1>;
     down?: Observable<FocusableItem$1>;
     up?: Observable<FocusableItem$1>;
@@ -689,7 +831,7 @@ declare class DropdownFocusHandler implements OnDestroy, FocusableItem$1 {
     private _container;
     private children;
     private _unlistenFuncs;
-    constructor(renderer: Renderer2, parent: DropdownFocusHandler, toggleService: ClrPopoverToggleService, focusService: FocusService$1, platformId: any);
+    constructor(renderer: Renderer2, parent: DropdownFocusHandler, popoverService: ClrPopoverService, focusService: FocusService$1, platformId: any);
     get trigger(): HTMLElement;
     set trigger(el: HTMLElement);
     get container(): HTMLElement;
@@ -699,10 +841,6 @@ declare class DropdownFocusHandler implements OnDestroy, FocusableItem$1 {
      * If the dropdown was opened by clicking on the trigger, we automatically move to the first item
      */
     moveToFirstItemWhenOpen(): void;
-    /**
-     * Focus on the menu when it opens, and focus back on the root trigger when the whole dropdown becomes closed
-     */
-    handleRootFocus(): void;
     focus(): void;
     blur(): void;
     activate(): void;
@@ -722,267 +860,37 @@ declare class RootDropdownService {
     static ɵprov: i0.ɵɵInjectableDeclaration<RootDropdownService>;
 }
 
-declare class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
-    private toggleService;
-    private subscription;
-    private lastOpenChange;
-    constructor(toggleService: ClrPopoverToggleService);
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    onEscapeKey(event: KeyboardEvent): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStopEscapePropagationDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStopEscapePropagationDirective, never, never, {}, {}, never, never, true, never>;
-}
-
-declare class ClrPopoverHostDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverHostDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverHostDirective, never, never, {}, {}, never, never, true, [{ directive: typeof ClrStopEscapePropagationDirective; inputs: {}; outputs: {}; }]>;
-}
-
 declare class ClrDropdown implements OnDestroy {
     parent: ClrDropdown;
-    toggleService: ClrPopoverToggleService;
+    popoverService: ClrPopoverService;
     focusHandler: DropdownFocusHandler;
     isMenuClosable: boolean;
     private subscriptions;
-    constructor(parent: ClrDropdown, toggleService: ClrPopoverToggleService, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
+    constructor(parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdown, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": { "alias": "clrCloseMenuOnItemClick"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
-interface PopoverOptions {
-    offsetX?: number;
-    offsetY?: number;
-    useAnchorParent?: boolean;
-    allowMultipleOpen?: boolean;
-    ignoreGlobalESCListener?: boolean;
-}
-
-declare enum Point {
-    RIGHT_CENTER = 0,
-    RIGHT_TOP = 1,
-    RIGHT_BOTTOM = 2,
-    TOP_CENTER = 3,
-    TOP_RIGHT = 4,
-    TOP_LEFT = 5,
-    BOTTOM_CENTER = 6,
-    BOTTOM_RIGHT = 7,
-    BOTTOM_LEFT = 8,
-    LEFT_CENTER = 9,
-    LEFT_TOP = 10,
-    LEFT_BOTTOM = 11
-}
-
-declare abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
-    protected parentHost: ElementRef<HTMLElement>;
-    closeOnOutsideClick: boolean;
-    protected el: ElementRef<HTMLElement>;
-    protected toggleService: ClrPopoverToggleService;
-    protected renderer: Renderer2;
-    protected ngZone: NgZone;
-    protected ref: ChangeDetectorRef;
-    protected anchorElem: any;
-    protected anchorPoint: Point;
-    protected popoverPoint: Point;
-    protected popoverOptions: PopoverOptions;
-    protected ignoredElement: any;
-    private updateAnchor;
-    private popoverInstance;
-    private subscription;
-    private documentESCListener;
-    protected constructor(injector: Injector, parentHost: ElementRef<HTMLElement>);
-    ngAfterViewChecked(): void;
-    ngOnDestroy(): void;
-    protected anchor(): void;
-    protected release(): void;
-    private attachESCListener;
-    private detachESCListener;
-    private closeOnOutsideClickCallback;
-    private attachOutsideClickListener;
-    private detachOutsideClickListener;
-    static ɵfac: i0.ɵɵFactoryDeclaration<AbstractPopover, [null, { skipSelf: true; }]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<AbstractPopover, never, never, {}, {}, never, never, true, never>;
-}
-
-declare class ClrDropdownMenu extends AbstractPopover implements AfterContentInit, OnDestroy {
-    items: QueryList<FocusableItem$1>;
+declare class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     private focusHandler;
-    constructor(injector: Injector, parentHost: ElementRef<HTMLElement>, nested: ClrDropdownMenu, focusHandler: DropdownFocusHandler);
-    set position(position: string);
+    private elementRef;
+    private popoverService;
+    private popoverContent;
+    items: QueryList<FocusableItem$1>;
+    constructor(parentHost: ElementRef<HTMLElement>, nested: ClrDropdownMenu, focusHandler: DropdownFocusHandler, elementRef: ElementRef, popoverService: ClrPopoverService, popoverContent: ClrPopoverContent);
+    get isOffScreen(): boolean;
+    set position(position: string | ClrPopoverPosition);
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownMenu, [null, { optional: true; }, { optional: true; skipSelf: true; }, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": { "alias": "clrPosition"; "required": false; }; }, {}, ["items"], ["*"], false, never>;
-}
-
-declare enum ClrAlignment {
-    START = 0,
-    CENTER = 0.5,
-    END = 1
-}
-
-declare enum ClrAxis {
-    VERTICAL = 0,
-    HORIZONTAL = 1
-}
-
-declare enum ClrSide {
-    BEFORE = -1,
-    AFTER = 1
-}
-
-/**
- * ClrPopoverPosition
- *
- * @description
- * A ClrPopover needs a way to describe the relationship between the anchor and the content (for when its
- * visible). The ClrPopoverPosition interface is that description.
- */
-interface ClrPopoverPosition {
-    axis: ClrAxis;
-    side: ClrSide;
-    anchor: ClrAlignment;
-    content: ClrAlignment;
-}
-
-/** @dynamic */
-declare class ClrPopoverEventsService implements OnDestroy {
-    private renderer;
-    private smartOpenService;
-    private document;
-    outsideClickClose: boolean;
-    scrollToClose: boolean;
-    ignoredEvent: any;
-    anchorButtonRef: ElementRef<HTMLButtonElement>;
-    closeButtonRef: ElementRef<HTMLButtonElement>;
-    contentRef: ElementRef<HTMLElement>;
-    private documentClickListener;
-    private escapeListener;
-    private scrollSubscription;
-    private subscriptions;
-    private documentScroller;
-    constructor(renderer: Renderer2, smartOpenService: ClrPopoverToggleService, document: HTMLDocument);
-    ngOnDestroy(): void;
-    addScrollListener(): void;
-    removeScrollListener(): void;
-    addClickListener(): void;
-    removeClickListener(): void;
-    addEscapeListener(): void;
-    removeEscapeListener(): void;
-    setCloseFocus(): void;
-    setAnchorFocus(): void;
-    private testForSmartPopoverContentContainer;
-    private removeAllEventListeners;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverEventsService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverEventsService>;
-}
-
-interface ClrPopoverContentOffset {
-    xOffset: number;
-    yOffset: number;
-}
-
-declare class ClrPopoverPositionService {
-    private eventService;
-    platformId: any;
-    position: ClrPopoverPosition;
-    shouldRealign: Observable<void>;
-    private currentAnchorCoords;
-    private currentContentCoords;
-    private contentOffsets;
-    private _shouldRealign;
-    constructor(eventService: ClrPopoverEventsService, platformId: any);
-    realign(): void;
-    alignContent(content: HTMLElement): ClrPopoverContentOffset;
-    private handleVerticalAxisOneViolation;
-    private handleVerticalAxisTwoViolations;
-    private handleHorizontalAxisOneViolation;
-    private handleHorizontalAxisTwoViolations;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverPositionService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverPositionService>;
-}
-
-declare class ClrPopoverAnchor {
-    constructor(smartEventService: ClrPopoverEventsService, element: ElementRef<HTMLButtonElement>);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverAnchor, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverAnchor, "[clrPopoverAnchor]", never, {}, {}, never, never, false, never>;
-}
-
-/** @dynamic */
-declare class ClrPopoverContent implements AfterContentChecked, OnDestroy {
-    private document;
-    private container;
-    private template;
-    private renderer;
-    private smartPositionService;
-    private smartEventsService;
-    private smartOpenService;
-    private view;
-    private subscriptions;
-    private removeClickListenerFn;
-    private shouldRealign;
-    private previousContentHeight;
-    private checkCollector;
-    constructor(document: Document, container: ViewContainerRef, template: TemplateRef<any>, renderer: Renderer2, smartPositionService: ClrPopoverPositionService, smartEventsService: ClrPopoverEventsService, smartOpenService: ClrPopoverToggleService);
-    set open(value: boolean);
-    set contentAt(position: ClrPopoverPosition);
-    set outsideClickClose(clickToClose: boolean);
-    set scrollToClose(scrollToClose: boolean);
-    ngAfterContentChecked(): void;
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    /**
-     * TODO(matt): investigate why DebugElement retains a reference to the nodes and causes a memory leak.
-     * A note about the use of appendChild/removeChild
-     * The DebugElement is keeping a reference to the detached node and its unclear why.
-     * This does warrant further investigation. But, since it doesn't happen in production mode
-     * it is a low priority issue for now.
-     */
-    private addContent;
-    private removeContent;
-    private alignContent;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
-    private elementRef;
-    private smartEventsService;
-    private smartOpenService;
-    closeChange: EventEmitter<void>;
-    private subscriptions;
-    constructor(elementRef: ElementRef<HTMLButtonElement>, smartEventsService: ClrPopoverEventsService, smartOpenService: ClrPopoverToggleService);
-    handleClick(event: MouseEvent): void;
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverCloseButton, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverCloseButton, "[clrPopoverCloseButton]", never, {}, { "closeChange": "clrPopoverOnCloseChange"; }, never, never, false, never>;
-}
-
-declare class ClrPopoverOpenCloseButton implements OnDestroy {
-    private smartOpenService;
-    openCloseChange: EventEmitter<boolean>;
-    private subscriptions;
-    constructor(smartOpenService: ClrPopoverToggleService);
-    handleClick(event: MouseEvent): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverOpenCloseButton, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverOpenCloseButton, "[clrPopoverOpenCloseButton]", never, {}, { "openCloseChange": "clrPopoverOpenCloseChange"; }, never, never, false, never>;
-}
-
-declare class ClrPopoverModuleNext {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModuleNext, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModuleNext, [typeof ClrPopoverAnchor, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton, typeof ClrPopoverContent], never, [typeof ClrPopoverAnchor, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton, typeof ClrPopoverContent]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModuleNext>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownMenu, [{ optional: true; }, { optional: true; skipSelf: true; }, null, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": { "alias": "clrPosition"; "required": false; }; }, {}, ["items"], ["*"], false, [{ directive: typeof ClrPopoverContent; inputs: {}; outputs: {}; }]>;
 }
 
 declare class ClrDropdownTrigger {
-    private toggleService;
-    private el;
-    private renderer;
+    private popoverService;
     isRootLevelToggle: boolean;
-    constructor(dropdown: ClrDropdown, toggleService: ClrPopoverToggleService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler, renderer: Renderer2);
+    constructor(dropdown: ClrDropdown, popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler);
     get active(): boolean;
     onDropdownTriggerClick(event: any): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownTrigger, never>;
@@ -1086,7 +994,7 @@ declare class ClrIfActive implements OnDestroy {
 }
 
 declare class ClrIfOpen implements OnDestroy {
-    private toggleService;
+    private popoverService;
     private template;
     private container;
     static ngAcceptInputType_open: boolean | '';
@@ -1098,11 +1006,11 @@ declare class ClrIfOpen implements OnDestroy {
      * used with de-structured / de-sugared syntax.
      */
     openChange: EventEmitter<boolean>;
-    private subscription;
-    constructor(toggleService: ClrPopoverToggleService, template: TemplateRef<any>, container: ViewContainerRef);
+    private subscriptions;
+    constructor(popoverService: ClrPopoverService, template: TemplateRef<any>, container: ViewContainerRef);
     /**
      * @description
-     * A property that gets/sets ClrPopoverToggleService.open with value.
+     * A property that gets/sets ClrPopoverService.open with value.
      */
     get open(): boolean | string;
     set open(value: boolean | string);
@@ -1829,7 +1737,7 @@ declare class SignpostIdService {
 }
 
 declare class ClrSignpostTrigger implements OnDestroy {
-    private toggleService;
+    private popoverService;
     private el;
     private signpostIdService;
     private signpostFocusManager;
@@ -1839,7 +1747,7 @@ declare class ClrSignpostTrigger implements OnDestroy {
     isOpen: boolean;
     private document;
     private subscriptions;
-    constructor(toggleService: ClrPopoverToggleService, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
+    constructor(popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
     ngOnInit(): void;
     ngOnDestroy(): void;
     /**********
@@ -2493,19 +2401,175 @@ declare class ClrDatagridActionBar {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionBar, "clr-dg-action-bar", never, {}, {}, never, ["*"], false, never>;
 }
 
+declare const CLR_MENU_POSITIONS: string[];
+
+declare class ClrSignpostContent implements OnDestroy, AfterViewInit {
+    private element;
+    commonStrings: ClrCommonStringsService;
+    private signpostFocusManager;
+    private platformId;
+    private document;
+    private popoverService;
+    private popoverContent;
+    signpostCloseAriaLabel: string;
+    closeButton: ElementRef<HTMLButtonElement>;
+    signpostContentId: string;
+    private _position;
+    constructor(parentHost: ElementRef<HTMLElement>, element: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: Document, popoverService: ClrPopoverService, popoverContent: ClrPopoverContent);
+    /*********
+     *
+     * @description
+     * A setter for the position of the ClrSignpostContent popover. This is a combination of the following:
+     * - anchorPoint - where on the trigger to anchor the ClrSignpostContent
+     * - popoverPoint - where on the ClrSignpostContent container to align with the anchorPoint
+     * - offsetY - where on the Y axis to align the ClrSignpostContent so it meets specs
+     * - offsetX - where on the X axis to align the ClrSignpostContent so it meets specs
+     * There are 12 possible positions to place a ClrSignpostContent container:
+     * - top-left
+     * - top-middle
+     * - top-right
+     * - right-top
+     * - right-middle
+     * - right-bottom
+     * - bottom-right
+     * - bottom-middle
+     * - bottom-left
+     * - left-bottom
+     * - left-middle
+     * - left-top
+     *
+     * I think of it as follows for 'top-left' -> CONTAINER_SIDE-SIDE_POSITION. In this case CONTAINER_SIDE is 'top'
+     * meaning the top of the trigger icon (above the icon that hides/shows) the ClrSignpostContent. And, SIDE_POSITION
+     * is 'left' meaning two things: 1) the ClrSignpostContent container extends to the left and 2) the 'arrow/pointer'
+     * linking the SignpostContent to the trigger points down at the horizontal center of the trigger icon.
+     *
+     * @param newPosition
+     */
+    get position(): string | ClrPopoverPosition;
+    set position(position: string | ClrPopoverPosition);
+    get isOffScreen(): boolean;
+    /**********
+     *
+     * @description
+     * Close function that uses the signpost instance to toggle the state of the content popover.
+     *
+     */
+    close(): void;
+    ngAfterViewInit(): void;
+    onKeyDown(event: KeyboardEvent): void;
+    ngOnDestroy(): void;
+    private getFocusableElements;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [{ optional: true; }, null, null, null, null, null, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "signpostCloseAriaLabel": { "alias": "clrSignpostCloseAriaLabel"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; }, {}, never, ["clr-signpost-title", "*"], false, [{ directive: typeof ClrPopoverContent; inputs: {}; outputs: {}; }]>;
+}
+
+declare class ClrSignpostTitle {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostTitle, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostTitle, "clr-signpost-title", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare const CLR_SIGNPOST_DIRECTIVES: Type<any>[];
+declare class ClrSignpostModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrFocusOnViewInitModule, typeof ClrPopoverModuleNext], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof ClrConditionalModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSignpostModule>;
+}
+
+declare class ClrTooltip {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltip, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltip, "clr-tooltip", never, {}, {}, never, ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+}
+
+declare class TooltipIdService {
+    private _id;
+    get id(): Observable<string>;
+    updateId(id: string): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TooltipIdService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<TooltipIdService>;
+}
+
+declare class TooltipMouseService {
+    private readonly popoverService;
+    private mouseOutDelay;
+    private mouseOverTrigger;
+    private mouseOverContent;
+    constructor(popoverService: ClrPopoverService);
+    onMouseEnterTrigger(): void;
+    onMouseLeaveTrigger(): void;
+    onMouseEnterContent(): void;
+    onMouseLeaveContent(): void;
+    private hideIfMouseOut;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TooltipMouseService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<TooltipMouseService>;
+}
+
+declare class ClrTooltipTrigger {
+    private popoverService;
+    private tooltipMouseService;
+    ariaDescribedBy: string;
+    private subs;
+    constructor(popoverService: ClrPopoverService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService, element: ElementRef);
+    ngOnDestroy(): void;
+    showTooltip(): void;
+    hideTooltip(): void;
+    private onMouseEnter;
+    private onMouseLeave;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipTrigger, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTooltipTrigger, "[clrTooltipTrigger]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrTooltipContent implements OnInit {
+    private tooltipIdService;
+    el: ElementRef;
+    private renderer;
+    private tooltipMouseService;
+    private popoverContent;
+    private _id;
+    private _position;
+    private _size;
+    constructor(parentHost: ElementRef<HTMLElement>, tooltipIdService: TooltipIdService, el: ElementRef, renderer: Renderer2, popoverService: ClrPopoverService, tooltipMouseService: TooltipMouseService, popoverContent: ClrPopoverContent);
+    get id(): string;
+    set id(value: string);
+    get position(): string | ClrPopoverPosition;
+    set position(value: string | ClrPopoverPosition);
+    get size(): string;
+    set size(value: string);
+    ngOnInit(): void;
+    private onMouseEnter;
+    private onMouseLeave;
+    private updateCssClass;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipContent, [{ optional: true; }, null, null, null, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltipContent, "clr-tooltip-content", never, { "id": { "alias": "id"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; "size": { "alias": "clrSize"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof ClrPopoverContent; inputs: {}; outputs: {}; }]>;
+}
+
+declare const CLR_TOOLTIP_DIRECTIVES: Type<any>[];
+declare class ClrTooltipModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrPopoverModuleNext], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof ClrConditionalModule, typeof ClrIcon]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTooltipModule>;
+}
+
+declare class ClrPopoverModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof ClrDropdownModule, typeof ClrSignpostModule, typeof ClrTooltipModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModule>;
+}
+
 declare class ClrDatagridActionOverflow implements OnDestroy {
     private rowActionService;
     commonStrings: ClrCommonStringsService;
     private platformId;
-    private smartToggleService;
+    private popoverService;
     buttonLabel: string;
     openChange: EventEmitter<boolean>;
     popoverId: string;
     smartPosition: ClrPopoverPosition;
+    protected positions: _angular_cdk_overlay.ConnectedPosition[];
     private readonly keyFocus;
     private _open;
     private subscriptions;
-    constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService, platformId: any, smartToggleService: ClrPopoverToggleService);
+    constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService, platformId: any, popoverService: ClrPopoverService);
     get open(): boolean;
     set open(open: boolean);
     ngOnDestroy(): void;
@@ -2622,18 +2686,16 @@ declare abstract class CustomFilter {
  */
 declare class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, OnDestroy {
     commonStrings: ClrCommonStringsService;
-    private smartToggleService;
-    private platformId;
-    private elementRef;
+    private popoverService;
     private keyNavigation;
     openChange: EventEmitter<boolean>;
     ariaExpanded: boolean;
     popoverId: string;
-    smartPosition: ClrPopoverPosition;
+    popoverPosition: ClrPopoverPosition;
+    popoverType: ClrPopoverType;
     anchor: ElementRef<HTMLButtonElement>;
-    private _open;
     private subs;
-    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, smartToggleService: ClrPopoverToggleService, platformId: any, elementRef: ElementRef<HTMLElement>, keyNavigation: KeyNavigationGridController);
+    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, keyNavigation: KeyNavigationGridController);
     get open(): boolean;
     set open(open: boolean);
     set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter<T, ClrDatagridFilterInterface<T>>);
@@ -2642,7 +2704,7 @@ declare class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrD
      */
     get active(): boolean;
     ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, [null, null, null, null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, [null, null, null, { optional: true; }]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": { "alias": "clrDgFilterOpen"; "required": false; }; "customFilter": { "alias": "clrDgFilter"; "required": false; }; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"], false, never>;
 }
 
@@ -3188,7 +3250,7 @@ declare class PseudoFocusModel<T> extends SingleSelectComboboxModel<T> {
 }
 
 declare class ComboboxFocusHandler<T> {
-    private toggleService;
+    private popoverService;
     private selectionService;
     private platformId;
     componentCdRef: ChangeDetectorRef;
@@ -3198,7 +3260,7 @@ declare class ComboboxFocusHandler<T> {
     private _listbox;
     private _textInput;
     private optionData;
-    constructor(rendererFactory: RendererFactory2, toggleService: ClrPopoverToggleService, selectionService: OptionSelectionService<T>, platformId: any);
+    constructor(rendererFactory: RendererFactory2, popoverService: ClrPopoverService, selectionService: OptionSelectionService<T>, platformId: any);
     get trigger(): HTMLElement;
     set trigger(el: HTMLElement);
     get listbox(): HTMLElement;
@@ -3233,8 +3295,7 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     protected el: ElementRef<HTMLElement>;
     optionSelectionService: OptionSelectionService<T>;
     commonStrings: ClrCommonStringsService;
-    private toggleService;
-    private positionService;
+    private popoverService;
     private controlStateService;
     private containerService;
     private platformId;
@@ -3252,14 +3313,14 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     optionSelected: ClrOptionSelected<T>;
     invalid: boolean;
     focused: boolean;
-    focusedPill: any;
-    smartPosition: ClrPopoverPosition;
+    popoverPosition: ClrPopoverPosition;
     protected index: number;
+    protected popoverType: ClrPopoverType;
     private options;
     private _searchText;
     private onTouchedCallback;
     private onChangeCallback;
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, toggleService: ClrPopoverToggleService, positionService: ClrPopoverPositionService, controlStateService: IfControlStateService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, controlStateService: IfControlStateService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
     get editable(): boolean;
     set editable(value: boolean);
     get multiSelect(): boolean | string;
@@ -3296,7 +3357,7 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     private updateInputValue;
     private updateControlValue;
     private getDisplayNames;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, null, { optional: true; }, { optional: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, { optional: true; }, { optional: true; }, null, null, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
@@ -3327,13 +3388,13 @@ declare class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy
     el: ElementRef<HTMLElement>;
     commonStrings: ClrCommonStringsService;
     private focusHandler;
-    private toggleService;
+    private popoverService;
     private document;
     optionsId: string;
     loading: boolean;
     _items: QueryList<ClrOption<T>>;
     private subscriptions;
-    constructor(optionSelectionService: OptionSelectionService<T>, id: number, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, toggleService: ClrPopoverToggleService, parentHost: ElementRef<HTMLElement>, document: any);
+    constructor(optionSelectionService: OptionSelectionService<T>, id: number, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, popoverService: ClrPopoverService, parentHost: ElementRef<HTMLElement>, document: any);
     get items(): QueryList<ClrOption<T>>;
     set items(items: QueryList<ClrOption<T>>);
     /**
@@ -3354,7 +3415,6 @@ declare class ClrOptionItems<T> implements DoCheck, OnDestroy {
     template: TemplateRef<NgForOfContext<T>>;
     private differs;
     private optionService;
-    private positionService;
     private iterableProxy;
     private _rawItems;
     private filteredItems;
@@ -3362,7 +3422,7 @@ declare class ClrOptionItems<T> implements DoCheck, OnDestroy {
     private filter;
     private _filterField;
     private differ;
-    constructor(template: TemplateRef<NgForOfContext<T>>, differs: IterableDiffers, optionService: OptionSelectionService<T>, positionService: ClrPopoverPositionService, vcr: ViewContainerRef);
+    constructor(template: TemplateRef<NgForOfContext<T>>, differs: IterableDiffers, optionService: OptionSelectionService<T>, vcr: ViewContainerRef);
     set rawItems(items: T[]);
     set trackBy(value: TrackByFunction<T>);
     set field(field: string);
@@ -3854,7 +3914,7 @@ declare class ViewManagerService {
 declare class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
     protected renderer: Renderer2;
     protected elem: ElementRef;
-    private toggleService;
+    private popoverService;
     private dateNavigationService;
     private datepickerEnabledService;
     private dateFormControlService;
@@ -3866,13 +3926,14 @@ declare class ClrDateContainer extends ClrAbstractContainer implements AfterView
     protected ngControlService: NgControlService;
     protected ifControlStateService: IfControlStateService;
     focus: boolean;
+    protected popoverType: ClrPopoverType;
     private toggleButton;
-    constructor(renderer: Renderer2, elem: ElementRef, toggleService: ClrPopoverToggleService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
+    constructor(renderer: Renderer2, elem: ElementRef, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
     /**
      * For date range picker actions buttons are shown by default
      */
     set showActionButtons(flag: boolean);
-    set clrPosition(position: string);
+    set clrPosition(position: string | ClrPopoverPosition);
     set rangeOptions(rangeOptions: any);
     set min(dateString: string);
     set max(dateString: string);
@@ -4382,13 +4443,13 @@ declare class ClrCalendar implements OnDestroy {
     private _dateIOService;
     private _elRef;
     private _dateFormControlService;
-    private _toggleService;
+    private _popoverService;
     /**
      * Calendar View Model to generate the Calendar.
      */
     calendarViewModel: CalendarViewModel;
     private _subs;
-    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _dateIOService: DateIOService, _elRef: ElementRef<HTMLElement>, _dateFormControlService: DateFormControlService, _toggleService: ClrPopoverToggleService);
+    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _dateIOService: DateIOService, _elRef: ElementRef<HTMLElement>, _dateFormControlService: DateFormControlService, _popoverService: ClrPopoverService);
     /**
      * Gets the locale days according to the TranslationWidth.Narrow format.
      */
@@ -4466,10 +4527,10 @@ declare class ClrDay {
 
 declare class ClrDatepickerActions {
     protected commonStrings: ClrCommonStringsService;
-    private toggleService;
+    private popoverService;
     private dateNavigationService;
     private dateFormControlService;
-    constructor(commonStrings: ClrCommonStringsService, toggleService: ClrPopoverToggleService, dateNavigationService: DateNavigationService, dateFormControlService: DateFormControlService);
+    constructor(commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, dateFormControlService: DateFormControlService);
     protected apply(): void;
     protected cancel(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerActions, never>;
@@ -5374,7 +5435,7 @@ declare class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInt
 declare class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>> implements CustomFilter, AfterViewInit {
     private domAdapter;
     commonStrings: ClrCommonStringsService;
-    private popoverToggleService;
+    private popoverService;
     private ngZone;
     minPlaceholder: string;
     maxPlaceholder: string;
@@ -5395,7 +5456,7 @@ declare class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, 
     filterContainer: ClrDatagridFilter<T>;
     private initFilterValues;
     private subscriptions;
-    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverToggleService: ClrPopoverToggleService, ngZone: NgZone);
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, ngZone: NgZone);
     /**
      * Common setter for the input values
      */
@@ -5463,7 +5524,7 @@ declare class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInte
 declare class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements CustomFilter, AfterViewInit, OnChanges, OnDestroy {
     private domAdapter;
     commonStrings: ClrCommonStringsService;
-    private smartToggleService;
+    private popoverService;
     private elementRef;
     private cdr;
     private ngZone;
@@ -5488,7 +5549,7 @@ declare class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, D
     labelValue: string;
     private initFilterValue;
     private subs;
-    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, smartToggleService: ClrPopoverToggleService, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
     /**
      * Customizable filter logic based on a search text
      */
@@ -5515,12 +5576,13 @@ declare class ClrDatagridColumnToggle implements OnDestroy {
     private columnsService;
     popoverId: string;
     openState: boolean;
-    smartPosition: ClrPopoverPosition;
+    popoverPosition: ClrPopoverPosition;
+    popoverType: ClrPopoverType;
     readonly trackByFn: i0.TrackByFunction<ColumnState>;
     private _allColumnsVisible;
     private subscription;
     private allSelectedElement;
-    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, popoverToggleService: ClrPopoverToggleService);
+    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, popoverService: ClrPopoverService);
     get allColumnsVisible(): boolean;
     set allColumnsVisible(value: boolean);
     get hideableColumnStates(): ColumnState[];
@@ -6085,14 +6147,14 @@ declare enum InitialFocus {
 
 declare class ButtonGroupFocusHandler {
     private focusService;
-    private toggleService;
+    private popoverService;
     private renderer;
     initialFocus: InitialFocus;
     private menu;
     private menuToggle;
     private buttons;
     private _unlistenFuncs;
-    constructor(focusService: FocusService$1, toggleService: ClrPopoverToggleService, renderer: Renderer2);
+    constructor(focusService: FocusService$1, popoverService: ClrPopoverService, renderer: Renderer2);
     ngOnDestroy(): void;
     initialize({ menu, menuToggle }: {
         menu: HTMLElement;
@@ -6110,7 +6172,7 @@ declare class ButtonGroupFocusHandler {
 
 declare class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     buttonGroupNewService: ButtonInGroupService;
-    private toggleService;
+    private popoverService;
     commonStrings: ClrCommonStringsService;
     private destroy$;
     private focusHandler;
@@ -6120,13 +6182,13 @@ declare class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     buttons: QueryList<ClrButton>;
     popoverId: string;
     InitialFocus: typeof InitialFocus;
-    popoverPosition: ClrPopoverPosition;
     inlineButtons: ClrButton[];
     menuButtons: ClrButton[];
+    protected popoverType: ClrPopoverType;
     private _menuPosition;
-    constructor(buttonGroupNewService: ButtonInGroupService, toggleService: ClrPopoverToggleService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
-    get menuPosition(): string;
-    set menuPosition(pos: string);
+    constructor(buttonGroupNewService: ButtonInGroupService, popoverService: ClrPopoverService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
+    get menuPosition(): ClrPopoverPosition;
+    set menuPosition(pos: ClrPopoverPosition | string);
     get open(): boolean;
     /**
      * 1. Initializes the initial Button Group View
@@ -6395,7 +6457,7 @@ declare class ClrTabContent implements OnDestroy {
 
 declare class ClrTabs implements AfterContentInit, OnDestroy {
     ifActiveService: IfActiveService;
-    toggleService: ClrPopoverToggleService;
+    popoverService: ClrPopoverService;
     tabsService: TabsService;
     tabsId: number;
     commonStrings: ClrCommonStringsService;
@@ -6407,7 +6469,7 @@ declare class ClrTabs implements AfterContentInit, OnDestroy {
     private subscriptions;
     private _tabOverflowEl;
     private _tabLinkDirectives;
-    constructor(ifActiveService: IfActiveService, toggleService: ClrPopoverToggleService, tabsService: TabsService, tabsId: number, commonStrings: ClrCommonStringsService);
+    constructor(ifActiveService: IfActiveService, popoverService: ClrPopoverService, tabsService: TabsService, tabsId: number, commonStrings: ClrCommonStringsService);
     get layout(): TabsLayout | string;
     set layout(layout: TabsLayout | string);
     get tabLinkDirectives(): ClrTabLink[];
@@ -6518,147 +6580,6 @@ declare class ClrLayoutModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLayoutModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof ClrMainContainerModule, typeof ClrNavigationModule, typeof ClrTabsModule, typeof ClrVerticalNavModule, typeof ClrBreadcrumbsModule]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrLayoutModule>;
-}
-
-declare class ClrSignpostContent extends AbstractPopover implements OnDestroy {
-    commonStrings: ClrCommonStringsService;
-    private signpostFocusManager;
-    private platformId;
-    signpostCloseAriaLabel: string;
-    signpostContentId: string;
-    private document;
-    private _position;
-    constructor(injector: Injector, parentHost: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: any);
-    /*********
-     *
-     * @description
-     * A setter for the position of the ClrSignpostContent popover. This is a combination of the following:
-     * - anchorPoint - where on the trigger to anchor the ClrSignpostContent
-     * - popoverPoint - where on the ClrSignpostContent container to align with the anchorPoint
-     * - offsetY - where on the Y axis to align the ClrSignpostContent so it meets specs
-     * - offsetX - where on the X axis to align the ClrSignpostContent so it meets specs
-     * There are 12 possible positions to place a ClrSignpostContent container:
-     * - top-left
-     * - top-middle
-     * - top-right
-     * - right-top
-     * - right-middle
-     * - right-bottom
-     * - bottom-right
-     * - bottom-middle
-     * - bottom-left
-     * - left-bottom
-     * - left-middle
-     * - left-top
-     *
-     * I think of it as follows for 'top-left' -> CONTAINER_SIDE-SIDE_POSITION. In this case CONTAINER_SIDE is 'top'
-     * meaning the top of the trigger icon (above the icon that hides/shows) the ClrSignpostContent. And, SIDE_POSITION
-     * is 'left' meaning two things: 1) the ClrSignpostContent container extends to the left and 2) the 'arrow/pointer'
-     * linking the SingpostContent to the trigger points down at the horizontal center of the trigger icon.
-     *
-     * @param newPosition
-     */
-    get position(): string;
-    set position(position: string);
-    /**********
-     *
-     * @description
-     * Close function that uses the signpost instance to toggle the state of the content popover.
-     *
-     */
-    close(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [null, { optional: true; }, null, null, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "signpostCloseAriaLabel": { "alias": "clrSignpostCloseAriaLabel"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; }, {}, never, ["clr-signpost-title", "*"], false, never>;
-}
-
-declare class ClrSignpostTitle {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostTitle, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostTitle, "clr-signpost-title", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare const CLR_SIGNPOST_DIRECTIVES: Type<any>[];
-declare class ClrSignpostModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrFocusOnViewInitModule], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof ClrConditionalModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSignpostModule>;
-}
-
-declare class ClrTooltip {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltip, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltip, "clr-tooltip", never, {}, {}, never, ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
-}
-
-declare class TooltipIdService {
-    private _id;
-    get id(): Observable<string>;
-    updateId(id: string): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TooltipIdService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<TooltipIdService>;
-}
-
-declare class TooltipMouseService {
-    private readonly toggleService;
-    private mouseOverTrigger;
-    private mouseOverContent;
-    constructor(toggleService: ClrPopoverToggleService);
-    onMouseEnterTrigger(): void;
-    onMouseLeaveTrigger(): void;
-    onMouseEnterContent(): void;
-    onMouseLeaveContent(): void;
-    private hideIfMouseOut;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TooltipMouseService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<TooltipMouseService>;
-}
-
-declare class ClrTooltipTrigger {
-    private toggleService;
-    private tooltipMouseService;
-    ariaDescribedBy: string;
-    private subs;
-    constructor(toggleService: ClrPopoverToggleService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService);
-    ngOnDestroy(): void;
-    showTooltip(): void;
-    hideTooltip(): void;
-    private onMouseEnter;
-    private onMouseLeave;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipTrigger, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTooltipTrigger, "[clrTooltipTrigger]", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrTooltipContent extends AbstractPopover implements OnInit {
-    private tooltipIdService;
-    private tooltipMouseService;
-    private _id;
-    private _position;
-    private _size;
-    constructor(injector: Injector, parentHost: ElementRef<HTMLElement>, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService);
-    get id(): string;
-    set id(value: string);
-    get position(): string;
-    set position(value: string);
-    get size(): string;
-    set size(value: string);
-    ngOnInit(): void;
-    private onMouseEnter;
-    private onMouseLeave;
-    private updateCssClass;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipContent, [null, { optional: true; }, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltipContent, "clr-tooltip-content", never, { "id": { "alias": "id"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; "size": { "alias": "clrSize"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare const CLR_TOOLTIP_DIRECTIVES: Type<any>[];
-declare class ClrTooltipModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i2.CommonModule, typeof ClrIcon], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof ClrConditionalModule, typeof ClrIcon]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTooltipModule>;
-}
-
-declare class ClrPopoverModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof ClrDropdownModule, typeof ClrSignpostModule, typeof ClrTooltipModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModule>;
 }
 
 declare class ButtonHubService {
@@ -9992,7 +9913,5 @@ declare const travelCollectionAliases: IconAlias[];
  */
 declare function loadTravelIconSet(): void;
 
-declare const CLR_MENU_POSITIONS: string[];
-
-export { BaseExpandableAnimation, CHANGE_KEYS, CLR_ALERT_DIRECTIVES, CLR_BUTTON_GROUP_DIRECTIVES, CLR_DATAGRID_DIRECTIVES, CLR_DATEPICKER_DIRECTIVES, CLR_DROPDOWN_DIRECTIVES, CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, CLR_ICON_DIRECTIVES, CLR_LAYOUT_DIRECTIVES, CLR_LOADING_BUTTON_DIRECTIVES, CLR_LOADING_DIRECTIVES, CLR_MENU_POSITIONS, CLR_MODAL_DIRECTIVES, CLR_NAVIGATION_DIRECTIVES, CLR_PROGRESS_BAR_DIRECTIVES, CLR_SIDEPANEL_DIRECTIVES, CLR_SIGNPOST_DIRECTIVES, CLR_SPINNER_DIRECTIVES, CLR_STACK_VIEW_DIRECTIVES, CLR_TABS_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, CLR_TREE_VIEW_DIRECTIVES, CLR_VERTICAL_NAV_DIRECTIVES, CLR_WIZARD_DIRECTIVES, CONDITIONAL_DIRECTIVES, CUSTOM_BUTTON_TYPES, CdsIconCustomTag, ClarityIcons, ClarityModule, ClrAbstractContainer, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle, ClrAlert, ClrAlertItem, ClrAlertModule, ClrAlertText, ClrAlerts, ClrAlertsPager, ClrAlignment, ClrAriaCurrentLink, ClrAxis, ClrBadge, ClrBadgeColors, ClrBreadcrumbItem, ClrBreadcrumbs, ClrBreadcrumbsModule, ClrButton, ClrButtonGroup, ClrButtonGroupModule, ClrButtonModule, ClrCalendar, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxModule, ClrCheckboxWrapper, ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrCommonFormsModule, ClrCommonStringsService, ClrConditionalModule, ClrControl, ClrControlContainer, ClrControlError, ClrControlHelper, ClrControlLabel, ClrControlSuccess, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrDatalist, ClrDatalistContainer, ClrDatalistInput, ClrDatalistModule, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrDestroyService, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrEmphasisModule, ClrEndDateInput, ClrEndDateInputValidator, ClrExpandableAnimation, ClrFileError, ClrFileInfo, ClrFileInput, ClrFileInputContainer, ClrFileInputModule, ClrFileInputValidator, ClrFileInputValueAccessor, ClrFileList, ClrFileMessagesTemplate, ClrFileSuccess, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrForm, ClrFormLayout, ClrFormsModule, ClrHeader, ClrIcon, ClrIconCustomTag, ClrIconModule, ClrIfActive, ClrIfDetail, ClrIfError, ClrIfExpanded, ClrIfOpen, ClrIfSuccess, ClrInput, ClrInputContainer, ClrInputModule, ClrLabel, ClrLabelColors, ClrLayout, ClrLayoutModule, ClrLoading, ClrLoadingButton, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState, ClrMainContainer, ClrMainContainerModule, ClrModal, ClrModalBody, ClrModalConfigurationService, ClrModalHostComponent, ClrModalModule, ClrMonthpicker, ClrNavLevel, ClrNavigationModule, ClrNumberInput, ClrNumberInputContainer, ClrNumberInputModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, ClrPassword, ClrPasswordContainer, ClrPasswordModule, ClrPopoverAnchor, ClrPopoverContent, ClrPopoverEventsService, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverPositionService, ClrPopoverToggleService, ClrProgressBar, ClrProgressBarModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrRadioWrapper, ClrRange, ClrRangeContainer, ClrRangeModule, ClrRecursiveForOf, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrSelectedState, ClrSide, ClrSidePanel, ClrSidePanelModule, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrSpinner, ClrSpinnerModule, ClrStackBlock, ClrStackContentInput, ClrStackHeader, ClrStackView, ClrStackViewCustomTags, ClrStackViewLabel, ClrStackViewModule, ClrStandaloneCdkTrapFocus, ClrStartDateInput, ClrStartDateInputValidator, ClrStepButton, ClrStepButtonType, ClrStepper, ClrStepperModule, ClrStepperPanel, ClrStopEscapePropagationDirective, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStep, ClrTimelineStepDescription, ClrTimelineStepHeader, ClrTimelineStepState, ClrTimelineStepTitle, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, ClrVerticalNav, ClrVerticalNavGroup, ClrVerticalNavGroupChildren, ClrVerticalNavIcon, ClrVerticalNavLink, ClrVerticalNavModule, ClrWizard, ClrWizardButton, ClrWizardHeaderAction, ClrWizardModule, ClrWizardPage, ClrWizardPageButtons, ClrWizardPageHeaderActions, ClrWizardPageNavTitle, ClrWizardPageTitle, ClrWizardStepnav, ClrWizardStepnavItem, ClrWizardTitle, ClrYearpicker, DEFAULT_BUTTON_TYPES, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, EXPANDABLE_ANIMATION_DIRECTIVES, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, IS_TOGGLE, IS_TOGGLE_PROVIDER, IconHtmlPipe, LoadingListener, MainContainerWillyWonka, NavDetectionOompaLoompa, Selection, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, ToggleServiceFactory, WrappedFormControl, accessibility1Icon, accessibility1IconName, accessibility2Icon, accessibility2IconName, addTextIcon, addTextIconName, administratorIcon, administratorIconName, airplaneIcon, airplaneIconName, alarmClockIcon, alarmClockIconName, alarmOffIcon, alarmOffIconName, alignBottomIcon, alignBottomIconName, alignCenterIcon, alignCenterIconName, alignLeftIcon, alignLeftIconName, alignLeftTextIcon, alignLeftTextIconName, alignMiddleIcon, alignMiddleIconName, alignRightIcon, alignRightIconName, alignRightTextIcon, alignRightTextIconName, alignTopIcon, alignTopIconName, angleDoubleIcon, angleDoubleIconName, angleIcon, angleIconName, animationIcon, animationIconName, announcementIcon, announcementIconName, applicationIcon, applicationIconName, applicationsIcon, applicationsIconName, archiveIcon, archiveIconName, arrowIcon, arrowIconName, arrowMiniIcon, arrowMiniIconName, assignUserIcon, assignUserIconName, asteriskIcon, asteriskIconName, atomIcon, atomIconName, axisChartIcon, axisChartIconName, backupIcon, backupIconName, backupRestoreIcon, backupRestoreIconName, banIcon, banIconName, bankIcon, bankIconName, barChartIcon, barChartIconName, barCodeIcon, barCodeIconName, barsIcon, barsIconName, batteryIcon, batteryIconName, bellCurveIcon, bellCurveIconName, bellIcon, bellIconName, betaIcon, betaIconName, bicycleIcon, bicycleIconName, birthdayCakeIcon, birthdayCakeIconName, bitcoinIcon, bitcoinIconName, blockIcon, blockIconName, blockQuoteIcon, blockQuoteIconName, blocksGroupIcon, blocksGroupIconName, bluetoothIcon, bluetoothIconName, bluetoothOffIcon, bluetoothOffIconName, boatIcon, boatIconName, boldIcon, boldIconName, boltIcon, boltIconName, bookIcon, bookIconName, bookmarkIcon, bookmarkIconName, boxPlotIcon, boxPlotIconName, briefcaseIcon, briefcaseIconName, bubbleChartIcon, bubbleChartIconName, bubbleExclamationIcon, bubbleExclamationIconName, bugIcon, bugIconName, buildingIcon, buildingIconName, bulletListIcon, bulletListIconName, bullseyeIcon, bullseyeIconName, bundleIcon, bundleIconName, calculatorIcon, calculatorIconName, calendarIcon, calendarIconName, calendarMiniIcon, calendarMiniIconName, cameraIcon, cameraIconName, campervanIcon, campervanIconName, capacitorIcon, capacitorIconName, carIcon, carIconName, caravanIcon, caravanIconName, cdDvdIcon, cdDvdIconName, centerTextIcon, centerTextIconName, certificateIcon, certificateIconName, chartCollectionAliases, chartCollectionIcons, chatBubbleIcon, chatBubbleIconName, checkCircleIcon, checkCircleIconName, checkCircleMiniIcon, checkCircleMiniIconName, checkIcon, checkIconName, checkMiniIcon, checkMiniIconName, checkboxListIcon, checkboxListIconName, childArrowIcon, childArrowIconName, ciCdIcon, ciCdIconName, circleArrowIcon, circleArrowIconName, circleIcon, circleIconName, clipboardIcon, clipboardIconName, clockIcon, clockIconName, cloneIcon, cloneIconName, cloudChartIcon, cloudChartIconName, cloudIcon, cloudIconName, cloudNetworkIcon, cloudNetworkIconName, cloudScaleIcon, cloudScaleIconName, cloudTrafficIcon, cloudTrafficIconName, clusterIcon, clusterIconName, codeIcon, codeIconName, cogIcon, cogIconName, coinBagIcon, coinBagIconName, collapse, collapseCardIcon, collapseCardIconName, colorPaletteIcon, colorPaletteIconName, colorPickerIcon, colorPickerIconName, commerceCollectionAliases, commerceCollectionIcons, commonStringsDefault, compassIcon, compassIconName, computerIcon, computerIconName, connectIcon, connectIconName, containerGroupIcon, containerGroupIconName, containerIcon, containerIconName, containerVolumeIcon, containerVolumeIconName, contractIcon, contractIconName, controlLunIcon, controlLunIconName, copyIcon, copyIconName, copyToClipboardIcon, copyToClipboardIconName, coreCollectionAliases, coreCollectionIcons, cpuIcon, cpuIconName, creditCardIcon, creditCardIconName, crosshairsIcon, crosshairsIconName, crownIcon, crownIconName, cursorArrowIcon, cursorArrowIconName, cursorHandClickIcon, cursorHandClickIconName, cursorHandGrabIcon, cursorHandGrabIconName, cursorHandIcon, cursorHandIconName, cursorHandOpenIcon, cursorHandOpenIconName, cursorMoveIcon, cursorMoveIconName, curveChartIcon, curveChartIconName, dashboardIcon, dashboardIconName, dataClusterIcon, dataClusterIconName, deployIcon, deployIconName, detailCollapseIcon, detailCollapseIconName, detailExpandIcon, detailExpandIconName, detailsIcon, detailsIconName, devicesIcon, devicesIconName, digitalSignatureIcon, digitalSignatureIconName, disconnectIcon, disconnectIconName, displayIcon, displayIconName, dollarBillIcon, dollarBillIconName, dollarIcon, dollarIconName, dotCircleIcon, dotCircleIconName, downloadCloudIcon, downloadCloudIconName, downloadIcon, downloadIconName, dragHandleCornerIcon, dragHandleCornerIconName, dragHandleIcon, dragHandleIconName, eCheckIcon, eCheckIconName, ellipsisHorizontalIcon, ellipsisHorizontalIconName, ellipsisVerticalIcon, ellipsisVerticalIconName, employeeGroupIcon, employeeGroupIconName, employeeIcon, employeeIconName, envelopeIcon, envelopeIconName, eraserIcon, eraserIconName, errorMiniIcon, errorMiniIconName, errorStandardIcon, errorStandardIconName, essentialCollectionAliases, essentialCollectionIcons, euroIcon, euroIconName, eventIcon, eventIconName, eventMiniIcon, eventMiniIconName, exclamationCircleIcon, exclamationCircleIconName, exclamationTriangleIcon, exclamationTriangleIconName, expandCardIcon, expandCardIconName, exportIcon, exportIconName, eyeHideIcon, eyeHideIconName, eyeIcon, eyeIconName, factoryIcon, factoryIconName, fade, fadeSlide, fastForwardIcon, fastForwardIconName, ferryIcon, ferryIconName, fileGroupIcon, fileGroupIconName, fileIcon, fileIconName, fileSettingsIcon, fileSettingsIconName, fileShare2Icon, fileShare2IconName, fileShareIcon, fileShareIconName, fileZipIcon, fileZipIconName, filmStripIcon, filmStripIconName, filter2Icon, filter2IconName, filterGridCircleIcon, filterGridCircleIconName, filterGridCircleMiniIcon, filterGridCircleMiniIconName, filterGridIcon, filterGridIconName, filterGridMiniIcon, filterGridMiniIconName, filterIcon, filterIconName, filterOffIcon, filterOffIconName, firewallIcon, firewallIconName, firstAidIcon, firstAidIconName, fishIcon, fishIconName, flagIcon, flagIconName, flameIcon, flameIconName, flaskIcon, flaskIconName, floppyIcon, floppyIconName, folderIcon, folderIconName, folderOpenIcon, folderOpenIconName, fontSizeIcon, fontSizeIconName, forkingIcon, forkingIconName, formIcon, formIconName, fuelIcon, fuelIconName, gavelIcon, gavelIconName, gridChartIcon, gridChartIconName, gridViewIcon, gridViewIconName, halfStarIcon, halfStarIconName, happyFaceIcon, happyFaceIconName, hardDiskIcon, hardDiskIconName, hardDriveDisksIcon, hardDriveDisksIconName, hardDriveIcon, hardDriveIconName, hashtagIcon, hashtagIconName, headphonesIcon, headphonesIconName, heartBrokenIcon, heartBrokenIconName, heartIcon, heartIconName, heatMapIcon, heatMapIconName, helixIcon, helixIconName, helpIcon, helpIconName, helpInfoIcon, helpInfoIconName, highlighterIcon, highlighterIconName, historyIcon, historyIconName, homeIcon, homeIconName, hostGroupIcon, hostGroupIconName, hostIcon, hostIconName, hourglassIcon, hourglassIconName, idBadgeIcon, idBadgeIconName, imageGalleryIcon, imageGalleryIconName, imageIcon, imageIconName, importIcon, importIconName, inboxIcon, inboxIconName, indentIcon, indentIconName, inductorIcon, inductorIconName, infoCircleIcon, infoCircleIconName, infoCircleMiniIcon, infoCircleMiniIconName, infoStandardIcon, infoStandardIconName, installIcon, installIconName, internetOfThingsIcon, internetOfThingsIconName, isToggleFactory, italicIcon, italicIconName, justifyTextIcon, justifyTextIconName, keyIcon, keyIconName, keyboardIcon, keyboardIconName, landscapeIcon, landscapeIconName, languageIcon, languageIconName, launchpadIcon, launchpadIconName, layersIcon, layersIconName, libraryIcon, libraryIconName, lightbulbIcon, lightbulbIconName, lineChartIcon, lineChartIconName, linkIcon, linkIconName, listIcon, listIconName, loadChartIconSet, loadCommerceIconSet, loadCoreIconSet, loadEssentialIconSet, loadMediaIconSet, loadMiniIconSet, loadSocialIconSet, loadTechnologyIconSet, loadTextEditIconSet, loadTravelIconSet, lockIcon, lockIconName, loginIcon, loginIconName, logoutIcon, logoutIconName, mapIcon, mapIconName, mapMarkerIcon, mapMarkerIconName, mediaChangerIcon, mediaChangerIconName, mediaCollectionAliases, mediaCollectionIcons, memoryIcon, memoryIconName, microphoneIcon, microphoneIconName, microphoneMuteIcon, microphoneMuteIconName, miniCollectionAliases, miniCollectionIcons, minusCircleIcon, minusCircleIconName, minusIcon, minusIconName, mobileIcon, mobileIconName, moonIcon, moonIconName, mouseIcon, mouseIconName, musicNoteIcon, musicNoteIconName, namespaceIcon, namespaceIconName, networkGlobeIcon, networkGlobeIconName, networkSettingsIcon, networkSettingsIconName, networkSwitchIcon, networkSwitchIconName, neutralFaceIcon, neutralFaceIconName, newIcon, newIconName, noAccessIcon, noAccessIconName, noWifiIcon, noWifiIconName, nodeGroupIcon, nodeGroupIconName, nodeIcon, nodeIconName, nodesIcon, nodesIconName, noteIcon, noteIconName, numberListIcon, numberListIconName, nvmeIcon, nvmeIconName, objectsIcon, objectsIconName, onHolidayIcon, onHolidayIconName, organizationIcon, organizationIconName, outdentIcon, outdentIconName, paintRollerIcon, paintRollerIconName, paperclipIcon, paperclipIconName, pasteIcon, pasteIconName, pauseIcon, pauseIconName, pdfFileIcon, pdfFileIconName, pencilIcon, pencilIconName, pesoIcon, pesoIconName, phoneHandsetIcon, phoneHandsetIconName, pictureIcon, pictureIconName, pieChartIcon, pieChartIconName, piggyBankIcon, piggyBankIconName, pinIcon, pinIconName, pinboardIcon, pinboardIconName, playIcon, playIconName, pluginIcon, pluginIconName, plusCircleIcon, plusCircleIconName, plusIcon, plusIconName, podIcon, podIconName, popOutIcon, popOutIconName, portraitIcon, portraitIconName, poundIcon, poundIconName, powerIcon, powerIconName, printerIcon, printerIconName, processOnVmIcon, processOnVmIconName, qrCodeIcon, qrCodeIconName, rackServerIcon, rackServerIconName, radarIcon, radarIconName, recycleIcon, recycleIconName, redoIcon, redoIconName, refreshIcon, refreshIconName, renderIcon, repeatIcon, repeatIconName, replayAllIcon, replayAllIconName, replayOneIcon, replayOneIconName, resistorIcon, resistorIconName, resizeIcon, resizeIconName, resourcePoolIcon, resourcePoolIconName, rewindIcon, rewindIconName, routerIcon, routerIconName, rubleIcon, rubleIconName, rulerPencilIcon, rulerPencilIconName, rupeeIcon, rupeeIconName, sadFaceIcon, sadFaceIconName, scatterPlotIcon, scatterPlotIconName, scissorsIcon, scissorsIconName, scriptExecuteIcon, scriptExecuteIconName, scriptScheduleIcon, scriptScheduleIconName, scrollIcon, scrollIconName, searchIcon, searchIconName, shareIcon, shareIconName, shieldCheckIcon, shieldCheckIconName, shieldIcon, shieldIconName, shieldXIcon, shieldXIconName, shoppingBagIcon, shoppingBagIconName, shoppingCartIcon, shoppingCartIconName, shrinkIcon, shrinkIconName, shuffleIcon, shuffleIconName, slide, sliderIcon, sliderIconName, snowflakeIcon, snowflakeIconName, socialCollectionAliases, socialCollectionIcons, sortByIcon, sortByIconName, squidIcon, squidIconName, ssdIcon, ssdIconName, starIcon, starIconName, stepForward2Icon, stepForward2IconName, stepForwardIcon, stepForwardIconName, stopIcon, stopIconName, storageAdapterIcon, storageAdapterIconName, storageIcon, storageIconName, storeIcon, storeIconName, strikethroughIcon, strikethroughIconName, subscriptIcon, subscriptIconName, successStandardIcon, successStandardIconName, sunIcon, sunIconName, superscriptIcon, superscriptIconName, switchIcon, switchIconName, syncIcon, syncIconName, tableIcon, tableIconName, tabletIcon, tabletIconName, tagIcon, tagIconName, tagsIcon, tagsIconName, talkBubblesIcon, talkBubblesIconName, tapeDriveIcon, tapeDriveIconName, targetIcon, targetIconName, tasksIcon, tasksIconName, technologyCollectionAliases, technologyCollectionIcons, terminalIcon, terminalIconName, textColorIcon, textColorIconName, textEditCollectionAliases, textEditCollectionIcons, textIcon, textIconName, thermometerIcon, thermometerIconName, thinClientIcon, thinClientIconName, thumbsDownIcon, thumbsDownIconName, thumbsUpIcon, thumbsUpIconName, tickChartIcon, tickChartIconName, timelineIcon, timelineIconName, timesCircleIcon, timesCircleIconName, timesIcon, timesIconName, timesMiniIcon, timesMiniIconName, toolsIcon, toolsIconName, trailerIcon, trailerIconName, trashIcon, trashIconName, travelCollectionAliases, travelCollectionIcons, treeIcon, treeIconName, treeViewIcon, treeViewIconName, truckIcon, truckIconName, twoWayArrowsIcon, twoWayArrowsIconName, unarchiveIcon, unarchiveIconName, underlineIcon, underlineIconName, undoIcon, undoIconName, uninstallIcon, uninstallIconName, unknownIcon, unknownIconName, unknownStatusIcon, unknownStatusIconName, unlinkIcon, unlinkIconName, unlockIcon, unlockIconName, unpinIcon, unpinIconName, updateIcon, updateIconName, uploadCloudIcon, uploadCloudIconName, uploadIcon, uploadIconName, usbIcon, usbIconName, userIcon, userIconName, usersIcon, usersIconName, videoCameraIcon, videoCameraIconName, videoGalleryIcon, videoGalleryIconName, viewCardsIcon, viewCardsIconName, viewColumnsIcon, viewColumnsIconName, viewListIcon, viewListIconName, vmBugIcon, vmBugIconName, vmBugInverseIcon, vmBugInverseIconName, vmIcon, vmIconName, vmwAppIcon, vmwAppIconName, volumeDownIcon, volumeDownIconName, volumeIcon, volumeIconName, volumeMuteIcon, volumeMuteIconName, volumeUpIcon, volumeUpIconName, walletIcon, walletIconName, wandIcon, wandIconName, warningMiniIcon, warningMiniIconName, warningStandardIcon, warningStandardIconName, wifiIcon, wifiIconName, windowCloseIcon, windowCloseIconName, windowMaxIcon, windowMaxIconName, windowMinIcon, windowMinIconName, windowRestoreIcon, windowRestoreIconName, wonIcon, wonIconName, worldIcon, worldIconName, wrenchIcon, wrenchIconName, xlsFileIcon, xlsFileIconName, yenIcon, yenIconName, zoomInIcon, zoomInIconName, zoomOutIcon, zoomOutIconName, AccordionOompaLoompa as ÇlrAccordionOompaLoompa, AccordionWillyWonka as ÇlrAccordionWillyWonka, ActionableOompaLoompa as ÇlrActionableOompaLoompa, ActiveOompaLoompa as ÇlrActiveOompaLoompa, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka, TabsWillyWonka as ÇlrTabsWillyWonka, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
-export type { BreadcrumbItem, ClrCommonStrings, ClrDatagridComparatorInterface, ClrDatagridFilterInterface, ClrDatagridItemsIdentityFunction, ClrDatagridNumericFilterInterface, ClrDatagridStateInterface, ClrDatagridStringFilterInterface, ClrDatagridVirtualScrollRangeInterface, ClrFileAcceptError, ClrFileInputSelection, ClrFileListValidationErrors, ClrFileMaxFileSizeError, ClrFileMessagesTemplateContext, ClrFileMinFileSizeError, ClrPopoverPosition, ClrRecursiveForOfContext, ClrSingleFileValidationErrors, ClrTabsActionsPosition, Directions, HeadingLevel, IconAlias, IconRegistry, IconRegistrySources, IconShapeCollection, IconShapeSources, IconShapeTuple, Orientations, PopoverOptions, StatusTypes };
+export { BaseExpandableAnimation, CHANGE_KEYS, CLR_ALERT_DIRECTIVES, CLR_BUTTON_GROUP_DIRECTIVES, CLR_DATAGRID_DIRECTIVES, CLR_DATEPICKER_DIRECTIVES, CLR_DROPDOWN_DIRECTIVES, CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, CLR_ICON_DIRECTIVES, CLR_LAYOUT_DIRECTIVES, CLR_LOADING_BUTTON_DIRECTIVES, CLR_LOADING_DIRECTIVES, CLR_MENU_POSITIONS, CLR_MODAL_DIRECTIVES, CLR_NAVIGATION_DIRECTIVES, CLR_PROGRESS_BAR_DIRECTIVES, CLR_SIDEPANEL_DIRECTIVES, CLR_SIGNPOST_DIRECTIVES, CLR_SPINNER_DIRECTIVES, CLR_STACK_VIEW_DIRECTIVES, CLR_TABS_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, CLR_TREE_VIEW_DIRECTIVES, CLR_VERTICAL_NAV_DIRECTIVES, CLR_WIZARD_DIRECTIVES, CONDITIONAL_DIRECTIVES, CUSTOM_BUTTON_TYPES, CdsIconCustomTag, ClarityIcons, ClarityModule, ClrAbstractContainer, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle, ClrAlert, ClrAlertItem, ClrAlertModule, ClrAlertText, ClrAlerts, ClrAlertsPager, ClrAriaCurrentLink, ClrBadge, ClrBadgeColors, ClrBreadcrumbItem, ClrBreadcrumbs, ClrBreadcrumbsModule, ClrButton, ClrButtonGroup, ClrButtonGroupModule, ClrButtonModule, ClrCalendar, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxModule, ClrCheckboxWrapper, ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrCommonFormsModule, ClrCommonStringsService, ClrConditionalModule, ClrControl, ClrControlContainer, ClrControlError, ClrControlHelper, ClrControlLabel, ClrControlSuccess, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrDatalist, ClrDatalistContainer, ClrDatalistInput, ClrDatalistModule, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrDestroyService, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrEmphasisModule, ClrEndDateInput, ClrEndDateInputValidator, ClrExpandableAnimation, ClrFileError, ClrFileInfo, ClrFileInput, ClrFileInputContainer, ClrFileInputModule, ClrFileInputValidator, ClrFileInputValueAccessor, ClrFileList, ClrFileMessagesTemplate, ClrFileSuccess, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrForm, ClrFormLayout, ClrFormsModule, ClrHeader, ClrIcon, ClrIconCustomTag, ClrIconModule, ClrIfActive, ClrIfDetail, ClrIfError, ClrIfExpanded, ClrIfOpen, ClrIfSuccess, ClrInput, ClrInputContainer, ClrInputModule, ClrLabel, ClrLabelColors, ClrLayout, ClrLayoutModule, ClrLoading, ClrLoadingButton, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState, ClrMainContainer, ClrMainContainerModule, ClrModal, ClrModalBody, ClrModalConfigurationService, ClrModalHostComponent, ClrModalModule, ClrMonthpicker, ClrNavLevel, ClrNavigationModule, ClrNumberInput, ClrNumberInputContainer, ClrNumberInputModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, ClrPassword, ClrPasswordContainer, ClrPasswordModule, ClrPopoverAnchor, ClrPopoverContent, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverService, ClrProgressBar, ClrProgressBarModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrRadioWrapper, ClrRange, ClrRangeContainer, ClrRangeModule, ClrRecursiveForOf, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrSelectedState, ClrSidePanel, ClrSidePanelModule, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrSpinner, ClrSpinnerModule, ClrStackBlock, ClrStackContentInput, ClrStackHeader, ClrStackView, ClrStackViewCustomTags, ClrStackViewLabel, ClrStackViewModule, ClrStandaloneCdkTrapFocus, ClrStartDateInput, ClrStartDateInputValidator, ClrStepButton, ClrStepButtonType, ClrStepper, ClrStepperModule, ClrStepperPanel, ClrStopEscapePropagationDirective, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStep, ClrTimelineStepDescription, ClrTimelineStepHeader, ClrTimelineStepState, ClrTimelineStepTitle, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, ClrVerticalNav, ClrVerticalNavGroup, ClrVerticalNavGroupChildren, ClrVerticalNavIcon, ClrVerticalNavLink, ClrVerticalNavModule, ClrWizard, ClrWizardButton, ClrWizardHeaderAction, ClrWizardModule, ClrWizardPage, ClrWizardPageButtons, ClrWizardPageHeaderActions, ClrWizardPageNavTitle, ClrWizardPageTitle, ClrWizardStepnav, ClrWizardStepnavItem, ClrWizardTitle, ClrYearpicker, DEFAULT_BUTTON_TYPES, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, EXPANDABLE_ANIMATION_DIRECTIVES, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, IS_TOGGLE, IS_TOGGLE_PROVIDER, IconHtmlPipe, LoadingListener, MainContainerWillyWonka, NavDetectionOompaLoompa, Selection, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, ToggleServiceFactory, WrappedFormControl, accessibility1Icon, accessibility1IconName, accessibility2Icon, accessibility2IconName, addTextIcon, addTextIconName, administratorIcon, administratorIconName, airplaneIcon, airplaneIconName, alarmClockIcon, alarmClockIconName, alarmOffIcon, alarmOffIconName, alignBottomIcon, alignBottomIconName, alignCenterIcon, alignCenterIconName, alignLeftIcon, alignLeftIconName, alignLeftTextIcon, alignLeftTextIconName, alignMiddleIcon, alignMiddleIconName, alignRightIcon, alignRightIconName, alignRightTextIcon, alignRightTextIconName, alignTopIcon, alignTopIconName, angleDoubleIcon, angleDoubleIconName, angleIcon, angleIconName, animationIcon, animationIconName, announcementIcon, announcementIconName, applicationIcon, applicationIconName, applicationsIcon, applicationsIconName, archiveIcon, archiveIconName, arrowIcon, arrowIconName, arrowMiniIcon, arrowMiniIconName, assignUserIcon, assignUserIconName, asteriskIcon, asteriskIconName, atomIcon, atomIconName, axisChartIcon, axisChartIconName, backupIcon, backupIconName, backupRestoreIcon, backupRestoreIconName, banIcon, banIconName, bankIcon, bankIconName, barChartIcon, barChartIconName, barCodeIcon, barCodeIconName, barsIcon, barsIconName, batteryIcon, batteryIconName, bellCurveIcon, bellCurveIconName, bellIcon, bellIconName, betaIcon, betaIconName, bicycleIcon, bicycleIconName, birthdayCakeIcon, birthdayCakeIconName, bitcoinIcon, bitcoinIconName, blockIcon, blockIconName, blockQuoteIcon, blockQuoteIconName, blocksGroupIcon, blocksGroupIconName, bluetoothIcon, bluetoothIconName, bluetoothOffIcon, bluetoothOffIconName, boatIcon, boatIconName, boldIcon, boldIconName, boltIcon, boltIconName, bookIcon, bookIconName, bookmarkIcon, bookmarkIconName, boxPlotIcon, boxPlotIconName, briefcaseIcon, briefcaseIconName, bubbleChartIcon, bubbleChartIconName, bubbleExclamationIcon, bubbleExclamationIconName, bugIcon, bugIconName, buildingIcon, buildingIconName, bulletListIcon, bulletListIconName, bullseyeIcon, bullseyeIconName, bundleIcon, bundleIconName, calculatorIcon, calculatorIconName, calendarIcon, calendarIconName, calendarMiniIcon, calendarMiniIconName, cameraIcon, cameraIconName, campervanIcon, campervanIconName, capacitorIcon, capacitorIconName, carIcon, carIconName, caravanIcon, caravanIconName, cdDvdIcon, cdDvdIconName, centerTextIcon, centerTextIconName, certificateIcon, certificateIconName, chartCollectionAliases, chartCollectionIcons, chatBubbleIcon, chatBubbleIconName, checkCircleIcon, checkCircleIconName, checkCircleMiniIcon, checkCircleMiniIconName, checkIcon, checkIconName, checkMiniIcon, checkMiniIconName, checkboxListIcon, checkboxListIconName, childArrowIcon, childArrowIconName, ciCdIcon, ciCdIconName, circleArrowIcon, circleArrowIconName, circleIcon, circleIconName, clipboardIcon, clipboardIconName, clockIcon, clockIconName, cloneIcon, cloneIconName, cloudChartIcon, cloudChartIconName, cloudIcon, cloudIconName, cloudNetworkIcon, cloudNetworkIconName, cloudScaleIcon, cloudScaleIconName, cloudTrafficIcon, cloudTrafficIconName, clusterIcon, clusterIconName, codeIcon, codeIconName, cogIcon, cogIconName, coinBagIcon, coinBagIconName, collapse, collapseCardIcon, collapseCardIconName, colorPaletteIcon, colorPaletteIconName, colorPickerIcon, colorPickerIconName, commerceCollectionAliases, commerceCollectionIcons, commonStringsDefault, compassIcon, compassIconName, computerIcon, computerIconName, connectIcon, connectIconName, containerGroupIcon, containerGroupIconName, containerIcon, containerIconName, containerVolumeIcon, containerVolumeIconName, contractIcon, contractIconName, controlLunIcon, controlLunIconName, copyIcon, copyIconName, copyToClipboardIcon, copyToClipboardIconName, coreCollectionAliases, coreCollectionIcons, cpuIcon, cpuIconName, creditCardIcon, creditCardIconName, crosshairsIcon, crosshairsIconName, crownIcon, crownIconName, cursorArrowIcon, cursorArrowIconName, cursorHandClickIcon, cursorHandClickIconName, cursorHandGrabIcon, cursorHandGrabIconName, cursorHandIcon, cursorHandIconName, cursorHandOpenIcon, cursorHandOpenIconName, cursorMoveIcon, cursorMoveIconName, curveChartIcon, curveChartIconName, dashboardIcon, dashboardIconName, dataClusterIcon, dataClusterIconName, deployIcon, deployIconName, detailCollapseIcon, detailCollapseIconName, detailExpandIcon, detailExpandIconName, detailsIcon, detailsIconName, devicesIcon, devicesIconName, digitalSignatureIcon, digitalSignatureIconName, disconnectIcon, disconnectIconName, displayIcon, displayIconName, dollarBillIcon, dollarBillIconName, dollarIcon, dollarIconName, dotCircleIcon, dotCircleIconName, downloadCloudIcon, downloadCloudIconName, downloadIcon, downloadIconName, dragHandleCornerIcon, dragHandleCornerIconName, dragHandleIcon, dragHandleIconName, eCheckIcon, eCheckIconName, ellipsisHorizontalIcon, ellipsisHorizontalIconName, ellipsisVerticalIcon, ellipsisVerticalIconName, employeeGroupIcon, employeeGroupIconName, employeeIcon, employeeIconName, envelopeIcon, envelopeIconName, eraserIcon, eraserIconName, errorMiniIcon, errorMiniIconName, errorStandardIcon, errorStandardIconName, essentialCollectionAliases, essentialCollectionIcons, euroIcon, euroIconName, eventIcon, eventIconName, eventMiniIcon, eventMiniIconName, exclamationCircleIcon, exclamationCircleIconName, exclamationTriangleIcon, exclamationTriangleIconName, expandCardIcon, expandCardIconName, exportIcon, exportIconName, eyeHideIcon, eyeHideIconName, eyeIcon, eyeIconName, factoryIcon, factoryIconName, fade, fadeSlide, fastForwardIcon, fastForwardIconName, ferryIcon, ferryIconName, fileGroupIcon, fileGroupIconName, fileIcon, fileIconName, fileSettingsIcon, fileSettingsIconName, fileShare2Icon, fileShare2IconName, fileShareIcon, fileShareIconName, fileZipIcon, fileZipIconName, filmStripIcon, filmStripIconName, filter2Icon, filter2IconName, filterGridCircleIcon, filterGridCircleIconName, filterGridCircleMiniIcon, filterGridCircleMiniIconName, filterGridIcon, filterGridIconName, filterGridMiniIcon, filterGridMiniIconName, filterIcon, filterIconName, filterOffIcon, filterOffIconName, firewallIcon, firewallIconName, firstAidIcon, firstAidIconName, fishIcon, fishIconName, flagIcon, flagIconName, flameIcon, flameIconName, flaskIcon, flaskIconName, floppyIcon, floppyIconName, folderIcon, folderIconName, folderOpenIcon, folderOpenIconName, fontSizeIcon, fontSizeIconName, forkingIcon, forkingIconName, formIcon, formIconName, fuelIcon, fuelIconName, gavelIcon, gavelIconName, gridChartIcon, gridChartIconName, gridViewIcon, gridViewIconName, halfStarIcon, halfStarIconName, happyFaceIcon, happyFaceIconName, hardDiskIcon, hardDiskIconName, hardDriveDisksIcon, hardDriveDisksIconName, hardDriveIcon, hardDriveIconName, hashtagIcon, hashtagIconName, headphonesIcon, headphonesIconName, heartBrokenIcon, heartBrokenIconName, heartIcon, heartIconName, heatMapIcon, heatMapIconName, helixIcon, helixIconName, helpIcon, helpIconName, helpInfoIcon, helpInfoIconName, highlighterIcon, highlighterIconName, historyIcon, historyIconName, homeIcon, homeIconName, hostGroupIcon, hostGroupIconName, hostIcon, hostIconName, hourglassIcon, hourglassIconName, idBadgeIcon, idBadgeIconName, imageGalleryIcon, imageGalleryIconName, imageIcon, imageIconName, importIcon, importIconName, inboxIcon, inboxIconName, indentIcon, indentIconName, inductorIcon, inductorIconName, infoCircleIcon, infoCircleIconName, infoCircleMiniIcon, infoCircleMiniIconName, infoStandardIcon, infoStandardIconName, installIcon, installIconName, internetOfThingsIcon, internetOfThingsIconName, isToggleFactory, italicIcon, italicIconName, justifyTextIcon, justifyTextIconName, keyIcon, keyIconName, keyboardIcon, keyboardIconName, landscapeIcon, landscapeIconName, languageIcon, languageIconName, launchpadIcon, launchpadIconName, layersIcon, layersIconName, libraryIcon, libraryIconName, lightbulbIcon, lightbulbIconName, lineChartIcon, lineChartIconName, linkIcon, linkIconName, listIcon, listIconName, loadChartIconSet, loadCommerceIconSet, loadCoreIconSet, loadEssentialIconSet, loadMediaIconSet, loadMiniIconSet, loadSocialIconSet, loadTechnologyIconSet, loadTextEditIconSet, loadTravelIconSet, lockIcon, lockIconName, loginIcon, loginIconName, logoutIcon, logoutIconName, mapIcon, mapIconName, mapMarkerIcon, mapMarkerIconName, mediaChangerIcon, mediaChangerIconName, mediaCollectionAliases, mediaCollectionIcons, memoryIcon, memoryIconName, microphoneIcon, microphoneIconName, microphoneMuteIcon, microphoneMuteIconName, miniCollectionAliases, miniCollectionIcons, minusCircleIcon, minusCircleIconName, minusIcon, minusIconName, mobileIcon, mobileIconName, moonIcon, moonIconName, mouseIcon, mouseIconName, musicNoteIcon, musicNoteIconName, namespaceIcon, namespaceIconName, networkGlobeIcon, networkGlobeIconName, networkSettingsIcon, networkSettingsIconName, networkSwitchIcon, networkSwitchIconName, neutralFaceIcon, neutralFaceIconName, newIcon, newIconName, noAccessIcon, noAccessIconName, noWifiIcon, noWifiIconName, nodeGroupIcon, nodeGroupIconName, nodeIcon, nodeIconName, nodesIcon, nodesIconName, noteIcon, noteIconName, numberListIcon, numberListIconName, nvmeIcon, nvmeIconName, objectsIcon, objectsIconName, onHolidayIcon, onHolidayIconName, organizationIcon, organizationIconName, outdentIcon, outdentIconName, paintRollerIcon, paintRollerIconName, paperclipIcon, paperclipIconName, pasteIcon, pasteIconName, pauseIcon, pauseIconName, pdfFileIcon, pdfFileIconName, pencilIcon, pencilIconName, pesoIcon, pesoIconName, phoneHandsetIcon, phoneHandsetIconName, pictureIcon, pictureIconName, pieChartIcon, pieChartIconName, piggyBankIcon, piggyBankIconName, pinIcon, pinIconName, pinboardIcon, pinboardIconName, playIcon, playIconName, pluginIcon, pluginIconName, plusCircleIcon, plusCircleIconName, plusIcon, plusIconName, podIcon, podIconName, popOutIcon, popOutIconName, portraitIcon, portraitIconName, poundIcon, poundIconName, powerIcon, powerIconName, printerIcon, printerIconName, processOnVmIcon, processOnVmIconName, qrCodeIcon, qrCodeIconName, rackServerIcon, rackServerIconName, radarIcon, radarIconName, recycleIcon, recycleIconName, redoIcon, redoIconName, refreshIcon, refreshIconName, renderIcon, repeatIcon, repeatIconName, replayAllIcon, replayAllIconName, replayOneIcon, replayOneIconName, resistorIcon, resistorIconName, resizeIcon, resizeIconName, resourcePoolIcon, resourcePoolIconName, rewindIcon, rewindIconName, routerIcon, routerIconName, rubleIcon, rubleIconName, rulerPencilIcon, rulerPencilIconName, rupeeIcon, rupeeIconName, sadFaceIcon, sadFaceIconName, scatterPlotIcon, scatterPlotIconName, scissorsIcon, scissorsIconName, scriptExecuteIcon, scriptExecuteIconName, scriptScheduleIcon, scriptScheduleIconName, scrollIcon, scrollIconName, searchIcon, searchIconName, shareIcon, shareIconName, shieldCheckIcon, shieldCheckIconName, shieldIcon, shieldIconName, shieldXIcon, shieldXIconName, shoppingBagIcon, shoppingBagIconName, shoppingCartIcon, shoppingCartIconName, shrinkIcon, shrinkIconName, shuffleIcon, shuffleIconName, slide, sliderIcon, sliderIconName, snowflakeIcon, snowflakeIconName, socialCollectionAliases, socialCollectionIcons, sortByIcon, sortByIconName, squidIcon, squidIconName, ssdIcon, ssdIconName, starIcon, starIconName, stepForward2Icon, stepForward2IconName, stepForwardIcon, stepForwardIconName, stopIcon, stopIconName, storageAdapterIcon, storageAdapterIconName, storageIcon, storageIconName, storeIcon, storeIconName, strikethroughIcon, strikethroughIconName, subscriptIcon, subscriptIconName, successStandardIcon, successStandardIconName, sunIcon, sunIconName, superscriptIcon, superscriptIconName, switchIcon, switchIconName, syncIcon, syncIconName, tableIcon, tableIconName, tabletIcon, tabletIconName, tagIcon, tagIconName, tagsIcon, tagsIconName, talkBubblesIcon, talkBubblesIconName, tapeDriveIcon, tapeDriveIconName, targetIcon, targetIconName, tasksIcon, tasksIconName, technologyCollectionAliases, technologyCollectionIcons, terminalIcon, terminalIconName, textColorIcon, textColorIconName, textEditCollectionAliases, textEditCollectionIcons, textIcon, textIconName, thermometerIcon, thermometerIconName, thinClientIcon, thinClientIconName, thumbsDownIcon, thumbsDownIconName, thumbsUpIcon, thumbsUpIconName, tickChartIcon, tickChartIconName, timelineIcon, timelineIconName, timesCircleIcon, timesCircleIconName, timesIcon, timesIconName, timesMiniIcon, timesMiniIconName, toolsIcon, toolsIconName, trailerIcon, trailerIconName, trashIcon, trashIconName, travelCollectionAliases, travelCollectionIcons, treeIcon, treeIconName, treeViewIcon, treeViewIconName, truckIcon, truckIconName, twoWayArrowsIcon, twoWayArrowsIconName, unarchiveIcon, unarchiveIconName, underlineIcon, underlineIconName, undoIcon, undoIconName, uninstallIcon, uninstallIconName, unknownIcon, unknownIconName, unknownStatusIcon, unknownStatusIconName, unlinkIcon, unlinkIconName, unlockIcon, unlockIconName, unpinIcon, unpinIconName, updateIcon, updateIconName, uploadCloudIcon, uploadCloudIconName, uploadIcon, uploadIconName, usbIcon, usbIconName, userIcon, userIconName, usersIcon, usersIconName, videoCameraIcon, videoCameraIconName, videoGalleryIcon, videoGalleryIconName, viewCardsIcon, viewCardsIconName, viewColumnsIcon, viewColumnsIconName, viewListIcon, viewListIconName, vmBugIcon, vmBugIconName, vmBugInverseIcon, vmBugInverseIconName, vmIcon, vmIconName, vmwAppIcon, vmwAppIconName, volumeDownIcon, volumeDownIconName, volumeIcon, volumeIconName, volumeMuteIcon, volumeMuteIconName, volumeUpIcon, volumeUpIconName, walletIcon, walletIconName, wandIcon, wandIconName, warningMiniIcon, warningMiniIconName, warningStandardIcon, warningStandardIconName, wifiIcon, wifiIconName, windowCloseIcon, windowCloseIconName, windowMaxIcon, windowMaxIconName, windowMinIcon, windowMinIconName, windowRestoreIcon, windowRestoreIconName, wonIcon, wonIconName, worldIcon, worldIconName, wrenchIcon, wrenchIconName, xlsFileIcon, xlsFileIconName, yenIcon, yenIconName, zoomInIcon, zoomInIconName, zoomOutIcon, zoomOutIconName, AccordionOompaLoompa as ÇlrAccordionOompaLoompa, AccordionWillyWonka as ÇlrAccordionWillyWonka, ActionableOompaLoompa as ÇlrActionableOompaLoompa, ActiveOompaLoompa as ÇlrActiveOompaLoompa, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka, TabsWillyWonka as ÇlrTabsWillyWonka, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
+export type { BreadcrumbItem, ClrCommonStrings, ClrDatagridComparatorInterface, ClrDatagridFilterInterface, ClrDatagridItemsIdentityFunction, ClrDatagridNumericFilterInterface, ClrDatagridStateInterface, ClrDatagridStringFilterInterface, ClrDatagridVirtualScrollRangeInterface, ClrFileAcceptError, ClrFileInputSelection, ClrFileListValidationErrors, ClrFileMaxFileSizeError, ClrFileMessagesTemplateContext, ClrFileMinFileSizeError, ClrRecursiveForOfContext, ClrSingleFileValidationErrors, ClrTabsActionsPosition, Directions, HeadingLevel, IconAlias, IconRegistry, IconRegistrySources, IconShapeCollection, IconShapeSources, IconShapeTuple, Orientations, StatusTypes };
