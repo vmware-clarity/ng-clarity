@@ -41,6 +41,8 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
       ngControlService.controlChanges.subscribe(control => {
         this.control = control;
 
+        this.state = control.control.status as CONTROL_STATE;
+
         this.subscriptions.push(
           control.statusChanges.subscribe(status => {
             this.state = status;

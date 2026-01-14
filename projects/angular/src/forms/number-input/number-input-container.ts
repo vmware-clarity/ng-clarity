@@ -24,9 +24,9 @@ import { NgControlService } from '../common/providers/ng-control.service';
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-number-input-wrapper">
-        <div class="clr-input-group" [class.clr-focus]="focus" (focusout)="focusOut()">
+        <div class="clr-input-group" [class.clr-focus]="focus">
           <ng-content select="[clrNumberInput]"></ng-content>
-          <div class="clr-input-group-actions">
+          <div class="clr-input-group-actions" (focusout)="focusOut()">
             <button
               type="button"
               class="clr-input-group-icon-action"

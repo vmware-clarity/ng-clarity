@@ -139,7 +139,6 @@ export abstract class ClrDateInputBase
     this.setFocus(true);
   }
 
-  @HostListener('blur')
   override triggerValidation() {
     super.triggerValidation();
     this.setFocus(false);

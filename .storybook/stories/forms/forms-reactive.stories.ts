@@ -74,11 +74,12 @@ const ReactiveFormTemplate: StoryFn = args => ({
       </clr-number-input-container>
       <clr-datalist-container>
         <label>Element</label>
-        <input clrDatalistInput formControlName="element" />
+        <input clrDatalistInput formControlName="element" required />
         <datalist>
           <option *ngFor="let element of elements" [value]="element.symbol">{{ element.name }}</option>
         </datalist>
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+        <clr-control-error *clrIfError="'required'">Element is required</clr-control-error>
       </clr-datalist-container>
       <clr-password-container>
         <label>Password</label>
