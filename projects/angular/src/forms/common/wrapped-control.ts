@@ -152,7 +152,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   // overrides MUST NOT have HostListener decorator.
   @HostListener('blur')
   triggerValidation() {
-    this._ngControl.control.markAsTouched();
+    this._ngControl?.control.markAsTouched();
   }
 
   // @TODO This method has a try/catch due to an unknown issue that came when building the clrToggle feature
