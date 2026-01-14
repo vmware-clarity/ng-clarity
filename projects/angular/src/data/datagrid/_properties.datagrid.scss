@@ -89,6 +89,7 @@
       --clr-datagrid-detail-body-text-color: #{tokens.$cds-alias-typography-color-400};
       --clr-datagrid-detail-header-title-color: #{tokens.$cds-alias-typography-color-400};
       --clr-datagrid-detail-pane-bg-color: #{tokens.$cds-alias-object-container-background};
+      --clr-datagrid-detail-pane-open-row-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
       --clr-datagrid-detail-pane-border-color: #{tokens.$cds-alias-object-border-color};
       --clr-datagrid-placeholder-background-color: #{tokens.$cds-alias-object-container-background};
       --clr-datagrid-popovers-box-shadow: #{tokens.$cds-alias-object-shadow-100};
