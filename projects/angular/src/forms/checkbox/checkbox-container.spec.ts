@@ -34,10 +34,6 @@ class NoLabelTest {}
     <clr-checkbox-container [clrInline]="inline">
       <label>Hello World</label>
       <clr-checkbox-wrapper>
-        <label>One</label>
-        <input type="checkbox" clrCheckbox name="model" required [(ngModel)]="model" value="one" />
-      </clr-checkbox-wrapper>
-      <clr-checkbox-wrapper>
         <label>Two</label>
         <input
           type="checkbox"

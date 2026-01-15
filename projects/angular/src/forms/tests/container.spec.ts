@@ -107,7 +107,8 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       // The scenarios were additionally verified by manual testing in a patched Stackblitz demo:
       // https://stackblitz.com/edit/input-on-blur-issue-onpush-td-13-4-3
       markControlService.markAsTouched();
-      container.state = valid ? CONTROL_STATE.VALID : CONTROL_STATE.INVALID;
+      container.control.control.value = valid;
+      container.control.control.markAsDirty();
     }
 
     it('injects the layoutService', () => {
@@ -165,6 +166,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
 
     it('projects the success content when valid', () => {
       setValid(true);
+      container.control.control.updateValueAndValidity();
       fixture.detectChanges();
       expect(containerEl.querySelector('clr-control-error')).toBeFalsy();
       expect(containerEl.querySelector('clr-control-success')).toBeTruthy();
@@ -172,6 +174,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
 
     it('should have the success icon when valid', () => {
       setValid(true);
+      container.control.control.updateValueAndValidity();
       fixture.detectChanges();
       const icon: HTMLElement = containerEl.querySelector('cds-icon[shape=check-circle]');
       expect(icon).toBeTruthy();

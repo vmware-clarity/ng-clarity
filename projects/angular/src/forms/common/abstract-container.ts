@@ -26,11 +26,9 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
   @ContentChild(ClrControlHelper) controlHelperComponent: ClrControlHelper;
 
   control: NgControl;
-  additionalControls: NgControl[];
+  additionalControls: NgControl[] = [];
 
   protected subscriptions: Subscription[] = [];
-
-  private state: CONTROL_STATE;
 
   constructor(
     @Optional() protected layoutService: LayoutService,
@@ -39,33 +37,10 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
   ) {
     this.subscriptions.push(
       ngControlService.controlChanges.subscribe(control => {
-        if (!control) {
-          return;
-        }
-
         this.control = control;
-
-        this.state = control.control?.status as CONTROL_STATE;
-
-        if (control.statusChanges) {
-          this.subscriptions.push(
-            control.statusChanges.subscribe(status => {
-              this.state = status;
-              this.updateHelpers();
-            })
-          );
-        }
       }),
       ngControlService.additionalControlsChanges.subscribe(controls => {
         this.additionalControls = controls;
-        this.additionalControls.forEach(control => {
-          this.subscriptions.push(
-            control.statusChanges.subscribe(status => {
-              this.state = status;
-              this.updateHelpers();
-            })
-          );
-        });
       })
     );
   }
@@ -113,6 +88,23 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
 
   private get touched() {
     return !!(this.control?.touched || this.additionalControls?.some(control => control.touched));
+  }
+
+  private get state() {
+    const controlStatuses = [this.control, ...this.additionalControls].map((control: NgControl) => {
+      return control.status;
+    });
+
+    // These status values are mutually exclusive, so a control
+    // cannot be both valid AND invalid or invalid AND disabled.
+    // if else order is important!
+    if (controlStatuses.includes(CONTROL_STATE.INVALID)) {
+      return CONTROL_STATE.INVALID;
+    } else if (controlStatuses.includes(CONTROL_STATE.VALID)) {
+      return CONTROL_STATE.VALID;
+    } else {
+      return CONTROL_STATE.INVALID;
+    }
   }
 
   ngAfterContentInit() {

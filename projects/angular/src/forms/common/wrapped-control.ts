@@ -136,7 +136,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   }
 
   ngDoCheck() {
-    this.triggerDoCheck(this.differ, this.ngControl);
+    this.triggerDoCheck(this.differ, this.ngControl ? this.ngControl : this._ngControl);
     if (this.hasAdditionalControls) {
       for (const [ngControl, differ] of this.additionalDiffer) {
         this.triggerDoCheck(differ, ngControl);
@@ -186,6 +186,12 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
             (change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
             change.currentValue !== change.previousValue
           ) {
+            if (this.ngControlService.control === ngControl) {
+              this.ngControlService.emitControlChange(ngControl);
+            } else {
+              this.ngControlService.emitAdditionalControlChange(this.ngControlService.additionalControls);
+            }
+
             this.triggerValidation();
           }
         });

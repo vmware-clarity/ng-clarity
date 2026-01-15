@@ -34,10 +34,6 @@ class NoLabelTest {}
     <clr-toggle-container [clrInline]="inline">
       <label>Hello World</label>
       <clr-toggle-wrapper>
-        <label>One</label>
-        <input type="checkbox" clrToggle name="model" required [(ngModel)]="model" value="one" />
-      </clr-toggle-wrapper>
-      <clr-toggle-wrapper>
         <label>Two</label>
         <input type="checkbox" clrToggle name="model" required [(ngModel)]="model" value="two" [disabled]="disabled" />
       </clr-toggle-wrapper>

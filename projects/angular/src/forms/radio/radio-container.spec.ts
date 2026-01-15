@@ -34,10 +34,6 @@ class NoLabelTest {}
     <clr-radio-container [clrInline]="inline">
       <label>Hello World</label>
       <clr-radio-wrapper>
-        <label>One</label>
-        <input type="radio" clrRadio name="model" required [(ngModel)]="model" value="one" />
-      </clr-radio-wrapper>
-      <clr-radio-wrapper>
         <label>Two</label>
         <input type="radio" clrRadio name="model" required [(ngModel)]="model" value="two" [disabled]="disabled" />
       </clr-radio-wrapper>

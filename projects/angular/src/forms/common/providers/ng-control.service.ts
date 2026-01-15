@@ -53,12 +53,21 @@ export class NgControlService {
 
   setControl(control: NgControl) {
     this._control = control;
+
+    this.emitControlChange(control);
+  }
+
+  emitControlChange(control: NgControl) {
     this._controlChanges.next(control);
   }
 
   addAdditionalControl(control: NgControl) {
     this._additionalControls.push(control);
-    this._additionalControlsChanges.next(this._additionalControls);
+    this.emitAdditionalControlChange(this._additionalControls);
+  }
+
+  emitAdditionalControlChange(controls: NgControl[]) {
+    this._additionalControlsChanges.next(controls);
   }
 
   setHelpers(state: Helpers) {
