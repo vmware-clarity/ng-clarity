@@ -94,6 +94,7 @@ export class ClrOption<T> implements OnInit {
     // This way we achieve two things:
     // - do not lose focus
     // - we're still able to use onBlur for "outside-click" handling
+    this.focusHandler.focusOption(this.optionProxy);
     this.focusHandler.focusInput();
   }
 }

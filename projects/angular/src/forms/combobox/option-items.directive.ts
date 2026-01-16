@@ -44,9 +44,7 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     this.subscriptions.push(
       optionService.inputChanged.subscribe(filter => {
         this.filter = filter;
-        if (optionService.filtering) {
-          this.updateItems();
-        }
+        this.updateItems();
       })
     );
   }

@@ -101,6 +101,10 @@ export const commonStringsDefault: ClrCommonStrings = {
   comboboxSelected: 'Selected',
   comboboxNoResults: 'No results',
   comboboxOpen: 'Show options',
+  comboboxSelectAll: 'Select All',
+  comboboxUnselectAll: 'Unselect All',
+  comboboxShowAll: 'Show all {ITEMS} selected',
+  comboboxShowLess: 'Show less',
   // Datagrid expandable rows
   datagridExpandableBeginningOf: 'Beginning of',
   datagridExpandableEndOf: 'End of',

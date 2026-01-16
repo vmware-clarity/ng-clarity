@@ -16,11 +16,13 @@ import {
   OnDestroy,
   Optional,
   QueryList,
+  ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { ClrOption } from './option';
-import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
+import { ComboboxFocusHandler, OptionData } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
 import { ClrPopoverService } from '../../popover/common/providers/popover.service';
@@ -30,6 +32,9 @@ import { ClrLoadingState } from '../../utils/loading/loading';
 import { LoadingListener } from '../../utils/loading/loading-listener';
 
 let nbOptionsComponents = 0;
+
+export const SELECT_ALL_ID = 'select-all-id';
+export const SELECT_ALL_VALUE = 'SELECT_ALL';
 
 @Component({
   selector: 'clr-options',
@@ -42,6 +47,21 @@ let nbOptionsComponents = 0;
         <span class="clr-combobox-options-text">
           {{ searchText(optionSelectionService.currentInput) }}
         </span>
+      </div>
+    }
+
+    @if (showSelectAllAction) {
+      <div class="clr-combobox-select-all">
+        <button
+          #selectAllBtn
+          type="button"
+          tabindex="-1"
+          class="btn btn-link clr-combobox-select-all-btn clr-combobox-option"
+          [class.clr-focus]="isSelectAllFocused"
+          (click)="toggleSelectAll($event)"
+        >
+          {{ allVisibleSelected ? commonStrings.keys.comboboxUnselectAll : commonStrings.keys.comboboxSelectAll }}
+        </button>
       </div>
     }
 
@@ -60,6 +80,7 @@ let nbOptionsComponents = 0;
   providers: [{ provide: LoadingListener, useExisting: ClrOptions }],
   host: {
     '[class.clr-combobox-options]': 'true',
+    '[class.clr-combobox-options-multi]': 'optionSelectionService.multiselectable',
     '[class.clr-combobox-options-hidden]': 'emptyOptions && editable',
     '[attr.role]': '"listbox"',
     '[id]': 'optionsId',
@@ -73,6 +94,8 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
   _items: QueryList<ClrOption<T>>;
 
   private subscriptions: Subscription[] = [];
+  private _selectAllBtn: ElementRef;
+  private _selectAllOption: OptionData<T>;
 
   constructor(
     public optionSelectionService: OptionSelectionService<T>,
@@ -95,13 +118,21 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     }
   }
 
+  @ViewChild('selectAllBtn')
+  set selectAllBtn(value: ElementRef) {
+    this._selectAllBtn = value;
+    this._selectAllOption = new OptionData<T>(SELECT_ALL_ID, { __action: SELECT_ALL_VALUE } as any);
+    this._selectAllOption.el = value?.nativeElement;
+    this.updateFocusableItems();
+  }
+
   @ContentChildren(ClrOption, { descendants: true })
   get items(): QueryList<ClrOption<T>> {
     return this._items;
   }
   set items(items: QueryList<ClrOption<T>>) {
     this._items = items;
-    this.focusHandler.addOptionValues(this._items.map(option => option.optionProxy));
+    this.updateFocusableItems();
   }
 
   /**
@@ -119,6 +150,37 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     return `${this.optionsId}-no-results`;
   }
 
+  get showSelectAllAction(): boolean {
+    return this.optionSelectionService.multiselectable && !this.optionSelectionService.loading && this.items.length > 0;
+  }
+
+  get allVisibleSelected(): boolean {
+    if ((!this.optionSelectionService.multiselectable && !this.items) || (this.items && this.items.length === 0)) {
+      return false;
+    }
+    return (
+      this.items.length === (this.optionSelectionService.selectionModel as MultiSelectComboboxModel<T>).model?.length
+    );
+  }
+
+  get isSelectAllFocused() {
+    return this.focusHandler.pseudoFocus.model?.id === SELECT_ALL_ID;
+  }
+
+  toggleSelectAll(event = null) {
+    if (event) {
+      event.stopPropagation();
+      this.focusHandler.focusInput();
+    }
+    const visibleValues = this.items.map(option => option.value);
+
+    if (this.allVisibleSelected) {
+      this.optionSelectionService.unselectMany(visibleValues);
+    } else {
+      this.optionSelectionService.selectMany(visibleValues);
+    }
+  }
+
   ngAfterViewInit() {
     this.focusHandler.listbox = this.el.nativeElement;
 
@@ -131,6 +193,9 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
         } else {
           this.focusHandler.pseudoFocus.pop();
         }
+      }),
+      this.optionSelectionService.selectAllRequested.subscribe(() => {
+        this.toggleSelectAll();
       })
     );
   }
@@ -145,5 +210,20 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
 
   loadingStateChange(state: ClrLoadingState): void {
     this.loading = state === ClrLoadingState.LOADING;
+  }
+
+  private updateFocusableItems() {
+    const focusList: OptionData<T>[] = [];
+
+    if (this._selectAllBtn) {
+      focusList.push(this._selectAllOption);
+    }
+
+    if (this._items) {
+      const itemOptions = this._items.map(option => option.optionProxy);
+      focusList.push(...itemOptions);
+    }
+
+    this.focusHandler.addOptionValues(focusList);
   }
 }

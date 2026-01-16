@@ -8,6 +8,7 @@
 <!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole
 width of the component, after being wrapped to a new line -->
 <div
+  #wrapper
   class="clr-combobox-wrapper"
   clrPopoverAnchor
   (click)="onWrapperClick($event)"
@@ -15,7 +16,7 @@ width of the component, after being wrapped to a new line -->
   [class.invalid]="invalid"
   [class.disabled]="control?.disabled? true: null"
 >
-  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {
+  @if (multiSelect && multiSelectModel && multiSelectModel.length > 0) {
   <span
     role="grid"
     clrRovingTabindex
@@ -25,14 +26,31 @@ width of the component, after being wrapped to a new line -->
     [attr.aria-disabled]="control?.disabled? true: null"
     class="clr-combobox-pills"
   >
-    @for (item of multiSelectModel; track item; let i = $index) {
+    @if (isTotalSelection) {
+    <span class="label label-combobox-pill" role="row">
+      <span role="gridcell">
+        <span class="clr-combobox-pill-content" clrKeyFocusItem> All {{ multiSelectModel.length }} selected </span>
+      </span>
+      <span role="gridcell">
+        <button
+          clrKeyFocusItem
+          type="button"
+          class="clr-combobox-remove-btn"
+          (click)="clearSelection()"
+          [attr.aria-label]="commonStrings.keys.comboboxUnselectAll"
+        >
+          <cds-icon shape="window-close" size="12"></cds-icon>
+        </button>
+      </span>
+    </span>
+    } @else { @for (item of multiSelectModel | slice:0:visibleLimit; track item; let i = $index) {
     <span class="label label-combobox-pill" role="row">
       <span role="gridcell">
         <span class="clr-combobox-pill-content" clrKeyFocusItem>
           @if (optionSelected) {
           <ng-container
             [ngTemplateOutlet]="optionSelected.template"
-            [ngTemplateOutletContext]="{$implicit: optionSelectionService.selectionModel.model[i]}"
+            [ngTemplateOutletContext]="{$implicit: item}"
           ></ng-container>
           }
         </span>
@@ -50,9 +68,46 @@ width of the component, after being wrapped to a new line -->
         </button>
       </span>
     </span>
+    } @if (calculatedLimit !== null && calculatedLimit < multiSelectModel.length) {
+    <span role="row" class="label label-combobox-pill clr-combobox-truncation-row">
+      <span role="gridcell" class="clr-combobox-truncation-cell">
+        <span class="clr-combobox-pill-content">
+          <button
+            #truncationButton
+            clrKeyFocusItem
+            type="button"
+            class="btn btn-link clr-combobox-show-more-btn"
+            (click)="toggleSelectionExpand()"
+            [attr.aria-expanded]="selectionExpanded"
+            [attr.aria-controls]="'expanded-selection-' + id"
+          >
+            @if (!selectionExpanded) { {{showAllText}} } @else { {{commonStrings.keys.comboboxShowLess}} }
+          </button>
+        </span>
+      </span>
+    </span>
+    } }
+  </span>
+
+  @if (shouldCalculate && !isTotalSelection) {
+  <span class="clr-combobox-pills-calculation" aria-hidden="true">
+    @for (item of multiSelectModel; track item; let i = $index) {
+    <span class="label label-combobox-pill" #pill>
+      <span class="clr-combobox-pill-content">
+        @if (optionSelected) {
+        <ng-container
+          [ngTemplateOutlet]="optionSelected.template"
+          [ngTemplateOutletContext]="{$implicit: item}"
+        ></ng-container>
+        }
+      </span>
+      <button type="button" class="clr-combobox-remove-btn" tabindex="-1">
+        <cds-icon shape="window-close" size="12"></cds-icon>
+      </button>
+    </span>
     }
   </span>
-  }
+  } }
 
   <input
     #textboxInput
