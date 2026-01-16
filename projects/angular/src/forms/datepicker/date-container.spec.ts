@@ -23,7 +23,6 @@ import { ClrPopoverService } from '../../popover/common/providers/popover.servic
 import { ClrPopoverPosition } from '../../popover/common/utils/popover-positions';
 import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { CONTROL_STATE } from '../common/if-control-state/control-state.enum';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
@@ -73,7 +72,8 @@ export default function () {
 
     function setValid(valid: boolean) {
       dateFormControlService.markAsTouched();
-      container.state = valid ? CONTROL_STATE.VALID : CONTROL_STATE.INVALID;
+      container.control.control.value = valid ? valid : null;
+      container.control.control.markAsDirty();
     }
 
     // @deprecated these tests refer to the old forms layout only and can be removed when its removed
@@ -185,12 +185,14 @@ export default function () {
       it('should add/remove success icon and text', () => {
         /* valid */
         setValid(true);
+        container.control.control.updateValueAndValidity();
         context.detectChanges();
         expect(context.clarityElement.querySelector('clr-control-success')).toBeTruthy();
         expect(context.clarityElement.querySelector('cds-icon[shape=check-circle]')).toBeTruthy();
 
         /* invalid */
         setValid(false);
+        container.control.control.updateValueAndValidity();
         context.detectChanges();
         expect(context.clarityElement.querySelector('clr-control-success')).toBeNull();
         expect(context.clarityElement.querySelector('cds-icon[shape=check-circle]')).toBeNull();
@@ -213,11 +215,14 @@ export default function () {
         expect(context.clarityDirective.controlClass()).toContain('clr-col-12');
         expect(context.clarityDirective.controlClass()).not.toContain('clr-error');
         setValid(false);
+        context.detectChanges();
         expect(context.clarityDirective.controlClass()).toContain('clr-error');
         const controlClassService = context.getClarityProvider(ControlClassService);
         const layoutService = context.getClarityProvider(LayoutService);
         layoutService.layout = ClrFormLayout.VERTICAL;
         setValid(true);
+        container.control.control.updateValueAndValidity();
+        context.detectChanges();
         expect(context.clarityDirective.controlClass()).not.toContain('clr-error');
         expect(context.clarityDirective.controlClass()).not.toContain('clr-col-md-10');
         controlClassService.className = 'clr-col-2';
@@ -231,7 +236,7 @@ export default function () {
 @Component({
   template: `
     <clr-date-container [clrPosition]="position">
-      <input type="date" clrDate [(ngModel)]="model" [disabled]="disabled" autocomplete="off" />
+      <input type="date" clrDate [(ngModel)]="model" required [disabled]="disabled" autocomplete="off" />
       <clr-control-success>Valid</clr-control-success>
     </clr-date-container>
   `,

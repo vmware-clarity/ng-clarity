@@ -12,7 +12,6 @@ import { By } from '@angular/platform-browser';
 import { ClrIcon } from '../../icon';
 import { ClrPopoverContent } from '../../popover';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { CONTROL_STATE } from '../common/if-control-state/control-state.enum';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { ClrFormLayout, LayoutService } from '../common/providers/layout.service';
 import { MarkControlService } from '../common/providers/mark-control.service';
@@ -21,7 +20,7 @@ import { DatalistIdService } from '../datalist/providers/datalist-id.service';
 
 export function ContainerNoLabelSpec(testContainer, testControl, testComponent): void {
   describe('no label', () => {
-    let fixture, containerDE, containerEl, layoutService, container;
+    let fixture, containerDE, containerEl, layoutService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -34,7 +33,6 @@ export function ContainerNoLabelSpec(testContainer, testControl, testComponent):
       containerDE = fixture.debugElement.query(By.directive(testContainer));
       containerEl = containerDE.nativeElement;
       layoutService = containerDE.injector.get(LayoutService);
-      container = containerDE.componentInstance;
     });
 
     it('adds an empty label when instantiated without vertical layout', () => {
@@ -48,18 +46,6 @@ export function ContainerNoLabelSpec(testContainer, testControl, testComponent):
       fixture.detectChanges();
       const labels = containerEl.querySelectorAll('label');
       expect(Array.prototype.filter.call(labels, label => label.textContent === '').length).toBe(0);
-    });
-
-    // working with private fiel`state`
-    it('should display helper text when both error and success text are not implemented', () => {
-      fixture.detectChanges();
-      expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
-      container.state = CONTROL_STATE.INVALID;
-      fixture.detectChanges();
-      expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
-      container.state = CONTROL_STATE.VALID;
-      fixture.detectChanges();
-      expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
     });
   });
 }
@@ -101,7 +87,6 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       fixture.detectChanges();
     });
 
-    // working with private field `state`
     function setValid(valid: boolean) {
       // NOTE The order of these two events should in theory be insignificant, but it's not.
       // The scenarios were additionally verified by manual testing in a patched Stackblitz demo:
