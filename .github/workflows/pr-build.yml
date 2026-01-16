@@ -20,7 +20,7 @@ jobs:
         with:
           node-version-file: '.nvmrc'
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Update to Angular v16
         if: ${{matrix.angular == 'Angular v16' || matrix.angular == 'Angular v17' || matrix.angular == 'Angular v18' || matrix.angular == 'Angular v19'}}
         run: |
@@ -86,7 +86,7 @@ jobs:
         with:
           node-version-file: '.nvmrc'
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps ${{matrix.browser}}
       - name: Build Storybook
