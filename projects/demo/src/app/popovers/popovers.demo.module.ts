@@ -5,18 +5,27 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ClarityModule } from '@clr/angular';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ClarityModule, ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
 
-import { DummyAnchor } from './dummy-anchor';
-import { DummyMenu } from './dummy-menu';
 import { PopoversDemo } from './popovers.demo';
 import { ROUTING } from './popovers.demo.routing';
 
 @NgModule({
-  imports: [CommonModule, ClarityModule, ROUTING],
-  declarations: [PopoversDemo, DummyMenu, DummyAnchor],
-  exports: [PopoversDemo, DummyMenu, DummyAnchor],
+  imports: [
+    CommonModule,
+    ClarityModule,
+    CdkTrapFocus,
+    ÇlrClrPopoverModuleNext,
+    ROUTING,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
+  providers: [ClrPopoverService],
+  declarations: [PopoversDemo],
+  exports: [PopoversDemo],
 })
 export class PopoversDemoModule {}

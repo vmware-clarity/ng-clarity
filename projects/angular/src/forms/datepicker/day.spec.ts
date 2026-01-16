@@ -8,6 +8,7 @@
 import { Component } from '@angular/core';
 
 import { ClrDay } from './day';
+import { ClrPopoverService } from '../../popover';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
@@ -16,7 +17,6 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 
 export default function () {
   describe('Day Component', () => {
@@ -26,7 +26,7 @@ export default function () {
       context = this.create(ClrDay, TestComponent, [
         LocaleHelperService,
         DateNavigationService,
-        ClrPopoverToggleService,
+        ClrPopoverService,
         DateFormControlService,
         DateIOService,
         ViewManagerService,
@@ -206,8 +206,8 @@ export default function () {
       });
 
       it('closes the popover when a Date is selected', () => {
-        const toggleService: ClrPopoverToggleService = context.getClarityProvider(ClrPopoverToggleService);
-        expect(toggleService.open).toBeFalsy();
+        const popoverService = context.getClarityProvider(ClrPopoverService);
+        expect(popoverService.open).toBeFalsy();
 
         const testDayView: DayViewModel = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
 
@@ -215,7 +215,7 @@ export default function () {
         context.clarityDirective.selectDay();
         context.detectChanges();
 
-        expect(toggleService.open).toBe(false);
+        expect(popoverService.open).toBe(false);
       });
 
       it('updates the focusedDay when a day is focused', () => {

@@ -60,7 +60,7 @@ export default {
       ...args,
     },
     template: `
-      <storybook-button-group ${argsToTemplate(args)}></storybook-button-group>
+      <storybook-button-group style="margin-top: 100px; display: block" ${argsToTemplate(args)}></storybook-button-group>
     `,
   }),
 };

@@ -8,6 +8,8 @@
 import { Component } from '@angular/core';
 
 import { ClrDaypicker } from './daypicker';
+import { ClrPopoverService } from '../../popover';
+import { ClrCommonStringsService } from '../../utils';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -16,8 +18,6 @@ import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 export default function () {
   describe('Daypicker Component', () => {
@@ -35,7 +35,7 @@ export default function () {
       context = this.create(ClrDaypicker, TestComponent, [
         { provide: DateNavigationService, useValue: dateNavigationService },
         DateIOService,
-        ClrPopoverToggleService,
+        ClrPopoverService,
         ViewManagerService,
         LocaleHelperService,
         DatepickerFocusService,

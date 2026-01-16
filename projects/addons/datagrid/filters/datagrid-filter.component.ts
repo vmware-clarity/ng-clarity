@@ -6,7 +6,7 @@
  */
 
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ClrDatagridFilterInterface, ClrDatagridStringFilterInterface, ClrPopoverToggleService } from '@clr/angular';
+import { ClrDatagridFilterInterface, ClrDatagridStringFilterInterface, ClrPopoverService } from '@clr/angular';
 import { asyncScheduler, Subject } from 'rxjs';
 import { observeOn } from 'rxjs/operators';
 
@@ -43,7 +43,7 @@ export class DatagridFilterComponent implements ClrDatagridFilterInterface<any>,
 
   constructor(
     public dgStrings: DatagridStrings,
-    private smartToggleService: ClrPopoverToggleService
+    private popoverService: ClrPopoverService
   ) {}
 
   ngOnInit() {
@@ -51,7 +51,7 @@ export class DatagridFilterComponent implements ClrDatagridFilterInterface<any>,
   }
 
   ngAfterViewInit() {
-    this.smartToggleService.openChange.pipe(observeOn(asyncScheduler)).subscribe(openChange => {
+    this.popoverService.openChange.pipe(observeOn(asyncScheduler)).subscribe(openChange => {
       if (openChange) {
         this.input.nativeElement.focus();
       }

@@ -9,10 +9,8 @@ import { AfterViewInit, Component, ElementRef, Input, Optional, Renderer2, ViewC
 import { startWith } from 'rxjs/operators';
 
 import { DayModel } from './model/day.model';
-import { ClrPopoverPositions } from '../../popover/common/enums/positions.enum';
-import { ClrPopoverPosition } from '../../popover/common/interfaces/popover-position.interface';
 import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../popover/common/providers/popover.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -20,6 +18,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS } from '../../popover/common/utils/popover-positions';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
@@ -58,7 +57,13 @@ import { NgControlService } from '../common/providers/ng-control.service';
             </button>
           }
           <clr-datepicker-view-manager
-            *clrPopoverContent="open; at: popoverPosition; outsideClickToClose: true; scrollToClose: true"
+            *clrPopoverContent="
+              open;
+              at: popoverPosition;
+              type: popoverType;
+              outsideClickToClose: true;
+              scrollToClose: true
+            "
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
@@ -105,12 +110,13 @@ import { NgControlService } from '../common/providers/ng-control.service';
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
 
+  protected popoverType = ClrPopoverType.DROPDOWN;
   private toggleButton: ElementRef<HTMLButtonElement>;
 
   constructor(
     protected renderer: Renderer2,
     protected elem: ElementRef,
-    private toggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     private dateNavigationService: DateNavigationService,
     private datepickerEnabledService: DatepickerEnabledService,
     private dateFormControlService: DateFormControlService,
@@ -132,7 +138,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     );
 
     this.subscriptions.push(
-      toggleService.openChange.subscribe(() => {
+      popoverService.openChange.subscribe(() => {
         dateFormControlService.markAsTouched();
       })
     );
@@ -157,10 +163,18 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   }
 
   @Input('clrPosition')
-  set clrPosition(position: string) {
-    if (position && (ClrPopoverPositions as Record<string, any>)[position]) {
-      this.viewManagerService.position = (ClrPopoverPositions as Record<string, any>)[position];
+  set clrPosition(position: string | ClrPopoverPosition) {
+    if (!position) {
+      return;
     }
+
+    const posIndex = DROPDOWN_POSITIONS.indexOf(position as ClrPopoverPosition);
+
+    if (posIndex === -1) {
+      return;
+    }
+
+    this.viewManagerService.position = DROPDOWN_POSITIONS[posIndex];
   }
 
   @Input()
@@ -200,7 +214,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   }
 
   get open() {
-    return this.toggleService.open;
+    return this.popoverService.open;
   }
 
   /**
@@ -227,7 +241,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   ngAfterViewInit(): void {
     this.dateRangeStructuralChecks();
     this.subscriptions.push(
-      this.toggleService.openChange.subscribe(open => {
+      this.popoverService.openChange.subscribe(open => {
         if (open) {
           this.initializeCalendar();
         } else {

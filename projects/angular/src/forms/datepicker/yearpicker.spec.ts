@@ -7,15 +7,15 @@
 
 import { Component } from '@angular/core';
 
+import { ClrPopoverService } from '../../popover';
+import { ClrCommonStringsService } from '../../utils';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { ClrYearpicker } from './yearpicker';
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
 import { Keys } from '../../utils/enums/keys.enum';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 export default function () {
   describe('Yearpicker Component', () => {
@@ -36,7 +36,7 @@ export default function () {
         context = this.create(ClrYearpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
-          ClrPopoverToggleService,
+          ClrPopoverService,
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
           ClrCommonStringsService,
@@ -157,7 +157,7 @@ export default function () {
         context = this.create(ClrYearpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
-          ClrPopoverToggleService,
+          ClrPopoverService,
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
           ClrCommonStringsService,
@@ -263,7 +263,7 @@ export default function () {
         context = scope.create(ClrYearpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
-          ClrPopoverToggleService,
+          ClrPopoverService,
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
           ClrCommonStringsService,

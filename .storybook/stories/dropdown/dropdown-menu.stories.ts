@@ -91,14 +91,11 @@ const DropdownMenuTemplate: StoryFn = args => ({
 
 const DropdownMenuAllTemplate: StoryFn = args => ({
   template: `
-    <div *ngFor="let position of CLR_MENU_POSITIONS">
-      <div style="margin: 5px">
-        <h5>Position : {{ position }}</h5>
-      </div>
-      <div style="margin: 150px; text-align: center">
+    <div *ngFor="let position of CLR_MENU_POSITIONS" style="display: inline-block">
+      <div style="margin: 100px 65px">
         <clr-dropdown [clrCloseMenuOnItemClick]="false">
           <button class="btn btn-outline-primary" clrDropdownTrigger>
-            Dropdown
+            {{ position }}
             <cds-icon shape="angle" direction="down"></cds-icon>
           </button>
           <clr-dropdown-menu [clrPosition]="position" *clrIfOpen="true">
@@ -152,5 +149,9 @@ export const Showcase: StoryObj = {
   parameters: {
     actions: { disable: true },
     controls: { disable: true },
+  },
+  args: {
+    menuCount: 2,
+    actionCount: 2,
   },
 };

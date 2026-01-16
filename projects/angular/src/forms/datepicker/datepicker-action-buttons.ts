@@ -7,10 +7,10 @@
 
 import { Component } from '@angular/core';
 
+import { ClrPopoverService } from '../../popover';
+import { ClrCommonStringsService } from '../../utils';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-datepicker-actions',
@@ -26,7 +26,7 @@ import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service
 export class ClrDatepickerActions {
   constructor(
     protected commonStrings: ClrCommonStringsService,
-    private toggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     private dateNavigationService: DateNavigationService,
     private dateFormControlService: DateFormControlService
   ) {}
@@ -46,11 +46,11 @@ export class ClrDatepickerActions {
       this.dateNavigationService.notifySelectedDayChanged(this.dateNavigationService.selectedDay);
       this.dateFormControlService.markAsDirty();
     }
-    this.toggleService.open = false;
+    this.popoverService.open = false;
   }
 
   protected cancel() {
     this.dateNavigationService.resetSelectedDay();
-    this.toggleService.open = false;
+    this.popoverService.open = false;
   }
 }

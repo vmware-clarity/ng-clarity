@@ -10,14 +10,14 @@ import { Component, EventEmitter, Inject, Input, OnDestroy, Output, PLATFORM_ID,
 import { Subscription } from 'rxjs';
 
 import { RowActionService } from './providers/row-action-service';
-import { ClrAlignment } from '../../popover/common/enums/alignment.enum';
-import { ClrAxis } from '../../popover/common/enums/axis.enum';
-import { ClrSide } from '../../popover/common/enums/side.enum';
-import { ClrPopoverPosition } from '../../popover/common/interfaces/popover-position.interface';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
-import { ClrPopoverToggleService } from '../../popover/common/providers/popover-toggle.service';
+import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
+import {
+  ClrPopoverPosition,
+  ClrPopoverType,
+  mapPopoverKeyToPosition,
+} from '../../popover/common/utils/popover-positions';
+import { ClrCommonStringsService } from '../../utils';
 import { ClrKeyFocus } from '../../utils/focus/key-focus';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 let clrDgActionId = 0;
@@ -50,7 +50,13 @@ let clrDgActionId = 0;
       clrKeyFocus
       cdkTrapFocus
       (click)="closeOverflowContent($event)"
-      *clrPopoverContent="open; at: smartPosition; outsideClickToClose: true; scrollToClose: true"
+      *clrPopoverContent="
+        open;
+        at: smartPosition;
+        availablePositions: positions;
+        outsideClickToClose: true;
+        scrollToClose: true
+      "
     >
       <ng-content></ng-content>
     </div>
@@ -64,12 +70,11 @@ export class ClrDatagridActionOverflow implements OnDestroy {
 
   popoverId = uniqueIdFactory();
 
-  smartPosition: ClrPopoverPosition = {
-    axis: ClrAxis.HORIZONTAL,
-    side: ClrSide.AFTER,
-    anchor: ClrAlignment.CENTER,
-    content: ClrAlignment.CENTER,
-  };
+  smartPosition = ClrPopoverPosition.RIGHT_MIDDLE;
+  protected positions = [
+    mapPopoverKeyToPosition(ClrPopoverPosition.RIGHT_BOTTOM, ClrPopoverType.DROPDOWN),
+    mapPopoverKeyToPosition(ClrPopoverPosition.RIGHT_TOP, ClrPopoverType.DROPDOWN),
+  ];
 
   @ViewChild(ClrKeyFocus) private readonly keyFocus: ClrKeyFocus;
 
@@ -80,14 +85,14 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     private rowActionService: RowActionService,
     public commonStrings: ClrCommonStringsService,
     @Inject(PLATFORM_ID) private platformId: any,
-    private smartToggleService: ClrPopoverToggleService
+    private popoverService: ClrPopoverService
   ) {
     rowActionService.register();
     this.subscriptions.push(
-      smartToggleService.openChange.subscribe(openState => {
+      popoverService.openChange.subscribe(openState => {
         this.open = openState;
       }),
-      smartToggleService.popoverVisible.subscribe(visible => {
+      popoverService.popoverVisible.subscribe(visible => {
         if (visible) {
           this.initializeFocus();
         }
@@ -104,7 +109,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     const openState = !!open;
     if (!!openState !== this.open) {
       // prevents chocolate mess
-      this.smartToggleService.open = openState;
+      this.popoverService.open = openState;
       this.openChange.emit(openState);
       this._open = openState;
     }
@@ -116,7 +121,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
   }
 
   closeOverflowContent(event: Event): void {
-    this.smartToggleService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
   }
 
   private initializeFocus(): void {
