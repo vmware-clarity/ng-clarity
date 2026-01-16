@@ -6,16 +6,16 @@
  */
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
 
 import { ClrComboboxIdentityFunction, ComboboxModel } from '../model/combobox.model';
 import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
+import { SELECT_ALL_VALUE } from '../options';
 
 @Injectable()
 export class OptionSelectionService<T> {
   loading = false;
   editable = false;
-  filtering = true;
   selectionModel: ComboboxModel<T>;
   inputChanged: Observable<string>;
 
@@ -27,6 +27,7 @@ export class OptionSelectionService<T> {
   private _displayField: string;
   private _inputChanged = new BehaviorSubject('');
   private _selectionChanged = new ReplaySubject<ComboboxModel<T>>(1);
+  private _selectAllRequested = new Subject<void>();
 
   constructor() {
     this.inputChanged = this._inputChanged.asObservable();
@@ -75,6 +76,10 @@ export class OptionSelectionService<T> {
     }
   }
 
+  get selectAllRequested(): Observable<void> {
+    return this._selectAllRequested.asObservable();
+  }
+
   select(item: T) {
     if (item === null || item === undefined || this.selectionModel.containsItem(item)) {
       return;
@@ -84,6 +89,10 @@ export class OptionSelectionService<T> {
   }
 
   toggle(item: T) {
+    if (item && (item as any).__action === SELECT_ALL_VALUE) {
+      this._selectAllRequested.next();
+      return;
+    }
     if (item === null || item === undefined) {
       return;
     }
@@ -93,6 +102,34 @@ export class OptionSelectionService<T> {
       this.selectionModel.select(item);
     }
     this._selectionChanged.next(this.selectionModel);
+  }
+
+  selectMany(items: T[]) {
+    const newItems = items.filter(i => !this.selectionModel.containsItem(i));
+    if (newItems.length > 0) {
+      const currentModel = (this.selectionModel.model as T[]) || [];
+      this.selectionModel.model = [...currentModel, ...newItems];
+      this._selectionChanged.next(this.selectionModel);
+    }
+  }
+
+  unselectMany(items: T[]) {
+    if (!this.selectionModel || this.selectionModel.isEmpty()) {
+      return;
+    }
+
+    let changed = false;
+
+    items.forEach(item => {
+      if (this.selectionModel.containsItem(item)) {
+        this.selectionModel.unselect(item);
+        changed = true;
+      }
+    });
+
+    if (changed) {
+      this._selectionChanged.next(this.selectionModel);
+    }
   }
 
   unselect(item: T) {
