@@ -97,6 +97,10 @@ export class ComboboxFocusHandler<T> {
     this.optionData = options;
   }
 
+  focusOption(option: OptionData<T>) {
+    this.pseudoFocus.select(option);
+  }
+
   private handleFocusSubscription() {
     this.popoverService.openChange.subscribe(open => {
       if (!open) {
