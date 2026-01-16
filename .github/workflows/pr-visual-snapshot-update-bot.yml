@@ -14,23 +14,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: haya14busa/action-workflow_run-status@v1
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          repo: ${{github.event.workflow_run.head_repository.full_name}}
-          ref: ${{github.event.workflow_run.head_sha}}
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-      - name: Install Dependencies
-        run: npm ci
       - name: Get PR Event
         id: get-pr-event
         uses: potiuk/get-workflow-origin@v1_5
         with:
           token: ${{secrets.GITHUB_TOKEN}}
           sourceRunId: ${{github.event.workflow_run.id}}
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repo: ${{ github.repository }}
+          ref: ${{ steps.get-pr-event.outputs.sourceBaseBranch }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
       - name: Create Temp Directory for Diff Artifacts
         run: mkdir -p ${{runner.temp}}/artifacts/
       - name: Download Changes
@@ -45,6 +45,9 @@ jobs:
         run: |
           # apply changes
           git apply ${{runner.temp}}/artifacts/visual-snapshot-changes-*.diff/visual-snapshot-changes-*.diff
+
+          # We force the cleanup script to revert to the version in HEAD (the trusted base).
+          git checkout HEAD -- scripts/delete-unused-screenshots.ts
 
           # delete unused screenshots
           npm run ts-node -- ./scripts/delete-unused-screenshots.ts
