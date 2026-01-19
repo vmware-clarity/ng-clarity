@@ -11,6 +11,7 @@ import {
   ContentChild,
   ContentChildren,
   ElementRef,
+  forwardRef,
   Input,
   Optional,
   QueryList,
@@ -76,7 +77,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
   role: string;
   ariaLabelledBy: string;
 
-  @ContentChildren(ClrRadio, { descendants: true }) radios: QueryList<ClrRadio>;
+  @ContentChildren(forwardRef(() => ClrRadio), { descendants: true }) radios: QueryList<ClrRadio>;
   @ContentChild(ClrControlLabel, { read: ElementRef, static: true }) groupLabel: ElementRef<HTMLElement>;
 
   private inline = false;
