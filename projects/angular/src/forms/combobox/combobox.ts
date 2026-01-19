@@ -30,7 +30,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { first, Subject, tap, throttleTime } from 'rxjs'; // Removed 'first'
+import { debounceTime, Subject, tap } from 'rxjs'; // Removed 'first'
 
 import { ClrComboboxContainer } from './combobox-container';
 import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
@@ -221,14 +221,9 @@ export class ClrCombobox<T>
     return this.optionSelectionService.displayField;
   }
 
-  // Getter for the count text
-  get hiddenSelectionCount(): number {
-    return this.multiSelectModel ? this.multiSelectModel.length : 0;
-  }
-
   get showAllText() {
     return this.commonStrings.parse(this.commonStrings.keys.comboboxShowAll, {
-      ITEMS: this.hiddenSelectionCount.toString(),
+      ITEMS: this.multiSelectModel?.length.toString(),
     });
   }
 
@@ -240,7 +235,10 @@ export class ClrCombobox<T>
   }
 
   get isTotalSelection() {
-    return this.multiSelectModel?.length > 0 && this.multiSelectModel?.length === this.options?.items.length;
+    if (!this.multiSelect || (this.multiSelectModel && !this.multiSelectModel.length)) {
+      return false;
+    }
+    return this.multiSelectModel?.length === this.options?.items.length;
   }
 
   private get disabled() {
@@ -263,7 +261,12 @@ export class ClrCombobox<T>
     // The text input is the actual element we are wrapping
     // This assignment is needed by the wrapper, so it can set
     // the aria properties on the input element, not on the component.
+
+    // We calculate on the initial load to prevent flickering
     this.el = this.textbox;
+    if (this.multiSelect && this.multiSelectModel?.length > 0) {
+      this.calculateLimit();
+    }
     this.initialiseObserver();
   }
 
@@ -424,13 +427,6 @@ export class ClrCombobox<T>
     });
     this.resizeObserver.observe(container);
     this.resizeObserver.observe(this.wrapper.nativeElement);
-
-    // We calculate on the initial load to prevent flickering
-    this.subscriptions.push(
-      this.calculationPills.changes.pipe(first()).subscribe(() => {
-        this.containerWidthChange.next(null);
-      })
-    );
   }
 
   private calculateLimit() {
@@ -510,7 +506,7 @@ export class ClrCombobox<T>
       }),
       this.containerWidthChange
         .pipe(
-          throttleTime(100),
+          debounceTime(0),
           tap(() => {
             if (!this.selectionExpanded && !this.isTotalSelection) {
               this.calculateLimit();

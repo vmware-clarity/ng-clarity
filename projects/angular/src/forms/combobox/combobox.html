@@ -89,9 +89,9 @@ width of the component, after being wrapped to a new line -->
     } }
   </span>
 
-  @if (shouldCalculate && !isTotalSelection) {
+  @if (shouldCalculate) {
   <span class="clr-combobox-pills-calculation" aria-hidden="true">
-    @for (item of multiSelectModel; track item; let i = $index) {
+    @for (item of multiSelectModel; track item) {
     <span class="label label-combobox-pill" #pill>
       <span class="clr-combobox-pill-content">
         @if (optionSelected) {
