@@ -5,7 +5,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive, ElementRef, Injector, NgModule, Renderer2, Type, ViewContainerRef } from '@angular/core';
+import {
+  Component,
+  Directive,
+  ElementRef,
+  forwardRef,
+  Inject,
+  Injector,
+  NgModule,
+  Optional,
+  Renderer2,
+  Type,
+  ViewContainerRef,
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -84,7 +96,8 @@ class TestControl3 extends WrappedFormControl<TestWrapper3> {
     injector: Injector,
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef<HTMLElement>
+    el: ElementRef<HTMLElement>,
+    @Optional() @Inject(forwardRef(() => TestWrapper3)) protected override container: TestWrapper3
   ) {
     super(vcr, TestWrapper3, injector, control, renderer, el);
   }
@@ -435,6 +448,7 @@ export default function (): void {
         await delay();
         expect(this.input.getAttribute('aria-describedby')).toEqual(`${this.input.id}-helper ${this.input.id}-error`);
       });
+
       it('adds the aria-describedby for error messages', async function (this: TestContext) {
         setupTest(this, WithControlAndError, TestControl3);
         this.input.focus();
@@ -443,6 +457,7 @@ export default function (): void {
         await delay();
         expect(this.input.getAttribute('aria-describedby')).toContain('-error');
       });
+
       it('does not set aria-describedby unless error helper is present', function () {
         setupTest(this, WithControl, TestControl3);
         this.input.focus();
@@ -456,22 +471,30 @@ export default function (): void {
         setupTest(this, WithControlAndSuccess, TestControl3);
         this.input.focus();
         this.fixture.componentInstance.model = 'test';
+        this.fixture.detectChanges();
+        await delay();
+
         this.input.blur();
         this.fixture.detectChanges();
         await delay();
 
         expect(this.input.getAttribute('aria-describedby')).toContain('-success');
       });
+
       it('adds the aria-describedby with helper and success ids', async function (this: TestContext) {
         setupTest(this, WithControlAndSuccess, TestControl3);
         this.input.focus();
         this.fixture.componentInstance.model = 'test';
+        this.fixture.detectChanges();
+        await delay();
+
         this.input.blur();
         this.fixture.detectChanges();
         await delay();
 
         expect(this.input.getAttribute('aria-describedby')).toEqual(`${this.input.id}-helper ${this.input.id}-success`);
       });
+
       it('does not set aria-describedby unless success helper is present', async function () {
         setupTest(this, WithControl, TestControl3);
         this.input.focus();
