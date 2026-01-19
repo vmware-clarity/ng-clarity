@@ -12,10 +12,11 @@ import { FormsModule } from '@angular/forms';
 import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
 import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon, eyeHideIcon, eyeIcon } from '../../icon';
+import { ClrProgressBarModule } from '../../progress/progress-bars/progress-bar.module';
 import { ClrCommonFormsModule } from '../common/common.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule],
+  imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule, ClrProgressBarModule],
   declarations: [ClrPassword, ClrPasswordContainer],
   exports: [ClrCommonFormsModule, ClrPassword, ClrPasswordContainer],
 })

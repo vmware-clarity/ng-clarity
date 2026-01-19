@@ -4122,13 +4122,17 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     // (undocumented)
     hidePasswordText(label: string): string;
     // (undocumented)
+    passStrength: number;
+    // (undocumented)
+    get passStrengthColor(): string;
+    // (undocumented)
     show: boolean;
     // (undocumented)
     showPasswordText(label: string): string;
     // (undocumented)
     toggle(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrPasswordContainer, "clr-password-container", never, { "clrToggle": { "alias": "clrToggle"; "required": false; }; }, {}, never, ["label", "[clrPassword]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrPasswordContainer, "clr-password-container", never, { "passStrength": { "alias": "clrPasswordStrength"; "required": false; }; "clrToggle": { "alias": "clrToggle"; "required": false; }; }, {}, never, ["label", "[clrPassword]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPasswordContainer, [null, { optional: true; }, null, null, null, null, null]>;
 }
@@ -4141,7 +4145,7 @@ export class ClrPasswordModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPasswordModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof ClrPassword, typeof ClrPasswordContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrPassword, typeof ClrPasswordContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof ClrPassword, typeof ClrPasswordContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrCommonFormsModule, typeof ClrProgressBarModule], [typeof ClrCommonFormsModule, typeof ClrPassword, typeof ClrPasswordContainer]>;
 }
 
 // @public (undocumented)

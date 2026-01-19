@@ -42,6 +42,14 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
               </span>
             </button>
           }
+          @if (typeof passStrength === 'number') {
+            <clr-progress-bar
+              class="clr-password-strength-bar"
+              [clrCompact]="true"
+              [clrValue]="passStrength"
+              [clrColor]="passStrengthColor"
+            ></clr-progress-bar>
+          }
         </div>
         @if (showInvalid) {
           <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
@@ -77,6 +85,8 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
   standalone: false,
 })
 export class ClrPasswordContainer extends ClrAbstractContainer {
+  @Input('clrPasswordStrength') passStrength: number;
+
   show = false;
   focus = false;
 
@@ -109,6 +119,18 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     this._toggle = state;
     if (!state) {
       this.show = false;
+    }
+  }
+
+  get passStrengthColor(): string {
+    if (this.passStrength <= 33) {
+      return 'danger';
+    } else if (this.passStrength > 33 && this.passStrength <= 66) {
+      return 'warning';
+    } else if (this.passStrength > 66) {
+      return 'success';
+    } else {
+      return '';
     }
   }
 
