@@ -46,7 +46,7 @@ export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> i
     renderer: Renderer2,
     el: ElementRef<HTMLInputElement>,
     private datalistIdService: DatalistIdService,
-    @Optional() @Inject(forwardRef(() => ClrDatalistContainer)) protected container: ClrDatalistContainer
+    @Optional() @Inject(forwardRef(() => ClrDatalistContainer)) protected override container: ClrDatalistContainer
   ) {
     super(vcr, ClrDatalistContainer, injector, control, renderer, el);
 

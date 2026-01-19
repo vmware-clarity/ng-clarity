@@ -35,7 +35,7 @@ export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
     control: NgControl,
     renderer: Renderer2,
     el: ElementRef<HTMLInputElement>,
-    @Optional() @Inject(forwardRef(() => ClrRangeContainer)) protected container: ClrRangeContainer
+    @Optional() @Inject(forwardRef(() => ClrRangeContainer)) protected override container: ClrRangeContainer
   ) {
     super(vcr, ClrRangeContainer, injector, control, renderer, el);
   }

@@ -47,7 +47,7 @@ export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     renderer: Renderer2,
     el: ElementRef<HTMLInputElement>,
     @Attribute('clrToggle') protected toggle: string,
-    @Optional() @Inject(forwardRef(() => ClrCheckboxContainer)) protected container: ClrCheckboxContainer
+    @Optional() @Inject(forwardRef(() => ClrCheckboxContainer)) protected override container: ClrCheckboxContainer
   ) {
     super(vcr, ClrCheckboxWrapper, injector, control, renderer, el);
   }

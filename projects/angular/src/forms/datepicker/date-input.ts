@@ -71,7 +71,7 @@ export abstract class ClrDateInputBase
     @Self()
     @Optional()
     protected control: NgControl,
-    @Optional() @Inject(forwardRef(() => ClrDateContainer)) protected container: ClrDateContainer,
+    @Optional() @Inject(forwardRef(() => ClrDateContainer)) protected override container: ClrDateContainer,
     @Optional() protected dateIOService: DateIOService,
     @Optional() protected dateNavigationService: DateNavigationService,
     @Optional() private datepickerEnabledService: DatepickerEnabledService,

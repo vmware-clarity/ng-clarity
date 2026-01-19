@@ -790,6 +790,12 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
     controlSuccessComponent: ClrControlSuccess;
     // (undocumented)
     protected get errorMessagePresent(): boolean;
+    get helpers(): {
+        show: boolean;
+        showInvalid: boolean;
+        showHelper: boolean;
+        showValid: boolean;
+    };
     // (undocumented)
     label: ClrControlLabel;
     // Warning: (ae-forgotten-export) The symbol "LayoutService" needs to be exported by the entry point index.d.ts
@@ -1326,15 +1332,19 @@ export class ClrCalendar implements OnDestroy {
 
 // @public
 export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, toggle: string);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, toggle: string, container: ClrCheckboxContainer);
+    // (undocumented)
+    protected container: ClrCheckboxContainer;
     // (undocumented)
     get controlDisabled(): boolean;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
+    protected toggle: string;
+    // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrCheckbox, "[clrCheckbox],[clrToggle]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckbox, [null, null, { optional: true; self: true; }, null, null, { attribute: "clrToggle"; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckbox, [null, null, { optional: true; self: true; }, null, null, { attribute: "clrToggle"; }, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -1397,7 +1407,7 @@ export class ClrCheckboxWrapper implements OnInit, OnDestroy {
 export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> implements ControlValueAccessor, LoadingListener, AfterContentInit {
     // Warning: (ae-forgotten-export) The symbol "ComboboxContainerService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ComboboxFocusHandler" needs to be exported by the entry point index.d.ts
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef, container: ClrComboboxContainer);
     // (undocumented)
     get ariaControls(): string;
     // (undocumented)
@@ -1412,6 +1422,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     clrSelectionChange: rxjs.Observable<ComboboxModel<T>>;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
+    // (undocumented)
+    protected container: ClrComboboxContainer;
     // (undocumented)
     control: NgControl;
     // (undocumented)
@@ -1493,7 +1505,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, { optional: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, { optional: true; }, null, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -1712,13 +1724,15 @@ export class ClrConditionalModule {
 
 // @public (undocumented)
 export class ClrControl extends WrappedFormControl<ClrControlContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, container: ClrControlContainer);
+    // (undocumented)
+    protected container: ClrControlContainer;
     // (undocumented)
     protected index: number;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrControl, "[clrControl]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControl, [null, null, { optional: true; self: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControl, [null, null, { optional: true; self: true; }, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -2613,7 +2627,9 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
 
 // @public (undocumented)
 export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> implements AfterContentInit {
-    constructor(focusService: FocusService, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, datalistIdService: DatalistIdService);
+    constructor(focusService: FocusService, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, datalistIdService: DatalistIdService, container: ClrDatalistContainer);
+    // (undocumented)
+    protected container: ClrDatalistContainer;
     // (undocumented)
     listValue: string;
     // (undocumented)
@@ -2625,7 +2641,7 @@ export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> i
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatalistInput, "[clrDatalistInput]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalistInput, [{ optional: true; }, null, null, { optional: true; self: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalistInput, [{ optional: true; }, null, null, { optional: true; self: true; }, null, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -2720,6 +2736,8 @@ export class ClrDateInput extends ClrDateInputBase {
 // @public (undocumented)
 export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
     constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef<HTMLInputElement>, renderer: Renderer2, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: any, focusService: FocusService, datepickerFocusService: DatepickerFocusService);
+    // (undocumented)
+    protected container: ClrDateContainer;
     // (undocumented)
     protected control: NgControl;
     // (undocumented)
@@ -3059,7 +3077,9 @@ export class ClrFileInfo {
 
 // @public (undocumented)
 export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
-    constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
+    constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService, container: ClrFileInputContainer);
+    // (undocumented)
+    protected container: ClrFileInputContainer;
     // (undocumented)
     protected get disabled(): boolean;
     // (undocumented)
@@ -3069,7 +3089,7 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFileInput, "input[type=\"file\"][clrFileInput]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInput, [null, null, null, null, { optional: true; self: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInput, [null, null, null, null, { optional: true; self: true; }, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -3514,13 +3534,15 @@ export class ClrIfSuccess extends AbstractIfState {
 
 // @public (undocumented)
 export class ClrInput extends WrappedFormControl<ClrInputContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, container: ClrInputContainer);
+    // (undocumented)
+    protected container: ClrInputContainer;
     // (undocumented)
     protected index: number;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrInput, "[clrInput]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrInput, [null, null, { optional: true; self: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrInput, [null, null, { optional: true; self: true; }, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -3905,7 +3927,9 @@ export class ClrNavLevel implements OnInit {
 
 // @public (undocumented)
 export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> {
-    constructor(focusService: FocusService, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    constructor(focusService: FocusService, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, container: ClrNumberInputContainer);
+    // (undocumented)
+    protected container: ClrNumberInputContainer;
     // (undocumented)
     dispatchBlur(): void;
     // (undocumented)
@@ -3925,7 +3949,7 @@ export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> 
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNumberInput, "input[type=\"number\"][clrNumberInput]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNumberInput, [{ optional: true; }, null, null, { optional: true; self: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNumberInput, [{ optional: true; }, null, null, { optional: true; self: true; }, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -4080,7 +4104,9 @@ export class ClrOptionSelected<T> {
 
 // @public (undocumented)
 export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit, OnDestroy {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, focusService: FocusService, toggleService: BehaviorSubject<boolean>);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, focusService: FocusService, toggleService: BehaviorSubject<boolean>, container: ClrPasswordContainer);
+    // (undocumented)
+    protected container: ClrPasswordContainer;
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -4090,7 +4116,7 @@ export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implem
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPassword, "[clrPassword]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPassword, [null, null, { optional: true; self: true; }, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPassword, [null, null, { optional: true; self: true; }, null, null, { optional: true; }, { optional: true; }, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -4297,11 +4323,13 @@ export class ClrProgressBarModule {
 
 // @public (undocumented)
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, container: ClrRadioContainer);
+    // (undocumented)
+    protected container: ClrRadioContainer;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadio, [null, null, { optional: true; self: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadio, [null, null, { optional: true; self: true; }, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -4357,11 +4385,13 @@ export class ClrRadioWrapper implements OnInit {
 
 // @public (undocumented)
 export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, container: ClrRangeContainer);
+    // (undocumented)
+    protected container: ClrRangeContainer;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRange, "[clrRange]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRange, [null, null, { optional: true; self: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRange, [null, null, { optional: true; self: true; }, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -4421,13 +4451,15 @@ export interface ClrRecursiveForOfContext<T> {
 
 // @public (undocumented)
 export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLSelectElement>);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLSelectElement>, container: ClrSelectContainer);
+    // (undocumented)
+    protected container: ClrSelectContainer;
     // (undocumented)
     protected index: number;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSelect, "[clrSelect]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSelect, [null, null, { optional: true; self: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSelect, [null, null, { optional: true; self: true; }, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -5115,13 +5147,15 @@ export class ClrTabsModule {
 
 // @public (undocumented)
 export class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLTextAreaElement>);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLTextAreaElement>, container: ClrTextareaContainer);
+    // (undocumented)
+    protected container: ClrTextareaContainer;
     // (undocumented)
     protected index: number;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTextarea, "[clrTextarea]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTextarea, [null, null, { optional: true; self: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTextarea, [null, null, { optional: true; self: true; }, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -8178,6 +8212,12 @@ export const worldIconName = "world";
 // @public (undocumented)
 export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, _ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
+    // Warning: (ae-forgotten-export) The symbol "Helpers" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    protected ariaDescribedBy(helpers: Helpers): string;
+    // (undocumented)
+    protected container: ClrAbstractContainer;
     // (undocumented)
     protected controlIdService: ControlIdService;
     // (undocumented)

@@ -112,7 +112,7 @@ export class ClrCombobox<T>
     @Inject(PLATFORM_ID) private platformId: any,
     private focusHandler: ComboboxFocusHandler<T>,
     private cdr: ChangeDetectorRef,
-    @Optional() @Inject(forwardRef(() => ClrComboboxContainer)) protected container: ClrComboboxContainer
+    @Optional() @Inject(forwardRef(() => ClrComboboxContainer)) protected override container: ClrComboboxContainer
   ) {
     super(vcr, ClrComboboxContainer, injector, control, renderer, el);
     if (control) {

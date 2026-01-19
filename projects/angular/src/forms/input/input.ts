@@ -37,7 +37,7 @@ export class ClrInput extends WrappedFormControl<ClrInputContainer> {
     control: NgControl,
     renderer: Renderer2,
     el: ElementRef<HTMLInputElement>,
-    @Optional() @Inject(forwardRef(() => ClrInputContainer)) protected container: ClrInputContainer
+    @Optional() @Inject(forwardRef(() => ClrInputContainer)) protected override container: ClrInputContainer
   ) {
     super(vcr, ClrInputContainer, injector, control, renderer, el);
     if (this.el.nativeElement.getAttribute('type') === 'number') {

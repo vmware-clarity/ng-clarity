@@ -37,7 +37,7 @@ export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
     control: NgControl,
     renderer: Renderer2,
     el: ElementRef<HTMLSelectElement>,
-    @Optional() @Inject(forwardRef(() => ClrSelectContainer)) protected container: ClrSelectContainer
+    @Optional() @Inject(forwardRef(() => ClrSelectContainer)) protected override container: ClrSelectContainer
   ) {
     super(vcr, ClrSelectContainer, injector, control, renderer, el);
   }

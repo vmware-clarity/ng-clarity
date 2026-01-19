@@ -37,7 +37,7 @@ export class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
     control: NgControl,
     renderer: Renderer2,
     el: ElementRef<HTMLTextAreaElement>,
-    @Optional() @Inject(forwardRef(() => ClrTextareaContainer)) protected container: ClrTextareaContainer
+    @Optional() @Inject(forwardRef(() => ClrTextareaContainer)) protected override container: ClrTextareaContainer
   ) {
     super(vcr, ClrTextareaContainer, injector, control, renderer, el);
   }

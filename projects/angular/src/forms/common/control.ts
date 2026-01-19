@@ -37,7 +37,7 @@ export class ClrControl extends WrappedFormControl<ClrControlContainer> {
     control: NgControl,
     renderer: Renderer2,
     el: ElementRef<HTMLElement>,
-    @Optional() @Inject(forwardRef(() => ClrControlContainer)) protected container: ClrControlContainer
+    @Optional() @Inject(forwardRef(() => ClrControlContainer)) protected override container: ClrControlContainer
   ) {
     super(vcr, ClrControlContainer, injector, control, renderer, el);
   }

@@ -35,7 +35,7 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     control: NgControl,
     renderer: Renderer2,
     el: ElementRef<HTMLInputElement>,
-    @Optional() @Inject(forwardRef(() => ClrRadioContainer)) protected container: ClrRadioContainer
+    @Optional() @Inject(forwardRef(() => ClrRadioContainer)) protected override container: ClrRadioContainer
   ) {
     super(vcr, ClrRadioWrapper, injector, control, renderer, el);
   }
