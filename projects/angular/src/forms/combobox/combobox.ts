@@ -13,6 +13,7 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
+  forwardRef,
   HostListener,
   Inject,
   Injector,
@@ -110,7 +111,8 @@ export class ClrCombobox<T>
     @Optional() private containerService: ComboboxContainerService,
     @Inject(PLATFORM_ID) private platformId: any,
     private focusHandler: ComboboxFocusHandler<T>,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    @Optional() @Inject(forwardRef(() => ClrComboboxContainer)) protected container: ClrComboboxContainer
   ) {
     super(vcr, ClrComboboxContainer, injector, control, renderer, el);
     if (control) {

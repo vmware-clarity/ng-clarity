@@ -25,6 +25,7 @@ import {
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
+import { ClrAbstractContainer } from './abstract-container';
 import { CONTROL_SUFFIX } from './abstract-control';
 import { ContainerIdService } from './providers/container-id.service';
 import { ControlClassService } from './providers/control-class.service';
@@ -46,6 +47,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   protected ngControlService: NgControlService;
   protected index = 0;
   protected subscriptions: Subscription[] = [];
+  protected container: ClrAbstractContainer;
 
   private controlClassService: ControlClassService;
   private markControlService: MarkControlService;
@@ -79,14 +81,6 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
         })
       );
     }
-
-    if (this.ngControlService) {
-      this.subscriptions.push(
-        this.ngControlService.helpersChange.subscribe((state: Helpers) => {
-          this.setAriaDescribedBy(state);
-        })
-      );
-    }
   }
 
   @Input()
@@ -99,6 +93,11 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     if (this.controlIdService) {
       this.controlIdService.id = value;
     }
+  }
+
+  @HostBinding('attr.aria-describedby')
+  private get getAriaDescribedBy() {
+    return this.ariaDescribedBy(this.container?.helpers);
   }
 
   private get hasAdditionalControls() {
@@ -168,6 +167,14 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     }
   }
 
+  protected ariaDescribedBy(helpers: Helpers) {
+    if (!helpers?.show) {
+      return null;
+    }
+
+    return this.getAriaDescribedById(helpers);
+  }
+
   private injectControlClassService(injector: Injector) {
     if (!this.controlClassService) {
       this.controlClassService = injector.get(ControlClassService, null);
@@ -210,18 +217,6 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
         ngControl.control.updateValueAndValidity();
       });
     }
-  }
-
-  private setAriaDescribedBy(helpers: Helpers) {
-    if (helpers.show) {
-      const ariaDescribedBy = this.getAriaDescribedById(helpers);
-      if (ariaDescribedBy !== null) {
-        this.renderer.setAttribute(this.el.nativeElement, 'aria-describedby', ariaDescribedBy);
-        return;
-      }
-    }
-
-    this.renderer.removeAttribute(this.el.nativeElement, 'aria-describedby');
   }
 
   private getAriaDescribedById(helpers: Helpers): string | null {

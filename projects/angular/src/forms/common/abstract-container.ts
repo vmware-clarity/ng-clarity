@@ -70,6 +70,20 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
     return Boolean(this.controlHelperComponent);
   }
 
+  /**
+   * We gonna set the helper control state, after all or most of the components
+   * are ready - also this will trigger some initial flows into wrappers and controls,
+   * like locating IDs  and setting  attributes.
+   */
+  get helpers() {
+    return {
+      show: this.showInvalid || this.showHelper || this.showValid,
+      showInvalid: this.showInvalid,
+      showHelper: this.showHelper,
+      showValid: this.showValid,
+    };
+  }
+
   get showValid(): boolean {
     return this.touched && this.state === CONTROL_STATE.VALID && this.successMessagePresent;
   }
@@ -113,7 +127,7 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
      * are ready - also this will trigger some initial flows into wrappers and controls,
      * like locating IDs  and setting  attributes.
      */
-    this.updateHelpers();
+    // this.updateHelpers();
   }
 
   ngOnDestroy() {
@@ -137,16 +151,5 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
 
   addGrid() {
     return this.layoutService && !this.layoutService.isVertical();
-  }
-
-  private updateHelpers() {
-    if (this.ngControlService) {
-      this.ngControlService.setHelpers({
-        show: this.showInvalid || this.showHelper || this.showValid,
-        showInvalid: this.showInvalid,
-        showHelper: this.showHelper,
-        showValid: this.showValid,
-      });
-    }
   }
 }

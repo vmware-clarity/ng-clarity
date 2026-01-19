@@ -25,8 +25,6 @@ export class NgControlService {
   private _controlChanges = new Subject<NgControl>();
   private _additionalControlsChanges = new Subject<NgControl[]>();
 
-  private _helpers = new Subject<Helpers>();
-
   get control() {
     return this._control;
   }
@@ -47,10 +45,6 @@ export class NgControlService {
     return !!this._additionalControls?.length;
   }
 
-  get helpersChange(): Observable<Helpers> {
-    return this._helpers.asObservable();
-  }
-
   setControl(control: NgControl) {
     this._control = control;
 
@@ -68,9 +62,5 @@ export class NgControlService {
 
   emitAdditionalControlChange(controls: NgControl[]) {
     this._additionalControlsChanges.next(controls);
-  }
-
-  setHelpers(state: Helpers) {
-    this._helpers.next(state);
   }
 }

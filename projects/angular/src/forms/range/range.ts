@@ -5,7 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, Injector, Optional, Renderer2, Self, ViewContainerRef } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  forwardRef,
+  Inject,
+  Injector,
+  Optional,
+  Renderer2,
+  Self,
+  ViewContainerRef,
+} from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 import { ClrRangeContainer } from './range-container';
@@ -24,7 +34,8 @@ export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef<HTMLInputElement>
+    el: ElementRef<HTMLInputElement>,
+    @Optional() @Inject(forwardRef(() => ClrRangeContainer)) protected container: ClrRangeContainer
   ) {
     super(vcr, ClrRangeContainer, injector, control, renderer, el);
   }
