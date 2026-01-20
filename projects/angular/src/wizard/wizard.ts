@@ -48,6 +48,7 @@ import { ClrWizardTitle } from './wizard-title';
     '[class.wizard-xl]': "size == 'xl'",
     '[class.wizard-in-page]': 'inPage',
     '[class.wizard-in-page--fill-content-area]': 'inPage && inPageFillContentArea',
+    '[class.wizard-horizontal]': "stepnavLayout === 'horizontal'",
   },
 })
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
@@ -55,6 +56,11 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * Set the aria-label for the stepnav section of the wizard. Set using `[clrWizardStepnavAriaLabel]` input.
    */
   @Input('clrWizardStepnavAriaLabel') stepnavAriaLabel = this.commonStrings.keys.wizardStepnavAriaLabel;
+
+  /**
+   * Set the wizard stepnav layout to 'vertical' (default) or 'horizontal'. Set using `[clrWizardStepnavLayout]` input.
+   */
+  @Input('clrWizardStepnavLayout') stepnavLayout: 'vertical' | 'horizontal' = 'vertical';
 
   /**
    * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
