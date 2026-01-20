@@ -15,43 +15,56 @@
 
 @include meta.load-css('properties.label');
 
-@mixin generateLabelStyles($color: gray, $alias: 1) {
-  &.label-#{'' + $color},
-  &.label-#{$alias} {
-    border: label-variables.$clr-label-borderwidth solid label-variables.getLabelColor($color, border-color);
-    background-color: label-variables.getLabelColor($color, bg-color);
+@mixin buildLabelStyles($colors, $badge-colors) {
+  background-color: map.get($colors, bg-color);
+  border: label-variables.$clr-label-borderwidth solid map.get($colors, border-color);
+  color: map.get($colors, color);
+
+  & > .badge {
+    border-color: map.get($badge-colors, bg-color);
+    background-color: map.get($badge-colors, bg-color);
+    color: map.get($badge-colors, color);
+  }
+
+  cds-icon,
+  clr-icon {
+    color: map.get($colors, color);
+  }
+
+  &.clickable:not(.disabled):hover,
+  &.clickable:not(.disabled):active {
+    border-color: map.get($badge-colors, bg-color);
+  }
+
+  &.label-solid {
+    border-color: map.get($colors, solid-border-color);
+    background-color: map.get($colors, solid-bg-color);
+    color: map.get($colors, solid-color);
+
+    &.clickable:not(.disabled, :active, :hover) > .badge {
+      border-color: map.get($badge-colors, outline-bg-color);
+      background-color: map.get($badge-colors, outline-bg-color);
+      color: map.get($badge-colors, outline-color);
+    }
 
     cds-icon,
     clr-icon {
-      color: label-variables.$clr-label-font-color;
+      color: map.get($colors, solid-color);
     }
-  }
-
-  &.label-#{'' + $color} > .badge {
-    $colors: map.get(badges-variables.$badge-colors, $color);
-
-    border-color: map.get($colors, bg-color);
-    background-color: map.get($colors, bg-color);
-    color: map.get($colors, color);
   }
 }
-@mixin generateStatusLabelStyles($status: info) {
-  &.label-#{$status} {
-    background: label-variables.getLabelColor($status, bg-color);
-    color: label-variables.getLabelColor($status, color);
-    border: label-variables.$clr-label-borderwidth solid label-variables.getLabelColor($status, border-color);
+@mixin generateLabelStyles($color: gray, $alias: null) {
+  $colors: map.get(label-variables.$label-colors, $color);
+  $badge-colors: map.get(badges-variables.$badge-colors, $color);
 
-    cds-icon,
-    clr-icon {
-      color: label-variables.getLabelColor($status, color);
-    }
+  &.label-#{$color} {
+    @include buildLabelStyles($colors, $badge-colors);
   }
-  &.label-#{'' + $status} > .badge {
-    $colors: map.get(badges-variables.$badge-colors, $status);
 
-    border-color: map.get($colors, bg-color);
-    background-color: map.get($colors, bg-color);
-    color: map.get($colors, color);
+  @if ($alias) {
+    &.label-#{$alias} {
+      @include buildLabelStyles($colors, $badge-colors);
+    }
   }
 }
 
@@ -78,6 +91,18 @@
     white-space: nowrap;
     color: label-variables.$clr-label-font-color;
     text-decoration: none;
+
+    &.label-solid {
+      border-color: label-variables.$clr-label-default-solid-border-color;
+      background-color: label-variables.$clr-label-default-solid-bg-color;
+      color: label-variables.$clr-label-font-solid-color;
+
+      & > .badge {
+        border-color: badges-variables.$clr-badge-outline-border-color;
+        background-color: badges-variables.$clr-badge-outline-bg-color;
+        color: badges-variables.$clr-badge-outline-color;
+      }
+    }
 
     // Set lower padding size if there is a badge or icon in the start / end of a label.
     &:has(> .badge:first-child),
@@ -154,10 +179,10 @@
     @include generateLabelStyles(blue, 3);
     @include generateLabelStyles(orange, 4);
     @include generateLabelStyles(light-blue, 5);
-    @include generateStatusLabelStyles(info);
-    @include generateStatusLabelStyles(success);
-    @include generateStatusLabelStyles(warning);
-    @include generateStatusLabelStyles(danger);
+    @include generateLabelStyles(info);
+    @include generateLabelStyles(success);
+    @include generateLabelStyles(warning);
+    @include generateLabelStyles(danger);
 
     & > .badge {
       margin: 0;
@@ -177,6 +202,7 @@
 
       .badge {
         background: label-variables.$clr-label-disabled-color;
+        border-color: label-variables.$clr-label-disabled-color;
         color: label-variables.$clr-label-bg-disabled-color;
       }
     }

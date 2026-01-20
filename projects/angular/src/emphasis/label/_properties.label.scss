@@ -18,6 +18,9 @@
       --clr-label-font-color: #{tokens.$cds-alias-typography-color-500};
       --clr-label-default-border-color: #{tokens.$cds-alias-utility-gray};
       --clr-label-default-bg-color: #{tokens.$cds-alias-object-opacity-0};
+      --clr-label-font-solid-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-label-default-solid-border-color: #{tokens.$cds-alias-utility-gray-shade};
+      --clr-label-default-solid-bg-color: #{tokens.$cds-alias-utility-gray};
       --clr-label-bg-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
       --clr-label-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
       --clr-label-bg-active-color: #{tokens.$cds-alias-object-interaction-background-active};
@@ -25,33 +28,78 @@
       --clr-label-bg-disabled-color: #{tokens.$cds-alias-object-interaction-background-disabled};
       --clr-label-disabled-color: #{tokens.$cds-alias-typography-disabled};
       --clr-label-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+
+      // gray
       --clr-label-gray-bg-color: #{tokens.$cds-alias-object-opacity-0};
       --clr-label-gray-border-color: #{tokens.$cds-alias-utility-gray};
       --clr-label-gray-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-label-gray-solid-bg-color: #{tokens.$cds-alias-utility-gray};
+      --clr-label-gray-solid-border-color: #{tokens.$cds-alias-utility-gray-shade};
+      --clr-label-gray-solid-color: #{tokens.$cds-alias-typography-color-100};
+
+      // purple
       --clr-label-purple-bg-color: #{tokens.$cds-alias-object-opacity-0};
       --clr-label-purple-border-color: #{tokens.$cds-alias-utility-violet};
       --clr-label-purple-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-label-purple-solid-bg-color: #{tokens.$cds-alias-utility-violet};
+      --clr-label-purple-solid-border-color: #{tokens.$cds-alias-utility-violet-shade};
+      --clr-label-purple-solid-color: #{tokens.$cds-alias-typography-color-100};
+
+      // blue
       --clr-label-blue-bg-color: #{tokens.$cds-alias-object-opacity-0};
       --clr-label-blue-border-color: #{tokens.$cds-alias-utility-dark-blue};
       --clr-label-blue-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-label-blue-solid-bg-color: #{tokens.$cds-alias-utility-dark-blue};
+      --clr-label-blue-solid-border-color: #{tokens.$cds-alias-utility-dark-blue-shade};
+      --clr-label-blue-solid-color: #{tokens.$cds-alias-typography-color-100};
+
+      // orange
       --clr-label-orange-bg-color: #{tokens.$cds-alias-object-opacity-0};
       --clr-label-orange-border-color: #{tokens.$cds-alias-utility-tangerine};
       --clr-label-orange-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-label-orange-solid-bg-color: #{tokens.$cds-alias-utility-tangerine};
+      --clr-label-orange-solid-border-color: #{tokens.$cds-alias-utility-tangerine-shade};
+      --clr-label-orange-solid-color: #{tokens.$cds-alias-typography-color-500};
+
+      // light-blue
       --clr-label-light-blue-bg-color: #{tokens.$cds-alias-object-opacity-0};
       --clr-label-light-blue-border-color: #{tokens.$cds-alias-utility-light-blue};
       --clr-label-light-blue-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-label-light-blue-solid-bg-color: #{tokens.$cds-alias-utility-light-blue};
+      --clr-label-light-blue-solid-border-color: #{tokens.$cds-alias-utility-light-blue-shade};
+      --clr-label-light-blue-solid-color: #{tokens.$cds-alias-typography-color-500};
+
+      // info
       --clr-label-info-bg-color: #{tokens.$cds-alias-utility-blue-tint};
       --clr-label-info-font-color: #{tokens.$cds-alias-typography-color-500};
       --clr-label-info-border-color: #{tokens.$cds-alias-utility-blue};
+      --clr-label-info-solid-bg-color: #{tokens.$cds-alias-utility-blue};
+      --clr-label-info-solid-border-color: #{tokens.$cds-alias-utility-blue-shade};
+      --clr-label-info-solid-color: #{tokens.$cds-alias-typography-color-100};
+
+      // success
       --clr-label-success-bg-color: #{tokens.$cds-alias-utility-green-tint};
       --clr-label-success-font-color: #{tokens.$cds-alias-typography-color-500};
       --clr-label-success-border-color: #{tokens.$cds-alias-utility-green};
+      --clr-label-success-solid-bg-color: #{tokens.$cds-alias-utility-green};
+      --clr-label-success-solid-border-color: #{tokens.$cds-alias-utility-green-shade};
+      --clr-label-success-solid-color: #{tokens.$cds-alias-typography-color-100};
+
+      // warning
       --clr-label-warning-bg-color: #{tokens.$cds-alias-utility-yellow-tint};
       --clr-label-warning-font-color: #{tokens.$cds-alias-typography-color-500};
       --clr-label-warning-border-color: #{tokens.$cds-alias-utility-yellow};
+      --clr-label-warning-solid-bg-color: #{tokens.$cds-alias-utility-yellow};
+      --clr-label-warning-solid-border-color: #{tokens.$cds-alias-utility-yellow-shade};
+      --clr-label-warning-solid-color: #{tokens.$cds-global-color-black};
+
+      // danger
       --clr-label-danger-bg-color: #{tokens.$cds-alias-utility-red-tint};
       --clr-label-danger-font-color: #{tokens.$cds-alias-typography-color-500};
       --clr-label-danger-border-color: #{tokens.$cds-alias-utility-red};
+      --clr-label-danger-solid-bg-color: #{tokens.$cds-alias-utility-red};
+      --clr-label-danger-solid-border-color: #{tokens.$cds-alias-utility-red-shade};
+      --clr-label-danger-solid-color: #{tokens.$cds-alias-typography-color-100};
     }
   }
 }

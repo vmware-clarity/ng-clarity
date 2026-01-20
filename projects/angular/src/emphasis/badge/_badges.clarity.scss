@@ -14,32 +14,27 @@
 
 @include meta.load-css('properties.badges');
 
-@mixin generateBadgeStyles($color: gray, $alias: null) {
-  $colors: map.get(badges-variables.$badge-colors, $color);
+@mixin buildBadgeStyles($colors) {
+  border-color: map.get($colors, border-color);
+  background-color: map.get($colors, bg-color);
+  color: map.get($colors, color);
 
-  &.badge-#{$color} {
-    border-color: map.get($colors, border-color);
-    background-color: map.get($colors, bg-color);
-    color: map.get($colors, color);
-  }
-
-  &.badge-outlined.badge-#{$color} {
+  &.badge-outlined {
     border-color: map.get($colors, outline-border-color);
     background-color: map.get($colors, outline-bg-color);
     color: map.get($colors, outline-color);
   }
+}
+@mixin generateBadgeStyles($color: gray, $alias: null) {
+  $colors: map.get(badges-variables.$badge-colors, $color);
+
+  &.badge-#{$color} {
+    @include buildBadgeStyles($colors);
+  }
 
   @if ($alias) {
     &.badge-#{$alias} {
-      border-color: map.get($colors, border-color);
-      background-color: map.get($colors, bg-color);
-      color: map.get($colors, color);
-    }
-
-    &.badge-outlined.badge-#{$alias} {
-      border-color: map.get($colors, outline-border-color);
-      background-color: map.get($colors, outline-bg-color);
-      color: map.get($colors, outline-color);
+      @include buildBadgeStyles($colors);
     }
   }
 }
