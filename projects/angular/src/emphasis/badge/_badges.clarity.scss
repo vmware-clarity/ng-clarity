@@ -6,6 +6,7 @@
  */
 
 @use 'sass:meta';
+@use 'sass:map';
 @use '../../styles/mixins';
 @use 'variables.badges' as badges-variables;
 @use '../../styles/variables/variables.density' as density;
@@ -13,17 +14,33 @@
 
 @include meta.load-css('properties.badges');
 
-@mixin generateBadgeStyles($color: gray, $alias: 1) {
-  &.badge-#{'' + $color},
-  &.badge-#{$alias} {
-    background: badges-variables.getBadgeColor($color, bg-color);
-    color: badges-variables.getBadgeColor($color, color);
+@mixin generateBadgeStyles($color: gray, $alias: null) {
+  $colors: map.get(badges-variables.$badge-colors, $color);
+
+  &.badge-#{$color} {
+    border-color: map.get($colors, border-color);
+    background-color: map.get($colors, bg-color);
+    color: map.get($colors, color);
   }
-}
-@mixin generateStatusBadgeStyles($status: info) {
-  &.badge-#{$status} {
-    background: badges-variables.getBadgeColor($status, bg-color);
-    color: badges-variables.getBadgeColor($status, color);
+
+  &.badge-outlined.badge-#{$color} {
+    border-color: map.get($colors, outline-border-color);
+    background-color: map.get($colors, outline-bg-color);
+    color: map.get($colors, outline-color);
+  }
+
+  @if ($alias) {
+    &.badge-#{$alias} {
+      border-color: map.get($colors, border-color);
+      background-color: map.get($colors, bg-color);
+      color: map.get($colors, color);
+    }
+
+    &.badge-outlined.badge-#{$alias} {
+      border-color: map.get($colors, outline-border-color);
+      background-color: map.get($colors, outline-bg-color);
+      color: map.get($colors, outline-color);
+    }
   }
 }
 
@@ -40,17 +57,24 @@
     align-items: center;
     justify-content: center;
     min-width: #{tokens.$cds-global-space-7};
-    background-color: badges-variables.$clr-badge-background-color;
     height: density.$clr-base-row-height-xs;
     border-radius: density.$clr-base-border-radius-xl;
-
-    @include mixins.generate-typography-token('CAPTION-SM-10');
-
-    padding: 0 density.$clr-base-horizontal-offset-xs;
+    padding: 0 calc(#{density.$clr-base-horizontal-offset-xs} - #{tokens.$cds-alias-object-border-width-100});
     margin-right: density.$clr-base-horizontal-offset-s;
     white-space: nowrap;
     text-align: center;
+
+    @include mixins.generate-typography-token('CAPTION-SM-10');
+
+    border: tokens.$cds-alias-object-border-width-100 solid badges-variables.$clr-badge-border-color;
+    background-color: badges-variables.$clr-badge-background-color;
     color: badges-variables.$clr-badge-color;
+
+    &.badge-outlined {
+      border-color: badges-variables.$clr-badge-outline-border-color;
+      background-color: badges-variables.$clr-badge-outline-bg-color;
+      color: badges-variables.$clr-badge-outline-color;
+    }
 
     &:visited {
       color: badges-variables.$clr-badge-color;
@@ -58,8 +82,7 @@
 
     // Link badge, default, no color or type specifier. Override a:link setting.
     &:link {
-      background-color: badges-variables.getBadgeColor(gray, bg-color);
-      color: badges-variables.getBadgeColor(gray, color);
+      @include generateBadgeStyles(gray);
     }
 
     @include generateBadgeStyles(gray, 1);
@@ -67,9 +90,9 @@
     @include generateBadgeStyles(blue, 3);
     @include generateBadgeStyles(orange, 4);
     @include generateBadgeStyles(light-blue, 5);
-    @include generateStatusBadgeStyles(info);
-    @include generateStatusBadgeStyles(success);
-    @include generateStatusBadgeStyles(danger);
-    @include generateStatusBadgeStyles(warning);
+    @include generateBadgeStyles(info);
+    @include generateBadgeStyles(success);
+    @include generateBadgeStyles(danger);
+    @include generateBadgeStyles(warning);
   }
 }

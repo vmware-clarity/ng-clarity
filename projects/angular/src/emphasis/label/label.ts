@@ -37,6 +37,7 @@ export enum ClrLabelColors {
     class: 'label',
     '[class.clickable]': 'clickable',
     '[class.disabled]': 'disabled',
+    '[class.label-solid]': 'solid',
     '[class]': 'colorClass',
   },
   imports: [ClrBadge],
@@ -47,6 +48,7 @@ export class ClrLabel {
   @Input('clrText') textContent = '';
   @Input('clrClickable') clickable = false;
   @Input('clrDisabled') disabled = false;
+  @Input('clrSolid') solid = false;
 
   get colorClass() {
     return this.color ? `label-${this.color}` : '';

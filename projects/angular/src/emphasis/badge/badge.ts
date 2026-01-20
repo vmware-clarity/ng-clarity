@@ -25,11 +25,13 @@ export enum ClrBadgeColors {
   template: `<ng-content></ng-content>`,
   host: {
     class: 'badge',
+    '[class.badge-outlined]': '!solid',
     '[class]': 'colorClass',
   },
 })
 export class ClrBadge {
   @Input('clrColor') color: ClrBadgeColors | string = ClrBadgeColors.None;
+  @Input('clrSolid') solid = true;
 
   get colorClass() {
     return this.color ? `badge-${this.color}` : '';

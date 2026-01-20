@@ -22,6 +22,27 @@
   </div>
 </div>
 
+<h2>Angular Solid Label and badges</h2>
+<div class="clr-example">
+  <div>
+    <clr-label [clrColor]="ClrLabelColors.Purple" [clrBadgeText]="'1'" [clrClickable]="true">
+      Austin
+      <cds-icon shape="close"></cds-icon>
+    </clr-label>
+    <clr-label [clrColor]="ClrLabelColors.Blue" [clrBadgeText]="'2'" [clrSolid]="true" [clrClickable]="true"
+      >New York</clr-label
+    >
+    <clr-label [clrColor]="ClrLabelColors.Orange" [clrBadgeText]="'3'" [clrSolid]="true" [clrClickable]="true"
+      >Palo Alto</clr-label
+    >
+    <clr-label [clrColor]="ClrLabelColors.LightBlue" [clrBadgeText]="'12'" [clrSolid]="true" [clrClickable]="true">
+      San Francisco
+    </clr-label>
+    <clr-label [clrBadgeText]="'15+'" [clrSolid]="true" [clrClickable]="true">Seattle</clr-label>
+    <clr-label [clrBadgeText]="'0'" [clrSolid]="true" [clrClickable]="true" [clrDisabled]="true">Philadephia</clr-label>
+  </div>
+</div>
+
 <h2>CSS Label</h2>
 <div class="clr-example">
   <a href="javascript://" class="label label-purple clickable">

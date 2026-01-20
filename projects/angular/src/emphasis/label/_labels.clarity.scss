@@ -6,6 +6,7 @@
  */
 
 @use 'sass:meta';
+@use 'sass:map';
 @use '../../styles/mixins';
 @use '../badge/variables.badges' as badges-variables;
 @use 'variables.label' as label-variables;
@@ -27,8 +28,11 @@
   }
 
   &.label-#{'' + $color} > .badge {
-    background: badges-variables.getBadgeColor($color, bg-color);
-    color: badges-variables.getBadgeColor($color, color);
+    $colors: map.get(badges-variables.$badge-colors, $color);
+
+    border-color: map.get($colors, bg-color);
+    background-color: map.get($colors, bg-color);
+    color: map.get($colors, color);
   }
 }
 @mixin generateStatusLabelStyles($status: info) {
@@ -43,8 +47,11 @@
     }
   }
   &.label-#{'' + $status} > .badge {
-    background: badges-variables.getBadgeColor($status, bg-color);
-    color: badges-variables.getBadgeColor($status, color);
+    $colors: map.get(badges-variables.$badge-colors, $status);
+
+    border-color: map.get($colors, bg-color);
+    background-color: map.get($colors, bg-color);
+    color: map.get($colors, color);
   }
 }
 
