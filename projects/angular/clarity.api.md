@@ -768,7 +768,7 @@ export const CLR_VERTICAL_NAV_DIRECTIVES: Type<any>[];
 export const CLR_WIZARD_DIRECTIVES: any[];
 
 // @public (undocumented)
-export abstract class ClrAbstractContainer implements OnDestroy, AfterContentInit {
+export abstract class ClrAbstractContainer implements OnDestroy {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
     addGrid(): boolean;
@@ -802,8 +802,6 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
     //
     // (undocumented)
     protected layoutService: LayoutService;
-    // (undocumented)
-    ngAfterContentInit(): void;
     // Warning: (ae-forgotten-export) The symbol "NgControlService" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
