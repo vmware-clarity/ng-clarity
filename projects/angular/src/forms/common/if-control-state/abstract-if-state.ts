@@ -6,48 +6,49 @@
  */
 
 import { Directive, Optional } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { merge, tap } from 'rxjs';
+import { startWith, switchMap } from 'rxjs/operators';
 
 import { NgControlService } from '../providers/ng-control.service';
 
 @Directive()
 export abstract class AbstractIfState {
-  protected subscriptions: Subscription[] = [];
   protected displayedContent = false;
   protected control: NgControl;
   protected additionalControls: NgControl[];
 
   protected constructor(@Optional() protected ngControlService: NgControlService) {
     if (ngControlService) {
-      this.subscriptions.push(
-        ngControlService.controlChanges.subscribe(control => {
-          this.control = control;
-          this.handleState(control.status);
-          this.subscriptions.push(
-            control.statusChanges.subscribe(status => {
-              this.handleState(status);
-            })
-          );
-        }),
-        ngControlService.additionalControlsChanges.subscribe(controls => {
-          this.additionalControls = controls;
+      ngControlService.controlChanges
+        .pipe(
+          tap(control => (this.control = control)),
+          switchMap(control => control.statusChanges.pipe(startWith(control.status), takeUntilDestroyed())),
+          takeUntilDestroyed()
+        )
+        .subscribe(status => {
+          this.handleState(status);
+        });
 
-          this.additionalControls.forEach(control => {
-            this.handleState(control.status);
-            this.subscriptions.push(
-              control.statusChanges.subscribe(status => {
-                this.handleState(status);
-              })
-            );
-          });
-        })
-      );
+      ngControlService.additionalControlsChanges
+        .pipe(
+          tap(controls => (this.additionalControls = controls)),
+          switchMap(controls => {
+            if (!controls || controls.length === 0) {
+              return [];
+            }
+
+            const statusStreams = controls.map(c => c.statusChanges.pipe(startWith(c.status), takeUntilDestroyed()));
+
+            return merge(...statusStreams);
+          }),
+          takeUntilDestroyed()
+        )
+        .subscribe(status => {
+          this.handleState(status);
+        });
     }
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   protected handleState(_state: any): void {

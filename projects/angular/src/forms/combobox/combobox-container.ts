@@ -62,7 +62,7 @@ export class ClrComboboxContainer extends ClrAbstractContainer implements AfterC
     super(layoutService, controlClassService, ngControlService);
   }
 
-  override ngAfterContentInit() {
+  ngAfterContentInit() {
     if (this.label) {
       this.containerService.labelText = this.label.labelText;
     }

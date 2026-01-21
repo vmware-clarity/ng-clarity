@@ -108,7 +108,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     }
   }
 
-  override ngAfterContentInit() {
+  ngAfterContentInit() {
     this.setAriaRoles();
     this.setAriaLabelledBy();
   }

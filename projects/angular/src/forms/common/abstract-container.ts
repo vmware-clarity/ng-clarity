@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, ContentChild, Directive, OnDestroy, Optional } from '@angular/core';
+import { ContentChild, Directive, OnDestroy, Optional } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -19,7 +19,7 @@ import { NgControlService } from './providers/ng-control.service';
 import { ClrControlSuccess } from './success';
 
 @Directive()
-export abstract class ClrAbstractContainer implements OnDestroy, AfterContentInit {
+export abstract class ClrAbstractContainer implements OnDestroy {
   @ContentChild(ClrControlLabel, { static: false }) label: ClrControlLabel;
   @ContentChild(ClrControlSuccess) controlSuccessComponent: ClrControlSuccess;
   @ContentChild(ClrControlError) controlErrorComponent: ClrControlError;
@@ -121,15 +121,6 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
     } else {
       return CONTROL_STATE.INVALID;
     }
-  }
-
-  ngAfterContentInit() {
-    /**
-     * We gonna set the helper control state, after all or most of the components
-     * are ready - also this will trigger some initial flows into wrappers and controls,
-     * like locating IDs  and setting  attributes.
-     */
-    // this.updateHelpers();
   }
 
   ngOnDestroy() {

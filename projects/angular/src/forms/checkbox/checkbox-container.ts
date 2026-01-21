@@ -100,7 +100,7 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     );
   }
 
-  override ngAfterContentInit() {
+  ngAfterContentInit() {
     this.setAriaRoles();
   }
 

@@ -208,12 +208,6 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
             (change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
             change.currentValue !== change.previousValue
           ) {
-            // if (this.ngControlService.control === ngControl) {
-            //   this.ngControlService.emitControlChange(ngControl);
-            // } else {
-            //   this.ngControlService.emitAdditionalControlChange(this.ngControlService.additionalControls);
-            // }
-
             this.triggerValidation();
           }
         });
