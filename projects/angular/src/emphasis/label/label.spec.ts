@@ -15,6 +15,7 @@ import { ClrLabel, ClrLabelColors } from './label';
     [clrColor]="color"
     [clrBadgeText]="badgeText"
     [clrText]="text"
+    [clrSolid]="solid"
     [clrClickable]="clickable"
     [clrDisabled]="disabled"
   >
@@ -29,6 +30,7 @@ class TestComponent {
   text = '';
   badgeText = '';
   clickable = false;
+  solid = false;
   disabled = false;
   color: ClrLabelColors | string = ClrLabelColors.None;
 }
@@ -167,6 +169,18 @@ describe('ClrLabel component', () => {
       fixture.detectChanges();
 
       expect(htmlElement.className).toContain('label-success');
+    });
+
+    it('change to solid variant', () => {
+      // default
+      const htmlElement = fixture.nativeElement.querySelector('.label');
+      expect(htmlElement).not.toBeNull();
+
+      // set solid color
+      fixture.componentInstance.solid = true;
+      fixture.detectChanges();
+
+      expect(htmlElement.className).toContain('label-solid');
     });
 
     it('make it clickable', () => {

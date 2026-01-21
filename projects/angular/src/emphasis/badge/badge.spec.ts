@@ -11,13 +11,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrBadge, ClrBadgeColors } from './badge';
 
 @Component({
-  template: ` <clr-badge [clrColor]="color">{{ content }}</clr-badge> `,
+  template: ` <clr-badge [clrColor]="color" [clrSolid]="solid">{{ content }}</clr-badge> `,
   standalone: false,
 })
 class TestComponent {
   @ViewChild(ClrBadge) badgeInstance: ClrBadge;
 
   content = '';
+  solid = true;
   color: ClrBadgeColors | string = ClrBadgeColors.None;
 }
 
@@ -115,6 +116,18 @@ describe('ClrBadge component', () => {
       fixture.detectChanges();
 
       expect(badgeElement.className).toContain('badge-success');
+    });
+
+    it('change to outlined variant', () => {
+      // default
+      const htmlElement = fixture.nativeElement.querySelector('.label');
+      expect(htmlElement).not.toBeNull();
+
+      // set solid color
+      fixture.componentInstance.solid = false;
+      fixture.detectChanges();
+
+      expect(htmlElement.className).toContain('badge-outlined');
     });
 
     it('change to number colors', () => {
