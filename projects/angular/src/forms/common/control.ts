@@ -5,17 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  Directive,
-  ElementRef,
-  forwardRef,
-  Inject,
-  Injector,
-  Optional,
-  Renderer2,
-  Self,
-  ViewContainerRef,
-} from '@angular/core';
+import { Directive, ElementRef, Injector, Optional, Renderer2, Self, ViewContainerRef } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 import { ClrControlContainer } from './control-container';
@@ -36,8 +26,7 @@ export class ClrControl extends WrappedFormControl<ClrControlContainer> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef<HTMLElement>,
-    @Optional() @Inject(forwardRef(() => ClrControlContainer)) protected override container: ClrControlContainer
+    el: ElementRef<HTMLElement>
   ) {
     super(vcr, ClrControlContainer, injector, control, renderer, el);
   }

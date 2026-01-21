@@ -8,7 +8,6 @@
 import {
   Directive,
   ElementRef,
-  forwardRef,
   HostListener,
   Inject,
   Injector,
@@ -45,8 +44,7 @@ export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implem
     @Optional() private focusService: FocusService,
     @Optional()
     @Inject(TOGGLE_SERVICE)
-    toggleService: BehaviorSubject<boolean>,
-    @Optional() @Inject(forwardRef(() => ClrPasswordContainer)) protected override container: ClrPasswordContainer
+    toggleService: BehaviorSubject<boolean>
   ) {
     super(vcr, ClrPasswordContainer, injector, control, renderer, el);
 

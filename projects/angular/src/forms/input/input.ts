@@ -5,17 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  Directive,
-  ElementRef,
-  forwardRef,
-  Inject,
-  Injector,
-  Optional,
-  Renderer2,
-  Self,
-  ViewContainerRef,
-} from '@angular/core';
+import { Directive, ElementRef, Injector, Optional, Renderer2, Self, ViewContainerRef } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 import { ClrInputContainer } from './input-container';
@@ -36,8 +26,7 @@ export class ClrInput extends WrappedFormControl<ClrInputContainer> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef<HTMLInputElement>,
-    @Optional() @Inject(forwardRef(() => ClrInputContainer)) protected override container: ClrInputContainer
+    el: ElementRef<HTMLInputElement>
   ) {
     super(vcr, ClrInputContainer, injector, control, renderer, el);
     if (this.el.nativeElement.getAttribute('type') === 'number') {

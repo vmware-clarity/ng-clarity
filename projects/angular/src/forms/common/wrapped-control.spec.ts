@@ -5,19 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  Component,
-  Directive,
-  ElementRef,
-  forwardRef,
-  Inject,
-  Injector,
-  NgModule,
-  Optional,
-  Renderer2,
-  Type,
-  ViewContainerRef,
-} from '@angular/core';
+import { Component, Directive, ElementRef, Injector, NgModule, Renderer2, Type, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -96,8 +84,7 @@ class TestControl3 extends WrappedFormControl<TestWrapper3> {
     injector: Injector,
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef<HTMLElement>,
-    @Optional() @Inject(forwardRef(() => TestWrapper3)) protected override container: TestWrapper3
+    el: ElementRef<HTMLElement>
   ) {
     super(vcr, TestWrapper3, injector, control, renderer, el);
   }

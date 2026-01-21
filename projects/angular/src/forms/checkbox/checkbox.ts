@@ -5,22 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  Attribute,
-  Directive,
-  ElementRef,
-  forwardRef,
-  Inject,
-  Injector,
-  Optional,
-  Renderer2,
-  Self,
-  ViewContainerRef,
-} from '@angular/core';
+import { Attribute, Directive, ElementRef, Injector, Optional, Renderer2, Self, ViewContainerRef } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 
-import { ClrCheckboxContainer } from './checkbox-container';
 import { ClrCheckboxWrapper, IS_TOGGLE } from './checkbox-wrapper';
 import { WrappedFormControl } from '../common/wrapped-control';
 
@@ -46,8 +34,7 @@ export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     private control: NgControl,
     renderer: Renderer2,
     el: ElementRef<HTMLInputElement>,
-    @Attribute('clrToggle') protected toggle: string,
-    @Optional() @Inject(forwardRef(() => ClrCheckboxContainer)) protected override container: ClrCheckboxContainer
+    @Attribute('clrToggle') protected toggle: string
   ) {
     super(vcr, ClrCheckboxWrapper, injector, control, renderer, el);
   }

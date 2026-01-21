@@ -43,6 +43,8 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
         this.additionalControls = controls;
       })
     );
+
+    ngControlService.container = this;
   }
 
   /**
@@ -139,14 +141,11 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
      * Decide what subtext to display:
      *   - container is valid but no success component is implemented - use helper class
      *   - container is valid and success component is implemented - use success class
+     *   - Pass form control state and return string of classes to be applied to the container.
      */
-    if (!this.touched) {
-      return this.controlClassService.controlClass(null, this.addGrid());
-    }
-    /**
-     * Pass form control state and return string of classes to be applied to the container.
-     */
-    return this.controlClassService.controlClass(this.state, this.addGrid());
+    const currentState = this.touched ? this.state : null;
+
+    return this.controlClassService.controlClass(currentState, this.addGrid());
   }
 
   addGrid() {

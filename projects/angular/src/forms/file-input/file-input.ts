@@ -8,10 +8,8 @@
 import {
   Directive,
   ElementRef,
-  forwardRef,
   HostBinding,
   HostListener,
-  Inject,
   Injector,
   Optional,
   Renderer2,
@@ -48,8 +46,7 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     viewContainerRef: ViewContainerRef,
     readonly elementRef: ElementRef<HTMLInputElement>,
     @Self() @Optional() private readonly control: NgControl,
-    private readonly commonStrings: ClrCommonStringsService,
-    @Optional() @Inject(forwardRef(() => ClrFileInputContainer)) protected override container: ClrFileInputContainer
+    private readonly commonStrings: ClrCommonStringsService
   ) {
     super(viewContainerRef, ClrFileInputContainer, injector, control, renderer, elementRef);
   }

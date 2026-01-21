@@ -9,6 +9,8 @@ import { Injectable } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 
+import { ClrAbstractContainer } from '../abstract-container';
+
 export interface Helpers {
   show?: boolean;
   showInvalid?: boolean;
@@ -18,6 +20,8 @@ export interface Helpers {
 
 @Injectable()
 export class NgControlService {
+  container: ClrAbstractContainer;
+
   private _control: NgControl;
   private _additionalControls: NgControl[] = [];
 

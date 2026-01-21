@@ -8,9 +8,7 @@
 import {
   Directive,
   ElementRef,
-  forwardRef,
   HostListener,
-  Inject,
   Injector,
   Optional,
   Renderer2,
@@ -39,8 +37,7 @@ export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> 
     @Optional()
     private control: NgControl,
     renderer: Renderer2,
-    protected override el: ElementRef<HTMLInputElement>,
-    @Optional() @Inject(forwardRef(() => ClrNumberInputContainer)) protected override container: ClrNumberInputContainer
+    protected override el: ElementRef<HTMLInputElement>
   ) {
     super(vcr, ClrNumberInputContainer, injector, control, renderer, el);
 

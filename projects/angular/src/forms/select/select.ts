@@ -5,17 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  Directive,
-  ElementRef,
-  forwardRef,
-  Inject,
-  Injector,
-  Optional,
-  Renderer2,
-  Self,
-  ViewContainerRef,
-} from '@angular/core';
+import { Directive, ElementRef, Injector, Optional, Renderer2, Self, ViewContainerRef } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 import { ClrSelectContainer } from './select-container';
@@ -36,8 +26,7 @@ export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef<HTMLSelectElement>,
-    @Optional() @Inject(forwardRef(() => ClrSelectContainer)) protected override container: ClrSelectContainer
+    el: ElementRef<HTMLSelectElement>
   ) {
     super(vcr, ClrSelectContainer, injector, control, renderer, el);
   }

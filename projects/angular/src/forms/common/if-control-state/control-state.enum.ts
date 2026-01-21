@@ -6,7 +6,6 @@
  */
 
 export enum CONTROL_STATE {
-  NONE = 'NONE',
   VALID = 'VALID',
   INVALID = 'INVALID',
 }

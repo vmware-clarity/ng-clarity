@@ -31,7 +31,7 @@ import { ContainerIdService } from './providers/container-id.service';
 import { ControlClassService } from './providers/control-class.service';
 import { ControlIdService } from './providers/control-id.service';
 import { MarkControlService } from './providers/mark-control.service';
-import { Helpers, NgControlService } from './providers/ng-control.service';
+import { NgControlService } from './providers/ng-control.service';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 
 export enum CHANGE_KEYS {
@@ -96,8 +96,33 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   }
 
   @HostBinding('attr.aria-describedby')
-  private get getAriaDescribedBy() {
-    return this.ariaDescribedBy(this.container?.helpers);
+  private get ariaDescribedById(): string | null {
+    const helpers = this.ngControlService?.container?.helpers;
+
+    if (!helpers?.show) {
+      return null;
+    }
+
+    const elementId = this.containerIdService?.id || this.controlIdService?.id;
+    /**
+     * If ContainerIdService or ControlIdService are missing don't try to guess
+     * Don't set anything.
+     */
+    if (!elementId) {
+      return null;
+    }
+
+    /**
+     * As the helper text is now always visible. If we have error/success then we should use both ids.
+     */
+    const describedByIds = [`${elementId}-${CONTROL_SUFFIX.HELPER}`];
+    if (helpers.showInvalid) {
+      describedByIds.push(`${elementId}-${CONTROL_SUFFIX.ERROR}`);
+    } else if (helpers.showValid) {
+      describedByIds.push(`${elementId}-${CONTROL_SUFFIX.SUCCESS}`);
+    }
+
+    return describedByIds.join(' ');
   }
 
   private get hasAdditionalControls() {
@@ -167,14 +192,6 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  protected ariaDescribedBy(helpers: Helpers) {
-    if (!helpers?.show) {
-      return null;
-    }
-
-    return this.getAriaDescribedById(helpers);
-  }
-
   private injectControlClassService(injector: Injector) {
     if (!this.controlClassService) {
       this.controlClassService = injector.get(ControlClassService, null);
@@ -193,11 +210,11 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
             (change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
             change.currentValue !== change.previousValue
           ) {
-            if (this.ngControlService.control === ngControl) {
-              this.ngControlService.emitControlChange(ngControl);
-            } else {
-              this.ngControlService.emitAdditionalControlChange(this.ngControlService.additionalControls);
-            }
+            // if (this.ngControlService.control === ngControl) {
+            //   this.ngControlService.emitControlChange(ngControl);
+            // } else {
+            //   this.ngControlService.emitAdditionalControlChange(this.ngControlService.additionalControls);
+            // }
 
             this.triggerValidation();
           }
@@ -217,27 +234,5 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
         ngControl.control.updateValueAndValidity();
       });
     }
-  }
-
-  private getAriaDescribedById(helpers: Helpers): string | null {
-    const elementId = this.containerIdService?.id || this.controlIdService?.id;
-    /**
-     * If ContainerIdService or ControlIdService are missing don't try to guess
-     * Don't set anything.
-     */
-    if (!elementId) {
-      return null;
-    }
-
-    /**
-     * As the helper text is now always visible. If we have error/success then we should use both ids.
-     */
-    const describedByIds = [`${elementId}-${CONTROL_SUFFIX.HELPER}`];
-    if (helpers.showInvalid) {
-      describedByIds.push(`${elementId}-${CONTROL_SUFFIX.ERROR}`);
-    } else if (helpers.showValid) {
-      describedByIds.push(`${elementId}-${CONTROL_SUFFIX.SUCCESS}`);
-    }
-    return describedByIds.join(' ');
   }
 }

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, Component, ContentChildren, forwardRef, Input, Optional, QueryList } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, Input, Optional, QueryList } from '@angular/core';
 
 import { ClrCheckbox } from './checkbox';
 import { ClrAbstractContainer } from '../common/abstract-container';
@@ -63,7 +63,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string;
 
-  @ContentChildren(forwardRef(() => ClrCheckbox), { descendants: true }) checkboxes: QueryList<ClrCheckbox>;
+  @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes: QueryList<ClrCheckbox>;
 
   private inline = false;
 

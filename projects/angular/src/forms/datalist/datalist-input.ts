@@ -9,9 +9,7 @@ import {
   AfterContentInit,
   Directive,
   ElementRef,
-  forwardRef,
   HostListener,
-  Inject,
   Injector,
   Optional,
   Renderer2,
@@ -45,8 +43,7 @@ export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> i
     control: NgControl,
     renderer: Renderer2,
     el: ElementRef<HTMLInputElement>,
-    private datalistIdService: DatalistIdService,
-    @Optional() @Inject(forwardRef(() => ClrDatalistContainer)) protected override container: ClrDatalistContainer
+    private datalistIdService: DatalistIdService
   ) {
     super(vcr, ClrDatalistContainer, injector, control, renderer, el);
 

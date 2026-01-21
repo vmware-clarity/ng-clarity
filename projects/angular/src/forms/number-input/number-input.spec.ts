@@ -90,7 +90,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
         valueChanges++;
       });
 
-      // make sure blur alone does trigger valueChanges
+      // make sure blur alone does not trigger valueChanges
       control.nativeElement.dispatchEvent(new Event('focus'));
       control.nativeElement.dispatchEvent(new Event('blur'));
       fixture.detectChanges();
