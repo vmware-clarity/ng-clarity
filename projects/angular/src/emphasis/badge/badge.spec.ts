@@ -120,7 +120,7 @@ describe('ClrBadge component', () => {
 
     it('change to outlined variant', () => {
       // default
-      const htmlElement = fixture.nativeElement.querySelector('.label');
+      const htmlElement = fixture.nativeElement.querySelector('.badge');
       expect(htmlElement).not.toBeNull();
 
       // set solid color
