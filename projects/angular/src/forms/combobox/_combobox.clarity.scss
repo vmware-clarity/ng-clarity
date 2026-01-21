@@ -6,6 +6,7 @@
  */
 
 @use 'sass:meta';
+@use 'sass:map';
 @use '../../popover/dropdown/menu-mixins.clarity';
 @use '../../styles/mixins';
 @use '../styles/mixins.forms' as styles-mixins;
@@ -14,6 +15,7 @@
 @use 'variables.combobox' as combobox-variables;
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 @use '../../styles/variables/variables.density' as density;
+@use '../../styles/variables/variables.global' as global;
 
 @include meta.load-css('properties.combobox');
 @include mixins.exports('combobox.clarity') {
@@ -78,6 +80,16 @@
       display: flex;
       flex-wrap: wrap;
       gap: density.$clr-base-gap-xs;
+
+      &-calculation {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        visibility: hidden;
+        pointer-events: none;
+        z-index: -1;
+      }
     }
 
     &.multi {
@@ -152,6 +164,31 @@
     &:focus-within {
       background-color: combobox-variables.$clr-combobox-hover-background-color;
     }
+
+    .clr-combobox-truncation-row {
+      background: none;
+      border: none;
+      padding: 0;
+
+      .clr-combobox-truncation-cell .clr-combobox-show-more-btn {
+        @include mixins.generate-typography-token(
+          'CAPTION-LG-11-CPT',
+          (
+            font-size: combobox-variables.$clr-combobox-font-size,
+          )
+        );
+
+        padding: 0;
+        border: 0;
+        text-transform: none;
+        height: auto;
+        min-width: unset;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
   }
 
   .clr-combobox-trigger {
@@ -199,6 +236,10 @@
     overflow-y: auto;
     visibility: visible;
 
+    &-multi {
+      padding-top: 0;
+    }
+
     .clr-combobox-options-loading {
       padding: 0 density.$clr-base-horizontal-offset-m;
       display: flex;
@@ -237,7 +278,7 @@
     @include menu-mixins.generate-dropdown-item();
     // Manual pseudo focus handling
     &.clr-focus {
-      background-color: combobox-variables.$clr-combobox-active-background-color;
+      @include menu-mixins.dropdown-item-outline();
     }
   }
 
@@ -264,5 +305,17 @@
   .clr-filter-highlight b {
     font-weight: tokens.$cds-alias-typography-font-weight-semibold;
     color: combobox-variables.$clr-combobox-filter-highlight;
+  }
+
+  .clr-combobox-select-all {
+    position: sticky;
+    top: 0;
+    z-index: #{map.get(global.$clr-layers, dropdown-menu) + 1};
+    background-color: dropdown-variables.$clr-dropdown-bg-color;
+    border-bottom: tokens.$cds-alias-object-border-width-100 solid combobox-variables.$clr-combobox-border-color;
+
+    & > .clr-combobox-select-all-btn {
+      justify-content: start;
+    }
   }
 }

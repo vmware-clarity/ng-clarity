@@ -64,7 +64,7 @@ interface OptionGroup {
             <ng-template
               clrOptionItems
               [clrOptionItemsOf]="elements"
-              [clrOptionItemsField]="objectValues ? 'symbol' : undefined"
+              [clrOptionItemsField]="objectValues ? 'name' : undefined"
               let-element
             >
               <clr-option [clrValue]="objectValues ? element : element.symbol">
