@@ -11,6 +11,7 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
+  forwardRef,
   HostBinding,
   HostListener,
   Inject,
@@ -70,6 +71,7 @@ export abstract class ClrDateInputBase
     @Self()
     @Optional()
     protected control: NgControl,
+    @Optional() @Inject(forwardRef(() => ClrDateContainer)) private container: ClrDateContainer,
     @Optional() protected dateIOService: DateIOService,
     @Optional() protected dateNavigationService: DateNavigationService,
     @Optional() private datepickerEnabledService: DatepickerEnabledService,
@@ -195,14 +197,12 @@ export abstract class ClrDateInputBase
   }
 
   private populateServicesFromContainerComponent() {
-    if (this.ngControlService && this.ngControlService.container) {
-      return;
+    if (!this.container) {
+      this.dateIOService = this.getProviderFromContainer(DateIOService);
+      this.dateNavigationService = this.getProviderFromContainer(DateNavigationService);
+      this.datepickerEnabledService = this.getProviderFromContainer(DatepickerEnabledService);
+      this.dateFormControlService = this.getProviderFromContainer(DateFormControlService);
     }
-
-    this.dateIOService = this.getProviderFromContainer(DateIOService);
-    this.dateNavigationService = this.getProviderFromContainer(DateNavigationService);
-    this.datepickerEnabledService = this.getProviderFromContainer(DatepickerEnabledService);
-    this.dateFormControlService = this.getProviderFromContainer(DateFormControlService);
   }
 
   private processInitialInputs() {

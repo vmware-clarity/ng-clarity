@@ -25,7 +25,6 @@ import {
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { ClrAbstractContainer } from './abstract-container';
 import { CONTROL_SUFFIX } from './abstract-control';
 import { ContainerIdService } from './providers/container-id.service';
 import { ControlClassService } from './providers/control-class.service';
@@ -47,7 +46,6 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   protected ngControlService: NgControlService;
   protected index = 0;
   protected subscriptions: Subscription[] = [];
-  protected container: ClrAbstractContainer;
 
   private controlClassService: ControlClassService;
   private markControlService: MarkControlService;
