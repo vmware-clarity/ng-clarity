@@ -119,7 +119,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     } else if (controlStatuses.includes(CONTROL_STATE.VALID)) {
       return CONTROL_STATE.VALID;
     } else {
-      return CONTROL_STATE.INVALID;
+      return null;
     }
   }
 

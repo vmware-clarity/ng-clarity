@@ -158,7 +158,13 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   }
 
   ngDoCheck() {
-    this.triggerDoCheck(this.differ, this.ngControl ? this.ngControl : this._ngControl);
+    if (!this.ngControl) {
+      this.triggerDoCheck(this.differ, this._ngControl);
+
+      return;
+    }
+
+    this.triggerDoCheck(this.differ, this.ngControl);
     if (this.hasAdditionalControls) {
       for (const [ngControl, differ] of this.additionalDiffer) {
         this.triggerDoCheck(differ, ngControl);
@@ -174,7 +180,9 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   // overrides MUST NOT have HostListener decorator.
   @HostListener('blur')
   triggerValidation() {
-    this._ngControl?.control.markAsTouched();
+    if (this._ngControl?.control?.markAsTouched) {
+      this._ngControl.control.markAsTouched();
+    }
   }
 
   // @TODO This method has a try/catch due to an unknown issue that came when building the clrToggle feature
@@ -208,6 +216,14 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
             (change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
             change.currentValue !== change.previousValue
           ) {
+            if (ngControl.control === change.currentValue) {
+              if (this.ngControlService.control === ngControl) {
+                this.ngControlService.emitControlChange(ngControl);
+              } else if (this.ngControlService.hasAdditionalControls) {
+                this.ngControlService.emitAdditionalControlChange(this.ngControlService.additionalControls);
+              }
+            }
+
             this.triggerValidation();
           }
         });

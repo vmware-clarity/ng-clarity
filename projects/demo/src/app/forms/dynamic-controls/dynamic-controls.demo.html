@@ -33,7 +33,7 @@
 </form>
 
 <h2>Reactive form</h2>
-<form [formGroup]="form">
+<form clrForm [formGroup]="form">
   <clr-select-container>
     <label>Choose Platform</label>
     <select class="w-60" clrSelect formControlName="platform">
@@ -57,10 +57,25 @@
   @if (form.get('scenario')?.value === 'two') {
   <clr-textarea-container>
     <label>Label</label>
-    <textarea clrTextarea [formControl]="$any(form).get('control')" required></textarea>
+    <textarea clrTextarea [formControl]="$any(form).get('textarea')" required></textarea>
     <clr-control-helper>Helper Message</clr-control-helper>
-    <clr-control-success>Successful</clr-control-success>
-    <clr-control-error>Required error</clr-control-error>
+    <clr-control-success *clrIfSuccess>Successful</clr-control-success>
+    <clr-control-error *clrIfError="'required'">Required error</clr-control-error>
   </clr-textarea-container>
+
+  <clr-radio-container clrInline>
+    <label>Label</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio [formControl]="$any(form).get('radios')" required value="one" />
+      <label>One</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio [formControl]="$any(form).get('radios')" required value="two" />
+      <label>Two</label>
+    </clr-radio-wrapper>
+    <clr-control-helper>Helper Message</clr-control-helper>
+    <clr-control-success *clrIfSuccess>Successful</clr-control-success>
+    <clr-control-error *clrIfError="'required'">Required error</clr-control-error>
+  </clr-radio-container>
   }
 </form>

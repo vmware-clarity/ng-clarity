@@ -6,9 +6,10 @@
  */
 
 import { Directive, Optional } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgControl } from '@angular/forms';
-import { merge, Subject, tap } from 'rxjs';
-import { startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { merge, of, tap } from 'rxjs';
+import { startWith, switchMap } from 'rxjs/operators';
 
 import { NgControlService } from '../providers/ng-control.service';
 
@@ -18,22 +19,15 @@ export abstract class AbstractIfState {
   protected control: NgControl;
   protected additionalControls: NgControl[];
 
-  private destroyed = new Subject<void>();
-  private controlDestroyed = new Subject<void>();
-  private additionalControlsDestroyed = new Subject<void>();
-
   protected constructor(@Optional() protected ngControlService: NgControlService) {
     if (ngControlService) {
       ngControlService.controlChanges
         .pipe(
           tap(control => {
-            this.controlDestroyed.next();
-            this.controlDestroyed.complete();
-
             this.control = control;
           }),
-          switchMap(control => control.statusChanges.pipe(startWith(control.status), takeUntil(this.controlDestroyed))),
-          takeUntil(this.destroyed)
+          switchMap(control => this.getControlStatusChangesObservable(control)),
+          takeUntilDestroyed()
         )
         .subscribe(status => {
           this.handleState(status);
@@ -42,9 +36,6 @@ export abstract class AbstractIfState {
       ngControlService.additionalControlsChanges
         .pipe(
           tap(controls => {
-            this.additionalControlsDestroyed.next();
-            this.additionalControlsDestroyed.complete();
-
             this.additionalControls = controls;
           }),
           switchMap(controls => {
@@ -52,13 +43,11 @@ export abstract class AbstractIfState {
               return [];
             }
 
-            const statusStreams = controls.map(c =>
-              c.statusChanges.pipe(startWith(c.status), takeUntil(this.additionalControlsDestroyed))
-            );
+            const statusStreams = controls.map(c => this.getControlStatusChangesObservable(c));
 
             return merge(...statusStreams);
           }),
-          takeUntil(this.destroyed)
+          takeUntilDestroyed()
         )
         .subscribe(status => {
           this.handleState(status);
@@ -66,16 +55,15 @@ export abstract class AbstractIfState {
     }
   }
 
-  ngOnDestroy() {
-    this.destroyed.next();
-    this.destroyed.complete();
-    this.controlDestroyed.next();
-    this.controlDestroyed.complete();
-    this.additionalControlsDestroyed.next();
-    this.additionalControlsDestroyed.complete();
-  }
-
   protected handleState(_state: any): void {
     /* overwrite in implementation to handle status change */
+  }
+
+  private getControlStatusChangesObservable(control: NgControl) {
+    if (!control.statusChanges) {
+      return of(null);
+    }
+
+    return control.statusChanges.pipe(startWith(control.status));
   }
 }

@@ -53,9 +53,13 @@ export class DynamicControlsDemo {
       ?.valueChanges.pipe(
         filter(value => value === 'two'),
         tap(() => {
-          this.form.addControl('control', new FormControl('test'));
-          this.form.get('control')?.markAsTouched();
-          this.form.get('control')?.updateValueAndValidity();
+          this.form.addControl('textarea', new FormControl('test'));
+          this.form.get('textarea')?.markAsTouched();
+          this.form.get('textarea')?.updateValueAndValidity();
+
+          this.form.addControl('radios', new FormControl(''));
+          this.form.get('radios')?.markAsTouched();
+          this.form.get('radios')?.updateValueAndValidity();
         }),
         takeUntil(this.destroyed)
       )
