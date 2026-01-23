@@ -16,15 +16,21 @@ jobs:
       - uses: haya14busa/action-workflow_run-status@v1
       - name: Get PR Event
         id: get-pr-event
-        uses: potiuk/get-workflow-origin@v1_5
+        uses: actions/github-script@v7
         with:
-          token: ${{secrets.GITHUB_TOKEN}}
-          sourceRunId: ${{github.event.workflow_run.id}}
+          script: |
+            const prs = context.payload.workflow_run.pull_requests;
+            if (prs.length > 0) {
+              core.setOutput('pullRequestNumber', prs[0].number);
+              core.setOutput('sourceHeadBranch', prs[0].head.ref);
+            } else {
+              core.setFailed('No PR found');
+            }
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          repo: ${{ github.repository }}
-          ref: ${{ steps.get-pr-event.outputs.sourceBaseBranch }}
+          repository: ${{ github.repository }}
+          ref: ${{ github.event.workflow_run.head_sha }}
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -65,16 +71,19 @@ jobs:
       - name: Push Changes
         if: ${{steps.diff.outputs.status == 'dirty'}}
         id: push-changes
+        env:
+          HEAD_BRANCH: ${{ steps.get-pr-event.outputs.sourceHeadBranch }}
+          PR_NUMBER: ${{ steps.get-pr-event.outputs.pullRequestNumber }}
         run: |
           repositoryUrl=${{github.server_url}}/${{github.repository}}.git
-          updateBranchName=visual-snapshot-update/pr-${{steps.get-pr-event.outputs.pullRequestNumber}}
+          updateBranchName=visual-snapshot-update/pr-$PR_NUMBER
 
           # configure git
           git config user.name "GitHub"
           git config user.email "noreply@github.com"
 
           # commit changes
-          git commit --message 'chore: update visual snapshots for `${{steps.get-pr-event.outputs.sourceHeadBranch}}`'
+          git commit --message "chore: update visual snapshots for \`$HEAD_BRANCH\`"
 
           # push changes
           git push $repositoryUrl HEAD:refs/heads/$updateBranchName --force
