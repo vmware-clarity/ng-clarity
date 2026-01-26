@@ -21,50 +21,47 @@ export interface Helpers {
 @Injectable()
 export class NgControlService {
   container: ClrAbstractContainer;
-
-  private _control: NgControl;
-  private _additionalControls: NgControl[] = [];
+  private _controls: NgControl[] = [];
 
   // Observable to subscribe to the control, since its not available immediately for projected content
-  private _controlChanges = new Subject<NgControl>();
-  private _additionalControlsChanges = new Subject<NgControl[]>();
+  private _controlsChanges = new Subject<NgControl[]>();
+  private _defaultControlsChanges = new Subject<NgControl>();
 
-  get control() {
-    return this._control;
+  get defaultControl() {
+    return this._controls[0];
   }
 
-  get controlChanges(): Observable<NgControl> {
-    return this._controlChanges.asObservable();
+  get defaultControlChanges(): Observable<NgControl> {
+    return this._defaultControlsChanges.asObservable();
   }
 
-  get additionalControls() {
-    return this._additionalControls;
+  get controls() {
+    return this._controls;
   }
 
-  get additionalControlsChanges(): Observable<NgControl[]> {
-    return this._additionalControlsChanges.asObservable();
+  get controlsChanges(): Observable<NgControl[]> {
+    return this._controlsChanges.asObservable();
   }
 
-  get hasAdditionalControls() {
-    return !!this._additionalControls?.length;
+  get hasMultipleControls() {
+    return this._controls?.length > 1;
   }
 
-  setControl(control: NgControl) {
-    this._control = control;
+  addControl(control: NgControl) {
+    this._controls.push(control);
 
-    this.emitControlChange(control);
+    if (!this.hasMultipleControls) {
+      this.emitDefaultControlsChanges(control);
+    }
+
+    this.emitControlsChange(this._controls);
   }
 
-  emitControlChange(control: NgControl) {
-    this._controlChanges.next(control);
+  emitControlsChange(controls: NgControl[]) {
+    this._controlsChanges.next(controls);
   }
 
-  addAdditionalControl(control: NgControl) {
-    this._additionalControls.push(control);
-    this.emitAdditionalControlChange(this._additionalControls);
-  }
-
-  emitAdditionalControlChange(controls: NgControl[]) {
-    this._additionalControlsChanges.next(controls);
+  emitDefaultControlsChanges(control: NgControl) {
+    this._defaultControlsChanges.next(control);
   }
 }

@@ -52,7 +52,6 @@ import { NgControlService } from '../common/providers/ng-control.service';
 })
 export class ClrSelectContainer extends ClrAbstractContainer {
   @ContentChild(SelectMultipleControlValueAccessor, { static: false }) multiple: SelectMultipleControlValueAccessor;
-  private multi = false;
 
   constructor(
     @Optional() protected override layoutService: LayoutService,
@@ -62,16 +61,8 @@ export class ClrSelectContainer extends ClrAbstractContainer {
     super(layoutService, controlClassService, ngControlService);
   }
 
-  ngOnInit() {
-    /* The unsubscribe is handle inside the ClrAbstractContainer */
-    this.subscriptions.push(
-      this.ngControlService.controlChanges.subscribe(control => {
-        if (control) {
-          this.multi = control.valueAccessor instanceof SelectMultipleControlValueAccessor;
-          this.control = control;
-        }
-      })
-    );
+  private get multi() {
+    return this.control?.valueAccessor instanceof SelectMultipleControlValueAccessor;
   }
 
   wrapperClass() {

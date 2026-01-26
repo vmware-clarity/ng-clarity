@@ -13,6 +13,10 @@ import { Component } from '@angular/core';
 })
 export class SelectsDemo {
   disabled = true;
+
+  noForm = '';
+  noFormNoModel = '';
+
   vertical = {
     one: '',
     two: '',
