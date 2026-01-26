@@ -25,15 +25,6 @@ export class NgControlService {
 
   // Observable to subscribe to the control, since its not available immediately for projected content
   private _controlsChanges = new Subject<NgControl[]>();
-  private _defaultControlsChanges = new Subject<NgControl>();
-
-  get defaultControl() {
-    return this._controls[0];
-  }
-
-  get defaultControlChanges(): Observable<NgControl> {
-    return this._defaultControlsChanges.asObservable();
-  }
 
   get controls() {
     return this._controls;
@@ -50,18 +41,10 @@ export class NgControlService {
   addControl(control: NgControl) {
     this._controls.push(control);
 
-    if (!this.hasMultipleControls) {
-      this.emitDefaultControlsChanges(control);
-    }
-
     this.emitControlsChange(this._controls);
   }
 
   emitControlsChange(controls: NgControl[]) {
     this._controlsChanges.next(controls);
-  }
-
-  emitDefaultControlsChanges(control: NgControl) {
-    this._defaultControlsChanges.next(control);
   }
 }

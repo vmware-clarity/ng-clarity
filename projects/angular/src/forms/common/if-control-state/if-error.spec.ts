@@ -80,7 +80,7 @@ export default function (): void {
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         const control = new FormControl('', Validators.required);
         control.markAsTouched();
-        ngControlService.setControl(control);
+        ngControlService.addControl(control);
         control.markAsTouched();
         fixture.detectChanges();
         await delay();
@@ -108,7 +108,7 @@ export default function (): void {
       it('displays the error when the specific error is defined', async () => {
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         const control = new FormControl('', [Validators.required, Validators.minLength(5)]);
-        ngControlService.setControl(control);
+        ngControlService.addControl(control);
         control.markAsTouched();
         await delay();
         fixture.detectChanges();
@@ -118,7 +118,7 @@ export default function (): void {
       it('hides the message even when it is invalid due to a different validation error', async () => {
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         const control = new FormControl('abc', [Validators.required, Validators.minLength(5)]);
-        ngControlService.setControl(control);
+        ngControlService.addControl(control);
         control.markAsTouched();
         await delay();
         fixture.detectChanges();
@@ -128,7 +128,7 @@ export default function (): void {
 
       it('displays the error message with values from error object in context', async () => {
         const control = new FormControl('abcdef', [Validators.maxLength(5)]);
-        ngControlService.setControl(control);
+        ngControlService.addControl(control);
         control.markAsTouched();
         await delay();
         fixture.detectChanges();
@@ -137,7 +137,7 @@ export default function (): void {
 
       it('updates the error message with values from error object in context', async () => {
         const control = new FormControl('abcdef', [Validators.maxLength(5)]);
-        ngControlService.setControl(control);
+        ngControlService.addControl(control);
         control.markAsTouched();
         await delay();
         fixture.detectChanges();
@@ -156,7 +156,7 @@ export default function (): void {
           Validators.maxLength(5),
         ]);
         control.markAsTouched();
-        ngControlService.setControl(control);
+        ngControlService.addControl(control);
         control.markAsTouched();
         await delay();
         fixture.detectChanges();

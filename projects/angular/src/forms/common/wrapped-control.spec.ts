@@ -367,9 +367,9 @@ export default function (): void {
       });
 
       it('sets the control on ngControlService', function (this: TestContext) {
-        spyOn(NgControlService.prototype, 'setControl').and.callThrough();
+        spyOn(NgControlService.prototype, 'addControl').and.callThrough();
         setupTest(this, WithControl, TestControl3);
-        expect(NgControlService.prototype.setControl).toHaveBeenCalled();
+        expect(NgControlService.prototype.addControl).toHaveBeenCalled();
       });
 
       it('triggers status changes on blur', function (this: TestContext) {

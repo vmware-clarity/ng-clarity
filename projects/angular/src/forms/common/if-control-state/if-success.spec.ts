@@ -64,7 +64,7 @@ export default function (): void {
         expect(fixture.nativeElement.innerHTML).not.toContain(successMessage);
         const control = new FormControl('abc', Validators.required);
         control.markAsTouched();
-        ngControlService.setControl(control);
+        ngControlService.addControl(control);
         control.markAsTouched();
         fixture.detectChanges();
         expect(fixture.nativeElement.innerHTML).toContain(successMessage);
