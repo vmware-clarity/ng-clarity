@@ -1996,7 +1996,7 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // Warning: (ae-forgotten-export) The symbol "FiltersProvider" needs to be exported by the entry point index.d.ts
     constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService);
     // (undocumented)
-    get ariaSort(): "ascending" | "descending" | "none";
+    get ariaSort(): "none" | "ascending" | "descending";
     // (undocumented)
     get colType(): "string" | "number";
     set colType(value: 'string' | 'number');
