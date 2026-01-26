@@ -13,14 +13,7 @@ export class MultiSelectComboboxModel<T> implements ComboboxModel<T> {
 
   containsItem(item: T): boolean {
     if (this.model) {
-      if (this.displayField && typeof item === 'object') {
-        const includes = this.model.some(modelItem => {
-          return modelItem[this.displayField] === item[this.displayField];
-        });
-        return includes;
-      } else {
-        return this.model.includes(item);
-      }
+      return this.model.includes(item);
     }
     return false;
   }

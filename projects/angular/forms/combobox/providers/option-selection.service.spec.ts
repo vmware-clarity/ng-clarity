@@ -108,5 +108,10 @@ export default function () {
       optionSelectionService.currentInput = '';
       expect(optionSelectionService.selectionModel.isEmpty()).toBeTrue();
     });
+
+    it('has a default compareItems function', () => {
+      expect(optionSelectionService.compareItems('one', 'two')).toBeFalse();
+      expect(optionSelectionService.compareItems('one', 'one')).toBeTrue();
+    });
   });
 }

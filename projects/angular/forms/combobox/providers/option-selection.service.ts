@@ -11,6 +11,8 @@ import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { ComboboxModel } from '../model/combobox.model';
 import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 
+export type ComboboxSelectionComparator<T> = (option: T, value: T) => boolean;
+
 @Injectable()
 export class OptionSelectionService<T> {
   loading = false;
@@ -64,6 +66,8 @@ export class OptionSelectionService<T> {
     return this.selectionModel instanceof MultiSelectComboboxModel;
   }
 
+  compareItems: ComboboxSelectionComparator<T> = (option: T, value: T) => option === value;
+
   select(item: T) {
     if (item === null || item === undefined || this.selectionModel.containsItem(item)) {
       return;
@@ -98,8 +102,8 @@ export class OptionSelectionService<T> {
     // but Eudes and I discussed that this is a possibility but we will handle
     // this later
 
-    // if selection is undefined, or its value hasn't changed, or changing from null <-> undefined, that's not really changing so we return
-    if (!this.selectionModel || this.selectionModel.model === value || (!this.selectionModel.model && !value)) {
+    // if selection is undefined, or changing from null <-> undefined, that's not really changing so we return
+    if (!this.selectionModel || (!this.selectionModel.model && !value)) {
       return;
     }
 

@@ -33,6 +33,7 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
   private filter = '';
   private _filterField: string;
   private differ: IterableDiffer<T> | null = null;
+  private modelDiffer: IterableDiffer<T> | null = null;
 
   constructor(
     public template: TemplateRef<NgForOfContext<T>>,
@@ -41,6 +42,7 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     vcr: ViewContainerRef
   ) {
     this.iterableProxy = new NgForOf<T>(vcr, template, differs);
+    this.modelDiffer = differs.find([]).create();
     this.subscriptions.push(
       optionService.inputChanged.subscribe(filter => {
         this.filter = filter;
@@ -83,6 +85,10 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
         this.iterableProxy.ngDoCheck();
       }
     }
+    const changes = this.modelDiffer.diff(this._rawItems);
+    if (changes) {
+      this.updateSelection();
+    }
   }
 
   ngOnDestroy() {
@@ -115,6 +121,33 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
       });
     }
     this.iterableProxy.ngForOf = this.filteredItems;
+  }
+
+  private updateSelection() {
+    if (!this.optionService.selectionModel?.model) {
+      return;
+    }
+    if (this.optionService.multiselectable) {
+      const multiModel = this.optionService.selectionModel.model as T[];
+      multiModel.forEach((selectedItem, selectedIndex) => {
+        for (let index = 0; index < this._rawItems.length; index++) {
+          const item = this._rawItems[index];
+          if (this.optionService.compareItems(item, selectedItem)) {
+            multiModel[selectedIndex] = item;
+            break;
+          }
+        }
+      });
+    } else {
+      const selectedItem = this.optionService.selectionModel.model as T;
+      for (let index = 0; index < this._rawItems.length; index++) {
+        const item = this._rawItems[index];
+        if (this.optionService.compareItems(item, selectedItem)) {
+          this.optionService.setSelectionValue(item);
+          break;
+        }
+      }
+    }
   }
 }
 
