@@ -28,7 +28,7 @@
 @mixin generateBadgeStyles($color: gray, $alias: null) {
   $colors: map.get(badges-variables.$badge-colors, $color);
 
-  &.badge-#{$color} {
+  &.badge-#{'' + $color} {
     @include buildBadgeStyles($colors);
   }
 

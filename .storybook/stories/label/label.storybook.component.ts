@@ -29,7 +29,7 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
         <clr-label
           [clrColor]="type"
           [clrText]="content"
-          [clrSolid]="solid"
+          [clrType]="solid ? 'solid' : 'outlined'"
           [clrBadgeText]="badgeText"
           [clrClickable]="clickable"
           [clrDisabled]="disabled"

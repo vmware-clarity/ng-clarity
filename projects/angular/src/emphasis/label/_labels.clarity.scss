@@ -57,7 +57,7 @@
   $colors: map.get(label-variables.$label-colors, $color);
   $badge-colors: map.get(badges-variables.$badge-colors, $color);
 
-  &.label-#{$color} {
+  &.label-#{'' + $color} {
     @include buildLabelStyles($colors, $badge-colors);
   }
 
