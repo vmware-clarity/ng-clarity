@@ -21,23 +21,23 @@ export class ComboboxDemo {
 
   states0 = [
     {
-      name: 'Alabama',
+      name: 'Alabama (replaced)',
       abbreviation: 'AL',
     },
     {
-      name: 'Alaska',
+      name: 'Alaska (replaced)',
       abbreviation: 'AK',
     },
     {
-      name: 'American Samoa',
+      name: 'American Samoa (replaced)',
       abbreviation: 'AS',
     },
     {
-      name: 'Arizona',
+      name: 'Arizona (replaced)',
       abbreviation: 'AZ',
     },
     {
-      name: 'Arkansas',
+      name: 'Arkansas (replaced)',
       abbreviation: 'AR',
     },
   ];
@@ -286,7 +286,7 @@ export class ComboboxDemo {
     two: '2',
     three: this.states[1],
     four: [this.states[3], this.states[4]],
-    five: [this.states[2], this.states[3]],
+    five: [this.states[2], this.states[3], this.states[12]],
   };
 
   horizontal = {
@@ -343,5 +343,30 @@ export class ComboboxDemo {
   fetchStates(filter = '') {
     this.loading = true;
     this.asyncStates$ = this.STATES_SERVICE.getStates(filter).pipe(tap(() => (this.loading = false)));
+  }
+
+  trackFunc(index: number, item: any) {
+    return item.abbreviation;
+  }
+
+  compareFunc(option: any, item: any) {
+    return item.abbreviation === option.abbreviation;
+  }
+
+  refreshStates() {
+    this.states = structuredClone(this.states0);
+  }
+
+  updateStates() {
+    this.states.splice(3, 1);
+    this.states.forEach(state => {
+      if (state.name.indexOf('(updated)') === -1) {
+        state.name += ' (updated)';
+      }
+    });
+    this.states[2] = {
+      name: 'Area 51 (renamed)',
+      abbreviation: 'AS',
+    };
   }
 }

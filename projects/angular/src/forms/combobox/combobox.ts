@@ -35,7 +35,7 @@ import { ClrOptionSelected } from './option-selected.directive';
 import { ClrOptions } from './options';
 import { ComboboxContainerService } from './providers/combobox-container.service';
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
-import { OptionSelectionService } from './providers/option-selection.service';
+import { ComboboxSelectionComparator, OptionSelectionService } from './providers/option-selection.service';
 import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
 import { ClrPopoverPosition, ClrPopoverType } from '../../popover/common/utils/popover-positions';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
@@ -146,6 +146,11 @@ export class ClrCombobox<T>
       this.optionSelectionService.selectionModel = new SingleSelectComboboxModel<T>();
     }
     this.updateControlValue();
+  }
+
+  @Input('clrItemCompare')
+  set clrItemCompare(compareFunc: ComboboxSelectionComparator<T>) {
+    this.optionSelectionService.compareItems = compareFunc;
   }
 
   // Override the id of WrappedFormControl, as we want to move it to the embedded input.
