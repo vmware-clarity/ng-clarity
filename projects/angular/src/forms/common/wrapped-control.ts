@@ -53,7 +53,6 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   private _containerInjector: Injector;
   private differs: KeyValueDiffers;
   private differ: KeyValueDiffer<any, any>;
-  // private _ngControl: NgControl | null;
 
   // I lost way too much time trying to make this work without injecting the ViewContainerRef and the Injector,
   // I'm giving up. So we have to inject these two manually for now.
@@ -195,7 +194,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  private triggerDoCheck(differ, ngControl) {
+  private triggerDoCheck(differ: KeyValueDiffer<any, any>, ngControl: NgControl) {
     if (differ) {
       const changes = differ.diff(ngControl);
       if (changes) {
@@ -217,7 +216,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
 
   private markAsTouched(): void {
     if (this.ngControlService && this.ngControlService.hasMultipleControls) {
-      this.ngControlService.controls?.forEach((ngControl: NgControl) => {
+      this.ngControlService.controls.forEach((ngControl: NgControl) => {
         ngControl.control.markAsTouched();
         ngControl.control.updateValueAndValidity();
       });
