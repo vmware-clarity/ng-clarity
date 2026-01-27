@@ -20,9 +20,9 @@ export default function (): void {
 
     it('provides observable for control changes, passing the control', () => {
       const cb = jasmine.createSpy('cb');
-      const sub = service.controlChanges.subscribe(control => cb(control));
+      const sub = service.controlsChanges.subscribe(controls => cb(controls[0]));
       expect(cb).not.toHaveBeenCalled();
-      service.setControl(testControl);
+      service.addControl(testControl);
       expect(cb).toHaveBeenCalledWith(testControl);
       sub.unsubscribe();
     });

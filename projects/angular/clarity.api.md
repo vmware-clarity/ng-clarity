@@ -773,9 +773,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     addGrid(): boolean;
     // (undocumented)
-    additionalControls: NgControl[];
-    // (undocumented)
-    control: NgControl;
+    get control(): NgControl;
     // (undocumented)
     controlClass(): string;
     // Warning: (ae-forgotten-export) The symbol "ControlClassService" needs to be exported by the entry point index.d.ts
@@ -786,6 +784,8 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     controlErrorComponent: ClrControlError;
     // (undocumented)
     controlHelperComponent: ClrControlHelper;
+    // (undocumented)
+    controls: NgControl[];
     // (undocumented)
     controlSuccessComponent: ClrControlSuccess;
     // (undocumented)
@@ -4447,8 +4447,6 @@ export class ClrSelectContainer extends ClrAbstractContainer {
     multiple: SelectMultipleControlValueAccessor;
     // (undocumented)
     protected ngControlService: NgControlService;
-    // (undocumented)
-    ngOnInit(): void;
     // (undocumented)
     wrapperClass(): "clr-multiselect-wrapper" | "clr-select-wrapper";
     // (undocumented)
@@ -8183,7 +8181,7 @@ export const worldIconName = "world";
 
 // @public (undocumented)
 export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
-    constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, _ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
+    constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
     // (undocumented)
     protected controlIdService: ControlIdService;
     // (undocumented)

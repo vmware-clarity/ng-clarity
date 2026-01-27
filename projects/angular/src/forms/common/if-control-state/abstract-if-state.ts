@@ -16,27 +16,14 @@ import { NgControlService } from '../providers/ng-control.service';
 @Directive()
 export abstract class AbstractIfState {
   protected displayedContent = false;
-  protected control: NgControl;
-  protected additionalControls: NgControl[];
+  protected controls: NgControl[];
 
   protected constructor(@Optional() protected ngControlService: NgControlService) {
     if (ngControlService) {
-      ngControlService.controlChanges
-        .pipe(
-          tap(control => {
-            this.control = control;
-          }),
-          switchMap(control => this.getControlStatusChangesObservable(control)),
-          takeUntilDestroyed()
-        )
-        .subscribe(status => {
-          this.handleState(status);
-        });
-
-      ngControlService.additionalControlsChanges
+      ngControlService.controlsChanges
         .pipe(
           tap(controls => {
-            this.additionalControls = controls;
+            this.controls = controls;
           }),
           switchMap(controls => {
             if (!controls || controls.length === 0) {

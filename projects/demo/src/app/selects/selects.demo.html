@@ -7,6 +7,36 @@
 
 <h2>Angular Select <button class="btn btn-sm btn-primary" (click)="disabled = !disabled">Toggle Disabled</button></h2>
 
+<h4>NO form and NO container: {{ noForm }}</h4>
+<select
+  #noFormSelectElement
+  clrSelect
+  [value]="noForm"
+  (change)="noForm=noFormSelectElement.value"
+  name="noForm"
+  required
+>
+  <option value="1">One</option>
+  <option value="2">Two</option>
+  <option value="3">Three</option>
+</select>
+
+<clr-select-container>
+  <label>NO ngModel/form WITH container: {{ noFormNoModel }}</label>
+  <select
+    #noFormNoModelSelectElement
+    clrSelect
+    [value]="noFormNoModel"
+    (change)="noFormNoModel=noFormNoModelSelectElement.value"
+    name="noForm"
+    required
+  >
+    <option value="1">One</option>
+    <option value="2">Two</option>
+    <option value="3">Three</option>
+  </select>
+</clr-select-container>
+
 <h4>Vertical</h4>
 
 <form clrForm clrLayout="vertical">

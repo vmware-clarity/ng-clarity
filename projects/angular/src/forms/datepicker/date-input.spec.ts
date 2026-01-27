@@ -352,7 +352,7 @@ export default function () {
           declarations: [TestComponentWithNgModel],
         });
 
-        spyOn(TestBed.inject(NgControlService), 'setControl');
+        spyOn(TestBed.inject(NgControlService), 'addControl');
 
         fixture = TestBed.createComponent(TestComponentWithNgModel);
         fixture.detectChanges();
@@ -363,7 +363,7 @@ export default function () {
       });
 
       it('should set control on NgControlService', async () => {
-        expect(TestBed.inject(NgControlService).setControl).toHaveBeenCalled();
+        expect(TestBed.inject(NgControlService).addControl).toHaveBeenCalled();
       });
 
       it('updates the selectedDay when the app changes the ngModel value', async () => {
@@ -477,7 +477,7 @@ export default function () {
           declarations: [TestComponentWithReactiveForms],
         });
 
-        spyOn(TestBed.inject(NgControlService), 'setControl');
+        spyOn(TestBed.inject(NgControlService), 'addControl');
 
         fixture = TestBed.createComponent(TestComponentWithReactiveForms);
         fixture.detectChanges();
@@ -489,7 +489,7 @@ export default function () {
       });
 
       it('should set control on NgControlService', async () => {
-        expect(TestBed.inject(NgControlService).setControl).toHaveBeenCalled();
+        expect(TestBed.inject(NgControlService).addControl).toHaveBeenCalled();
       });
 
       it('initializes the input and the selected day with the value set by the user', () => {
@@ -564,7 +564,7 @@ export default function () {
           declarations: [TestComponentWithTemplateDrivenForms],
         });
 
-        spyOn(TestBed.inject(NgControlService), 'setControl');
+        spyOn(TestBed.inject(NgControlService), 'addControl');
 
         fixture = TestBed.createComponent(TestComponentWithTemplateDrivenForms);
         fixture.detectChanges();
@@ -574,7 +574,7 @@ export default function () {
       });
 
       it('should set control on NgControlService', async () => {
-        expect(TestBed.inject(NgControlService).setControl).toHaveBeenCalled();
+        expect(TestBed.inject(NgControlService).addControl).toHaveBeenCalled();
       });
 
       it('marks the form as touched when the markAsTouched event is received', async () => {
@@ -636,7 +636,7 @@ export default function () {
           declarations: [TestComponentWithClrDate],
         });
 
-        spyOn(TestBed.inject(NgControlService), 'setControl');
+        spyOn(TestBed.inject(NgControlService), 'addControl');
 
         fixture = TestBed.createComponent(TestComponentWithClrDate);
         fixture.detectChanges();
@@ -647,7 +647,7 @@ export default function () {
       });
 
       it('should not set control on NgControlService', async () => {
-        expect(TestBed.inject(NgControlService).setControl).not.toHaveBeenCalled();
+        expect(TestBed.inject(NgControlService).addControl).not.toHaveBeenCalled();
       });
 
       it('when disabled is true there must be attribute attached to the input', () => {

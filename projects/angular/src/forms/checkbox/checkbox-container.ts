@@ -94,10 +94,11 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
   }
 
   protected get allCheckboxesDisabled() {
-    return (
-      this.control?.disabled &&
-      (!this.additionalControls?.length || this.additionalControls.every(control => control.disabled))
-    );
+    if (!this.controls?.length) {
+      return false;
+    }
+
+    return this.controls.every(control => control.disabled);
   }
 
   ngAfterContentInit() {

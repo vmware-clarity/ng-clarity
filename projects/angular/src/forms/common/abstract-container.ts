@@ -25,8 +25,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
   @ContentChild(ClrControlError) controlErrorComponent: ClrControlError;
   @ContentChild(ClrControlHelper) controlHelperComponent: ClrControlHelper;
 
-  control: NgControl;
-  additionalControls: NgControl[] = [];
+  controls: NgControl[] = [];
 
   protected subscriptions: Subscription[] = [];
 
@@ -36,15 +35,16 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     protected ngControlService: NgControlService
   ) {
     this.subscriptions.push(
-      ngControlService.controlChanges.subscribe(control => {
-        this.control = control;
-      }),
-      ngControlService.additionalControlsChanges.subscribe(controls => {
-        this.additionalControls = controls;
+      ngControlService.controlsChanges.subscribe(controls => {
+        this.controls = controls;
       })
     );
 
     ngControlService.container = this;
+  }
+
+  get control() {
+    return this.controls[0];
   }
 
   /**
@@ -103,11 +103,11 @@ export abstract class ClrAbstractContainer implements OnDestroy {
   }
 
   private get touched() {
-    return !!(this.control?.touched || this.additionalControls?.some(control => control.touched));
+    return !!this.controls?.some(control => control.touched);
   }
 
   private get state() {
-    const controlStatuses = [this.control, ...this.additionalControls].map((control: NgControl) => {
+    const controlStatuses = this.controls.map((control: NgControl) => {
       return control.status;
     });
 

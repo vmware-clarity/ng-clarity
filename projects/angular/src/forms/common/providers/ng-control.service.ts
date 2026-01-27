@@ -21,50 +21,30 @@ export interface Helpers {
 @Injectable()
 export class NgControlService {
   container: ClrAbstractContainer;
-
-  private _control: NgControl;
-  private _additionalControls: NgControl[] = [];
+  private _controls: NgControl[] = [];
 
   // Observable to subscribe to the control, since its not available immediately for projected content
-  private _controlChanges = new Subject<NgControl>();
-  private _additionalControlsChanges = new Subject<NgControl[]>();
+  private _controlsChanges = new Subject<NgControl[]>();
 
-  get control() {
-    return this._control;
+  get controls() {
+    return this._controls;
   }
 
-  get controlChanges(): Observable<NgControl> {
-    return this._controlChanges.asObservable();
+  get controlsChanges(): Observable<NgControl[]> {
+    return this._controlsChanges.asObservable();
   }
 
-  get additionalControls() {
-    return this._additionalControls;
+  get hasMultipleControls() {
+    return this._controls?.length > 1;
   }
 
-  get additionalControlsChanges(): Observable<NgControl[]> {
-    return this._additionalControlsChanges.asObservable();
+  addControl(control: NgControl) {
+    this._controls.push(control);
+
+    this.emitControlsChange(this._controls);
   }
 
-  get hasAdditionalControls() {
-    return !!this._additionalControls?.length;
-  }
-
-  setControl(control: NgControl) {
-    this._control = control;
-
-    this.emitControlChange(control);
-  }
-
-  emitControlChange(control: NgControl) {
-    this._controlChanges.next(control);
-  }
-
-  addAdditionalControl(control: NgControl) {
-    this._additionalControls.push(control);
-    this.emitAdditionalControlChange(this._additionalControls);
-  }
-
-  emitAdditionalControlChange(controls: NgControl[]) {
-    this._additionalControlsChanges.next(controls);
+  emitControlsChange(controls: NgControl[]) {
+    this._controlsChanges.next(controls);
   }
 }

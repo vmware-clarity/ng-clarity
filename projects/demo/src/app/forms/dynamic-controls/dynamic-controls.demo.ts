@@ -57,7 +57,7 @@ export class DynamicControlsDemo {
           this.form.get('textarea')?.markAsTouched();
           this.form.get('textarea')?.updateValueAndValidity();
 
-          this.form.addControl('radios', new FormControl(''));
+          this.form.addControl('radios', new FormControl('', [Validators.required, Validators.pattern(/two/)]));
           this.form.get('radios')?.markAsTouched();
           this.form.get('radios')?.updateValueAndValidity();
         }),
