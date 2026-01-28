@@ -79,7 +79,8 @@
   --cds-alias-object-interaction-info-selected: var(--cds-global-color-blue-900);
   --cds-alias-object-interaction-info-active: var(--cds-alias-object-interaction-info-click);
   --cds-alias-object-interaction-success-active: var(--cds-alias-object-interaction-success-click);
-  --cds-alias-object-interaction-warning-active: var(--cds-alias-object-interaction-warning-click);
+  --cds-alias-object-interaction-warning-click: var(--cds-global-color-ochre-700);
+  --cds-alias-object-interaction-warning-active: var(--cds-global-color-ochre-700);
   --cds-alias-object-interaction-danger-active: var(--cds-alias-object-interaction-danger-click);
   --cds-alias-object-interaction-neutral-active: var(--cds-alias-object-interaction-neutral-click);
   --cds-alias-object-interaction-inverse-active: var(--cds-alias-object-interaction-inverse-click);
