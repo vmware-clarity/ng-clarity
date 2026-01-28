@@ -81,10 +81,6 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       control = fixture.debugElement.query(By.directive(testControl));
       clarityDirective = control.injector.get(testControl);
       fixture.detectChanges();
-      spyOn(clarityDirective, 'stepUp').and.callThrough();
-      spyOn(clarityDirective, 'stepDown').and.callThrough();
-      spyOn(control.nativeElement, 'onblur').and.callThrough();
-      spyOn(control.nativeElement, 'onchange').and.callThrough();
     });
 
     it('should handle valueChanges calls', () => {
@@ -109,7 +105,11 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       fixture.detectChanges();
       expect(valueChanges).toBe(1);
     });
+
     it('should increase or decrease value on step buttons click', () => {
+      spyOn(clarityDirective, 'stepUp').and.callThrough();
+      spyOn(clarityDirective, 'stepDown').and.callThrough();
+
       const inputGroup = control.nativeElement.closest('.clr-input-group');
       const stepDownButton = inputGroup.querySelector('button:has(cds-icon[shape="minus"])');
       const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
@@ -127,6 +127,8 @@ function inputSpec(description, testContainer, testControl, testComponent) {
     });
 
     it('should trigger blur after clicking step buttons and focusing different element', () => {
+      spyOn(control.nativeElement, 'onblur').and.callThrough();
+
       const inputGroup = control.nativeElement.closest('.clr-input-group');
       const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
       stepUpButton.focus();
@@ -135,7 +137,10 @@ function inputSpec(description, testContainer, testControl, testComponent) {
 
       expect(control.nativeElement.onblur).toHaveBeenCalled();
     });
+
     it('should trigger change after clicking step buttons', () => {
+      spyOn(control.nativeElement, 'onchange').and.callThrough();
+
       const inputGroup = control.nativeElement.closest('.clr-input-group');
       const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
       stepUpButton.click();

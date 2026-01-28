@@ -10,7 +10,6 @@ import ControlContainerSpecs from './control-container.spec';
 import ErrorSpecs from './error.spec';
 import FormSpecs from './form.spec';
 import HelperSpecs from './helper.spec';
-import IfControlStateSpecs from './if-control-state/if-control-state.service.spec';
 import IfErrorSpec from './if-control-state/if-error.spec';
 import LabelSpecs from './label.spec';
 import LayoutSpecs from './layout.spec';
@@ -30,7 +29,6 @@ describe('Forms common utilities', function () {
   LayoutSpecs();
   FormSpecs();
   LabelSpecs();
-  IfControlStateSpecs();
   WrappedControlSpecs();
   CommonSpecs();
   ErrorSpecs();

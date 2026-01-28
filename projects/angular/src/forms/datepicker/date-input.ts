@@ -139,7 +139,6 @@ export abstract class ClrDateInputBase
     this.setFocus(true);
   }
 
-  @HostListener('blur')
   override triggerValidation() {
     super.triggerValidation();
     this.setFocus(false);
@@ -309,15 +308,10 @@ export abstract class ClrDateInputBase
    */
   private validateDateRange() {
     if (this.dateNavigationService.isRangePicker) {
-      const primaryControl = this.ngControlService?.control;
-      const additionalControls = this.ngControlService?.additionalControls;
+      const controls = this.ngControlService?.controls;
       const isValid = this.dateNavigationService.selectedDay?.isBefore(this.dateNavigationService.selectedEndDay, true);
-      if (
-        isValid &&
-        (primaryControl?.hasError('range') || additionalControls?.some(control => control.hasError('range')))
-      ) {
-        primaryControl.control?.updateValueAndValidity({ emitEvent: false });
-        additionalControls.forEach((ngControl: NgControl) => {
+      if (isValid && controls?.some(control => control.hasError('range'))) {
+        controls.forEach((ngControl: NgControl) => {
           ngControl?.control?.updateValueAndValidity({ emitEvent: false });
         });
       }

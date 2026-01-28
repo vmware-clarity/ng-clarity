@@ -20,7 +20,6 @@ import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS } from '../../popover/common/utils/popover-positions';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
@@ -96,7 +95,6 @@ import { NgControlService } from '../common/providers/ng-control.service';
     DatepickerEnabledService,
     DateFormControlService,
     ViewManagerService,
-    IfControlStateService,
   ],
   hostDirectives: [ClrPopoverHostDirective],
   host: {
@@ -126,10 +124,9 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     private viewManagerService: ViewManagerService,
     protected override controlClassService: ControlClassService,
     @Optional() protected override layoutService: LayoutService,
-    protected override ngControlService: NgControlService,
-    protected override ifControlStateService: IfControlStateService
+    protected override ngControlService: NgControlService
   ) {
-    super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    super(layoutService, controlClassService, ngControlService);
 
     this.subscriptions.push(
       focusService.focusChange.subscribe(state => {

@@ -8,7 +8,6 @@
 import { Component, Input, Optional, Renderer2 } from '@angular/core';
 
 import { ClrAbstractContainer } from '../common/abstract-container';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { LayoutService } from '../common/providers/layout.service';
@@ -50,7 +49,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+  providers: [NgControlService, ControlIdService, ControlClassService],
   standalone: false,
 })
 export class ClrRangeContainer extends ClrAbstractContainer {
@@ -62,10 +61,9 @@ export class ClrRangeContainer extends ClrAbstractContainer {
     controlClassService: ControlClassService,
     ngControlService: NgControlService,
     private renderer: Renderer2,
-    private idService: ControlIdService,
-    protected override ifControlStateService: IfControlStateService
+    private idService: ControlIdService
   ) {
-    super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    super(layoutService, controlClassService, ngControlService);
   }
 
   @Input('clrRangeHasProgress')
