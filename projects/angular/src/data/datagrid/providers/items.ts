@@ -83,6 +83,10 @@ export class Items<T = any> {
     return this._displayed;
   }
 
+  get filtered(): T[] {
+    return this._filtered;
+  }
+
   // We do not want to expose the Subject itself, but the Observable which is read-only
   get change(): Observable<T[]> {
     return this._change.asObservable();
