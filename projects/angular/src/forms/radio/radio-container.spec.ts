@@ -15,7 +15,6 @@ import { ClrRadioContainer } from './radio-container';
 import { ClrRadioWrapper } from './radio-wrapper';
 import { ClrIcon } from '../../icon';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
@@ -34,10 +33,6 @@ class NoLabelTest {}
   template: `
     <clr-radio-container [clrInline]="inline">
       <label>Hello World</label>
-      <clr-radio-wrapper>
-        <label>One</label>
-        <input type="radio" clrRadio name="model" required [(ngModel)]="model" value="one" />
-      </clr-radio-wrapper>
       <clr-radio-wrapper>
         <label>Two</label>
         <input type="radio" clrRadio name="model" required [(ngModel)]="model" value="two" [disabled]="disabled" />
@@ -101,7 +96,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrRadioContainer, ClrRadioWrapper, ClrRadio, TemplateDrivenTest],
-          providers: [IfControlStateService, NgControl, NgControlService, LayoutService],
+          providers: [NgControl, NgControlService, LayoutService],
         });
         fixture = TestBed.createComponent(TemplateDrivenTest);
 

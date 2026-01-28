@@ -26,12 +26,11 @@ import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { CONTROL_SUFFIX } from './abstract-control';
-import { IfControlStateService } from './if-control-state/if-control-state.service';
 import { ContainerIdService } from './providers/container-id.service';
 import { ControlClassService } from './providers/control-class.service';
 import { ControlIdService } from './providers/control-id.service';
 import { MarkControlService } from './providers/mark-control.service';
-import { Helpers, NgControlService } from './providers/ng-control.service';
+import { NgControlService } from './providers/ng-control.service';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 
 export enum CHANGE_KEYS {
@@ -48,15 +47,12 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   protected index = 0;
   protected subscriptions: Subscription[] = [];
 
-  private ifControlStateService: IfControlStateService;
   private controlClassService: ControlClassService;
   private markControlService: MarkControlService;
   private containerIdService: ContainerIdService;
   private _containerInjector: Injector;
   private differs: KeyValueDiffers;
   private differ: KeyValueDiffer<any, any>;
-  private additionalDiffer = new Map<NgControl, KeyValueDiffer<any, any>>();
-  private ngControl: NgControl | null;
 
   // I lost way too much time trying to make this work without injecting the ViewContainerRef and the Injector,
   // I'm giving up. So we have to inject these two manually for now.
@@ -64,13 +60,12 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     protected vcr: ViewContainerRef,
     protected wrapperType: Type<W>,
     injector: Injector,
-    private _ngControl: NgControl | null,
+    private ngControl: NgControl | null,
     protected renderer: Renderer2,
     protected el: ElementRef<HTMLElement>
   ) {
     if (injector) {
       this.ngControlService = injector.get(NgControlService, null);
-      this.ifControlStateService = injector.get(IfControlStateService, null);
       this.markControlService = injector.get(MarkControlService, null);
       this.differs = injector.get(KeyValueDiffers, null);
     }
@@ -79,14 +74,6 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
       this.subscriptions.push(
         this.markControlService.touchedChange.subscribe(() => {
           this.markAsTouched();
-        })
-      );
-    }
-
-    if (this.ngControlService) {
-      this.subscriptions.push(
-        this.ngControlService.helpersChange.subscribe((state: Helpers) => {
-          this.setAriaDescribedBy(state);
         })
       );
     }
@@ -104,8 +91,34 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  private get hasAdditionalControls() {
-    return this.additionalDiffer.size > 0;
+  @HostBinding('attr.aria-describedby')
+  private get ariaDescribedById(): string | null {
+    const helpers = this.ngControlService?.container?.helpers;
+
+    if (!helpers?.show) {
+      return null;
+    }
+
+    const elementId = this.containerIdService?.id || this.controlIdService?.id;
+    /**
+     * If ContainerIdService or ControlIdService are missing don't try to guess
+     * Don't set anything.
+     */
+    if (!elementId) {
+      return null;
+    }
+
+    /**
+     * As the helper text is now always visible. If we have error/success then we should use both ids.
+     */
+    const describedByIds = [`${elementId}-${CONTROL_SUFFIX.HELPER}`];
+    if (helpers.showInvalid) {
+      describedByIds.push(`${elementId}-${CONTROL_SUFFIX.ERROR}`);
+    } else if (helpers.showValid) {
+      describedByIds.push(`${elementId}-${CONTROL_SUFFIX.SUCCESS}`);
+    }
+
+    return describedByIds.join(' ');
   }
 
   ngOnInit() {
@@ -125,25 +138,24 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
       this._id = this.controlIdService.id;
     }
 
-    if (this.ngControlService && this._ngControl) {
-      if (!this.ngControlService.control) {
-        this.ngControl = this._ngControl;
-        this.ngControlService.setControl(this.ngControl);
-        this.differ = this.differs.find(this._ngControl).create();
-      } else {
-        this.ngControl = this.ngControlService.control;
-        this.ngControlService.addAdditionalControl(this._ngControl);
-        this.additionalDiffer.set(this._ngControl, this.differs.find(this._ngControl).create());
-      }
+    // 4 possible variations
+    // 1. NO  ngControlService and NO  ngControl
+    // 2. NO  ngControlService and YES ngControl
+    // 3. YES ngControlService and NO  ngControl
+    // 4. YES ngControlService and YES ngControl
+
+    if (this.ngControl) {
+      this.differ = this.differs.find(this.ngControl).create();
+    }
+
+    if (this.ngControlService && this.ngControl) {
+      this.ngControlService.addControl(this.ngControl);
     }
   }
 
   ngDoCheck() {
-    this.triggerDoCheck(this.differ, this.ngControl);
-    if (this.hasAdditionalControls) {
-      for (const [ngControl, differ] of this.additionalDiffer) {
-        this.triggerDoCheck(differ, ngControl);
-      }
+    if (this.ngControl) {
+      this.triggerDoCheck(this.differ, this.ngControl);
     }
   }
 
@@ -151,10 +163,12 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     this.subscriptions.forEach(sub => sub?.unsubscribe());
   }
 
+  // blur HostListener decorator MUST be 1 and on the parent.
+  // overrides MUST NOT have HostListener decorator.
   @HostListener('blur')
   triggerValidation() {
-    if (this.ifControlStateService) {
-      this.ifControlStateService.triggerStatusChange();
+    if (this.ngControl?.control?.markAsTouched) {
+      this.ngControl.control.markAsTouched();
     }
   }
 
@@ -180,7 +194,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  private triggerDoCheck(differ, ngControl) {
+  private triggerDoCheck(differ: KeyValueDiffer<any, any>, ngControl: NgControl) {
     if (differ) {
       const changes = differ.diff(ngControl);
       if (changes) {
@@ -189,6 +203,10 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
             (change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
             change.currentValue !== change.previousValue
           ) {
+            if (this.ngControlService) {
+              this.ngControlService.emitControlsChange(this.ngControlService.controls);
+            }
+
             this.triggerValidation();
           }
         });
@@ -197,49 +215,18 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   }
 
   private markAsTouched(): void {
+    if (this.ngControlService && this.ngControlService.hasMultipleControls) {
+      this.ngControlService.controls.forEach((ngControl: NgControl) => {
+        ngControl.control.markAsTouched();
+        ngControl.control.updateValueAndValidity();
+      });
+
+      return;
+    }
+
     if (this.ngControl) {
       this.ngControl.control.markAsTouched();
       this.ngControl.control.updateValueAndValidity();
     }
-    if (this.ngControlService && this.ngControlService.hasAdditionalControls) {
-      this.ngControlService.additionalControls?.forEach((ngControl: NgControl) => {
-        ngControl.control.markAsTouched();
-        ngControl.control.updateValueAndValidity();
-      });
-    }
-  }
-
-  private setAriaDescribedBy(helpers: Helpers) {
-    if (helpers.show) {
-      const ariaDescribedBy = this.getAriaDescribedById(helpers);
-      if (ariaDescribedBy !== null) {
-        this.renderer.setAttribute(this.el.nativeElement, 'aria-describedby', ariaDescribedBy);
-        return;
-      }
-    }
-
-    this.renderer.removeAttribute(this.el.nativeElement, 'aria-describedby');
-  }
-
-  private getAriaDescribedById(helpers: Helpers): string | null {
-    const elementId = this.containerIdService?.id || this.controlIdService?.id;
-    /**
-     * If ContainerIdService or ControlIdService are missing don't try to guess
-     * Don't set anything.
-     */
-    if (!elementId) {
-      return null;
-    }
-
-    /**
-     * As the helper text is now always visible. If we have error/success then we should use both ids.
-     */
-    const describedByIds = [`${elementId}-${CONTROL_SUFFIX.HELPER}`];
-    if (helpers.showInvalid) {
-      describedByIds.push(`${elementId}-${CONTROL_SUFFIX.ERROR}`);
-    } else if (helpers.showValid) {
-      describedByIds.push(`${elementId}-${CONTROL_SUFFIX.SUCCESS}`);
-    }
-    return describedByIds.join(' ');
   }
 }

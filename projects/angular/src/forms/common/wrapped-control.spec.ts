@@ -13,7 +13,6 @@ import { By } from '@angular/platform-browser';
 import { ClrAbstractContainer } from './abstract-container';
 import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
-import { CONTROL_STATE, IfControlStateService } from './if-control-state/if-control-state.service';
 import { ControlClassService } from './providers/control-class.service';
 import { ControlIdService } from './providers/control-id.service';
 import { LayoutService } from './providers/layout.service';
@@ -70,7 +69,7 @@ class TestControl2 extends WrappedFormControl<TestWrapper2> {
 @Component({
   selector: 'test-wrapper3',
   template: `<div id="wrapper"><ng-content></ng-content></div>`,
-  providers: [ControlIdService, NgControlService, IfControlStateService, ControlClassService],
+  providers: [ControlIdService, NgControlService, ControlClassService],
   standalone: false,
 })
 class TestWrapper3 extends ClrAbstractContainer {}
@@ -261,7 +260,6 @@ interface TestContext {
   controlClassService?: ControlClassService;
   markControlService?: MarkControlService;
   ngControlService?: NgControlService;
-  ifControlStateService: IfControlStateService;
   layoutService?: LayoutService;
 }
 
@@ -271,9 +269,7 @@ export default function (): void {
       TestBed.configureTestingModule({
         imports: [WrappedFormControlTestModule, FormsModule, ReactiveFormsModule],
         declarations: [testComponent, ClrControlError, ClrControlHelper, ClrControlSuccess],
-        providers: includeProviders
-          ? [MarkControlService, ControlClassService, NgControlService, IfControlStateService, LayoutService]
-          : [],
+        providers: includeProviders ? [MarkControlService, ControlClassService, NgControlService, LayoutService] : [],
       });
       testContext.fixture = TestBed.createComponent(testComponent);
       testContext.fixture.detectChanges();
@@ -289,7 +285,6 @@ export default function (): void {
         testContext.markControlService = wrapperDebugElement.injector.get(MarkControlService);
         testContext.controlClassService = wrapperDebugElement.injector.get(ControlClassService);
         testContext.ngControlService = wrapperDebugElement.injector.get(NgControlService);
-        testContext.ifControlStateService = wrapperDebugElement.injector.get(IfControlStateService);
         testContext.layoutService = wrapperDebugElement.injector.get(LayoutService);
       } catch (error) {
         // Swallow errors
@@ -372,18 +367,18 @@ export default function (): void {
       });
 
       it('sets the control on ngControlService', function (this: TestContext) {
-        spyOn(NgControlService.prototype, 'setControl').and.callThrough();
+        spyOn(NgControlService.prototype, 'addControl').and.callThrough();
         setupTest(this, WithControl, TestControl3);
-        expect(NgControlService.prototype.setControl).toHaveBeenCalled();
+        expect(NgControlService.prototype.addControl).toHaveBeenCalled();
       });
 
       it('triggers status changes on blur', function (this: TestContext) {
-        spyOn(IfControlStateService.prototype, 'triggerStatusChange').and.callThrough();
         setupTest(this, WithControl, TestControl3);
+        spyOn(TestControl3.prototype, 'triggerValidation').and.callThrough();
         this.input.focus();
         this.input.blur();
         this.fixture.detectChanges();
-        expect(IfControlStateService.prototype.triggerStatusChange).toHaveBeenCalled();
+        expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
       });
 
       it('blur marks the control as touched', function (this: TestContext) {
@@ -404,37 +399,31 @@ export default function (): void {
     describe('with dynamic controls', function () {
       it('with form-control directive', function (this: TestContext) {
         setupTest(this, WithDynamicFormControl, TestControl3);
-        const cb = jasmine.createSpy('cb');
-        const sub = this.ifControlStateService.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
-        expect(cb).toHaveBeenCalledWith(CONTROL_STATE.NONE);
+        spyOn<any>(TestControl3.prototype, 'triggerValidation').and.callThrough();
         this.fixture.componentInstance.addControl();
         this.fixture.detectChanges();
-        expect(cb).toHaveBeenCalledWith(CONTROL_STATE.VALID);
-        sub.unsubscribe();
+        expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
       });
 
       it('with ng-control directive', function (this: TestContext) {
         setupTest(this, WithDynamicNgControl, TestControl3);
-        const cb = jasmine.createSpy('cb');
-        const sub = this.ifControlStateService.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
-        expect(cb).toHaveBeenCalledWith(CONTROL_STATE.NONE);
+        spyOn(TestControl3.prototype, 'triggerValidation').and.callThrough();
         this.fixture.componentInstance.addControl();
         this.fixture.detectChanges();
-        expect(cb).toHaveBeenCalledWith(CONTROL_STATE.VALID);
-        sub.unsubscribe();
+        expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
       });
     });
 
     describe('aria roles', function () {
       it('adds the aria-describedby for helper', function () {
         setupTest(this, WithControlAndHelper, TestControl3);
-        this.ifControlStateService.triggerStatusChange(); // Manually trigger ngModel to sync which doesn't want to do because internal async
+        this.control.triggerValidation();
         expect(this.input.getAttribute('aria-describedby')).toContain('-helper');
       });
 
       it('does not set aria-describedby unless helper is present', function () {
         setupTest(this, WithControl, TestControl3);
-        this.ifControlStateService.triggerStatusChange(); // Manually trigger ngModel to sync which doesn't want to do because internal async
+        this.control.triggerValidation();
         expect(this.input.getAttribute('aria-describedby')).toBe(null);
       });
 
@@ -446,6 +435,7 @@ export default function (): void {
         await delay();
         expect(this.input.getAttribute('aria-describedby')).toEqual(`${this.input.id}-helper ${this.input.id}-error`);
       });
+
       it('adds the aria-describedby for error messages', async function (this: TestContext) {
         setupTest(this, WithControlAndError, TestControl3);
         this.input.focus();
@@ -454,6 +444,7 @@ export default function (): void {
         await delay();
         expect(this.input.getAttribute('aria-describedby')).toContain('-error');
       });
+
       it('does not set aria-describedby unless error helper is present', function () {
         setupTest(this, WithControl, TestControl3);
         this.input.focus();
@@ -467,22 +458,30 @@ export default function (): void {
         setupTest(this, WithControlAndSuccess, TestControl3);
         this.input.focus();
         this.fixture.componentInstance.model = 'test';
+        this.fixture.detectChanges();
+        await delay();
+
         this.input.blur();
         this.fixture.detectChanges();
         await delay();
 
         expect(this.input.getAttribute('aria-describedby')).toContain('-success');
       });
+
       it('adds the aria-describedby with helper and success ids', async function (this: TestContext) {
         setupTest(this, WithControlAndSuccess, TestControl3);
         this.input.focus();
         this.fixture.componentInstance.model = 'test';
+        this.fixture.detectChanges();
+        await delay();
+
         this.input.blur();
         this.fixture.detectChanges();
         await delay();
 
         expect(this.input.getAttribute('aria-describedby')).toEqual(`${this.input.id}-helper ${this.input.id}-success`);
       });
+
       it('does not set aria-describedby unless success helper is present', async function () {
         setupTest(this, WithControl, TestControl3);
         this.input.focus();

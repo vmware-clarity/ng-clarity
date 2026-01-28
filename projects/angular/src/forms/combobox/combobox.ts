@@ -44,7 +44,6 @@ import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { LoadingListener } from '../../utils/loading/loading-listener';
-import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { WrappedFormControl } from '../common/wrapped-control';
 
 @Component({
@@ -83,7 +82,6 @@ export class ClrCombobox<T>
   @ViewChild('trigger') trigger: ElementRef<HTMLButtonElement>;
   @ContentChild(ClrOptionSelected) optionSelected: ClrOptionSelected<T>;
 
-  invalid = false;
   focused = false;
 
   popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
@@ -109,7 +107,6 @@ export class ClrCombobox<T>
     public optionSelectionService: OptionSelectionService<T>,
     public commonStrings: ClrCommonStringsService,
     private popoverService: ClrPopoverService,
-    @Optional() private controlStateService: IfControlStateService,
     @Optional() private containerService: ComboboxContainerService,
     @Inject(PLATFORM_ID) private platformId: any,
     private focusHandler: ComboboxFocusHandler<T>,
@@ -379,14 +376,6 @@ export class ClrCombobox<T>
         }
       })
     );
-
-    if (this.controlStateService) {
-      this.subscriptions.push(
-        this.controlStateService.statusChanges.subscribe(invalid => {
-          this.invalid = this.control?.control.touched && invalid === CONTROL_STATE.INVALID;
-        })
-      );
-    }
   }
 
   private updateInputValue(model: ComboboxModel<T>) {

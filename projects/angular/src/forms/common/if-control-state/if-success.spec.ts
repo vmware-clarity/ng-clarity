@@ -14,7 +14,6 @@ import { ClrInput } from '../../input/input';
 import { ClrInputContainer } from '../../input/input-container';
 import { NgControlService } from '../providers/ng-control.service';
 import { ClrControlSuccess } from '../success';
-import { IfControlStateService } from './if-control-state.service';
 import { ClrIfSuccess } from './if-success';
 
 const successMessage = 'SUCCESS_MESSAGE';
@@ -27,7 +26,7 @@ class InvalidUseTest {}
 
 @Component({
   template: `<clr-control-success *clrIfSuccess>${successMessage}</clr-control-success>`,
-  providers: [IfControlStateService, NgControlService],
+  providers: [NgControlService],
   standalone: false,
 })
 class GeneralSuccessTest {}
@@ -45,7 +44,7 @@ export default function (): void {
     });
 
     describe('general success', () => {
-      let fixture, ifControlStateService, ngControlService;
+      let fixture, ngControlService;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -55,7 +54,6 @@ export default function (): void {
         fixture = TestBed.createComponent(GeneralSuccessTest);
         fixture.detectChanges();
         ngControlService = fixture.debugElement.injector.get(NgControlService);
-        ifControlStateService = fixture.debugElement.injector.get(IfControlStateService);
       });
 
       it('hides the success initially', () => {
@@ -66,8 +64,8 @@ export default function (): void {
         expect(fixture.nativeElement.innerHTML).not.toContain(successMessage);
         const control = new FormControl('abc', Validators.required);
         control.markAsTouched();
-        ngControlService.setControl(control);
-        ifControlStateService.triggerStatusChange();
+        ngControlService.addControl(control);
+        control.markAsTouched();
         fixture.detectChanges();
         expect(fixture.nativeElement.innerHTML).toContain(successMessage);
       });

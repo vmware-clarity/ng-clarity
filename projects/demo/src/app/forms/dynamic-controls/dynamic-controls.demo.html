@@ -14,11 +14,37 @@
   <li>3. Control should be valid and in success state.</li>
 </ul>
 
+<h2>Mark as touched</h2>
+<button class="btn" type="button" (click)="angularMarkAsTouched()">Angular mark as touched</button>
+<br />
+<button class="btn" type="button" (click)="clarityMarkAsTouched()">Clarity mark as touched</button>
+<br />
+<button class="btn" type="button" (click)="reset()">Reset</button>
+
+<form clrForm [formGroup]="exampleForm">
+  <clr-input-container>
+    <label>Field 1 label</label>
+    <input clrInput formControlName="sample" />
+
+    <clr-control-success>Successful</clr-control-success>
+    <clr-control-helper>Helper Message</clr-control-helper>
+    <clr-control-error>Field is required</clr-control-error>
+  </clr-input-container>
+</form>
+
 <h2>Reactive form</h2>
-<form [formGroup]="form">
+<form clrForm [formGroup]="form">
   <clr-select-container>
     <label>Choose Platform</label>
     <select class="w-60" clrSelect formControlName="platform">
+      <option value="one">One</option>
+      <option value="two">Two</option>
+    </select>
+    <clr-control-error> Required </clr-control-error>
+  </clr-select-container>
+  <clr-select-container>
+    <label>Change Control</label>
+    <select class="w-60" clrSelect formControlName="changeControl">
       <option value="one">One</option>
       <option value="two">Two</option>
     </select>
@@ -39,10 +65,31 @@
   @if (form.get('scenario')?.value === 'two') {
   <clr-textarea-container>
     <label>Label</label>
-    <textarea clrTextarea [formControl]="$any(form).get('control')" required></textarea>
+    <textarea
+      clrTextarea
+      [formControl]="$any(form).get(form
+      .get('changeControl')?.value === 'two' ? 'textarea1' : 'textarea')"
+      required
+    ></textarea>
     <clr-control-helper>Helper Message</clr-control-helper>
-    <clr-control-success>Successful</clr-control-success>
-    <clr-control-error>Required error</clr-control-error>
+    <clr-control-success *clrIfSuccess>Successful</clr-control-success>
+    <clr-control-error *clrIfError="'required'">Required error</clr-control-error>
   </clr-textarea-container>
+
+  <clr-radio-container clrInline>
+    <label>Label</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio [formControl]="$any(form).get('radios')" required value="one" />
+      <label>One</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio [formControl]="$any(form).get('radios')" required value="two" />
+      <label>Two</label>
+    </clr-radio-wrapper>
+    <clr-control-helper>Helper Message</clr-control-helper>
+    <clr-control-success *clrIfSuccess>Successful</clr-control-success>
+    <clr-control-error *clrIfError="'required'">Required error</clr-control-error>
+    <clr-control-error *clrIfError="'pattern'">Must be Two</clr-control-error>
+  </clr-radio-container>
   }
 </form>

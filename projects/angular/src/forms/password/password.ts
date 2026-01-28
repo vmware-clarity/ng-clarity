@@ -66,7 +66,6 @@ export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implem
     }
   }
 
-  @HostListener('blur')
   override triggerValidation() {
     super.triggerValidation();
     if (this.focusService) {
