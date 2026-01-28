@@ -19,7 +19,7 @@ import { ClrBadge } from '@clr/angular';
           <a href="#" class="badge" [ngClass]="badgeClass(status)">{{ context }}</a>
         }
       } @else {
-        <clr-badge [clrColor]="status">{{ context }}</clr-badge>
+        <clr-badge [clrType]="outlined ? 'outlined' : 'solid'" [clrColor]="status">{{ context }}</clr-badge>
       }
     }
   `,
@@ -29,6 +29,7 @@ import { ClrBadge } from '@clr/angular';
 export class BadgeStoryBookComponent {
   @Input() context = '42';
   @Input() showLinkBadge = true;
+  @Input() outlined = false;
   @Input() cssBadge = true;
   @Input() badgeTypes: string[] = [''];
   @Input() badgeType = '';
@@ -38,6 +39,6 @@ export class BadgeStoryBookComponent {
   }
 
   badgeClass(name: string) {
-    return `badge-${name}`;
+    return `badge-${name} ${this.outlined ? 'badge-outlined' : ''}`;
   }
 }

@@ -5,164 +5,157 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+// default (gray)
 $clr-badge-background-color: var(--clr-badge-background-color) !default;
+$clr-badge-border-color: var(--clr-badge-border-color) !default;
 $clr-badge-color: var(--clr-badge-color) !default;
+$clr-badge-outline-bg-color: var(--clr-badge-outline-bg-color) !default;
+$clr-badge-outline-border-color: var(--clr-badge-outline-border-color) !default;
+$clr-badge-outline-color: var(--clr-badge-outline-color) !default;
 
+// info
 $clr-badge-info-bg-color: var(--clr-badge-info-bg-color) !default;
+$clr-badge-info-border-color: var(--clr-badge-info-border-color) !default;
 $clr-badge-info-color: var(--clr-badge-info-color) !default;
+$clr-badge-info-outline-bg-color: var(--clr-badge-info-outline-bg-color) !default;
+$clr-badge-info-outline-border-color: var(--clr-badge-info-outline-border-color) !default;
+$clr-badge-info-outline-color: var(--clr-badge-info-outline-color) !default;
+
+// success
 $clr-badge-success-bg-color: var(--clr-badge-success-bg-color) !default;
+$clr-badge-success-border-color: var(--clr-badge-success-border-color) !default;
 $clr-badge-success-color: var(--clr-badge-success-color) !default;
+$clr-badge-success-outline-bg-color: var(--clr-badge-success-outline-bg-color) !default;
+$clr-badge-success-outline-border-color: var(--clr-badge-success-outline-border-color) !default;
+$clr-badge-success-outline-color: var(--clr-badge-success-outline-color) !default;
+
+// warning
 $clr-badge-warning-bg-color: var(--clr-badge-warning-bg-color) !default;
+$clr-badge-warning-border-color: var(--clr-badge-warning-border-color) !default;
 $clr-badge-warning-color: var(--clr-badge-warning-color) !default;
+$clr-badge-warning-outline-bg-color: var(--clr-badge-warning-outline-bg-color) !default;
+$clr-badge-warning-outline-border-color: var(--clr-badge-warning-outline-border-color) !default;
+$clr-badge-warning-outline-color: var(--clr-badge-warning-outline-color) !default;
+
+// danger
 $clr-badge-danger-bg-color: var(--clr-badge-danger-bg-color) !default;
+$clr-badge-danger-border-color: var(--clr-badge-danger-border-color) !default;
 $clr-badge-danger-color: var(--clr-badge-danger-color) !default;
+$clr-badge-danger-outline-bg-color: var(--clr-badge-danger-outline-bg-color) !default;
+$clr-badge-danger-outline-border-color: var(--clr-badge-danger-outline-border-color) !default;
+$clr-badge-danger-outline-color: var(--clr-badge-danger-outline-color) !default;
 
+// gray
 $clr-badge-gray-bg-color: var(--clr-badge-gray-bg-color) !default;
+$clr-badge-gray-border-color: var(--clr-badge-gray-border-color) !default;
 $clr-badge-gray-color: var(--clr-badge-gray-color) !default;
+$clr-badge-gray-outline-bg-color: var(--clr-badge-gray-outline-bg-color) !default;
+$clr-badge-gray-outline-border-color: var(--clr-badge-gray-outline-border-color) !default;
+$clr-badge-gray-outline-color: var(--clr-badge-gray-outline-color) !default;
+
+// purple
 $clr-badge-purple-bg-color: var(--clr-badge-purple-bg-color) !default;
+$clr-badge-purple-border-color: var(--clr-badge-purple-border-color) !default;
 $clr-badge-purple-color: var(--clr-badge-purple-color) !default;
+$clr-badge-purple-outline-bg-color: var(--clr-badge-purple-outline-bg-color) !default;
+$clr-badge-purple-outline-border-color: var(--clr-badge-purple-outline-border-color) !default;
+$clr-badge-purple-outline-color: var(--clr-badge-purple-outline-color) !default;
+
+// blue
 $clr-badge-blue-bg-color: var(--clr-badge-blue-bg-color) !default;
+$clr-badge-blue-border-color: var(--clr-badge-blue-border-color) !default;
 $clr-badge-blue-color: var(--clr-badge-blue-color) !default;
+$clr-badge-blue-outline-bg-color: var(--clr-badge-blue-outline-bg-color) !default;
+$clr-badge-blue-outline-border-color: var(--clr-badge-blue-outline-border-color) !default;
+$clr-badge-blue-outline-color: var(--clr-badge-blue-outline-color) !default;
+
+// orange
 $clr-badge-orange-bg-color: var(--clr-badge-orange-bg-color) !default;
+$clr-badge-orange-border-color: var(--clr-badge-orange-border-color) !default;
 $clr-badge-orange-color: var(--clr-badge-orange-color) !default;
+$clr-badge-orange-outline-bg-color: var(--clr-badge-orange-outline-bg-color) !default;
+$clr-badge-orange-outline-border-color: var(--clr-badge-orange-outline-border-color) !default;
+$clr-badge-orange-outline-color: var(--clr-badge-orange-outline-color) !default;
+
+// light-blue
 $clr-badge-light-blue-bg-color: var(--clr-badge-light-blue-bg-color) !default;
+$clr-badge-light-blue-border-color: var(--clr-badge-light-blue-border-color) !default;
 $clr-badge-light-blue-color: var(--clr-badge-light-blue-color) !default;
+$clr-badge-light-blue-outline-bg-color: var(--clr-badge-light-blue-outline-bg-color) !default;
+$clr-badge-light-blue-outline-border-color: var(--clr-badge-light-blue-outline-border-color) !default;
+$clr-badge-light-blue-outline-color: var(--clr-badge-light-blue-outline-color) !default;
 
-@function getBadgeColor($type: gray, $property: color) {
-  @if $type == gray {
-    @return lookupGrayBadgeColor($property);
-  }
-
-  @if $type == purple {
-    @return lookupPurpleBadgeColor($property);
-  }
-
-  @if $type == blue {
-    @return lookupBlueBadgeColor($property);
-  }
-
-  @if $type == orange {
-    @return lookupOrangeBadgeColor($property);
-  }
-
-  @if $type == light-blue {
-    @return lookupLightBlueBadgeColor($property);
-  }
-
-  @if $type == success {
-    @return lookupSuccessBadgeColor($property);
-  }
-
-  @if $type == warning {
-    @return lookupWarningBadgeColor($property);
-  }
-
-  @if $type == danger {
-    @return lookupDangerBadgeColor($property);
-  }
-
-  @if $type == info {
-    @return lookupInfoBadgeColor($property);
-  }
-
-  @return null;
-}
-@function lookupGrayBadgeColor($property: color) {
-  @if $property == color {
-    @return $clr-badge-gray-color;
-  }
-
-  @if $property == bg-color {
-    @return $clr-badge-gray-bg-color;
-  }
-
-  @return null;
-}
-@function lookupPurpleBadgeColor($property: color) {
-  @if $property == color {
-    @return $clr-badge-purple-color;
-  }
-
-  @if $property == bg-color {
-    @return $clr-badge-purple-bg-color;
-  }
-
-  @return null;
-}
-@function lookupBlueBadgeColor($property: color) {
-  @if $property == color {
-    @return $clr-badge-blue-color;
-  }
-
-  @if $property == bg-color {
-    @return $clr-badge-blue-bg-color;
-  }
-
-  @return null;
-}
-@function lookupOrangeBadgeColor($property: color) {
-  @if $property == color {
-    @return $clr-badge-orange-color;
-  }
-
-  @if $property == bg-color {
-    @return $clr-badge-orange-bg-color;
-  }
-
-  @return null;
-}
-@function lookupLightBlueBadgeColor($property: color) {
-  @if $property == color {
-    @return $clr-badge-light-blue-color;
-  }
-
-  @if $property == bg-color {
-    @return $clr-badge-light-blue-bg-color;
-  }
-
-  @return null;
-}
-@function lookupInfoBadgeColor($property: color) {
-  @if $property == color {
-    @return $clr-badge-info-color;
-  }
-
-  @if $property == bg-color {
-    @return $clr-badge-info-bg-color;
-  }
-
-  @return null;
-}
-@function lookupSuccessBadgeColor($property: color) {
-  @if $property == color {
-    @return $clr-badge-success-color;
-  }
-
-  @if $property == bg-color {
-    @return $clr-badge-success-bg-color;
-  }
-
-  @return null;
-}
-@function lookupWarningBadgeColor($property: color) {
-  @if $property == color {
-    @return $clr-badge-warning-color;
-  }
-
-  @if $property == bg-color {
-    @return $clr-badge-warning-bg-color;
-  }
-
-  @return null;
-}
-@function lookupDangerBadgeColor($property: color) {
-  @if $property == color {
-    @return $clr-badge-danger-color;
-  }
-
-  @if $property == bg-color {
-    @return $clr-badge-danger-bg-color;
-  }
-
-  @return null;
-}
+$badge-colors: (
+  gray: (
+    bg-color: $clr-badge-gray-bg-color,
+    border-color: $clr-badge-gray-border-color,
+    color: $clr-badge-gray-color,
+    outline-bg-color: $clr-badge-gray-outline-bg-color,
+    outline-border-color: $clr-badge-gray-outline-border-color,
+    outline-color: $clr-badge-gray-outline-color,
+  ),
+  purple: (
+    bg-color: $clr-badge-purple-bg-color,
+    border-color: $clr-badge-purple-border-color,
+    color: $clr-badge-purple-color,
+    outline-bg-color: $clr-badge-purple-outline-bg-color,
+    outline-border-color: $clr-badge-purple-outline-border-color,
+    outline-color: $clr-badge-purple-outline-color,
+  ),
+  blue: (
+    bg-color: $clr-badge-blue-bg-color,
+    border-color: $clr-badge-blue-border-color,
+    color: $clr-badge-blue-color,
+    outline-bg-color: $clr-badge-blue-outline-bg-color,
+    outline-border-color: $clr-badge-blue-outline-border-color,
+    outline-color: $clr-badge-blue-outline-color,
+  ),
+  orange: (
+    bg-color: $clr-badge-orange-bg-color,
+    border-color: $clr-badge-orange-border-color,
+    color: $clr-badge-orange-color,
+    outline-bg-color: $clr-badge-orange-outline-bg-color,
+    outline-border-color: $clr-badge-orange-outline-border-color,
+    outline-color: $clr-badge-orange-outline-color,
+  ),
+  light-blue: (
+    bg-color: $clr-badge-light-blue-bg-color,
+    border-color: $clr-badge-light-blue-border-color,
+    color: $clr-badge-light-blue-color,
+    outline-bg-color: $clr-badge-light-blue-outline-bg-color,
+    outline-border-color: $clr-badge-light-blue-outline-border-color,
+    outline-color: $clr-badge-light-blue-outline-color,
+  ),
+  success: (
+    bg-color: $clr-badge-success-bg-color,
+    border-color: $clr-badge-success-border-color,
+    color: $clr-badge-success-color,
+    outline-bg-color: $clr-badge-success-outline-bg-color,
+    outline-border-color: $clr-badge-success-outline-border-color,
+    outline-color: $clr-badge-success-outline-color,
+  ),
+  warning: (
+    bg-color: $clr-badge-warning-bg-color,
+    border-color: $clr-badge-warning-border-color,
+    color: $clr-badge-warning-color,
+    outline-bg-color: $clr-badge-warning-outline-bg-color,
+    outline-border-color: $clr-badge-warning-outline-border-color,
+    outline-color: $clr-badge-warning-outline-color,
+  ),
+  danger: (
+    bg-color: $clr-badge-danger-bg-color,
+    border-color: $clr-badge-danger-border-color,
+    color: $clr-badge-danger-color,
+    outline-bg-color: $clr-badge-danger-outline-bg-color,
+    outline-border-color: $clr-badge-danger-outline-border-color,
+    outline-color: $clr-badge-danger-outline-color,
+  ),
+  info: (
+    bg-color: $clr-badge-info-bg-color,
+    border-color: $clr-badge-info-border-color,
+    color: $clr-badge-info-color,
+    outline-bg-color: $clr-badge-info-outline-bg-color,
+    outline-border-color: $clr-badge-info-outline-border-color,
+    outline-color: $clr-badge-info-outline-color,
+  ),
+);

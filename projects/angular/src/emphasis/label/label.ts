@@ -8,6 +8,7 @@
 import { Component, Input } from '@angular/core';
 
 import { ClrBadge } from '../badge';
+import { Type } from '../common/type.enum';
 
 export enum ClrLabelColors {
   None = '',
@@ -37,6 +38,7 @@ export enum ClrLabelColors {
     class: 'label',
     '[class.clickable]': 'clickable',
     '[class.disabled]': 'disabled',
+    '[class.label-solid]': 'isSolid',
     '[class]': 'colorClass',
   },
   imports: [ClrBadge],
@@ -47,6 +49,11 @@ export class ClrLabel {
   @Input('clrText') textContent = '';
   @Input('clrClickable') clickable = false;
   @Input('clrDisabled') disabled = false;
+  @Input('clrType') type: Type | string = Type.Outlined;
+
+  get isSolid() {
+    return this.type === Type.Solid;
+  }
 
   get colorClass() {
     return this.color ? `label-${this.color}` : '';

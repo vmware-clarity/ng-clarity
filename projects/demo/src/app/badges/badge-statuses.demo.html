@@ -5,12 +5,20 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<h2>Angular Badges</h2>
+<h2>Angular Solid Badges</h2>
 <div class="clr-example">
   <clr-badge [clrColor]="ClrBadgeColors.Info">2</clr-badge>
   <clr-badge [clrColor]="ClrBadgeColors.Success">3</clr-badge>
   <clr-badge [clrColor]="ClrBadgeColors.Warning">12</clr-badge>
   <clr-badge [clrColor]="ClrBadgeColors.Danger">15</clr-badge>
+</div>
+
+<h2>Angular Outlined Badges</h2>
+<div class="clr-example">
+  <clr-badge [clrColor]="ClrBadgeColors.Info" [clrType]="'outlined'">2</clr-badge>
+  <clr-badge [clrColor]="ClrBadgeColors.Success" [clrType]="'outlined'">3</clr-badge>
+  <clr-badge [clrColor]="ClrBadgeColors.Warning" [clrType]="'outlined'">12</clr-badge>
+  <clr-badge [clrColor]="ClrBadgeColors.Danger" [clrType]="'outlined'">15</clr-badge>
 </div>
 
 <h2>CSS Badges</h2>
@@ -19,4 +27,8 @@
   <span class="badge badge-success">3</span>
   <span class="badge badge-warning">12</span>
   <span class="badge badge-danger">15</span>
+  <span class="badge badge-outlined badge-info">2</span>
+  <span class="badge badge-outlined badge-success">3</span>
+  <span class="badge badge-outlined badge-warning">12</span>
+  <span class="badge badge-outlined badge-danger">15</span>
 </div>

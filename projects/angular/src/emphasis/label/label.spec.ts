@@ -9,12 +9,14 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrLabel, ClrLabelColors } from './label';
+import { Type } from '../common/type.enum';
 
 @Component({
   template: ` <clr-label
     [clrColor]="color"
     [clrBadgeText]="badgeText"
     [clrText]="text"
+    [clrType]="type"
     [clrClickable]="clickable"
     [clrDisabled]="disabled"
   >
@@ -29,6 +31,7 @@ class TestComponent {
   text = '';
   badgeText = '';
   clickable = false;
+  type = Type.Outlined;
   disabled = false;
   color: ClrLabelColors | string = ClrLabelColors.None;
 }
@@ -167,6 +170,18 @@ describe('ClrLabel component', () => {
       fixture.detectChanges();
 
       expect(htmlElement.className).toContain('label-success');
+    });
+
+    it('change to solid variant', () => {
+      // default
+      const htmlElement = fixture.nativeElement.querySelector('.label');
+      expect(htmlElement).not.toBeNull();
+
+      // set solid color
+      fixture.componentInstance.type = Type.Solid;
+      fixture.detectChanges();
+
+      expect(htmlElement.className).toContain('label-solid');
     });
 
     it('make it clickable', () => {

@@ -29,6 +29,7 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
         <clr-label
           [clrColor]="type"
           [clrText]="content"
+          [clrType]="solid ? 'solid' : 'outlined'"
           [clrBadgeText]="badgeText"
           [clrClickable]="clickable"
           [clrDisabled]="disabled"
@@ -51,6 +52,7 @@ export class LabelStoryBookComponent extends RenderComponentStorybook {
   @Input() badgeText = '';
   @Input() cssLabel = true;
   @Input() clickable = false;
+  @Input() solid = false;
   @Input() disabled = false;
   @Input() closeIcon = false;
   @Input() showProjectedContent = false;
@@ -62,6 +64,6 @@ export class LabelStoryBookComponent extends RenderComponentStorybook {
   }
 
   labelClass(name: string) {
-    return name ? `label-${name}` : '';
+    return name ? `label-${name} ${this.solid ? 'label-solid' : ''}` : '';
   }
 }

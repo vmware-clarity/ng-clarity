@@ -1097,7 +1097,13 @@ export class ClrBadge {
     // (undocumented)
     get colorClass(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrColor"; "required": false; }; }, {}, never, ["*"], true, never>;
+    get isOutlined(): boolean;
+    // Warning: (ae-forgotten-export) The symbol "Type_2" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    type: Type_2 | string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrColor"; "required": false; }; "type": { "alias": "clrType"; "required": false; }; }, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrBadge, never>;
 }
@@ -3561,9 +3567,13 @@ export class ClrLabel {
     // (undocumented)
     disabled: boolean;
     // (undocumented)
+    get isSolid(): boolean;
+    // (undocumented)
     textContent: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeText": { "alias": "clrBadgeText"; "required": false; }; "textContent": { "alias": "clrText"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; }, {}, never, ["*"], true, never>;
+    type: Type_2 | string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeText": { "alias": "clrBadgeText"; "required": false; }; "textContent": { "alias": "clrText"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "type": { "alias": "clrType"; "required": false; }; }, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLabel, never>;
 }

@@ -5,7 +5,80 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<h2>Angular Label</h2>
+<h2>Angular Outlined Label and badges</h2>
+<div class="clr-example">
+  <div>
+    <clr-label [clrColor]="ClrLabelColors.Purple" [clrText]="'Austin'" [clrBadgeText]="'1'" [clrClickable]="true">
+      <cds-icon shape="close"></cds-icon>
+    </clr-label>
+    <clr-label
+      [clrColor]="ClrLabelColors.Blue"
+      [clrText]="'New York'"
+      [clrBadgeText]="'2'"
+      [clrClickable]="true"
+    ></clr-label>
+    <clr-label
+      [clrColor]="ClrLabelColors.Orange"
+      [clrText]="'Palo Alto'"
+      [clrBadgeText]="'3'"
+      [clrClickable]="true"
+    ></clr-label>
+    <clr-label
+      [clrColor]="ClrLabelColors.LightBlue"
+      [clrText]="'San Francisco'"
+      [clrBadgeText]="'12'"
+      [clrClickable]="true"
+    ></clr-label>
+    <clr-label [clrText]="'Seattle'" [clrBadgeText]="'15+'" [clrClickable]="true"></clr-label>
+    <clr-label [clrText]="'Philadelphia'" [clrBadgeText]="'0'" [clrClickable]="true" [clrDisabled]="true"></clr-label>
+  </div>
+</div>
+
+<h2>Angular Solid Label and badges</h2>
+<div class="clr-example">
+  <div>
+    <clr-label
+      [clrColor]="ClrLabelColors.Purple"
+      [clrText]="'Austin'"
+      [clrBadgeText]="'1'"
+      [clrType]="'solid'"
+      [clrClickable]="true"
+    >
+      <cds-icon shape="close"></cds-icon>
+    </clr-label>
+    <clr-label
+      [clrColor]="ClrLabelColors.Blue"
+      [clrText]="'New York'"
+      [clrBadgeText]="'2'"
+      [clrType]="'solid'"
+      [clrClickable]="true"
+    ></clr-label>
+    <clr-label
+      [clrColor]="ClrLabelColors.Orange"
+      [clrText]="'Palo Alto'"
+      [clrBadgeText]="'3'"
+      [clrType]="'solid'"
+      [clrClickable]="true"
+    ></clr-label>
+    <clr-label
+      [clrColor]="ClrLabelColors.LightBlue"
+      [clrText]="'San Francisco'"
+      [clrBadgeText]="'12'"
+      [clrType]="'solid'"
+      [clrClickable]="true"
+    ></clr-label>
+    <clr-label [clrText]="'Seattle'" [clrBadgeText]="'15+'" [clrType]="'solid'" [clrClickable]="true"></clr-label>
+    <clr-label
+      [clrText]="'Philadelphia'"
+      [clrBadgeText]="'0'"
+      [clrType]="'solid'"
+      [clrClickable]="true"
+      [clrDisabled]="true"
+    ></clr-label>
+  </div>
+</div>
+
+<h2>Angular Labels with content projection</h2>
 <div class="clr-example">
   <div>
     <clr-label [clrColor]="ClrLabelColors.Purple" [clrBadgeText]="'1'" [clrClickable]="true">

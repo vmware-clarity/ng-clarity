@@ -6,10 +6,13 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrLabelColors } from '@clr/angular';
 
 @Component({
   selector: 'clr-labels-status-demo',
   templateUrl: './labels-status.demo.html',
   standalone: false,
 })
-export class LabelsStatusDemo {}
+export class LabelsStatusDemo {
+  protected readonly ClrLabelColors = ClrLabelColors;
+}

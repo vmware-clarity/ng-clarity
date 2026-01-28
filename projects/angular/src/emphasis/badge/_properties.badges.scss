@@ -12,26 +12,71 @@
   @include mixins.root-or-host() {
     &,
     [cds-theme] {
+      // default
       --clr-badge-background-color: #{tokens.$cds-alias-utility-gray};
+      --clr-badge-border-color: #{tokens.$cds-alias-utility-gray};
       --clr-badge-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-badge-outline-bg-color: #{tokens.$cds-alias-utility-gray-tint};
+      --clr-badge-outline-border-color: #{tokens.$cds-alias-utility-gray};
+      --clr-badge-outline-color: #{tokens.$cds-alias-typography-color-500};
+
+      // solid
       --clr-badge-info-bg-color: #{tokens.$cds-alias-utility-blue};
+      --clr-badge-info-border-color: #{tokens.$cds-alias-utility-blue};
       --clr-badge-info-color: #{tokens.$cds-alias-typography-color-100};
       --clr-badge-success-bg-color: #{tokens.$cds-alias-utility-green};
+      --clr-badge-success-border-color: #{tokens.$cds-alias-utility-green};
       --clr-badge-success-color: #{tokens.$cds-alias-typography-color-100};
       --clr-badge-warning-bg-color: #{tokens.$cds-alias-utility-yellow};
+      --clr-badge-warning-border-color: #{tokens.$cds-alias-utility-yellow};
       --clr-badge-warning-color: #{tokens.$cds-global-color-black};
       --clr-badge-danger-bg-color: #{tokens.$cds-alias-utility-red};
+      --clr-badge-danger-border-color: #{tokens.$cds-alias-utility-red};
       --clr-badge-danger-color: #{tokens.$cds-alias-typography-color-100};
       --clr-badge-gray-bg-color: #{tokens.$cds-alias-utility-gray};
+      --clr-badge-gray-border-color: #{tokens.$cds-alias-utility-gray};
       --clr-badge-gray-color: #{tokens.$cds-alias-typography-color-100};
       --clr-badge-purple-bg-color: #{tokens.$cds-alias-utility-violet};
+      --clr-badge-purple-border-color: #{tokens.$cds-alias-utility-violet};
       --clr-badge-purple-color: #{tokens.$cds-alias-typography-color-100};
       --clr-badge-blue-bg-color: #{tokens.$cds-alias-utility-dark-blue};
+      --clr-badge-blue-border-color: #{tokens.$cds-alias-utility-dark-blue};
       --clr-badge-blue-color: #{tokens.$cds-alias-typography-color-100};
       --clr-badge-orange-bg-color: #{tokens.$cds-alias-utility-tangerine};
+      --clr-badge-orange-border-color: #{tokens.$cds-alias-utility-tangerine};
       --clr-badge-orange-color: #{tokens.$cds-alias-typography-color-500};
       --clr-badge-light-blue-bg-color: #{tokens.$cds-alias-utility-light-blue};
+      --clr-badge-light-blue-border-color: #{tokens.$cds-alias-utility-light-blue};
       --clr-badge-light-blue-color: #{tokens.$cds-alias-typography-color-500};
+
+      // outlined
+      --clr-badge-info-outline-bg-color: #{tokens.$cds-alias-utility-blue-tint};
+      --clr-badge-info-outline-border-color: #{tokens.$cds-alias-utility-blue};
+      --clr-badge-info-outline-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-badge-success-outline-bg-color: #{tokens.$cds-alias-utility-green-tint};
+      --clr-badge-success-outline-border-color: #{tokens.$cds-alias-utility-green};
+      --clr-badge-success-outline-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-badge-warning-outline-bg-color: #{tokens.$cds-alias-utility-yellow-tint};
+      --clr-badge-warning-outline-border-color: #{tokens.$cds-alias-utility-yellow};
+      --clr-badge-warning-outline-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-badge-danger-outline-bg-color: #{tokens.$cds-alias-utility-red-tint};
+      --clr-badge-danger-outline-border-color: #{tokens.$cds-alias-utility-red};
+      --clr-badge-danger-outline-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-badge-gray-outline-bg-color: #{tokens.$cds-alias-utility-gray-tint};
+      --clr-badge-gray-outline-border-color: #{tokens.$cds-alias-utility-gray};
+      --clr-badge-gray-outline-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-badge-purple-outline-bg-color: #{tokens.$cds-alias-utility-violet-tint};
+      --clr-badge-purple-outline-border-color: #{tokens.$cds-alias-utility-violet};
+      --clr-badge-purple-outline-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-badge-blue-outline-bg-color: #{tokens.$cds-alias-utility-dark-blue-tint};
+      --clr-badge-blue-outline-border-color: #{tokens.$cds-alias-utility-dark-blue};
+      --clr-badge-blue-outline-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-badge-orange-outline-bg-color: #{tokens.$cds-alias-utility-tangerine-tint};
+      --clr-badge-orange-outline-border-color: #{tokens.$cds-alias-utility-tangerine};
+      --clr-badge-orange-outline-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-badge-light-blue-outline-bg-color: #{tokens.$cds-alias-utility-light-blue-tint};
+      --clr-badge-light-blue-outline-border-color: #{tokens.$cds-alias-utility-light-blue};
+      --clr-badge-light-blue-outline-color: #{tokens.$cds-alias-typography-color-500};
     }
   }
 }

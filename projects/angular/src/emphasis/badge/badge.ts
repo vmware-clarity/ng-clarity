@@ -7,6 +7,8 @@
 
 import { Component, Input } from '@angular/core';
 
+import { Type } from '../common/type.enum';
+
 export enum ClrBadgeColors {
   None = '',
   Info = 'info',
@@ -25,11 +27,17 @@ export enum ClrBadgeColors {
   template: `<ng-content></ng-content>`,
   host: {
     class: 'badge',
+    '[class.badge-outlined]': 'isOutlined',
     '[class]': 'colorClass',
   },
 })
 export class ClrBadge {
   @Input('clrColor') color: ClrBadgeColors | string = ClrBadgeColors.None;
+  @Input('clrType') type: Type | string = Type.Solid;
+
+  get isOutlined() {
+    return this.type === Type.Outlined;
+  }
 
   get colorClass() {
     return this.color ? `badge-${this.color}` : '';
