@@ -4,8 +4,8 @@ import * as i5 from '@angular/common';
 import { CommonModule, isPlatformBrowser, NgForOf, getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, getLocaleFirstDayOfWeek, getLocaleDateFormat, FormatWidth } from '@angular/common';
 import * as i1 from '@angular/platform-browser';
 import * as i2$1 from 'rxjs';
-import { Subject, BehaviorSubject, Observable, merge, fromEvent, isObservable, of, ReplaySubject, shareReplay, combineLatest, startWith as startWith$1, switchMap, map as map$1, EMPTY, tap as tap$1 } from 'rxjs';
-import { map, tap, startWith, distinctUntilChanged, filter, skipUntil, takeUntil, take, first, delay, debounceTime, switchMap as switchMap$1 } from 'rxjs/operators';
+import { Subject, BehaviorSubject, Observable, merge, fromEvent, isObservable, of, ReplaySubject, tap as tap$1, combineLatest, startWith as startWith$1 } from 'rxjs';
+import { map, tap, startWith, distinctUntilChanged, filter, skipUntil, takeUntil, switchMap, take, first, delay, debounceTime } from 'rxjs/operators';
 import * as i2 from '@angular/animations';
 import { animation, style, animate, trigger, transition, state, useAnimation, keyframes } from '@angular/animations';
 import * as i1$1 from '@angular/forms';
@@ -18,6 +18,7 @@ import { OverlayConfig } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
 import * as i1$4 from '@angular/cdk/a11y';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import * as i2$2 from '@angular/cdk/drag-drop';
 import { CdkDrag, CDK_DROP_LIST, CDK_DRAG_CONFIG } from '@angular/cdk/drag-drop';
 import * as i1$5 from '@angular/cdk/bidi';
@@ -13098,40 +13099,25 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  */
 class NgControlService {
     constructor() {
-        this._additionalControls = [];
+        this._controls = [];
         // Observable to subscribe to the control, since its not available immediately for projected content
-        this._controlChanges = new Subject();
-        this._additionalControlsChanges = new Subject();
-        this._helpers = new Subject();
+        this._controlsChanges = new Subject();
     }
-    get control() {
-        return this._control;
+    get controls() {
+        return this._controls;
     }
-    get controlChanges() {
-        return this._controlChanges.asObservable();
+    get controlsChanges() {
+        return this._controlsChanges.asObservable();
     }
-    get additionalControls() {
-        return this._additionalControls;
+    get hasMultipleControls() {
+        return this._controls?.length > 1;
     }
-    get additionalControlsChanges() {
-        return this._additionalControlsChanges.asObservable();
+    addControl(control) {
+        this._controls.push(control);
+        this.emitControlsChange(this._controls);
     }
-    get hasAdditionalControls() {
-        return !!this._additionalControls?.length;
-    }
-    get helpersChange() {
-        return this._helpers.asObservable();
-    }
-    setControl(control) {
-        this._control = control;
-        this._controlChanges.next(control);
-    }
-    addAdditionalControl(control) {
-        this._additionalControls.push(control);
-        this._additionalControlsChanges.next(this._additionalControls);
-    }
-    setHelpers(state) {
-        this._helpers.next(state);
+    emitControlsChange(controls) {
+        this._controlsChanges.next(controls);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: NgControlService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
     static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: NgControlService }); }
@@ -13394,50 +13380,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  */
 var CONTROL_STATE;
 (function (CONTROL_STATE) {
-    CONTROL_STATE["NONE"] = "NONE";
     CONTROL_STATE["VALID"] = "VALID";
     CONTROL_STATE["INVALID"] = "INVALID";
 })(CONTROL_STATE || (CONTROL_STATE = {}));
-class IfControlStateService {
-    constructor(ngControlService) {
-        this.triggerStatusChangeSubject = new Subject();
-        this.statusChanges = this.getStatusChanges(ngControlService).pipe(shareReplay(1));
-    }
-    triggerStatusChange() {
-        this.triggerStatusChangeSubject.next();
-    }
-    getStatusChanges(ngControlService) {
-        return combineLatest([
-            ngControlService.controlChanges,
-            ngControlService.additionalControlsChanges.pipe(startWith$1([])),
-        ]).pipe(switchMap(([control, additionalControls]) => {
-            if (control) {
-                const controls = [control, ...additionalControls];
-                return merge(combineLatest(controls.map(control => control.statusChanges)), this.triggerStatusChangeSubject.pipe(map$1(() => controls.map(control => control.status))));
-            }
-            else {
-                return EMPTY;
-            }
-        }), map$1(controlStatuses => {
-            // These status values are mutually exclusive, so a control
-            // cannot be both valid AND invalid or invalid AND disabled.
-            if (controlStatuses.includes(CONTROL_STATE.INVALID)) {
-                return CONTROL_STATE.INVALID;
-            }
-            else if (controlStatuses.includes(CONTROL_STATE.VALID)) {
-                return CONTROL_STATE.VALID;
-            }
-            else {
-                return CONTROL_STATE.NONE;
-            }
-        }), startWith$1(CONTROL_STATE.NONE));
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: IfControlStateService, deps: [{ token: NgControlService }], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: IfControlStateService }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: IfControlStateService, decorators: [{
-            type: Injectable
-        }], ctorParameters: () => [{ type: NgControlService }] });
 
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
@@ -13452,7 +13397,7 @@ class ControlClassService {
         this.layoutService = layoutService;
         this.className = '';
     }
-    controlClass(state = CONTROL_STATE.NONE, grid = false, additional = '') {
+    controlClass(state, grid = false, additional = '') {
         const controlClasses = [this.className, additional];
         switch (state) {
             case CONTROL_STATE.VALID:
@@ -13587,29 +13532,22 @@ var CHANGE_KEYS;
 class WrappedFormControl {
     // I lost way too much time trying to make this work without injecting the ViewContainerRef and the Injector,
     // I'm giving up. So we have to inject these two manually for now.
-    constructor(vcr, wrapperType, injector, _ngControl, renderer, el) {
+    constructor(vcr, wrapperType, injector, ngControl, renderer, el) {
         this.vcr = vcr;
         this.wrapperType = wrapperType;
-        this._ngControl = _ngControl;
+        this.ngControl = ngControl;
         this.renderer = renderer;
         this.el = el;
         this.index = 0;
         this.subscriptions = [];
-        this.additionalDiffer = new Map();
         if (injector) {
             this.ngControlService = injector.get(NgControlService, null);
-            this.ifControlStateService = injector.get(IfControlStateService, null);
             this.markControlService = injector.get(MarkControlService, null);
             this.differs = injector.get(KeyValueDiffers, null);
         }
         if (this.markControlService) {
             this.subscriptions.push(this.markControlService.touchedChange.subscribe(() => {
                 this.markAsTouched();
-            }));
-        }
-        if (this.ngControlService) {
-            this.subscriptions.push(this.ngControlService.helpersChange.subscribe((state) => {
-                this.setAriaDescribedBy(state);
             }));
         }
     }
@@ -13622,8 +13560,30 @@ class WrappedFormControl {
             this.controlIdService.id = value;
         }
     }
-    get hasAdditionalControls() {
-        return this.additionalDiffer.size > 0;
+    get ariaDescribedById() {
+        const helpers = this.ngControlService?.container?.helpers;
+        if (!helpers?.show) {
+            return null;
+        }
+        const elementId = this.containerIdService?.id || this.controlIdService?.id;
+        /**
+         * If ContainerIdService or ControlIdService are missing don't try to guess
+         * Don't set anything.
+         */
+        if (!elementId) {
+            return null;
+        }
+        /**
+         * As the helper text is now always visible. If we have error/success then we should use both ids.
+         */
+        const describedByIds = [`${elementId}-${CONTROL_SUFFIX.HELPER}`];
+        if (helpers.showInvalid) {
+            describedByIds.push(`${elementId}-${CONTROL_SUFFIX.ERROR}`);
+        }
+        else if (helpers.showValid) {
+            describedByIds.push(`${elementId}-${CONTROL_SUFFIX.SUCCESS}`);
+        }
+        return describedByIds.join(' ');
     }
     ngOnInit() {
         this._containerInjector = new HostWrapper(this.wrapperType, this.vcr, this.index);
@@ -13639,33 +13599,31 @@ class WrappedFormControl {
         else {
             this._id = this.controlIdService.id;
         }
-        if (this.ngControlService && this._ngControl) {
-            if (!this.ngControlService.control) {
-                this.ngControl = this._ngControl;
-                this.ngControlService.setControl(this.ngControl);
-                this.differ = this.differs.find(this._ngControl).create();
-            }
-            else {
-                this.ngControl = this.ngControlService.control;
-                this.ngControlService.addAdditionalControl(this._ngControl);
-                this.additionalDiffer.set(this._ngControl, this.differs.find(this._ngControl).create());
-            }
+        // 4 possible variations
+        // 1. NO  ngControlService and NO  ngControl
+        // 2. NO  ngControlService and YES ngControl
+        // 3. YES ngControlService and NO  ngControl
+        // 4. YES ngControlService and YES ngControl
+        if (this.ngControl) {
+            this.differ = this.differs.find(this.ngControl).create();
+        }
+        if (this.ngControlService && this.ngControl) {
+            this.ngControlService.addControl(this.ngControl);
         }
     }
     ngDoCheck() {
-        this.triggerDoCheck(this.differ, this.ngControl);
-        if (this.hasAdditionalControls) {
-            for (const [ngControl, differ] of this.additionalDiffer) {
-                this.triggerDoCheck(differ, ngControl);
-            }
+        if (this.ngControl) {
+            this.triggerDoCheck(this.differ, this.ngControl);
         }
     }
     ngOnDestroy() {
         this.subscriptions.forEach(sub => sub?.unsubscribe());
     }
+    // blur HostListener decorator MUST be 1 and on the parent.
+    // overrides MUST NOT have HostListener decorator.
     triggerValidation() {
-        if (this.ifControlStateService) {
-            this.ifControlStateService.triggerStatusChange();
+        if (this.ngControl?.control?.markAsTouched) {
+            this.ngControl.control.markAsTouched();
         }
     }
     // @TODO This method has a try/catch due to an unknown issue that came when building the clrToggle feature
@@ -13696,6 +13654,9 @@ class WrappedFormControl {
                 changes.forEachChangedItem(change => {
                     if ((change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
                         change.currentValue !== change.previousValue) {
+                        if (this.ngControlService) {
+                            this.ngControlService.emitControlsChange(this.ngControlService.controls);
+                        }
                         this.triggerValidation();
                     }
                 });
@@ -13703,50 +13664,20 @@ class WrappedFormControl {
         }
     }
     markAsTouched() {
+        if (this.ngControlService && this.ngControlService.hasMultipleControls) {
+            this.ngControlService.controls.forEach((ngControl) => {
+                ngControl.control.markAsTouched();
+                ngControl.control.updateValueAndValidity();
+            });
+            return;
+        }
         if (this.ngControl) {
             this.ngControl.control.markAsTouched();
             this.ngControl.control.updateValueAndValidity();
         }
-        if (this.ngControlService && this.ngControlService.hasAdditionalControls) {
-            this.ngControlService.additionalControls?.forEach((ngControl) => {
-                ngControl.control.markAsTouched();
-                ngControl.control.updateValueAndValidity();
-            });
-        }
-    }
-    setAriaDescribedBy(helpers) {
-        if (helpers.show) {
-            const ariaDescribedBy = this.getAriaDescribedById(helpers);
-            if (ariaDescribedBy !== null) {
-                this.renderer.setAttribute(this.el.nativeElement, 'aria-describedby', ariaDescribedBy);
-                return;
-            }
-        }
-        this.renderer.removeAttribute(this.el.nativeElement, 'aria-describedby');
-    }
-    getAriaDescribedById(helpers) {
-        const elementId = this.containerIdService?.id || this.controlIdService?.id;
-        /**
-         * If ContainerIdService or ControlIdService are missing don't try to guess
-         * Don't set anything.
-         */
-        if (!elementId) {
-            return null;
-        }
-        /**
-         * As the helper text is now always visible. If we have error/success then we should use both ids.
-         */
-        const describedByIds = [`${elementId}-${CONTROL_SUFFIX.HELPER}`];
-        if (helpers.showInvalid) {
-            describedByIds.push(`${elementId}-${CONTROL_SUFFIX.ERROR}`);
-        }
-        else if (helpers.showValid) {
-            describedByIds.push(`${elementId}-${CONTROL_SUFFIX.SUCCESS}`);
-        }
-        return describedByIds.join(' ');
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: WrappedFormControl, deps: [{ token: i0.ViewContainerRef }, { token: i0.Type }, { token: i0.Injector }, { token: i1$1.NgControl }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: WrappedFormControl, isStandalone: true, inputs: { id: "id" }, host: { listeners: { "blur": "triggerValidation()" }, properties: { "id": "this.id" } }, ngImport: i0 }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: WrappedFormControl, isStandalone: true, inputs: { id: "id" }, host: { listeners: { "blur": "triggerValidation()" }, properties: { "id": "this.id", "attr.aria-describedby": "this.ariaDescribedById" } }, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: WrappedFormControl, decorators: [{
             type: Directive
@@ -13754,6 +13685,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                 type: Input
             }, {
                 type: HostBinding
+            }], ariaDescribedById: [{
+                type: HostBinding,
+                args: ['attr.aria-describedby']
             }], triggerValidation: [{
                 type: HostListener,
                 args: ['blur']
@@ -13916,24 +13850,19 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrAbstractContainer {
-    constructor(ifControlStateService, layoutService, controlClassService, ngControlService) {
-        this.ifControlStateService = ifControlStateService;
+    constructor(layoutService, controlClassService, ngControlService) {
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
         this.ngControlService = ngControlService;
+        this.controls = [];
         this.subscriptions = [];
-        this.subscriptions.push(ifControlStateService.statusChanges.subscribe((state) => {
-            this.state = state;
-            // Make sure everything is updated before dispatching the values for helpers
-            setTimeout(() => {
-                this.updateHelpers();
-            });
+        this.subscriptions.push(ngControlService.controlsChanges.subscribe(controls => {
+            this.controls = controls;
         }));
-        this.subscriptions.push(ngControlService.controlChanges.subscribe(control => {
-            this.control = control;
-        }), ngControlService.additionalControlsChanges.subscribe(controls => {
-            this.additionalControls = controls;
-        }));
+        ngControlService.container = this;
+    }
+    get control() {
+        return this.controls[0];
     }
     /**
      * @NOTE
@@ -13959,6 +13888,19 @@ class ClrAbstractContainer {
          */
         return Boolean(this.controlHelperComponent);
     }
+    /**
+     * We gonna set the helper control state, after all or most of the components
+     * are ready - also this will trigger some initial flows into wrappers and controls,
+     * like locating IDs  and setting  attributes.
+     */
+    get helpers() {
+        return {
+            show: this.showInvalid || this.showHelper || this.showValid,
+            showInvalid: this.showInvalid,
+            showHelper: this.showHelper,
+            showValid: this.showValid,
+        };
+    }
     get showValid() {
         return this.touched && this.state === CONTROL_STATE.VALID && this.successMessagePresent;
     }
@@ -13972,15 +13914,24 @@ class ClrAbstractContainer {
         return !!this.controlErrorComponent;
     }
     get touched() {
-        return !!(this.control?.touched || this.additionalControls?.some(control => control.touched));
+        return !!this.controls?.some(control => control.touched);
     }
-    ngAfterContentInit() {
-        /**
-         * We gonna set the helper control state, after all or most of the components
-         * are ready - also this will trigger some initial flows into wrappers and controls,
-         * like locating IDs  and setting  attributes.
-         */
-        this.updateHelpers();
+    get state() {
+        const controlStatuses = this.controls.map((control) => {
+            return control.status;
+        });
+        // These status values are mutually exclusive, so a control
+        // cannot be both valid AND invalid or invalid AND disabled.
+        // if else order is important!
+        if (controlStatuses.includes(CONTROL_STATE.INVALID)) {
+            return CONTROL_STATE.INVALID;
+        }
+        else if (controlStatuses.includes(CONTROL_STATE.VALID)) {
+            return CONTROL_STATE.VALID;
+        }
+        else {
+            return null;
+        }
     }
     ngOnDestroy() {
         this.subscriptions.forEach(subscription => subscription.unsubscribe());
@@ -13990,34 +13941,20 @@ class ClrAbstractContainer {
          * Decide what subtext to display:
          *   - container is valid but no success component is implemented - use helper class
          *   - container is valid and success component is implemented - use success class
+         *   - Pass form control state and return string of classes to be applied to the container.
          */
-        if ((!this.controlSuccessComponent && this.state === CONTROL_STATE.VALID) || !this.touched) {
-            return this.controlClassService.controlClass(CONTROL_STATE.NONE, this.addGrid());
-        }
-        /**
-         * Pass form control state and return string of classes to be applied to the container.
-         */
-        return this.controlClassService.controlClass(this.state, this.addGrid());
+        const currentState = this.touched ? this.state : null;
+        return this.controlClassService.controlClass(currentState, this.addGrid());
     }
     addGrid() {
         return this.layoutService && !this.layoutService.isVertical();
     }
-    updateHelpers() {
-        if (this.ngControlService) {
-            this.ngControlService.setHelpers({
-                show: this.showInvalid || this.showHelper || this.showValid,
-                showInvalid: this.showInvalid,
-                showHelper: this.showHelper,
-                showValid: this.showValid,
-            });
-        }
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAbstractContainer, deps: [{ token: IfControlStateService }, { token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAbstractContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrAbstractContainer, isStandalone: true, queries: [{ propertyName: "label", first: true, predicate: ClrControlLabel, descendants: true }, { propertyName: "controlSuccessComponent", first: true, predicate: ClrControlSuccess, descendants: true }, { propertyName: "controlErrorComponent", first: true, predicate: ClrControlError, descendants: true }, { propertyName: "controlHelperComponent", first: true, predicate: ClrControlHelper, descendants: true }], ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAbstractContainer, decorators: [{
             type: Directive
-        }], ctorParameters: () => [{ type: IfControlStateService }, { type: LayoutService, decorators: [{
+        }], ctorParameters: () => [{ type: LayoutService, decorators: [{
                     type: Optional
                 }] }, { type: ControlClassService }, { type: NgControlService }], propDecorators: { label: [{
                 type: ContentChild,
@@ -14040,12 +13977,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrCheckboxContainer extends ClrAbstractContainer {
-    constructor(layoutService, controlClassService, ngControlService, ifControlStateService) {
-        super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    constructor(layoutService, controlClassService, ngControlService) {
+        super(layoutService, controlClassService, ngControlService);
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
         this.ngControlService = ngControlService;
-        this.ifControlStateService = ifControlStateService;
         this.inline = false;
     }
     /*
@@ -14066,17 +14002,19 @@ class ClrCheckboxContainer extends ClrAbstractContainer {
         }
     }
     get allCheckboxesDisabled() {
-        return (this.control?.disabled &&
-            (!this.additionalControls?.length || this.additionalControls.every(control => control.disabled)));
+        if (!this.controls?.length) {
+            return false;
+        }
+        return this.controls.every(control => control.disabled);
     }
     ngAfterContentInit() {
         this.setAriaRoles();
     }
     setAriaRoles() {
-        this.role = this.checkboxes.length ? 'group' : null;
+        this.role = this.checkboxes?.length ? 'group' : null;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrCheckboxContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrCheckboxContainer, isStandalone: false, selector: "clr-checkbox-container,clr-toggle-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "allCheckboxesDisabled", "class.clr-row": "addGrid()", "attr.role": "role" } }, providers: [IfControlStateService, NgControlService, ControlClassService, ContainerIdService], queries: [{ propertyName: "checkboxes", predicate: ClrCheckbox, descendants: true }], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrCheckboxContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrCheckboxContainer, isStandalone: false, selector: "clr-checkbox-container,clr-toggle-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "allCheckboxesDisabled", "class.clr-row": "addGrid()", "attr.role": "role" } }, providers: [NgControlService, ControlClassService, ContainerIdService], queries: [{ propertyName: "checkboxes", predicate: ClrCheckbox, descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -14157,12 +14095,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         '[class.clr-row]': 'addGrid()',
                         '[attr.role]': 'role',
                     },
-                    providers: [IfControlStateService, NgControlService, ControlClassService, ContainerIdService],
+                    providers: [NgControlService, ControlClassService, ContainerIdService],
                     standalone: false,
                 }]
         }], ctorParameters: () => [{ type: LayoutService, decorators: [{
                     type: Optional
-                }] }, { type: ControlClassService }, { type: NgControlService }, { type: IfControlStateService }], propDecorators: { checkboxes: [{
+                }] }, { type: ControlClassService }, { type: NgControlService }], propDecorators: { checkboxes: [{
                 type: ContentChildren,
                 args: [ClrCheckbox, { descendants: true }]
             }], clrInline: [{
@@ -14199,7 +14137,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  */
 class ClrControlContainer extends ClrAbstractContainer {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrControlContainer, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrControlContainer, isStandalone: false, selector: "clr-control-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrControlContainer, isStandalone: false, selector: "clr-control-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -14261,7 +14199,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         '[class.clr-form-control-disabled]': 'control?.disabled',
                         '[class.clr-row]': 'addGrid()',
                     },
-                    providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+                    providers: [NgControlService, ControlIdService, ControlClassService],
                     standalone: false,
                 }]
         }] });
@@ -14348,38 +14286,40 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class AbstractIfState {
-    constructor(ifControlStateService, ngControlService) {
-        this.ifControlStateService = ifControlStateService;
+    constructor(ngControlService) {
         this.ngControlService = ngControlService;
-        this.subscriptions = [];
         this.displayedContent = false;
         if (ngControlService) {
-            this.subscriptions.push(ngControlService.controlChanges.subscribe(control => {
-                this.control = control;
-            }), ngControlService.additionalControlsChanges.subscribe(controls => {
-                this.additionalControls = controls;
-            }));
+            ngControlService.controlsChanges
+                .pipe(tap$1(controls => {
+                this.controls = controls;
+            }), switchMap(controls => {
+                if (!controls || controls.length === 0) {
+                    return [];
+                }
+                const statusStreams = controls.map(c => this.getControlStatusChangesObservable(c));
+                return merge(...statusStreams);
+            }), takeUntilDestroyed())
+                .subscribe(status => {
+                this.handleState(status);
+            });
         }
-        if (ifControlStateService) {
-            this.subscriptions.push(ifControlStateService.statusChanges.subscribe((state) => {
-                this.handleState(state);
-            }));
-        }
-    }
-    ngOnDestroy() {
-        this.subscriptions.forEach(sub => sub.unsubscribe());
     }
     handleState(_state) {
         /* overwrite in implementation to handle status change */
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: AbstractIfState, deps: [{ token: IfControlStateService, optional: true }, { token: NgControlService, optional: true }], target: i0.ɵɵFactoryTarget.Directive }); }
+    getControlStatusChangesObservable(control) {
+        if (!control.statusChanges) {
+            return of(null);
+        }
+        return control.statusChanges.pipe(startWith(control.status));
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: AbstractIfState, deps: [{ token: NgControlService, optional: true }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: AbstractIfState, isStandalone: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: AbstractIfState, decorators: [{
             type: Directive
-        }], ctorParameters: () => [{ type: IfControlStateService, decorators: [{
-                    type: Optional
-                }] }, { type: NgControlService, decorators: [{
+        }], ctorParameters: () => [{ type: NgControlService, decorators: [{
                     type: Optional
                 }] }] });
 
@@ -14390,11 +14330,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrIfError extends AbstractIfState {
-    constructor(ifControlStateService, ngControlService, template, container) {
-        super(ifControlStateService, ngControlService);
+    constructor(ngControlService, template, container) {
+        super(ngControlService);
         this.template = template;
         this.container = container;
-        if (!this.ifControlStateService) {
+        if (!ngControlService) {
             throw new Error('clrIfError can only be used within a form control container element like clr-input-container');
         }
     }
@@ -14402,18 +14342,15 @@ class ClrIfError extends AbstractIfState {
      * @param state CONTROL_STATE
      */
     handleState(state) {
-        if (this.error && this.control && this.control.invalid) {
-            this.displayError(this.control.hasError(this.error));
-        }
-        else if (this.error && !!this.additionalControls?.length) {
-            const invalidControl = this.additionalControls?.filter(control => control.hasError(this.error))[0];
+        if (this.error && !!this.controls?.length) {
+            const invalidControl = this.controls?.filter(control => control.hasError(this.error))[0];
             this.displayError(!!invalidControl, invalidControl);
         }
         else {
             this.displayError(CONTROL_STATE.INVALID === state);
         }
     }
-    displayError(invalid, control = this.control) {
+    displayError(invalid, control = this.controls[0]) {
         /* if no container do nothing */
         if (!this.container) {
             return;
@@ -14435,7 +14372,7 @@ class ClrIfError extends AbstractIfState {
             this.displayedContent = false;
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfError, deps: [{ token: IfControlStateService, optional: true }, { token: NgControlService, optional: true }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfError, deps: [{ token: NgControlService, optional: true }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrIfError, isStandalone: false, selector: "[clrIfError]", inputs: { error: ["clrIfError", "error"] }, usesInheritance: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfError, decorators: [{
@@ -14444,9 +14381,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                     selector: '[clrIfError]',
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: IfControlStateService, decorators: [{
-                    type: Optional
-                }] }, { type: NgControlService, decorators: [{
+        }], ctorParameters: () => [{ type: NgControlService, decorators: [{
                     type: Optional
                 }] }, { type: i0.TemplateRef }, { type: i0.ViewContainerRef }], propDecorators: { error: [{
                 type: Input,
@@ -14460,11 +14395,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrIfSuccess extends AbstractIfState {
-    constructor(ifControlStateService, ngControlService, template, container) {
-        super(ifControlStateService, ngControlService);
+    constructor(ngControlService, template, container) {
+        super(ngControlService);
         this.template = template;
         this.container = container;
-        if (!ifControlStateService) {
+        if (!ngControlService) {
             throw new Error('ClrIfSuccess can only be used within a form control container element like clr-input-container');
         }
     }
@@ -14481,7 +14416,7 @@ class ClrIfSuccess extends AbstractIfState {
         }
         this.displayedContent = isValid;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfSuccess, deps: [{ token: IfControlStateService, optional: true }, { token: NgControlService, optional: true }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfSuccess, deps: [{ token: NgControlService, optional: true }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrIfSuccess, isStandalone: false, selector: "[clrIfSuccess]", usesInheritance: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrIfSuccess, decorators: [{
@@ -14490,9 +14425,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                     selector: '[clrIfSuccess]',
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: IfControlStateService, decorators: [{
-                    type: Optional
-                }] }, { type: NgControlService, decorators: [{
+        }], ctorParameters: () => [{ type: NgControlService, decorators: [{
                     type: Optional
                 }] }, { type: i0.TemplateRef }, { type: i0.ViewContainerRef }] });
 
@@ -14638,8 +14571,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrComboboxContainer extends ClrAbstractContainer {
-    constructor(ifControlStateService, layoutService, controlClassService, ngControlService, containerService, el) {
-        super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    constructor(layoutService, controlClassService, ngControlService, containerService, el) {
+        super(layoutService, controlClassService, ngControlService);
         this.containerService = containerService;
         this.el = el;
     }
@@ -14652,8 +14585,8 @@ class ClrComboboxContainer extends ClrAbstractContainer {
         this.containerService.labelOffset =
             this.controlContainer.nativeElement.offsetHeight - this.el.nativeElement.offsetHeight;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrComboboxContainer, deps: [{ token: IfControlStateService }, { token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: ComboboxContainerService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrComboboxContainer, isStandalone: false, selector: "clr-combobox-container", host: { properties: { "class.clr-form-control": "true", "class.clr-combobox-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService, ComboboxContainerService], viewQueries: [{ propertyName: "controlContainer", first: true, predicate: ["controlContainer"], descendants: true }], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrComboboxContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: ComboboxContainerService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrComboboxContainer, isStandalone: false, selector: "clr-combobox-container", host: { properties: { "class.clr-form-control": "true", "class.clr-combobox-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [NgControlService, ControlIdService, ControlClassService, ComboboxContainerService], viewQueries: [{ propertyName: "controlContainer", first: true, predicate: ["controlContainer"], descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -14712,10 +14645,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         '[class.clr-form-control-disabled]': 'control?.disabled',
                         '[class.clr-row]': 'addGrid()',
                     },
-                    providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService, ComboboxContainerService],
+                    providers: [NgControlService, ControlIdService, ControlClassService, ComboboxContainerService],
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: IfControlStateService }, { type: LayoutService, decorators: [{
+        }], ctorParameters: () => [{ type: LayoutService, decorators: [{
                     type: Optional
                 }] }, { type: ControlClassService }, { type: NgControlService }, { type: ComboboxContainerService }, { type: i0.ElementRef }], propDecorators: { controlContainer: [{
                 type: ViewChild,
@@ -15918,7 +15851,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrCombobox extends WrappedFormControl {
-    constructor(vcr, injector, control, renderer, el, optionSelectionService, commonStrings, popoverService, controlStateService, containerService, platformId, focusHandler, cdr) {
+    constructor(vcr, injector, control, renderer, el, optionSelectionService, commonStrings, popoverService, containerService, platformId, focusHandler, cdr) {
         super(vcr, ClrComboboxContainer, injector, control, renderer, el);
         this.control = control;
         this.renderer = renderer;
@@ -15926,7 +15859,6 @@ class ClrCombobox extends WrappedFormControl {
         this.optionSelectionService = optionSelectionService;
         this.commonStrings = commonStrings;
         this.popoverService = popoverService;
-        this.controlStateService = controlStateService;
         this.containerService = containerService;
         this.platformId = platformId;
         this.focusHandler = focusHandler;
@@ -15938,7 +15870,6 @@ class ClrCombobox extends WrappedFormControl {
          * This output should be used to set up a live region using aria-live and populate it with updates that reflect each combobox change.
          */
         this.clrSelectionChange = this.optionSelectionService.selectionChanged;
-        this.invalid = false;
         this.focused = false;
         this.popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
         this.index = 1;
@@ -16168,11 +16099,6 @@ class ClrCombobox extends WrappedFormControl {
                 this.searchText = this.getDisplayNames(this.optionSelectionService.selectionModel.model)[0] || '';
             }
         }));
-        if (this.controlStateService) {
-            this.subscriptions.push(this.controlStateService.statusChanges.subscribe(invalid => {
-                this.invalid = this.control?.control.touched && invalid === CONTROL_STATE.INVALID;
-            }));
-        }
     }
     updateInputValue(model) {
         if (!this.multiSelect) {
@@ -16196,14 +16122,14 @@ class ClrCombobox extends WrappedFormControl {
         }
         return [this.optionSelectionService.selectionModel.model];
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrCombobox, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: OptionSelectionService }, { token: ClrCommonStringsService }, { token: ClrPopoverService }, { token: IfControlStateService, optional: true }, { token: ComboboxContainerService, optional: true }, { token: PLATFORM_ID }, { token: ComboboxFocusHandler }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrCombobox, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: OptionSelectionService }, { token: ClrCommonStringsService }, { token: ClrPopoverService }, { token: ComboboxContainerService, optional: true }, { token: PLATFORM_ID }, { token: ComboboxFocusHandler }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrCombobox, isStandalone: false, selector: "clr-combobox", inputs: { placeholder: "placeholder", editable: ["clrEditable", "editable"], multiSelect: ["clrMulti", "multiSelect"] }, outputs: { clrInputChange: "clrInputChange", clrOpenChange: "clrOpenChange", clrSelectionChange: "clrSelectionChange" }, host: { listeners: { "keydown": "onKeyUp($event)" }, properties: { "class.aria-required": "true", "class.clr-combobox": "true", "class.clr-combobox-disabled": "control?.disabled" } }, providers: [
             OptionSelectionService,
             { provide: LoadingListener, useExisting: ClrCombobox },
             IF_ACTIVE_ID_PROVIDER,
             FOCUS_SERVICE_PROVIDER,
             COMBOBOX_FOCUS_HANDLER_PROVIDER,
-        ], queries: [{ propertyName: "optionSelected", first: true, predicate: ClrOptionSelected, descendants: true }, { propertyName: "options", first: true, predicate: ClrOptions, descendants: true }], viewQueries: [{ propertyName: "textbox", first: true, predicate: ["textboxInput"], descendants: true }, { propertyName: "trigger", first: true, predicate: ["trigger"], descendants: true }], usesInheritance: true, hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: "<!--\n~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n~ This software is released under MIT license.\n~ The full license information can be found in LICENSE in the root directory of this project.\n-->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverAnchor\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"invalid\"\n  [class.disabled]=\"control?.disabled? true: null\"\n>\n  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    @for (item of multiSelectModel; track item; let i = $index) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          @if (optionSelected) {\n          <ng-container\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n          }\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    }\n  </span>\n  }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually due to issues in Edge browser.\nAdditionally 'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n", dependencies: [{ kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1$1.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i1$1.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1$1.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: ClrRovingTabindex, selector: "[clrRovingTabindex]", inputs: ["clrRovingTabindex", "clrRovingTabindexDisabled"] }, { kind: "directive", type: ClrKeyFocusItem, selector: "[clrKeyFocusItem]" }, { kind: "directive", type: ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }] }); }
+        ], queries: [{ propertyName: "optionSelected", first: true, predicate: ClrOptionSelected, descendants: true }, { propertyName: "options", first: true, predicate: ClrOptions, descendants: true }], viewQueries: [{ propertyName: "textbox", first: true, predicate: ["textboxInput"], descendants: true }, { propertyName: "trigger", first: true, predicate: ["trigger"], descendants: true }], usesInheritance: true, hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: "<!--\n~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n~ This software is released under MIT license.\n~ The full license information can be found in LICENSE in the root directory of this project.\n-->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverAnchor\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"(control?.control.touched && control?.invalid)\"\n  [class.disabled]=\"control?.disabled\"\n>\n  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    @for (item of multiSelectModel; track item; let i = $index) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          @if (optionSelected) {\n          <ng-container\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n          }\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    }\n  </span>\n  }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually due to issues in Edge browser.\nAdditionally 'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n", dependencies: [{ kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1$1.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i1$1.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1$1.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: ClrRovingTabindex, selector: "[clrRovingTabindex]", inputs: ["clrRovingTabindex", "clrRovingTabindexDisabled"] }, { kind: "directive", type: ClrKeyFocusItem, selector: "[clrKeyFocusItem]" }, { kind: "directive", type: ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrCombobox, decorators: [{
             type: Component,
@@ -16217,14 +16143,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         '[class.aria-required]': 'true',
                         '[class.clr-combobox]': 'true',
                         '[class.clr-combobox-disabled]': 'control?.disabled',
-                    }, standalone: false, template: "<!--\n~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n~ This software is released under MIT license.\n~ The full license information can be found in LICENSE in the root directory of this project.\n-->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverAnchor\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"invalid\"\n  [class.disabled]=\"control?.disabled? true: null\"\n>\n  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    @for (item of multiSelectModel; track item; let i = $index) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          @if (optionSelected) {\n          <ng-container\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n          }\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    }\n  </span>\n  }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually due to issues in Edge browser.\nAdditionally 'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n" }]
+                    }, standalone: false, template: "<!--\n~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n~ This software is released under MIT license.\n~ The full license information can be found in LICENSE in the root directory of this project.\n-->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverAnchor\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"(control?.control.touched && control?.invalid)\"\n  [class.disabled]=\"control?.disabled\"\n>\n  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    @for (item of multiSelectModel; track item; let i = $index) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          @if (optionSelected) {\n          <ng-container\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n          }\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    }\n  </span>\n  }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually due to issues in Edge browser.\nAdditionally 'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n" }]
         }], ctorParameters: () => [{ type: i0.ViewContainerRef }, { type: i0.Injector }, { type: i1$1.NgControl, decorators: [{
                     type: Self
                 }, {
                     type: Optional
-                }] }, { type: i0.Renderer2 }, { type: i0.ElementRef }, { type: OptionSelectionService }, { type: ClrCommonStringsService }, { type: ClrPopoverService }, { type: IfControlStateService, decorators: [{
-                    type: Optional
-                }] }, { type: ComboboxContainerService, decorators: [{
+                }] }, { type: i0.Renderer2 }, { type: i0.ElementRef }, { type: OptionSelectionService }, { type: ClrCommonStringsService }, { type: ClrPopoverService }, { type: ComboboxContainerService, decorators: [{
                     type: Optional
                 }] }, { type: undefined, decorators: [{
                     type: Inject,
@@ -16635,9 +16559,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrDatalistContainer extends ClrAbstractContainer {
-    constructor(controlClassService, layoutService, ngControlService, focusService, ifControlStateService) {
-        super(ifControlStateService, layoutService, controlClassService, ngControlService);
-        this.ifControlStateService = ifControlStateService;
+    constructor(controlClassService, layoutService, ngControlService, focusService) {
+        super(layoutService, controlClassService, ngControlService);
         this.focus = false;
         this.subscriptions.push(focusService.focusChange.subscribe(state => (this.focus = state)));
     }
@@ -16648,15 +16571,8 @@ class ClrDatalistContainer extends ClrAbstractContainer {
             datalistInput.showPicker();
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDatalistContainer, deps: [{ token: ControlClassService }, { token: LayoutService, optional: true }, { token: NgControlService }, { token: FocusService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrDatalistContainer, isStandalone: false, selector: "clr-datalist-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [
-            ControlClassService,
-            ControlIdService,
-            FocusService,
-            NgControlService,
-            DatalistIdService,
-            IfControlStateService,
-        ], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDatalistContainer, deps: [{ token: ControlClassService }, { token: LayoutService, optional: true }, { token: NgControlService }, { token: FocusService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrDatalistContainer, isStandalone: false, selector: "clr-datalist-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [ControlClassService, ControlIdService, FocusService, NgControlService, DatalistIdService], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -16726,19 +16642,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         '[class.clr-form-control-disabled]': 'control?.disabled',
                         '[class.clr-row]': 'addGrid()',
                     },
-                    providers: [
-                        ControlClassService,
-                        ControlIdService,
-                        FocusService,
-                        NgControlService,
-                        DatalistIdService,
-                        IfControlStateService,
-                    ],
+                    providers: [ControlClassService, ControlIdService, FocusService, NgControlService, DatalistIdService],
                     standalone: false,
                 }]
         }], ctorParameters: () => [{ type: ControlClassService }, { type: LayoutService, decorators: [{
                     type: Optional
-                }] }, { type: NgControlService }, { type: FocusService }, { type: IfControlStateService }] });
+                }] }, { type: NgControlService }, { type: FocusService }] });
 
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
@@ -16771,7 +16680,7 @@ class ClrDatalistInput extends WrappedFormControl {
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDatalistInput, deps: [{ token: FocusService, optional: true }, { token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: DatalistIdService }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrDatalistInput, isStandalone: false, selector: "[clrDatalistInput]", host: { listeners: { "focus": "triggerFocus()", "blur": "triggerValidation()" }, properties: { "class.clr-input": "true", "attr.list": "listValue" } }, usesInheritance: true, ngImport: i0 }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrDatalistInput, isStandalone: false, selector: "[clrDatalistInput]", host: { listeners: { "focus": "triggerFocus()" }, properties: { "class.clr-input": "true", "attr.list": "listValue" } }, usesInheritance: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDatalistInput, decorators: [{
             type: Directive,
@@ -16792,9 +16701,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                 }] }, { type: i0.Renderer2 }, { type: i0.ElementRef }, { type: DatalistIdService }], propDecorators: { triggerFocus: [{
                 type: HostListener,
                 args: ['focus']
-            }], triggerValidation: [{
-                type: HostListener,
-                args: ['blur']
             }] } });
 
 /*
@@ -16805,7 +16711,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  */
 class ClrInputContainer extends ClrAbstractContainer {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrInputContainer, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrInputContainer, isStandalone: false, selector: "clr-input-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrInputContainer, isStandalone: false, selector: "clr-input-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -16875,7 +16781,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         '[class.clr-form-control-disabled]': 'control?.disabled',
                         '[class.clr-row]': 'addGrid()',
                     },
-                    providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+                    providers: [NgControlService, ControlIdService, ControlClassService],
                     standalone: false,
                 }]
         }] });
@@ -19536,8 +19442,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrDateContainer extends ClrAbstractContainer {
-    constructor(renderer, elem, popoverService, dateNavigationService, datepickerEnabledService, dateFormControlService, dateIOService, commonStrings, focusService, viewManagerService, controlClassService, layoutService, ngControlService, ifControlStateService) {
-        super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    constructor(renderer, elem, popoverService, dateNavigationService, datepickerEnabledService, dateFormControlService, dateIOService, commonStrings, focusService, viewManagerService, controlClassService, layoutService, ngControlService) {
+        super(layoutService, controlClassService, ngControlService);
         this.renderer = renderer;
         this.elem = elem;
         this.popoverService = popoverService;
@@ -19550,7 +19456,6 @@ class ClrDateContainer extends ClrAbstractContainer {
         this.controlClassService = controlClassService;
         this.layoutService = layoutService;
         this.ngControlService = ngControlService;
-        this.ifControlStateService = ifControlStateService;
         this.focus = false;
         this.popoverType = ClrPopoverType.DROPDOWN;
         this.subscriptions.push(focusService.focusChange.subscribe(state => {
@@ -19691,7 +19596,7 @@ class ClrDateContainer extends ClrAbstractContainer {
             }
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDateContainer, deps: [{ token: i0.Renderer2 }, { token: i0.ElementRef }, { token: ClrPopoverService }, { token: DateNavigationService }, { token: DatepickerEnabledService }, { token: DateFormControlService }, { token: DateIOService }, { token: ClrCommonStringsService }, { token: FocusService }, { token: ViewManagerService }, { token: ControlClassService }, { token: LayoutService, optional: true }, { token: NgControlService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDateContainer, deps: [{ token: i0.Renderer2 }, { token: i0.ElementRef }, { token: ClrPopoverService }, { token: DateNavigationService }, { token: DatepickerEnabledService }, { token: DateFormControlService }, { token: DateIOService }, { token: ClrCommonStringsService }, { token: FocusService }, { token: ViewManagerService }, { token: ControlClassService }, { token: LayoutService, optional: true }, { token: NgControlService }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrDateContainer, isStandalone: false, selector: "clr-date-container, clr-date-range-container", inputs: { showActionButtons: "showActionButtons", clrPosition: "clrPosition", rangeOptions: "rangeOptions", min: "min", max: "max" }, host: { properties: { "class.clr-date-container": "true", "class.clr-form-control-disabled": "isInputDateDisabled", "class.clr-form-control": "true", "class.clr-row": "addGrid()" } }, providers: [
             ControlIdService,
             LocaleHelperService,
@@ -19703,7 +19608,6 @@ class ClrDateContainer extends ClrAbstractContainer {
             DatepickerEnabledService,
             DateFormControlService,
             ViewManagerService,
-            IfControlStateService,
         ], viewQueries: [{ propertyName: "actionButton", first: true, predicate: ["actionButton"], descendants: true }], usesInheritance: true, hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
@@ -19832,7 +19736,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         DatepickerEnabledService,
                         DateFormControlService,
                         ViewManagerService,
-                        IfControlStateService,
                     ],
                     hostDirectives: [ClrPopoverHostDirective],
                     host: {
@@ -19845,7 +19748,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                 }]
         }], ctorParameters: () => [{ type: i0.Renderer2 }, { type: i0.ElementRef }, { type: ClrPopoverService }, { type: DateNavigationService }, { type: DatepickerEnabledService }, { type: DateFormControlService }, { type: DateIOService }, { type: ClrCommonStringsService }, { type: FocusService }, { type: ViewManagerService }, { type: ControlClassService }, { type: LayoutService, decorators: [{
                     type: Optional
-                }] }, { type: NgControlService }, { type: IfControlStateService }], propDecorators: { showActionButtons: [{
+                }] }, { type: NgControlService }], propDecorators: { showActionButtons: [{
                 type: Input,
                 args: ['showActionButtons']
             }], clrPosition: [{
@@ -20077,20 +19980,17 @@ class ClrDateInputBase extends WrappedFormControl {
      */
     validateDateRange() {
         if (this.dateNavigationService.isRangePicker) {
-            const primaryControl = this.ngControlService?.control;
-            const additionalControls = this.ngControlService?.additionalControls;
+            const controls = this.ngControlService?.controls;
             const isValid = this.dateNavigationService.selectedDay?.isBefore(this.dateNavigationService.selectedEndDay, true);
-            if (isValid &&
-                (primaryControl?.hasError('range') || additionalControls?.some(control => control.hasError('range')))) {
-                primaryControl.control?.updateValueAndValidity({ emitEvent: false });
-                additionalControls.forEach((ngControl) => {
+            if (isValid && controls?.some(control => control.hasError('range'))) {
+                controls.forEach((ngControl) => {
                     ngControl?.control?.updateValueAndValidity({ emitEvent: false });
                 });
             }
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDateInputBase, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i1$1.NgControl, optional: true, self: true }, { token: forwardRef(() => ClrDateContainer), optional: true }, { token: DateIOService, optional: true }, { token: DateNavigationService, optional: true }, { token: DatepickerEnabledService, optional: true }, { token: DateFormControlService, optional: true }, { token: PLATFORM_ID }, { token: FocusService, optional: true }, { token: DatepickerFocusService }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrDateInputBase, isStandalone: true, inputs: { placeholder: "placeholder", disabled: "disabled" }, host: { listeners: { "focus": "setFocusStates()", "blur": "triggerValidation()", "change": "onValueChange($event.target)" }, properties: { "disabled": "this.disabled", "attr.placeholder": "this.placeholderText", "attr.type": "this.inputType" } }, usesInheritance: true, ngImport: i0 }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrDateInputBase, isStandalone: true, inputs: { placeholder: "placeholder", disabled: "disabled" }, host: { listeners: { "focus": "setFocusStates()", "change": "onValueChange($event.target)" }, properties: { "disabled": "this.disabled", "attr.placeholder": "this.placeholderText", "attr.type": "this.inputType" } }, usesInheritance: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDateInputBase, decorators: [{
             type: Directive
@@ -20133,9 +20033,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
             }], setFocusStates: [{
                 type: HostListener,
                 args: ['focus']
-            }], triggerValidation: [{
-                type: HostListener,
-                args: ['blur']
             }], onValueChange: [{
                 type: HostListener,
                 args: ['change', ['$event.target']]
@@ -22506,7 +22403,7 @@ class ClrFileList {
         this.fileInputContainer.focusBrowseButton();
     }
     createFileMessagesTemplateContext(file) {
-        const fileInputErrors = this.ngControlService.control.errors || {};
+        const fileInputErrors = this.ngControlService.controls[0].errors || {};
         const errors = {
             accept: fileInputErrors.accept?.find(error => error.name === file.name),
             minFileSize: fileInputErrors.minFileSize?.find(error => error.name === file.name),
@@ -22679,7 +22576,7 @@ class ClrFileInputContainer extends ClrAbstractContainer {
         selectFiles(this.fileInput.elementRef.nativeElement, mergedFiles);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrFileInputContainer, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrFileInputContainer, isStandalone: false, selector: "clr-file-input-container", inputs: { customButtonLabel: ["clrButtonLabel", "customButtonLabel"] }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "fileInput", first: true, predicate: i0.forwardRef(() => ClrFileInput), descendants: true }, { propertyName: "fileList", first: true, predicate: i0.forwardRef(() => ClrFileList), descendants: true }, { propertyName: "fileSuccessComponent", first: true, predicate: ClrFileSuccess, descendants: true }, { propertyName: "fileErrorComponent", first: true, predicate: ClrFileError, descendants: true }], viewQueries: [{ propertyName: "browseButtonElementRef", first: true, predicate: ["browseButton"], descendants: true }, { propertyName: "fileListFileInputElementRef", first: true, predicate: ["fileListFileInput"], descendants: true }], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrFileInputContainer, isStandalone: false, selector: "clr-file-input-container", inputs: { customButtonLabel: ["clrButtonLabel", "customButtonLabel"] }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "disabled", "class.clr-row": "addGrid()" } }, providers: [NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "fileInput", first: true, predicate: i0.forwardRef(() => ClrFileInput), descendants: true }, { propertyName: "fileList", first: true, predicate: i0.forwardRef(() => ClrFileList), descendants: true }, { propertyName: "fileSuccessComponent", first: true, predicate: ClrFileSuccess, descendants: true }, { propertyName: "fileErrorComponent", first: true, predicate: ClrFileError, descendants: true }], viewQueries: [{ propertyName: "browseButtonElementRef", first: true, predicate: ["browseButton"], descendants: true }, { propertyName: "fileListFileInputElementRef", first: true, predicate: ["fileListFileInput"], descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -22827,7 +22724,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         '[class.clr-form-control-disabled]': 'disabled',
                         '[class.clr-row]': 'addGrid()',
                     },
-                    providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+                    providers: [NgControlService, ControlIdService, ControlClassService],
                     standalone: false,
                 }]
         }], propDecorators: { customButtonLabel: [{
@@ -23154,26 +23051,25 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrNumberInputContainer extends ClrAbstractContainer {
-    constructor(controlClassService, layoutService, ngControlService, focusService, ifControlStateService) {
-        super(ifControlStateService, layoutService, controlClassService, ngControlService);
-        this.ifControlStateService = ifControlStateService;
+    constructor(controlClassService, layoutService, ngControlService, focusService) {
+        super(layoutService, controlClassService, ngControlService);
         this.focus = false;
         this.subscriptions.push(focusService.focusChange.subscribe(state => (this.focus = state)));
     }
     focusOut() {
         this.input.dispatchBlur();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrNumberInputContainer, deps: [{ token: ControlClassService }, { token: LayoutService, optional: true }, { token: NgControlService }, { token: FocusService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrNumberInputContainer, isStandalone: false, selector: "clr-number-input-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-form-control-readonly": "input.readonly", "class.clr-row": "addGrid()" } }, providers: [FocusService, IfControlStateService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "input", first: true, predicate: i0.forwardRef(() => ClrNumberInput), descendants: true }], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrNumberInputContainer, deps: [{ token: ControlClassService }, { token: LayoutService, optional: true }, { token: NgControlService }, { token: FocusService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrNumberInputContainer, isStandalone: false, selector: "clr-number-input-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-form-control-readonly": "input.readonly", "class.clr-row": "addGrid()" } }, providers: [FocusService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "input", first: true, predicate: i0.forwardRef(() => ClrNumberInput), descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-number-input-wrapper">
-        <div class="clr-input-group" [class.clr-focus]="focus" (focusout)="focusOut()">
+        <div class="clr-input-group" [class.clr-focus]="focus">
           <ng-content select="[clrNumberInput]"></ng-content>
-          <div class="clr-input-group-actions">
+          <div class="clr-input-group-actions" (focusout)="focusOut()">
             <button
               type="button"
               class="clr-input-group-icon-action"
@@ -23223,9 +23119,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-number-input-wrapper">
-        <div class="clr-input-group" [class.clr-focus]="focus" (focusout)="focusOut()">
+        <div class="clr-input-group" [class.clr-focus]="focus">
           <ng-content select="[clrNumberInput]"></ng-content>
-          <div class="clr-input-group-actions">
+          <div class="clr-input-group-actions" (focusout)="focusOut()">
             <button
               type="button"
               class="clr-input-group-icon-action"
@@ -23269,12 +23165,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         '[class.clr-form-control-readonly]': 'input.readonly',
                         '[class.clr-row]': 'addGrid()',
                     },
-                    providers: [FocusService, IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+                    providers: [FocusService, NgControlService, ControlIdService, ControlClassService],
                     standalone: false,
                 }]
         }], ctorParameters: () => [{ type: ControlClassService }, { type: LayoutService, decorators: [{
                     type: Optional
-                }] }, { type: NgControlService }, { type: FocusService }, { type: IfControlStateService }], propDecorators: { input: [{
+                }] }, { type: NgControlService }, { type: FocusService }], propDecorators: { input: [{
                 type: ContentChild,
                 args: [forwardRef(() => ClrNumberInput)]
             }] } });
@@ -23330,7 +23226,7 @@ class ClrNumberInput extends WrappedFormControl {
         this.el.nativeElement.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrNumberInput, deps: [{ token: FocusService, optional: true }, { token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrNumberInput, isStandalone: false, selector: "input[type=\"number\"][clrNumberInput]", host: { listeners: { "focus": "triggerFocus()", "blur": "triggerValidation()" }, properties: { "class.clr-input": "true", "class.clr-number-input": "true" } }, usesInheritance: true, ngImport: i0 }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrNumberInput, isStandalone: false, selector: "input[type=\"number\"][clrNumberInput]", host: { listeners: { "focus": "triggerFocus()" }, properties: { "class.clr-input": "true", "class.clr-number-input": "true" } }, usesInheritance: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrNumberInput, decorators: [{
             type: Directive,
@@ -23348,9 +23244,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                 }] }, { type: i0.Renderer2 }, { type: i0.ElementRef }], propDecorators: { triggerFocus: [{
                 type: HostListener,
                 args: ['focus']
-            }], triggerValidation: [{
-                type: HostListener,
-                args: ['blur']
             }] } });
 
 /*
@@ -23388,8 +23281,8 @@ function ToggleServiceFactory() {
 }
 const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: ToggleServiceFactory };
 class ClrPasswordContainer extends ClrAbstractContainer {
-    constructor(ifControlStateService, layoutService, controlClassService, ngControlService, focusService, toggleService, commonStrings) {
-        super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    constructor(layoutService, controlClassService, ngControlService, focusService, toggleService, commonStrings) {
+        super(layoutService, controlClassService, ngControlService);
         this.focusService = focusService;
         this.toggleService = toggleService;
         this.commonStrings = commonStrings;
@@ -23420,15 +23313,8 @@ class ClrPasswordContainer extends ClrAbstractContainer {
     hidePasswordText(label) {
         return this.commonStrings.parse(this.commonStrings.keys.passwordHide, { LABEL: label });
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrPasswordContainer, deps: [{ token: IfControlStateService }, { token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: FocusService }, { token: TOGGLE_SERVICE }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrPasswordContainer, isStandalone: false, selector: "clr-password-container", inputs: { clrToggle: "clrToggle" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [
-            NgControlService,
-            ControlIdService,
-            ControlClassService,
-            FocusService,
-            TOGGLE_SERVICE_PROVIDER,
-            IfControlStateService,
-        ], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrPasswordContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: FocusService }, { token: TOGGLE_SERVICE }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrPasswordContainer, isStandalone: false, selector: "clr-password-container", inputs: { clrToggle: "clrToggle" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [NgControlService, ControlIdService, ControlClassService, FocusService, TOGGLE_SERVICE_PROVIDER], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -23510,17 +23396,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         '[class.clr-form-control-disabled]': 'control?.disabled',
                         '[class.clr-row]': 'addGrid()',
                     },
-                    providers: [
-                        NgControlService,
-                        ControlIdService,
-                        ControlClassService,
-                        FocusService,
-                        TOGGLE_SERVICE_PROVIDER,
-                        IfControlStateService,
-                    ],
+                    providers: [NgControlService, ControlIdService, ControlClassService, FocusService, TOGGLE_SERVICE_PROVIDER],
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: IfControlStateService }, { type: LayoutService, decorators: [{
+        }], ctorParameters: () => [{ type: LayoutService, decorators: [{
                     type: Optional
                 }] }, { type: ControlClassService }, { type: NgControlService }, { type: FocusService }, { type: i2$1.BehaviorSubject, decorators: [{
                     type: Inject,
@@ -23560,7 +23439,7 @@ class ClrPassword extends WrappedFormControl {
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrPassword, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: FocusService, optional: true }, { token: TOGGLE_SERVICE, optional: true }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrPassword, isStandalone: false, selector: "[clrPassword]", host: { listeners: { "focus": "triggerFocus()", "blur": "triggerValidation()" }, properties: { "class.clr-input": "true" } }, usesInheritance: true, ngImport: i0 }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrPassword, isStandalone: false, selector: "[clrPassword]", host: { listeners: { "focus": "triggerFocus()" }, properties: { "class.clr-input": "true" } }, usesInheritance: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrPassword, decorators: [{
             type: Directive,
@@ -23583,9 +23462,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                 }] }], propDecorators: { triggerFocus: [{
                 type: HostListener,
                 args: ['focus']
-            }], triggerValidation: [{
-                type: HostListener,
-                args: ['blur']
             }] } });
 
 /*
@@ -23693,12 +23569,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrRadioContainer extends ClrAbstractContainer {
-    constructor(layoutService, controlClassService, ngControlService, ifControlStateService) {
-        super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    constructor(layoutService, controlClassService, ngControlService) {
+        super(layoutService, controlClassService, ngControlService);
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
         this.ngControlService = ngControlService;
-        this.ifControlStateService = ifControlStateService;
         this.inline = false;
         this._generatedId = uniqueIdFactory();
     }
@@ -23736,8 +23611,8 @@ class ClrRadioContainer extends ClrAbstractContainer {
             this.ariaLabelledBy = this.radios.length ? _id : null;
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrRadioContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrRadioContainer, isStandalone: false, selector: "clr-radio-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()", "attr.role": "role", "attr.aria-labelledby": "ariaLabelledBy" } }, providers: [NgControlService, IfControlStateService, ControlClassService, ContainerIdService], queries: [{ propertyName: "groupLabel", first: true, predicate: ClrControlLabel, descendants: true, read: ElementRef, static: true }, { propertyName: "radios", predicate: ClrRadio, descendants: true }], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrRadioContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrRadioContainer, isStandalone: false, selector: "clr-radio-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()", "attr.role": "role", "attr.aria-labelledby": "ariaLabelledBy" } }, providers: [NgControlService, ControlClassService, ContainerIdService], queries: [{ propertyName: "groupLabel", first: true, predicate: ClrControlLabel, descendants: true, read: ElementRef, static: true }, { propertyName: "radios", predicate: ClrRadio, descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -23819,12 +23694,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         '[attr.role]': 'role',
                         '[attr.aria-labelledby]': 'ariaLabelledBy',
                     },
-                    providers: [NgControlService, IfControlStateService, ControlClassService, ContainerIdService],
+                    providers: [NgControlService, ControlClassService, ContainerIdService],
                     standalone: false,
                 }]
         }], ctorParameters: () => [{ type: LayoutService, decorators: [{
                     type: Optional
-                }] }, { type: ControlClassService }, { type: NgControlService }, { type: IfControlStateService }], propDecorators: { radios: [{
+                }] }, { type: ControlClassService }, { type: NgControlService }], propDecorators: { radios: [{
                 type: ContentChildren,
                 args: [ClrRadio, { descendants: true }]
             }], groupLabel: [{
@@ -23864,11 +23739,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrRangeContainer extends ClrAbstractContainer {
-    constructor(layoutService, controlClassService, ngControlService, renderer, idService, ifControlStateService) {
-        super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    constructor(layoutService, controlClassService, ngControlService, renderer, idService) {
+        super(layoutService, controlClassService, ngControlService);
         this.renderer = renderer;
         this.idService = idService;
-        this.ifControlStateService = ifControlStateService;
         this._hasProgress = false;
     }
     get hasProgress() {
@@ -23905,8 +23779,8 @@ class ClrRangeContainer extends ClrAbstractContainer {
             return undefined;
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrRangeContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: i0.Renderer2 }, { token: ControlIdService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrRangeContainer, isStandalone: false, selector: "clr-range-container", inputs: { hasProgress: ["clrRangeHasProgress", "hasProgress"] }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrRangeContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: i0.Renderer2 }, { token: ControlIdService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrRangeContainer, isStandalone: false, selector: "clr-range-container", inputs: { hasProgress: ["clrRangeHasProgress", "hasProgress"] }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -23974,12 +23848,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         '[class.clr-form-control-disabled]': 'control?.disabled',
                         '[class.clr-row]': 'addGrid()',
                     },
-                    providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+                    providers: [NgControlService, ControlIdService, ControlClassService],
                     standalone: false,
                 }]
         }], ctorParameters: () => [{ type: LayoutService, decorators: [{
                     type: Optional
-                }] }, { type: ControlClassService }, { type: NgControlService }, { type: i0.Renderer2 }, { type: ControlIdService }, { type: IfControlStateService }], propDecorators: { hasProgress: [{
+                }] }, { type: ControlClassService }, { type: NgControlService }, { type: i0.Renderer2 }, { type: ControlIdService }], propDecorators: { hasProgress: [{
                 type: Input,
                 args: ['clrRangeHasProgress']
             }] } });
@@ -24040,28 +23914,20 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrSelectContainer extends ClrAbstractContainer {
-    constructor(layoutService, controlClassService, ngControlService, ifControlStateService) {
-        super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    constructor(layoutService, controlClassService, ngControlService) {
+        super(layoutService, controlClassService, ngControlService);
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
         this.ngControlService = ngControlService;
-        this.ifControlStateService = ifControlStateService;
-        this.multi = false;
     }
-    ngOnInit() {
-        /* The unsubscribe is handle inside the ClrAbstractContainer */
-        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(control => {
-            if (control) {
-                this.multi = control.valueAccessor instanceof SelectMultipleControlValueAccessor;
-                this.control = control;
-            }
-        }));
+    get multi() {
+        return this.control?.valueAccessor instanceof SelectMultipleControlValueAccessor;
     }
     wrapperClass() {
         return this.multi ? 'clr-multiselect-wrapper' : 'clr-select-wrapper';
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrSelectContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrSelectContainer, isStandalone: false, selector: "clr-select-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "multiple", first: true, predicate: SelectMultipleControlValueAccessor, descendants: true }], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrSelectContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrSelectContainer, isStandalone: false, selector: "clr-select-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "multiple", first: true, predicate: SelectMultipleControlValueAccessor, descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -24123,12 +23989,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         '[class.clr-form-control-disabled]': 'control?.disabled',
                         '[class.clr-row]': 'addGrid()',
                     },
-                    providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+                    providers: [NgControlService, ControlIdService, ControlClassService],
                     standalone: false,
                 }]
         }], ctorParameters: () => [{ type: LayoutService, decorators: [{
                     type: Optional
-                }] }, { type: ControlClassService }, { type: NgControlService }, { type: IfControlStateService }], propDecorators: { multiple: [{
+                }] }, { type: ControlClassService }, { type: NgControlService }], propDecorators: { multiple: [{
                 type: ContentChild,
                 args: [SelectMultipleControlValueAccessor, { static: false }]
             }] } });
@@ -24191,7 +24057,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  */
 class ClrTextareaContainer extends ClrAbstractContainer {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrTextareaContainer, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrTextareaContainer, isStandalone: false, selector: "clr-textarea-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrTextareaContainer, isStandalone: false, selector: "clr-textarea-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -24253,7 +24119,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         '[class.clr-form-control-disabled]': 'control?.disabled',
                         '[class.clr-row]': 'addGrid()',
                     },
-                    providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+                    providers: [NgControlService, ControlIdService, ControlClassService],
                     standalone: false,
                 }]
         }] });
@@ -29477,7 +29343,7 @@ class ClrDatagrid {
         if (!this.items.smart) {
             this.items.all = this.rows.map((row) => row.item);
         }
-        const rowItemsChanges = this.rows.changes.pipe(switchMap$1((rows) => merge(
+        const rowItemsChanges = this.rows.changes.pipe(switchMap((rows) => merge(
         // immediate update
         of(rows.map(row => row.item)), 
         // subsequent updates once per tick
