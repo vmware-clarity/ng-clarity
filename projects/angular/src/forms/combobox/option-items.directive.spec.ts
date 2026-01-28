@@ -9,6 +9,7 @@ import { Component, TrackByFunction, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrComboboxModule } from './combobox.module';
+import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { ClrOptionItems } from './option-items.directive';
 import { OptionSelectionService } from './providers/option-selection.service';
 import { ClrPopoverService } from '../../popover/common/providers/popover.service';
@@ -54,7 +55,12 @@ class TrackByIndexTest {
 })
 class ObjectDataTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
-  numbers = [{ a: 0 }, { a: 1 }, { a: 2 }, { a: 3 }];
+  numbers = [
+    { a: 0, b: 'zero' },
+    { a: 1, b: 'one' },
+    { a: 2, b: 'two' },
+    { a: 3, b: 'three' },
+  ];
   trackBy: TrackByFunction<number> = index => index;
 }
 
@@ -233,6 +239,67 @@ export default function (): void {
         optionService.currentInput = 'arde';
         this.fixture.detectChanges();
         expect(this.clarityDirective.filteredItems).toEqual([{ a: 'Ardèche' }, { a: 'Ardennes' }]);
+      });
+    });
+
+    describe('updates selections correctly', () => {
+      beforeEach(function () {
+        TestBed.configureTestingModule({
+          imports: [ClrComboboxModule],
+          declarations: [ObjectDataTest],
+          providers: OPTION_ITEM_PROVIDERS,
+        });
+        this.fixture = TestBed.createComponent(ObjectDataTest);
+        this.fixture.detectChanges();
+        this.testComponent = this.fixture.componentInstance;
+        this.clarityDirective = this.fixture.componentInstance.optionItems;
+        this.optionService = TestBed.inject(OptionSelectionService);
+        this.optionService.selectionModel = new MultiSelectComboboxModel<any>();
+        (this.optionService as OptionSelectionService<any>).setSelectionValue([
+          this.testComponent.numbers[0],
+          this.testComponent.numbers[1],
+        ]);
+        (this.optionService as OptionSelectionService<any>).compareItems = (a, b) => {
+          return a.a === b.a;
+        };
+      });
+
+      afterEach(function () {
+        this.fixture.destroy();
+      });
+
+      it('has initial selection', function () {
+        expect((this.optionService as OptionSelectionService<any>).selectionModel.model.map(x => x.b)).toEqual([
+          'zero',
+          'one',
+        ]);
+      });
+
+      it('updates selection when data set replaced and keeps value for deleted item', function () {
+        this.testComponent.numbers = [{ a: 0, b: 'zero and a half' }];
+        this.fixture.detectChanges();
+        expect((this.optionService as OptionSelectionService<any>).selectionModel.model.map(x => x.b)).toEqual([
+          'zero and a half',
+          'one',
+        ]);
+      });
+
+      it('updates selection when item replaced', function () {
+        this.testComponent.numbers[1] = { a: 1, b: 'one and a half' };
+        this.fixture.detectChanges();
+        expect((this.optionService as OptionSelectionService<any>).selectionModel.model.map(x => x.b)).toEqual([
+          'zero',
+          'one and a half',
+        ]);
+      });
+
+      it('updates selection when item updated', function () {
+        this.testComponent.numbers[1].b = 'one and a third';
+        this.fixture.detectChanges();
+        expect((this.optionService as OptionSelectionService<any>).selectionModel.model.map(x => x.b)).toEqual([
+          'zero',
+          'one and a third',
+        ]);
       });
     });
   });
