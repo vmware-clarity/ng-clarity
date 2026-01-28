@@ -42,6 +42,14 @@
     </select>
     <clr-control-error> Required </clr-control-error>
   </clr-select-container>
+  <clr-select-container>
+    <label>Change Control</label>
+    <select class="w-60" clrSelect formControlName="changeControl">
+      <option value="one">One</option>
+      <option value="two">Two</option>
+    </select>
+    <clr-control-error> Required </clr-control-error>
+  </clr-select-container>
   <clr-radio-container clrInline>
     <label>Scenario</label>
     <clr-radio-wrapper>
@@ -57,7 +65,12 @@
   @if (form.get('scenario')?.value === 'two') {
   <clr-textarea-container>
     <label>Label</label>
-    <textarea clrTextarea [formControl]="$any(form).get('textarea')" required></textarea>
+    <textarea
+      clrTextarea
+      [formControl]="$any(form).get(form
+      .get('changeControl')?.value === 'two' ? 'textarea1' : 'textarea')"
+      required
+    ></textarea>
     <clr-control-helper>Helper Message</clr-control-helper>
     <clr-control-success *clrIfSuccess>Successful</clr-control-success>
     <clr-control-error *clrIfError="'required'">Required error</clr-control-error>

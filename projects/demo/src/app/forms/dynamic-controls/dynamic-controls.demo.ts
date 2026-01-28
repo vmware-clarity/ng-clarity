@@ -20,6 +20,7 @@ export class DynamicControlsDemo {
   destroyed = new Subject<void>();
   form = new FormGroup<any>({
     platform: new FormControl(),
+    changeControl: new FormControl(),
     scenario: new FormControl('one'),
   });
 
@@ -60,6 +61,19 @@ export class DynamicControlsDemo {
           this.form.addControl('radios', new FormControl('', [Validators.required, Validators.pattern(/two/)]));
           this.form.get('radios')?.markAsTouched();
           this.form.get('radios')?.updateValueAndValidity();
+        }),
+        takeUntil(this.destroyed)
+      )
+      .subscribe();
+
+    this.form
+      .get('changeControl')
+      ?.valueChanges.pipe(
+        filter(value => value === 'two'),
+        tap(() => {
+          this.form.addControl('textarea1', new FormControl(''));
+          this.form.get('textarea1')?.markAsTouched();
+          this.form.get('textarea1')?.updateValueAndValidity();
         }),
         takeUntil(this.destroyed)
       )
