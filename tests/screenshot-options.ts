@@ -45,7 +45,7 @@ export const screenshotOptions: ScreenshotOptions = {
   'header--collapsed': {
     viewport: { width: 500, height: 300 },
   },
-  'application--default': {
+  'application--basic': {
     fullPageScreenshot: true,
   },
   'application--first-navigation-only': {
