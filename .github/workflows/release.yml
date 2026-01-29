@@ -1,6 +1,8 @@
 name: Release
 on:
   workflow_dispatch:
+permissions:
+  id-token: write
 jobs:
   release:
     name: Release
