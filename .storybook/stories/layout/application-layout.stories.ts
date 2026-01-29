@@ -5,8 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { StoryObj } from '@storybook/angular';
-
 import { ApplicationLayoutStorybookComponent } from './application-layout/application-layout.storybook.component';
 
 export default {
@@ -22,21 +20,21 @@ export default {
   },
 };
 
-export const Default: StoryObj = {};
-
-export const FirstNavigationOnly: StoryObj = {
-  args: {
-    level1Navigation: true,
-    level2Navigation: false,
-    level3Navigation: false,
-    level4Navigation: false,
-  },
-};
-export const NoNavigations: StoryObj = {
-  args: {
-    level1Navigation: false,
-    level2Navigation: false,
-    level3Navigation: false,
-    level4Navigation: false,
-  },
-};
+// export const Default: StoryObj = {};
+//
+// export const FirstNavigationOnly: StoryObj = {
+//   args: {
+//     level1Navigation: true,
+//     level2Navigation: false,
+//     level3Navigation: false,
+//     level4Navigation: false,
+//   },
+// };
+// export const NoNavigations: StoryObj = {
+//   args: {
+//     level1Navigation: false,
+//     level2Navigation: false,
+//     level3Navigation: false,
+//     level4Navigation: false,
+//   },
+// };
