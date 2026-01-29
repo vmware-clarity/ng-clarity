@@ -30,7 +30,6 @@ jobs:
           BD_ACCESS_TOKEN: ${{ secrets.BD_ACCESS_TOKEN }}
           BD_RELEASE_PHASE: RELEASED
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         run: npx semantic-release --extends ./.releaserc.release.js
       - name: Deploy Docs
         continue-on-error: true
