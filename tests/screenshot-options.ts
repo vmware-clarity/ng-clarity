@@ -6,7 +6,11 @@
  */
 
 type ScreenshotOptions = {
-  [componentOrStoryName: string]: { fullPageScreenshot?: boolean; viewport?: { width: number; height: number } };
+  [componentOrStoryName: string]: {
+    fullPageScreenshot?: boolean;
+    viewport?: { width: number; height: number };
+    exclude?: boolean;
+  };
 };
 
 /**
@@ -46,7 +50,7 @@ export const screenshotOptions: ScreenshotOptions = {
     viewport: { width: 500, height: 300 },
   },
   'application--default': {
-    fullPageScreenshot: true,
+    exclude: true,
   },
   'application--first-navigation-only': {
     fullPageScreenshot: true,

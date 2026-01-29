@@ -29,7 +29,7 @@ for (const story of stories) {
   const storyId = story.id;
   const componentParsed = component.replaceAll(' ', '-').replaceAll('/', '-').toLowerCase();
   const storyName = storyId.replace(`${componentParsed}-`, '');
-  if (story.id.endsWith('--docs') || !component || storyName === 'application--default') {
+  if (story.id.endsWith('--docs') || !component || excludeTakingScreenshot(componentParsed, storyName)) {
     continue;
   }
 
@@ -61,6 +61,10 @@ for (const story of stories) {
       threshold: 0.01,
     });
   });
+}
+
+function excludeTakingScreenshot(component: string, storyName: string) {
+  return screenshotOptions[component]?.exclude || screenshotOptions[storyName]?.exclude;
 }
 
 function takeFullPageScreenshot(component: string, storyName: string) {
