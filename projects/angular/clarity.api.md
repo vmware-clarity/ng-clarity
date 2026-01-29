@@ -4696,6 +4696,8 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     getStackChildrenId(): string;
     // (undocumented)
+    headingEnabled: boolean;
+    // (undocumented)
     get headingLevel(): string;
     // (undocumented)
     get labelledById(): any;
@@ -4718,7 +4720,7 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     uniqueId: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": { "alias": "clrSbExpanded"; "required": false; }; "expandable": { "alias": "clrSbExpandable"; "required": false; }; "ariaLevel": { "alias": "clrStackViewLevel"; "required": false; }; "setChangedValue": { "alias": "clrSbNotifyChange"; "required": false; }; }, { "expandedChange": "clrSbExpandedChange"; }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": { "alias": "clrSbExpanded"; "required": false; }; "expandable": { "alias": "clrSbExpandable"; "required": false; }; "headingEnabled": { "alias": "clrStackViewHeadingEnabled"; "required": false; }; "ariaLevel": { "alias": "clrStackViewLevel"; "required": false; }; "setChangedValue": { "alias": "clrSbNotifyChange"; "required": false; }; }, { "expandedChange": "clrSbExpandedChange"; }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{ optional: true; skipSelf: true; }, null]>;
 }
