@@ -8,7 +8,6 @@
 import { Component } from '@angular/core';
 
 import { ClrAbstractContainer } from '../common/abstract-container';
-import { IfControlStateService } from './if-control-state/if-control-state.service';
 import { ControlClassService } from './providers/control-class.service';
 import { ControlIdService } from './providers/control-id.service';
 import { NgControlService } from './providers/ng-control.service';
@@ -46,7 +45,7 @@ import { NgControlService } from './providers/ng-control.service';
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+  providers: [NgControlService, ControlIdService, ControlClassService],
   standalone: false,
 })
 export class ClrControlContainer extends ClrAbstractContainer {}

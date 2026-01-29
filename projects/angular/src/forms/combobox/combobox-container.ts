@@ -9,7 +9,6 @@ import { AfterContentInit, AfterViewInit, Component, ElementRef, Optional, ViewC
 
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { ComboboxContainerService } from './providers/combobox-container.service';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { LayoutService } from '../common/providers/layout.service';
@@ -47,24 +46,23 @@ import { NgControlService } from '../common/providers/ng-control.service';
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService, ComboboxContainerService],
+  providers: [NgControlService, ControlIdService, ControlClassService, ComboboxContainerService],
   standalone: false,
 })
 export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
   @ViewChild('controlContainer') controlContainer: ElementRef<HTMLElement>;
 
   constructor(
-    ifControlStateService: IfControlStateService,
     @Optional() layoutService: LayoutService,
     controlClassService: ControlClassService,
     ngControlService: NgControlService,
     private containerService: ComboboxContainerService,
     private el: ElementRef<HTMLElement>
   ) {
-    super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    super(layoutService, controlClassService, ngControlService);
   }
 
-  override ngAfterContentInit() {
+  ngAfterContentInit() {
     if (this.label) {
       this.containerService.labelText = this.label.labelText;
     }

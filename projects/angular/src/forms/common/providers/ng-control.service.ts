@@ -9,6 +9,8 @@ import { Injectable } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 
+import { ClrAbstractContainer } from '../abstract-container';
+
 export interface Helpers {
   show?: boolean;
   showInvalid?: boolean;
@@ -18,50 +20,31 @@ export interface Helpers {
 
 @Injectable()
 export class NgControlService {
-  private _control: NgControl;
-  private _additionalControls: NgControl[] = [];
+  container: ClrAbstractContainer;
+  private _controls: NgControl[] = [];
 
   // Observable to subscribe to the control, since its not available immediately for projected content
-  private _controlChanges = new Subject<NgControl>();
-  private _additionalControlsChanges = new Subject<NgControl[]>();
+  private _controlsChanges = new Subject<NgControl[]>();
 
-  private _helpers = new Subject<Helpers>();
-
-  get control() {
-    return this._control;
+  get controls() {
+    return this._controls;
   }
 
-  get controlChanges(): Observable<NgControl> {
-    return this._controlChanges.asObservable();
+  get controlsChanges(): Observable<NgControl[]> {
+    return this._controlsChanges.asObservable();
   }
 
-  get additionalControls() {
-    return this._additionalControls;
+  get hasMultipleControls() {
+    return this._controls?.length > 1;
   }
 
-  get additionalControlsChanges(): Observable<NgControl[]> {
-    return this._additionalControlsChanges.asObservable();
+  addControl(control: NgControl) {
+    this._controls.push(control);
+
+    this.emitControlsChange(this._controls);
   }
 
-  get hasAdditionalControls() {
-    return !!this._additionalControls?.length;
-  }
-
-  get helpersChange(): Observable<Helpers> {
-    return this._helpers.asObservable();
-  }
-
-  setControl(control: NgControl) {
-    this._control = control;
-    this._controlChanges.next(control);
-  }
-
-  addAdditionalControl(control: NgControl) {
-    this._additionalControls.push(control);
-    this._additionalControlsChanges.next(this._additionalControls);
-  }
-
-  setHelpers(state: Helpers) {
-    this._helpers.next(state);
+  emitControlsChange(controls: NgControl[]) {
+    this._controlsChanges.next(controls);
   }
 }

@@ -5,13 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, ContentChild, Directive, OnDestroy, Optional } from '@angular/core';
+import { ContentChild, Directive, OnDestroy, Optional } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
-import { CONTROL_STATE, IfControlStateService } from './if-control-state/if-control-state.service';
+import { CONTROL_STATE } from './if-control-state/control-state.enum';
 import { ClrControlLabel } from './label';
 import { ControlClassService } from './providers/control-class.service';
 import { LayoutService } from './providers/layout.service';
@@ -19,43 +19,32 @@ import { NgControlService } from './providers/ng-control.service';
 import { ClrControlSuccess } from './success';
 
 @Directive()
-export abstract class ClrAbstractContainer implements OnDestroy, AfterContentInit {
+export abstract class ClrAbstractContainer implements OnDestroy {
   @ContentChild(ClrControlLabel, { static: false }) label: ClrControlLabel;
   @ContentChild(ClrControlSuccess) controlSuccessComponent: ClrControlSuccess;
   @ContentChild(ClrControlError) controlErrorComponent: ClrControlError;
   @ContentChild(ClrControlHelper) controlHelperComponent: ClrControlHelper;
 
-  control: NgControl;
-  additionalControls: NgControl[];
+  controls: NgControl[] = [];
 
   protected subscriptions: Subscription[] = [];
 
-  private state: CONTROL_STATE;
-
   constructor(
-    protected ifControlStateService: IfControlStateService,
     @Optional() protected layoutService: LayoutService,
     protected controlClassService: ControlClassService,
     protected ngControlService: NgControlService
   ) {
     this.subscriptions.push(
-      ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
-        this.state = state;
-        // Make sure everything is updated before dispatching the values for helpers
-        setTimeout(() => {
-          this.updateHelpers();
-        });
+      ngControlService.controlsChanges.subscribe(controls => {
+        this.controls = controls;
       })
     );
 
-    this.subscriptions.push(
-      ngControlService.controlChanges.subscribe(control => {
-        this.control = control;
-      }),
-      ngControlService.additionalControlsChanges.subscribe(controls => {
-        this.additionalControls = controls;
-      })
-    );
+    ngControlService.container = this;
+  }
+
+  get control() {
+    return this.controls[0];
   }
 
   /**
@@ -83,6 +72,20 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
     return Boolean(this.controlHelperComponent);
   }
 
+  /**
+   * We gonna set the helper control state, after all or most of the components
+   * are ready - also this will trigger some initial flows into wrappers and controls,
+   * like locating IDs  and setting  attributes.
+   */
+  get helpers() {
+    return {
+      show: this.showInvalid || this.showHelper || this.showValid,
+      showInvalid: this.showInvalid,
+      showHelper: this.showHelper,
+      showValid: this.showValid,
+    };
+  }
+
   get showValid(): boolean {
     return this.touched && this.state === CONTROL_STATE.VALID && this.successMessagePresent;
   }
@@ -100,16 +103,24 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
   }
 
   private get touched() {
-    return !!(this.control?.touched || this.additionalControls?.some(control => control.touched));
+    return !!this.controls?.some(control => control.touched);
   }
 
-  ngAfterContentInit() {
-    /**
-     * We gonna set the helper control state, after all or most of the components
-     * are ready - also this will trigger some initial flows into wrappers and controls,
-     * like locating IDs  and setting  attributes.
-     */
-    this.updateHelpers();
+  private get state() {
+    const controlStatuses = this.controls.map((control: NgControl) => {
+      return control.status;
+    });
+
+    // These status values are mutually exclusive, so a control
+    // cannot be both valid AND invalid or invalid AND disabled.
+    // if else order is important!
+    if (controlStatuses.includes(CONTROL_STATE.INVALID)) {
+      return CONTROL_STATE.INVALID;
+    } else if (controlStatuses.includes(CONTROL_STATE.VALID)) {
+      return CONTROL_STATE.VALID;
+    } else {
+      return null;
+    }
   }
 
   ngOnDestroy() {
@@ -121,28 +132,14 @@ export abstract class ClrAbstractContainer implements OnDestroy, AfterContentIni
      * Decide what subtext to display:
      *   - container is valid but no success component is implemented - use helper class
      *   - container is valid and success component is implemented - use success class
+     *   - Pass form control state and return string of classes to be applied to the container.
      */
-    if ((!this.controlSuccessComponent && this.state === CONTROL_STATE.VALID) || !this.touched) {
-      return this.controlClassService.controlClass(CONTROL_STATE.NONE, this.addGrid());
-    }
-    /**
-     * Pass form control state and return string of classes to be applied to the container.
-     */
-    return this.controlClassService.controlClass(this.state, this.addGrid());
+    const currentState = this.touched ? this.state : null;
+
+    return this.controlClassService.controlClass(currentState, this.addGrid());
   }
 
   addGrid() {
     return this.layoutService && !this.layoutService.isVertical();
-  }
-
-  private updateHelpers() {
-    if (this.ngControlService) {
-      this.ngControlService.setHelpers({
-        show: this.showInvalid || this.showHelper || this.showValid,
-        showInvalid: this.showInvalid,
-        showHelper: this.showHelper,
-        showValid: this.showValid,
-      });
-    }
   }
 }

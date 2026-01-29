@@ -8,7 +8,7 @@
 import { Injectable, Optional, Renderer2 } from '@angular/core';
 
 import { LayoutService } from './layout.service';
-import { CONTROL_STATE } from '../if-control-state/if-control-state.service';
+import { CONTROL_STATE } from '../if-control-state/control-state.enum';
 
 const CLASS_ERROR = 'clr-error';
 const CLASS_SUCCESS = 'clr-success';
@@ -19,7 +19,7 @@ export class ControlClassService {
 
   constructor(@Optional() private layoutService: LayoutService) {}
 
-  controlClass(state: CONTROL_STATE = CONTROL_STATE.NONE, grid = false, additional = '') {
+  controlClass(state: string, grid = false, additional = '') {
     const controlClasses = [this.className, additional];
 
     switch (state) {

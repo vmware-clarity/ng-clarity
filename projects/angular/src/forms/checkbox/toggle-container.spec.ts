@@ -15,7 +15,6 @@ import { ClrCheckboxContainer } from './checkbox-container';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
 import { ClrIcon } from '../../icon';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
@@ -34,10 +33,6 @@ class NoLabelTest {}
   template: `
     <clr-toggle-container [clrInline]="inline">
       <label>Hello World</label>
-      <clr-toggle-wrapper>
-        <label>One</label>
-        <input type="checkbox" clrToggle name="model" required [(ngModel)]="model" value="one" />
-      </clr-toggle-wrapper>
       <clr-toggle-wrapper>
         <label>Two</label>
         <input type="checkbox" clrToggle name="model" required [(ngModel)]="model" value="two" [disabled]="disabled" />
@@ -106,7 +101,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrCheckboxContainer, ClrCheckboxWrapper, ClrCheckbox, TemplateDrivenTest],
-          providers: [IfControlStateService, NgControl, NgControlService, LayoutService],
+          providers: [NgControl, NgControlService, LayoutService],
         });
         fixture = TestBed.createComponent(TemplateDrivenTest);
 

@@ -15,7 +15,6 @@ import { ClrCheckboxContainer } from './checkbox-container';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
 import { ClrIcon } from '../../icon';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { WrapperContainerSpec, WrapperFullSpec, WrapperNoLabelSpec } from '../tests/wrapper.spec';
@@ -72,7 +71,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrCheckboxWrapper, ClrCheckbox, FullTest],
-          providers: [IfControlStateService, NgControl, NgControlService, LayoutService],
+          providers: [NgControl, NgControlService, LayoutService],
         });
         fixture = TestBed.createComponent(FullTest);
 

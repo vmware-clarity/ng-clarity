@@ -10,7 +10,6 @@ import { BehaviorSubject } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
@@ -66,14 +65,7 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [
-    NgControlService,
-    ControlIdService,
-    ControlClassService,
-    FocusService,
-    TOGGLE_SERVICE_PROVIDER,
-    IfControlStateService,
-  ],
+  providers: [NgControlService, ControlIdService, ControlClassService, FocusService, TOGGLE_SERVICE_PROVIDER],
   standalone: false,
 })
 export class ClrPasswordContainer extends ClrAbstractContainer {
@@ -83,7 +75,6 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
   private _toggle = true;
 
   constructor(
-    ifControlStateService: IfControlStateService,
     @Optional() layoutService: LayoutService,
     controlClassService: ControlClassService,
     ngControlService: NgControlService,
@@ -91,7 +82,7 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     @Inject(TOGGLE_SERVICE) private toggleService: BehaviorSubject<boolean>,
     public commonStrings: ClrCommonStringsService
   ) {
-    super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    super(layoutService, controlClassService, ngControlService);
 
     /* The unsubscribe is handle inside the ClrAbstractContainer */
     this.subscriptions.push(

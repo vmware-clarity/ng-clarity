@@ -57,7 +57,6 @@ export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> 
     }
   }
 
-  @HostListener('blur')
   override triggerValidation() {
     if (!this.readonly) {
       super.triggerValidation();

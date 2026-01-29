@@ -6,48 +6,51 @@
  */
 
 import { Directive, Optional } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { merge, of, tap } from 'rxjs';
+import { startWith, switchMap } from 'rxjs/operators';
 
-import { CONTROL_STATE, IfControlStateService } from './if-control-state.service';
 import { NgControlService } from '../providers/ng-control.service';
 
 @Directive()
 export abstract class AbstractIfState {
-  protected subscriptions: Subscription[] = [];
   protected displayedContent = false;
-  protected control: NgControl;
-  protected additionalControls: NgControl[];
+  protected controls: NgControl[];
 
-  protected constructor(
-    @Optional() protected ifControlStateService: IfControlStateService,
-    @Optional() protected ngControlService: NgControlService
-  ) {
+  protected constructor(@Optional() protected ngControlService: NgControlService) {
     if (ngControlService) {
-      this.subscriptions.push(
-        ngControlService.controlChanges.subscribe(control => {
-          this.control = control;
-        }),
-        ngControlService.additionalControlsChanges.subscribe(controls => {
-          this.additionalControls = controls;
-        })
-      );
-    }
+      ngControlService.controlsChanges
+        .pipe(
+          tap(controls => {
+            this.controls = controls;
+          }),
+          switchMap(controls => {
+            if (!controls || controls.length === 0) {
+              return [];
+            }
 
-    if (ifControlStateService) {
-      this.subscriptions.push(
-        ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
-          this.handleState(state);
-        })
-      );
+            const statusStreams = controls.map(c => this.getControlStatusChangesObservable(c));
+
+            return merge(...statusStreams);
+          }),
+          takeUntilDestroyed()
+        )
+        .subscribe(status => {
+          this.handleState(status);
+        });
     }
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-  }
-
-  protected handleState(_state: CONTROL_STATE): void {
+  protected handleState(_state: any): void {
     /* overwrite in implementation to handle status change */
+  }
+
+  private getControlStatusChangesObservable(control: NgControl) {
+    if (!control.statusChanges) {
+      return of(null);
+    }
+
+    return control.statusChanges.pipe(startWith(control.status));
   }
 }

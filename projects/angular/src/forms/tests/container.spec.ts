@@ -12,7 +12,6 @@ import { By } from '@angular/platform-browser';
 import { ClrIcon } from '../../icon';
 import { ClrPopoverContent } from '../../popover';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { ClrFormLayout, LayoutService } from '../common/providers/layout.service';
 import { MarkControlService } from '../common/providers/mark-control.service';
@@ -21,20 +20,19 @@ import { DatalistIdService } from '../datalist/providers/datalist-id.service';
 
 export function ContainerNoLabelSpec(testContainer, testControl, testComponent): void {
   describe('no label', () => {
-    let fixture, containerDE, containerEl, layoutService, container;
+    let fixture, containerDE, containerEl, layoutService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ClrPopoverContent],
         declarations: [testContainer, testControl, testComponent],
-        providers: [NgControl, NgControlService, IfControlStateService, LayoutService, MarkControlService],
+        providers: [NgControl, NgControlService, LayoutService, MarkControlService],
       });
       fixture = TestBed.createComponent(testComponent);
 
       containerDE = fixture.debugElement.query(By.directive(testContainer));
       containerEl = containerDE.nativeElement;
       layoutService = containerDE.injector.get(LayoutService);
-      container = containerDE.componentInstance;
     });
 
     it('adds an empty label when instantiated without vertical layout', () => {
@@ -49,17 +47,6 @@ export function ContainerNoLabelSpec(testContainer, testControl, testComponent):
       const labels = containerEl.querySelectorAll('label');
       expect(Array.prototype.filter.call(labels, label => label.textContent === '').length).toBe(0);
     });
-
-    it('should display helper text when both error and success text are not implemented', () => {
-      fixture.detectChanges();
-      expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
-      container.state = CONTROL_STATE.INVALID;
-      fixture.detectChanges();
-      expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
-      container.state = CONTROL_STATE.VALID;
-      fixture.detectChanges();
-      expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
-    });
   });
 }
 
@@ -73,13 +60,7 @@ export function ReactiveSpec(testContainer, testControl, testComponent, wrapperC
 
 function fullSpec(description, testContainer, directives: any | any[], testComponent, wrapperClass) {
   describe(description, () => {
-    let fixture,
-      containerDE,
-      container,
-      containerEl,
-      ifControlStateService: IfControlStateService,
-      layoutService,
-      markControlService;
+    let fixture, containerDE, container, containerEl, layoutService, markControlService;
     if (!Array.isArray(directives)) {
       directives = [directives];
     }
@@ -94,7 +75,6 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
           MarkControlService,
           ControlIdService,
           DatalistIdService,
-          IfControlStateService,
         ],
       });
       fixture = TestBed.createComponent(testComponent);
@@ -102,7 +82,6 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       containerDE = fixture.debugElement.query(By.directive(testContainer));
       container = containerDE.componentInstance;
       containerEl = containerDE.nativeElement;
-      ifControlStateService = containerDE.injector.get(IfControlStateService);
       markControlService = containerDE.injector.get(MarkControlService);
       layoutService = containerDE.injector.get(LayoutService);
       fixture.detectChanges();
@@ -113,7 +92,8 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       // The scenarios were additionally verified by manual testing in a patched Stackblitz demo:
       // https://stackblitz.com/edit/input-on-blur-issue-onpush-td-13-4-3
       markControlService.markAsTouched();
-      container.state = valid ? CONTROL_STATE.VALID : CONTROL_STATE.INVALID;
+      container.control.control.value = valid;
+      container.control.control.markAsDirty();
     }
 
     it('injects the layoutService', () => {
@@ -121,8 +101,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       expect(layoutService.layout).toEqual(ClrFormLayout.HORIZONTAL);
     });
 
-    it('injects the IfControlStateService and subscribes', () => {
-      expect(ifControlStateService).toBeTruthy();
+    it('injects the container subscribes', () => {
       expect(container.subscriptions[0]).toBeTruthy();
     });
 
@@ -172,6 +151,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
 
     it('projects the success content when valid', () => {
       setValid(true);
+      container.control.control.updateValueAndValidity();
       fixture.detectChanges();
       expect(containerEl.querySelector('clr-control-error')).toBeFalsy();
       expect(containerEl.querySelector('clr-control-success')).toBeTruthy();
@@ -179,6 +159,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
 
     it('should have the success icon when valid', () => {
       setValid(true);
+      container.control.control.updateValueAndValidity();
       fixture.detectChanges();
       const icon: HTMLElement = containerEl.querySelector('cds-icon[shape=check-circle]');
       expect(icon).toBeTruthy();

@@ -8,7 +8,7 @@
 import { Directive, EmbeddedViewRef, Input, Optional, TemplateRef, ViewContainerRef } from '@angular/core';
 
 import { AbstractIfState } from './abstract-if-state';
-import { CONTROL_STATE, IfControlStateService } from './if-control-state.service';
+import { CONTROL_STATE } from './control-state.enum';
 import { NgControlService } from '../providers/ng-control.service';
 
 @Directive({
@@ -21,14 +21,13 @@ export class ClrIfError extends AbstractIfState {
   private embeddedViewRef: EmbeddedViewRef<any>;
 
   constructor(
-    @Optional() ifControlStateService: IfControlStateService,
     @Optional() ngControlService: NgControlService,
     private template: TemplateRef<any>,
     private container: ViewContainerRef
   ) {
-    super(ifControlStateService, ngControlService);
+    super(ngControlService);
 
-    if (!this.ifControlStateService) {
+    if (!ngControlService) {
       throw new Error('clrIfError can only be used within a form control container element like clr-input-container');
     }
   }
@@ -36,17 +35,15 @@ export class ClrIfError extends AbstractIfState {
    * @param state CONTROL_STATE
    */
   protected override handleState(state: CONTROL_STATE) {
-    if (this.error && this.control && this.control.invalid) {
-      this.displayError(this.control.hasError(this.error));
-    } else if (this.error && !!this.additionalControls?.length) {
-      const invalidControl = this.additionalControls?.filter(control => control.hasError(this.error))[0];
+    if (this.error && !!this.controls?.length) {
+      const invalidControl = this.controls?.filter(control => control.hasError(this.error))[0];
       this.displayError(!!invalidControl, invalidControl);
     } else {
       this.displayError(CONTROL_STATE.INVALID === state);
     }
   }
 
-  private displayError(invalid: boolean, control = this.control) {
+  private displayError(invalid: boolean, control = this.controls[0]) {
     /* if no container do nothing */
     if (!this.container) {
       return;
