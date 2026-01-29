@@ -27,7 +27,6 @@ import { OptionSelectionService } from './providers/option-selection.service';
 })
 export class ClrOptionItems<T> implements DoCheck, OnDestroy {
   private iterableProxy: NgForOf<T>;
-  private _rawItems: T[];
   private filteredItems: T[];
   private subscriptions: Subscription[] = [];
   private filter = '';
@@ -54,8 +53,12 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
   }
 
   @Input('clrOptionItemsOf')
+  get rawItems(): T[] {
+    return this.optionService.rawItems;
+  }
+
   set rawItems(items: T[]) {
-    this._rawItems = items ? items : [];
+    this.optionService.rawItems = items ? items : [];
     this.updateItems();
   }
 
@@ -85,9 +88,9 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
         this.iterableProxy.ngDoCheck();
       }
     }
-    const changes = this.modelDiffer.diff(this._rawItems);
+    const changes = this.modelDiffer.diff(this.optionService.rawItems);
     if (changes) {
-      this.updateSelection();
+      this.optionService.updateSelection();
     }
   }
 
@@ -95,22 +98,22 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
   private updateItems() {
-    if (!this._rawItems || this.filter === undefined || this.filter === null) {
+    if (!this.optionService.rawItems || this.filter === undefined || this.filter === null) {
       return;
     }
 
     const normalizedFilterValue = normalizeValue(this.filter);
 
     if (this.optionService.showAllOptions) {
-      this.filteredItems = this._rawItems;
+      this.filteredItems = this.optionService.rawItems;
     } else if (this._filterField) {
-      this.filteredItems = this._rawItems.filter(item => {
+      this.filteredItems = this.optionService.rawItems.filter(item => {
         const objValue = (item as any)[this._filterField];
         return objValue ? normalizeValue(objValue).includes(normalizedFilterValue) : false;
       });
     } else {
       // Filter by all item object values
-      this.filteredItems = this._rawItems.filter(item => {
+      this.filteredItems = this.optionService.rawItems.filter(item => {
         if (typeof item !== 'object') {
           return normalizeValue(item).includes(normalizedFilterValue);
         }
@@ -121,33 +124,6 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
       });
     }
     this.iterableProxy.ngForOf = this.filteredItems;
-  }
-
-  private updateSelection() {
-    if (!this.optionService.selectionModel?.model) {
-      return;
-    }
-    if (this.optionService.multiselectable) {
-      const multiModel = this.optionService.selectionModel.model as T[];
-      multiModel.forEach((selectedItem, selectedIndex) => {
-        for (let index = 0; index < this._rawItems.length; index++) {
-          const item = this._rawItems[index];
-          if (this.optionService.compareItems(item, selectedItem)) {
-            multiModel[selectedIndex] = item;
-            break;
-          }
-        }
-      });
-    } else {
-      const selectedItem = this.optionService.selectionModel.model as T;
-      for (let index = 0; index < this._rawItems.length; index++) {
-        const item = this._rawItems[index];
-        if (this.optionService.compareItems(item, selectedItem)) {
-          this.optionService.setSelectionValue(item);
-          break;
-        }
-      }
-    }
   }
 }
 

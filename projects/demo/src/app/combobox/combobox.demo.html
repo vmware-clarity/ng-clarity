@@ -37,7 +37,7 @@
     <label>My State</label>
     <clr-combobox
       [(ngModel)]="vertical.three"
-      [clrItemCompare]="compareFunc"
+      [clrItemsIdentityFn]="identityFunc"
       name="three"
       required
       [disabled]="disabled"
@@ -84,9 +84,10 @@
     <label>Favorite States</label>
     <clr-combobox
       [(ngModel)]="vertical.five"
-      [clrItemCompare]="compareFunc"
+      [clrItemsIdentityFn]="identityFunc"
       name="five"
       clrMulti="true"
+      [clrEditable]="true"
       required
       [disabled]="disabled"
     >

@@ -11,7 +11,7 @@ import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { ComboboxModel } from '../model/combobox.model';
 import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 
-export type ComboboxSelectionComparator<T> = (option: T, value: T) => boolean;
+export type ComboboxItemIdentity<T> = (item: T) => any;
 
 @Injectable()
 export class OptionSelectionService<T> {
@@ -20,6 +20,7 @@ export class OptionSelectionService<T> {
   filtering = true;
   selectionModel: ComboboxModel<T>;
   inputChanged: Observable<string>;
+  rawItems: T[];
 
   // Display all options on first open, even if filter text exists.
   // https://github.com/vmware-clarity/ng-clarity/issues/386
@@ -66,7 +67,7 @@ export class OptionSelectionService<T> {
     return this.selectionModel instanceof MultiSelectComboboxModel;
   }
 
-  compareItems: ComboboxSelectionComparator<T> = (option: T, value: T) => option === value;
+  identifyBy: ComboboxItemIdentity<T> = (item: T) => item;
 
   select(item: T) {
     if (item === null || item === undefined || this.selectionModel.containsItem(item)) {
@@ -118,5 +119,34 @@ export class OptionSelectionService<T> {
       } as T;
     }
     return value as T;
+  }
+
+  updateSelection() {
+    if (!this.selectionModel?.model || !(this.rawItems && this.rawItems.length > 0)) {
+      return;
+    }
+    if (this.multiselectable) {
+      const multiModel = this.selectionModel.model as T[];
+      multiModel.forEach((selectedItem, selectedIndex) => {
+        for (let index = 0; index < this.rawItems.length; index++) {
+          const item = this.rawItems[index];
+          if (this.identifyBy(item) === this.identifyBy(selectedItem)) {
+            multiModel[selectedIndex] = item;
+            break;
+          }
+        }
+      });
+    } else {
+      const selectedItem = this.selectionModel.model as T;
+      for (let index = 0; index < this.rawItems.length; index++) {
+        const item = this.rawItems[index];
+        if (this.identifyBy(item) === this.identifyBy(selectedItem)) {
+          // We need this call to be able to refresh the selection in single selection model.
+          // This prevents us from moving the current method in the respective models.
+          this.setSelectionValue(item);
+          break;
+        }
+      }
+    }
   }
 }

@@ -98,13 +98,13 @@ export default function (): void {
       it('handles a null input for the array of items', function () {
         this.testComponent.numbers = null;
         this.fixture.detectChanges();
-        expect(this.clarityDirective._rawItems).toEqual([]);
+        expect(this.clarityDirective.rawItems).toEqual([]);
       });
 
       it('handles an undefined input for the array of items', function () {
         this.testComponent.numbers = undefined;
         this.fixture.detectChanges();
-        expect(this.clarityDirective._rawItems).toEqual([]);
+        expect(this.clarityDirective.rawItems).toEqual([]);
       });
 
       it('will not filter on first open', function () {
@@ -177,7 +177,7 @@ export default function (): void {
         this.testComponent.numbers.unshift(42);
         this.fixture.detectChanges();
         const unshiftedItem = this.fixture.nativeElement.querySelector('li');
-        expect(this.clarityDirective._rawItems).toEqual([42, 0, 1, 2, 3]);
+        expect(this.clarityDirective.rawItems).toEqual([42, 0, 1, 2, 3]);
         expect(unshiftedItem.style.color).toBe('red');
 
         // Resetting
@@ -243,6 +243,7 @@ export default function (): void {
     });
 
     describe('updates selections correctly', () => {
+      let optionService: OptionSelectionService<any>;
       beforeEach(function () {
         TestBed.configureTestingModule({
           imports: [ClrComboboxModule],
@@ -253,14 +254,11 @@ export default function (): void {
         this.fixture.detectChanges();
         this.testComponent = this.fixture.componentInstance;
         this.clarityDirective = this.fixture.componentInstance.optionItems;
-        this.optionService = TestBed.inject(OptionSelectionService);
-        this.optionService.selectionModel = new MultiSelectComboboxModel<any>();
-        (this.optionService as OptionSelectionService<any>).setSelectionValue([
-          this.testComponent.numbers[0],
-          this.testComponent.numbers[1],
-        ]);
-        (this.optionService as OptionSelectionService<any>).compareItems = (a, b) => {
-          return a.a === b.a;
+        optionService = TestBed.inject(OptionSelectionService);
+        optionService.selectionModel = new MultiSelectComboboxModel<any>();
+        optionService.setSelectionValue([this.testComponent.numbers[0], this.testComponent.numbers[1]]);
+        optionService.identifyBy = a => {
+          return a.a;
         };
       });
 
@@ -269,37 +267,25 @@ export default function (): void {
       });
 
       it('has initial selection', function () {
-        expect((this.optionService as OptionSelectionService<any>).selectionModel.model.map(x => x.b)).toEqual([
-          'zero',
-          'one',
-        ]);
+        expect(optionService.selectionModel.model.map(x => x.b)).toEqual(['zero', 'one']);
       });
 
       it('updates selection when data set replaced and keeps value for deleted item', function () {
         this.testComponent.numbers = [{ a: 0, b: 'zero and a half' }];
         this.fixture.detectChanges();
-        expect((this.optionService as OptionSelectionService<any>).selectionModel.model.map(x => x.b)).toEqual([
-          'zero and a half',
-          'one',
-        ]);
+        expect(optionService.selectionModel.model.map(x => x.b)).toEqual(['zero and a half', 'one']);
       });
 
       it('updates selection when item replaced', function () {
         this.testComponent.numbers[1] = { a: 1, b: 'one and a half' };
         this.fixture.detectChanges();
-        expect((this.optionService as OptionSelectionService<any>).selectionModel.model.map(x => x.b)).toEqual([
-          'zero',
-          'one and a half',
-        ]);
+        expect(optionService.selectionModel.model.map(x => x.b)).toEqual(['zero', 'one and a half']);
       });
 
       it('updates selection when item updated', function () {
         this.testComponent.numbers[1].b = 'one and a third';
         this.fixture.detectChanges();
-        expect((this.optionService as OptionSelectionService<any>).selectionModel.model.map(x => x.b)).toEqual([
-          'zero',
-          'one and a third',
-        ]);
+        expect(optionService.selectionModel.model.map(x => x.b)).toEqual(['zero', 'one and a third']);
       });
     });
   });

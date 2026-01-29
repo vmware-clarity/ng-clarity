@@ -109,9 +109,9 @@ export default function () {
       expect(optionSelectionService.selectionModel.isEmpty()).toBeTrue();
     });
 
-    it('has a default compareItems function', () => {
-      expect(optionSelectionService.compareItems('one', 'two')).toBeFalse();
-      expect(optionSelectionService.compareItems('one', 'one')).toBeTrue();
+    it('has a default item identity function', () => {
+      expect(optionSelectionService.identifyBy('one')).not.toEqual(optionSelectionService.identifyBy('two'));
+      expect(optionSelectionService.identifyBy('one')).toEqual(optionSelectionService.identifyBy('one'));
     });
   });
 }

@@ -286,7 +286,7 @@ export class ComboboxDemo {
     two: '2',
     three: this.states[1],
     four: [this.states[3], this.states[4]],
-    five: [this.states[2], this.states[3], this.states[12]],
+    five: [this.states[2], this.states[3], this.states[12], { name: 'Somewhere else', abbreviation: 'WY' }],
   };
 
   horizontal = {
@@ -349,8 +349,8 @@ export class ComboboxDemo {
     return item.abbreviation;
   }
 
-  compareFunc(option: any, item: any) {
-    return item.abbreviation === option.abbreviation;
+  identityFunc(item: any) {
+    return item.abbreviation;
   }
 
   refreshStates() {
