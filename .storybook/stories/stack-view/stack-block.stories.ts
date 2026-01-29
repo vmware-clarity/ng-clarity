@@ -37,6 +37,7 @@ export default {
     content: 'Block content',
     subLabel: 'Sub-block',
     subContent: 'Sub-block content',
+    clrStackViewHeadingEnabled: false,
   },
 };
 
@@ -46,13 +47,13 @@ const StackViewTemplate: StoryFn = args => ({
       <clr-stack-block
         ${args.clrSbExpandable === undefined ? '' : '[clrSbExpandable]="clrSbExpandable"'}
         [clrSbExpanded]="clrSbExpanded"
-        [clrStackViewLevel]="clrStackViewLevel"
+        [clrStackViewHeadingEnabled]="clrStackViewHeadingEnabled"
         (clrSbExpandedChange)="clrSbExpandedChange($event)"
         [clrSbNotifyChange]="clrSbNotifyChange"
       >
         <clr-stack-label>{{ label }}</clr-stack-label>
         <clr-stack-content>{{ content }}</clr-stack-content>
-        <clr-stack-block>
+        <clr-stack-block [clrStackViewHeadingEnabled]="clrStackViewHeadingEnabled">
           <clr-stack-label>{{ subLabel }}</clr-stack-label>
           <clr-stack-content>{{ subContent }}</clr-stack-content>
         </clr-stack-block>
@@ -71,7 +72,7 @@ export const StackViewNonExpandable: StoryObj = {
   args: { clrSbExpandable: false },
 };
 
-export const StackViewColapsed: StoryObj = {
+export const StackViewCollapsed: StoryObj = {
   render: StackViewTemplate,
   args: { clrSbExpanded: false },
 };
@@ -79,6 +80,14 @@ export const StackViewColapsed: StoryObj = {
 export const StackViewExpanded: StoryObj = {
   render: StackViewTemplate,
   args: { clrSbExpanded: true },
+};
+
+export const StackViewExpandedHeadingEnabled: StoryObj = {
+  render: StackViewTemplate,
+  args: {
+    clrSbExpanded: true,
+    clrStackViewHeadingEnabled: true,
+  },
 };
 
 export const StackViewNotifyChange: StoryObj = {

@@ -78,8 +78,8 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
   // Make sure the host has the proper class for styling purposes
   host: {
     '[class.stack-block]': 'true',
-    '[attr.role]': '"heading"',
-    '[attr.aria-level]': 'headingLevel',
+    '[attr.role]': "headingEnabled || ariaLevel ? 'heading' : null",
+    '[attr.aria-level]': 'headingEnabled || ariaLevel ? headingLevel : null',
   },
   standalone: false,
 })
@@ -87,6 +87,7 @@ export class ClrStackBlock implements OnInit {
   @Input('clrSbExpanded') @HostBinding('class.stack-block-expanded') expanded = false;
   @Input('clrSbExpandable') @HostBinding('class.stack-block-expandable') expandable = false;
 
+  @Input('clrStackViewHeadingEnabled') headingEnabled = false;
   /**
    * Depth of the stack view starting from 1 for first level
    */
