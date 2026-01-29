@@ -73,3 +73,21 @@ export const Showcase: StoryObj = {
     controls: { disable: true },
   },
 };
+
+export const ShowcaseHover: StoryObj = {
+  args: { templateMode: 'showcase' },
+  parameters: {
+    actions: { disable: true },
+    controls: { disable: true },
+    pseudo: { hover: true },
+  },
+};
+
+export const ShowcaseActive: StoryObj = {
+  args: { templateMode: 'showcase' },
+  parameters: {
+    actions: { disable: true },
+    controls: { disable: true },
+    pseudo: { active: true },
+  },
+};
