@@ -29,7 +29,7 @@ for (const story of stories) {
   const storyId = story.id;
   const componentParsed = component.replaceAll(' ', '-').replaceAll('/', '-').toLowerCase();
   const storyName = storyId.replace(`${componentParsed}-`, '');
-  if (story.id.endsWith('--docs') || !component) {
+  if (story.id.endsWith('--docs') || !component || storyName === 'application--default') {
     continue;
   }
 

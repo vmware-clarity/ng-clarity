@@ -22,7 +22,7 @@ export default {
   },
 };
 
-export const Basic: StoryObj = {};
+export const Default: StoryObj = {};
 
 export const FirstNavigationOnly: StoryObj = {
   args: {
