@@ -6,7 +6,11 @@
  */
 
 type ScreenshotOptions = {
-  [componentOrStoryName: string]: { fullPageScreenshot?: boolean; viewport?: { width: number; height: number } };
+  [componentOrStoryName: string]: {
+    fullPageScreenshot?: boolean;
+    viewport?: { width: number; height: number };
+    exclude?: boolean;
+  };
 };
 
 /**
@@ -44,6 +48,15 @@ export const screenshotOptions: ScreenshotOptions = {
   },
   'header--collapsed': {
     viewport: { width: 500, height: 300 },
+  },
+  'application--default': {
+    exclude: true,
+  },
+  'application--first-navigation-only': {
+    fullPageScreenshot: true,
+  },
+  'application--no-navigations': {
+    fullPageScreenshot: true,
   },
   'modal--open-small-modal': {
     fullPageScreenshot: true,
