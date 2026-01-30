@@ -69,7 +69,7 @@
     "@angular/platform-browser-dynamic": "15.2.10",
     "@angular/router": "15.2.2",
     "@cds/core": "6.9.2",
-    "@compodoc/compodoc": "1.1.19",
+    "@compodoc/compodoc": "1.2.1",
     "@microsoft/api-extractor": "7.33.6",
     "@playwright/test": "1.48.0",
     "@semantic-release/exec": "6.0.3",
