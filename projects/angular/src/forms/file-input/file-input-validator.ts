@@ -38,12 +38,15 @@ export class ClrFileInputValidator implements Validator {
         const file = files.item(i);
 
         // accept validation (native attribute)
-        if (accept) {
-          const [fileExtension] = file.name.match(/\..+$/);
-
-          if (!accept.includes(file.type) && !accept.includes(fileExtension)) {
+        if (accept && accept.length) {
+          if (!this.validateAccept(file, accept)) {
             errors.accept = errors.accept || [];
-            errors.accept.push({ name: file.name, accept, type: file.type, extension: fileExtension });
+            errors.accept.push({
+              name: file.name,
+              accept,
+              type: file.type || '',
+              extension: this.getSuffixByDepth(file.name, 2), // last up to 2 parts for reporting
+            });
           }
         }
 
@@ -62,5 +65,43 @@ export class ClrFileInputValidator implements Validator {
     }
 
     return Object.keys(errors).length ? errors : null;
+  }
+
+  private getSuffixByDepth(filename: string, depth: number): string {
+    const match = filename.toLowerCase().match(new RegExp(`(\\.[^.]+){1,${depth}}$`, 'i'));
+    return match ? match[0] : '';
+  }
+
+  private validateAccept(file: File, acceptList: string[]): boolean {
+    const name = file.name.toLowerCase();
+    const type = (file.type || '').toLowerCase();
+
+    for (const entryRaw of acceptList) {
+      const entry = entryRaw.trim().toLowerCase();
+      if (!entry) {
+        continue;
+      }
+
+      // Extension check
+      if (entry.startsWith('.')) {
+        const depth = (entry.match(/\./g) || []).length;
+        if (this.getSuffixByDepth(name, depth) === entry) {
+          return true;
+        }
+        continue;
+      }
+
+      // MIME check
+      if (entry.endsWith('/*')) {
+        const prefix = entry.slice(0, entry.length - 1); // keep trailing slash
+        if (type.startsWith(prefix)) {
+          return true;
+        }
+      } else if (entry.includes('/') && type === entry) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

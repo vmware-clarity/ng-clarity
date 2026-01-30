@@ -49,7 +49,8 @@
     --cds-alias-object-interaction-info-selected: #{tokens.$cds-global-color-blue-900};
     --cds-alias-object-interaction-info-active: #{tokens.$cds-alias-object-interaction-info-click};
     --cds-alias-object-interaction-success-active: #{tokens.$cds-alias-object-interaction-success-click};
-    --cds-alias-object-interaction-warning-active: #{tokens.$cds-alias-object-interaction-warning-click};
+    --cds-alias-object-interaction-warning-click: #{tokens.$cds-global-color-ochre-700};
+    --cds-alias-object-interaction-warning-active: #{tokens.$cds-global-color-ochre-700};
     --cds-alias-object-interaction-danger-active: #{tokens.$cds-alias-object-interaction-danger-click};
     --cds-alias-object-interaction-neutral-active: #{tokens.$cds-alias-object-interaction-neutral-click};
     --cds-alias-object-interaction-inverse-active: #{tokens.$cds-alias-object-interaction-inverse-click};
