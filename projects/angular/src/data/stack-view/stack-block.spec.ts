@@ -391,7 +391,7 @@ export default function (): void {
       expect(defaultBlockLabelledBy).toBe(stackLabelId);
     });
 
-    it('should have expected NO heading roles and aria heading levels', async () => {
+    it('should not have heading role and aria-level attribute set if ariaLevel is not set', async () => {
       fixture = TestBed.createComponent(NestedBlocks);
       fixture.detectChanges();
       const component = fixture.componentInstance;
@@ -401,6 +401,7 @@ export default function (): void {
 
       const topLevelBlock = fixture.nativeElement.querySelector('.stack-block-expandable');
       expect(topLevelBlock.getAttribute('role')).toBeNull();
+      expect(component.blockInstance.ariaLevel).toBeNull();
       expect(topLevelBlock.getAttribute('aria-level')).toBeNull();
 
       const childBlocks = fixture.nativeElement.querySelectorAll('.stack-children .stack-block');
