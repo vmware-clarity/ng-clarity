@@ -21,7 +21,7 @@
   color: map.get($colors, color);
 
   & > .badge {
-    border-color: map.get($badge-colors, bg-color);
+    border-color: map.get($badge-colors, border-color);
     background-color: map.get($badge-colors, bg-color);
     color: map.get($badge-colors, color);
   }
@@ -33,7 +33,7 @@
 
   &.clickable:not(.disabled):hover,
   &.clickable:not(.disabled):active {
-    border-color: map.get($badge-colors, bg-color);
+    border-color: map.get($colors, border-color);
   }
 
   &.label-solid {
@@ -42,9 +42,16 @@
     color: map.get($colors, solid-color);
 
     &.clickable:not(.disabled, :active, :hover) > .badge {
-      border-color: map.get($badge-colors, outline-bg-color);
+      border-color: map.get($badge-colors, outline-border-color);
       background-color: map.get($badge-colors, outline-bg-color);
       color: map.get($badge-colors, outline-color);
+    }
+
+    &.clickable:active > .badge,
+    &.clickable:hover > .badge {
+      border-color: map.get($badge-colors, border-color);
+      background-color: map.get($badge-colors, bg-color);
+      color: map.get($badge-colors, color);
     }
 
     cds-icon,
@@ -156,6 +163,12 @@
         background: label-variables.$clr-label-bg-hover-color;
         color: label-variables.$clr-label-hover-color;
 
+        & > .badge {
+          border-color: badges-variables.$clr-badge-border-color;
+          background-color: badges-variables.$clr-badge-background-color;
+          color: badges-variables.$clr-badge-color;
+        }
+
         cds-icon,
         clr-icon {
           color: label-variables.$clr-label-hover-color;
@@ -166,6 +179,12 @@
         color: label-variables.$clr-label-active-color;
         background: label-variables.$clr-label-bg-active-color;
         transform: translateY(tokens.$cds-global-space-2);
+
+        & > .badge {
+          border-color: badges-variables.$clr-badge-border-color;
+          background-color: badges-variables.$clr-badge-background-color;
+          color: badges-variables.$clr-badge-color;
+        }
 
         cds-icon,
         clr-icon {
