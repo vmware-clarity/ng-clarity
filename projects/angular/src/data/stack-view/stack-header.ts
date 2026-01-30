@@ -16,9 +16,7 @@ import { HeadingLevel } from '../../wizard';
     <div class="stack-header">
       <div
         [attr.role]="ariaLevel ? 'heading' : null"
-        ,
         [attr.aria-level]="ariaLevel ? ariaLevel : null"
-        ,
         class="stack-title"
       >
         <ng-content></ng-content>
