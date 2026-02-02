@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 
 import { ClrStackView } from './stack-view';
 import { ClrStackViewModule } from './stack-view.module';
-import { HeadingLevel } from '../../wizard';
+import { HeadingLevel } from '../../utils/types/heading-level';
 
 @Component({
   template: `

@@ -17,5 +17,3 @@ export * from './wizard-page-navtitle';
 export * from './wizard-page-buttons';
 export * from './wizard-page-header-actions';
 export * from './wizard.module';
-
-export * from './heading-level';
