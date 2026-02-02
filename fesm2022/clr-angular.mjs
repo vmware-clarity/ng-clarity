@@ -32135,12 +32135,6 @@ class ClrStackBlock {
     get labelledById() {
         return this.stackBlockTitle.id;
     }
-    get headingLevel() {
-        if (this.ariaLevel) {
-            return this.ariaLevel + '';
-        }
-        return this.parent ? '4' : '3';
-    }
     get caretDirection() {
         return this.expanded ? 'down' : 'right';
     }
@@ -32185,7 +32179,7 @@ class ClrStackBlock {
         event.preventDefault();
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrStackBlock, deps: [{ token: ClrStackBlock, optional: true, skipSelf: true }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrStackBlock, isStandalone: false, selector: "clr-stack-block", inputs: { expanded: ["clrSbExpanded", "expanded"], expandable: ["clrSbExpandable", "expandable"], ariaLevel: ["clrStackViewLevel", "ariaLevel"], setChangedValue: ["clrSbNotifyChange", "setChangedValue"] }, outputs: { expandedChange: "clrSbExpandedChange" }, host: { properties: { "class.stack-block": "true", "attr.role": "\"heading\"", "attr.aria-level": "headingLevel", "class.stack-block-expanded": "this.expanded", "class.stack-block-expandable": "this.expandable", "class.stack-block-changed": "this.getChangedValue", "class.on-focus": "this.onStackLabelFocus" } }, queries: [{ propertyName: "stackBlockTitle", first: true, predicate: ClrStackViewLabel, descendants: true }], ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrStackBlock, isStandalone: false, selector: "clr-stack-block", inputs: { expanded: ["clrSbExpanded", "expanded"], expandable: ["clrSbExpandable", "expandable"], ariaLevel: ["clrStackViewLevel", "ariaLevel"], setChangedValue: ["clrSbNotifyChange", "setChangedValue"] }, outputs: { expandedChange: "clrSbExpandedChange" }, host: { properties: { "class.stack-block": "true", "attr.role": "ariaLevel ? 'heading' : null", "attr.aria-level": "ariaLevel ? ariaLevel : null", "class.stack-block-expanded": "this.expanded", "class.stack-block-expandable": "this.expandable", "class.stack-block-changed": "this.getChangedValue", "class.on-focus": "this.onStackLabelFocus" } }, queries: [{ propertyName: "stackBlockTitle", first: true, predicate: ClrStackViewLabel, descendants: true }], ngImport: i0, template: `
     <!-- The 'preventDefault' for the space keydown event prevents the page
     from scrolling when a stack block is toggled via the space key. -->
     <div
@@ -32277,8 +32271,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
     </clr-expandable-animation>
   `, host: {
                         '[class.stack-block]': 'true',
-                        '[attr.role]': '"heading"',
-                        '[attr.aria-level]': 'headingLevel',
+                        '[attr.role]': "ariaLevel ? 'heading' : null",
+                        '[attr.aria-level]': 'ariaLevel ? ariaLevel : null',
                     }, standalone: false, styles: [":host{display:block}\n"] }]
         }], ctorParameters: () => [{ type: ClrStackBlock, decorators: [{
                     type: SkipSelf
@@ -32379,9 +32373,15 @@ class ClrStackHeader {
         this.stackView = stackView;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrStackHeader, deps: [{ token: ClrStackView }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrStackHeader, isStandalone: false, selector: "clr-stack-header", ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrStackHeader, isStandalone: false, selector: "clr-stack-header", inputs: { ariaLevel: ["clrStackHeaderLevel", "ariaLevel"] }, ngImport: i0, template: `
     <div class="stack-header">
-      <h4 class="stack-title"><ng-content></ng-content></h4>
+      <div
+        [attr.role]="ariaLevel ? 'heading' : null"
+        [attr.aria-level]="ariaLevel ? ariaLevel : null"
+        class="stack-title"
+      >
+        <ng-content></ng-content>
+      </div>
 
       <span class="stack-actions">
         <ng-content select=".stack-action"></ng-content>
@@ -32393,14 +32393,23 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
             type: Component,
             args: [{ selector: 'clr-stack-header', template: `
     <div class="stack-header">
-      <h4 class="stack-title"><ng-content></ng-content></h4>
+      <div
+        [attr.role]="ariaLevel ? 'heading' : null"
+        [attr.aria-level]="ariaLevel ? ariaLevel : null"
+        class="stack-title"
+      >
+        <ng-content></ng-content>
+      </div>
 
       <span class="stack-actions">
         <ng-content select=".stack-action"></ng-content>
       </span>
     </div>
   `, standalone: false, styles: [":host{display:block}\n"] }]
-        }], ctorParameters: () => [{ type: ClrStackView }] });
+        }], ctorParameters: () => [{ type: ClrStackView }], propDecorators: { ariaLevel: [{
+                type: Input,
+                args: ['clrStackHeaderLevel']
+            }] } });
 
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.

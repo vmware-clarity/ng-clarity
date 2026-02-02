@@ -5652,904 +5652,6 @@ declare class ClrStackView {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackView, "clr-stack-view", never, {}, {}, never, ["clr-stack-header", "*"], false, never>;
 }
 
-declare class ClrStackHeader {
-    stackView: ClrStackView;
-    constructor(stackView: ClrStackView);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackHeader, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackHeader, "clr-stack-header", never, {}, {}, never, ["*", ".stack-action"], false, never>;
-}
-
-declare class ClrStackBlock implements OnInit {
-    private parent;
-    commonStrings: ClrCommonStringsService;
-    expanded: boolean;
-    expandable: boolean;
-    /**
-     * Depth of the stack view starting from 1 for first level
-     */
-    ariaLevel: number;
-    expandedChange: EventEmitter<boolean>;
-    stackBlockTitle: any;
-    focused: boolean;
-    uniqueId: string;
-    private _changedChildren;
-    private _fullyInitialized;
-    private _changed;
-    constructor(parent: ClrStackBlock, commonStrings: ClrCommonStringsService);
-    set setChangedValue(value: boolean);
-    get getChangedValue(): boolean;
-    get onStackLabelFocus(): boolean;
-    get labelledById(): any;
-    get headingLevel(): string;
-    get caretDirection(): string;
-    get role(): string;
-    get tabIndex(): string;
-    get ariaExpanded(): string;
-    ngOnInit(): void;
-    addChild(): void;
-    toggleExpand(event?: Event): void;
-    getStackChildrenId(): string;
-    protected preventDefaultIfNotInputEvent(event: Event): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{ optional: true; skipSelf: true; }, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": { "alias": "clrSbExpanded"; "required": false; }; "expandable": { "alias": "clrSbExpandable"; "required": false; }; "ariaLevel": { "alias": "clrStackViewLevel"; "required": false; }; "setChangedValue": { "alias": "clrSbNotifyChange"; "required": false; }; }, { "expandedChange": "clrSbExpandedChange"; }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
-}
-
-declare class ClrStackContentInput {
-    uniqueId: string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackContentInput, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStackContentInput, "[clrStackInput]", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrStackViewCustomTags {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewCustomTags, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStackViewCustomTags, "clr-stack-content", never, {}, {}, never, never, false, never>;
-}
-declare class ClrStackViewLabel implements OnInit {
-    private _generatedId;
-    private _id;
-    get id(): string;
-    set id(val: string);
-    ngOnInit(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewLabel, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackViewLabel, "clr-stack-label", never, { "id": { "alias": "id"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare const CLR_STACK_VIEW_DIRECTIVES: Type<any>[];
-declare class ClrStackViewModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrExpandableAnimationModule], [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrStackViewModule>;
-}
-
-type AsyncArray<T> = T[] | null | undefined | Promise<T[] | null | undefined> | Observable<T[] | null | undefined>;
-
-declare enum ClrSelectedState {
-    UNSELECTED = 0,
-    SELECTED = 1,
-    INDETERMINATE = 2
-}
-
-declare abstract class TreeNodeModel<T> {
-    nodeId: string;
-    expanded: boolean;
-    model: T | null;
-    textContent: string;
-    loading$: BehaviorSubject<boolean>;
-    selected: BehaviorSubject<ClrSelectedState>;
-    private _loading;
-    private _disabled;
-    abstract parent: TreeNodeModel<T> | null;
-    abstract children: TreeNodeModel<T>[];
-    get loading(): boolean;
-    set loading(isLoading: boolean);
-    get disabled(): boolean;
-    set disabled(value: boolean);
-    destroy(): void;
-    setSelected(state: ClrSelectedState, propagateUp: boolean, propagateDown: boolean): void;
-    toggleSelection(propagate: boolean): void;
-    _updateSelectionFromChildren(): void;
-    private computeSelectionStateFromChildren;
-}
-
-declare class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
-    private getChildren;
-    private featuresService;
-    parent: RecursiveTreeNodeModel<T> | null;
-    private subscription;
-    private childrenFetched;
-    private _children;
-    constructor(model: T, parent: RecursiveTreeNodeModel<T> | null, getChildren: (node: T) => AsyncArray<T> | undefined, featuresService: TreeFeaturesService<T> | undefined);
-    get children(): RecursiveTreeNodeModel<T>[];
-    set children(value: RecursiveTreeNodeModel<T>[]);
-    destroy(): void;
-    clearChildren(): void;
-    fetchChildren(): void;
-    private wrapChildren;
-}
-
-interface ClrRecursiveForOfContext<T> {
-    $implicit: T;
-    clrModel: TreeNodeModel<T>;
-}
-declare class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
-    private template;
-    private featuresService;
-    private cdr;
-    nodes: T | T[];
-    getChildren: (node: T) => AsyncArray<T>;
-    private childrenFetchSubscription;
-    constructor(template: TemplateRef<ClrRecursiveForOfContext<T>>, featuresService: TreeFeaturesService<T>, cdr: ChangeDetectorRef);
-    ngOnChanges(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRecursiveForOf<any>, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRecursiveForOf<any>, "[clrRecursiveFor][clrRecursiveForOf]", never, { "nodes": { "alias": "clrRecursiveForOf"; "required": false; }; "getChildren": { "alias": "clrRecursiveForGetChildren"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare class TreeFeaturesService<T> {
-    selectable: boolean;
-    eager: boolean;
-    recursion: {
-        template: TemplateRef<ClrRecursiveForOfContext<T>>;
-        root: RecursiveTreeNodeModel<T>[];
-    };
-    childrenFetched: Subject<void>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TreeFeaturesService<any>, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<TreeFeaturesService<any>>;
-}
-
-declare class TreeFocusManagerService<T> {
-    rootNodeModels: TreeNodeModel<T>[];
-    private focusedNodeId;
-    private _focusRequest;
-    private _focusChange;
-    get focusRequest(): Observable<string>;
-    get focusChange(): Observable<string>;
-    focusNode(model: TreeNodeModel<T>): void;
-    broadcastFocusedNode(nodeId: string): void;
-    focusParent(model: TreeNodeModel<T>): void;
-    focusFirstVisibleNode(): void;
-    focusLastVisibleNode(): void;
-    focusNodeAbove(model: TreeNodeModel<T>): void;
-    focusNodeBelow(model: TreeNodeModel<T>): void;
-    focusNodeStartsWith(searchString: string, model: TreeNodeModel<T>): void;
-    private findSiblings;
-    private findLastVisibleInNode;
-    private findNextFocusable;
-    private findLastVisibleInTree;
-    private findNodeAbove;
-    private findNodeBelow;
-    private findDescendentNodeStartsWith;
-    private findSiblingNodeStartsWith;
-    private findRootNodeStartsWith;
-    private findNodeStartsWith;
-    private findClosestNodeStartsWith;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TreeFocusManagerService<any>, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<TreeFocusManagerService<any>>;
-}
-
-declare class ClrTree<T> implements AfterContentInit, OnDestroy {
-    featuresService: TreeFeaturesService<T>;
-    private focusManagerService;
-    private renderer;
-    private el;
-    private rootNodes;
-    private subscriptions;
-    private _isMultiSelectable;
-    constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
-    set lazy(value: boolean);
-    get isMultiSelectable(): boolean;
-    ngAfterContentInit(): void;
-    ngOnDestroy(): void;
-    private setMultiSelectable;
-    private setRootNodes;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTree<any>, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTree<any>, "clr-tree", never, { "lazy": { "alias": "clrLazy"; "required": false; }; }, {}, ["rootNodes"], ["*"], false, never>;
-}
-
-declare class ClrTreeNodeLink {
-    private el;
-    constructor(el: ElementRef<HTMLElement>);
-    get active(): boolean;
-    activate(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNodeLink, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTreeNodeLink, ".clr-treenode-link", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
-    private platformId;
-    featuresService: TreeFeaturesService<T>;
-    expandService: IfExpandService;
-    commonStrings: ClrCommonStringsService;
-    private focusManager;
-    private elementRef;
-    expandable: boolean | undefined;
-    selectedChange: EventEmitter<ClrSelectedState>;
-    expandedChange: EventEmitter<boolean>;
-    STATES: typeof ClrSelectedState;
-    isModelLoading: boolean;
-    nodeId: string;
-    contentContainerTabindex: number;
-    _model: TreeNodeModel<T>;
-    private skipEmitChange;
-    private typeAheadKeyBuffer;
-    private typeAheadKeyEvent;
-    private subscriptions;
-    private contentContainer;
-    private treeNodeLinkList;
-    constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
-    get disabled(): boolean;
-    set disabled(value: boolean);
-    get selected(): ClrSelectedState | boolean;
-    set selected(value: ClrSelectedState | boolean);
-    get expanded(): boolean;
-    set expanded(value: boolean);
-    set clrForTypeAhead(value: string);
-    get ariaSelected(): boolean;
-    get treeNodeLink(): ClrTreeNodeLink;
-    private get isParent();
-    ngOnInit(): void;
-    ngAfterContentInit(): void;
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    isExpandable(): boolean;
-    isSelectable(): boolean;
-    focusTreeNode(): void;
-    broadcastFocusOnContainer(): void;
-    onKeyDown(event: KeyboardEvent): void;
-    private setTabIndex;
-    private checkTabIndex;
-    private toggleExpandOrTriggerDefault;
-    private expandOrFocusFirstChild;
-    private collapseOrFocusParent;
-    private triggerDefaultAction;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, null, null, null, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": { "alias": "clrExpandable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "selected": { "alias": "clrSelected"; "required": false; }; "expanded": { "alias": "clrExpanded"; "required": false; }; "clrForTypeAhead": { "alias": "clrForTypeAhead"; "required": false; }; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
-}
-
-declare class RecursiveChildren<T> {
-    featuresService: TreeFeaturesService<T>;
-    private expandService;
-    parent: TreeNodeModel<T>;
-    children: TreeNodeModel<T>[];
-    subscription: Subscription;
-    role: string;
-    constructor(featuresService: TreeFeaturesService<T>, expandService: IfExpandService);
-    ngAfterContentInit(): void;
-    shouldRender(): boolean;
-    getContext(node: TreeNodeModel<T>): ClrRecursiveForOfContext<T>;
-    ngOnDestroy(): void;
-    private setAriaRoles;
-    static ɵfac: i0.ɵɵFactoryDeclaration<RecursiveChildren<any>, [null, { optional: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<RecursiveChildren<any>, "clr-recursive-children", never, { "parent": { "alias": "parent"; "required": false; }; "children": { "alias": "children"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare const CLR_TREE_VIEW_DIRECTIVES: Type<any>[];
-declare class ClrTreeViewModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeViewModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTreeViewModule>;
-}
-
-declare class ClrDataModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDataModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDataModule, never, never, [typeof ClrDatagridModule, typeof ClrStackViewModule, typeof ClrTreeViewModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrDataModule>;
-}
-
-/** @deprecated since v18 in favor of ClrIcon, remove in v19 */
-declare class ClrIconCustomTag {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIconCustomTag, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIconCustomTag, "clr-icon", never, {}, {}, never, never, false, never>;
-}
-/** @deprecated since v18 in favor of ClrIcon, remove in v19 */
-declare class CdsIconCustomTag {
-    static ɵfac: i0.ɵɵFactoryDeclaration<CdsIconCustomTag, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<CdsIconCustomTag, "cds-icon", never, {}, {}, never, never, false, never>;
-}
-
-declare const CLR_ICON_DIRECTIVES: Type<any>[];
-/** @deprecated since v18 in favor of ClrIcon, remove in v19 */
-declare class ClrIconModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIconModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrIconModule, [typeof ClrIconCustomTag, typeof CdsIconCustomTag], [typeof i2.CommonModule], [typeof ClrIconCustomTag, typeof CdsIconCustomTag]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrIconModule>;
-}
-
-declare class ClrModalConfigurationService {
-    fadeMove: string;
-    backdrop: boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalConfigurationService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrModalConfigurationService>;
-}
-
-declare class ScrollingService {
-    private _document;
-    constructor(_document: any);
-    stopScrolling(): void;
-    resumeScrolling(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ScrollingService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ScrollingService>;
-}
-
-declare class ClrModal implements OnChanges, OnDestroy {
-    private _scrollingService;
-    commonStrings: ClrCommonStringsService;
-    private modalStackService;
-    private configuration;
-    modalId: string;
-    title: ElementRef<HTMLElement>;
-    _open: boolean;
-    _openChanged: EventEmitter<boolean>;
-    closable: boolean;
-    closeButtonAriaLabel: string;
-    size: string;
-    staticBackdrop: boolean;
-    skipAnimation: boolean;
-    stopClose: boolean;
-    altClose: EventEmitter<boolean>;
-    labelledBy: string;
-    bypassScrollService: boolean;
-    protected readonly modalContentTemplate: TemplateRef<any>;
-    private readonly bodyElementRef;
-    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
-    get fadeMove(): string;
-    set fadeMove(move: string);
-    get backdrop(): boolean;
-    ngOnChanges(changes: {
-        [propName: string]: SimpleChange;
-    }): void;
-    ngOnDestroy(): void;
-    open(): void;
-    backdropClick(): void;
-    close(): void;
-    fadeDone(e: AnimationEvent): void;
-    scrollTop(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": { "alias": "clrModalOpen"; "required": false; }; "closable": { "alias": "clrModalClosable"; "required": false; }; "closeButtonAriaLabel": { "alias": "clrModalCloseButtonAriaLabel"; "required": false; }; "size": { "alias": "clrModalSize"; "required": false; }; "staticBackdrop": { "alias": "clrModalStaticBackdrop"; "required": false; }; "skipAnimation": { "alias": "clrModalSkipAnimation"; "required": false; }; "stopClose": { "alias": "clrModalPreventClose"; "required": false; }; "labelledBy": { "alias": "clrModalLabelledById"; "required": false; }; "bypassScrollService": { "alias": "clrModalOverrideScrollService"; "required": false; }; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
-}
-
-/**
- * Allows modal overflow area to be scrollable via keyboard.
- * The modal body will focus with keyboard navigation only.
- * This allows inner focusable items to be focused without
- * the overflow scroll being focused.
- */
-declare class ClrModalBody implements OnDestroy {
-    private readonly renderer;
-    private readonly host;
-    private tabindex;
-    private unlisteners;
-    private observer;
-    constructor(renderer: Renderer2, host: ElementRef<HTMLElement>, ngZone: NgZone);
-    ngOnDestroy(): void;
-    private addTabIndex;
-    private removeTabIndex;
-    private addOrRemoveTabIndex;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalBody, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrModalBody, ".modal-body", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrModalHostComponent {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalHostComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModalHostComponent, "[clrModalHost]", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare const CLR_MODAL_DIRECTIVES: Type<any>[];
-declare class ClrModalModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent], [typeof i2.CommonModule, typeof CdkTrapFocusModule, typeof ClrIcon], [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent, typeof ClrIcon]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrModalModule>;
-}
-
-declare class ClrLoadingButton implements LoadingListener {
-    el: ElementRef<HTMLButtonElement>;
-    private renderer;
-    disabled: boolean;
-    clrLoadingChange: EventEmitter<ClrLoadingState>;
-    buttonState: typeof ClrLoadingState;
-    state: ClrLoadingState;
-    constructor(el: ElementRef<HTMLButtonElement>, renderer: Renderer2);
-    loadingStateChange(state: ClrLoadingState): void;
-    private setExplicitButtonWidth;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingButton, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLoadingButton, "button[clrLoading]", never, { "disabled": { "alias": "disabled"; "required": false; }; }, { "clrLoadingChange": "clrLoadingChange"; }, never, ["*"], false, never>;
-}
-
-declare const CLR_LOADING_BUTTON_DIRECTIVES: Type<any>[];
-declare class ClrLoadingButtonModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingButtonModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingButtonModule, [typeof ClrLoadingButton], [typeof i2.CommonModule], [typeof ClrLoadingButton]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLoadingButtonModule>;
-}
-
-declare class ButtonInGroupService {
-    private _changes;
-    get changes(): Observable<ClrButton>;
-    updateButtonGroup(button: ClrButton): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ButtonInGroupService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ButtonInGroupService>;
-}
-
-declare class ClrButton implements LoadingListener {
-    private readonly routerLinkActive;
-    buttonInGroupService: ButtonInGroupService;
-    _click: EventEmitter<boolean>;
-    routerLinkActiveClasses: string;
-    templateRef: TemplateRef<ClrButton>;
-    loading: boolean;
-    private _inMenu;
-    private _enableService;
-    private _classNames;
-    private _name;
-    private _type;
-    private _disabled;
-    private _id;
-    constructor(routerLinkActive: RouterLinkActive, buttonInGroupService: ButtonInGroupService);
-    get inMenu(): boolean;
-    set inMenu(value: boolean);
-    get classNames(): string;
-    set classNames(value: string);
-    get name(): string;
-    set name(value: string);
-    get type(): string;
-    set type(value: string);
-    get id(): string;
-    set id(value: string);
-    get disabled(): any;
-    set disabled(value: any);
-    get role(): string;
-    ngAfterViewInit(): void;
-    loadingStateChange(state: ClrLoadingState): void;
-    emitClick(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{ optional: true; }, { optional: true; skipSelf: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, { "routerLinkActiveClasses": { "alias": "routerLinkActive"; "required": false; }; "inMenu": { "alias": "clrInMenu"; "required": false; }; "classNames": { "alias": "class"; "required": false; }; "name": { "alias": "name"; "required": false; }; "type": { "alias": "type"; "required": false; }; "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; }, { "_click": "click"; }, never, ["*"], false, never>;
-}
-
-declare enum InitialFocus {
-    FIRST_ITEM = "first",
-    LAST_ITEM = "last"
-}
-
-declare class ButtonGroupFocusHandler {
-    private focusService;
-    private popoverService;
-    private renderer;
-    initialFocus: InitialFocus;
-    private menu;
-    private menuToggle;
-    private buttons;
-    private _unlistenFuncs;
-    constructor(focusService: FocusService$1, popoverService: ClrPopoverService, renderer: Renderer2);
-    ngOnDestroy(): void;
-    initialize({ menu, menuToggle }: {
-        menu: HTMLElement;
-        menuToggle: HTMLElement;
-    }): void;
-    private resetButtonsFocus;
-    private listenToKeys;
-    private closeMenu;
-    private linkButtons;
-    private focusFirstItem;
-    private focusLastItem;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ButtonGroupFocusHandler, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ButtonGroupFocusHandler>;
-}
-
-declare class ClrButtonGroup implements AfterContentInit, AfterViewInit {
-    buttonGroupNewService: ButtonInGroupService;
-    private popoverService;
-    commonStrings: ClrCommonStringsService;
-    private destroy$;
-    private focusHandler;
-    clrToggleButtonAriaLabel: string;
-    menuToggle: ElementRef<HTMLElement>;
-    menu: ElementRef<HTMLElement>;
-    buttons: QueryList<ClrButton>;
-    popoverId: string;
-    InitialFocus: typeof InitialFocus;
-    inlineButtons: ClrButton[];
-    menuButtons: ClrButton[];
-    protected popoverType: ClrPopoverType;
-    private _menuPosition;
-    constructor(buttonGroupNewService: ButtonInGroupService, popoverService: ClrPopoverService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
-    get menuPosition(): ClrPopoverPosition;
-    set menuPosition(pos: ClrPopoverPosition | string);
-    get open(): boolean;
-    /**
-     * 1. Initializes the initial Button Group View
-     * 2. Subscribes to changes on the ContentChildren
-     *    in case the user content projection changes
-     */
-    ngAfterContentInit(): void;
-    ngAfterViewInit(): void;
-    /**
-     * Moves the button into the other ViewContainer
-     * when an update is received.
-     *
-     * @param button
-     */
-    rearrangeButton(button: ClrButton): void;
-    openMenu(event: Event, initialFocus: InitialFocus): void;
-    /**
-     * Author: Eudes
-     *
-     * Finds the order of a button w.r.t other buttons
-     *
-     * @param buttonToMove
-     * @returns
-     */
-    getMoveIndex(buttonToMove: ClrButton): number;
-    initializeButtons(): void;
-    private handleFocusOnMenuOpen;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroup, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "clrToggleButtonAriaLabel": { "alias": "clrToggleButtonAriaLabel"; "required": false; }; "menuPosition": { "alias": "clrMenuPosition"; "required": false; }; }, {}, ["buttons"], never, false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
-}
-
-declare const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
-declare class ClrButtonGroupModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroupModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof ClrButton, typeof ClrButtonGroup], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrPopoverModuleNext], [typeof ClrButton, typeof ClrButtonGroup]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrButtonGroupModule>;
-}
-
-declare class ClrButtonModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonModule, never, never, [typeof ClrLoadingButtonModule, typeof ClrButtonGroupModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrButtonModule>;
-}
-
-declare class ResponsiveNavControlMessage {
-    private _controlCode;
-    private _navLevel;
-    constructor(_controlCode: string, _navLevel: number);
-    get controlCode(): string;
-    get navLevel(): number;
-}
-
-declare class ResponsiveNavigationService {
-    responsiveNavList: number[];
-    private registerNavSubject;
-    private controlNavSubject;
-    constructor();
-    get registeredNavs(): Observable<number[]>;
-    get navControl(): Observable<ResponsiveNavControlMessage>;
-    registerNav(navLevel: number): void;
-    isNavRegistered(navLevel: number): boolean;
-    unregisterNav(navLevel: number): void;
-    sendControlMessage(controlCode: string, navLevel: number): void;
-    closeAllNavs(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ResponsiveNavigationService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ResponsiveNavigationService>;
-}
-
-declare class ClrMainContainer implements OnDestroy, OnInit {
-    private elRef;
-    private responsiveNavService;
-    private _subscription;
-    private _classList;
-    constructor(elRef: ElementRef<HTMLElement>, responsiveNavService: ResponsiveNavigationService);
-    ngOnInit(): void;
-    processMessage(message: ResponsiveNavControlMessage): void;
-    controlNav(controlCode: string, navClass: string): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrMainContainer, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrMainContainer, "clr-main-container", never, {}, {}, never, never, false, never>;
-}
-
-declare const CLR_LAYOUT_DIRECTIVES: Type<any>[];
-declare class ClrMainContainerModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrMainContainerModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrMainContainerModule, [typeof ClrMainContainer], [typeof i2.CommonModule, typeof ClrIcon], [typeof ClrMainContainer]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrMainContainerModule>;
-}
-
-declare class ResponsiveNavCodes {
-    static NAV_LEVEL_1: number;
-    static NAV_LEVEL_2: number;
-    static NAV_CLOSE_ALL: string;
-    static NAV_OPEN: string;
-    static NAV_CLOSE: string;
-    static NAV_TOGGLE: string;
-    static NAV_CLASS_HAMBURGER_MENU: string;
-    static NAV_CLASS_OVERFLOW_MENU: string;
-    static NAV_CLASS_TRIGGER_1: string;
-    static NAV_CLASS_TRIGGER_2: string;
-    static NAV_CLASS_LEVEL_1: string;
-    static NAV_CLASS_LEVEL_2: string;
-}
-
-declare class ClrHeader implements OnDestroy {
-    private responsiveNavService;
-    commonStrings: ClrCommonStringsService;
-    role: string;
-    isNavLevel1OnPage: boolean;
-    isNavLevel2OnPage: boolean;
-    openNavLevel: number;
-    responsiveNavCodes: typeof ResponsiveNavCodes;
-    private _subscription;
-    constructor(responsiveNavService: ResponsiveNavigationService, commonStrings: ClrCommonStringsService);
-    get responsiveNavCommonString(): string;
-    get responsiveOverflowCommonString(): string;
-    resetNavTriggers(): void;
-    initializeNavTriggers(navList: number[]): void;
-    closeOpenNav(): void;
-    /**
-     * @deprecated Will be removed in with @clr/angular v15.0.0
-     *
-     * Use `openNav(navLevel)` instead to open the navigation and ResponsiveNavService to close it.
-     */
-    toggleNav(navLevel: number): void;
-    openNav(navLevel: number): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrHeader, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrHeader, "clr-header", never, { "role": { "alias": "role"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare class ClrNavLevel implements OnInit {
-    private cdkTrapFocus;
-    private responsiveNavService;
-    private elementRef;
-    private renderer;
-    _level: number;
-    closeButtonAriaLabel: string;
-    private _isOpen;
-    private _document;
-    private _subscription;
-    constructor(platformId: any, cdkTrapFocus: ClrStandaloneCdkTrapFocus, responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef<HTMLElement>, renderer: Renderer2, injector: Injector);
-    get level(): number;
-    get responsiveNavCodes(): ResponsiveNavCodes;
-    get isOpen(): boolean;
-    ngOnInit(): void;
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    onResize(event: Event): void;
-    onMouseClick(target: any): void;
-    addNavClass(level: number): void;
-    open(): void;
-    close(): void;
-    protected hideNavigation(): void;
-    protected showNavigation(): void;
-    protected hideCloseButton(): void;
-    protected showCloseButton(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "_level": { "alias": "clr-nav-level"; "required": false; }; "closeButtonAriaLabel": { "alias": "closeAriaLabel"; "required": false; }; }, {}, never, never, false, [{ directive: typeof ClrStandaloneCdkTrapFocus; inputs: {}; outputs: {}; }]>;
-}
-
-declare class ClrAriaCurrentLink implements OnInit, OnDestroy {
-    private rla;
-    ariaCurrent: string | undefined;
-    private subscription;
-    constructor(rla: RouterLinkActive);
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAriaCurrentLink, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAriaCurrentLink, "[clrAriaCurrentLink]", never, {}, {}, never, never, false, never>;
-}
-
-declare class MainContainerWillyWonka extends WillyWonka {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MainContainerWillyWonka, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MainContainerWillyWonka, "clr-main-container", never, {}, {}, never, never, false, never>;
-}
-
-declare class NavDetectionOompaLoompa extends OompaLoompa {
-    private responsiveNavService;
-    constructor(cdr: ChangeDetectorRef, willyWonka: MainContainerWillyWonka, responsiveNavService: ResponsiveNavigationService);
-    get flavor(): number;
-    static ɵfac: i0.ɵɵFactoryDeclaration<NavDetectionOompaLoompa, [null, { optional: true; }, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<NavDetectionOompaLoompa, "clr-header", never, {}, {}, never, never, false, never>;
-}
-
-declare const CLR_NAVIGATION_DIRECTIVES: Type<any>[];
-declare class ClrNavigationModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavigationModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrNavigationModule>;
-}
-
-declare enum TabsLayout {
-    HORIZONTAL = "horizontal",
-    VERTICAL = "vertical"
-}
-
-declare class TemplateRefContainer {
-    template: TemplateRef<any>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TemplateRefContainer, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<TemplateRefContainer, "ng-component", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class ClrTabLink {
-    ifActiveService: IfActiveService;
-    readonly id: number;
-    el: ElementRef<HTMLElement>;
-    private tabsService;
-    tabsId: number;
-    tabLinkId: string;
-    templateRefContainer: TemplateRefContainer;
-    private _inOverflow;
-    constructor(ifActiveService: IfActiveService, id: number, el: ElementRef<HTMLElement>, viewContainerRef: ViewContainerRef, tabsService: TabsService, tabsId: number);
-    get inOverflow(): boolean;
-    set inOverflow(inOverflow: boolean);
-    get addLinkClasses(): boolean;
-    get ariaControls(): string;
-    get active(): boolean;
-    get tabindex(): 0 | -1;
-    activate(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabLink, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabLink, "[clrTabLink]", never, { "tabLinkId": { "alias": "id"; "required": false; }; "inOverflow": { "alias": "clrTabLinkInOverflow"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare class ClrTab {
-    ifActiveService: IfActiveService;
-    id: number;
-    private tabsService;
-    tabLink: ClrTabLink;
-    tabContent: ClrTabContent;
-    constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService);
-    get active(): boolean;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTab, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTab, "clr-tab", never, {}, {}, ["tabLink", "tabContent"], ["*"], false, never>;
-}
-
-declare class TabsService {
-    layout: TabsLayout | string;
-    tabContentViewContainer: ViewContainerRef;
-    private _children;
-    get children(): ClrTab[];
-    get activeTab(): ClrTab;
-    get overflowTabs(): ClrTab[];
-    register(tab: ClrTab): void;
-    unregister(tab: ClrTab): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TabsService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<TabsService>;
-}
-
-declare class ClrTabContent implements OnDestroy {
-    ifActiveService: IfActiveService;
-    id: number;
-    private tabsService;
-    tabContentId: string;
-    private viewRef;
-    constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService);
-    get active(): boolean;
-    get ariaLabelledBy(): string;
-    private set templateRef(value);
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabContent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabContent, "clr-tab-content", never, { "tabContentId": { "alias": "id"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare class ClrTabs implements AfterContentInit, OnDestroy {
-    ifActiveService: IfActiveService;
-    popoverService: ClrPopoverService;
-    tabsService: TabsService;
-    tabsId: number;
-    commonStrings: ClrCommonStringsService;
-    tabLinkElements: HTMLElement[];
-    _mousedown: boolean;
-    keyFocus: ClrKeyFocus;
-    tabsActions: QueryList<ElementRef>;
-    private tabs;
-    private subscriptions;
-    private _tabOverflowEl;
-    private _tabLinkDirectives;
-    constructor(ifActiveService: IfActiveService, popoverService: ClrPopoverService, tabsService: TabsService, tabsId: number, commonStrings: ClrCommonStringsService);
-    get layout(): TabsLayout | string;
-    set layout(layout: TabsLayout | string);
-    get tabLinkDirectives(): ClrTabLink[];
-    get activeTabInOverflow(): boolean;
-    get activeTabPosition(): number;
-    get isCurrentInOverflow(): boolean;
-    get isVertical(): boolean;
-    set tabOverflowEl(value: ElementRef<HTMLElement>);
-    private get overflowPosition();
-    private set tabContentViewContainer(value);
-    ngAfterContentInit(): void;
-    ngOnDestroy(): void;
-    toggleOverflowOnPosition(position: number): void;
-    resetKeyFocusCurrentToActive(event: FocusEvent): void;
-    toggleOverflowOnClick(): void;
-    openOverflowOnFocus(): void;
-    closeOnFocusOut(event: FocusEvent): void;
-    closeOnEscapeKey(): void;
-    closeOnOutsideClick(event: Event, tabOverflowTrigger: HTMLElement): void;
-    private setTabLinkElements;
-    private listenForTabLinkChanges;
-    private listedForTabsActionsChanges;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabs, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabs, "clr-tabs", never, { "layout": { "alias": "clrLayout"; "required": false; }; }, {}, ["tabsActions", "tabs"], ["clr-tabs-actions"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
-}
-
-declare class ClrTabOverflowContent {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabOverflowContent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabOverflowContent, "clr-tab-overflow-content", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class ClrTabAction {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabAction, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabAction, "[clrTabAction]", never, {}, {}, never, never, false, never>;
-}
-
-type ClrTabsActionsPosition = 'left' | 'right';
-declare class ClrTabsActions {
-    position: ClrTabsActionsPosition;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabsActions, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabsActions, "clr-tabs-actions", never, { "position": { "alias": "position"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare class TabsWillyWonka extends WillyWonka {
-    static ɵfac: i0.ɵɵFactoryDeclaration<TabsWillyWonka, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<TabsWillyWonka, "clr-tabs", never, {}, {}, never, never, false, never>;
-}
-
-declare class ActiveOompaLoompa extends OompaLoompa {
-    private ifActive;
-    private id;
-    constructor(cdr: ChangeDetectorRef, willyWonka: TabsWillyWonka, id: number, ifActive: IfActiveService);
-    get flavor(): boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ActiveOompaLoompa, [null, { optional: true; }, null, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ActiveOompaLoompa, "[clrTabLink], clr-tab-content", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrTemplateRefModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTemplateRefModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTemplateRefModule, [typeof TemplateRefContainer], [typeof i2.CommonModule], [typeof TemplateRefContainer]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTemplateRefModule>;
-}
-
-declare const CLR_TABS_DIRECTIVES: Type<any>[];
-declare class ClrTabsModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabsModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa], [typeof i2.CommonModule, typeof ClrConditionalModule, typeof ClrIcon, typeof ClrTemplateRefModule, typeof ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa, typeof ClrConditionalModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTabsModule>;
-}
-
-interface BreadcrumbItem {
-    label: string;
-    href?: string;
-    routerLink?: string;
-    queryParams?: {
-        [key: string]: string;
-    };
-    target?: string;
-}
-
-declare class ClrBreadcrumbs {
-    protected commonStrings: ClrCommonStringsService;
-    isExpanded: boolean;
-    items: BreadcrumbItem[];
-    clrBreadcrumbItemClick: EventEmitter<BreadcrumbItem>;
-    protected limit: number;
-    protected max: number;
-    constructor(commonStrings: ClrCommonStringsService);
-    protected expand(): void;
-    protected handleItemClick(breadcrumb: BreadcrumbItem): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbs, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbs, "clr-breadcrumbs", never, { "items": { "alias": "items"; "required": false; }; }, { "clrBreadcrumbItemClick": "clrBreadcrumbItemClick"; }, never, never, false, never>;
-}
-
-declare class ClrBreadcrumbItem {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbItem, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbItem, "clr-breadcrumb-item", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class ClrBreadcrumbsModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbsModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBreadcrumbsModule, [typeof ClrBreadcrumbs, typeof ClrBreadcrumbItem], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrHostWrappingModule, typeof i6.RouterModule], [typeof ClrBreadcrumbs, typeof ClrIcon]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrBreadcrumbsModule>;
-}
-
-declare class ClrLayoutModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLayoutModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof ClrMainContainerModule, typeof ClrNavigationModule, typeof ClrTabsModule, typeof ClrVerticalNavModule, typeof ClrBreadcrumbsModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLayoutModule>;
-}
-
 declare class ButtonHubService {
     buttonsReady: boolean;
     private _previousBtnClicked;
@@ -7985,12 +7087,913 @@ declare class ClrWizardButton {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardButton, "clr-wizard-button", never, { "type": { "alias": "type"; "required": false; }; "disabled": { "alias": "clrWizardButtonDisabled"; "required": false; }; "hidden": { "alias": "clrWizardButtonHidden"; "required": false; }; }, { "wasClicked": "clrWizardButtonClicked"; }, never, ["*"], false, never>;
 }
 
+declare class ClrModalConfigurationService {
+    fadeMove: string;
+    backdrop: boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalConfigurationService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrModalConfigurationService>;
+}
+
+declare class ScrollingService {
+    private _document;
+    constructor(_document: any);
+    stopScrolling(): void;
+    resumeScrolling(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ScrollingService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ScrollingService>;
+}
+
+declare class ClrModal implements OnChanges, OnDestroy {
+    private _scrollingService;
+    commonStrings: ClrCommonStringsService;
+    private modalStackService;
+    private configuration;
+    modalId: string;
+    title: ElementRef<HTMLElement>;
+    _open: boolean;
+    _openChanged: EventEmitter<boolean>;
+    closable: boolean;
+    closeButtonAriaLabel: string;
+    size: string;
+    staticBackdrop: boolean;
+    skipAnimation: boolean;
+    stopClose: boolean;
+    altClose: EventEmitter<boolean>;
+    labelledBy: string;
+    bypassScrollService: boolean;
+    protected readonly modalContentTemplate: TemplateRef<any>;
+    private readonly bodyElementRef;
+    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
+    get fadeMove(): string;
+    set fadeMove(move: string);
+    get backdrop(): boolean;
+    ngOnChanges(changes: {
+        [propName: string]: SimpleChange;
+    }): void;
+    ngOnDestroy(): void;
+    open(): void;
+    backdropClick(): void;
+    close(): void;
+    fadeDone(e: AnimationEvent): void;
+    scrollTop(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": { "alias": "clrModalOpen"; "required": false; }; "closable": { "alias": "clrModalClosable"; "required": false; }; "closeButtonAriaLabel": { "alias": "clrModalCloseButtonAriaLabel"; "required": false; }; "size": { "alias": "clrModalSize"; "required": false; }; "staticBackdrop": { "alias": "clrModalStaticBackdrop"; "required": false; }; "skipAnimation": { "alias": "clrModalSkipAnimation"; "required": false; }; "stopClose": { "alias": "clrModalPreventClose"; "required": false; }; "labelledBy": { "alias": "clrModalLabelledById"; "required": false; }; "bypassScrollService": { "alias": "clrModalOverrideScrollService"; "required": false; }; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
+}
+
+/**
+ * Allows modal overflow area to be scrollable via keyboard.
+ * The modal body will focus with keyboard navigation only.
+ * This allows inner focusable items to be focused without
+ * the overflow scroll being focused.
+ */
+declare class ClrModalBody implements OnDestroy {
+    private readonly renderer;
+    private readonly host;
+    private tabindex;
+    private unlisteners;
+    private observer;
+    constructor(renderer: Renderer2, host: ElementRef<HTMLElement>, ngZone: NgZone);
+    ngOnDestroy(): void;
+    private addTabIndex;
+    private removeTabIndex;
+    private addOrRemoveTabIndex;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalBody, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrModalBody, ".modal-body", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrModalHostComponent {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalHostComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModalHostComponent, "[clrModalHost]", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare const CLR_MODAL_DIRECTIVES: Type<any>[];
+declare class ClrModalModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent], [typeof i2.CommonModule, typeof CdkTrapFocusModule, typeof ClrIcon], [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent, typeof ClrIcon]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrModalModule>;
+}
+
 declare const CLR_WIZARD_DIRECTIVES: any[];
 declare class ClrWizardModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrModalModule, typeof ClrAlertModule], [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrWizardModule>;
+}
+
+declare class ClrStackHeader {
+    stackView: ClrStackView;
+    /**
+     * Depth of the stack view header starting from 1 for first level
+     */
+    ariaLevel: HeadingLevel;
+    constructor(stackView: ClrStackView);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackHeader, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackHeader, "clr-stack-header", never, { "ariaLevel": { "alias": "clrStackHeaderLevel"; "required": false; }; }, {}, never, ["*", ".stack-action"], false, never>;
+}
+
+declare class ClrStackBlock implements OnInit {
+    private parent;
+    commonStrings: ClrCommonStringsService;
+    expanded: boolean;
+    expandable: boolean;
+    /**
+     * Depth of the stack view starting from 1 for first level
+     */
+    ariaLevel: HeadingLevel;
+    expandedChange: EventEmitter<boolean>;
+    stackBlockTitle: any;
+    focused: boolean;
+    uniqueId: string;
+    private _changedChildren;
+    private _fullyInitialized;
+    private _changed;
+    constructor(parent: ClrStackBlock, commonStrings: ClrCommonStringsService);
+    set setChangedValue(value: boolean);
+    get getChangedValue(): boolean;
+    get onStackLabelFocus(): boolean;
+    get labelledById(): any;
+    get caretDirection(): string;
+    get role(): string;
+    get tabIndex(): string;
+    get ariaExpanded(): string;
+    ngOnInit(): void;
+    addChild(): void;
+    toggleExpand(event?: Event): void;
+    getStackChildrenId(): string;
+    protected preventDefaultIfNotInputEvent(event: Event): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{ optional: true; skipSelf: true; }, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": { "alias": "clrSbExpanded"; "required": false; }; "expandable": { "alias": "clrSbExpandable"; "required": false; }; "ariaLevel": { "alias": "clrStackViewLevel"; "required": false; }; "setChangedValue": { "alias": "clrSbNotifyChange"; "required": false; }; }, { "expandedChange": "clrSbExpandedChange"; }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
+}
+
+declare class ClrStackContentInput {
+    uniqueId: string;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackContentInput, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStackContentInput, "[clrStackInput]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrStackViewCustomTags {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewCustomTags, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStackViewCustomTags, "clr-stack-content", never, {}, {}, never, never, false, never>;
+}
+declare class ClrStackViewLabel implements OnInit {
+    private _generatedId;
+    private _id;
+    get id(): string;
+    set id(val: string);
+    ngOnInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewLabel, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackViewLabel, "clr-stack-label", never, { "id": { "alias": "id"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare const CLR_STACK_VIEW_DIRECTIVES: Type<any>[];
+declare class ClrStackViewModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrExpandableAnimationModule], [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrStackViewModule>;
+}
+
+type AsyncArray<T> = T[] | null | undefined | Promise<T[] | null | undefined> | Observable<T[] | null | undefined>;
+
+declare enum ClrSelectedState {
+    UNSELECTED = 0,
+    SELECTED = 1,
+    INDETERMINATE = 2
+}
+
+declare abstract class TreeNodeModel<T> {
+    nodeId: string;
+    expanded: boolean;
+    model: T | null;
+    textContent: string;
+    loading$: BehaviorSubject<boolean>;
+    selected: BehaviorSubject<ClrSelectedState>;
+    private _loading;
+    private _disabled;
+    abstract parent: TreeNodeModel<T> | null;
+    abstract children: TreeNodeModel<T>[];
+    get loading(): boolean;
+    set loading(isLoading: boolean);
+    get disabled(): boolean;
+    set disabled(value: boolean);
+    destroy(): void;
+    setSelected(state: ClrSelectedState, propagateUp: boolean, propagateDown: boolean): void;
+    toggleSelection(propagate: boolean): void;
+    _updateSelectionFromChildren(): void;
+    private computeSelectionStateFromChildren;
+}
+
+declare class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
+    private getChildren;
+    private featuresService;
+    parent: RecursiveTreeNodeModel<T> | null;
+    private subscription;
+    private childrenFetched;
+    private _children;
+    constructor(model: T, parent: RecursiveTreeNodeModel<T> | null, getChildren: (node: T) => AsyncArray<T> | undefined, featuresService: TreeFeaturesService<T> | undefined);
+    get children(): RecursiveTreeNodeModel<T>[];
+    set children(value: RecursiveTreeNodeModel<T>[]);
+    destroy(): void;
+    clearChildren(): void;
+    fetchChildren(): void;
+    private wrapChildren;
+}
+
+interface ClrRecursiveForOfContext<T> {
+    $implicit: T;
+    clrModel: TreeNodeModel<T>;
+}
+declare class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
+    private template;
+    private featuresService;
+    private cdr;
+    nodes: T | T[];
+    getChildren: (node: T) => AsyncArray<T>;
+    private childrenFetchSubscription;
+    constructor(template: TemplateRef<ClrRecursiveForOfContext<T>>, featuresService: TreeFeaturesService<T>, cdr: ChangeDetectorRef);
+    ngOnChanges(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRecursiveForOf<any>, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRecursiveForOf<any>, "[clrRecursiveFor][clrRecursiveForOf]", never, { "nodes": { "alias": "clrRecursiveForOf"; "required": false; }; "getChildren": { "alias": "clrRecursiveForGetChildren"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare class TreeFeaturesService<T> {
+    selectable: boolean;
+    eager: boolean;
+    recursion: {
+        template: TemplateRef<ClrRecursiveForOfContext<T>>;
+        root: RecursiveTreeNodeModel<T>[];
+    };
+    childrenFetched: Subject<void>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TreeFeaturesService<any>, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<TreeFeaturesService<any>>;
+}
+
+declare class TreeFocusManagerService<T> {
+    rootNodeModels: TreeNodeModel<T>[];
+    private focusedNodeId;
+    private _focusRequest;
+    private _focusChange;
+    get focusRequest(): Observable<string>;
+    get focusChange(): Observable<string>;
+    focusNode(model: TreeNodeModel<T>): void;
+    broadcastFocusedNode(nodeId: string): void;
+    focusParent(model: TreeNodeModel<T>): void;
+    focusFirstVisibleNode(): void;
+    focusLastVisibleNode(): void;
+    focusNodeAbove(model: TreeNodeModel<T>): void;
+    focusNodeBelow(model: TreeNodeModel<T>): void;
+    focusNodeStartsWith(searchString: string, model: TreeNodeModel<T>): void;
+    private findSiblings;
+    private findLastVisibleInNode;
+    private findNextFocusable;
+    private findLastVisibleInTree;
+    private findNodeAbove;
+    private findNodeBelow;
+    private findDescendentNodeStartsWith;
+    private findSiblingNodeStartsWith;
+    private findRootNodeStartsWith;
+    private findNodeStartsWith;
+    private findClosestNodeStartsWith;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TreeFocusManagerService<any>, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<TreeFocusManagerService<any>>;
+}
+
+declare class ClrTree<T> implements AfterContentInit, OnDestroy {
+    featuresService: TreeFeaturesService<T>;
+    private focusManagerService;
+    private renderer;
+    private el;
+    private rootNodes;
+    private subscriptions;
+    private _isMultiSelectable;
+    constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
+    set lazy(value: boolean);
+    get isMultiSelectable(): boolean;
+    ngAfterContentInit(): void;
+    ngOnDestroy(): void;
+    private setMultiSelectable;
+    private setRootNodes;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTree<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTree<any>, "clr-tree", never, { "lazy": { "alias": "clrLazy"; "required": false; }; }, {}, ["rootNodes"], ["*"], false, never>;
+}
+
+declare class ClrTreeNodeLink {
+    private el;
+    constructor(el: ElementRef<HTMLElement>);
+    get active(): boolean;
+    activate(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNodeLink, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTreeNodeLink, ".clr-treenode-link", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
+    private platformId;
+    featuresService: TreeFeaturesService<T>;
+    expandService: IfExpandService;
+    commonStrings: ClrCommonStringsService;
+    private focusManager;
+    private elementRef;
+    expandable: boolean | undefined;
+    selectedChange: EventEmitter<ClrSelectedState>;
+    expandedChange: EventEmitter<boolean>;
+    STATES: typeof ClrSelectedState;
+    isModelLoading: boolean;
+    nodeId: string;
+    contentContainerTabindex: number;
+    _model: TreeNodeModel<T>;
+    private skipEmitChange;
+    private typeAheadKeyBuffer;
+    private typeAheadKeyEvent;
+    private subscriptions;
+    private contentContainer;
+    private treeNodeLinkList;
+    constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
+    get disabled(): boolean;
+    set disabled(value: boolean);
+    get selected(): ClrSelectedState | boolean;
+    set selected(value: ClrSelectedState | boolean);
+    get expanded(): boolean;
+    set expanded(value: boolean);
+    set clrForTypeAhead(value: string);
+    get ariaSelected(): boolean;
+    get treeNodeLink(): ClrTreeNodeLink;
+    private get isParent();
+    ngOnInit(): void;
+    ngAfterContentInit(): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    isExpandable(): boolean;
+    isSelectable(): boolean;
+    focusTreeNode(): void;
+    broadcastFocusOnContainer(): void;
+    onKeyDown(event: KeyboardEvent): void;
+    private setTabIndex;
+    private checkTabIndex;
+    private toggleExpandOrTriggerDefault;
+    private expandOrFocusFirstChild;
+    private collapseOrFocusParent;
+    private triggerDefaultAction;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, null, null, null, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": { "alias": "clrExpandable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "selected": { "alias": "clrSelected"; "required": false; }; "expanded": { "alias": "clrExpanded"; "required": false; }; "clrForTypeAhead": { "alias": "clrForTypeAhead"; "required": false; }; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
+}
+
+declare class RecursiveChildren<T> {
+    featuresService: TreeFeaturesService<T>;
+    private expandService;
+    parent: TreeNodeModel<T>;
+    children: TreeNodeModel<T>[];
+    subscription: Subscription;
+    role: string;
+    constructor(featuresService: TreeFeaturesService<T>, expandService: IfExpandService);
+    ngAfterContentInit(): void;
+    shouldRender(): boolean;
+    getContext(node: TreeNodeModel<T>): ClrRecursiveForOfContext<T>;
+    ngOnDestroy(): void;
+    private setAriaRoles;
+    static ɵfac: i0.ɵɵFactoryDeclaration<RecursiveChildren<any>, [null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<RecursiveChildren<any>, "clr-recursive-children", never, { "parent": { "alias": "parent"; "required": false; }; "children": { "alias": "children"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare const CLR_TREE_VIEW_DIRECTIVES: Type<any>[];
+declare class ClrTreeViewModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeViewModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTreeViewModule>;
+}
+
+declare class ClrDataModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDataModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDataModule, never, never, [typeof ClrDatagridModule, typeof ClrStackViewModule, typeof ClrTreeViewModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrDataModule>;
+}
+
+/** @deprecated since v18 in favor of ClrIcon, remove in v19 */
+declare class ClrIconCustomTag {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIconCustomTag, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIconCustomTag, "clr-icon", never, {}, {}, never, never, false, never>;
+}
+/** @deprecated since v18 in favor of ClrIcon, remove in v19 */
+declare class CdsIconCustomTag {
+    static ɵfac: i0.ɵɵFactoryDeclaration<CdsIconCustomTag, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<CdsIconCustomTag, "cds-icon", never, {}, {}, never, never, false, never>;
+}
+
+declare const CLR_ICON_DIRECTIVES: Type<any>[];
+/** @deprecated since v18 in favor of ClrIcon, remove in v19 */
+declare class ClrIconModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIconModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrIconModule, [typeof ClrIconCustomTag, typeof CdsIconCustomTag], [typeof i2.CommonModule], [typeof ClrIconCustomTag, typeof CdsIconCustomTag]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrIconModule>;
+}
+
+declare class ClrLoadingButton implements LoadingListener {
+    el: ElementRef<HTMLButtonElement>;
+    private renderer;
+    disabled: boolean;
+    clrLoadingChange: EventEmitter<ClrLoadingState>;
+    buttonState: typeof ClrLoadingState;
+    state: ClrLoadingState;
+    constructor(el: ElementRef<HTMLButtonElement>, renderer: Renderer2);
+    loadingStateChange(state: ClrLoadingState): void;
+    private setExplicitButtonWidth;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingButton, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLoadingButton, "button[clrLoading]", never, { "disabled": { "alias": "disabled"; "required": false; }; }, { "clrLoadingChange": "clrLoadingChange"; }, never, ["*"], false, never>;
+}
+
+declare const CLR_LOADING_BUTTON_DIRECTIVES: Type<any>[];
+declare class ClrLoadingButtonModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingButtonModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingButtonModule, [typeof ClrLoadingButton], [typeof i2.CommonModule], [typeof ClrLoadingButton]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLoadingButtonModule>;
+}
+
+declare class ButtonInGroupService {
+    private _changes;
+    get changes(): Observable<ClrButton>;
+    updateButtonGroup(button: ClrButton): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ButtonInGroupService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ButtonInGroupService>;
+}
+
+declare class ClrButton implements LoadingListener {
+    private readonly routerLinkActive;
+    buttonInGroupService: ButtonInGroupService;
+    _click: EventEmitter<boolean>;
+    routerLinkActiveClasses: string;
+    templateRef: TemplateRef<ClrButton>;
+    loading: boolean;
+    private _inMenu;
+    private _enableService;
+    private _classNames;
+    private _name;
+    private _type;
+    private _disabled;
+    private _id;
+    constructor(routerLinkActive: RouterLinkActive, buttonInGroupService: ButtonInGroupService);
+    get inMenu(): boolean;
+    set inMenu(value: boolean);
+    get classNames(): string;
+    set classNames(value: string);
+    get name(): string;
+    set name(value: string);
+    get type(): string;
+    set type(value: string);
+    get id(): string;
+    set id(value: string);
+    get disabled(): any;
+    set disabled(value: any);
+    get role(): string;
+    ngAfterViewInit(): void;
+    loadingStateChange(state: ClrLoadingState): void;
+    emitClick(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{ optional: true; }, { optional: true; skipSelf: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, { "routerLinkActiveClasses": { "alias": "routerLinkActive"; "required": false; }; "inMenu": { "alias": "clrInMenu"; "required": false; }; "classNames": { "alias": "class"; "required": false; }; "name": { "alias": "name"; "required": false; }; "type": { "alias": "type"; "required": false; }; "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; }, { "_click": "click"; }, never, ["*"], false, never>;
+}
+
+declare enum InitialFocus {
+    FIRST_ITEM = "first",
+    LAST_ITEM = "last"
+}
+
+declare class ButtonGroupFocusHandler {
+    private focusService;
+    private popoverService;
+    private renderer;
+    initialFocus: InitialFocus;
+    private menu;
+    private menuToggle;
+    private buttons;
+    private _unlistenFuncs;
+    constructor(focusService: FocusService$1, popoverService: ClrPopoverService, renderer: Renderer2);
+    ngOnDestroy(): void;
+    initialize({ menu, menuToggle }: {
+        menu: HTMLElement;
+        menuToggle: HTMLElement;
+    }): void;
+    private resetButtonsFocus;
+    private listenToKeys;
+    private closeMenu;
+    private linkButtons;
+    private focusFirstItem;
+    private focusLastItem;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ButtonGroupFocusHandler, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ButtonGroupFocusHandler>;
+}
+
+declare class ClrButtonGroup implements AfterContentInit, AfterViewInit {
+    buttonGroupNewService: ButtonInGroupService;
+    private popoverService;
+    commonStrings: ClrCommonStringsService;
+    private destroy$;
+    private focusHandler;
+    clrToggleButtonAriaLabel: string;
+    menuToggle: ElementRef<HTMLElement>;
+    menu: ElementRef<HTMLElement>;
+    buttons: QueryList<ClrButton>;
+    popoverId: string;
+    InitialFocus: typeof InitialFocus;
+    inlineButtons: ClrButton[];
+    menuButtons: ClrButton[];
+    protected popoverType: ClrPopoverType;
+    private _menuPosition;
+    constructor(buttonGroupNewService: ButtonInGroupService, popoverService: ClrPopoverService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
+    get menuPosition(): ClrPopoverPosition;
+    set menuPosition(pos: ClrPopoverPosition | string);
+    get open(): boolean;
+    /**
+     * 1. Initializes the initial Button Group View
+     * 2. Subscribes to changes on the ContentChildren
+     *    in case the user content projection changes
+     */
+    ngAfterContentInit(): void;
+    ngAfterViewInit(): void;
+    /**
+     * Moves the button into the other ViewContainer
+     * when an update is received.
+     *
+     * @param button
+     */
+    rearrangeButton(button: ClrButton): void;
+    openMenu(event: Event, initialFocus: InitialFocus): void;
+    /**
+     * Author: Eudes
+     *
+     * Finds the order of a button w.r.t other buttons
+     *
+     * @param buttonToMove
+     * @returns
+     */
+    getMoveIndex(buttonToMove: ClrButton): number;
+    initializeButtons(): void;
+    private handleFocusOnMenuOpen;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroup, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "clrToggleButtonAriaLabel": { "alias": "clrToggleButtonAriaLabel"; "required": false; }; "menuPosition": { "alias": "clrMenuPosition"; "required": false; }; }, {}, ["buttons"], never, false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+}
+
+declare const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
+declare class ClrButtonGroupModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroupModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof ClrButton, typeof ClrButtonGroup], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrPopoverModuleNext], [typeof ClrButton, typeof ClrButtonGroup]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrButtonGroupModule>;
+}
+
+declare class ClrButtonModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonModule, never, never, [typeof ClrLoadingButtonModule, typeof ClrButtonGroupModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrButtonModule>;
+}
+
+declare class ResponsiveNavControlMessage {
+    private _controlCode;
+    private _navLevel;
+    constructor(_controlCode: string, _navLevel: number);
+    get controlCode(): string;
+    get navLevel(): number;
+}
+
+declare class ResponsiveNavigationService {
+    responsiveNavList: number[];
+    private registerNavSubject;
+    private controlNavSubject;
+    constructor();
+    get registeredNavs(): Observable<number[]>;
+    get navControl(): Observable<ResponsiveNavControlMessage>;
+    registerNav(navLevel: number): void;
+    isNavRegistered(navLevel: number): boolean;
+    unregisterNav(navLevel: number): void;
+    sendControlMessage(controlCode: string, navLevel: number): void;
+    closeAllNavs(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ResponsiveNavigationService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ResponsiveNavigationService>;
+}
+
+declare class ClrMainContainer implements OnDestroy, OnInit {
+    private elRef;
+    private responsiveNavService;
+    private _subscription;
+    private _classList;
+    constructor(elRef: ElementRef<HTMLElement>, responsiveNavService: ResponsiveNavigationService);
+    ngOnInit(): void;
+    processMessage(message: ResponsiveNavControlMessage): void;
+    controlNav(controlCode: string, navClass: string): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrMainContainer, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrMainContainer, "clr-main-container", never, {}, {}, never, never, false, never>;
+}
+
+declare const CLR_LAYOUT_DIRECTIVES: Type<any>[];
+declare class ClrMainContainerModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrMainContainerModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrMainContainerModule, [typeof ClrMainContainer], [typeof i2.CommonModule, typeof ClrIcon], [typeof ClrMainContainer]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrMainContainerModule>;
+}
+
+declare class ResponsiveNavCodes {
+    static NAV_LEVEL_1: number;
+    static NAV_LEVEL_2: number;
+    static NAV_CLOSE_ALL: string;
+    static NAV_OPEN: string;
+    static NAV_CLOSE: string;
+    static NAV_TOGGLE: string;
+    static NAV_CLASS_HAMBURGER_MENU: string;
+    static NAV_CLASS_OVERFLOW_MENU: string;
+    static NAV_CLASS_TRIGGER_1: string;
+    static NAV_CLASS_TRIGGER_2: string;
+    static NAV_CLASS_LEVEL_1: string;
+    static NAV_CLASS_LEVEL_2: string;
+}
+
+declare class ClrHeader implements OnDestroy {
+    private responsiveNavService;
+    commonStrings: ClrCommonStringsService;
+    role: string;
+    isNavLevel1OnPage: boolean;
+    isNavLevel2OnPage: boolean;
+    openNavLevel: number;
+    responsiveNavCodes: typeof ResponsiveNavCodes;
+    private _subscription;
+    constructor(responsiveNavService: ResponsiveNavigationService, commonStrings: ClrCommonStringsService);
+    get responsiveNavCommonString(): string;
+    get responsiveOverflowCommonString(): string;
+    resetNavTriggers(): void;
+    initializeNavTriggers(navList: number[]): void;
+    closeOpenNav(): void;
+    /**
+     * @deprecated Will be removed in with @clr/angular v15.0.0
+     *
+     * Use `openNav(navLevel)` instead to open the navigation and ResponsiveNavService to close it.
+     */
+    toggleNav(navLevel: number): void;
+    openNav(navLevel: number): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrHeader, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrHeader, "clr-header", never, { "role": { "alias": "role"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare class ClrNavLevel implements OnInit {
+    private cdkTrapFocus;
+    private responsiveNavService;
+    private elementRef;
+    private renderer;
+    _level: number;
+    closeButtonAriaLabel: string;
+    private _isOpen;
+    private _document;
+    private _subscription;
+    constructor(platformId: any, cdkTrapFocus: ClrStandaloneCdkTrapFocus, responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef<HTMLElement>, renderer: Renderer2, injector: Injector);
+    get level(): number;
+    get responsiveNavCodes(): ResponsiveNavCodes;
+    get isOpen(): boolean;
+    ngOnInit(): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    onResize(event: Event): void;
+    onMouseClick(target: any): void;
+    addNavClass(level: number): void;
+    open(): void;
+    close(): void;
+    protected hideNavigation(): void;
+    protected showNavigation(): void;
+    protected hideCloseButton(): void;
+    protected showCloseButton(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "_level": { "alias": "clr-nav-level"; "required": false; }; "closeButtonAriaLabel": { "alias": "closeAriaLabel"; "required": false; }; }, {}, never, never, false, [{ directive: typeof ClrStandaloneCdkTrapFocus; inputs: {}; outputs: {}; }]>;
+}
+
+declare class ClrAriaCurrentLink implements OnInit, OnDestroy {
+    private rla;
+    ariaCurrent: string | undefined;
+    private subscription;
+    constructor(rla: RouterLinkActive);
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAriaCurrentLink, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAriaCurrentLink, "[clrAriaCurrentLink]", never, {}, {}, never, never, false, never>;
+}
+
+declare class MainContainerWillyWonka extends WillyWonka {
+    static ɵfac: i0.ɵɵFactoryDeclaration<MainContainerWillyWonka, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<MainContainerWillyWonka, "clr-main-container", never, {}, {}, never, never, false, never>;
+}
+
+declare class NavDetectionOompaLoompa extends OompaLoompa {
+    private responsiveNavService;
+    constructor(cdr: ChangeDetectorRef, willyWonka: MainContainerWillyWonka, responsiveNavService: ResponsiveNavigationService);
+    get flavor(): number;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NavDetectionOompaLoompa, [null, { optional: true; }, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NavDetectionOompaLoompa, "clr-header", never, {}, {}, never, never, false, never>;
+}
+
+declare const CLR_NAVIGATION_DIRECTIVES: Type<any>[];
+declare class ClrNavigationModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavigationModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrNavigationModule>;
+}
+
+declare enum TabsLayout {
+    HORIZONTAL = "horizontal",
+    VERTICAL = "vertical"
+}
+
+declare class TemplateRefContainer {
+    template: TemplateRef<any>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TemplateRefContainer, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<TemplateRefContainer, "ng-component", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrTabLink {
+    ifActiveService: IfActiveService;
+    readonly id: number;
+    el: ElementRef<HTMLElement>;
+    private tabsService;
+    tabsId: number;
+    tabLinkId: string;
+    templateRefContainer: TemplateRefContainer;
+    private _inOverflow;
+    constructor(ifActiveService: IfActiveService, id: number, el: ElementRef<HTMLElement>, viewContainerRef: ViewContainerRef, tabsService: TabsService, tabsId: number);
+    get inOverflow(): boolean;
+    set inOverflow(inOverflow: boolean);
+    get addLinkClasses(): boolean;
+    get ariaControls(): string;
+    get active(): boolean;
+    get tabindex(): 0 | -1;
+    activate(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabLink, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabLink, "[clrTabLink]", never, { "tabLinkId": { "alias": "id"; "required": false; }; "inOverflow": { "alias": "clrTabLinkInOverflow"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare class ClrTab {
+    ifActiveService: IfActiveService;
+    id: number;
+    private tabsService;
+    tabLink: ClrTabLink;
+    tabContent: ClrTabContent;
+    constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService);
+    get active(): boolean;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTab, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTab, "clr-tab", never, {}, {}, ["tabLink", "tabContent"], ["*"], false, never>;
+}
+
+declare class TabsService {
+    layout: TabsLayout | string;
+    tabContentViewContainer: ViewContainerRef;
+    private _children;
+    get children(): ClrTab[];
+    get activeTab(): ClrTab;
+    get overflowTabs(): ClrTab[];
+    register(tab: ClrTab): void;
+    unregister(tab: ClrTab): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TabsService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<TabsService>;
+}
+
+declare class ClrTabContent implements OnDestroy {
+    ifActiveService: IfActiveService;
+    id: number;
+    private tabsService;
+    tabContentId: string;
+    private viewRef;
+    constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService);
+    get active(): boolean;
+    get ariaLabelledBy(): string;
+    private set templateRef(value);
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabContent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabContent, "clr-tab-content", never, { "tabContentId": { "alias": "id"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare class ClrTabs implements AfterContentInit, OnDestroy {
+    ifActiveService: IfActiveService;
+    popoverService: ClrPopoverService;
+    tabsService: TabsService;
+    tabsId: number;
+    commonStrings: ClrCommonStringsService;
+    tabLinkElements: HTMLElement[];
+    _mousedown: boolean;
+    keyFocus: ClrKeyFocus;
+    tabsActions: QueryList<ElementRef>;
+    private tabs;
+    private subscriptions;
+    private _tabOverflowEl;
+    private _tabLinkDirectives;
+    constructor(ifActiveService: IfActiveService, popoverService: ClrPopoverService, tabsService: TabsService, tabsId: number, commonStrings: ClrCommonStringsService);
+    get layout(): TabsLayout | string;
+    set layout(layout: TabsLayout | string);
+    get tabLinkDirectives(): ClrTabLink[];
+    get activeTabInOverflow(): boolean;
+    get activeTabPosition(): number;
+    get isCurrentInOverflow(): boolean;
+    get isVertical(): boolean;
+    set tabOverflowEl(value: ElementRef<HTMLElement>);
+    private get overflowPosition();
+    private set tabContentViewContainer(value);
+    ngAfterContentInit(): void;
+    ngOnDestroy(): void;
+    toggleOverflowOnPosition(position: number): void;
+    resetKeyFocusCurrentToActive(event: FocusEvent): void;
+    toggleOverflowOnClick(): void;
+    openOverflowOnFocus(): void;
+    closeOnFocusOut(event: FocusEvent): void;
+    closeOnEscapeKey(): void;
+    closeOnOutsideClick(event: Event, tabOverflowTrigger: HTMLElement): void;
+    private setTabLinkElements;
+    private listenForTabLinkChanges;
+    private listedForTabsActionsChanges;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabs, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabs, "clr-tabs", never, { "layout": { "alias": "clrLayout"; "required": false; }; }, {}, ["tabsActions", "tabs"], ["clr-tabs-actions"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+}
+
+declare class ClrTabOverflowContent {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabOverflowContent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabOverflowContent, "clr-tab-overflow-content", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrTabAction {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabAction, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabAction, "[clrTabAction]", never, {}, {}, never, never, false, never>;
+}
+
+type ClrTabsActionsPosition = 'left' | 'right';
+declare class ClrTabsActions {
+    position: ClrTabsActionsPosition;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabsActions, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabsActions, "clr-tabs-actions", never, { "position": { "alias": "position"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare class TabsWillyWonka extends WillyWonka {
+    static ɵfac: i0.ɵɵFactoryDeclaration<TabsWillyWonka, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<TabsWillyWonka, "clr-tabs", never, {}, {}, never, never, false, never>;
+}
+
+declare class ActiveOompaLoompa extends OompaLoompa {
+    private ifActive;
+    private id;
+    constructor(cdr: ChangeDetectorRef, willyWonka: TabsWillyWonka, id: number, ifActive: IfActiveService);
+    get flavor(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ActiveOompaLoompa, [null, { optional: true; }, null, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ActiveOompaLoompa, "[clrTabLink], clr-tab-content", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrTemplateRefModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTemplateRefModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTemplateRefModule, [typeof TemplateRefContainer], [typeof i2.CommonModule], [typeof TemplateRefContainer]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTemplateRefModule>;
+}
+
+declare const CLR_TABS_DIRECTIVES: Type<any>[];
+declare class ClrTabsModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabsModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa], [typeof i2.CommonModule, typeof ClrConditionalModule, typeof ClrIcon, typeof ClrTemplateRefModule, typeof ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa, typeof ClrConditionalModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTabsModule>;
+}
+
+interface BreadcrumbItem {
+    label: string;
+    href?: string;
+    routerLink?: string;
+    queryParams?: {
+        [key: string]: string;
+    };
+    target?: string;
+}
+
+declare class ClrBreadcrumbs {
+    protected commonStrings: ClrCommonStringsService;
+    isExpanded: boolean;
+    items: BreadcrumbItem[];
+    clrBreadcrumbItemClick: EventEmitter<BreadcrumbItem>;
+    protected limit: number;
+    protected max: number;
+    constructor(commonStrings: ClrCommonStringsService);
+    protected expand(): void;
+    protected handleItemClick(breadcrumb: BreadcrumbItem): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbs, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbs, "clr-breadcrumbs", never, { "items": { "alias": "items"; "required": false; }; }, { "clrBreadcrumbItemClick": "clrBreadcrumbItemClick"; }, never, never, false, never>;
+}
+
+declare class ClrBreadcrumbItem {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbItem, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbItem, "clr-breadcrumb-item", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrBreadcrumbsModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbsModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBreadcrumbsModule, [typeof ClrBreadcrumbs, typeof ClrBreadcrumbItem], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrHostWrappingModule, typeof i6.RouterModule], [typeof ClrBreadcrumbs, typeof ClrIcon]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrBreadcrumbsModule>;
+}
+
+declare class ClrLayoutModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLayoutModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof ClrMainContainerModule, typeof ClrNavigationModule, typeof ClrTabsModule, typeof ClrVerticalNavModule, typeof ClrBreadcrumbsModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLayoutModule>;
 }
 
 declare class ClrSidePanel implements OnInit, OnDestroy {
