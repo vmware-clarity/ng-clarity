@@ -8,7 +8,7 @@
 import { Component, Input } from '@angular/core';
 
 import { ClrStackView } from './stack-view';
-import { HeadingLevel } from '../../wizard';
+import { HeadingLevel } from '../../utils/types/heading-level';
 
 @Component({
   selector: 'clr-stack-header',

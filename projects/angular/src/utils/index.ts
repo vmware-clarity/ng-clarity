@@ -12,3 +12,4 @@ export * from './i18n/index';
 export * from './focus/focus-on-view-init/index';
 export * from './focus/focus-trap/index';
 export * from './destroy';
+export * from './types/heading-level';
