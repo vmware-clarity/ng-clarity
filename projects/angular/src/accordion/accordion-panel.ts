@@ -46,7 +46,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   @Input('clrAccordionPanelDisabled') @HostBinding('class.clr-accordion-panel-disabled') disabled = false;
   @Input('clrAccordionPanelOpen') panelOpen = false;
 
-  @Input('clrAccordionPanelHeadingEnabled') headingEnabled = false;
   /**
    * Level of the accordion/stepper heading from 1 to 6.
    */
@@ -78,14 +77,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
 
   get panelNumber() {
     return this._panelIndex + 1;
-  }
-
-  get headingLevel() {
-    if (this.explicitHeadingLevel) {
-      return this.explicitHeadingLevel;
-    }
-
-    return this.parent ? 4 : 3;
   }
 
   ngOnInit() {
