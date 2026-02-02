@@ -7409,6 +7409,69 @@ function loadTravelIconSet() {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+class ClrAccordionDescription {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAccordionDescription, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrAccordionDescription, isStandalone: false, selector: "clr-accordion-description, clr-step-description", host: { properties: { "class.clr-accordion-description": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAccordionDescription, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'clr-accordion-description, clr-step-description',
+                    template: `<ng-content></ng-content>`,
+                    host: { '[class.clr-accordion-description]': 'true' },
+                    changeDetection: ChangeDetectionStrategy.OnPush,
+                    standalone: false,
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+const defaultAnimationTiming = '0.2s ease-in-out';
+const defaultExpandAnimation = animation([style({ height: '{{ startHeight }}px' }), animate(defaultAnimationTiming, style({ height: '*' }))], {
+    params: {
+        startHeight: 0, // default
+    },
+});
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+const panelAnimation = [
+    trigger('skipInitialRender', [transition(':enter', [])]),
+    trigger('toggle', [
+        transition('void => *', [
+            style({ display: 'block', height: 0 }),
+            animate(defaultAnimationTiming, style({ height: '*' })),
+        ]),
+    ]),
+];
+const stepAnimation = [
+    trigger('skipInitialRender', [transition(':enter', [])]),
+    trigger('toggle', [
+        transition('void => *', [
+            style({ display: 'block', height: 0 }),
+            animate(defaultAnimationTiming, style({ height: '*' })),
+        ]),
+        transition('* => void', [
+            style({ display: 'block' }),
+            animate(defaultAnimationTiming, style({ height: 0, display: 'none' })),
+        ]),
+    ]),
+];
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 /**
  * This is an abstract class because we need it to still be a valid token for dependency injection after transpiling.
  * This does not mean you should extend it, simply implementing it is fine.
@@ -7538,69 +7601,6 @@ let NB_INSTANCES = 0;
 function uniqueIdFactory() {
     return 'clr-id-' + NB_INSTANCES++;
 }
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrAccordionDescription {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAccordionDescription, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrAccordionDescription, isStandalone: false, selector: "clr-accordion-description, clr-step-description", host: { properties: { "class.clr-accordion-description": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAccordionDescription, decorators: [{
-            type: Component,
-            args: [{
-                    selector: 'clr-accordion-description, clr-step-description',
-                    template: `<ng-content></ng-content>`,
-                    host: { '[class.clr-accordion-description]': 'true' },
-                    changeDetection: ChangeDetectionStrategy.OnPush,
-                    standalone: false,
-                }]
-        }] });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-const defaultAnimationTiming = '0.2s ease-in-out';
-const defaultExpandAnimation = animation([style({ height: '{{ startHeight }}px' }), animate(defaultAnimationTiming, style({ height: '*' }))], {
-    params: {
-        startHeight: 0, // default
-    },
-});
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-const panelAnimation = [
-    trigger('skipInitialRender', [transition(':enter', [])]),
-    trigger('toggle', [
-        transition('void => *', [
-            style({ display: 'block', height: 0 }),
-            animate(defaultAnimationTiming, style({ height: '*' })),
-        ]),
-    ]),
-];
-const stepAnimation = [
-    trigger('skipInitialRender', [transition(':enter', [])]),
-    trigger('toggle', [
-        transition('void => *', [
-            style({ display: 'block', height: 0 }),
-            animate(defaultAnimationTiming, style({ height: '*' })),
-        ]),
-        transition('* => void', [
-            style({ display: 'block' }),
-            animate(defaultAnimationTiming, style({ height: 0, display: 'none' })),
-        ]),
-    ]),
-];
 
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
@@ -11966,6 +11966,13 @@ class ClrDestroyService extends Subject {
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrDestroyService, decorators: [{
             type: Injectable
         }] });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
@@ -38297,13 +38304,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                     ],
                 }]
         }] });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
