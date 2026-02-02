@@ -11,23 +11,27 @@ import { FormsModule } from '@angular/forms';
 
 import { ClrStackView } from './stack-view';
 import { ClrStackViewModule } from './stack-view.module';
+import { HeadingLevel } from '../../wizard';
 
 @Component({
   template: `
-    <clr-stack-header>
+    <clr-stack-header [clrStackHeaderLevel]="headingLevel">
       Title
       <a class="stack-action">Action</a>
     </clr-stack-header>
   `,
   standalone: false,
 })
-class TestComponent {}
+class TestComponent {
+  headingLevel: HeadingLevel = null;
+}
 
 export default function (): void {
   'use strict';
   describe('StackHeader', () => {
     let fixture: ComponentFixture<any>;
     let compiled: any;
+    let component: any;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -38,6 +42,7 @@ export default function (): void {
       fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
       compiled = fixture.nativeElement;
+      component = fixture.componentInstance;
     });
 
     afterEach(() => {
@@ -54,6 +59,23 @@ export default function (): void {
     it('projects content', () => {
       expect(compiled.textContent).toMatch(/Title/);
       expect(compiled.textContent).toMatch(/Action/);
+    });
+
+    it('should not have heading role and aria-level attribute set if ariaLevel is not set', () => {
+      fixture.detectChanges();
+
+      const stackTitle = compiled.querySelector('.stack-title');
+      expect(stackTitle.getAttribute('role')).toBeNull();
+      expect(stackTitle.getAttribute('aria-level')).toBeNull();
+    });
+
+    it('should have heading role and aria-level set when ariaLevel is set', () => {
+      component.headingLevel = 1;
+      fixture.detectChanges();
+
+      const stackTitle = compiled.querySelector('.stack-title');
+      expect(stackTitle.getAttribute('role')).toBe('heading');
+      expect(stackTitle.getAttribute('aria-level')).toBe('1');
     });
   });
 }

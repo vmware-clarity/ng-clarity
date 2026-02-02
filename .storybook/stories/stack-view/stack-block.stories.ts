@@ -46,7 +46,6 @@ const StackViewTemplate: StoryFn = args => ({
       <clr-stack-block
         ${args.clrSbExpandable === undefined ? '' : '[clrSbExpandable]="clrSbExpandable"'}
         [clrSbExpanded]="clrSbExpanded"
-        [clrStackViewLevel]="clrStackViewLevel"
         (clrSbExpandedChange)="clrSbExpandedChange($event)"
         [clrSbNotifyChange]="clrSbNotifyChange"
       >
@@ -71,7 +70,7 @@ export const StackViewNonExpandable: StoryObj = {
   args: { clrSbExpandable: false },
 };
 
-export const StackViewColapsed: StoryObj = {
+export const StackViewCollapsed: StoryObj = {
   render: StackViewTemplate,
   args: { clrSbExpanded: false },
 };
