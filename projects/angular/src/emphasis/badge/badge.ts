@@ -27,7 +27,7 @@ export enum ClrBadgeColors {
   template: `<ng-content></ng-content>`,
   host: {
     class: 'badge',
-    '[class.badge-outlined]': 'isOutlined',
+    '[class.outlined]': 'isOutlined',
     '[class]': 'colorClass',
   },
 })

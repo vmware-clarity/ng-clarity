@@ -38,7 +38,7 @@ export enum ClrLabelColors {
     class: 'label',
     '[class.clickable]': 'clickable',
     '[class.disabled]': 'disabled',
-    '[class.label-solid]': 'isSolid',
+    '[class.solid]': 'isSolid',
     '[class]': 'colorClass',
   },
   imports: [ClrBadge],

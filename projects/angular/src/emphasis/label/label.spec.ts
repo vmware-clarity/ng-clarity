@@ -181,7 +181,7 @@ describe('ClrLabel component', () => {
       fixture.componentInstance.type = Type.Solid;
       fixture.detectChanges();
 
-      expect(htmlElement.className).toContain('label-solid');
+      expect(htmlElement.className).toContain('solid');
     });
 
     it('make it clickable', () => {

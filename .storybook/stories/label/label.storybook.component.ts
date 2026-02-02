@@ -64,6 +64,6 @@ export class LabelStoryBookComponent extends RenderComponentStorybook {
   }
 
   labelClass(name: string) {
-    return name ? `label-${name} ${this.solid ? 'label-solid' : ''}` : '';
+    return name ? `label-${name} ${this.solid ? 'solid' : ''}` : '';
   }
 }

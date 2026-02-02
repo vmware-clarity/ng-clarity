@@ -36,7 +36,7 @@
     border-color: map.get($colors, border-color);
   }
 
-  &.label-solid {
+  &.solid {
     border-color: map.get($colors, solid-border-color);
     background-color: map.get($colors, solid-bg-color);
     color: map.get($colors, solid-color);
@@ -99,7 +99,7 @@
     color: label-variables.$clr-label-font-color;
     text-decoration: none;
 
-    &.label-solid {
+    &.solid {
       border-color: label-variables.$clr-label-default-solid-border-color;
       background-color: label-variables.$clr-label-default-solid-bg-color;
       color: label-variables.$clr-label-font-solid-color;

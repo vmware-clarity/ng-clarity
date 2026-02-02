@@ -128,7 +128,7 @@ describe('ClrBadge component', () => {
       fixture.componentInstance.type = Type.Outlined;
       fixture.detectChanges();
 
-      expect(htmlElement.className).toContain('badge-outlined');
+      expect(htmlElement.className).toContain('outlined');
     });
 
     it('change to number colors', () => {

@@ -19,7 +19,7 @@
   background-color: map.get($colors, bg-color);
   color: map.get($colors, color);
 
-  &.badge-outlined {
+  &.outlined {
     border-color: map.get($colors, outline-border-color);
     background-color: map.get($colors, outline-bg-color);
     color: map.get($colors, outline-color);
@@ -65,7 +65,7 @@
     background-color: badges-variables.$clr-badge-background-color;
     color: badges-variables.$clr-badge-color;
 
-    &.badge-outlined {
+    &.outlined {
       border-color: badges-variables.$clr-badge-outline-border-color;
       background-color: badges-variables.$clr-badge-outline-bg-color;
       color: badges-variables.$clr-badge-outline-color;

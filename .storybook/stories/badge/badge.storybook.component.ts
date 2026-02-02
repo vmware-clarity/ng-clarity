@@ -39,6 +39,6 @@ export class BadgeStoryBookComponent {
   }
 
   badgeClass(name: string) {
-    return `badge-${name} ${this.outlined ? 'badge-outlined' : ''}`;
+    return `badge-${name} ${this.outlined ? 'outlined' : ''}`;
   }
 }
