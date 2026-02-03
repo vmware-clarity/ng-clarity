@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -9,6 +9,7 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core
 import { Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
@@ -25,6 +26,9 @@ import { VerticalNavService } from './providers/vertical-nav.service';
   },
 })
 export class ClrVerticalNav implements OnDestroy {
+  @Input('clrVerticalNavToggleLabel') toggleLabel: string;
+  contentId = uniqueIdFactory();
+
   @Output('clrVerticalNavCollapsedChange') private _collapsedChanged = new EventEmitter<boolean>(true);
 
   private _sub: Subscription;

@@ -1,0 +1,127 @@
+<!-- Copyright 2022-2023 Broadcom. All rights reserved. -->
+<span class="label label-blue">
+  {{ managedProperty.displayName }}
+  <span
+    class="badge"
+    dismissable
+    [dismissAriaLabel]="
+      filterStrings.removeFilterText + ' ' + managedProperty.displayName + ' ' + primaryConditionDisplayText
+    "
+    (dismiss)="removeFilter(0)"
+  >
+    <clr-signpost>
+      <span
+        clrSignpostTrigger
+        class="edit-filter"
+        tabindex="0"
+        role="button"
+        [attr.aria-label]="editFilterAriaLabel"
+        (keydown)="onEditFilterKeyPress($event, 0)"
+      >
+        {{ primaryConditionDisplayText }}
+      </span>
+      <ng-template [(clrIfOpen)]="openPrimaryConditionSignPost">
+        <clr-signpost-content [clrPosition]="'bottom-middle'" [ngSwitch]="managedPropertyType" filterPopoverReposition>
+          <clr-select-container class="mt-0">
+            <label class="clr-control-label">
+              {{ this.filterStrings.filterLabel }}
+            </label>
+            <select clrSelect [(ngModel)]="managedProperty" disabled>
+              <option [ngValue]="managedProperty">
+                {{ managedProperty.displayName }}
+              </option>
+            </select>
+          </clr-select-container>
+          <appfx-general-filter
+            *ngSwitchCase="stringPropertyType"
+            [filterProperty]="stringProperty"
+            [propertyFilter]="propertyFilter"
+            (filterCriteriaChange)="onFilterCriteriaChange($event)"
+          >
+          </appfx-general-filter>
+          <appfx-general-filter
+            *ngSwitchCase="numericPropertyType"
+            [filterProperty]="numericProperty"
+            [propertyFilter]="propertyFilter"
+            (filterCriteriaChange)="onFilterCriteriaChange($event)"
+          >
+          </appfx-general-filter>
+          <appfx-enum-filter
+            *ngSwitchCase="enumPropertyType"
+            [filterProperty]="enumProperty"
+            [propertyFilter]="propertyFilter"
+            (filterCriteriaChange)="onFilterCriteriaChange($event)"
+          >
+          </appfx-enum-filter>
+          <appfx-datetime-filter
+            *ngSwitchCase="dateTimePropertyType"
+            [filterProperty]="dateTimeProperty"
+            [propertyFilter]="propertyFilter"
+            (filterCriteriaChange)="onFilterCriteriaChange($event)"
+          >
+          </appfx-datetime-filter>
+        </clr-signpost-content>
+      </ng-template>
+    </clr-signpost>
+  </span>
+  <span *ngIf="propertyFilter.criteria.length === 2 && managedPropertyType !== dateTimePropertyType" class="text-lower">
+    {{ this.filterStrings.getConjoinerDisplayName(propertyFilter.operator) }}
+  </span>
+  <span
+    *ngIf="propertyFilter.criteria.length === 2 && managedPropertyType !== dateTimePropertyType"
+    class="badge"
+    dismissable
+    [dismissAriaLabel]="
+      this.filterStrings.removeFilterText + managedProperty.displayName + ' ' + secondaryConditionDisplayText
+    "
+    (dismiss)="removeFilter(1)"
+  >
+    <clr-signpost>
+      <span
+        clrSignpostTrigger
+        class="edit-filter"
+        tabindex="0"
+        role="button"
+        [attr.aria-label]="editFilterAriaLabel"
+        (keydown)="onEditFilterKeyPress($event, 1)"
+      >
+        {{ secondaryConditionDisplayText }}
+      </span>
+      <ng-template [(clrIfOpen)]="openSecondaryConditionSignPost">
+        <clr-signpost-content [clrPosition]="'bottom-middle'" [ngSwitch]="managedPropertyType" filterPopoverReposition>
+          <clr-select-container class="mt-0">
+            <label class="clr-control-label">
+              {{ this.filterStrings.filterLabel }}
+            </label>
+            <select clrSelect [(ngModel)]="managedProperty" disabled>
+              <option [ngValue]="managedProperty">
+                {{ managedProperty.displayName }}
+              </option>
+            </select>
+          </clr-select-container>
+          <appfx-general-filter
+            *ngSwitchCase="stringPropertyType"
+            [filterProperty]="stringProperty"
+            [propertyFilter]="propertyFilter"
+            (filterCriteriaChange)="onFilterCriteriaChange($event)"
+          >
+          </appfx-general-filter>
+          <appfx-general-filter
+            *ngSwitchCase="numericPropertyType"
+            [filterProperty]="numericProperty"
+            [propertyFilter]="propertyFilter"
+            (filterCriteriaChange)="onFilterCriteriaChange($event)"
+          >
+          </appfx-general-filter>
+          <appfx-enum-filter
+            *ngSwitchCase="enumPropertyType"
+            [filterProperty]="enumProperty"
+            [propertyFilter]="propertyFilter"
+            (filterCriteriaChange)="onFilterCriteriaChange($event)"
+          >
+          </appfx-enum-filter>
+        </clr-signpost-content>
+      </ng-template>
+    </clr-signpost>
+  </span>
+</span>

@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { Component, TrackByFunction } from '@angular/core';
-import { ClrDatagridStateInterface } from '@clr/angular';
+import { ClrDatagridItemsTrackByFunction, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -38,6 +38,7 @@ export class DatagridSelectionDemo {
 
   trackByIndex: TrackByFunction<User> = index => index;
   trackById: TrackByFunction<User> = (_index, item) => item.id;
+  trackByFn: ClrDatagridItemsTrackByFunction<User> = item => item.id;
 
   async refresh(state: ClrDatagridStateInterface) {
     this.loading = true;
@@ -56,5 +57,21 @@ export class DatagridSelectionDemo {
 
     this.serverTrackByIdUsers = result.users;
     this.loading = false;
+  }
+
+  selectItems() {
+    const selectedUsers = [
+      { ...this.clientNoTrackByUsers[1] },
+      { ...this.clientNoTrackByUsers[2] },
+      { ...this.clientNoTrackByUsers[3] },
+    ];
+    this.clientNoTrackBySelected.push(...selectedUsers);
+    this.clientTrackByIndexSelected = selectedUsers;
+    this.clientTrackByIdSelected = selectedUsers;
+    this.serverTrackByIdSelected = selectedUsers;
+  }
+
+  selectedChange(event: any) {
+    console.log(event);
   }
 }

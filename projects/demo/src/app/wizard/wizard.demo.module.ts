@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -18,6 +18,7 @@ import { WizardCustomButtonsDemo } from './wizard-custom-buttons.demo';
 import { WizardForceForwardDemo } from './wizard-force-forward.demo';
 import { WizardFormValidation } from './wizard-form-validation.demo';
 import { WizardHeaderActionsDemo } from './wizard-header-actions.demo';
+import { WizardInPageDemo } from './wizard-in-page.demo';
 import { WizardInlineDemo } from './wizard-inline.demo';
 import { WizardJumpToDemo } from './wizard-jump-to.demo';
 import { WizardNotClosableDemo } from './wizard-not-closable.demo';
@@ -41,6 +42,7 @@ import { ROUTING } from './wizard.demo.routing';
     WizardResetDemo,
     WizardHeaderActionsDemo,
     WizardAltCancelDemo,
+    WizardInPageDemo,
     WizardInlineDemo,
     WizardJumpToDemo,
     WizardAltNextDemo,

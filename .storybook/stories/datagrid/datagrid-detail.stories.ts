@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -54,6 +54,7 @@ export default {
     multiSelectable: false,
     expandable: false,
     compact: false,
+    removeMargin: false,
     hidableColumns: false,
     height: 0,
     disabledDetailIndex: -1,
@@ -62,6 +63,7 @@ export default {
 };
 
 const longContentElement: Element = {
+  id: 223,
   name: 'A really really really really really really really really really long content in the cell',
   symbol: 'Ac',
   number: 89,
@@ -69,6 +71,7 @@ const longContentElement: Element = {
 };
 
 const longUninterruptedContentElement: Element = {
+  id: 224,
   name: 'aReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongUninterruptedContent',
   symbol: 'Ac',
   number: 89,
@@ -85,17 +88,26 @@ const DetailTemplate: StoryFn = args => {
     template: `
       <style>
         .highlight {
-          border: 1px solid red !important;
+          border: 1px solid var(--cds-alias-status-danger) !important;
         }
         .electronegativity-container {
-          border-bottom: 4px solid #119cd4;
+          display: flex;
+          justify-content: space-between;
+
+          .electronegativity-bar {
+            background-color: var(--cds-alias-status-info);
+          }
+        }
+        .removed-margin {
+          --clr-datagrid-margin-top: 0px;
+          --clr-datagrid-compact-margin-top: 0px;
         }
       </style>
       <clr-datagrid
         ${args.height ? '[style.height.px]="height"' : ''}
         ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
         ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
-        [ngClass]="{ 'datagrid-compact': compact }"
+        [ngClass]="{ 'datagrid-compact': compact, 'removed-margin': removeMargin }"
       >
         <clr-dg-column ${args.showLongUninterruptedContent ? '' : '[style.width.px]="250"'}>
           <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
@@ -119,10 +131,9 @@ const DetailTemplate: StoryFn = args => {
           <clr-dg-cell>{{ element.name }}</clr-dg-cell>
           <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
           <clr-dg-cell>{{ element.number }}</clr-dg-cell>
-          <clr-dg-cell>
-            <div [style.width.%]="(element.electronegativity * 100) / 4" class="electronegativity-container">
-              {{ element.electronegativity }}
-            </div>
+          <clr-dg-cell class="electronegativity-container">
+            {{ element.electronegativity }}
+            <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
           </clr-dg-cell>
           <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
             <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
@@ -190,6 +201,35 @@ export const OpenDetail: StoryObj = {
     removeFocusOutline({ canvasElement });
   },
   args: {
+    detailContentType: 'datagrid',
+    // The height is set larger than the height of the rows to regression test the detail pane border. (CDE-2188)
+    height: 500,
+  },
+};
+export const OpenDetailWithRemovedMargin: StoryObj = {
+  render: DetailTemplate,
+  play({ canvasElement }: StoryContext) {
+    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+
+    removeFocusOutline({ canvasElement });
+  },
+  args: {
+    removeMargin: true,
+    detailContentType: 'datagrid',
+    // The height is set larger than the height of the rows to regression test the detail pane border. (CDE-2188)
+    height: 500,
+  },
+};
+export const CompactOpenDetailWithRemovedMargin: StoryObj = {
+  render: DetailTemplate,
+  play({ canvasElement }: StoryContext) {
+    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+
+    removeFocusOutline({ canvasElement });
+  },
+  args: {
+    removeMargin: true,
+    compact: true,
     detailContentType: 'datagrid',
     // The height is set larger than the height of the rows to regression test the detail pane border. (CDE-2188)
     height: 500,

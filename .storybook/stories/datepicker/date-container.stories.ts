@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -28,13 +28,14 @@ export default {
   args: {
     // inputs
     clrPosition: 'bottom-left',
+    showActionButtons: false,
   },
 };
 
 const DatePickerTemplate: StoryFn = args => ({
   template: `
     <div style="margin-top: 300px; display: flex; justify-content: center">
-      <clr-date-container [clrPosition]="clrPosition">
+      <clr-date-container [showActionButtons]="showActionButtons" [clrPosition]="clrPosition">
         <label>Date</label>
         <input type="date" autocomplete="off" clrDate />
       </clr-date-container>

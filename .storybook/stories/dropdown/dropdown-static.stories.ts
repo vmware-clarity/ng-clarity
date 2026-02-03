@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -18,6 +18,9 @@ export default {
     }),
   ],
   component: ClrDropdown,
+  args: {
+    showIcon: false,
+  },
 };
 
 const DropdownStaticTemplate: StoryFn = args => ({
@@ -30,14 +33,18 @@ const DropdownStaticTemplate: StoryFn = args => ({
         </button>
         <div class="dropdown-menu" role="menu">
           <label class="dropdown-header" aria-hidden="true">Dropdown header</label>
-          <div aria-label="Dropdown header Action" class="dropdown-item active" role="menuitem">Action</div>
+          <div aria-label="Dropdown header Action" class="dropdown-item active" role="menuitem">
+            <cds-icon *ngIf="showIcon" shape="user"></cds-icon>
+            <span>Action</span>
+          </div>
           <div
             aria-label="Dropdown header Disabled Link"
             class="dropdown-item disabled"
             role="menuitem"
             aria-disabled="true"
           >
-            Disabled Link
+            <cds-icon *ngIf="showIcon" shape="user"></cds-icon>
+            <span>Disabled Link</span>
           </div>
           <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
           <button class="dropdown-item" role="menuitem">Lorem</button>
@@ -46,13 +53,20 @@ const DropdownStaticTemplate: StoryFn = args => ({
               Lorem ipsum
             </button>
             <div class="dropdown-menu" role="menu">
-              <button class="dropdown-item" role="menuitem">Foo.</button>
+              <button class="dropdown-item" role="menuitem">
+                <cds-icon *ngIf="showIcon" shape="user"></cds-icon>
+                <span>Foo.</span>
+              </button>
               <div class="dropdown open right-top">
                 <button class="dropdown-item active expandable" role="menuitem" aria-expanded="true" aria-haspopup="menu">
-                  Bar
+                  <cds-icon *ngIf="showIcon" shape="user"></cds-icon>
+                  <span>Bar</span>
                 </button>
                 <div class="dropdown-menu" role="menu">
-                  <div class="dropdown-item" role="menuitem">Baz</div>
+                  <div class="dropdown-item" role="menuitem">
+                    <cds-icon *ngIf="showIcon" shape="user"></cds-icon>
+                    <span>Baz</span>
+                  </div>
                 </div>
               </div>
               <div class="dropdown-item" role="menuitem">Foo 2</div>
@@ -68,4 +82,11 @@ const DropdownStaticTemplate: StoryFn = args => ({
 
 export const DropdownStatic: StoryObj = {
   render: DropdownStaticTemplate,
+};
+
+export const DropdownWithIconsStatic: StoryObj = {
+  render: DropdownStaticTemplate,
+  args: {
+    showIcon: true,
+  },
 };

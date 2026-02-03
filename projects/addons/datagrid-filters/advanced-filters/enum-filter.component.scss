@@ -1,0 +1,29 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.enum-options {
+  margin-top: 0.1rem;
+  text-align: left;
+}
+
+:host-context(.no-zoom) {
+  .enum-options {
+    overflow-y: auto;
+    max-height: 8.8rem;
+  }
+}
+:host {
+  ::ng-deep .clr-control-container {
+    margin-left: 0.2rem;
+  }
+}
+
+clr-checkbox-container:not(.clr-default-style) {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  min-height: auto !important;
+}

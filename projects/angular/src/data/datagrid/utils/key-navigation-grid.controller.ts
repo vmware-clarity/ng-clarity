@@ -1,30 +1,40 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, NgZone, OnDestroy } from '@angular/core';
+import { EventEmitter, Injectable, NgZone, OnDestroy } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-export function getTabableItems(el: HTMLElement) {
-  const tabableSelector = [
-    'a[href]',
-    'area[href]',
-    'input:not([disabled])',
-    'button:not([disabled])',
-    'select:not([disabled])',
-    'textarea:not([disabled])',
-    'iframe',
-    'object',
-    'embed',
-    '*[tabindex]:not([disabled])',
-    '*[contenteditable=true]',
-    '[role=button]:not([disabled])',
-  ].join(',');
-  return Array.from(el.querySelectorAll(tabableSelector)) as HTMLElement[];
+import { Keys } from '../../../utils/enums/keys.enum';
+import { KeyNavigationUtils } from './key-navigation-utils';
+
+const actionableItemSelectors = [
+  'a[href]',
+  'area[href]',
+  'input:not([disabled])',
+  'button:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  'iframe',
+  'object',
+  'embed',
+  '[contenteditable=true]',
+  '[role=button]:not([disabled])',
+];
+
+export function getTabbableItems(el: HTMLElement) {
+  const tabbableItemSelectors = [...actionableItemSelectors, '[tabindex="0"]:not([disabled])'];
+  const tabbableSelector = tabbableItemSelectors.join(',');
+  return Array.from(el.querySelectorAll(tabbableSelector)) as HTMLElement[];
+}
+
+function isActionableItem(el: HTMLElement) {
+  const actionableSelector = actionableItemSelectors.join(',');
+  return el.matches(actionableSelector);
 }
 
 export interface KeyNavigationGridConfig {
@@ -33,36 +43,30 @@ export interface KeyNavigationGridConfig {
   keyGridCells: string;
 }
 
+export interface CellCoordinates {
+  x: number;
+  y: number;
+  ariaRowIndex?: string;
+}
+
 @Injectable()
 export class KeyNavigationGridController implements OnDestroy {
-  skipItemFocus = false;
+  nextCellCoordsEmitter = new EventEmitter<CellCoordinates>(false);
 
-  private host: HTMLElement;
-  private config: KeyNavigationGridConfig;
+  skipItemFocus = false;
+  preventScrollOnFocus = false;
+
+  config: KeyNavigationGridConfig = {
+    keyGridRows: '[role=row]:not(.datagrid-placeholder):not([style*="display: none"])',
+    keyGridCells:
+      '[role=gridcell]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), [role=columnheader]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), .datagrid-detail-caret',
+    keyGrid: '[role=grid]',
+  };
+  private keyNavUtils: KeyNavigationUtils;
   private listenersAdded = false;
   private destroy$ = new Subject<void>();
-  private _activeCell: HTMLElement = null;
 
-  constructor(private zone: NgZone) {
-    this.config = {
-      keyGridRows: '[role=row]:not(.datagrid-placeholder)',
-      keyGridCells:
-        '[role=gridcell]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), [role=columnheader]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), .datagrid-detail-caret',
-      keyGrid: '[role=grid]',
-    };
-  }
-
-  private get grid() {
-    return this.host?.querySelector(this.config.keyGrid);
-  }
-
-  private get rows() {
-    return this.host?.querySelectorAll(this.config.keyGridRows) as NodeListOf<HTMLElement>;
-  }
-
-  private get cells() {
-    return this.host?.querySelectorAll(this.config.keyGridCells) as NodeListOf<HTMLElement>;
-  }
+  constructor(private zone: NgZone) {}
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -75,55 +79,74 @@ export class KeyNavigationGridController implements OnDestroy {
     }
 
     this.zone.runOutsideAngular(() => {
-      fromEvent(this.grid, 'mousedown')
+      fromEvent(this.keyNavUtils.grid, 'mousedown')
         .pipe(takeUntil(this.destroy$))
         .subscribe((e: MouseEvent) => {
           // preserve right click for context menus & keyboard mouse control https://apple.stackexchange.com/questions/32715/how-do-i-open-the-context-menu-from-a-mac-keyboard
           if (e.buttons === 1 && !e.ctrlKey) {
-            const activeCell = this.cells
-              ? Array.from(this.cells).find(
+            const activeCell = this.keyNavUtils.cells
+              ? Array.from(this.keyNavUtils.cells).find(
                   c => c === e.target || c === (e.target as HTMLElement).closest(this.config.keyGridCells)
                 )
               : null;
             if (activeCell) {
               this.setActiveCell(activeCell);
+
+              if (!isActionableItem(e.target as HTMLElement)) {
+                this.focusElement(activeCell);
+              }
             }
           }
         });
 
-      fromEvent(this.grid, 'wheel')
+      fromEvent(this.keyNavUtils.grid, 'wheel')
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          this.removeActiveCell();
+          this.nextCellCoordsEmitter.emit(null);
         });
 
-      fromEvent(this.grid, 'keydown')
+      fromEvent(this.keyNavUtils.grid, 'keydown')
         .pipe(takeUntil(this.destroy$))
         .subscribe((e: KeyboardEvent) => {
           // Skip column resize events
           if (
             (e.target as HTMLElement).classList.contains('drag-handle') &&
-            (e.code === 'ArrowLeft' || e.code === 'ArrowRight')
+            (e.key === Keys.ArrowLeft || e.key === Keys.ArrowRight)
           ) {
             return;
           }
           if (
-            e.code === 'ArrowUp' ||
-            e.code === 'ArrowDown' ||
-            e.code === 'ArrowLeft' ||
-            e.code === 'ArrowRight' ||
-            e.code === 'End' ||
-            e.code === 'Home' ||
-            e.code === 'PageUp' ||
-            e.code === 'PageDown'
+            e.key === Keys.ArrowUp ||
+            e.key === Keys.ArrowDown ||
+            e.key === Keys.ArrowLeft ||
+            e.key === Keys.ArrowRight ||
+            e.key === Keys.End ||
+            e.key === Keys.Home ||
+            e.key === Keys.PageUp ||
+            e.key === Keys.PageDown
           ) {
-            const { x, y } = this.getNextItemCoordinate(e);
-            const activeItem = this.rows
-              ? (Array.from(this.rows[y].querySelectorAll(this.config.keyGridCells))[x] as HTMLElement)
+            const nextCellCoords = this.keyNavUtils.getNextItemCoordinate(e);
+
+            if (
+              nextCellCoords.y > 0 &&
+              (e.key === Keys.ArrowUp || e.key === Keys.ArrowDown || e.key === Keys.PageUp || e.key === Keys.PageDown)
+            ) {
+              this.keyNavUtils.setAriaRowIndexTo(nextCellCoords);
+
+              this.nextCellCoordsEmitter.emit(nextCellCoords);
+            }
+
+            const activeItem = this.keyNavUtils.rows
+              ? (Array.from(this.keyNavUtils.getCellsForRow(nextCellCoords.y))[nextCellCoords.x] as HTMLElement)
               : null;
+
             if (activeItem) {
               this.setActiveCell(activeItem);
+              this.focusElement(activeItem, {
+                preventScroll: this.preventScrollOnFocus && !!nextCellCoords.ariaRowIndex,
+              });
             }
+
             e.preventDefault();
           }
         });
@@ -132,91 +155,43 @@ export class KeyNavigationGridController implements OnDestroy {
   }
 
   initializeKeyGrid(host: HTMLElement) {
-    this.host = host;
+    this.keyNavUtils = new KeyNavigationUtils(host, this.config);
     this.addListeners();
     this.resetKeyGrid();
   }
 
   resetKeyGrid() {
-    this.cells?.forEach((i: HTMLElement) => i.setAttribute('tabindex', '-1'));
-    const firstCell = this.cells ? this.cells[0] : null;
+    this.keyNavUtils.cells?.forEach((i: HTMLElement) => i.setAttribute('tabindex', '-1'));
+    const firstCell = this.keyNavUtils.cells ? this.keyNavUtils.cells[0] : null;
     firstCell?.setAttribute('tabindex', '0');
   }
 
-  removeActiveCell() {
-    this._activeCell = null;
-  }
-
-  getActiveCell() {
-    return this._activeCell;
-  }
-
   setActiveCell(activeCell: HTMLElement) {
-    const prior = this.cells ? Array.from(this.cells).find(c => c.getAttribute('tabindex') === '0') : null;
+    const prior = this.keyNavUtils.cells
+      ? Array.from(this.keyNavUtils.cells).find(c => c.getAttribute('tabindex') === '0')
+      : null;
 
     if (prior) {
       prior.setAttribute('tabindex', '-1');
     }
 
     activeCell.setAttribute('tabindex', '0');
-    this._activeCell = activeCell;
-
-    const items = getTabableItems(activeCell);
-    const item = activeCell.getAttribute('role') !== 'columnheader' && items[0] ? items[0] : activeCell;
-
-    if (!this.skipItemFocus) {
-      item.focus();
-    }
   }
 
-  private getNextItemCoordinate(e: any) {
-    let currentCell = this.cells ? Array.from(this.cells).find(i => i.getAttribute('tabindex') === '0') : null;
-    if (e.code === 'Tab') {
-      currentCell = document.activeElement as HTMLElement;
-    }
-    const currentRow = this.rows && currentCell ? Array.from(this.rows).find(r => r.contains(currentCell)) : null;
-    const numOfRows = this.rows ? this.rows.length - 1 : 0;
-    const numOfColumns = this.cells ? Math.floor(this.cells.length / this.rows.length - 1) : 0;
-
-    let x =
-      currentRow && currentCell
-        ? Array.from(currentRow.querySelectorAll(this.config.keyGridCells)).indexOf(currentCell)
-        : 0;
-    let y = currentRow && currentCell && this.rows ? Array.from(this.rows).indexOf(currentRow) : 0;
-
-    const dir = this.host.dir;
-    const inlineStart = dir === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
-    const inlineEnd = dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
-
-    const itemsPerPage =
-      Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
-
-    if (e.code === 'ArrowUp' && y !== 0) {
-      y = y - 1;
-    } else if (e.code === 'ArrowDown' && y < numOfRows) {
-      y = y + 1;
-    } else if (e.code === inlineStart && x !== 0) {
-      x = x - 1;
-    } else if (e.code === inlineEnd && x < numOfColumns) {
-      x = x + 1;
-    } else if (e.code === 'End') {
-      x = numOfColumns;
-
-      if (e.ctrlKey) {
-        y = numOfRows;
-      }
-    } else if (e.code === 'Home') {
-      x = 0;
-
-      if (e.ctrlKey) {
-        y = 0;
-      }
-    } else if (e.code === 'PageUp') {
-      y = y - itemsPerPage > 0 ? y - itemsPerPage + 1 : 1;
-    } else if (e.code === 'PageDown') {
-      y = y + itemsPerPage < numOfRows ? y + itemsPerPage : numOfRows;
+  focusElement(activeCell: HTMLElement, options: FocusOptions = { preventScroll: false }) {
+    if (this.skipItemFocus) {
+      return;
     }
 
-    return { x, y };
+    let elementToFocus: HTMLElement;
+
+    if (activeCell.getAttribute('role') === 'columnheader') {
+      elementToFocus = activeCell;
+    } else {
+      const tabbableElements = getTabbableItems(activeCell);
+      elementToFocus = tabbableElements.length ? tabbableElements[0] : activeCell;
+    }
+
+    elementToFocus.focus(options);
   }
 }

@@ -1,0 +1,241 @@
+<div class="clr-row" xmlns="http://www.w3.org/1999/html">
+  <div class="clr-col-4 density-container" *ngFor="let density of densities" [attr.clr-density]="density.type">
+    <h3 cds-layout="m-b:md">{{density.name}}</h3>
+    <div>
+      <h4>Alerts</h4>
+      <div class="clr-example">
+        <clr-alert [clrAlertClosable]="false" clrAlertType="success">
+          <clr-alert-item>
+            <span class="alert-text">This alert cannot be dismissed.</span>
+            <div class="alert-actions">
+              <a class="alert-action" href="javascript://"><cds-icon shape="user"></cds-icon>Acknowledge</a>
+              <a class="alert-action" href="javascript://">Reset</a>
+              <clr-dropdown>
+                <button class="dropdown-toggle" clrDropdownTrigger>
+                  More Actions
+                  <cds-icon shape="angle" direction="down"></cds-icon>
+                </button>
+                <clr-dropdown-menu clrPosition="bottom-right">
+                  <a href="javascript://" class="dropdown-item" clrDropdownItem>Shutdown</a>
+                  <a href="javascript://" class="dropdown-item" clrDropdownItem>Delete</a>
+                  <a href="javascript://" class="dropdown-item" clrDropdownItem>Reboot</a>
+                </clr-dropdown-menu>
+              </clr-dropdown>
+            </div>
+          </clr-alert-item>
+        </clr-alert>
+
+        <clr-alert clrAlertType="warning">
+          <clr-alert-item>
+            <span class="alert-text">Try closing this alert.</span>
+          </clr-alert-item>
+          <clr-alert-item>
+            <span class="alert-text">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua.
+            </span>
+          </clr-alert-item>
+          <clr-alert-item>
+            <span class="alert-text">Try closing this alert.</span>
+          </clr-alert-item>
+        </clr-alert>
+
+        <clr-alert clrAlertType="unknown" [clrAlertLightweight]="true" [clrAlertSizeSmall]="true">
+          <clr-alert-item>
+            <span class="alert-text">Unknown Lightweight alert</span>
+          </clr-alert-item>
+        </clr-alert>
+        <clr-alert clrAlertType="loading" [clrAlertLightweight]="true">
+          <clr-alert-item>
+            <span class="alert-text">Loading Lightweight alert</span>
+          </clr-alert-item>
+        </clr-alert>
+        <clr-alert clrAlertType="loading" [clrAlertLightweight]="false">
+          <clr-alert-item>
+            <span class="alert-text">Loading NOT lightweight alert</span>
+          </clr-alert-item>
+        </clr-alert>
+
+        <clr-alert [clrAlertSizeSmall]="true">
+          <clr-alert-item>
+            <span class="alert-text">This is a small alert.</span>
+          </clr-alert-item>
+        </clr-alert>
+        <clr-alert [clrAlertSizeSmall]="true" clrAlertType="danger">
+          <clr-alert-item>
+            <span class="alert-text">This is a small alert.</span>
+          </clr-alert-item>
+          <clr-alert-item>
+            <span class="alert-text">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua.
+            </span>
+          </clr-alert-item>
+          <clr-alert-item>
+            <span class="alert-text">This is a small alert.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+
+      <div class="clr-example">
+        <clr-alert clrAlertType="danger" [clrAlertAppLevel]="true">
+          <clr-alert-item>
+            <span class="alert-text">This is an app level alert.</span>
+            <div class="alert-actions">
+              <button class="btn alert-action">Fix</button>
+            </div>
+          </clr-alert-item>
+        </clr-alert>
+
+        <hr />
+
+        <clr-alerts>
+          <clr-alert *ngFor="let alert of alerts; let i = index" [clrAlertType]="alert.type" [clrAlertAppLevel]="true">
+            <clr-alert-item>
+              <span class="alert-text"> {{ alert.text }} at index {{i}} </span>
+            </clr-alert-item>
+          </clr-alert>
+        </clr-alerts>
+
+        <hr />
+
+        <clr-alerts>
+          <clr-alert *ngFor="let alert of alerts; let i = index" [clrAlertType]="alert.type" [clrAlertAppLevel]="false">
+            <clr-alert-item>
+              <span class="alert-text"> {{ alert.text }} at index {{i}} </span>
+            </clr-alert-item>
+          </clr-alert>
+        </clr-alerts>
+      </div>
+    </div>
+
+    <div>
+      <h4>Labels</h4>
+      <div class="clr-example">
+        <span class="label label-info">Info</span>
+        <span class="label label-success">Success</span>
+        <span class="label label-warning">Warning</span>
+        <span class="label label-danger">Error</span>
+      </div>
+
+      <div class="clr-example">
+        <a href="javascript://" class="label label-purple clickable">
+          <span class="text">Austin</span>
+          <span class="badge">1</span>
+          <cds-icon shape="close"></cds-icon>
+        </a>
+        <a href="javascript://" class="label label-blue clickable">
+          <span class="text">New York</span>
+          <span class="badge">2</span>
+        </a>
+        <a href="javascript://" class="label label-orange clickable">
+          <span class="text">Palo Alto</span>
+          <span class="badge">3</span>
+        </a>
+        <a href="javascript://" class="label label-light-blue clickable">
+          <span class="text">San Francisco</span>
+          <span class="badge">12</span>
+        </a>
+        <a href="javascript://" class="label clickable">
+          <span class="text">Seattle</span>
+          <span class="badge">15</span>
+        </a>
+        <a href="javascript://" class="label label-purple clickable">
+          <span class="text">Chicago</span>
+          <span class="badge">55</span>
+        </a>
+        <a href="javascript://" class="label label-blue clickable">
+          <span class="text">San Jose</span>
+          <span class="badge">66</span>
+        </a>
+        <a href="javascript://" class="label label-orange clickable">
+          <span class="text">Charlotte</span>
+          <span class="badge">88</span>
+        </a>
+        <a href="javascript://" class="label label-light-blue clickable">
+          <span class="text">Atlanta</span>
+          <span class="badge">99+</span>
+        </a>
+        <a href="javascript://" class="label clickable disabled">
+          <span class="text">Philadephia</span>
+          <span class="badge">0</span>
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <h4>Forms</h4>
+      <h5>Textarea</h5>
+      <form clrForm clrLayout="vertical">
+        <clr-textarea-container>
+          <label>Label</label>
+          <textarea clrTextarea name="description" required></textarea>
+          <clr-control-helper>Please provide a description.</clr-control-helper>
+          <clr-control-error>You must provide a description!</clr-control-error>
+        </clr-textarea-container>
+      </form>
+      <form clrForm clrLayout="horizontal">
+        <clr-textarea-container>
+          <label>Label</label>
+          <textarea clrTextarea name="description" required></textarea>
+          <clr-control-helper>Please provide a description.</clr-control-helper>
+          <clr-control-error *clrIfError="'required'">You must provide a description!</clr-control-error>
+        </clr-textarea-container>
+      </form>
+    </div>
+    <div>
+      <h4>Checkboxes, Toggles and Radios</h4>
+      <div class="clr-row">
+        <div class="clr-example clr-col-4">
+          <input type="checkbox" clrCheckbox />
+
+          <input type="checkbox" clrCheckbox id="checkbox-testing456-{{density.type}}" />
+
+          <clr-checkbox-wrapper>
+            <input type="checkbox" clrCheckbox />
+            <label>Test</label>
+          </clr-checkbox-wrapper>
+
+          <clr-checkbox-wrapper>
+            <input type="checkbox" clrCheckbox id="checkbox-testing123-{{density.type}}" />
+            <label for="checkbox-testing123-{{density.type}}">Test</label>
+          </clr-checkbox-wrapper>
+        </div>
+        <div class="clr-example clr-col-4">
+          <input type="checkbox" clrToggle />
+
+          <input type="checkbox" clrToggle id="toggle-testing456-{{density.type}}" />
+
+          <clr-toggle-wrapper>
+            <input type="checkbox" clrToggle />
+            <label>Test</label>
+          </clr-toggle-wrapper>
+
+          <clr-toggle-wrapper>
+            <input type="checkbox" clrToggle id="toggle-testing123-{{density.type}}" />
+            <label for="toggle-testing123-{{density.type}}">Test</label>
+          </clr-toggle-wrapper>
+        </div>
+        <div class="clr-example clr-col-4">
+          <input type="radio" clrRadio />
+
+          <input type="radio" clrRadio id="radio-testing456-{{density.type}}" />
+
+          <clr-radio-wrapper>
+            <input type="radio" clrRadio />
+            <label>Test</label>
+          </clr-radio-wrapper>
+
+          <clr-radio-wrapper>
+            <input type="radio" clrRadio id="radio-testing123-{{density.type}}" />
+            <label for="radio-testing123-{{density.type}}">Test</label>
+          </clr-radio-wrapper>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <button class="btn">Hello</button>
+    </div>
+  </div>
+</div>

@@ -1,22 +1,25 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('dropdown.properties') {
-  :root {
-    [cds-theme] {
+  @include mixins.root-or-host() {
+    --clr-dropdown-divider-border-width: #{tokens.$cds-global-space-1};
+    --clr-dropdown-header-font-weight: #{tokens.$cds-alias-typography-font-weight-medium};
+    --clr-dropdown-item-font-weight: #{tokens.$cds-alias-typography-secondary-font-weight};
+
+    &,
+    & [cds-theme] {
       // Usage: ../popover/dropdown/_dropdown.clarity.scss
       --clr-dropdown-active-text-color: #{tokens.$cds-alias-object-interaction-color-active};
       --clr-dropdown-bg-color: #{tokens.$cds-alias-object-container-background};
       --clr-dropdown-border-color: #{tokens.$cds-alias-object-border-color};
       --clr-dropdown-divider-color: #{tokens.$cds-alias-object-border-color-tint};
-      --clr-dropdown-divider-border-width: #{tokens.$cds-global-space-1};
       --clr-dropdown-child-border-color: #{tokens.$cds-alias-object-border-color};
       // @deprecated in favor of '--clr-dropdown-item-hover-bg-color'
       --clr-dropdown-bg-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
@@ -30,11 +33,9 @@
       // Usage: ../popover/dropdown/_dropdown.clarity.scss
       // Dropdown Header
       --clr-dropdown-header-color: #{tokens.$cds-alias-typography-color-400};
-      --clr-dropdown-header-font-weight: #{tokens.$cds-alias-typography-font-weight-medium};
 
       // Usage: ../popover/dropdown/_menu-mixins.clarity.scss
       // Dropdown Item
-      --clr-dropdown-item-font-weight: #{tokens.$cds-alias-typography-secondary-font-weight};
       --clr-dropdown-item-color: #{tokens.$cds-alias-object-interaction-color};
       --clr-dropdown-item-bg-color: transparent; // #{tokens.$cds-alias-object-interaction-background};
       --clr-dropdown-item-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};

@@ -1,0 +1,60 @@
+<clr-dropdown
+  *ngIf="selectedItemsCount > 0 || filteredItemsCount > 0; else exportAllOption"
+  class="column-switch-wrapper"
+>
+  <button
+    data-test-id="export-link"
+    type="button"
+    class="column-toggle--action btn btn-sm btn-link"
+    [clrLoading]="exportStatus.inProgress || false"
+    [disabled]="!(allItemsCount > 0)"
+    (click)="exportAllIfOnlyOption()"
+    clrDropdownTrigger
+  >
+    {{ dgStrings.exportLink }}
+    <cds-icon shape="angle" direction="down" *ngIf="selectedItemsCount > 0 || filteredItemsCount > 0"></cds-icon>
+  </button>
+  <clr-dropdown-menu class="export-dropdown" clrPosition="top-left" *clrIfOpen>
+    <button
+      type="button"
+      clrDropdownItem
+      *ngIf="selectedItemsCount > 0 || filteredItemsCount > 0"
+      (click)="onExportClick(exportType.ALL)"
+    >
+      {{ dgStrings.exportAll }} {{ allRowsCount }}
+    </button>
+
+    <button
+      type="button"
+      clrDropdownItem
+      *ngIf="filteredItemsCount > 0"
+      (click)="onExportClick(exportType.MATCHING_FILTERS)"
+    >
+      {{ dgStrings.exportMatchingFilters }}
+      {{ matchedFilterRowsCount }}
+    </button>
+
+    <button
+      type="button"
+      clrDropdownItem
+      *ngIf="selectedItemsCount > 0"
+      (click)="onExportClick(exportType.SELECTED_ONLY)"
+    >
+      {{ dgStrings.exportSelectedRows }} {{ selectedRowsCount }}
+    </button>
+  </clr-dropdown-menu>
+</clr-dropdown>
+<ng-template #exportAllOption>
+  <div class="column-switch-wrapper">
+    <button
+      data-test-id="export-link"
+      type="button"
+      class="column-toggle--action btn btn-sm btn-link"
+      [clrLoading]="exportStatus.inProgress || false"
+      [disabled]="!(allItemsCount > 0)"
+      (click)="exportAllIfOnlyOption()"
+    >
+      {{ dgStrings.exportLink }}
+    </button>
+  </div>
+</ng-template>

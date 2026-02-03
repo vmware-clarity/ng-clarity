@@ -1,0 +1,45 @@
+<grid-confirm-form [(options)]="options"> </grid-confirm-form>
+
+<button class="btn btn-primary" (click)="reset()">Render</button>
+<button class="btn btn-primary" (click)="refresh()">Refresh data</button>
+
+<div *ngIf="options.selectionType !== 0" class="card card-block">
+  <p class="card-text">
+    Selected VMs:
+    <em *ngIf="selectedVms?.length == 0">No vm selected.</em>
+    <span *ngFor="let vm of selectedVms">{{ vm.name + ' ' }}</span>
+  </p>
+</div>
+
+<hr />
+
+<appfx-datagrid
+  *ngIf="!resetting"
+  preserveSelection
+  [trackByGridItemProperty]="'id'"
+  [gridItems]="vmItems"
+  [selectedItems]="selectedVms"
+  [columns]="columns"
+  [layoutModel]="{
+    disabled: options.disabled,
+    compact: options.compactDatagrid,
+    stretchToParentHeight: false
+  }"
+  [footerModel]="{
+    showFooter: options.showFooter,
+    enableCustomExport: options.enableExport,
+    hideColumnToggle: !options.showColumnToggle
+  }"
+  [serverDrivenDatagrid]="true"
+  [totalItems]="options.totalItems"
+  [loading]="options.loading"
+  [listItemsCount]="options.totalItems"
+  [selectionType]="options.selectionType"
+  [pageSize]="options.pageSize"
+  [pageSizeOptions]="options.pageSizeOptions"
+  [rowSelectionMode]="options.enableRowSelection"
+  (refreshGridData)="onRefreshGridData($event)"
+  (exportDataEvent)="onExportDataEvent($event)"
+  (selectedItemsChange)="onSelectedItemsChange($event)"
+>
+</appfx-datagrid>

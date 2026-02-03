@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -7,7 +7,7 @@
 
 import { ListRange } from '@angular/cdk/collections';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ClrDatagridStateInterface } from '@clr/angular';
+import { ClrDatagridItemsTrackByFunction, ClrDatagridStateInterface } from '@clr/angular';
 import { Observable } from 'rxjs';
 
 import { Inventory } from '../inventory/inventory';
@@ -35,6 +35,8 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
 
     this.users = this._inventory.getAllUsersSubject();
   }
+
+  trackItemById: ClrDatagridItemsTrackByFunction<User> = item => item?.id;
 
   ngOnInit(): void {
     this.users.subscribe(users => {

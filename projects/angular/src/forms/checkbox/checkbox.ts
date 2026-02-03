@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -20,6 +20,9 @@ import { ClrCheckboxWrapper, IS_TOGGLE } from './checkbox-wrapper';
  */
 @Directive({
   selector: '[clrCheckbox],[clrToggle]',
+  host: {
+    '[attr.role]': 'toggle !== null ? "switch" : null',
+  },
 })
 export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
   constructor(
@@ -27,12 +30,16 @@ export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     injector: Injector,
     @Self()
     @Optional()
-    control: NgControl,
+    private control: NgControl,
     renderer: Renderer2,
     el: ElementRef<HTMLInputElement>,
     @Attribute('clrToggle') private toggle: string
   ) {
     super(vcr, ClrCheckboxWrapper, injector, control, renderer, el);
+  }
+
+  get controlDisabled() {
+    return this.control?.disabled;
   }
 
   override ngOnInit() {

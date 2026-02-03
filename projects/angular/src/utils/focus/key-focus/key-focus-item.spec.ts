@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -8,6 +8,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { expectActiveElementToBe } from '../../testing/helpers.spec';
 import { ClrKeyFocusItem } from './key-focus-item';
 import { ClrKeyFocusModule } from './key-focus.module';
 
@@ -34,6 +35,6 @@ describe('Typescript API', () => {
 
   it('should focus host element', () => {
     component.button.focus();
-    expect(document.activeElement).toBe(fixture.nativeElement.querySelector('button'));
+    expectActiveElementToBe(fixture.nativeElement.querySelector('button'));
   });
 });

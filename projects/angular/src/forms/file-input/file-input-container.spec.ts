@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -22,7 +22,7 @@ interface TestComponent {
 @Component({
   template: `
     <clr-file-input-container>
-      <input type="file" name="model" [(ngModel)]="model" clrFileInput required required />
+      <input type="file" name="model" [(ngModel)]="model" clrFileInput required />
       <clr-control-helper>Helper text</clr-control-helper>
       <clr-control-success>Success message</clr-control-success>
       <clr-control-error>Error message</clr-control-error>

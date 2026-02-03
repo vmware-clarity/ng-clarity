@@ -1,0 +1,10 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm' # or "maven", "pip", etc.
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    # This block tells Dependabot to ignore major versions for ALL dependencies
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']

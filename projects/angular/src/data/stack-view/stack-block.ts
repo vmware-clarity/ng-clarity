@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -40,7 +40,7 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="getStackChildrenId()"
     >
-      <cds-icon shape="angle" class="stack-block-caret" *ngIf="expandable" [attr.direction]="caretDirection"></cds-icon>
+      <cds-icon shape="angle" class="stack-block-caret" [attr.direction]="caretDirection"></cds-icon>
       <span class="clr-sr-only" *ngIf="getChangedValue">{{ commonStrings.keys.stackViewChanged }}</span>
       <div class="stack-view-key">
         <!-- This structure changed to fix #3567 and the a11y request was to move away from dl's -->

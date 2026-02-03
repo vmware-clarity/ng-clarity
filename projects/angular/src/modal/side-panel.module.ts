@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -18,6 +18,6 @@ export const CLR_SIDEPANEL_DIRECTIVES: Type<any>[] = [ClrSidePanel];
 @NgModule({
   imports: [CommonModule, CdkTrapFocusModule, ClrIconModule, ClrModalModule],
   declarations: [CLR_SIDEPANEL_DIRECTIVES],
-  exports: [CLR_SIDEPANEL_DIRECTIVES, ClrIconModule],
+  exports: [CLR_SIDEPANEL_DIRECTIVES, ClrModalModule, ClrIconModule],
 })
 export class ClrSidePanelModule {}

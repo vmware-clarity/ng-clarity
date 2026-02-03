@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
   ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
@@ -8,13 +8,13 @@
 <div class="alerts-pager-control">
   <div class="alerts-page-down">
     <button class="alerts-pager-button" type="button" (click)="pageDown()" [attr.aria-label]="previousAlertAriaLabel">
-      <cds-icon shape="angle" direction="left"></cds-icon>
+      <cds-icon shape="angle" direction="left" [attr.title]="commonStrings.keys.previous"></cds-icon>
     </button>
   </div>
   <div class="alerts-pager-text">{{this.multiAlertService.current+1}} / {{this.multiAlertService.count}}</div>
   <div class="alerts-page-up">
     <button class="alerts-pager-button" type="button" (click)="pageUp()" [attr.aria-label]="nextAlertAriaLabel">
-      <cds-icon shape="angle" direction="right"></cds-icon>
+      <cds-icon shape="angle" direction="right" [attr.title]="commonStrings.keys.next"></cds-icon>
     </button>
   </div>
 </div>

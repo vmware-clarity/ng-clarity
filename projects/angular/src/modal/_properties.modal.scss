@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -8,33 +8,40 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use './variables.modal' as modal-variables;
+@use '../utils/variables/variables.density' as density;
 
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('modal.properties') {
-  :root {
-    [cds-theme] {
-      --clr-modal-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+  @include mixins.root-or-host() {
+    // sizes
+    --clr-modal-sm-width: #{mixins.baselinePx(288)};
+    --clr-modal-md-width: #{mixins.baselinePx(576)};
+    --clr-modal-lg-width: #{mixins.baselinePx(864)};
+    --clr-modal-xl-width: #{mixins.baselinePx(1152)};
 
+    --clr-modal-title-font-family: #{variables.$clr-font};
+    --clr-modal-title-font-weight: #{tokens.$cds-alias-typography-section-font-weight};
+    --clr-modal-title-letter-spacing: #{mixins.baselinePx(-0.2)};
+
+    &,
+    & [clr-density] {
+      --clr-modal-border-radius: #{density.$clr-base-border-radius-s};
+
+      --clr-modal-title-font-size: #{density.$clr-base-typography-font-size-section};
+      --clr-modal-title-line-height: #{density.$clr-base-typography-line-height-24};
+    }
+
+    &,
+    & [cds-theme] {
       // color
       --clr-modal-close-color: var(--clr-close-color);
       --clr-modal-bg-color: #{tokens.$cds-alias-object-container-background};
       --clr-modal-content-box-shadow: #{tokens.$cds-alias-object-shadow-300};
       --clr-modal-backdrop-color: #{tokens.$cds-alias-object-overlay-backdrop-background};
 
-      // sizes
-      --clr-modal-sm-width: #{mixins.baselinePx(288)};
-      --clr-modal-md-width: #{mixins.baselinePx(576)};
-      --clr-modal-lg-width: #{mixins.baselinePx(864)};
-      --clr-modal-xl-width: #{mixins.baselinePx(1152)};
-
       // title
       --clr-modal-title-color: #{tokens.$cds-alias-typography-color-400};
-      --clr-modal-title-font-size: #{tokens.$cds-alias-typography-section-font-size};
-      --clr-modal-title-font-family: #{variables.$clr-font}; // #{tokens.$cds-alias-typography-header-font-family};
-      --clr-modal-title-font-weight: #{tokens.$cds-alias-typography-section-font-weight};
-      --clr-modal-title-line-height: #{tokens.$cds-alias-typography-section-line-height};
-      --clr-modal-title-letter-spacing: #{tokens.$cds-alias-typography-section-letter-spacing};
     }
   }
 }

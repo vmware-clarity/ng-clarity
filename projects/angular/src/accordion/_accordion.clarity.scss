@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -9,12 +9,13 @@
 @use '../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
 @use 'variables.accordion' as accordion-variables;
+@use '../utils/variables/variables.density' as density;
 @include meta.load-css('properties.accordion');
 
 @include mixins.exports('accordion.clarity') {
   .clr-accordion {
     display: block;
-    margin-bottom: tokens.$cds-global-space-9;
+    margin-bottom: density.$clr-base-vertical-offset-xl;
   }
 
   .clr-accordion-panel {
@@ -69,23 +70,18 @@
     }
   }
 
-  .clr-accordion-number {
-    padding: 0 tokens.$cds-global-space-7;
-    display: none !important;
-  }
-
   .clr-accordion-header-button {
     display: flex;
     flex-flow: row wrap;
     flex: 1 1 0;
     width: 100%;
     border: 0;
-    padding: tokens.$cds-global-space-8;
+    padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
     background: transparent;
     text-align: left;
     cursor: pointer;
     color: inherit;
-    gap: tokens.$cds-global-space-5;
+    gap: density.$clr-base-gap-s;
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
       flex-flow: row;
     }
@@ -102,8 +98,8 @@
   }
 
   .clr-accordion-status {
-    width: tokens.$cds-global-space-11;
-    display: inline-block;
+    width: density.$clr-base-layout-space-xl;
+    display: inline-flex;
     vertical-align: top;
   }
 
@@ -116,9 +112,6 @@
       min-width: accordion-variables.$clr-accordion-step-title-min-width;
       max-width: mixins.baselinePx(264);
       width: 100%;
-      @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-        margin-left: tokens.$cds-global-space-7;
-      }
     }
   }
 
@@ -127,7 +120,7 @@
     max-width: mixins.baselinePx(650);
 
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-      margin-left: mixins.baselinePx(40);
+      margin-left: density.$clr-base-horizontal-offset-l;
     }
   }
 
@@ -136,28 +129,15 @@
     border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
     border-bottom: 0;
     overflow: hidden;
-    padding: tokens.$cds-global-space-8;
     display: none;
 
     .clr-form {
       padding: 0;
     }
-
-    &.ng-trigger {
-      padding: 0; // inner element/padding to prevent extra hight in ng animation
-    }
-
-    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-      padding: tokens.$cds-global-space-8 mixins.baselinePx(54);
-    }
   }
 
   .clr-accordion-inner-content {
-    padding: tokens.$cds-global-space-9;
-
-    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-      padding: tokens.$cds-global-space-8 mixins.baselinePx(54);
-    }
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
   }
 
   .clr-accordion-angle {
@@ -165,17 +145,9 @@
     transform: rotate(90deg);
   }
 
-  .clr-accordion-error-icon,
-  .clr-accordion-complete-icon {
-    @include mixins.equilateral(tokens.$cds-global-space-9);
-    display: none;
-    padding: 0;
-    margin: 0 tokens.$cds-global-space-6;
-  }
-
   // panel states
   .clr-accordion-panel-open {
-    .clr-accordion-header {
+    > .clr-accordion-header {
       box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
     }
     .clr-accordion-panel-complete > .clr-accordion-header {
@@ -229,9 +201,6 @@
   .clr-accordion-panel-error {
     & > .clr-accordion-header {
       box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
-      border-color: accordion-variables.$clr-accordion-error-color;
-      border-bottom: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-left-color-error;
-      background-color: accordion-variables.$clr-accordion-active-background-color;
     }
 
     & > .clr-accordion-error-icon {
@@ -248,37 +217,61 @@
   // temporary overrides to match stackview until stepper, accordion and stackview are aligned
   // https://github.com/vmware/clarity/issues/3471
   .clr-accordion:not(.clr-stepper-forms) {
-    .clr-accordion-header {
+    .clr-accordion-header:not(.clr-stepper-header) {
       box-shadow: none;
     }
 
-    .clr-accordion-panel:first-child .clr-accordion-header {
-      border-top-left-radius: accordion-variables.$clr-accordion-border-radius;
-      border-top-right-radius: accordion-variables.$clr-accordion-border-radius;
-    }
+    //Add borders to panel
+    .clr-accordion-panel .clr-accordion-header:not(.clr-stepper-header) {
+      border-radius: accordion-variables.$clr-accordion-border-radius;
 
-    .clr-accordion-panel:last-child {
-      .clr-accordion-content,
-      .clr-accordion-header {
+      // add borders to content
+      & + .clr-accordion-content-region > .clr-accordion-content {
         border-bottom-left-radius: accordion-variables.$clr-accordion-border-radius;
         border-bottom-right-radius: accordion-variables.$clr-accordion-border-radius;
       }
     }
 
-    .clr-accordion-header-button {
-      align-items: center;
-      padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6};
+    // Remove borders from Middle panel
+    .clr-accordion-panel
+      + .clr-accordion-panel
+      > div[class*='clr-accordion-panel-']
+      > .clr-accordion-header:not(.clr-stepper-header) {
+      border-top-left-radius: unset;
+      border-top-right-radius: unset;
     }
 
-    .clr-accordion-content {
-      padding: 0;
+    // if not last panel - note: last-child not quite working on classes
+    .clr-accordion-panel:not(:last-child)
+      > div[class*='clr-accordion-panel-']
+      > .clr-accordion-header:not(.clr-stepper-header) {
+      &,
+      & + .clr-accordion-content-region > .clr-accordion-content {
+        // if not last content element
+        border-bottom: none;
+        border-bottom-left-radius: unset;
+        border-bottom-right-radius: unset;
+      }
+    }
+
+    .clr-accordion-header-button {
+      align-items: center;
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
     }
 
     .clr-accordion-inner-content {
-      padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6 tokens.$cds-global-space-5
-        tokens.$cds-global-space-11;
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l
+        density.$clr-base-vertical-offset-m
+        calc(
+          density.$clr-base-horizontal-offset-l + density.$clr-base-icon-size-s + density.$clr-base-horizontal-offset-m
+        );
       color: accordion-variables.$clr-accordion-content-color;
-      font-size: accordion-variables.$clr-accordion-content-font-size;
+      @include mixins.generate-typography-token(
+        'SECONDARY-13-RG-STD',
+        (
+          font-size: accordion-variables.$clr-accordion-content-font-size,
+        )
+      );
     }
 
     .clr-accordion-panel-disabled .clr-accordion-inner-content {
@@ -289,9 +282,9 @@
     .clr-accordion-status {
       width: auto;
 
-      cds-icon,
+      cds-icon:not([size]),
       clr-icon {
-        @include mixins.equilateral(tokens.$cds-global-space-7);
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       }
     }
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -29,6 +29,16 @@ export default {
 
 const ModalStackedOnDetailTemplate: StoryFn = args => ({
   template: `
+    <style>
+      .electronegativity-container {
+        display: flex;
+        justify-content: space-between;
+
+        .electronegativity-bar {
+          background-color: var(--cds-alias-status-info);
+        }
+      }
+    </style>
     <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
 
     <clr-datagrid>
@@ -41,10 +51,9 @@ const ModalStackedOnDetailTemplate: StoryFn = args => ({
         <clr-dg-cell>{{ element.name }}</clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
         <clr-dg-cell>{{ element.number }}</clr-dg-cell>
-        <clr-dg-cell>
-          <div [style.width.%]="(element.electronegativity * 100) / 4" class="electronegativity-container">
-            {{ element.electronegativity }}
-          </div>
+        <clr-dg-cell class="electronegativity-container">
+          {{ element.electronegativity }}
+          <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
         </clr-dg-cell>
       </clr-dg-row>
 

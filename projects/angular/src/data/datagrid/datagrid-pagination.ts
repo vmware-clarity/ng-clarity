@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -54,22 +54,24 @@ import { Page } from './providers/page';
           <span class="clr-sr-only">{{ commonStrings.keys.previousPage }}</span>
           <cds-icon shape="angle" direction="left"></cds-icon>
         </button>
-        <input
-          *ngIf="!disableCurrentPageInput; else readOnly"
-          #currentPageInput
-          type="text"
-          class="pagination-current clr-input"
-          [size]="page.last.toString().length"
-          [value]="page.current"
-          (keydown.enter)="updateCurrentPage($event)"
-          (blur)="verifyCurrentPage($event)"
-          [attr.aria-label]="commonStrings.keys.currentPage"
-        />
-        <ng-template #readOnly>
-          <span>{{ page.current }}</span>
-        </ng-template>
+        <div class="pagination-pages">
+          <input
+            *ngIf="!disableCurrentPageInput; else readOnly"
+            #currentPageInput
+            type="text"
+            class="pagination-current clr-input"
+            [size]="page.last.toString().length"
+            [value]="page.current"
+            (keydown.enter)="updateCurrentPage($event)"
+            (blur)="verifyCurrentPage($event)"
+            [attr.aria-label]="commonStrings.keys.currentPage"
+          />
+          <ng-template #readOnly>
+            <span>{{ page.current }}</span>
+          </ng-template>
 
-        &nbsp;/&nbsp;<span [attr.aria-label]="commonStrings.keys.totalPages">{{ page.last }}</span>
+          &nbsp;/&nbsp;<span [attr.aria-label]="commonStrings.keys.totalPages">{{ page.last }}</span>
+        </div>
         <button
           type="button"
           class="pagination-next"

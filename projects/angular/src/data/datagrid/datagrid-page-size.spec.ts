@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -47,6 +47,19 @@ export default function (): void {
           expect(select).not.toBeNull();
           expect(select.options.length).toBe(1);
           expect(select.options[0].innerText).toMatch('0');
+        });
+      });
+      describe('Inside Form Test', function () {
+        let context: TestContext<ClrDatagridPageSize, FormTest>;
+
+        beforeEach(function () {
+          context = this.create(ClrDatagridPageSize, FormTest, [Page, StateDebouncer]);
+        });
+
+        it('label should not have col classes when inside a form', function () {
+          const label = context.clarityElement.querySelector('label') as HTMLElement;
+          expect(label).not.toBeNull();
+          expect(label.className.includes('clr-col')).toBeFalse();
         });
       });
 
@@ -112,6 +125,15 @@ export default function (): void {
   template: `<clr-dg-page-size>Hello world</clr-dg-page-size>`,
 })
 class SimpleTest {}
+
+@Component({
+  template: `
+    <form clrForm>
+      <clr-dg-page-size>Hello world</clr-dg-page-size>
+    </form>
+  `,
+})
+class FormTest {}
 
 @Component({
   template: `

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -8,8 +8,11 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('label.properties') {
-  :root {
-    [cds-theme] {
+  @include mixins.root-or-host() {
+    --clr-label-border-width: #{tokens.$cds-alias-object-border-width-100};
+
+    &,
+    & [cds-theme] {
       // COLOR
       --clr-label-font-color-light: #{tokens.$cds-alias-typography-color-500};
       --clr-label-font-color-dark: var(--clr-color-neutral-1000);
@@ -60,8 +63,6 @@
       --clr-label-danger-bg-color: #{tokens.$cds-alias-utility-red-tint};
       --clr-label-danger-font-color: #{tokens.$cds-alias-typography-color-500};
       --clr-label-danger-border-color: #{tokens.$cds-alias-utility-red};
-
-      --clr-label-border-width: #{tokens.$cds-alias-object-border-width-100};
     }
   }
 }

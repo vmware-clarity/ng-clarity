@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -180,3 +180,11 @@ export function animationFrameTick(fixture?: ComponentFixture<any>) {
  * would be nice to be able to pass karma/jasmine a flag to turn this off and on.
  */
 // reportSlowSpecs();
+
+export function expectActiveElementToBe(element: Element, failOutput = null): void {
+  expect(document.activeElement).toBe(element, failOutput);
+}
+
+export function expectActiveElementNotToBe(element: Element, failOutput = null): void {
+  expect(document.activeElement).not.toBe(element, failOutput);
+}

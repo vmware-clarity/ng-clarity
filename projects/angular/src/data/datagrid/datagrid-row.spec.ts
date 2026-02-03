@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { AnimationBuilder } from '@angular/animations';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
@@ -194,6 +195,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrDatagridModule],
           declarations: [NgForDatagridWithTrackBy],
+          providers: [AnimationBuilder],
         });
 
         fixture = TestBed.createComponent(NgForDatagridWithTrackBy);
@@ -324,7 +326,7 @@ export default function (): void {
         const row = context.clarityElement;
         expect(row.children).toBeDefined();
 
-        expect(row.children[0] instanceof HTMLLabelElement).toBeFalsy();
+        expect(row.classList.contains('datagrid-row-clickable')).toBeFalse();
         row.children[0].click();
         context.detectChanges();
         expect(selectionProvider.currentSingle).toBeUndefined();
@@ -344,7 +346,7 @@ export default function (): void {
         const row = context.clarityElement;
         expect(row.children).toBeDefined();
         expect(selectionProvider.current).toEqual([]);
-        expect(row.children[0] instanceof HTMLLabelElement).toBeFalsy();
+        expect(row.classList.contains('datagrid-row-clickable')).toBeFalse();
         row.children[0].click();
         context.detectChanges();
         expect(selectionProvider.current).toEqual([]);
@@ -416,11 +418,21 @@ export default function (): void {
       });
 
       it('contains expandable element', function () {
-        expect(context.clarityElement.querySelector('clr-expandable-animation')).not.toBeNull();
+        expect(context.clarityElement.children[0].classList.contains('clr-expandable-animation')).toBeTrue();
       });
 
-      it('button must contain aria-controls', function () {
+      it('button must not contain aria-controls with template when not expanded', function () {
         const button = context.clarityElement.querySelector('.datagrid-expandable-caret-button');
+        expect(button.getAttribute('aria-controls')).toBeNull();
+      });
+
+      it('button must contain aria-controls when expanded', function () {
+        const button: HTMLButtonElement = context.clarityElement.querySelector('.datagrid-expandable-caret-button');
+        expect(button.getAttribute('aria-controls')).toBeNull();
+
+        button.dispatchEvent(new MouseEvent('click', { buttons: 1, bubbles: true }));
+        context.detectChanges();
+
         expect(button.getAttribute('aria-controls')).not.toBeNull();
       });
 

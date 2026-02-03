@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -9,6 +9,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 
 import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
 import { TestContext } from './helpers.spec';
 import { RowActionService } from './providers/row-action-service';
@@ -107,7 +108,7 @@ export default function (): void {
       context.detectChanges();
       await context.fixture.whenStable();
       const firstButton: HTMLButtonElement = context.testComponent.actionItem.nativeElement;
-      expect(document.activeElement).toBe(firstButton);
+      expectActiveElementToBe(firstButton);
     });
   });
 }

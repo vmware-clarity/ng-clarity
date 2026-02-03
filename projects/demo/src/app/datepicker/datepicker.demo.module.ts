@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -23,8 +23,10 @@ import { DatepickerInTemplateDrivenFormsDemo } from './datepicker-in-template-dr
 import { DatepickerKKJDemo } from './datepicker-KKJ';
 import { DatepickerLocaleData } from './datepicker-locale-data';
 import { DatepickerMinMaxDemo } from './datepicker-min-max';
+import { DatePickerWithActionButtonsDemo } from './datepicker-with-action-buttons';
 import { DatepickerDemo } from './datepicker.demo';
 import { ROUTING } from './datepicker.demo.routing';
+import { DateRangePickerDemo } from './daterangepicker';
 import { DisabledDemo } from './disabled';
 import { DatepickerLayoutDemo } from './layout';
 import { NgModelAutoWrappedDatepickerDemo } from './ngmodel-auto-wrapped';
@@ -51,6 +53,8 @@ import { NgModelExplicitWrapperDemo } from './ngmodel-wrapper-explicit-wrapper';
     DisabledDemo,
     DatepickerLayoutDemo,
     DatepickerMinMaxDemo,
+    DateRangePickerDemo,
+    DatePickerWithActionButtonsDemo,
   ],
   exports: [
     DatepickerDemo,
@@ -71,6 +75,8 @@ import { NgModelExplicitWrapperDemo } from './ngmodel-wrapper-explicit-wrapper';
     DisabledDemo,
     DatepickerLayoutDemo,
     DatepickerMinMaxDemo,
+    DateRangePickerDemo,
+    DatePickerWithActionButtonsDemo,
   ],
 })
 export class DatepickerDemoModule {}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -9,7 +9,6 @@ import { AfterContentInit, ContentChild, Directive, OnDestroy, Optional } from '
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
 import { CONTROL_STATE, IfControlStateService } from './if-control-state/if-control-state.service';
@@ -20,14 +19,14 @@ import { NgControlService } from './providers/ng-control.service';
 import { ClrControlSuccess } from './success';
 
 @Directive()
-export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy, AfterContentInit {
+export abstract class ClrAbstractContainer implements OnDestroy, AfterContentInit {
   @ContentChild(ClrLabel, { static: false }) label: ClrLabel;
   @ContentChild(ClrControlSuccess) controlSuccessComponent: ClrControlSuccess;
   @ContentChild(ClrControlError) controlErrorComponent: ClrControlError;
   @ContentChild(ClrControlHelper) controlHelperComponent: ClrControlHelper;
 
   control: NgControl;
-  _dynamic = false;
+  additionalControls: NgControl[];
 
   protected subscriptions: Subscription[] = [];
 
@@ -52,6 +51,9 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
     this.subscriptions.push(
       ngControlService.controlChanges.subscribe(control => {
         this.control = control;
+      }),
+      ngControlService.additionalControlsChanges.subscribe(controls => {
+        this.additionalControls = controls;
       })
     );
   }
@@ -82,15 +84,23 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
   }
 
   get showValid(): boolean {
-    return this.touched && this.state === CONTROL_STATE.VALID && !!this.controlSuccessComponent;
+    return this.touched && this.state === CONTROL_STATE.VALID && this.successMessagePresent;
   }
 
   get showInvalid(): boolean {
-    return this.touched && this.state === CONTROL_STATE.INVALID && !!this.controlErrorComponent;
+    return this.touched && this.state === CONTROL_STATE.INVALID && this.errorMessagePresent;
+  }
+
+  protected get successMessagePresent() {
+    return !!this.controlSuccessComponent;
+  }
+
+  protected get errorMessagePresent() {
+    return !!this.controlErrorComponent;
   }
 
   private get touched() {
-    return this.control?.touched;
+    return !!(this.control?.touched || this.additionalControls?.some(control => control.touched));
   }
 
   ngAfterContentInit() {

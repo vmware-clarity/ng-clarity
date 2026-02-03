@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -28,11 +28,12 @@ import { Component } from '@angular/core';
           <li><a [routerLink]="['./move-button-in-menu']">Move Button In Menu</a></li>
           <li><a [routerLink]="['./move-multiple-buttons-in-menu']">Move Multiple Buttons In Menu</a></li>
           <li><a [routerLink]="['./move-all-in-menu']">Move All Buttons In Menu</a></li>
-          <li><a [routerLink]="['./projection-update-test-1']">Projection Update Test 1</a></li>
+          <li><a [routerLink]="['./router-link']">Router Link</a></li>
         </ul>
       </div>
       <div class="clr-col-12 clr-col-md-4">
         <ul>
+          <li><a [routerLink]="['./projection-update-test-1']">Projection Update Test 1</a></li>
           <li><a [routerLink]="['./projection-update-test-2']">Projection Update Test 2</a></li>
           <li><a [routerLink]="['./projection-update-test-3']">Projection Update Test 3</a></li>
           <li><a [routerLink]="['./projection-update-test-4']">Projection Update Test 4</a></li>

@@ -1,0 +1,116 @@
+<!--
+     Copyright (c) 2020-2024 Broadcom. All Rights Reserved.
+     Broadcom Confidential. The term "Broadcom" refers to Broadcom Inc.
+     and/or its subsidiaries.
+-->
+<div class="btn-group" [ngClass]="{ 'btn-flex': btnLayout === 'flex', 'btn-inline': btnLayout === 'inline' }">
+  <ng-container *ngFor="let action of actions$ | async; index as i">
+    <clr-dropdown
+      [clrCloseMenuOnItemClick]="true"
+      #actionBtn
+      [class]="i === 0 ? 'has-border-left' : ''"
+      *ngIf="action.children && action.isVisible"
+    >
+      <button
+        type="button"
+        clrDropdownTrigger
+        [title]="action.tooltip"
+        [attr.data-test-id]="action.id"
+        [disabled]="!action.enabled"
+        [ngClass]="action.class"
+      >
+        {{ action.label }}
+        <cds-icon shape="angle" direction="down"></cds-icon>
+      </button>
+      <clr-dropdown-menu *clrIfOpen [clrPosition]="dropdownOrientation">
+        <button
+          clrDropdownItem
+          type="button"
+          (click)="onActionClick(childAction)"
+          [title]="childAction.tooltip"
+          [attr.data-test-id]="childAction.id"
+          [clrDisabled]="!childAction.enabled"
+          [ngClass]="childAction.class"
+          *ngFor="let childAction of action.children"
+        >
+          {{ childAction.label }}
+        </button>
+      </clr-dropdown-menu>
+    </clr-dropdown>
+
+    <button
+      type="button"
+      #actionBtn
+      (click)="onActionClick(action)"
+      *ngIf="!action.children && action.isVisible"
+      [title]="action.tooltip"
+      [attr.data-test-id]="action.id"
+      [disabled]="!action.enabled"
+      [attr.aria-label]="action.ariaLabel"
+      [ngClass]="action.class"
+    >
+      {{ action.label }}
+    </button>
+  </ng-container>
+
+  <!-- Process the hidden actions due to not enough space on the screen -->
+  <ng-container *ngIf="hasDropdownActions()">
+    <clr-dropdown class="dropdown-container" [clrCloseMenuOnItemClick]="true">
+      <button type="button" clrDropdownTrigger [ngClass]="actions[0].class">
+        <cds-icon shape="ellipsis-horizontal"></cds-icon>
+      </button>
+      <ng-template [(clrIfOpen)]="isDropdownOpened">
+        <clr-dropdown-menu clrPosition="bottom-right" dropdownMenuReposition>
+          <ng-container *ngFor="let action of getDropdownActions()">
+            <!-- Action has children - show a nested dropdown -->
+            <clr-dropdown [clrCloseMenuOnItemClick]="true" #actionBtn *ngIf="action.children">
+              <button
+                type="button"
+                clrDropdownTrigger
+                class=""
+                [title]="action.tooltip"
+                [attr.data-test-id]="action.id"
+                [disabled]="!action.enabled"
+                [attr.aria-label]="action.ariaLabel"
+                [ngClass]="action.class"
+              >
+                {{ action.label }}
+                <clr-icon shape="caret down"></clr-icon>
+              </button>
+              <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+                <button
+                  clrDropdownItem
+                  type="button"
+                  (click)="onActionClick(childAction)"
+                  [title]="childAction.tooltip"
+                  [attr.data-test-id]="childAction.id"
+                  [clrDisabled]="!childAction.enabled"
+                  [attr.aria-label]="action.ariaLabel"
+                  [ngClass]="childAction.class"
+                  *ngFor="let childAction of action.children"
+                >
+                  {{ childAction.label }}
+                </button>
+              </clr-dropdown-menu>
+            </clr-dropdown>
+
+            <!-- Action has no children -->
+            <button
+              clrDropdownItem
+              type="button"
+              (click)="onActionClick(action)"
+              *ngIf="!action.children"
+              [title]="action.tooltip"
+              [attr.data-test-id]="action.id"
+              [attr.aria-label]="action.ariaLabel"
+              [disabled]="!action.enabled"
+              [ngClass]="action.class"
+            >
+              {{ action.label }}
+            </button>
+          </ng-container>
+        </clr-dropdown-menu>
+      </ng-template>
+    </clr-dropdown>
+  </ng-container>
+</div>

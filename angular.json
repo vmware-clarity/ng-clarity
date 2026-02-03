@@ -63,7 +63,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "4kb",
-                  "maximumError": "8kb"
+                  "maximumError": "9kb"
                 }
               ]
             },
@@ -159,6 +159,40 @@
               "node_modules/@cds/core/styles/theme.dark.min.css",
               "projects/ui/src/clr-ui.scss"
             ]
+          }
+        }
+      }
+    },
+    "clr-addons": {
+      "projectType": "library",
+      "root": "projects/addons",
+      "sourceRoot": "projects/addons",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/addons/tsconfig.lib.json",
+            "project": "projects/addons/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/addons/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "styles": [
+              "node_modules/@cds/core/global.min.css",
+              "node_modules/@cds/core/styles/theme.dark.min.css",
+              "projects/ui/src/clr-ui.scss"
+            ],
+            "main": "projects/addons/test.ts",
+            "tsConfig": "projects/addons/tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "codeCoverage": true
           }
         }
       }

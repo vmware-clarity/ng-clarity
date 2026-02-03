@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -8,17 +8,11 @@
 @use 'mixins.forms' as forms-mixins;
 @use '@cds/core/tokens/tokens.scss';
 @use 'variables.forms' as forms-variables;
+@use '../../utils/variables/variables.density' as density;
 
 @include mixins.exports('forms.containers') {
-  // Fix of #5009 and #5146
-  .clr-date-container {
-    .clr-input-wrapper {
-      max-width: fit-content;
-    }
-  }
-
   .clr-form-control {
-    margin-top: calc(4 * #{forms-variables.$clr-forms-baseline});
+    margin-top: density.$clr-base-vertical-offset-2xl;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -39,7 +33,8 @@
 
     .clr-input,
     .clr-textarea,
-    .clr-select {
+    .clr-select,
+    .clr-number-input {
       color: forms-variables.$clr-forms-text-disabled-color;
       border-bottom-color: forms-variables.$clr-forms-border-disabled-color;
     }
@@ -69,6 +64,9 @@
   .clr-control-label {
     display: block;
     color: forms-variables.$clr-forms-label-color;
+    padding-top: density.$clr-base-vertical-offset-xs;
+    padding-bottom: density.$clr-base-vertical-offset-xs;
+
     @include mixins.generate-typography-token(
       'SECONDARY-13-SB-CPT',
       (
@@ -78,25 +76,27 @@
   }
 
   .clr-control-container {
-    display: inline-block;
-
-    @include mixins.generate-typography-token(
-      'SECONDARY-13-RG-EXP',
-      (
-        font-size: forms-variables.$clr-forms-field-font-size,
-      )
-    );
+    @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
   }
 
   .clr-control-inline {
-    @include forms-mixins.form-inline-input();
+    @include forms-mixins.form-inline-input(true);
+
+    .clr-checkbox-wrapper,
+    .clr-radio-wrapper {
+      padding-top: 0;
+    }
+
+    .clr-toggle-wrapper {
+      margin-top: 0;
+    }
   }
 
   .clr-subtext {
     display: block;
-    @include mixins.generate-typography-token('CAPTION-LG-11');
+    @include mixins.generate-typography-token('CAPTION-LG-11-STD');
     color: forms-variables.$clr-forms-subtext-color;
-    margin-top: tokens.$cds-global-space-3;
+    margin-top: density.$clr-base-gap-xs;
 
     &.error {
       color: forms-variables.$clr-forms-invalid-text-color;
@@ -110,6 +110,7 @@
   .clr-subtext-wrapper {
     flex-basis: 100%;
     display: flex;
+    align-items: flex-start;
   }
 
   .clr-validate-icon {
@@ -138,7 +139,6 @@
     .clr-form-control > .clr-form-control.clr-form-control-multi .clr-control-label {
       width: calc(32 * #{forms-variables.$clr-forms-baseline});
       flex-shrink: 0;
-      margin-top: tokens.$cds-global-space-3;
     }
     &.clr-row .clr-control-label {
       width: auto;
@@ -154,7 +154,7 @@
     &.clr-error,
     &.clr-success {
       & > .clr-subtext-wrapper .clr-validate-icon {
-        margin-left: calc(-1 * #{tokens.$cds-global-space-3});
+        margin-left: calc(-1 * #{density.$clr-base-horizontal-offset-xs});
       }
     }
   }
@@ -164,27 +164,30 @@
       width: calc(32 * #{forms-variables.$clr-forms-baseline});
       min-width: calc(32 * #{forms-variables.$clr-forms-baseline});
     }
+
     .clr-form-control.clr-row > .clr-control-label {
       width: auto;
       min-width: auto;
     }
 
-    .clr-control-label {
-      margin-top: tokens.$cds-global-space-3;
-    }
-
     .clr-form-control {
       display: flex;
       flex-direction: row;
-      margin-top: calc(2 * #{forms-variables.$clr-forms-baseline});
+      margin-top: density.$clr-base-vertical-offset-l;
     }
 
     .clr-control-container {
       display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      align-items: center;
     }
 
     .clr-subtext {
       display: inline-block;
+      align-self: flex-start;
+      padding: density.$clr-base-vertical-offset-xs 0;
+      margin-top: 0;
 
       // special margin left based on --clr-forms-icon-size
       // to align subtexts when error/success icon is missing.
@@ -194,12 +197,7 @@
     .clr-error,
     .clr-success {
       .clr-subtext {
-        margin-left: tokens.$cds-global-space-3;
-
-        &.error,
-        &.success {
-          margin-left: tokens.$cds-global-space-4;
-        }
+        margin-left: density.$clr-base-gap-xs;
       }
 
       // Center the validation icon
@@ -210,7 +208,6 @@
 
     .clr-subtext-wrapper {
       flex-basis: auto;
-      display: inline-block;
     }
   }
 }

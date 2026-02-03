@@ -1,0 +1,119 @@
+<!-- Copyright 2022-2025 Broadcom. All rights reserved. -->
+<appfx-filter-form
+  [formGroup]="generalFilterForm"
+  [valid]="generalFilterForm.valid"
+  (cancel)="onCancelButtonClick()"
+  (apply)="onApplyButtonClick()"
+>
+  <clr-select-container class="mt-compact">
+    <label class="clr-control-label">
+      {{ filterStrings.operatorLabel }}
+    </label>
+    <select clrSelect formControlName="primaryOperator">
+      <option *ngFor="let operator of comparisonOperators" [ngValue]="operator">
+        {{ filterStrings.getOperatorDisplayName(operator) }}
+      </option>
+    </select>
+  </clr-select-container>
+  <div class="flex-container" *ngIf="!isEmptyPrimaryPredicate">
+    <clr-input-container>
+      <input
+        type="text"
+        formControlName="primaryValue"
+        placeholder="{{ filterStrings.enterValue }}"
+        clrInput
+        (keydown)="onInputKeyPress($event)"
+      />
+      <clr-control-error *clrIfError="'required'" role="alert">{{
+        filterStrings.requiredValidatorMessage
+      }}</clr-control-error>
+      <clr-control-error *clrIfError="'pattern'" role="alert">{{
+        filterStrings.integerValidatorMessage
+      }}</clr-control-error>
+    </clr-input-container>
+    <clr-select-container class="ml-half" *ngIf="isNumericUnitProperty">
+      <select clrSelect formControlName="primaryUnit" [attr.aria-label]="filterStrings.unitAriaLabel">
+        <option *ngFor="let unit of units" [ngValue]="unit">
+          {{ filterStrings.getUnitDisplayName(unit) }}
+        </option>
+      </select>
+    </clr-select-container>
+  </div>
+  <button
+    class="btn btn-sm btn-link mt-half"
+    data-test-id="add-button"
+    [attr.aria-label]="filterStrings.addCondition"
+    (click)="enableSecondaryPredicate()"
+    *ngIf="!additionalPredicate && !filterProperty.singleCondition"
+  >
+    <cds-icon shape="plus" class="is-solid"></cds-icon>
+    {{ filterStrings.addCondition }}
+  </button>
+  <div *ngIf="additionalPredicate">
+    <clr-radio-container *ngIf="filterProperty.logicalOperator == undefined" clrInline class="mt-compact">
+      <clr-radio-wrapper>
+        <input
+          type="radio"
+          clrRadio
+          formControlName="logicalOperator"
+          [value]="logicalOperators[0]"
+          [attr.disabled]="isEmptyPrimaryPredicate || isEmptySecondaryPredicate ? 'disabled' : null"
+        />
+        <label> {{ filterStrings.getConjoinerDisplayName(logicalOperators[0]) }} </label>
+      </clr-radio-wrapper>
+      <clr-radio-wrapper>
+        <input type="radio" clrRadio formControlName="logicalOperator" [value]="logicalOperators[1]" />
+        <label> {{ filterStrings.getConjoinerDisplayName(logicalOperators[1]) }} </label>
+      </clr-radio-wrapper>
+    </clr-radio-container>
+    <div *ngIf="filterProperty.logicalOperator != undefined" class="clr-control-container" cds-layout="m-t:sm">
+      <span data-test-id="logical-operator" cds-text="body medium">{{
+        filterStrings.getConjoinerDisplayName(filterProperty.logicalOperator)
+      }}</span>
+    </div>
+    <div class="flex-end-container">
+      <clr-select-container class="form-control-compact">
+        <label class="clr-control-label">
+          {{ filterStrings.operatorLabel }}
+        </label>
+        <select clrSelect formControlName="secondaryOperator">
+          <option *ngFor="let operator of comparisonOperators" [ngValue]="operator">
+            {{ filterStrings.getOperatorDisplayName(operator) }}
+          </option>
+        </select>
+      </clr-select-container>
+      <button
+        class="close ml-half"
+        data-test-id="close-button"
+        [attr.aria-label]="filterStrings.removeConditionAriaLabel"
+        (click)="disableSecondaryPredicate()"
+      >
+        <cds-icon size="20" shape="window-close"></cds-icon>
+      </button>
+    </div>
+    <div class="flex-container" *ngIf="!isEmptySecondaryPredicate">
+      <clr-input-container>
+        <input
+          type="text"
+          formControlName="secondaryValue"
+          placeholder="{{ filterStrings.enterValue }}"
+          clrInput
+          (keydown)="onInputKeyPress($event)"
+        />
+        <clr-control-error *clrIfError="'required'" role="alert">{{
+          filterStrings.requiredValidatorMessage
+        }}</clr-control-error>
+        <clr-control-error *clrIfError="'pattern'" role="alert">{{
+          filterStrings.integerValidatorMessage
+        }}</clr-control-error>
+      </clr-input-container>
+      <clr-select-container class="ml-half" *ngIf="isNumericUnitProperty">
+        <select clrSelect formControlName="secondaryUnit">
+          <option *ngFor="let unit of units" [ngValue]="unit">
+            {{ filterStrings.getUnitDisplayName(unit) }}
+          </option>
+        </select>
+      </clr-select-container>
+    </div>
+  </div>
+</appfx-filter-form>

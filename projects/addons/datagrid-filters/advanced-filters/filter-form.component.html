@@ -1,0 +1,25 @@
+<!-- Copyright 2025 Broadcom. All rights reserved. -->
+<form clrForm class="form-compact" clrLayout="vertical">
+  <div class="form-max-height">
+    <ng-content></ng-content>
+  </div>
+  <div>
+    <button
+      type="button"
+      data-test-id="submitBtn"
+      class="btn btn-sm btn-primary btn-right"
+      [disabled]="!valid"
+      (click)="onApplyButtonClick()"
+    >
+      {{ filterStrings.apply }}
+    </button>
+    <button
+      type="button"
+      data-test-id="cancelBtn"
+      class="btn btn-sm btn-outline btn-right"
+      (click)="onCancelButtonClick()"
+    >
+      {{ filterStrings.cancel }}
+    </button>
+  </div>
+</form>

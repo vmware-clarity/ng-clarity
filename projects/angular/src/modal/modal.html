@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
   ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
@@ -22,13 +22,12 @@
     [attr.aria-labelledby]="labelledBy || modalId"
   >
     <div class="clr-sr-only">{{commonStrings.keys.modalContentStart}}</div>
-    <div class="modal-content-wrapper">
-      <!-- only used in wizards -->
-      <ng-content select=".modal-nav"></ng-content>
-
+    <!-- This wizard is tightly coupled to the modal styles, so changes here could require changes in the wizard. -->
+    <div *ngIf="!modalContentTemplate; else modalContentTemplate" class="modal-content-wrapper">
       <div class="modal-content">
         <div class="modal-header--accessible">
-          <div class="modal-title-wrapper" #title id="{{modalId}}" cdkFocusInitial tabindex="-1">
+          <ng-content select=".leading-button"></ng-content>
+          <div class="modal-title-wrapper" #title [id]="modalId" cdkFocusInitial tabindex="-1">
             <ng-content select=".modal-title"></ng-content>
           </div>
           <button
@@ -41,7 +40,7 @@
             <cds-icon shape="window-close"></cds-icon>
           </button>
         </div>
-        <div class="modal-body-wrapper">
+        <div #body class="modal-body-wrapper">
           <ng-content select=".modal-body"></ng-content>
         </div>
         <ng-content select=".modal-footer"></ng-content>
@@ -49,6 +48,5 @@
     </div>
     <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   </div>
-
   <div [@fade] *ngIf="backdrop" class="modal-backdrop" aria-hidden="true" (click)="backdropClick()"></div>
 </div>

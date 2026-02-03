@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
 
 import { BASIC_FOCUSABLE_ITEM_PROVIDER } from '../../utils/focus/focusable-item/basic-focusable-item.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
@@ -27,7 +27,9 @@ export class ClrDropdownItem {
   constructor(
     private dropdown: ClrDropdown,
     private _dropdownService: RootDropdownService,
-    private focusableItem: FocusableItem
+    private focusableItem: FocusableItem,
+    private el: ElementRef,
+    private renderer: Renderer2
   ) {}
 
   @Input('clrDisabled')

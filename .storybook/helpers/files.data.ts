@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -84,17 +84,20 @@ export function getFileTreeNodeMarkup(
   args: { asLink?: boolean; clrSelected?: boolean; hasIcon?: boolean } = {}
 ) {
   return files
-    .map(
-      file => `
+    .map(file => {
+      const data = args.hasIcon
+        ? `<cds-icon [attr.shape]="'${file.files ? 'folder' : 'file'}'"></cds-icon> ${file.name}`
+        : file.name;
+
+      return `
         <clr-tree-node
           [clrDisabled]="${file.disabled}"
           [clrExpanded]="${file.expanded}"
           ${args.clrSelected !== undefined && file.selected !== undefined ? `[clrSelected]="${file.selected}"` : ''}
         >
-          ${args.hasIcon ? `<cds-icon [attr.shape]="'${file.files ? 'folder' : 'file'}'"></cds-icon>` : ''}
-          ${args.asLink ? `<a href="javascript:;" class="clr-treenode-link">${file.name}</a>` : file.name}
+          ${args.asLink ? `<a href="javascript:;" class="clr-treenode-link">${data}</a>` : data}
           ${file.files ? getFileTreeNodeMarkup(file.files, args) : ''}
-        </clr-tree-node>`
-    )
+        </clr-tree-node>`;
+    })
     .join('');
 }

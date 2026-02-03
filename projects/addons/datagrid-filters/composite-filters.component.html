@@ -1,0 +1,77 @@
+<!-- Copyright 2022-2023 Broadcom. All rights reserved. -->
+<div class="composite-filter-container">
+  <clr-signpost class="height-standard">
+    <button
+      clrSignpostTrigger
+      class="btn btn-sm btn-link btn-compact"
+      data-test-id="add-button"
+      [attr.aria-label]="filterStrings.addNewAriaLabel"
+      [disabled]="filterableProperties.length === propertyFilters.length"
+    >
+      <cds-icon size="20" shape="filter-grid" class="is-solid"></cds-icon>
+      {{ filterStrings.addNew }}
+    </button>
+    <ng-template [(clrIfOpen)]="signPostOpened">
+      <clr-signpost-content [clrPosition]="'bottom-middle'" [ngSwitch]="propertyType" filterPopoverReposition>
+        <clr-select-container class="mt-0">
+          <label class="clr-control-label"> {{ filterStrings.filterLabel }} </label>
+          <select clrSelect [(ngModel)]="selectedFilterableProperty" (ngModelChange)="onPropertyChange()">
+            <option *ngFor="let property of filterableProperties | skipFilter: activeFilters()" [ngValue]="property">
+              {{ property.displayName }}
+            </option>
+          </select>
+        </clr-select-container>
+        <appfx-general-filter
+          *ngSwitchCase="stringPropertyType"
+          [filterProperty]="stringProperty"
+          (filterCriteriaChange)="onFilterCriteriaChange($event)"
+        >
+        </appfx-general-filter>
+        <appfx-general-filter
+          *ngSwitchCase="numericPropertyType"
+          [filterProperty]="numericProperty"
+          (filterCriteriaChange)="onFilterCriteriaChange($event)"
+        >
+        </appfx-general-filter>
+        <appfx-enum-filter
+          *ngSwitchCase="enumPropertyType"
+          [filterProperty]="enumProperty"
+          (filterCriteriaChange)="onFilterCriteriaChange($event)"
+        >
+        </appfx-enum-filter>
+        <appfx-datetime-filter
+          *ngSwitchCase="dateTimePropertyType"
+          [filterProperty]="dateTimeProperty"
+          (filterCriteriaChange)="onFilterCriteriaChange($event)"
+        >
+        </appfx-datetime-filter>
+      </clr-signpost-content>
+    </ng-template>
+  </clr-signpost>
+  <div *ngIf="propertyFilters.length > 0" class="manage-filter-container">
+    <appfx-manage-filter
+      *ngFor="let propertyFilter of propertyFilters"
+      [hidden]="collapsedFilters"
+      [propertyFilter]="propertyFilter"
+      (filterCriteriaChange)="onFilterCriteriaChange($event)"
+    >
+    </appfx-manage-filter>
+    <button
+      class="btn btn-sm btn-link btn-compact"
+      data-test-id="hide-filters"
+      [attr.aria-label]="showHideFiltersAriaLabel"
+      (click)="showHideAllFilters()"
+    >
+      <cds-icon shape="angle" class="is-solid" [attr.direction]="showHideFiltersArrowDir"></cds-icon>
+      {{ showHideFiltersLabel }}
+    </button>
+    <button
+      class="btn btn-sm btn-link btn-compact"
+      data-test-id="clear-all-button"
+      [attr.aria-label]="filterStrings.clearAllButtonAriaLabel"
+      (click)="clearAllFilters()"
+    >
+      {{ filterStrings.clearAllButtonLabel }}
+    </button>
+  </div>
+</div>

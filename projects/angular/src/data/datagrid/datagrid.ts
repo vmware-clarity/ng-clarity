@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -12,6 +12,7 @@ import {
   Component,
   ContentChild,
   ContentChildren,
+  DoCheck,
   ElementRef,
   EventEmitter,
   Inject,
@@ -21,7 +22,9 @@ import {
   Output,
   QueryList,
   Renderer2,
+  TemplateRef,
   ViewChild,
+  ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
@@ -33,6 +36,7 @@ import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridItems } from './datagrid-items';
 import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { ClrDatagridRow } from './datagrid-row';
+import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType } from './enums/selection-type';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';
@@ -50,7 +54,7 @@ import { StateDebouncer } from './providers/state-debouncer.provider';
 import { StateProvider } from './providers/state.provider';
 import { TableSizeService } from './providers/table-size.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
-import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
+import { CellCoordinates, KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
 @Component({
   selector: 'clr-datagrid',
@@ -75,9 +79,10 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
   host: {
     '[class.datagrid-host]': 'true',
     '[class.datagrid-detail-open]': 'detailService.isOpen',
+    '[class.datagrid-virtual-scroll]': '!!virtualScroll',
   },
 })
-export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
+export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy, DoCheck {
   @Input('clrLoadingMoreItems') loadingMoreItems: boolean;
 
   @Input() clrDgSingleSelectionAriaLabel: string = this.commonStrings.keys.singleSelectionAriaLabel;
@@ -95,6 +100,16 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   @Output('clrDgRefresh') refresh = new EventEmitter<ClrDatagridStateInterface<T>>(false);
 
+  /**
+   * The application can provide custom select all logic.
+   */
+  @Input('clrDgCustomSelectAllEnabled') customSelectAllEnabled = false;
+  @Output('clrDgCustomSelectAll') customSelectAll = new EventEmitter<boolean>();
+
+  /**
+   * Expose virtual scroll directive for applications to access its public methods
+   */
+  @ContentChildren(ClrDatagridVirtualScrollDirective) _virtualScroll: QueryList<ClrDatagridVirtualScrollDirective<any>>;
   /**
    * We grab the smart iterator from projected content
    */
@@ -115,26 +130,42 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * by querying the projected content. This is needed to keep track of the models currently
    * displayed, typically for selection.
    */
-  @ContentChildren(ClrDatagridRow) rows: QueryList<ClrDatagridRow<T>>;
+  @ContentChildren(ClrDatagridRow, { emitDistinctChangesOnly: false }) rows: QueryList<ClrDatagridRow<T>>;
 
   @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef<HTMLElement>;
   @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef<HTMLElement>;
+  @ViewChild('datagridHeader', { read: ElementRef }) datagridHeader: ElementRef<HTMLElement>;
+  @ViewChild('contentWrapper', { read: ElementRef, static: true }) contentWrapper: ElementRef<HTMLElement>;
+  @ViewChild('rowsWrapper', { read: ElementRef, static: true }) rowsWrapper: ElementRef<HTMLElement>;
   @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
   @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
   @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
   @ViewChild('displayedRows', { read: ViewContainerRef }) _displayedRows: ViewContainerRef;
   @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
+  @ViewChild('fixedColumnTemplate') _fixedColumnTemplate: TemplateRef<any>;
+  @ViewChildren('stickyHeader', { emitDistinctChangesOnly: true }) stickyHeaders: QueryList<ElementRef>;
 
   selectAllId: string;
-  hasVirtualScroller: boolean;
+  activeCellCoords: CellCoordinates;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
+
+  @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
 
   /**
    * Subscriptions to all the services and queries changes
    */
   private _subscriptions: Subscription[] = [];
+  private _virtualScrollSubscriptions: Subscription[] = [];
+
+  private cachedRowsHeight = 0;
+  private cachedContentHeight = 0;
+  private resizeObserver: ResizeObserver = new ResizeObserver(entries => {
+    requestAnimationFrame(() => {
+      this.handleResizeChanges(entries);
+    });
+  });
 
   constructor(
     private organizer: DatagridRenderOrganizer,
@@ -225,13 +256,21 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   get allSelected() {
     return this.selection.isAllSelected();
   }
-  set allSelected(_value: boolean) {
-    /**
-     * This is a setter but we ignore the value.
-     * It's strange, but it lets us have an indeterminate state where only
-     * some of the items are selected.
-     */
-    this.selection.toggleAll();
+  set allSelected(value: boolean) {
+    if (this.customSelectAllEnabled) {
+      this.customSelectAll.emit(value);
+    } else {
+      /**
+       * This is a setter but we ignore the value.
+       * It's strange, but it lets us have an indeterminate state where only
+       * some of the items are selected.
+       */
+      this.selection.toggleAll();
+    }
+  }
+
+  get virtualScroll(): ClrDatagridVirtualScrollDirective<any> {
+    return this._virtualScroll?.get(0);
   }
 
   ngAfterContentInit() {
@@ -256,6 +295,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           this.items.all = all;
         }
       }),
+      this._virtualScroll.changes.subscribe(() => {
+        this.toggleVirtualScrollSubscriptions();
+      }),
       this.rows.changes.subscribe(() => {
         // Remove any projected rows from the displayedRows container
         // Necessary with Ivy off. See https://github.com/vmware/clarity/issues/4692
@@ -271,14 +313,23 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         this.updateDetailState();
 
         // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
-        if (this.hasVirtualScroller) {
-          const active = this.keyNavigation.getActiveCell();
-          const isFocusInsideDatagrid = this.datagrid.nativeElement.contains(document.activeElement);
-          if (active && isFocusInsideDatagrid) {
-            this.zone.runOutsideAngular(() => {
-              setTimeout(() => this.keyNavigation.setActiveCell(active));
+        if (this.virtualScroll && this.activeCellCoords) {
+          this.zone.runOutsideAngular(() => {
+            const row = Array.from(this.rows).find(row => {
+              return row.el.nativeElement.children[0].ariaRowIndex === this.activeCellCoords.ariaRowIndex;
             });
-          }
+
+            if (!row) {
+              return;
+            }
+
+            const activeCell = row.el.nativeElement.querySelectorAll(this.keyNavigation.config.keyGridCells)[
+              this.activeCellCoords.x
+            ] as HTMLElement;
+
+            this.keyNavigation.setActiveCell(activeCell);
+            this.keyNavigation.focusElement(activeCell, { preventScroll: true });
+          });
         }
       })
     );
@@ -289,11 +340,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   ngAfterViewInit() {
     this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
-    this.updateDetailState();
 
+    this.updateDetailState();
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
     this.refresh.emit(this.stateProvider.state);
     this._subscriptions.push(
+      this.stickyHeaders.changes.subscribe(() => this.resize()),
       this.stateProvider.change.subscribe(state => this.refresh.emit(state)),
       this.selection.change.subscribe(s => {
         if (this.selection.selectionType === SelectionType.Single) {
@@ -339,6 +391,17 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         } else {
           // Set state, style for the datagrid to CALCULATE and insert row & columns into containers
           this.renderer.addClass(this.el.nativeElement, 'datagrid-calculate-mode');
+          // Inserts a fixed column if any of these conditions are true.
+          const fixedColumnConditions = [
+            this.rowActionService.hasActionableRow,
+            this.selection.selectionType !== this.SELECTION_TYPE.None,
+            this.expandableRows.hasExpandableRow || this.detailService.enabled,
+          ];
+          fixedColumnConditions
+            .filter(Boolean)
+            .forEach(() =>
+              this._projectedCalculationColumns.insert(this._fixedColumnTemplate.createEmbeddedView(null))
+            );
           this.columns.forEach(column => {
             this._projectedCalculationColumns.insert(column._view);
           });
@@ -348,6 +411,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         }
       })
     );
+
+    if (this.virtualScroll) {
+      this.toggleVirtualScrollSubscriptions();
+    }
 
     // We need to preserve shift state, so it can be used on selection change, regardless of the input event
     // that triggered the change. This helps us to easily resolve the k/b only case together with the mouse selection case.
@@ -367,18 +434,21 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     });
   }
 
+  ngDoCheck() {
+    // we track for changes on selection.current because it can happen with pushing items
+    // instead of overriding the variable
+    this.selection.checkForChanges();
+  }
+
   ngOnDestroy() {
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this.resizeObserver.disconnect();
   }
 
   toggleAllSelected($event: any) {
     $event.preventDefault();
-
-    if (this.hasVirtualScroller) {
-      return;
-    }
-
-    this.allSelected = !this.allSelected;
+    this.selectAllCheckbox?.nativeElement.click();
   }
 
   resize(): void {
@@ -400,7 +470,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       if (row) {
         this.detailService.open(row.item, row.detailButton.nativeElement);
         // always keep open when virtual scroll is available otherwise close it
-      } else if (!this.hasVirtualScroller) {
+      } else if (!this.virtualScroll) {
         // Using setTimeout to make sure the inner cycles in rows are done
         setTimeout(() => {
           this.detailService.close();
@@ -414,5 +484,74 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   dataChanged() {
     this.items.refresh();
+  }
+
+  private toggleVirtualScrollSubscriptions() {
+    const hasVirtualScroll = !!this.virtualScroll;
+
+    // the virtual scroll will handle the scrolling
+    this.keyNavigation.preventScrollOnFocus = hasVirtualScroll;
+
+    if (hasVirtualScroll && this._virtualScrollSubscriptions.length === 0) {
+      // TODO: use `resizeObserver` for all datagrid variants
+      this.resizeObserver.observe(this.contentWrapper.nativeElement);
+      this.resizeObserver.observe(this.rowsWrapper.nativeElement);
+
+      this._virtualScrollSubscriptions.push(
+        fromEvent(this.contentWrapper.nativeElement, 'scroll').subscribe(() => {
+          if (this.datagridHeader.nativeElement.scrollLeft !== this.contentWrapper.nativeElement.scrollLeft) {
+            this.datagridHeader.nativeElement.scrollLeft = this.contentWrapper.nativeElement.scrollLeft;
+          }
+        }),
+        fromEvent(this.datagridHeader.nativeElement, 'scroll').subscribe(() => {
+          if (this.datagridHeader.nativeElement.scrollLeft !== this.contentWrapper.nativeElement.scrollLeft) {
+            this.contentWrapper.nativeElement.scrollLeft = this.datagridHeader.nativeElement.scrollLeft;
+          }
+        }),
+        this.keyNavigation.nextCellCoordsEmitter.subscribe(cellCoords => {
+          if (!cellCoords?.ariaRowIndex) {
+            this.activeCellCoords = null;
+            return;
+          }
+
+          if (cellCoords.ariaRowIndex === this.activeCellCoords?.ariaRowIndex) {
+            this.activeCellCoords = cellCoords;
+            return;
+          }
+
+          this.activeCellCoords = cellCoords;
+
+          // aria-rowindex is always + 1. Check virtual scroller updateAriaRowIndexes method.
+          const rowIndex = Number(cellCoords.ariaRowIndex) - 1;
+
+          this.virtualScroll.scrollToIndex(rowIndex);
+        })
+      );
+    } else if (!hasVirtualScroll) {
+      this.resizeObserver.disconnect();
+      this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+      this._virtualScrollSubscriptions = [];
+    }
+  }
+
+  private handleResizeChanges(entries: ResizeObserverEntry[]) {
+    const rowsWrapper = this.rowsWrapper.nativeElement;
+
+    for (const entry of entries) {
+      if (entry.target === this.contentWrapper.nativeElement) {
+        this.cachedContentHeight = entry.contentRect.height;
+      }
+      if (entry.target === rowsWrapper) {
+        this.cachedRowsHeight = entry.contentRect.height;
+      }
+    }
+
+    const scrollClass = 'datagrid-scrollbar-visible';
+
+    if (this.cachedRowsHeight > this.cachedContentHeight) {
+      this.renderer.addClass(rowsWrapper, scrollClass);
+    } else {
+      this.renderer.removeClass(rowsWrapper, scrollClass);
+    }
   }
 }

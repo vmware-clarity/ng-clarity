@@ -48,11 +48,13 @@
 | --clr-forms-datalist-caret-disabled-color                    | Color of disabled datalist caret                      |
 | --clr-forms-datalist-caret-icon-size                         | Size of datalist caret                                |
 | --clr-forms-input-group-icon-action-size                     | Size of action icon                                   |
+| --clr-forms-input-group-icon-disabled-color                  | Color for action icons in disabled input              |
 
 ## CSS Classes
 
-| Class name        | Description                          |
-| ----------------- | ------------------------------------ |
-| clr-form          | Main form element.                   |
-| clr-form-group    | Form group identifier.               |
-| clr-required-mark | Add required mark on the right side. |
+| Class name          | Description                                           |
+| ------------------- | ----------------------------------------------------- |
+| clr-form            | Main form element.                                    |
+| clr-form-group      | Form group identifier.                                |
+| clr-form-full-width | Make all controls to take 100% width of the container |
+| clr-required-mark   | Add required mark on the right side.                  |

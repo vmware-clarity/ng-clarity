@@ -1,11 +1,20 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, ElementRef, Input, Optional, Renderer2, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ContentChild,
+  ElementRef,
+  Input,
+  Optional,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { startWith } from 'rxjs/operators';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -20,6 +29,9 @@ import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
+import { ClrEndDateInput } from './date-end-input';
+import { ClrDateInput } from './date-single-input';
+import { ClrStartDateInput } from './date-start-input';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -29,13 +41,20 @@ import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
 @Component({
-  selector: 'clr-date-container',
+  selector: 'clr-date-container, clr-date-range-container',
   template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper" clrPopoverAnchor>
         <div class="clr-input-group" [class.clr-focus]="focus">
+          <!-- render range inputs only if using clr-date-range-container -->
+          <ng-container *ngIf="isRangePicker">
+            <ng-content select="[clrStartDate]"></ng-content>
+            <span class="date-range-separator">-</span>
+            <ng-content select="[clrEndDate]"></ng-content>
+          </ng-container>
+          <!-- no *ngIf for the singe-date input because it breaks the "auto-wrapped" date picker -->
           <ng-content select="[clrDate]"></ng-content>
           <button
             #actionButton
@@ -96,10 +115,15 @@ import { ViewManagerService } from './providers/view-manager.service';
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
 
+  @ContentChild(ClrDateInput) private readonly clrDateInput: ClrDateInput;
+  @ContentChild(ClrStartDateInput) private readonly clrStartDateInput: ClrStartDateInput;
+  @ContentChild(ClrEndDateInput) private readonly clrEndDateInput: ClrEndDateInput;
+
   private toggleButton: ElementRef<HTMLButtonElement>;
 
   constructor(
     protected renderer: Renderer2,
+    protected elem: ElementRef,
     private toggleService: ClrPopoverToggleService,
     private dateNavigationService: DateNavigationService,
     private datepickerEnabledService: DatepickerEnabledService,
@@ -126,12 +150,61 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
         dateFormControlService.markAsTouched();
       })
     );
+
+    if (dateNavigationService) {
+      const tagName = elem.nativeElement.tagName.toLowerCase();
+      dateNavigationService.hasActionButtons = dateNavigationService.isRangePicker =
+        tagName === 'clr-date-range-container';
+    }
+  }
+
+  /**
+   * For date range picker actions buttons are shown by default
+   */
+  @Input('showActionButtons')
+  set showActionButtons(flag: boolean) {
+    if (this.dateNavigationService.isRangePicker && !flag) {
+      console.error('Error! The date range picker requires action buttons, [showActionButtons] cannot be turned off.');
+    } else {
+      this.dateNavigationService.hasActionButtons = flag;
+    }
   }
 
   @Input('clrPosition')
   set clrPosition(position: string) {
     if (position && (ClrPopoverPositions as Record<string, any>)[position]) {
       this.viewManagerService.position = (ClrPopoverPositions as Record<string, any>)[position];
+    }
+  }
+
+  @Input()
+  set rangeOptions(rangeOptions) {
+    this.dateIOService.setRangeOptions(rangeOptions);
+  }
+
+  @Input()
+  set min(dateString: string) {
+    if (this.dateNavigationService.isRangePicker) {
+      this.dateIOService.setMinDate(dateString);
+      this.clrStartDateInput?.triggerControlInputValidation();
+      this.clrEndDateInput?.triggerControlInputValidation();
+    } else {
+      console.error(
+        'Error! The date container [min] input only works for date range pickers. Use the native `min` attribute/property for single-date inputs.'
+      );
+    }
+  }
+
+  @Input()
+  set max(dateString: string) {
+    if (this.dateNavigationService.isRangePicker) {
+      this.dateIOService.setMaxDate(dateString);
+      this.clrStartDateInput?.triggerControlInputValidation();
+      this.clrEndDateInput?.triggerControlInputValidation();
+    } else {
+      console.error(
+        'Error! The date container [max] input only works for date range pickers. Use the native `max` attribute/property for single-date inputs.'
+      );
     }
   }
 
@@ -165,13 +238,19 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     );
   }
 
+  protected get isRangePicker(): boolean {
+    return this.dateNavigationService.isRangePicker;
+  }
+
   ngAfterViewInit(): void {
+    this.dateRangeStructuralChecks();
     this.subscriptions.push(
       this.toggleService.openChange.subscribe(open => {
         if (open) {
           this.initializeCalendar();
         } else {
           this.toggleButton.nativeElement.focus();
+          this.dateNavigationService.resetSelectedDay();
         }
       })
     );
@@ -215,5 +294,19 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
    */
   private initializeCalendar(): void {
     this.dateNavigationService.initializeCalendar();
+  }
+
+  private dateRangeStructuralChecks() {
+    if (this.dateNavigationService.isRangePicker) {
+      if (this.clrDateInput) {
+        console.error('Error! clr-date-range-container must contain clrStartDate and clrEndDate inputs');
+      }
+      if (!this.clrStartDateInput) {
+        console.error('Error! clr-date-range-container must contain clrStartDate input');
+      }
+      if (!this.clrEndDateInput) {
+        console.error('Error! clr-date-range-container must contain clrEndDate input');
+      }
+    }
   }
 }

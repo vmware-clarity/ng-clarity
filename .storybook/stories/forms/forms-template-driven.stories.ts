@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -58,15 +58,15 @@ const TemplateDrivenStory: StoryFn = args => ({
         <clr-control-error *clrIfError="'minlength'">Must be at least 5 characters</clr-control-error>
         <clr-control-error *clrIfError="'pattern'">Must contain only alpha-numeric characters</clr-control-error>
       </clr-input-container>
-      <clr-input-container>
+      <clr-number-input-container>
         <label>Age</label>
-        <input clrInput [(ngModel)]="data.age" type="number" min="0" required name="age" />
+        <input clrNumberInput [(ngModel)]="data.age" type="number" min="0" required name="age" />
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
         <clr-control-success>Age is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Age is required</clr-control-error>
         <clr-control-error *clrIfError="'min'">Must be at least 5 years old</clr-control-error>
         <clr-control-error *clrIfError="'max'">Must be less than 100 years old</clr-control-error>
-      </clr-input-container>
+      </clr-number-input-container>
       <clr-datalist-container>
         <label>Element</label>
         <input clrDatalistInput name="element" [(ngModel)]="data.element" />

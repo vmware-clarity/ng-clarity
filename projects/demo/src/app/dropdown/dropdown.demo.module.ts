@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -12,6 +12,7 @@ import { ClarityModule } from '@clr/angular';
 import { DropdownAngularCloseItemFalseDemo } from './dropdown-angular-close-item-false';
 import { DropdownAngularNestedDemo } from './dropdown-angular-nested';
 import { DropdownAngularPositioningDemo } from './dropdown-angular-positioning';
+import { DropdownAngularShadowRootDemo } from './dropdown-angular-shadow-root';
 import { DropdownHeaderDemo } from './dropdown-header';
 import { DropdownStaticButtonLinkToggleDemo } from './dropdown-static-buttonlink-toggle';
 import { DropdownStaticDefaultDemo } from './dropdown-static-default';
@@ -29,6 +30,7 @@ import { ROUTING } from './dropdown.demo.routing';
     DropdownStaticIconToggleDemo,
     DropdownStaticButtonLinkToggleDemo,
     DropdownAngularPositioningDemo,
+    DropdownAngularShadowRootDemo,
     DropdownAngularNestedDemo,
     DropdownAngularCloseItemFalseDemo,
     DropdownHeaderDemo,
@@ -40,6 +42,7 @@ import { ROUTING } from './dropdown.demo.routing';
     DropdownStaticIconToggleDemo,
     DropdownStaticButtonLinkToggleDemo,
     DropdownAngularPositioningDemo,
+    DropdownAngularShadowRootDemo,
     DropdownAngularNestedDemo,
     DropdownAngularCloseItemFalseDemo,
     DropdownHeaderDemo,

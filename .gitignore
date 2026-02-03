@@ -6,6 +6,13 @@
 /out-tsc
 /bazel-out
 /documentation.json
+/__temp_api_reports__
+
+# API extractor temporary files
+.api-temp/
+temp-tsconfig-*.json
+temp-extractor-*.json
+
 
 # Node
 **/node_modules

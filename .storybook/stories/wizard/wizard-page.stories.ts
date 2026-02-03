@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -134,6 +134,24 @@ export const WizardPageStatusIndicators: StoryObj = {
     const nextButtonElement = canvasElement.querySelector<HTMLButtonElement>('clr-wizard-button[type="next"] button');
     nextButtonElement.click();
     nextButtonElement.click();
+  },
+  args: {
+    clrWizardPageHasError: true,
+  },
+};
+
+export const WizardPageStatusIndicatorsWithCurrentStepError: StoryObj = {
+  render: WizardPageTemplate,
+  play({ canvasElement }) {
+    removeFocusOutline({ canvasElement });
+
+    // navigate to the last page
+    const nextButtonElement = canvasElement.querySelector<HTMLButtonElement>('clr-wizard-button[type="next"] button');
+    nextButtonElement.click();
+    nextButtonElement.click();
+
+    // navigate back to the error step
+    canvasElement.querySelector<HTMLButtonElement>('clr-wizard-button[type="previous"] button').click();
   },
   args: {
     clrWizardPageHasError: true,

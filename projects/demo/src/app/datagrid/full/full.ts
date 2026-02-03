@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { Component, TrackByFunction } from '@angular/core';
-import { ClrDatagridStateInterface } from '@clr/angular';
+import { ClrDatagridItemsTrackByFunction, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -27,7 +27,7 @@ export class DatagridFullDemo {
     selectable: true,
     loremIpsum: false,
 
-    server: false,
+    server: true,
     latency: '500',
     nameFilter: 'd',
     loadRowActionsDynamically: false,
@@ -53,6 +53,7 @@ export class DatagridFullDemo {
   }
 
   trackById: TrackByFunction<User> = (_index, item) => item.id;
+  trackByFn: ClrDatagridItemsTrackByFunction<User> = item => item.id;
 
   loadDynamicRowActions() {
     if (!this.options.loadRowActionsDynamically) {

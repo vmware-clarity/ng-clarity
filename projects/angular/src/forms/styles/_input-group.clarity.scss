@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -7,6 +7,7 @@
 @use '../../utils/mixins';
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
+@use '../../utils/variables/variables.density' as density;
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('forms.input-group') {
@@ -15,7 +16,8 @@
     @include forms-mixins.input-border-bottom-animation();
     position: relative;
     max-width: 100%;
-    height: tokens.$cds-global-space-9;
+    max-height: forms-variables.$clr-forms-input-wrapper-height;
+    padding-right: density.$clr-base-horizontal-offset-xs;
 
     &.clr-focus {
       width: auto;
@@ -45,37 +47,26 @@
 
     .clr-input-group-addon {
       color: forms-variables.$clr-forms-subtext-color;
+    }
 
-      &:first-child {
-        padding: 0 0 0 #{tokens.$cds-global-space-11};
-      }
-
-      &:last-child {
-        padding: 0 #{tokens.$cds-global-space-11} 0 0;
-      }
+    .clr-input-group-actions {
+      display: inline-flex;
+      align-items: center;
     }
 
     .clr-input-group-icon-action {
       @include mixins.clr-no-styles-button();
-      padding: 0 calc(1.5 * #{forms-variables.$clr-forms-baseline});
+      padding: 0 density.$clr-base-horizontal-offset-s;
       cursor: pointer;
 
       cds-icon,
       clr-icon {
         fill: forms-variables.$clr-forms-icon-color;
-        @include mixins.equilateral(var(--clr-forms-input-group-icon-action-size));
-        transform: translate(calc(-1 * #{tokens.$cds-global-space-1}), calc(-1 * #{tokens.$cds-global-space-1}));
-      }
-    }
-  }
 
-  .clr-form-control-disabled {
-    .clr-input-group {
-      border-bottom-color: forms-variables.$clr-forms-border-disabled-color;
-    }
-    .clr-input-group-icon-action {
-      color: forms-variables.$clr-forms-text-disabled-color;
-      cursor: not-allowed;
+        &:not([size]) {
+          @include mixins.equilateral(var(--clr-forms-input-group-icon-action-size));
+        }
+      }
     }
   }
 
@@ -87,6 +78,29 @@
   .clr-success .clr-input-group {
     border-bottom-color: forms-variables.$clr-forms-valid-color;
     @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-valid-color);
+  }
+
+  .clr-form-control-disabled {
+    .clr-input-group {
+      border-bottom-color: forms-variables.$clr-forms-border-disabled-color;
+    }
+    .clr-input-group-icon-action {
+      color: forms-variables.$clr-forms-text-disabled-color;
+      cursor: not-allowed;
+
+      cds-icon {
+        fill: forms-variables.$clr-forms-input-group-icon-disabled-color;
+      }
+    }
+  }
+
+  .clr-input-group:has(input[readonly]),
+  .clr-form-control-readonly .clr-input-group {
+    border: none;
+    background: transparent;
+    .clr-input-group-actions {
+      display: none;
+    }
   }
 
   .clr-form-horizontal .clr-input-group {

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
   ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
@@ -54,9 +54,9 @@
   <clr-wizard-page>
     <ng-template clrPageTitle>Page 4</ng-template>
     <!-- mandatory -->
-    <clr-input-container>
+    <clr-number-input-container>
       <label>What is your lucky number?</label>
-      <input clrInput placeholder="Lucky number?" #stepFourInput type="number" [(ngModel)]="model.luckyNumber" />
-    </clr-input-container>
+      <input clrNumberInput placeholder="Lucky number?" #stepFourInput type="number" [(ngModel)]="model.luckyNumber" />
+    </clr-number-input-container>
   </clr-wizard-page>
 </clr-wizard>

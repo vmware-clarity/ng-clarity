@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -15,6 +15,7 @@ import { ClrDatalistModule } from './datalist/datalist.module';
 import { ClrDatepickerModule } from './datepicker/datepicker.module';
 import { ClrFileInputModule } from './file-input';
 import { ClrInputModule } from './input/input.module';
+import { ClrNumberInputModule } from './number-input/number-input.module';
 import { ClrPasswordModule } from './password/password.module';
 import { ClrRadioModule } from './radio/radio.module';
 import { ClrRangeModule } from './range/range.module';
@@ -36,6 +37,7 @@ import { ClrTextareaModule } from './textarea/textarea.module';
     ClrTextareaModule,
     ClrRangeModule,
     ClrDatalistModule,
+    ClrNumberInputModule,
   ],
 })
 export class ClrFormsModule {}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@ang
 import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
-import { Keys } from '../../utils/enums/keys.enum';
+import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { ClrDatagrid } from './datagrid';
@@ -133,7 +133,11 @@ class MultiSelectionTest {
 
 @Component({
   template: `
-    <clr-datagrid [(clrDgSelected)]="selected">
+    <clr-datagrid
+      [clrDgCustomSelectAllEnabled]="clrDgCustomSelectAllEnabled"
+      [(clrDgSelected)]="selected"
+      (clrDgCustomSelectAll)="clrDgCustomSelectAllEventSpy($event)"
+    >
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
@@ -147,6 +151,9 @@ class MultiSelectionTest {
 class MultiSelectionSimpleTest {
   items: any[] = [1, 2, 3, 4, 5, 6, 7];
   selected: any[] = [];
+  @Input() clrDgCustomSelectAllEnabled = false;
+
+  readonly clrDgCustomSelectAllEventSpy = jasmine.createSpy('clrDgCustomSelectAll');
 }
 
 @Component({
@@ -696,17 +703,17 @@ export default function (): void {
         });
 
         it('focuses the datagrid on page change', function () {
-          expect(document.activeElement).not.toBe(context.clarityDirective.datagridTable.nativeElement);
+          expectActiveElementNotToBe(context.clarityDirective.datagridTable.nativeElement);
           context.getClarityProvider(Page).current = 2;
-          expect(document.activeElement).toBe(context.clarityDirective.datagridTable.nativeElement);
+          expectActiveElementToBe(context.clarityDirective.datagridTable.nativeElement);
         });
 
         it('does not focus the datagrid on page change when disabled', function () {
           context.testComponent.disableFocus = true;
           context.detectChanges();
-          expect(document.activeElement).not.toBe(context.clarityDirective.datagridTable.nativeElement);
+          expectActiveElementNotToBe(context.clarityDirective.datagridTable.nativeElement);
           context.getClarityProvider(Page).current = 2;
-          expect(document.activeElement).not.toBe(context.clarityDirective.datagridTable.nativeElement);
+          expectActiveElementNotToBe(context.clarityDirective.datagridTable.nativeElement);
         });
       });
     });
@@ -885,106 +892,6 @@ export default function (): void {
       });
     });
 
-    describe('Key focus', function () {
-      // We use SingleSelctionTest to test focusing of actionalbe content in cells
-      let context: TestContext<ClrDatagrid<number>, SingleSelectionTest>;
-
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, SingleSelectionTest, [Selection]);
-      });
-
-      it('Moves focus across cells', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        expect(grid).toBeDefined();
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        expect(cells.length).toBe(12); // 3*2 data, 3 select radios, 3 headers
-        // need to start with this cell exactly, because it has tabindex=0
-        cells[0].focus();
-        expect(document.activeElement).toBe(cells[0]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
-        // second time, to avoid cycling over cells with radios
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
-        expect(document.activeElement).toBe(cells[2]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
-        expect(document.activeElement).toBe(cells[5]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowLeft }));
-        expect(document.activeElement).toBe(cells[4]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowUp }));
-        expect(document.activeElement).toBe(cells[1]);
-      });
-
-      it('Moves focus to inner actionable element', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[0].focus();
-        expect(document.activeElement).toBe(cells[0]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
-        expect(document.activeElement).toBe(cells[3].querySelector('[type=radio]'));
-      });
-
-      it('Does not move focus to the placeholder element', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[0].focus();
-        expect(document.activeElement).toBe(cells[0]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
-        expect(document.activeElement).toBe(cells[9].querySelector('[type=radio]'));
-        // we're at the edge, then we click once more to get to the placeholder
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
-        expect(document.activeElement).toBe(cells[9].querySelector('[type=radio]'));
-      });
-
-      it('Moves focus to a clicked element', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        const testCell = 7;
-        expect(document.activeElement).not.toBe(cells[testCell]);
-        cells[testCell].dispatchEvent(new MouseEvent('mousedown', { buttons: 1, bubbles: true }));
-        expect(document.activeElement).toBe(cells[testCell]);
-      });
-
-      it('Moves focus on PageDown and PageUp', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-
-        // focus at most left header cell
-        cells[0].focus();
-        expect(document.activeElement).toBe(cells[0]);
-
-        // focus at bottom datagrid radio input
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-        expect(document.activeElement).toBe(cells[9].querySelector('[type=radio]'));
-
-        // focus at top datagrid radio input
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
-        expect(document.activeElement).toBe(cells[3].querySelector('[type=radio]'));
-      });
-
-      it('Moves focus on Home and End', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[0].focus();
-        expect(document.activeElement).toBe(cells[0]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'End' }));
-        expect(document.activeElement).toBe(cells[2]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'Home' }));
-        expect(document.activeElement).toBe(cells[0]);
-      });
-
-      it('Moves focus on Ctrl-Home and Ctrl-End', function () {
-        const grid = context.clarityElement.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[0].focus();
-        expect(document.activeElement).toBe(cells[0]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'End', ctrlKey: true }));
-        expect(document.activeElement).toBe(cells[11]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'Home', ctrlKey: true }));
-        expect(document.activeElement).toBe(cells[0]);
-      });
-    });
-
     describe('Single selection', function () {
       let context: TestContext<ClrDatagrid<number>, SingleSelectionTest>;
       let selection: Selection<number>;
@@ -1128,6 +1035,68 @@ export default function (): void {
         selection = context.getClarityProvider(Selection) as Selection<number>;
       });
 
+      describe('Select all', function () {
+        let selectAllCheckbox: HTMLInputElement;
+        let itemCheckboxes: HTMLInputElement[];
+
+        beforeEach(function () {
+          [selectAllCheckbox, ...itemCheckboxes] = context.clarityElement.querySelectorAll('input[type=checkbox]');
+        });
+
+        describe('default select all', function () {
+          it('selects all rows (empty selection)', function () {
+            selectAllCheckbox.click();
+            expect(selection.current).toEqual([1, 2, 3, 4, 5, 6, 7]);
+          });
+
+          it('selects all rows (partial selection)', function () {
+            itemCheckboxes[0].click();
+            itemCheckboxes[1].click();
+            selectAllCheckbox.click();
+
+            expect(selection.current).toEqual([1, 2, 3, 4, 5, 6, 7]);
+          });
+
+          it('deselects all rows', function () {
+            for (const itemCheckbox of itemCheckboxes) {
+              itemCheckbox.click();
+            }
+
+            selectAllCheckbox.click();
+
+            expect(selection.current).toEqual([]);
+          });
+
+          it('does not emit custom select all event', function () {
+            selectAllCheckbox.click();
+
+            expect(context.testComponent.clrDgCustomSelectAllEventSpy).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('custom select all', function () {
+          beforeEach(function () {
+            context.testComponent.clrDgCustomSelectAllEnabled = true;
+            context.detectChanges();
+          });
+
+          it('emits the custom select all event', function () {
+            selectAllCheckbox.click();
+            selectAllCheckbox.click();
+
+            expect(context.testComponent.clrDgCustomSelectAllEventSpy).toHaveBeenCalledTimes(2);
+            expect(context.testComponent.clrDgCustomSelectAllEventSpy.calls.first().args).toEqual([true]);
+            expect(context.testComponent.clrDgCustomSelectAllEventSpy.calls.mostRecent().args).toEqual([false]);
+          });
+
+          it('does not modify the selection', function () {
+            selectAllCheckbox.click();
+
+            expect(selection.current).toEqual([]);
+          });
+        });
+      });
+
       describe('Range selection', function () {
         let checkboxes: HTMLElement[];
 
@@ -1145,7 +1114,8 @@ export default function (): void {
           expect(selection.current).toEqual([1, 3]);
         });
 
-        it('updates selection range when Shift key pressed', function () {
+        it('updates selection range when Shift key pressed', fakeAsync(() => {
+          const selectedChange = spyOn(context.clarityDirective.selectedChanged, 'emit').and.callThrough();
           checkboxes[1].click();
           expect(selection.current).toEqual([1]);
           expect(selection.shiftPressed).toBeFalse();
@@ -1153,9 +1123,11 @@ export default function (): void {
           expect(selection.shiftPressed).toBeTrue();
           checkboxes[3].click();
           document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift' }));
+          tick();
           expect(selection.shiftPressed).toBeFalse();
+          expect(selectedChange).toHaveBeenCalledWith([1, 2, 3]);
           expect(selection.current).toEqual([1, 2, 3]);
-        });
+        }));
 
         it('updates selection range in reverse order', function () {
           checkboxes[3].click();

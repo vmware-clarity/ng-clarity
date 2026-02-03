@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -26,6 +26,7 @@ import {
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+import { ClrModal } from '../modal/modal';
 import { ClrCommonStringsService } from '../utils';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ButtonHubService } from './providers/button-hub.service';
@@ -45,7 +46,8 @@ import { ClrWizardTitle } from './wizard-title';
     '[class.wizard-md]': "size == 'md'",
     '[class.wizard-lg]': "size == 'lg'",
     '[class.wizard-xl]': "size == 'xl'",
-    '[class.lastPage]': 'navService.currentPageIsLast',
+    '[class.wizard-in-page]': 'inPage',
+    '[class.wizard-in-page--fill-content-area]': 'inPage && inPageFillContentArea',
   },
 })
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
@@ -58,6 +60,17 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
    */
   @Input('clrWizardSize') size = 'xl';
+
+  /**
+   * Enable "in page" wizard. Set using `[clrWizardInPage]` input.
+   */
+  @Input('clrWizardInPage') inPage = false;
+
+  /**
+   * Make an "in page" wizard fill the `.content-area`. Set using `[clrWizardInPageFillContentArea]` input.
+   * If you can't use this option, you will likely need to provide custom CSS to set the wizard's height and margins.
+   */
+  @Input('clrWizardInPageFillContentArea') inPageFillContentArea = false;
 
   /**
    * Tells the modal part of the wizard whether it should have a close "X"
@@ -124,6 +137,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   wizardId = uniqueIdFactory();
 
   @ContentChild(ClrWizardTitle) protected wizardTitle: ClrWizardTitle;
+  @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
 
   private _forceForward = false;
   private _stopNext = false;
@@ -133,9 +147,11 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   private differ: any; // for marking when the collection of wizard pages has been added to or deleted from
   private subscriptions: Subscription[] = [];
 
+  @ViewChild(ClrModal) private readonly modal: ClrModal;
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
-    private commonStrings: ClrCommonStringsService,
+    public commonStrings: ClrCommonStringsService,
     public navService: WizardNavigationService,
     public pageCollection: PageCollectionService,
     public buttonService: ButtonHubService,
@@ -263,13 +279,18 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     return this.elementRef.nativeElement.classList.contains('clr-wizard--inline');
   }
 
-  get stopModalAnimations(): string {
-    return this._stopModalAnimations ? 'true' : 'false';
+  get stopModalAnimations(): boolean {
+    return this._stopModalAnimations;
   }
 
   ngAfterContentInit(): void {
     this.pageCollection.pages = this.pages;
     this.headerActionService.wizardHeaderActions = this.headerActions;
+
+    if (this.inPage) {
+      this.open();
+    }
+
     this.initializeButtons();
   }
 
@@ -488,6 +509,9 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
       //   tabs content to make the wizard more accessible.
       this.pageTitle?.nativeElement.focus();
       this.currentPageChanged.emit();
+
+      // scroll to top of page in case there is long page content
+      this.bodyElementRef?.nativeElement.scrollTo(0, 0);
     });
   }
 

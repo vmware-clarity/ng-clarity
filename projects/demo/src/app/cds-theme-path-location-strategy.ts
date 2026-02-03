@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -9,7 +9,7 @@ import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy, PlatformLocation
 import { Inject, Injectable, Optional, Provider } from '@angular/core';
 import { UrlSerializer } from '@angular/router';
 
-import { cdsThemeAttribute, getCdsThemeFromDom } from './cds-theme-select.component';
+import { cdsThemeAttribute, clrDensityAttribute, getAttributeFromDom } from './cds-theme-select.component';
 
 /**
  * This path location strategy adds the current theme to the query string so that
@@ -29,10 +29,16 @@ export class CdsThemePathLocationStrategy extends PathLocationStrategy {
     const url = super.prepareExternalUrl(internal);
     const urlTree = this.urlSerializer.parse(url);
 
-    const currentTheme = getCdsThemeFromDom();
+    const currentTheme = getAttributeFromDom(cdsThemeAttribute);
 
     if (currentTheme) {
       urlTree.queryParams = { ...urlTree.queryParams, [cdsThemeAttribute]: currentTheme };
+    }
+
+    const currentDensity = getAttributeFromDom(clrDensityAttribute);
+
+    if (currentDensity) {
+      urlTree.queryParams = { ...urlTree.queryParams, [clrDensityAttribute]: currentDensity };
     }
 
     return urlTree.toString();

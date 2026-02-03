@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -47,7 +47,7 @@ import { ClrCheckbox } from './checkbox';
   `,
   host: {
     '[class.clr-form-control]': 'true',
-    '[class.clr-form-control-disabled]': 'control?.disabled',
+    '[class.clr-form-control-disabled]': 'allCheckboxesDisabled',
     '[class.clr-row]': 'addGrid()',
     '[attr.role]': 'role',
   },
@@ -85,6 +85,13 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     } else {
       this.inline = !!value;
     }
+  }
+
+  protected get allCheckboxesDisabled() {
+    return (
+      this.control?.disabled &&
+      (!this.additionalControls?.length || this.additionalControls.every(control => control.disabled))
+    );
   }
 
   override ngAfterContentInit() {

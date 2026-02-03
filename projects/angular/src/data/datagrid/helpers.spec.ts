@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -35,6 +35,7 @@ import { StateDebouncer } from './providers/state-debouncer.provider';
 import { StateProvider } from './providers/state.provider';
 import { TableSizeService } from './providers/table-size.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
+import { DatagridRowRenderer } from './render/row-renderer';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
 // Reusable list of providers used in a number of tests
@@ -57,6 +58,7 @@ export const DATAGRID_SPEC_PROVIDERS = [
   StateProvider,
   TableSizeService,
   DetailService,
+  DatagridRowRenderer,
   KeyNavigationGridController,
 ];
 

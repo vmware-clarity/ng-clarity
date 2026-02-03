@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -9,7 +9,12 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
+import {
+  expectActiveElementNotToBe,
+  expectActiveElementToBe,
+  spec,
+  TestContext,
+} from '../../utils/testing/helpers.spec';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpost } from './signpost';
 import { ClrSignpostModule } from './signpost.module';
@@ -63,6 +68,14 @@ export default function (): void {
 
         expect(signpostToggle.getAttribute('aria-label')).toEqual('Signpost Toggle');
       });
+
+      it('allows a custom aria-label for the default trigger', function (this: Context) {
+        this.fixture.componentInstance.signpost.signpostTriggerAriaLabel = 'custom label';
+        this.detectChanges();
+        const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+
+        expect(signpostToggle.getAttribute('aria-label')).toBe('custom label');
+      });
     });
 
     describe('focus management', function () {
@@ -77,7 +90,7 @@ export default function (): void {
         this.toggleService.open = false;
         this.detectChanges();
         expect(signpostToggle).not.toBeNull();
-        expect(document.activeElement).not.toBe(signpostToggle);
+        expectActiveElementNotToBe(signpostToggle);
       });
 
       it('should not get focus back on trigger if signpost gets closed with outside click on another interactive element', fakeAsync(function (
@@ -94,7 +107,7 @@ export default function (): void {
         this.detectChanges();
 
         expect(this.hostElement.querySelector('.signpost-content')).toBeNull();
-        expect(document.activeElement).toBe(this.hostComponent.outsideClickBtn.nativeElement);
+        expectActiveElementToBe(this.hostComponent.outsideClickBtn.nativeElement);
       }));
 
       it('should get focus back on trigger if signpost gets closed with outside click on non-interactive element', fakeAsync(function (
@@ -109,7 +122,7 @@ export default function (): void {
         this.detectChanges();
 
         expect(this.hostElement.querySelector('.signpost-content')).toBeNull();
-        expect(document.activeElement).toBe(this.hostElement.querySelector('.signpost-action'));
+        expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
       }));
 
       it('should get focus back on trigger if signpost gets closed while focused element inside content', function (this: Context) {
@@ -122,7 +135,7 @@ export default function (): void {
         this.toggleService.open = false;
         this.detectChanges();
 
-        expect(document.activeElement).toBe(this.hostElement.querySelector('.signpost-action'));
+        expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
       });
 
       it('should get focus back on trigger if signpost gets closed with ESC key', function (this: Context) {
@@ -136,7 +149,7 @@ export default function (): void {
         this.detectChanges();
 
         expect(this.hostElement.querySelector('.signpost-content')).toBeNull();
-        expect(document.activeElement).toBe(this.hostElement.querySelector('.signpost-action'));
+        expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
       });
     });
 
@@ -263,7 +276,7 @@ class TestCustomTriggerSignpost {
 @Component({
   template: `
     <button #outsideClick type="button">Button to test clicks outside of the dropdown component</button>
-    <clr-signpost>
+    <clr-signpost [clrSignpostTriggerAriaLabel]="signpostTriggerAriaLabel">
       <clr-signpost-content *clrIfOpen="openState">
         <button class="dummy-button" type="button">dummy button</button>
         Signpost content
@@ -275,6 +288,7 @@ class TestDefaultSignpost {
   @ViewChild(ClrSignpost) signpost: ClrSignpost;
 
   openState = false;
+  signpostTriggerAriaLabel: string;
 
   @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn: ElementRef<HTMLButtonElement>;
 }

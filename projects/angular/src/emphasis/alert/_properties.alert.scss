@@ -1,20 +1,25 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
 
 @include mixins.exports('alert.properties') {
-  :root {
-    [cds-theme] {
-      /* Dimensions & Layout */
-      // Usage: ./_alert.clarity.scss
-      --clr-alert-borderradius: #{tokens.$cds-alias-object-border-radius-100};
-      --clr-app-alert-pager-width: #{mixins.baselinePx(144)};
+  @include mixins.root-or-host() {
+    --clr-app-alert-pager-width: #{mixins.baselinePx(144)};
 
+    &,
+    & [clr-density] {
+      /* Dimensions & Layout */
+      --clr-alert-borderradius: #{density.$clr-base-border-radius-s};
+    }
+
+    &,
+    & [cds-theme] {
       /* Alert Color Properties */
 
       // Usage: ./_alert.clarity.scss
@@ -55,7 +60,7 @@
       // Warning type
       // Usage: ./_alert.clarity.scss
       --clr-alert-warning-bg-color: #{tokens.$cds-alias-status-warning-tint};
-      --clr-alert-warning-font-color: #{tokens.$cds-global-color-black};
+      --clr-alert-warning-font-color: #{tokens.$cds-alias-typography-color-500};
       --clr-alert-warning-border-color: #{tokens.$cds-alias-status-warning};
       --clr-alert-warning-icon-color: var(--clr-alert-warning-font-color);
       --clr-alert-warning-close-icon-color: var(--clr-alert-warning-font-color);

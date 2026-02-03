@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -15,7 +15,6 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 
-import { DynamicWrapper } from './dynamic-wrapper';
 import { EmptyAnchor } from './empty-anchor';
 
 /**
@@ -23,7 +22,7 @@ import { EmptyAnchor } from './empty-anchor';
  * still undefined.
  * TODO - make sure these comment annotations do not break ng-packgr.
  */
-export class HostWrapper<W extends DynamicWrapper> implements Injector {
+export class HostWrapper<W> implements Injector {
   private injector: Injector;
 
   constructor(containerType: Type<W>, vcr: ViewContainerRef, index = 0) {
@@ -46,9 +45,6 @@ export class HostWrapper<W extends DynamicWrapper> implements Injector {
       const containerRef = vcr.createComponent(factory, undefined, undefined, element);
       // We can now remove the useless anchor
       vcr.remove(0);
-
-      // We note that the container was dynamically created
-      containerRef.instance._dynamic = true;
 
       // We keep the wrapper's injector to access the dependencies that weren't available before.
       this.injector = containerRef.injector;

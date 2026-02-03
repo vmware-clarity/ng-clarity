@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -20,7 +20,11 @@ import { NgControlService } from '../common/providers/ng-control.service';
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
-        <ng-content select="[clrInput]"></ng-content>
+        <div class="clr-input-group">
+          <ng-content select="[clrInputPrefix]"></ng-content>
+          <ng-content select="[clrInput]"></ng-content>
+          <ng-content select="[clrInputSuffix]"></ng-content>
+        </div>
         <cds-icon
           *ngIf="showInvalid"
           class="clr-validate-icon"

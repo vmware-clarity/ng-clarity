@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -67,6 +67,11 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     this.optionService.displayField = field;
   }
 
+  get hasResults() {
+    // explicity return `undefined` instead of `false` if the answer is not known
+    return this.filteredItems ? this.filteredItems.length : undefined;
+  }
+
   ngDoCheck() {
     if (!this.differ) {
       this.differ = this.differs.find(this.filteredItems).create(this.iterableProxy.ngForTrackBy);
@@ -83,7 +88,6 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
-
   private updateItems() {
     if (!this._rawItems || this.filter === undefined || this.filter === null) {
       return;

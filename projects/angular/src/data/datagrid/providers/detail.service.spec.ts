@@ -1,13 +1,14 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ModalStackService } from 'projects/angular/src/modal/modal-stack.service';
 import { Subscription } from 'rxjs';
 
+import { ModalStackService } from '../../../modal/modal-stack.service';
+import { expectActiveElementToBe } from '../../../utils/testing/helpers.spec';
 import { DetailService } from './detail.service';
 
 // Prevent ModalStackService from adding event handlers.
@@ -42,7 +43,7 @@ export default function (): void {
       provider.open('value', button);
       expect(provider.isOpen);
       provider.close();
-      expect(document.activeElement).toBe(button);
+      expectActiveElementToBe(button);
       expect(button.focus).toHaveBeenCalled();
       document.body.removeChild(button);
     });

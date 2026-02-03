@@ -14,7 +14,7 @@ jobs:
         with:
           node-version-file: '.nvmrc'
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Lint
         run: npm run lint
       - name: Build
@@ -24,10 +24,13 @@ jobs:
       - name: Public Api Check
         run: npm run public-api:check
       - name: Preview Release
-        run: npm run preview
+        env:
+          BD_ACCESS_TOKEN: ${{ secrets.BD_ACCESS_TOKEN }}
+          BD_RELEASE_PHASE: PRERELEASE
+        run: npx semantic-release --extends ./.releaserc.base.js --dry-run --no-ci
       - name: Deploy Docs Preview
         continue-on-error: true
         timeout-minutes: 5
         env:
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-        run: npx netlify-cli deploy --site storybook-clarity-design
+        run: npx netlify-cli deploy --no-build --site ${{secrets.NETLIFY_SITE_NAME}}

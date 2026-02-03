@@ -2,44 +2,58 @@ name: PR Visual Snapshot Update Bot
 on:
   workflow_run:
     workflows: [PR Build]
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+  statuses: write
 jobs:
   pr-visual-snapshot-update-bot:
     if: ${{github.event.workflow_run.conclusion == 'success'}}
     runs-on: ubuntu-latest
     steps:
       - uses: haya14busa/action-workflow_run-status@v1
+      - name: Get PR Event
+        id: get-pr-event
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prs = context.payload.workflow_run.pull_requests;
+            if (prs.length > 0) {
+              core.setOutput('pullRequestNumber', prs[0].number);
+              core.setOutput('sourceHeadBranch', prs[0].head.ref);
+            } else {
+              core.setFailed('No PR found');
+            }
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          repo: ${{github.event.workflow_run.head_repository.full_name}}
-          ref: ${{github.event.workflow_run.head_sha}}
+          repository: ${{ github.repository }}
+          ref: ${{ github.event.workflow_run.head_sha }}
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
       - name: Install Dependencies
-        run: npm ci
-      - name: Get PR Event
-        id: get-pr-event
-        uses: potiuk/get-workflow-origin@v1_5
-        with:
-          token: ${{secrets.GITHUB_TOKEN}}
-          sourceRunId: ${{github.event.workflow_run.id}}
+        run: npm ci --ignore-scripts
+      - name: Create Temp Directory for Diff Artifacts
+        run: mkdir -p ${{runner.temp}}/artifacts/
       - name: Download Changes
-        uses: dawidd6/action-download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
-          name: visual-snapshot-changes-.+\.diff
-          name_is_regexp: true
-          path: .
-          workflow: ${{github.event.workflow_run.workflow_id}}
-          run_id: ${{github.event.workflow_run.id}}
-          if_no_artifact_found: ignore
+          pattern: visual-snapshot-changes-*.diff
+          path: ${{runner.temp}}/artifacts/
+          run-id: ${{github.event.workflow_run.id}}
+          github-token: ${{ github.token }}
       - name: Apply Changes
         id: apply-changes
         run: |
           # apply changes
-          git apply visual-snapshot-changes-*.diff/visual-snapshot-changes-*.diff
-          rm visual-snapshot-changes-*.diff/visual-snapshot-changes-*.diff
+          git apply ${{runner.temp}}/artifacts/visual-snapshot-changes-*.diff/visual-snapshot-changes-*.diff
+
+          # We force the cleanup script to revert to the version in HEAD (the trusted base).
+          git checkout HEAD -- scripts/delete-unused-screenshots.ts
 
           # delete unused screenshots
           npm run ts-node -- ./scripts/delete-unused-screenshots.ts
@@ -57,16 +71,19 @@ jobs:
       - name: Push Changes
         if: ${{steps.diff.outputs.status == 'dirty'}}
         id: push-changes
+        env:
+          HEAD_BRANCH: ${{ steps.get-pr-event.outputs.sourceHeadBranch }}
+          PR_NUMBER: ${{ steps.get-pr-event.outputs.pullRequestNumber }}
         run: |
           repositoryUrl=${{github.server_url}}/${{github.repository}}.git
-          updateBranchName=visual-snapshot-update/pr-${{steps.get-pr-event.outputs.pullRequestNumber}}
+          updateBranchName=visual-snapshot-update/pr-$PR_NUMBER
 
           # configure git
           git config user.name "GitHub"
           git config user.email "noreply@github.com"
 
           # commit changes
-          git commit --message 'chore: update visual snapshots for `${{steps.get-pr-event.outputs.sourceHeadBranch}}`'
+          git commit --message "chore: update visual snapshots for \`$HEAD_BRANCH\`"
 
           # push changes
           git push $repositoryUrl HEAD:refs/heads/$updateBranchName --force

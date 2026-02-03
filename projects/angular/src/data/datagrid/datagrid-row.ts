@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -19,12 +19,13 @@ import {
   Output,
   QueryList,
   Renderer2,
+  TemplateRef,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 import { combineLatest, ReplaySubject, Subscription } from 'rxjs';
 
-import { ClrExpandableAnimation } from '../../utils/animations/expandable-animation/expandable-animation';
+import { ClrExpandableAnimationDirective } from '../../utils/animations/expandable-animation/expandable-animation.directive';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -48,6 +49,7 @@ let nbRow = 0;
   templateUrl: './datagrid-row.html',
   host: {
     '[class.datagrid-row]': 'true',
+    '[class.datagrid-row-skeleton]': 'skeletonLoading',
     '[class.datagrid-selected]': 'selected',
     '[attr.aria-owns]': 'id',
     role: 'rowgroup',
@@ -63,6 +65,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   @Output('clrDgExpandedChange') expandedChange = new EventEmitter<boolean>(false);
   @Input('clrDgDetailDisabled') detailDisabled = false;
   @Input('clrDgDetailHidden') detailHidden = false;
+  @Input('clrDgSkeletonLoading') skeletonLoading = false;
 
   id: string;
   radioId: string;
@@ -89,11 +92,12 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
    */
   @ContentChildren(ClrDatagridCell) dgCells: QueryList<ClrDatagridCell>;
 
-  @ViewChild(ClrExpandableAnimation) expandAnimation: ClrExpandableAnimation;
+  @ViewChild(ClrExpandableAnimationDirective) expandAnimation: ClrExpandableAnimationDirective;
   @ViewChild('detailButton') detailButton: ElementRef<HTMLButtonElement>;
   @ViewChild('stickyCells', { read: ViewContainerRef }) _stickyCells: ViewContainerRef;
   @ViewChild('scrollableCells', { read: ViewContainerRef }) _scrollableCells: ViewContainerRef;
   @ViewChild('calculatedCells', { read: ViewContainerRef }) _calculatedCells: ViewContainerRef;
+  @ViewChild('fixedCellTemplate') _fixedCellTemplate: TemplateRef<any>;
 
   private _item: T;
   private _selected = false;
@@ -115,7 +119,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     private displayMode: DisplayModeService,
     private vcr: ViewContainerRef,
     renderer: Renderer2,
-    el: ElementRef<HTMLElement>,
+    public el: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     private items: Items,
     @Inject(DOCUMENT) private document: any
@@ -228,6 +232,10 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     return this.wrappedInjector.get(WrappedRow, this.vcr).rowView;
   }
 
+  get trackBy() {
+    return this.items.trackBy;
+  }
+
   ngOnInit() {
     this.wrappedInjector = new HostWrapper(WrappedRow, this.vcr);
     this.selection.lockItem(this.item, this.clrDgSelectable === false);
@@ -257,6 +265,16 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
         }
         if (viewChange === DatagridDisplayMode.CALCULATE) {
           this.displayCells = false;
+          // Inserts a fixed cell if any of these conditions are true.
+          const fixedCellConditions = [
+            this.selection.selectionType !== this.SELECTION_TYPE.None,
+            this.rowActionService.hasActionableRow,
+            this.globalExpandable.hasExpandableRow,
+            this.detailService.enabled,
+          ];
+          fixedCellConditions
+            .filter(Boolean)
+            .forEach(() => this._calculatedCells.insert(this._fixedCellTemplate.createEmbeddedView(null)));
           this.dgCells.forEach(cell => {
             if (!cell._view.destroyed) {
               this._calculatedCells.insert(cell._view);
@@ -303,7 +321,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
    * selection browser functionality, which is inconsistently implemented in browsers anyway.
    */
   clearRanges(event: MouseEvent) {
-    if (event.shiftKey) {
+    if (this.selection.rowSelectionMode && event.shiftKey) {
       this.document.getSelection().removeAllRanges();
       // Firefox is too persistent about its text-selection behaviour. So we need to add a preventDefault();
       // We should not try to enforce this on the other browsers, though, because their toggle cycle does not get canceled by
@@ -321,7 +339,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   protected selectRow(selected = !this.selected, $event) {
     // The label also captures clicks that bubble up to the row event listener, causing
     // this handler to run twice. This exits early to prevent toggling the checkbox twice.
-    if ($event.target.tagName === 'LABEL') {
+    if (!this.selection.rowSelectionMode || $event.target.tagName === 'LABEL' || !this._selectable) {
       return;
     }
     if (this.selection.selectionType === this.SELECTION_TYPE.Single) {
@@ -348,8 +366,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
       const newSelection = new Set(
         this.selection.current.concat(items.slice(Math.min(startIx, endIx), Math.max(startIx, endIx) + 1))
       );
-      this.selection.clearSelection();
-      this.selection.current.push(...newSelection);
+      this.selection.current = [...newSelection];
     } else {
       // page number has changed or
       // no Shift was pressed or

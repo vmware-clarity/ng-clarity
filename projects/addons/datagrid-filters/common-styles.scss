@@ -1,0 +1,78 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.form-compact {
+  padding: 0;
+  text-align: left;
+  font-weight: normal;
+}
+
+.form-control-compact {
+  margin-top: 0.3rem;
+}
+
+.btn-compact {
+  min-width: 1.2rem;
+  padding: 0;
+  margin: 0 0.4rem;
+}
+
+.btn-right {
+  float: right;
+  margin-right: 0;
+  margin-top: 0.9rem;
+  margin-left: 0.3rem;
+}
+
+.mt-half {
+  margin-top: 0.6rem;
+}
+
+.mt-compact {
+  margin-top: 0.9rem;
+}
+
+.mb-compact {
+  margin-bottom: 0.9rem;
+}
+
+.ml-half {
+  margin-left: 0.6rem;
+}
+
+.mt-0 {
+  margin-top: 0;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+:host-context(.zoom2x, .zoom4x) {
+  .form-max-height {
+    max-height: 8rem;
+    overflow-y: auto;
+  }
+}
+
+select {
+  max-width: 18rem;
+  text-overflow: ellipsis;
+}
+// in order to display properties with longer names.
+clr-signpost-content {
+  max-width: 20rem;
+}
+
+.flex-end-container {
+  display: flex;
+  align-items: flex-end;
+}
+
+.flex-container {
+  display: flex;
+}

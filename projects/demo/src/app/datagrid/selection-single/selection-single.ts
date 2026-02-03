@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { Component, TrackByFunction } from '@angular/core';
-import { ClrDatagridStateInterface } from '@clr/angular';
+import { ClrDatagridItemsTrackByFunction, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -31,7 +31,7 @@ export class DatagridSelectionSingleDemo {
   trackByIdServerSingleSelected: User;
 
   loading = true;
-  total: number;
+  total = 0;
 
   constructor(private inventory: Inventory) {
     inventory.size = 100;
@@ -42,6 +42,7 @@ export class DatagridSelectionSingleDemo {
 
   trackByIndex: TrackByFunction<User> = index => index;
   trackById: TrackByFunction<User> = (_index, item) => item.id;
+  idendityFn: ClrDatagridItemsTrackByFunction<User> = item => item.id;
 
   async refresh(state: ClrDatagridStateInterface) {
     // this.loading = true;
@@ -63,5 +64,13 @@ export class DatagridSelectionSingleDemo {
       this.total = result.length;
       this.loading = false;
     });
+  }
+
+  selectItems() {
+    const selectedUser = { ...this.users[1] };
+    this.singleSelected = selectedUser;
+    this.trackByIndexSingleSelected = selectedUser;
+    this.trackByIdSingleSelected = selectedUser;
+    this.trackByIdServerSingleSelected = selectedUser;
   }
 }

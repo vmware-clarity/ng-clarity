@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { expectActiveElementNotToBe, expectActiveElementToBe } from '../../../utils/testing/helpers.spec';
 import { SignpostFocusManager } from './signpost-focus-manager.service';
 
 export default function (): void {
@@ -24,9 +25,9 @@ export default function (): void {
       const button = document.createElement('button');
       document.body.appendChild(button);
       signpostFocusManager.triggerEl = button;
-      expect(document.activeElement).not.toBe(button);
+      expectActiveElementNotToBe(button);
       signpostFocusManager.focusTrigger();
-      expect(document.activeElement).toBe(button);
+      expectActiveElementToBe(button);
     });
   });
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -47,6 +47,12 @@ export class StepperService extends AccordionService {
     this.emitUpdatedPanels();
   }
 
+  navigateToPreviousPanel(currentPanelId: string) {
+    this.accordion.navigateToPreviousPanel(currentPanelId);
+    this.updatePreviousStep(currentPanelId);
+    this.emitUpdatedPanels();
+  }
+
   navigateToNextPanel(currentPanelId: string, currentPanelValid = true) {
     this.accordion.navigateToNextPanel(currentPanelId, currentPanelValid);
     this.updateNextStep(currentPanelId, currentPanelValid);
@@ -65,6 +71,14 @@ export class StepperService extends AccordionService {
       this._activeStepChanges.next(nextPanel.id);
     } else if (currentPanelValid) {
       this._activeStepChanges.next(currentPanelId);
+    }
+  }
+
+  private updatePreviousStep(currentPanelId: string) {
+    const prevPanel = this.accordion.getPreviousPanel(currentPanelId);
+
+    if (prevPanel) {
+      this._activeStepChanges.next(prevPanel.id);
     }
   }
 

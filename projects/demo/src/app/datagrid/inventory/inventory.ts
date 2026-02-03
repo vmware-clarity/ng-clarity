@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -37,12 +37,12 @@ export class Inventory {
     this._all = this._all.concat(this.addBySize());
   }
 
-  addBySize(size = this.size) {
+  addBySize(size = this.size, startCount = this.generatedCount) {
     const newData: User[] = [];
 
     for (let i = 0; i < size; i++) {
       newData.push({
-        id: this.generatedCount + i,
+        id: startCount + i,
         name: this.getItem(i, NAMES),
         creation: new Date(Date.now() * Math.random()),
         color: this.getItem(i, COLORS),
@@ -116,6 +116,7 @@ export class Inventory {
   }
 
   fetch(skip = 0, limit: number = this._currentQuery.length): Promise<FetchResult> {
+    this._checkCurrentQuery();
     // Stringify and parse to mimic new object creation like a real HTTP request
     const items = JSON.stringify(this._currentQuery.slice(skip, skip + limit));
     const result: FetchResult = { users: JSON.parse(items), length: this._currentQuery.length };

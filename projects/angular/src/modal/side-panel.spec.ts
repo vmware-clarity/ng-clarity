@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '../utils/cdk/cdk-trap-focus.module';
+import { expectActiveElementToBe } from '../utils/testing/helpers.spec';
 import { ClrSidePanel } from './side-panel';
 import { ClrSidePanelModule } from './side-panel.module';
 
@@ -158,7 +159,7 @@ describe('Side Panel', () => {
   }));
 
   it('focuses on the title when opened', fakeAsync(() => {
-    expect(document.activeElement).toBe(fixture.nativeElement.querySelector('.modal-title-wrapper'));
+    expectActiveElementToBe(fixture.nativeElement.querySelector('.modal-title-wrapper'));
   }));
 
   it('supports a clrSidePanelSize option', fakeAsync(() => {

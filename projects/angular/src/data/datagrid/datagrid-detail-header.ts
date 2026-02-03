@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -22,7 +22,7 @@ import { DetailService } from './providers/detail.service';
     <div class="datagrid-detail-pane-close">
       <button
         type="button"
-        class="btn btn-link"
+        class="btn btn-icon btn-link"
         (click)="detailService.close()"
         [attr.aria-label]="commonStrings.keys.close"
       >

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
   ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
@@ -27,8 +27,23 @@
       </div>
     </header>
     <div class="content-container nested-menus-text">
-      <clr-vertical-nav [clrVerticalNavCollapsible]="true" [(clrVerticalNavCollapsed)]="collapse">
+      <clr-vertical-nav
+        class="nav-trigger--bottom"
+        [clrVerticalNavCollapsible]="true"
+        [(clrVerticalNavCollapsed)]="collapse"
+      >
         <ng-container *ngFor="let item of case.items">
+          <clr-vertical-nav-group *ngIf="item['children']">
+            <cds-icon [attr.shape]="item.icon" *ngIf="item['icon']" clrVerticalNavIcon></cds-icon>
+            {{item.label}}
+
+            <clr-vertical-nav-group-children *clrIfExpanded>
+              <a clrVerticalNavLink href="javascript:void(0)" *ngFor="let childItem of item.children">
+                {{childItem.label}}
+              </a>
+            </clr-vertical-nav-group-children>
+          </clr-vertical-nav-group>
+          <div class="nav-divider"></div>
           <clr-vertical-nav-group *ngIf="item['children']">
             <cds-icon [attr.shape]="item.icon" *ngIf="item['icon']" clrVerticalNavIcon></cds-icon>
             {{item.label}}

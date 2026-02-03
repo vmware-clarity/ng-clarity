@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -57,6 +57,7 @@ import DatagridMainRendererSpecs from './render/main-renderer.spec';
 import NoopDomAdapterSpecs from './render/noop-dom-adapter.spec';
 import DatagridRenderOrganizerSpecs from './render/render-organizer.spec';
 import DatagridRowRendererSpecs from './render/row-renderer.spec';
+import KeyNavigationSpec from './utils/key-navigation-grid.controller.spec';
 import WrappedCellSpec from './wrapped-cell.spec';
 import WrappedColumnSpec from './wrapped-column.spec';
 import WrappedRowSpec from './wrapped-row.spec';
@@ -93,6 +94,7 @@ describe('Datagrid', function () {
     DatagridFooterSpecs();
     DatagridPlaceholderSpecs();
     DatagridSpecs();
+    KeyNavigationSpec();
     DatagridVirtualScrollSpec();
     DatagridColumnToggleSpecs();
     DatagridColumnToggleButtonSpecs();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -13,10 +13,12 @@ import { applicationConfig } from '@storybook/angular';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import docs from '../documentation.json';
-import { THEMES } from './helpers/constants';
+import { DENSITY, THEMES } from './helpers/constants';
+import AutoDocsTemplate from './stories/auto-docs.mdx';
 
 const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
+const clrDensityAttribute = 'clr-density';
 
 loadIcons();
 addDocs(docs);
@@ -67,7 +69,7 @@ const customViewports = {
 };
 
 export const parameters = {
-  docs: { inlineStories: true },
+  docs: { page: AutoDocsTemplate },
   options: {
     storySort: {
       method: 'alphabetical',
@@ -90,8 +92,22 @@ export const globalTypes = {
       icon: 'paintbrush',
       showName: true,
       items: [
-        { value: THEMES.CORE_LIGHT, title: 'Light Theme' },
-        { value: THEMES.CORE_DARK, title: 'Dark Theme' },
+        { value: THEMES.LIGHT, title: 'Light Theme' },
+        { value: THEMES.DARK, title: 'Dark Theme' },
+      ],
+    },
+  },
+  density: {
+    name: 'Density',
+    description: 'Available Clarity density models',
+    defaultValue: '',
+    toolbar: {
+      icon: 'graphbar',
+      showName: true,
+      items: [
+        { value: DENSITY.NONE, title: 'None' },
+        { value: DENSITY.REGULAR, title: 'Regular' },
+        { value: DENSITY.COMPACT, title: 'Compact' },
       ],
     },
   },
@@ -99,13 +115,25 @@ export const globalTypes = {
 
 const themeDecorator = (story, { globals }) => {
   const { theme } = globals;
+
   document.body.setAttribute(cdsThemeAttribute, theme);
+
+  return story();
+};
+const densityDecorator = (story, { globals }) => {
+  const { density } = globals;
+  if (density === DENSITY.NONE) {
+    document.body.removeAttribute(clrDensityAttribute);
+  } else {
+    document.body.setAttribute(clrDensityAttribute, density);
+  }
 
   return story();
 };
 
 export const decorators = [
   themeDecorator,
+  densityDecorator,
   applicationConfig({
     providers: [provideAnimations()],
   }),

@@ -1,0 +1,36 @@
+<!-- Copyright 2023 Broadcom. All rights reserved. -->
+<div data-test-id="appfx-advanced-datagrid-filter" class="filter-container" [ngSwitch]="mode">
+  <label *ngSwitchCase="quickMode" class="clr-control-label form-control-compact">
+    {{ filterStrings.quickFilter }}
+  </label>
+  <label *ngSwitchCase="advancedOnlyMode" class="clr-control-label form-control-compact">
+    {{ filterStrings.advancedFilter }}
+  </label>
+  <clr-select-container *ngSwitchCase="advancedMode" class="form-control-compact">
+    <select clrSelect [(ngModel)]="selectedFilterMode" (ngModelChange)="onFilterModeChange()">
+      <option [ngValue]="quickMode">{{ filterStrings.quickFilter }}</option>
+      <option [ngValue]="advancedMode">{{ filterStrings.advancedFilter }}</option>
+    </select>
+  </clr-select-container>
+  <clr-input-container
+    *ngIf="selectedFilterMode === quickMode && mode !== advancedOnlyMode"
+    class="ml-half form-control-compact"
+  >
+    <label class="clr-sr-only"> {{ filterStrings.quickFilter }} </label>
+    <input
+      type="text"
+      (keydown)="onSearchInputKeyPress($event)"
+      [ngModel]="searchTerm"
+      (ngModelChange)="onSearchTermChanged($event)"
+      placeholder="{{ filterStrings.enterValue }}"
+      clrInput
+    />
+  </clr-input-container>
+  <appfx-composite-filter
+    *ngIf="selectedFilterMode === advancedMode || mode === advancedOnlyMode"
+    class="filter-contents"
+    [filterableProperties]="filterableProperties"
+    (propertyFiltersChange)="onFilterCriteriaChange($event)"
+  >
+  </appfx-composite-filter>
+</div>

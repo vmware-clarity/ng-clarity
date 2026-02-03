@@ -1,0 +1,50 @@
+<h2>Number Picker</h2>
+<h3>Container and component</h3>
+<form clrForm [formGroup]="form">
+  <h4>Default</h4>
+  <clr-number-input-container>
+    <label>Number Input</label>
+    <input clrNumberInput type="number" formControlName="number" name="default" placeholder="Placeholder" />
+    <clr-control-helper>Helper Text</clr-control-helper>
+    <clr-control-error>Helper Error</clr-control-error>
+    <clr-control-success>Helper Success</clr-control-success>
+  </clr-number-input-container>
+  <h4>Required</h4>
+  <clr-number-input-container>
+    <label>Number Input</label>
+    <input
+      clrNumberInput
+      type="number"
+      formControlName="numberRequired"
+      name="required"
+      placeholder="Placeholder"
+      required
+    />
+    <clr-control-helper>Helper Text</clr-control-helper>
+    <clr-control-error>Helper Error</clr-control-error>
+    <clr-control-success>Helper Success</clr-control-success>
+  </clr-number-input-container>
+  <h4>Readonly</h4>
+  <clr-number-input-container>
+    <label>Number Input</label>
+    <input
+      clrNumberInput
+      type="number"
+      formControlName="numberReadonly"
+      name="readonly"
+      placeholder="Placeholder"
+      readonly
+    />
+    <clr-control-helper>Helper Text</clr-control-helper>
+    <clr-control-error>Helper Error</clr-control-error>
+    <clr-control-success>Helper Success</clr-control-success>
+  </clr-number-input-container>
+  <h4>Disabled</h4>
+  <clr-number-input-container>
+    <label>Number Input</label>
+    <input clrNumberInput type="number" formControlName="numberDisabled" name="disabled" placeholder="Placeholder" />
+    <clr-control-helper>Helper Text</clr-control-helper>
+    <clr-control-error>Helper Error</clr-control-error>
+    <clr-control-success>Helper Success</clr-control-success>
+  </clr-number-input-container>
+</form>
