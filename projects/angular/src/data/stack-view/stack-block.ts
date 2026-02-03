@@ -20,6 +20,7 @@ import {
 import { ClrStackViewLabel } from './stack-view-custom-tags';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
+import { HeadingLevel } from '../../utils/types/heading-level';
 
 @Component({
   selector: 'clr-stack-block',
@@ -78,8 +79,8 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
   // Make sure the host has the proper class for styling purposes
   host: {
     '[class.stack-block]': 'true',
-    '[attr.role]': '"heading"',
-    '[attr.aria-level]': 'headingLevel',
+    '[attr.role]': "ariaLevel ? 'heading' : null",
+    '[attr.aria-level]': 'ariaLevel ? ariaLevel : null',
   },
   standalone: false,
 })
@@ -90,7 +91,7 @@ export class ClrStackBlock implements OnInit {
   /**
    * Depth of the stack view starting from 1 for first level
    */
-  @Input('clrStackViewLevel') ariaLevel: number;
+  @Input('clrStackViewLevel') ariaLevel: HeadingLevel;
 
   @Output('clrSbExpandedChange') expandedChange = new EventEmitter<boolean>(false);
 
@@ -144,14 +145,6 @@ export class ClrStackBlock implements OnInit {
 
   get labelledById() {
     return this.stackBlockTitle.id;
-  }
-
-  get headingLevel() {
-    if (this.ariaLevel) {
-      return this.ariaLevel + '';
-    }
-
-    return this.parent ? '4' : '3';
   }
 
   get caretDirection(): string {

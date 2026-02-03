@@ -5,15 +5,22 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { ClrStackView } from './stack-view';
+import { HeadingLevel } from '../../utils/types/heading-level';
 
 @Component({
   selector: 'clr-stack-header',
   template: `
     <div class="stack-header">
-      <h4 class="stack-title"><ng-content></ng-content></h4>
+      <div
+        [attr.role]="ariaLevel ? 'heading' : null"
+        [attr.aria-level]="ariaLevel ? ariaLevel : null"
+        class="stack-title"
+      >
+        <ng-content></ng-content>
+      </div>
 
       <span class="stack-actions">
         <ng-content select=".stack-action"></ng-content>
@@ -31,5 +38,10 @@ import { ClrStackView } from './stack-view';
   standalone: false,
 })
 export class ClrStackHeader {
+  /**
+   * Depth of the stack view header starting from 1 for first level
+   */
+  @Input('clrStackHeaderLevel') ariaLevel: HeadingLevel;
+
   constructor(public stackView: ClrStackView) {}
 }

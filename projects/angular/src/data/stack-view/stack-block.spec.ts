@@ -34,14 +34,14 @@ class BasicBlock {
 
 @Component({
   template: `
-    <clr-stack-block #main>
+    <clr-stack-block #main [clrStackViewLevel]="explicitHeadingLevels ? 1 : null">
       <clr-stack-label>Label</clr-stack-label>
       <clr-stack-content>Content</clr-stack-content>
-      <clr-stack-block>
+      <clr-stack-block [clrStackViewLevel]="explicitHeadingLevels ? 2 : null">
         <clr-stack-label>Sub-Label 1</clr-stack-label>
         <clr-stack-content>Sub-Content 1</clr-stack-content>
       </clr-stack-block>
-      <clr-stack-block>
+      <clr-stack-block [clrStackViewLevel]="explicitHeadingLevels ? 2 : null">
         <clr-stack-label>Sub-Label 2</clr-stack-label>
         <clr-stack-content>Sub-Content 2</clr-stack-content>
       </clr-stack-block>
@@ -51,6 +51,7 @@ class BasicBlock {
 })
 class NestedBlocks {
   @ViewChild('main') blockInstance: ClrStackBlock;
+  explicitHeadingLevels: false;
 }
 
 @Component({
@@ -390,7 +391,7 @@ export default function (): void {
       expect(defaultBlockLabelledBy).toBe(stackLabelId);
     });
 
-    it('should have expected heading roles and aria heading levels', async () => {
+    it('should not have heading role and aria-level attribute set if ariaLevel is not set', async () => {
       fixture = TestBed.createComponent(NestedBlocks);
       fixture.detectChanges();
       const component = fixture.componentInstance;
@@ -399,13 +400,34 @@ export default function (): void {
       fixture.detectChanges();
 
       const topLevelBlock = fixture.nativeElement.querySelector('.stack-block-expandable');
-      expect(topLevelBlock.getAttribute('role')).toBe('heading');
-      expect(topLevelBlock.getAttribute('aria-level')).toBe('3');
+      expect(topLevelBlock.getAttribute('role')).toBeNull();
+      expect(component.blockInstance.ariaLevel).toBeNull();
+      expect(topLevelBlock.getAttribute('aria-level')).toBeNull();
 
       const childBlocks = fixture.nativeElement.querySelectorAll('.stack-children .stack-block');
-      childBlocks.forEach(blok => {
-        expect(blok.getAttribute('role')).toBe('heading');
-        expect(blok.getAttribute('aria-level')).toBe('4');
+      childBlocks.forEach((block: HTMLElement) => {
+        expect(block.getAttribute('role')).toBeNull();
+        expect(block.getAttribute('aria-level')).toBeNull();
+      });
+    });
+
+    it('should have expected explicit heading roles and aria heading levels', async () => {
+      fixture = TestBed.createComponent(NestedBlocks);
+      fixture.detectChanges();
+      const component = fixture.componentInstance;
+      component.explicitHeadingLevels = true;
+      component.blockInstance.expanded = true;
+      await delay();
+      fixture.detectChanges();
+
+      const topLevelBlock = fixture.nativeElement.querySelector('.stack-block-expandable');
+      expect(topLevelBlock.getAttribute('role')).toBe('heading');
+      expect(topLevelBlock.getAttribute('aria-level')).toBe('1');
+
+      const childBlocks = fixture.nativeElement.querySelectorAll('.stack-children .stack-block');
+      childBlocks.forEach((block: HTMLElement) => {
+        expect(block.getAttribute('role')).toBe('heading');
+        expect(block.getAttribute('aria-level')).toBe('2');
       });
     });
 

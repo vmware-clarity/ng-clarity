@@ -4688,7 +4688,7 @@ export class ClrStackBlock implements OnInit {
     addChild(): void;
     // (undocumented)
     get ariaExpanded(): string;
-    ariaLevel: number;
+    ariaLevel: HeadingLevel;
     // (undocumented)
     get caretDirection(): string;
     // (undocumented)
@@ -4705,8 +4705,6 @@ export class ClrStackBlock implements OnInit {
     get getChangedValue(): boolean;
     // (undocumented)
     getStackChildrenId(): string;
-    // (undocumented)
-    get headingLevel(): string;
     // (undocumented)
     get labelledById(): any;
     // (undocumented)
@@ -4746,10 +4744,11 @@ export class ClrStackContentInput {
 // @public (undocumented)
 export class ClrStackHeader {
     constructor(stackView: ClrStackView);
+    ariaLevel: HeadingLevel;
     // (undocumented)
     stackView: ClrStackView;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackHeader, "clr-stack-header", never, {}, {}, never, ["*", ".stack-action"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackHeader, "clr-stack-header", never, { "ariaLevel": { "alias": "clrStackHeaderLevel"; "required": false; }; }, {}, never, ["*", ".stack-action"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackHeader, never>;
 }
