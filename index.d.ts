@@ -8166,7 +8166,6 @@ declare class ClrAccordionPanel implements OnInit, OnChanges {
     private cdr;
     disabled: boolean;
     panelOpen: boolean;
-    headingEnabled: boolean;
     /**
      * Level of the accordion/stepper heading from 1 to 6.
      */
@@ -8180,7 +8179,6 @@ declare class ClrAccordionPanel implements OnInit, OnChanges {
     get id(): string;
     set id(value: string);
     get panelNumber(): number;
-    get headingLevel(): HeadingLevel;
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     togglePanel(): void;
@@ -8192,7 +8190,7 @@ declare class ClrAccordionPanel implements OnInit, OnChanges {
     protected stepErrorText(panelNumber: number): string;
     private emitPanelChange;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": { "alias": "clrAccordionPanelDisabled"; "required": false; }; "panelOpen": { "alias": "clrAccordionPanelOpen"; "required": false; }; "headingEnabled": { "alias": "clrAccordionPanelHeadingEnabled"; "required": false; }; "explicitHeadingLevel": { "alias": "clrAccordionPanelHeadingLevel"; "required": false; }; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": { "alias": "clrAccordionPanelDisabled"; "required": false; }; "panelOpen": { "alias": "clrAccordionPanelOpen"; "required": false; }; "explicitHeadingLevel": { "alias": "clrAccordionPanelHeadingLevel"; "required": false; }; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
 }
 
 declare class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
