@@ -8,7 +8,6 @@
 @use 'sass:meta';
 @use '../../accordion/variables.accordion' as accordion-variables;
 @use '../../image/icons.clarity';
-@use '../../image/images.clarity';
 @use '../../styles/mixins';
 @use 'variables.stack-view' as stack-view-variables;
 @use '../../styles/core/tokens/variables.tokens' as tokens;
@@ -165,7 +164,7 @@
           content: '';
 
           @include mixins.min-equilateral(density.$clr-base-icon-size-s);
-          @include images.icon-background-styles();
+          @include mixins.icon-background-styles();
 
           background-image: icons.generateCaretIcon(accordion-variables.$clr-accordion-text-color);
           transform: rotate(-90deg);

@@ -10,12 +10,6 @@
 @use '../styles/mixins';
 @use 'icons.clarity';
 
-@mixin icon-background-styles() {
-  background-repeat: no-repeat;
-  background-size: contain;
-  vertical-align: middle;
-}
-
 @include mixins.exports('images.clarity') {
   %icon-styles {
     display: inline-block;
@@ -24,7 +18,7 @@
 
     padding: 0;
 
-    @include icon-background-styles();
+    @include mixins.icon-background-styles();
   }
 
   .alert-icon,
