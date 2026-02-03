@@ -24,12 +24,22 @@ export default {
     badgeType: null,
     badgeTypes: [...BADGE_STATUS_TYPES, ...BADGE_COLOR_TYPES],
     cssBadge: true,
+    outlined: false,
   },
 };
 
 export const Initial: StoryObj = {
   argTypes: {
     badgeType: { control: { disable: true }, table: { disable: true } },
+  },
+};
+
+export const Outlined: StoryObj = {
+  argTypes: {
+    badgeType: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    outlined: true,
   },
 };
 
@@ -49,5 +59,15 @@ export const BadgeComponent: StoryObj = {
   },
   args: {
     cssBadge: false,
+  },
+};
+
+export const OutlinedBadgeComponent: StoryObj = {
+  argTypes: {
+    badgeType: { control: { type: 'select' }, options: [...BADGE_STATUS_TYPES, ...BADGE_COLOR_TYPES] },
+  },
+  args: {
+    cssBadge: false,
+    outlined: true,
   },
 };

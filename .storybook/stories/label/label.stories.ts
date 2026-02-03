@@ -28,6 +28,7 @@ export default {
     closeIcon: false,
     disabled: false,
     cssLabel: true,
+    solid: false,
     showProjectedContent: false,
   },
 };
@@ -145,6 +146,86 @@ export const LabelComponentClickableWithBadge: StoryObj = {
     cssLabel: false,
     clickable: true,
     badgeText: '42',
+  },
+};
+
+export const LabelComponentClickableWithBadgeHover: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+    cssLabel: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
+    cssLabel: false,
+    clickable: true,
+    badgeText: '42',
+  },
+  parameters: {
+    pseudo: { hover: true },
+  },
+};
+
+export const LabelComponentClickableWithBadgeClicked: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+    cssLabel: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
+    cssLabel: false,
+    clickable: true,
+    badgeText: '42',
+  },
+  parameters: {
+    pseudo: { active: true },
+  },
+};
+
+export const LabelComponentSolidClickableWithBadge: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+    cssLabel: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
+    cssLabel: false,
+    clickable: true,
+    solid: true,
+    badgeText: '42',
+  },
+};
+
+export const LabelComponentSolidClickableWithBadgeHover: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+    cssLabel: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
+    cssLabel: false,
+    clickable: true,
+    solid: true,
+    badgeText: '42',
+  },
+  parameters: {
+    pseudo: { hover: true },
+  },
+};
+
+export const LabelComponentSolidClickableWithBadgeActive: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+    cssLabel: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
+    cssLabel: false,
+    clickable: true,
+    solid: true,
+    badgeText: '42',
+  },
+  parameters: {
+    pseudo: { active: true },
   },
 };
 
