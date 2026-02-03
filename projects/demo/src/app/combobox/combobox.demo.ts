@@ -359,14 +359,18 @@ export class ComboboxDemo {
 
   updateStates() {
     this.states.splice(3, 1);
-    this.states.forEach(state => {
+    this.states.forEach((state, index) => {
+      if (index === 0) {
+        return;
+      }
       if (state.name.indexOf('(updated)') === -1) {
-        state.name += ' (updated)';
+        this.states[index] = this.updateName(state, state.name + ' (updated)');
       }
     });
-    this.states[2] = {
-      name: 'Area 51 (renamed)',
-      abbreviation: 'AS',
-    };
+    this.states[2] = this.updateName(this.states[2], 'Area 51 (renamed)');
+  }
+
+  private updateName(item: any, newName: string) {
+    return { ...item, name: newName };
   }
 }

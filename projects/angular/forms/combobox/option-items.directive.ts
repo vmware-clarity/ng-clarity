@@ -88,7 +88,7 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
         this.iterableProxy.ngDoCheck();
       }
     }
-    const changes = this.modelDiffer.diff(this.optionService.rawItems);
+    const changes = this.modelDiffer.diff(this.rawItems);
     if (changes) {
       this.optionService.updateSelection();
     }
@@ -98,22 +98,22 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
   private updateItems() {
-    if (!this.optionService.rawItems || this.filter === undefined || this.filter === null) {
+    if (!this.rawItems || this.filter === undefined || this.filter === null) {
       return;
     }
 
     const normalizedFilterValue = normalizeValue(this.filter);
 
     if (this.optionService.showAllOptions) {
-      this.filteredItems = this.optionService.rawItems;
+      this.filteredItems = this.rawItems;
     } else if (this._filterField) {
-      this.filteredItems = this.optionService.rawItems.filter(item => {
+      this.filteredItems = this.rawItems.filter(item => {
         const objValue = (item as any)[this._filterField];
         return objValue ? normalizeValue(objValue).includes(normalizedFilterValue) : false;
       });
     } else {
       // Filter by all item object values
-      this.filteredItems = this.optionService.rawItems.filter(item => {
+      this.filteredItems = this.rawItems.filter(item => {
         if (typeof item !== 'object') {
           return normalizeValue(item).includes(normalizedFilterValue);
         }

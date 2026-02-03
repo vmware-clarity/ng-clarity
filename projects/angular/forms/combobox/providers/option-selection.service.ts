@@ -143,7 +143,9 @@ export class OptionSelectionService<T> {
         if (this.identifyBy(item) === this.identifyBy(selectedItem)) {
           // We need this call to be able to refresh the selection in single selection model.
           // This prevents us from moving the current method in the respective models.
-          this.setSelectionValue(item);
+          if (this.currentInput !== item && this.currentInput !== item[this.displayField]) {
+            this.setSelectionValue(item);
+          }
           break;
         }
       }
