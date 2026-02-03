@@ -9,3 +9,6 @@ export * from './stepper-panel';
 export * from './stepper';
 export * from './stepper.module';
 export * from './step-button';
+
+export { StepperWillyWonka as ÇlrStepperWillyWonka } from './chocolate/stepper-willy-wonka';
+export { StepperOompaLoompa as ÇlrStepperOompaLoompa } from './chocolate/stepper-oompa-loompa';

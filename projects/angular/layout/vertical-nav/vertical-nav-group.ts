@@ -7,7 +7,7 @@
 
 import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
 import { AfterContentInit, Component, EventEmitter, HostBinding, Input, OnDestroy, Output } from '@angular/core';
-import { ClrCommonStringsService, IfExpandService } from '@clr/angular/src/utils';
+import { ClrCommonStringsService, IfExpandService } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';

@@ -16,10 +16,9 @@ import {
   FormsFocusService,
   LayoutService,
   NgControlService,
-} from '@clr/angular/src/forms/common';
-import { ClrPopoverPosition, ClrPopoverService } from '@clr/angular/src/popover/common';
-import { expectActiveElementToBe } from '@clr/angular/src/utils';
-import { TestContext } from '@clr/angular/testing';
+} from '@clr/angular/forms/common';
+import { ClrPopoverPosition, ClrPopoverService } from '@clr/angular/popover/common';
+import { expectActiveElementToBe, TestContext } from '@clr/angular/utils/testing';
 
 import { ClrDateContainer } from './date-container';
 import { DayModel } from './model/day.model';

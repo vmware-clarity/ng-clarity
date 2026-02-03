@@ -13,7 +13,7 @@ import {
   ControlIdService,
   LayoutService,
   NgControlService,
-} from '@clr/angular/src/forms/common';
+} from '@clr/angular/forms/common';
 
 @Component({
   selector: 'clr-select-container',

@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ClrCommonFormsModule } from '@clr/angular/src/forms/common';
+import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 import {
   angleIcon,
   checkCircleIcon,
@@ -16,10 +16,10 @@ import {
   ClrIcon,
   exclamationCircleIcon,
   windowCloseIcon,
-} from '@clr/angular/src/icon';
-import { ÇlrClrPopoverModuleNext } from '@clr/angular/src/popover/common';
-import { ClrSpinnerModule } from '@clr/angular/src/progress/spinner';
-import { ClrConditionalModule, ClrKeyFocusModule } from '@clr/angular/src/utils';
+} from '@clr/angular/icon';
+import { ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
+import { ClrConditionalModule, ClrKeyFocusModule } from '@clr/angular/utils';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';

@@ -23,8 +23,8 @@ import {
   QueryList,
   ViewChild,
 } from '@angular/core';
-import { ClrModal } from '@clr/angular/src/modal';
-import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/src/utils';
+import { ClrModal } from '@clr/angular/modal';
+import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 

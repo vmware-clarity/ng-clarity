@@ -6,7 +6,7 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { spec, TestContext } from '@clr/angular/testing';
+import { spec, TestContext } from '@clr/angular/utils/testing';
 
 import { ClrPopoverAnchor } from './popover-anchor';
 import { ClrPopoverService } from './providers/popover.service';
@@ -36,7 +36,7 @@ export default function (): void {
       });
 
       it('registers the anchor element with the event service', function (this: Context) {
-        expect(this.popoverService.anchorElementRef).toEqual(this.hostComponent.anchor);
+        expect(this.popoverService.anchorElementRef).toEqual(this.testComponent.anchor);
       });
     });
 

@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { spec, TestContext } from '@clr/angular/testing';
+import { spec, TestContext } from '@clr/angular/utils/testing';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { ClrTooltip } from './tooltip';

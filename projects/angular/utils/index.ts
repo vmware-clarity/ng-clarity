@@ -36,6 +36,6 @@ export * from './cdk/cdk-trap-focus.module';
 export * from './destroy';
 export * from './types/heading-level';
 export * from './enums/keys.enum';
+export * from './enums/position.enum';
 export * from './chocolate/willy-wonka';
 export * from './chocolate/oompa-loompa';
-export * from './i18n';

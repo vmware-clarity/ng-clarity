@@ -7,8 +7,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { ClarityIcons, ClrIcon, ellipsisHorizontalIcon } from '@clr/angular/src/icon';
-import { ClrConditionalModule, ClrKeyFocusModule, ClrTemplateRefModule } from '@clr/angular/src/utils';
+import { ClarityIcons, ClrIcon, ellipsisHorizontalIcon } from '@clr/angular/icon';
+import { ClrConditionalModule, ClrKeyFocusModule, ClrTemplateRefModule } from '@clr/angular/utils';
 
 import { ActiveOompaLoompa } from './chocolate/active-oompa-loompa';
 import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';

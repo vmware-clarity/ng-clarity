@@ -11,6 +11,8 @@ export * from './popover-anchor';
 export * from './popover-host.directive';
 export * from './stop-escape-propagation.directive';
 export * from './popover-host-anchor.token';
+export * from './if-open.directive';
+export * from './utils/popover-positions';
 
 export { ClrPopoverModuleNext as ÇlrClrPopoverModuleNext } from './popover.module';
 export { ClrPopoverCloseButton as ÇlrClrPopoverCloseButton } from './popover-close-button';

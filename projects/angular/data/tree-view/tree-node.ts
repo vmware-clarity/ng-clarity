@@ -35,7 +35,7 @@ import {
   normalizeKey,
   preventArrowKeyScroll,
   uniqueIdFactory,
-} from '@clr/angular/src/utils';
+} from '@clr/angular/utils';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 

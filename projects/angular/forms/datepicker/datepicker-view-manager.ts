@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';

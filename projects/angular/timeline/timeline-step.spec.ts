@@ -8,9 +8,9 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ClrIcon } from '@clr/angular/src/icon';
-import { ClrSpinnerModule } from '@clr/angular/src/progress/spinner';
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
+import { ClrIcon } from '@clr/angular/icon';
+import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrTimelineStepState } from './enums/timeline-step-state.enum';
 import { TimelineIconAttributeService } from './providers/timeline-icon-attribute.service';

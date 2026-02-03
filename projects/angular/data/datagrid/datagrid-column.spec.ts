@@ -8,7 +8,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext } from '@clr/angular/utils/testing';
 import { Subject } from 'rxjs';
 
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';

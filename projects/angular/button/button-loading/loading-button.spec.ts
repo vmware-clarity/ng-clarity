@@ -8,8 +8,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ClrLoadingModule, ClrLoadingState } from '@clr/angular/src/utils';
-import { delay } from '@clr/angular/testing';
+import { ClrLoadingModule, ClrLoadingState } from '@clr/angular/utils';
+import { delay } from '@clr/angular/utils/testing';
 
 import { ClrLoadingButton } from './loading-button';
 import { ClrLoadingButtonModule } from './loading-button.module';

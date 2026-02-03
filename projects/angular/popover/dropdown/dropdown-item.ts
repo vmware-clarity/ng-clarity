@@ -6,7 +6,7 @@
  */
 
 import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
-import { BASIC_FOCUSABLE_ITEM_PROVIDER, FocusableItem } from '@clr/angular/src/utils';
+import { BASIC_FOCUSABLE_ITEM_PROVIDER, FocusableItem } from '@clr/angular/utils';
 
 import { ClrDropdown } from './dropdown';
 import { RootDropdownService } from './providers/dropdown.service';

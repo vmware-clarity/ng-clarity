@@ -6,10 +6,10 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { TestContext } from '@clr/angular/utils/testing';
 
 import { ClrDay } from './day';
-import { ClrPopoverService } from '../../popover';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';

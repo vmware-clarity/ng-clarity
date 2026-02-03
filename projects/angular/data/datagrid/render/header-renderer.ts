@@ -6,7 +6,7 @@
  */
 
 import { Directive, ElementRef, EventEmitter, Inject, OnDestroy, Output, Renderer2 } from '@angular/core';
-import { DomAdapter } from '@clr/angular/src/utils';
+import { DomAdapter } from '@clr/angular/utils';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';

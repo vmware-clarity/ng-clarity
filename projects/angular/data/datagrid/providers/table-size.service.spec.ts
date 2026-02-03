@@ -7,7 +7,7 @@
 
 import { Component, ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DomAdapter } from '@clr/angular/src/utils';
+import { DomAdapter } from '@clr/angular/utils';
 
 import { ClrDatagridModule } from '../datagrid.module';
 import { ColumnsService } from './columns.service';

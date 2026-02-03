@@ -26,8 +26,8 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { FormsFocusService, WrappedFormControl } from '@clr/angular/src/forms/common';
-import { isBooleanAttributeSet } from '@clr/angular/src/utils';
+import { FormsFocusService, WrappedFormControl } from '@clr/angular/forms/common';
+import { isBooleanAttributeSet } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 

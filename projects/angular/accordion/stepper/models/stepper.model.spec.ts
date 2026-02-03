@@ -5,8 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { AccordionStatus } from '@clr/angular/accordion';
+
 import { StepperModel } from './stepper.model';
-import { AccordionStatus } from '../../enums/accordion-status.enum';
 
 describe('StepperModel', () => {
   let stepper: StepperModel;

@@ -6,11 +6,10 @@
  */
 
 import { ElementRef, Injectable } from '@angular/core';
-import { preventArrowKeyScroll } from '@clr/angular/src/utils';
+import { preventArrowKeyScroll } from '@clr/angular/utils';
 import { Observable, Subject } from 'rxjs';
 
 import { ClrPopoverPosition } from '../utils/popover-positions';
-
 
 // Popovers might need to ignore click events on an element
 // (eg: popover opens on focus on an input field. Clicks should be ignored in this case)

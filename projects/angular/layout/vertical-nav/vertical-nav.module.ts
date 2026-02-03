@@ -7,8 +7,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { angleDoubleIcon, angleIcon, ClarityIcons, ClrIcon } from '@clr/angular/src/icon';
-import { ClrConditionalModule, ClrFocusOnViewInitModule } from '@clr/angular/src/utils';
+import { angleDoubleIcon, angleIcon, ClarityIcons, ClrIcon } from '@clr/angular/icon';
+import { ClrConditionalModule, ClrFocusOnViewInitModule } from '@clr/angular/utils';
 
 import { ClrVerticalNav } from './vertical-nav';
 import { ClrVerticalNavGroup } from './vertical-nav-group';

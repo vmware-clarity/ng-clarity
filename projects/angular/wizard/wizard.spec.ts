@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { delay, TestContext } from '@clr/angular/testing';
+import { delay, TestContext } from '@clr/angular/utils/testing';
 
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';

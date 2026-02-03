@@ -13,7 +13,7 @@ import {
   FormsFocusService,
   LayoutService,
   NgControlService,
-} from '@clr/angular/src/forms/common';
+} from '@clr/angular/forms/common';
 
 import { DatalistIdService } from './providers/datalist-id.service';
 
@@ -54,13 +54,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [
-    ControlClassService,
-    ControlIdService,
-    FormsFocusService,
-    NgControlService,
-    DatalistIdService,
-  ],
+  providers: [ControlClassService, ControlIdService, FormsFocusService, NgControlService, DatalistIdService],
   standalone: false,
 })
 export class ClrDatalistContainer extends ClrAbstractContainer {

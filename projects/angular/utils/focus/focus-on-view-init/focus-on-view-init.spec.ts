@@ -7,7 +7,7 @@
 
 import { ApplicationRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { expectActiveElementToBe } from '@clr/angular/testing';
+import { expectActiveElementToBe } from '@clr/angular/utils/testing';
 
 import { ClrFocusOnViewInit } from './focus-on-view-init';
 import { ClrFocusOnViewInitModule } from './focus-on-view-init.module';

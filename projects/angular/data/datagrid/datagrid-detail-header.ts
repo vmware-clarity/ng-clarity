@@ -6,7 +6,7 @@
  */
 
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { DetailService } from './providers/detail.service';
 

@@ -7,8 +7,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { ClrIcon } from '@clr/angular/src/icon';
-import { ÇlrClrPopoverModuleNext } from '@clr/angular/src/popover/common';
+import { ClrIcon } from '@clr/angular/icon';
+import { ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
 
 import { ClrButton } from './button';
 import { ClrButtonGroup } from './button-group';

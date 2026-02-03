@@ -7,9 +7,9 @@
 
 import { Component, ElementRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { ClrPopoverService, POPOVER_HOST_ANCHOR } from '@clr/angular/src/popover/common';
-import { ClrCommonStringsService, FocusService, IF_ACTIVE_ID_PROVIDER } from '@clr/angular/src/utils';
-import { TestContext } from '@clr/angular/testing';
+import { ClrPopoverService, POPOVER_HOST_ANCHOR } from '@clr/angular/popover/common';
+import { ClrCommonStringsService, FocusService, IF_ACTIVE_ID_PROVIDER } from '@clr/angular/utils';
+import { TestContext } from '@clr/angular/utils/testing';
 
 import { ClrOptions } from './options';
 import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';

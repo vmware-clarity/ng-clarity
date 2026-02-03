@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectorRef, Directive, Optional } from '@angular/core';
-import { IfExpandService, OompaLoompa } from '@clr/angular/src/utils';
+import { IfExpandService, OompaLoompa } from '@clr/angular/utils';
 
 import { AccordionWillyWonka } from './accordion-willy-wonka';
 

@@ -10,10 +10,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { AccordionPanelModel, AccordionStatus } from '@clr/angular/accordion';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import { AccordionStatus } from '../enums/accordion-status.enum';
-import { AccordionPanelModel } from '../models/accordion.model';
 import { StepperService } from './providers/stepper.service';
 import { ClrStepper } from './stepper';
 import { ClrStepperPanel } from './stepper-panel';

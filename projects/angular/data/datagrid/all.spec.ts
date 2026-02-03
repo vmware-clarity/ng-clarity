@@ -12,7 +12,7 @@
  * over the place because we load them asynchronously.
  */
 
-import { addHelpers } from '@clr/angular/testing';
+import { addHelpers } from '@clr/angular/utils/testing';
 
 import DatagridPropertyComparatorSpecs from './built-in/comparators/datagrid-property-comparator.spec';
 import DatagridNumericFilterImplSpecs from './built-in/filters/datagrid-numeric-filter-impl.spec';

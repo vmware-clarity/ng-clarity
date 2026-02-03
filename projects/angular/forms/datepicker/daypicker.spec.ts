@@ -6,11 +6,11 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
-import { TestContext } from '@clr/angular/testing';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { ClrCommonStringsService } from '@clr/angular/utils';
+import { TestContext } from '@clr/angular/utils/testing';
 
 import { ClrDaypicker } from './daypicker';
-import { ClrPopoverService } from '../../popover';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';

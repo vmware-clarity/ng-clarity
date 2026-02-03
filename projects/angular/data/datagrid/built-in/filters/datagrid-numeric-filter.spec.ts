@@ -7,9 +7,9 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { ClrPopoverService } from '@clr/angular/src/popover/common';
-import { DomAdapter } from '@clr/angular/src/utils';
-import { animationFrameTick, delay, TestContext } from '@clr/angular/testing';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { DomAdapter } from '@clr/angular/utils';
+import { animationFrameTick, delay, TestContext } from '@clr/angular/utils/testing';
 
 import { DatagridNumericFilter } from './datagrid-numeric-filter';
 import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';

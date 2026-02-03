@@ -14,8 +14,8 @@ import {
   dotCircleIcon,
   errorStandardIcon,
   successStandardIcon,
-} from '@clr/angular/src/icon';
-import { ClrSpinnerModule } from '@clr/angular/src/progress/spinner';
+} from '@clr/angular/icon';
+import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 
 import { ClrTimeline } from './timeline';
 import { ClrTimelineStep } from './timeline-step';

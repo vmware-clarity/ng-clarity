@@ -6,9 +6,9 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrPopoverService } from '@clr/angular/src/popover/common';
-import { FocusService } from '@clr/angular/src/utils';
-import { spec, TestContext } from '@clr/angular/testing';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { FocusService } from '@clr/angular/utils';
+import { spec, TestContext } from '@clr/angular/utils/testing';
 
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownTrigger } from './dropdown-trigger';

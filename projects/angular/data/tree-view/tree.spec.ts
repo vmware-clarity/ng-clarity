@@ -9,7 +9,7 @@ import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/cor
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { delay, spec, TestContext } from '@clr/angular/testing';
+import { delay, spec, TestContext } from '@clr/angular/utils/testing';
 
 import { RecursiveChildren } from './recursive-children';
 import { ClrTree } from './tree';

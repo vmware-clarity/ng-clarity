@@ -9,7 +9,7 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ClrLoadingModule, ClrLoadingState } from '@clr/angular/src/utils';
+import { ClrLoadingModule, ClrLoadingState } from '@clr/angular/utils';
 
 import { ClrButton } from './button';
 import { ClrButtonGroupModule } from './button-group.module';

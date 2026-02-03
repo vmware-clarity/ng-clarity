@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectorRef, Directive, Inject, Optional } from '@angular/core';
-import { IF_ACTIVE_ID, IfActiveService, OompaLoompa } from '@clr/angular/src/utils';
+import { IF_ACTIVE_ID, IfActiveService, OompaLoompa } from '@clr/angular/utils';
 
 import { TabsWillyWonka } from './tabs-willy-wonka';
 

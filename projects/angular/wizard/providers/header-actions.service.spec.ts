@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TestContext } from '@clr/angular/testing';
+import { TestContext } from '@clr/angular/utils/testing';
 
 import { HeaderActionsTestComponent } from '../test-components/header-action-wizard.mock';
 import { ClrWizard } from '../wizard';

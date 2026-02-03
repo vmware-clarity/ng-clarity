@@ -28,7 +28,7 @@ import {
   ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
-import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/src/utils';
+import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 

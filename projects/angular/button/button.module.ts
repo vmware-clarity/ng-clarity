@@ -6,7 +6,7 @@
  */
 
 import { NgModule } from '@angular/core';
-import { ClarityIcons, ellipsisHorizontalIcon } from '@clr/angular/src/icon';
+import { ClarityIcons, ellipsisHorizontalIcon } from '@clr/angular/icon';
 
 import { ClrButtonGroupModule } from './button-group/button-group.module';
 import { ClrLoadingButtonModule } from './button-loading/loading-button.module';

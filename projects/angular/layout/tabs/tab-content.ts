@@ -6,7 +6,7 @@
  */
 
 import { Component, EmbeddedViewRef, Inject, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
-import { IF_ACTIVE_ID, IfActiveService } from '@clr/angular/src/utils';
+import { IF_ACTIVE_ID, IfActiveService } from '@clr/angular/utils';
 
 import { TabsService } from './providers/tabs.service';
 

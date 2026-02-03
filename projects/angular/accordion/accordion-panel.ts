@@ -21,8 +21,8 @@ import {
   SimpleChanges,
   SkipSelf,
 } from '@angular/core';
-import { ClrCommonStringsService, IfExpandService, uniqueIdFactory } from '@clr/angular/src/utils';
-import { HeadingLevel } from '@clr/angular/src/wizard';
+import { ClrCommonStringsService, IfExpandService, uniqueIdFactory } from '@clr/angular/utils';
+import { HeadingLevel } from '@clr/angular/wizard';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 

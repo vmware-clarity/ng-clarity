@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ClrPopoverService } from '@clr/angular/src/popover/common';
+import { ClrPopoverService } from '@clr/angular/popover/common';
 
 import { ClrTabOverflowContent } from './tab-overflow-content';
 @Component({

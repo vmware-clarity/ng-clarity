@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { spec, TestContext } from '@clr/angular/testing';
+import { spec, TestContext } from '@clr/angular/utils/testing';
 
 import { ClrDatalist } from './datalist';
 import { DatalistIdService } from './providers/datalist-id.service';

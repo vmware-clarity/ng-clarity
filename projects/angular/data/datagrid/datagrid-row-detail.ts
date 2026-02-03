@@ -6,7 +6,7 @@
  */
 
 import { AfterContentInit, Component, ContentChildren, Input, OnDestroy, QueryList } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { ClrDatagridCell } from './datagrid-cell';

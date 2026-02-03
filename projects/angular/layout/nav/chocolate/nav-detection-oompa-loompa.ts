@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectorRef, Directive, Optional } from '@angular/core';
-import { OompaLoompa } from '@clr/angular/src/utils';
+import { OompaLoompa } from '@clr/angular/utils';
 
 import { MainContainerWillyWonka } from './main-container-willy-wonka';
 import { ResponsiveNavigationService } from '../providers/responsive-navigation.service';

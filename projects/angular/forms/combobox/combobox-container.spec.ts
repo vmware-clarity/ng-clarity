@@ -9,9 +9,9 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { ClrCommonFormsModule } from '@clr/angular/src/forms/common';
-import { ClrIcon } from '@clr/angular/src/icon';
-import { ClrPopoverContent } from '@clr/angular/src/popover/common';
+import { ClrCommonFormsModule } from '@clr/angular/forms/common';
+import { ClrIcon } from '@clr/angular/icon';
+import { ClrPopoverContent } from '@clr/angular/popover/common';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';

@@ -6,8 +6,8 @@
  */
 
 import { Component, ContentChild, inject, Injector } from '@angular/core';
-import { NgControlService } from '@clr/angular/src/forms/common';
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
+import { NgControlService } from '@clr/angular/forms/common';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrFileInputContainer } from './file-input-container';
 import { ClrFileListValidationErrors } from './file-input-validator-errors';

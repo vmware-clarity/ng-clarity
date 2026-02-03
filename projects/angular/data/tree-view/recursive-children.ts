@@ -6,7 +6,7 @@
  */
 
 import { Component, Input, Optional } from '@angular/core';
-import { IfExpandService } from '@clr/angular/src/utils';
+import { IfExpandService } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';

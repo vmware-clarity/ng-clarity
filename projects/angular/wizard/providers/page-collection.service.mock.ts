@@ -5,8 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Observable } from 'rxjs';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 export class PageCollectionMock {
   _previousPageIsCompleted = true;

@@ -7,19 +7,19 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ClrCheckboxModule } from '@clr/angular/src/forms/checkbox';
-import { ClrComboboxModule } from '@clr/angular/src/forms/combobox';
-import { ClrCommonFormsModule } from '@clr/angular/src/forms/common';
-import { ClrDatalistModule } from '@clr/angular/src/forms/datalist';
-import { ClrDatepickerModule } from '@clr/angular/src/forms/datepicker';
-import { ClrFileInputModule } from '@clr/angular/src/forms/file-input';
-import { ClrInputModule } from '@clr/angular/src/forms/input';
-import { ClrNumberInputModule } from '@clr/angular/src/forms/number-input';
-import { ClrPasswordModule } from '@clr/angular/src/forms/password';
-import { ClrRadioModule } from '@clr/angular/src/forms/radio';
-import { ClrRangeModule } from '@clr/angular/src/forms/range';
-import { ClrSelectModule } from '@clr/angular/src/forms/select';
-import { ClrTextareaModule } from '@clr/angular/src/forms/textarea';
+import { ClrCheckboxModule } from '@clr/angular/forms/checkbox';
+import { ClrComboboxModule } from '@clr/angular/forms/combobox';
+import { ClrCommonFormsModule } from '@clr/angular/forms/common';
+import { ClrDatalistModule } from '@clr/angular/forms/datalist';
+import { ClrDatepickerModule } from '@clr/angular/forms/datepicker';
+import { ClrFileInputModule } from '@clr/angular/forms/file-input';
+import { ClrInputModule } from '@clr/angular/forms/input';
+import { ClrNumberInputModule } from '@clr/angular/forms/number-input';
+import { ClrPasswordModule } from '@clr/angular/forms/password';
+import { ClrRadioModule } from '@clr/angular/forms/radio';
+import { ClrRangeModule } from '@clr/angular/forms/range';
+import { ClrSelectModule } from '@clr/angular/forms/select';
+import { ClrTextareaModule } from '@clr/angular/forms/textarea';
 
 @NgModule({
   imports: [CommonModule],

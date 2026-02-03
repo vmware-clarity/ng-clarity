@@ -6,7 +6,7 @@
  */
 
 import { Directive } from '@angular/core';
-import { WillyWonka } from '@clr/angular/src/utils';
+import { WillyWonka } from '@clr/angular/utils';
 
 @Directive({
   selector: 'clr-accordion',

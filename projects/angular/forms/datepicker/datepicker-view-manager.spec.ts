@@ -6,10 +6,10 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { TestContext } from '@clr/angular/utils/testing';
 
 import { ClrDatepickerViewManager } from './datepicker-view-manager';
-import { ClrPopoverService } from '../../popover';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';

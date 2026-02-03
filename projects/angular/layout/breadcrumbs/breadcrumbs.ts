@@ -6,7 +6,7 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { MAX_DISPLAY_ITEMS } from './breadcrumbs.constants';
 import { BreadcrumbItem } from './model/breadcrumbs.model';

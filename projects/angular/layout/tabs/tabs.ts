@@ -18,8 +18,8 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { ClrPopoverHostDirective, ClrPopoverService } from '@clr/angular/src/popover/common';
-import { ClrCommonStringsService, ClrKeyFocus, IfActiveService } from '@clr/angular/src/utils';
+import { ClrPopoverHostDirective, ClrPopoverService } from '@clr/angular/popover/common';
+import { ClrCommonStringsService, ClrKeyFocus, IfActiveService } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 

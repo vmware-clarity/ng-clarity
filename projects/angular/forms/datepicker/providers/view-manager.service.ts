@@ -6,7 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { ClrPopoverPosition } from '@clr/angular/src/popover/common';
+import { ClrPopoverPosition } from '@clr/angular/popover/common';
 
 const enum DatepickerViewEnum {
   MONTHVIEW = 'MONTHVIEW',

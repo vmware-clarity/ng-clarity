@@ -6,7 +6,7 @@
  */
 
 import { Directive, ElementRef, HostListener } from '@angular/core';
-import { ClrPopoverService } from '@clr/angular/src/popover/common';
+import { ClrPopoverService } from '@clr/angular/popover/common';
 import { Subscription } from 'rxjs';
 
 import { TooltipIdService } from './providers/tooltip-id.service';

@@ -8,7 +8,7 @@
 import { Component, Directive, NgModule, Type, ViewContainerRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ClrHostWrappingModule } from '@clr/angular/src/utils';
+import { ClrHostWrappingModule } from '@clr/angular/utils';
 
 import { ClrCommonFormsModule } from './common.module';
 import { ControlIdService } from './providers/control-id.service';

@@ -19,10 +19,10 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormGroupDirective, NgForm } from '@angular/forms';
+import { AccordionService } from '@clr/angular/accordion';
 import { Observable, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
-import { AccordionService } from '../providers/accordion.service';
 import { StepperService } from './providers/stepper.service';
 import { ClrStepperPanel } from './stepper-panel';
 

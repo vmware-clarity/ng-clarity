@@ -6,7 +6,7 @@
  */
 
 import { Component, ContentChild, Input } from '@angular/core';
-import { uniqueIdFactory } from '@clr/angular/src/utils';
+import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { ClrOptionItems } from './option-items.directive';
 

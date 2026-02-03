@@ -6,8 +6,7 @@
  */
 
 import { Injectable, OnDestroy, TemplateRef } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 
 import { ClrWizardPage } from '../wizard-page';
 import { ButtonHubService } from './button-hub.service';

@@ -7,7 +7,7 @@
 
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext } from '@clr/angular/utils/testing';
 
 import { ClrPopoverContent } from './popover-content';
 import { ClrPopoverModuleNext } from './popover.module';

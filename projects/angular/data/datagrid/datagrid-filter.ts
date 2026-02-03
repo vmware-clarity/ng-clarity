@@ -6,12 +6,11 @@
  */
 
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, Optional, Output, ViewChild } from '@angular/core';
-import { ClrPopoverPosition, ClrPopoverType } from '@clr/angular/src/popover/common';
-import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/src/utils';
+import { ClrPopoverPosition, ClrPopoverService, ClrPopoverType } from '@clr/angular/popover/common';
+import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
-import { ClrPopoverService } from '../../popover';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from './providers/filters';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';

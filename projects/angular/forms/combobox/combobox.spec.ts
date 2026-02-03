@@ -10,10 +10,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ClrIcon } from '@clr/angular/src/icon';
-import { ClrPopoverContent, ClrPopoverService } from '@clr/angular/src/popover/common';
-import { FOCUS_SERVICE_PROVIDER, IF_ACTIVE_ID_PROVIDER } from '@clr/angular/src/utils';
-import { delay } from '@clr/angular/testing';
+import { ClrIcon } from '@clr/angular/icon';
+import { ClrPopoverContent, ClrPopoverService } from '@clr/angular/popover/common';
+import { FOCUS_SERVICE_PROVIDER, IF_ACTIVE_ID_PROVIDER } from '@clr/angular/utils';
+import { delay } from '@clr/angular/utils/testing';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxModule } from './combobox.module';

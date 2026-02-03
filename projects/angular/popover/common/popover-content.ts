@@ -24,6 +24,7 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
+import { Keys, normalizeKey } from '@clr/angular/utils';
 import { fromEvent, merge, Subscription } from 'rxjs';
 
 import { ClrPopoverService } from './providers/popover.service';
@@ -33,8 +34,6 @@ import {
   getConnectedPositions,
   mapPopoverKeyToPosition,
 } from './utils/popover-positions';
-import { Keys } from '../../utils/enums/keys.enum';
-import { normalizeKey } from '../../utils/focus/key-focus/util';
 
 /** @dynamic */
 @Directive({

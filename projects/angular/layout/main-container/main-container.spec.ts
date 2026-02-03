@@ -7,7 +7,7 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ClrNavigationModule, ResponsiveNavCodes, ResponsiveNavControlMessage } from '@clr/angular/src/layout/nav';
+import { ClrNavigationModule, ResponsiveNavCodes, ResponsiveNavControlMessage } from '@clr/angular/layout/nav';
 
 import { ClrMainContainer } from './main-container';
 import { ClrMainContainerModule } from './main-container.module';

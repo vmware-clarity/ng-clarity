@@ -22,7 +22,7 @@
       "@clr/angular/*": ["projects/angular/*"],
       "@clr/addons": ["projects/addons/index.ts"],
       "@clr/addons/*": ["projects/addons/*"],
-      "@clr/angular/testing": ["projects/angular/src/utils/testing"]
+      "@clr/angular/testing": ["projects/angular/utils/testing"]
     }
   },
   "angularCompilerOptions": {

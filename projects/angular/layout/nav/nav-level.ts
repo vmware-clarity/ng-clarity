@@ -18,8 +18,8 @@ import {
   PLATFORM_ID,
   Renderer2,
 } from '@angular/core';
-import { ClarityIcons, timesIcon } from '@clr/angular/src/icon';
-import { ClrStandaloneCdkTrapFocus, commonStringsDefault, LARGE_BREAKPOINT } from '@clr/angular/src/utils';
+import { ClarityIcons, timesIcon } from '@clr/angular/icon';
+import { ClrStandaloneCdkTrapFocus, commonStringsDefault, LARGE_BREAKPOINT } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 

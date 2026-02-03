@@ -6,7 +6,7 @@
  */
 
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';

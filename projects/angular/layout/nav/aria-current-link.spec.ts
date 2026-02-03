@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { delay } from '@clr/angular/testing';
+import { delay } from '@clr/angular/utils/testing';
 
 import { ClrAriaCurrentLink } from './aria-current-link';
 import { MainContainerWillyWonka } from './chocolate/main-container-willy-wonka';

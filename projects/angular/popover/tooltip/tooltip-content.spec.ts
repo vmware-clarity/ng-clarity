@@ -8,9 +8,8 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ClrPopoverService } from '@clr/angular/src/popover/common';
-import { ClrPopoverPosition } from '@clr/angular/src/popover/common/utils/popover-positions';
-import { TestContext } from '@clr/angular/testing';
+import { ClrPopoverPosition, ClrPopoverService } from '@clr/angular/popover/common';
+import { TestContext } from '@clr/angular/utils/testing';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { ClrTooltipContent } from './tooltip-content';

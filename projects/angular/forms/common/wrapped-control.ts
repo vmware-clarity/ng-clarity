@@ -23,7 +23,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { HostWrapper } from '@clr/angular/src/utils';
+import { HostWrapper } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { CONTROL_SUFFIX } from './abstract-control';

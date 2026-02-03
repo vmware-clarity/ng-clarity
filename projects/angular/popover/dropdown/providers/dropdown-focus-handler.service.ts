@@ -7,7 +7,7 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, OnDestroy, Optional, PLATFORM_ID, Renderer2, SkipSelf } from '@angular/core';
-import { ClrPopoverService } from '@clr/angular/src/popover/common';
+import { ClrPopoverService } from '@clr/angular/popover/common';
 import {
   ArrowKeyDirection,
   customFocusableItemProvider,
@@ -16,7 +16,7 @@ import {
   Linkers,
   uniqueIdFactory,
   wrapObservable,
-} from '@clr/angular/src/utils';
+} from '@clr/angular/utils';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 @Injectable()

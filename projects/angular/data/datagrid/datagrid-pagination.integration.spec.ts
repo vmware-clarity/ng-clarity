@@ -7,7 +7,7 @@
 
 import { Component, Directive } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { spec, TestContext } from '@clr/angular/testing';
+import { spec, TestContext } from '@clr/angular/utils/testing';
 
 import { ClrDatagridPagination } from './datagrid-pagination';
 import { ClrDatagridModule } from './datagrid.module';

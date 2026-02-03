@@ -6,7 +6,7 @@
  */
 
 import { Directive, ElementRef, HostBinding, HostListener, Inject, Input, ViewContainerRef } from '@angular/core';
-import { IF_ACTIVE_ID, IfActiveService, TemplateRefContainer } from '@clr/angular/src/utils';
+import { IF_ACTIVE_ID, IfActiveService, TemplateRefContainer } from '@clr/angular/utils';
 
 import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';

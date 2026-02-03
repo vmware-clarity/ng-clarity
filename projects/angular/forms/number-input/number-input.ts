@@ -16,7 +16,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { FormsFocusService, WrappedFormControl } from '@clr/angular/src/forms/common';
+import { FormsFocusService, WrappedFormControl } from '@clr/angular/forms/common';
 
 import { ClrNumberInputContainer } from './number-input-container';
 

@@ -20,7 +20,7 @@ import {
   QueryList,
   Renderer2,
 } from '@angular/core';
-import { DomAdapter } from '@clr/angular/src/utils';
+import { DomAdapter } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { ClrDatagrid } from '../datagrid';

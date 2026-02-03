@@ -6,8 +6,8 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
-import { TestContext } from '@clr/angular/testing';
+import { ClrCommonStringsService } from '@clr/angular/utils';
+import { TestContext } from '@clr/angular/utils/testing';
 
 import { ClrDatagridPagination } from './datagrid-pagination';
 import { DetailService } from './providers/detail.service';

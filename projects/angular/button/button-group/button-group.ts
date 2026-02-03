@@ -19,14 +19,15 @@ import {
   ClrPopoverHostDirective,
   ClrPopoverPosition,
   ClrPopoverService,
-  DROPDOWN_POSITIONS
-} from '@clr/angular/src/popover/common';
+  ClrPopoverType,
+  DROPDOWN_POSITIONS,
+} from '@clr/angular/popover/common';
 import {
   ClrCommonStringsService,
   ClrDestroyService,
   FOCUS_SERVICE_PROVIDER,
   uniqueIdFactory,
-} from '@clr/angular/src/utils';
+} from '@clr/angular/utils';
 import { takeUntil } from 'rxjs/operators';
 
 import { ClrButton } from './button';

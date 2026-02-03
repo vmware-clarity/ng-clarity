@@ -6,8 +6,8 @@
  */
 
 import { ChangeDetectorRef, Component, Input, OnDestroy, Optional, SkipSelf } from '@angular/core';
-import { ClrPopoverHostDirective, ClrPopoverService } from '@clr/angular/src/popover/common';
-import { FOCUS_SERVICE_PROVIDER } from '@clr/angular/src/utils';
+import { ClrPopoverHostDirective, ClrPopoverService } from '@clr/angular/popover/common';
+import { FOCUS_SERVICE_PROVIDER } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';

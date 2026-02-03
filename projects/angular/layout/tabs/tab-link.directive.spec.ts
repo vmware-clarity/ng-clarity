@@ -7,7 +7,7 @@
 
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IfActiveService } from '@clr/angular/src/utils';
+import { IfActiveService } from '@clr/angular/utils';
 
 import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';
 import { TabsLayout } from './enums/tabs-layout.enum';

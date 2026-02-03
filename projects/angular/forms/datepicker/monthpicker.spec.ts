@@ -6,12 +6,12 @@
  */
 
 import { Component } from '@angular/core';
-import { Keys } from '@clr/angular/src/utils';
-import { TestContext } from '@clr/angular/testing';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { Keys } from '@clr/angular/utils';
+import { TestContext } from '@clr/angular/utils/testing';
 
 import { DayModel } from './model/day.model';
 import { ClrMonthpicker } from './monthpicker';
-import { ClrPopoverService } from '../../popover';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';

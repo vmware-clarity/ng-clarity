@@ -16,7 +16,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { ClrCommonStringsService, Keys, normalizeKey, uniqueIdFactory } from '@clr/angular/src/utils';
+import { ClrCommonStringsService, Keys, normalizeKey, uniqueIdFactory } from '@clr/angular/utils';
 
 import { ColumnResizerService } from './providers/column-resizer.service';
 import { TableSizeService } from './providers/table-size.service';

@@ -6,7 +6,7 @@
  */
 
 import { Component, ContentChild, Inject } from '@angular/core';
-import { IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IfActiveService } from '@clr/angular/src/utils';
+import { IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IfActiveService } from '@clr/angular/utils';
 
 import { TabsService } from './providers/tabs.service';
 import { ClrTabContent } from './tab-content';

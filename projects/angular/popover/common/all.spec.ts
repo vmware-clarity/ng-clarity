@@ -5,13 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import IfOpenDirectiveSpecs from './if-open.directive.spec';
 import ClrPopoverAnchorSpec from './popover-anchor.spec';
 import ClrPopoverCloseButtonSpec from './popover-close-button.spec';
 import ClrPopoverContentSpec from './popover-content.spec';
 import ClrPopoverOpenCloseButtonSpec from './popover-open-close-button.spec';
 import PopoverServiceSpec from './providers/popover.service.spec';
 import ClrStopEscapePropagationDirectiveSpec from './stop-escape-propagation.directive.spec';
-import IfOpenDirectiveSpecs from './utils/if-open.directive.spec';
 
 describe('ClrPopover', () => {
   describe('Service', () => {

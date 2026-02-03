@@ -6,21 +6,21 @@
  */
 
 import { NgModule } from '@angular/core';
-import { ClrStepperModule } from '@clr/angular/src/accordion';
-import { ClrButtonModule } from '@clr/angular/src/button';
-import { ClrDataModule } from '@clr/angular/src/data';
-import { ClrEmphasisModule } from '@clr/angular/src/emphasis';
-import { ClrFormsModule } from '@clr/angular/src/forms';
-import { ClrIcon, ClrIconModule } from '@clr/angular/src/icon';
-import { ClrLayoutModule } from '@clr/angular/src/layout';
-import { ClrModalModule, ClrSidePanelModule } from '@clr/angular/src/modal';
-import { ClrPopoverModule } from '@clr/angular/src/popover';
-import { ÇlrClrPopoverModuleNext } from '@clr/angular/src/popover/common';
-import { ClrProgressBarModule } from '@clr/angular/src/progress/progress-bars';
-import { ClrSpinnerModule } from '@clr/angular/src/progress/spinner';
-import { ClrTimelineModule } from '@clr/angular/src/timeline';
-import { ClrConditionalModule, ClrFocusOnViewInitModule, ClrLoadingModule } from '@clr/angular/src/utils';
-import { ClrWizardModule } from '@clr/angular/src/wizard';
+import { ClrButtonModule } from '@clr/angular/button';
+import { ClrDataModule } from '@clr/angular/data';
+import { ClrEmphasisModule } from '@clr/angular/emphasis';
+import { ClrFormsModule } from '@clr/angular/forms';
+import { ClrIcon, ClrIconModule } from '@clr/angular/icon';
+import { ClrLayoutModule } from '@clr/angular/layout';
+import { ClrModalModule, ClrSidePanelModule } from '@clr/angular/modal';
+import { ClrPopoverModule } from '@clr/angular/popover';
+import { ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrProgressBarModule } from '@clr/angular/progress/progress-bars';
+import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
+import { ClrStepperModule } from '@clr/angular/stepper';
+import { ClrTimelineModule } from '@clr/angular/timeline';
+import { ClrConditionalModule, ClrFocusOnViewInitModule, ClrLoadingModule } from '@clr/angular/utils';
+import { ClrWizardModule } from '@clr/angular/wizard';
 
 @NgModule({
   imports: [ClrIcon],

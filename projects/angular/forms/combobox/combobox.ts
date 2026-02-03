@@ -26,13 +26,13 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { WrappedFormControl } from '@clr/angular/src/forms/common';
+import { WrappedFormControl } from '@clr/angular/forms/common';
 import {
   ClrPopoverHostDirective,
   ClrPopoverPosition,
   ClrPopoverService,
   ClrPopoverType,
-} from '@clr/angular/src/popover/common';
+} from '@clr/angular/popover/common';
 import {
   ClrCommonStringsService,
   ClrLoadingState,
@@ -40,7 +40,7 @@ import {
   IF_ACTIVE_ID_PROVIDER,
   Keys,
   LoadingListener,
-} from '@clr/angular/src/utils';
+} from '@clr/angular/utils';
 
 import { ClrComboboxContainer } from './combobox-container';
 import { ComboboxModel } from './model/combobox.model';

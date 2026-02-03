@@ -6,7 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { ClrLoadingState, IfExpandService } from '@clr/angular/src/utils';
+import { ClrLoadingState, IfExpandService } from '@clr/angular/utils';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 let nbRow = 0;

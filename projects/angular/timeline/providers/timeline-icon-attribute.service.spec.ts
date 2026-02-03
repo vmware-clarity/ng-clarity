@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { TimelineIconAttributeService } from './timeline-icon-attribute.service';
 import { ClrTimelineStepState } from '../enums/timeline-step-state.enum';

@@ -14,7 +14,6 @@ export * from './form';
 export * from './helper';
 export * from './if-control-state/if-error';
 export * from './if-control-state/if-success';
-export * from './if-control-state/if-control-state.service';
 export * from './if-control-state/abstract-if-state';
 export * from './label';
 export * from './layout';

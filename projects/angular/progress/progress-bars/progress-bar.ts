@@ -6,7 +6,7 @@
  */
 
 import { Component, HostBinding, Input } from '@angular/core';
-import { isBooleanAttributeSet } from '@clr/angular/src/utils';
+import { isBooleanAttributeSet } from '@clr/angular/utils';
 
 @Component({
   selector: 'clr-progress-bar',

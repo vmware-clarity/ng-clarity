@@ -6,7 +6,7 @@
  */
 
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { DatagridColumnChanges } from './enums/column-changes.enum';

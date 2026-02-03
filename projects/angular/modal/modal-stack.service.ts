@@ -7,7 +7,7 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Keys, normalizeKey } from '@clr/angular/src/utils';
+import { Keys, normalizeKey } from '@clr/angular/utils';
 
 export interface Closable {
   close(): void;

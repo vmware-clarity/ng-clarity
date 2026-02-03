@@ -7,7 +7,7 @@
 
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IfActiveService } from '@clr/angular/src/utils';
+import { IfActiveService } from '@clr/angular/utils';
 
 import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';
 import { TabsService } from './providers/tabs.service';

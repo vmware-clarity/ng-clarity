@@ -9,9 +9,9 @@ import { Component, DebugElement, QueryList, ViewChild, ViewChildren } from '@an
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ClrAlert, ClrAlertModule } from '@clr/angular/src/emphasis/alert';
-import { ClrIcon } from '@clr/angular/src/icon';
-import { delay } from '@clr/angular/testing';
+import { ClrAlert, ClrAlertModule } from '@clr/angular/emphasis/alert';
+import { ClrIcon } from '@clr/angular/icon';
+import { delay } from '@clr/angular/utils/testing';
 
 import { ButtonHubService } from './providers/button-hub.service';
 import { PageCollectionService } from './providers/page-collection.service';

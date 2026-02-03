@@ -6,7 +6,7 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { spec, TestContext } from '@clr/angular/testing';
+import { spec, TestContext } from '@clr/angular/utils/testing';
 
 import { ClrPopoverCloseButton } from './popover-close-button';
 import { ClrPopoverModuleNext } from './popover.module';
@@ -52,7 +52,7 @@ export default function (): void {
       });
 
       it('sets the close button ref in the popover service', function (this: Context) {
-        expect(this.hostComponent.closeButton).toEqual(this.popoverService.closeButtonRef);
+        expect(this.testComponent.closeButton).toEqual(this.popoverService.closeButtonRef);
       });
     });
 
@@ -73,13 +73,13 @@ export default function (): void {
         const closeBtn: HTMLButtonElement = this.testElement.querySelector('.clr-smart-close-button');
         closeBtn.click();
         this.detectChanges();
-        expect(this.hostComponent.openState).toBe(this.popoverService.open);
+        expect(this.testComponent.openState).toBe(this.popoverService.open);
       });
 
       it('focuses on the toggle/anchor element when clicked', function (this: Context) {
         const clickSpy = spyOn(this.popoverService, 'toggleWithEvent');
-        const closeBtn: HTMLButtonElement = this.hostElement.querySelector('.clr-smart-close-button');
-        const focusSpy = spyOn(this.hostComponent.toggleButton.nativeElement, 'focus');
+        const closeBtn: HTMLButtonElement = this.testElement.querySelector('.clr-smart-close-button');
+        const focusSpy = spyOn(this.testComponent.toggleButton.nativeElement, 'focus');
         closeBtn.click();
         expect(clickSpy.calls.count()).toEqual(1);
         expect(focusSpy.calls.count()).toEqual(1);

@@ -11,11 +11,10 @@ import {
   ControlClassService,
   ControlIdService,
   FormsFocusService,
-  IfControlStateService,
   LayoutService,
   NgControlService,
-} from '@clr/angular/src/forms/common';
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
+} from '@clr/angular/forms/common';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 import { BehaviorSubject } from 'rxjs';
 
 export const TOGGLE_SERVICE = new InjectionToken<BehaviorSubject<boolean>>(undefined);
@@ -67,14 +66,7 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [
-    NgControlService,
-    ControlIdService,
-    ControlClassService,
-    FormsFocusService,
-    TOGGLE_SERVICE_PROVIDER,
-    IfControlStateService,
-  ],
+  providers: [NgControlService, ControlIdService, ControlClassService, FormsFocusService, TOGGLE_SERVICE_PROVIDER],
   standalone: false,
 })
 export class ClrPasswordContainer extends ClrAbstractContainer {

@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { ClrCommonFormsModule } from '@clr/angular/src/forms/common';
+import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 import {
   angleIcon,
   calendarIcon,
@@ -16,10 +16,10 @@ import {
   ClrIcon,
   eventIcon,
   exclamationCircleIcon,
-} from '@clr/angular/src/icon';
-import { ClrVerticalNavModule } from '@clr/angular/src/layout/vertical-nav';
-import { ÇlrClrPopoverModuleNext } from '@clr/angular/src/popover/common';
-import { CdkTrapFocusModule, ClrConditionalModule, ClrHostWrappingModule } from '@clr/angular/src/utils';
+} from '@clr/angular/icon';
+import { ClrVerticalNavModule } from '@clr/angular/layout/vertical-nav';
+import { ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { CdkTrapFocusModule, ClrConditionalModule, ClrHostWrappingModule } from '@clr/angular/utils';
 
 import { ClrCalendar } from './calendar';
 import { ClrDateContainer } from './date-container';

@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext } from '@clr/angular/utils/testing';
 
 import { ClrDatagridDetail } from './datagrid-detail';
 import { DetailService } from './providers/detail.service';

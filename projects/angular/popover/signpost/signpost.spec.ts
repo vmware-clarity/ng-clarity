@@ -6,10 +6,15 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ClrPopoverPosition, SIGNPOST_POSITIONS } from '@clr/angular/src/popover/common';
-import { delay, expectActiveElementNotToBe, expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
+import { ClrPopoverPosition, ClrPopoverService, SIGNPOST_POSITIONS } from '@clr/angular/popover/common';
+import {
+  delay,
+  expectActiveElementNotToBe,
+  expectActiveElementToBe,
+  spec,
+  TestContext,
+} from '@clr/angular/utils/testing';
 
-import { ClrPopoverService } from '../common';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpost } from './signpost';
 import { ClrSignpostModule } from './signpost.module';
@@ -79,10 +84,10 @@ export default function (): void {
 
       function testPosition(name: ClrPopoverPosition): void {
         it('has a ' + name + ' signpost content position', function () {
-          this.hostComponent.position = name;
+          this.testComponent.position = name;
           this.detectChanges();
 
-          const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+          const signpostToggle: HTMLElement = this.testElement.querySelector('.signpost-action');
 
           // Test we have a trigger
           expect(signpostToggle).not.toBeNull();
@@ -106,7 +111,7 @@ export default function (): void {
       });
 
       it('should not get focus on trigger initially', function (this: Context) {
-        const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+        const signpostToggle: HTMLElement = this.testElement.querySelector('.signpost-action');
         this.popoverService.open = false;
         this.detectChanges();
         expect(signpostToggle).not.toBeNull();
@@ -125,7 +130,7 @@ export default function (): void {
         this.detectChanges();
 
         expect(document.body.querySelector('.clr-signpost-container')).toBeNull();
-        expectActiveElementToBe(this.hostComponent.outsideClickBtn.nativeElement);
+        expectActiveElementToBe(this.testComponent.outsideClickBtn.nativeElement);
       });
 
       it('should get focus back on trigger if signpost gets closed with outside click on non-interactive element', async function (this: Context) {
@@ -138,7 +143,7 @@ export default function (): void {
         this.detectChanges();
 
         expect(document.body.querySelector('.clr-signpost-container')).toBeNull();
-        expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
+        expectActiveElementToBe(this.testElement.querySelector('.signpost-action'));
       });
 
       it('should get focus back on trigger if signpost gets closed while focused element inside content', function (this: Context) {
@@ -165,7 +170,7 @@ export default function (): void {
         this.detectChanges();
 
         expect(document.body.querySelector('.clr-signpost-container')).toBeNull();
-        expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
+        expectActiveElementToBe(this.testElement.querySelector('.signpost-action'));
       });
     });
 

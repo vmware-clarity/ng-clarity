@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DomAdapter } from '@clr/angular/src/utils';
+import { DomAdapter } from '@clr/angular/utils';
 
 import { ColumnResizerService } from './column-resizer.service';
 import { DatagridRenderOrganizer } from '../render/render-organizer';

@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { AccordionStatus } from '@clr/angular/accordion';
 import { take } from 'rxjs/operators';
 
 import { StepperService } from './stepper.service';
-import { AccordionStatus } from '../../enums/accordion-status.enum';
 
 describe('StepperService', () => {
   let stepperService: StepperService;

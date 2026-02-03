@@ -6,7 +6,7 @@
  */
 
 import { Component, ElementRef, HostBinding, HostListener, Input, OnInit } from '@angular/core';
-import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/src/utils';
+import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 
 import { ComboboxFocusHandler, OptionData as OptionProxy } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';

@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectorRef, Directive, Optional } from '@angular/core';
-import { OompaLoompa } from '@clr/angular/src/utils';
+import { OompaLoompa } from '@clr/angular/utils';
 
 import { DatagridWillyWonka } from './datagrid-willy-wonka';
 import { ExpandableRowsCount } from '../providers/global-expandable-rows';

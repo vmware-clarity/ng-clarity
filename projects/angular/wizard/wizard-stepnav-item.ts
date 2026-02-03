@@ -6,7 +6,7 @@
  */
 
 import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 import { startWith, Subscription, tap } from 'rxjs';
 
 import { PageCollectionService } from './providers/page-collection.service';

@@ -6,7 +6,7 @@
  */
 
 import { EventEmitter, Injectable, NgZone, OnDestroy } from '@angular/core';
-import { Keys } from '@clr/angular/src/utils';
+import { Keys } from '@clr/angular/utils';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

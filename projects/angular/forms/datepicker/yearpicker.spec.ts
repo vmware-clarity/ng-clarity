@@ -6,10 +6,10 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrCommonStringsService, Keys } from '@clr/angular/src/utils';
-import { TestContext } from '@clr/angular/testing';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { ClrCommonStringsService, Keys } from '@clr/angular/utils';
+import { TestContext } from '@clr/angular/utils/testing';
 
-import { ClrPopoverService } from '../../popover';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';

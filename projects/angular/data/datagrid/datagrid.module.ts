@@ -8,11 +8,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ClrCheckboxModule } from '@clr/angular/src/forms/checkbox';
-import { ClrInputModule } from '@clr/angular/src/forms/input';
-import { ClrNumberInputModule } from '@clr/angular/src/forms/number-input';
-import { ClrRadioModule } from '@clr/angular/src/forms/radio';
-import { ClrSelectModule } from '@clr/angular/src/forms/select';
+import { ClrCheckboxModule } from '@clr/angular/forms/checkbox';
+import { ClrInputModule } from '@clr/angular/forms/input';
+import { ClrNumberInputModule } from '@clr/angular/forms/number-input';
+import { ClrRadioModule } from '@clr/angular/forms/radio';
+import { ClrSelectModule } from '@clr/angular/forms/select';
 import {
   angleDoubleIcon,
   arrowIcon,
@@ -25,9 +25,9 @@ import {
   timesIcon,
   viewColumnsIcon,
   windowCloseIcon,
-} from '@clr/angular/src/icon';
-import { ÇlrClrPopoverModuleNext } from '@clr/angular/src/popover/common';
-import { ClrSpinnerModule } from '@clr/angular/src/progress/spinner';
+} from '@clr/angular/icon';
+import { ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import {
   CdkDragModule,
   CdkTrapFocusModule,
@@ -36,7 +36,7 @@ import {
   ClrKeyFocusModule,
   ClrLoadingModule,
   ClrOutsideClickModule,
-} from '@clr/angular/src/utils';
+} from '@clr/angular/utils';
 
 import { DatagridNumericFilter } from './built-in/filters/datagrid-numeric-filter';
 import { DatagridStringFilter } from './built-in/filters/datagrid-string-filter';

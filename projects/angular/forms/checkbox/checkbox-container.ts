@@ -12,7 +12,7 @@ import {
   ControlClassService,
   LayoutService,
   NgControlService,
-} from '@clr/angular/src/forms/common';
+} from '@clr/angular/forms/common';
 
 import { ClrCheckbox } from './checkbox';
 

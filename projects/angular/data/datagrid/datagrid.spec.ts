@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
-import { delay, expectActiveElementNotToBe, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
+import { delay, expectActiveElementNotToBe, expectActiveElementToBe, TestContext } from '@clr/angular/utils/testing';
 import { Subject } from 'rxjs';
 
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';

@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ModalStackService } from '@clr/angular/src/modal';
-import { expectActiveElementToBe } from '@clr/angular/testing';
+import { ModalStackService } from '@clr/angular/modal';
+import { expectActiveElementToBe } from '@clr/angular/utils/testing';
 import { Subscription } from 'rxjs';
 
 import { DetailService } from './detail.service';

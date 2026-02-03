@@ -6,10 +6,10 @@
  */
 
 import { Component, ElementRef, HostListener, OnDestroy } from '@angular/core';
-import { Keys, normalizeKey } from '@clr/angular/src/utils';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { Keys, normalizeKey } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverService } from '../../popover';
 import { DateRangeInput } from './interfaces/date-range.interface';
 import { ClrDayOfWeek } from './interfaces/day-of-week.interface';
 import { CalendarViewModel } from './model/calendar-view.model';

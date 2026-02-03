@@ -7,8 +7,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { ClrIcon } from '@clr/angular/src/icon';
-import { CdkTrapFocusModule } from '@clr/angular/src/utils';
+import { ClrIcon } from '@clr/angular/icon';
+import { CdkTrapFocusModule } from '@clr/angular/utils';
 
 import { ClrModalModule } from './modal.module';
 import { ClrSidePanel } from './side-panel';

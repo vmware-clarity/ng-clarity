@@ -8,8 +8,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { angleIcon, ClarityIcons, ClrIcon } from '@clr/angular/src/icon';
-import { ClrExpandableAnimationModule } from '@clr/angular/src/utils';
+import { angleIcon, ClarityIcons, ClrIcon } from '@clr/angular/icon';
+import { ClrExpandableAnimationModule } from '@clr/angular/utils';
 
 import { ClrStackBlock } from './stack-block';
 import { ClrStackContentInput } from './stack-content-input';

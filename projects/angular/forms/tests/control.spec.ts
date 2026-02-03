@@ -16,10 +16,10 @@ import {
   MarkControlService,
   NgControlService,
   WrappedFormControl,
-} from '@clr/angular/src/forms/common';
-import { DatalistIdService } from '@clr/angular/src/forms/datalist';
-import { selectFiles } from '@clr/angular/src/forms/file-input';
-import { ClrIcon } from '@clr/angular/src/icon';
+} from '@clr/angular/forms/common';
+import { DatalistIdService } from '@clr/angular/forms/datalist';
+import { selectFiles } from '@clr/angular/forms/file-input';
+import { ClrIcon } from '@clr/angular/icon';
 
 export function ControlStandaloneSpec(testComponent): void {
   describe('standalone use', () => {

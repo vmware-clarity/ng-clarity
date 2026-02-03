@@ -7,8 +7,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { ClrIcon } from '@clr/angular/src/icon';
-import { ClrConditionalModule } from '@clr/angular/src/utils';
+import { ClrIcon } from '@clr/angular/icon';
+import { ClrIfOpen } from '@clr/angular/popover/common';
 
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownItem } from './dropdown-item';
@@ -18,8 +18,8 @@ import { ClrDropdownTrigger } from './dropdown-trigger';
 export const CLR_DROPDOWN_DIRECTIVES: Type<any>[] = [ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem];
 
 @NgModule({
-  imports: [CommonModule, ClrIcon],
+  imports: [CommonModule, ClrIcon, ClrIfOpen],
   declarations: [CLR_DROPDOWN_DIRECTIVES],
-  exports: [CLR_DROPDOWN_DIRECTIVES, ClrConditionalModule, ClrIcon],
+  exports: [CLR_DROPDOWN_DIRECTIVES, ClrIfOpen, ClrIcon],
 })
 export class ClrDropdownModule {}

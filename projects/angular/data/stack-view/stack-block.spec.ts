@@ -9,8 +9,8 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Keys } from '@clr/angular/src/utils';
-import { delay } from '@clr/angular/testing';
+import { Keys } from '@clr/angular/utils';
+import { delay } from '@clr/angular/utils/testing';
 
 import { ClrStackBlock } from './stack-block';
 import { ClrStackView } from './stack-view';

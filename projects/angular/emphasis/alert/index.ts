@@ -11,3 +11,4 @@ export * from './alert-text';
 export * from './alerts';
 export * from './alerts-pager';
 export * from './alert.module';
+export * from './utils/alert-types';

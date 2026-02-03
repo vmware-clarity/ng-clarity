@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Keys } from '@clr/angular/src/utils';
+import { Keys } from '@clr/angular/utils';
 
 import { CellCoordinates, KeyNavigationGridConfig } from './key-navigation-grid.controller';
 import { KeyNavigationGridStrategyInterface } from '../interfaces/key-nav-grid-strategy.interface';

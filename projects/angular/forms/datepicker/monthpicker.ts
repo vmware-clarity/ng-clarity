@@ -6,7 +6,7 @@
  */
 
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
-import { ClrCommonStringsService, Keys, normalizeKey } from '@clr/angular/src/utils';
+import { ClrCommonStringsService, Keys, normalizeKey } from '@clr/angular/utils';
 
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';

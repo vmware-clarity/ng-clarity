@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { SelectionType } from './enums/selection-type';
 import { ColumnsService } from './providers/columns.service';

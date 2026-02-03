@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { ClrCommonFormsModule, NgControlService } from '@clr/angular/src/forms/common';
+import { ClrCommonFormsModule, NgControlService } from '@clr/angular/forms/common';
 
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';

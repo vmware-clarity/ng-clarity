@@ -6,10 +6,10 @@
  */
 
 import { Injectable } from '@angular/core';
+import { AccordionService } from '@clr/angular/accordion';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
-import { AccordionService } from '../../providers/accordion.service';
 import { StepperModel } from '../models/stepper.model';
 
 @Injectable()

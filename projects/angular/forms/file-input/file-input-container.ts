@@ -11,8 +11,8 @@ import {
   ControlClassService,
   ControlIdService,
   NgControlService,
-} from '@clr/angular/src/forms/common';
-import { ClrCommonStringsService } from '@clr/angular/src/utils';
+} from '@clr/angular/forms/common';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrFileInput } from './file-input';
 import { selectFiles } from './file-input.helpers';

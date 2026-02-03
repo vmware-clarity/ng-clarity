@@ -18,16 +18,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
-import { ClrCommonStringsService, IfExpandService, triggerAllFormControlValidation } from '@clr/angular/src/utils';
+import { AccordionPanelModel, AccordionStatus, ClrAccordionPanel, stepAnimation } from '@clr/angular/accordion';
+import { ClrCommonStringsService, IfExpandService, triggerAllFormControlValidation } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, skipUntil, tap } from 'rxjs/operators';
 
-import { ClrAccordionPanel } from '../accordion-panel';
-import { AccordionStatus } from '../enums/accordion-status.enum';
-import { AccordionPanelModel } from '../models/accordion.model';
-import { stepAnimation } from '../utils/animation';
 import { StepperService } from './providers/stepper.service';
-
 @Component({
   selector: 'clr-stepper-panel',
   templateUrl: 'stepper-panel.html',

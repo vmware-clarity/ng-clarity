@@ -7,9 +7,9 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ClrAlertModule } from '@clr/angular/src/emphasis/alert';
-import { ClarityIcons, ClrIcon, errorStandardIcon, successStandardIcon } from '@clr/angular/src/icon';
-import { ClrModalModule } from '@clr/angular/src/modal';
+import { ClrAlertModule } from '@clr/angular/emphasis/alert';
+import { ClarityIcons, ClrIcon, errorStandardIcon, successStandardIcon } from '@clr/angular/icon';
+import { ClrModalModule } from '@clr/angular/modal';
 
 import { ClrWizard } from './wizard';
 import { ClrWizardButton } from './wizard-button';

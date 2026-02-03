@@ -7,7 +7,7 @@
 
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
-import { ClrLoadingState, LoadingListener } from '@clr/angular/src/utils';
+import { ClrLoadingState, LoadingListener } from '@clr/angular/utils';
 
 // minimum width to fit loading spinner
 const MIN_BUTTON_WIDTH = 42;

@@ -8,7 +8,6 @@
 import { TestBed } from '@angular/core/testing';
 import { FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { ClrPopoverContent } from '@clr/angular/popover';
 import {
   ClrCommonFormsModule,
   ClrFormLayout,
@@ -16,9 +15,10 @@ import {
   LayoutService,
   MarkControlService,
   NgControlService,
-} from '@clr/angular/src/forms/common';
-import { DatalistIdService } from '@clr/angular/src/forms/datalist';
-import { ClrIcon } from '@clr/angular/src/icon';
+} from '@clr/angular/forms/common';
+import { DatalistIdService } from '@clr/angular/forms/datalist';
+import { ClrIcon } from '@clr/angular/icon';
+import { ClrPopoverContent } from '@clr/angular/popover';
 
 export function ContainerNoLabelSpec(testContainer, testControl, testComponent): void {
   describe('no label', () => {

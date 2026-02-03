@@ -21,6 +21,7 @@ import { delay, expectActiveElementNotToBe, expectActiveElementToBe, TestContext
 
 import { ClrDateContainer } from './date-container';
 import { ClrDateInput } from './date-single-input';
+import { ClrFormsModule } from '../forms.module';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';

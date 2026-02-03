@@ -6,7 +6,7 @@
  */
 
 import { animate, style, transition, trigger } from '@angular/animations';
-import { defaultAnimationTiming } from '@clr/angular/src/utils';
+import { defaultAnimationTiming } from '@clr/angular/utils';
 
 export const panelAnimation = [
   trigger('skipInitialRender', [transition(':enter', [])]),

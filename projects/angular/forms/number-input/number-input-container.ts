@@ -13,7 +13,7 @@ import {
   FormsFocusService,
   LayoutService,
   NgControlService,
-} from '@clr/angular/src/forms/common';
+} from '@clr/angular/forms/common';
 
 import { ClrNumberInput } from './number-input';
 
@@ -84,7 +84,7 @@ export class ClrNumberInputContainer extends ClrAbstractContainer {
     controlClassService: ControlClassService,
     @Optional() layoutService: LayoutService,
     ngControlService: NgControlService,
-    focusService: FormsFocusService,
+    focusService: FormsFocusService
   ) {
     super(layoutService, controlClassService, ngControlService);
 
