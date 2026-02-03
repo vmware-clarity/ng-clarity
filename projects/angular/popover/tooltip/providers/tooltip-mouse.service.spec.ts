@@ -1,0 +1,61 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { delay } from '@clr/angular/utils/testing';
+
+import { TooltipMouseService } from './tooltip-mouse.service';
+
+export default function (): void {
+  describe('Tooltip Mouse Service', () => {
+    let popoverService: ClrPopoverService;
+    let mouseService: TooltipMouseService;
+    let waitTimeMS: number;
+
+    beforeEach(() => {
+      popoverService = new ClrPopoverService();
+      mouseService = new TooltipMouseService(popoverService);
+
+      // 100 from default mouseOutDelay + 1 MS extra time
+      waitTimeMS = mouseService['mouseOutDelay'] + 1;
+    });
+
+    it('should show the tooltip when the mouse enters the trigger', () => {
+      mouseService.onMouseEnterTrigger();
+
+      expect(popoverService.open).toBe(true);
+    });
+
+    it('should hide the tooltip if the mouse leaves the trigger and does not enter the content', async () => {
+      popoverService.open = true;
+
+      mouseService.onMouseLeaveTrigger();
+      await delay(waitTimeMS);
+
+      expect(popoverService.open).toBe(false);
+    });
+
+    it('should hide the tooltip if the mouse leaves the content and does not enter the trigger', async () => {
+      popoverService.open = true;
+
+      mouseService.onMouseLeaveContent();
+      await delay(waitTimeMS);
+
+      expect(popoverService.open).toBe(false);
+    });
+
+    it('should not hide the tooltip as the mouse moves from the trigger to the content', async () => {
+      popoverService.open = true;
+
+      mouseService.onMouseLeaveTrigger();
+      mouseService.onMouseEnterContent();
+      await delay(waitTimeMS);
+
+      expect(popoverService.open).toBe(true);
+    });
+  });
+}

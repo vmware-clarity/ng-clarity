@@ -24,7 +24,7 @@ import { ModalStaticOldDemo } from './modal-static-old';
 import { ModalTrapDemo } from './modal-trap';
 import { ModalDemo } from './modal.demo';
 import { ROUTING } from './modal.demo.routing';
-import { CdkTrapFocusModule } from '../../../../angular/src/utils/cdk/cdk-trap-focus.module';
+import { CdkTrapFocusModule } from '../../../../angular/utils/cdk/cdk-trap-focus.module';
 
 @NgModule({
   imports: [CommonModule, CdkTrapFocusModule, ClarityModule, ROUTING, FormsModule],

@@ -1,0 +1,156 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import {
+  ClrPopoverHostDirective,
+  ClrPopoverPosition,
+  ClrPopoverService,
+  ClrPopoverType,
+} from '@clr/angular/popover/common';
+import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
+import { Subscription } from 'rxjs';
+
+import { columnToggleTrackByFn } from './datagrid-column-toggle-trackby';
+import { DatagridColumnChanges } from './enums/column-changes.enum';
+import { ColumnState } from './interfaces/column-state.interface';
+import { ColumnsService } from './providers/columns.service';
+
+@Component({
+  selector: 'clr-dg-column-toggle',
+  template: `
+    <button
+      role="button"
+      type="button"
+      class="btn btn-sm column-toggle-action"
+      clrPopoverAnchor
+      clrPopoverOpenCloseButton
+      [attr.aria-controls]="popoverId"
+      [attr.aria-expanded]="openState"
+      [attr.aria-haspopup]="'menu'"
+    >
+      {{ commonStrings.keys.pickColumns }}
+    </button>
+    <div
+      class="column-switch"
+      role="dialog"
+      [attr.aria-label]="commonStrings.keys.showColumnsMenuDescription"
+      [id]="popoverId"
+      cdkTrapFocus
+      *clrPopoverContent="
+        openState;
+        at: popoverPosition;
+        type: popoverType;
+        outsideClickToClose: true;
+        scrollToClose: true
+      "
+    >
+      <div class="switch-header">
+        <div class="clr-sr-only" tabindex="-1" #allSelected>{{ commonStrings.keys.allColumnsSelected }}</div>
+        <h2>{{ commonStrings.keys.showColumns }}</h2>
+        <button
+          class="btn btn-sm btn-link-neutral toggle-switch-close-button"
+          clrPopoverCloseButton
+          type="button"
+          [attr.aria-label]="commonStrings.keys.close"
+        >
+          <cds-icon shape="window-close" aria-hidden="true" [attr.title]="commonStrings.keys.close"></cds-icon>
+          <span class="clr-sr-only">{{ commonStrings.keys.close }}</span>
+        </button>
+      </div>
+      <ul class="switch-content list-unstyled">
+        @for (columnState of hideableColumnStates; track trackByFn($index, columnState)) {
+          <li>
+            <clr-checkbox-wrapper>
+              <input
+                clrCheckbox
+                type="checkbox"
+                [disabled]="hasOnlyOneVisibleColumn && !columnState.hidden"
+                [ngModel]="!columnState.hidden"
+                (ngModelChange)="toggleColumnState(columnState, !$event)"
+              />
+              <label>
+                <ng-template [ngTemplateOutlet]="columnState.titleTemplateRef"></ng-template>
+              </label>
+            </clr-checkbox-wrapper>
+          </li>
+        }
+      </ul>
+      <div class="switch-footer">
+        <clr-dg-column-toggle-button (clrAllSelected)="allColumnsSelected()"></clr-dg-column-toggle-button>
+      </div>
+    </div>
+  `,
+  host: { '[class.column-switch-wrapper]': 'true', '[class.active]': 'openState' },
+  hostDirectives: [ClrPopoverHostDirective],
+  standalone: false,
+})
+export class ClrDatagridColumnToggle implements OnDestroy {
+  popoverId = uniqueIdFactory();
+  openState = false;
+
+  // Smart Popover
+  popoverPosition = ClrPopoverPosition.TOP_LEFT;
+  popoverType = ClrPopoverType.DROPDOWN;
+
+  // Without tracking the checkboxes get rerendered on model update, which leads
+  // to loss of focus after checkbox toggle.
+  readonly trackByFn = columnToggleTrackByFn;
+
+  private _allColumnsVisible: boolean;
+  private subscription: Subscription;
+
+  @ViewChild('allSelected', { read: ElementRef }) private allSelectedElement: ElementRef<HTMLElement>;
+
+  constructor(
+    public commonStrings: ClrCommonStringsService,
+    private columnsService: ColumnsService,
+    popoverService: ClrPopoverService
+  ) {
+    this.subscription = popoverService.openChange.subscribe(change => (this.openState = change));
+  }
+
+  get allColumnsVisible(): boolean {
+    return this._allColumnsVisible;
+  }
+  set allColumnsVisible(value: boolean) {
+    this._allColumnsVisible = value;
+  }
+
+  get hideableColumnStates(): ColumnState[] {
+    const hideables = this.columnsService.columns.filter(column => column.value.hideable);
+    return hideables.map(column => column.value);
+  }
+
+  get hasOnlyOneVisibleColumn(): boolean {
+    const nbNonHideableColumns = this.columnsService.columns.length - this.hideableColumnStates.length;
+    // this should only return true when there is no non-hideable columns.
+    return (
+      nbNonHideableColumns === 0 && this.hideableColumnStates.filter(columnState => !columnState.hidden).length === 1
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  toggleColumnState(columnState: ColumnState, event: boolean) {
+    const columnToToggle = this.columnsService.columns.filter(column => column.value === columnState)[0];
+    this.columnsService.emitStateChange(columnToToggle, {
+      hidden: event,
+      changes: [DatagridColumnChanges.HIDDEN],
+    });
+  }
+
+  toggleSwitchPanel() {
+    this.openState = !this.openState;
+  }
+
+  allColumnsSelected() {
+    this.allSelectedElement.nativeElement.focus();
+  }
+}

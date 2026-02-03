@@ -1,0 +1,54 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { FocusService } from '@clr/angular/utils';
+import { spec, TestContext } from '@clr/angular/utils/testing';
+
+import { ClrDropdown } from './dropdown';
+import { ClrDropdownTrigger } from './dropdown-trigger';
+import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
+@Component({
+  template: `<button clrDropdownTrigger>Hello world</button>`,
+  // These services are declared here because they need the renderer
+  providers: [FocusService, DROPDOWN_FOCUS_HANDLER_PROVIDER],
+  standalone: false,
+})
+class SimpleTest {}
+
+export default function (): void {
+  describe('DropdownTrigger directive', function () {
+    /*
+     * Most tests for this directive are apparently jammed in the main dropdown.spec.ts,
+     * but moving them isn't relevant to this commit.
+     */
+
+    type Context = TestContext<ClrDropdownTrigger, SimpleTest>;
+    spec(ClrDropdownTrigger, SimpleTest, null, {
+      providers: [{ provide: ClrDropdown, useValue: {} }, ClrPopoverService],
+    });
+
+    it('adds the aria-haspopup attribute to the host', function (this: Context) {
+      expect(this.clarityElement.getAttribute('aria-haspopup')).toBe('menu');
+    });
+
+    it('adds the aria-expanded attribute to the host', function (this: Context) {
+      const popoverService = this.getProvider(ClrPopoverService);
+      popoverService.open = false;
+      this.detectChanges();
+      expect(this.clarityElement.getAttribute('aria-expanded')).toBe('false');
+      popoverService.open = true;
+      this.detectChanges();
+      expect(this.clarityElement.getAttribute('aria-expanded')).toBe('true');
+    });
+
+    it('declares itself to the DropdownFocusHandler', function (this: Context) {
+      expect(this.getClarityProvider(DropdownFocusHandler).trigger).toBe(this.clarityElement);
+    });
+  });
+}

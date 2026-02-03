@@ -14,7 +14,7 @@ import {
   ClrPopoverType,
   SIGNPOST_POSITIONS,
   TOOLTIP_POSITIONS,
-} from '../../../projects/angular/src/popover/common/utils/popover-positions';
+} from '../../../projects/angular/popover/common/utils/popover-positions';
 
 const Positions: any = [
   'bottom-right',

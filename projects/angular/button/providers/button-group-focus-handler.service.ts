@@ -1,0 +1,110 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Injectable, Renderer2 } from '@angular/core';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { FocusableItem, FocusService, Linkers } from '@clr/angular/utils';
+
+import { InitialFocus } from './button-group-focus.enum';
+@Injectable()
+export class ButtonGroupFocusHandler {
+  initialFocus: InitialFocus = InitialFocus.FIRST_ITEM;
+
+  private menu: HTMLElement;
+  private menuToggle: HTMLElement;
+  private buttons: FocusableItem[];
+  private _unlistenFuncs: (() => void)[] = [];
+
+  constructor(
+    private focusService: FocusService,
+    private popoverService: ClrPopoverService,
+    private renderer: Renderer2
+  ) {}
+
+  ngOnDestroy() {
+    this._unlistenFuncs.forEach((unlisten: () => void) => unlisten());
+    this.focusService.detachListeners(this.menu);
+  }
+
+  initialize({ menu, menuToggle }: { menu: HTMLElement; menuToggle: HTMLElement }) {
+    this.menu = menu;
+    this.menuToggle = menuToggle;
+
+    this.focusService.registerContainer(this.menu);
+    this.listenToKeys();
+    this.linkButtons();
+
+    switch (this.initialFocus) {
+      case InitialFocus.LAST_ITEM:
+        this.focusLastItem();
+        break;
+      default:
+        this.focusFirstItem();
+        break;
+    }
+  }
+
+  private resetButtonsFocus() {
+    this.buttons.forEach(button => {
+      button.blur();
+    });
+  }
+
+  private listenToKeys() {
+    this._unlistenFuncs.push(
+      this.renderer.listen(this.menu, 'keydown.shift.tab', event => this.closeMenu(event, false))
+    );
+    this._unlistenFuncs.push(this.renderer.listen(this.menu, 'keydown.tab', event => this.closeMenu(event, true)));
+  }
+
+  private closeMenu(event: KeyboardEvent, focusBackOnToggle: boolean) {
+    this.popoverService.toggleWithEvent(event);
+    if (focusBackOnToggle) {
+      this.menuToggle.focus();
+    }
+    this.resetButtonsFocus();
+  }
+
+  private linkButtons() {
+    const buttonElements = Array.from(this.menu.children) as HTMLElement[];
+    this.buttons = buttonElements.map<FocusableItem>(buttonElement => {
+      this._unlistenFuncs.push(this.renderer.listen(buttonElement, 'click', event => this.closeMenu(event, true)));
+      return {
+        id: buttonElement.id,
+        value: buttonElement,
+        focus: () => {
+          buttonElement.setAttribute('tabindex', '0');
+          buttonElement.focus();
+        },
+        blur: () => {
+          buttonElement.setAttribute('tabindex', '-1');
+          buttonElement.blur();
+        },
+      };
+    });
+    this.resetButtonsFocus();
+    Linkers.linkVertical(this.buttons);
+  }
+
+  private focusFirstItem(): void {
+    if (this.buttons.length) {
+      this.focusService.moveTo(this.buttons[0]);
+    }
+    this.initialFocus = InitialFocus.FIRST_ITEM;
+  }
+
+  private focusLastItem(): void {
+    if (this.buttons.length) {
+      this.focusService.moveTo(this.buttons[this.buttons.length - 1]);
+    }
+    this.initialFocus = InitialFocus.FIRST_ITEM;
+  }
+}
+
+export const BUTTON_GROUP_FOCUS_HANDLER_PROVIDER = {
+  provide: ButtonGroupFocusHandler,
+};

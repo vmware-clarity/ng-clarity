@@ -9,8 +9,7 @@ import { ClrSidePanel, ClrSidePanelModule, commonStringsDefault } from '@clr/ang
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { fn } from 'storybook/test';
 
-import { removeFocusOutline } from '../../../.storybook/helpers/common';
-import { CommonModules } from '../../../.storybook/helpers/common';
+import { CommonModules, removeFocusOutline } from '../../../.storybook/helpers/common';
 
 export function render(story: StoryObj, template: StoryFn): StoryObj {
   return {

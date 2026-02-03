@@ -1,0 +1,96 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { ClrCommonFormsModule } from '@clr/angular/forms/common';
+import { ClrIcon } from '@clr/angular/icon';
+import { ClrPopoverContent } from '@clr/angular/popover/common';
+
+import { ClrCombobox } from './combobox';
+import { ClrComboboxContainer } from './combobox-container';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ComboboxContainerService } from './providers/combobox-container.service';
+
+@Component({
+  template: `
+    <clr-combobox-container>
+      <clr-control-helper>Helper text</clr-control-helper>
+    </clr-combobox-container>
+  `,
+  standalone: false,
+})
+class NoLabelTest {}
+
+@Component({
+  template: `
+    <clr-combobox-container>
+      <label>Hello World</label>
+      <clr-combobox [(ngModel)]="model" [disabled]="disabled" required></clr-combobox>
+      <clr-control-error>There was an error</clr-control-error>
+      <clr-control-helper>Helper text</clr-control-helper>
+      <clr-control-success>Valid</clr-control-success>
+    </clr-combobox-container>
+  `,
+  standalone: false,
+})
+class TemplateDrivenTest {
+  inline = false;
+  disabled = false;
+  model = [];
+}
+
+@Component({
+  template: `
+    <form [formGroup]="form">
+      <clr-combobox-container>
+        <label>Hello World</label>
+        <clr-combobox formControlName="model"></clr-combobox>
+        <clr-control-error>There was an error</clr-control-error>
+        <clr-control-helper>Helper text</clr-control-helper>
+        <clr-control-success>Valid</clr-control-success>
+      </clr-combobox-container>
+    </form>
+  `,
+  standalone: false,
+})
+class ReactiveTest {
+  disabled = false;
+  form = new FormGroup({
+    model: new FormControl({ value: 'Cookie', disabled: this.disabled }, Validators.required),
+  });
+}
+
+export default function (): void {
+  describe('ClrComboboxContainer', () => {
+    ContainerNoLabelSpec(ClrComboboxContainer, [ClrCombobox], NoLabelTest);
+    TemplateDrivenSpec(ClrComboboxContainer, [ClrCombobox], TemplateDrivenTest, '.clr-control-container clr-combobox');
+    ReactiveSpec(ClrComboboxContainer, [ClrCombobox], TemplateDrivenTest, '.clr-control-container clr-combobox');
+
+    describe('label offset', () => {
+      let fixture, containerDE;
+      let containerService: ComboboxContainerService;
+
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ClrPopoverContent],
+          declarations: [ClrComboboxContainer, ClrCombobox, ReactiveTest, TemplateDrivenTest],
+        });
+        fixture = TestBed.createComponent(TemplateDrivenTest);
+        containerDE = fixture.debugElement.query(By.directive(ClrComboboxContainer));
+        containerService = containerDE.injector.get(ComboboxContainerService);
+        fixture.detectChanges();
+      });
+
+      it('adds label offset', () => {
+        expect(containerService.labelOffset).not.toBe(0);
+      });
+    });
+  });
+}

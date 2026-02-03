@@ -9,8 +9,8 @@ import { Component, QueryList, ViewChildren } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ClrCommonStringsService, ClrStepperModule, ClrStepperPanel } from '@clr/angular';
-import { ClrCommonStrings } from '@clr/angular/utils/i18n/common-strings.interface';
+import { ClrStepperModule, ClrStepperPanel } from '@clr/angular/stepper';
+import { ClrCommonStrings, ClrCommonStringsService } from '@clr/angular/utils';
 
 import { AppfxA11yModule } from '../a11y.module';
 

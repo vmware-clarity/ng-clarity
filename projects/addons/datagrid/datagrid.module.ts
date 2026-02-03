@@ -14,13 +14,15 @@ import { FormsModule } from '@angular/forms';
 import { AppfxA11yModule } from '@clr/addons/a11y';
 import { AppfxDatagridFiltersModule } from '@clr/addons/datagrid-filters';
 import {
+  ClarityIcons,
   ClrCheckboxModule,
   ClrDatagridModule,
   ClrDropdownModule,
+  ClrIcon,
   ClrInputModule,
   ClrLoadingModule,
+  dragHandleIcon,
 } from '@clr/angular';
-import { ClarityIcons, ClrIcon, dragHandleIcon } from '@clr/angular';
 
 import { DatagridActionBarDropdownRepositionDirective } from './addons/action-bar/datagrid-action-bar-dropdown-reposition.directive';
 import { DatagridActionBarComponent } from './addons/action-bar/datagrid-action-bar.component';

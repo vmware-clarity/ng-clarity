@@ -9,6 +9,7 @@ import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
+import * as _angular_animations from '@angular/animations';
 import { AnimationBuilder } from '@angular/animations';
 import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
 import { AnimationMetadata } from '@angular/animations';
@@ -45,8 +46,8 @@ import * as i16 from '@angular/cdk/a11y';
 import * as i18 from '@angular/cdk/overlay';
 import * as i22 from '@angular/forms';
 import * as i4 from '@angular/common';
-import * as i5_2 from '@angular/cdk/drag-drop';
-import * as i6 from '@angular/router';
+import * as i5_3 from '@angular/cdk/drag-drop';
+import * as i6$1_2 from '@angular/router';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
@@ -58,9 +59,11 @@ import { NgForOfContext } from '@angular/common';
 import { NgModelGroup } from '@angular/forms';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Observer } from 'rxjs';
 import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
+import { Optional } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { PipeTransform } from '@angular/core';
@@ -143,7 +146,7 @@ export class AppfxDatagridModule {
     // Warning: (ae-forgotten-export) The symbol "DatagridColumnsOrderModule" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridActionBarDropdownRepositionDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i14.AppfxA11yModule, typeof i15.AppfxDatagridFiltersModule, typeof i16.A11yModule, typeof i5_2.DragDropModule, typeof i18.OverlayModule, typeof i19.ClrCheckboxModule, typeof i19.ClrDatagridModule, typeof i19.ClrDropdownModule, typeof i19.ClrIcon, typeof i19.ClrInputModule, typeof i19.ClrLoadingModule, typeof i4.CommonModule, typeof DatagridColumnsOrderModule, typeof i22.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridActionBarDropdownRepositionDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i14.AppfxA11yModule, typeof i15.AppfxDatagridFiltersModule, typeof i16.A11yModule, typeof i5_3.DragDropModule, typeof i18.OverlayModule, typeof i19.ClrCheckboxModule, typeof i19.ClrDatagridModule, typeof i19.ClrDropdownModule, typeof i19.ClrIcon, typeof i19.ClrInputModule, typeof i19.ClrLoadingModule, typeof i4.CommonModule, typeof DatagridColumnsOrderModule, typeof i22.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "PersistDatagridSettingsService" needs to be exported by the entry point index.d.ts

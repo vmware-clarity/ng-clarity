@@ -8,10 +8,9 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ClrAlertModule, ClrDropdownModule, commonStringsDefault } from '@clr/angular';
+import { ALERT_TYPES } from '@clr/angular/emphasis/alert';
 import { createArray } from 'helpers/common';
 import { RenderComponentStorybook } from 'helpers/render-component';
-
-import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';
 
 @Component({
   selector: 'storybook-standard-alert',

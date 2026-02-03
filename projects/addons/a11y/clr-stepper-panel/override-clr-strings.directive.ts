@@ -6,7 +6,8 @@
  */
 
 import { Directive, Input, OnInit } from '@angular/core';
-import { ClrCommonStrings, ClrCommonStringsService, ClrStepperPanel } from '@clr/angular';
+import { ClrStepperPanel } from '@clr/angular';
+import { ClrCommonStrings, ClrCommonStringsService } from '@clr/angular/utils';
 
 /**
  * This directive overrides strings used in ClrStepperPanel. It creates a copy of the strings, returned by

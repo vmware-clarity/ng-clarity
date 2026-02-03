@@ -11,8 +11,7 @@ import { AppfxDatagridModule, ColumnDefinition, ExportProviderService, Selection
 import { ClrDatagridStateInterface } from '@clr/angular';
 
 import { GridConfigDemoOptions, GridConfigFormComponent } from '../grid-config/grid-config-form.component';
-import { FetchResult, Inventory } from '../inventory/inventory';
-import { VmItem } from '../inventory/inventory';
+import { FetchResult, Inventory, VmItem } from '../inventory/inventory';
 
 @Component({
   imports: [AppfxDatagridModule, CommonModule, GridConfigFormComponent],

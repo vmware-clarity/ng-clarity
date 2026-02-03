@@ -1,0 +1,36 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { CommonModule } from '@angular/common';
+import { NgModule, Type } from '@angular/core';
+import { angleDoubleIcon, angleIcon, ClarityIcons, ClrIcon } from '@clr/angular/icon';
+import { ClrConditionalModule, ClrFocusOnViewInitModule } from '@clr/angular/utils';
+
+import { ClrVerticalNav } from './vertical-nav';
+import { ClrVerticalNavGroup } from './vertical-nav-group';
+import { ClrVerticalNavGroupChildren } from './vertical-nav-group-children';
+import { ClrVerticalNavIcon } from './vertical-nav-icon';
+import { ClrVerticalNavLink } from './vertical-nav-link';
+
+export const CLR_VERTICAL_NAV_DIRECTIVES: Type<any>[] = [
+  ClrVerticalNav,
+  ClrVerticalNavLink,
+  ClrVerticalNavGroup,
+  ClrVerticalNavGroupChildren,
+  ClrVerticalNavIcon,
+];
+
+@NgModule({
+  imports: [CommonModule, ClrIcon, ClrConditionalModule, ClrFocusOnViewInitModule],
+  declarations: [CLR_VERTICAL_NAV_DIRECTIVES],
+  exports: [CLR_VERTICAL_NAV_DIRECTIVES, ClrConditionalModule, ClrIcon, ClrFocusOnViewInitModule],
+})
+export class ClrVerticalNavModule {
+  constructor() {
+    ClarityIcons.addIcons(angleIcon, angleDoubleIcon);
+  }
+}
