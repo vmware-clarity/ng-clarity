@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { OnInit, OnDestroy, ElementRef, ChangeDetectorRef, QueryList, EventEmitter, Renderer2, AfterContentInit, AfterViewInit, ViewContainerRef, TemplateRef, NgZone, Type, InjectionToken, OnChanges, SimpleChanges, DoCheck, IterableDiffers, TrackByFunction, EnvironmentInjector, Injector, RendererFactory2, EmbeddedViewRef, AfterViewChecked, AfterContentChecked, SimpleChange, PipeTransform } from '@angular/core';
+import { OnInit, OnDestroy, ElementRef, ChangeDetectorRef, QueryList, EventEmitter, Renderer2, AfterContentInit, AfterViewInit, ViewContainerRef, TemplateRef, NgZone, Type as Type$1, InjectionToken, OnChanges, SimpleChanges, DoCheck, IterableDiffers, TrackByFunction, EnvironmentInjector, Injector, RendererFactory2, EmbeddedViewRef, AfterViewChecked, AfterContentChecked, SimpleChange, PipeTransform } from '@angular/core';
 import * as rxjs from 'rxjs';
 import { Observable, Subject, BehaviorSubject, ReplaySubject, Subscription } from 'rxjs';
 import * as i2 from '@angular/common';
@@ -86,6 +86,11 @@ declare class ClrIcon implements OnInit, OnDestroy {
     static ngAcceptInputType_inverse: unknown;
 }
 
+declare enum Type {
+    Solid = "solid",
+    Outlined = "outlined"
+}
+
 declare enum ClrBadgeColors {
     None = "",
     Info = "info",
@@ -100,9 +105,11 @@ declare enum ClrBadgeColors {
 }
 declare class ClrBadge {
     color: ClrBadgeColors | string;
+    type: Type | string;
+    get isOutlined(): boolean;
     get colorClass(): string;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrBadge, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrColor"; "required": false; }; }, {}, never, ["*"], true, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrColor"; "required": false; }; "type": { "alias": "clrType"; "required": false; }; }, {}, never, ["*"], true, never>;
 }
 
 declare enum ClrLabelColors {
@@ -123,9 +130,11 @@ declare class ClrLabel {
     textContent: string;
     clickable: boolean;
     disabled: boolean;
+    type: Type | string;
+    get isSolid(): boolean;
     get colorClass(): string;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLabel, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeText": { "alias": "clrBadgeText"; "required": false; }; "textContent": { "alias": "clrText"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; }, {}, never, ["*"], true, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeText": { "alias": "clrBadgeText"; "required": false; }; "textContent": { "alias": "clrText"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "type": { "alias": "clrType"; "required": false; }; }, {}, never, ["*"], true, never>;
 }
 
 interface ClrCommonStrings {
@@ -1092,14 +1101,14 @@ declare class ClrIfExpanded implements OnInit, OnDestroy {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfExpanded, "[clrIfExpanded]", never, { "expanded": { "alias": "clrIfExpanded"; "required": false; }; }, { "expandedChange": "clrIfExpandedChange"; }, never, never, false, never>;
 }
 
-declare const CONDITIONAL_DIRECTIVES: Type<any>[];
+declare const CONDITIONAL_DIRECTIVES: Type$1<any>[];
 declare class ClrConditionalModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrConditionalModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrConditionalModule, [typeof ClrIfActive, typeof ClrIfOpen, typeof ClrIfExpanded], [typeof i2.CommonModule], [typeof ClrIfActive, typeof ClrIfOpen, typeof ClrIfExpanded]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrConditionalModule>;
 }
 
-declare const CLR_DROPDOWN_DIRECTIVES: Type<any>[];
+declare const CLR_DROPDOWN_DIRECTIVES: Type$1<any>[];
 declare class ClrDropdownModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDropdownModule, [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem], [typeof i2.CommonModule, typeof ClrIcon], [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem, typeof ClrConditionalModule, typeof ClrIcon]>;
@@ -1138,14 +1147,14 @@ declare class ClrSpinner {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrSpinner, "clr-spinner", never, { "clrInline": { "alias": "clrInline"; "required": false; }; "clrInverse": { "alias": "clrInverse"; "required": false; }; "clrSmall": { "alias": "clrSmall"; "required": false; }; "clrMedium": { "alias": "clrMedium"; "required": false; }; }, {}, never, ["*"], false, never>;
 }
 
-declare const CLR_SPINNER_DIRECTIVES: Type<any>[];
+declare const CLR_SPINNER_DIRECTIVES: Type$1<any>[];
 declare class ClrSpinnerModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinnerModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSpinnerModule, [typeof ClrSpinner], [typeof i2.CommonModule], [typeof ClrSpinner]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSpinnerModule>;
 }
 
-declare const CLR_ALERT_DIRECTIVES: Type<any>[];
+declare const CLR_ALERT_DIRECTIVES: Type$1<any>[];
 declare class ClrAlertModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertModule, never>;
@@ -1201,7 +1210,7 @@ declare class ClrExpandableAnimation extends BaseExpandableAnimation {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": { "alias": "clrExpandTrigger"; "required": false; }; }, {}, never, ["*"], false, never>;
 }
 
-declare const EXPANDABLE_ANIMATION_DIRECTIVES: Type<any>[];
+declare const EXPANDABLE_ANIMATION_DIRECTIVES: Type$1<any>[];
 
 declare function fade(opacity?: number): AnimationMetadata[];
 
@@ -1209,7 +1218,7 @@ declare function fadeSlide(direction: string): AnimationMetadata[];
 
 declare function slide(direction: string): AnimationMetadata[];
 
-declare const CLR_LOADING_DIRECTIVES: Type<any>[];
+declare const CLR_LOADING_DIRECTIVES: Type$1<any>[];
 declare class ClrLoadingModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingModule, [typeof ClrLoading], [typeof i2.CommonModule], [typeof ClrLoading]>;
@@ -1238,7 +1247,7 @@ declare class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
 
 declare const FOCUS_ON_VIEW_INIT: InjectionToken<boolean>;
 
-declare const FOCUS_ON_VIEW_INIT_DIRECTIVES: Type<any>[];
+declare const FOCUS_ON_VIEW_INIT_DIRECTIVES: Type$1<any>[];
 declare class ClrFocusOnViewInitModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFocusOnViewInitModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFocusOnViewInitModule, [typeof ClrFocusOnViewInit], [typeof i2.CommonModule], [typeof ClrFocusOnViewInit]>;
@@ -2470,7 +2479,7 @@ declare class ClrSignpostTitle {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostTitle, "clr-signpost-title", never, {}, {}, never, ["*"], false, never>;
 }
 
-declare const CLR_SIGNPOST_DIRECTIVES: Type<any>[];
+declare const CLR_SIGNPOST_DIRECTIVES: Type$1<any>[];
 declare class ClrSignpostModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostModule, never>;
@@ -2545,7 +2554,7 @@ declare class ClrTooltipContent implements OnInit {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltipContent, "clr-tooltip-content", never, { "id": { "alias": "id"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; "size": { "alias": "clrSize"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof ClrPopoverContent; inputs: {}; outputs: {}; }]>;
 }
 
-declare const CLR_TOOLTIP_DIRECTIVES: Type<any>[];
+declare const CLR_TOOLTIP_DIRECTIVES: Type$1<any>[];
 declare class ClrTooltipModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrPopoverModuleNext], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof ClrConditionalModule, typeof ClrIcon]>;
@@ -3027,7 +3036,7 @@ declare enum CHANGE_KEYS {
 }
 declare class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     protected vcr: ViewContainerRef;
-    protected wrapperType: Type<W>;
+    protected wrapperType: Type$1<W>;
     private ngControl;
     protected renderer: Renderer2;
     protected el: ElementRef<HTMLElement>;
@@ -3042,7 +3051,7 @@ declare class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     private _containerInjector;
     private differs;
     private differ;
-    constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
+    constructor(vcr: ViewContainerRef, wrapperType: Type$1<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
     get id(): string;
     set id(value: string);
     private get ariaDescribedById();
@@ -3050,7 +3059,7 @@ declare class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     ngDoCheck(): void;
     ngOnDestroy(): void;
     triggerValidation(): void;
-    protected getProviderFromContainer<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T;
+    protected getProviderFromContainer<T>(token: Type$1<T> | InjectionToken<T>, notFoundValue?: T): T;
     private injectControlClassService;
     private triggerDoCheck;
     private markAsTouched;
@@ -4644,7 +4653,7 @@ declare class ClrVerticalNavIcon implements OnDestroy {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrVerticalNavIcon, "[clrVerticalNavIcon]", never, {}, {}, never, never, false, never>;
 }
 
-declare const CLR_VERTICAL_NAV_DIRECTIVES: Type<any>[];
+declare const CLR_VERTICAL_NAV_DIRECTIVES: Type$1<any>[];
 declare class ClrVerticalNavModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavModule, never>;
@@ -4652,7 +4661,7 @@ declare class ClrVerticalNavModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrVerticalNavModule>;
 }
 
-declare const CLR_DATEPICKER_DIRECTIVES: Type<any>[];
+declare const CLR_DATEPICKER_DIRECTIVES: Type$1<any>[];
 declare class ClrDatepickerModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerModule, never>;
@@ -5641,7 +5650,7 @@ declare class ClrDatagridSingleSelectionValueAccessor implements ControlValueAcc
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridSingleSelectionValueAccessor, "input[type=radio][clrDgSingleSelectionRadio]", never, { "value": { "alias": "value"; "required": false; }; "clrDgIdentityFn": { "alias": "clrDgIdentityFn"; "required": false; }; }, {}, never, never, true, never>;
 }
 
-declare const CLR_DATAGRID_DIRECTIVES: Type<any>[];
+declare const CLR_DATAGRID_DIRECTIVES: Type$1<any>[];
 declare class ClrDatagridModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridModule, never>;
@@ -5719,7 +5728,7 @@ declare class ClrStackViewLabel implements OnInit {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackViewLabel, "clr-stack-label", never, { "id": { "alias": "id"; "required": false; }; }, {}, never, ["*"], false, never>;
 }
 
-declare const CLR_STACK_VIEW_DIRECTIVES: Type<any>[];
+declare const CLR_STACK_VIEW_DIRECTIVES: Type$1<any>[];
 declare class ClrStackViewModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewModule, never>;
@@ -5929,7 +5938,7 @@ declare class RecursiveChildren<T> {
     static ɵcmp: i0.ɵɵComponentDeclaration<RecursiveChildren<any>, "clr-recursive-children", never, { "parent": { "alias": "parent"; "required": false; }; "children": { "alias": "children"; "required": false; }; }, {}, never, never, false, never>;
 }
 
-declare const CLR_TREE_VIEW_DIRECTIVES: Type<any>[];
+declare const CLR_TREE_VIEW_DIRECTIVES: Type$1<any>[];
 declare class ClrTreeViewModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeViewModule, never>;
@@ -5954,7 +5963,7 @@ declare class CdsIconCustomTag {
     static ɵdir: i0.ɵɵDirectiveDeclaration<CdsIconCustomTag, "cds-icon", never, {}, {}, never, never, false, never>;
 }
 
-declare const CLR_ICON_DIRECTIVES: Type<any>[];
+declare const CLR_ICON_DIRECTIVES: Type$1<any>[];
 /** @deprecated since v18 in favor of ClrIcon, remove in v19 */
 declare class ClrIconModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIconModule, never>;
@@ -6041,7 +6050,7 @@ declare class ClrModalHostComponent {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrModalHostComponent, "[clrModalHost]", never, {}, {}, never, ["*"], false, never>;
 }
 
-declare const CLR_MODAL_DIRECTIVES: Type<any>[];
+declare const CLR_MODAL_DIRECTIVES: Type$1<any>[];
 declare class ClrModalModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalModule, never>;
@@ -6063,7 +6072,7 @@ declare class ClrLoadingButton implements LoadingListener {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrLoadingButton, "button[clrLoading]", never, { "disabled": { "alias": "disabled"; "required": false; }; }, { "clrLoadingChange": "clrLoadingChange"; }, never, ["*"], false, never>;
 }
 
-declare const CLR_LOADING_BUTTON_DIRECTIVES: Type<any>[];
+declare const CLR_LOADING_BUTTON_DIRECTIVES: Type$1<any>[];
 declare class ClrLoadingButtonModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingButtonModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingButtonModule, [typeof ClrLoadingButton], [typeof i2.CommonModule], [typeof ClrLoadingButton]>;
@@ -6193,7 +6202,7 @@ declare class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "clrToggleButtonAriaLabel": { "alias": "clrToggleButtonAriaLabel"; "required": false; }; "menuPosition": { "alias": "clrMenuPosition"; "required": false; }; }, {}, ["buttons"], never, false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
-declare const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
+declare const CLR_BUTTON_GROUP_DIRECTIVES: Type$1<any>[];
 declare class ClrButtonGroupModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroupModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof ClrButton, typeof ClrButtonGroup], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrPopoverModuleNext], [typeof ClrButton, typeof ClrButtonGroup]>;
@@ -6245,7 +6254,7 @@ declare class ClrMainContainer implements OnDestroy, OnInit {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrMainContainer, "clr-main-container", never, {}, {}, never, never, false, never>;
 }
 
-declare const CLR_LAYOUT_DIRECTIVES: Type<any>[];
+declare const CLR_LAYOUT_DIRECTIVES: Type$1<any>[];
 declare class ClrMainContainerModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrMainContainerModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrMainContainerModule, [typeof ClrMainContainer], [typeof i2.CommonModule, typeof ClrIcon], [typeof ClrMainContainer]>;
@@ -6348,7 +6357,7 @@ declare class NavDetectionOompaLoompa extends OompaLoompa {
     static ɵdir: i0.ɵɵDirectiveDeclaration<NavDetectionOompaLoompa, "clr-header", never, {}, {}, never, never, false, never>;
 }
 
-declare const CLR_NAVIGATION_DIRECTIVES: Type<any>[];
+declare const CLR_NAVIGATION_DIRECTIVES: Type$1<any>[];
 declare class ClrNavigationModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavigationModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka]>;
@@ -6506,7 +6515,7 @@ declare class ClrTemplateRefModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTemplateRefModule>;
 }
 
-declare const CLR_TABS_DIRECTIVES: Type<any>[];
+declare const CLR_TABS_DIRECTIVES: Type$1<any>[];
 declare class ClrTabsModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabsModule, never>;
@@ -8046,7 +8055,7 @@ declare class ClrSidePanel implements OnInit, OnDestroy {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "closeButtonAriaLabel": { "alias": "clrSidePanelCloseButtonAriaLabel"; "required": false; }; "skipAnimation": { "alias": "clrSidePanelSkipAnimation"; "required": false; }; "labelledById": { "alias": "clrSidePanelLabelledById"; "required": false; }; "staticBackdrop": { "alias": "clrSidePanelStaticBackdrop"; "required": false; }; "closable": { "alias": "clrSidePanelClosable"; "required": false; }; "preventClose": { "alias": "clrSidePanelPreventClose"; "required": false; }; "_open": { "alias": "clrSidePanelOpen"; "required": false; }; "size": { "alias": "clrSidePanelSize"; "required": false; }; "position": { "alias": "clrSidePanelPosition"; "required": false; }; "pinned": { "alias": "clrSidePanelPinned"; "required": false; }; "clrSidePanelBackdrop": { "alias": "clrSidePanelBackdrop"; "required": false; }; "clrSidePanelPinnable": { "alias": "clrSidePanelPinnable"; "required": false; }; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
 }
 
-declare const CLR_SIDEPANEL_DIRECTIVES: Type<any>[];
+declare const CLR_SIDEPANEL_DIRECTIVES: Type$1<any>[];
 declare class ClrSidePanelModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanelModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSidePanelModule, [typeof ClrSidePanel], [typeof i2.CommonModule, typeof CdkTrapFocusModule, typeof ClrIcon, typeof ClrModalModule], [typeof ClrSidePanel, typeof ClrModalModule, typeof ClrIcon]>;
@@ -8363,7 +8372,7 @@ declare class ClrProgressBar {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrProgressBar, "clr-progress-bar", never, { "max": { "alias": "clrMax"; "required": false; }; "displayval": { "alias": "clrDisplayval"; "required": false; }; "color": { "alias": "clrColor"; "required": false; }; "value": { "alias": "clrValue"; "required": false; }; "id": { "alias": "id"; "required": false; }; "clrCompact": { "alias": "clrCompact"; "required": false; }; "clrLabeled": { "alias": "clrLabeled"; "required": false; }; "clrFade": { "alias": "clrFade"; "required": false; }; "clrLoop": { "alias": "clrLoop"; "required": false; }; "clrFlash": { "alias": "clrFlash"; "required": false; }; "clrFlashDanger": { "alias": "clrFlashDanger"; "required": false; }; }, {}, never, never, false, never>;
 }
 
-declare const CLR_PROGRESS_BAR_DIRECTIVES: Type<any>[];
+declare const CLR_PROGRESS_BAR_DIRECTIVES: Type$1<any>[];
 declare class ClrProgressBarModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrProgressBarModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrProgressBarModule, [typeof ClrProgressBar], [typeof i2.CommonModule], [typeof ClrProgressBar]>;

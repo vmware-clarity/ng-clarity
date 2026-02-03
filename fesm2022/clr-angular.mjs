@@ -34167,6 +34167,18 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+var Type;
+(function (Type) {
+    Type["Solid"] = "solid";
+    Type["Outlined"] = "outlined";
+})(Type || (Type = {}));
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 var ClrBadgeColors;
 (function (ClrBadgeColors) {
     ClrBadgeColors["None"] = "";
@@ -34183,12 +34195,16 @@ var ClrBadgeColors;
 class ClrBadge {
     constructor() {
         this.color = ClrBadgeColors.None;
+        this.type = Type.Solid;
+    }
+    get isOutlined() {
+        return this.type === Type.Outlined;
     }
     get colorClass() {
         return this.color ? `badge-${this.color}` : '';
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrBadge, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrBadge, isStandalone: true, selector: "clr-badge", inputs: { color: ["clrColor", "color"] }, host: { properties: { "class": "colorClass" }, classAttribute: "badge" }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrBadge, isStandalone: true, selector: "clr-badge", inputs: { color: ["clrColor", "color"], type: ["clrType", "type"] }, host: { properties: { "class.outlined": "isOutlined", "class": "colorClass" }, classAttribute: "badge" }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrBadge, decorators: [{
             type: Component,
@@ -34197,12 +34213,16 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                     template: `<ng-content></ng-content>`,
                     host: {
                         class: 'badge',
+                        '[class.outlined]': 'isOutlined',
                         '[class]': 'colorClass',
                     },
                 }]
         }], propDecorators: { color: [{
                 type: Input,
                 args: ['clrColor']
+            }], type: [{
+                type: Input,
+                args: ['clrType']
             }] } });
 
 /*
@@ -34238,12 +34258,16 @@ class ClrLabel {
         this.textContent = '';
         this.clickable = false;
         this.disabled = false;
+        this.type = Type.Outlined;
+    }
+    get isSolid() {
+        return this.type === Type.Solid;
     }
     get colorClass() {
         return this.color ? `label-${this.color}` : '';
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrLabel, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrLabel, isStandalone: true, selector: "clr-label", inputs: { color: ["clrColor", "color"], badgeText: ["clrBadgeText", "badgeText"], textContent: ["clrText", "textContent"], clickable: ["clrClickable", "clickable"], disabled: ["clrDisabled", "disabled"] }, host: { properties: { "class.clickable": "clickable", "class.disabled": "disabled", "class": "colorClass" }, classAttribute: "label" }, ngImport: i0, template: `@if (textContent) {
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrLabel, isStandalone: true, selector: "clr-label", inputs: { color: ["clrColor", "color"], badgeText: ["clrBadgeText", "badgeText"], textContent: ["clrText", "textContent"], clickable: ["clrClickable", "clickable"], disabled: ["clrDisabled", "disabled"], type: ["clrType", "type"] }, host: { properties: { "class.clickable": "clickable", "class.disabled": "disabled", "class.solid": "isSolid", "class": "colorClass" }, classAttribute: "label" }, ngImport: i0, template: `@if (textContent) {
       <span class="text">{{ textContent }}</span>
     }
 
@@ -34251,7 +34275,7 @@ class ClrLabel {
       <clr-badge>{{ badgeText }}</clr-badge>
     }
 
-    <ng-content></ng-content>`, isInline: true, dependencies: [{ kind: "component", type: ClrBadge, selector: "clr-badge", inputs: ["clrColor"] }] }); }
+    <ng-content></ng-content>`, isInline: true, dependencies: [{ kind: "component", type: ClrBadge, selector: "clr-badge", inputs: ["clrColor", "clrType"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrLabel, decorators: [{
             type: Component,
@@ -34270,6 +34294,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         class: 'label',
                         '[class.clickable]': 'clickable',
                         '[class.disabled]': 'disabled',
+                        '[class.solid]': 'isSolid',
                         '[class]': 'colorClass',
                     },
                     imports: [ClrBadge],
@@ -34289,6 +34314,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
             }], disabled: [{
                 type: Input,
                 args: ['clrDisabled']
+            }], type: [{
+                type: Input,
+                args: ['clrType']
             }] } });
 
 /*
