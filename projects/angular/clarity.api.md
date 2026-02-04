@@ -2194,6 +2194,16 @@ export class ClrDatagridActionOverflow implements OnDestroy {
 }
 
 // @public (undocumented)
+export enum ClrDatagridAriaSortOrder {
+    // (undocumented)
+    ASC = "ascending",
+    // (undocumented)
+    DESC = "descending",
+    // (undocumented)
+    UNSORTED = "none"
+}
+
+// @public (undocumented)
 export class ClrDatagridCell implements OnInit {
     constructor(vcr: ViewContainerRef);
     // (undocumented)
@@ -2216,7 +2226,7 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar_3<T, Clr
     // Warning: (ae-forgotten-export) The symbol "FiltersProvider_3" needs to be exported by the entry point index.d.ts
     constructor(el: ElementRef<HTMLElement>, _sort: Sort_3<T>, filters: FiltersProvider_3<T>, vcr: ViewContainerRef, detailService: DetailService_3, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService_2);
     // (undocumented)
-    get ariaSort(): "none" | "ascending" | "descending";
+    get ariaSort(): ClrDatagridAriaSortOrder;
     // (undocumented)
     get colType(): "string" | "number";
     set colType(value: 'string' | 'number');
@@ -7181,7 +7191,7 @@ export const FOCUS_ON_VIEW_INIT_DIRECTIVES: Type<any>[];
 export const FOCUS_SERVICE_PROVIDER: {
     provide: typeof FocusService;
     useFactory: typeof clrFocusServiceFactory;
-    deps: (typeof Renderer2 | Optional[])[];
+    deps: (Optional[] | typeof Renderer2)[];
 };
 
 // @public (undocumented)
