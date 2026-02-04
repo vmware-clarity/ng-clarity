@@ -1,0 +1,60 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+// This is a performance optimization that aliases the token to a "minified" value to reduce overall bundle size.
+@use '../tokens/variables.tokens' as *;
+@use '../../variables/variables.density' as density;
+@use '../../mixins';
+
+@include mixins.root-or-host() {
+  &,
+  [clr-density] {
+    --δ1: #{density.$clr-base-layout-space-3xs};
+    --δ2: #{density.$clr-base-layout-space-2xs};
+    --δ3: #{density.$clr-base-layout-space-xs};
+    --δ4: #{density.$clr-base-layout-space-s};
+    --δ5: #{density.$clr-base-layout-space-m};
+    --δ6: #{density.$clr-base-layout-space-l};
+    --δ7: #{density.$clr-base-layout-space-xl};
+    --δ8: #{density.$clr-base-layout-space-2xl};
+    --δ9: #{density.$clr-base-layout-space-3xl};
+  }
+}
+
+$cds-global-layout-space-xxxs: var(--δ1);
+$cds-global-layout-space-xxs: var(--δ2);
+$cds-global-layout-space-xs: var(--δ3);
+$cds-global-layout-space-sm: var(--δ4);
+$cds-global-layout-space-md: var(--δ5);
+$cds-global-layout-space-lg: var(--δ6);
+$cds-global-layout-space-xl: var(--δ7);
+$cds-global-layout-space-xxl: var(--δ8);
+$cds-global-layout-space-xxxl: var(--δ9);
+
+// selectors one location to make it easier to test for shorthand optimizations
+// this is also helpful for tools like AMP that require data-* prefix on all attrs
+$layout: 'cds-layout';
+$horizontal: 'horizontal';
+$vertical: 'vertical';
+$grid: 'grid';
+$gap: 'gap';
+$align: 'align';
+$top: 'top';
+$bottom: 'bottom';
+$left: 'left';
+$right: 'right';
+$center: 'center';
+$stretch: 'stretch';
+$shrink: 'shrink';
+$fill: 'fill';
+$cols: 'cols';
+$rows: 'rows';
+$col: 'col';
+$row: 'row';
+$vertical-center: 'vertical-center';
+$horizontal-center: 'horizontal-center';
+$vertical-stretch: 'vertical-stretch';
+$horizontal-stretch: 'horizontal-stretch';

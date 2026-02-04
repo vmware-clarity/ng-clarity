@@ -1,0 +1,181 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../styles/variables/variables';
+
+// Usage: ./_labels.clarity.scss
+$clr-label-borderwidth: var(--clr-label-border-width) !default;
+
+// COLOR
+// Usage:
+// - ./_labels.clarity.scss
+$clr-label-font-color: var(--clr-label-font-color) !default;
+$clr-label-default-border-color: var(--clr-label-default-border-color) !default;
+$clr-label-default-bg-color: var(--clr-label-default-bg-color) !default;
+$clr-label-font-solid-color: var(--clr-label-font-solid-color) !default;
+$clr-label-default-solid-border-color: var(--clr-label-default-solid-border-color) !default;
+$clr-label-default-solid-bg-color: var(--clr-label-default-solid-bg-color) !default;
+
+// TYPOGRAPHIC STYLES
+// Usage: ./_labels.clarity.scss
+$clr-label-bg-hover-color: var(--clr-label-bg-hover-color) !default;
+
+// gray
+$clr-label-gray-bg-color: var(--clr-label-gray-bg-color) !default;
+$clr-label-gray-border-color: var(--clr-label-gray-border-color) !default;
+$clr-label-gray-color: var(--clr-label-gray-color) !default;
+$clr-label-gray-solid-bg-color: var(--clr-label-gray-solid-bg-color) !default;
+$clr-label-gray-solid-border-color: var(--clr-label-gray-solid-border-color) !default;
+$clr-label-gray-solid-color: var(--clr-label-gray-solid-color) !default;
+
+// purple
+$clr-label-purple-bg-color: var(--clr-label-purple-bg-color) !default;
+$clr-label-purple-border-color: var(--clr-label-purple-border-color) !default;
+$clr-label-purple-color: var(--clr-label-purple-color) !default;
+$clr-label-purple-solid-bg-color: var(--clr-label-purple-solid-bg-color) !default;
+$clr-label-purple-solid-border-color: var(--clr-label-purple-solid-border-color) !default;
+$clr-label-purple-solid-color: var(--clr-label-purple-solid-color) !default;
+
+// blue
+$clr-label-blue-bg-color: var(--clr-label-blue-bg-color) !default;
+$clr-label-blue-border-color: var(--clr-label-blue-border-color) !default;
+$clr-label-blue-color: var(--clr-label-blue-color) !default;
+$clr-label-blue-solid-bg-color: var(--clr-label-blue-solid-bg-color) !default;
+$clr-label-blue-solid-border-color: var(--clr-label-blue-solid-border-color) !default;
+$clr-label-blue-solid-color: var(--clr-label-blue-solid-color) !default;
+
+// orange
+$clr-label-orange-bg-color: var(--clr-label-orange-bg-color) !default;
+$clr-label-orange-border-color: var(--clr-label-orange-border-color) !default;
+$clr-label-orange-color: var(--clr-label-orange-color) !default;
+$clr-label-orange-solid-bg-color: var(--clr-label-orange-solid-bg-color) !default;
+$clr-label-orange-solid-border-color: var(--clr-label-orange-solid-border-color) !default;
+$clr-label-orange-solid-color: var(--clr-label-orange-solid-color) !default;
+
+// light-blue
+$clr-label-light-blue-bg-color: var(--clr-label-light-blue-bg-color) !default;
+$clr-label-light-blue-border-color: var(--clr-label-light-blue-border-color) !default;
+$clr-label-light-blue-color: var(--clr-label-light-blue-color) !default;
+$clr-label-light-blue-solid-bg-color: var(--clr-label-light-blue-solid-bg-color) !default;
+$clr-label-light-blue-solid-border-color: var(--clr-label-light-blue-solid-border-color) !default;
+$clr-label-light-blue-solid-color: var(--clr-label-light-blue-solid-color) !default;
+
+// info
+$clr-label-info-bg-color: var(--clr-label-info-bg-color) !default;
+$clr-label-info-font-color: var(--clr-label-info-font-color) !default;
+$clr-label-info-border-color: var(--clr-label-info-border-color) !default;
+$clr-label-info-solid-bg-color: var(--clr-label-info-solid-bg-color) !default;
+$clr-label-info-solid-border-color: var(--clr-label-info-solid-border-color) !default;
+$clr-label-info-solid-color: var(--clr-label-info-solid-color) !default;
+
+// success
+$clr-label-success-bg-color: var(--clr-label-success-bg-color) !default;
+$clr-label-success-font-color: var(--clr-label-success-font-color) !default;
+$clr-label-success-border-color: var(--clr-label-success-border-color) !default;
+$clr-label-success-solid-bg-color: var(--clr-label-success-solid-bg-color) !default;
+$clr-label-success-solid-border-color: var(--clr-label-success-solid-border-color) !default;
+$clr-label-success-solid-color: var(--clr-label-success-solid-color) !default;
+
+// warning
+$clr-label-warning-bg-color: var(--clr-label-warning-bg-color) !default;
+$clr-label-warning-font-color: var(--clr-label-warning-font-color) !default;
+$clr-label-warning-border-color: var(--clr-label-warning-border-color) !default;
+$clr-label-warning-solid-bg-color: var(--clr-label-warning-solid-bg-color) !default;
+$clr-label-warning-solid-border-color: var(--clr-label-warning-solid-border-color) !default;
+$clr-label-warning-solid-color: var(--clr-label-warning-solid-color) !default;
+
+// danger
+$clr-label-danger-bg-color: var(--clr-label-danger-bg-color) !default;
+$clr-label-danger-font-color: var(--clr-label-danger-font-color) !default;
+$clr-label-danger-border-color: var(--clr-label-danger-border-color) !default;
+$clr-label-danger-solid-bg-color: var(--clr-label-danger-solid-bg-color) !default;
+$clr-label-danger-solid-border-color: var(--clr-label-danger-solid-border-color) !default;
+$clr-label-danger-solid-color: var(--clr-label-danger-solid-color) !default;
+
+// ACTION COLORS
+$clr-label-hover-color: var(--clr-label-hover-color) !default;
+$clr-label-active-color: var(--clr-label-active-color) !default;
+$clr-label-bg-active-color: var(--clr-label-bg-active-color) !default;
+$clr-label-box-shadow: var(--clr-label-box-shadow) !default;
+$clr-label-bg-disabled-color: var(--clr-label-bg-disabled-color) !default;
+$clr-label-disabled-color: var(--clr-label-disabled-color) !default;
+$clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !default;
+
+$label-colors: (
+  gray: (
+    bg-color: $clr-label-gray-bg-color,
+    border-color: $clr-label-gray-border-color,
+    color: $clr-label-gray-color,
+    solid-bg-color: $clr-label-gray-solid-bg-color,
+    solid-border-color: $clr-label-gray-solid-border-color,
+    solid-color: $clr-label-gray-solid-color,
+  ),
+  purple: (
+    bg-color: $clr-label-purple-bg-color,
+    border-color: $clr-label-purple-border-color,
+    color: $clr-label-purple-color,
+    solid-bg-color: $clr-label-purple-solid-bg-color,
+    solid-border-color: $clr-label-purple-solid-border-color,
+    solid-color: $clr-label-purple-solid-color,
+  ),
+  blue: (
+    bg-color: $clr-label-blue-bg-color,
+    border-color: $clr-label-blue-border-color,
+    color: $clr-label-blue-color,
+    solid-bg-color: $clr-label-blue-solid-bg-color,
+    solid-border-color: $clr-label-blue-solid-border-color,
+    solid-color: $clr-label-blue-solid-color,
+  ),
+  orange: (
+    bg-color: $clr-label-orange-bg-color,
+    border-color: $clr-label-orange-border-color,
+    color: $clr-label-orange-color,
+    solid-bg-color: $clr-label-orange-solid-bg-color,
+    solid-border-color: $clr-label-orange-solid-border-color,
+    solid-color: $clr-label-orange-solid-color,
+  ),
+  light-blue: (
+    bg-color: $clr-label-light-blue-bg-color,
+    border-color: $clr-label-light-blue-border-color,
+    color: $clr-label-light-blue-color,
+    solid-bg-color: $clr-label-light-blue-solid-bg-color,
+    solid-border-color: $clr-label-light-blue-solid-border-color,
+    solid-color: $clr-label-light-blue-solid-color,
+  ),
+  success: (
+    bg-color: $clr-label-success-bg-color,
+    border-color: $clr-label-success-border-color,
+    color: $clr-label-success-font-color,
+    solid-bg-color: $clr-label-success-solid-bg-color,
+    solid-border-color: $clr-label-success-solid-border-color,
+    solid-color: $clr-label-success-solid-color,
+  ),
+  warning: (
+    bg-color: $clr-label-warning-bg-color,
+    border-color: $clr-label-warning-border-color,
+    color: $clr-label-warning-font-color,
+    solid-bg-color: $clr-label-warning-solid-bg-color,
+    solid-border-color: $clr-label-warning-solid-border-color,
+    solid-color: $clr-label-warning-solid-color,
+  ),
+  danger: (
+    bg-color: $clr-label-danger-bg-color,
+    border-color: $clr-label-danger-border-color,
+    color: $clr-label-danger-font-color,
+    solid-bg-color: $clr-label-danger-solid-bg-color,
+    solid-border-color: $clr-label-danger-solid-border-color,
+    solid-color: $clr-label-danger-solid-color,
+  ),
+  info: (
+    bg-color: $clr-label-info-bg-color,
+    border-color: $clr-label-info-border-color,
+    color: $clr-label-info-font-color,
+    solid-bg-color: $clr-label-info-solid-bg-color,
+    solid-border-color: $clr-label-info-solid-border-color,
+    solid-color: $clr-label-info-solid-color,
+  ),
+);

@@ -1,0 +1,34 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../mixins';
+
+@include mixins.root-or-host() {
+  --cds-alias-status-info: var(--cds-global-color-blue-700);
+  --cds-alias-status-info-tint: var(--cds-global-color-blue-50);
+  --cds-alias-status-info-shade: var(--cds-global-color-blue-800);
+  --cds-alias-status-success: var(--cds-global-color-green-700);
+  --cds-alias-status-success-tint: var(--cds-global-color-green-50);
+  --cds-alias-status-success-shade: var(--cds-global-color-green-800);
+  --cds-alias-status-warning: var(--cds-global-color-ochre-500);
+  --cds-alias-status-warning-tint: var(--cds-global-color-ochre-100);
+  --cds-alias-status-warning-shade: var(--cds-global-color-ochre-600);
+  --cds-alias-status-warning-dark: var(--cds-global-color-ochre-800);
+  --cds-alias-status-danger: var(--cds-global-color-red-700);
+  --cds-alias-status-danger-tint: var(--cds-global-color-red-50);
+  --cds-alias-status-danger-shade: var(--cds-global-color-red-800);
+  --cds-alias-status-danger-dark: var(--cds-global-color-red-900);
+  --cds-alias-status-neutral: var(--cds-global-color-construction-600);
+  --cds-alias-status-neutral-tint: var(--cds-global-color-construction-50);
+  --cds-alias-status-neutral-shade: var(--cds-global-color-construction-700);
+  --cds-alias-status-disabled: var(--cds-global-color-construction-300);
+  --cds-alias-status-disabled-tint: var(--cds-global-color-construction-200);
+  --cds-alias-status-disabled-shade: var(--cds-global-color-construction-400);
+  --cds-alias-status-alt: var(--cds-global-color-violet-700);
+  --cds-alias-status-alt-tint: var(--cds-global-color-violet-600);
+  --cds-alias-status-alt-shade: var(--cds-global-color-violet-900);
+}
