@@ -22,7 +22,7 @@
 @use 'mixins.datagrid' as datagrid-mixins;
 @use '../../styles/variables/variables.density' as density;
 @use '../../styles/core/tokens/variables.tokens' as tokens;
-@use '../../utils/animations/animations.clarity' as animations;
+@use '../../utils/animations/mixins.animations' as animations-mixins;
 
 @include meta.load-css('properties.datagrid');
 @include mixins.exports('datagrid.clarity') {
@@ -145,7 +145,7 @@
       .datagrid-row-master {
         position: relative;
 
-        @include animations.skeleton-loading();
+        @include animations-mixins.skeleton-loading();
 
         &::before {
           position: absolute;
