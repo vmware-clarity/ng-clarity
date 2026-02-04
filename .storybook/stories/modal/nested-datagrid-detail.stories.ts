@@ -42,7 +42,7 @@ const NestedDatagridTemplate: StoryFn = args => ({
         }
       }
     </style>
-    <div [style.min-height.px]="showActionOverflow ? 650 : 0">
+    <div [@.disabled]="true" [style.min-height.px]="showActionOverflow ? 650 : 0">
       <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
 
       <button type="button" class="btn btn-primary" (click)="modalOpen = true">Open Modal</button>
@@ -119,6 +119,6 @@ export const NestedDatagridWithOpenedActions: StoryObj = {
   play({ canvasElement }) {
     setTimeout(() => {
       (canvasElement.querySelector('button.datagrid-action-toggle') as HTMLElement).click();
-    }, 300);
+    }, 0);
   },
 };
