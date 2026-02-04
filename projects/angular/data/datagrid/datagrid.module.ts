@@ -33,6 +33,7 @@ import {
   CdkTrapFocusModule,
   ClrConditionalModule,
   ClrExpandableAnimationModule,
+  ClrIfExpanded,
   ClrKeyFocusModule,
   ClrLoadingModule,
   ClrOutsideClickModule,
@@ -124,6 +125,7 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
 
 const CLR_DATAGRID_INTERNAL_DIRECTIVES = [ClrDatagridColumnToggle, ClrDatagridColumnToggleButton];
 const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAccessor];
+const CLR_DATAGRID_SHARED_DIRECTIVES = [ClrIfExpanded];
 
 @NgModule({
   imports: [
@@ -145,9 +147,10 @@ const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAcces
     ÇlrClrPopoverModuleNext,
     ClrKeyFocusModule,
     CLR_DATAGRID_STANDALONE_DIRECTIVES,
+    CLR_DATAGRID_SHARED_DIRECTIVES,
   ],
   declarations: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_INTERNAL_DIRECTIVES],
-  exports: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_STANDALONE_DIRECTIVES],
+  exports: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_STANDALONE_DIRECTIVES, CLR_DATAGRID_SHARED_DIRECTIVES],
 })
 export class ClrDatagridModule {
   constructor() {

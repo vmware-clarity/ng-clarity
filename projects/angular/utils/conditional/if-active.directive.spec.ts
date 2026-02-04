@@ -16,7 +16,8 @@ export default function (): void {
     describe('Typescript API', function () {
       beforeEach(function () {
         TestBed.configureTestingModule({
-          declarations: [ClrIfActive, IfOpenTest],
+          imports: [ClrIfActive],
+          declarations: [IfOpenTest],
           providers: [IfActiveService, IF_ACTIVE_ID_PROVIDER],
         });
         this.fixture = TestBed.createComponent(IfOpenTest);
@@ -93,7 +94,8 @@ export default function (): void {
     describe('View', function () {
       beforeEach(function () {
         TestBed.configureTestingModule({
-          declarations: [ClrIfActive, IfOpenTest],
+          imports: [ClrIfActive],
+          declarations: [IfOpenTest],
           providers: [IfActiveService, IF_ACTIVE_ID_PROVIDER],
         });
         this.fixture = TestBed.createComponent(IfOpenTest);

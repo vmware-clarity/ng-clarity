@@ -21,7 +21,8 @@ export default function (): void {
          * A quick investigation didn't reveal a better solution yet, we might want to look into it more.
          */
         TestBed.configureTestingModule({
-          declarations: [ClrIfExpanded, SimpleTest, TestCounter],
+          imports: [ClrIfExpanded],
+          declarations: [SimpleTest, TestCounter],
           providers: [IfExpandService],
         });
         this.fixture = TestBed.createComponent(SimpleTest);
@@ -82,7 +83,8 @@ export default function (): void {
          * A quick investigation didn't reveal a better solution yet, we might want to look into it more.
          */
         TestBed.configureTestingModule({
-          declarations: [ClrIfExpanded, SimpleTemplateTest, TestCounter],
+          imports: [ClrIfExpanded],
+          declarations: [SimpleTemplateTest, TestCounter],
           providers: [IfExpandService],
         });
         this.fixture = TestBed.createComponent(SimpleTemplateTest);
