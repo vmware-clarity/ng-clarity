@@ -31,7 +31,7 @@ import { DatagridNumericFilterImpl } from './built-in/filters/datagrid-numeric-f
 import { DatagridPropertyNumericFilter } from './built-in/filters/datagrid-property-numeric-filter';
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
-import { ClrDatagridSortOrder } from './enums/sort-order.enum';
+import { ClrDatagridAriaSortOrder, ClrDatagridSortOrder } from './enums/sort-order.enum';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { CustomFilter } from './providers/custom-filter';
@@ -290,15 +290,15 @@ export class ClrDatagridColumn<T = any>
     return !!this._sortBy;
   }
 
-  get ariaSort() {
+  get ariaSort(): ClrDatagridAriaSortOrder {
     switch (this._sortOrder) {
       case ClrDatagridSortOrder.ASC:
-        return 'ascending';
+        return ClrDatagridAriaSortOrder.ASC;
       case ClrDatagridSortOrder.DESC:
-        return 'descending';
+        return ClrDatagridAriaSortOrder.DESC;
       case ClrDatagridSortOrder.UNSORTED:
       default:
-        return 'none';
+        return ClrDatagridAriaSortOrder.UNSORTED;
     }
   }
 
