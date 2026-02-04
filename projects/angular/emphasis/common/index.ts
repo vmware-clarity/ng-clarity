@@ -5,13 +5,4 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, Input } from '@angular/core';
-import { HeadingLevel } from '@clr/angular/utils';
-
-@Directive({
-  selector: 'clr-wizard-title',
-  standalone: false,
-})
-export class ClrWizardTitle {
-  @Input('clrHeadingLevel') headingLevel: HeadingLevel;
-}
+export * from './type.enum';

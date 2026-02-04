@@ -6,8 +6,8 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
+import { HeadingLevel } from '@clr/angular/utils';
 
-import { HeadingLevel } from '../../utils/types/heading-level';
 import { ClrWizard } from '../wizard';
 
 @Component({

@@ -21,8 +21,7 @@ import {
   SimpleChanges,
   SkipSelf,
 } from '@angular/core';
-import { ClrCommonStringsService, IfExpandService, uniqueIdFactory } from '@clr/angular/utils';
-import { HeadingLevel } from '@clr/angular/wizard';
+import { ClrCommonStringsService, HeadingLevel, IfExpandService, uniqueIdFactory } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -30,11 +29,6 @@ import { ClrAccordionDescription } from './accordion-description';
 import { AccordionPanelModel } from './models/accordion.model';
 import { AccordionService } from './providers/accordion.service';
 import { panelAnimation } from './utils/animation';
-import { IfExpandService } from '../utils/conditional/if-expanded.service';
-import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
-import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
-import { HeadingLevel } from '../utils/types/heading-level';
-
 @Component({
   selector: 'clr-accordion-panel',
   templateUrl: './accordion-panel.html',

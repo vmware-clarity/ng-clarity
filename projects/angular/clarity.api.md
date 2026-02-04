@@ -2216,7 +2216,7 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar_3<T, Clr
     // Warning: (ae-forgotten-export) The symbol "FiltersProvider_3" needs to be exported by the entry point index.d.ts
     constructor(el: ElementRef<HTMLElement>, _sort: Sort_3<T>, filters: FiltersProvider_3<T>, vcr: ViewContainerRef, detailService: DetailService_3, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService_2);
     // (undocumented)
-    get ariaSort(): "ascending" | "descending" | "none";
+    get ariaSort(): "none" | "ascending" | "descending";
     // (undocumented)
     get colType(): "string" | "number";
     set colType(value: 'string' | 'number');
@@ -5150,7 +5150,7 @@ export class ClrStackBlock implements OnInit {
     addChild(): void;
     // (undocumented)
     get ariaExpanded(): string;
-    ariaLevel: HeadingLevel;
+    ariaLevel: HeadingLevel_2;
     // (undocumented)
     get caretDirection(): string;
     // (undocumented)
@@ -5206,7 +5206,7 @@ export class ClrStackContentInput {
 // @public (undocumented)
 export class ClrStackHeader {
     constructor(stackView: ClrStackView);
-    ariaLevel: HeadingLevel;
+    ariaLevel: HeadingLevel_2;
     // (undocumented)
     stackView: ClrStackView;
     // (undocumented)
@@ -5481,7 +5481,7 @@ export class ClrTabLink {
     get inOverflow(): boolean;
     set inOverflow(inOverflow: boolean);
     // (undocumented)
-    get tabindex(): -1 | 0;
+    get tabindex(): 0 | -1;
     // (undocumented)
     tabLinkId: string;
     // (undocumented)
@@ -6267,7 +6267,7 @@ export class ClrWizardPageNavTitle {
 export class ClrWizardPageTitle {
     constructor(pageTitleTemplateRef: TemplateRef<any>);
     // (undocumented)
-    headingLevel: HeadingLevel;
+    headingLevel: HeadingLevel_2;
     // (undocumented)
     pageTitleTemplateRef: TemplateRef<any>;
     // (undocumented)
@@ -6344,7 +6344,7 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
 // @public (undocumented)
 export class ClrWizardTitle {
     // (undocumented)
-    headingLevel: HeadingLevel;
+    headingLevel: HeadingLevel_2;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardTitle, "clr-wizard-title", never, { "headingLevel": { "alias": "clrHeadingLevel"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
@@ -7181,7 +7181,7 @@ export const FOCUS_ON_VIEW_INIT_DIRECTIVES: Type<any>[];
 export const FOCUS_SERVICE_PROVIDER: {
     provide: typeof FocusService;
     useFactory: typeof clrFocusServiceFactory;
-    deps: (Optional[] | typeof Renderer2)[];
+    deps: (typeof Renderer2 | Optional[])[];
 };
 
 // @public (undocumented)

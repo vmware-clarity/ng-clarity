@@ -6,9 +6,9 @@
  */
 
 import { Component, Input } from '@angular/core';
+import { HeadingLevel } from '@clr/angular/utils';
 
 import { ClrStackView } from './stack-view';
-import { HeadingLevel } from '../../utils/types/heading-level';
 
 @Component({
   selector: 'clr-stack-header',

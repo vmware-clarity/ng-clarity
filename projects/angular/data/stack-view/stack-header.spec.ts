@@ -8,10 +8,10 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { HeadingLevel } from '@clr/angular/utils';
 
 import { ClrStackView } from './stack-view';
 import { ClrStackViewModule } from './stack-view.module';
-import { HeadingLevel } from '../../utils/types/heading-level';
 
 @Component({
   template: `
