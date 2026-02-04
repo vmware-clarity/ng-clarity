@@ -9,48 +9,9 @@
 @use '../../styles/a11y';
 @use '../../styles/mixins';
 @use 'variables.vertical-nav' as vertical-nav-variables;
+@use 'mixins.vertical-nav' as vertical-nav-mixins;
 @use '../../styles/core/tokens/variables.tokens' as tokens;
-@use '../tabs/tabs.clarity' as tabs;
 @use '../../styles/variables/variables.density' as density;
-
-@mixin vertical-nav-divider($position: 'border-top') {
-  #{$position}: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-width solid
-    vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color;
-}
-@mixin vertical-nav-link-colors() {
-  color: vertical-nav-variables.$clr-vertical-nav-item-color;
-
-  &.active {
-    color: vertical-nav-variables.$clr-vertical-nav-item-active-color;
-    background-color: vertical-nav-variables.$clr-vertical-nav-selected-bg-color;
-    position: relative;
-
-    @include tabs.nav-link-border-appearence('left');
-
-    .nav-icon {
-      fill: vertical-nav-variables.$clr-vertical-nav-icon-active-color;
-    }
-
-    &:hover {
-      background-color: vertical-nav-variables.$clr-vertical-nav-selected-hover-bg-color;
-    }
-
-    &:active {
-      background-color: vertical-nav-variables.$clr-vertical-nav-selected-active-bg-color;
-    }
-  }
-
-  &:hover {
-    color: vertical-nav-variables.$clr-vertical-nav-item-active-color;
-    background-color: vertical-nav-variables.$clr-vertical-nav-hover-bg-color;
-    text-decoration: none;
-  }
-
-  &:active {
-    color: vertical-nav-variables.$clr-vertical-nav-active-color;
-    background-color: vertical-nav-variables.$clr-vertical-nav-active-bg-color;
-  }
-}
 
 @include meta.load-css('properties.vertical-nav');
 @include mixins.exports('vertical-nav.clarity') {
@@ -69,7 +30,7 @@
     transition: width 0.2s ease-in-out;
 
     .nav-divider {
-      @include vertical-nav-divider();
+      @include vertical-nav-mixins.vertical-nav-divider();
     }
 
     .nav-content {
@@ -98,7 +59,7 @@
 
       //Others
 
-      @include vertical-nav-link-colors();
+      @include vertical-nav-mixins.vertical-nav-link-colors();
 
       .nav-link {
         //Display
@@ -238,7 +199,7 @@
     .nav-trigger + .nav-content {
       //Dims
 
-      @include vertical-nav-divider();
+      @include vertical-nav-mixins.vertical-nav-divider();
     }
 
     .nav-group-text,
@@ -273,7 +234,7 @@
 
       //Others
 
-      @include vertical-nav-link-colors();
+      @include vertical-nav-mixins.vertical-nav-link-colors();
     }
 
     .nav-header {
@@ -504,7 +465,7 @@
         //Dims
         border-top: 0;
 
-        @include vertical-nav-divider('border-bottom');
+        @include vertical-nav-mixins.vertical-nav-divider('border-bottom');
       }
     }
   }
