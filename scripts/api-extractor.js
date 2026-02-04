@@ -197,6 +197,7 @@ function processTask(task, baseConfig, distPaths) {
     const result = Extractor.invoke(loadedConfig, {
       localBuild: IS_LOCAL_MODE,
       showVerboseMessages: false,
+      printApiReportDiff: true,
     });
 
     // 4. Handle Results
