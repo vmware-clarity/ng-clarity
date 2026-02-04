@@ -4,183 +4,13 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use 'sass:map';
+
 @use 'sass:meta';
-@use 'sass:list';
+@use '../../styles/mixins';
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 @use '../../button/variables.buttons' as button-variables;
-@use '../../styles/mixins';
-@use '../../styles/variables/variables.global';
 @use 'variables.tooltip' as tooltip-variables;
-@use '../../styles/variables/variables.density' as density;
-
-$tooltip-configs: (
-  'top-right': (
-    top,
-    right,
-  ),
-  'top-left': (
-    top,
-    left,
-  ),
-  'bottom-right': (
-    bottom,
-    right,
-  ),
-  'bottom-left': (
-    bottom,
-    left,
-  ),
-  'right': (
-    right,
-    null,
-  ),
-  'left': (
-    left,
-    null,
-  ),
-);
-
-@mixin generate-tooltip-styles($isCss: true) {
-  $prefix: if($isCss, 'tooltip-', '');
-
-  @each $name, $args in $tooltip-configs {
-    // Destructure arguments
-    $dirA: list.nth($args, 1);
-    $dirB: list.nth($args, 2);
-
-    // Generate Selector
-    &.#{$prefix}#{$name} > .tooltip-content {
-      // Logic: If second direction exists, it's vertical. Otherwise, horizontal.
-      @if $dirB {
-        @include vertical-tooltip-generator($dirA, $dirB, $isCss);
-      } @else {
-        @include horizontal-tooltip-generator($dirA, $isCss);
-      }
-    }
-  }
-}
-@mixin tooltip-sizes {
-  &.tooltip-xs > .tooltip-content,
-  .tooltip-content.tooltip-xs {
-    width: tokens.$cds-global-space-14;
-  }
-
-  &.tooltip-sm > .tooltip-content,
-  .tooltip-content.tooltip-sm {
-    width: mixins.baselinePx(120);
-  }
-
-  &.tooltip-md > .tooltip-content,
-  .tooltip-content.tooltip-md {
-    width: mixins.baselinePx(240);
-  }
-
-  &.tooltip-lg > .tooltip-content,
-  .tooltip-content.tooltip-lg {
-    width: mixins.baselinePx(360);
-  }
-}
-@mixin common-tooltip-styles {
-  margin: 0; //Resetting any margin that might be applied to span/div elements inside forms
-  width: mixins.baselinePx(240);
-  border-radius: tooltip-variables.$clr-tooltip-border-radius;
-  padding: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-l;
-  color: tooltip-variables.$clr-tooltip-color;
-  background-color: tooltip-variables.$clr-tooltip-background-color;
-
-  @include mixins.generate-typography-token(
-    'BODY-14-RG-CPT',
-    (
-      font-weight: tooltip-variables.$clr-tooltip-font-weight,
-    )
-  );
-}
-@mixin common-tooltip-content-styles {
-  //Both visibility and opacity are needed. Opacity handles the transition.
-  //And visibility makes sure that the user cant select the text in the tooltip-content
-  //when hidden
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.3s linear;
-  white-space: normal;
-  z-index: map.get(variables.$clr-layers, tooltips);
-
-  // This allows a user to hover their mouse over the tooltip to stop it from hiding
-  &::after {
-    position: absolute;
-    inset: -20px;
-    content: '';
-    // make sure this is underneath the tooltip so that user can use their mouse to select text
-    z-index: -1;
-  }
-
-  // color overrides for components and HTML elements
-  li {
-    color: inherit;
-  }
-}
-@mixin vertical-tooltip-generator($dirA: top, $dirB: right, $plain: false) {
-  $oppA: map.get(mixins.$opp-directions, $dirA);
-  $oppB: map.get(mixins.$opp-directions, $dirB);
-
-  @include common-tooltip-styles;
-
-  @if $plain {
-    position: absolute;
-    #{$dirA}: auto;
-    #{$oppA}: 100%;
-    #{$oppB}: 50%;
-    #{$dirB}: auto;
-    margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
-  }
-
-  border-#{$oppA}-#{$oppB}-radius: 0;
-
-  &::before {
-    content: '';
-    position: absolute;
-    pointer-events: none;
-    #{$oppB}: 0;
-    #{$dirA}: auto;
-    #{$dirB}: auto;
-    #{$oppA}: calc(-1 * #{tooltip-variables.$clr-tooltip-arrow-height});
-    border-#{$oppB}: tooltip-variables.$clr-tooltip-arrow-height solid tooltip-variables.$clr-tooltip-background-color;
-    border-#{$dirA}: tooltip-variables.$clr-tooltip-arrow-width solid tooltip-variables.$clr-tooltip-background-color;
-    border-#{$oppA}: tooltip-variables.$clr-tooltip-arrow-width solid transparent;
-    border-#{$dirB}: tooltip-variables.$clr-tooltip-arrow-width solid transparent;
-  }
-}
-@mixin horizontal-tooltip-generator($dirA: right, $plain: false) {
-  $oppA: map.get(mixins.$opp-directions, $dirA);
-
-  @include common-tooltip-styles;
-
-  @if $plain {
-    position: absolute;
-    #{$dirA}: auto;
-    #{$oppA}: 100%;
-    top: 50%;
-    bottom: auto;
-    margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
-  }
-
-  border-top-#{$oppA}-radius: 0;
-
-  &::before {
-    content: '';
-    position: absolute;
-    pointer-events: none;
-    top: 0;
-    bottom: auto;
-    #{$dirA}: auto;
-    #{$oppA}: calc(-1 * #{tooltip-variables.$clr-tooltip-arrow-width});
-    border-top: tooltip-variables.$clr-tooltip-arrow-height solid tooltip-variables.$clr-tooltip-background-color;
-    border-#{$dirA}: tooltip-variables.$clr-tooltip-arrow-width solid tooltip-variables.$clr-tooltip-background-color;
-    border-bottom: tooltip-variables.$clr-tooltip-arrow-height solid transparent;
-    border-#{$oppA}: tooltip-variables.$clr-tooltip-arrow-width solid transparent;
-  }
-}
+@use 'mixins.tooltip' as tooltip-mixins;
 
 @include meta.load-css('properties.tooltip');
 @include mixins.exports('tooltips.clarity') {
@@ -191,10 +21,10 @@ $tooltip-configs: (
     overflow: visible;
 
     & > .tooltip-content {
-      @include common-tooltip-content-styles;
+      @include tooltip-mixins.common-tooltip-content-styles;
 
       //Default Tooltip direction - Top Right
-      @include vertical-tooltip-generator(top, right, true);
+      @include tooltip-mixins.vertical-tooltip-generator(top, right, true);
     }
 
     &:hover > .tooltip-content,
@@ -219,10 +49,10 @@ $tooltip-configs: (
     }
 
     //Tooltip directions
-    @include generate-tooltip-styles();
+    @include tooltip-mixins.generate-tooltip-styles();
 
     //Tooltips Size
-    @include tooltip-sizes();
+    @include tooltip-mixins.tooltip-sizes();
   }
 
   //Override tooltip margins values for different components.
@@ -272,7 +102,7 @@ $tooltip-configs: (
     display: inline-block;
 
     & > .tooltip-content {
-      @include common-tooltip-content-styles;
+      @include tooltip-mixins.common-tooltip-content-styles;
 
       display: none;
       visibility: visible;
@@ -284,9 +114,9 @@ $tooltip-configs: (
     }
 
     //Tooltip directions
-    @include generate-tooltip-styles(false);
+    @include tooltip-mixins.generate-tooltip-styles(false);
 
     //Tooltips Size
-    @include tooltip-sizes();
+    @include tooltip-mixins.tooltip-sizes();
   }
 }
