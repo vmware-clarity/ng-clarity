@@ -226,3 +226,7 @@
   @include btn-nowrap();
   @include btn-text-properties();
 }
+@mixin square-off-btngroup-btns($dir: left) {
+  border-top-#{$dir}-radius: 0;
+  border-bottom-#{$dir}-radius: 0;
+}
