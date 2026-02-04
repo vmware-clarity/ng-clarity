@@ -16,7 +16,7 @@ import {
   Output,
   SkipSelf,
 } from '@angular/core';
-import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
+import { ClrCommonStringsService, HeadingLevel, uniqueIdFactory } from '@clr/angular/utils';
 
 import { ClrStackViewLabel } from './stack-view-custom-tags';
 
