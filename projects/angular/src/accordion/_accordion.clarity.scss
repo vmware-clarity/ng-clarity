@@ -217,7 +217,7 @@
 
   .clr-accordion-panel-error .clr-accordion-number,
   .clr-accordion-panel-complete .clr-accordion-number {
-    @include a11y.screen-reader-only();
+    @include mixins.screen-reader-only();
   }
 
   // temporary overrides to match stackview until stepper, accordion and stackview are aligned

@@ -472,6 +472,20 @@ $typography-tokens: (
   }
 }
 
+// a11y
+@mixin screen-reader-only() {
+  position: absolute;
+  clip-path: inset(50%);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  top: 0;
+  left: 0;
+}
+
 // default are for metropolis/clarity-city
 @mixin line-height-eraser(
   $line-height-gap-em: 0.6em,

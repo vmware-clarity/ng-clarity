@@ -450,7 +450,7 @@
 
         .nav-group-text,
         .nav-text {
-          @include a11y.screen-reader-only();
+          @include mixins.screen-reader-only();
         }
       }
     }
