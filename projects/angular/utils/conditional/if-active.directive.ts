@@ -21,7 +21,6 @@ import { IF_ACTIVE_ID, IfActiveService } from './if-active.service';
 
 @Directive({
   selector: '[clrIfActive]',
-  standalone: false,
 })
 
 /**********

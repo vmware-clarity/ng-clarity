@@ -14,8 +14,7 @@ import { ClrIfExpanded } from './if-expanded.directive';
 export const CONDITIONAL_DIRECTIVES: Type<any>[] = [ClrIfActive, ClrIfExpanded];
 
 @NgModule({
-  imports: [CommonModule],
-  declarations: [CONDITIONAL_DIRECTIVES],
+  imports: [CommonModule, CONDITIONAL_DIRECTIVES],
   exports: [CONDITIONAL_DIRECTIVES],
 })
 export class ClrConditionalModule {}
