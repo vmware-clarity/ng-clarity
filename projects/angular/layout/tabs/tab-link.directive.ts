@@ -76,7 +76,7 @@ export class ClrTabLink {
   }
 
   @HostBinding('attr.tabindex')
-  get tabindex() {
+  get tabindex(): 0 | -1 {
     return this.active ? 0 : -1;
   }
 
