@@ -1,0 +1,169 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:meta';
+@use 'sass:map';
+@use '../../styles/mixins';
+@use '../badge/variables.badges' as badges-variables;
+@use 'variables.label' as label-variables;
+@use 'mixins.label' as label-mixins;
+@use '../../styles/variables/variables.density' as density;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+
+@include meta.load-css('properties.label');
+@include mixins.exports('labels.clarity') {
+  //NOTE: Had to use inline-flex, reset line-height to normal, and had to use change a few values
+  //instead of using our baselineRem function. This was done to achieve the desired look
+  //and to align this with our vertical baseline. Not sure why but aligning inline-blocks within inline-blocks
+  //is a bit tricky. I initially used display: inline-block but I wasn't able to align the labels properly.
+  .label,
+  a.label {
+    //default
+
+    @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: density.$clr-base-gap-xs;
+    padding: density.$clr-base-vertical-offset-2xs calc(density.$clr-base-horizontal-offset-xs * 2);
+    border: label-variables.$clr-label-borderwidth solid label-variables.$clr-label-default-border-color;
+    border-radius: density.$clr-base-border-radius-xl;
+    min-height: density.$clr-base-row-height-s;
+    margin: 0 density.$clr-base-horizontal-offset-s density.$clr-base-vertical-offset-2xs 0;
+    white-space: nowrap;
+    color: label-variables.$clr-label-font-color;
+    text-decoration: none;
+
+    &.solid {
+      border-color: label-variables.$clr-label-default-solid-border-color;
+      background-color: label-variables.$clr-label-default-solid-bg-color;
+      color: label-variables.$clr-label-font-solid-color;
+
+      & > .badge {
+        border-color: badges-variables.$clr-badge-outline-border-color;
+        background-color: badges-variables.$clr-badge-outline-bg-color;
+        color: badges-variables.$clr-badge-outline-color;
+      }
+    }
+
+    // Set lower padding size if there is a badge or icon in the start / end of a label.
+    &:has(> .badge:first-child),
+    &:has(> cds-icon:first-child) {
+      padding-left: density.$clr-base-horizontal-offset-xs;
+    }
+
+    &:has(> .badge:last-child),
+    &:has(> cds-icon:last-child) {
+      padding-right: density.$clr-base-horizontal-offset-xs;
+    }
+
+    .badge,
+    cds-icon {
+      margin: 0;
+      text-decoration: none;
+    }
+
+    cds-icon:not([size]) {
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+    }
+
+    &.clickable:not(:has(.text)) {
+      text-decoration: underline;
+    }
+
+    &.clickable > .text {
+      text-decoration: underline;
+    }
+
+    &:visited {
+      color: label-variables.$clr-label-font-color;
+
+      cds-icon,
+      clr-icon {
+        color: label-variables.$clr-label-font-color;
+      }
+    }
+
+    &:focus,
+    &:hover,
+    &:active {
+      text-decoration: none;
+    }
+
+    &.clickable:not(.disabled) {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: none;
+        background: label-variables.$clr-label-bg-hover-color;
+        color: label-variables.$clr-label-hover-color;
+
+        & > .badge {
+          border-color: badges-variables.$clr-badge-border-color;
+          background-color: badges-variables.$clr-badge-background-color;
+          color: badges-variables.$clr-badge-color;
+        }
+
+        cds-icon,
+        clr-icon {
+          color: label-variables.$clr-label-hover-color;
+        }
+      }
+
+      &:active {
+        color: label-variables.$clr-label-active-color;
+        background: label-variables.$clr-label-bg-active-color;
+        transform: translateY(tokens.$cds-global-space-2);
+
+        & > .badge {
+          border-color: badges-variables.$clr-badge-border-color;
+          background-color: badges-variables.$clr-badge-background-color;
+          color: badges-variables.$clr-badge-color;
+        }
+
+        cds-icon,
+        clr-icon {
+          color: label-variables.$clr-label-active-color;
+        }
+      }
+    }
+
+    @include label-mixins.generateLabelStyles(gray, 1);
+    @include label-mixins.generateLabelStyles(purple, 2);
+    @include label-mixins.generateLabelStyles(blue, 3);
+    @include label-mixins.generateLabelStyles(orange, 4);
+    @include label-mixins.generateLabelStyles(light-blue, 5);
+    @include label-mixins.generateLabelStyles(info);
+    @include label-mixins.generateLabelStyles(success);
+    @include label-mixins.generateLabelStyles(warning);
+    @include label-mixins.generateLabelStyles(danger);
+
+    & > .badge {
+      margin: 0;
+    }
+
+    &.disabled,
+    &:disabled {
+      cursor: not-allowed;
+      background: label-variables.$clr-label-bg-disabled-color;
+      color: label-variables.$clr-label-disabled-color;
+      border-color: label-variables.$clr-label-disabled-border-color;
+
+      cds-icon,
+      clr-icon {
+        color: label-variables.$clr-label-disabled-color;
+      }
+
+      .badge {
+        background: label-variables.$clr-label-disabled-color;
+        border-color: label-variables.$clr-label-disabled-color;
+        color: label-variables.$clr-label-bg-disabled-color;
+      }
+    }
+  }
+}

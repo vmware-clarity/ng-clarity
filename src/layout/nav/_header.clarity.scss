@@ -1,0 +1,40 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:map';
+@use 'sass:meta';
+@use '../../styles/mixins';
+@use '../../styles/variables/variables';
+@use '../main-container/variables.header' as header-variables;
+@use 'mixins.header' as header-mixins;
+
+@include meta.load-css('../main-container/properties.header');
+@include mixins.exports('header.clarity') {
+  // TODO: rename to follow clr naming convention
+  header,
+  .header {
+    display: flex;
+    color: header-variables.$clr-header-font-color;
+    background-color: header-variables.$clr-header-bg-color;
+    height: header-variables.$clr-header-height;
+    white-space: nowrap;
+
+    @include header-mixins.header-backgrounds();
+    @include header-mixins.header-branding();
+    @include header-mixins.header-links();
+    @include header-mixins.header-nav();
+    @include header-mixins.header-actions();
+    @include header-mixins.header-search();
+  }
+
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) {
+    header,
+    .header {
+      @include header-mixins.header-search-md();
+    }
+  }
+}

@@ -1,0 +1,26 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+// Usage: ../signpost/_signpost.clarity.scss
+$clr-signpost-content-color: var(--clr-signpost-content-color) !default;
+$clr-signpost-content-bg-color: var(--clr-signpost-content-bg-color) !default;
+$clr-signpost-content-border-color: var(--clr-signpost-content-border-color) !default;
+
+$clr-signpost-action-color: var(--clr-signpost-action-color) !default;
+$clr-signpost-action-hover-color: var(--clr-signpost-action-hover-color) !default;
+$clr-signpost-action-active-color: var(--clr-signpost-action-active-color) !default;
+
+$clr-signpost-border-radius: var(--clr-signpost-border-radius) !default;
+
+// @deprecated in v17 to be removed in v18 in favor of $clr-signpost-pointer-size
+$clr-signpost-border-size: var(--clr-signpost-border-size) !default;
+$clr-signpost-pointer-size: $clr-signpost-border-size !default;
+$clr-signpost-pointer-border: var(--clr-signpost-pointer-border) !default;
+$clr-signpost-pointer-invisible-border: var(--clr-signpost-pointer-invisible-border) !default;
+
+// @deprecated in v17 to be removed in v18 in favor of $clr-signpost-pointer-pseudo-border
+$clr-signpost-pointer-psuedo-border: var(--clr-signpost-pointer-psuedo-border) !default;
+$clr-signpost-pointer-pseudo-border: $clr-signpost-pointer-psuedo-border !default;

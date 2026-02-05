@@ -1,0 +1,31 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+// why are we doing these in groups?
+// so that more explicit side declarations can override more general axis declarations
+// it's more verbose but allows customization through greater specificity
+// <div cds-layout="p:sm p-t:lg p-b:none">...</div>
+
+// The micro syntax is primarily needed for performance.
+// To support all the sides as well as breakpoints we need
+// a compact syntax to prevent an excessive amount of generated CSS.
+// [type]-[side]@[breakpoint]:[size]
+
+@use './mixins/mixins';
+
+@include mixins.generateGaps();
+@include mixins.spacers();
+@include mixins.axisSpacers();
+@include mixins.sideSpacers();
+
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @include mixins.generateGaps($breakpoint);
+    @include mixins.spacers($breakpoint);
+    @include mixins.axisSpacers($breakpoint);
+    @include mixins.sideSpacers($breakpoint);
+  }
+}

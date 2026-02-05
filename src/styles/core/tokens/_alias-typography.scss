@@ -1,0 +1,101 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../variables/variables.density' as density;
+@use '../../mixins';
+
+@include mixins.root-or-host() {
+  --cds-alias-typography-color-100: var(--cds-global-color-white);
+  --cds-alias-typography-color-200: var(--cds-global-color-construction-600);
+  --cds-alias-typography-color-300: var(--cds-global-color-construction-800);
+  --cds-alias-typography-color-400: var(--cds-global-color-construction-900);
+  --cds-alias-typography-color-450: var(--cds-global-color-construction-1000);
+  --cds-alias-typography-color-500: var(--cds-global-color-black);
+  --cds-alias-typography-font-weight-light: 300;
+  --cds-alias-typography-font-weight-regular: 400;
+  --cds-alias-typography-font-weight-medium: 500;
+  --cds-alias-typography-font-weight-semibold: 600;
+  --cds-alias-typography-font-weight-bold: 600;
+  --cds-alias-typography-font-weight-extrabold: 600;
+  --cds-alias-typography-font-size-0: calc(10 * var(--cds-internal-scale-3));
+  --cds-alias-typography-font-size-1: calc(11 * var(--cds-internal-scale-3));
+  --cds-alias-typography-font-size-2: calc(12 * var(--cds-internal-scale-3));
+  --cds-alias-typography-font-size-3: calc(13 * var(--cds-internal-scale-3));
+  --cds-alias-typography-font-size-4: calc(14 * var(--cds-internal-scale-3));
+  --cds-alias-typography-font-size-5: calc(16 * var(--cds-internal-scale-3));
+  --cds-alias-typography-font-size-6: calc(20 * var(--cds-internal-scale-3));
+  --cds-alias-typography-font-size-7: calc(24 * var(--cds-internal-scale-3));
+  --cds-alias-typography-font-size-8: calc(32 * var(--cds-internal-scale-3));
+  --cds-alias-typography-font-size-9: calc(40 * var(--cds-internal-scale-3));
+  --cds-alias-typography-font-family: 'Metropolis', 'Avenir Next', sans-serif;
+  --cds-alias-typography-header-font-family: 'Metropolis', 'Avenir Next', sans-serif;
+  --cds-alias-typography-monospace-font-family: ui-monospace, Consolas, Menlo, Monaco, monospace;
+  --cds-alias-typography-top-gap-height: 0.1475em;
+  --cds-alias-typography-ascender-height: 0.1703em;
+  --cds-alias-typography-x-height: 0.517em;
+  --cds-alias-typography-link-color: var(--cds-global-color-blue-800);
+  --cds-alias-typography-link-color-hover: var(--cds-global-color-blue-900);
+  --cds-alias-typography-link-color-active: var(--cds-global-color-red-700);
+  --cds-alias-typography-link-color-visited: var(--cds-global-color-violet-700);
+  --cds-alias-typography-link-color-visited-hover: var(--cds-global-color-violet-1000);
+  --cds-alias-typography-link-on-colorbg: var(--cds-global-color-black);
+  --cds-alias-typography-body-letter-spacing: -0.00714286em;
+  --cds-alias-typography-body-font-weight: 400;
+  --cds-alias-typography-display-letter-spacing: -0.0125em;
+  --cds-alias-typography-display-font-weight: 500;
+  --cds-alias-typography-heading-letter-spacing: -0.0125em;
+  --cds-alias-typography-heading-font-weight: 500;
+  --cds-alias-typography-headline-letter-spacing: -0.0125em;
+  --cds-alias-typography-headline-font-weight: 500;
+  --cds-alias-typography-title-letter-spacing: -0.00833333em;
+  --cds-alias-typography-title-font-weight: 500;
+  --cds-alias-typography-section-letter-spacing: -0.01em;
+  --cds-alias-typography-section-font-weight: 500;
+  --cds-alias-typography-subsection-letter-spacing: -0.0125em;
+  --cds-alias-typography-subsection-font-weight: 500;
+  --cds-alias-typography-message-letter-spacing: -0.0125em;
+  --cds-alias-typography-message-font-weight: calc(400 * (1rem / var(--cds-global-base)));
+  --cds-alias-typography-secondary-letter-spacing: -0.007692em;
+  --cds-alias-typography-secondary-font-weight: 400;
+  --cds-alias-typography-caption-letter-spacing: 0.018182em;
+  --cds-alias-typography-caption-font-weight: 400;
+  --cds-alias-typography-smallcaption-letter-spacing: 0.05em;
+  --cds-alias-typography-smallcaption-font-weight: 500;
+  --cds-alias-typography-info-hover: var(--cds-global-color-blue-800);
+  --cds-alias-typography-success-hover: var(--cds-global-color-green-800);
+  --cds-alias-typography-warning-hover: var(--cds-global-color-ochre-900);
+  --cds-alias-typography-danger-hover: var(--cds-global-color-red-800);
+  --cds-alias-typography-neutral-hover: var(--cds-global-color-construction-700);
+  --cds-alias-typography-disabled: var(--cds-global-color-construction-500);
+  --cds-alias-typography-disabled-button: var(--cds-global-color-construction-500);
+
+  &,
+  & [clr-density] {
+    --cds-alias-typography-body-font-size: #{density.$clr-base-typography-font-size-default};
+    --cds-alias-typography-body-line-height: #{density.$clr-base-typography-line-height-20};
+    --cds-alias-typography-display-font-size: #{density.$clr-base-typography-font-size-display};
+    --cds-alias-typography-display-line-height: #{density.$clr-base-typography-line-height-44};
+    --cds-alias-typography-heading-font-size: #{density.$clr-base-typography-font-size-heading};
+    --cds-alias-typography-heading-line-height: #{density.$clr-base-typography-line-height-32};
+    --cds-alias-typography-headline-font-size: #{density.$clr-base-typography-font-size-headline};
+    --cds-alias-typography-headline-line-height: #{density.$clr-base-typography-line-height-36};
+    --cds-alias-typography-title-font-size: #{density.$clr-base-typography-font-size-heading};
+    --cds-alias-typography-title-line-height: #{density.$clr-base-typography-line-height-32};
+    --cds-alias-typography-section-font-size: #{density.$clr-base-typography-font-size-section};
+    --cds-alias-typography-section-line-height: #{density.$clr-base-typography-line-height-24};
+    --cds-alias-typography-subsection-font-size: #{density.$clr-base-typography-font-size-sub-section};
+    --cds-alias-typography-subsection-line-height: #{density.$clr-base-typography-line-height-24};
+    --cds-alias-typography-message-font-size: #{density.$clr-base-typography-font-size-sub-section};
+    --cds-alias-typography-message-line-height: #{density.$clr-base-typography-line-height-24};
+    --cds-alias-typography-secondary-font-size: #{density.$clr-base-typography-font-size-inline};
+    --cds-alias-typography-secondary-line-height: #{density.$clr-base-typography-line-height-16};
+    --cds-alias-typography-caption-font-size: #{density.$clr-base-typography-font-size-caption};
+    --cds-alias-typography-caption-line-height: #{density.$clr-base-typography-line-height-16};
+    --cds-alias-typography-smallcaption-font-size: #{density.$clr-base-typography-font-size-caption-small};
+    --cds-alias-typography-smallcaption-line-height: #{density.$clr-base-typography-line-height-12};
+  }
+}

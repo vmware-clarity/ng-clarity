@@ -1,0 +1,21 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use './alias-interaction';
+@use './alias-typography';
+@use './alias-object-background';
+@use './alias-object-border';
+@use './alias-object-container';
+@use './alias-object-opacity';
+@use './alias-object-shadow';
+@use './alias-status';
+@use './alias-utility';
+@use './alias-viz-colors';
+@use './global-animation';
+@use './global-colors';
+@use './global-space';
+@use './internal-scale';

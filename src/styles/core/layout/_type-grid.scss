@@ -1,0 +1,66 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../tokens/variables.tokens' as tokens;
+@use './mixins/mixins';
+@use './mixins/mixins.grid' as grid-mixins;
+@use 'optimize';
+
+[#{optimize.$layout}~='#{optimize.$grid}'] {
+  display: grid;
+  align-items: start;
+  align-content: start;
+  grid-template-columns: repeat(#{tokens.$cds-global-layout-grid-cols}, 1fr);
+  width: 100%;
+
+  &[#{optimize.$layout}*='#{optimize.$rows}'] {
+    grid-template-rows: repeat(12, auto);
+  }
+
+  & > [#{optimize.$layout}*='#{optimize.$row}'] {
+    align-self: stretch;
+  }
+
+  &[#{optimize.$layout}*='#{optimize.$cols}:auto'] {
+    grid-auto-flow: column;
+    grid-template-columns: initial;
+  }
+}
+
+[#{optimize.$layout}*='#{optimize.$cols}\@'] > * {
+  grid-column: span #{tokens.$cds-global-layout-grid-cols};
+}
+
+[#{optimize.$layout}*='#{optimize.$col}\@'] {
+  grid-column: span 12;
+}
+
+@include grid-mixins.generateColumnsAndRows();
+@include grid-mixins.generateExplicitColumnAndRow();
+@include grid-mixins.generatePositions();
+@include grid-mixins.generateAlignments();
+
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @include grid-mixins.generateColumnsAndRows($breakpoint);
+  }
+}
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @include grid-mixins.generateExplicitColumnAndRow($breakpoint);
+  }
+}
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @include grid-mixins.generatePositions($breakpoint);
+  }
+}
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @include grid-mixins.generateAlignments($breakpoint);
+  }
+}

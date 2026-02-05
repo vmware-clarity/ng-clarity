@@ -1,0 +1,19 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+// common alignment styles shared between vertical and horizontal layouts
+@use 'mixins/mixins';
+@use 'mixins/mixins.alignment' as alignment-mixins;
+@use 'optimize';
+
+@include alignment-mixins.generateHorizontalVerticalAlignments();
+
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @include alignment-mixins.generateHorizontalVerticalAlignments($breakpoint);
+  }
+}
