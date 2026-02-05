@@ -32,6 +32,7 @@ import { ElementRef } from '@angular/core';
 import { EmbeddedViewRef } from '@angular/core';
 import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { FactoryProvider } from '@angular/core';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
@@ -54,7 +55,6 @@ import { Observer } from 'rxjs';
 import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { Optional } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { PipeTransform } from '@angular/core';
@@ -7188,11 +7188,7 @@ export const FOCUS_ON_VIEW_INIT: InjectionToken<boolean>;
 export const FOCUS_ON_VIEW_INIT_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
-export const FOCUS_SERVICE_PROVIDER: {
-    provide: typeof FocusService;
-    useFactory: typeof clrFocusServiceFactory;
-    deps: (Optional[] | typeof Renderer2)[];
-};
+export const FOCUS_SERVICE_PROVIDER: FactoryProvider;
 
 // @public (undocumented)
 export abstract class FocusableItem {
