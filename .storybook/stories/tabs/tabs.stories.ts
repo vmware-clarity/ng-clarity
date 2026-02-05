@@ -8,7 +8,7 @@
 import { ClrTabs, ClrTabsModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { TabsLayout } from '../../../projects/angular/src/layout/tabs/enums/tabs-layout.enum';
+import { TabsLayout } from '../../../projects/angular/layout/tabs/enums/tabs-layout.enum';
 
 export default {
   title: 'Tabs/Tabs',

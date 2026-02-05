@@ -1,0 +1,74 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { FormControl, FormsModule, Validators } from '@angular/forms';
+import { ClrIcon } from 'projects/angular/icon';
+
+import { ClrInput } from '../../input/input';
+import { ClrInputContainer } from '../../input/input-container';
+import { NgControlService } from '../providers/ng-control.service';
+import { ClrControlSuccess } from '../success';
+import { ClrIfSuccess } from './if-success';
+
+const successMessage = 'SUCCESS_MESSAGE';
+
+@Component({
+  template: `<div *clrIfSuccess></div>`,
+  standalone: false,
+})
+class InvalidUseTest {}
+
+@Component({
+  template: `<clr-control-success *clrIfSuccess>${successMessage}</clr-control-success>`,
+  providers: [NgControlService],
+  standalone: false,
+})
+class GeneralSuccessTest {}
+
+export default function (): void {
+  describe('ClrIfSuccess', () => {
+    describe('invalid use', () => {
+      it('throws error when used outside of a control container', () => {
+        TestBed.configureTestingModule({ declarations: [ClrIfSuccess, InvalidUseTest] });
+        expect(() => {
+          const fixture = TestBed.createComponent(InvalidUseTest);
+          fixture.detectChanges();
+        }).toThrow();
+      });
+    });
+
+    describe('general success', () => {
+      let fixture, ngControlService;
+
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          imports: [ClrIcon, FormsModule],
+          declarations: [ClrInput, ClrControlSuccess, ClrInputContainer, ClrIfSuccess, GeneralSuccessTest],
+        });
+        fixture = TestBed.createComponent(GeneralSuccessTest);
+        fixture.detectChanges();
+        ngControlService = fixture.debugElement.injector.get(NgControlService);
+      });
+
+      it('hides the success initially', () => {
+        expect(fixture.nativeElement.innerHTML).not.toContain(successMessage);
+      });
+
+      it('displays the success message after touched', () => {
+        expect(fixture.nativeElement.innerHTML).not.toContain(successMessage);
+        const control = new FormControl('abc', Validators.required);
+        control.markAsTouched();
+        ngControlService.addControl(control);
+        control.markAsTouched();
+        fixture.detectChanges();
+        expect(fixture.nativeElement.innerHTML).toContain(successMessage);
+      });
+    });
+  });
+}

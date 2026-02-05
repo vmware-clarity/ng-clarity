@@ -18,8 +18,8 @@
     "target": "es2022",
     "useDefineForClassFields": false,
     "paths": {
-      "@clr/angular": ["projects/angular/src/index.ts"],
-      "@clr/angular/*": ["projects/angular/src/*"],
+      "@clr/angular": ["projects/angular/index.ts"],
+      "@clr/angular/*": ["projects/angular/*"],
       "@clr/addons": ["projects/addons/index.ts"],
       "@clr/addons/*": ["projects/addons/*"]
     }

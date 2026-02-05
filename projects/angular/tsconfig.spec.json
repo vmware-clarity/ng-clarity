@@ -3,6 +3,6 @@
   "compilerOptions": {
     "types": ["jasmine"]
   },
-  "files": ["src/test.ts"],
+  "files": ["test.ts"],
   "include": ["**/*.spec.ts", "**/*.d.ts"]
 }

@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { ClrFileInputModule, ClrFormLayout, commonStringsDefault } from '@clr/angular';
 import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
 
-import { selectFiles } from '../../../projects/angular/src/forms/file-input/file-input.helpers';
+import { selectFiles } from '../../../projects/angular/forms/file-input/file-input.helpers';
 
 export default {
   title: 'File Input/File Input',
