@@ -12,6 +12,5 @@ export const THEMES = {
 
 export const DENSITY = {
   NONE: 'default',
-  REGULAR: 'regular',
   COMPACT: 'compact',
 };

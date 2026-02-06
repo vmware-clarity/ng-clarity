@@ -27,7 +27,6 @@ import { Component } from '@angular/core';
 export class LayoutSizeDemo {
   densities = [
     { name: 'Current', type: null },
-    { name: 'Regular', type: 'regular' },
     { name: 'Compact', type: 'compact' },
   ];
 
