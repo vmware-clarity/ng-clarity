@@ -11,7 +11,7 @@ import { By } from '@angular/platform-browser';
 import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrSignpostModule, ClrSignpostTrigger } from '@clr/angular/popover/signpost';
-import { expectActiveElementToBe } from '@clr/angular/utils/testing';
+import { expectActiveElementToBe } from '@clr/angular/testing';
 
 import { ClrControlLabel } from './label';
 import { ControlIdService } from './providers/control-id.service';

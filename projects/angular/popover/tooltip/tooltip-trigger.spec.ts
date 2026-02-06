@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { spec, TestContext } from '@clr/angular/utils/testing';
+import { spec, TestContext } from '@clr/angular/testing';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';

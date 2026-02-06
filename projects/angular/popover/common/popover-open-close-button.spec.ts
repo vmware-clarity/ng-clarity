@@ -6,7 +6,7 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { spec, TestContext } from '@clr/angular/utils/testing';
+import { spec, TestContext } from '@clr/angular/testing';
 import { Subscription } from 'rxjs';
 
 import { ClrPopoverOpenCloseButton } from './popover-open-close-button';

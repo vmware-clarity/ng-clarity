@@ -7,8 +7,8 @@
 
 import { Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
+import { TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService, Keys } from '@clr/angular/utils';
-import { TestContext } from '@clr/angular/utils/testing';
 
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';

@@ -6,8 +6,8 @@
  */
 
 import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { spec, TestContext } from '@clr/angular/testing';
 import { IfExpandService } from '@clr/angular/utils';
-import { spec, TestContext } from '@clr/angular/utils/testing';
 
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { RecursiveChildren } from './recursive-children';

@@ -10,7 +10,7 @@ import { TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
 import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
 import { ClrIcon } from '@clr/angular/icon';
-import { delay } from '@clr/angular/utils/testing';
+import { delay } from '@clr/angular/testing';
 
 import { ClrIfError } from './if-error';
 import { ClrControlError } from '../error';

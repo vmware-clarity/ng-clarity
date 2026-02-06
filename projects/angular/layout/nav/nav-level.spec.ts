@@ -6,8 +6,8 @@
  */
 
 import { Component } from '@angular/core';
+import { spec } from '@clr/angular/testing';
 import { LARGE_BREAKPOINT } from '@clr/angular/utils';
-import { spec } from '@clr/angular/utils/testing';
 
 import { ClrNavLevel } from './nav-level';
 import { ClrNavigationModule } from './navigation.module';

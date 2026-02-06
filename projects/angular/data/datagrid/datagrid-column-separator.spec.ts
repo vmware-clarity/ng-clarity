@@ -8,8 +8,8 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { expectActiveElementNotToBe, expectActiveElementToBe } from '@clr/angular/testing';
 import { DomAdapter, Keys } from '@clr/angular/utils';
-import { expectActiveElementNotToBe, expectActiveElementToBe } from '@clr/angular/utils/testing';
 
 import { ClrDatagridColumnSeparator } from './datagrid-column-separator';
 import { ColumnResizerService } from './providers/column-resizer.service';

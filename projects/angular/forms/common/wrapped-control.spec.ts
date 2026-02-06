@@ -9,8 +9,8 @@ import { Component, Directive, ElementRef, Injector, NgModule, Renderer2, Type, 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { delay } from '@clr/angular/testing';
 import { ClrHostWrappingModule, HostWrapper } from '@clr/angular/utils';
-import { delay } from '@clr/angular/utils/testing';
 
 import { ClrAbstractContainer } from './abstract-container';
 import { ClrControlError } from './error';

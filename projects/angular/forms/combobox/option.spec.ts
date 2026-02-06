@@ -7,7 +7,7 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ClrPopoverService, POPOVER_HOST_ANCHOR } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/utils/testing';
+import { TestContext } from '@clr/angular/testing';
 
 import { ComboboxModel } from './model/combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';

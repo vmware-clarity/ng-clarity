@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/utils/testing';
+import { TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridPageSize } from './datagrid-page-size';
 import { Page } from './providers/page';

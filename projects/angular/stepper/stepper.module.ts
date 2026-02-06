@@ -10,10 +10,6 @@ import { NgModule } from '@angular/core';
 import { ClrAccordionModule } from '@clr/angular/accordion';
 import { ClrIcon } from '@clr/angular/icon';
 
-<<<<<<<< HEAD:projects/angular/accordion/stepper/stepper.module.ts
-import { ClrAccordionModule } from '../accordion.module';
-========
->>>>>>>> bbe8bc6a5 (fix: update to latest, move out of src, separate stepper from accordion directory):projects/angular/stepper/stepper.module.ts
 import { StepperOompaLoompa } from './chocolate/stepper-oompa-loompa';
 import { StepperWillyWonka } from './chocolate/stepper-willy-wonka';
 import { ClrStepButton } from './step-button';

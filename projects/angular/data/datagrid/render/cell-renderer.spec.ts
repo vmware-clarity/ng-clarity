@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/utils/testing';
+import { TestContext } from '@clr/angular/testing';
 
 import { DatagridCellRenderer } from './cell-renderer';
 import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';

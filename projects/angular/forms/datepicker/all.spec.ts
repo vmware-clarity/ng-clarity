@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { addHelpers } from '@clr/angular/utils/testing';
+import { addHelpers } from '@clr/angular/testing';
 
 import CalendarSpecs from './calendar.spec';
 import DateContainerSpecs from './date-container.spec';

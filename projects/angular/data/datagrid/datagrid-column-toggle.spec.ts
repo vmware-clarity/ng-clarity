@@ -7,7 +7,7 @@
 
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { delay, TestContext } from '@clr/angular/utils/testing';
+import { delay, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
 import { ColumnsService } from './providers/columns.service';

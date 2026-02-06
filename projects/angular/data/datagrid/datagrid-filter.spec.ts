@@ -7,8 +7,8 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
+import { TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
-import { TestContext } from '@clr/angular/utils/testing';
 import { Subject } from 'rxjs';
 
 import { ClrDatagridFilter } from './datagrid-filter';

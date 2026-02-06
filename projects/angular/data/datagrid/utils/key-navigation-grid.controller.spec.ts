@@ -6,8 +6,8 @@
  */
 
 import { Component } from '@angular/core';
+import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
-import { expectActiveElementToBe, TestContext } from '@clr/angular/utils/testing';
 
 import { ClrDatagrid } from '../datagrid';
 import { Selection } from '../providers/selection';

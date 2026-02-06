@@ -6,7 +6,7 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { spec, TestContext } from '@clr/angular/utils/testing';
+import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrPopoverCloseButton } from './popover-close-button';
 import { ClrPopoverModuleNext } from './popover.module';

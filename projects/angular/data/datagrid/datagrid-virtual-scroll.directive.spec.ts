@@ -8,8 +8,8 @@
 import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { delay, expectActiveElementToBe } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
-import { delay, expectActiveElementToBe } from '@clr/angular/utils/testing';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';

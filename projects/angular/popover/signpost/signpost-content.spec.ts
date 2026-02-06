@@ -10,7 +10,7 @@ import { TestBed } from '@angular/core/testing';
 // I'm giving up, I'm using the datagrid ones for now.
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverPosition, ClrPopoverService, POPOVER_HOST_ANCHOR } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/utils/testing';
+import { TestContext } from '@clr/angular/testing';
 
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';

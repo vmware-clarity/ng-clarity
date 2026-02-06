@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/utils/testing';
+import { TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridActionBar } from './datagrid-action-bar';
 import { FiltersProvider } from './providers/filters';

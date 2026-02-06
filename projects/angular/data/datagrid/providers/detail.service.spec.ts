@@ -6,7 +6,7 @@
  */
 
 import { ModalStackService } from '@clr/angular/modal';
-import { expectActiveElementToBe } from '@clr/angular/utils/testing';
+import { expectActiveElementToBe } from '@clr/angular/testing';
 import { Subscription } from 'rxjs';
 
 import { DetailService } from './detail.service';

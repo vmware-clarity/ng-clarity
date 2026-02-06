@@ -7,8 +7,8 @@
 
 import { Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
+import { TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
-import { TestContext } from '@clr/angular/utils/testing';
 
 import { ClrDaypicker } from './daypicker';
 import { DayModel } from './model/day.model';
