@@ -10,7 +10,7 @@ import { applicationConfig, moduleMetadata, StoryObj } from '@storybook/angular'
 import { CommonModules } from 'helpers/common';
 import { action } from 'storybook/actions';
 
-import { ClrBreadcrumbs, ClrBreadcrumbsModule } from '../../../projects/angular/src/layout/breadcrumbs';
+import { ClrBreadcrumbs, ClrBreadcrumbsModule } from '../../../projects/angular/layout/breadcrumbs';
 
 const menuItems = [
   { label: 'Home', routerLink: '/home' },

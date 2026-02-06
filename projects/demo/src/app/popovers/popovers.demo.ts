@@ -13,8 +13,8 @@ import {
   ClrPopoverType,
   getConnectedPositions,
   getPositionsArray,
-} from '../../../../angular/src/popover/common/utils/popover-positions';
-import { uniqueIdFactory } from '../../../../angular/src/utils/id-generator/id-generator.service';
+} from '../../../../angular/popover/common/utils/popover-positions';
+import { uniqueIdFactory } from '../../../../angular/utils/id-generator/id-generator.service';
 
 @Component({
   selector: 'clr-popovers-demo',
