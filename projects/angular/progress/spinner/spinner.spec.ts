@@ -99,27 +99,27 @@ describe('ClrSpinner component', () => {
         );
       }
 
-      it(`.${SPINNER_SMALL_SIZE} should have the size ot 18x18`, async () => {
+      it(`.${SPINNER_SMALL_SIZE} should have the size ot 16x16`, async () => {
         fixture = TestBed.createComponent(TestSmallComponent);
         fixture.detectChanges();
-        expect(componentHeight(fixture)).toBe(18);
-        expect(componentWidth(fixture)).toBe(18);
+        expect(componentHeight(fixture)).toBe(16);
+        expect(componentWidth(fixture)).toBe(16);
       });
 
-      it(`.${SPINNER_MEDIUM_SIZE} should have the size ot 36x36`, () => {
+      it(`.${SPINNER_MEDIUM_SIZE} should have the size ot 32x32`, () => {
         fixture = TestBed.createComponent(TestMediumComponent);
         fixture.detectChanges();
 
-        expect(componentHeight(fixture)).toBe(36);
-        expect(componentWidth(fixture)).toBe(36);
+        expect(componentHeight(fixture)).toBe(32);
+        expect(componentWidth(fixture)).toBe(32);
       });
 
-      it(`.${SPINNER_LARGE_SIZE} should have the size ot 72x72`, () => {
+      it(`.${SPINNER_LARGE_SIZE} should have the size ot 64x64`, () => {
         fixture = TestBed.createComponent(TestLargeComponent);
         fixture.detectChanges();
 
-        expect(componentHeight(fixture)).toBe(72);
-        expect(componentWidth(fixture)).toBe(72);
+        expect(componentHeight(fixture)).toBe(64);
+        expect(componentWidth(fixture)).toBe(64);
       });
 
       it(`should add .${SPINNER_SMALL_SIZE}`, () => {
