@@ -30,7 +30,6 @@ export const clrDensityAttribute = 'clr-density';
         (change)="applyDensity(clrDensitySelectElement.value)"
       >
         <option value="">None</option>
-        <option value="regular">Regular</option>
         <option value="compact">Compact</option>
       </select>
     </clr-select-container>
