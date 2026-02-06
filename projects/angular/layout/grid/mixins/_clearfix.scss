@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use 'mixins';
-
-@include mixins.exports('a11y.clarity') {
-  .clr-sr-only {
-    @include mixins.screen-reader-only();
+@mixin clearfix() {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
   }
 }

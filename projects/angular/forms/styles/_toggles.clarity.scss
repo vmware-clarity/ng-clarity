@@ -13,11 +13,6 @@
 @use 'mixins.forms' as forms-mixins;
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 
-@mixin clr-toggle-transition-styles() {
-  transition-duration: toggle-variables.$clr-toggle-transition-time;
-  transition-timing-function: toggle-variables.$clr-toggle-transition-animation;
-}
-
 @include meta.load-css('../../button/properties.toggles');
 @include mixins.exports('toggles.clarity') {
   $mark-half-size: calc(#{forms-variables.$clr-forms-checkbox-mark-size} * 0.5);
@@ -57,7 +52,7 @@
       border-radius: density.$clr-base-border-radius-xl; // Style outline radius properly
       background-color: toggle-variables.$clr-toggle-bg-color-off;
 
-      @include clr-toggle-transition-styles;
+      @include forms-mixins.clr-toggle-transition-styles;
 
       transition-property: background-color;
 
@@ -76,7 +71,7 @@
         left: 0;
 
         @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
-        @include clr-toggle-transition-styles;
+        @include forms-mixins.clr-toggle-transition-styles;
 
         transition-property: left, border-width, border-color;
       }
@@ -87,7 +82,7 @@
         content: '';
         visibility: hidden;
 
-        @include clr-toggle-transition-styles;
+        @include forms-mixins.clr-toggle-transition-styles;
 
         left: #{tokens.$cds-global-space-3};
         transition-property: visibility, left, border-color;

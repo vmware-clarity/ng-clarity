@@ -13,7 +13,7 @@
 @use '../../styles/mixins';
 @use 'variables.dropdown' as dropdown-variables;
 @use '../../styles/core/tokens/variables.tokens' as tokens;
-@use '../../layout/tabs/tabs.clarity' as tabs;
+@use '../../layout/tabs/mixins.tabs' as tabs-mixins;
 @use '../../styles/variables/variables.density' as density;
 
 @include meta.load-css('properties.dropdown');
@@ -132,7 +132,7 @@
       &.active {
         position: relative;
 
-        @include tabs.nav-link-border-appearence('left');
+        @include tabs-mixins.nav-link-border-appearance('left');
       }
 
       &.expandable {

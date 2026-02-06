@@ -10,6 +10,7 @@
 @use '../../styles/variables/variables.global';
 @use '../../styles/variables/variables.density' as density;
 @use 'variables.forms' as forms-variables;
+@use '../../button/variables.toggles' as toggle-variables;
 
 // Flatten the error icon and message to be inline for certain input types
 
@@ -178,4 +179,8 @@
   background-color: $background-color;
 
   @include mixins.equilateral($size);
+}
+@mixin clr-toggle-transition-styles() {
+  transition-duration: toggle-variables.$clr-toggle-transition-time;
+  transition-timing-function: toggle-variables.$clr-toggle-transition-animation;
 }

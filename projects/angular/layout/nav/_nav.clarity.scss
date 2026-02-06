@@ -8,7 +8,7 @@
 @use '../../styles/mixins';
 @use '../tabs/variables.tabs' as tabs-variables;
 @use 'variables.subnav' as subnav-variables;
-@use '../tabs/tabs.clarity' as tabs;
+@use '../tabs/mixins.tabs' as tabs-mixins;
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 @use '../../styles/variables/variables.density' as density;
 
@@ -71,7 +71,7 @@
 
       &:hover,
       &.active {
-        @include tabs.nav-link-border-appearence('bottom');
+        @include tabs-mixins.nav-link-border-appearance('bottom');
       }
 
       &:hover,
