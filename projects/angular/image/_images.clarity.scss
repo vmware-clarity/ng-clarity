@@ -7,6 +7,7 @@
 
 @use '../styles/core/tokens/variables.tokens' as tokens;
 @use '../emphasis/alert/variables.alert' as alert-variables;
+@use 'mixins.images' as images-mixins;
 @use '../styles/mixins';
 @use 'icons.clarity';
 
@@ -18,7 +19,7 @@
 
     padding: 0;
 
-    @include mixins.icon-background-styles();
+    @include images-mixins.icon-background-styles();
   }
 
   .alert-icon,

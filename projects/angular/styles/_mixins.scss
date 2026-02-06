@@ -523,11 +523,6 @@ $typography-tokens: (
     content: none;
   }
 }
-@mixin icon-background-styles() {
-  background-repeat: no-repeat;
-  background-size: contain;
-  vertical-align: middle;
-}
 
 @function getLineHeightGap($line-height-value: 1.2, $line-height-token: null) {
   @if (not $line-height-token) or ($line-height-value < 1) {
