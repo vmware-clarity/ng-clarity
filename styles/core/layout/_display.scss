@@ -4,25 +4,9 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../tokens/variables.tokens' as tokens;
-
-@mixin display($breakpoint) {
-  [cds-layout~='display\@#{$breakpoint}:none'] {
-    display: none !important;
-  }
-
-  [cds-layout~='display\@#{$breakpoint}:flex'] {
-    display: flex !important;
-  }
-
-  [cds-layout~='display\@#{$breakpoint}:block'] {
-    display: block !important;
-  }
-
-  [cds-layout~='display\@#{$breakpoint}:inline'] {
-    display: inline !important;
-  }
-}
+@use 'mixins/mixins.display' as display-mixins;
 
 [cds-layout~='display:none'] {
   display: none !important;
@@ -45,16 +29,16 @@
 }
 
 @media (min-width: tokens.$cds-global-layout-width-sm-static) {
-  @include display('sm');
+  @include display-mixins.display('sm');
 }
 @media (min-width: tokens.$cds-global-layout-width-md-static) {
-  @include display('md');
+  @include display-mixins.display('md');
 }
 @media (min-width: tokens.$cds-global-layout-width-lg-static) {
-  @include display('lg');
+  @include display-mixins.display('lg');
 }
 @media (min-width: tokens.$cds-global-layout-width-xl-static) {
-  @include display('xl');
+  @include display-mixins.display('xl');
 }
 
 ::slotted([cds-layout~='display:screen-reader-only']),

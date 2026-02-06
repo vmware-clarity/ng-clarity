@@ -324,6 +324,8 @@ $cds-global-animation-duration-slowest: var(--cds-global-animation-duration-slow
 $cds-global-animation-easing-primary: var(--cds-global-animation-easing-primary) !default;
 $cds-global-animation-easing-secondary: var(--cds-global-animation-easing-secondary) !default;
 $cds-global-animation-easing-loop: var(--cds-global-animation-easing-loop) !default;
+$cds-global-animation-easing-in-out: var(--cds-global-animation-easing-in-out) !default;
+$cds-global-animation-skeleton-duration: var(--cds-global-animation-skeleton-duration) !default;
 $cds-alias-object-border-radius-100: var(--cds-alias-object-border-radius-100) !default;
 $cds-alias-object-border-radius-100-static: 4 !default;
 $cds-alias-object-border-radius-200: var(--cds-alias-object-border-radius-200) !default;
@@ -435,6 +437,7 @@ $cds-alias-object-container-background-inverse-shade: var(
 ) !default;
 $cds-alias-object-container-backdrop-background: var(--cds-alias-object-container-backdrop-background) !default;
 $cds-alias-object-container-border-color: var(--cds-alias-object-container-border-color) !default;
+$cds-alias-object-skeleton-loading-gradient: var(--cds-alias-object-skeleton-loading-gradient) !default;
 $cds-alias-status-info: var(--cds-alias-status-info) !default;
 $cds-alias-status-info-tint: var(--cds-alias-status-info-tint) !default;
 $cds-alias-status-info-shade: var(--cds-alias-status-info-shade) !default;

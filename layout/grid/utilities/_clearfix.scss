@@ -5,14 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@mixin clearfix() {
-  &::after {
-    content: '';
-    display: table;
-    clear: both;
-  }
-}
+@use '../mixins/clearfix' as mixin;
 
 .clr-clearfix {
-  @include clearfix();
+  @include mixin.clearfix();
 }

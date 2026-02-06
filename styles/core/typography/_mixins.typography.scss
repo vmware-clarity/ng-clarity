@@ -1,0 +1,18 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../tokens/variables.tokens' as tokens;
+@use '../../mixins';
+
+@mixin LHE($lh-gap: 0.5em) {
+  @include mixins.line-height-eraser(
+    $lh-gap,
+    tokens.$cds-alias-typography-top-gap-height,
+    tokens.$cds-alias-typography-ascender-height,
+    tokens.$cds-alias-typography-x-height
+  );
+}
