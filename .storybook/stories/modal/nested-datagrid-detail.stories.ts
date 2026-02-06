@@ -42,12 +42,12 @@ const NestedDatagridTemplate: StoryFn = args => ({
         }
       }
     </style>
-    <div [@.disabled]="true" [style.min-height.px]="showActionOverflow ? 650 : 0">
+    <div [style.min-height.px]="showActionOverflow ? 650 : 0">
       <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
 
       <button type="button" class="btn btn-primary" (click)="modalOpen = true">Open Modal</button>
 
-      <clr-modal [(clrModalOpen)]="modalOpen">
+      <clr-modal [(clrModalOpen)]="modalOpen" [clrModalSkipAnimation]="true">
         <h3 class="modal-title">Modal</h3>
         <div class="modal-body">
           <clr-signpost>
