@@ -11,7 +11,7 @@ import { ClrAlertModule, ClrDropdownModule, commonStringsDefault } from '@clr/an
 import { createArray } from 'helpers/common';
 import { RenderComponentStorybook } from 'helpers/render-component';
 
-import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';
+import { ALERT_TYPES } from '../../../projects/angular/emphasis/alert/utils/alert-types';
 
 @Component({
   selector: 'storybook-standard-alert',

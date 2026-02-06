@@ -6,11 +6,11 @@
  */
 
 @use 'sass:map';
-@use '../../angular/src/styles/core/module.reset.scss' as reset;
-@use '../../angular/src/styles/core/tokens/variables.tokens' as tokens;
-@use '../../angular/src/styles/core/module.layout.scss' as layout;
-@use '../../angular/src/styles/core/module.typography.scss' as typography;
-@use '../../angular/src/styles/variables/variables';
+@use '../../angular/styles/core/module.reset.scss' as reset;
+@use '../../angular/styles/core/tokens/variables.tokens' as tokens;
+@use '../../angular/styles/core/module.layout.scss' as layout;
+@use '../../angular/styles/core/module.typography.scss' as typography;
+@use '../../angular/styles/variables/variables';
 
 :root {
   --clr-test-header-text-color: magenta;

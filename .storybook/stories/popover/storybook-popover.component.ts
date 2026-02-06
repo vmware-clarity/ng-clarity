@@ -14,7 +14,7 @@ import { ClarityModule, ClrPopoverService } from '@clr/angular';
 import {
   ClrPopoverType,
   mapPopoverKeyToPosition,
-} from '../../../projects/angular/src/popover/common/utils/popover-positions';
+} from '../../../projects/angular/popover/common/utils/popover-positions';
 
 @Component({
   selector: 'storybook-popover',

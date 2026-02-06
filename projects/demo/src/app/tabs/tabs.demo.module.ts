@@ -14,7 +14,7 @@ import { TabsAngularDemo } from './tabs-angular';
 import { TabsStaticDemo } from './tabs-static';
 import { TabsDemo } from './tabs.demo';
 import { ROUTING } from './tabs.demo.routing';
-import { ClrKeyFocusModule } from '../../../../angular/src/utils/focus/key-focus/key-focus.module';
+import { ClrKeyFocusModule } from '../../../../angular/utils/focus/key-focus/key-focus.module';
 
 @NgModule({
   imports: [CommonModule, ClarityModule, ROUTING, ClrKeyFocusModule],
