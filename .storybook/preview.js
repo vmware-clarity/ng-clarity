@@ -112,7 +112,6 @@ export const globalTypes = {
       showName: true,
       items: [
         { value: DENSITY.NONE, title: 'None' },
-        { value: DENSITY.REGULAR, title: 'Regular' },
         { value: DENSITY.COMPACT, title: 'Compact' },
       ],
     },
