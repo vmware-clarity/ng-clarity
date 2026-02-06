@@ -31,7 +31,7 @@
             "polyfills": ["projects/demo/src/polyfills.ts"],
             "tsConfig": "projects/demo/tsconfig.app.json",
             "assets": ["projects/demo/src/favicon.ico", "projects/demo/src/assets"],
-            "styles": ["projects/angular/src/main.scss", "projects/demo/src/styles.scss"],
+            "styles": ["projects/angular/main.scss", "projects/demo/src/styles.scss"],
             "scripts": [],
             "baseHref": "/demo/",
             "extractLicenses": false,
@@ -85,7 +85,7 @@
     "clr-angular": {
       "projectType": "library",
       "root": "projects/angular",
-      "sourceRoot": "projects/angular/src",
+      "sourceRoot": "projects/angular",
       "prefix": "lib",
       "architect": {
         "build": {
@@ -104,7 +104,7 @@
           "builder": "@angular/build:karma",
           "options": {
             "styles": ["projects/ui/src/clr-ui.scss"],
-            "main": "projects/angular/src/test.ts",
+            "main": "projects/angular/test.ts",
             "tsConfig": "projects/angular/tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "codeCoverage": true,

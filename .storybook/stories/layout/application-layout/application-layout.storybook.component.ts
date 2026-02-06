@@ -25,7 +25,7 @@ import {
 import { elements } from 'helpers/elements.data';
 
 import { organization } from './organization';
-import { VerticalNavIconService } from '../../../../projects/angular/src/layout/vertical-nav/providers/vertical-nav-icon.service';
+import { VerticalNavIconService } from '../../../../projects/angular/layout/vertical-nav/providers/vertical-nav-icon.service';
 
 @Component({
   selector: 'storybook-application-layout',

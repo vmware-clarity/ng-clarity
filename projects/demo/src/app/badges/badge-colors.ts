@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 
-import { ClrBadgeColors } from '../../../../angular/src/emphasis/badge';
+import { ClrBadgeColors } from '../../../../angular/emphasis/badge';
 
 @Component({
   selector: 'clr-badge-colors-demo',
