@@ -8289,6 +8289,54 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+class StepperWillyWonka extends WillyWonka {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: StepperWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: StepperWillyWonka, isStandalone: false, selector: "form[clrStepper]", usesInheritance: true, ngImport: i0 }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: StepperWillyWonka, decorators: [{
+            type: Directive,
+            args: [{
+                    selector: 'form[clrStepper]',
+                    standalone: false,
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class StepperOompaLoompa extends OompaLoompa {
+    constructor(cdr, willyWonka, ifExpandService) {
+        if (!willyWonka) {
+            throw new Error('clr-stepper-panel should only be used inside of clrStepper');
+        }
+        super(cdr, willyWonka);
+        this.expand = ifExpandService;
+    }
+    get flavor() {
+        return this.expand.expanded;
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: StepperOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: StepperWillyWonka, optional: true }, { token: IfExpandService }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: StepperOompaLoompa, isStandalone: false, selector: "clr-stepper-panel, [clrStepButton]", usesInheritance: true, ngImport: i0 }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: StepperOompaLoompa, decorators: [{
+            type: Directive,
+            args: [{
+                    selector: 'clr-stepper-panel, [clrStepButton]',
+                    standalone: false,
+                }]
+        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef }, { type: StepperWillyWonka, decorators: [{
+                    type: Optional
+                }] }, { type: IfExpandService }] });
+
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 function triggerAllFormControlValidation(formGroup) {
     Object.keys(formGroup.controls).forEach(field => {
         const control = formGroup.get(field);
@@ -8752,54 +8800,6 @@ function fromControlReset(control) {
         };
     });
 }
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class StepperWillyWonka extends WillyWonka {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: StepperWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: StepperWillyWonka, isStandalone: false, selector: "form[clrStepper]", usesInheritance: true, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: StepperWillyWonka, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: 'form[clrStepper]',
-                    standalone: false,
-                }]
-        }] });
-
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class StepperOompaLoompa extends OompaLoompa {
-    constructor(cdr, willyWonka, ifExpandService) {
-        if (!willyWonka) {
-            throw new Error('clr-stepper-panel should only be used inside of clrStepper');
-        }
-        super(cdr, willyWonka);
-        this.expand = ifExpandService;
-    }
-    get flavor() {
-        return this.expand.expanded;
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: StepperOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: StepperWillyWonka, optional: true }, { token: IfExpandService }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: StepperOompaLoompa, isStandalone: false, selector: "clr-stepper-panel, [clrStepButton]", usesInheritance: true, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: StepperOompaLoompa, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: 'clr-stepper-panel, [clrStepButton]',
-                    standalone: false,
-                }]
-        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef }, { type: StepperWillyWonka, decorators: [{
-                    type: Optional
-                }] }, { type: IfExpandService }] });
 
 /*
  * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
