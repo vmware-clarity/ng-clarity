@@ -7,9 +7,9 @@
 
 import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
 import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
 import { AppLevelAlertStorybookComponent } from './app-level-alert.storybook.component';
-import { CommonModules } from '../../../.storybook/helpers/common';
 
 export default {
   title: 'Alert/App Level Alerts',

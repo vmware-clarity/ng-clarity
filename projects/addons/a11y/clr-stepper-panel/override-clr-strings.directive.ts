@@ -6,7 +6,7 @@
  */
 
 import { Directive, Input, OnInit } from '@angular/core';
-import { ClrStepperPanel } from '@clr/angular';
+import { ClrStepperPanel } from '@clr/angular/stepper';
 import { ClrCommonStrings, ClrCommonStringsService } from '@clr/angular/utils';
 
 /**

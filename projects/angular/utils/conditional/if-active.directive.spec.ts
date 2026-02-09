@@ -17,10 +17,10 @@ export default function (): void {
       beforeEach(function () {
         TestBed.configureTestingModule({
           imports: [ClrIfActive],
-          declarations: [IfOpenTest],
+          declarations: [IfActiveTest],
           providers: [IfActiveService, IF_ACTIVE_ID_PROVIDER],
         });
-        this.fixture = TestBed.createComponent(IfOpenTest);
+        this.fixture = TestBed.createComponent(IfActiveTest);
         this.fixture.detectChanges();
         this.testComponent = this.fixture.componentInstance;
         this.testElement = this.fixture.nativeElement;
@@ -95,10 +95,10 @@ export default function (): void {
       beforeEach(function () {
         TestBed.configureTestingModule({
           imports: [ClrIfActive],
-          declarations: [IfOpenTest],
+          declarations: [IfActiveTest],
           providers: [IfActiveService, IF_ACTIVE_ID_PROVIDER],
         });
-        this.fixture = TestBed.createComponent(IfOpenTest);
+        this.fixture = TestBed.createComponent(IfActiveTest);
         this.fixture.detectChanges();
         this.testComponent = this.fixture.componentInstance;
         this.testElement = this.fixture.nativeElement;
@@ -128,7 +128,7 @@ export default function (): void {
   template: `<ng-template [(clrIfActive)]="activeState">Hello Template!</ng-template>`,
   standalone: false,
 })
-class IfOpenTest {
+class IfActiveTest {
   @ViewChild(ClrIfActive) directive: ClrIfActive;
   activeState = false;
 }
