@@ -11,7 +11,7 @@ import { Component, ContentChildren, Directive, ElementRef, QueryList, ViewChild
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ClrDatagridModule } from '@clr/angular';
+import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 
 import { ColumnOrderDirective } from './column-order.directive';
 import { DatagridColumnsOrderDirective } from './datagrid-columns-order.directive';

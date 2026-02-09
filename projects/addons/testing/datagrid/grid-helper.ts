@@ -8,7 +8,7 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ClrDatagrid } from '@clr/angular';
+import { ClrDatagrid } from '@clr/angular/data/datagrid';
 
 export class GridHelper {
   isExpandable = false;

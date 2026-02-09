@@ -12,7 +12,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MockDatagridColumnToggleComponent } from '@clr/addons/testing';
-import { ClrDatagridModule } from '@clr/angular';
+import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 import { of } from 'rxjs';
 
 import { appfxDatagridUserPreferencesToken } from './appfx-datagrid-user-preferences.token';

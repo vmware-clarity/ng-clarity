@@ -8,7 +8,8 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrIcon, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular';
+import { ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
+import { ClrIcon } from '@clr/angular/icon';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { FilterFormComponent } from './filter-form.component';

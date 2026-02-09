@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDatagridFilterInterface } from '@clr/angular';
+import { ClrDatagridFilterInterface } from '@clr/angular/data/datagrid';
 
 export interface ColumnFilter<T> extends ClrDatagridFilterInterface<T> {
   /**

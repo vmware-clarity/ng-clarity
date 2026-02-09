@@ -6,7 +6,11 @@
  */
 
 import { Type } from '@angular/core';
-import { ClrDatagridComparatorInterface, ClrDatagridSortOrder, ClrDatagridStringFilterInterface } from '@clr/angular';
+import {
+  ClrDatagridComparatorInterface,
+  ClrDatagridSortOrder,
+  ClrDatagridStringFilterInterface,
+} from '@clr/angular/data/datagrid';
 
 import { ColumnFilter } from '../../interfaces/column-filter';
 

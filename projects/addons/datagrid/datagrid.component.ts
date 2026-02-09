@@ -37,7 +37,7 @@ import {
   ClrDatagridStateInterface,
   ClrDatagridVirtualScrollRangeInterface,
   Selection,
-} from '@clr/angular';
+} from '@clr/angular/data/datagrid';
 import { Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 

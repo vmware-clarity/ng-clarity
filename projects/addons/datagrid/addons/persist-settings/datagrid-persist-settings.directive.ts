@@ -6,7 +6,7 @@
  */
 
 import { AfterViewInit, Directive, Host, Inject, Input, OnDestroy, Optional } from '@angular/core';
-import { ClrDatagridStateInterface } from '@clr/angular';
+import { ClrDatagridStateInterface } from '@clr/angular/data/datagrid';
 import { combineLatest, Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 

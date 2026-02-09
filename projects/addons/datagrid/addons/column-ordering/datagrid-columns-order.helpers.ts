@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDatagrid } from '@clr/angular';
+import { ClrDatagrid } from '@clr/angular/data/datagrid';
 
 import { ColumnDefinition } from '../../shared/column/column-definitions';
 
