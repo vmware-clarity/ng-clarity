@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -7,103 +7,8 @@
 
 @use '../tokens/variables.tokens' as tokens;
 @use './mixins/mixins';
+@use './mixins/mixins.grid' as grid-mixins;
 @use 'optimize';
-
-$columnsNumber: tokens.$cds-global-layout-grid-cols-static;
-
-@mixin generateColumnsAndRows($breakpoint: null) {
-  @for $i from 1 through $columnsNumber {
-    // implicit columns/rows
-    [#{optimize.$layout}*='#{optimize.$cols}#{$breakpoint}:#{$i}'] > * {
-      grid-column: span $i / span $i;
-    }
-
-    [#{optimize.$layout}*='#{optimize.$rows}#{$breakpoint}:#{$i}'] > * {
-      grid-row: span $i / span $i;
-    }
-  }
-}
-@mixin generateExplicitColumnAndRow($breakpoint: null) {
-  @for $i from 1 through $columnsNumber {
-    // explicit column/row positions
-    [#{optimize.$layout}*='#{optimize.$col}#{$breakpoint}:#{$i}'] {
-      grid-column: span $i / span $i !important;
-    }
-
-    [#{optimize.$layout}*='#{optimize.$row}#{$breakpoint}:#{$i}'] {
-      grid-row: span $i / span $i !important;
-    }
-  }
-}
-@mixin generatePositions($breakpoint: null) {
-  // +1 for grid cols/rows which end at beginning of next item
-  @for $i from 1 through $columnsNumber + 1 {
-    [#{optimize.$layout}*='#{optimize.$col}#{$breakpoint}:start-#{$i}'] {
-      grid-column-start: $i !important;
-    }
-
-    [#{optimize.$layout}*='#{optimize.$col}#{$breakpoint}:end-#{$i}'] {
-      grid-column-end: $i !important;
-    }
-
-    [#{optimize.$layout}*='#{optimize.$row}#{$breakpoint}:start-#{$i}'] {
-      grid-row-start: $i !important;
-    }
-
-    [#{optimize.$layout}*='#{optimize.$row}#{$breakpoint}:end-#{$i}'] {
-      grid-row-end: $i !important;
-    }
-  }
-}
-@mixin generateAlignments($breakpoint: null) {
-  [#{optimize.$layout}~='#{optimize.$grid}'] {
-    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$top}'] {
-      align-content: start;
-    }
-
-    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$right}'] {
-      justify-content: end;
-    }
-
-    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$bottom}'] {
-      align-content: end;
-    }
-
-    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$left}'] {
-      justify-content: start;
-    }
-
-    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-stretch}'] {
-      align-items: stretch;
-      align-content: stretch;
-    }
-
-    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-stretch}'] {
-      justify-items: stretch;
-      justify-content: stretch;
-    }
-
-    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$stretch}'] {
-      place-items: stretch stretch;
-      place-content: stretch stretch;
-    }
-
-    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$vertical-center}'] {
-      align-items: center;
-      align-content: center;
-    }
-
-    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$horizontal-center}'] {
-      justify-items: center;
-      justify-content: center;
-    }
-
-    &[#{optimize.$layout}*='#{optimize.$align}#{$breakpoint}:#{optimize.$center}'] {
-      place-items: center center;
-      place-content: center center;
-    }
-  }
-}
 
 [#{optimize.$layout}~='#{optimize.$grid}'] {
   display: grid;
@@ -134,28 +39,28 @@ $columnsNumber: tokens.$cds-global-layout-grid-cols-static;
   grid-column: span 12;
 }
 
-@include generateColumnsAndRows();
-@include generateExplicitColumnAndRow();
-@include generatePositions();
-@include generateAlignments();
+@include grid-mixins.generateColumnsAndRows();
+@include grid-mixins.generateExplicitColumnAndRow();
+@include grid-mixins.generatePositions();
+@include grid-mixins.generateAlignments();
 
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
   @media (min-width: $breakpoint-value) {
-    @include generateColumnsAndRows($breakpoint);
+    @include grid-mixins.generateColumnsAndRows($breakpoint);
   }
 }
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
   @media (min-width: $breakpoint-value) {
-    @include generateExplicitColumnAndRow($breakpoint);
+    @include grid-mixins.generateExplicitColumnAndRow($breakpoint);
   }
 }
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
   @media (min-width: $breakpoint-value) {
-    @include generatePositions($breakpoint);
+    @include grid-mixins.generatePositions($breakpoint);
   }
 }
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
   @media (min-width: $breakpoint-value) {
-    @include generateAlignments($breakpoint);
+    @include grid-mixins.generateAlignments($breakpoint);
   }
 }

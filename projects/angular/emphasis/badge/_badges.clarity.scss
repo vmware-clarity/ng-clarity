@@ -1,44 +1,18 @@
 /*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 @use 'sass:meta';
-@use 'sass:map';
 @use '../../styles/mixins';
 @use 'variables.badges' as badges-variables;
+@use 'mixins.bades' as badges-mixins;
 @use '../../styles/variables/variables.density' as density;
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 
 @include meta.load-css('properties.badges');
-
-@mixin buildBadgeStyles($colors) {
-  border-color: map.get($colors, border-color);
-  background-color: map.get($colors, bg-color);
-  color: map.get($colors, color);
-
-  &.outlined {
-    border-color: map.get($colors, outline-border-color);
-    background-color: map.get($colors, outline-bg-color);
-    color: map.get($colors, outline-color);
-  }
-}
-@mixin generateBadgeStyles($color: gray, $alias: null) {
-  $colors: map.get(badges-variables.$badge-colors, $color);
-
-  &.badge-#{'' + $color} {
-    @include buildBadgeStyles($colors);
-  }
-
-  @if ($alias) {
-    &.badge-#{$alias} {
-      @include buildBadgeStyles($colors);
-    }
-  }
-}
-
 @include mixins.exports('badges.clarity') {
   //NOTE: Had to use inline-flex, reset line-height to normal, and had to use change a few values
   //instead of using our baselineRem function. This was done to achieve the desired look
@@ -77,17 +51,17 @@
 
     // Link badge, default, no color or type specifier. Override a:link setting.
     &:link {
-      @include generateBadgeStyles(gray);
+      @include badges-mixins.generateBadgeStyles(gray);
     }
 
-    @include generateBadgeStyles(gray, 1);
-    @include generateBadgeStyles(purple, 2);
-    @include generateBadgeStyles(blue, 3);
-    @include generateBadgeStyles(orange, 4);
-    @include generateBadgeStyles(light-blue, 5);
-    @include generateBadgeStyles(info);
-    @include generateBadgeStyles(success);
-    @include generateBadgeStyles(danger);
-    @include generateBadgeStyles(warning);
+    @include badges-mixins.generateBadgeStyles(gray, 1);
+    @include badges-mixins.generateBadgeStyles(purple, 2);
+    @include badges-mixins.generateBadgeStyles(blue, 3);
+    @include badges-mixins.generateBadgeStyles(orange, 4);
+    @include badges-mixins.generateBadgeStyles(light-blue, 5);
+    @include badges-mixins.generateBadgeStyles(info);
+    @include badges-mixins.generateBadgeStyles(success);
+    @include badges-mixins.generateBadgeStyles(danger);
+    @include badges-mixins.generateBadgeStyles(warning);
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -470,6 +470,20 @@ $typography-tokens: (
     margin-top: calc(-1 * var(--cds-global-space-3));
     margin-bottom: calc(-1 * var(--cds-global-space-1));
   }
+}
+
+// a11y
+@mixin screen-reader-only() {
+  position: absolute;
+  clip-path: inset(50%);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  top: 0;
+  left: 0;
 }
 
 // default are for metropolis/clarity-city

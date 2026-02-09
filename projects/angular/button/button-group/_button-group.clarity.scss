@@ -1,18 +1,14 @@
 /*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 @use '../../styles/mixins';
+@use '../mixins.buttons' as button-mixins;
 @use '../variables.buttons' as buttons-variables;
 @use '../../styles/variables/variables.density' as density;
-
-@mixin square-off-btngroup-btns($dir: left) {
-  border-top-#{$dir}-radius: 0;
-  border-bottom-#{$dir}-radius: 0;
-}
 
 @include mixins.exports('button-group.clarity') {
   .btn-group {
@@ -23,8 +19,8 @@
       display: inline-flex;
 
       .dropdown-toggle {
-        @include square-off-btngroup-btns(left);
-        @include square-off-btngroup-btns(right);
+        @include button-mixins.square-off-btngroup-btns(left);
+        @include button-mixins.square-off-btngroup-btns(right);
       }
 
       &:last-child {
@@ -74,11 +70,11 @@
 
     .btn {
       &:not(:first-child) {
-        @include square-off-btngroup-btns(left);
+        @include button-mixins.square-off-btngroup-btns(left);
       }
 
       &:not(:last-child) {
-        @include square-off-btngroup-btns(right);
+        @include button-mixins.square-off-btngroup-btns(right);
       }
 
       &:disabled:not(:last-child) {
@@ -88,11 +84,11 @@
 
     .tooltip {
       &:not(:first-child) .btn {
-        @include square-off-btngroup-btns(left);
+        @include button-mixins.square-off-btngroup-btns(left);
       }
 
       &:not(:last-child) .btn {
-        @include square-off-btngroup-btns(right);
+        @include button-mixins.square-off-btngroup-btns(right);
       }
     }
 

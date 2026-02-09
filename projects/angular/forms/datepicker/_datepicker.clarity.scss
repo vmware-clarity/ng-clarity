@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -10,91 +10,12 @@
 @use '../../styles/mixins';
 @use '../../styles/variables/variables.global';
 @use 'variables.datepicker' as datepicker-variables;
+@use 'mixins.datepicker' as datepicker-mixins;
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 @use '../../button/variables.buttons' as button-variables;
 @use '../../styles/variables/variables.density' as density;
 
 @include meta.load-css('properties.datepicker');
-
-@mixin generate-calendar-button(
-  $height: datepicker-variables.$clr-calendar-btn-size,
-  $padding: datepicker-variables.$clr-calendar-btn-horizontal-padding
-) {
-  //Dimensions
-
-  @include mixins.min-equilateral($height);
-
-  padding: 0 $padding;
-  margin: 0 !important; //Because stupid forms target buttons directly. We really need to refactor forms.
-
-  //Other Props
-  color: inherit;
-  border: none;
-  border-radius: density.$clr-base-border-radius-s;
-  background: none;
-  cursor: pointer;
-}
-@mixin generate-calendar-focus-style() {
-  &.in-range {
-    background: datepicker-variables.$clr-calendar-in-range-cell-background-color;
-    border-radius: 0;
-  }
-
-  &:hover {
-    background: datepicker-variables.$clr-calendar-btn-hover-focus-color;
-  }
-
-  &:focus {
-    //Only because we have defined a background color for focus above
-    // using cds-alias-object-interaction-outline token will be better when focus state get implemented
-    outline: tokens.$cds-global-color-blue-700 solid 2px;
-    outline-offset: calc(-1 * tokens.$cds-global-space-2);
-    background: tokens.$cds-alias-object-interaction-background-hover;
-  }
-
-  &:active {
-    background: datepicker-variables.$clr-calendar-btn-active-color-bg;
-  }
-}
-@mixin generate-current-date-style() {
-  &.is-today {
-    color: datepicker-variables.$clr-calendar-today-date-cell-color;
-    border: tokens.$cds-global-space-1 solid datepicker-variables.$clr-calendar-today-date-cell-border-color;
-    font-weight: datepicker-variables.$clr-calendar-today-date-cell-font-weight;
-  }
-}
-@mixin generate-selected-date-style() {
-  &.is-selected,
-  &.is-start-range,
-  &.is-end-range {
-    background: datepicker-variables.$clr-calendar-active-cell-background-color;
-    color: datepicker-variables.$clr-calendar-active-cell-color;
-  }
-
-  &.is-start-range:not(.is-end-range) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  &.is-end-range:not(.is-start-range) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-
-  &.is-selected:focus {
-    background: datepicker-variables.$clr-calendar-active-focus-cell-background-color;
-  }
-}
-@mixin generate-calendar-hover-active-color-style() {
-  &:hover {
-    color: datepicker-variables.$clr-calendar-btn-hover-focus-color-text;
-  }
-
-  &:active {
-    color: datepicker-variables.$clr-calendar-btn-active-color;
-  }
-}
-
 @include mixins.exports('datepicker.clarity') {
   .datepicker {
     display: flex;
@@ -206,8 +127,8 @@
   }
 
   .calendar-btn {
-    @include generate-calendar-button();
-    @include generate-calendar-focus-style();
+    @include datepicker-mixins.generate-calendar-button();
+    @include datepicker-mixins.generate-calendar-focus-style();
     @include mixins.generate-typography-token(
       'SECTION-20-STD',
       (
@@ -218,12 +139,12 @@
   }
 
   .day-btn {
-    @include generate-calendar-button($padding: 0);
-    @include generate-calendar-focus-style();
-    @include generate-calendar-hover-active-color-style();
+    @include datepicker-mixins.generate-calendar-button($padding: 0);
+    @include datepicker-mixins.generate-calendar-focus-style();
+    @include datepicker-mixins.generate-calendar-hover-active-color-style();
     @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
-    @include generate-current-date-style();
-    @include generate-selected-date-style();
+    @include datepicker-mixins.generate-current-date-style();
+    @include datepicker-mixins.generate-selected-date-style();
 
     //Dimensions
     width: 100%;
@@ -247,7 +168,7 @@
   }
 
   .switcher {
-    @include generate-calendar-hover-active-color-style();
+    @include datepicker-mixins.generate-calendar-hover-active-color-style();
 
     color: datepicker-variables.$clr-calendar-btn-color;
 
@@ -294,11 +215,13 @@
 
   .month,
   .year {
-    @include generate-calendar-button($padding: datepicker-variables.$clr-calendar-month-cell-horizontal-padding);
-    @include generate-calendar-hover-active-color-style();
+    @include datepicker-mixins.generate-calendar-button(
+      $padding: datepicker-variables.$clr-calendar-month-cell-horizontal-padding
+    );
+    @include datepicker-mixins.generate-calendar-hover-active-color-style();
     @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
-    @include generate-current-date-style();
-    @include generate-selected-date-style();
+    @include datepicker-mixins.generate-current-date-style();
+    @include datepicker-mixins.generate-selected-date-style();
 
     height: datepicker-variables.$clr-calendar-header-btn-height;
     width: datepicker-variables.$clr-month-year-btn-width;

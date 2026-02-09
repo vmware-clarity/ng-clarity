@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 @use '../../styles/mixins';
+@use 'mixins.animations' as animation-mixins;
 @use '../../styles/variables/variables.density' as density;
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 
@@ -18,32 +19,8 @@
  * animate.css, if we want.
  */
 
-$clr-animation-duration: 0.2s;
-$clr-animation-easing: ease-in-out;
-
-@keyframes clr-skeleton-loading {
-  from {
-    background-position-x: 0;
-  }
-
-  to {
-    background-position-x: -200%;
-  }
-}
-
-@mixin skeleton-loading() {
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    border-radius: density.$clr-base-border-radius-s;
-    background: var(--cds-alias-object-skeleton-loading-gradient);
-    animation: var(--cds-global-animation-skeleton-duration) clr-skeleton-loading
-      var(--cds-global-animation-easing-in-out) infinite;
-    background-size: 200% 100%;
-  }
-}
+$clr-animation-duration: #{tokens.$cds-global-animation-duration-quick};
+$clr-animation-easing: #{tokens.$cds-global-animation-easing-in-out};
 
 @include mixins.exports('animations.clarity') {
   .fade {
@@ -71,6 +48,6 @@ $clr-animation-easing: ease-in-out;
   }
 
   .skeleton-loading {
-    @include skeleton-loading();
+    @include animation-mixins.skeleton-loading();
   }
 }

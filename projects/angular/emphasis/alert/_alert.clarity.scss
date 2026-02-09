@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -11,100 +11,12 @@
 @use '../../styles/variables/variables';
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use 'variables.alert' as alert-variables;
+@use 'mixins.alert' as alert-mixins;
 @use '../../button/buttons.clarity';
 @use '../../styles/variables/variables.density' as density;
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 
 @include meta.load-css('properties.alert');
-
-@mixin generateAlertType($alertType: 'info') {
-  background: alert-variables.getAlertColor($alertType, bg-color);
-  color: alert-variables.getAlertColor($alertType, color);
-
-  & .alert-items .alert-item a:not(.dropdown-item, .badge, .label) {
-    color: alert-variables.getAlertColor($alertType, color);
-
-    cds-icon,
-    clr-icon {
-      fill: alert-variables.getAlertColor($alertType, color);
-    }
-  }
-
-  $border-prop: alert-variables.getAlertColor($alertType, border-color);
-
-  @if $border-prop != 'none' {
-    border: alert-variables.$clr-alert-borderwidth solid $border-prop;
-  } @else {
-    border: none;
-  }
-
-  .alert-icon {
-    color: alert-variables.getAlertColor($alertType, icon);
-  }
-
-  $myActionSassVar: alert-variables.getAlertColor($alertType, action);
-
-  .alert-actions .dropdown .dropdown-toggle {
-    color: $myActionSassVar;
-    border-color: alert-variables.getAlertColor($alertType, action-active);
-  }
-
-  .alert-action,
-  .dropdown-toggle {
-    color: $myActionSassVar;
-
-    &.btn {
-      border-color: $myActionSassVar;
-      color: $myActionSassVar;
-
-      cds-icon,
-      clr-icon {
-        color: $myActionSassVar;
-      }
-
-      &:active {
-        color: $myActionSassVar;
-
-        cds-icon,
-        clr-icon {
-          color: $myActionSassVar;
-        }
-      }
-    }
-  }
-
-  .close {
-    color: alert-variables.getAlertColor($alertType, close-icon);
-
-    cds-icon,
-    clr-icon {
-      fill: alert-variables.getAlertColor($alertType, close-icon);
-    }
-
-    &:focus,
-    &:hover,
-    &:active {
-      color: alert-variables.getAlertColor($alertType, close-icon-hover);
-
-      cds-icon,
-      clr-icon {
-        fill: alert-variables.getAlertColor($alertType, close-icon-hover);
-      }
-    }
-  }
-}
-@mixin generateLightweightAlertType($alertType: 'info') {
-  &.alert-#{$alertType} {
-    .alert-text {
-      color: alert-variables.getAlertColor('lightweight-#{$alertType}', color);
-    }
-
-    .alert-icon {
-      color: alert-variables.getAlertColor('lightweight-#{$alertType}', icon);
-    }
-  }
-}
-
 @include mixins.exports('alert.clarity') {
   $alertTypes: info, warning, danger, success, neutral;
 
@@ -153,26 +65,26 @@
     // To be deleted with refactoring task
     margin-top: alert-variables.$clr-alert-top-margin;
 
-    @include generateAlertType(info);
+    @include alert-mixins.generateAlertType(info);
 
     &.alert-info {
-      @include generateAlertType(info);
+      @include alert-mixins.generateAlertType(info);
     }
 
     &.alert-success {
-      @include generateAlertType(success);
+      @include alert-mixins.generateAlertType(success);
     }
 
     &.alert-warning {
-      @include generateAlertType(warning);
+      @include alert-mixins.generateAlertType(warning);
     }
 
     &.alert-danger {
-      @include generateAlertType(danger);
+      @include alert-mixins.generateAlertType(danger);
     }
 
     &.alert-neutral {
-      @include generateAlertType(neutral);
+      @include alert-mixins.generateAlertType(neutral);
     }
 
     .alert-item {
@@ -275,11 +187,11 @@
         margin: 0;
       }
 
-      @include generateLightweightAlertType(info);
-      @include generateLightweightAlertType(warning);
-      @include generateLightweightAlertType(danger);
-      @include generateLightweightAlertType(success);
-      @include generateLightweightAlertType(neutral);
+      @include alert-mixins.generateLightweightAlertType(info);
+      @include alert-mixins.generateLightweightAlertType(warning);
+      @include alert-mixins.generateLightweightAlertType(danger);
+      @include alert-mixins.generateLightweightAlertType(success);
+      @include alert-mixins.generateLightweightAlertType(neutral);
     }
   }
 
@@ -296,7 +208,7 @@
       align-items: center;
     }
 
-    @include generateAlertType(app-info);
+    @include alert-mixins.generateAlertType(app-info);
 
     .alert-item .btn {
       @extend .btn;
@@ -306,7 +218,7 @@
     }
 
     &.alert-info {
-      @include generateAlertType(app-info);
+      @include alert-mixins.generateAlertType(app-info);
 
       .alert-item .btn {
         @extend .btn-info-outline;
@@ -314,7 +226,7 @@
     }
 
     &.alert-danger {
-      @include generateAlertType(app-danger);
+      @include alert-mixins.generateAlertType(app-danger);
 
       .alert-item .btn {
         @extend .btn-danger-outline;
@@ -322,7 +234,7 @@
     }
 
     &.alert-neutral {
-      @include generateAlertType(app-neutral);
+      @include alert-mixins.generateAlertType(app-neutral);
 
       .alert-item .btn {
         @extend .btn-neutral-outline;
@@ -330,7 +242,7 @@
     }
 
     &.alert-warning {
-      @include generateAlertType(app-warning);
+      @include alert-mixins.generateAlertType(app-warning);
 
       .alert-item .btn {
         @extend .btn-warning-outline;
@@ -338,7 +250,7 @@
     }
 
     &.alert-success {
-      @include generateAlertType(app-success);
+      @include alert-mixins.generateAlertType(app-success);
 
       .alert-item .btn {
         @extend .btn-success-outline;
