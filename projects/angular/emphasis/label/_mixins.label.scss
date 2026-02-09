@@ -28,6 +28,12 @@
   &.clickable:not(.disabled):hover,
   &.clickable:not(.disabled):active {
     border-color: map.get($colors, border-color);
+
+    & > .badge {
+      border-color: map.get($badge-colors, border-color);
+      background-color: map.get($badge-colors, bg-color);
+      color: map.get($badge-colors, color);
+    }
   }
 
   &.solid {
