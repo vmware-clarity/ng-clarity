@@ -31,7 +31,7 @@ export default {
 
 const HeaderStaticTemplate: StoryFn = args => ({
   template: `
-    <header class="header-1">
+    <header>
       <div class="branding">
         <a href="#" class="nav-link">
           <cds-icon shape="vm-bug"></cds-icon>
@@ -49,7 +49,7 @@ const HeaderStaticTemplate: StoryFn = args => ({
       </div>
     </header>
     <br />
-    <header class="header-1">
+    <header>
       <div class="branding">
         <a href="#" class="nav-link">
           <cds-icon shape="vm-bug"></cds-icon>
@@ -73,7 +73,7 @@ const HeaderStaticTemplate: StoryFn = args => ({
       </div>
     </header>
     <br />
-    <header class="header-1">
+    <header>
       <div class="branding">
         <a href="#" class="nav-link">
           <cds-icon shape="vm-bug"></cds-icon>
@@ -95,7 +95,7 @@ const HeaderStaticTemplate: StoryFn = args => ({
       </div>
     </header>
     <br />
-    <header class="header-1">
+    <header>
       <div class="branding">
         <a href="#" class="nav-link">
           <cds-icon shape="vm-bug"></cds-icon>
@@ -107,7 +107,7 @@ const HeaderStaticTemplate: StoryFn = args => ({
       </div>
     </header>
     <br />
-    <header class="header-1">
+    <header>
       <div class="branding">
         <a href="javascript://" class="nav-link">
           <cds-icon shape="vm-bug"></cds-icon>
@@ -122,7 +122,7 @@ const HeaderStaticTemplate: StoryFn = args => ({
       </div>
     </header>
     <br />
-    <header class="header-1">
+    <header>
       <div class="branding">
         <a href="#" class="nav-link">
           <cds-icon shape="vm-bug"></cds-icon>

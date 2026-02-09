@@ -5,11 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '../../styles/mixins';
+@use 'sass:map';
+@use 'sass:meta';
 @use '../../image/icons.clarity';
+@use '../../styles/mixins';
+@use '../../styles/variables/variables';
 @use '../../styles/variables/variables.density' as density;
-@use '../../styles/core/tokens/variables.tokens' as tokens;
 @use '../main-container/variables.header' as header-variables;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
 
 @mixin header-nav-link($horizontal-padding: density.$clr-base-horizontal-offset-xl) {
   display: inline-flex;
@@ -55,6 +58,11 @@
 
   &.header-3 {
     background-color: header-variables.$clr-header-3-bg-color;
+  }
+
+  // dark theme only header added by external team to workaround lack of header-7 in dark theme
+  &.header-8 {
+    background-color: header-variables.$clr-header-8-bg-color;
   }
 }
 @mixin header-branding() {
@@ -324,6 +332,33 @@
 
     label {
       padding: 0;
+    }
+  }
+}
+
+@include meta.load-css('../main-container/properties.header');
+@include mixins.exports('header.clarity') {
+  // TODO: rename to follow clr naming convention
+  header,
+  .header {
+    display: flex;
+    color: header-variables.$clr-header-font-color;
+    background-color: header-variables.$clr-header-bg-color;
+    height: header-variables.$clr-header-height;
+    white-space: nowrap;
+
+    @include header-backgrounds();
+    @include header-branding();
+    @include header-links();
+    @include header-nav();
+    @include header-actions();
+    @include header-search();
+  }
+
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) {
+    header,
+    .header {
+      @include header-search-md();
     }
   }
 }
