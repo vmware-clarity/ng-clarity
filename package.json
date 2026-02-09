@@ -56,7 +56,7 @@
   },
   "devDependencies": {
     "@amanda-mitchell/semantic-release-npm-multiple": "3.5.0",
-    "@angular-devkit/build-angular": "15.2.4",
+    "@angular-devkit/build-angular": "15.2.11",
     "@angular/animations": "15.2.10",
     "@angular/cdk": "15.2.2",
     "@angular/cli": "15.2.4",
