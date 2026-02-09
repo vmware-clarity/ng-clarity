@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -8,28 +8,11 @@
 @use 'sass:meta';
 @use '../../styles/mixins';
 @use 'variables.tabs' as tabs-variables;
+@use 'mixins.tabs' as tabs-mixins;
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 @use '../../styles/variables/variables.density' as density;
 
 @include meta.load-css('properties.tabs');
-
-// TODO: Fix this typo
-
-@mixin nav-link-border-appearence($position) {
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    border: none;
-    border-#{$position}: tokens.$cds-alias-object-border-width-300 solid
-      tokens.$cds-alias-object-interaction-background-highlight;
-    transition: border-#{$position} 0.2s ease-in;
-  }
-}
-
 @include mixins.exports('tabs.clarity') {
   @media screen {
     section[aria-hidden='true'] {
@@ -98,7 +81,7 @@
 
         &.active,
         &:hover {
-          @include nav-link-border-appearence('left');
+          @include tabs-mixins.nav-link-border-appearance('left');
         }
       }
     }

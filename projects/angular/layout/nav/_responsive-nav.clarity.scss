@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -10,85 +10,16 @@
 @use '../../styles/mixins';
 @use '../../styles/variables/variables';
 @use '../main-container/variables.header' as header-variables;
-@use '../vertical-nav/vertical-nav.clarity';
-@use 'header.clarity';
+@use '../vertical-nav/mixins.vertical-nav' as vertical-nav-mixins;
+@use 'mixins.header' as header-mixins;
 @use 'variables.responsive-nav' as responsive-nav-variables;
+@use 'mixins.responsive-nav' as responsive-nav-mixins;
 @use '../../styles/variables/variables' as util-variables;
 @use '../../layout/vertical-nav/variables.vertical-nav' as vertical-nav-variables;
 @use '../tabs/tabs.clarity' as tabs;
 @use 'variables.subnav' as nav-variables;
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 @use '../../styles/variables/variables.density' as density;
-
-@mixin sliding-nav-positioning($top: 0, $right: auto, $bottom: 0, $left: 0) {
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  inset: $top $right $bottom $left;
-  background: vertical-nav-variables.$clr-vertical-nav-bg-color;
-  z-index: responsive-nav-variables.$clr-sliding-panel-z-index;
-  height: 100vh;
-}
-@mixin menu-trigger($right: auto, $left: 0, $transformX: responsive-nav-variables.$clr-trigger-position) {
-  position: fixed;
-  top: 0;
-  right: $right;
-  left: $left;
-  z-index: responsive-nav-variables.$clr-sliding-panel-z-index;
-  transform: translateX($transformX);
-  transition: responsive-nav-variables.$clr-trigger-animation;
-
-  &::after {
-    content: none;
-  }
-}
-@mixin hamburger-menu-trigger-animation() {
-  & > span {
-    background: transparent;
-
-    &::before,
-    &::after {
-      left: tokens.$cds-global-space-3;
-      transform-origin: 9%;
-      transition: responsive-nav-variables.$clr-trigger-animation;
-    }
-
-    &::before {
-      transform: rotate(45deg);
-    }
-
-    &::after {
-      transform: rotate(-45deg);
-    }
-  }
-}
-@mixin clr-nav-close-trigger-animation() {
-  left: tokens.$cds-global-space-3;
-  transform-origin: 9%;
-  transition: responsive-nav-variables.$clr-trigger-animation;
-}
-@mixin overflow-menu-trigger-animation() {
-  & > span {
-    background: transparent;
-
-    &::before,
-    &::after {
-      height: tokens.$cds-global-space-2;
-      width: tokens.$cds-global-space-9;
-      left: calc(-1 * tokens.$cds-global-space-4);
-      transform-origin: -3%;
-      transition: responsive-nav-variables.$clr-trigger-animation;
-    }
-
-    &::before {
-      transform: rotate(45deg);
-    }
-
-    &::after {
-      transform: rotate(-45deg);
-    }
-  }
-}
 
 @include meta.load-css('properties.responsive-nav');
 @include mixins.exports('responsive-nav.clarity') {
@@ -112,7 +43,7 @@
   }
 
   .header-hamburger-trigger {
-    $trigger-span-psuedo-positioning: calc(-1 * tokens.$cds-global-space-5);
+    $trigger-span-pseudo-positioning: calc(-1 * tokens.$cds-global-space-5);
 
     & > span,
     & > span::before,
@@ -136,21 +67,21 @@
       }
 
       &::before {
-        top: $trigger-span-psuedo-positioning;
+        top: $trigger-span-pseudo-positioning;
       }
 
       &::after {
-        bottom: $trigger-span-psuedo-positioning;
+        bottom: $trigger-span-pseudo-positioning;
       }
     }
 
     &.active {
-      @include hamburger-menu-trigger-animation();
+      @include responsive-nav-mixins.hamburger-menu-trigger-animation();
     }
   }
 
   .header-overflow-trigger {
-    $overflow-trigger-psuedo-positioning: calc(-1 * tokens.$cds-global-space-5);
+    $overflow-trigger-pseudo-positioning: calc(-1 * tokens.$cds-global-space-5);
 
     & > span,
     & > span::before,
@@ -176,16 +107,16 @@
       }
 
       &::before {
-        top: $overflow-trigger-psuedo-positioning;
+        top: $overflow-trigger-pseudo-positioning;
       }
 
       &::after {
-        bottom: $overflow-trigger-psuedo-positioning;
+        bottom: $overflow-trigger-pseudo-positioning;
       }
     }
 
     &.active {
-      @include overflow-menu-trigger-animation();
+      @include responsive-nav-mixins.overflow-menu-trigger-animation();
     }
   }
 
@@ -211,14 +142,14 @@
           outline-offset: calc(-1 * tokens.$cds-global-space-4);
         }
 
-        @include header.header-nav-appearance();
+        @include header-mixins.header-nav-appearance();
       }
 
       .header-nav.clr-nav-level-1,
       .subnav.clr-nav-level-1,
       .sub-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
-        @include sliding-nav-positioning();
+        @include responsive-nav-mixins.sliding-nav-positioning();
 
         transform: translateX(calc(-1 * #{responsive-nav-variables.$clr-sliding-panel-width}));
         transition: responsive-nav-variables.$clr-sliding-panel-animation;
@@ -228,7 +159,7 @@
       .subnav.clr-nav-level-2,
       .sub-nav.clr-nav-level-2,
       .clr-vertical-nav.clr-nav-level-2 {
-        @include sliding-nav-positioning(0, 0, 0, auto);
+        @include responsive-nav-mixins.sliding-nav-positioning(0, 0, 0, auto);
 
         transform: translateX(responsive-nav-variables.$clr-sliding-panel-width);
         transition: responsive-nav-variables.$clr-sliding-panel-animation;
@@ -268,7 +199,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
 
-            @include vertical-nav.vertical-nav-link-colors();
+            @include vertical-nav-mixins.vertical-nav-link-colors();
 
             &:hover,
             &.active {
@@ -295,7 +226,7 @@
         position: relative;
 
         &::after {
-          @include header.header-section-divider();
+          @include header-mixins.header-section-divider();
         }
       }
 
@@ -364,7 +295,7 @@
                 display: inline-block;
               }
 
-              @include vertical-nav.vertical-nav-link-colors();
+              @include vertical-nav-mixins.vertical-nav-link-colors();
 
               &.active > .nav-text {
                 color: inherit;
@@ -418,8 +349,8 @@
         }
 
         .clr-nav-close {
-          @include menu-trigger();
-          @include hamburger-menu-trigger-animation();
+          @include responsive-nav-mixins.menu-trigger();
+          @include responsive-nav-mixins.hamburger-menu-trigger-animation();
         }
 
         .header-nav.clr-nav-level-1,
@@ -448,8 +379,12 @@
         }
 
         .clr-nav-close {
-          @include menu-trigger(0, auto, (calc(-1 * #{responsive-nav-variables.$clr-trigger-position})));
-          @include overflow-menu-trigger-animation();
+          @include responsive-nav-mixins.menu-trigger(
+            0,
+            auto,
+            (calc(-1 * #{responsive-nav-variables.$clr-trigger-position}))
+          );
+          @include responsive-nav-mixins.overflow-menu-trigger-animation();
         }
       }
 
@@ -527,7 +462,7 @@
         }
 
         .clr-nav-close {
-          @include menu-trigger(auto, 0, responsive-nav-variables.$clr-trigger-position-sm);
+          @include responsive-nav-mixins.menu-trigger(auto, 0, responsive-nav-variables.$clr-trigger-position-sm);
         }
       }
 
@@ -541,7 +476,11 @@
         }
 
         .clr-nav-close {
-          @include menu-trigger(0, auto, (calc(-1 * #{responsive-nav-variables.$clr-trigger-position-sm})));
+          @include responsive-nav-mixins.menu-trigger(
+            0,
+            auto,
+            (calc(-1 * #{responsive-nav-variables.$clr-trigger-position-sm}))
+          );
         }
       }
     }

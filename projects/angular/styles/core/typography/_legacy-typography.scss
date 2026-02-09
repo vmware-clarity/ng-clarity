@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 @use '../../mixins';
-@use '../typography/typography';
+@use '../typography/mixins.typography' as typography-mixins;
 
 $typography-h0-font-size: 2rem;
 $typography-h0-font-size-static: 2rem;
@@ -146,7 +146,7 @@ $typography-p8-line-height-static: 1.2em;
 // LEGACY FONT STYLES
 [cds-text*='h0'] {
   $lh-gap: mixins.getLineHeightGap($typography-h0-line-height-static, $typography-h0-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-family: $typography-header-font-family;
   font-size: $typography-h0-font-size;
@@ -158,7 +158,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='h1'] {
   $lh-gap: mixins.getLineHeightGap($typography-h1-line-height-static, $typography-h1-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-family: $typography-header-font-family;
   font-size: $typography-h1-font-size;
@@ -170,7 +170,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='h2'] {
   $lh-gap: mixins.getLineHeightGap($typography-h2-line-height-static, $typography-h2-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-family: $typography-header-font-family;
   font-size: $typography-h2-font-size;
@@ -182,7 +182,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='h3'] {
   $lh-gap: mixins.getLineHeightGap($typography-h3-line-height-static, $typography-h3-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-family: $typography-header-font-family;
   font-size: $typography-h3-font-size;
@@ -194,7 +194,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='h4'] {
   $lh-gap: mixins.getLineHeightGap($typography-h4-line-height-static, $typography-h4-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-family: $typography-header-font-family;
   font-size: $typography-h4-font-size;
@@ -206,7 +206,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='h5'] {
   $lh-gap: mixins.getLineHeightGap($typography-h5-line-height-static, $typography-h5-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-family: $typography-header-font-family;
   font-size: $typography-h5-font-size;
@@ -218,7 +218,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='h6'] {
   $lh-gap: mixins.getLineHeightGap($typography-h6-line-height-static, $typography-h6-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-family: $typography-header-font-family;
   font-size: $typography-h6-font-size;
@@ -230,7 +230,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='p0'] {
   $lh-gap: mixins.getLineHeightGap($typography-p0-line-height-static, $typography-p0-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-size: $typography-p0-font-size;
   font-weight: $typography-p0-font-weight;
@@ -241,7 +241,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='p1'] {
   $lh-gap: mixins.getLineHeightGap($typography-p1-line-height-static, $typography-p1-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-size: $typography-p1-font-size;
   font-weight: $typography-p1-font-weight;
@@ -252,7 +252,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='p2'] {
   $lh-gap: mixins.getLineHeightGap($typography-p2-line-height-static, $typography-p2-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-size: $typography-p2-font-size;
   font-weight: $typography-p2-font-weight;
@@ -263,7 +263,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='p3'] {
   $lh-gap: mixins.getLineHeightGap($typography-p3-line-height-static, $typography-p3-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-size: $typography-p3-font-size;
   font-weight: $typography-p3-font-weight;
@@ -274,7 +274,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='p4'] {
   $lh-gap: mixins.getLineHeightGap($typography-p4-line-height-static, $typography-p4-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-size: $typography-p4-font-size;
   font-weight: $typography-p4-font-weight;
@@ -285,7 +285,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='p5'] {
   $lh-gap: mixins.getLineHeightGap($typography-p5-line-height-static, $typography-p5-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-size: $typography-p5-font-size;
   font-weight: $typography-p5-font-weight;
@@ -296,7 +296,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='p6'] {
   $lh-gap: mixins.getLineHeightGap($typography-p6-line-height-static, $typography-p6-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-size: $typography-p6-font-size;
   font-weight: $typography-p6-font-weight;
@@ -307,7 +307,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='p7'] {
   $lh-gap: mixins.getLineHeightGap($typography-p7-line-height-static, $typography-p7-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-size: $typography-p7-font-size;
   font-weight: $typography-p7-font-weight;
@@ -318,7 +318,7 @@ $typography-p8-line-height-static: 1.2em;
 
 [cds-text*='p8'] {
   $lh-gap: mixins.getLineHeightGap($typography-p8-line-height-static, $typography-p8-line-height);
-  @include typography.LHE($lh-gap);
+  @include typography-mixins.LHE($lh-gap);
 
   font-size: $typography-p8-font-size;
   font-weight: $typography-p8-font-weight;
