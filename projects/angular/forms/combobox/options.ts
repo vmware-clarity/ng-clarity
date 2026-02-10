@@ -46,7 +46,7 @@ export const SELECT_ALL_VALUE = 'SELECT_ALL';
       </div>
     }
 
-    @if (showSelectAllAction) {
+    @if (showSelectAll) {
       <div class="clr-combobox-select-all">
         <button
           #selectAllBtn
@@ -146,8 +146,13 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     return `${this.optionsId}-no-results`;
   }
 
-  get showSelectAllAction(): boolean {
-    return this.optionSelectionService.multiselectable && !this.optionSelectionService.loading && this.items.length > 0;
+  get showSelectAll(): boolean {
+    return (
+      this.optionSelectionService.showSelectAll &&
+      this.optionSelectionService.multiselectable &&
+      !this.optionSelectionService.loading &&
+      this.items.length > 0
+    );
   }
 
   get allVisibleSelected(): boolean {

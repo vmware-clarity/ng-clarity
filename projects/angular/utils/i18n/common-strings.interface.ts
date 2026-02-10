@@ -291,6 +291,7 @@ export interface ClrCommonStrings {
   comboboxOpen: string;
   comboboxSelectAll: string;
   comboboxUnselectAll: string;
+  comboboxAllSelected: string;
   comboboxShowAll: string;
   comboboxShowLess: string;
   /**

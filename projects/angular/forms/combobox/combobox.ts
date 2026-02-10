@@ -8,6 +8,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
+  booleanAttribute,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -45,7 +46,7 @@ import {
   Keys,
   LoadingListener,
 } from '@clr/angular/utils';
-import { Subject, tap } from 'rxjs';
+import { debounceTime, Subject, tap } from 'rxjs';
 
 import { ClrComboboxContainer } from './combobox-container';
 import { ClrComboboxIdentityFunction, ComboboxModel } from './model/combobox.model';
@@ -80,7 +81,6 @@ export class ClrCombobox<T>
   implements ControlValueAccessor, LoadingListener, AfterContentInit
 {
   @Input('placeholder') placeholder = '';
-  @Input('showSelectAll') showSelectAll = false;
 
   @Output('clrInputChange') clrInputChange = new EventEmitter<string>(false);
   @Output('clrOpenChange') clrOpenChange = this.popoverService.openChange;
@@ -145,6 +145,14 @@ export class ClrCombobox<T>
 
     // default to SingleSelectComboboxModel, in case the optional input [ClrMulti] isn't used
     this.multiSelect = false;
+  }
+
+  @Input({ alias: 'showSelectAll', transform: booleanAttribute })
+  get showSelectAll() {
+    return this.optionSelectionService.showSelectAll;
+  }
+  set showSelectAll(value: boolean) {
+    this.optionSelectionService.showSelectAll = value;
   }
 
   @Input('clrEditable')
@@ -232,6 +240,12 @@ export class ClrCombobox<T>
 
   get showAllText() {
     return this.commonStrings.parse(this.commonStrings.keys.comboboxShowAll, {
+      ITEMS: this.multiSelectModel?.length.toString(),
+    });
+  }
+
+  get allSelectedText() {
+    return this.commonStrings.parse(this.commonStrings.keys.comboboxAllSelected, {
       ITEMS: this.multiSelectModel?.length.toString(),
     });
   }

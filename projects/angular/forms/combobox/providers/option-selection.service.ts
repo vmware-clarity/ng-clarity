@@ -16,6 +16,7 @@ import { SELECT_ALL_VALUE } from '../options';
 export class OptionSelectionService<T> {
   loading = false;
   editable = false;
+  showSelectAll = false;
   selectionModel: ComboboxModel<T>;
   inputChanged: Observable<string>;
 
