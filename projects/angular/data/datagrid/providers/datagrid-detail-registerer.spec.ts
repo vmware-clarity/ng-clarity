@@ -6,12 +6,12 @@
  */
 
 import { Component } from '@angular/core';
+import { TestContext } from '@clr/angular/testing';
+import { IfExpandService } from '@clr/angular/utils';
 
-import { IfExpandService } from '../../../utils/conditional/if-expanded.service';
 import { ClrDatagrid } from '../datagrid';
 import { DatagridDetailRegisterer } from '../datagrid-detail-registerer';
 import { DatagridIfExpandService } from '../datagrid-if-expanded.service';
-import { TestContext } from '../helpers.spec';
 import { DetailService } from './detail.service';
 import { ExpandableRowsCount } from './global-expandable-rows';
 

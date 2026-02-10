@@ -6,10 +6,8 @@
  */
 
 import { Injectable } from '@angular/core';
+import { ClrLoadingState, LoadingListener } from '@clr/angular/utils/loading';
 import { Observable, Subject } from 'rxjs';
-
-import { ClrLoadingState } from '../loading/loading';
-import { LoadingListener } from '../loading/loading-listener';
 
 @Injectable()
 export class IfExpandService implements LoadingListener {

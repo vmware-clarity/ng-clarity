@@ -7,10 +7,9 @@
 
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClrPopoverService } from '@clr/angular/popover/common';
 
 import { ClrTabOverflowContent } from './tab-overflow-content';
-import { ClrPopoverService } from '../../popover';
-
 @Component({
   template: `<clr-tab-overflow-content>Hello world</clr-tab-overflow-content>`,
   standalone: false,

@@ -6,8 +6,7 @@
  */
 
 import { ConnectedPosition } from '@angular/cdk/overlay';
-
-import { ClrPosition } from '../../../utils/enums/position.enum';
+import { ClrPosition } from '@clr/angular/utils';
 
 export enum ClrPopoverType {
   SIGNPOST,

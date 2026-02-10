@@ -6,12 +6,13 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { TestContext } from '@clr/angular/testing';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 import { Subject } from 'rxjs';
 
 import { ClrDatagridFilter } from './datagrid-filter';
-import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
-import { ClrPopoverService } from '../../popover';
-import { ClrCommonStringsService } from '../../utils';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider } from './providers/filters';

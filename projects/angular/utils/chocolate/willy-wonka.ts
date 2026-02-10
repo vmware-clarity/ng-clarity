@@ -6,8 +6,7 @@
  */
 
 import { AfterViewChecked, Directive } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 /*
  * After a conversation with the Angular core team, it turns out we don't have much of a choice for our

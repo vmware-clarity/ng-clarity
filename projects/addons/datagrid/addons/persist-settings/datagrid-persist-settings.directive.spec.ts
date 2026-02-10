@@ -18,7 +18,7 @@ import {
   MockIsRowSelectablePipe,
   ZoomLevelServiceMock,
 } from '@clr/addons/testing';
-import { ClrDatagridSortOrder } from '@clr/angular';
+import { ClrDatagridSortOrder } from '@clr/angular/data/datagrid';
 
 import { appfxDatagridPersistSettingsToken } from './appfx-datagrid-persist-settings.token';
 import { DatagridPersistSettingsDirective } from './datagrid-persist-settings.directive';

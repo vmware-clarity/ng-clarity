@@ -6,8 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
-
-import { ClrPopoverService } from '../../common';
+import { ClrPopoverService } from '@clr/angular/popover/common';
 
 @Injectable()
 export class TooltipMouseService {

@@ -7,18 +7,17 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { Component, EventEmitter, Inject, Input, OnDestroy, Output, PLATFORM_ID, ViewChild } from '@angular/core';
+import {
+  ClrPopoverHostDirective,
+  ClrPopoverPosition,
+  ClrPopoverService,
+  ClrPopoverType,
+  mapPopoverKeyToPosition,
+} from '@clr/angular/popover/common';
+import { ClrCommonStringsService, ClrKeyFocus, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { RowActionService } from './providers/row-action-service';
-import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
-import {
-  ClrPopoverPosition,
-  ClrPopoverType,
-  mapPopoverKeyToPosition,
-} from '../../popover/common/utils/popover-positions';
-import { ClrCommonStringsService } from '../../utils';
-import { ClrKeyFocus } from '../../utils/focus/key-focus';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 let clrDgActionId = 0;
 

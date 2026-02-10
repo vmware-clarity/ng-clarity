@@ -6,8 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
-import { Subject } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 
 import { DateRangeInput } from '../interfaces/date-range.interface';
 import { CalendarModel } from '../model/calendar.model';

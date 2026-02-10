@@ -6,9 +6,9 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
-import { ClrPopoverService } from '../../popover';
-import { ClrCommonStringsService } from '../../utils';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 

@@ -6,14 +6,15 @@
  */
 
 import { AfterContentInit, AfterViewInit, Component, ElementRef, Optional, ViewChild } from '@angular/core';
+import {
+  ClrAbstractContainer,
+  ControlClassService,
+  ControlIdService,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/forms/common';
 
-import { ClrAbstractContainer } from '../common/abstract-container';
 import { ComboboxContainerService } from './providers/combobox-container.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
-
 @Component({
   selector: 'clr-combobox-container',
   template: `

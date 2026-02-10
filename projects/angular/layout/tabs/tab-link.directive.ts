@@ -6,12 +6,11 @@
  */
 
 import { Directive, ElementRef, HostBinding, HostListener, Inject, Input, ViewContainerRef } from '@angular/core';
+import { IF_ACTIVE_ID, IfActiveService, TemplateRefContainer } from '@clr/angular/utils';
 
 import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';
 import { TABS_ID } from './tabs-id.provider';
-import { IF_ACTIVE_ID, IfActiveService } from '../../utils/conditional/if-active.service';
-import { TemplateRefContainer } from '../../utils/template-ref/template-ref-container';
 
 let nbTabLinkComponents = 0;
 
@@ -77,7 +76,7 @@ export class ClrTabLink {
   }
 
   @HostBinding('attr.tabindex')
-  get tabindex() {
+  get tabindex(): 0 | -1 {
     return this.active ? 0 : -1;
   }
 

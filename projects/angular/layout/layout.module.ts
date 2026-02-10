@@ -6,12 +6,11 @@
  */
 
 import { NgModule } from '@angular/core';
-
-import { ClrBreadcrumbsModule } from './breadcrumbs';
-import { ClrMainContainerModule } from './main-container/main-container.module';
-import { ClrNavigationModule } from './nav/navigation.module';
-import { ClrTabsModule } from './tabs/tabs.module';
-import { ClrVerticalNavModule } from './vertical-nav/vertical-nav.module';
+import { ClrBreadcrumbsModule } from '@clr/angular/layout/breadcrumbs';
+import { ClrMainContainerModule } from '@clr/angular/layout/main-container';
+import { ClrNavigationModule } from '@clr/angular/layout/nav';
+import { ClrTabsModule } from '@clr/angular/layout/tabs';
+import { ClrVerticalNavModule } from '@clr/angular/layout/vertical-nav';
 
 @NgModule({
   exports: [ClrMainContainerModule, ClrNavigationModule, ClrTabsModule, ClrVerticalNavModule, ClrBreadcrumbsModule],

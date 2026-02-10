@@ -6,7 +6,7 @@
  */
 
 import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
-import { ClrDatagridVirtualScrollRangeInterface } from '@clr/angular';
+import { ClrDatagridVirtualScrollRangeInterface } from '@clr/angular/data/datagrid';
 
 @Component({
   selector: 'appfx-datagrid',

@@ -6,11 +6,10 @@
  */
 
 import { provideRouter } from '@angular/router';
+import { ClrBreadcrumbs, ClrBreadcrumbsModule } from '@clr/angular/layout/breadcrumbs';
 import { applicationConfig, moduleMetadata, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 import { action } from 'storybook/actions';
-
-import { ClrBreadcrumbs, ClrBreadcrumbsModule } from '../../../projects/angular/layout/breadcrumbs';
 
 const menuItems = [
   { label: 'Home', routerLink: '/home' },

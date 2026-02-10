@@ -7,14 +7,12 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { delay } from 'projects/angular/utils/testing/helpers.spec';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { animationFrameTick, delay, TestContext } from '@clr/angular/testing';
+import { DomAdapter } from '@clr/angular/utils';
 
 import { DatagridStringFilter } from './datagrid-string-filter';
 import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
-import { ClrPopoverService } from '../../../../popover';
-import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
-import { animationFrameTick } from '../../../../utils/testing/helpers.spec';
-import { TestContext } from '../../helpers.spec';
 import { ClrDatagridStringFilterInterface } from '../../interfaces/string-filter.interface';
 import { CustomFilter } from '../../providers/custom-filter';
 import { FiltersProvider } from '../../providers/filters';

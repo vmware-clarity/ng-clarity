@@ -8,7 +8,7 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ClrDatagridFilter } from '@clr/angular';
+import { ClrDatagridFilter } from '@clr/angular/data/datagrid';
 import { Subject } from 'rxjs';
 
 import { DatagridFilterContainerComponent } from './datagrid-filter-container.component';

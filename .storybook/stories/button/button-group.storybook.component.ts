@@ -8,11 +8,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ClrButtonGroupModule, ClrIcon, ClrLoadingModule, commonStringsDefault } from '@clr/angular';
+import { ClrPopoverPosition } from '@clr/angular/popover/common';
 import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from 'helpers/button-class.helper';
 import { createArray } from 'helpers/common';
-
-import { ClrPopoverPosition } from '../../../projects/angular/popover/common/utils/popover-positions';
-
 @Component({
   selector: 'storybook-button-group',
   standalone: true,

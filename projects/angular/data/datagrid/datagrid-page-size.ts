@@ -6,10 +6,10 @@
  */
 
 import { Component, Input, ViewChild } from '@angular/core';
+import { ClrControlLabel } from '@clr/angular/forms/common';
+import { uniqueIdFactory } from '@clr/angular/utils';
 
-import { ClrControlLabel } from '../../forms';
 import { Page } from './providers/page';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Component({
   selector: 'clr-dg-page-size',

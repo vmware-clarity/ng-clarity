@@ -15,15 +15,17 @@ import {
   Optional,
   QueryList,
 } from '@angular/core';
+import {
+  ClrAbstractContainer,
+  ClrControlLabel,
+  ContainerIdService,
+  ControlClassService,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/forms/common';
+import { uniqueIdFactory } from '@clr/angular/utils';
 
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrControlLabel } from '../common';
 import { ClrRadio } from './radio';
-import { ClrAbstractContainer } from '../common/abstract-container';
-import { ContainerIdService } from '../common/providers/container-id.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 
 @Component({
   selector: 'clr-radio-container',

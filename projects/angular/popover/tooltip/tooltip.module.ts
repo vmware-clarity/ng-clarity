@@ -7,19 +7,18 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
+import { ClrIcon } from '@clr/angular/icon';
+import { ClrIfOpen, ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
 
 import { ClrTooltip } from './tooltip';
 import { ClrTooltipContent } from './tooltip-content';
 import { ClrTooltipTrigger } from './tooltip-trigger';
-import { ClrIcon } from '../../icon';
-import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-import { ClrPopoverModuleNext } from '../common/popover.module';
 
 export const CLR_TOOLTIP_DIRECTIVES: Type<any>[] = [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent];
 
 @NgModule({
-  imports: [CommonModule, ClrIcon, ClrPopoverModuleNext],
+  imports: [CommonModule, ClrIcon, ÇlrClrPopoverModuleNext],
   declarations: [CLR_TOOLTIP_DIRECTIVES],
-  exports: [CLR_TOOLTIP_DIRECTIVES, ClrConditionalModule, ClrIcon],
+  exports: [CLR_TOOLTIP_DIRECTIVES, ClrIfOpen, ClrIcon],
 })
 export class ClrTooltipModule {}

@@ -7,9 +7,9 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Type } from '@clr/angular/emphasis/common';
 
 import { ClrLabel, ClrLabelColors } from './label';
-import { Type } from '../common/type.enum';
 
 @Component({
   template: ` <clr-label

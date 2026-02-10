@@ -5,8 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { inject, TemplateRef } from '@angular/core';
-import { Directive } from '@angular/core';
+import { Directive, inject, TemplateRef } from '@angular/core';
 
 import { ClrFileAcceptError, ClrFileMaxFileSizeError, ClrFileMinFileSizeError } from './file-input-validator-errors';
 

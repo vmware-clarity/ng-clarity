@@ -6,7 +6,8 @@
  */
 
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { ClrInputModule, ClrPopoverService } from '@clr/angular';
+import { ClrInputModule } from '@clr/angular/forms/input';
+import { ClrPopoverService } from '@clr/angular/popover/common';
 import { Observable, of } from 'rxjs';
 
 import { DatagridFilterComponent } from './datagrid-filter.component';

@@ -6,13 +6,12 @@
  */
 
 import { ChangeDetectorRef, Component, Input, OnDestroy, Optional, SkipSelf } from '@angular/core';
+import { ClrPopoverHostDirective, ClrPopoverService } from '@clr/angular/popover/common';
+import { FOCUS_SERVICE_PROVIDER } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverHostDirective, ClrPopoverService } from '../common';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdown.service';
-import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
-
 @Component({
   selector: 'clr-dropdown',
   template: `<ng-content></ng-content>`,

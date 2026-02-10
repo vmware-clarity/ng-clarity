@@ -18,12 +18,17 @@ import {
   QueryList,
   SkipSelf,
 } from '@angular/core';
+import {
+  ClrPopoverContent,
+  ClrPopoverPosition,
+  ClrPopoverService,
+  ClrPopoverType,
+  DROPDOWN_POSITIONS,
+  POPOVER_HOST_ANCHOR,
+} from '@clr/angular/popover/common';
+import { FocusableItem } from '@clr/angular/utils';
 
-import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { ClrPopoverContent, ClrPopoverService } from '../common';
-import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
-import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS } from '../common/utils/popover-positions';
 
 @Component({
   selector: 'clr-dropdown-menu',

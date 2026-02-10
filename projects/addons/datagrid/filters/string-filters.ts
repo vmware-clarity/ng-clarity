@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDatagridStringFilterInterface } from '@clr/angular';
+import { ClrDatagridStringFilterInterface } from '@clr/angular/data/datagrid';
 
 export class CaseInsensitiveContainsStringFilter implements ClrDatagridStringFilterInterface<any> {
   constructor(private fieldName: string) {}

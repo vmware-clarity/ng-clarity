@@ -16,7 +16,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ClrDatagrid } from '@clr/angular';
+import { ClrDatagrid } from '@clr/angular/data/datagrid';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 

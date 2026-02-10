@@ -6,26 +6,21 @@
  */
 
 import { NgModule } from '@angular/core';
-
-import { ClrStepperModule } from './accordion/stepper/stepper.module';
-import { ClrButtonModule } from './button/button.module';
-import { ClrDataModule } from './data/data.module';
-import { ClrEmphasisModule } from './emphasis/emphasis.module';
-import { ClrFormsModule } from './forms/forms.module';
-import { ClrIcon } from './icon';
-import { ClrIconModule } from './icon/icon.module';
-import { ClrLayoutModule } from './layout/layout.module';
-import { ClrModalModule } from './modal/modal.module';
-import { ClrSidePanelModule } from './modal/side-panel.module';
-import { ClrPopoverModuleNext } from './popover/common/popover.module';
-import { ClrPopoverModule } from './popover/popover.module';
-import { ClrProgressBarModule } from './progress/progress-bars/progress-bar.module';
-import { ClrSpinnerModule } from './progress/spinner/spinner.module';
-import { ClrTimelineModule } from './timeline/timeline.module';
-import { ClrConditionalModule } from './utils/conditional/conditional.module';
-import { ClrFocusOnViewInitModule } from './utils/focus/focus-on-view-init/focus-on-view-init.module';
-import { ClrLoadingModule } from './utils/loading/loading.module';
-import { ClrWizardModule } from './wizard/wizard.module';
+import { ClrButtonModule } from '@clr/angular/button';
+import { ClrDataModule } from '@clr/angular/data';
+import { ClrEmphasisModule } from '@clr/angular/emphasis';
+import { ClrFormsModule } from '@clr/angular/forms';
+import { ClrIcon, ClrIconModule } from '@clr/angular/icon';
+import { ClrLayoutModule } from '@clr/angular/layout';
+import { ClrModalModule, ClrSidePanelModule } from '@clr/angular/modal';
+import { ClrPopoverModule } from '@clr/angular/popover';
+import { ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrProgressBarModule } from '@clr/angular/progress/progress-bars';
+import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
+import { ClrStepperModule } from '@clr/angular/stepper';
+import { ClrTimelineModule } from '@clr/angular/timeline';
+import { ClrConditionalModule, ClrFocusOnViewInitModule, ClrLoadingModule } from '@clr/angular/utils';
+import { ClrWizardModule } from '@clr/angular/wizard';
 
 @NgModule({
   imports: [ClrIcon],
@@ -47,7 +42,7 @@ import { ClrWizardModule } from './wizard/wizard.module';
     ClrStepperModule,
     ClrSpinnerModule,
     ClrProgressBarModule,
-    ClrPopoverModuleNext,
+    ÇlrClrPopoverModuleNext,
     ClrTimelineModule,
   ],
 })

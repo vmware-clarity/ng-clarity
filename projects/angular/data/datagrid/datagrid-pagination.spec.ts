@@ -6,13 +6,13 @@
  */
 
 import { Component } from '@angular/core';
+import { TestContext } from '@clr/angular/testing';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrDatagridPagination } from './datagrid-pagination';
-import { TestContext } from './helpers.spec';
 import { DetailService } from './providers/detail.service';
 import { Page } from './providers/page';
 import { StateDebouncer } from './providers/state-debouncer.provider';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 export default function (): void {
   describe('ClrDatagridPagination component', function () {

@@ -6,13 +6,10 @@
  */
 
 import { Injectable, Renderer2 } from '@angular/core';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { FocusableItem, FocusService, Linkers } from '@clr/angular/utils';
 
 import { InitialFocus } from './button-group-focus.enum';
-import { ClrPopoverService } from '../../popover';
-import { FocusService } from '../../utils/focus/focus.service';
-import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { Linkers } from '../../utils/focus/focusable-item/linkers';
-
 @Injectable()
 export class ButtonGroupFocusHandler {
   initialFocus: InitialFocus = InitialFocus.FIRST_ITEM;

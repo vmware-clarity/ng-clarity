@@ -6,19 +6,12 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ClrPopoverPosition, ClrPopoverService, SIGNPOST_POSITIONS } from '@clr/angular/popover/common';
+import { delay, expectActiveElementNotToBe, expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
 
-import { ClrPopoverService } from '../common';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpost } from './signpost';
 import { ClrSignpostModule } from './signpost.module';
-import {
-  expectActiveElementNotToBe,
-  expectActiveElementToBe,
-  spec,
-  TestContext,
-} from '../../utils/testing/helpers.spec';
-import { delay } from '../../utils/testing/helpers.spec';
-import { ClrPopoverPosition, SIGNPOST_POSITIONS } from '../common/utils/popover-positions';
 
 interface Context extends TestContext<ClrSignpost, TestDefaultSignpost | TestCustomTriggerSignpost> {
   popoverService: ClrPopoverService;
@@ -43,7 +36,7 @@ export default function (): void {
       });
 
       it('has a default trigger that can hide/show content', function (this: Context) {
-        const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+        const signpostToggle: HTMLElement = this.testElement.querySelector('.signpost-action');
         let signpostContent: HTMLElement;
 
         // Test we have a trigger
@@ -65,7 +58,7 @@ export default function (): void {
       });
 
       it('has a default aria-label on the default trigger', function (this: Context) {
-        const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+        const signpostToggle: HTMLElement = this.testElement.querySelector('.signpost-action');
 
         expect(signpostToggle.getAttribute('aria-label')).toEqual('Signpost Toggle');
       });
@@ -73,7 +66,7 @@ export default function (): void {
       it('allows a custom aria-label for the default trigger', function (this: Context) {
         this.fixture.componentInstance.signpost.signpostTriggerAriaLabel = 'custom label';
         this.detectChanges();
-        const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+        const signpostToggle: HTMLElement = this.testElement.querySelector('.signpost-action');
 
         expect(signpostToggle.getAttribute('aria-label')).toBe('custom label');
       });
@@ -85,10 +78,10 @@ export default function (): void {
 
       function testPosition(name: ClrPopoverPosition): void {
         it('has a ' + name + ' signpost content position', function () {
-          this.hostComponent.position = name;
+          this.testComponent.position = name;
           this.detectChanges();
 
-          const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+          const signpostToggle: HTMLElement = this.testElement.querySelector('.signpost-action');
 
           // Test we have a trigger
           expect(signpostToggle).not.toBeNull();
@@ -112,7 +105,7 @@ export default function (): void {
       });
 
       it('should not get focus on trigger initially', function (this: Context) {
-        const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+        const signpostToggle: HTMLElement = this.testElement.querySelector('.signpost-action');
         this.popoverService.open = false;
         this.detectChanges();
         expect(signpostToggle).not.toBeNull();
@@ -126,12 +119,12 @@ export default function (): void {
         expect(document.body.querySelector('.clr-signpost-container')).not.toBeNull();
 
         // dynamic click doesn't set the focus so here manually focusing first
-        this.hostComponent.outsideClickBtn.nativeElement.focus();
-        this.hostComponent.outsideClickBtn.nativeElement.click();
+        this.testComponent.outsideClickBtn.nativeElement.focus();
+        this.testComponent.outsideClickBtn.nativeElement.click();
         this.detectChanges();
 
         expect(document.body.querySelector('.clr-signpost-container')).toBeNull();
-        expectActiveElementToBe(this.hostComponent.outsideClickBtn.nativeElement);
+        expectActiveElementToBe(this.testComponent.outsideClickBtn.nativeElement);
       });
 
       it('should get focus back on trigger if signpost gets closed with outside click on non-interactive element', async function (this: Context) {
@@ -144,7 +137,7 @@ export default function (): void {
         this.detectChanges();
 
         expect(document.body.querySelector('.clr-signpost-container')).toBeNull();
-        expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
+        expectActiveElementToBe(this.testElement.querySelector('.signpost-action'));
       });
 
       it('should get focus back on trigger if signpost gets closed while focused element inside content', function (this: Context) {
@@ -157,7 +150,7 @@ export default function (): void {
         this.popoverService.open = false;
         this.detectChanges();
 
-        expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
+        expectActiveElementToBe(this.testElement.querySelector('.signpost-action'));
       });
 
       it('should get focus back on trigger if signpost gets closed with ESC key', function (this: Context) {
@@ -171,7 +164,7 @@ export default function (): void {
         this.detectChanges();
 
         expect(document.body.querySelector('.clr-signpost-container')).toBeNull();
-        expectActiveElementToBe(this.hostElement.querySelector('.signpost-action'));
+        expectActiveElementToBe(this.testElement.querySelector('.signpost-action'));
       });
     });
 
@@ -186,7 +179,7 @@ export default function (): void {
        * This test assumes that if
        */
       it('does not display the default trigger', function (this: Context) {
-        const triggerIcon: HTMLElement = this.hostElement.querySelector('cds-icon');
+        const triggerIcon: HTMLElement = this.testElement.querySelector('cds-icon');
 
         /**********
          * If there is a cds-icon we are testing that it is not the same shape
@@ -198,7 +191,7 @@ export default function (): void {
       });
 
       it('projects a custom trigger element to hide/show content', function (this: Context) {
-        const signpostTrigger: HTMLElement = this.hostElement.querySelector('.signpost-action');
+        const signpostTrigger: HTMLElement = this.testElement.querySelector('.signpost-action');
         let signpostContent: HTMLElement;
 
         expect(signpostTrigger.textContent.trim()).toBe('Custom trigger');
@@ -248,7 +241,7 @@ export default function (): void {
 
       beforeEach(function (this: Context) {
         this.signpostIdService = this.getClarityProvider(SignpostIdService);
-        this.triggerButton = this.hostElement.querySelector('.signpost-action');
+        this.triggerButton = this.testElement.querySelector('.signpost-action');
       });
 
       it('are correct when content is opened', function (this: Context) {

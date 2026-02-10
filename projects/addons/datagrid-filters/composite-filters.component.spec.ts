@@ -8,7 +8,9 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrCheckboxModule, ClrIcon, ClrInputModule, ClrSelectModule, ClrSignpostModule } from '@clr/angular';
+import { ClrCheckboxModule, ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
+import { ClrIcon } from '@clr/angular/icon';
+import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 
 import { EnumFilterComponent } from './advanced-filters/enum-filter.component';
 import { FilterFormComponent } from './advanced-filters/filter-form.component';

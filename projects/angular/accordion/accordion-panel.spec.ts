@@ -10,13 +10,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { HeadingLevel, IfExpandService } from '@clr/angular/utils';
 
 import { ClrAccordionPanel } from './accordion-panel';
 import { ClrAccordionModule } from './accordion.module';
 import { AccordionPanelModel } from './models/accordion.model';
 import { AccordionService } from './providers/accordion.service';
-import { IfExpandService } from '../utils/conditional/if-expanded.service';
-import { HeadingLevel } from '../utils/types/heading-level';
 
 @Component({
   template: `

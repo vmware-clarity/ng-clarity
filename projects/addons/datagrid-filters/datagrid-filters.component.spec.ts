@@ -8,7 +8,9 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrIcon, ClrInputModule, ClrSelectModule, ClrSignpostModule } from '@clr/angular';
+import { ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
+import { ClrIcon } from '@clr/angular/icon';
+import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 
 import { CompositeFiltersComponent } from './composite-filters.component';
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';

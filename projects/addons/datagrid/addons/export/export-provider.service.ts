@@ -6,7 +6,7 @@
  */
 
 import { ElementRef, Inject, Injectable, Optional, Renderer2 } from '@angular/core';
-import { ClrDatagridSortOrder } from '@clr/angular';
+import { ClrDatagridSortOrder } from '@clr/angular/data/datagrid';
 
 import { CsvHelperService } from './csv-helper.service';
 import { ExportType } from './export-type';

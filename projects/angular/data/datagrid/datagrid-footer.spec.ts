@@ -6,11 +6,12 @@
  */
 
 import { Component } from '@angular/core';
+import { TestContext } from '@clr/angular/testing';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClrDatagridFooter } from './datagrid-footer';
 import { SelectionType } from './enums/selection-type';
-import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 import { ColumnsService } from './providers/columns.service';
 import { MOCK_COLUMN_SERVICE_PROVIDER, MockColumnsService } from './providers/columns.service.mock';
 import { DetailService } from './providers/detail.service';
