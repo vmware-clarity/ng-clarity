@@ -73,9 +73,10 @@ export const VerticalTabs: StoryObj = {
 
 export const TabsResponsive: StoryObj = {
   render: tabsTemplate,
-  parameters: {
+  globals: {
     viewport: {
-      defaultViewport: 'large',
+      value: 'large',
+      isRotated: false,
     },
   },
 };
