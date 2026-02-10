@@ -31,11 +31,195 @@
     ".": {
       "types": "./index.d.ts",
       "default": "./fesm2022/clr-angular.mjs"
+    },
+    "./accordion": {
+      "types": "./accordion/index.d.ts",
+      "default": "./fesm2022/clr-angular-accordion.mjs"
+    },
+    "./button": {
+      "types": "./button/index.d.ts",
+      "default": "./fesm2022/clr-angular-button.mjs"
+    },
+    "./data": {
+      "types": "./data/index.d.ts",
+      "default": "./fesm2022/clr-angular-data.mjs"
+    },
+    "./emphasis": {
+      "types": "./emphasis/index.d.ts",
+      "default": "./fesm2022/clr-angular-emphasis.mjs"
+    },
+    "./forms": {
+      "types": "./forms/index.d.ts",
+      "default": "./fesm2022/clr-angular-forms.mjs"
+    },
+    "./icon": {
+      "types": "./icon/index.d.ts",
+      "default": "./fesm2022/clr-angular-icon.mjs"
+    },
+    "./layout": {
+      "types": "./layout/index.d.ts",
+      "default": "./fesm2022/clr-angular-layout.mjs"
+    },
+    "./modal": {
+      "types": "./modal/index.d.ts",
+      "default": "./fesm2022/clr-angular-modal.mjs"
+    },
+    "./popover": {
+      "types": "./popover/index.d.ts",
+      "default": "./fesm2022/clr-angular-popover.mjs"
+    },
+    "./stepper": {
+      "types": "./stepper/index.d.ts",
+      "default": "./fesm2022/clr-angular-stepper.mjs"
+    },
+    "./timeline": {
+      "types": "./timeline/index.d.ts",
+      "default": "./fesm2022/clr-angular-timeline.mjs"
+    },
+    "./utils": {
+      "types": "./utils/index.d.ts",
+      "default": "./fesm2022/clr-angular-utils.mjs"
+    },
+    "./wizard": {
+      "types": "./wizard/index.d.ts",
+      "default": "./fesm2022/clr-angular-wizard.mjs"
+    },
+    "./data/stack-view": {
+      "types": "./data/stack-view/index.d.ts",
+      "default": "./fesm2022/clr-angular-data-stack-view.mjs"
+    },
+    "./data/datagrid": {
+      "types": "./data/datagrid/index.d.ts",
+      "default": "./fesm2022/clr-angular-data-datagrid.mjs"
+    },
+    "./data/tree-view": {
+      "types": "./data/tree-view/index.d.ts",
+      "default": "./fesm2022/clr-angular-data-tree-view.mjs"
+    },
+    "./emphasis/alert": {
+      "types": "./emphasis/alert/index.d.ts",
+      "default": "./fesm2022/clr-angular-emphasis-alert.mjs"
+    },
+    "./emphasis/common": {
+      "types": "./emphasis/common/index.d.ts",
+      "default": "./fesm2022/clr-angular-emphasis-common.mjs"
+    },
+    "./emphasis/badge": {
+      "types": "./emphasis/badge/index.d.ts",
+      "default": "./fesm2022/clr-angular-emphasis-badge.mjs"
+    },
+    "./emphasis/label": {
+      "types": "./emphasis/label/index.d.ts",
+      "default": "./fesm2022/clr-angular-emphasis-label.mjs"
+    },
+    "./forms/checkbox": {
+      "types": "./forms/checkbox/index.d.ts",
+      "default": "./fesm2022/clr-angular-forms-checkbox.mjs"
+    },
+    "./forms/combobox": {
+      "types": "./forms/combobox/index.d.ts",
+      "default": "./fesm2022/clr-angular-forms-combobox.mjs"
+    },
+    "./forms/common": {
+      "types": "./forms/common/index.d.ts",
+      "default": "./fesm2022/clr-angular-forms-common.mjs"
+    },
+    "./forms/datalist": {
+      "types": "./forms/datalist/index.d.ts",
+      "default": "./fesm2022/clr-angular-forms-datalist.mjs"
+    },
+    "./forms/datepicker": {
+      "types": "./forms/datepicker/index.d.ts",
+      "default": "./fesm2022/clr-angular-forms-datepicker.mjs"
+    },
+    "./forms/file-input": {
+      "types": "./forms/file-input/index.d.ts",
+      "default": "./fesm2022/clr-angular-forms-file-input.mjs"
+    },
+    "./forms/input": {
+      "types": "./forms/input/index.d.ts",
+      "default": "./fesm2022/clr-angular-forms-input.mjs"
+    },
+    "./forms/number-input": {
+      "types": "./forms/number-input/index.d.ts",
+      "default": "./fesm2022/clr-angular-forms-number-input.mjs"
+    },
+    "./forms/password": {
+      "types": "./forms/password/index.d.ts",
+      "default": "./fesm2022/clr-angular-forms-password.mjs"
+    },
+    "./forms/radio": {
+      "types": "./forms/radio/index.d.ts",
+      "default": "./fesm2022/clr-angular-forms-radio.mjs"
+    },
+    "./forms/range": {
+      "types": "./forms/range/index.d.ts",
+      "default": "./fesm2022/clr-angular-forms-range.mjs"
+    },
+    "./forms/select": {
+      "types": "./forms/select/index.d.ts",
+      "default": "./fesm2022/clr-angular-forms-select.mjs"
+    },
+    "./forms/textarea": {
+      "types": "./forms/textarea/index.d.ts",
+      "default": "./fesm2022/clr-angular-forms-textarea.mjs"
+    },
+    "./layout/breadcrumbs": {
+      "types": "./layout/breadcrumbs/index.d.ts",
+      "default": "./fesm2022/clr-angular-layout-breadcrumbs.mjs"
+    },
+    "./layout/main-container": {
+      "types": "./layout/main-container/index.d.ts",
+      "default": "./fesm2022/clr-angular-layout-main-container.mjs"
+    },
+    "./layout/nav": {
+      "types": "./layout/nav/index.d.ts",
+      "default": "./fesm2022/clr-angular-layout-nav.mjs"
+    },
+    "./layout/tabs": {
+      "types": "./layout/tabs/index.d.ts",
+      "default": "./fesm2022/clr-angular-layout-tabs.mjs"
+    },
+    "./layout/vertical-nav": {
+      "types": "./layout/vertical-nav/index.d.ts",
+      "default": "./fesm2022/clr-angular-layout-vertical-nav.mjs"
+    },
+    "./popover/common": {
+      "types": "./popover/common/index.d.ts",
+      "default": "./fesm2022/clr-angular-popover-common.mjs"
+    },
+    "./popover/dropdown": {
+      "types": "./popover/dropdown/index.d.ts",
+      "default": "./fesm2022/clr-angular-popover-dropdown.mjs"
+    },
+    "./popover/signpost": {
+      "types": "./popover/signpost/index.d.ts",
+      "default": "./fesm2022/clr-angular-popover-signpost.mjs"
+    },
+    "./popover/tooltip": {
+      "types": "./popover/tooltip/index.d.ts",
+      "default": "./fesm2022/clr-angular-popover-tooltip.mjs"
+    },
+    "./progress/progress-bars": {
+      "types": "./progress/progress-bars/index.d.ts",
+      "default": "./fesm2022/clr-angular-progress-progress-bars.mjs"
+    },
+    "./progress/spinner": {
+      "types": "./progress/spinner/index.d.ts",
+      "default": "./fesm2022/clr-angular-progress-spinner.mjs"
+    },
+    "./utils/conditional": {
+      "types": "./utils/conditional/index.d.ts",
+      "default": "./fesm2022/clr-angular-utils-conditional.mjs"
+    },
+    "./utils/loading": {
+      "types": "./utils/loading/index.d.ts",
+      "default": "./fesm2022/clr-angular-utils-loading.mjs"
     }
   },
   "sideEffects": false,
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.c8882d1"
+  "version": "0.0.0-preview.4e3d597"
 }

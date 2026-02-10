@@ -1,1301 +1,246 @@
 import * as i0 from '@angular/core';
-import { OnInit, OnDestroy, ElementRef, ChangeDetectorRef, QueryList, EventEmitter, Renderer2, AfterContentInit, AfterViewInit, ViewContainerRef, TemplateRef, NgZone, Type as Type$1, InjectionToken, OnChanges, SimpleChanges, DoCheck, IterableDiffers, TrackByFunction, EnvironmentInjector, Injector, RendererFactory2, EmbeddedViewRef, AfterViewChecked, AfterContentChecked, SimpleChange, PipeTransform } from '@angular/core';
-import * as rxjs from 'rxjs';
-import { Observable, Subject, BehaviorSubject, ReplaySubject, Subscription } from 'rxjs';
-import * as i2 from '@angular/common';
+import { ElementRef, EventEmitter, Renderer2, Type, TemplateRef, AfterContentInit, AfterViewInit, QueryList, OnDestroy, OnInit, OnChanges, ViewContainerRef, ChangeDetectorRef, SimpleChanges, DoCheck, IterableDiffers, TrackByFunction, NgZone, EnvironmentInjector, EmbeddedViewRef, AfterViewChecked, Injector, InjectionToken, RendererFactory2, PipeTransform, SimpleChange, FactoryProvider, AfterContentChecked } from '@angular/core';
+import * as i7 from '@clr/angular/icon';
+import * as i2 from '@clr/angular/emphasis';
+import * as i3 from '@clr/angular/data';
+import * as i4 from '@clr/angular/modal';
+import { ModalStackService as ModalStackService$1 } from '@clr/angular/modal';
+import * as i39 from '@clr/angular/utils';
+import { LoadingListener as LoadingListener$1, ClrLoadingState as ClrLoadingState$1, FocusService as FocusService$1, ClrCommonStringsService as ClrCommonStringsService$1, ClrDestroyService as ClrDestroyService$1, IfExpandService as IfExpandService$1, ClrExpandableAnimationDirective as ClrExpandableAnimationDirective$1, DomAdapter as DomAdapter$1, WillyWonka as WillyWonka$1, OompaLoompa as OompaLoompa$1, HeadingLevel as HeadingLevel$1, ClrStandaloneCdkTrapFocus as ClrStandaloneCdkTrapFocus$1, IfActiveService as IfActiveService$1, TemplateRefContainer as TemplateRefContainer$1, ClrKeyFocus as ClrKeyFocus$1, ScrollingService as ScrollingService$1, FocusableItem as FocusableItem$2, ClrPosition as ClrPosition$1 } from '@clr/angular/utils';
+import * as i6 from '@clr/angular/button';
+import * as i7$1 from '@clr/angular/forms';
+import * as i8 from '@clr/angular/layout';
+import * as i9 from '@clr/angular/popover';
+import * as i10 from '@clr/angular/wizard';
+import * as i11 from '@clr/angular/stepper';
+import * as i8$1 from '@clr/angular/progress/spinner';
+import * as i13 from '@clr/angular/progress/progress-bars';
+import * as i1 from '@clr/angular/popover/common';
+import { ClrPopoverService as ClrPopoverService$1, ClrPopoverType as ClrPopoverType$1, ClrPopoverPosition as ClrPopoverPosition$1, ClrPopoverContent as ClrPopoverContent$1 } from '@clr/angular/popover/common';
+import * as i15 from '@clr/angular/timeline';
+import * as i2$1 from '@angular/common';
 import { NgForOfContext } from '@angular/common';
-import * as _angular_cdk_overlay from '@angular/cdk/overlay';
-import { OverlayContainer, Overlay, ConnectedPosition } from '@angular/cdk/overlay';
+import * as i6$3 from '@angular/router';
+import { RouterLinkActive } from '@angular/router';
+import * as rxjs from 'rxjs';
+import { Observable, Subject, BehaviorSubject, ReplaySubject, Subscription, Observer } from 'rxjs';
+import * as i1$1 from '@clr/angular/data/datagrid';
+import * as i2$2 from '@clr/angular/data/stack-view';
+import * as i3$1 from '@clr/angular/data/tree-view';
 import * as _clr_angular from '@clr/angular';
-import { AnimationMetadata, AnimationEvent, AnimationBuilder } from '@angular/animations';
+import * as i2$5 from '@clr/angular/popover/signpost';
+import { ClrSignpost as ClrSignpost$1 } from '@clr/angular/popover/signpost';
 import { Directionality } from '@angular/cdk/bidi';
 import { ListRange } from '@angular/cdk/collections';
 import { CdkVirtualForOfContext, ScrollDispatcher, ViewportRuler, CdkVirtualForOf, CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
-import * as i4 from '@angular/forms';
-import { NgControl, ControlValueAccessor, Validator, AbstractControl, ValidationErrors, SelectMultipleControlValueAccessor, FormGroupName, NgModelGroup, FormGroupDirective, NgForm } from '@angular/forms';
-import { CdkDrag, DragDropConfig, DragDrop } from '@angular/cdk/drag-drop';
-import { CdkTrapFocus, FocusTrapFactory } from '@angular/cdk/a11y';
-import * as i6 from '@angular/router';
-import { RouterLinkActive } from '@angular/router';
+import * as _angular_cdk_overlay from '@angular/cdk/overlay';
+import { ConnectedPosition, OverlayContainer, Overlay } from '@angular/cdk/overlay';
+import * as i6$1 from '@clr/angular/forms/common';
+import { ClrControlLabel as ClrControlLabel$1, WrappedFormControl as WrappedFormControl$1, ClrAbstractContainer as ClrAbstractContainer$1, LayoutService as LayoutService$1, ControlClassService as ControlClassService$1, NgControlService as NgControlService$1, FormsFocusService as FormsFocusService$1, ControlIdService as ControlIdService$1 } from '@clr/angular/forms/common';
+import * as i41 from '@clr/angular/forms/input';
+import * as i42 from '@clr/angular/forms/radio';
+import * as i43 from '@clr/angular/forms/checkbox';
+import * as i44 from '@clr/angular/forms/number-input';
+import * as i45 from '@clr/angular/forms/select';
+import * as i4$1 from '@angular/forms';
+import { ControlValueAccessor, NgControl, Validator, AbstractControl, ValidationErrors, SelectMultipleControlValueAccessor, FormGroup, FormGroupName, NgModelGroup, FormGroupDirective, NgForm } from '@angular/forms';
+import * as i1$2 from '@clr/angular/emphasis/badge';
+import * as i2$3 from '@clr/angular/emphasis/label';
+import * as i3$2 from '@clr/angular/emphasis/alert';
+import * as i8$2 from '@clr/angular/popover/dropdown';
+import { Type as Type$1 } from '@clr/angular/emphasis/common';
+import * as i18 from '@clr/angular/layout/vertical-nav';
+import * as i4$2 from '@clr/angular/forms/combobox';
+import * as i5 from '@clr/angular/forms/datepicker';
+import * as i6$2 from '@clr/angular/forms/file-input';
+import * as i8$3 from '@clr/angular/forms/password';
+import * as i11$1 from '@clr/angular/forms/textarea';
+import * as i12 from '@clr/angular/forms/range';
+import * as i13$1 from '@clr/angular/forms/datalist';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import * as i1$3 from '@clr/angular/layout/main-container';
+import * as i2$4 from '@clr/angular/layout/nav';
+import { ResponsiveNavigationService as ResponsiveNavigationService$1, ResponsiveNavControlMessage as ResponsiveNavControlMessage$1 } from '@clr/angular/layout/nav';
+import * as i3$3 from '@clr/angular/layout/tabs';
+import * as i5$1 from '@clr/angular/layout/breadcrumbs';
+import * as _angular_animations from '@angular/animations';
+import { AnimationEvent, AnimationMetadata, AnimationBuilder } from '@angular/animations';
+import * as i3$4 from '@clr/angular/popover/tooltip';
+import { LoadingListener as LoadingListener$2, ClrLoadingState as ClrLoadingState$2 } from '@clr/angular/utils/loading';
+import { CdkTrapFocus, FocusTrapFactory } from '@angular/cdk/a11y';
+import { CdkDrag, DragDropConfig, DragDrop } from '@angular/cdk/drag-drop';
+import * as _clr_angular_accordion from '@clr/angular/accordion';
+import { AccordionModel as AccordionModel$1, AccordionService as AccordionService$1, ClrAccordionPanel as ClrAccordionPanel$1, AccordionStatus as AccordionStatus$1 } from '@clr/angular/accordion';
 
-type IconSvgString = string;
-type IconNameString = string;
-type IconAliases = string[];
-interface IconShapeCollection {
-    outline?: IconSvgString;
-    solid?: IconSvgString;
-    outlineBadged?: IconSvgString;
-    outlineAlerted?: IconSvgString;
-    solidBadged?: IconSvgString;
-    solidAlerted?: IconSvgString;
-}
-type IconShapeTuple = [IconNameString, IconSvgString | IconShapeCollection];
-interface IconShapeSources {
-    [key: string]: IconShapeTuple;
-}
-interface IconRegistrySources {
-    [key: string]: IconSvgString | IconShapeCollection;
-}
-type IconRegistry = Partial<IconRegistrySources>;
-type NameOfIconToAlias = string;
-type IconAlias = [NameOfIconToAlias, IconAliases];
-type Directions = 'up' | 'down' | 'left' | 'right';
-type Orientations = 'horizontal' | 'vertical';
-type StatusTypes = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
-
-declare class ClrIcon implements OnInit, OnDestroy {
-    el: ElementRef<HTMLElement>;
-    private cdr;
-    iconSVG: string;
-    isStringIcon: boolean;
-    private _shape;
-    private _size;
-    private _direction;
-    private _flip;
-    private _solid;
-    private _status;
-    private _inverse;
-    private _badge;
-    private subscription;
-    private _priorShape;
-    constructor(el: ElementRef<HTMLElement>, cdr: ChangeDetectorRef);
-    get shape(): string;
-    set shape(value: string);
-    get size(): string;
-    set size(value: string);
-    get direction(): string;
-    set direction(value: string);
-    get flip(): Orientations;
-    set flip(value: Orientations);
-    get solid(): boolean;
-    set solid(value: boolean);
-    get status(): string;
-    set status(value: string);
-    get inverse(): boolean;
-    set inverse(value: boolean);
-    get badge(): string | boolean;
-    set badge(value: string | boolean);
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    updateIcon(): void;
-    updateIconSize(value: string): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIcon, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrIcon, "clr-icon, cds-icon", never, { "shape": { "alias": "shape"; "required": false; }; "size": { "alias": "size"; "required": false; }; "direction": { "alias": "direction"; "required": false; }; "flip": { "alias": "flip"; "required": false; }; "solid": { "alias": "solid"; "required": false; }; "status": { "alias": "status"; "required": false; }; "inverse": { "alias": "inverse"; "required": false; }; "badge": { "alias": "badge"; "required": false; }; }, {}, never, never, true, never>;
-    static ngAcceptInputType_solid: unknown;
-    static ngAcceptInputType_inverse: unknown;
+declare class ClarityModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClarityModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof i7.ClrIcon], [typeof i2.ClrEmphasisModule, typeof i3.ClrDataModule, typeof i7.ClrIcon, typeof i7.ClrIconModule, typeof i4.ClrModalModule, typeof i39.ClrLoadingModule, typeof i39.ClrConditionalModule, typeof i39.ClrFocusOnViewInitModule, typeof i6.ClrButtonModule, typeof i7$1.ClrFormsModule, typeof i8.ClrLayoutModule, typeof i9.ClrPopoverModule, typeof i10.ClrWizardModule, typeof i4.ClrSidePanelModule, typeof i11.ClrStepperModule, typeof i8$1.ClrSpinnerModule, typeof i13.ClrProgressBarModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i15.ClrTimelineModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClarityModule>;
 }
 
-declare enum Type {
-    Solid = "solid",
-    Outlined = "outlined"
-}
-
-declare enum ClrBadgeColors {
-    None = "",
-    Info = "info",
-    Warning = "warning",
-    Danger = "danger",
-    Success = "success",
-    Gray = "gray",
-    Blue = "blue",
-    LightBlue = "light-blue",
-    Orange = "orange",
-    Purple = "purple"
-}
-declare class ClrBadge {
-    color: ClrBadgeColors | string;
-    type: Type | string;
-    get isOutlined(): boolean;
-    get colorClass(): string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBadge, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrColor"; "required": false; }; "type": { "alias": "clrType"; "required": false; }; }, {}, never, ["*"], true, never>;
-}
-
-declare enum ClrLabelColors {
-    None = "",
-    Info = "info",
-    Warning = "warning",
-    Danger = "danger",
-    Success = "success",
-    Gray = "gray",
-    Blue = "blue",
-    LightBlue = "light-blue",
-    Orange = "orange",
-    Purple = "purple"
-}
-declare class ClrLabel {
-    color: ClrLabelColors | string;
-    badgeText: string;
-    textContent: string;
-    clickable: boolean;
+declare class ClrLoadingButton implements LoadingListener$1 {
+    el: ElementRef<HTMLButtonElement>;
+    private renderer;
     disabled: boolean;
-    type: Type | string;
-    get isSolid(): boolean;
-    get colorClass(): string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLabel, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeText": { "alias": "clrBadgeText"; "required": false; }; "textContent": { "alias": "clrText"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "type": { "alias": "clrType"; "required": false; }; }, {}, never, ["*"], true, never>;
+    clrLoadingChange: EventEmitter<ClrLoadingState$1>;
+    buttonState: typeof ClrLoadingState$1;
+    state: ClrLoadingState$1;
+    constructor(el: ElementRef<HTMLButtonElement>, renderer: Renderer2);
+    loadingStateChange(state: ClrLoadingState$1): void;
+    private setExplicitButtonWidth;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingButton, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLoadingButton, "button[clrLoading]", never, { "disabled": { "alias": "disabled"; "required": false; }; }, { "clrLoadingChange": "clrLoadingChange"; }, never, ["*"], false, never>;
 }
 
-interface ClrCommonStrings {
-    /**
-     * Open button
-     */
-    open: string;
-    /**
-     * Close button
-     */
-    close: string;
-    /**
-     * Show button
-     */
-    show: string;
-    /**
-     * Hide button
-     */
-    hide: string;
-    /**
-     * Apply button
-     */
-    apply: string;
-    /**
-     * Cancel button
-     */
-    cancel: string;
-    /**
-     * Expandable components: expand caret
-     */
-    expand: string;
-    /**
-     * Expandable components: collapse caret
-     */
-    collapse: string;
-    /**
-     * Overflow menus: ellipsis button
-     */
-    more: string;
-    /**
-     * Selectable components: checkbox or radio
-     */
-    select: string;
-    /**
-     * Selectable components: checkbox to select all
-     */
-    selectAll: string;
-    /**
-     * Pagination: previous button
-     */
-    previous: string;
-    /**
-     * Pagination: next button
-     */
-    next: string;
-    /**
-     * Pagination: go to current
-     */
-    current: string;
-    /**
-     * Alert levels: info
-     */
-    info: string;
-    /**
-     * Alert levels: success
-     */
-    success: string;
-    /**
-     * Alert levels: warning
-     */
-    warning: string;
-    /**
-     * Alert levels: danger
-     */
-    danger: string;
-    /**
-     * Alert levels: neutral
-     */
-    neutral: string;
-    /**
-     * Alert levels: unknown
-     */
-    unknown: string;
-    /**
-     * Datagrid: row actions
-     */
-    rowActions: string;
-    /**
-     * Datagrid: pick columns
-     */
-    pickColumns: string;
-    /**
-     * Datagrid: show columns
-     */
-    showColumns: string;
-    /**
-     * Datagrid: sort of columns
-     */
-    sortColumn: string;
-    /**
-     * Datagrid: first page
-     */
-    firstPage: string;
-    /**
-     * Datagrid: last page
-     */
-    lastPage: string;
-    /**
-     * Datagrid: next page
-     */
-    nextPage: string;
-    /**
-     * Datagrid: previous page
-     */
-    previousPage: string;
-    /**
-     * Datagrid: previous page
-     */
-    currentPage: string;
-    /**
-     * Datagird: total pages
-     */
-    totalPages: string;
-    /**
-     * Datagrid string filter: filter items
-     */
-    filterItems: string;
-    /**
-     * Datagrid numeric filter: min
-     */
-    minValue: string;
-    /**
-     * Datagrid numeric filter: max
-     */
-    maxValue: string;
-    /**
-     * Datagrid filter toggle button
-     */
-    datagridFilterAriaLabel: string;
-    /**
-     * Datagrid filter label
-     */
-    datagridFilterLabel: string;
-    /**
-     * Datagrid filter dialog
-     */
-    datagridFilterDialogAriaLabel: string;
-    /**
-     * Datagrid column handler string
-     */
-    columnSeparatorAriaLabel: string;
-    /**
-     * Datagrid column resize handler string
-     */
-    columnSeparatorDescription: string;
-    /**
-     * Numeric filter from label string
-     */
-    fromLabel: string;
-    /**
-     * Numeric filter to label string
-     */
-    toLabel: string;
-    /**
-     * Modal start of content
-     */
-    modalContentStart: string;
-    /**
-     * Modal end of content
-     */
-    modalContentEnd: string;
-    /**
-     * Side Panel pin dialog
-     */
-    sidePanelPin: string;
-    /**
-     * Datagrid Show columns menu description
-     */
-    showColumnsMenuDescription: string;
-    /**
-     * Datagrid Show columns / All columns selected confirmation
-     */
-    allColumnsSelected: string;
-    /**
-     * Signpost Toggle Button
-     */
-    signpostToggle: string;
-    /**
-     * Signpost Close Button
-     * (used inside signpost content components)
-     */
-    signpostClose: string;
-    loading: string;
-    /**
-     * Datagrid: detail pane start content for screen reader
-     */
-    detailPaneStart: string;
-    /**
-     * Datagrid: detail pane end content for screen reader
-     */
-    detailPaneEnd: string;
-    /**
-     * Datagrid: Single selection header
-     */
-    singleSelectionAriaLabel: string;
-    /**
-     * Datagrid: Single actionable header
-     */
-    singleActionableAriaLabel: string;
-    /**
-     * Datagrid: Expandable row
-     */
-    detailExpandableAriaLabel: string;
-    /**
-     * Alert: Close alert button
-     */
-    alertCloseButtonAriaLabel: string;
-    /**
-     * Alert: Next Alert button
-     */
-    alertNextAlertAriaLabel: string;
-    /**
-     * Alert: Previous Alert button
-     */
-    alertPreviousAlertAriaLabel: string;
-    /**
-     * Datepicker UI labels
-     */
-    datepickerDialogLabel: string;
-    datepickerToggleChooseDateLabel: string;
-    datepickerToggleChangeDateLabel: string;
-    datepickerPreviousMonth: string;
-    datepickerCurrentMonth: string;
-    datepickerNextMonth: string;
-    datepickerPreviousDecade: string;
-    datepickerNextDecade: string;
-    datepickerCurrentDecade: string;
-    datepickerSelectMonthText: string;
-    datepickerSelectYearText: string;
-    datepickerSelectedLabel: string;
-    /**
-     * Stack View: Record has changed
-     */
-    stackViewChanged: string;
-    responsiveNavToggleOpen: string;
-    responsiveNavToggleClose: string;
-    responsiveNavOverflowOpen: string;
-    responsiveNavOverflowClose: string;
-    verticalNavToggle: string;
-    /**
-     * Timeline Steps
-     */
-    timelineStepNotStarted: string;
-    timelineStepCurrent: string;
-    timelineStepSuccess: string;
-    timelineStepError: string;
-    timelineStepProcessing: string;
-    datagridExpandableBeginningOf: string;
-    datagridExpandableEndOf: string;
-    datagridExpandableRowContent: string;
-    datagridExpandableRowsHelperText: string;
-    /**
-     * Combobox Searching Text
-     */
-    comboboxSearching: string;
-    comboboxDelete: string;
-    comboboxSelection: string;
-    comboboxSelected: string;
-    comboboxNoResults: string;
-    comboboxOpen: string;
-    /**
-     * Wizard: Screen-reader text for "step" (read before step number).
-     */
-    wizardStep: string;
-    /**
-     * Wizard: Screen-reader text for current step.
-     */
-    wizardStepCurrent: string;
-    /**
-     * Wizard: Screen-reader text for completed step.
-     */
-    wizardStepSuccess: string;
-    /**
-     * Wizard: Screen-reader text for step with error.
-     */
-    wizardStepError: string;
-    /**
-     * Wizard: Aria-label for the stepnav section.
-     */
-    wizardStepnavAriaLabel: string;
-    /**
-     * Password Input
-     * Screen-reader text for the hide/show password field button.
-     */
-    passwordHide: string;
-    passwordShow: string;
-    /**
-     * Datagrid footer; sr-only text after the number of selected rows.
-     */
-    selectedRows: string;
-    stepComplete: string;
-    stepError: string;
-    browse: string;
-    fileCount: string;
-    clearFile: string;
-    clearFiles: string;
-    selectedTreeNode: string;
-    unselectedTreeNode: string;
-    breadcrumbsLabel: string;
-    expandBreadcrumbsLabel: string;
+declare const CLR_LOADING_BUTTON_DIRECTIVES: Type<any>[];
+declare class ClrLoadingButtonModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingButtonModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingButtonModule, [typeof ClrLoadingButton], [typeof i2$1.CommonModule], [typeof ClrLoadingButton]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLoadingButtonModule>;
 }
 
-declare class ClrCommonStringsService {
-    private _strings;
-    /**
-     * Access to all of the keys as strings
-     */
-    get keys(): Readonly<ClrCommonStrings>;
-    /**
-     * Allows you to pass in new overrides for localization
-     */
-    localize(overrides: Partial<ClrCommonStrings>): void;
-    /**
-     * Parse a string with a set of tokens to replace
-     */
-    parse(source: string, tokens?: {
-        [key: string]: string;
-    }): string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCommonStringsService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrCommonStringsService>;
-}
-
-interface AlertInfoObject {
-    shape: string;
-    cssClass: string;
-    title: string;
-}
-
-declare class AlertIconAndTypesService {
-    private commonStrings;
-    private defaultIconShape;
-    private _alertIconShape;
-    private _alertType;
-    constructor(commonStrings: ClrCommonStringsService);
-    get alertType(): string;
-    set alertType(val: string);
-    get alertIconShape(): string;
-    set alertIconShape(val: string);
-    get alertIconTitle(): string;
-    iconInfoFromType(type: string): AlertInfoObject;
-    static ɵfac: i0.ɵɵFactoryDeclaration<AlertIconAndTypesService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<AlertIconAndTypesService>;
-}
-
-declare class MultiAlertService {
-    private subscription;
-    private allAlerts;
-    private _change;
-    private _current;
-    /**
-     * The Observable that lets other classes subscribe to changes
-     */
-    get changes(): Observable<number>;
-    get current(): number;
-    set current(index: number);
-    get activeAlerts(): ClrAlert[];
-    get currentAlert(): ClrAlert;
-    set currentAlert(alert: ClrAlert);
-    get count(): number;
-    manage(alerts: QueryList<ClrAlert>): void;
-    next(): void;
-    previous(): void;
-    open(): void;
-    close(isCurrentAlert: boolean): void;
-    destroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<MultiAlertService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<MultiAlertService>;
-}
-
-declare class ClrAlert implements OnInit, OnDestroy {
-    private iconService;
-    private cdr;
-    private multiAlertService;
-    private commonStrings;
-    private renderer;
-    private hostElement;
-    isSmall: boolean;
-    closable: boolean;
-    isAppLevel: boolean;
-    clrCloseButtonAriaLabel: string;
-    _closedChanged: EventEmitter<boolean>;
-    _closed: boolean;
-    private _hidden;
-    private subscriptions;
-    private _isLightweight;
-    private _origAlertType;
-    constructor(iconService: AlertIconAndTypesService, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService, renderer: Renderer2, hostElement: ElementRef<HTMLElement>);
-    get isLightweight(): boolean;
-    set isLightweight(val: boolean);
-    get alertType(): string;
-    set alertType(val: string);
-    set alertIconShape(value: string);
-    set closed(value: boolean);
-    get alertClass(): string;
-    get hidden(): boolean;
-    set hidden(value: boolean);
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    configAlertType(val: string): void;
-    open(): void;
-    close(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, { optional: true; }, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": { "alias": "clrAlertSizeSmall"; "required": false; }; "closable": { "alias": "clrAlertClosable"; "required": false; }; "isAppLevel": { "alias": "clrAlertAppLevel"; "required": false; }; "clrCloseButtonAriaLabel": { "alias": "clrCloseButtonAriaLabel"; "required": false; }; "isLightweight": { "alias": "clrAlertLightweight"; "required": false; }; "alertType": { "alias": "clrAlertType"; "required": false; }; "alertIconShape": { "alias": "clrAlertIcon"; "required": false; }; "closed": { "alias": "clrAlertClosed"; "required": false; }; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
-}
-
-declare class ClrAlertItem {
-    iconService: AlertIconAndTypesService;
-    constructor(iconService: AlertIconAndTypesService);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertItem, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlertItem, "clr-alert-item", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class ClrAlerts implements AfterContentInit, OnDestroy {
-    multiAlertService: MultiAlertService;
-    currentAlertChange: EventEmitter<ClrAlert>;
-    currentAlertIndexChange: EventEmitter<number>;
-    private subscriptions;
-    constructor(multiAlertService: MultiAlertService);
-    set allAlerts(value: QueryList<ClrAlert>);
-    /**
-     * Input/Output to support two way binding on current alert index
-     */
-    set _inputCurrentIndex(index: number);
-    get currentAlertIndex(): number;
-    set currentAlertIndex(index: number);
-    /**
-     * Input/Output to support two way binding on current alert instance
-     */
-    get currentAlert(): ClrAlert;
-    set currentAlert(alert: ClrAlert);
-    /**
-     * Ensure we are only dealing with alerts that have not been closed yet
-     */
-    get alerts(): ClrAlert[];
-    get currentAlertType(): string;
-    ngAfterContentInit(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlerts, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlerts, "clr-alerts", never, { "_inputCurrentIndex": { "alias": "clrCurrentAlertIndex"; "required": false; }; "currentAlert": { "alias": "clrCurrentAlert"; "required": false; }; }, { "currentAlertChange": "clrCurrentAlertChange"; "currentAlertIndexChange": "clrCurrentAlertIndexChange"; }, ["allAlerts"], ["clr-alert"], false, never>;
-}
-
-declare class ClrAlertsPager implements OnInit, OnDestroy {
-    multiAlertService: MultiAlertService;
-    commonStrings: ClrCommonStringsService;
-    currentAlertChange: EventEmitter<ClrAlert>;
-    currentAlertIndexChange: EventEmitter<number>;
-    private multiAlertServiceChanges;
-    constructor(multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService);
-    /**
-     * Input/Output to support two way binding on current alert instance
-     */
-    get currentAlert(): ClrAlert;
-    set currentAlert(alert: ClrAlert);
-    /**
-     * Input/Output to support two way binding on current alert index
-     */
-    get currentAlertIndex(): number;
-    set currentAlertIndex(index: number);
-    protected get previousAlertAriaLabel(): string;
-    protected get nextAlertAriaLabel(): string;
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    pageUp(): void;
-    pageDown(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertsPager, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlertsPager, "clr-alerts-pager", never, { "currentAlert": { "alias": "clrCurrentAlert"; "required": false; }; "currentAlertIndex": { "alias": "clrCurrentAlertIndex"; "required": false; }; }, { "currentAlertChange": "clrCurrentAlertChange"; "currentAlertIndexChange": "clrCurrentAlertIndexChange"; }, never, never, false, never>;
-}
-
-/**
- * @remark
- * This directive is used only of selectin alert text.
- */
-declare class ClrAlertText {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertText, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAlertText, ".alert-text", never, {}, {}, never, never, false, never>;
-}
-
-declare enum ClrPopoverType {
-    SIGNPOST = 0,
-    TOOLTIP = 1,
-    DROPDOWN = 2,
-    DEFAULT = 3
-}
-declare enum ClrPopoverPosition {
-    TOP_RIGHT = "top-right",
-    TOP_MIDDLE = "top-middle",
-    TOP_LEFT = "top-left",
-    RIGHT = "right",
-    RIGHT_TOP = "right-top",
-    RIGHT_MIDDLE = "right-middle",
-    RIGHT_BOTTOM = "right-bottom",
-    LEFT = "left",
-    LEFT_TOP = "left-top",
-    LEFT_MIDDLE = "left-middle",
-    LEFT_BOTTOM = "left-bottom",
-    BOTTOM_RIGHT = "bottom-right",
-    BOTTOM_MIDDLE = "bottom-middle",
-    BOTTOM_LEFT = "bottom-left"
-}
-
-declare class ClrPopoverService {
-    anchorElementRef: ElementRef<HTMLElement>;
-    closeButtonRef: ElementRef;
-    panelClass: string[];
-    private _open;
-    private _openChange;
-    private _openEvent;
-    private _openEventChange;
-    private _positionChange;
-    private _resetPositions;
-    private _updatePosition;
-    private _popoverVisible;
-    get openChange(): Observable<boolean>;
-    get popoverVisible(): Observable<boolean>;
-    get openEvent(): Event;
-    set openEvent(event: Event);
-    get open(): boolean;
-    set open(value: boolean);
-    get resetPositionsChange(): Observable<void>;
-    positionChange(position: ClrPopoverPosition): void;
-    updatePositionChange(): Observable<void>;
-    getPositionChange(): Observable<string>;
-    getEventChange(): Observable<Event>;
-    /**
-     * Sometimes, we need to remember the event that triggered the toggling to avoid loops.
-     * This is for instance the case of components that open on a click, but close on a click outside.
-     */
-    toggleWithEvent(event: any): void;
-    popoverVisibleEmit(visible: boolean): void;
-    resetPositions(): void;
-    updatePosition(): void;
-    focusCloseButton(): void;
-    focusAnchor(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverService>;
-}
-
-/** @dynamic */
-declare class ClrPopoverContent implements OnDestroy, AfterViewInit {
-    private container;
-    private template;
-    private parent;
-    private overlay;
-    private popoverService;
-    private zone;
-    private platformId;
-    private _outsideClickClose;
-    private _scrollToClose;
-    private view;
-    private elementRef;
-    private overlayRef;
-    private popoverType;
-    private _availablePositions;
-    private _position;
-    private scrollableParents;
-    private subscriptions;
-    private openCloseSubscription;
-    private domPortal;
-    private preferredPositionIsSet;
-    private availablePositionsAreSet;
-    private _preferredPosition;
-    private intersectionObserver;
-    constructor(element: ElementRef, container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, parent: ClrPopoverContent, overlay: Overlay, popoverService: ClrPopoverService, zone: NgZone, platformId: any);
-    set open(value: boolean);
-    get contentAt(): string | ClrPopoverPosition | ConnectedPosition;
-    set contentAt(position: string | ClrPopoverPosition | ConnectedPosition);
-    set availablePositions(positions: ConnectedPosition[]);
-    set contentType(type: ClrPopoverType);
-    get outsideClickClose(): boolean;
-    set outsideClickClose(clickToClose: boolean);
-    get scrollToClose(): boolean;
-    set scrollToClose(scrollToClose: boolean);
-    private get positionStrategy();
-    private get preferredPosition();
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    private _createOverlayRef;
-    private resetPosition;
-    private closePopover;
-    private showOverlay;
-    private removeOverlay;
-    private getScrollableParents;
-    /**
-     * Uses IntersectionObserver to detect when the anchor leaves the screen.
-     * This handles the "Close on Scroll" logic much cheaper than getBoundingClientRect.
-     */
-    private setupIntersectionObserver;
-    private listenToMouseEvents;
-    private getRootPopover;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, null, { optional: true; }, null, { optional: true; skipSelf: true; }, null, null, null, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
-}
-
-declare class ClrPopoverAnchor {
-    constructor(popoverService: ClrPopoverService, element: ElementRef<HTMLButtonElement>);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverAnchor, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverAnchor, "[clrPopoverAnchor]", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
-    private popoverService;
-    private subscription;
-    private lastOpenChange;
-    constructor(popoverService: ClrPopoverService);
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    onEscapeKey(event: KeyboardEvent): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStopEscapePropagationDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStopEscapePropagationDirective, never, never, {}, {}, never, never, true, never>;
-}
-
-declare class ClrPopoverHostDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverHostDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverHostDirective, never, never, {}, {}, never, never, true, [{ directive: typeof ClrStopEscapePropagationDirective; inputs: {}; outputs: {}; }]>;
-}
-
-declare class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
-    private elementRef;
-    private popoverService;
-    closeChange: EventEmitter<void>;
-    private subscriptions;
-    constructor(elementRef: ElementRef<HTMLButtonElement>, popoverService: ClrPopoverService);
-    handleClick(event: MouseEvent): void;
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverCloseButton, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverCloseButton, "[clrPopoverCloseButton]", never, {}, { "closeChange": "clrPopoverOnCloseChange"; }, never, never, false, never>;
-}
-
-declare class ClrPopoverOpenCloseButton implements OnDestroy {
-    private popoverService;
-    openCloseChange: EventEmitter<boolean>;
-    private subscriptions;
-    constructor(popoverService: ClrPopoverService);
-    handleClick(event: MouseEvent): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverOpenCloseButton, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverOpenCloseButton, "[clrPopoverOpenCloseButton]", never, {}, { "openCloseChange": "clrPopoverOpenCloseChange"; }, never, never, false, never>;
-}
-
-declare class ClrPopoverModuleNext {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModuleNext, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModuleNext, [typeof ClrPopoverAnchor, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton], [typeof ClrPopoverContent], [typeof ClrPopoverAnchor, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton, typeof ClrPopoverContent]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModuleNext>;
-}
-
-declare enum ArrowKeyDirection {
-    UP = "up",
-    DOWN = "down",
-    LEFT = "left",
-    RIGHT = "right"
-}
-
-declare abstract class FocusableItem$1 {
-    id: string;
-    disabled?: boolean;
-    up?: FocusableItem$1 | Observable<FocusableItem$1>;
-    down?: FocusableItem$1 | Observable<FocusableItem$1>;
-    left?: FocusableItem$1 | Observable<FocusableItem$1>;
-    right?: FocusableItem$1 | Observable<FocusableItem$1>;
-    abstract focus(): void;
-    abstract blur(): void;
-    abstract activate?(): void;
-}
-
-declare class FocusService$1 {
-    private renderer;
-    private _current;
-    private _unlistenFuncsMap;
-    constructor(renderer: Renderer2);
-    get current(): FocusableItem$1;
-    reset(first: FocusableItem$1): void;
-    registerContainer(el: HTMLElement): void;
-    moveTo(item: FocusableItem$1): void;
-    move(direction: ArrowKeyDirection): boolean;
-    activateCurrent(): boolean;
-    detachListeners(el: HTMLElement): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<FocusService$1, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<FocusService$1>;
-}
-
-declare class DropdownFocusHandler implements OnDestroy, FocusableItem$1 {
-    private renderer;
-    private parent;
-    private popoverService;
-    private focusService;
-    private platformId;
-    id: string;
-    right?: Observable<FocusableItem$1>;
-    down?: Observable<FocusableItem$1>;
-    up?: Observable<FocusableItem$1>;
-    private _trigger;
-    private _container;
-    private children;
-    private _unlistenFuncs;
-    constructor(renderer: Renderer2, parent: DropdownFocusHandler, popoverService: ClrPopoverService, focusService: FocusService$1, platformId: any);
-    get trigger(): HTMLElement;
-    set trigger(el: HTMLElement);
-    get container(): HTMLElement;
-    set container(el: HTMLElement);
-    ngOnDestroy(): void;
-    /**
-     * If the dropdown was opened by clicking on the trigger, we automatically move to the first item
-     */
-    moveToFirstItemWhenOpen(): void;
-    focus(): void;
-    blur(): void;
-    activate(): void;
-    resetChildren(): void;
-    addChildren(children: FocusableItem$1[]): void;
-    private openAndGetChildren;
-    private closeAndGetThis;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DropdownFocusHandler, [null, { optional: true; skipSelf: true; }, null, null, null]>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<DropdownFocusHandler>;
-}
-
-declare class RootDropdownService {
+declare class ButtonInGroupService {
     private _changes;
-    get changes(): Observable<boolean>;
-    closeMenus(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<RootDropdownService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<RootDropdownService>;
+    get changes(): Observable<ClrButton>;
+    updateButtonGroup(button: ClrButton): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ButtonInGroupService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ButtonInGroupService>;
 }
 
-declare class ClrDropdown implements OnDestroy {
-    parent: ClrDropdown;
-    popoverService: ClrPopoverService;
-    focusHandler: DropdownFocusHandler;
-    isMenuClosable: boolean;
-    private subscriptions;
-    constructor(parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdown, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": { "alias": "clrCloseMenuOnItemClick"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
-}
-
-declare class ClrDropdownMenu implements AfterContentInit, OnDestroy {
-    private focusHandler;
-    private elementRef;
-    private popoverService;
-    private popoverContent;
-    items: QueryList<FocusableItem$1>;
-    constructor(parentHost: ElementRef<HTMLElement>, nested: ClrDropdownMenu, focusHandler: DropdownFocusHandler, elementRef: ElementRef, popoverService: ClrPopoverService, popoverContent: ClrPopoverContent);
-    get isOffScreen(): boolean;
-    set position(position: string | ClrPopoverPosition);
-    ngAfterContentInit(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownMenu, [{ optional: true; }, { optional: true; skipSelf: true; }, null, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": { "alias": "clrPosition"; "required": false; }; }, {}, ["items"], ["*"], false, [{ directive: typeof ClrPopoverContent; inputs: {}; outputs: {}; }]>;
-}
-
-declare class ClrDropdownTrigger {
-    private popoverService;
-    isRootLevelToggle: boolean;
-    constructor(dropdown: ClrDropdown, popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler);
-    get active(): boolean;
-    onDropdownTriggerClick(event: any): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownTrigger, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownTrigger, "[clrDropdownTrigger],[clrDropdownToggle]", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrDropdownItem {
-    private dropdown;
-    private _dropdownService;
-    private focusableItem;
-    private el;
-    private renderer;
-    constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem$1, el: ElementRef, renderer: Renderer2);
-    get disabled(): boolean | string;
-    set disabled(value: boolean | string);
-    /**
-     * Let you overwrite the focusable auto increment id.
-     */
-    get dropdownItemId(): string;
-    set dropdownItemId(value: string);
-    private onDropdownItemClick;
-    private onSpaceKeydown;
-    private onEnterKeydown;
-    private stopImmediatePropagationIfDisabled;
-    private findRootDropdown;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownItem, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare class IfActiveService {
-    /********
-     * @property _currentChange
-     *
-     * @description
-     * A RXJS Subject that updates and provides subscriptions to for the current current state of a component template
-     * implemting the IfActive structural directive.
-     *
-     */
-    private _currentChange;
-    /*********
-     * @property _current
-     *
-     * @description
-     * A property holding the current value for current/closed state of an IfActive structural directive.
-     */
-    private _current;
-    /*********
-     *
-     * @description
-     * A getter function that provides an observable for the _current Subject.
-     *
-     */
-    get currentChange(): Observable<number>;
-    /*********
-     *
-     * @description
-     * A property that gets/sets the current state of _current for this instance of IfActive structural directive.
-     * And, broadcasts the new value to all subscribers.
-     *
-     */
-    get current(): number;
-    set current(value: number);
-    static ɵfac: i0.ɵɵFactoryDeclaration<IfActiveService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<IfActiveService>;
-}
-
-declare class ClrIfActive implements OnDestroy {
-    private ifActiveService;
-    private id;
-    private template;
-    private container;
-    /**********
-     * @property activeChange
-     *
-     * @description
-     * An event emitter that emits when the active property is set to allow for 2way binding when the directive is
-     * used with de-structured / de-sugared syntax.
-     *
-     */
-    activeChange: EventEmitter<boolean>;
-    private subscription;
-    private wasActive;
-    constructor(ifActiveService: IfActiveService, id: number, template: TemplateRef<any>, container: ViewContainerRef);
-    /**
-     * @description
-     * A property that gets/sets IfActiveService.active with value.
-     *
-     */
-    get active(): boolean | string;
-    set active(value: boolean | string);
-    ngOnDestroy(): void;
-    /**
-     * @description
-     * Function that takes a any value and either created an embedded view for the associated ViewContainerRef or,
-     * Clears all views from the ViewContainerRef
-     */
-    updateView(value: boolean): void;
-    private checkAndUpdateView;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfActive, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfActive, "[clrIfActive]", never, { "active": { "alias": "clrIfActive"; "required": false; }; }, { "activeChange": "clrIfActiveChange"; }, never, never, false, never>;
-}
-
-declare class ClrIfOpen implements OnDestroy {
-    private popoverService;
-    private template;
-    private container;
-    static ngAcceptInputType_open: boolean | '';
-    /**********
-     * @property openChange
-     *
-     * @description
-     * An event emitter that emits when the open property is set to allow for 2way binding when the directive is
-     * used with de-structured / de-sugared syntax.
-     */
-    openChange: EventEmitter<boolean>;
-    private subscriptions;
-    constructor(popoverService: ClrPopoverService, template: TemplateRef<any>, container: ViewContainerRef);
-    /**
-     * @description
-     * A property that gets/sets ClrPopoverService.open with value.
-     */
-    get open(): boolean | string;
-    set open(value: boolean | string);
-    ngOnDestroy(): void;
-    /**
-     * @description
-     * Function that takes a boolean value and either created an embedded view for the associated ViewContainerRef or,
-     * Clears all views from the ViewContainerRef
-     *
-     * @param value
-     */
-    updateView(value: boolean): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfOpen, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfOpen, "[clrIfOpen]", never, { "open": { "alias": "clrIfOpen"; "required": false; }; }, { "openChange": "clrIfOpenChange"; }, never, never, false, never>;
-}
-
-/**
- * This is an abstract class because we need it to still be a valid token for dependency injection after transpiling.
- * This does not mean you should extend it, simply implementing it is fine.
- */
-declare abstract class LoadingListener {
-    abstract loadingStateChange(state: ClrLoadingState | string): void;
-}
-
-declare enum ClrLoadingState {
-    DEFAULT = 0,
-    LOADING = 1,
-    SUCCESS = 2,
-    ERROR = 3
-}
-declare class ClrLoading implements OnDestroy {
-    private listener;
-    static ngAcceptInputType_loadingState: boolean | ClrLoadingState | null | string;
-    private _loadingState;
-    constructor(listener: LoadingListener);
-    get loadingState(): boolean | string | ClrLoadingState;
-    set loadingState(value: boolean | string | ClrLoadingState);
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoading, [{ optional: true; }]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLoading, "[clrLoading]", never, { "loadingState": { "alias": "clrLoading"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare class IfExpandService implements LoadingListener {
-    expandable: number;
-    hasExpandTemplate: boolean;
-    protected _loading: boolean;
-    protected _expanded: boolean;
-    protected _expandChange: Subject<boolean>;
-    get loading(): boolean;
-    set loading(value: boolean);
-    get expanded(): boolean;
-    set expanded(value: boolean);
-    get expandChange(): Observable<boolean>;
-    toggle(): void;
-    loadingStateChange(state: ClrLoadingState): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<IfExpandService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<IfExpandService>;
-}
-
-declare class ClrIfExpanded implements OnInit, OnDestroy {
-    private template;
-    private container;
-    private el;
-    private renderer;
-    private expand;
-    expandedChange: EventEmitter<boolean>;
-    private _expanded;
-    /**
-     * Subscriptions to all the services and queries changes
-     */
-    private _subscriptions;
-    constructor(template: TemplateRef<any>, container: ViewContainerRef, el: ElementRef<HTMLElement>, renderer: Renderer2, expand: IfExpandService);
-    get expanded(): boolean | string;
-    set expanded(value: boolean | string);
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    private updateView;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfExpanded, [{ optional: true; }, null, null, null, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfExpanded, "[clrIfExpanded]", never, { "expanded": { "alias": "clrIfExpanded"; "required": false; }; }, { "expandedChange": "clrIfExpandedChange"; }, never, never, false, never>;
-}
-
-declare const CONDITIONAL_DIRECTIVES: Type$1<any>[];
-declare class ClrConditionalModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrConditionalModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrConditionalModule, [typeof ClrIfActive, typeof ClrIfOpen, typeof ClrIfExpanded], [typeof i2.CommonModule], [typeof ClrIfActive, typeof ClrIfOpen, typeof ClrIfExpanded]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrConditionalModule>;
-}
-
-declare const CLR_DROPDOWN_DIRECTIVES: Type$1<any>[];
-declare class ClrDropdownModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDropdownModule, [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem], [typeof i2.CommonModule, typeof ClrIcon], [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem, typeof ClrConditionalModule, typeof ClrIcon]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrDropdownModule>;
-}
-
-declare class ClrSpinner {
-    private _inline;
-    private _inverse;
-    private _small;
-    private _medium;
-    /**
-     * Default class for all spinners. This class is always true
-     */
-    get spinnerClass(): boolean;
-    get inlineClass(): boolean;
-    set clrInline(value: boolean | string);
-    get inverseClass(): boolean;
-    set clrInverse(value: boolean | string);
-    get smallClass(): boolean;
-    set clrSmall(value: boolean | string);
-    /**
-     * When clrSmall & clrMedium are set both to true.
-     * The CSS with high priority will be small - so medium size will be ignored.
-     *
-     * For this reason if clrSmall is set we won't add clrMedium class.
-     *
-     * NOTE: This is dictated by the CSS rules.
-     * DON'T USE clrSmall & clrMedium to toggle classes. This could change without notice.
-     *
-     * Also there is no logical need to have both of them set to TRUE or FALSE.
-     */
-    get mediumClass(): boolean;
-    set clrMedium(value: boolean | string);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinner, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSpinner, "clr-spinner", never, { "clrInline": { "alias": "clrInline"; "required": false; }; "clrInverse": { "alias": "clrInverse"; "required": false; }; "clrSmall": { "alias": "clrSmall"; "required": false; }; "clrMedium": { "alias": "clrMedium"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare const CLR_SPINNER_DIRECTIVES: Type$1<any>[];
-declare class ClrSpinnerModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinnerModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSpinnerModule, [typeof ClrSpinner], [typeof i2.CommonModule], [typeof ClrSpinner]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSpinnerModule>;
-}
-
-declare const CLR_ALERT_DIRECTIVES: Type$1<any>[];
-declare class ClrAlertModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAlertModule, [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrDropdownModule, typeof ClrSpinnerModule], [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrAlertModule>;
-}
-
-declare class ClrEmphasisModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrEmphasisModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, [typeof ClrBadge, typeof ClrLabel], [typeof ClrAlertModule, typeof ClrBadge, typeof ClrLabel]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrEmphasisModule>;
-}
-
-declare function collapse(): AnimationMetadata[];
-
-declare class DomAdapter {
-    userDefinedWidth(element: HTMLElement): number;
-    scrollBarWidth(element: any): number;
-    scrollWidth(element: any): any;
-    computedHeight(element: any): number;
-    clientRect(element: any): DOMRect;
-    minWidth(element: any): number;
-    focus(element: any): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DomAdapter, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<DomAdapter>;
-}
-
-declare class BaseExpandableAnimation {
-    protected element: ElementRef<HTMLElement>;
-    protected domAdapter: DomAdapter;
-    protected renderer: Renderer2;
-    startHeight: number;
-    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
-    updateStartHeight(): void;
-    initAnimationEffects(): void;
-    cleanupAnimationEffects(cancelAnimations?: boolean): void;
-    private cancelElementAnimations;
-    static ɵfac: i0.ɵɵFactoryDeclaration<BaseExpandableAnimation, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<BaseExpandableAnimation, never, never, {}, {}, never, never, true, never>;
-}
-
-declare class ClrExpandableAnimation extends BaseExpandableAnimation {
-    clrExpandTrigger: boolean;
-    get expandAnimation(): {
-        value: boolean;
-        params: {
-            startHeight: number;
-        };
-    };
-    animationStart(event: AnimationEvent): void;
-    animationDone(event: AnimationEvent): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimation, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": { "alias": "clrExpandTrigger"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare const EXPANDABLE_ANIMATION_DIRECTIVES: Type$1<any>[];
-
-declare function fade(opacity?: number): AnimationMetadata[];
-
-declare function fadeSlide(direction: string): AnimationMetadata[];
-
-declare function slide(direction: string): AnimationMetadata[];
-
-declare const CLR_LOADING_DIRECTIVES: Type$1<any>[];
-declare class ClrLoadingModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingModule, [typeof ClrLoading], [typeof i2.CommonModule], [typeof ClrLoading]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLoadingModule>;
-}
-
-declare const commonStringsDefault: ClrCommonStrings;
-
-declare class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
-    private el;
-    private platformId;
-    private focusOnViewInit;
-    private renderer;
-    private document;
-    private directFocus;
-    private destroy$;
-    private _isEnabled;
-    constructor(el: ElementRef<HTMLElement>, platformId: any, focusOnViewInit: boolean, document: any, renderer: Renderer2, ngZone: NgZone);
-    set isEnabled(value: boolean | string);
+declare class ClrButton implements LoadingListener$1 {
+    private readonly routerLinkActive;
+    buttonInGroupService: ButtonInGroupService;
+    _click: EventEmitter<boolean>;
+    routerLinkActiveClasses: string;
+    templateRef: TemplateRef<ClrButton>;
+    loading: boolean;
+    private _inMenu;
+    private _enableService;
+    private _classNames;
+    private _name;
+    private _type;
+    private _disabled;
+    private _id;
+    constructor(routerLinkActive: RouterLinkActive, buttonInGroupService: ButtonInGroupService);
+    get inMenu(): boolean;
+    set inMenu(value: boolean);
+    get classNames(): string;
+    set classNames(value: string);
+    get name(): string;
+    set name(value: string);
+    get type(): string;
+    set type(value: string);
+    get id(): string;
+    set id(value: string);
+    get disabled(): any;
+    set disabled(value: any);
+    get role(): string;
     ngAfterViewInit(): void;
+    loadingStateChange(state: ClrLoadingState$1): void;
+    emitClick(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{ optional: true; }, { optional: true; skipSelf: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, { "routerLinkActiveClasses": { "alias": "routerLinkActive"; "required": false; }; "inMenu": { "alias": "clrInMenu"; "required": false; }; "classNames": { "alias": "class"; "required": false; }; "name": { "alias": "name"; "required": false; }; "type": { "alias": "type"; "required": false; }; "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; }, { "_click": "click"; }, never, ["*"], false, never>;
+}
+
+declare enum InitialFocus {
+    FIRST_ITEM = "first",
+    LAST_ITEM = "last"
+}
+
+declare class ButtonGroupFocusHandler {
+    private focusService;
+    private popoverService;
+    private renderer;
+    initialFocus: InitialFocus;
+    private menu;
+    private menuToggle;
+    private buttons;
+    private _unlistenFuncs;
+    constructor(focusService: FocusService$1, popoverService: ClrPopoverService$1, renderer: Renderer2);
     ngOnDestroy(): void;
-    private focus;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFocusOnViewInit, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFocusOnViewInit, "[clrFocusOnViewInit]", never, { "isEnabled": { "alias": "clrFocusOnViewInit"; "required": false; }; }, {}, never, never, false, never>;
+    initialize({ menu, menuToggle }: {
+        menu: HTMLElement;
+        menuToggle: HTMLElement;
+    }): void;
+    private resetButtonsFocus;
+    private listenToKeys;
+    private closeMenu;
+    private linkButtons;
+    private focusFirstItem;
+    private focusLastItem;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ButtonGroupFocusHandler, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ButtonGroupFocusHandler>;
 }
 
-declare const FOCUS_ON_VIEW_INIT: InjectionToken<boolean>;
-
-declare const FOCUS_ON_VIEW_INIT_DIRECTIVES: Type$1<any>[];
-declare class ClrFocusOnViewInitModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFocusOnViewInitModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFocusOnViewInitModule, [typeof ClrFocusOnViewInit], [typeof i2.CommonModule], [typeof ClrFocusOnViewInit]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrFocusOnViewInitModule>;
-}
-
-declare class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
+declare class ClrButtonGroup implements AfterContentInit, AfterViewInit {
+    buttonGroupNewService: ButtonInGroupService;
+    private popoverService;
+    commonStrings: ClrCommonStringsService$1;
+    private destroy$;
+    private focusHandler;
+    clrToggleButtonAriaLabel: string;
+    menuToggle: ElementRef<HTMLElement>;
+    menu: ElementRef<HTMLElement>;
+    buttons: QueryList<ClrButton>;
+    popoverId: string;
+    InitialFocus: typeof InitialFocus;
+    inlineButtons: ClrButton[];
+    menuButtons: ClrButton[];
+    protected popoverType: ClrPopoverType$1;
+    private _menuPosition;
+    constructor(buttonGroupNewService: ButtonInGroupService, popoverService: ClrPopoverService$1, commonStrings: ClrCommonStringsService$1, destroy$: ClrDestroyService$1, focusHandler: ButtonGroupFocusHandler);
+    get menuPosition(): ClrPopoverPosition$1;
+    set menuPosition(pos: ClrPopoverPosition$1 | string);
+    get open(): boolean;
     /**
-     * Include the constructor to forward all the dependencies to the base class
-     * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
-     * https://github.com/storybookjs/storybook/issues/23534
+     * 1. Initializes the initial Button Group View
+     * 2. Subscribes to changes on the ContentChildren
+     *    in case the user content projection changes
      */
-    constructor(elementRef: ElementRef<HTMLElement>, focusTrapFactory: FocusTrapFactory, document: any);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStandaloneCdkTrapFocus, [null, null, { optional: true; }]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStandaloneCdkTrapFocus, never, never, {}, {}, never, never, true, never>;
+    ngAfterContentInit(): void;
+    ngAfterViewInit(): void;
+    /**
+     * Moves the button into the other ViewContainer
+     * when an update is received.
+     *
+     * @param button
+     */
+    rearrangeButton(button: ClrButton): void;
+    openMenu(event: Event, initialFocus: InitialFocus): void;
+    /**
+     * Author: Eudes
+     *
+     * Finds the order of a button w.r.t other buttons
+     *
+     * @param buttonToMove
+     * @returns
+     */
+    getMoveIndex(buttonToMove: ClrButton): number;
+    initializeButtons(): void;
+    private handleFocusOnMenuOpen;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroup, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "clrToggleButtonAriaLabel": { "alias": "clrToggleButtonAriaLabel"; "required": false; }; "menuPosition": { "alias": "clrMenuPosition"; "required": false; }; }, {}, ["buttons"], never, false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
-/**
- * @description
- *
- * Developers should explicitly add this service to providers; it then can be injected
- * into a constructor and used as a notifier for the `takeUntil` operator. This eliminates
- * the need for boilerplates with subscriptions, and we don't need to implement the `OnDestroy`
- * interface and teardown subscriptions there.
- *
- * This can be used as follows:
- * ```ts
- * @Component({
- *   selector: 'clr-button-group',
- *   templateUrl: 'button-group.html',
- *   providers: [ClrDestroyService],
- * })
- * export class ClrButtonGroup {
- *   constructor(public buttonGroupNewService: ButtonInGroupService, private destroy$: ClrDestroyService) {}
- *
- *   ngAfterContentInit() {
- *     this.buttonGroupNewService.changes.pipe(takeUntil(this.destroy$)).subscribe(button => this.rearrangeButton(button));
- *   }
- * }
- * ```
- */
-declare class ClrDestroyService extends Subject<void> implements OnDestroy {
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDestroyService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrDestroyService>;
+declare const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
+declare class ClrButtonGroupModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroupModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof ClrButton, typeof ClrButtonGroup], [typeof i2$1.CommonModule, typeof i7.ClrIcon, typeof i1.ÇlrClrPopoverModuleNext], [typeof ClrButton, typeof ClrButtonGroup]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrButtonGroupModule>;
 }
 
-type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
+declare class ClrButtonModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonModule, never, never, [typeof ClrLoadingButtonModule, typeof ClrButtonGroupModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrButtonModule>;
+}
+
+declare class ClrDataModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDataModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDataModule, never, never, [typeof i1$1.ClrDatagridModule, typeof i2$2.ClrStackViewModule, typeof i3$1.ClrTreeViewModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrDataModule>;
+}
 
 /**
  * Enumeration representing the sorting order of a datagrid column. It is a constant Enum,
@@ -1308,6 +253,11 @@ declare enum ClrDatagridSortOrder {
     UNSORTED = 0,
     ASC = 1,
     DESC = -1
+}
+declare enum ClrDatagridAriaSortOrder {
+    UNSORTED = "none",
+    ASC = "ascending",
+    DESC = "descending"
 }
 
 interface ClrDatagridComparatorInterface<T> {
@@ -1322,21 +272,6 @@ interface ClrDatagridFilterInterface<T, S = any> {
     equals?(other: ClrDatagridFilterInterface<T, any>): boolean;
 }
 
-interface Closable {
-    close(): void;
-}
-declare class ModalStackService {
-    private readonly platformId;
-    private readonly modalStack;
-    private readonly keyUpEventListener;
-    constructor(platformId: unknown);
-    trackModalOpen(openedModal: Closable): void;
-    trackModalClose(closedModal: Closable): void;
-    private onKeyUp;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ModalStackService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ModalStackService>;
-}
-
 declare class DetailService {
     private readonly modalStackService;
     id: string;
@@ -1346,7 +281,7 @@ declare class DetailService {
     private button;
     private _enabled;
     private _state;
-    constructor(modalStackService: ModalStackService);
+    constructor(modalStackService: ModalStackService$1);
     get enabled(): boolean;
     set enabled(state: boolean);
     get preventFocusScroll(): boolean;
@@ -1568,7 +503,7 @@ declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrD
      */
     private subscriptions;
     private _showSeparator;
-    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService);
+    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService$1);
     get isHidden(): boolean;
     get showSeparator(): boolean;
     set showSeparator(value: boolean);
@@ -1586,7 +521,7 @@ declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrD
      * Indicates if the column is sortable
      */
     get sortable(): boolean;
-    get ariaSort(): "none" | "ascending" | "descending";
+    get ariaSort(): ClrDatagridAriaSortOrder;
     get sortDirection(): 'up' | 'down' | null;
     /**
      * @NOTE type `any` here is to let us pass templateStrictMode, because in our code we try to handle
@@ -1612,7 +547,7 @@ declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrD
     private listenForSortingChanges;
     private setupDefaultFilter;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
 type ClrDatagridItemsIdentityFunction<T> = (item: T) => any;
@@ -1731,71 +666,6 @@ declare class ClrDatagridPlaceholder<T = any> {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPlaceholder<any>, "clr-dg-placeholder", never, {}, {}, never, ["*"], false, never>;
 }
 
-declare class SignpostFocusManager {
-    private _triggerEl;
-    set triggerEl(value: HTMLElement);
-    focusTrigger(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<SignpostFocusManager, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<SignpostFocusManager>;
-}
-
-declare class SignpostIdService {
-    private _id;
-    get id(): Observable<string>;
-    setId(id: string): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<SignpostIdService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<SignpostIdService>;
-}
-
-declare class ClrSignpostTrigger implements OnDestroy {
-    private popoverService;
-    private el;
-    private signpostIdService;
-    private signpostFocusManager;
-    private platformId;
-    ariaExpanded: boolean;
-    ariaControl: string;
-    isOpen: boolean;
-    private document;
-    private subscriptions;
-    constructor(popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    /**********
-     *
-     * @description
-     * click handler for the ClrSignpost trigger button used to hide/show ClrSignpostContent.
-     */
-    onSignpostTriggerClick(event: Event): void;
-    private focusOnClose;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostTrigger, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSignpostTrigger, "[clrSignpostTrigger]", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrSignpost {
-    commonStrings: ClrCommonStringsService;
-    /**********
-     * @property useCustomTrigger
-     *
-     * @description
-     * Flag used to determine if we need to use the default trigger or a user supplied trigger element.
-     *
-     */
-    useCustomTrigger: boolean;
-    signpostTriggerAriaLabel: string;
-    constructor(commonStrings: ClrCommonStringsService);
-    /**********
-     * @property signPostTrigger
-     *
-     * @description
-     * Uses ContentChild to check for a user supplied element with the ClrSignpostTrigger on it.
-     *
-     */
-    set customTrigger(trigger: ClrSignpostTrigger);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
-}
-
 declare class ClrDatagridCell implements OnInit {
     private vcr;
     /*********
@@ -1806,7 +676,7 @@ declare class ClrDatagridCell implements OnInit {
      * On the host, we set the .datagrid-signpost-trigger class on the cell when signpost.length is greater than 0.
      *
      */
-    signpost: QueryList<ClrSignpost>;
+    signpost: QueryList<ClrSignpost$1>;
     private wrappedInjector;
     constructor(vcr: ViewContainerRef);
     get _view(): any;
@@ -1815,7 +685,7 @@ declare class ClrDatagridCell implements OnInit {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridCell, "clr-dg-cell", never, {}, {}, ["signpost"], ["*"], false, never>;
 }
 
-declare class DatagridIfExpandService extends IfExpandService {
+declare class DatagridIfExpandService extends IfExpandService$1 {
     expandableId: string;
     private _replace;
     private _animate;
@@ -1824,7 +694,7 @@ declare class DatagridIfExpandService extends IfExpandService {
     set expanded(value: boolean);
     get replace(): Observable<boolean>;
     get animate(): Observable<void>;
-    loadingStateChange(state: ClrLoadingState): void;
+    loadingStateChange(state: ClrLoadingState$1): void;
     setReplace(replaceValue: boolean): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridIfExpandService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<DatagridIfExpandService>;
@@ -1995,18 +865,6 @@ declare class Selection<T = any> {
     static ɵprov: i0.ɵɵInjectableDeclaration<Selection<any>>;
 }
 
-declare class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
-    private builder;
-    expanded: boolean;
-    private player;
-    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, builder: AnimationBuilder);
-    ngOnChanges(changes: SimpleChanges): void;
-    ngOnDestroy(): void;
-    playAnimation(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrExpandableAnimationDirective, "[clrExpandableAnimation]", never, { "expanded": { "alias": "clrExpandableAnimation"; "required": false; }; }, {}, never, never, false, never>;
-}
-
 declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
     selection: Selection<T>;
     rowActionService: RowActionService;
@@ -2016,7 +874,7 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
     private displayMode;
     private vcr;
     el: ElementRef<HTMLElement>;
-    commonStrings: ClrCommonStringsService;
+    commonStrings: ClrCommonStringsService$1;
     private items;
     private document;
     selectedChanged: EventEmitter<boolean>;
@@ -2044,7 +902,7 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
      *
      */
     dgCells: QueryList<ClrDatagridCell>;
-    expandAnimation: ClrExpandableAnimationDirective;
+    expandAnimation: ClrExpandableAnimationDirective$1;
     detailButton: ElementRef<HTMLButtonElement>;
     _stickyCells: ViewContainerRef;
     _scrollableCells: ViewContainerRef;
@@ -2058,7 +916,7 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
     private wrappedInjector;
     private subscriptions;
     private _selectable;
-    constructor(selection: Selection<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, document: any);
+    constructor(selection: Selection<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService$1, items: Items, document: any);
     /**
      * Model of the row, to use for selection
      */
@@ -2290,7 +1148,7 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
     private document;
     el: ElementRef<HTMLElement>;
     private page;
-    commonStrings: ClrCommonStringsService;
+    commonStrings: ClrCommonStringsService$1;
     keyNavigation: KeyNavigationGridController;
     private zone;
     loadingMoreItems: boolean;
@@ -2355,7 +1213,7 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
     private cachedRowsHeight;
     private cachedContentHeight;
     private resizeObserver;
-    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
+    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService$1, keyNavigation: KeyNavigationGridController, zone: NgZone);
     /**
      * Freezes the datagrid while data is loading
      */
@@ -2412,182 +1270,64 @@ declare class ClrDatagridActionBar {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionBar, "clr-dg-action-bar", never, {}, {}, never, ["*"], false, never>;
 }
 
-declare const CLR_MENU_POSITIONS: string[];
-
-declare class ClrSignpostContent implements OnDestroy, AfterViewInit {
-    private element;
-    commonStrings: ClrCommonStringsService;
-    private signpostFocusManager;
-    private platformId;
-    private document;
-    private popoverService;
-    private popoverContent;
-    signpostCloseAriaLabel: string;
-    closeButton: ElementRef<HTMLButtonElement>;
-    signpostContentId: string;
-    private _position;
-    constructor(parentHost: ElementRef<HTMLElement>, element: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: Document, popoverService: ClrPopoverService, popoverContent: ClrPopoverContent);
-    /*********
-     *
-     * @description
-     * A setter for the position of the ClrSignpostContent popover. This is a combination of the following:
-     * - anchorPoint - where on the trigger to anchor the ClrSignpostContent
-     * - popoverPoint - where on the ClrSignpostContent container to align with the anchorPoint
-     * - offsetY - where on the Y axis to align the ClrSignpostContent so it meets specs
-     * - offsetX - where on the X axis to align the ClrSignpostContent so it meets specs
-     * There are 12 possible positions to place a ClrSignpostContent container:
-     * - top-left
-     * - top-middle
-     * - top-right
-     * - right-top
-     * - right-middle
-     * - right-bottom
-     * - bottom-right
-     * - bottom-middle
-     * - bottom-left
-     * - left-bottom
-     * - left-middle
-     * - left-top
-     *
-     * I think of it as follows for 'top-left' -> CONTAINER_SIDE-SIDE_POSITION. In this case CONTAINER_SIDE is 'top'
-     * meaning the top of the trigger icon (above the icon that hides/shows) the ClrSignpostContent. And, SIDE_POSITION
-     * is 'left' meaning two things: 1) the ClrSignpostContent container extends to the left and 2) the 'arrow/pointer'
-     * linking the SignpostContent to the trigger points down at the horizontal center of the trigger icon.
-     *
-     * @param newPosition
-     */
-    get position(): string | ClrPopoverPosition;
-    set position(position: string | ClrPopoverPosition);
-    get isOffScreen(): boolean;
-    /**********
-     *
-     * @description
-     * Close function that uses the signpost instance to toggle the state of the content popover.
-     *
-     */
-    close(): void;
-    ngAfterViewInit(): void;
-    onKeyDown(event: KeyboardEvent): void;
-    ngOnDestroy(): void;
-    private getFocusableElements;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [{ optional: true; }, null, null, null, null, null, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "signpostCloseAriaLabel": { "alias": "clrSignpostCloseAriaLabel"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; }, {}, never, ["clr-signpost-title", "*"], false, [{ directive: typeof ClrPopoverContent; inputs: {}; outputs: {}; }]>;
-}
-
-declare class ClrSignpostTitle {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostTitle, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostTitle, "clr-signpost-title", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare const CLR_SIGNPOST_DIRECTIVES: Type$1<any>[];
-declare class ClrSignpostModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrFocusOnViewInitModule, typeof ClrPopoverModuleNext], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof ClrConditionalModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSignpostModule>;
-}
-
-declare class ClrTooltip {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltip, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltip, "clr-tooltip", never, {}, {}, never, ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
-}
-
-declare class TooltipIdService {
-    private _id;
-    get id(): Observable<string>;
-    updateId(id: string): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TooltipIdService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<TooltipIdService>;
-}
-
-declare class TooltipMouseService {
-    private readonly popoverService;
-    private mouseOutDelay;
-    private mouseOverTrigger;
-    private mouseOverContent;
-    constructor(popoverService: ClrPopoverService);
-    onMouseEnterTrigger(): void;
-    onMouseLeaveTrigger(): void;
-    onMouseEnterContent(): void;
-    onMouseLeaveContent(): void;
-    private hideIfMouseOut;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TooltipMouseService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<TooltipMouseService>;
-}
-
-declare class ClrTooltipTrigger {
-    private popoverService;
-    private tooltipMouseService;
-    ariaDescribedBy: string;
-    private subs;
-    constructor(popoverService: ClrPopoverService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService, element: ElementRef);
-    ngOnDestroy(): void;
-    showTooltip(): void;
-    hideTooltip(): void;
-    private onMouseEnter;
-    private onMouseLeave;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipTrigger, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTooltipTrigger, "[clrTooltipTrigger]", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrTooltipContent implements OnInit {
-    private tooltipIdService;
-    el: ElementRef;
-    private renderer;
-    private tooltipMouseService;
-    private popoverContent;
-    private _id;
-    private _position;
-    private _size;
-    constructor(parentHost: ElementRef<HTMLElement>, tooltipIdService: TooltipIdService, el: ElementRef, renderer: Renderer2, popoverService: ClrPopoverService, tooltipMouseService: TooltipMouseService, popoverContent: ClrPopoverContent);
-    get id(): string;
-    set id(value: string);
-    get position(): string | ClrPopoverPosition;
-    set position(value: string | ClrPopoverPosition);
-    get size(): string;
-    set size(value: string);
-    ngOnInit(): void;
-    private onMouseEnter;
-    private onMouseLeave;
-    private updateCssClass;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipContent, [{ optional: true; }, null, null, null, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltipContent, "clr-tooltip-content", never, { "id": { "alias": "id"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; "size": { "alias": "clrSize"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof ClrPopoverContent; inputs: {}; outputs: {}; }]>;
-}
-
-declare const CLR_TOOLTIP_DIRECTIVES: Type$1<any>[];
-declare class ClrTooltipModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrPopoverModuleNext], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof ClrConditionalModule, typeof ClrIcon]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTooltipModule>;
-}
-
-declare class ClrPopoverModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof ClrDropdownModule, typeof ClrSignpostModule, typeof ClrTooltipModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModule>;
-}
-
 declare class ClrDatagridActionOverflow implements OnDestroy {
     private rowActionService;
-    commonStrings: ClrCommonStringsService;
+    commonStrings: ClrCommonStringsService$1;
     private platformId;
     private popoverService;
     buttonLabel: string;
     openChange: EventEmitter<boolean>;
     popoverId: string;
-    smartPosition: ClrPopoverPosition;
+    smartPosition: ClrPopoverPosition$1;
     protected positions: _angular_cdk_overlay.ConnectedPosition[];
     private readonly keyFocus;
     private _open;
     private subscriptions;
-    constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService, platformId: any, popoverService: ClrPopoverService);
+    constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService$1, platformId: any, popoverService: ClrPopoverService$1);
     get open(): boolean;
     set open(open: boolean);
     ngOnDestroy(): void;
     closeOverflowContent(event: Event): void;
     private initializeFocus;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridActionOverflow, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "buttonLabel": { "alias": "clrDgActionOverflowButtonLabel"; "required": false; }; "open": { "alias": "clrDgActionOverflowOpen"; "required": false; }; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "buttonLabel": { "alias": "clrDgActionOverflowButtonLabel"; "required": false; }; "open": { "alias": "clrDgActionOverflowOpen"; "required": false; }; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+}
+
+declare class ClrDatagridColumnToggle implements OnDestroy {
+    commonStrings: ClrCommonStringsService$1;
+    private columnsService;
+    popoverId: string;
+    openState: boolean;
+    popoverPosition: ClrPopoverPosition$1;
+    popoverType: ClrPopoverType$1;
+    readonly trackByFn: i0.TrackByFunction<ColumnState>;
+    private _allColumnsVisible;
+    private subscription;
+    private allSelectedElement;
+    constructor(commonStrings: ClrCommonStringsService$1, columnsService: ColumnsService, popoverService: ClrPopoverService$1);
+    get allColumnsVisible(): boolean;
+    set allColumnsVisible(value: boolean);
+    get hideableColumnStates(): ColumnState[];
+    get hasOnlyOneVisibleColumn(): boolean;
+    ngOnDestroy(): void;
+    toggleColumnState(columnState: ColumnState, event: boolean): void;
+    toggleSwitchPanel(): void;
+    allColumnsSelected(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnToggle, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggle, "clr-dg-column-toggle", never, {}, {}, never, never, false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+}
+
+declare class ClrDatagridColumnToggleButton {
+    commonStrings: ClrCommonStringsService$1;
+    private columnsService;
+    private allSelected;
+    constructor(commonStrings: ClrCommonStringsService$1, columnsService: ColumnsService);
+    get clrAllSelected(): Observable<boolean>;
+    get allHideablesVisible(): boolean;
+    selectAll(): void;
+    private hideableColumns;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnToggleButton, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggleButton, "clr-dg-column-toggle-button", never, {}, { "clrAllSelected": "clrAllSelected"; }, never, never, false, never>;
 }
 
 declare class ColumnResizerService {
@@ -2597,7 +1337,7 @@ declare class ColumnResizerService {
     isWithinMaxResizeRange: boolean;
     private widthBeforeResize;
     private _resizedBy;
-    constructor(el: ElementRef<HTMLElement>, domAdapter: DomAdapter, organizer: DatagridRenderOrganizer);
+    constructor(el: ElementRef<HTMLElement>, domAdapter: DomAdapter$1, organizer: DatagridRenderOrganizer);
     get resizedBy(): number;
     get minColumnWidth(): number;
     get maxResizeRange(): number;
@@ -2630,7 +1370,7 @@ declare class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
     private renderer;
     private ngZone;
     private tableSizeService;
-    commonString: ClrCommonStringsService;
+    commonString: ClrCommonStringsService$1;
     private document;
     columnSeparatorId: string;
     private resizeStartedOnKeyDown;
@@ -2638,7 +1378,7 @@ declare class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
     private unlisteners;
     private resizeTrackerRef;
     private columnHandleRef;
-    constructor(columnResizerService: ColumnResizerService, renderer: Renderer2, ngZone: NgZone, tableSizeService: TableSizeService, commonString: ClrCommonStringsService, document: any);
+    constructor(columnResizerService: ColumnResizerService, renderer: Renderer2, ngZone: NgZone, tableSizeService: TableSizeService, commonString: ClrCommonStringsService$1, document: any);
     get descriptionId(): string;
     private get resizeTrackerEl();
     private get columnHandleEl();
@@ -2659,9 +1399,9 @@ declare class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
 
 declare class ClrDatagridDetailHeader implements AfterViewInit {
     detailService: DetailService;
-    commonStrings: ClrCommonStringsService;
+    commonStrings: ClrCommonStringsService$1;
     title: ElementRef<HTMLElement>;
-    constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
+    constructor(detailService: DetailService, commonStrings: ClrCommonStringsService$1);
     get titleId(): string;
     ngAfterViewInit(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetailHeader, never>;
@@ -2670,11 +1410,11 @@ declare class ClrDatagridDetailHeader implements AfterViewInit {
 
 declare class ClrDatagridDetail {
     detailService: DetailService;
-    commonStrings: ClrCommonStringsService;
+    commonStrings: ClrCommonStringsService$1;
     ariaLabelledBy: string;
     ariaLabel: string;
     header: ClrDatagridDetailHeader;
-    constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
+    constructor(detailService: DetailService, commonStrings: ClrCommonStringsService$1);
     get labelledBy(): string;
     get label(): string;
     close(): void;
@@ -2685,50 +1425,6 @@ declare class ClrDatagridDetail {
 declare class ClrDatagridDetailBody {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetailBody, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetailBody, "clr-dg-detail-body", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare abstract class CustomFilter {
-}
-
-/**
- * Custom filter that can be added in any column to override the default object property string filter.
- * The reason this is not just an input on DatagridColumn is because we need the filter's template to be projected,
- * since it can be anything (not just a text input).
- */
-declare class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, OnDestroy {
-    commonStrings: ClrCommonStringsService;
-    private popoverService;
-    private keyNavigation;
-    openChange: EventEmitter<boolean>;
-    ariaExpanded: boolean;
-    popoverId: string;
-    popoverPosition: ClrPopoverPosition;
-    popoverType: ClrPopoverType;
-    anchor: ElementRef<HTMLButtonElement>;
-    private subs;
-    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, keyNavigation: KeyNavigationGridController);
-    get open(): boolean;
-    set open(open: boolean);
-    set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter<T, ClrDatagridFilterInterface<T>>);
-    /**
-     * Indicates if the filter is currently active
-     */
-    get active(): boolean;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, [null, null, null, { optional: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": { "alias": "clrDgFilterOpen"; "required": false; }; "customFilter": { "alias": "clrDgFilter"; "required": false; }; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"], false, never>;
-}
-
-declare class ClrDatagridFooter<T = any> {
-    selection: Selection<T>;
-    detailService: DetailService;
-    private columnsService;
-    commonStrings: ClrCommonStringsService;
-    SELECTION_TYPE: typeof SelectionType;
-    constructor(selection: Selection<T>, detailService: DetailService, columnsService: ColumnsService, commonStrings: ClrCommonStringsService);
-    get hasHideableColumns(): boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFooter<any>, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFooter<any>, "clr-dg-footer", never, {}, {}, never, ["*", "clr-dg-pagination"], false, never>;
 }
 
 declare class ClrDatagridHideableColumn implements OnDestroy {
@@ -2766,6 +1462,1100 @@ declare class ClrDatagridHideableColumn implements OnDestroy {
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridHideableColumn, [null, null, null, { optional: true; }]>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridHideableColumn, "[clrDgHideableColumn]", never, { "clrDgHideableColumn": { "alias": "clrDgHideableColumn"; "required": false; }; "clrDgHidden": { "alias": "clrDgHidden"; "required": false; }; }, { "hiddenChange": "clrDgHiddenChange"; }, never, never, false, never>;
+}
+
+declare abstract class CustomFilter {
+}
+
+/**
+ * Custom filter that can be added in any column to override the default object property string filter.
+ * The reason this is not just an input on DatagridColumn is because we need the filter's template to be projected,
+ * since it can be anything (not just a text input).
+ */
+declare class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, OnDestroy {
+    commonStrings: ClrCommonStringsService$1;
+    private popoverService;
+    private keyNavigation;
+    openChange: EventEmitter<boolean>;
+    ariaExpanded: boolean;
+    popoverId: string;
+    popoverPosition: ClrPopoverPosition$1;
+    popoverType: ClrPopoverType$1;
+    anchor: ElementRef<HTMLButtonElement>;
+    private subs;
+    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService$1, popoverService: ClrPopoverService$1, keyNavigation: KeyNavigationGridController);
+    get open(): boolean;
+    set open(open: boolean);
+    set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter<T, ClrDatagridFilterInterface<T>>);
+    /**
+     * Indicates if the filter is currently active
+     */
+    get active(): boolean;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, [null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": { "alias": "clrDgFilterOpen"; "required": false; }; "customFilter": { "alias": "clrDgFilter"; "required": false; }; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"], false, never>;
+}
+
+declare class ClrIfDetail implements OnInit, OnDestroy {
+    private templateRef;
+    private viewContainer;
+    private detailService;
+    stateChange: EventEmitter<any>;
+    private subscriptions;
+    private skip;
+    private embeddedViewRef;
+    constructor(templateRef: TemplateRef<any>, viewContainer: ViewContainerRef, detailService: DetailService);
+    set state(model: any);
+    get viewContext(): {
+        $implicit: any;
+    };
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    private togglePanel;
+    /**
+     * For a given outlet instance, we create a proxy object that delegates
+     * to the user-specified context. This allows changing, or swapping out
+     * the context object completely without having to destroy/re-create the view.
+     */
+    private _createContextForwardProxy;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfDetail, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfDetail, "[clrIfDetail]", never, { "state": { "alias": "clrIfDetail"; "required": false; }; }, { "stateChange": "clrIfDetailChange"; }, never, never, false, never>;
+}
+
+/**
+ * Generic bland container serving various purposes for Datagrid.
+ * For instance, it can help span a text over multiple rows in detail view.
+ */
+declare class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
+    selection: Selection;
+    rowActionService: RowActionService;
+    expand: DatagridIfExpandService;
+    expandableRows: ExpandableRowsCount;
+    commonStrings: ClrCommonStringsService$1;
+    _beginningOfExpandableContentAriaText: string;
+    _endOfExpandableContentAriaText: string;
+    replacedRow: boolean;
+    SELECTION_TYPE: typeof SelectionType;
+    cells: QueryList<ClrDatagridCell>;
+    private subscriptions;
+    constructor(selection: Selection, rowActionService: RowActionService, expand: DatagridIfExpandService, expandableRows: ExpandableRowsCount, commonStrings: ClrCommonStringsService$1);
+    set replace(value: boolean);
+    get beginningOfExpandableContentAriaText(): string;
+    get endOfExpandableContentAriaText(): string;
+    ngAfterContentInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRowDetail, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRowDetail, "clr-dg-row-detail", never, { "_beginningOfExpandableContentAriaText": { "alias": "clrRowDetailBeginningAriaText"; "required": false; }; "_endOfExpandableContentAriaText": { "alias": "clrRowDetailEndAriaText"; "required": false; }; "replace": { "alias": "clrDgReplace"; "required": false; }; }, {}, ["cells"], ["*"], false, never>;
+}
+
+declare class ClrDatagridFooter<T = any> {
+    selection: Selection<T>;
+    detailService: DetailService;
+    private columnsService;
+    commonStrings: ClrCommonStringsService$1;
+    SELECTION_TYPE: typeof SelectionType;
+    constructor(selection: Selection<T>, detailService: DetailService, columnsService: ColumnsService, commonStrings: ClrCommonStringsService$1);
+    get hasHideableColumns(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFooter<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFooter<any>, "clr-dg-footer", never, {}, {}, never, ["*", "clr-dg-pagination"], false, never>;
+}
+
+declare class ClrDatagridPageSize {
+    page: Page;
+    pageSizeOptions: number[];
+    pageSizeOptionsId: string;
+    constructor(page: Page);
+    set label(label: ClrControlLabel$1);
+    ngOnInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridPageSize, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPageSize, "clr-dg-page-size", never, { "pageSizeOptions": { "alias": "clrPageSizeOptions"; "required": false; }; "pageSizeOptionsId": { "alias": "clrPageSizeOptionsId"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare class ClrDatagridPagination implements OnDestroy, OnInit {
+    page: Page;
+    commonStrings: ClrCommonStringsService$1;
+    detailService: DetailService;
+    disableCurrentPageInput: boolean;
+    currentChanged: EventEmitter<number>;
+    _pageSizeComponent: ClrDatagridPageSize;
+    currentPageInputRef: ElementRef<HTMLInputElement>;
+    /**
+     * Subscription to the page service changes
+     */
+    private _pageSubscription;
+    constructor(page: Page, commonStrings: ClrCommonStringsService$1, detailService: DetailService);
+    /**
+     * Page size
+     */
+    get pageSize(): number;
+    set pageSize(size: number);
+    /**
+     * Total items (needed to guess the last page)
+     */
+    get totalItems(): number;
+    set totalItems(total: number);
+    /**
+     * Last page
+     */
+    get lastPage(): number;
+    set lastPage(last: number);
+    /**
+     * Current page
+     */
+    get currentPage(): number;
+    set currentPage(page: number);
+    /**
+     * Index of the first item displayed on the current page, starting at 0, -1 if none displayed
+     */
+    get firstItem(): number;
+    /**
+     * Index of the last item displayed on the current page, starting at 0, -1 if none displayed
+     */
+    get lastItem(): number;
+    /**
+     * Conditionally adds page numbers before and after the current page
+     */
+    get middlePages(): number[];
+    /**********
+     * Subscription to the Page service for page changes.
+     * Note: this only emits after the datagrid is initialized/stabalized and the page changes.
+     */
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    /**
+     * Moves to the previous page if it exists
+     */
+    previous(): void;
+    /**
+     * Moves to the next page if it exists
+     */
+    next(): void;
+    verifyCurrentPage(event: any): void;
+    /**
+     * We only update the pagination's current page on enter.
+     */
+    updateCurrentPage(event: any): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridPagination, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPagination, "clr-dg-pagination", never, { "disableCurrentPageInput": { "alias": "clrDgPageInputDisabled"; "required": false; }; "pageSize": { "alias": "clrDgPageSize"; "required": false; }; "totalItems": { "alias": "clrDgTotalItems"; "required": false; }; "lastPage": { "alias": "clrDgLastPage"; "required": false; }; "currentPage": { "alias": "clrDgPage"; "required": false; }; }, { "currentChanged": "clrDgPageChange"; }, ["_pageSizeComponent"], ["clr-dg-page-size", "*"], false, never>;
+}
+
+interface ClrDatagridStringFilterInterface<T> {
+    accepts(item: T, search: string): boolean;
+}
+
+interface ClrDatagridNumericFilterInterface<T> {
+    accepts(item: T, low: number, high: number): boolean;
+}
+
+declare class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInterface<T> {
+    filterFn: ClrDatagridStringFilterInterface<T>;
+    /**
+     * The Observable required as part of the Filter interface
+     */
+    private _changes;
+    /**
+     * Input value converted to lowercase
+     */
+    private _lowerCaseValue;
+    /**
+     * Raw input value
+     */
+    private _rawValue;
+    constructor(filterFn: ClrDatagridStringFilterInterface<T>);
+    get changes(): Observable<string>;
+    get lowerCaseValue(): string;
+    get state(): this | {
+        property: string;
+        value: string;
+    };
+    get value(): string;
+    /**
+     * Common setter for the input value
+     */
+    set value(value: string);
+    /**
+     * Indicates if the filter is currently active, meaning the input is not empty
+     */
+    isActive(): boolean;
+    /**
+     * Tests if an item matches a search text
+     */
+    accepts(item: T): boolean;
+    equals(other: ClrDatagridFilterInterface<T, any>): boolean;
+}
+
+declare class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements CustomFilter, AfterViewInit, OnChanges, OnDestroy {
+    private domAdapter;
+    commonStrings: ClrCommonStringsService$1;
+    private popoverService;
+    private elementRef;
+    private cdr;
+    private ngZone;
+    /**
+     * Provide a way to pass external placeholder and aria-label to the filter input
+     */
+    placeholder: string;
+    label: string;
+    filterValueChange: EventEmitter<any>;
+    /**
+     * Indicates if the filter dropdown is open
+     */
+    open: boolean;
+    /**
+     * We need the actual input element to automatically focus on it
+     */
+    input: ElementRef<HTMLInputElement>;
+    /**
+     * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
+     */
+    filterContainer: ClrDatagridFilter<T>;
+    labelValue: string;
+    private initFilterValue;
+    private subs;
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter$1, commonStrings: ClrCommonStringsService$1, popoverService: ClrPopoverService$1, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
+    /**
+     * Customizable filter logic based on a search text
+     */
+    set customStringFilter(value: ClrDatagridStringFilterInterface<T> | RegisteredFilter<T, DatagridStringFilterImpl<T>>);
+    /**
+     * Common setter for the input value
+     */
+    get value(): string;
+    set value(value: string);
+    get placeholderValue(): string;
+    ngAfterViewInit(): void;
+    ngOnChanges(): void;
+    ngOnDestroy(): void;
+    /**
+     * This is not in a getter to prevent "expression has changed after it was checked" errors.
+     */
+    private setFilterLabel;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridStringFilter<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridStringFilter<any>, "clr-dg-string-filter", never, { "placeholder": { "alias": "clrFilterPlaceholder"; "required": false; }; "label": { "alias": "clrFilterLabel"; "required": false; }; "customStringFilter": { "alias": "clrDgStringFilter"; "required": false; }; "value": { "alias": "clrFilterValue"; "required": false; }; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
+}
+
+declare class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInterface<T> {
+    filterFn: ClrDatagridNumericFilterInterface<T>;
+    /**
+     * The Observable required as part of the Filter interface
+     */
+    private _changes;
+    /**
+     * Internal values and accessor
+     */
+    private _low;
+    private _high;
+    constructor(filterFn: ClrDatagridNumericFilterInterface<T>);
+    get changes(): Observable<[number, number]>;
+    get value(): [number, number];
+    set value(vals: [number, number]);
+    get low(): number;
+    set low(low: number);
+    get high(): number;
+    set high(high: number);
+    get state(): this | {
+        property: string;
+        low: number;
+        high: number;
+    };
+    /**
+     * Indicates if the filter is currently active, (at least one input is set)
+     */
+    isActive(): boolean;
+    /**
+     * Tests if an item matches a search text
+     */
+    accepts(item: T): boolean;
+    equals(other: ClrDatagridFilterInterface<T, any>): boolean;
+}
+
+declare class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>> implements CustomFilter, AfterViewInit {
+    private domAdapter;
+    commonStrings: ClrCommonStringsService$1;
+    private popoverService;
+    private ngZone;
+    minPlaceholder: string;
+    maxPlaceholder: string;
+    fromLabel: string;
+    toLabel: string;
+    filterValueChange: EventEmitter<any>;
+    /**
+     * Indicates if the filter dropdown is open
+     */
+    open: boolean;
+    /**
+     * We need the actual input element to automatically focus on it
+     */
+    input: ElementRef<HTMLInputElement>;
+    /**
+     * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
+     */
+    filterContainer: ClrDatagridFilter<T>;
+    private initFilterValues;
+    private subscriptions;
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter$1, commonStrings: ClrCommonStringsService$1, popoverService: ClrPopoverService$1, ngZone: NgZone);
+    /**
+     * Common setter for the input values
+     */
+    get value(): [number, number];
+    set value(values: [number, number]);
+    /**
+     * Customizable filter logic based on high and low values
+     */
+    set customNumericFilter(value: ClrDatagridNumericFilterInterface<T> | RegisteredFilter<T, DatagridNumericFilterImpl<T>>);
+    get maxPlaceholderValue(): string;
+    get minPlaceholderValue(): string;
+    get fromLabelValue(): string;
+    get toLabelValue(): string;
+    get low(): number | string;
+    set low(low: number | string);
+    get high(): number | string;
+    set high(high: number | string);
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridNumericFilter<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": { "alias": "clrFilterMinPlaceholder"; "required": false; }; "maxPlaceholder": { "alias": "clrFilterMaxPlaceholder"; "required": false; }; "fromLabel": { "alias": "clrFilterFromLabel"; "required": false; }; "toLabel": { "alias": "clrFilterToLabel"; "required": false; }; "value": { "alias": "clrFilterValue"; "required": false; }; "customNumericFilter": { "alias": "clrDgNumericFilter"; "required": false; }; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
+}
+
+declare class DatagridPropertyStringFilter<T = any> implements ClrDatagridStringFilterInterface<T> {
+    prop: string;
+    exact: boolean;
+    private nestedProp;
+    constructor(prop: string, exact?: boolean);
+    accepts(item: T, search: string): boolean;
+}
+
+declare class DatagridPropertyNumericFilter<T = any> implements ClrDatagridNumericFilterInterface<T> {
+    prop: string;
+    exact: boolean;
+    private nestedProp;
+    constructor(prop: string, exact?: boolean);
+    accepts(item: T, low: number, high: number): boolean;
+}
+
+declare class DatagridPropertyComparator<T = any> implements ClrDatagridComparatorInterface<T> {
+    prop: string;
+    private nestedProp;
+    constructor(prop: string);
+    compare(a: T, b: T): number;
+}
+
+declare class ClrDatagridSelectionCellDirective {
+    private readonly selection;
+    constructor(selection: Selection);
+    private onSelectionCellClick;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridSelectionCellDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridSelectionCellDirective, ".datagrid-select", never, {}, {}, never, never, false, never>;
+}
+
+declare class DatagridDetailRegisterer {
+    private expandableRowsCount;
+    constructor(expandableRowsCount: ExpandableRowsCount);
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridDetailRegisterer, [{ optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridDetailRegisterer, "[clrIfExpanded]", never, {}, {}, never, never, false, never>;
+}
+
+declare class WrappedCell implements AfterViewInit, OnDestroy {
+    templateRef: TemplateRef<void>;
+    cellView: EmbeddedViewRef<void>;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<WrappedCell, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<WrappedCell, "dg-wrapped-cell", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class WrappedColumn implements AfterViewInit, OnDestroy {
+    templateRef: TemplateRef<void>;
+    columnView: EmbeddedViewRef<void>;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<WrappedColumn, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<WrappedColumn, "dg-wrapped-column", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class WrappedRow implements AfterViewInit, OnDestroy {
+    templateRef: TemplateRef<void>;
+    rowView: EmbeddedViewRef<void>;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<WrappedRow, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<WrappedRow, "dg-wrapped-row", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class DatagridCellRenderer implements OnDestroy {
+    private el;
+    private renderer;
+    private stateSubscription;
+    private subscriptions;
+    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer);
+    ngOnDestroy(): void;
+    resetState(state: ColumnState): void;
+    setWidth(state: ColumnState): void;
+    setHidden(state: ColumnState): void;
+    private clearWidth;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridCellRenderer, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridCellRenderer, "clr-dg-cell", never, {}, {}, never, never, false, never>;
+}
+
+declare class DatagridHeaderRenderer implements OnDestroy {
+    private el;
+    private renderer;
+    private domAdapter;
+    private columnResizerService;
+    private columnsService;
+    private columnState;
+    resizeEmitter: EventEmitter<number>;
+    /**
+     * Indicates if the column has a strict width, so it doesn't shrink or expand based on the content.
+     */
+    private widthSet;
+    private autoSet;
+    private subscriptions;
+    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter$1, columnResizerService: ColumnResizerService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
+    ngOnDestroy(): void;
+    getColumnWidthState(): Partial<ColumnState>;
+    setColumnState(index: number): void;
+    setWidth(state: ColumnState): void;
+    setHidden(state: ColumnState): void;
+    private clearWidth;
+    private detectStrictWidth;
+    private computeWidth;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridHeaderRenderer, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridHeaderRenderer, "clr-dg-column", never, {}, { "resizeEmitter": "clrDgColumnResize"; }, never, never, false, never>;
+}
+
+declare class DatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
+    private datagrid;
+    private organizer;
+    private items;
+    private page;
+    private el;
+    private renderer;
+    private tableSizeService;
+    private columnsService;
+    private ngZone;
+    private keyNavigation;
+    private changeDetectorRef;
+    private headers;
+    private rows;
+    private _heightSet;
+    private shouldStabilizeColumns;
+    private subscriptions;
+    private intersectionObserver;
+    /**
+     * Indicates if we want to re-compute columns width. This should only happen:
+     * 1) When headers change, with columns being added or removed
+     * 2) When rows are lazily loaded for the first time
+     */
+    private columnsSizesStable;
+    constructor(datagrid: ClrDatagrid, organizer: DatagridRenderOrganizer, items: Items, page: Page, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController, changeDetectorRef: ChangeDetectorRef);
+    ngOnInit(): void;
+    ngAfterContentInit(): void;
+    ngAfterViewInit(): void;
+    ngAfterViewChecked(): void;
+    ngOnDestroy(): void;
+    toggleDetailPane(state: boolean): void;
+    private setupColumns;
+    private shouldComputeHeight;
+    /**
+     * Computes the height of the datagrid.
+     *
+     * NOTE: We had to choose to set the height instead of the min-height because
+     * IE 11 requires the height on the parent for the children flex grow/shrink properties to work.
+     * When we used min-height, 1 1 auto doesn't used to work in IE11 :-(
+     * But this doesn't affect the fix. It works in both fixed & variable height datagrids.
+     *
+     * Refer: http://stackoverflow.com/questions/24396205/flex-grow-not-working-in-internet-explorer-11-0
+     */
+    private computeDatagridHeight;
+    private resetDatagridHeight;
+    /**
+     * Makes each header compute its width.
+     */
+    private computeHeadersWidth;
+    private columnStateChanged;
+    /**
+     * Triggers a whole re-rendring cycle to set column sizes, if needed.
+     */
+    private stabilizeColumns;
+    private updateColumnSeparatorsVisibility;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridMainRenderer, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridMainRenderer, "clr-datagrid", never, {}, {}, ["headers", "rows"], never, false, never>;
+}
+
+declare class DatagridRowRenderer implements AfterContentInit, OnDestroy {
+    private columnsService;
+    cells: QueryList<DatagridCellRenderer>;
+    expandableRows: DatagridRowDetailRenderer[];
+    private subscriptions;
+    constructor(columnsService: ColumnsService);
+    ngAfterContentInit(): void;
+    ngOnDestroy(): void;
+    setCellsState(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridRowRenderer, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridRowRenderer, "clr-dg-row", never, {}, {}, ["cells"], never, false, never>;
+}
+
+declare class DatagridRowDetailRenderer extends DatagridRowRenderer implements OnDestroy {
+    private parentRow;
+    constructor(parentRow: DatagridRowRenderer, columnsService: ColumnsService);
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridRowDetailRenderer, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridRowDetailRenderer, "clr-dg-row-detail", never, {}, {}, never, never, false, never>;
+}
+
+declare class DatagridWillyWonka extends WillyWonka$1 {
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridWillyWonka, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridWillyWonka, "clr-datagrid", never, {}, {}, never, never, false, never>;
+}
+
+declare class ActionableOompaLoompa extends OompaLoompa$1 {
+    private rowActions;
+    constructor(cdr: ChangeDetectorRef, willyWonka: DatagridWillyWonka, rowActions: RowActionService);
+    get flavor(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ActionableOompaLoompa, [null, { optional: true; }, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ActionableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false, never>;
+}
+
+declare class ExpandableOompaLoompa extends OompaLoompa$1 {
+    private expandableCount;
+    constructor(cdr: ChangeDetectorRef, willyWonka: DatagridWillyWonka, expandableCount: ExpandableRowsCount);
+    get flavor(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ExpandableOompaLoompa, [null, { optional: true; }, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ExpandableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
+    private renderer;
+    private elementRef;
+    value: any;
+    clrDgIdentityFn: (value: any) => unknown;
+    private state;
+    constructor(renderer: Renderer2, elementRef: ElementRef<HTMLInputElement>);
+    onChange: (value: any) => void;
+    onTouched: () => void;
+    registerOnChange(fn: (value: any) => void): void;
+    registerOnTouched(fn: () => void): void;
+    setDisabledState(isDisabled: boolean): void;
+    writeValue(value: any): void;
+    private keyOf;
+    private updateChecked;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridSingleSelectionValueAccessor, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridSingleSelectionValueAccessor, "input[type=radio][clrDgSingleSelectionRadio]", never, { "value": { "alias": "value"; "required": false; }; "clrDgIdentityFn": { "alias": "clrDgIdentityFn"; "required": false; }; }, {}, never, never, true, never>;
+}
+
+declare const CLR_DATAGRID_DIRECTIVES: Type<any>[];
+declare class ClrDatagridModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i2$1.CommonModule, typeof i39.CdkDragModule, typeof i39.CdkTrapFocusModule, typeof i7.ClrIcon, typeof i41.ClrInputModule, typeof i42.ClrRadioModule, typeof i43.ClrCheckboxModule, typeof i44.ClrNumberInputModule, typeof i45.ClrSelectModule, typeof i4$1.FormsModule, typeof i39.ClrLoadingModule, typeof i39.ClrConditionalModule, typeof i39.ClrOutsideClickModule, typeof i39.ClrExpandableAnimationModule, typeof i8$1.ClrSpinnerModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i39.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i39.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i39.ClrIfExpanded]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatagridModule>;
+}
+
+declare enum ClrSelectedState {
+    UNSELECTED = 0,
+    SELECTED = 1,
+    INDETERMINATE = 2
+}
+
+type AsyncArray<T> = T[] | null | undefined | Promise<T[] | null | undefined> | Observable<T[] | null | undefined>;
+
+declare abstract class TreeNodeModel<T> {
+    nodeId: string;
+    expanded: boolean;
+    model: T | null;
+    textContent: string;
+    loading$: BehaviorSubject<boolean>;
+    selected: BehaviorSubject<ClrSelectedState>;
+    private _loading;
+    private _disabled;
+    abstract parent: TreeNodeModel<T> | null;
+    abstract children: TreeNodeModel<T>[];
+    get loading(): boolean;
+    set loading(isLoading: boolean);
+    get disabled(): boolean;
+    set disabled(value: boolean);
+    destroy(): void;
+    setSelected(state: ClrSelectedState, propagateUp: boolean, propagateDown: boolean): void;
+    toggleSelection(propagate: boolean): void;
+    _updateSelectionFromChildren(): void;
+    private computeSelectionStateFromChildren;
+}
+
+declare class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
+    private getChildren;
+    private featuresService;
+    parent: RecursiveTreeNodeModel<T> | null;
+    private subscription;
+    private childrenFetched;
+    private _children;
+    constructor(model: T, parent: RecursiveTreeNodeModel<T> | null, getChildren: (node: T) => AsyncArray<T> | undefined, featuresService: TreeFeaturesService<T> | undefined);
+    get children(): RecursiveTreeNodeModel<T>[];
+    set children(value: RecursiveTreeNodeModel<T>[]);
+    destroy(): void;
+    clearChildren(): void;
+    fetchChildren(): void;
+    private wrapChildren;
+}
+
+interface ClrRecursiveForOfContext<T> {
+    $implicit: T;
+    clrModel: TreeNodeModel<T>;
+}
+declare class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
+    private template;
+    private featuresService;
+    private cdr;
+    nodes: T | T[];
+    getChildren: (node: T) => AsyncArray<T>;
+    private childrenFetchSubscription;
+    constructor(template: TemplateRef<ClrRecursiveForOfContext<T>>, featuresService: TreeFeaturesService<T>, cdr: ChangeDetectorRef);
+    ngOnChanges(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRecursiveForOf<any>, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRecursiveForOf<any>, "[clrRecursiveFor][clrRecursiveForOf]", never, { "nodes": { "alias": "clrRecursiveForOf"; "required": false; }; "getChildren": { "alias": "clrRecursiveForGetChildren"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare class TreeFeaturesService<T> {
+    selectable: boolean;
+    eager: boolean;
+    recursion: {
+        template: TemplateRef<ClrRecursiveForOfContext<T>>;
+        root: RecursiveTreeNodeModel<T>[];
+    };
+    childrenFetched: Subject<void>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TreeFeaturesService<any>, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<TreeFeaturesService<any>>;
+}
+
+declare class TreeFocusManagerService<T> {
+    rootNodeModels: TreeNodeModel<T>[];
+    private focusedNodeId;
+    private _focusRequest;
+    private _focusChange;
+    get focusRequest(): Observable<string>;
+    get focusChange(): Observable<string>;
+    focusNode(model: TreeNodeModel<T>): void;
+    broadcastFocusedNode(nodeId: string): void;
+    focusParent(model: TreeNodeModel<T>): void;
+    focusFirstVisibleNode(): void;
+    focusLastVisibleNode(): void;
+    focusNodeAbove(model: TreeNodeModel<T>): void;
+    focusNodeBelow(model: TreeNodeModel<T>): void;
+    focusNodeStartsWith(searchString: string, model: TreeNodeModel<T>): void;
+    private findSiblings;
+    private findLastVisibleInNode;
+    private findNextFocusable;
+    private findLastVisibleInTree;
+    private findNodeAbove;
+    private findNodeBelow;
+    private findDescendentNodeStartsWith;
+    private findSiblingNodeStartsWith;
+    private findRootNodeStartsWith;
+    private findNodeStartsWith;
+    private findClosestNodeStartsWith;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TreeFocusManagerService<any>, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<TreeFocusManagerService<any>>;
+}
+
+declare class ClrTree<T> implements AfterContentInit, OnDestroy {
+    featuresService: TreeFeaturesService<T>;
+    private focusManagerService;
+    private renderer;
+    private el;
+    private rootNodes;
+    private subscriptions;
+    private _isMultiSelectable;
+    constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
+    set lazy(value: boolean);
+    get isMultiSelectable(): boolean;
+    ngAfterContentInit(): void;
+    ngOnDestroy(): void;
+    private setMultiSelectable;
+    private setRootNodes;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTree<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTree<any>, "clr-tree", never, { "lazy": { "alias": "clrLazy"; "required": false; }; }, {}, ["rootNodes"], ["*"], false, never>;
+}
+
+declare class ClrTreeNodeLink {
+    private el;
+    constructor(el: ElementRef<HTMLElement>);
+    get active(): boolean;
+    activate(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNodeLink, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTreeNodeLink, ".clr-treenode-link", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
+    private platformId;
+    featuresService: TreeFeaturesService<T>;
+    expandService: IfExpandService$1;
+    commonStrings: ClrCommonStringsService$1;
+    private focusManager;
+    private elementRef;
+    expandable: boolean | undefined;
+    selectedChange: EventEmitter<ClrSelectedState>;
+    expandedChange: EventEmitter<boolean>;
+    STATES: typeof ClrSelectedState;
+    isModelLoading: boolean;
+    nodeId: string;
+    contentContainerTabindex: number;
+    _model: TreeNodeModel<T>;
+    private skipEmitChange;
+    private typeAheadKeyBuffer;
+    private typeAheadKeyEvent;
+    private subscriptions;
+    private contentContainer;
+    private treeNodeLinkList;
+    constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService$1, commonStrings: ClrCommonStringsService$1, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
+    get disabled(): boolean;
+    set disabled(value: boolean);
+    get selected(): ClrSelectedState | boolean;
+    set selected(value: ClrSelectedState | boolean);
+    get expanded(): boolean;
+    set expanded(value: boolean);
+    set clrForTypeAhead(value: string);
+    get ariaSelected(): boolean;
+    get treeNodeLink(): ClrTreeNodeLink;
+    private get isParent();
+    ngOnInit(): void;
+    ngAfterContentInit(): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    isExpandable(): boolean;
+    isSelectable(): boolean;
+    focusTreeNode(): void;
+    broadcastFocusOnContainer(): void;
+    onKeyDown(event: KeyboardEvent): void;
+    private setTabIndex;
+    private checkTabIndex;
+    private toggleExpandOrTriggerDefault;
+    private expandOrFocusFirstChild;
+    private collapseOrFocusParent;
+    private triggerDefaultAction;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, null, null, null, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": { "alias": "clrExpandable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "selected": { "alias": "clrSelected"; "required": false; }; "expanded": { "alias": "clrExpanded"; "required": false; }; "clrForTypeAhead": { "alias": "clrForTypeAhead"; "required": false; }; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
+}
+
+declare class RecursiveChildren<T> {
+    featuresService: TreeFeaturesService<T>;
+    private expandService;
+    parent: TreeNodeModel<T>;
+    children: TreeNodeModel<T>[];
+    subscription: Subscription;
+    role: string;
+    constructor(featuresService: TreeFeaturesService<T>, expandService: IfExpandService$1);
+    ngAfterContentInit(): void;
+    shouldRender(): boolean;
+    getContext(node: TreeNodeModel<T>): ClrRecursiveForOfContext<T>;
+    ngOnDestroy(): void;
+    private setAriaRoles;
+    static ɵfac: i0.ɵɵFactoryDeclaration<RecursiveChildren<any>, [null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<RecursiveChildren<any>, "clr-recursive-children", never, { "parent": { "alias": "parent"; "required": false; }; "children": { "alias": "children"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare const CLR_TREE_VIEW_DIRECTIVES: Type<any>[];
+declare class ClrTreeViewModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeViewModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i2$1.CommonModule, typeof i7.ClrIcon, typeof i39.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTreeViewModule>;
+}
+
+declare class ClrStackView {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackView, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackView, "clr-stack-view", never, {}, {}, never, ["clr-stack-header", "*"], false, never>;
+}
+
+declare class ClrStackHeader {
+    stackView: ClrStackView;
+    /**
+     * Depth of the stack view header starting from 1 for first level
+     */
+    ariaLevel: HeadingLevel$1;
+    constructor(stackView: ClrStackView);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackHeader, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackHeader, "clr-stack-header", never, { "ariaLevel": { "alias": "clrStackHeaderLevel"; "required": false; }; }, {}, never, ["*", ".stack-action"], false, never>;
+}
+
+declare class ClrStackBlock implements OnInit {
+    private parent;
+    commonStrings: ClrCommonStringsService$1;
+    expanded: boolean;
+    expandable: boolean;
+    /**
+     * Depth of the stack view starting from 1 for first level
+     */
+    ariaLevel: HeadingLevel$1;
+    expandedChange: EventEmitter<boolean>;
+    stackBlockTitle: any;
+    focused: boolean;
+    uniqueId: string;
+    private _changedChildren;
+    private _fullyInitialized;
+    private _changed;
+    constructor(parent: ClrStackBlock, commonStrings: ClrCommonStringsService$1);
+    set setChangedValue(value: boolean);
+    get getChangedValue(): boolean;
+    get onStackLabelFocus(): boolean;
+    get labelledById(): any;
+    get caretDirection(): string;
+    get role(): string;
+    get tabIndex(): string;
+    get ariaExpanded(): string;
+    ngOnInit(): void;
+    addChild(): void;
+    toggleExpand(event?: Event): void;
+    getStackChildrenId(): string;
+    protected preventDefaultIfNotInputEvent(event: Event): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{ optional: true; skipSelf: true; }, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": { "alias": "clrSbExpanded"; "required": false; }; "expandable": { "alias": "clrSbExpandable"; "required": false; }; "ariaLevel": { "alias": "clrStackViewLevel"; "required": false; }; "setChangedValue": { "alias": "clrSbNotifyChange"; "required": false; }; }, { "expandedChange": "clrSbExpandedChange"; }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
+}
+
+declare class ClrStackContentInput {
+    uniqueId: string;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackContentInput, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStackContentInput, "[clrStackInput]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrStackViewCustomTags {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewCustomTags, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStackViewCustomTags, "clr-stack-content", never, {}, {}, never, never, false, never>;
+}
+declare class ClrStackViewLabel implements OnInit {
+    private _generatedId;
+    private _id;
+    get id(): string;
+    set id(val: string);
+    ngOnInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewLabel, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackViewLabel, "clr-stack-label", never, { "id": { "alias": "id"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare const CLR_STACK_VIEW_DIRECTIVES: Type<any>[];
+declare class ClrStackViewModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags], [typeof i2$1.CommonModule, typeof i4$1.FormsModule, typeof i7.ClrIcon, typeof i39.ClrExpandableAnimationModule], [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrStackViewModule>;
+}
+
+declare class ClrEmphasisModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrEmphasisModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, [typeof i1$2.ClrBadge, typeof i2$3.ClrLabel], [typeof i3$2.ClrAlertModule, typeof i1$2.ClrBadge, typeof i2$3.ClrLabel]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrEmphasisModule>;
+}
+
+interface AlertInfoObject {
+    shape: string;
+    cssClass: string;
+    title: string;
+}
+
+declare class AlertIconAndTypesService {
+    private commonStrings;
+    private defaultIconShape;
+    private _alertIconShape;
+    private _alertType;
+    constructor(commonStrings: ClrCommonStringsService$1);
+    get alertType(): string;
+    set alertType(val: string);
+    get alertIconShape(): string;
+    set alertIconShape(val: string);
+    get alertIconTitle(): string;
+    iconInfoFromType(type: string): AlertInfoObject;
+    static ɵfac: i0.ɵɵFactoryDeclaration<AlertIconAndTypesService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<AlertIconAndTypesService>;
+}
+
+declare class MultiAlertService {
+    private subscription;
+    private allAlerts;
+    private _change;
+    private _current;
+    /**
+     * The Observable that lets other classes subscribe to changes
+     */
+    get changes(): Observable<number>;
+    get current(): number;
+    set current(index: number);
+    get activeAlerts(): ClrAlert[];
+    get currentAlert(): ClrAlert;
+    set currentAlert(alert: ClrAlert);
+    get count(): number;
+    manage(alerts: QueryList<ClrAlert>): void;
+    next(): void;
+    previous(): void;
+    open(): void;
+    close(isCurrentAlert: boolean): void;
+    destroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MultiAlertService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<MultiAlertService>;
+}
+
+declare class ClrAlert implements OnInit, OnDestroy {
+    private iconService;
+    private cdr;
+    private multiAlertService;
+    private commonStrings;
+    private renderer;
+    private hostElement;
+    isSmall: boolean;
+    closable: boolean;
+    isAppLevel: boolean;
+    clrCloseButtonAriaLabel: string;
+    _closedChanged: EventEmitter<boolean>;
+    _closed: boolean;
+    private _hidden;
+    private subscriptions;
+    private _isLightweight;
+    private _origAlertType;
+    constructor(iconService: AlertIconAndTypesService, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService$1, renderer: Renderer2, hostElement: ElementRef<HTMLElement>);
+    get isLightweight(): boolean;
+    set isLightweight(val: boolean);
+    get alertType(): string;
+    set alertType(val: string);
+    set alertIconShape(value: string);
+    set closed(value: boolean);
+    get alertClass(): string;
+    get hidden(): boolean;
+    set hidden(value: boolean);
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    configAlertType(val: string): void;
+    open(): void;
+    close(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, { optional: true; }, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": { "alias": "clrAlertSizeSmall"; "required": false; }; "closable": { "alias": "clrAlertClosable"; "required": false; }; "isAppLevel": { "alias": "clrAlertAppLevel"; "required": false; }; "clrCloseButtonAriaLabel": { "alias": "clrCloseButtonAriaLabel"; "required": false; }; "isLightweight": { "alias": "clrAlertLightweight"; "required": false; }; "alertType": { "alias": "clrAlertType"; "required": false; }; "alertIconShape": { "alias": "clrAlertIcon"; "required": false; }; "closed": { "alias": "clrAlertClosed"; "required": false; }; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
+}
+
+declare class ClrAlertItem {
+    iconService: AlertIconAndTypesService;
+    constructor(iconService: AlertIconAndTypesService);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertItem, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlertItem, "clr-alert-item", never, {}, {}, never, ["*"], false, never>;
+}
+
+/**
+ * @remark
+ * This directive is used only of selectin alert text.
+ */
+declare class ClrAlertText {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertText, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAlertText, ".alert-text", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrAlerts implements AfterContentInit, OnDestroy {
+    multiAlertService: MultiAlertService;
+    currentAlertChange: EventEmitter<ClrAlert>;
+    currentAlertIndexChange: EventEmitter<number>;
+    private subscriptions;
+    constructor(multiAlertService: MultiAlertService);
+    set allAlerts(value: QueryList<ClrAlert>);
+    /**
+     * Input/Output to support two way binding on current alert index
+     */
+    set _inputCurrentIndex(index: number);
+    get currentAlertIndex(): number;
+    set currentAlertIndex(index: number);
+    /**
+     * Input/Output to support two way binding on current alert instance
+     */
+    get currentAlert(): ClrAlert;
+    set currentAlert(alert: ClrAlert);
+    /**
+     * Ensure we are only dealing with alerts that have not been closed yet
+     */
+    get alerts(): ClrAlert[];
+    get currentAlertType(): string;
+    ngAfterContentInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlerts, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlerts, "clr-alerts", never, { "_inputCurrentIndex": { "alias": "clrCurrentAlertIndex"; "required": false; }; "currentAlert": { "alias": "clrCurrentAlert"; "required": false; }; }, { "currentAlertChange": "clrCurrentAlertChange"; "currentAlertIndexChange": "clrCurrentAlertIndexChange"; }, ["allAlerts"], ["clr-alert"], false, never>;
+}
+
+declare class ClrAlertsPager implements OnInit, OnDestroy {
+    multiAlertService: MultiAlertService;
+    commonStrings: ClrCommonStringsService$1;
+    currentAlertChange: EventEmitter<ClrAlert>;
+    currentAlertIndexChange: EventEmitter<number>;
+    private multiAlertServiceChanges;
+    constructor(multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService$1);
+    /**
+     * Input/Output to support two way binding on current alert instance
+     */
+    get currentAlert(): ClrAlert;
+    set currentAlert(alert: ClrAlert);
+    /**
+     * Input/Output to support two way binding on current alert index
+     */
+    get currentAlertIndex(): number;
+    set currentAlertIndex(index: number);
+    protected get previousAlertAriaLabel(): string;
+    protected get nextAlertAriaLabel(): string;
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    pageUp(): void;
+    pageDown(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertsPager, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlertsPager, "clr-alerts-pager", never, { "currentAlert": { "alias": "clrCurrentAlert"; "required": false; }; "currentAlertIndex": { "alias": "clrCurrentAlertIndex"; "required": false; }; }, { "currentAlertChange": "clrCurrentAlertChange"; "currentAlertIndexChange": "clrCurrentAlertIndexChange"; }, never, never, false, never>;
+}
+
+declare const CLR_ALERT_DIRECTIVES: Type<any>[];
+declare class ClrAlertModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAlertModule, [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText], [typeof i2$1.CommonModule, typeof i7.ClrIcon, typeof i8$2.ClrDropdownModule, typeof i8$1.ClrSpinnerModule], [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrAlertModule>;
+}
+
+declare const ALERT_TYPES: string[];
+
+declare enum ClrBadgeColors {
+    None = "",
+    Info = "info",
+    Warning = "warning",
+    Danger = "danger",
+    Success = "success",
+    Gray = "gray",
+    Blue = "blue",
+    LightBlue = "light-blue",
+    Orange = "orange",
+    Purple = "purple"
+}
+declare class ClrBadge {
+    color: ClrBadgeColors | string;
+    type: Type$1 | string;
+    get isOutlined(): boolean;
+    get colorClass(): string;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBadge, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrColor"; "required": false; }; "type": { "alias": "clrType"; "required": false; }; }, {}, never, ["*"], true, never>;
+}
+
+declare enum ClrLabelColors {
+    None = "",
+    Info = "info",
+    Warning = "warning",
+    Danger = "danger",
+    Success = "success",
+    Gray = "gray",
+    Blue = "blue",
+    LightBlue = "light-blue",
+    Orange = "orange",
+    Purple = "purple"
+}
+declare class ClrLabel {
+    color: ClrLabelColors | string;
+    badgeText: string;
+    textContent: string;
+    clickable: boolean;
+    disabled: boolean;
+    type: Type$1 | string;
+    get isSolid(): boolean;
+    get colorClass(): string;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLabel, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeText": { "alias": "clrBadgeText"; "required": false; }; "textContent": { "alias": "clrText"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "type": { "alias": "clrType"; "required": false; }; }, {}, never, ["*"], true, never>;
 }
 
 /**
@@ -2847,6 +2637,25 @@ declare class LayoutService {
     labelSizeIsValid(labelSize: number): boolean;
     static ɵfac: i0.ɵɵFactoryDeclaration<LayoutService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<LayoutService>;
+}
+
+interface Helpers {
+    show?: boolean;
+    showInvalid?: boolean;
+    showValid?: boolean;
+    showHelper?: boolean;
+}
+declare class NgControlService {
+    container: ClrAbstractContainer;
+    private _controls;
+    private _controlsChanges;
+    get controls(): NgControl[];
+    get controlsChanges(): Observable<NgControl[]>;
+    get hasMultipleControls(): boolean;
+    addControl(control: NgControl): void;
+    emitControlsChange(controls: NgControl[]): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NgControlService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NgControlService>;
 }
 
 declare class ClrControlLabel implements OnInit, OnDestroy {
@@ -2940,19 +2749,6 @@ declare abstract class ClrAbstractContainer implements OnDestroy {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["label", "controlSuccessComponent", "controlErrorComponent", "controlHelperComponent"], never, true, never>;
 }
 
-declare class NgControlService {
-    container: ClrAbstractContainer;
-    private _controls;
-    private _controlsChanges;
-    get controls(): NgControl[];
-    get controlsChanges(): Observable<NgControl[]>;
-    get hasMultipleControls(): boolean;
-    addControl(control: NgControl): void;
-    emitControlsChange(controls: NgControl[]): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<NgControlService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<NgControlService>;
-}
-
 declare abstract class AbstractIfState {
     protected ngControlService: NgControlService;
     protected displayedContent: boolean;
@@ -3036,7 +2832,7 @@ declare enum CHANGE_KEYS {
 }
 declare class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     protected vcr: ViewContainerRef;
-    protected wrapperType: Type$1<W>;
+    protected wrapperType: Type<W>;
     private ngControl;
     protected renderer: Renderer2;
     protected el: ElementRef<HTMLElement>;
@@ -3051,7 +2847,7 @@ declare class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     private _containerInjector;
     private differs;
     private differ;
-    constructor(vcr: ViewContainerRef, wrapperType: Type$1<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
+    constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
     get id(): string;
     set id(value: string);
     private get ariaDescribedById();
@@ -3059,7 +2855,7 @@ declare class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     ngDoCheck(): void;
     ngOnDestroy(): void;
     triggerValidation(): void;
-    protected getProviderFromContainer<T>(token: Type$1<T> | InjectionToken<T>, notFoundValue?: T): T;
+    protected getProviderFromContainer<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T;
     private injectControlClassService;
     private triggerDoCheck;
     private markAsTouched;
@@ -3077,8 +2873,16 @@ declare class ClrControl extends WrappedFormControl<ClrControlContainer> {
 declare class ClrCommonFormsModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCommonFormsModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCommonFormsModule, [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl], [typeof i2.CommonModule, typeof ClrIcon], [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl, typeof ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCommonFormsModule, [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl], [typeof i2$1.CommonModule, typeof i7.ClrIcon], [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl, typeof i7.ClrIcon]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrCommonFormsModule>;
+}
+
+declare class FormsFocusService {
+    private _focused;
+    get focusChange(): Observable<boolean>;
+    set focused(state: boolean);
+    static ɵfac: i0.ɵɵFactoryDeclaration<FormsFocusService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<FormsFocusService>;
 }
 
 declare const IS_TOGGLE: InjectionToken<BehaviorSubject<boolean>>;
@@ -3088,7 +2892,7 @@ declare const IS_TOGGLE_PROVIDER: {
     useFactory: typeof isToggleFactory;
 };
 declare class ClrCheckboxWrapper implements OnInit, OnDestroy {
-    label: ClrControlLabel;
+    label: ClrControlLabel$1;
     checkbox: ClrCheckbox;
     toggle: boolean;
     private subscriptions;
@@ -3105,7 +2909,7 @@ declare class ClrCheckboxWrapper implements OnInit, OnDestroy {
  * decorator gets for us to determine if the toggle is used, and emits a value to the wrapper container to tell it
  * there is a toggle switch instead.
  */
-declare class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
+declare class ClrCheckbox extends WrappedFormControl$1<ClrCheckboxWrapper> {
     private control;
     protected toggle: string;
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, toggle: string);
@@ -3115,14 +2919,14 @@ declare class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrCheckbox, "[clrCheckbox],[clrToggle]", never, {}, {}, never, never, false, never>;
 }
 
-declare class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
-    protected layoutService: LayoutService;
-    protected controlClassService: ControlClassService;
-    protected ngControlService: NgControlService;
+declare class ClrCheckboxContainer extends ClrAbstractContainer$1 implements AfterContentInit {
+    protected layoutService: LayoutService$1;
+    protected controlClassService: ControlClassService$1;
+    protected ngControlService: NgControlService$1;
     role: string;
     checkboxes: QueryList<ClrCheckbox>;
     private inline;
-    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
+    constructor(layoutService: LayoutService$1, controlClassService: ControlClassService$1, ngControlService: NgControlService$1);
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
     protected get allCheckboxesDisabled(): boolean;
@@ -3132,24 +2936,10 @@ declare class ClrCheckboxContainer extends ClrAbstractContainer implements After
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxContainer, "clr-checkbox-container,clr-toggle-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["checkboxes"], ["label", "clr-checkbox-wrapper,clr-toggle-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
 }
 
-declare class EmptyAnchor {
-    static ɵfac: i0.ɵɵFactoryDeclaration<EmptyAnchor, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<EmptyAnchor, "ng-component", never, {}, {}, never, never, false, never>;
-}
-
-/**
- * Internal module, please do not export!
- */
-declare class ClrHostWrappingModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrHostWrappingModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrHostWrappingModule, [typeof EmptyAnchor], never, [typeof EmptyAnchor]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrHostWrappingModule>;
-}
-
 declare class ClrCheckboxModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckboxModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCheckboxModule, [typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrCommonFormsModule, typeof ClrHostWrappingModule], [typeof ClrCommonFormsModule, typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCheckboxModule, [typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper], [typeof i2$1.CommonModule, typeof i7.ClrIcon, typeof i6$1.ClrCommonFormsModule, typeof i39.ClrHostWrappingModule], [typeof i6$1.ClrCommonFormsModule, typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrCheckboxModule>;
 }
 
@@ -3160,11 +2950,11 @@ declare class ComboboxContainerService {
     static ɵprov: i0.ɵɵInjectableDeclaration<ComboboxContainerService>;
 }
 
-declare class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
+declare class ClrComboboxContainer extends ClrAbstractContainer$1 implements AfterContentInit, AfterViewInit {
     private containerService;
     private el;
     controlContainer: ElementRef<HTMLElement>;
-    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, containerService: ComboboxContainerService, el: ElementRef<HTMLElement>);
+    constructor(layoutService: LayoutService$1, controlClassService: ControlClassService$1, ngControlService: NgControlService$1, containerService: ComboboxContainerService, el: ElementRef<HTMLElement>);
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrComboboxContainer, [{ optional: true; }, null, null, null, null]>;
@@ -3248,7 +3038,7 @@ declare class ComboboxFocusHandler<T> {
     private _listbox;
     private _textInput;
     private optionData;
-    constructor(rendererFactory: RendererFactory2, popoverService: ClrPopoverService, selectionService: OptionSelectionService<T>, platformId: any);
+    constructor(rendererFactory: RendererFactory2, popoverService: ClrPopoverService$1, selectionService: OptionSelectionService<T>, platformId: any);
     get trigger(): HTMLElement;
     set trigger(el: HTMLElement);
     get listbox(): HTMLElement;
@@ -3277,12 +3067,12 @@ declare class OptionData<T> {
     equals(other: OptionData<T>): boolean;
 }
 
-declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> implements ControlValueAccessor, LoadingListener, AfterContentInit {
+declare class ClrCombobox<T> extends WrappedFormControl$1<ClrComboboxContainer> implements ControlValueAccessor, LoadingListener$1, AfterContentInit {
     control: NgControl;
     protected renderer: Renderer2;
     protected el: ElementRef<HTMLElement>;
     optionSelectionService: OptionSelectionService<T>;
-    commonStrings: ClrCommonStringsService;
+    commonStrings: ClrCommonStringsService$1;
     private popoverService;
     private containerService;
     private platformId;
@@ -3299,14 +3089,14 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     trigger: ElementRef<HTMLButtonElement>;
     optionSelected: ClrOptionSelected<T>;
     focused: boolean;
-    popoverPosition: ClrPopoverPosition;
+    popoverPosition: ClrPopoverPosition$1;
     protected index: number;
-    protected popoverType: ClrPopoverType;
+    protected popoverType: ClrPopoverType$1;
     private options;
     private _searchText;
     private onTouchedCallback;
     private onChangeCallback;
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService$1, popoverService: ClrPopoverService$1, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
     get editable(): boolean;
     set editable(value: boolean);
     get multiSelect(): boolean | string;
@@ -3326,7 +3116,7 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     ngAfterViewInit(): void;
     onKeyUp(event: KeyboardEvent): void;
     inputId(): string;
-    loadingStateChange(state: ClrLoadingState): void;
+    loadingStateChange(state: ClrLoadingState$1): void;
     unselect(item: T): void;
     onBlur(event: any): void;
     onFocus(): void;
@@ -3344,18 +3134,18 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     private updateControlValue;
     private getDisplayNames;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, { optional: true; }, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
 declare class ClrOption<T> implements OnInit {
     elRef: ElementRef<HTMLElement>;
-    commonStrings: ClrCommonStringsService;
+    commonStrings: ClrCommonStringsService$1;
     private focusHandler;
     private optionSelectionService;
     optionProxy: OptionData<T>;
     private _id;
     private _value;
-    constructor(elRef: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, optionSelectionService: OptionSelectionService<T>);
+    constructor(elRef: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService$1, focusHandler: ComboboxFocusHandler<T>, optionSelectionService: OptionSelectionService<T>);
     get optionId(): string;
     set optionId(id: string);
     get value(): T;
@@ -3368,11 +3158,11 @@ declare class ClrOption<T> implements OnInit {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrOption<any>, "clr-option", never, { "optionId": { "alias": "id"; "required": false; }; "value": { "alias": "clrValue"; "required": false; }; }, {}, never, ["*"], false, never>;
 }
 
-declare class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
+declare class ClrOptions<T> implements AfterViewInit, LoadingListener$1, OnDestroy {
     optionSelectionService: OptionSelectionService<T>;
     id: number;
     el: ElementRef<HTMLElement>;
-    commonStrings: ClrCommonStringsService;
+    commonStrings: ClrCommonStringsService$1;
     private focusHandler;
     private popoverService;
     private document;
@@ -3380,7 +3170,7 @@ declare class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy
     loading: boolean;
     _items: QueryList<ClrOption<T>>;
     private subscriptions;
-    constructor(optionSelectionService: OptionSelectionService<T>, id: number, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, popoverService: ClrPopoverService, parentHost: ElementRef<HTMLElement>, document: any);
+    constructor(optionSelectionService: OptionSelectionService<T>, id: number, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService$1, focusHandler: ComboboxFocusHandler<T>, popoverService: ClrPopoverService$1, parentHost: ElementRef<HTMLElement>, document: any);
     get items(): QueryList<ClrOption<T>>;
     set items(items: QueryList<ClrOption<T>>);
     /**
@@ -3392,7 +3182,7 @@ declare class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
     searchText(input: string): string;
-    loadingStateChange(state: ClrLoadingState): void;
+    loadingStateChange(state: ClrLoadingState$1): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrOptions<any>, [null, null, null, null, null, null, { optional: true; }, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrOptions<any>, "clr-options", never, { "optionsId": { "alias": "id"; "required": false; }; }, {}, ["items"], ["*"], false, never>;
 }
@@ -3428,93 +3218,10 @@ declare class ClrOptionGroup<T> {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrOptionGroup<any>, "clr-option-group", never, { "label": { "alias": "clrOptionGroupLabel"; "required": false; }; }, {}, ["clrOptionItems"], ["*"], false, never>;
 }
 
-declare enum ClrFocusDirection {
-    VERTICAL = "vertical",
-    HORIZONTAL = "horizontal",
-    BOTH = "both"
-}
-
-interface FocusableItem {
-    tabIndex?: number;
-    focus: () => void;
-    nativeElement?: HTMLElement;
-}
-
-declare class ClrKeyFocusItem {
-    private elementRef;
-    private platformId;
-    constructor(elementRef: ElementRef<HTMLElement>, platformId: any);
-    get nativeElement(): HTMLElement;
-    focus(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrKeyFocusItem, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrKeyFocusItem, "[clrKeyFocusItem]", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrKeyFocus {
-    private elementRef;
-    direction: ClrFocusDirection | string;
-    focusOnLoad: boolean;
-    protected clrKeyFocusItems: QueryList<ClrKeyFocusItem>;
-    protected subscriptions: Subscription[];
-    private focusChange;
-    private _current;
-    private _focusableItems;
-    constructor(elementRef: ElementRef<HTMLElement>);
-    /**
-     * Here we use `any` cause any other type require reworking all methods below and a lot of more ifs.
-     * this method will only work with array with FocusableItems anyway so any other value will be ignored.
-     */
-    get focusableItems(): Array<FocusableItem> | any;
-    set focusableItems(elements: Array<FocusableItem> | any);
-    get nativeElement(): HTMLElement;
-    get current(): number;
-    set current(value: number);
-    get currentItem(): any;
-    get currentItemElement(): HTMLElement;
-    ngAfterContentInit(): void;
-    ngOnDestroy(): void;
-    handleKeyboardEvent(event: KeyboardEvent): void;
-    setClickedItemCurrent(event: any): void;
-    focusCurrent(): void;
-    moveTo(position: number): void;
-    protected positionInRange(position: number): boolean;
-    protected currentFocusIsNotFirstItem(): boolean;
-    protected currentFocusIsNotLastItem(): boolean;
-    protected initializeFocus(): void;
-    protected nextKeyPressed(event: KeyboardEvent): boolean;
-    protected prevKeyPressed(event: KeyboardEvent): boolean;
-    private getItemPosition;
-    private listenForItemUpdates;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrKeyFocus, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrKeyFocus, "[clrKeyFocus]", never, { "direction": { "alias": "clrDirection"; "required": false; }; "focusOnLoad": { "alias": "clrFocusOnLoad"; "required": false; }; "focusableItems": { "alias": "clrKeyFocus"; "required": false; }; }, { "focusChange": "clrFocusChange"; }, ["clrKeyFocusItems"], ["*"], false, never>;
-}
-
-declare class ClrRovingTabindex extends ClrKeyFocus {
-    private renderer;
-    private disabled;
-    constructor(elementRef: ElementRef<HTMLElement>, renderer: Renderer2);
-    get rovingIndexItems(): Array<FocusableItem> | string;
-    set rovingIndexItems(elements: Array<FocusableItem> | string);
-    set rovingTabindexDisabled(disabled: boolean);
-    handleKeyboardEvent(event: KeyboardEvent): void;
-    setClickedItemCurrent(event: any): void;
-    protected initializeFocus(): void;
-    private updateTabindex;
-    private setTabindex;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRovingTabindex, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRovingTabindex, "[clrRovingTabindex]", never, { "rovingIndexItems": { "alias": "clrRovingTabindex"; "required": false; }; "rovingTabindexDisabled": { "alias": "clrRovingTabindexDisabled"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare class ClrKeyFocusModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrKeyFocusModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrKeyFocusModule, [typeof ClrKeyFocus, typeof ClrRovingTabindex, typeof ClrKeyFocusItem], [typeof i2.CommonModule], [typeof ClrKeyFocus, typeof ClrRovingTabindex, typeof ClrKeyFocusItem]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrKeyFocusModule>;
-}
-
 declare class ClrComboboxModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrComboboxModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrOptionItems], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrKeyFocusModule, typeof ClrCommonFormsModule, typeof ClrConditionalModule, typeof ClrPopoverModuleNext, typeof ClrSpinnerModule], [typeof ClrCommonFormsModule, typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrConditionalModule, typeof ClrOptionItems]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrOptionItems], [typeof i2$1.CommonModule, typeof i4$1.FormsModule, typeof i7.ClrIcon, typeof i39.ClrKeyFocusModule, typeof i6$1.ClrCommonFormsModule, typeof i39.ClrConditionalModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i8$1.ClrSpinnerModule], [typeof i6$1.ClrCommonFormsModule, typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof i39.ClrConditionalModule, typeof ClrOptionItems]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrComboboxModule>;
 }
 
@@ -3540,27 +3247,19 @@ declare class ClrDatalist implements AfterContentInit {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatalist, "datalist", never, { "id": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
 }
 
-declare class FocusService {
-    private _focused;
-    get focusChange(): Observable<boolean>;
-    set focused(state: boolean);
-    static ɵfac: i0.ɵɵFactoryDeclaration<FocusService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<FocusService>;
-}
-
-declare class ClrDatalistContainer extends ClrAbstractContainer {
+declare class ClrDatalistContainer extends ClrAbstractContainer$1 {
     focus: boolean;
-    constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FocusService);
+    constructor(controlClassService: ControlClassService$1, layoutService: LayoutService$1, ngControlService: NgControlService$1, focusService: FormsFocusService$1);
     showPicker(datalist: HTMLElement): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalistContainer, [null, { optional: true; }, null, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatalistContainer, "clr-datalist-container", never, {}, {}, never, ["label", "[clrDatalistInput]", "datalist", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
 }
 
-declare class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> implements AfterContentInit {
+declare class ClrDatalistInput extends WrappedFormControl$1<ClrDatalistContainer> implements AfterContentInit {
     private focusService;
     private datalistIdService;
     listValue: string;
-    constructor(focusService: FocusService, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, datalistIdService: DatalistIdService);
+    constructor(focusService: FormsFocusService$1, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, datalistIdService: DatalistIdService);
     ngAfterContentInit(): void;
     triggerFocus(): void;
     triggerValidation(): void;
@@ -3568,29 +3267,10 @@ declare class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> 
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatalistInput, "[clrDatalistInput]", never, {}, {}, never, never, false, never>;
 }
 
-declare class ClrInputContainer extends ClrAbstractContainer {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrInputContainer, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrInputContainer, "clr-input-container", never, {}, {}, never, ["label", "[clrInputPrefix]", "[clrInput]", "[clrInputSuffix]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
-}
-
-declare class ClrInput extends WrappedFormControl<ClrInputContainer> {
-    protected index: number;
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrInput, [null, null, { optional: true; self: true; }, null, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrInput, "[clrInput]", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrInputModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrInputModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof ClrInput, typeof ClrInputContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrInput, typeof ClrInputContainer]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrInputModule>;
-}
-
 declare class ClrDatalistModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalistModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatalistModule, [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer], [typeof i2.CommonModule, typeof ClrInputModule, typeof ClrIcon], [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatalistModule, [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer], [typeof i2$1.CommonModule, typeof i41.ClrInputModule, typeof i7.ClrIcon], [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatalistModule>;
 }
 
@@ -3884,7 +3564,7 @@ declare class DatepickerEnabledService {
  * This service manages which view is visible in the datepicker popover.
  */
 declare class ViewManagerService {
-    position: ClrPopoverPosition;
+    position: ClrPopoverPosition$1;
     private _currentView;
     get isDayView(): boolean;
     get isYearView(): boolean;
@@ -3896,7 +3576,7 @@ declare class ViewManagerService {
     static ɵprov: i0.ɵɵInjectableDeclaration<ViewManagerService>;
 }
 
-declare class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
+declare class ClrDateContainer extends ClrAbstractContainer$1 implements AfterViewInit {
     protected renderer: Renderer2;
     protected elem: ElementRef;
     private popoverService;
@@ -3904,25 +3584,25 @@ declare class ClrDateContainer extends ClrAbstractContainer implements AfterView
     private datepickerEnabledService;
     private dateFormControlService;
     private dateIOService;
-    commonStrings: ClrCommonStringsService;
+    commonStrings: ClrCommonStringsService$1;
     private viewManagerService;
-    protected controlClassService: ControlClassService;
-    protected layoutService: LayoutService;
-    protected ngControlService: NgControlService;
+    protected controlClassService: ControlClassService$1;
+    protected layoutService: LayoutService$1;
+    protected ngControlService: NgControlService$1;
     focus: boolean;
-    protected popoverType: ClrPopoverType;
+    protected popoverType: ClrPopoverType$1;
     private toggleButton;
-    constructor(renderer: Renderer2, elem: ElementRef, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService);
+    constructor(renderer: Renderer2, elem: ElementRef, popoverService: ClrPopoverService$1, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService$1, focusService: FormsFocusService$1, viewManagerService: ViewManagerService, controlClassService: ControlClassService$1, layoutService: LayoutService$1, ngControlService: NgControlService$1);
     /**
      * For date range picker actions buttons are shown by default
      */
     set showActionButtons(flag: boolean);
-    set clrPosition(position: string | ClrPopoverPosition);
+    set clrPosition(position: string | ClrPopoverPosition$1);
     set rangeOptions(rangeOptions: any);
     set min(dateString: string);
     set max(dateString: string);
     set actionButton(button: ElementRef<HTMLButtonElement>);
-    get popoverPosition(): ClrPopoverPosition;
+    get popoverPosition(): ClrPopoverPosition$1;
     get open(): boolean;
     /**
      * Returns if the Datepicker is enabled or not. If disabled, hides the datepicker trigger.
@@ -3946,7 +3626,7 @@ declare class ClrDateContainer extends ClrAbstractContainer implements AfterView
     private initializeCalendar;
     private dateRangeStructuralChecks;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, null, { optional: true; }, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, { "showActionButtons": { "alias": "showActionButtons"; "required": false; }; "clrPosition": { "alias": "clrPosition"; "required": false; }; "rangeOptions": { "alias": "rangeOptions"; "required": false; }; "min": { "alias": "min"; "required": false; }; "max": { "alias": "max"; "required": false; }; }, {}, never, ["label", "[clrStartDate]", "[clrEndDate]", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, { "showActionButtons": { "alias": "showActionButtons"; "required": false; }; "clrPosition": { "alias": "clrPosition"; "required": false; }; "rangeOptions": { "alias": "rangeOptions"; "required": false; }; "min": { "alias": "min"; "required": false; }; "max": { "alias": "max"; "required": false; }; }, {}, never, ["label", "[clrStartDate]", "[clrEndDate]", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
 /**
@@ -3964,7 +3644,7 @@ declare class DatepickerFocusService {
     static ɵprov: i0.ɵɵInjectableDeclaration<DatepickerFocusService>;
 }
 
-declare abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
+declare abstract class ClrDateInputBase extends WrappedFormControl$1<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
     protected el: ElementRef<HTMLInputElement>;
     protected renderer: Renderer2;
     protected control: NgControl;
@@ -3982,7 +3662,7 @@ declare abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContai
     private initialClrDateInputValue;
     private previousDateChange;
     protected abstract dateChange: EventEmitter<Date>;
-    constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef<HTMLInputElement>, renderer: Renderer2, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: any, focusService: FocusService, datepickerFocusService: DatepickerFocusService);
+    constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef<HTMLInputElement>, renderer: Renderer2, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: any, focusService: FormsFocusService$1, datepickerFocusService: DatepickerFocusService);
     get disabled(): boolean | string;
     set disabled(value: boolean | string);
     get placeholderText(): string;
@@ -4080,11 +3760,11 @@ declare class ClrEndDateInputValidator implements Validator {
 }
 
 declare class ClrDatepickerViewManager {
-    commonStrings: ClrCommonStringsService;
+    commonStrings: ClrCommonStringsService$1;
     private viewManagerService;
     private dateNavigationService;
     private dateIOService;
-    constructor(commonStrings: ClrCommonStringsService, viewManagerService: ViewManagerService, dateNavigationService: DateNavigationService, dateIOService: DateIOService);
+    constructor(commonStrings: ClrCommonStringsService$1, viewManagerService: ViewManagerService, dateNavigationService: DateNavigationService, dateIOService: DateIOService);
     /**
      * Returns if the current view is the monthpicker.
      */
@@ -4109,8 +3789,8 @@ declare class ClrDaypicker {
     private _viewManagerService;
     private _dateNavigationService;
     private _localeHelperService;
-    commonStrings: ClrCommonStringsService;
-    constructor(_viewManagerService: ViewManagerService, _dateNavigationService: DateNavigationService, _localeHelperService: LocaleHelperService, commonStrings: ClrCommonStringsService);
+    commonStrings: ClrCommonStringsService$1;
+    constructor(_viewManagerService: ViewManagerService, _dateNavigationService: DateNavigationService, _localeHelperService: LocaleHelperService, commonStrings: ClrCommonStringsService$1);
     get monthAttrString(): string;
     get yearAttrString(): string;
     /**
@@ -4151,12 +3831,12 @@ declare class ClrMonthpicker implements AfterViewInit {
     private _datepickerFocusService;
     private _elRef;
     private _viewManagerService;
-    commonStrings: ClrCommonStringsService;
+    commonStrings: ClrCommonStringsService$1;
     /**
      * Keeps track of the current focused month.
      */
     private _focusedMonthIndex;
-    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef, _viewManagerService: ViewManagerService, commonStrings: ClrCommonStringsService);
+    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef, _viewManagerService: ViewManagerService, commonStrings: ClrCommonStringsService$1);
     /**
      * Gets the months array which is used to rendered the monthpicker view.
      * Months are in the TranslationWidth.Wide format.
@@ -4266,7 +3946,7 @@ declare class ClrYearpicker implements AfterViewInit {
     private _viewManagerService;
     private _datepickerFocusService;
     private _elRef;
-    commonStrings: ClrCommonStringsService;
+    commonStrings: ClrCommonStringsService$1;
     /**
      * YearRangeModel which is used to build the YearPicker view.
      */
@@ -4275,7 +3955,7 @@ declare class ClrYearpicker implements AfterViewInit {
      * Keeps track of the current focused year.
      */
     private _focusedYear;
-    constructor(_dateNavigationService: DateNavigationService, _viewManagerService: ViewManagerService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService);
+    constructor(_dateNavigationService: DateNavigationService, _viewManagerService: ViewManagerService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService$1);
     get selectedStartYear(): number;
     get selectedEndYear(): number;
     /**
@@ -4433,7 +4113,7 @@ declare class ClrCalendar implements OnDestroy {
      */
     calendarViewModel: CalendarViewModel;
     private _subs;
-    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _dateIOService: DateIOService, _elRef: ElementRef<HTMLElement>, _dateFormControlService: DateFormControlService, _popoverService: ClrPopoverService);
+    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _dateIOService: DateIOService, _elRef: ElementRef<HTMLElement>, _dateFormControlService: DateFormControlService, _popoverService: ClrPopoverService$1);
     /**
      * Gets the locale days according to the TranslationWidth.Narrow format.
      */
@@ -4479,7 +4159,7 @@ declare class ClrDay {
     private commonStrings;
     onSelectDay: EventEmitter<DayModel>;
     private _dayView;
-    constructor(_dateNavigationService: DateNavigationService, commonStrings: ClrCommonStringsService);
+    constructor(_dateNavigationService: DateNavigationService, commonStrings: ClrCommonStringsService$1);
     /**
      * DayViewModel input which is used to build the Day View.
      */
@@ -4510,162 +4190,22 @@ declare class ClrDay {
 }
 
 declare class ClrDatepickerActions {
-    protected commonStrings: ClrCommonStringsService;
+    protected commonStrings: ClrCommonStringsService$1;
     private popoverService;
     private dateNavigationService;
     private dateFormControlService;
-    constructor(commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, dateFormControlService: DateFormControlService);
+    constructor(commonStrings: ClrCommonStringsService$1, popoverService: ClrPopoverService$1, dateNavigationService: DateNavigationService, dateFormControlService: DateFormControlService);
     protected apply(): void;
     protected cancel(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerActions, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerActions, "clr-datepicker-actions", never, {}, {}, never, never, false, never>;
 }
 
-/**
- * This is just a copy of CdkTrapFocus so it can be used independent of the rest of the A11yModule.
- */
-declare class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
-    /**
-     * Include the constructor to forward all the dependencies to the base class
-     * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
-     * https://github.com/storybookjs/storybook/issues/23534
-     */
-    constructor(elementRef: ElementRef<HTMLElement>, focusTrapFactory: FocusTrapFactory, document: any);
-    static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule_CdkTrapFocus, [null, null, { optional: true; }]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<CdkTrapFocusModule_CdkTrapFocus, "[cdkTrapFocus]", never, {}, {}, never, never, false, never>;
-}
-/**
- * This module allows us to avoid importing all of A11yModule which results in a smaller application bundle.
- */
-declare class CdkTrapFocusModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<CdkTrapFocusModule, [typeof CdkTrapFocusModule_CdkTrapFocus], never, [typeof CdkTrapFocusModule_CdkTrapFocus]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<CdkTrapFocusModule>;
-}
-
-declare class VerticalNavGroupRegistrationService {
-    navGroupCount: number;
-    registerNavGroup(): void;
-    unregisterNavGroup(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<VerticalNavGroupRegistrationService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<VerticalNavGroupRegistrationService>;
-}
-
-declare class VerticalNavIconService {
-    private _icons;
-    get hasIcons(): boolean;
-    registerIcon(): void;
-    unregisterIcon(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<VerticalNavIconService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<VerticalNavIconService>;
-}
-
-declare class VerticalNavService {
-    private _animateOnCollapsed;
-    private _collapsedChanged;
-    private _collapsed;
-    private _collapsible;
-    get animateOnCollapsed(): Observable<boolean>;
-    get collapsedChanged(): Observable<boolean>;
-    get collapsed(): boolean;
-    set collapsed(value: boolean);
-    get collapsible(): boolean;
-    set collapsible(value: boolean);
-    private updateCollapseBehavior;
-    static ɵfac: i0.ɵɵFactoryDeclaration<VerticalNavService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<VerticalNavService>;
-}
-
-declare class ClrVerticalNav implements OnDestroy {
-    private _navService;
-    private _navIconService;
-    private _navGroupRegistrationService;
-    commonStrings: ClrCommonStringsService;
-    toggleLabel: string;
-    contentId: string;
-    private _collapsedChanged;
-    private _sub;
-    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService);
-    get collapsible(): boolean | string;
-    set collapsible(value: boolean | string);
-    get collapsed(): boolean | string;
-    set collapsed(value: boolean | string);
-    get hasNavGroups(): boolean;
-    get hasIcons(): boolean;
-    get ariaExpanded(): string;
-    ngOnDestroy(): void;
-    toggleByButton(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "toggleLabel": { "alias": "clrVerticalNavToggleLabel"; "required": false; }; "collapsible": { "alias": "clrVerticalNavCollapsible"; "required": false; }; "collapsed": { "alias": "clrVerticalNavCollapsed"; "required": false; }; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
-}
-
-declare class VerticalNavGroupService {
-    private _expandChange;
-    get expandChange(): Observable<boolean>;
-    expand(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<VerticalNavGroupService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<VerticalNavGroupService>;
-}
-
-declare class ClrVerticalNavLink implements OnDestroy {
-    private destroy$;
-    constructor(host: ElementRef<HTMLElement>, ref: ChangeDetectorRef, navGroupService: VerticalNavGroupService | null);
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavLink, [null, null, { optional: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavLink, "[clrVerticalNavLink]", never, {}, {}, never, ["[clrVerticalNavIcon]", "*"], false, never>;
-}
-
-declare class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
-    private _itemExpand;
-    private _navGroupRegistrationService;
-    private _navService;
-    commonStrings: ClrCommonStringsService;
-    expandedChange: EventEmitter<boolean>;
-    private wasExpanded;
-    private _subscriptions;
-    private _expandAnimationState;
-    constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService);
-    get expanded(): boolean;
-    set expanded(value: boolean);
-    set userExpandedInput(value: boolean | string);
-    get expandAnimationState(): string;
-    set expandAnimationState(value: string);
-    ngAfterContentInit(): void;
-    ngOnDestroy(): void;
-    expandGroup(): void;
-    collapseGroup(): void;
-    expandAnimationDone($event: AnimationEvent): void;
-    toggleExpand(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavGroup, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroup, "clr-vertical-nav-group", never, { "userExpandedInput": { "alias": "clrVerticalNavGroupExpanded"; "required": false; }; }, { "expandedChange": "clrVerticalNavGroupExpandedChange"; }, never, ["[clrVerticalNavLink]", "[clrVerticalNavIcon]", "*", "[clrIfExpanded], clr-vertical-nav-group-children"], false, never>;
-}
-
-declare class ClrVerticalNavGroupChildren {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavGroupChildren, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroupChildren, "clr-vertical-nav-group-children", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class ClrVerticalNavIcon implements OnDestroy {
-    private _verticalNavIconService;
-    constructor(_verticalNavIconService: VerticalNavIconService);
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavIcon, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrVerticalNavIcon, "[clrVerticalNavIcon]", never, {}, {}, never, never, false, never>;
-}
-
-declare const CLR_VERTICAL_NAV_DIRECTIVES: Type$1<any>[];
-declare class ClrVerticalNavModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrVerticalNavModule, [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrConditionalModule, typeof ClrFocusOnViewInitModule], [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon, typeof ClrConditionalModule, typeof ClrIcon, typeof ClrFocusOnViewInitModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrVerticalNavModule>;
-}
-
-declare const CLR_DATEPICKER_DIRECTIVES: Type$1<any>[];
+declare const CLR_DATEPICKER_DIRECTIVES: Type<any>[];
 declare class ClrDatepickerModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions], [typeof i2.CommonModule, typeof CdkTrapFocusModule, typeof ClrHostWrappingModule, typeof ClrConditionalModule, typeof ClrPopoverModuleNext, typeof ClrIcon, typeof ClrCommonFormsModule, typeof ClrVerticalNavModule], [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions], [typeof i2$1.CommonModule, typeof i39.CdkTrapFocusModule, typeof i39.ClrHostWrappingModule, typeof i39.ClrConditionalModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i7.ClrIcon, typeof i6$1.ClrCommonFormsModule, typeof i18.ClrVerticalNavModule], [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatepickerModule>;
 }
 
@@ -4755,7 +4295,7 @@ declare class ClrFileList {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileList, "clr-file-list", never, {}, {}, ["fileMessagesTemplate"], never, false, never>;
 }
 
-declare class ClrFileInputContainer extends ClrAbstractContainer {
+declare class ClrFileInputContainer extends ClrAbstractContainer$1 {
     customButtonLabel: string;
     readonly fileInput: ClrFileInput;
     protected readonly fileList: ClrFileList;
@@ -4784,12 +4324,12 @@ interface ClrFileInputSelection {
     buttonLabel: string;
     clearFilesButtonLabel: string;
 }
-declare class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
+declare class ClrFileInput extends WrappedFormControl$1<ClrFileInputContainer> {
     readonly elementRef: ElementRef<HTMLInputElement>;
     private readonly control;
     private readonly commonStrings;
     selection: ClrFileInputSelection;
-    constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
+    constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService$1);
     protected get disabled(): boolean;
     private handleChange;
     private updateSelection;
@@ -4840,25 +4380,48 @@ declare class ClrFileError {
 declare class ClrFileInputModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInputModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFileInputModule, [typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFileInputModule, [typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError], [typeof i2$1.CommonModule, typeof i7.ClrIcon, typeof i6$1.ClrCommonFormsModule], [typeof i6$1.ClrCommonFormsModule, typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrFileInputModule>;
 }
 
-declare class ClrNumberInputContainer extends ClrAbstractContainer {
+declare function buildFileList(files: File[]): FileList;
+declare function selectFiles(fileInputElement: HTMLInputElement, files: File[] | FileList): void;
+declare function clearFiles(fileInputElement: HTMLInputElement): void;
+
+declare class ClrInputContainer extends ClrAbstractContainer$1 {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrInputContainer, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrInputContainer, "clr-input-container", never, {}, {}, never, ["label", "[clrInputPrefix]", "[clrInput]", "[clrInputSuffix]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+}
+
+declare class ClrInput extends WrappedFormControl$1<ClrInputContainer> {
+    protected index: number;
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrInput, [null, null, { optional: true; self: true; }, null, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrInput, "[clrInput]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrInputModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrInputModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof ClrInput, typeof ClrInputContainer], [typeof i2$1.CommonModule, typeof i4$1.FormsModule, typeof i7.ClrIcon, typeof i6$1.ClrCommonFormsModule], [typeof i6$1.ClrCommonFormsModule, typeof ClrInput, typeof ClrInputContainer]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrInputModule>;
+}
+
+declare class ClrNumberInputContainer extends ClrAbstractContainer$1 {
     focus: boolean;
     protected readonly input: ClrNumberInput;
-    constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FocusService);
+    constructor(controlClassService: ControlClassService$1, layoutService: LayoutService$1, ngControlService: NgControlService$1, focusService: FormsFocusService$1);
     focusOut(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNumberInputContainer, [null, { optional: true; }, null, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrNumberInputContainer, "clr-number-input-container", never, {}, {}, ["input"], ["label", "[clrNumberInput]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
 }
 
-declare class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> {
+declare class ClrNumberInput extends WrappedFormControl$1<ClrNumberInputContainer> {
     private focusService;
     private control;
     protected el: ElementRef<HTMLInputElement>;
     protected index: number;
-    constructor(focusService: FocusService, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    constructor(focusService: FormsFocusService$1, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     get readonly(): boolean;
     triggerFocus(): void;
     triggerValidation(): void;
@@ -4873,7 +4436,7 @@ declare class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer>
 declare class ClrNumberInputModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNumberInputModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNumberInputModule, [typeof ClrNumberInput, typeof ClrNumberInputContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrNumberInput, typeof ClrNumberInputContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNumberInputModule, [typeof ClrNumberInput, typeof ClrNumberInputContainer], [typeof i2$1.CommonModule, typeof i4$1.FormsModule, typeof i7.ClrIcon, typeof i6$1.ClrCommonFormsModule], [typeof i6$1.ClrCommonFormsModule, typeof ClrNumberInput, typeof ClrNumberInputContainer]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrNumberInputModule>;
 }
 
@@ -4883,14 +4446,14 @@ declare const TOGGLE_SERVICE_PROVIDER: {
     provide: InjectionToken<BehaviorSubject<boolean>>;
     useFactory: typeof ToggleServiceFactory;
 };
-declare class ClrPasswordContainer extends ClrAbstractContainer {
-    focusService: FocusService;
+declare class ClrPasswordContainer extends ClrAbstractContainer$1 {
+    focusService: FormsFocusService$1;
     private toggleService;
-    commonStrings: ClrCommonStringsService;
+    commonStrings: ClrCommonStringsService$1;
     show: boolean;
     focus: boolean;
     private _toggle;
-    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, focusService: FocusService, toggleService: BehaviorSubject<boolean>, commonStrings: ClrCommonStringsService);
+    constructor(layoutService: LayoutService$1, controlClassService: ControlClassService$1, ngControlService: NgControlService$1, focusService: FormsFocusService$1, toggleService: BehaviorSubject<boolean>, commonStrings: ClrCommonStringsService$1);
     get clrToggle(): boolean;
     set clrToggle(state: boolean);
     toggle(): void;
@@ -4900,10 +4463,10 @@ declare class ClrPasswordContainer extends ClrAbstractContainer {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrPasswordContainer, "clr-password-container", never, { "clrToggle": { "alias": "clrToggle"; "required": false; }; }, {}, never, ["label", "[clrPassword]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
 }
 
-declare class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit, OnDestroy {
+declare class ClrPassword extends WrappedFormControl$1<ClrPasswordContainer> implements OnInit, OnDestroy {
     private focusService;
     protected index: number;
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, focusService: FocusService, toggleService: BehaviorSubject<boolean>);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, focusService: FormsFocusService$1, toggleService: BehaviorSubject<boolean>);
     triggerFocus(): void;
     triggerValidation(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPassword, [null, null, { optional: true; self: true; }, null, null, { optional: true; }, { optional: true; }]>;
@@ -4913,34 +4476,34 @@ declare class ClrPassword extends WrappedFormControl<ClrPasswordContainer> imple
 declare class ClrPasswordModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPasswordModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof ClrPassword, typeof ClrPasswordContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrPassword, typeof ClrPasswordContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof ClrPassword, typeof ClrPasswordContainer], [typeof i2$1.CommonModule, typeof i4$1.FormsModule, typeof i7.ClrIcon, typeof i6$1.ClrCommonFormsModule], [typeof i6$1.ClrCommonFormsModule, typeof ClrPassword, typeof ClrPasswordContainer]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPasswordModule>;
 }
 
 declare class ClrRadioWrapper implements OnInit {
-    label: ClrControlLabel;
+    label: ClrControlLabel$1;
     ngOnInit(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadioWrapper, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioWrapper, "clr-radio-wrapper", never, {}, {}, ["label"], ["[clrRadio]", "label"], false, never>;
 }
 
-declare class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
+declare class ClrRadio extends WrappedFormControl$1<ClrRadioWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadio, [null, null, { optional: true; self: true; }, null, null]>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never, never, false, never>;
 }
 
-declare class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
-    protected layoutService: LayoutService;
-    protected controlClassService: ControlClassService;
-    protected ngControlService: NgControlService;
+declare class ClrRadioContainer extends ClrAbstractContainer$1 implements AfterContentInit {
+    protected layoutService: LayoutService$1;
+    protected controlClassService: ControlClassService$1;
+    protected ngControlService: NgControlService$1;
     role: string;
     ariaLabelledBy: string;
     radios: QueryList<ClrRadio>;
     groupLabel: ElementRef<HTMLElement>;
     private inline;
     private _generatedId;
-    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
+    constructor(layoutService: LayoutService$1, controlClassService: ControlClassService$1, ngControlService: NgControlService$1);
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
     ngAfterContentInit(): void;
@@ -4953,23 +4516,23 @@ declare class ClrRadioContainer extends ClrAbstractContainer implements AfterCon
 declare class ClrRadioModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadioModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRadioModule, [typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper], [typeof i2.CommonModule, typeof ClrCommonFormsModule, typeof ClrHostWrappingModule, typeof ClrIcon], [typeof ClrCommonFormsModule, typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRadioModule, [typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper], [typeof i2$1.CommonModule, typeof i6$1.ClrCommonFormsModule, typeof i39.ClrHostWrappingModule, typeof i7.ClrIcon], [typeof i6$1.ClrCommonFormsModule, typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrRadioModule>;
 }
 
-declare class ClrSelectContainer extends ClrAbstractContainer {
-    protected layoutService: LayoutService;
-    protected controlClassService: ControlClassService;
-    protected ngControlService: NgControlService;
+declare class ClrSelectContainer extends ClrAbstractContainer$1 {
+    protected layoutService: LayoutService$1;
+    protected controlClassService: ControlClassService$1;
+    protected ngControlService: NgControlService$1;
     multiple: SelectMultipleControlValueAccessor;
-    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
+    constructor(layoutService: LayoutService$1, controlClassService: ControlClassService$1, ngControlService: NgControlService$1);
     private get multi();
     wrapperClass(): "clr-multiselect-wrapper" | "clr-select-wrapper";
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSelectContainer, [{ optional: true; }, null, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrSelectContainer, "clr-select-container", never, {}, {}, ["multiple"], ["label", "[clrSelect]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
 }
 
-declare class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
+declare class ClrSelect extends WrappedFormControl$1<ClrSelectContainer> {
     protected index: number;
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLSelectElement>);
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSelect, [null, null, { optional: true; self: true; }, null, null]>;
@@ -4979,16 +4542,16 @@ declare class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
 declare class ClrSelectModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSelectModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof ClrSelect, typeof ClrSelectContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrSelect, typeof ClrSelectContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof ClrSelect, typeof ClrSelectContainer], [typeof i2$1.CommonModule, typeof i4$1.FormsModule, typeof i7.ClrIcon, typeof i6$1.ClrCommonFormsModule], [typeof i6$1.ClrCommonFormsModule, typeof ClrSelect, typeof ClrSelectContainer]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSelectModule>;
 }
 
-declare class ClrTextareaContainer extends ClrAbstractContainer {
+declare class ClrTextareaContainer extends ClrAbstractContainer$1 {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTextareaContainer, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTextareaContainer, "clr-textarea-container", never, {}, {}, never, ["label", "[clrTextarea]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
 }
 
-declare class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
+declare class ClrTextarea extends WrappedFormControl$1<ClrTextareaContainer> {
     protected index: number;
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLTextAreaElement>);
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTextarea, [null, null, { optional: true; self: true; }, null, null]>;
@@ -4998,16 +4561,16 @@ declare class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
 declare class ClrTextareaModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTextareaModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof ClrTextarea, typeof ClrTextareaContainer], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrCommonFormsModule], [typeof ClrCommonFormsModule, typeof ClrTextarea, typeof ClrTextareaContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof ClrTextarea, typeof ClrTextareaContainer], [typeof i2$1.CommonModule, typeof i4$1.FormsModule, typeof i7.ClrIcon, typeof i6$1.ClrCommonFormsModule], [typeof i6$1.ClrCommonFormsModule, typeof ClrTextarea, typeof ClrTextareaContainer]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTextareaModule>;
 }
 
-declare class ClrRangeContainer extends ClrAbstractContainer {
+declare class ClrRangeContainer extends ClrAbstractContainer$1 {
     private renderer;
     private idService;
     private _hasProgress;
     private lastRangeProgressFillWidth;
-    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, renderer: Renderer2, idService: ControlIdService);
+    constructor(layoutService: LayoutService$1, controlClassService: ControlClassService$1, ngControlService: NgControlService$1, renderer: Renderer2, idService: ControlIdService$1);
     get hasProgress(): boolean;
     set hasProgress(val: boolean);
     getRangeProgressFillWidth(): string;
@@ -5016,7 +4579,7 @@ declare class ClrRangeContainer extends ClrAbstractContainer {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrRangeContainer, "clr-range-container", never, { "hasProgress": { "alias": "clrRangeHasProgress"; "required": false; }; }, {}, never, ["label", "[clrRange]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
 }
 
-declare class ClrRange extends WrappedFormControl<ClrRangeContainer> {
+declare class ClrRange extends WrappedFormControl$1<ClrRangeContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRange, [null, null, { optional: true; self: true; }, null, null]>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRange, "[clrRange]", never, {}, {}, never, never, false, never>;
@@ -5025,931 +4588,22 @@ declare class ClrRange extends WrappedFormControl<ClrRangeContainer> {
 declare class ClrRangeModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRangeModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRangeModule, [typeof ClrRange, typeof ClrRangeContainer], [typeof i2.CommonModule, typeof ClrCommonFormsModule, typeof ClrHostWrappingModule, typeof ClrIcon], [typeof ClrCommonFormsModule, typeof ClrRange, typeof ClrRangeContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRangeModule, [typeof ClrRange, typeof ClrRangeContainer], [typeof i2$1.CommonModule, typeof i6$1.ClrCommonFormsModule, typeof i39.ClrHostWrappingModule, typeof i7.ClrIcon], [typeof i6$1.ClrCommonFormsModule, typeof ClrRange, typeof ClrRangeContainer]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrRangeModule>;
 }
 
 declare class ClrFormsModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFormsModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i2.CommonModule], [typeof ClrCommonFormsModule, typeof ClrCheckboxModule, typeof ClrComboboxModule, typeof ClrDatepickerModule, typeof ClrFileInputModule, typeof ClrInputModule, typeof ClrPasswordModule, typeof ClrRadioModule, typeof ClrSelectModule, typeof ClrTextareaModule, typeof ClrRangeModule, typeof ClrDatalistModule, typeof ClrNumberInputModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i2$1.CommonModule], [typeof i6$1.ClrCommonFormsModule, typeof i43.ClrCheckboxModule, typeof i4$2.ClrComboboxModule, typeof i5.ClrDatepickerModule, typeof i6$2.ClrFileInputModule, typeof i41.ClrInputModule, typeof i8$3.ClrPasswordModule, typeof i42.ClrRadioModule, typeof i45.ClrSelectModule, typeof i11$1.ClrTextareaModule, typeof i12.ClrRangeModule, typeof i13$1.ClrDatalistModule, typeof i44.ClrNumberInputModule]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrFormsModule>;
 }
 
-declare class ClrDatagridPageSize {
-    page: Page;
-    pageSizeOptions: number[];
-    pageSizeOptionsId: string;
-    constructor(page: Page);
-    set label(label: ClrControlLabel);
-    ngOnInit(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridPageSize, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPageSize, "clr-dg-page-size", never, { "pageSizeOptions": { "alias": "clrPageSizeOptions"; "required": false; }; "pageSizeOptionsId": { "alias": "clrPageSizeOptionsId"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare class ClrDatagridPagination implements OnDestroy, OnInit {
-    page: Page;
-    commonStrings: ClrCommonStringsService;
-    detailService: DetailService;
-    disableCurrentPageInput: boolean;
-    currentChanged: EventEmitter<number>;
-    _pageSizeComponent: ClrDatagridPageSize;
-    currentPageInputRef: ElementRef<HTMLInputElement>;
-    /**
-     * Subscription to the page service changes
-     */
-    private _pageSubscription;
-    constructor(page: Page, commonStrings: ClrCommonStringsService, detailService: DetailService);
-    /**
-     * Page size
-     */
-    get pageSize(): number;
-    set pageSize(size: number);
-    /**
-     * Total items (needed to guess the last page)
-     */
-    get totalItems(): number;
-    set totalItems(total: number);
-    /**
-     * Last page
-     */
-    get lastPage(): number;
-    set lastPage(last: number);
-    /**
-     * Current page
-     */
-    get currentPage(): number;
-    set currentPage(page: number);
-    /**
-     * Index of the first item displayed on the current page, starting at 0, -1 if none displayed
-     */
-    get firstItem(): number;
-    /**
-     * Index of the last item displayed on the current page, starting at 0, -1 if none displayed
-     */
-    get lastItem(): number;
-    /**
-     * Conditionally adds page numbers before and after the current page
-     */
-    get middlePages(): number[];
-    /**********
-     * Subscription to the Page service for page changes.
-     * Note: this only emits after the datagrid is initialized/stabalized and the page changes.
-     */
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    /**
-     * Moves to the previous page if it exists
-     */
-    previous(): void;
-    /**
-     * Moves to the next page if it exists
-     */
-    next(): void;
-    verifyCurrentPage(event: any): void;
-    /**
-     * We only update the pagination's current page on enter.
-     */
-    updateCurrentPage(event: any): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridPagination, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPagination, "clr-dg-pagination", never, { "disableCurrentPageInput": { "alias": "clrDgPageInputDisabled"; "required": false; }; "pageSize": { "alias": "clrDgPageSize"; "required": false; }; "totalItems": { "alias": "clrDgTotalItems"; "required": false; }; "lastPage": { "alias": "clrDgLastPage"; "required": false; }; "currentPage": { "alias": "clrDgPage"; "required": false; }; }, { "currentChanged": "clrDgPageChange"; }, ["_pageSizeComponent"], ["clr-dg-page-size", "*"], false, never>;
-}
-
-/**
- * Generic bland container serving various purposes for Datagrid.
- * For instance, it can help span a text over multiple rows in detail view.
- */
-declare class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
-    selection: Selection;
-    rowActionService: RowActionService;
-    expand: DatagridIfExpandService;
-    expandableRows: ExpandableRowsCount;
-    commonStrings: ClrCommonStringsService;
-    _beginningOfExpandableContentAriaText: string;
-    _endOfExpandableContentAriaText: string;
-    replacedRow: boolean;
-    SELECTION_TYPE: typeof SelectionType;
-    cells: QueryList<ClrDatagridCell>;
-    private subscriptions;
-    constructor(selection: Selection, rowActionService: RowActionService, expand: DatagridIfExpandService, expandableRows: ExpandableRowsCount, commonStrings: ClrCommonStringsService);
-    set replace(value: boolean);
-    get beginningOfExpandableContentAriaText(): string;
-    get endOfExpandableContentAriaText(): string;
-    ngAfterContentInit(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRowDetail, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRowDetail, "clr-dg-row-detail", never, { "_beginningOfExpandableContentAriaText": { "alias": "clrRowDetailBeginningAriaText"; "required": false; }; "_endOfExpandableContentAriaText": { "alias": "clrRowDetailEndAriaText"; "required": false; }; "replace": { "alias": "clrDgReplace"; "required": false; }; }, {}, ["cells"], ["*"], false, never>;
-}
-
-declare class ClrDatagridSelectionCellDirective {
-    private readonly selection;
-    constructor(selection: Selection);
-    private onSelectionCellClick;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridSelectionCellDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridSelectionCellDirective, ".datagrid-select", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrIfDetail implements OnInit, OnDestroy {
-    private templateRef;
-    private viewContainer;
-    private detailService;
-    stateChange: EventEmitter<any>;
-    private subscriptions;
-    private skip;
-    private embeddedViewRef;
-    constructor(templateRef: TemplateRef<any>, viewContainer: ViewContainerRef, detailService: DetailService);
-    set state(model: any);
-    get viewContext(): {
-        $implicit: any;
-    };
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    private togglePanel;
-    /**
-     * For a given outlet instance, we create a proxy object that delegates
-     * to the user-specified context. This allows changing, or swapping out
-     * the context object completely without having to destroy/re-create the view.
-     */
-    private _createContextForwardProxy;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfDetail, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfDetail, "[clrIfDetail]", never, { "state": { "alias": "clrIfDetail"; "required": false; }; }, { "stateChange": "clrIfDetailChange"; }, never, never, false, never>;
-}
-
-declare class DatagridDetailRegisterer {
-    private expandableRowsCount;
-    constructor(expandableRowsCount: ExpandableRowsCount);
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridDetailRegisterer, [{ optional: true; }]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridDetailRegisterer, "[clrIfExpanded]", never, {}, {}, never, never, false, never>;
-}
-
-declare class WrappedCell implements AfterViewInit, OnDestroy {
-    templateRef: TemplateRef<void>;
-    cellView: EmbeddedViewRef<void>;
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<WrappedCell, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<WrappedCell, "dg-wrapped-cell", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class WrappedColumn implements AfterViewInit, OnDestroy {
-    templateRef: TemplateRef<void>;
-    columnView: EmbeddedViewRef<void>;
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<WrappedColumn, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<WrappedColumn, "dg-wrapped-column", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class WrappedRow implements AfterViewInit, OnDestroy {
-    templateRef: TemplateRef<void>;
-    rowView: EmbeddedViewRef<void>;
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<WrappedRow, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<WrappedRow, "dg-wrapped-row", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class DatagridCellRenderer implements OnDestroy {
-    private el;
-    private renderer;
-    private stateSubscription;
-    private subscriptions;
-    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer);
-    ngOnDestroy(): void;
-    resetState(state: ColumnState): void;
-    setWidth(state: ColumnState): void;
-    setHidden(state: ColumnState): void;
-    private clearWidth;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridCellRenderer, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridCellRenderer, "clr-dg-cell", never, {}, {}, never, never, false, never>;
-}
-
-declare class DatagridHeaderRenderer implements OnDestroy {
-    private el;
-    private renderer;
-    private domAdapter;
-    private columnResizerService;
-    private columnsService;
-    private columnState;
-    resizeEmitter: EventEmitter<number>;
-    /**
-     * Indicates if the column has a strict width, so it doesn't shrink or expand based on the content.
-     */
-    private widthSet;
-    private autoSet;
-    private subscriptions;
-    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter, columnResizerService: ColumnResizerService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
-    ngOnDestroy(): void;
-    getColumnWidthState(): Partial<ColumnState>;
-    setColumnState(index: number): void;
-    setWidth(state: ColumnState): void;
-    setHidden(state: ColumnState): void;
-    private clearWidth;
-    private detectStrictWidth;
-    private computeWidth;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridHeaderRenderer, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridHeaderRenderer, "clr-dg-column", never, {}, { "resizeEmitter": "clrDgColumnResize"; }, never, never, false, never>;
-}
-
-declare class DatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
-    private datagrid;
-    private organizer;
-    private items;
-    private page;
-    private el;
-    private renderer;
-    private tableSizeService;
-    private columnsService;
-    private ngZone;
-    private keyNavigation;
-    private changeDetectorRef;
-    private headers;
-    private rows;
-    private _heightSet;
-    private shouldStabilizeColumns;
-    private subscriptions;
-    private intersectionObserver;
-    /**
-     * Indicates if we want to re-compute columns width. This should only happen:
-     * 1) When headers change, with columns being added or removed
-     * 2) When rows are lazily loaded for the first time
-     */
-    private columnsSizesStable;
-    constructor(datagrid: ClrDatagrid, organizer: DatagridRenderOrganizer, items: Items, page: Page, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController, changeDetectorRef: ChangeDetectorRef);
-    ngOnInit(): void;
-    ngAfterContentInit(): void;
-    ngAfterViewInit(): void;
-    ngAfterViewChecked(): void;
-    ngOnDestroy(): void;
-    toggleDetailPane(state: boolean): void;
-    private setupColumns;
-    private shouldComputeHeight;
-    /**
-     * Computes the height of the datagrid.
-     *
-     * NOTE: We had to choose to set the height instead of the min-height because
-     * IE 11 requires the height on the parent for the children flex grow/shrink properties to work.
-     * When we used min-height, 1 1 auto doesn't used to work in IE11 :-(
-     * But this doesn't affect the fix. It works in both fixed & variable height datagrids.
-     *
-     * Refer: http://stackoverflow.com/questions/24396205/flex-grow-not-working-in-internet-explorer-11-0
-     */
-    private computeDatagridHeight;
-    private resetDatagridHeight;
-    /**
-     * Makes each header compute its width.
-     */
-    private computeHeadersWidth;
-    private columnStateChanged;
-    /**
-     * Triggers a whole re-rendring cycle to set column sizes, if needed.
-     */
-    private stabilizeColumns;
-    private updateColumnSeparatorsVisibility;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridMainRenderer, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridMainRenderer, "clr-datagrid", never, {}, {}, ["headers", "rows"], never, false, never>;
-}
-
-declare class DatagridRowRenderer implements AfterContentInit, OnDestroy {
-    private columnsService;
-    cells: QueryList<DatagridCellRenderer>;
-    expandableRows: DatagridRowDetailRenderer[];
-    private subscriptions;
-    constructor(columnsService: ColumnsService);
-    ngAfterContentInit(): void;
-    ngOnDestroy(): void;
-    setCellsState(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridRowRenderer, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridRowRenderer, "clr-dg-row", never, {}, {}, ["cells"], never, false, never>;
-}
-
-declare class DatagridRowDetailRenderer extends DatagridRowRenderer implements OnDestroy {
-    private parentRow;
-    constructor(parentRow: DatagridRowRenderer, columnsService: ColumnsService);
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridRowDetailRenderer, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridRowDetailRenderer, "clr-dg-row-detail", never, {}, {}, never, never, false, never>;
-}
-
-declare class WillyWonka implements AfterViewChecked {
-    disableChocolateCheck: boolean;
-    private _chocolate;
-    get chocolate(): Observable<void>;
-    ngAfterViewChecked(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<WillyWonka, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<WillyWonka, never, never, {}, {}, never, never, true, never>;
-}
-
-declare class DatagridWillyWonka extends WillyWonka {
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridWillyWonka, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridWillyWonka, "clr-datagrid", never, {}, {}, never, never, false, never>;
-}
-
-declare abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
-    private latestFlavor;
-    private subscription;
-    protected constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka);
-    abstract get flavor(): any;
-    ngAfterContentChecked(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<OompaLoompa, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<OompaLoompa, never, never, {}, {}, never, never, true, never>;
-}
-
-declare class ActionableOompaLoompa extends OompaLoompa {
-    private rowActions;
-    constructor(cdr: ChangeDetectorRef, willyWonka: DatagridWillyWonka, rowActions: RowActionService);
-    get flavor(): boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ActionableOompaLoompa, [null, { optional: true; }, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ActionableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false, never>;
-}
-
-declare class ExpandableOompaLoompa extends OompaLoompa {
-    private expandableCount;
-    constructor(cdr: ChangeDetectorRef, willyWonka: DatagridWillyWonka, expandableCount: ExpandableRowsCount);
-    get flavor(): boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ExpandableOompaLoompa, [null, { optional: true; }, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ExpandableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false, never>;
-}
-
-interface ClrDatagridNumericFilterInterface<T> {
-    accepts(item: T, low: number, high: number): boolean;
-}
-
-declare class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInterface<T> {
-    filterFn: ClrDatagridNumericFilterInterface<T>;
-    /**
-     * The Observable required as part of the Filter interface
-     */
-    private _changes;
-    /**
-     * Internal values and accessor
-     */
-    private _low;
-    private _high;
-    constructor(filterFn: ClrDatagridNumericFilterInterface<T>);
-    get changes(): Observable<[number, number]>;
-    get value(): [number, number];
-    set value(vals: [number, number]);
-    get low(): number;
-    set low(low: number);
-    get high(): number;
-    set high(high: number);
-    get state(): this | {
-        property: string;
-        low: number;
-        high: number;
-    };
-    /**
-     * Indicates if the filter is currently active, (at least one input is set)
-     */
-    isActive(): boolean;
-    /**
-     * Tests if an item matches a search text
-     */
-    accepts(item: T): boolean;
-    equals(other: ClrDatagridFilterInterface<T, any>): boolean;
-}
-
-declare class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>> implements CustomFilter, AfterViewInit {
-    private domAdapter;
-    commonStrings: ClrCommonStringsService;
-    private popoverService;
-    private ngZone;
-    minPlaceholder: string;
-    maxPlaceholder: string;
-    fromLabel: string;
-    toLabel: string;
-    filterValueChange: EventEmitter<any>;
-    /**
-     * Indicates if the filter dropdown is open
-     */
-    open: boolean;
-    /**
-     * We need the actual input element to automatically focus on it
-     */
-    input: ElementRef<HTMLInputElement>;
-    /**
-     * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
-     */
-    filterContainer: ClrDatagridFilter<T>;
-    private initFilterValues;
-    private subscriptions;
-    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, ngZone: NgZone);
-    /**
-     * Common setter for the input values
-     */
-    get value(): [number, number];
-    set value(values: [number, number]);
-    /**
-     * Customizable filter logic based on high and low values
-     */
-    set customNumericFilter(value: ClrDatagridNumericFilterInterface<T> | RegisteredFilter<T, DatagridNumericFilterImpl<T>>);
-    get maxPlaceholderValue(): string;
-    get minPlaceholderValue(): string;
-    get fromLabelValue(): string;
-    get toLabelValue(): string;
-    get low(): number | string;
-    set low(low: number | string);
-    get high(): number | string;
-    set high(high: number | string);
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridNumericFilter<any>, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": { "alias": "clrFilterMinPlaceholder"; "required": false; }; "maxPlaceholder": { "alias": "clrFilterMaxPlaceholder"; "required": false; }; "fromLabel": { "alias": "clrFilterFromLabel"; "required": false; }; "toLabel": { "alias": "clrFilterToLabel"; "required": false; }; "value": { "alias": "clrFilterValue"; "required": false; }; "customNumericFilter": { "alias": "clrDgNumericFilter"; "required": false; }; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
-}
-
-interface ClrDatagridStringFilterInterface<T> {
-    accepts(item: T, search: string): boolean;
-}
-
-declare class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInterface<T> {
-    filterFn: ClrDatagridStringFilterInterface<T>;
-    /**
-     * The Observable required as part of the Filter interface
-     */
-    private _changes;
-    /**
-     * Input value converted to lowercase
-     */
-    private _lowerCaseValue;
-    /**
-     * Raw input value
-     */
-    private _rawValue;
-    constructor(filterFn: ClrDatagridStringFilterInterface<T>);
-    get changes(): Observable<string>;
-    get lowerCaseValue(): string;
-    get state(): this | {
-        property: string;
-        value: string;
-    };
-    get value(): string;
-    /**
-     * Common setter for the input value
-     */
-    set value(value: string);
-    /**
-     * Indicates if the filter is currently active, meaning the input is not empty
-     */
-    isActive(): boolean;
-    /**
-     * Tests if an item matches a search text
-     */
-    accepts(item: T): boolean;
-    equals(other: ClrDatagridFilterInterface<T, any>): boolean;
-}
-
-declare class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements CustomFilter, AfterViewInit, OnChanges, OnDestroy {
-    private domAdapter;
-    commonStrings: ClrCommonStringsService;
-    private popoverService;
-    private elementRef;
-    private cdr;
-    private ngZone;
-    /**
-     * Provide a way to pass external placeholder and aria-label to the filter input
-     */
-    placeholder: string;
-    label: string;
-    filterValueChange: EventEmitter<any>;
-    /**
-     * Indicates if the filter dropdown is open
-     */
-    open: boolean;
-    /**
-     * We need the actual input element to automatically focus on it
-     */
-    input: ElementRef<HTMLInputElement>;
-    /**
-     * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
-     */
-    filterContainer: ClrDatagridFilter<T>;
-    labelValue: string;
-    private initFilterValue;
-    private subs;
-    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
-    /**
-     * Customizable filter logic based on a search text
-     */
-    set customStringFilter(value: ClrDatagridStringFilterInterface<T> | RegisteredFilter<T, DatagridStringFilterImpl<T>>);
-    /**
-     * Common setter for the input value
-     */
-    get value(): string;
-    set value(value: string);
-    get placeholderValue(): string;
-    ngAfterViewInit(): void;
-    ngOnChanges(): void;
-    ngOnDestroy(): void;
-    /**
-     * This is not in a getter to prevent "expression has changed after it was checked" errors.
-     */
-    private setFilterLabel;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridStringFilter<any>, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridStringFilter<any>, "clr-dg-string-filter", never, { "placeholder": { "alias": "clrFilterPlaceholder"; "required": false; }; "label": { "alias": "clrFilterLabel"; "required": false; }; "customStringFilter": { "alias": "clrDgStringFilter"; "required": false; }; "value": { "alias": "clrFilterValue"; "required": false; }; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
-}
-
-declare class ClrDatagridColumnToggle implements OnDestroy {
-    commonStrings: ClrCommonStringsService;
-    private columnsService;
-    popoverId: string;
-    openState: boolean;
-    popoverPosition: ClrPopoverPosition;
-    popoverType: ClrPopoverType;
-    readonly trackByFn: i0.TrackByFunction<ColumnState>;
-    private _allColumnsVisible;
-    private subscription;
-    private allSelectedElement;
-    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, popoverService: ClrPopoverService);
-    get allColumnsVisible(): boolean;
-    set allColumnsVisible(value: boolean);
-    get hideableColumnStates(): ColumnState[];
-    get hasOnlyOneVisibleColumn(): boolean;
-    ngOnDestroy(): void;
-    toggleColumnState(columnState: ColumnState, event: boolean): void;
-    toggleSwitchPanel(): void;
-    allColumnsSelected(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnToggle, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggle, "clr-dg-column-toggle", never, {}, {}, never, never, false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
-}
-
-declare class ClrDatagridColumnToggleButton {
-    commonStrings: ClrCommonStringsService;
-    private columnsService;
-    private allSelected;
-    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService);
-    get clrAllSelected(): Observable<boolean>;
-    get allHideablesVisible(): boolean;
-    selectAll(): void;
-    private hideableColumns;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnToggleButton, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggleButton, "clr-dg-column-toggle-button", never, {}, { "clrAllSelected": "clrAllSelected"; }, never, never, false, never>;
-}
-
-/**
- * This is just a copy of CdkDrag so it can be used independent of the rest of the CdkDragDropModule.
- */
-declare class CdkDragModule_CdkDrag extends CdkDrag {
-    /**
-     * Include the constructor to forward all the dependencies to the base class
-     * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
-     * https://github.com/storybookjs/storybook/issues/23534
-     */
-    constructor(elementRef: ElementRef<HTMLElement>, dropContainer: any, document: any, ngZone: NgZone, viewContainerRef: ViewContainerRef, config: DragDropConfig, dir: Directionality, dragDrop: DragDrop, changeDetectorRef: ChangeDetectorRef);
-    static ɵfac: i0.ɵɵFactoryDeclaration<CdkDragModule_CdkDrag, [null, { optional: true; }, { optional: true; }, null, null, { optional: true; }, null, null, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<CdkDragModule_CdkDrag, "[cdkDrag]", never, {}, {}, never, never, false, never>;
-}
-/**
- * This module allows us to avoid importing all of CdkDragDropModule which results in a smaller application bundle.
- */
-declare class CdkDragModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<CdkDragModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<CdkDragModule, [typeof CdkDragModule_CdkDrag], never, [typeof CdkDragModule_CdkDrag]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<CdkDragModule>;
-}
-
-declare class OutsideClick implements OnDestroy {
-    strict: boolean;
-    outsideClick: EventEmitter<any>;
-    private documentClickListener;
-    constructor(host: ElementRef<HTMLElement>, renderer: Renderer2, ngZone: NgZone);
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<OutsideClick, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<OutsideClick, "[clrOutsideClick]", never, { "strict": { "alias": "clrStrict"; "required": false; }; }, { "outsideClick": "clrOutsideClick"; }, never, never, false, never>;
-}
-
-declare class ClrOutsideClickModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrOutsideClickModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrOutsideClickModule, [typeof OutsideClick], [typeof i2.CommonModule], [typeof OutsideClick]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrOutsideClickModule>;
-}
-
-declare class ClrExpandableAnimationModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrExpandableAnimationModule, [typeof ClrExpandableAnimation, typeof ClrExpandableAnimationDirective], [typeof i2.CommonModule], [typeof ClrExpandableAnimation, typeof ClrExpandableAnimationDirective]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrExpandableAnimationModule>;
-}
-
-declare class ClrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
-    private renderer;
-    private elementRef;
-    value: any;
-    clrDgIdentityFn: (value: any) => unknown;
-    private state;
-    constructor(renderer: Renderer2, elementRef: ElementRef<HTMLInputElement>);
-    onChange: (value: any) => void;
-    onTouched: () => void;
-    registerOnChange(fn: (value: any) => void): void;
-    registerOnTouched(fn: () => void): void;
-    setDisabledState(isDisabled: boolean): void;
-    writeValue(value: any): void;
-    private keyOf;
-    private updateChecked;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridSingleSelectionValueAccessor, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridSingleSelectionValueAccessor, "input[type=radio][clrDgSingleSelectionRadio]", never, { "value": { "alias": "value"; "required": false; }; "clrDgIdentityFn": { "alias": "clrDgIdentityFn"; "required": false; }; }, {}, never, never, true, never>;
-}
-
-declare const CLR_DATAGRID_DIRECTIVES: Type$1<any>[];
-declare class ClrDatagridModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i2.CommonModule, typeof CdkDragModule, typeof CdkTrapFocusModule, typeof ClrIcon, typeof ClrFormsModule, typeof i4.FormsModule, typeof ClrLoadingModule, typeof ClrConditionalModule, typeof ClrOutsideClickModule, typeof ClrExpandableAnimationModule, typeof ClrSpinnerModule, typeof ClrPopoverModuleNext, typeof ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatagridModule>;
-}
-
-declare class ClrStackView {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackView, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackView, "clr-stack-view", never, {}, {}, never, ["clr-stack-header", "*"], false, never>;
-}
-
-declare class ClrStackHeader {
-    stackView: ClrStackView;
-    /**
-     * Depth of the stack view header starting from 1 for first level
-     */
-    ariaLevel: HeadingLevel;
-    constructor(stackView: ClrStackView);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackHeader, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackHeader, "clr-stack-header", never, { "ariaLevel": { "alias": "clrStackHeaderLevel"; "required": false; }; }, {}, never, ["*", ".stack-action"], false, never>;
-}
-
-declare class ClrStackBlock implements OnInit {
-    private parent;
-    commonStrings: ClrCommonStringsService;
-    expanded: boolean;
-    expandable: boolean;
-    /**
-     * Depth of the stack view starting from 1 for first level
-     */
-    ariaLevel: HeadingLevel;
-    expandedChange: EventEmitter<boolean>;
-    stackBlockTitle: any;
-    focused: boolean;
-    uniqueId: string;
-    private _changedChildren;
-    private _fullyInitialized;
-    private _changed;
-    constructor(parent: ClrStackBlock, commonStrings: ClrCommonStringsService);
-    set setChangedValue(value: boolean);
-    get getChangedValue(): boolean;
-    get onStackLabelFocus(): boolean;
-    get labelledById(): any;
-    get caretDirection(): string;
-    get role(): string;
-    get tabIndex(): string;
-    get ariaExpanded(): string;
-    ngOnInit(): void;
-    addChild(): void;
-    toggleExpand(event?: Event): void;
-    getStackChildrenId(): string;
-    protected preventDefaultIfNotInputEvent(event: Event): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{ optional: true; skipSelf: true; }, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": { "alias": "clrSbExpanded"; "required": false; }; "expandable": { "alias": "clrSbExpandable"; "required": false; }; "ariaLevel": { "alias": "clrStackViewLevel"; "required": false; }; "setChangedValue": { "alias": "clrSbNotifyChange"; "required": false; }; }, { "expandedChange": "clrSbExpandedChange"; }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
-}
-
-declare class ClrStackContentInput {
-    uniqueId: string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackContentInput, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStackContentInput, "[clrStackInput]", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrStackViewCustomTags {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewCustomTags, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStackViewCustomTags, "clr-stack-content", never, {}, {}, never, never, false, never>;
-}
-declare class ClrStackViewLabel implements OnInit {
-    private _generatedId;
-    private _id;
-    get id(): string;
-    set id(val: string);
-    ngOnInit(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewLabel, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackViewLabel, "clr-stack-label", never, { "id": { "alias": "id"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare const CLR_STACK_VIEW_DIRECTIVES: Type$1<any>[];
-declare class ClrStackViewModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags], [typeof i2.CommonModule, typeof i4.FormsModule, typeof ClrIcon, typeof ClrExpandableAnimationModule], [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrStackViewModule>;
-}
-
-type AsyncArray<T> = T[] | null | undefined | Promise<T[] | null | undefined> | Observable<T[] | null | undefined>;
-
-declare enum ClrSelectedState {
-    UNSELECTED = 0,
-    SELECTED = 1,
-    INDETERMINATE = 2
-}
-
-declare abstract class TreeNodeModel<T> {
-    nodeId: string;
-    expanded: boolean;
-    model: T | null;
-    textContent: string;
-    loading$: BehaviorSubject<boolean>;
-    selected: BehaviorSubject<ClrSelectedState>;
-    private _loading;
-    private _disabled;
-    abstract parent: TreeNodeModel<T> | null;
-    abstract children: TreeNodeModel<T>[];
-    get loading(): boolean;
-    set loading(isLoading: boolean);
-    get disabled(): boolean;
-    set disabled(value: boolean);
-    destroy(): void;
-    setSelected(state: ClrSelectedState, propagateUp: boolean, propagateDown: boolean): void;
-    toggleSelection(propagate: boolean): void;
-    _updateSelectionFromChildren(): void;
-    private computeSelectionStateFromChildren;
-}
-
-declare class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
-    private getChildren;
-    private featuresService;
-    parent: RecursiveTreeNodeModel<T> | null;
-    private subscription;
-    private childrenFetched;
-    private _children;
-    constructor(model: T, parent: RecursiveTreeNodeModel<T> | null, getChildren: (node: T) => AsyncArray<T> | undefined, featuresService: TreeFeaturesService<T> | undefined);
-    get children(): RecursiveTreeNodeModel<T>[];
-    set children(value: RecursiveTreeNodeModel<T>[]);
-    destroy(): void;
-    clearChildren(): void;
-    fetchChildren(): void;
-    private wrapChildren;
-}
-
-interface ClrRecursiveForOfContext<T> {
-    $implicit: T;
-    clrModel: TreeNodeModel<T>;
-}
-declare class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
-    private template;
-    private featuresService;
-    private cdr;
-    nodes: T | T[];
-    getChildren: (node: T) => AsyncArray<T>;
-    private childrenFetchSubscription;
-    constructor(template: TemplateRef<ClrRecursiveForOfContext<T>>, featuresService: TreeFeaturesService<T>, cdr: ChangeDetectorRef);
-    ngOnChanges(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRecursiveForOf<any>, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRecursiveForOf<any>, "[clrRecursiveFor][clrRecursiveForOf]", never, { "nodes": { "alias": "clrRecursiveForOf"; "required": false; }; "getChildren": { "alias": "clrRecursiveForGetChildren"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare class TreeFeaturesService<T> {
-    selectable: boolean;
-    eager: boolean;
-    recursion: {
-        template: TemplateRef<ClrRecursiveForOfContext<T>>;
-        root: RecursiveTreeNodeModel<T>[];
-    };
-    childrenFetched: Subject<void>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TreeFeaturesService<any>, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<TreeFeaturesService<any>>;
-}
-
-declare class TreeFocusManagerService<T> {
-    rootNodeModels: TreeNodeModel<T>[];
-    private focusedNodeId;
-    private _focusRequest;
-    private _focusChange;
-    get focusRequest(): Observable<string>;
-    get focusChange(): Observable<string>;
-    focusNode(model: TreeNodeModel<T>): void;
-    broadcastFocusedNode(nodeId: string): void;
-    focusParent(model: TreeNodeModel<T>): void;
-    focusFirstVisibleNode(): void;
-    focusLastVisibleNode(): void;
-    focusNodeAbove(model: TreeNodeModel<T>): void;
-    focusNodeBelow(model: TreeNodeModel<T>): void;
-    focusNodeStartsWith(searchString: string, model: TreeNodeModel<T>): void;
-    private findSiblings;
-    private findLastVisibleInNode;
-    private findNextFocusable;
-    private findLastVisibleInTree;
-    private findNodeAbove;
-    private findNodeBelow;
-    private findDescendentNodeStartsWith;
-    private findSiblingNodeStartsWith;
-    private findRootNodeStartsWith;
-    private findNodeStartsWith;
-    private findClosestNodeStartsWith;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TreeFocusManagerService<any>, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<TreeFocusManagerService<any>>;
-}
-
-declare class ClrTree<T> implements AfterContentInit, OnDestroy {
-    featuresService: TreeFeaturesService<T>;
-    private focusManagerService;
-    private renderer;
-    private el;
-    private rootNodes;
-    private subscriptions;
-    private _isMultiSelectable;
-    constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
-    set lazy(value: boolean);
-    get isMultiSelectable(): boolean;
-    ngAfterContentInit(): void;
-    ngOnDestroy(): void;
-    private setMultiSelectable;
-    private setRootNodes;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTree<any>, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTree<any>, "clr-tree", never, { "lazy": { "alias": "clrLazy"; "required": false; }; }, {}, ["rootNodes"], ["*"], false, never>;
-}
-
-declare class ClrTreeNodeLink {
-    private el;
-    constructor(el: ElementRef<HTMLElement>);
-    get active(): boolean;
-    activate(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNodeLink, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTreeNodeLink, ".clr-treenode-link", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
-    private platformId;
-    featuresService: TreeFeaturesService<T>;
-    expandService: IfExpandService;
-    commonStrings: ClrCommonStringsService;
-    private focusManager;
-    private elementRef;
-    expandable: boolean | undefined;
-    selectedChange: EventEmitter<ClrSelectedState>;
-    expandedChange: EventEmitter<boolean>;
-    STATES: typeof ClrSelectedState;
-    isModelLoading: boolean;
-    nodeId: string;
-    contentContainerTabindex: number;
-    _model: TreeNodeModel<T>;
-    private skipEmitChange;
-    private typeAheadKeyBuffer;
-    private typeAheadKeyEvent;
-    private subscriptions;
-    private contentContainer;
-    private treeNodeLinkList;
-    constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
-    get disabled(): boolean;
-    set disabled(value: boolean);
-    get selected(): ClrSelectedState | boolean;
-    set selected(value: ClrSelectedState | boolean);
-    get expanded(): boolean;
-    set expanded(value: boolean);
-    set clrForTypeAhead(value: string);
-    get ariaSelected(): boolean;
-    get treeNodeLink(): ClrTreeNodeLink;
-    private get isParent();
-    ngOnInit(): void;
-    ngAfterContentInit(): void;
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    isExpandable(): boolean;
-    isSelectable(): boolean;
-    focusTreeNode(): void;
-    broadcastFocusOnContainer(): void;
-    onKeyDown(event: KeyboardEvent): void;
-    private setTabIndex;
-    private checkTabIndex;
-    private toggleExpandOrTriggerDefault;
-    private expandOrFocusFirstChild;
-    private collapseOrFocusParent;
-    private triggerDefaultAction;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, null, null, null, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": { "alias": "clrExpandable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "selected": { "alias": "clrSelected"; "required": false; }; "expanded": { "alias": "clrExpanded"; "required": false; }; "clrForTypeAhead": { "alias": "clrForTypeAhead"; "required": false; }; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
-}
-
-declare class RecursiveChildren<T> {
-    featuresService: TreeFeaturesService<T>;
-    private expandService;
-    parent: TreeNodeModel<T>;
-    children: TreeNodeModel<T>[];
-    subscription: Subscription;
-    role: string;
-    constructor(featuresService: TreeFeaturesService<T>, expandService: IfExpandService);
-    ngAfterContentInit(): void;
-    shouldRender(): boolean;
-    getContext(node: TreeNodeModel<T>): ClrRecursiveForOfContext<T>;
-    ngOnDestroy(): void;
-    private setAriaRoles;
-    static ɵfac: i0.ɵɵFactoryDeclaration<RecursiveChildren<any>, [null, { optional: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<RecursiveChildren<any>, "clr-recursive-children", never, { "parent": { "alias": "parent"; "required": false; }; "children": { "alias": "children"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare const CLR_TREE_VIEW_DIRECTIVES: Type$1<any>[];
-declare class ClrTreeViewModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeViewModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTreeViewModule>;
-}
-
-declare class ClrDataModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDataModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDataModule, never, never, [typeof ClrDatagridModule, typeof ClrStackViewModule, typeof ClrTreeViewModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrDataModule>;
+declare class IconHtmlPipe implements PipeTransform {
+    private sanitizer;
+    constructor(sanitizer: DomSanitizer);
+    transform(value: string): SafeHtml;
+    static ɵfac: i0.ɵɵFactoryDeclaration<IconHtmlPipe, never>;
+    static ɵpipe: i0.ɵɵPipeDeclaration<IconHtmlPipe, "iconHtml", true>;
 }
 
 /** @deprecated since v18 in favor of ClrIcon, remove in v19 */
@@ -5963,2535 +4617,79 @@ declare class CdsIconCustomTag {
     static ɵdir: i0.ɵɵDirectiveDeclaration<CdsIconCustomTag, "cds-icon", never, {}, {}, never, never, false, never>;
 }
 
-declare const CLR_ICON_DIRECTIVES: Type$1<any>[];
+declare const CLR_ICON_DIRECTIVES: Type<any>[];
 /** @deprecated since v18 in favor of ClrIcon, remove in v19 */
 declare class ClrIconModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIconModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrIconModule, [typeof ClrIconCustomTag, typeof CdsIconCustomTag], [typeof i2.CommonModule], [typeof ClrIconCustomTag, typeof CdsIconCustomTag]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrIconModule, [typeof ClrIconCustomTag, typeof CdsIconCustomTag], [typeof i2$1.CommonModule], [typeof ClrIconCustomTag, typeof CdsIconCustomTag]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrIconModule>;
 }
 
-declare class ClrModalConfigurationService {
-    fadeMove: string;
-    backdrop: boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalConfigurationService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrModalConfigurationService>;
+type IconSvgString = string;
+type IconNameString = string;
+type IconAliases = string[];
+interface IconShapeCollection {
+    outline?: IconSvgString;
+    solid?: IconSvgString;
+    outlineBadged?: IconSvgString;
+    outlineAlerted?: IconSvgString;
+    solidBadged?: IconSvgString;
+    solidAlerted?: IconSvgString;
 }
-
-declare class ScrollingService {
-    private _document;
-    constructor(_document: any);
-    stopScrolling(): void;
-    resumeScrolling(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ScrollingService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ScrollingService>;
+type IconShapeTuple = [IconNameString, IconSvgString | IconShapeCollection];
+interface IconShapeSources {
+    [key: string]: IconShapeTuple;
 }
-
-declare class ClrModal implements OnChanges, OnDestroy {
-    private _scrollingService;
-    commonStrings: ClrCommonStringsService;
-    private modalStackService;
-    private configuration;
-    modalId: string;
-    title: ElementRef<HTMLElement>;
-    _open: boolean;
-    _openChanged: EventEmitter<boolean>;
-    closable: boolean;
-    closeButtonAriaLabel: string;
-    size: string;
-    staticBackdrop: boolean;
-    skipAnimation: boolean;
-    stopClose: boolean;
-    altClose: EventEmitter<boolean>;
-    labelledBy: string;
-    bypassScrollService: boolean;
-    protected readonly modalContentTemplate: TemplateRef<any>;
-    private readonly bodyElementRef;
-    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
-    get fadeMove(): string;
-    set fadeMove(move: string);
-    get backdrop(): boolean;
-    ngOnChanges(changes: {
-        [propName: string]: SimpleChange;
-    }): void;
-    ngOnDestroy(): void;
-    open(): void;
-    backdropClick(): void;
-    close(): void;
-    fadeDone(e: AnimationEvent): void;
-    scrollTop(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": { "alias": "clrModalOpen"; "required": false; }; "closable": { "alias": "clrModalClosable"; "required": false; }; "closeButtonAriaLabel": { "alias": "clrModalCloseButtonAriaLabel"; "required": false; }; "size": { "alias": "clrModalSize"; "required": false; }; "staticBackdrop": { "alias": "clrModalStaticBackdrop"; "required": false; }; "skipAnimation": { "alias": "clrModalSkipAnimation"; "required": false; }; "stopClose": { "alias": "clrModalPreventClose"; "required": false; }; "labelledBy": { "alias": "clrModalLabelledById"; "required": false; }; "bypassScrollService": { "alias": "clrModalOverrideScrollService"; "required": false; }; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
+interface IconRegistrySources {
+    [key: string]: IconSvgString | IconShapeCollection;
 }
+type IconRegistry = Partial<IconRegistrySources>;
+type NameOfIconToAlias = string;
+type IconAlias = [NameOfIconToAlias, IconAliases];
+type Directions = 'up' | 'down' | 'left' | 'right';
+type Orientations = 'horizontal' | 'vertical';
+type StatusTypes = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
 
-/**
- * Allows modal overflow area to be scrollable via keyboard.
- * The modal body will focus with keyboard navigation only.
- * This allows inner focusable items to be focused without
- * the overflow scroll being focused.
- */
-declare class ClrModalBody implements OnDestroy {
-    private readonly renderer;
-    private readonly host;
-    private tabindex;
-    private unlisteners;
-    private observer;
-    constructor(renderer: Renderer2, host: ElementRef<HTMLElement>, ngZone: NgZone);
-    ngOnDestroy(): void;
-    private addTabIndex;
-    private removeTabIndex;
-    private addOrRemoveTabIndex;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalBody, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrModalBody, ".modal-body", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrModalHostComponent {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalHostComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModalHostComponent, "[clrModalHost]", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare const CLR_MODAL_DIRECTIVES: Type$1<any>[];
-declare class ClrModalModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent], [typeof i2.CommonModule, typeof CdkTrapFocusModule, typeof ClrIcon], [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent, typeof ClrIcon]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrModalModule>;
-}
-
-declare class ClrLoadingButton implements LoadingListener {
-    el: ElementRef<HTMLButtonElement>;
-    private renderer;
-    disabled: boolean;
-    clrLoadingChange: EventEmitter<ClrLoadingState>;
-    buttonState: typeof ClrLoadingState;
-    state: ClrLoadingState;
-    constructor(el: ElementRef<HTMLButtonElement>, renderer: Renderer2);
-    loadingStateChange(state: ClrLoadingState): void;
-    private setExplicitButtonWidth;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingButton, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLoadingButton, "button[clrLoading]", never, { "disabled": { "alias": "disabled"; "required": false; }; }, { "clrLoadingChange": "clrLoadingChange"; }, never, ["*"], false, never>;
-}
-
-declare const CLR_LOADING_BUTTON_DIRECTIVES: Type$1<any>[];
-declare class ClrLoadingButtonModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingButtonModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingButtonModule, [typeof ClrLoadingButton], [typeof i2.CommonModule], [typeof ClrLoadingButton]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLoadingButtonModule>;
-}
-
-declare class ButtonInGroupService {
-    private _changes;
-    get changes(): Observable<ClrButton>;
-    updateButtonGroup(button: ClrButton): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ButtonInGroupService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ButtonInGroupService>;
-}
-
-declare class ClrButton implements LoadingListener {
-    private readonly routerLinkActive;
-    buttonInGroupService: ButtonInGroupService;
-    _click: EventEmitter<boolean>;
-    routerLinkActiveClasses: string;
-    templateRef: TemplateRef<ClrButton>;
-    loading: boolean;
-    private _inMenu;
-    private _enableService;
-    private _classNames;
-    private _name;
-    private _type;
-    private _disabled;
-    private _id;
-    constructor(routerLinkActive: RouterLinkActive, buttonInGroupService: ButtonInGroupService);
-    get inMenu(): boolean;
-    set inMenu(value: boolean);
-    get classNames(): string;
-    set classNames(value: string);
-    get name(): string;
-    set name(value: string);
-    get type(): string;
-    set type(value: string);
-    get id(): string;
-    set id(value: string);
-    get disabled(): any;
-    set disabled(value: any);
-    get role(): string;
-    ngAfterViewInit(): void;
-    loadingStateChange(state: ClrLoadingState): void;
-    emitClick(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{ optional: true; }, { optional: true; skipSelf: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, { "routerLinkActiveClasses": { "alias": "routerLinkActive"; "required": false; }; "inMenu": { "alias": "clrInMenu"; "required": false; }; "classNames": { "alias": "class"; "required": false; }; "name": { "alias": "name"; "required": false; }; "type": { "alias": "type"; "required": false; }; "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; }, { "_click": "click"; }, never, ["*"], false, never>;
-}
-
-declare enum InitialFocus {
-    FIRST_ITEM = "first",
-    LAST_ITEM = "last"
-}
-
-declare class ButtonGroupFocusHandler {
-    private focusService;
-    private popoverService;
-    private renderer;
-    initialFocus: InitialFocus;
-    private menu;
-    private menuToggle;
-    private buttons;
-    private _unlistenFuncs;
-    constructor(focusService: FocusService$1, popoverService: ClrPopoverService, renderer: Renderer2);
-    ngOnDestroy(): void;
-    initialize({ menu, menuToggle }: {
-        menu: HTMLElement;
-        menuToggle: HTMLElement;
-    }): void;
-    private resetButtonsFocus;
-    private listenToKeys;
-    private closeMenu;
-    private linkButtons;
-    private focusFirstItem;
-    private focusLastItem;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ButtonGroupFocusHandler, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ButtonGroupFocusHandler>;
-}
-
-declare class ClrButtonGroup implements AfterContentInit, AfterViewInit {
-    buttonGroupNewService: ButtonInGroupService;
-    private popoverService;
-    commonStrings: ClrCommonStringsService;
-    private destroy$;
-    private focusHandler;
-    clrToggleButtonAriaLabel: string;
-    menuToggle: ElementRef<HTMLElement>;
-    menu: ElementRef<HTMLElement>;
-    buttons: QueryList<ClrButton>;
-    popoverId: string;
-    InitialFocus: typeof InitialFocus;
-    inlineButtons: ClrButton[];
-    menuButtons: ClrButton[];
-    protected popoverType: ClrPopoverType;
-    private _menuPosition;
-    constructor(buttonGroupNewService: ButtonInGroupService, popoverService: ClrPopoverService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
-    get menuPosition(): ClrPopoverPosition;
-    set menuPosition(pos: ClrPopoverPosition | string);
-    get open(): boolean;
-    /**
-     * 1. Initializes the initial Button Group View
-     * 2. Subscribes to changes on the ContentChildren
-     *    in case the user content projection changes
-     */
-    ngAfterContentInit(): void;
-    ngAfterViewInit(): void;
-    /**
-     * Moves the button into the other ViewContainer
-     * when an update is received.
-     *
-     * @param button
-     */
-    rearrangeButton(button: ClrButton): void;
-    openMenu(event: Event, initialFocus: InitialFocus): void;
-    /**
-     * Author: Eudes
-     *
-     * Finds the order of a button w.r.t other buttons
-     *
-     * @param buttonToMove
-     * @returns
-     */
-    getMoveIndex(buttonToMove: ClrButton): number;
-    initializeButtons(): void;
-    private handleFocusOnMenuOpen;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroup, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "clrToggleButtonAriaLabel": { "alias": "clrToggleButtonAriaLabel"; "required": false; }; "menuPosition": { "alias": "clrMenuPosition"; "required": false; }; }, {}, ["buttons"], never, false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
-}
-
-declare const CLR_BUTTON_GROUP_DIRECTIVES: Type$1<any>[];
-declare class ClrButtonGroupModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroupModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof ClrButton, typeof ClrButtonGroup], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrPopoverModuleNext], [typeof ClrButton, typeof ClrButtonGroup]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrButtonGroupModule>;
-}
-
-declare class ClrButtonModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonModule, never, never, [typeof ClrLoadingButtonModule, typeof ClrButtonGroupModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrButtonModule>;
-}
-
-declare class ResponsiveNavControlMessage {
-    private _controlCode;
-    private _navLevel;
-    constructor(_controlCode: string, _navLevel: number);
-    get controlCode(): string;
-    get navLevel(): number;
-}
-
-declare class ResponsiveNavigationService {
-    responsiveNavList: number[];
-    private registerNavSubject;
-    private controlNavSubject;
-    constructor();
-    get registeredNavs(): Observable<number[]>;
-    get navControl(): Observable<ResponsiveNavControlMessage>;
-    registerNav(navLevel: number): void;
-    isNavRegistered(navLevel: number): boolean;
-    unregisterNav(navLevel: number): void;
-    sendControlMessage(controlCode: string, navLevel: number): void;
-    closeAllNavs(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ResponsiveNavigationService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ResponsiveNavigationService>;
-}
-
-declare class ClrMainContainer implements OnDestroy, OnInit {
-    private elRef;
-    private responsiveNavService;
-    private _subscription;
-    private _classList;
-    constructor(elRef: ElementRef<HTMLElement>, responsiveNavService: ResponsiveNavigationService);
-    ngOnInit(): void;
-    processMessage(message: ResponsiveNavControlMessage): void;
-    controlNav(controlCode: string, navClass: string): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrMainContainer, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrMainContainer, "clr-main-container", never, {}, {}, never, never, false, never>;
-}
-
-declare const CLR_LAYOUT_DIRECTIVES: Type$1<any>[];
-declare class ClrMainContainerModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrMainContainerModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrMainContainerModule, [typeof ClrMainContainer], [typeof i2.CommonModule, typeof ClrIcon], [typeof ClrMainContainer]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrMainContainerModule>;
-}
-
-declare class ResponsiveNavCodes {
-    static NAV_LEVEL_1: number;
-    static NAV_LEVEL_2: number;
-    static NAV_CLOSE_ALL: string;
-    static NAV_OPEN: string;
-    static NAV_CLOSE: string;
-    static NAV_TOGGLE: string;
-    static NAV_CLASS_HAMBURGER_MENU: string;
-    static NAV_CLASS_OVERFLOW_MENU: string;
-    static NAV_CLASS_TRIGGER_1: string;
-    static NAV_CLASS_TRIGGER_2: string;
-    static NAV_CLASS_LEVEL_1: string;
-    static NAV_CLASS_LEVEL_2: string;
-}
-
-declare class ClrHeader implements OnDestroy {
-    private responsiveNavService;
-    commonStrings: ClrCommonStringsService;
-    role: string;
-    isNavLevel1OnPage: boolean;
-    isNavLevel2OnPage: boolean;
-    openNavLevel: number;
-    responsiveNavCodes: typeof ResponsiveNavCodes;
-    private _subscription;
-    constructor(responsiveNavService: ResponsiveNavigationService, commonStrings: ClrCommonStringsService);
-    get responsiveNavCommonString(): string;
-    get responsiveOverflowCommonString(): string;
-    resetNavTriggers(): void;
-    initializeNavTriggers(navList: number[]): void;
-    closeOpenNav(): void;
-    /**
-     * @deprecated Will be removed in with @clr/angular v15.0.0
-     *
-     * Use `openNav(navLevel)` instead to open the navigation and ResponsiveNavService to close it.
-     */
-    toggleNav(navLevel: number): void;
-    openNav(navLevel: number): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrHeader, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrHeader, "clr-header", never, { "role": { "alias": "role"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare class ClrNavLevel implements OnInit {
-    private cdkTrapFocus;
-    private responsiveNavService;
-    private elementRef;
-    private renderer;
-    _level: number;
-    closeButtonAriaLabel: string;
-    private _isOpen;
-    private _document;
-    private _subscription;
-    constructor(platformId: any, cdkTrapFocus: ClrStandaloneCdkTrapFocus, responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef<HTMLElement>, renderer: Renderer2, injector: Injector);
-    get level(): number;
-    get responsiveNavCodes(): ResponsiveNavCodes;
-    get isOpen(): boolean;
-    ngOnInit(): void;
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    onResize(event: Event): void;
-    onMouseClick(target: any): void;
-    addNavClass(level: number): void;
-    open(): void;
-    close(): void;
-    protected hideNavigation(): void;
-    protected showNavigation(): void;
-    protected hideCloseButton(): void;
-    protected showCloseButton(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "_level": { "alias": "clr-nav-level"; "required": false; }; "closeButtonAriaLabel": { "alias": "closeAriaLabel"; "required": false; }; }, {}, never, never, false, [{ directive: typeof ClrStandaloneCdkTrapFocus; inputs: {}; outputs: {}; }]>;
-}
-
-declare class ClrAriaCurrentLink implements OnInit, OnDestroy {
-    private rla;
-    ariaCurrent: string | undefined;
-    private subscription;
-    constructor(rla: RouterLinkActive);
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAriaCurrentLink, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAriaCurrentLink, "[clrAriaCurrentLink]", never, {}, {}, never, never, false, never>;
-}
-
-declare class MainContainerWillyWonka extends WillyWonka {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MainContainerWillyWonka, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MainContainerWillyWonka, "clr-main-container", never, {}, {}, never, never, false, never>;
-}
-
-declare class NavDetectionOompaLoompa extends OompaLoompa {
-    private responsiveNavService;
-    constructor(cdr: ChangeDetectorRef, willyWonka: MainContainerWillyWonka, responsiveNavService: ResponsiveNavigationService);
-    get flavor(): number;
-    static ɵfac: i0.ɵɵFactoryDeclaration<NavDetectionOompaLoompa, [null, { optional: true; }, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<NavDetectionOompaLoompa, "clr-header", never, {}, {}, never, never, false, never>;
-}
-
-declare const CLR_NAVIGATION_DIRECTIVES: Type$1<any>[];
-declare class ClrNavigationModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavigationModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrNavigationModule>;
-}
-
-declare enum TabsLayout {
-    HORIZONTAL = "horizontal",
-    VERTICAL = "vertical"
-}
-
-declare class TemplateRefContainer {
-    template: TemplateRef<any>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TemplateRefContainer, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<TemplateRefContainer, "ng-component", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class ClrTabLink {
-    ifActiveService: IfActiveService;
-    readonly id: number;
+declare class ClrIcon implements OnInit, OnDestroy {
     el: ElementRef<HTMLElement>;
-    private tabsService;
-    tabsId: number;
-    tabLinkId: string;
-    templateRefContainer: TemplateRefContainer;
-    private _inOverflow;
-    constructor(ifActiveService: IfActiveService, id: number, el: ElementRef<HTMLElement>, viewContainerRef: ViewContainerRef, tabsService: TabsService, tabsId: number);
-    get inOverflow(): boolean;
-    set inOverflow(inOverflow: boolean);
-    get addLinkClasses(): boolean;
-    get ariaControls(): string;
-    get active(): boolean;
-    get tabindex(): 0 | -1;
-    activate(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabLink, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabLink, "[clrTabLink]", never, { "tabLinkId": { "alias": "id"; "required": false; }; "inOverflow": { "alias": "clrTabLinkInOverflow"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare class ClrTab {
-    ifActiveService: IfActiveService;
-    id: number;
-    private tabsService;
-    tabLink: ClrTabLink;
-    tabContent: ClrTabContent;
-    constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService);
-    get active(): boolean;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTab, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTab, "clr-tab", never, {}, {}, ["tabLink", "tabContent"], ["*"], false, never>;
-}
-
-declare class TabsService {
-    layout: TabsLayout | string;
-    tabContentViewContainer: ViewContainerRef;
-    private _children;
-    get children(): ClrTab[];
-    get activeTab(): ClrTab;
-    get overflowTabs(): ClrTab[];
-    register(tab: ClrTab): void;
-    unregister(tab: ClrTab): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TabsService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<TabsService>;
-}
-
-declare class ClrTabContent implements OnDestroy {
-    ifActiveService: IfActiveService;
-    id: number;
-    private tabsService;
-    tabContentId: string;
-    private viewRef;
-    constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService);
-    get active(): boolean;
-    get ariaLabelledBy(): string;
-    private set templateRef(value);
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabContent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabContent, "clr-tab-content", never, { "tabContentId": { "alias": "id"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare class ClrTabs implements AfterContentInit, OnDestroy {
-    ifActiveService: IfActiveService;
-    popoverService: ClrPopoverService;
-    tabsService: TabsService;
-    tabsId: number;
-    commonStrings: ClrCommonStringsService;
-    tabLinkElements: HTMLElement[];
-    _mousedown: boolean;
-    keyFocus: ClrKeyFocus;
-    tabsActions: QueryList<ElementRef>;
-    private tabs;
-    private subscriptions;
-    private _tabOverflowEl;
-    private _tabLinkDirectives;
-    constructor(ifActiveService: IfActiveService, popoverService: ClrPopoverService, tabsService: TabsService, tabsId: number, commonStrings: ClrCommonStringsService);
-    get layout(): TabsLayout | string;
-    set layout(layout: TabsLayout | string);
-    get tabLinkDirectives(): ClrTabLink[];
-    get activeTabInOverflow(): boolean;
-    get activeTabPosition(): number;
-    get isCurrentInOverflow(): boolean;
-    get isVertical(): boolean;
-    set tabOverflowEl(value: ElementRef<HTMLElement>);
-    private get overflowPosition();
-    private set tabContentViewContainer(value);
-    ngAfterContentInit(): void;
-    ngOnDestroy(): void;
-    toggleOverflowOnPosition(position: number): void;
-    resetKeyFocusCurrentToActive(event: FocusEvent): void;
-    toggleOverflowOnClick(): void;
-    openOverflowOnFocus(): void;
-    closeOnFocusOut(event: FocusEvent): void;
-    closeOnEscapeKey(): void;
-    closeOnOutsideClick(event: Event, tabOverflowTrigger: HTMLElement): void;
-    private setTabLinkElements;
-    private listenForTabLinkChanges;
-    private listedForTabsActionsChanges;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabs, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabs, "clr-tabs", never, { "layout": { "alias": "clrLayout"; "required": false; }; }, {}, ["tabsActions", "tabs"], ["clr-tabs-actions"], false, [{ directive: typeof ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
-}
-
-declare class ClrTabOverflowContent {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabOverflowContent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabOverflowContent, "clr-tab-overflow-content", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class ClrTabAction {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabAction, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabAction, "[clrTabAction]", never, {}, {}, never, never, false, never>;
-}
-
-type ClrTabsActionsPosition = 'left' | 'right';
-declare class ClrTabsActions {
-    position: ClrTabsActionsPosition;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabsActions, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabsActions, "clr-tabs-actions", never, { "position": { "alias": "position"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare class TabsWillyWonka extends WillyWonka {
-    static ɵfac: i0.ɵɵFactoryDeclaration<TabsWillyWonka, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<TabsWillyWonka, "clr-tabs", never, {}, {}, never, never, false, never>;
-}
-
-declare class ActiveOompaLoompa extends OompaLoompa {
-    private ifActive;
-    private id;
-    constructor(cdr: ChangeDetectorRef, willyWonka: TabsWillyWonka, id: number, ifActive: IfActiveService);
-    get flavor(): boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ActiveOompaLoompa, [null, { optional: true; }, null, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ActiveOompaLoompa, "[clrTabLink], clr-tab-content", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrTemplateRefModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTemplateRefModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTemplateRefModule, [typeof TemplateRefContainer], [typeof i2.CommonModule], [typeof TemplateRefContainer]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTemplateRefModule>;
-}
-
-declare const CLR_TABS_DIRECTIVES: Type$1<any>[];
-declare class ClrTabsModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabsModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa], [typeof i2.CommonModule, typeof ClrConditionalModule, typeof ClrIcon, typeof ClrTemplateRefModule, typeof ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa, typeof ClrConditionalModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTabsModule>;
-}
-
-interface BreadcrumbItem {
-    label: string;
-    href?: string;
-    routerLink?: string;
-    queryParams?: {
-        [key: string]: string;
-    };
-    target?: string;
-}
-
-declare class ClrBreadcrumbs {
-    protected commonStrings: ClrCommonStringsService;
-    isExpanded: boolean;
-    items: BreadcrumbItem[];
-    clrBreadcrumbItemClick: EventEmitter<BreadcrumbItem>;
-    protected limit: number;
-    protected max: number;
-    constructor(commonStrings: ClrCommonStringsService);
-    protected expand(): void;
-    protected handleItemClick(breadcrumb: BreadcrumbItem): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbs, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbs, "clr-breadcrumbs", never, { "items": { "alias": "items"; "required": false; }; }, { "clrBreadcrumbItemClick": "clrBreadcrumbItemClick"; }, never, never, false, never>;
-}
-
-declare class ClrBreadcrumbItem {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbItem, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbItem, "clr-breadcrumb-item", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class ClrBreadcrumbsModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbsModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBreadcrumbsModule, [typeof ClrBreadcrumbs, typeof ClrBreadcrumbItem], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrHostWrappingModule, typeof i6.RouterModule], [typeof ClrBreadcrumbs, typeof ClrIcon]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrBreadcrumbsModule>;
-}
-
-declare class ClrLayoutModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLayoutModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof ClrMainContainerModule, typeof ClrNavigationModule, typeof ClrTabsModule, typeof ClrVerticalNavModule, typeof ClrBreadcrumbsModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLayoutModule>;
-}
-
-declare class ButtonHubService {
-    buttonsReady: boolean;
-    private _previousBtnClicked;
-    private _nextBtnClicked;
-    private _dangerBtnClicked;
-    private _cancelBtnClicked;
-    private _finishBtnClicked;
-    private _customBtnClicked;
-    get previousBtnClicked(): Observable<void>;
-    get nextBtnClicked(): Observable<void>;
-    get dangerBtnClicked(): Observable<void>;
-    get cancelBtnClicked(): Observable<void>;
-    get finishBtnClicked(): Observable<void>;
-    get customBtnClicked(): Observable<string>;
-    buttonClicked(buttonType: string): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ButtonHubService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ButtonHubService>;
-}
-
-declare class ClrWizardHeaderAction {
-    title: string;
-    _id: string;
-    disabled: boolean;
-    headerActionClicked: EventEmitter<string>;
-    get id(): string;
-    click(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardHeaderAction, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardHeaderAction, "clr-wizard-header-action", never, { "title": { "alias": "title"; "required": false; }; "_id": { "alias": "id"; "required": false; }; "disabled": { "alias": "clrWizardHeaderActionDisabled"; "required": false; }; }, { "headerActionClicked": "actionClicked"; }, never, ["*"], false, never>;
-}
-
-/**
- * PageCollectionService manages the collection of pages assigned to the wizard and offers
- * a number of functions useful across the wizards providers and subcomponents -- all related
- * to essentially lookups on the collection of pages.
- *
- * The easiest way to access PageCollectionService is via the wizard. The
- * following example would allow you to access your instance of the wizard from your host
- * component and thereby access the page collection via YourHostComponent.wizard.pageCollection.
- *
- * @example
- * <clr-wizard #wizard ...>
- *
- * @example
- * export class YourHostComponent {
- *   @ViewChild("wizard") wizard: Wizard;
- *   ...
- * }
- *
- * The heart of the page collection is the query list of pages, which it is assigned as a
- * reference to the Wizard.pages QueryList when the wizard is created.
- *
- */
-declare class PageCollectionService {
-    /**
-     * A reference to the Wizard.pages QueryList.
-     *
-     * Populated when the wizard is created.
-     *
-     * @memberof PageCollectionService
-     */
-    pages: QueryList<ClrWizardPage>;
-    /**
-     *
-     * @memberof PageCollectionService
-     */
-    private _pagesReset;
-    /**
-     * Converts the PageCollectionService.pages QueryList to an array and returns it.
-     *
-     * Useful for many instances when you would prefer a QueryList to act like an array.
-     *
-     * @memberof PageCollectionService
-     */
-    get pagesAsArray(): ClrWizardPage[];
-    /**
-     * Returns the length of the pages query list.
-     *
-     * @memberof PageCollectionService
-     */
-    get pagesCount(): number;
-    /**
-     * Returns the next-to-last page in the query list of pages. Operates as a getter
-     * so that it isn't working with stale data.
-     *
-     * @memberof PageCollectionService
-     */
-    get penultimatePage(): ClrWizardPage;
-    /**
-     * Returns the last page in the query list of pages. Operates as a getter
-     * so that it isn't working with stale data.
-     *
-     * @memberof PageCollectionService
-     */
-    get lastPage(): ClrWizardPage;
-    /**
-     * Returns the first page in the query list of pages. Operates as a getter
-     * so that it isn't working with stale data.
-     *
-     * @memberof PageCollectionService
-     */
-    get firstPage(): ClrWizardPage;
-    /**
-     * An observable that the navigation service listens to in order to know when
-     * the page collection completed states have been reset to false so that way it
-     * can also reset the navigation to make the first page in the page collection
-     * current/active.
-     *
-     * @memberof PageCollectionService
-     */
-    get pagesReset(): Observable<boolean>;
-    /**
-     * Used mostly internally, but accepts a string ID and returns a ClrWizardPage
-     * object that matches the ID passed. Note that IDs here should include the prefix
-     * "clr-wizard-page-".
-     *
-     * Returns the next-to-last page in the query list of pages. Operates as a getter
-     * so that it isn't working with stale data.
-     *
-     * @memberof PageCollectionService
-     */
-    getPageById(id: string): ClrWizardPage;
-    /**
-     * Accepts s number as a parameter and treats that number as the index of the page
-     * you're looking for in the collection of pages. Returns a  wizard page object.
-     *
-     * @memberof PageCollectionService
-     */
-    getPageByIndex(index: number): ClrWizardPage;
-    /**
-     * Takes a wizard page object as a parameter and returns its index in the
-     * collection of pages.
-     *
-     * @memberof PageCollectionService
-     */
-    getPageIndex(page: ClrWizardPage): number;
-    /**
-     * Accepts two numeric indexes and returns an array of wizard page objects that include
-     * all wizard pages in the page collection from the first index to the second.
-     *
-     * @memberof PageCollectionService
-     */
-    pageRange(start: number, end: number): ClrWizardPage[];
-    /**
-     * Accepts two wizard page objects and returns those page objects with all other page
-     * objects between them in the page collection. It doesn't care which page is ahead of the
-     * other in the parameters. It will be smart enough to figure that out  on its own.
-     *
-     * @memberof PageCollectionService
-     */
-    getPageRangeFromPages(page: ClrWizardPage, otherPage: ClrWizardPage): ClrWizardPage[];
-    /**
-     * Takes a wizard page object as a parameter and returns the wizard page object of
-     * the page immediately before it in the page collection. Returns null if there is
-     * no page before the page it is passed.
-     *
-     * @memberof PageCollectionService
-     */
-    getPreviousPage(page: ClrWizardPage): ClrWizardPage;
-    /**
-     * Accepts a wizard page object as a parameter and returns a Boolean that says if
-     * the page you sent it is complete.
-     *
-     * @memberof PageCollectionService
-     */
-    previousPageIsCompleted(page: ClrWizardPage): boolean;
-    /**
-     * Takes a wizard page object as a parameter and returns the wizard page object of
-     * the page immediately after it in the page collection. Returns null if there is
-     * no page after the page it is passed.
-     *
-     * @memberof PageCollectionService
-     */
-    getNextPage(page: ClrWizardPage): ClrWizardPage;
-    /**
-     * Takes a wizard page object as a parameter and generates a step item id from the
-     * page ID. Returns the generated step item ID as a string.
-     *
-     * @memberof PageCollectionService
-     */
-    getStepItemIdForPage(page: ClrWizardPage): string;
-    /**
-     * Generally only used internally to mark that a specific page has been "committed".
-     * This involves marking the page complete and firing the ClrWizardPage.onCommit
-     * (clrWizardPageOnCommit) output. Takes the wizard page object that you intend to
-     * mark completed as a parameter.
-     *
-     * @memberof PageCollectionService
-     */
-    commitPage(page: ClrWizardPage): void;
-    /**
-     * Sets all completed states of the pages in the page collection to false and
-     * notifies the navigation service to likewise reset the navigation.
-     *
-     * @memberof PageCollectionService
-     */
-    reset(): void;
-    /**
-     * Rolls through all the pages in the page collection to make sure there are no
-     * incomplete pages sandwiched between completed pages in the workflow. Identifies
-     * the first incomplete page index and sets all pages behind it to a completed
-     * state of false.
-     *
-     * @memberof PageCollectionService
-     */
-    updateCompletedStates(): void;
-    /**
-     * Retrieves the index of the first incomplete page in the page collection.
-     *
-     * @memberof PageCollectionService
-     */
-    findFirstIncompletePageIndex(): number;
-    findFirstIncompletePage(): ClrWizardPage;
-    /**
-     * Consolidates guard logic that prevents a couple of unfortunate edge cases with
-     * look ups on the collection of pages.
-     *
-     * @memberof PageCollectionService
-     */
-    private checkResults;
-    static ɵfac: i0.ɵɵFactoryDeclaration<PageCollectionService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<PageCollectionService>;
-}
-
-declare class ClrWizardPageButtons {
-    pageButtonsTemplateRef: TemplateRef<any>;
-    constructor(pageButtonsTemplateRef: TemplateRef<any>);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPageButtons, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageButtons, "[clrPageButtons]", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrWizardPageHeaderActions {
-    pageHeaderActionsTemplateRef: TemplateRef<any>;
-    constructor(pageHeaderActionsTemplateRef: TemplateRef<any>);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPageHeaderActions, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageHeaderActions, "[clrPageHeaderActions]", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrWizardPageNavTitle {
-    pageNavTitleTemplateRef: TemplateRef<any>;
-    constructor(pageNavTitleTemplateRef: TemplateRef<any>);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPageNavTitle, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageNavTitle, "[clrPageNavTitle]", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrWizardPageTitle {
-    pageTitleTemplateRef: TemplateRef<any>;
-    headingLevel: HeadingLevel;
-    constructor(pageTitleTemplateRef: TemplateRef<any>);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPageTitle, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageTitle, "[clrPageTitle]", never, { "headingLevel": { "alias": "clrHeadingLevel"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-/**
- * The ClrWizardPage component is responsible for displaying the content of each step
- * in the wizard workflow.
- *
- * ClrWizardPage component has hooks into the navigation service (ClrWizardPage.navService),
- * page collection (ClrWizardPage.pageCollection), and button service
- * (ClrWizardPage.buttonService). These three providers are shared across the components
- * within each instance of a Wizard.
- *
- */
-declare class ClrWizardPage implements OnInit {
-    private navService;
-    pageCollection: PageCollectionService;
-    buttonService: ButtonHubService;
-    /**
-     * An input value that is used internally to generate the ClrWizardPage ID as
-     * well as the step nav item ID.
-     *
-     * Typed as any because it should be able to accept numbers as well as
-     * strings. Passing an index for wizard whose pages are created with an
-     * ngFor loop is a common use case.
-     *
-     * @memberof WizardPage
-     *
-     */
-    _id: any;
-    /**
-     * Overrides all actions from the page level, so you can use an alternate function for
-     * validation or data-munging with a ClrWizardPage.onCommit (clrWizardPageOnCommit output),
-     * ClrWizardPage.onCancel (clrWizardPageOnCancel output), or one
-     * of the granular page-level button click event emitters.
-     *
-     * @memberof WizardPage
-     *
-     */
-    preventDefault: boolean | string;
-    /**
-     * Emits when the value of ClrWizardPage.nextStepDisabled changes.
-     * Should emit the new value of nextStepDisabled.
-     *
-     * @memberof WizardPage
-     *
-     */
-    nextStepDisabledChange: EventEmitter<boolean>;
-    /**
-     * Emits when the value of ClrWizardPage.previousStepDisabled changes.
-     * Should emit the new value of previousStepDisabled.
-     *
-     * @memberof WizardPage
-     *
-     */
-    previousStepDisabledChange: EventEmitter<boolean>;
-    /**
-     *
-     * @memberof WizardPage
-     *
-     */
-    stopCancelChange: EventEmitter<boolean>;
-    /**
-     * An event emitter carried over from a legacy version of ClrWizardPage.
-     * Fires an event on ClrWizardPage whenever the next or finish buttons
-     * are clicked and the page is the current page of the Wizard.
-     *
-     * Note that this does not automatically emit an event when a custom
-     * button is used in place of a next or finish button.
-     *
-     * @memberof WizardPage
-     *
-     */
-    onCommit: EventEmitter<string>;
-    /**
-     * Emits an event when ClrWizardPage becomes the current page of the
-     * Wizard.
-     *
-     * @memberof WizardPage
-     *
-     */
-    onLoad: EventEmitter<string>;
-    /**
-     * Emits an event when the ClrWizardPage invokes the cancel routine for the wizard.
-     *
-     * Can be used in conjunction with the ClrWizardPage.stopCancel
-     * (clrWizardPagePreventDefaultCancel) or ClrWizardPage.preventDefault
-     * (clrWizardPagePagePreventDefault) inputs to implement custom cancel
-     * functionality at the page level. This is useful if you would like to do
-     * validation, save data, or warn users before cancelling the wizard.
-     *
-     * Note that this requires you to call Wizard.close() from the host component.
-     * This constitues a full replacement of the cancel functionality.
-     *
-     * @memberof WizardPage
-     *
-     */
-    pageOnCancel: EventEmitter<ClrWizardPage>;
-    /**
-     * Emits an event when the finish button is clicked and the ClrWizardPage is
-     * the wizard's current page.
-     *
-     * Can be used in conjunction with the ClrWizardPage.preventDefault
-     * (clrWizardPagePagePreventDefault) input to implement custom finish
-     * functionality at the page level. This is useful if you would like to do
-     * validation, save data, or warn users before allowing them to complete
-     * the wizard.
-     *
-     * Note that this requires you to call Wizard.finish() or Wizard.forceFinish()
-     * from the host component. This combination creates a full replacement of
-     * the finish functionality.
-     *
-     * @memberof WizardPage
-     *
-     */
-    finishButtonClicked: EventEmitter<ClrWizardPage>;
-    /**
-     * Emits an event when the previous button is clicked and the ClrWizardPage is
-     * the wizard's current page.
-     *
-     * Can be used in conjunction with the ClrWizardPage.preventDefault
-     * (clrWizardPagePagePreventDefault) input to implement custom backwards
-     * navigation at the page level. This is useful if you would like to do
-     * validation, save data, or warn users before allowing them to go
-     * backwards in the wizard.
-     *
-     * Note that this requires you to call Wizard.previous()
-     * from the host component. This combination creates a full replacement of
-     * the backwards navigation functionality.
-     *
-     * @memberof WizardPage
-     *
-     */
-    previousButtonClicked: EventEmitter<ClrWizardPage>;
-    /**
-     * Emits an event when the next button is clicked and the ClrWizardPage is
-     * the wizard's current page.
-     *
-     * Can be used in conjunction with the ClrWizardPage.preventDefault
-     * (clrWizardPagePagePreventDefault) input to implement custom forwards
-     * navigation at the page level. This is useful if you would like to do
-     * validation, save data, or warn users before allowing them to go
-     * to the next page in the wizard.
-     *
-     * Note that this requires you to call Wizard.forceNext() or Wizard.next()
-     * from the host component. This combination creates a full replacement of
-     * the forward navigation functionality.
-     *
-     * @memberof WizardPage
-     *
-     */
-    nextButtonClicked: EventEmitter<ClrWizardPage>;
-    /**
-     * Emits an event when a danger button is clicked and the ClrWizardPage is
-     * the wizard's current page. By default, a danger button will act as
-     * either a "next" or "finish" button depending on if the ClrWizardPage is the
-     * last page or not.
-     *
-     * Can be used in conjunction with the ClrWizardPage.preventDefault
-     * (clrWizardPagePagePreventDefault) input to implement custom forwards
-     * or finish navigation at the page level when the danger button is clicked.
-     * This is useful if you would like to do validation, save data, or warn
-     * users before allowing them to go to the next page in the wizard or
-     * finish the wizard.
-     *
-     * Note that this requires you to call Wizard.finish(), Wizard.forceFinish(),
-     * Wizard.forceNext() or Wizard.next() from the host component. This
-     * combination creates a full replacement of the forward navigation and
-     * finish functionality.
-     *
-     * @memberof WizardPage
-     *
-     */
-    dangerButtonClicked: EventEmitter<ClrWizardPage>;
-    /**
-     * Emits an event when a next, finish, or danger button is clicked and the
-     * ClrWizardPage is the wizard's current page.
-     *
-     * Can be used in conjunction with the ClrWizardPage.preventDefault
-     * (clrWizardPagePagePreventDefault) input to implement custom forwards
-     * or finish navigation at the page level, regardless of the type of
-     * primary button.
-     *
-     * This is useful if you would like to do validation, save data, or warn
-     * users before allowing them to go to the next page in the wizard or
-     * finish the wizard.
-     *
-     * Note that this requires you to call Wizard.finish(), Wizard.forceFinish(),
-     * Wizard.forceNext() or Wizard.next() from the host component. This
-     * combination creates a full replacement of the forward navigation and
-     * finish functionality.
-     *
-     * @memberof WizardPage
-     *
-     */
-    primaryButtonClicked: EventEmitter<string>;
-    customButtonClicked: EventEmitter<string>;
-    /**
-     * Contains a reference to the page title which is used for a number
-     * of different tasks for display in the wizard.
-     *
-     * @memberof WizardPage
-     *
-     */
-    pageTitle: ClrWizardPageTitle;
-    /**
-     * Contains a reference to the desired title for the page's step in the
-     * navigation on the left side of the wizard. Can be projected to change the
-     * navigation link's text.
-     *
-     * If not defined, then ClrWizardPage.pageTitle will be displayed in the stepnav.
-     *
-     * @memberof WizardPage
-     *
-     */
-    pageNavTitle: ClrWizardPageNavTitle;
-    /**
-     * Contains a reference to the buttons defined within the page. If not defined,
-     * the wizard defaults to the set of buttons defined as a direct child of the
-     * wizard.
-     *
-     * @memberof WizardPage
-     *
-     */
-    _buttons: ClrWizardPageButtons;
-    /**
-     * Contains a reference to the header actions defined within the page. If not defined,
-     * the wizard defaults to the set of header actions defined as a direct child of the
-     * wizard.
-     *
-     * @memberof WizardPage
-     *
-     */
-    _headerActions: ClrWizardPageHeaderActions;
-    /**
-     *
-     * @memberof WizardPage
-     *
-     */
-    private _nextStepDisabled;
-    /**
-     *
-     * @memberof WizardPage
-     *
-     */
-    private _previousStepDisabled;
-    /**
-     *
-     * @memberof WizardPage
-     *
-     */
-    private _hasError;
-    /**
-     *
-     * @memberof WizardPage
-     *
-     */
-    private _stopCancel;
-    /**
-     *
-     * @memberof WizardPage
-     *
-     */
-    private _stopNext;
-    /**
-     *
-     * @memberof WizardPage
-     *
-     */
-    private _complete;
-    /**
-     * Creates an instance of ClrWizardPage.
-     *
-     * @memberof WizardPage
-     */
-    constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService);
-    /**
-     * A property that tells whether or not the wizard should be allowed
-     * to move to the next page.
-     *
-     * Useful for in-page validation because it prevents forward navigation
-     * and visibly disables the next button.
-     *
-     * Does not require that you re-implement navigation routines like you
-     * would if you were using ClrWizardPage.preventDefault or
-     * Wizard.preventDefault.
-     *
-     * @memberof WizardPage
-     *
-     */
-    get nextStepDisabled(): boolean;
-    set nextStepDisabled(val: boolean);
-    /**
-     * A property that tells whether or not the wizard should be allowed
-     * to move to the previous page.
-     *
-     * Useful for in-page validation because it prevents backward navigation
-     * and visibly disables the previous button.
-     *
-     * Does not require that you re-implement navigation routines like you
-     * would if you were using ClrWizardPage.preventDefault or
-     * Wizard.preventDefault.
-     *
-     * @memberof WizardPage
-     *
-     */
-    get previousStepDisabled(): boolean;
-    set previousStepDisabled(val: boolean);
-    /**
-     * Whether the page has an error and also resolve the "falsy" value. The
-     * current logic treat a "0" or an empty string as false and likewise will treat any
-     * "truthy" value as true.
-     *
-     * @memberof WizardPage
-     *
-     */
-    get hasError(): boolean;
-    set hasError(val: boolean);
-    /**
-     * Overrides the cancel action from the page level. Allows you to use an
-     * alternate function for validation or data-munging before cancelling the
-     * wizard when combined with the ClrWizardPage.onCancel
-     * (the clrWizardPageOnCancel output).
-     *
-     * Requires that you manually close the wizard from your host component,
-     * usually with a call to Wizard.forceNext() or wizard.next();
-     *
-     * @memberof ClrWizardPage
-     */
-    get stopCancel(): boolean;
-    set stopCancel(val: boolean);
-    /**
-     * Overrides forward navigation from the page level. Allows you to use an
-     * alternate function for validation or data-munging before moving the
-     * wizard to the next pagewhen combined with the ClrWizardPage.onCommit
-     * (clrWizardPageOnCommit) or ClrWizardPage.nextButtonClicked
-     * (clrWizardPageNext) outputs.
-     *
-     * Requires that you manually tell the wizard to navigate forward from
-     * the hostComponent, usually with a call to Wizard.forceNext() or
-     * wizard.next();
-     *
-     * @memberof ClrWizardPage
-     */
-    get stopNext(): boolean;
-    set stopNext(val: boolean);
-    /**
-     * A read-only getter that generates an ID string for the wizard page from
-     * either the value passed to the ClrWizardPage "id" input or a wizard page
-     * counter shared across all wizard pages in the application.
-     *
-     * Note that the value passed into the ID input Will be prefixed with
-     * "clr-wizard-page-".
-     *
-     * @readonly
-     *
-     * @memberof ClrWizardPage
-     */
-    get id(): string;
-    /**
-     * A read-only getter that serves as a convenience for those who would rather
-     * not think in the terms of !ClrWizardPage.nextStepDisabled. For some use cases,
-     * ClrWizardPage.readyToComplete is more logical and declarative.
-     *
-     * @memberof WizardPage
-     *
-     */
-    get readyToComplete(): boolean;
-    /**
-     * A page is marked as completed if it is both readyToComplete and completed,
-     * as in the next or finish action has been executed while this page was current.
-     *
-     * Note there is and open question about how to handle pages that are marked
-     * complete but who are no longer readyToComplete. This might indicate an error
-     * state for the ClrWizardPage. Currently, the wizard does not acknowledge this state
-     * and only returns that the page is incomplete.
-     *
-     * @memberof WizardPage
-     *
-     */
-    get completed(): boolean;
-    /**
-     * A ClrWizardPage can be manually set to completed using this boolean setter.
-     * It is recommended that users rely on the convenience functions in the wizard
-     * and navigation service instead of manually setting pages’ completion state.
-     *
-     * @memberof ClrWizardPage
-     */
-    set completed(value: boolean);
-    /**
-     * Checks with the navigation service to see if it is the current page.
-     *
-     * @memberof WizardPage
-     *
-     */
-    get current(): boolean;
-    get disabled(): boolean;
-    /**
-     * A read-only getter that returns whether or not the page is navigable
-     * in the wizard. A wizard page can be navigated to if it is completed
-     * or the page before it is completed.
-     *
-     * This getter handles the logic for enabling or disabling the links in
-     * the step nav on the left Side of the wizard.
-     *
-     * @memberof WizardPage
-     *
-     */
-    get enabled(): boolean;
-    /**
-     * A read-only getter that returns whether or not the page before this
-     * ClrWizardPage is completed. This is useful for determining whether or not
-     * a page is navigable if it is not current or already completed.
-     *
-     * @memberof WizardPage
-     *
-     */
-    get previousCompleted(): boolean;
-    /**
-     *
-     * @memberof WizardPage
-     *
-     */
-    get title(): TemplateRef<any>;
-    /**
-     *
-     * @memberof WizardPage
-     *
-     */
-    get navTitle(): TemplateRef<any>;
-    /**
-     *
-     * @memberof WizardPage
-     *
-     */
-    get headerActions(): TemplateRef<any>;
-    /**
-     *
-     * @memberof WizardPage
-     *
-     */
-    get hasHeaderActions(): boolean;
-    /**
-     *
-     * @memberof WizardPage
-     *
-     */
-    get buttons(): TemplateRef<any>;
-    /**
-     * A read-only getter that returns a boolean that says whether or
-     * not the ClrWizardPage includes buttons. Used to determine if the
-     * Wizard should override the default button set defined as
-     * its direct children.
-     *
-     * @memberof WizardPage
-     *
-     */
-    get hasButtons(): boolean;
-    /**
-     * A read-only getter that returns the id used by the step nav item associated with the page.
-     *
-     * ClrWizardPage needs this ID string for aria information.
-     *
-     * @memberof WizardPage
-     *
-     */
-    get stepItemId(): string;
-    /**
-     * Links the nav service and establishes the current page if one is not defined.
-     *
-     * @memberof WizardPage
-     *
-     */
-    ngOnInit(): void;
-    /**
-     * Uses the nav service to make the ClrWizardPage the current page in the
-     * wizard. Bypasses all checks but still emits the ClrWizardPage.onLoad
-     * (clrWizardPageOnLoad) output.
-     *
-     * In most cases, it is better to use the default navigation functions
-     * in Wizard.
-     *
-     * @memberof WizardPage
-     *
-     */
-    makeCurrent(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPage, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardPage, "clr-wizard-page", never, { "_id": { "alias": "id"; "required": false; }; "preventDefault": { "alias": "clrWizardPagePreventDefault"; "required": false; }; "nextStepDisabled": { "alias": "clrWizardPageNextDisabled"; "required": false; }; "previousStepDisabled": { "alias": "clrWizardPagePreviousDisabled"; "required": false; }; "hasError": { "alias": "clrWizardPageHasError"; "required": false; }; "stopCancel": { "alias": "clrWizardPagePreventDefaultCancel"; "required": false; }; "stopNext": { "alias": "clrWizardPagePreventDefaultNext"; "required": false; }; }, { "nextStepDisabledChange": "clrWizardPageNextDisabledChange"; "previousStepDisabledChange": "clrWizardPagePreviousDisabledChange"; "stopCancelChange": "clrWizardPagePreventDefaultCancelChange"; "onCommit": "clrWizardPageOnCommit"; "onLoad": "clrWizardPageOnLoad"; "pageOnCancel": "clrWizardPageOnCancel"; "finishButtonClicked": "clrWizardPageFinish"; "previousButtonClicked": "clrWizardPagePrevious"; "nextButtonClicked": "clrWizardPageNext"; "dangerButtonClicked": "clrWizardPageDanger"; "primaryButtonClicked": "clrWizardPagePrimary"; "customButtonClicked": "clrWizardPageCustomButton"; }, ["pageTitle", "pageNavTitle", "_buttons", "_headerActions"], ["*"], false, never>;
-}
-
-/**
- * Performs navigation functions for a wizard and manages the current page. Presented as a
- * separate service to encapsulate the behavior of navigating and completing the wizard so
- * that it can be shared across the wizard and its sub-components.
- *
- * The easiest way to access the navigation service is there a reference on your wizard. The
- * Following example would allow you to access your instance of the wizard from your host
- * component and thereby access the navigation service via YourHostComponent.wizard.navService.
- *
- * @example
- * <clr-wizard #wizard ...>
- *
- * @example
- * export class YourHostComponent {
- *   @ViewChild("wizard") wizard: Wizard;
- *   ...
- * }
- *
- */
-declare class WizardNavigationService implements OnDestroy {
-    pageCollection: PageCollectionService;
-    buttonService: ButtonHubService;
-    /**
-     * Is notified when a previous button is clicked in the wizard. Performs checks
-     * before alerting the current page of the button click. Enacts navigation to
-     * the previous page if not overridden at the page level.
-     *
-     * @memberof WizardNavigationService
-     */
-    previousButtonSubscription: Subscription;
-    /**
-     * Is notified when a Next button is clicked in the wizard.
-     *
-     * @memberof WizardNavigationService
-     */
-    nextButtonSubscription: Subscription;
-    /**
-     * Is notified when a danger button is clicked in the wizard.
-     *
-     * @memberof WizardNavigationService
-     */
-    dangerButtonSubscription: Subscription;
-    /**
-     * Is notified when a  finish button is clicked in the wizard.
-     *
-     * @memberof WizardNavigationService
-     */
-    finishButtonSubscription: Subscription;
-    /**
-     * Is notified when a Custom button is clicked in the wizard.
-     *
-     * @memberof WizardNavigationService
-     */
-    customButtonSubscription: Subscription;
-    /**
-     * Is notified when a Cancel button is clicked in the wizard. Notifies the wizard,
-     * which handles all cancel functionality, if cancel is not overridden at the page
-     * level.
-     *
-     * @memberof WizardNavigationService
-     */
-    cancelButtonSubscription: Subscription;
-    /**
-     * Resets navigation to make the first page current when the page collection service
-     * emits an event notifying WizardNavigationService that it has reset all pages
-     * to their pristine, incomplete state.
-     *
-     * @memberof WizardNavigationService
-     */
-    pagesResetSubscription: Subscription;
-    /**
-     * A Boolean flag used by the ClrWizardPage to avoid a race condition when pages are
-     * loading and there is no current page defined.
-     *
-     * @memberof WizardNavigationService
-     */
-    navServiceLoaded: boolean;
-    /**
-     * A boolean flag shared across the Wizard subcomponents that follows the value
-     * of the Wizard.forceForward (clrWizardForceForwardNavigation) input. When true,
-     * navigating backwards in the stepnav menu will reset any skipped pages' completed
-     * state to false.
-     *
-     * This is useful when a wizard executes validation on a page-by-page basis when
-     * the next button is clicked.
-     *
-     * @memberof WizardNavigationService
-     */
-    forceForwardNavigation: boolean;
-    /**
-     * A boolean flag shared across the Wizard subcomponents that follows the value
-     * of the Wizard.stopCancel (clrWizardPreventDefaultCancel) input. When true, the cancel
-     * routine is subverted and must be reinstated in the host component calling Wizard.close()
-     * at some point.
-     *
-     * @memberof WizardNavigationService
-     */
-    wizardHasAltCancel: boolean;
-    /**
-     * A boolean flag shared across the Wizard subcomponents that follows the value
-     * of the Wizard.stopNext (clrWizardPreventDefaultNext) input. When true, the next and finish
-     * routines are subverted and must be reinstated in the host component calling Wizard.next(),
-     * Wizard.forceNext(), Wizard.finish(), or Wizard.forceFinish().
-     *
-     * @memberof WizardNavigationService
-     */
-    wizardHasAltNext: boolean;
-    /**
-     * A boolean flag shared across the Wizard subcomponents that follows the value
-     * of the Wizard.stopNavigation (clrWizardPreventNavigation) input. When true, all
-     * navigational elements in the wizard are disabled.
-     *
-     * This is intended to freeze the wizard in place. Events are not fired so this is
-     * not a way to implement alternate functionality for navigation.
-     *
-     * @memberof WizardNavigationService
-     */
-    wizardStopNavigation: boolean;
-    /**
-     * A boolean flag shared with the stepnav items that prevents user clicks on
-     * stepnav items from navigating the wizard.
-     *
-     * @memberof WizardNavigationService
-     */
-    wizardDisableStepnav: boolean;
-    /**
-     * @memberof WizardNavigationService
-     */
-    private _currentPage;
-    /**
-     *
-     * @memberof WizardNavigationService
-     */
-    private _currentChanged;
-    /**
-     * @memberof WizardNavigationService
-     */
-    private _movedToNextPage;
-    /**
-     * @memberof WizardNavigationService
-     */
-    private _wizardFinished;
-    /**
-     * @memberof WizardNavigationService
-     */
-    private _movedToPreviousPage;
-    /**
-     * @memberof WizardNavigationService
-     */
-    private _cancelWizard;
-    /**
-     * Creates an instance of WizardNavigationService. Also sets up subscriptions
-     * that listen to the button service to determine when a button has been clicked
-     * in the wizard. Is also responsible for taking action when the page collection
-     * requests that navigation be reset to its pristine state.
-     *
-     * @memberof WizardNavigationService
-     */
-    constructor(pageCollection: PageCollectionService, buttonService: ButtonHubService);
-    /**
-     * An Observable that is predominantly used amongst the subcomponents and services
-     * of the wizard. It is recommended that users listen to the ClrWizardPage.onLoad
-     * (clrWizardPageOnLoad) output instead of this Observable.
-     *
-     * @memberof WizardNavigationService
-     */
-    get currentPageChanged(): Observable<ClrWizardPage>;
-    /**
-     * @memberof WizardNavigationService
-     */
-    get currentPageTitle(): TemplateRef<any>;
-    /**
-     * Returns a Boolean that tells you whether or not the current page is the first
-     * page in the Wizard.
-     *
-     * This is helpful for determining whether a page is navigable.
-     *
-     * @memberof WizardNavigationService
-     */
-    get currentPageIsFirst(): boolean;
-    /**
-     * Returns a Boolean that tells you whether or not the current page is the
-     * last page in the Wizard.
-     *
-     * This is used to determine which buttons should display in the wizard footer.
-     *
-     * @memberof WizardNavigationService
-     */
-    get currentPageIsLast(): boolean;
-    /**
-     * Returns the ClrWizardPage object of the current page or null.
-     *
-     * @memberof WizardNavigationService
-     */
-    get currentPage(): ClrWizardPage;
-    /**
-     * Accepts a ClrWizardPage object, since that object to be the current/active
-     * page in the wizard, and emits the ClrWizardPage.onLoad (clrWizardPageOnLoad)
-     * event for that page.
-     *
-     * Note that all of this work is bypassed if the ClrWizardPage object is already
-     * the current page.
-     *
-     * @memberof WizardNavigationService
-     */
-    set currentPage(page: ClrWizardPage);
-    /**
-     * An observable used internally to alert the wizard that forward navigation
-     * has occurred. It is recommended that you use the Wizard.onMoveNext
-     * (clrWizardOnNext) output instead of this one.
-     *
-     * @memberof WizardNavigationService
-     */
-    get movedToNextPage(): Observable<boolean>;
-    /**
-     * An observable used internally to alert the wizard that the nav service
-     * has approved completion of the wizard.
-     *
-     * It is recommended that you use the Wizard.wizardFinished (clrWizardOnFinish)
-     * output instead of this one.
-     *
-     * @memberof WizardNavigationService
-     */
-    get wizardFinished(): Observable<void>;
-    /**
-     * Notifies the wizard when backwards navigation has occurred via the
-     * previous button.
-     *
-     * @memberof WizardNavigationService
-     */
-    get movedToPreviousPage(): Observable<boolean>;
-    /**
-     * Notifies the wizard that a user is trying to cancel it.
-     *
-     * @memberof WizardNavigationService
-     */
-    get notifyWizardCancel(): Observable<any>;
-    /**
-     *
-     * @memberof WizardNavigationService
-     */
-    ngOnDestroy(): void;
-    /**
-     * This is a public function that can be used to programmatically advance
-     * the user to the next page.
-     *
-     * When invoked, this method will move the wizard to the next page after
-     * successful validation. Note that this method goes through all checks
-     * and event emissions as if Wizard.next(false) had been called.
-     *
-     * In most cases, it makes more sense to use Wizard.next(false).
-     *
-     * @memberof WizardNavigationService
-     */
-    next(): void;
-    /**
-     * Bypasses checks and most event emissions to force a page to navigate forward.
-     *
-     * Comparable to calling Wizard.next() or Wizard.forceNext().
-     *
-     * @memberof WizardNavigationService
-     */
-    forceNext(): void;
-    /**
-     * Accepts a button/action type as a parameter. Encapsulates all logic for
-     * event emissions, state of the current page, and wizard and page level overrides.
-     *
-     * Avoid calling this function directly unless you really know what you're doing.
-     *
-     * @memberof WizardNavigationService
-     */
-    checkAndCommitCurrentPage(buttonType: string): void;
-    /**
-     * This is a public function that can be used to programmatically conclude
-     * the wizard.
-     *
-     * When invoked, this method will  initiate the work involved with finalizing
-     * and finishing the wizard workflow. Note that this method goes through all
-     * checks and event emissions as if Wizard.finish(false) had been called.
-     *
-     * In most cases, it makes more sense to use Wizard.finish(false).
-     *
-     * @memberof WizardNavigationService
-     */
-    finish(): void;
-    /**
-     * Programmatically moves the wizard to the page before the current page.
-     *
-     * In most instances, it makes more sense to call Wizard.previous()
-     * which does the same thing.
-     *
-     * @memberof WizardNavigationService
-     */
-    previous(): void;
-    /**
-     * Allows a hook into the cancel workflow of the wizard from the nav service. Note that
-     * this route goes through all checks and event emissions as if a cancel button had
-     * been clicked.
-     *
-     * In most cases, users looking for a hook into the cancel routine are actually looking
-     * for a way to close the wizard from their host component because they have prevented
-     * the default cancel action.
-     *
-     * In this instance, it is recommended that you use Wizard.close() to avoid any event
-     * emission loop resulting from an event handler calling back into routine that will
-     * again evoke the events it handles.
-     *
-     * @memberof WizardNavigationService
-     */
-    cancel(): void;
-    /**
-     * Performs all required checks to determine if a user can navigate to a page. Checking at each
-     * point if a page is navigable -- completed where the page immediately after the last completed
-     * page.
-     *
-     * Takes two parameters. The first one must be either the ClrWizardPage object or the ID of the
-     * ClrWizardPage object that you want to make the current page.
-     *
-     * The second parameter is optional and is a Boolean flag for "lazy completion". What this means
-     * is the Wizard will mark all pages between the current page and the page you want to navigate
-     * to as completed. This is useful for informational wizards that do not require user action,
-     * allowing an easy means for users to jump ahead.
-     *
-     * To avoid checks on navigation, use ClrWizardPage.makeCurrent() instead.
-     *
-     * @memberof WizardNavigationService
-     */
-    goTo(pageToGoToOrId: any, lazyComplete?: boolean): void;
-    /**
-     * Accepts a range of ClrWizardPage objects as a parameter. Performs the work of checking
-     * those objects to determine if navigation can be accomplished.
-     *
-     * @memberof WizardNavigationService
-     */
-    canGoTo(pagesToCheck: ClrWizardPage[]): boolean;
-    /**
-     * Looks through the collection of pages to find the first one that is incomplete
-     * and makes that page the current/active page.
-     *
-     * @memberof WizardNavigationService
-     */
-    setLastEnabledPageCurrent(): void;
-    /**
-     * Finds the first page in the collection of pages and makes that page the
-     * current/active page.
-     *
-     * @memberof WizardNavigationService
-     */
-    setFirstPageCurrent(): void;
-    /**
-     * Updates the stepnav on the left side of the wizard when pages are dynamically
-     * added or removed from the collection of pages.
-     *
-     * @memberof WizardNavigationService
-     */
-    updateNavigation(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<WizardNavigationService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<WizardNavigationService>;
-}
-
-declare class HeaderActionService {
-    navService: WizardNavigationService;
-    wizardHeaderActions: QueryList<ClrWizardHeaderAction>;
-    constructor(navService: WizardNavigationService);
-    get wizardHasHeaderActions(): boolean;
-    get currentPageHasHeaderActions(): boolean;
-    get showWizardHeaderActions(): boolean;
-    get displayHeaderActionsWrapper(): boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<HeaderActionService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<HeaderActionService>;
-}
-
-declare class ClrWizardTitle {
-    headingLevel: HeadingLevel;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardTitle, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardTitle, "clr-wizard-title", never, { "headingLevel": { "alias": "clrHeadingLevel"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
-    private platformId;
-    commonStrings: ClrCommonStringsService;
-    navService: WizardNavigationService;
-    pageCollection: PageCollectionService;
-    buttonService: ButtonHubService;
-    headerActionService: HeaderActionService;
-    private elementRef;
-    /**
-     * Set the aria-label for the stepnav section of the wizard. Set using `[clrWizardStepnavAriaLabel]` input.
-     */
-    stepnavAriaLabel: string;
-    /**
-     * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
-     */
-    size: string;
-    /**
-     * Enable "in page" wizard. Set using `[clrWizardInPage]` input.
-     */
-    inPage: boolean;
-    /**
-     * Make an "in page" wizard fill the `.content-area`. Set using `[clrWizardInPageFillContentArea]` input.
-     * If you can't use this option, you will likely need to provide custom CSS to set the wizard's height and margins.
-     */
-    inPageFillContentArea: boolean;
-    /**
-     * Tells the modal part of the wizard whether it should have a close "X"
-     * in the top right corner. Set using `[clrWizardClosable]` input.
-     */
-    closable: boolean;
-    /**
-     * Used to communicate to the underlying modal that animations are not
-     * wanted. Primary use is for the display of static/inline wizards.
-     * Set using `[clrWizardPreventModalAnimation]` input.
-     */
-    _stopModalAnimations: boolean;
-    /**
-     * Emits when the wizard is opened or closed.
-     * Listen via `(clrWizardOpenChange)` event.
-     */
-    _openChanged: EventEmitter<boolean>;
-    /**
-     * Emits when the wizard is canceled. Listen via `(clrWizardOnCancel)` event.
-     * Can be combined with the `[clrWizardPreventDefaultCancel]` input to create
-     * wizard-level custom cancel routines.
-     */
-    onCancel: EventEmitter<any>;
-    /**
-     * Emits when the wizard is completed. Listen via `(clrWizardOnFinish)` event.
-     * Can be combined with the `[clrWizardPreventDefaultNext]` input to create
-     * wizard-level custom completion routines.
-     */
-    wizardFinished: EventEmitter<any>;
-    /**
-     * Emits when the wizard is reset. Listen via `(clrWizardOnReset)` event.
-     */
-    onReset: EventEmitter<any>;
-    /**
-     * Emits when the current page has changed. Listen via `(clrWizardCurrentPageChanged)` event.
-     * output. Useful for non-blocking validation.
-     */
-    currentPageChanged: EventEmitter<any>;
-    /**
-     * Emits when the wizard moves to the next page. Listen via `(clrWizardOnNext)` event.
-     * Can be combined with the `[clrWizardPreventDefaultNext]` input to create
-     * wizard-level custom navigation routines, which are useful for validation.
-     */
-    onMoveNext: EventEmitter<any>;
-    /**
-     * Emits when the wizard moves to the previous page. Can be useful for validation.
-     * Listen via `(clrWizardOnPrevious)` event.
-     */
-    onMovePrevious: EventEmitter<any>;
-    pageTitle: ElementRef<HTMLElement>;
-    pages: QueryList<ClrWizardPage>;
-    headerActions: QueryList<ClrWizardHeaderAction>;
-    _open: boolean;
-    wizardId: string;
-    protected wizardTitle: ClrWizardTitle;
-    private readonly bodyElementRef;
-    private _forceForward;
-    private _stopNext;
-    private _stopCancel;
-    private _stopNavigation;
-    private _disableStepnav;
-    private differ;
-    private subscriptions;
-    private readonly modal;
-    constructor(platformId: any, commonStrings: ClrCommonStringsService, navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService, headerActionService: HeaderActionService, elementRef: ElementRef<HTMLElement>, differs: IterableDiffers);
-    /**
-     * Resets page completed states when navigating backwards.
-     * Set using `[clrWizardForceForwardNavigation]` input.
-     */
-    get forceForward(): boolean;
-    set forceForward(value: boolean);
-    /**
-     * Toggles open/close of the wizard component.
-     * Set using the `[clrWizardOpen]` input.
-     */
-    set clrWizardOpen(open: boolean);
-    /**
-     * Prevents ClrWizard from moving to the next page or closing itself on finishing.
-     * Set using the `[clrWizardPreventDefaultNext]` input. Note that using stopNext
-     * will require you to create your own calls to .next() and .finish() in your
-     * host component to make the ClrWizard work as expected.
-     */
-    get stopNext(): boolean;
-    set stopNext(value: boolean);
-    /**
-     * Prevents ClrWizard from closing when the cancel button or close "X" is clicked.
-     * Set using the `[clrWizardPreventDefaultCancel]` input.
-     *
-     * Note that using stopCancel will require you to create your own calls to `close()` in your host compone`nt
-     * to make the ClrWizard work as expected. Useful for doing checks or prompts
-     * before closing a ClrWizard.
-     */
-    get stopCancel(): boolean;
-    set stopCancel(value: boolean);
-    /**
-     * Prevents ClrWizard from performing any form of navigation away from the current
-     * page. Set using the `[clrWizardPreventNavigation]` input.
-     * Note that stopNavigation is meant to freeze the wizard in place, typically
-     * during a long validation or background action where you want the wizard to
-     * display loading content but not allow the user to execute navigation in
-     * the stepnav, close X, or the  back, finish, or next buttons.
-     */
-    get stopNavigation(): boolean;
-    set stopNavigation(value: boolean);
-    /**
-     * Prevents clicks on the links in the stepnav from working.
-     * Set using `[clrWizardDisableStepnav]` input.
-     * A more granular bypassing of navigation which can be useful when your
-     * ClrWizard is in a state of completion and you don't want users to be
-     * able to jump backwards and change things.
-     */
-    get disableStepnav(): boolean;
-    set disableStepnav(value: boolean);
-    get currentPage(): ClrWizardPage;
-    set currentPage(page: ClrWizardPage);
-    get isLast(): boolean;
-    get isFirst(): boolean;
-    get isInline(): boolean;
-    get stopModalAnimations(): boolean;
-    ngAfterContentInit(): void;
-    ngDoCheck(): void;
-    ngOnDestroy(): void;
-    /**
-     * Marks Wizard as finished. By default it does not execute event
-     * emissions or checks before completing and closing. This method is commonly
-     * used as part of an alternative navigation with `[clrWizardPreventDefaultNext]`.
-     *
-     * If `skipChecksAndEmits` is true, the wizard will complete and close
-     * regardless of the state of its current page. This is useful for alternative
-     * navigation where event emissions have already been done and firing them again
-     * may cause an event loop.
-     */
-    finish(skipChecksAndEmits?: boolean): void;
-    /**
-     * Marks the wizard as finished but does run checks and emissions.
-     * Good for a last step in an alternate workflow. Does the same thing as
-     * calling `ClrWizard.finish(true)` or `ClrWizard.finish()` without a parameter.
-     */
-    forceFinish(): void;
-    /**
-     * Opens the wizard. If there is no current page defined, sets the first page in the wizard to be current.
-     */
-    open(): void;
-    /**
-     * Closes the wizard. Call this directly instead of `cancel()` to implement alternative cancel functionality.
-     */
-    close(): void;
-    /**
-     * Used to open and close the wizard. By default the wizard will
-     * close if invoked with no parameter. If parameter is true wizard will open
-     * else if false will close.
-     */
-    toggle(open: boolean): void;
-    /**
-     * Moves the wizard to the previous page.
-     */
-    previous(): void;
-    /**
-     * By default, `next()` does not execute event emissions.
-     * This method is commonly called as part of an alternative navigation
-     * with `[clrWizardPreventDefaultNext]`. The wizard will move to the next page
-     * regardless of the state of its current page. This is useful for alternative
-     * navigation where event emissions have already been done and firing them again
-     * may cause an event loop.
-     *
-     * If `skipChecksAndEmits` is false, the wizard will execute default checks
-     * and emit events as normal. This is useful for custom buttons or programmatic
-     * workflows that are not executing the wizards default checks and emissions.
-     * It is another way to navigate without having to rewrite the wizard’s default
-     * functionality from scratch.
-     */
-    next(skipChecksAndEmits?: boolean): void;
-    /**
-     * Moves the wizard to the next page without the checks and emissions.
-     * Good for a last step in an alternate workflow.
-     * Alias for `ClrWizard.next(true)` or `ClrWizard.next()`
-     */
-    forceNext(): void;
-    /**
-     * Cancels and closes the wizard. Do not use this for an override of the cancel
-     * the functionality with `[clrWizardPreventDefaultCancel]`, `[clrWizardPreventPageDefaultCancel]`,
-     * or `[clrWizardPagePreventDefault]` because it will initiate the same checks
-     * and event emissions that invoked your event handler. Use `ClrWizard.close()` instead.
-     */
-    cancel(): void;
-    /**
-     * Overrides behavior of the underlying modal to avoid collisions with
-     * alternative cancel functionality. In most cases, use `ClrWizard.cancel()` instead.
-     */
-    modalCancel(): void;
-    /**
-     * Checks for alternative cancel flows defined at the current page or
-     * wizard level. Performs a canceled if not. Emits events that initiate
-     * the alternative cancel outputs `(clrWizardPageOnCancel)` and `(clrWizardOnCancel)`.
-     */
-    checkAndCancel(): void;
-    /**
-     * Navigates to a given page in the Wizard. Navigation will invoke the wizard’s default
-     * checks and event emissions.
-     *
-     * The format of the expected ID parameter can be found in the return of the
-     * ClrWizardPage.id getter, usually prefixed with `clr-wizard-page-` and then either a
-     * numeric ID or the ID specified for the `ClrWizardPage` component’s `id` input.
-     */
-    goTo(pageId: string): void;
-    /**
-     * Reset sets all WizardPages to incomplete and sets the first page in the `ClrWizard` to
-     * be the current page, resetting the wizard navigation.
-     * Use `(clrWizardOnReset)` event to reset the data or model of your wizard.
-     */
-    reset(): void;
-    private listenForNextPageChanges;
-    private listenForPreviousPageChanges;
-    private listenForCancelChanges;
-    private listenForFinishedChanges;
-    private listenForPageChanges;
-    private updateNavOnPageChanges;
-    private initializeButtons;
-    private emitWizardFinished;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
-}
-
-declare class ClrWizardStepnav {
-    pageService: PageCollectionService;
-    label: string;
-    constructor(pageService: PageCollectionService);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnav, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": { "alias": "label"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare class ClrWizardStepnavItem implements OnInit, OnDestroy {
-    navService: WizardNavigationService;
-    pageCollection: PageCollectionService;
-    commonStrings: ClrCommonStringsService;
-    private readonly elementRef;
-    page: ClrWizardPage;
-    private subscription;
-    /**
-     * This is used to prevent the steps from scrolling as the user clicks on the steps.
-     */
-    private skipNextScroll;
-    constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, commonStrings: ClrCommonStringsService, elementRef: ElementRef<HTMLElement>);
-    get id(): string;
-    get stepAriaCurrent(): string;
-    get isDisabled(): boolean;
-    get isCurrent(): boolean;
-    get isComplete(): boolean;
-    get hasError(): boolean;
-    get canNavigate(): boolean;
-    protected get stepIconId(): string;
-    protected get stepTextId(): string;
-    protected get stepNumberId(): string;
-    protected get stepTitleId(): string;
-    protected get labelledby(): string;
-    protected get icon(): {
-        shape: string;
-        label: string;
-    } | null;
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    click(): void;
-    private pageGuard;
-    private ensureCurrentStepIsScrolledIntoView;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnavItem, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnavItem, "[clr-wizard-stepnav-item]", never, { "page": { "alias": "page"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare const DEFAULT_BUTTON_TYPES: any;
-declare const CUSTOM_BUTTON_TYPES: any;
-declare class ClrWizardButton {
-    navService: WizardNavigationService;
-    buttonService: ButtonHubService;
-    type: string;
-    disabled: boolean;
-    hidden: boolean;
-    wasClicked: EventEmitter<string>;
-    constructor(navService: WizardNavigationService, buttonService: ButtonHubService);
-    get isCancel(): boolean;
-    get isNext(): boolean;
-    get isPrevious(): boolean;
-    get isFinish(): boolean;
-    get isDanger(): boolean;
-    get isPrimaryAction(): boolean;
-    get _disabledAttribute(): string | null;
-    get isDisabled(): boolean;
-    get isHidden(): boolean;
-    click(): void;
-    private checkDefaultAndCustomType;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardButton, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardButton, "clr-wizard-button", never, { "type": { "alias": "type"; "required": false; }; "disabled": { "alias": "clrWizardButtonDisabled"; "required": false; }; "hidden": { "alias": "clrWizardButtonHidden"; "required": false; }; }, { "wasClicked": "clrWizardButtonClicked"; }, never, ["*"], false, never>;
-}
-
-declare const CLR_WIZARD_DIRECTIVES: any[];
-declare class ClrWizardModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrModalModule, typeof ClrAlertModule], [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrWizardModule>;
-}
-
-declare class ClrSidePanel implements OnInit, OnDestroy {
-    private element;
-    private configuration;
-    commonStrings: ClrCommonStringsService;
-    openChange: EventEmitter<boolean>;
-    closeButtonAriaLabel: string | undefined;
-    skipAnimation: boolean;
-    labelledById: string;
-    staticBackdrop: boolean;
-    closable: boolean;
-    preventClose: boolean;
-    altClose: EventEmitter<boolean>;
-    private _pinnable;
-    private _pinned;
-    private originalStopClose;
-    private _position;
-    private _modal;
-    private __open;
+    private cdr;
+    iconSVG: string;
+    isStringIcon: boolean;
+    private _shape;
     private _size;
-    constructor(element: ElementRef<HTMLElement>, configuration: ClrModalConfigurationService, commonStrings: ClrCommonStringsService);
-    get _open(): boolean;
-    set _open(open: boolean);
+    private _direction;
+    private _flip;
+    private _solid;
+    private _status;
+    private _inverse;
+    private _badge;
+    private subscription;
+    private _priorShape;
+    constructor(el: ElementRef<HTMLElement>, cdr: ChangeDetectorRef);
+    get shape(): string;
+    set shape(value: string);
     get size(): string;
     set size(value: string);
-    get position(): string;
-    set position(position: string);
-    get pinned(): boolean;
-    set pinned(pinned: boolean);
-    get clrSidePanelBackdrop(): boolean;
-    set clrSidePanelBackdrop(backdrop: boolean);
-    get clrSidePanelPinnable(): boolean;
-    set clrSidePanelPinnable(pinnable: boolean);
-    private get modal();
-    private set modal(value);
-    private get hostElement();
-    private get bottomPositionCssClass();
+    get direction(): string;
+    set direction(value: string);
+    get flip(): Orientations;
+    set flip(value: Orientations);
+    get solid(): boolean;
+    set solid(value: boolean);
+    get status(): string;
+    set status(value: string);
+    get inverse(): boolean;
+    set inverse(value: boolean);
+    get badge(): string | boolean;
+    set badge(value: string | boolean);
     ngOnInit(): void;
     ngOnDestroy(): void;
-    handleModalOpen(open: boolean): void;
-    open(): void;
-    close(): void;
-    togglePinned(): void;
-    private documentClick;
-    private updateModalState;
-    private cleanupPinnedClasses;
-    private updatePinnedClasses;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanel, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "closeButtonAriaLabel": { "alias": "clrSidePanelCloseButtonAriaLabel"; "required": false; }; "skipAnimation": { "alias": "clrSidePanelSkipAnimation"; "required": false; }; "labelledById": { "alias": "clrSidePanelLabelledById"; "required": false; }; "staticBackdrop": { "alias": "clrSidePanelStaticBackdrop"; "required": false; }; "closable": { "alias": "clrSidePanelClosable"; "required": false; }; "preventClose": { "alias": "clrSidePanelPreventClose"; "required": false; }; "_open": { "alias": "clrSidePanelOpen"; "required": false; }; "size": { "alias": "clrSidePanelSize"; "required": false; }; "position": { "alias": "clrSidePanelPosition"; "required": false; }; "pinned": { "alias": "clrSidePanelPinned"; "required": false; }; "clrSidePanelBackdrop": { "alias": "clrSidePanelBackdrop"; "required": false; }; "clrSidePanelPinnable": { "alias": "clrSidePanelPinnable"; "required": false; }; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
-}
-
-declare const CLR_SIDEPANEL_DIRECTIVES: Type$1<any>[];
-declare class ClrSidePanelModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanelModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSidePanelModule, [typeof ClrSidePanel], [typeof i2.CommonModule, typeof CdkTrapFocusModule, typeof ClrIcon, typeof ClrModalModule], [typeof ClrSidePanel, typeof ClrModalModule, typeof ClrIcon]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSidePanelModule>;
-}
-
-declare enum AccordionStrategy {
-    Default = "default",// only one panel at a time
-    Multi = "multi"
-}
-
-declare enum AccordionStatus {
-    Inactive = "inactive",
-    Error = "error",
-    Complete = "complete"
-}
-
-declare class AccordionPanelModel {
-    id: string;
-    accordionId: number | string;
-    status: AccordionStatus;
-    index: number;
-    disabled: boolean;
-    open: boolean;
-    templateId: string;
-    constructor(id: string, accordionId: number | string);
-}
-declare class AccordionModel {
-    protected strategy: AccordionStrategy;
-    protected accordionCount: number;
-    protected _panels: {
-        [id: string]: AccordionPanelModel;
-    };
-    get panels(): AccordionPanelModel[];
-    setStrategy(strategy: AccordionStrategy): void;
-    updatePanelOrder(ids: string[]): void;
-    addPanel(id: string, open?: boolean): void;
-    togglePanel(panelId: string, open?: boolean): void;
-    disablePanel(panelId: string, disabled: boolean): void;
-    private closeAllPanels;
-    private removeOldPanels;
-}
-
-declare class AccordionService {
-    protected accordion: AccordionModel;
-    protected readonly _panelsChanges: BehaviorSubject<AccordionPanelModel[]>;
-    getPanelChanges(panelId: string): Observable<AccordionPanelModel>;
-    setStrategy(strategy: AccordionStrategy): void;
-    addPanel(panelId: string, open?: boolean): void;
-    togglePanel(panelId: string, open?: boolean): void;
-    disablePanel(panelId: string, disabled?: boolean): void;
-    updatePanelOrder(ids: string[]): void;
-    protected emitUpdatedPanels(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<AccordionService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<AccordionService>;
-}
-
-declare class StepperModel extends AccordionModel {
-    private stepperModelInitialize;
-    private initialPanel;
-    get allPanelsCompleted(): boolean;
-    get shouldOpenFirstPanel(): boolean;
-    addPanel(id: string, open?: boolean): void;
-    updatePanelOrder(ids: string[]): void;
-    togglePanel(panelId: string): void;
-    navigateToPreviousPanel(currentPanelId: string): void;
-    navigateToNextPanel(currentPanelId: string, currentPanelValid?: boolean): void;
-    overrideInitialPanel(panelId: string): void;
-    setPanelValid(panelId: string): void;
-    setPanelInvalid(panelId: string): void;
-    setPanelsWithErrors(ids: string[]): void;
-    resetPanels(): void;
-    getNextPanel(currentPanelId: string): AccordionPanelModel;
-    getPreviousPanel(currentPanelId: string): AccordionPanelModel;
-    private resetAllFuturePanels;
-    private resetPanel;
-    private openFirstPanel;
-    private completePanel;
-    private openNextPanel;
-    private openPreviousPanel;
-    private setPanelError;
-    private getFirstPanel;
-    private getNumberOfIncompletePanels;
-    private getNumberOfOpenPanels;
-}
-
-declare class StepperService extends AccordionService {
-    readonly activeStep: Observable<string>;
-    readonly panelsCompleted: Observable<boolean>;
-    protected accordion: StepperModel;
-    private _activeStepChanges;
-    constructor();
-    resetPanels(): void;
-    setPanelValid(panelId: string): void;
-    setPanelInvalid(panelId: string): void;
-    setPanelsWithErrors(ids: string[]): void;
-    navigateToPreviousPanel(currentPanelId: string): void;
-    navigateToNextPanel(currentPanelId: string, currentPanelValid?: boolean): void;
-    overrideInitialPanel(panelId: string): void;
-    private updateNextStep;
-    private updatePreviousStep;
-    private getAllCompletedPanelChanges;
-    static ɵfac: i0.ɵɵFactoryDeclaration<StepperService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<StepperService>;
-}
-
-declare class ClrAccordionDescription {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionDescription, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionDescription, "clr-accordion-description, clr-step-description", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class ClrAccordionPanel implements OnInit, OnChanges {
-    private parent;
-    commonStrings: ClrCommonStringsService;
-    private accordionService;
-    private ifExpandService;
-    private cdr;
-    disabled: boolean;
-    panelOpen: boolean;
-    /**
-     * Level of the accordion/stepper heading from 1 to 6.
-     */
-    explicitHeadingLevel: HeadingLevel;
-    panelOpenChange: EventEmitter<boolean>;
-    accordionDescription: QueryList<ClrAccordionDescription>;
-    panel: Observable<AccordionPanelModel>;
-    private _id;
-    private _panelIndex;
-    constructor(parent: ClrAccordionPanel, commonStrings: ClrCommonStringsService, accordionService: AccordionService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
-    get id(): string;
-    set id(value: string);
-    get panelNumber(): number;
-    ngOnInit(): void;
-    ngOnChanges(changes: SimpleChanges): void;
-    togglePanel(): void;
-    collapsePanelOnAnimationDone(panel: AccordionPanelModel): void;
-    getPanelStateClasses(panel: AccordionPanelModel): string;
-    getAccordionContentId(id: string): string;
-    getAccordionHeaderId(id: string): string;
-    protected stepCompleteText(panelNumber: number): string;
-    protected stepErrorText(panelNumber: number): string;
-    private emitPanelChange;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": { "alias": "clrAccordionPanelDisabled"; "required": false; }; "panelOpen": { "alias": "clrAccordionPanelOpen"; "required": false; }; "explicitHeadingLevel": { "alias": "clrAccordionPanelHeadingLevel"; "required": false; }; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
-}
-
-declare class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
-    private platformId;
-    commonStrings: ClrCommonStringsService;
-    private formGroupName;
-    private ngModelGroup;
-    private stepperService;
-    headerButton: ElementRef<HTMLButtonElement>;
-    readonly AccordionStatus: typeof AccordionStatus;
-    private subscriptions;
-    constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
-    get id(): string;
-    set id(_value: string);
-    get formGroup(): i4.FormGroup<any>;
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    private listenToFocusChanges;
-    private triggerAllFormControlValidationIfError;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-step-title", "clr-step-description", "*"], false, never>;
-}
-
-declare class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-    private formGroup;
-    private ngForm;
-    private stepperService;
-    initialPanel: string;
-    panels: QueryList<ClrStepperPanel>;
-    subscriptions: Subscription[];
-    form: FormGroupDirective | NgForm;
-    constructor(formGroup: FormGroupDirective, ngForm: NgForm, stepperService: StepperService);
-    ngOnInit(): void;
-    ngOnChanges(changes: SimpleChanges): void;
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    private listenForFormResetChanges;
-    private listenForPanelsCompleted;
-    private setPanelsWithFormErrors;
-    private listenForDOMChanges;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepper, [{ optional: true; }, { optional: true; }, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepper, "form[clrStepper]", never, { "initialPanel": { "alias": "clrInitialStep"; "required": false; }; }, {}, ["panels"], ["*"], false, never>;
-}
-
-declare enum ClrStepButtonType {
-    Next = "next",
-    Previous = "previous",
-    Submit = "submit"
-}
-declare class ClrStepButton implements OnInit {
-    private clrStep;
-    private stepperService;
-    type: ClrStepButtonType | string;
-    submitButton: boolean;
-    previousButton: boolean;
-    constructor(clrStep: ClrStepperPanel, stepperService: StepperService);
-    ngOnInit(): void;
-    navigateToNextPanel(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepButton, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStepButton, "[clrStepButton]", never, { "type": { "alias": "clrStepButton"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare class StepperWillyWonka extends WillyWonka {
-    static ɵfac: i0.ɵɵFactoryDeclaration<StepperWillyWonka, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<StepperWillyWonka, "form[clrStepper]", never, {}, {}, never, never, false, never>;
-}
-
-declare class StepperOompaLoompa extends OompaLoompa {
-    private expand;
-    constructor(cdr: ChangeDetectorRef, willyWonka: StepperWillyWonka, ifExpandService: IfExpandService);
-    get flavor(): boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<StepperOompaLoompa, [null, { optional: true; }, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<StepperOompaLoompa, "clr-stepper-panel, [clrStepButton]", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-    private accordionService;
-    multiPanel: boolean | string;
-    panels: QueryList<ClrAccordionPanel>;
-    subscriptions: Subscription[];
-    constructor(accordionService: AccordionService);
-    ngOnInit(): void;
-    ngOnChanges(changes: SimpleChanges): void;
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    private setAccordionStrategy;
-    private listenForDOMChanges;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordion, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordion, "clr-accordion", never, { "multiPanel": { "alias": "clrAccordionMultiPanel"; "required": false; }; }, {}, ["panels"], ["*"], false, never>;
-}
-
-declare class ClrAccordionTitle {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionTitle, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionTitle, "clr-accordion-title, clr-step-title", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class ClrAccordionContent {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionContent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionContent, "clr-accordion-content, clr-step-content", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class AccordionWillyWonka extends WillyWonka {
-    static ɵfac: i0.ɵɵFactoryDeclaration<AccordionWillyWonka, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<AccordionWillyWonka, "clr-accordion", never, {}, {}, never, never, false, never>;
-}
-
-declare class AccordionOompaLoompa extends OompaLoompa {
-    private expand;
-    constructor(cdr: ChangeDetectorRef, willyWonka: AccordionWillyWonka, ifExpandService: IfExpandService);
-    get flavor(): boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<AccordionOompaLoompa, [null, { optional: true; }, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<AccordionOompaLoompa, "clr-accordion-panel", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrAccordionModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof AccordionOompaLoompa, typeof AccordionWillyWonka], [typeof i2.CommonModule, typeof ClrIcon], [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof AccordionOompaLoompa, typeof AccordionWillyWonka]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrAccordionModule>;
-}
-
-declare class ClrStepperModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepperPanel, typeof StepperOompaLoompa, typeof StepperWillyWonka], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrAccordionModule], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepperPanel, typeof StepperOompaLoompa, typeof StepperWillyWonka, typeof ClrAccordionModule, typeof ClrIcon]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrStepperModule>;
-}
-
-declare class ClrProgressBar {
-    max: number | string;
-    displayval: string;
-    color: string;
-    value: number | string;
-    externalId: string;
-    private _ID;
-    private _labeled;
-    private _fade;
-    private _loop;
-    private _flash;
-    private _flashDanger;
-    private _compact;
-    get id(): string;
-    set id(value: string);
-    get progressClass(): boolean;
-    set clrCompact(value: boolean | string);
-    get compactClass(): boolean;
-    set clrLabeled(value: boolean | string);
-    get labeledClass(): boolean;
-    set clrFade(value: boolean | string);
-    get fadeClass(): boolean;
-    set clrLoop(value: boolean | string);
-    get loopClass(): boolean;
-    get warningClass(): boolean;
-    get successClass(): boolean;
-    get dangerClass(): boolean;
-    set clrFlash(value: boolean | string);
-    get flashClass(): boolean;
-    /** @deprecated since 2.0, remove in 4.0 */
-    set clrFlashDanger(value: boolean | string);
-    get flashDangerClass(): boolean;
-    /**
-     * Make sure that we always will have something that is readable
-     * for the screen reader
-     */
-    get displayValue(): string;
-    /**
-     * Display optional text only when labeled is eneabled
-     */
-    displayStringValue(): boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrProgressBar, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrProgressBar, "clr-progress-bar", never, { "max": { "alias": "clrMax"; "required": false; }; "displayval": { "alias": "clrDisplayval"; "required": false; }; "color": { "alias": "clrColor"; "required": false; }; "value": { "alias": "clrValue"; "required": false; }; "id": { "alias": "id"; "required": false; }; "clrCompact": { "alias": "clrCompact"; "required": false; }; "clrLabeled": { "alias": "clrLabeled"; "required": false; }; "clrFade": { "alias": "clrFade"; "required": false; }; "clrLoop": { "alias": "clrLoop"; "required": false; }; "clrFlash": { "alias": "clrFlash"; "required": false; }; "clrFlashDanger": { "alias": "clrFlashDanger"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare const CLR_PROGRESS_BAR_DIRECTIVES: Type$1<any>[];
-declare class ClrProgressBarModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrProgressBarModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrProgressBarModule, [typeof ClrProgressBar], [typeof i2.CommonModule], [typeof ClrProgressBar]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrProgressBarModule>;
-}
-
-declare enum ClrTimelineLayout {
-    HORIZONTAL = "horizontal",
-    VERTICAL = "vertical"
-}
-
-declare class ClrTimeline {
-    layout: ClrTimelineLayout;
-    get isVertical(): boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimeline, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimeline, "clr-timeline", never, { "layout": { "alias": "clrLayout"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare enum ClrTimelineStepState {
-    NOT_STARTED = "not-started",
-    CURRENT = "current",
-    PROCESSING = "processing",
-    SUCCESS = "success",
-    ERROR = "error"
-}
-
-declare class TimelineIconAttributeService {
-    private attributeMap;
-    constructor(commonStrings: ClrCommonStringsService);
-    getAriaLabel(step: ClrTimelineStepState): string;
-    getIconShape(step: ClrTimelineStepState): string;
-    getIconStatus(step: ClrTimelineStepState): string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TimelineIconAttributeService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<TimelineIconAttributeService>;
-}
-
-declare class ClrTimelineStep {
-    private iconAttributeService;
-    private platformId;
-    state: ClrTimelineStepState;
-    stepTitle: ElementRef<HTMLElement>;
-    stepTitleText: string;
-    constructor(iconAttributeService: TimelineIconAttributeService, platformId: any);
-    get iconAriaLabel(): string;
-    get iconShape(): string;
-    get iconStatus(): string;
-    get isProcessing(): boolean;
-    ngAfterContentInit(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStep, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStep, "clr-timeline-step", never, { "state": { "alias": "clrState"; "required": false; }; }, {}, ["stepTitle"], ["clr-timeline-step-header", "clr-timeline-step-title", "clr-timeline-step-description"], false, never>;
-}
-
-declare class ClrTimelineStepDescription {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStepDescription, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStepDescription, "clr-timeline-step-description", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class ClrTimelineStepHeader {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStepHeader, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStepHeader, "clr-timeline-step-header", never, {}, {}, never, ["*"], false, never>;
-}
-
-/**
- * Note: Why does this component have aria-hidden attribute?
- *
- * tl;dr: we want screen readers to ignore this element when its reading out to blind users.
- *
- * In order to make a timeline step accessible to screen readers we need the title read out before the
- * icon. In order to do this, ClrTimeLine step has a ContentChild that queries for the ClrTimelineStepTitle and
- * then adds the projected text into a .clr-sr-only element that is a sibling element to the icon. See the
- * ClrTimlineStep template for the DOM structure.
- */
-declare class ClrTimelineStepTitle {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStepTitle, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStepTitle, "clr-timeline-step-title", never, {}, {}, never, ["*"], false, never>;
-}
-
-declare class ClrTimelineModule {
-    constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTimelineModule, [typeof ClrTimeline, typeof ClrTimelineStep, typeof ClrTimelineStepDescription, typeof ClrTimelineStepHeader, typeof ClrTimelineStepTitle], [typeof i2.CommonModule, typeof ClrIcon, typeof ClrSpinnerModule], [typeof ClrTimeline, typeof ClrTimelineStep, typeof ClrTimelineStepDescription, typeof ClrTimelineStepHeader, typeof ClrTimelineStepTitle, typeof ClrIcon, typeof ClrSpinnerModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTimelineModule>;
-}
-
-declare class ClarityModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClarityModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof ClrIcon], [typeof ClrEmphasisModule, typeof ClrDataModule, typeof ClrIcon, typeof ClrIconModule, typeof ClrModalModule, typeof ClrLoadingModule, typeof ClrConditionalModule, typeof ClrFocusOnViewInitModule, typeof ClrButtonModule, typeof ClrFormsModule, typeof ClrLayoutModule, typeof ClrPopoverModule, typeof ClrWizardModule, typeof ClrSidePanelModule, typeof ClrStepperModule, typeof ClrSpinnerModule, typeof ClrProgressBarModule, typeof ClrPopoverModuleNext, typeof ClrTimelineModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClarityModule>;
-}
-
-declare class DatagridPropertyStringFilter<T = any> implements ClrDatagridStringFilterInterface<T> {
-    prop: string;
-    exact: boolean;
-    private nestedProp;
-    constructor(prop: string, exact?: boolean);
-    accepts(item: T, search: string): boolean;
-}
-
-declare class DatagridPropertyNumericFilter<T = any> implements ClrDatagridNumericFilterInterface<T> {
-    prop: string;
-    exact: boolean;
-    private nestedProp;
-    constructor(prop: string, exact?: boolean);
-    accepts(item: T, low: number, high: number): boolean;
-}
-
-declare class DatagridPropertyComparator<T = any> implements ClrDatagridComparatorInterface<T> {
-    prop: string;
-    private nestedProp;
-    constructor(prop: string);
-    compare(a: T, b: T): number;
-}
-
-declare class IconHtmlPipe implements PipeTransform {
-    private sanitizer;
-    constructor(sanitizer: DomSanitizer);
-    transform(value: string): SafeHtml;
-    static ɵfac: i0.ɵɵFactoryDeclaration<IconHtmlPipe, never>;
-    static ɵpipe: i0.ɵɵPipeDeclaration<IconHtmlPipe, "iconHtml", true>;
+    updateIcon(): void;
+    updateIconSize(value: string): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIcon, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrIcon, "clr-icon, cds-icon", never, { "shape": { "alias": "shape"; "required": false; }; "size": { "alias": "size"; "required": false; }; "direction": { "alias": "direction"; "required": false; }; "flip": { "alias": "flip"; "required": false; }; "solid": { "alias": "solid"; "required": false; }; "status": { "alias": "status"; "required": false; }; "inverse": { "alias": "inverse"; "required": false; }; "badge": { "alias": "badge"; "required": false; }; }, {}, never, never, true, never>;
+    static ngAcceptInputType_solid: unknown;
+    static ngAcceptInputType_inverse: unknown;
 }
 
 /**
@@ -9891,5 +6089,4101 @@ declare const travelCollectionAliases: IconAlias[];
  */
 declare function loadTravelIconSet(): void;
 
-export { BaseExpandableAnimation, CHANGE_KEYS, CLR_ALERT_DIRECTIVES, CLR_BUTTON_GROUP_DIRECTIVES, CLR_DATAGRID_DIRECTIVES, CLR_DATEPICKER_DIRECTIVES, CLR_DROPDOWN_DIRECTIVES, CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, CLR_ICON_DIRECTIVES, CLR_LAYOUT_DIRECTIVES, CLR_LOADING_BUTTON_DIRECTIVES, CLR_LOADING_DIRECTIVES, CLR_MENU_POSITIONS, CLR_MODAL_DIRECTIVES, CLR_NAVIGATION_DIRECTIVES, CLR_PROGRESS_BAR_DIRECTIVES, CLR_SIDEPANEL_DIRECTIVES, CLR_SIGNPOST_DIRECTIVES, CLR_SPINNER_DIRECTIVES, CLR_STACK_VIEW_DIRECTIVES, CLR_TABS_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, CLR_TREE_VIEW_DIRECTIVES, CLR_VERTICAL_NAV_DIRECTIVES, CLR_WIZARD_DIRECTIVES, CONDITIONAL_DIRECTIVES, CUSTOM_BUTTON_TYPES, CdsIconCustomTag, ClarityIcons, ClarityModule, ClrAbstractContainer, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle, ClrAlert, ClrAlertItem, ClrAlertModule, ClrAlertText, ClrAlerts, ClrAlertsPager, ClrAriaCurrentLink, ClrBadge, ClrBadgeColors, ClrBreadcrumbItem, ClrBreadcrumbs, ClrBreadcrumbsModule, ClrButton, ClrButtonGroup, ClrButtonGroupModule, ClrButtonModule, ClrCalendar, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxModule, ClrCheckboxWrapper, ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrCommonFormsModule, ClrCommonStringsService, ClrConditionalModule, ClrControl, ClrControlContainer, ClrControlError, ClrControlHelper, ClrControlLabel, ClrControlSuccess, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrDatalist, ClrDatalistContainer, ClrDatalistInput, ClrDatalistModule, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrDestroyService, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrEmphasisModule, ClrEndDateInput, ClrEndDateInputValidator, ClrExpandableAnimation, ClrFileError, ClrFileInfo, ClrFileInput, ClrFileInputContainer, ClrFileInputModule, ClrFileInputValidator, ClrFileInputValueAccessor, ClrFileList, ClrFileMessagesTemplate, ClrFileSuccess, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrForm, ClrFormLayout, ClrFormsModule, ClrHeader, ClrIcon, ClrIconCustomTag, ClrIconModule, ClrIfActive, ClrIfDetail, ClrIfError, ClrIfExpanded, ClrIfOpen, ClrIfSuccess, ClrInput, ClrInputContainer, ClrInputModule, ClrLabel, ClrLabelColors, ClrLayout, ClrLayoutModule, ClrLoading, ClrLoadingButton, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState, ClrMainContainer, ClrMainContainerModule, ClrModal, ClrModalBody, ClrModalConfigurationService, ClrModalHostComponent, ClrModalModule, ClrMonthpicker, ClrNavLevel, ClrNavigationModule, ClrNumberInput, ClrNumberInputContainer, ClrNumberInputModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, ClrPassword, ClrPasswordContainer, ClrPasswordModule, ClrPopoverAnchor, ClrPopoverContent, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverService, ClrProgressBar, ClrProgressBarModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrRadioWrapper, ClrRange, ClrRangeContainer, ClrRangeModule, ClrRecursiveForOf, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrSelectedState, ClrSidePanel, ClrSidePanelModule, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrSpinner, ClrSpinnerModule, ClrStackBlock, ClrStackContentInput, ClrStackHeader, ClrStackView, ClrStackViewCustomTags, ClrStackViewLabel, ClrStackViewModule, ClrStandaloneCdkTrapFocus, ClrStartDateInput, ClrStartDateInputValidator, ClrStepButton, ClrStepButtonType, ClrStepper, ClrStepperModule, ClrStepperPanel, ClrStopEscapePropagationDirective, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStep, ClrTimelineStepDescription, ClrTimelineStepHeader, ClrTimelineStepState, ClrTimelineStepTitle, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, ClrVerticalNav, ClrVerticalNavGroup, ClrVerticalNavGroupChildren, ClrVerticalNavIcon, ClrVerticalNavLink, ClrVerticalNavModule, ClrWizard, ClrWizardButton, ClrWizardHeaderAction, ClrWizardModule, ClrWizardPage, ClrWizardPageButtons, ClrWizardPageHeaderActions, ClrWizardPageNavTitle, ClrWizardPageTitle, ClrWizardStepnav, ClrWizardStepnavItem, ClrWizardTitle, ClrYearpicker, DEFAULT_BUTTON_TYPES, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, EXPANDABLE_ANIMATION_DIRECTIVES, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, IS_TOGGLE, IS_TOGGLE_PROVIDER, IconHtmlPipe, LoadingListener, MainContainerWillyWonka, NavDetectionOompaLoompa, Selection, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, ToggleServiceFactory, WrappedFormControl, accessibility1Icon, accessibility1IconName, accessibility2Icon, accessibility2IconName, addTextIcon, addTextIconName, administratorIcon, administratorIconName, airplaneIcon, airplaneIconName, alarmClockIcon, alarmClockIconName, alarmOffIcon, alarmOffIconName, alignBottomIcon, alignBottomIconName, alignCenterIcon, alignCenterIconName, alignLeftIcon, alignLeftIconName, alignLeftTextIcon, alignLeftTextIconName, alignMiddleIcon, alignMiddleIconName, alignRightIcon, alignRightIconName, alignRightTextIcon, alignRightTextIconName, alignTopIcon, alignTopIconName, angleDoubleIcon, angleDoubleIconName, angleIcon, angleIconName, animationIcon, animationIconName, announcementIcon, announcementIconName, applicationIcon, applicationIconName, applicationsIcon, applicationsIconName, archiveIcon, archiveIconName, arrowIcon, arrowIconName, arrowMiniIcon, arrowMiniIconName, assignUserIcon, assignUserIconName, asteriskIcon, asteriskIconName, atomIcon, atomIconName, axisChartIcon, axisChartIconName, backupIcon, backupIconName, backupRestoreIcon, backupRestoreIconName, banIcon, banIconName, bankIcon, bankIconName, barChartIcon, barChartIconName, barCodeIcon, barCodeIconName, barsIcon, barsIconName, batteryIcon, batteryIconName, bellCurveIcon, bellCurveIconName, bellIcon, bellIconName, betaIcon, betaIconName, bicycleIcon, bicycleIconName, birthdayCakeIcon, birthdayCakeIconName, bitcoinIcon, bitcoinIconName, blockIcon, blockIconName, blockQuoteIcon, blockQuoteIconName, blocksGroupIcon, blocksGroupIconName, bluetoothIcon, bluetoothIconName, bluetoothOffIcon, bluetoothOffIconName, boatIcon, boatIconName, boldIcon, boldIconName, boltIcon, boltIconName, bookIcon, bookIconName, bookmarkIcon, bookmarkIconName, boxPlotIcon, boxPlotIconName, briefcaseIcon, briefcaseIconName, bubbleChartIcon, bubbleChartIconName, bubbleExclamationIcon, bubbleExclamationIconName, bugIcon, bugIconName, buildingIcon, buildingIconName, bulletListIcon, bulletListIconName, bullseyeIcon, bullseyeIconName, bundleIcon, bundleIconName, calculatorIcon, calculatorIconName, calendarIcon, calendarIconName, calendarMiniIcon, calendarMiniIconName, cameraIcon, cameraIconName, campervanIcon, campervanIconName, capacitorIcon, capacitorIconName, carIcon, carIconName, caravanIcon, caravanIconName, cdDvdIcon, cdDvdIconName, centerTextIcon, centerTextIconName, certificateIcon, certificateIconName, chartCollectionAliases, chartCollectionIcons, chatBubbleIcon, chatBubbleIconName, checkCircleIcon, checkCircleIconName, checkCircleMiniIcon, checkCircleMiniIconName, checkIcon, checkIconName, checkMiniIcon, checkMiniIconName, checkboxListIcon, checkboxListIconName, childArrowIcon, childArrowIconName, ciCdIcon, ciCdIconName, circleArrowIcon, circleArrowIconName, circleIcon, circleIconName, clipboardIcon, clipboardIconName, clockIcon, clockIconName, cloneIcon, cloneIconName, cloudChartIcon, cloudChartIconName, cloudIcon, cloudIconName, cloudNetworkIcon, cloudNetworkIconName, cloudScaleIcon, cloudScaleIconName, cloudTrafficIcon, cloudTrafficIconName, clusterIcon, clusterIconName, codeIcon, codeIconName, cogIcon, cogIconName, coinBagIcon, coinBagIconName, collapse, collapseCardIcon, collapseCardIconName, colorPaletteIcon, colorPaletteIconName, colorPickerIcon, colorPickerIconName, commerceCollectionAliases, commerceCollectionIcons, commonStringsDefault, compassIcon, compassIconName, computerIcon, computerIconName, connectIcon, connectIconName, containerGroupIcon, containerGroupIconName, containerIcon, containerIconName, containerVolumeIcon, containerVolumeIconName, contractIcon, contractIconName, controlLunIcon, controlLunIconName, copyIcon, copyIconName, copyToClipboardIcon, copyToClipboardIconName, coreCollectionAliases, coreCollectionIcons, cpuIcon, cpuIconName, creditCardIcon, creditCardIconName, crosshairsIcon, crosshairsIconName, crownIcon, crownIconName, cursorArrowIcon, cursorArrowIconName, cursorHandClickIcon, cursorHandClickIconName, cursorHandGrabIcon, cursorHandGrabIconName, cursorHandIcon, cursorHandIconName, cursorHandOpenIcon, cursorHandOpenIconName, cursorMoveIcon, cursorMoveIconName, curveChartIcon, curveChartIconName, dashboardIcon, dashboardIconName, dataClusterIcon, dataClusterIconName, deployIcon, deployIconName, detailCollapseIcon, detailCollapseIconName, detailExpandIcon, detailExpandIconName, detailsIcon, detailsIconName, devicesIcon, devicesIconName, digitalSignatureIcon, digitalSignatureIconName, disconnectIcon, disconnectIconName, displayIcon, displayIconName, dollarBillIcon, dollarBillIconName, dollarIcon, dollarIconName, dotCircleIcon, dotCircleIconName, downloadCloudIcon, downloadCloudIconName, downloadIcon, downloadIconName, dragHandleCornerIcon, dragHandleCornerIconName, dragHandleIcon, dragHandleIconName, eCheckIcon, eCheckIconName, ellipsisHorizontalIcon, ellipsisHorizontalIconName, ellipsisVerticalIcon, ellipsisVerticalIconName, employeeGroupIcon, employeeGroupIconName, employeeIcon, employeeIconName, envelopeIcon, envelopeIconName, eraserIcon, eraserIconName, errorMiniIcon, errorMiniIconName, errorStandardIcon, errorStandardIconName, essentialCollectionAliases, essentialCollectionIcons, euroIcon, euroIconName, eventIcon, eventIconName, eventMiniIcon, eventMiniIconName, exclamationCircleIcon, exclamationCircleIconName, exclamationTriangleIcon, exclamationTriangleIconName, expandCardIcon, expandCardIconName, exportIcon, exportIconName, eyeHideIcon, eyeHideIconName, eyeIcon, eyeIconName, factoryIcon, factoryIconName, fade, fadeSlide, fastForwardIcon, fastForwardIconName, ferryIcon, ferryIconName, fileGroupIcon, fileGroupIconName, fileIcon, fileIconName, fileSettingsIcon, fileSettingsIconName, fileShare2Icon, fileShare2IconName, fileShareIcon, fileShareIconName, fileZipIcon, fileZipIconName, filmStripIcon, filmStripIconName, filter2Icon, filter2IconName, filterGridCircleIcon, filterGridCircleIconName, filterGridCircleMiniIcon, filterGridCircleMiniIconName, filterGridIcon, filterGridIconName, filterGridMiniIcon, filterGridMiniIconName, filterIcon, filterIconName, filterOffIcon, filterOffIconName, firewallIcon, firewallIconName, firstAidIcon, firstAidIconName, fishIcon, fishIconName, flagIcon, flagIconName, flameIcon, flameIconName, flaskIcon, flaskIconName, floppyIcon, floppyIconName, folderIcon, folderIconName, folderOpenIcon, folderOpenIconName, fontSizeIcon, fontSizeIconName, forkingIcon, forkingIconName, formIcon, formIconName, fuelIcon, fuelIconName, gavelIcon, gavelIconName, gridChartIcon, gridChartIconName, gridViewIcon, gridViewIconName, halfStarIcon, halfStarIconName, happyFaceIcon, happyFaceIconName, hardDiskIcon, hardDiskIconName, hardDriveDisksIcon, hardDriveDisksIconName, hardDriveIcon, hardDriveIconName, hashtagIcon, hashtagIconName, headphonesIcon, headphonesIconName, heartBrokenIcon, heartBrokenIconName, heartIcon, heartIconName, heatMapIcon, heatMapIconName, helixIcon, helixIconName, helpIcon, helpIconName, helpInfoIcon, helpInfoIconName, highlighterIcon, highlighterIconName, historyIcon, historyIconName, homeIcon, homeIconName, hostGroupIcon, hostGroupIconName, hostIcon, hostIconName, hourglassIcon, hourglassIconName, idBadgeIcon, idBadgeIconName, imageGalleryIcon, imageGalleryIconName, imageIcon, imageIconName, importIcon, importIconName, inboxIcon, inboxIconName, indentIcon, indentIconName, inductorIcon, inductorIconName, infoCircleIcon, infoCircleIconName, infoCircleMiniIcon, infoCircleMiniIconName, infoStandardIcon, infoStandardIconName, installIcon, installIconName, internetOfThingsIcon, internetOfThingsIconName, isToggleFactory, italicIcon, italicIconName, justifyTextIcon, justifyTextIconName, keyIcon, keyIconName, keyboardIcon, keyboardIconName, landscapeIcon, landscapeIconName, languageIcon, languageIconName, launchpadIcon, launchpadIconName, layersIcon, layersIconName, libraryIcon, libraryIconName, lightbulbIcon, lightbulbIconName, lineChartIcon, lineChartIconName, linkIcon, linkIconName, listIcon, listIconName, loadChartIconSet, loadCommerceIconSet, loadCoreIconSet, loadEssentialIconSet, loadMediaIconSet, loadMiniIconSet, loadSocialIconSet, loadTechnologyIconSet, loadTextEditIconSet, loadTravelIconSet, lockIcon, lockIconName, loginIcon, loginIconName, logoutIcon, logoutIconName, mapIcon, mapIconName, mapMarkerIcon, mapMarkerIconName, mediaChangerIcon, mediaChangerIconName, mediaCollectionAliases, mediaCollectionIcons, memoryIcon, memoryIconName, microphoneIcon, microphoneIconName, microphoneMuteIcon, microphoneMuteIconName, miniCollectionAliases, miniCollectionIcons, minusCircleIcon, minusCircleIconName, minusIcon, minusIconName, mobileIcon, mobileIconName, moonIcon, moonIconName, mouseIcon, mouseIconName, musicNoteIcon, musicNoteIconName, namespaceIcon, namespaceIconName, networkGlobeIcon, networkGlobeIconName, networkSettingsIcon, networkSettingsIconName, networkSwitchIcon, networkSwitchIconName, neutralFaceIcon, neutralFaceIconName, newIcon, newIconName, noAccessIcon, noAccessIconName, noWifiIcon, noWifiIconName, nodeGroupIcon, nodeGroupIconName, nodeIcon, nodeIconName, nodesIcon, nodesIconName, noteIcon, noteIconName, numberListIcon, numberListIconName, nvmeIcon, nvmeIconName, objectsIcon, objectsIconName, onHolidayIcon, onHolidayIconName, organizationIcon, organizationIconName, outdentIcon, outdentIconName, paintRollerIcon, paintRollerIconName, paperclipIcon, paperclipIconName, pasteIcon, pasteIconName, pauseIcon, pauseIconName, pdfFileIcon, pdfFileIconName, pencilIcon, pencilIconName, pesoIcon, pesoIconName, phoneHandsetIcon, phoneHandsetIconName, pictureIcon, pictureIconName, pieChartIcon, pieChartIconName, piggyBankIcon, piggyBankIconName, pinIcon, pinIconName, pinboardIcon, pinboardIconName, playIcon, playIconName, pluginIcon, pluginIconName, plusCircleIcon, plusCircleIconName, plusIcon, plusIconName, podIcon, podIconName, popOutIcon, popOutIconName, portraitIcon, portraitIconName, poundIcon, poundIconName, powerIcon, powerIconName, printerIcon, printerIconName, processOnVmIcon, processOnVmIconName, qrCodeIcon, qrCodeIconName, rackServerIcon, rackServerIconName, radarIcon, radarIconName, recycleIcon, recycleIconName, redoIcon, redoIconName, refreshIcon, refreshIconName, renderIcon, repeatIcon, repeatIconName, replayAllIcon, replayAllIconName, replayOneIcon, replayOneIconName, resistorIcon, resistorIconName, resizeIcon, resizeIconName, resourcePoolIcon, resourcePoolIconName, rewindIcon, rewindIconName, routerIcon, routerIconName, rubleIcon, rubleIconName, rulerPencilIcon, rulerPencilIconName, rupeeIcon, rupeeIconName, sadFaceIcon, sadFaceIconName, scatterPlotIcon, scatterPlotIconName, scissorsIcon, scissorsIconName, scriptExecuteIcon, scriptExecuteIconName, scriptScheduleIcon, scriptScheduleIconName, scrollIcon, scrollIconName, searchIcon, searchIconName, shareIcon, shareIconName, shieldCheckIcon, shieldCheckIconName, shieldIcon, shieldIconName, shieldXIcon, shieldXIconName, shoppingBagIcon, shoppingBagIconName, shoppingCartIcon, shoppingCartIconName, shrinkIcon, shrinkIconName, shuffleIcon, shuffleIconName, slide, sliderIcon, sliderIconName, snowflakeIcon, snowflakeIconName, socialCollectionAliases, socialCollectionIcons, sortByIcon, sortByIconName, squidIcon, squidIconName, ssdIcon, ssdIconName, starIcon, starIconName, stepForward2Icon, stepForward2IconName, stepForwardIcon, stepForwardIconName, stopIcon, stopIconName, storageAdapterIcon, storageAdapterIconName, storageIcon, storageIconName, storeIcon, storeIconName, strikethroughIcon, strikethroughIconName, subscriptIcon, subscriptIconName, successStandardIcon, successStandardIconName, sunIcon, sunIconName, superscriptIcon, superscriptIconName, switchIcon, switchIconName, syncIcon, syncIconName, tableIcon, tableIconName, tabletIcon, tabletIconName, tagIcon, tagIconName, tagsIcon, tagsIconName, talkBubblesIcon, talkBubblesIconName, tapeDriveIcon, tapeDriveIconName, targetIcon, targetIconName, tasksIcon, tasksIconName, technologyCollectionAliases, technologyCollectionIcons, terminalIcon, terminalIconName, textColorIcon, textColorIconName, textEditCollectionAliases, textEditCollectionIcons, textIcon, textIconName, thermometerIcon, thermometerIconName, thinClientIcon, thinClientIconName, thumbsDownIcon, thumbsDownIconName, thumbsUpIcon, thumbsUpIconName, tickChartIcon, tickChartIconName, timelineIcon, timelineIconName, timesCircleIcon, timesCircleIconName, timesIcon, timesIconName, timesMiniIcon, timesMiniIconName, toolsIcon, toolsIconName, trailerIcon, trailerIconName, trashIcon, trashIconName, travelCollectionAliases, travelCollectionIcons, treeIcon, treeIconName, treeViewIcon, treeViewIconName, truckIcon, truckIconName, twoWayArrowsIcon, twoWayArrowsIconName, unarchiveIcon, unarchiveIconName, underlineIcon, underlineIconName, undoIcon, undoIconName, uninstallIcon, uninstallIconName, unknownIcon, unknownIconName, unknownStatusIcon, unknownStatusIconName, unlinkIcon, unlinkIconName, unlockIcon, unlockIconName, unpinIcon, unpinIconName, updateIcon, updateIconName, uploadCloudIcon, uploadCloudIconName, uploadIcon, uploadIconName, usbIcon, usbIconName, userIcon, userIconName, usersIcon, usersIconName, videoCameraIcon, videoCameraIconName, videoGalleryIcon, videoGalleryIconName, viewCardsIcon, viewCardsIconName, viewColumnsIcon, viewColumnsIconName, viewListIcon, viewListIconName, vmBugIcon, vmBugIconName, vmBugInverseIcon, vmBugInverseIconName, vmIcon, vmIconName, vmwAppIcon, vmwAppIconName, volumeDownIcon, volumeDownIconName, volumeIcon, volumeIconName, volumeMuteIcon, volumeMuteIconName, volumeUpIcon, volumeUpIconName, walletIcon, walletIconName, wandIcon, wandIconName, warningMiniIcon, warningMiniIconName, warningStandardIcon, warningStandardIconName, wifiIcon, wifiIconName, windowCloseIcon, windowCloseIconName, windowMaxIcon, windowMaxIconName, windowMinIcon, windowMinIconName, windowRestoreIcon, windowRestoreIconName, wonIcon, wonIconName, worldIcon, worldIconName, wrenchIcon, wrenchIconName, xlsFileIcon, xlsFileIconName, yenIcon, yenIconName, zoomInIcon, zoomInIconName, zoomOutIcon, zoomOutIconName, AccordionOompaLoompa as ÇlrAccordionOompaLoompa, AccordionWillyWonka as ÇlrAccordionWillyWonka, ActionableOompaLoompa as ÇlrActionableOompaLoompa, ActiveOompaLoompa as ÇlrActiveOompaLoompa, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka, TabsWillyWonka as ÇlrTabsWillyWonka, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
-export type { BreadcrumbItem, ClrCommonStrings, ClrDatagridComparatorInterface, ClrDatagridFilterInterface, ClrDatagridItemsIdentityFunction, ClrDatagridNumericFilterInterface, ClrDatagridStateInterface, ClrDatagridStringFilterInterface, ClrDatagridVirtualScrollRangeInterface, ClrFileAcceptError, ClrFileInputSelection, ClrFileListValidationErrors, ClrFileMaxFileSizeError, ClrFileMessagesTemplateContext, ClrFileMinFileSizeError, ClrRecursiveForOfContext, ClrSingleFileValidationErrors, ClrTabsActionsPosition, Directions, HeadingLevel, IconAlias, IconRegistry, IconRegistrySources, IconShapeCollection, IconShapeSources, IconShapeTuple, Orientations, StatusTypes };
+declare class ClrLayoutModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLayoutModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof i1$3.ClrMainContainerModule, typeof i2$4.ClrNavigationModule, typeof i3$3.ClrTabsModule, typeof i18.ClrVerticalNavModule, typeof i5$1.ClrBreadcrumbsModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLayoutModule>;
+}
+
+declare class ClrMainContainer implements OnDestroy, OnInit {
+    private elRef;
+    private responsiveNavService;
+    private _subscription;
+    private _classList;
+    constructor(elRef: ElementRef<HTMLElement>, responsiveNavService: ResponsiveNavigationService$1);
+    ngOnInit(): void;
+    processMessage(message: ResponsiveNavControlMessage$1): void;
+    controlNav(controlCode: string, navClass: string): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrMainContainer, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrMainContainer, "clr-main-container", never, {}, {}, never, never, false, never>;
+}
+
+declare const CLR_LAYOUT_DIRECTIVES: Type<any>[];
+declare class ClrMainContainerModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrMainContainerModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrMainContainerModule, [typeof ClrMainContainer], [typeof i2$1.CommonModule, typeof i7.ClrIcon], [typeof ClrMainContainer]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrMainContainerModule>;
+}
+
+declare class MainContainerWillyWonka extends WillyWonka$1 {
+    static ɵfac: i0.ɵɵFactoryDeclaration<MainContainerWillyWonka, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<MainContainerWillyWonka, "clr-main-container", never, {}, {}, never, never, false, never>;
+}
+
+declare class ResponsiveNavControlMessage {
+    private _controlCode;
+    private _navLevel;
+    constructor(_controlCode: string, _navLevel: number);
+    get controlCode(): string;
+    get navLevel(): number;
+}
+
+declare class ResponsiveNavigationService {
+    responsiveNavList: number[];
+    private registerNavSubject;
+    private controlNavSubject;
+    constructor();
+    get registeredNavs(): Observable<number[]>;
+    get navControl(): Observable<ResponsiveNavControlMessage>;
+    registerNav(navLevel: number): void;
+    isNavRegistered(navLevel: number): boolean;
+    unregisterNav(navLevel: number): void;
+    sendControlMessage(controlCode: string, navLevel: number): void;
+    closeAllNavs(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ResponsiveNavigationService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ResponsiveNavigationService>;
+}
+
+declare class NavDetectionOompaLoompa extends OompaLoompa$1 {
+    private responsiveNavService;
+    constructor(cdr: ChangeDetectorRef, willyWonka: MainContainerWillyWonka, responsiveNavService: ResponsiveNavigationService);
+    get flavor(): number;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NavDetectionOompaLoompa, [null, { optional: true; }, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NavDetectionOompaLoompa, "clr-header", never, {}, {}, never, never, false, never>;
+}
+
+declare class ResponsiveNavCodes {
+    static NAV_LEVEL_1: number;
+    static NAV_LEVEL_2: number;
+    static NAV_CLOSE_ALL: string;
+    static NAV_OPEN: string;
+    static NAV_CLOSE: string;
+    static NAV_TOGGLE: string;
+    static NAV_CLASS_HAMBURGER_MENU: string;
+    static NAV_CLASS_OVERFLOW_MENU: string;
+    static NAV_CLASS_TRIGGER_1: string;
+    static NAV_CLASS_TRIGGER_2: string;
+    static NAV_CLASS_LEVEL_1: string;
+    static NAV_CLASS_LEVEL_2: string;
+}
+
+declare class ClrHeader implements OnDestroy {
+    private responsiveNavService;
+    commonStrings: ClrCommonStringsService$1;
+    role: string;
+    isNavLevel1OnPage: boolean;
+    isNavLevel2OnPage: boolean;
+    openNavLevel: number;
+    responsiveNavCodes: typeof ResponsiveNavCodes;
+    private _subscription;
+    constructor(responsiveNavService: ResponsiveNavigationService, commonStrings: ClrCommonStringsService$1);
+    get responsiveNavCommonString(): string;
+    get responsiveOverflowCommonString(): string;
+    resetNavTriggers(): void;
+    initializeNavTriggers(navList: number[]): void;
+    closeOpenNav(): void;
+    /**
+     * @deprecated Will be removed in with @clr/angular v15.0.0
+     *
+     * Use `openNav(navLevel)` instead to open the navigation and ResponsiveNavService to close it.
+     */
+    toggleNav(navLevel: number): void;
+    openNav(navLevel: number): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrHeader, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrHeader, "clr-header", never, { "role": { "alias": "role"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare class ClrNavLevel implements OnInit {
+    private cdkTrapFocus;
+    private responsiveNavService;
+    private elementRef;
+    private renderer;
+    _level: number;
+    closeButtonAriaLabel: string;
+    private _isOpen;
+    private _document;
+    private _subscription;
+    constructor(platformId: any, cdkTrapFocus: ClrStandaloneCdkTrapFocus$1, responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef<HTMLElement>, renderer: Renderer2, injector: Injector);
+    get level(): number;
+    get responsiveNavCodes(): ResponsiveNavCodes;
+    get isOpen(): boolean;
+    ngOnInit(): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    onResize(event: Event): void;
+    onMouseClick(target: any): void;
+    addNavClass(level: number): void;
+    open(): void;
+    close(): void;
+    protected hideNavigation(): void;
+    protected showNavigation(): void;
+    protected hideCloseButton(): void;
+    protected showCloseButton(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "_level": { "alias": "clr-nav-level"; "required": false; }; "closeButtonAriaLabel": { "alias": "closeAriaLabel"; "required": false; }; }, {}, never, never, false, [{ directive: typeof i39.ClrStandaloneCdkTrapFocus; inputs: {}; outputs: {}; }]>;
+}
+
+declare class ClrAriaCurrentLink implements OnInit, OnDestroy {
+    private rla;
+    ariaCurrent: string | undefined;
+    private subscription;
+    constructor(rla: RouterLinkActive);
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAriaCurrentLink, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAriaCurrentLink, "[clrAriaCurrentLink]", never, {}, {}, never, never, false, never>;
+}
+
+declare const CLR_NAVIGATION_DIRECTIVES: Type<any>[];
+declare class ClrNavigationModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavigationModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka], [typeof i2$1.CommonModule, typeof i7.ClrIcon, typeof i8$2.ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrNavigationModule>;
+}
+
+declare enum TabsLayout {
+    HORIZONTAL = "horizontal",
+    VERTICAL = "vertical"
+}
+
+declare class ClrTabContent implements OnDestroy {
+    ifActiveService: IfActiveService$1;
+    id: number;
+    private tabsService;
+    tabContentId: string;
+    private viewRef;
+    constructor(ifActiveService: IfActiveService$1, id: number, tabsService: TabsService);
+    get active(): boolean;
+    get ariaLabelledBy(): string;
+    private set templateRef(value);
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabContent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabContent, "clr-tab-content", never, { "tabContentId": { "alias": "id"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare class ClrTabLink {
+    ifActiveService: IfActiveService$1;
+    readonly id: number;
+    el: ElementRef<HTMLElement>;
+    private tabsService;
+    tabsId: number;
+    tabLinkId: string;
+    templateRefContainer: TemplateRefContainer$1;
+    private _inOverflow;
+    constructor(ifActiveService: IfActiveService$1, id: number, el: ElementRef<HTMLElement>, viewContainerRef: ViewContainerRef, tabsService: TabsService, tabsId: number);
+    get inOverflow(): boolean;
+    set inOverflow(inOverflow: boolean);
+    get addLinkClasses(): boolean;
+    get ariaControls(): string;
+    get active(): boolean;
+    get tabindex(): 0 | -1;
+    activate(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabLink, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabLink, "[clrTabLink]", never, { "tabLinkId": { "alias": "id"; "required": false; }; "inOverflow": { "alias": "clrTabLinkInOverflow"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare class ClrTab {
+    ifActiveService: IfActiveService$1;
+    id: number;
+    private tabsService;
+    tabLink: ClrTabLink;
+    tabContent: ClrTabContent;
+    constructor(ifActiveService: IfActiveService$1, id: number, tabsService: TabsService);
+    get active(): boolean;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTab, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTab, "clr-tab", never, {}, {}, ["tabLink", "tabContent"], ["*"], false, never>;
+}
+
+declare class TabsService {
+    layout: TabsLayout | string;
+    tabContentViewContainer: ViewContainerRef;
+    private _children;
+    get children(): ClrTab[];
+    get activeTab(): ClrTab;
+    get overflowTabs(): ClrTab[];
+    register(tab: ClrTab): void;
+    unregister(tab: ClrTab): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TabsService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<TabsService>;
+}
+
+declare class ClrTabs implements AfterContentInit, OnDestroy {
+    ifActiveService: IfActiveService$1;
+    popoverService: ClrPopoverService$1;
+    tabsService: TabsService;
+    tabsId: number;
+    commonStrings: ClrCommonStringsService$1;
+    tabLinkElements: HTMLElement[];
+    _mousedown: boolean;
+    keyFocus: ClrKeyFocus$1;
+    tabsActions: QueryList<ElementRef>;
+    private tabs;
+    private subscriptions;
+    private _tabOverflowEl;
+    private _tabLinkDirectives;
+    constructor(ifActiveService: IfActiveService$1, popoverService: ClrPopoverService$1, tabsService: TabsService, tabsId: number, commonStrings: ClrCommonStringsService$1);
+    get layout(): TabsLayout | string;
+    set layout(layout: TabsLayout | string);
+    get tabLinkDirectives(): ClrTabLink[];
+    get activeTabInOverflow(): boolean;
+    get activeTabPosition(): number;
+    get isCurrentInOverflow(): boolean;
+    get isVertical(): boolean;
+    set tabOverflowEl(value: ElementRef<HTMLElement>);
+    private get overflowPosition();
+    private set tabContentViewContainer(value);
+    ngAfterContentInit(): void;
+    ngOnDestroy(): void;
+    toggleOverflowOnPosition(position: number): void;
+    resetKeyFocusCurrentToActive(event: FocusEvent): void;
+    toggleOverflowOnClick(): void;
+    openOverflowOnFocus(): void;
+    closeOnFocusOut(event: FocusEvent): void;
+    closeOnEscapeKey(): void;
+    closeOnOutsideClick(event: Event, tabOverflowTrigger: HTMLElement): void;
+    private setTabLinkElements;
+    private listenForTabLinkChanges;
+    private listedForTabsActionsChanges;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabs, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabs, "clr-tabs", never, { "layout": { "alias": "clrLayout"; "required": false; }; }, {}, ["tabsActions", "tabs"], ["clr-tabs-actions"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+}
+
+type ClrTabsActionsPosition = 'left' | 'right';
+declare class ClrTabsActions {
+    position: ClrTabsActionsPosition;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabsActions, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabsActions, "clr-tabs-actions", never, { "position": { "alias": "position"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare class ClrTabOverflowContent {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabOverflowContent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabOverflowContent, "clr-tab-overflow-content", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrTabAction {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabAction, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabAction, "[clrTabAction]", never, {}, {}, never, never, false, never>;
+}
+
+declare class TabsWillyWonka extends WillyWonka$1 {
+    static ɵfac: i0.ɵɵFactoryDeclaration<TabsWillyWonka, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<TabsWillyWonka, "clr-tabs", never, {}, {}, never, never, false, never>;
+}
+
+declare class ActiveOompaLoompa extends OompaLoompa$1 {
+    private ifActive;
+    private id;
+    constructor(cdr: ChangeDetectorRef, willyWonka: TabsWillyWonka, id: number, ifActive: IfActiveService$1);
+    get flavor(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ActiveOompaLoompa, [null, { optional: true; }, null, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ActiveOompaLoompa, "[clrTabLink], clr-tab-content", never, {}, {}, never, never, false, never>;
+}
+
+declare const CLR_TABS_DIRECTIVES: Type<any>[];
+declare class ClrTabsModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabsModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa], [typeof i2$1.CommonModule, typeof i39.ClrConditionalModule, typeof i7.ClrIcon, typeof i39.ClrTemplateRefModule, typeof i39.ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa, typeof i39.ClrConditionalModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTabsModule>;
+}
+
+declare class ClrVerticalNavGroupChildren {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavGroupChildren, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroupChildren, "clr-vertical-nav-group-children", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class VerticalNavGroupRegistrationService {
+    navGroupCount: number;
+    registerNavGroup(): void;
+    unregisterNavGroup(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<VerticalNavGroupRegistrationService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<VerticalNavGroupRegistrationService>;
+}
+
+declare class VerticalNavGroupService {
+    private _expandChange;
+    get expandChange(): Observable<boolean>;
+    expand(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<VerticalNavGroupService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<VerticalNavGroupService>;
+}
+
+declare class VerticalNavService {
+    private _animateOnCollapsed;
+    private _collapsedChanged;
+    private _collapsed;
+    private _collapsible;
+    get animateOnCollapsed(): Observable<boolean>;
+    get collapsedChanged(): Observable<boolean>;
+    get collapsed(): boolean;
+    set collapsed(value: boolean);
+    get collapsible(): boolean;
+    set collapsible(value: boolean);
+    private updateCollapseBehavior;
+    static ɵfac: i0.ɵɵFactoryDeclaration<VerticalNavService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<VerticalNavService>;
+}
+
+declare class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
+    private _itemExpand;
+    private _navGroupRegistrationService;
+    private _navService;
+    commonStrings: ClrCommonStringsService$1;
+    expandedChange: EventEmitter<boolean>;
+    private wasExpanded;
+    private _subscriptions;
+    private _expandAnimationState;
+    constructor(_itemExpand: IfExpandService$1, _navGroupRegistrationService: VerticalNavGroupRegistrationService, navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService$1);
+    get expanded(): boolean;
+    set expanded(value: boolean);
+    set userExpandedInput(value: boolean | string);
+    get expandAnimationState(): string;
+    set expandAnimationState(value: string);
+    ngAfterContentInit(): void;
+    ngOnDestroy(): void;
+    expandGroup(): void;
+    collapseGroup(): void;
+    expandAnimationDone($event: AnimationEvent): void;
+    toggleExpand(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavGroup, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroup, "clr-vertical-nav-group", never, { "userExpandedInput": { "alias": "clrVerticalNavGroupExpanded"; "required": false; }; }, { "expandedChange": "clrVerticalNavGroupExpandedChange"; }, never, ["[clrVerticalNavLink]", "[clrVerticalNavIcon]", "*", "[clrIfExpanded], clr-vertical-nav-group-children"], false, never>;
+}
+
+declare class VerticalNavIconService {
+    private _icons;
+    get hasIcons(): boolean;
+    registerIcon(): void;
+    unregisterIcon(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<VerticalNavIconService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<VerticalNavIconService>;
+}
+
+declare class ClrVerticalNav implements OnDestroy {
+    private _navService;
+    private _navIconService;
+    private _navGroupRegistrationService;
+    commonStrings: ClrCommonStringsService$1;
+    toggleLabel: string;
+    contentId: string;
+    private _collapsedChanged;
+    private _sub;
+    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService$1);
+    get collapsible(): boolean | string;
+    set collapsible(value: boolean | string);
+    get collapsed(): boolean | string;
+    set collapsed(value: boolean | string);
+    get hasNavGroups(): boolean;
+    get hasIcons(): boolean;
+    get ariaExpanded(): string;
+    ngOnDestroy(): void;
+    toggleByButton(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "toggleLabel": { "alias": "clrVerticalNavToggleLabel"; "required": false; }; "collapsible": { "alias": "clrVerticalNavCollapsible"; "required": false; }; "collapsed": { "alias": "clrVerticalNavCollapsed"; "required": false; }; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
+}
+
+declare class ClrVerticalNavLink implements OnDestroy {
+    private destroy$;
+    constructor(host: ElementRef<HTMLElement>, ref: ChangeDetectorRef, navGroupService: VerticalNavGroupService | null);
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavLink, [null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavLink, "[clrVerticalNavLink]", never, {}, {}, never, ["[clrVerticalNavIcon]", "*"], false, never>;
+}
+
+declare class ClrVerticalNavIcon implements OnDestroy {
+    private _verticalNavIconService;
+    constructor(_verticalNavIconService: VerticalNavIconService);
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavIcon, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrVerticalNavIcon, "[clrVerticalNavIcon]", never, {}, {}, never, never, false, never>;
+}
+
+declare const CLR_VERTICAL_NAV_DIRECTIVES: Type<any>[];
+declare class ClrVerticalNavModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrVerticalNavModule, [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon], [typeof i2$1.CommonModule, typeof i7.ClrIcon, typeof i39.ClrConditionalModule, typeof i39.ClrFocusOnViewInitModule], [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon, typeof i39.ClrConditionalModule, typeof i7.ClrIcon, typeof i39.ClrFocusOnViewInitModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrVerticalNavModule>;
+}
+
+interface BreadcrumbItem {
+    label: string;
+    href?: string;
+    routerLink?: string;
+    queryParams?: {
+        [key: string]: string;
+    };
+    target?: string;
+}
+
+declare class ClrBreadcrumbs {
+    protected commonStrings: ClrCommonStringsService$1;
+    isExpanded: boolean;
+    items: BreadcrumbItem[];
+    clrBreadcrumbItemClick: EventEmitter<BreadcrumbItem>;
+    protected limit: number;
+    protected max: number;
+    constructor(commonStrings: ClrCommonStringsService$1);
+    protected expand(): void;
+    protected handleItemClick(breadcrumb: BreadcrumbItem): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbs, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbs, "clr-breadcrumbs", never, { "items": { "alias": "items"; "required": false; }; }, { "clrBreadcrumbItemClick": "clrBreadcrumbItemClick"; }, never, never, false, never>;
+}
+
+declare class ClrBreadcrumbItem {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbItem, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbItem, "clr-breadcrumb-item", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrBreadcrumbsModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbsModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBreadcrumbsModule, [typeof ClrBreadcrumbs, typeof ClrBreadcrumbItem], [typeof i2$1.CommonModule, typeof i7.ClrIcon, typeof i39.ClrHostWrappingModule, typeof i6$3.RouterModule], [typeof ClrBreadcrumbs, typeof i7.ClrIcon]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrBreadcrumbsModule>;
+}
+
+declare class ClrModalConfigurationService {
+    fadeMove: string;
+    backdrop: boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalConfigurationService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrModalConfigurationService>;
+}
+
+interface Closable {
+    close(): void;
+}
+declare class ModalStackService {
+    private readonly platformId;
+    private readonly modalStack;
+    private readonly keyUpEventListener;
+    constructor(platformId: unknown);
+    trackModalOpen(openedModal: Closable): void;
+    trackModalClose(closedModal: Closable): void;
+    private onKeyUp;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ModalStackService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ModalStackService>;
+}
+
+declare class ClrModal implements OnChanges, OnDestroy {
+    private _scrollingService;
+    commonStrings: ClrCommonStringsService$1;
+    private modalStackService;
+    private configuration;
+    modalId: string;
+    title: ElementRef<HTMLElement>;
+    _open: boolean;
+    _openChanged: EventEmitter<boolean>;
+    closable: boolean;
+    closeButtonAriaLabel: string;
+    size: string;
+    staticBackdrop: boolean;
+    skipAnimation: boolean;
+    stopClose: boolean;
+    altClose: EventEmitter<boolean>;
+    labelledBy: string;
+    bypassScrollService: boolean;
+    protected readonly modalContentTemplate: TemplateRef<any>;
+    private readonly bodyElementRef;
+    constructor(_scrollingService: ScrollingService$1, commonStrings: ClrCommonStringsService$1, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
+    get fadeMove(): string;
+    set fadeMove(move: string);
+    get backdrop(): boolean;
+    ngOnChanges(changes: {
+        [propName: string]: SimpleChange;
+    }): void;
+    ngOnDestroy(): void;
+    open(): void;
+    backdropClick(): void;
+    close(): void;
+    fadeDone(e: AnimationEvent): void;
+    scrollTop(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": { "alias": "clrModalOpen"; "required": false; }; "closable": { "alias": "clrModalClosable"; "required": false; }; "closeButtonAriaLabel": { "alias": "clrModalCloseButtonAriaLabel"; "required": false; }; "size": { "alias": "clrModalSize"; "required": false; }; "staticBackdrop": { "alias": "clrModalStaticBackdrop"; "required": false; }; "skipAnimation": { "alias": "clrModalSkipAnimation"; "required": false; }; "stopClose": { "alias": "clrModalPreventClose"; "required": false; }; "labelledBy": { "alias": "clrModalLabelledById"; "required": false; }; "bypassScrollService": { "alias": "clrModalOverrideScrollService"; "required": false; }; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
+}
+
+/**
+ * Allows modal overflow area to be scrollable via keyboard.
+ * The modal body will focus with keyboard navigation only.
+ * This allows inner focusable items to be focused without
+ * the overflow scroll being focused.
+ */
+declare class ClrModalBody implements OnDestroy {
+    private readonly renderer;
+    private readonly host;
+    private tabindex;
+    private unlisteners;
+    private observer;
+    constructor(renderer: Renderer2, host: ElementRef<HTMLElement>, ngZone: NgZone);
+    ngOnDestroy(): void;
+    private addTabIndex;
+    private removeTabIndex;
+    private addOrRemoveTabIndex;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalBody, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrModalBody, ".modal-body", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrModalHostComponent {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalHostComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModalHostComponent, "[clrModalHost]", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare const CLR_MODAL_DIRECTIVES: Type<any>[];
+declare class ClrModalModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent], [typeof i2$1.CommonModule, typeof i39.CdkTrapFocusModule, typeof i7.ClrIcon], [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent, typeof i7.ClrIcon]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrModalModule>;
+}
+
+declare class ClrSidePanel implements OnInit, OnDestroy {
+    private element;
+    private configuration;
+    commonStrings: ClrCommonStringsService$1;
+    openChange: EventEmitter<boolean>;
+    closeButtonAriaLabel: string | undefined;
+    skipAnimation: boolean;
+    labelledById: string;
+    staticBackdrop: boolean;
+    closable: boolean;
+    preventClose: boolean;
+    altClose: EventEmitter<boolean>;
+    private _pinnable;
+    private _pinned;
+    private originalStopClose;
+    private _position;
+    private _modal;
+    private __open;
+    private _size;
+    constructor(element: ElementRef<HTMLElement>, configuration: ClrModalConfigurationService, commonStrings: ClrCommonStringsService$1);
+    get _open(): boolean;
+    set _open(open: boolean);
+    get size(): string;
+    set size(value: string);
+    get position(): string;
+    set position(position: string);
+    get pinned(): boolean;
+    set pinned(pinned: boolean);
+    get clrSidePanelBackdrop(): boolean;
+    set clrSidePanelBackdrop(backdrop: boolean);
+    get clrSidePanelPinnable(): boolean;
+    set clrSidePanelPinnable(pinnable: boolean);
+    private get modal();
+    private set modal(value);
+    private get hostElement();
+    private get bottomPositionCssClass();
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    handleModalOpen(open: boolean): void;
+    open(): void;
+    close(): void;
+    togglePinned(): void;
+    private documentClick;
+    private updateModalState;
+    private cleanupPinnedClasses;
+    private updatePinnedClasses;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanel, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "closeButtonAriaLabel": { "alias": "clrSidePanelCloseButtonAriaLabel"; "required": false; }; "skipAnimation": { "alias": "clrSidePanelSkipAnimation"; "required": false; }; "labelledById": { "alias": "clrSidePanelLabelledById"; "required": false; }; "staticBackdrop": { "alias": "clrSidePanelStaticBackdrop"; "required": false; }; "closable": { "alias": "clrSidePanelClosable"; "required": false; }; "preventClose": { "alias": "clrSidePanelPreventClose"; "required": false; }; "_open": { "alias": "clrSidePanelOpen"; "required": false; }; "size": { "alias": "clrSidePanelSize"; "required": false; }; "position": { "alias": "clrSidePanelPosition"; "required": false; }; "pinned": { "alias": "clrSidePanelPinned"; "required": false; }; "clrSidePanelBackdrop": { "alias": "clrSidePanelBackdrop"; "required": false; }; "clrSidePanelPinnable": { "alias": "clrSidePanelPinnable"; "required": false; }; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
+}
+
+declare const CLR_SIDEPANEL_DIRECTIVES: Type<any>[];
+declare class ClrSidePanelModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanelModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSidePanelModule, [typeof ClrSidePanel], [typeof i2$1.CommonModule, typeof i39.CdkTrapFocusModule, typeof i7.ClrIcon, typeof ClrModalModule], [typeof ClrSidePanel, typeof ClrModalModule, typeof i7.ClrIcon]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSidePanelModule>;
+}
+
+declare class DropdownFocusHandler implements OnDestroy, FocusableItem$2 {
+    private renderer;
+    private parent;
+    private popoverService;
+    private focusService;
+    private platformId;
+    id: string;
+    right?: Observable<FocusableItem$2>;
+    down?: Observable<FocusableItem$2>;
+    up?: Observable<FocusableItem$2>;
+    private _trigger;
+    private _container;
+    private children;
+    private _unlistenFuncs;
+    constructor(renderer: Renderer2, parent: DropdownFocusHandler, popoverService: ClrPopoverService$1, focusService: FocusService$1, platformId: any);
+    get trigger(): HTMLElement;
+    set trigger(el: HTMLElement);
+    get container(): HTMLElement;
+    set container(el: HTMLElement);
+    ngOnDestroy(): void;
+    /**
+     * If the dropdown was opened by clicking on the trigger, we automatically move to the first item
+     */
+    moveToFirstItemWhenOpen(): void;
+    focus(): void;
+    blur(): void;
+    activate(): void;
+    resetChildren(): void;
+    addChildren(children: FocusableItem$2[]): void;
+    private openAndGetChildren;
+    private closeAndGetThis;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DropdownFocusHandler, [null, { optional: true; skipSelf: true; }, null, null, null]>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<DropdownFocusHandler>;
+}
+
+declare class RootDropdownService {
+    private _changes;
+    get changes(): Observable<boolean>;
+    closeMenus(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<RootDropdownService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<RootDropdownService>;
+}
+
+declare class ClrDropdown implements OnDestroy {
+    parent: ClrDropdown;
+    popoverService: ClrPopoverService$1;
+    focusHandler: DropdownFocusHandler;
+    isMenuClosable: boolean;
+    private subscriptions;
+    constructor(parent: ClrDropdown, popoverService: ClrPopoverService$1, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdown, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": { "alias": "clrCloseMenuOnItemClick"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+}
+
+declare class ClrDropdownMenu implements AfterContentInit, OnDestroy {
+    private focusHandler;
+    private elementRef;
+    private popoverService;
+    private popoverContent;
+    items: QueryList<FocusableItem$2>;
+    constructor(parentHost: ElementRef<HTMLElement>, nested: ClrDropdownMenu, focusHandler: DropdownFocusHandler, elementRef: ElementRef, popoverService: ClrPopoverService$1, popoverContent: ClrPopoverContent$1);
+    get isOffScreen(): boolean;
+    set position(position: string | ClrPopoverPosition$1);
+    ngAfterContentInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownMenu, [{ optional: true; }, { optional: true; skipSelf: true; }, null, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": { "alias": "clrPosition"; "required": false; }; }, {}, ["items"], ["*"], false, [{ directive: typeof i1.ClrPopoverContent; inputs: {}; outputs: {}; }]>;
+}
+
+declare class ClrDropdownTrigger {
+    private popoverService;
+    isRootLevelToggle: boolean;
+    constructor(dropdown: ClrDropdown, popoverService: ClrPopoverService$1, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler);
+    get active(): boolean;
+    onDropdownTriggerClick(event: any): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownTrigger, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownTrigger, "[clrDropdownTrigger],[clrDropdownToggle]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrDropdownItem {
+    private dropdown;
+    private _dropdownService;
+    private focusableItem;
+    private el;
+    private renderer;
+    constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem$2, el: ElementRef, renderer: Renderer2);
+    get disabled(): boolean | string;
+    set disabled(value: boolean | string);
+    /**
+     * Let you overwrite the focusable auto increment id.
+     */
+    get dropdownItemId(): string;
+    set dropdownItemId(value: string);
+    private onDropdownItemClick;
+    private onSpaceKeydown;
+    private onEnterKeydown;
+    private stopImmediatePropagationIfDisabled;
+    private findRootDropdown;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownItem, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare const CLR_MENU_POSITIONS: string[];
+
+declare const CLR_DROPDOWN_DIRECTIVES: Type<any>[];
+declare class ClrDropdownModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDropdownModule, [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem], [typeof i2$1.CommonModule, typeof i7.ClrIcon, typeof i1.ClrIfOpen], [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem, typeof i1.ClrIfOpen, typeof i7.ClrIcon]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrDropdownModule>;
+}
+
+declare enum ClrPopoverType {
+    SIGNPOST = 0,
+    TOOLTIP = 1,
+    DROPDOWN = 2,
+    DEFAULT = 3
+}
+declare enum ClrPopoverPosition {
+    TOP_RIGHT = "top-right",
+    TOP_MIDDLE = "top-middle",
+    TOP_LEFT = "top-left",
+    RIGHT = "right",
+    RIGHT_TOP = "right-top",
+    RIGHT_MIDDLE = "right-middle",
+    RIGHT_BOTTOM = "right-bottom",
+    LEFT = "left",
+    LEFT_TOP = "left-top",
+    LEFT_MIDDLE = "left-middle",
+    LEFT_BOTTOM = "left-bottom",
+    BOTTOM_RIGHT = "bottom-right",
+    BOTTOM_MIDDLE = "bottom-middle",
+    BOTTOM_LEFT = "bottom-left"
+}
+declare const TOOLTIP_POSITIONS: ClrPopoverPosition[];
+declare const DROPDOWN_POSITIONS: ClrPopoverPosition[];
+declare const SIGNPOST_POSITIONS: ClrPopoverPosition[];
+declare function getPositionsArray(type: ClrPopoverType): ClrPopoverPosition[];
+declare function getConnectedPositions(type: ClrPopoverType): ConnectedPosition[];
+declare function mapPopoverKeyToPosition(key: ClrPopoverPosition, type: ClrPopoverType): ConnectedPosition;
+declare function getAnchorPosition(key: ClrPosition$1): Partial<ConnectedPosition>;
+declare function getContentPosition(key: ClrPosition$1): Partial<ConnectedPosition>;
+
+declare class ClrPopoverService {
+    anchorElementRef: ElementRef<HTMLElement>;
+    closeButtonRef: ElementRef;
+    panelClass: string[];
+    private _open;
+    private _openChange;
+    private _openEvent;
+    private _openEventChange;
+    private _positionChange;
+    private _resetPositions;
+    private _updatePosition;
+    private _popoverVisible;
+    get openChange(): Observable<boolean>;
+    get popoverVisible(): Observable<boolean>;
+    get openEvent(): Event;
+    set openEvent(event: Event);
+    get open(): boolean;
+    set open(value: boolean);
+    get resetPositionsChange(): Observable<void>;
+    positionChange(position: ClrPopoverPosition): void;
+    updatePositionChange(): Observable<void>;
+    getPositionChange(): Observable<string>;
+    getEventChange(): Observable<Event>;
+    /**
+     * Sometimes, we need to remember the event that triggered the toggling to avoid loops.
+     * This is for instance the case of components that open on a click, but close on a click outside.
+     */
+    toggleWithEvent(event: any): void;
+    popoverVisibleEmit(visible: boolean): void;
+    resetPositions(): void;
+    updatePosition(): void;
+    focusCloseButton(): void;
+    focusAnchor(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverService>;
+}
+
+/** @dynamic */
+declare class ClrPopoverContent implements OnDestroy, AfterViewInit {
+    private container;
+    private template;
+    private parent;
+    private overlay;
+    private popoverService;
+    private zone;
+    private platformId;
+    private _outsideClickClose;
+    private _scrollToClose;
+    private view;
+    private elementRef;
+    private overlayRef;
+    private popoverType;
+    private _availablePositions;
+    private _position;
+    private scrollableParents;
+    private subscriptions;
+    private openCloseSubscription;
+    private domPortal;
+    private preferredPositionIsSet;
+    private availablePositionsAreSet;
+    private _preferredPosition;
+    private intersectionObserver;
+    constructor(element: ElementRef, container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, parent: ClrPopoverContent, overlay: Overlay, popoverService: ClrPopoverService, zone: NgZone, platformId: any);
+    set open(value: boolean);
+    get contentAt(): string | ClrPopoverPosition | ConnectedPosition;
+    set contentAt(position: string | ClrPopoverPosition | ConnectedPosition);
+    set availablePositions(positions: ConnectedPosition[]);
+    set contentType(type: ClrPopoverType);
+    get outsideClickClose(): boolean;
+    set outsideClickClose(clickToClose: boolean);
+    get scrollToClose(): boolean;
+    set scrollToClose(scrollToClose: boolean);
+    private get positionStrategy();
+    private get preferredPosition();
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    private _createOverlayRef;
+    private resetPosition;
+    private closePopover;
+    private showOverlay;
+    private removeOverlay;
+    private getScrollableParents;
+    /**
+     * Uses IntersectionObserver to detect when the anchor leaves the screen.
+     * This handles the "Close on Scroll" logic much cheaper than getBoundingClientRect.
+     */
+    private setupIntersectionObserver;
+    private listenToMouseEvents;
+    private getRootPopover;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, null, { optional: true; }, null, { optional: true; skipSelf: true; }, null, null, null, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
+}
+
+declare class ClrPopoverAnchor {
+    constructor(popoverService: ClrPopoverService, element: ElementRef<HTMLButtonElement>);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverAnchor, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverAnchor, "[clrPopoverAnchor]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
+    private popoverService;
+    private subscription;
+    private lastOpenChange;
+    constructor(popoverService: ClrPopoverService);
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    onEscapeKey(event: KeyboardEvent): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStopEscapePropagationDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStopEscapePropagationDirective, never, never, {}, {}, never, never, true, never>;
+}
+
+declare class ClrPopoverHostDirective {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverHostDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverHostDirective, never, never, {}, {}, never, never, true, [{ directive: typeof ClrStopEscapePropagationDirective; inputs: {}; outputs: {}; }]>;
+}
+
+declare const POPOVER_HOST_ANCHOR: InjectionToken<ElementRef<any>>;
+
+/**********
+ *
+ * @class ClrIfOpen
+ *
+ * @description
+ * A structural directive that controls whether or not the associated TemplateRef is instantiated or not.
+ * It makes use of a Component instance level service: ClrPopoverService to maintain state between itself and the component
+ * using it in the component template.
+ *
+ */
+declare class ClrIfOpen implements OnDestroy {
+    private popoverService;
+    private template;
+    private container;
+    static ngAcceptInputType_open: boolean | '';
+    /**********
+     * @property openChange
+     *
+     * @description
+     * An event emitter that emits when the open property is set to allow for 2way binding when the directive is
+     * used with de-structured / de-sugared syntax.
+     */
+    openChange: EventEmitter<boolean>;
+    private subscriptions;
+    constructor(popoverService: ClrPopoverService, template: TemplateRef<any>, container: ViewContainerRef);
+    /**
+     * @description
+     * A property that gets/sets ClrPopoverService.open with value.
+     */
+    get open(): boolean | string;
+    set open(value: boolean | string);
+    ngOnDestroy(): void;
+    /**
+     * @description
+     * Function that takes a boolean value and either created an embedded view for the associated ViewContainerRef or,
+     * Clears all views from the ViewContainerRef
+     *
+     * @param value
+     */
+    updateView(value: boolean): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfOpen, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfOpen, "[clrIfOpen]", never, { "open": { "alias": "clrIfOpen"; "required": false; }; }, { "openChange": "clrIfOpenChange"; }, never, never, true, never>;
+}
+
+declare class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
+    private elementRef;
+    private popoverService;
+    closeChange: EventEmitter<void>;
+    private subscriptions;
+    constructor(elementRef: ElementRef<HTMLButtonElement>, popoverService: ClrPopoverService);
+    handleClick(event: MouseEvent): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverCloseButton, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverCloseButton, "[clrPopoverCloseButton]", never, {}, { "closeChange": "clrPopoverOnCloseChange"; }, never, never, false, never>;
+}
+
+declare class ClrPopoverOpenCloseButton implements OnDestroy {
+    private popoverService;
+    openCloseChange: EventEmitter<boolean>;
+    private subscriptions;
+    constructor(popoverService: ClrPopoverService);
+    handleClick(event: MouseEvent): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverOpenCloseButton, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverOpenCloseButton, "[clrPopoverOpenCloseButton]", never, {}, { "openCloseChange": "clrPopoverOpenCloseChange"; }, never, never, false, never>;
+}
+
+declare class ClrPopoverModuleNext {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModuleNext, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModuleNext, [typeof ClrPopoverAnchor, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton], [typeof ClrPopoverContent, typeof ClrIfOpen], [typeof ClrPopoverAnchor, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton, typeof ClrPopoverContent, typeof ClrIfOpen]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModuleNext>;
+}
+
+declare class ClrPopoverModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof i8$2.ClrDropdownModule, typeof i2$5.ClrSignpostModule, typeof i3$4.ClrTooltipModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModule>;
+}
+
+declare class SignpostFocusManager {
+    private _triggerEl;
+    set triggerEl(value: HTMLElement);
+    focusTrigger(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<SignpostFocusManager, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<SignpostFocusManager>;
+}
+
+declare class SignpostIdService {
+    private _id;
+    get id(): Observable<string>;
+    setId(id: string): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<SignpostIdService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<SignpostIdService>;
+}
+
+declare class ClrSignpostTrigger implements OnDestroy {
+    private popoverService;
+    private el;
+    private signpostIdService;
+    private signpostFocusManager;
+    private platformId;
+    ariaExpanded: boolean;
+    ariaControl: string;
+    isOpen: boolean;
+    private document;
+    private subscriptions;
+    constructor(popoverService: ClrPopoverService$1, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    /**********
+     *
+     * @description
+     * click handler for the ClrSignpost trigger button used to hide/show ClrSignpostContent.
+     */
+    onSignpostTriggerClick(event: Event): void;
+    private focusOnClose;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostTrigger, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSignpostTrigger, "[clrSignpostTrigger]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrSignpost {
+    commonStrings: ClrCommonStringsService$1;
+    /**********
+     * @property useCustomTrigger
+     *
+     * @description
+     * Flag used to determine if we need to use the default trigger or a user supplied trigger element.
+     *
+     */
+    useCustomTrigger: boolean;
+    signpostTriggerAriaLabel: string;
+    constructor(commonStrings: ClrCommonStringsService$1);
+    /**********
+     * @property signPostTrigger
+     *
+     * @description
+     * Uses ContentChild to check for a user supplied element with the ClrSignpostTrigger on it.
+     *
+     */
+    set customTrigger(trigger: ClrSignpostTrigger);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+}
+
+declare class ClrSignpostContent implements OnDestroy, AfterViewInit {
+    private element;
+    commonStrings: ClrCommonStringsService$1;
+    private signpostFocusManager;
+    private platformId;
+    private document;
+    private popoverService;
+    private popoverContent;
+    signpostCloseAriaLabel: string;
+    closeButton: ElementRef<HTMLButtonElement>;
+    signpostContentId: string;
+    private _position;
+    constructor(parentHost: ElementRef<HTMLElement>, element: ElementRef, commonStrings: ClrCommonStringsService$1, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: Document, popoverService: ClrPopoverService$1, popoverContent: ClrPopoverContent$1);
+    /*********
+     *
+     * @description
+     * A setter for the position of the ClrSignpostContent popover. This is a combination of the following:
+     * - anchorPoint - where on the trigger to anchor the ClrSignpostContent
+     * - popoverPoint - where on the ClrSignpostContent container to align with the anchorPoint
+     * - offsetY - where on the Y axis to align the ClrSignpostContent so it meets specs
+     * - offsetX - where on the X axis to align the ClrSignpostContent so it meets specs
+     * There are 12 possible positions to place a ClrSignpostContent container:
+     * - top-left
+     * - top-middle
+     * - top-right
+     * - right-top
+     * - right-middle
+     * - right-bottom
+     * - bottom-right
+     * - bottom-middle
+     * - bottom-left
+     * - left-bottom
+     * - left-middle
+     * - left-top
+     *
+     * I think of it as follows for 'top-left' -> CONTAINER_SIDE-SIDE_POSITION. In this case CONTAINER_SIDE is 'top'
+     * meaning the top of the trigger icon (above the icon that hides/shows) the ClrSignpostContent. And, SIDE_POSITION
+     * is 'left' meaning two things: 1) the ClrSignpostContent container extends to the left and 2) the 'arrow/pointer'
+     * linking the SignpostContent to the trigger points down at the horizontal center of the trigger icon.
+     *
+     * @param newPosition
+     */
+    get position(): string | ClrPopoverPosition$1;
+    set position(position: string | ClrPopoverPosition$1);
+    get isOffScreen(): boolean;
+    /**********
+     *
+     * @description
+     * Close function that uses the signpost instance to toggle the state of the content popover.
+     *
+     */
+    close(): void;
+    ngAfterViewInit(): void;
+    onKeyDown(event: KeyboardEvent): void;
+    ngOnDestroy(): void;
+    private getFocusableElements;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [{ optional: true; }, null, null, null, null, null, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "signpostCloseAriaLabel": { "alias": "clrSignpostCloseAriaLabel"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; }, {}, never, ["clr-signpost-title", "*"], false, [{ directive: typeof i1.ClrPopoverContent; inputs: {}; outputs: {}; }]>;
+}
+
+declare class ClrSignpostTitle {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostTitle, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostTitle, "clr-signpost-title", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare const CLR_SIGNPOST_DIRECTIVES: Type<any>[];
+declare class ClrSignpostModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i2$1.CommonModule, typeof i7.ClrIcon, typeof i39.ClrFocusOnViewInitModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i1.ClrIfOpen], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof i1.ClrIfOpen]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSignpostModule>;
+}
+
+declare class ClrTooltip {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltip, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltip, "clr-tooltip", never, {}, {}, never, ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+}
+
+declare class TooltipIdService {
+    private _id;
+    get id(): Observable<string>;
+    updateId(id: string): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TooltipIdService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<TooltipIdService>;
+}
+
+declare class TooltipMouseService {
+    private readonly popoverService;
+    private mouseOutDelay;
+    private mouseOverTrigger;
+    private mouseOverContent;
+    constructor(popoverService: ClrPopoverService$1);
+    onMouseEnterTrigger(): void;
+    onMouseLeaveTrigger(): void;
+    onMouseEnterContent(): void;
+    onMouseLeaveContent(): void;
+    private hideIfMouseOut;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TooltipMouseService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<TooltipMouseService>;
+}
+
+declare class ClrTooltipTrigger {
+    private popoverService;
+    private tooltipMouseService;
+    ariaDescribedBy: string;
+    private subs;
+    constructor(popoverService: ClrPopoverService$1, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService, element: ElementRef);
+    ngOnDestroy(): void;
+    showTooltip(): void;
+    hideTooltip(): void;
+    private onMouseEnter;
+    private onMouseLeave;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipTrigger, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTooltipTrigger, "[clrTooltipTrigger]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrTooltipContent implements OnInit {
+    private tooltipIdService;
+    el: ElementRef;
+    private renderer;
+    private tooltipMouseService;
+    private popoverContent;
+    private _id;
+    private _position;
+    private _size;
+    constructor(parentHost: ElementRef<HTMLElement>, tooltipIdService: TooltipIdService, el: ElementRef, renderer: Renderer2, popoverService: ClrPopoverService$1, tooltipMouseService: TooltipMouseService, popoverContent: ClrPopoverContent$1);
+    get id(): string;
+    set id(value: string);
+    get position(): string | ClrPopoverPosition$1;
+    set position(value: string | ClrPopoverPosition$1);
+    get size(): string;
+    set size(value: string);
+    ngOnInit(): void;
+    private onMouseEnter;
+    private onMouseLeave;
+    private updateCssClass;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipContent, [{ optional: true; }, null, null, null, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltipContent, "clr-tooltip-content", never, { "id": { "alias": "id"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; "size": { "alias": "clrSize"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof i1.ClrPopoverContent; inputs: {}; outputs: {}; }]>;
+}
+
+declare const CLR_TOOLTIP_DIRECTIVES: Type<any>[];
+declare class ClrTooltipModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i2$1.CommonModule, typeof i7.ClrIcon, typeof i1.ÇlrClrPopoverModuleNext], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof i1.ClrIfOpen, typeof i7.ClrIcon]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTooltipModule>;
+}
+
+declare function triggerAllFormControlValidation(formGroup: FormGroup): void;
+
+declare class DomAdapter {
+    userDefinedWidth(element: HTMLElement): number;
+    scrollBarWidth(element: any): number;
+    scrollWidth(element: any): any;
+    computedHeight(element: any): number;
+    clientRect(element: any): DOMRect;
+    minWidth(element: any): number;
+    focus(element: any): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DomAdapter, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<DomAdapter>;
+}
+
+declare class MockDomAdapter extends DomAdapter {
+    _userDefinedWidth: number;
+    _scrollBarWidth: number;
+    _scrollWidth: number;
+    _computedHeight: number;
+    userDefinedWidth(_element: any): number;
+    scrollBarWidth(_element: any): number;
+    scrollWidth(_element: any): number;
+    computedHeight(_element: any): number;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockDomAdapter, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<MockDomAdapter>;
+}
+declare const MOCK_DOM_ADAPTER_PROVIDER: {
+    provide: typeof DomAdapter;
+    useClass: typeof MockDomAdapter;
+};
+
+declare class OutsideClick implements OnDestroy {
+    strict: boolean;
+    outsideClick: EventEmitter<any>;
+    private documentClickListener;
+    constructor(host: ElementRef<HTMLElement>, renderer: Renderer2, ngZone: NgZone);
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<OutsideClick, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<OutsideClick, "[clrOutsideClick]", never, { "strict": { "alias": "clrStrict"; "required": false; }; }, { "outsideClick": "clrOutsideClick"; }, never, never, false, never>;
+}
+
+declare const OUSTIDE_CLICK_DIRECTIVES: Type<any>[];
+declare class ClrOutsideClickModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrOutsideClickModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrOutsideClickModule, [typeof OutsideClick], [typeof i2$1.CommonModule], [typeof OutsideClick]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrOutsideClickModule>;
+}
+
+declare class TemplateRefContainer {
+    template: TemplateRef<any>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TemplateRefContainer, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<TemplateRefContainer, "ng-component", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrTemplateRefModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTemplateRefModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTemplateRefModule, [typeof TemplateRefContainer], [typeof i2$1.CommonModule], [typeof TemplateRefContainer]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTemplateRefModule>;
+}
+
+/**
+ * TODO:
+ * Using core functions like:
+ * - pluckPixelValue
+ * - getCssPropertyValue
+ *
+ * to get the value of the design token.
+ *
+ * Note: Memoization/Cache usage possible.
+ */
+declare const DATEPICKER_ENABLE_BREAKPOINT = 768;
+declare const SMALL_BREAKPOINT = 576;
+declare const MEDIUM_BREAKPOINT = 768;
+declare const LARGE_BREAKPOINT = 992;
+declare const EXTRA_LARGE_BREAKPOINT = 1200;
+
+declare class EmptyAnchor {
+    static ɵfac: i0.ɵɵFactoryDeclaration<EmptyAnchor, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<EmptyAnchor, "ng-component", never, {}, {}, never, never, false, never>;
+}
+
+/**
+ * HostWrapper must be called in OnInit to ensure that the Views are ready. If its called in a constructor the view is
+ * still undefined.
+ * TODO - make sure these comment annotations do not break ng-packgr.
+ */
+declare class HostWrapper<W> implements Injector {
+    private injector;
+    constructor(containerType: Type<W>, vcr: ViewContainerRef, index?: number);
+    get<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T;
+}
+
+/**
+ * Internal module, please do not export!
+ */
+declare class ClrHostWrappingModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrHostWrappingModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrHostWrappingModule, [typeof EmptyAnchor], never, [typeof EmptyAnchor]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrHostWrappingModule>;
+}
+
+declare function assertNever(value: never): void;
+
+declare function isBooleanAttributeSet(value: string | boolean): boolean;
+
+declare const defaultAnimationTiming = "0.2s ease-in-out";
+declare const defaultExpandAnimation: _angular_animations.AnimationReferenceMetadata;
+
+declare function collapse(): AnimationMetadata[];
+
+declare class BaseExpandableAnimation {
+    protected element: ElementRef<HTMLElement>;
+    protected domAdapter: DomAdapter;
+    protected renderer: Renderer2;
+    startHeight: number;
+    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
+    updateStartHeight(): void;
+    initAnimationEffects(): void;
+    cleanupAnimationEffects(cancelAnimations?: boolean): void;
+    private cancelElementAnimations;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BaseExpandableAnimation, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<BaseExpandableAnimation, never, never, {}, {}, never, never, true, never>;
+}
+
+declare class ClrExpandableAnimation extends BaseExpandableAnimation {
+    clrExpandTrigger: boolean;
+    get expandAnimation(): {
+        value: boolean;
+        params: {
+            startHeight: number;
+        };
+    };
+    animationStart(event: AnimationEvent): void;
+    animationDone(event: AnimationEvent): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimation, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": { "alias": "clrExpandTrigger"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
+    private builder;
+    expanded: boolean;
+    private player;
+    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, builder: AnimationBuilder);
+    ngOnChanges(changes: SimpleChanges): void;
+    ngOnDestroy(): void;
+    playAnimation(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrExpandableAnimationDirective, "[clrExpandableAnimation]", never, { "expanded": { "alias": "clrExpandableAnimation"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare const EXPANDABLE_ANIMATION_DIRECTIVES: Type<any>[];
+declare class ClrExpandableAnimationModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrExpandableAnimationModule, [typeof ClrExpandableAnimation, typeof ClrExpandableAnimationDirective], [typeof i2$1.CommonModule], [typeof ClrExpandableAnimation, typeof ClrExpandableAnimationDirective]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrExpandableAnimationModule>;
+}
+
+declare function fade(opacity?: number): AnimationMetadata[];
+
+declare function fadeSlide(direction: string): AnimationMetadata[];
+
+declare function slide(direction: string): AnimationMetadata[];
+
+/**
+ * This is an abstract class because we need it to still be a valid token for dependency injection after transpiling.
+ * This does not mean you should extend it, simply implementing it is fine.
+ */
+declare abstract class LoadingListener {
+    abstract loadingStateChange(state: ClrLoadingState | string): void;
+}
+
+declare enum ClrLoadingState {
+    DEFAULT = 0,
+    LOADING = 1,
+    SUCCESS = 2,
+    ERROR = 3
+}
+declare class ClrLoading implements OnDestroy {
+    private listener;
+    static ngAcceptInputType_loadingState: boolean | ClrLoadingState | null | string;
+    private _loadingState;
+    constructor(listener: LoadingListener);
+    get loadingState(): boolean | string | ClrLoadingState;
+    set loadingState(value: boolean | string | ClrLoadingState);
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoading, [{ optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLoading, "[clrLoading]", never, { "loadingState": { "alias": "clrLoading"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare const CLR_LOADING_DIRECTIVES: Type<any>[];
+declare class ClrLoadingModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingModule, [typeof ClrLoading], [typeof i2$1.CommonModule], [typeof ClrLoading]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLoadingModule>;
+}
+
+declare const IF_ACTIVE_ID: InjectionToken<number>;
+declare function tokenFactory(): number;
+declare const IF_ACTIVE_ID_PROVIDER: {
+    provide: InjectionToken<number>;
+    useFactory: typeof tokenFactory;
+};
+declare class IfActiveService {
+    /********
+     * @property _currentChange
+     *
+     * @description
+     * A RXJS Subject that updates and provides subscriptions to for the current current state of a component template
+     * implemting the IfActive structural directive.
+     *
+     */
+    private _currentChange;
+    /*********
+     * @property _current
+     *
+     * @description
+     * A property holding the current value for current/closed state of an IfActive structural directive.
+     */
+    private _current;
+    /*********
+     *
+     * @description
+     * A getter function that provides an observable for the _current Subject.
+     *
+     */
+    get currentChange(): Observable<number>;
+    /*********
+     *
+     * @description
+     * A property that gets/sets the current state of _current for this instance of IfActive structural directive.
+     * And, broadcasts the new value to all subscribers.
+     *
+     */
+    get current(): number;
+    set current(value: number);
+    static ɵfac: i0.ɵɵFactoryDeclaration<IfActiveService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<IfActiveService>;
+}
+
+declare class ClrIfActive implements OnDestroy {
+    private ifActiveService;
+    private id;
+    private template;
+    private container;
+    /**********
+     * @property activeChange
+     *
+     * @description
+     * An event emitter that emits when the active property is set to allow for 2way binding when the directive is
+     * used with de-structured / de-sugared syntax.
+     *
+     */
+    activeChange: EventEmitter<boolean>;
+    private subscription;
+    private wasActive;
+    constructor(ifActiveService: IfActiveService, id: number, template: TemplateRef<any>, container: ViewContainerRef);
+    /**
+     * @description
+     * A property that gets/sets IfActiveService.active with value.
+     *
+     */
+    get active(): boolean | string;
+    set active(value: boolean | string);
+    ngOnDestroy(): void;
+    /**
+     * @description
+     * Function that takes a any value and either created an embedded view for the associated ViewContainerRef or,
+     * Clears all views from the ViewContainerRef
+     */
+    updateView(value: boolean): void;
+    private checkAndUpdateView;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfActive, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfActive, "[clrIfActive]", never, { "active": { "alias": "clrIfActive"; "required": false; }; }, { "activeChange": "clrIfActiveChange"; }, never, never, true, never>;
+}
+
+declare class IfExpandService implements LoadingListener$2 {
+    expandable: number;
+    hasExpandTemplate: boolean;
+    protected _loading: boolean;
+    protected _expanded: boolean;
+    protected _expandChange: Subject<boolean>;
+    get loading(): boolean;
+    set loading(value: boolean);
+    get expanded(): boolean;
+    set expanded(value: boolean);
+    get expandChange(): Observable<boolean>;
+    toggle(): void;
+    loadingStateChange(state: ClrLoadingState$2): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<IfExpandService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<IfExpandService>;
+}
+
+declare class ClrIfExpanded implements OnInit, OnDestroy {
+    private template;
+    private container;
+    private el;
+    private renderer;
+    private expand;
+    expandedChange: EventEmitter<boolean>;
+    private _expanded;
+    /**
+     * Subscriptions to all the services and queries changes
+     */
+    private _subscriptions;
+    constructor(template: TemplateRef<any>, container: ViewContainerRef, el: ElementRef<HTMLElement>, renderer: Renderer2, expand: IfExpandService);
+    get expanded(): boolean | string;
+    set expanded(value: boolean | string);
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    private updateView;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfExpanded, [{ optional: true; }, null, null, null, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfExpanded, "[clrIfExpanded]", never, { "expanded": { "alias": "clrIfExpanded"; "required": false; }; }, { "expandedChange": "clrIfExpandedChange"; }, never, never, true, never>;
+}
+
+declare const CONDITIONAL_DIRECTIVES: Type<any>[];
+declare class ClrConditionalModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrConditionalModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrConditionalModule, never, [typeof i2$1.CommonModule, typeof ClrIfActive, typeof ClrIfExpanded], [typeof ClrIfActive, typeof ClrIfExpanded]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrConditionalModule>;
+}
+
+interface ClrCommonStrings {
+    /**
+     * Open button
+     */
+    open: string;
+    /**
+     * Close button
+     */
+    close: string;
+    /**
+     * Show button
+     */
+    show: string;
+    /**
+     * Hide button
+     */
+    hide: string;
+    /**
+     * Apply button
+     */
+    apply: string;
+    /**
+     * Cancel button
+     */
+    cancel: string;
+    /**
+     * Expandable components: expand caret
+     */
+    expand: string;
+    /**
+     * Expandable components: collapse caret
+     */
+    collapse: string;
+    /**
+     * Overflow menus: ellipsis button
+     */
+    more: string;
+    /**
+     * Selectable components: checkbox or radio
+     */
+    select: string;
+    /**
+     * Selectable components: checkbox to select all
+     */
+    selectAll: string;
+    /**
+     * Pagination: previous button
+     */
+    previous: string;
+    /**
+     * Pagination: next button
+     */
+    next: string;
+    /**
+     * Pagination: go to current
+     */
+    current: string;
+    /**
+     * Alert levels: info
+     */
+    info: string;
+    /**
+     * Alert levels: success
+     */
+    success: string;
+    /**
+     * Alert levels: warning
+     */
+    warning: string;
+    /**
+     * Alert levels: danger
+     */
+    danger: string;
+    /**
+     * Alert levels: neutral
+     */
+    neutral: string;
+    /**
+     * Alert levels: unknown
+     */
+    unknown: string;
+    /**
+     * Datagrid: row actions
+     */
+    rowActions: string;
+    /**
+     * Datagrid: pick columns
+     */
+    pickColumns: string;
+    /**
+     * Datagrid: show columns
+     */
+    showColumns: string;
+    /**
+     * Datagrid: sort of columns
+     */
+    sortColumn: string;
+    /**
+     * Datagrid: first page
+     */
+    firstPage: string;
+    /**
+     * Datagrid: last page
+     */
+    lastPage: string;
+    /**
+     * Datagrid: next page
+     */
+    nextPage: string;
+    /**
+     * Datagrid: previous page
+     */
+    previousPage: string;
+    /**
+     * Datagrid: previous page
+     */
+    currentPage: string;
+    /**
+     * Datagird: total pages
+     */
+    totalPages: string;
+    /**
+     * Datagrid string filter: filter items
+     */
+    filterItems: string;
+    /**
+     * Datagrid numeric filter: min
+     */
+    minValue: string;
+    /**
+     * Datagrid numeric filter: max
+     */
+    maxValue: string;
+    /**
+     * Datagrid filter toggle button
+     */
+    datagridFilterAriaLabel: string;
+    /**
+     * Datagrid filter label
+     */
+    datagridFilterLabel: string;
+    /**
+     * Datagrid filter dialog
+     */
+    datagridFilterDialogAriaLabel: string;
+    /**
+     * Datagrid column handler string
+     */
+    columnSeparatorAriaLabel: string;
+    /**
+     * Datagrid column resize handler string
+     */
+    columnSeparatorDescription: string;
+    /**
+     * Numeric filter from label string
+     */
+    fromLabel: string;
+    /**
+     * Numeric filter to label string
+     */
+    toLabel: string;
+    /**
+     * Modal start of content
+     */
+    modalContentStart: string;
+    /**
+     * Modal end of content
+     */
+    modalContentEnd: string;
+    /**
+     * Side Panel pin dialog
+     */
+    sidePanelPin: string;
+    /**
+     * Datagrid Show columns menu description
+     */
+    showColumnsMenuDescription: string;
+    /**
+     * Datagrid Show columns / All columns selected confirmation
+     */
+    allColumnsSelected: string;
+    /**
+     * Signpost Toggle Button
+     */
+    signpostToggle: string;
+    /**
+     * Signpost Close Button
+     * (used inside signpost content components)
+     */
+    signpostClose: string;
+    loading: string;
+    /**
+     * Datagrid: detail pane start content for screen reader
+     */
+    detailPaneStart: string;
+    /**
+     * Datagrid: detail pane end content for screen reader
+     */
+    detailPaneEnd: string;
+    /**
+     * Datagrid: Single selection header
+     */
+    singleSelectionAriaLabel: string;
+    /**
+     * Datagrid: Single actionable header
+     */
+    singleActionableAriaLabel: string;
+    /**
+     * Datagrid: Expandable row
+     */
+    detailExpandableAriaLabel: string;
+    /**
+     * Alert: Close alert button
+     */
+    alertCloseButtonAriaLabel: string;
+    /**
+     * Alert: Next Alert button
+     */
+    alertNextAlertAriaLabel: string;
+    /**
+     * Alert: Previous Alert button
+     */
+    alertPreviousAlertAriaLabel: string;
+    /**
+     * Datepicker UI labels
+     */
+    datepickerDialogLabel: string;
+    datepickerToggleChooseDateLabel: string;
+    datepickerToggleChangeDateLabel: string;
+    datepickerPreviousMonth: string;
+    datepickerCurrentMonth: string;
+    datepickerNextMonth: string;
+    datepickerPreviousDecade: string;
+    datepickerNextDecade: string;
+    datepickerCurrentDecade: string;
+    datepickerSelectMonthText: string;
+    datepickerSelectYearText: string;
+    datepickerSelectedLabel: string;
+    /**
+     * Stack View: Record has changed
+     */
+    stackViewChanged: string;
+    responsiveNavToggleOpen: string;
+    responsiveNavToggleClose: string;
+    responsiveNavOverflowOpen: string;
+    responsiveNavOverflowClose: string;
+    verticalNavToggle: string;
+    /**
+     * Timeline Steps
+     */
+    timelineStepNotStarted: string;
+    timelineStepCurrent: string;
+    timelineStepSuccess: string;
+    timelineStepError: string;
+    timelineStepProcessing: string;
+    datagridExpandableBeginningOf: string;
+    datagridExpandableEndOf: string;
+    datagridExpandableRowContent: string;
+    datagridExpandableRowsHelperText: string;
+    /**
+     * Combobox Searching Text
+     */
+    comboboxSearching: string;
+    comboboxDelete: string;
+    comboboxSelection: string;
+    comboboxSelected: string;
+    comboboxNoResults: string;
+    comboboxOpen: string;
+    /**
+     * Wizard: Screen-reader text for "step" (read before step number).
+     */
+    wizardStep: string;
+    /**
+     * Wizard: Screen-reader text for current step.
+     */
+    wizardStepCurrent: string;
+    /**
+     * Wizard: Screen-reader text for completed step.
+     */
+    wizardStepSuccess: string;
+    /**
+     * Wizard: Screen-reader text for step with error.
+     */
+    wizardStepError: string;
+    /**
+     * Wizard: Aria-label for the stepnav section.
+     */
+    wizardStepnavAriaLabel: string;
+    /**
+     * Password Input
+     * Screen-reader text for the hide/show password field button.
+     */
+    passwordHide: string;
+    passwordShow: string;
+    /**
+     * Datagrid footer; sr-only text after the number of selected rows.
+     */
+    selectedRows: string;
+    stepComplete: string;
+    stepError: string;
+    browse: string;
+    fileCount: string;
+    clearFile: string;
+    clearFiles: string;
+    selectedTreeNode: string;
+    unselectedTreeNode: string;
+    breadcrumbsLabel: string;
+    expandBreadcrumbsLabel: string;
+}
+
+declare class ClrCommonStringsService {
+    private _strings;
+    /**
+     * Access to all of the keys as strings
+     */
+    get keys(): Readonly<ClrCommonStrings>;
+    /**
+     * Allows you to pass in new overrides for localization
+     */
+    localize(overrides: Partial<ClrCommonStrings>): void;
+    /**
+     * Parse a string with a set of tokens to replace
+     */
+    parse(source: string, tokens?: {
+        [key: string]: string;
+    }): string;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCommonStringsService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrCommonStringsService>;
+}
+
+declare const commonStringsDefault: ClrCommonStrings;
+
+declare class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
+    private el;
+    private platformId;
+    private focusOnViewInit;
+    private renderer;
+    private document;
+    private directFocus;
+    private destroy$;
+    private _isEnabled;
+    constructor(el: ElementRef<HTMLElement>, platformId: any, focusOnViewInit: boolean, document: any, renderer: Renderer2, ngZone: NgZone);
+    set isEnabled(value: boolean | string);
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    private focus;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFocusOnViewInit, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFocusOnViewInit, "[clrFocusOnViewInit]", never, { "isEnabled": { "alias": "clrFocusOnViewInit"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare const FOCUS_ON_VIEW_INIT: InjectionToken<boolean>;
+
+declare const FOCUS_ON_VIEW_INIT_DIRECTIVES: Type<any>[];
+declare class ClrFocusOnViewInitModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFocusOnViewInitModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFocusOnViewInitModule, [typeof ClrFocusOnViewInit], [typeof i2$1.CommonModule], [typeof ClrFocusOnViewInit]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrFocusOnViewInitModule>;
+}
+
+declare class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
+    /**
+     * Include the constructor to forward all the dependencies to the base class
+     * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
+     * https://github.com/storybookjs/storybook/issues/23534
+     */
+    constructor(elementRef: ElementRef<HTMLElement>, focusTrapFactory: FocusTrapFactory, document: any);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStandaloneCdkTrapFocus, [null, null, { optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStandaloneCdkTrapFocus, never, never, {}, {}, never, never, true, never>;
+}
+
+declare enum ClrFocusDirection {
+    VERTICAL = "vertical",
+    HORIZONTAL = "horizontal",
+    BOTH = "both"
+}
+
+interface FocusableItem$1 {
+    tabIndex?: number;
+    focus: () => void;
+    nativeElement?: HTMLElement;
+}
+
+declare class ClrKeyFocusItem {
+    private elementRef;
+    private platformId;
+    constructor(elementRef: ElementRef<HTMLElement>, platformId: any);
+    get nativeElement(): HTMLElement;
+    focus(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrKeyFocusItem, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrKeyFocusItem, "[clrKeyFocusItem]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrKeyFocus {
+    private elementRef;
+    direction: ClrFocusDirection | string;
+    focusOnLoad: boolean;
+    protected clrKeyFocusItems: QueryList<ClrKeyFocusItem>;
+    protected subscriptions: Subscription[];
+    private focusChange;
+    private _current;
+    private _focusableItems;
+    constructor(elementRef: ElementRef<HTMLElement>);
+    /**
+     * Here we use `any` cause any other type require reworking all methods below and a lot of more ifs.
+     * this method will only work with array with FocusableItems anyway so any other value will be ignored.
+     */
+    get focusableItems(): Array<FocusableItem$1> | any;
+    set focusableItems(elements: Array<FocusableItem$1> | any);
+    get nativeElement(): HTMLElement;
+    get current(): number;
+    set current(value: number);
+    get currentItem(): any;
+    get currentItemElement(): HTMLElement;
+    ngAfterContentInit(): void;
+    ngOnDestroy(): void;
+    handleKeyboardEvent(event: KeyboardEvent): void;
+    setClickedItemCurrent(event: any): void;
+    focusCurrent(): void;
+    moveTo(position: number): void;
+    protected positionInRange(position: number): boolean;
+    protected currentFocusIsNotFirstItem(): boolean;
+    protected currentFocusIsNotLastItem(): boolean;
+    protected initializeFocus(): void;
+    protected nextKeyPressed(event: KeyboardEvent): boolean;
+    protected prevKeyPressed(event: KeyboardEvent): boolean;
+    private getItemPosition;
+    private listenForItemUpdates;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrKeyFocus, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrKeyFocus, "[clrKeyFocus]", never, { "direction": { "alias": "clrDirection"; "required": false; }; "focusOnLoad": { "alias": "clrFocusOnLoad"; "required": false; }; "focusableItems": { "alias": "clrKeyFocus"; "required": false; }; }, { "focusChange": "clrFocusChange"; }, ["clrKeyFocusItems"], ["*"], false, never>;
+}
+
+declare function normalizeKey(key: string): string;
+declare function preventArrowKeyScroll(event: KeyboardEvent): void;
+declare function isKeyEitherLetterOrNumber(event: KeyboardEvent): boolean;
+
+declare class ClrRovingTabindex extends ClrKeyFocus {
+    private renderer;
+    private disabled;
+    constructor(elementRef: ElementRef<HTMLElement>, renderer: Renderer2);
+    get rovingIndexItems(): Array<FocusableItem$1> | string;
+    set rovingIndexItems(elements: Array<FocusableItem$1> | string);
+    set rovingTabindexDisabled(disabled: boolean);
+    handleKeyboardEvent(event: KeyboardEvent): void;
+    setClickedItemCurrent(event: any): void;
+    protected initializeFocus(): void;
+    private updateTabindex;
+    private setTabindex;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRovingTabindex, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRovingTabindex, "[clrRovingTabindex]", never, { "rovingIndexItems": { "alias": "clrRovingTabindex"; "required": false; }; "rovingTabindexDisabled": { "alias": "clrRovingTabindexDisabled"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare class ClrKeyFocusModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrKeyFocusModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrKeyFocusModule, [typeof ClrKeyFocus, typeof ClrRovingTabindex, typeof ClrKeyFocusItem], [typeof i2$1.CommonModule], [typeof ClrKeyFocus, typeof ClrRovingTabindex, typeof ClrKeyFocusItem]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrKeyFocusModule>;
+}
+
+declare abstract class FocusableItem {
+    id: string;
+    disabled?: boolean;
+    up?: FocusableItem | Observable<FocusableItem>;
+    down?: FocusableItem | Observable<FocusableItem>;
+    left?: FocusableItem | Observable<FocusableItem>;
+    right?: FocusableItem | Observable<FocusableItem>;
+    abstract focus(): void;
+    abstract blur(): void;
+    abstract activate?(): void;
+}
+
+declare class MockFocusableItem implements FocusableItem {
+    id: string;
+    disabled: boolean;
+    up?: FocusableItem | Observable<FocusableItem>;
+    down?: FocusableItem | Observable<FocusableItem>;
+    left?: FocusableItem | Observable<FocusableItem>;
+    right?: FocusableItem | Observable<FocusableItem>;
+    constructor(id: string);
+    focus(): void;
+    blur(): void;
+    activate(): void;
+}
+
+declare class BasicFocusableItem implements FocusableItem {
+    private el;
+    private renderer;
+    private platformId;
+    id: string;
+    disabled: boolean;
+    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, platformId: any);
+    focus(): void;
+    blur(): void;
+    activate(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BasicFocusableItem, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<BasicFocusableItem>;
+}
+declare const BASIC_FOCUSABLE_ITEM_PROVIDER: {
+    provide: typeof FocusableItem;
+    useClass: typeof BasicFocusableItem;
+}[];
+
+declare function customFocusableItemProvider<T>(implementation: Type<T>): (Type<T> | {
+    provide: typeof FocusableItem;
+    useExisting: Type<T>;
+})[];
+
+declare enum ArrowKeyDirection {
+    UP = "up",
+    DOWN = "down",
+    LEFT = "left",
+    RIGHT = "right"
+}
+
+declare class Linkers {
+    /**
+     * Links a set of focusable items to a parent along one direction
+     */
+    static linkParent(items: FocusableItem[], parent: FocusableItem | Observable<FocusableItem>, direction: ArrowKeyDirection): void;
+    /**
+     * Double-links a set of focusable items vertically, possibly looping
+     */
+    static linkVertical(items: FocusableItem[], loop?: boolean): void;
+}
+
+declare function wrapObservable<T>(observable: Observable<T>, onSubscribe?: (observer: Observer<T>) => void, onUnsubscribe?: (observer: Observer<T>) => void): Observable<T>;
+
+declare class FocusService {
+    private renderer;
+    private _current;
+    private _unlistenFuncsMap;
+    constructor(renderer: Renderer2);
+    get current(): FocusableItem;
+    reset(first: FocusableItem): void;
+    registerContainer(el: HTMLElement): void;
+    moveTo(item: FocusableItem): void;
+    move(direction: ArrowKeyDirection): boolean;
+    activateCurrent(): boolean;
+    detachListeners(el: HTMLElement): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<FocusService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<FocusService>;
+}
+declare function clrFocusServiceFactory(existing: FocusService, renderer: Renderer2): FocusService;
+declare const FOCUS_SERVICE_PROVIDER: FactoryProvider;
+
+declare function uniqueIdFactory(): string;
+
+declare class ScrollingService {
+    private _document;
+    constructor(_document: any);
+    stopScrolling(): void;
+    resumeScrolling(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ScrollingService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ScrollingService>;
+}
+
+/**
+ * This is just a copy of CdkDrag so it can be used independent of the rest of the CdkDragDropModule.
+ */
+declare class CdkDragModule_CdkDrag extends CdkDrag {
+    /**
+     * Include the constructor to forward all the dependencies to the base class
+     * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
+     * https://github.com/storybookjs/storybook/issues/23534
+     */
+    constructor(elementRef: ElementRef<HTMLElement>, dropContainer: any, document: any, ngZone: NgZone, viewContainerRef: ViewContainerRef, config: DragDropConfig, dir: Directionality, dragDrop: DragDrop, changeDetectorRef: ChangeDetectorRef);
+    static ɵfac: i0.ɵɵFactoryDeclaration<CdkDragModule_CdkDrag, [null, { optional: true; }, { optional: true; }, null, null, { optional: true; }, null, null, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<CdkDragModule_CdkDrag, "[cdkDrag]", never, {}, {}, never, never, false, never>;
+}
+/**
+ * This module allows us to avoid importing all of CdkDragDropModule which results in a smaller application bundle.
+ */
+declare class CdkDragModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<CdkDragModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<CdkDragModule, [typeof CdkDragModule_CdkDrag], never, [typeof CdkDragModule_CdkDrag]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<CdkDragModule>;
+}
+
+/**
+ * This is just a copy of CdkTrapFocus so it can be used independent of the rest of the A11yModule.
+ */
+declare class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
+    /**
+     * Include the constructor to forward all the dependencies to the base class
+     * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
+     * https://github.com/storybookjs/storybook/issues/23534
+     */
+    constructor(elementRef: ElementRef<HTMLElement>, focusTrapFactory: FocusTrapFactory, document: any);
+    static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule_CdkTrapFocus, [null, null, { optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<CdkTrapFocusModule_CdkTrapFocus, "[cdkTrapFocus]", never, {}, {}, never, never, false, never>;
+}
+/**
+ * This module allows us to avoid importing all of A11yModule which results in a smaller application bundle.
+ */
+declare class CdkTrapFocusModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<CdkTrapFocusModule, [typeof CdkTrapFocusModule_CdkTrapFocus], never, [typeof CdkTrapFocusModule_CdkTrapFocus]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<CdkTrapFocusModule>;
+}
+
+/**
+ * @description
+ *
+ * Developers should explicitly add this service to providers; it then can be injected
+ * into a constructor and used as a notifier for the `takeUntil` operator. This eliminates
+ * the need for boilerplates with subscriptions, and we don't need to implement the `OnDestroy`
+ * interface and teardown subscriptions there.
+ *
+ * This can be used as follows:
+ * ```ts
+ * @Component({
+ *   selector: 'clr-button-group',
+ *   templateUrl: 'button-group.html',
+ *   providers: [ClrDestroyService],
+ * })
+ * export class ClrButtonGroup {
+ *   constructor(public buttonGroupNewService: ButtonInGroupService, private destroy$: ClrDestroyService) {}
+ *
+ *   ngAfterContentInit() {
+ *     this.buttonGroupNewService.changes.pipe(takeUntil(this.destroy$)).subscribe(button => this.rearrangeButton(button));
+ *   }
+ * }
+ * ```
+ */
+declare class ClrDestroyService extends Subject<void> implements OnDestroy {
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDestroyService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrDestroyService>;
+}
+
+type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
+
+declare enum Keys {
+    ArrowLeft = "ArrowLeft",
+    ArrowUp = "ArrowUp",
+    ArrowRight = "ArrowRight",
+    ArrowDown = "ArrowDown",
+    Backspace = "Backspace",
+    Tab = "Tab",
+    Enter = "Enter",
+    Escape = "Escape",
+    Space = "Space",
+    Spacebar = " ",
+    Home = "Home",
+    End = "End",
+    PageDown = "PageDown",
+    PageUp = "PageUp"
+}
+declare enum IEKeys {
+    ArrowUp = "Up",
+    ArrowDown = "Down",
+    ArrowRight = "Right",
+    ArrowLeft = "Left",
+    Space = "Spacebar",
+    Escape = "Esc"
+}
+
+/**
+ * A (clockwise) enumeration for positions around an element.
+ *
+ *     A    B    C
+ *  L  ----------- D
+ *     |         |
+ *     |         |
+ *  K  |         | E
+ *     |         |
+ *     |         |
+ *  J  ----------- F
+ *     I    H    G
+ *
+ * TOP_LEFT      = A
+ * TOP_CENTER    = B
+ * TOP_RIGHT     = C
+ * RIGHT_TOP     = D
+ * RIGHT_CENTER  = E
+ * RIGHT_BOTTOM  = F
+ * BOTTOM_RIGHT  = G
+ * BOTTOM_CENTER = H
+ * BOTTOM_LEFT   = I
+ * LEFT_BOTTOM   = J
+ * LEFT_CENTER   = K
+ * LEFT_TOP      = L
+ *
+ *
+ * Consumers tell us that they want something to display on the TOP_LEFT of the trigger and that they want the
+ * _content_ container to anchor/orient AT the bottom left.
+ * In order to calculate the position for the content I need to match up the anchor/toggle ClrPosition with the
+ * content ClrPosition.
+ *
+ * Anchor TOP_LEFT **AT** Content BOTTOM_LEFT.
+ *     -----------
+ *     |         |
+ *     |         |
+ *     | content |
+ *     |         |
+ *     |         |
+ *     -----------
+ *     |/
+ *     -----------
+ *     |         |
+ *     |         |
+ *     | trigger |
+ *     |         |
+ *     |         |
+ *     -----------
+ *
+ */
+declare enum ClrPosition {
+    TOP_LEFT = 0,
+    TOP_CENTER = 1,
+    TOP_RIGHT = 2,
+    RIGHT_TOP = 3,
+    RIGHT_CENTER = 4,
+    RIGHT_BOTTOM = 5,
+    BOTTOM_RIGHT = 6,
+    BOTTOM_CENTER = 7,
+    BOTTOM_LEFT = 8,
+    LEFT_BOTTOM = 9,
+    LEFT_CENTER = 10,
+    LEFT_TOP = 11
+}
+
+declare class WillyWonka implements AfterViewChecked {
+    disableChocolateCheck: boolean;
+    private _chocolate;
+    get chocolate(): Observable<void>;
+    ngAfterViewChecked(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<WillyWonka, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<WillyWonka, never, never, {}, {}, never, never, true, never>;
+}
+
+declare abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
+    private latestFlavor;
+    private subscription;
+    protected constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka);
+    abstract get flavor(): any;
+    ngAfterContentChecked(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<OompaLoompa, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<OompaLoompa, never, never, {}, {}, never, never, true, never>;
+}
+
+declare class ButtonHubService {
+    buttonsReady: boolean;
+    private _previousBtnClicked;
+    private _nextBtnClicked;
+    private _dangerBtnClicked;
+    private _cancelBtnClicked;
+    private _finishBtnClicked;
+    private _customBtnClicked;
+    get previousBtnClicked(): Observable<void>;
+    get nextBtnClicked(): Observable<void>;
+    get dangerBtnClicked(): Observable<void>;
+    get cancelBtnClicked(): Observable<void>;
+    get finishBtnClicked(): Observable<void>;
+    get customBtnClicked(): Observable<string>;
+    buttonClicked(buttonType: string): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ButtonHubService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ButtonHubService>;
+}
+
+declare class ClrWizardHeaderAction {
+    title: string;
+    _id: string;
+    disabled: boolean;
+    headerActionClicked: EventEmitter<string>;
+    get id(): string;
+    click(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardHeaderAction, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardHeaderAction, "clr-wizard-header-action", never, { "title": { "alias": "title"; "required": false; }; "_id": { "alias": "id"; "required": false; }; "disabled": { "alias": "clrWizardHeaderActionDisabled"; "required": false; }; }, { "headerActionClicked": "actionClicked"; }, never, ["*"], false, never>;
+}
+
+/**
+ * PageCollectionService manages the collection of pages assigned to the wizard and offers
+ * a number of functions useful across the wizards providers and subcomponents -- all related
+ * to essentially lookups on the collection of pages.
+ *
+ * The easiest way to access PageCollectionService is via the wizard. The
+ * following example would allow you to access your instance of the wizard from your host
+ * component and thereby access the page collection via YourHostComponent.wizard.pageCollection.
+ *
+ * @example
+ * <clr-wizard #wizard ...>
+ *
+ * @example
+ * export class YourHostComponent {
+ *   @ViewChild("wizard") wizard: Wizard;
+ *   ...
+ * }
+ *
+ * The heart of the page collection is the query list of pages, which it is assigned as a
+ * reference to the Wizard.pages QueryList when the wizard is created.
+ *
+ */
+declare class PageCollectionService {
+    /**
+     * A reference to the Wizard.pages QueryList.
+     *
+     * Populated when the wizard is created.
+     *
+     * @memberof PageCollectionService
+     */
+    pages: QueryList<ClrWizardPage>;
+    /**
+     *
+     * @memberof PageCollectionService
+     */
+    private _pagesReset;
+    /**
+     * Converts the PageCollectionService.pages QueryList to an array and returns it.
+     *
+     * Useful for many instances when you would prefer a QueryList to act like an array.
+     *
+     * @memberof PageCollectionService
+     */
+    get pagesAsArray(): ClrWizardPage[];
+    /**
+     * Returns the length of the pages query list.
+     *
+     * @memberof PageCollectionService
+     */
+    get pagesCount(): number;
+    /**
+     * Returns the next-to-last page in the query list of pages. Operates as a getter
+     * so that it isn't working with stale data.
+     *
+     * @memberof PageCollectionService
+     */
+    get penultimatePage(): ClrWizardPage;
+    /**
+     * Returns the last page in the query list of pages. Operates as a getter
+     * so that it isn't working with stale data.
+     *
+     * @memberof PageCollectionService
+     */
+    get lastPage(): ClrWizardPage;
+    /**
+     * Returns the first page in the query list of pages. Operates as a getter
+     * so that it isn't working with stale data.
+     *
+     * @memberof PageCollectionService
+     */
+    get firstPage(): ClrWizardPage;
+    /**
+     * An observable that the navigation service listens to in order to know when
+     * the page collection completed states have been reset to false so that way it
+     * can also reset the navigation to make the first page in the page collection
+     * current/active.
+     *
+     * @memberof PageCollectionService
+     */
+    get pagesReset(): Observable<boolean>;
+    /**
+     * Used mostly internally, but accepts a string ID and returns a ClrWizardPage
+     * object that matches the ID passed. Note that IDs here should include the prefix
+     * "clr-wizard-page-".
+     *
+     * Returns the next-to-last page in the query list of pages. Operates as a getter
+     * so that it isn't working with stale data.
+     *
+     * @memberof PageCollectionService
+     */
+    getPageById(id: string): ClrWizardPage;
+    /**
+     * Accepts s number as a parameter and treats that number as the index of the page
+     * you're looking for in the collection of pages. Returns a  wizard page object.
+     *
+     * @memberof PageCollectionService
+     */
+    getPageByIndex(index: number): ClrWizardPage;
+    /**
+     * Takes a wizard page object as a parameter and returns its index in the
+     * collection of pages.
+     *
+     * @memberof PageCollectionService
+     */
+    getPageIndex(page: ClrWizardPage): number;
+    /**
+     * Accepts two numeric indexes and returns an array of wizard page objects that include
+     * all wizard pages in the page collection from the first index to the second.
+     *
+     * @memberof PageCollectionService
+     */
+    pageRange(start: number, end: number): ClrWizardPage[];
+    /**
+     * Accepts two wizard page objects and returns those page objects with all other page
+     * objects between them in the page collection. It doesn't care which page is ahead of the
+     * other in the parameters. It will be smart enough to figure that out  on its own.
+     *
+     * @memberof PageCollectionService
+     */
+    getPageRangeFromPages(page: ClrWizardPage, otherPage: ClrWizardPage): ClrWizardPage[];
+    /**
+     * Takes a wizard page object as a parameter and returns the wizard page object of
+     * the page immediately before it in the page collection. Returns null if there is
+     * no page before the page it is passed.
+     *
+     * @memberof PageCollectionService
+     */
+    getPreviousPage(page: ClrWizardPage): ClrWizardPage;
+    /**
+     * Accepts a wizard page object as a parameter and returns a Boolean that says if
+     * the page you sent it is complete.
+     *
+     * @memberof PageCollectionService
+     */
+    previousPageIsCompleted(page: ClrWizardPage): boolean;
+    /**
+     * Takes a wizard page object as a parameter and returns the wizard page object of
+     * the page immediately after it in the page collection. Returns null if there is
+     * no page after the page it is passed.
+     *
+     * @memberof PageCollectionService
+     */
+    getNextPage(page: ClrWizardPage): ClrWizardPage;
+    /**
+     * Takes a wizard page object as a parameter and generates a step item id from the
+     * page ID. Returns the generated step item ID as a string.
+     *
+     * @memberof PageCollectionService
+     */
+    getStepItemIdForPage(page: ClrWizardPage): string;
+    /**
+     * Generally only used internally to mark that a specific page has been "committed".
+     * This involves marking the page complete and firing the ClrWizardPage.onCommit
+     * (clrWizardPageOnCommit) output. Takes the wizard page object that you intend to
+     * mark completed as a parameter.
+     *
+     * @memberof PageCollectionService
+     */
+    commitPage(page: ClrWizardPage): void;
+    /**
+     * Sets all completed states of the pages in the page collection to false and
+     * notifies the navigation service to likewise reset the navigation.
+     *
+     * @memberof PageCollectionService
+     */
+    reset(): void;
+    /**
+     * Rolls through all the pages in the page collection to make sure there are no
+     * incomplete pages sandwiched between completed pages in the workflow. Identifies
+     * the first incomplete page index and sets all pages behind it to a completed
+     * state of false.
+     *
+     * @memberof PageCollectionService
+     */
+    updateCompletedStates(): void;
+    /**
+     * Retrieves the index of the first incomplete page in the page collection.
+     *
+     * @memberof PageCollectionService
+     */
+    findFirstIncompletePageIndex(): number;
+    findFirstIncompletePage(): ClrWizardPage;
+    /**
+     * Consolidates guard logic that prevents a couple of unfortunate edge cases with
+     * look ups on the collection of pages.
+     *
+     * @memberof PageCollectionService
+     */
+    private checkResults;
+    static ɵfac: i0.ɵɵFactoryDeclaration<PageCollectionService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<PageCollectionService>;
+}
+
+declare class ClrWizardPageButtons {
+    pageButtonsTemplateRef: TemplateRef<any>;
+    constructor(pageButtonsTemplateRef: TemplateRef<any>);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPageButtons, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageButtons, "[clrPageButtons]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrWizardPageHeaderActions {
+    pageHeaderActionsTemplateRef: TemplateRef<any>;
+    constructor(pageHeaderActionsTemplateRef: TemplateRef<any>);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPageHeaderActions, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageHeaderActions, "[clrPageHeaderActions]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrWizardPageNavTitle {
+    pageNavTitleTemplateRef: TemplateRef<any>;
+    constructor(pageNavTitleTemplateRef: TemplateRef<any>);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPageNavTitle, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageNavTitle, "[clrPageNavTitle]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrWizardPageTitle {
+    pageTitleTemplateRef: TemplateRef<any>;
+    headingLevel: HeadingLevel$1;
+    constructor(pageTitleTemplateRef: TemplateRef<any>);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPageTitle, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageTitle, "[clrPageTitle]", never, { "headingLevel": { "alias": "clrHeadingLevel"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+/**
+ * The ClrWizardPage component is responsible for displaying the content of each step
+ * in the wizard workflow.
+ *
+ * ClrWizardPage component has hooks into the navigation service (ClrWizardPage.navService),
+ * page collection (ClrWizardPage.pageCollection), and button service
+ * (ClrWizardPage.buttonService). These three providers are shared across the components
+ * within each instance of a Wizard.
+ *
+ */
+declare class ClrWizardPage implements OnInit {
+    private navService;
+    pageCollection: PageCollectionService;
+    buttonService: ButtonHubService;
+    /**
+     * An input value that is used internally to generate the ClrWizardPage ID as
+     * well as the step nav item ID.
+     *
+     * Typed as any because it should be able to accept numbers as well as
+     * strings. Passing an index for wizard whose pages are created with an
+     * ngFor loop is a common use case.
+     *
+     * @memberof WizardPage
+     *
+     */
+    _id: any;
+    /**
+     * Overrides all actions from the page level, so you can use an alternate function for
+     * validation or data-munging with a ClrWizardPage.onCommit (clrWizardPageOnCommit output),
+     * ClrWizardPage.onCancel (clrWizardPageOnCancel output), or one
+     * of the granular page-level button click event emitters.
+     *
+     * @memberof WizardPage
+     *
+     */
+    preventDefault: boolean | string;
+    /**
+     * Emits when the value of ClrWizardPage.nextStepDisabled changes.
+     * Should emit the new value of nextStepDisabled.
+     *
+     * @memberof WizardPage
+     *
+     */
+    nextStepDisabledChange: EventEmitter<boolean>;
+    /**
+     * Emits when the value of ClrWizardPage.previousStepDisabled changes.
+     * Should emit the new value of previousStepDisabled.
+     *
+     * @memberof WizardPage
+     *
+     */
+    previousStepDisabledChange: EventEmitter<boolean>;
+    /**
+     *
+     * @memberof WizardPage
+     *
+     */
+    stopCancelChange: EventEmitter<boolean>;
+    /**
+     * An event emitter carried over from a legacy version of ClrWizardPage.
+     * Fires an event on ClrWizardPage whenever the next or finish buttons
+     * are clicked and the page is the current page of the Wizard.
+     *
+     * Note that this does not automatically emit an event when a custom
+     * button is used in place of a next or finish button.
+     *
+     * @memberof WizardPage
+     *
+     */
+    onCommit: EventEmitter<string>;
+    /**
+     * Emits an event when ClrWizardPage becomes the current page of the
+     * Wizard.
+     *
+     * @memberof WizardPage
+     *
+     */
+    onLoad: EventEmitter<string>;
+    /**
+     * Emits an event when the ClrWizardPage invokes the cancel routine for the wizard.
+     *
+     * Can be used in conjunction with the ClrWizardPage.stopCancel
+     * (clrWizardPagePreventDefaultCancel) or ClrWizardPage.preventDefault
+     * (clrWizardPagePagePreventDefault) inputs to implement custom cancel
+     * functionality at the page level. This is useful if you would like to do
+     * validation, save data, or warn users before cancelling the wizard.
+     *
+     * Note that this requires you to call Wizard.close() from the host component.
+     * This constitues a full replacement of the cancel functionality.
+     *
+     * @memberof WizardPage
+     *
+     */
+    pageOnCancel: EventEmitter<ClrWizardPage>;
+    /**
+     * Emits an event when the finish button is clicked and the ClrWizardPage is
+     * the wizard's current page.
+     *
+     * Can be used in conjunction with the ClrWizardPage.preventDefault
+     * (clrWizardPagePagePreventDefault) input to implement custom finish
+     * functionality at the page level. This is useful if you would like to do
+     * validation, save data, or warn users before allowing them to complete
+     * the wizard.
+     *
+     * Note that this requires you to call Wizard.finish() or Wizard.forceFinish()
+     * from the host component. This combination creates a full replacement of
+     * the finish functionality.
+     *
+     * @memberof WizardPage
+     *
+     */
+    finishButtonClicked: EventEmitter<ClrWizardPage>;
+    /**
+     * Emits an event when the previous button is clicked and the ClrWizardPage is
+     * the wizard's current page.
+     *
+     * Can be used in conjunction with the ClrWizardPage.preventDefault
+     * (clrWizardPagePagePreventDefault) input to implement custom backwards
+     * navigation at the page level. This is useful if you would like to do
+     * validation, save data, or warn users before allowing them to go
+     * backwards in the wizard.
+     *
+     * Note that this requires you to call Wizard.previous()
+     * from the host component. This combination creates a full replacement of
+     * the backwards navigation functionality.
+     *
+     * @memberof WizardPage
+     *
+     */
+    previousButtonClicked: EventEmitter<ClrWizardPage>;
+    /**
+     * Emits an event when the next button is clicked and the ClrWizardPage is
+     * the wizard's current page.
+     *
+     * Can be used in conjunction with the ClrWizardPage.preventDefault
+     * (clrWizardPagePagePreventDefault) input to implement custom forwards
+     * navigation at the page level. This is useful if you would like to do
+     * validation, save data, or warn users before allowing them to go
+     * to the next page in the wizard.
+     *
+     * Note that this requires you to call Wizard.forceNext() or Wizard.next()
+     * from the host component. This combination creates a full replacement of
+     * the forward navigation functionality.
+     *
+     * @memberof WizardPage
+     *
+     */
+    nextButtonClicked: EventEmitter<ClrWizardPage>;
+    /**
+     * Emits an event when a danger button is clicked and the ClrWizardPage is
+     * the wizard's current page. By default, a danger button will act as
+     * either a "next" or "finish" button depending on if the ClrWizardPage is the
+     * last page or not.
+     *
+     * Can be used in conjunction with the ClrWizardPage.preventDefault
+     * (clrWizardPagePagePreventDefault) input to implement custom forwards
+     * or finish navigation at the page level when the danger button is clicked.
+     * This is useful if you would like to do validation, save data, or warn
+     * users before allowing them to go to the next page in the wizard or
+     * finish the wizard.
+     *
+     * Note that this requires you to call Wizard.finish(), Wizard.forceFinish(),
+     * Wizard.forceNext() or Wizard.next() from the host component. This
+     * combination creates a full replacement of the forward navigation and
+     * finish functionality.
+     *
+     * @memberof WizardPage
+     *
+     */
+    dangerButtonClicked: EventEmitter<ClrWizardPage>;
+    /**
+     * Emits an event when a next, finish, or danger button is clicked and the
+     * ClrWizardPage is the wizard's current page.
+     *
+     * Can be used in conjunction with the ClrWizardPage.preventDefault
+     * (clrWizardPagePagePreventDefault) input to implement custom forwards
+     * or finish navigation at the page level, regardless of the type of
+     * primary button.
+     *
+     * This is useful if you would like to do validation, save data, or warn
+     * users before allowing them to go to the next page in the wizard or
+     * finish the wizard.
+     *
+     * Note that this requires you to call Wizard.finish(), Wizard.forceFinish(),
+     * Wizard.forceNext() or Wizard.next() from the host component. This
+     * combination creates a full replacement of the forward navigation and
+     * finish functionality.
+     *
+     * @memberof WizardPage
+     *
+     */
+    primaryButtonClicked: EventEmitter<string>;
+    customButtonClicked: EventEmitter<string>;
+    /**
+     * Contains a reference to the page title which is used for a number
+     * of different tasks for display in the wizard.
+     *
+     * @memberof WizardPage
+     *
+     */
+    pageTitle: ClrWizardPageTitle;
+    /**
+     * Contains a reference to the desired title for the page's step in the
+     * navigation on the left side of the wizard. Can be projected to change the
+     * navigation link's text.
+     *
+     * If not defined, then ClrWizardPage.pageTitle will be displayed in the stepnav.
+     *
+     * @memberof WizardPage
+     *
+     */
+    pageNavTitle: ClrWizardPageNavTitle;
+    /**
+     * Contains a reference to the buttons defined within the page. If not defined,
+     * the wizard defaults to the set of buttons defined as a direct child of the
+     * wizard.
+     *
+     * @memberof WizardPage
+     *
+     */
+    _buttons: ClrWizardPageButtons;
+    /**
+     * Contains a reference to the header actions defined within the page. If not defined,
+     * the wizard defaults to the set of header actions defined as a direct child of the
+     * wizard.
+     *
+     * @memberof WizardPage
+     *
+     */
+    _headerActions: ClrWizardPageHeaderActions;
+    /**
+     *
+     * @memberof WizardPage
+     *
+     */
+    private _nextStepDisabled;
+    /**
+     *
+     * @memberof WizardPage
+     *
+     */
+    private _previousStepDisabled;
+    /**
+     *
+     * @memberof WizardPage
+     *
+     */
+    private _hasError;
+    /**
+     *
+     * @memberof WizardPage
+     *
+     */
+    private _stopCancel;
+    /**
+     *
+     * @memberof WizardPage
+     *
+     */
+    private _stopNext;
+    /**
+     *
+     * @memberof WizardPage
+     *
+     */
+    private _complete;
+    /**
+     * Creates an instance of ClrWizardPage.
+     *
+     * @memberof WizardPage
+     */
+    constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService);
+    /**
+     * A property that tells whether or not the wizard should be allowed
+     * to move to the next page.
+     *
+     * Useful for in-page validation because it prevents forward navigation
+     * and visibly disables the next button.
+     *
+     * Does not require that you re-implement navigation routines like you
+     * would if you were using ClrWizardPage.preventDefault or
+     * Wizard.preventDefault.
+     *
+     * @memberof WizardPage
+     *
+     */
+    get nextStepDisabled(): boolean;
+    set nextStepDisabled(val: boolean);
+    /**
+     * A property that tells whether or not the wizard should be allowed
+     * to move to the previous page.
+     *
+     * Useful for in-page validation because it prevents backward navigation
+     * and visibly disables the previous button.
+     *
+     * Does not require that you re-implement navigation routines like you
+     * would if you were using ClrWizardPage.preventDefault or
+     * Wizard.preventDefault.
+     *
+     * @memberof WizardPage
+     *
+     */
+    get previousStepDisabled(): boolean;
+    set previousStepDisabled(val: boolean);
+    /**
+     * Whether the page has an error and also resolve the "falsy" value. The
+     * current logic treat a "0" or an empty string as false and likewise will treat any
+     * "truthy" value as true.
+     *
+     * @memberof WizardPage
+     *
+     */
+    get hasError(): boolean;
+    set hasError(val: boolean);
+    /**
+     * Overrides the cancel action from the page level. Allows you to use an
+     * alternate function for validation or data-munging before cancelling the
+     * wizard when combined with the ClrWizardPage.onCancel
+     * (the clrWizardPageOnCancel output).
+     *
+     * Requires that you manually close the wizard from your host component,
+     * usually with a call to Wizard.forceNext() or wizard.next();
+     *
+     * @memberof ClrWizardPage
+     */
+    get stopCancel(): boolean;
+    set stopCancel(val: boolean);
+    /**
+     * Overrides forward navigation from the page level. Allows you to use an
+     * alternate function for validation or data-munging before moving the
+     * wizard to the next pagewhen combined with the ClrWizardPage.onCommit
+     * (clrWizardPageOnCommit) or ClrWizardPage.nextButtonClicked
+     * (clrWizardPageNext) outputs.
+     *
+     * Requires that you manually tell the wizard to navigate forward from
+     * the hostComponent, usually with a call to Wizard.forceNext() or
+     * wizard.next();
+     *
+     * @memberof ClrWizardPage
+     */
+    get stopNext(): boolean;
+    set stopNext(val: boolean);
+    /**
+     * A read-only getter that generates an ID string for the wizard page from
+     * either the value passed to the ClrWizardPage "id" input or a wizard page
+     * counter shared across all wizard pages in the application.
+     *
+     * Note that the value passed into the ID input Will be prefixed with
+     * "clr-wizard-page-".
+     *
+     * @readonly
+     *
+     * @memberof ClrWizardPage
+     */
+    get id(): string;
+    /**
+     * A read-only getter that serves as a convenience for those who would rather
+     * not think in the terms of !ClrWizardPage.nextStepDisabled. For some use cases,
+     * ClrWizardPage.readyToComplete is more logical and declarative.
+     *
+     * @memberof WizardPage
+     *
+     */
+    get readyToComplete(): boolean;
+    /**
+     * A page is marked as completed if it is both readyToComplete and completed,
+     * as in the next or finish action has been executed while this page was current.
+     *
+     * Note there is and open question about how to handle pages that are marked
+     * complete but who are no longer readyToComplete. This might indicate an error
+     * state for the ClrWizardPage. Currently, the wizard does not acknowledge this state
+     * and only returns that the page is incomplete.
+     *
+     * @memberof WizardPage
+     *
+     */
+    get completed(): boolean;
+    /**
+     * A ClrWizardPage can be manually set to completed using this boolean setter.
+     * It is recommended that users rely on the convenience functions in the wizard
+     * and navigation service instead of manually setting pages’ completion state.
+     *
+     * @memberof ClrWizardPage
+     */
+    set completed(value: boolean);
+    /**
+     * Checks with the navigation service to see if it is the current page.
+     *
+     * @memberof WizardPage
+     *
+     */
+    get current(): boolean;
+    get disabled(): boolean;
+    /**
+     * A read-only getter that returns whether or not the page is navigable
+     * in the wizard. A wizard page can be navigated to if it is completed
+     * or the page before it is completed.
+     *
+     * This getter handles the logic for enabling or disabling the links in
+     * the step nav on the left Side of the wizard.
+     *
+     * @memberof WizardPage
+     *
+     */
+    get enabled(): boolean;
+    /**
+     * A read-only getter that returns whether or not the page before this
+     * ClrWizardPage is completed. This is useful for determining whether or not
+     * a page is navigable if it is not current or already completed.
+     *
+     * @memberof WizardPage
+     *
+     */
+    get previousCompleted(): boolean;
+    /**
+     *
+     * @memberof WizardPage
+     *
+     */
+    get title(): TemplateRef<any>;
+    /**
+     *
+     * @memberof WizardPage
+     *
+     */
+    get navTitle(): TemplateRef<any>;
+    /**
+     *
+     * @memberof WizardPage
+     *
+     */
+    get headerActions(): TemplateRef<any>;
+    /**
+     *
+     * @memberof WizardPage
+     *
+     */
+    get hasHeaderActions(): boolean;
+    /**
+     *
+     * @memberof WizardPage
+     *
+     */
+    get buttons(): TemplateRef<any>;
+    /**
+     * A read-only getter that returns a boolean that says whether or
+     * not the ClrWizardPage includes buttons. Used to determine if the
+     * Wizard should override the default button set defined as
+     * its direct children.
+     *
+     * @memberof WizardPage
+     *
+     */
+    get hasButtons(): boolean;
+    /**
+     * A read-only getter that returns the id used by the step nav item associated with the page.
+     *
+     * ClrWizardPage needs this ID string for aria information.
+     *
+     * @memberof WizardPage
+     *
+     */
+    get stepItemId(): string;
+    /**
+     * Links the nav service and establishes the current page if one is not defined.
+     *
+     * @memberof WizardPage
+     *
+     */
+    ngOnInit(): void;
+    /**
+     * Uses the nav service to make the ClrWizardPage the current page in the
+     * wizard. Bypasses all checks but still emits the ClrWizardPage.onLoad
+     * (clrWizardPageOnLoad) output.
+     *
+     * In most cases, it is better to use the default navigation functions
+     * in Wizard.
+     *
+     * @memberof WizardPage
+     *
+     */
+    makeCurrent(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPage, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardPage, "clr-wizard-page", never, { "_id": { "alias": "id"; "required": false; }; "preventDefault": { "alias": "clrWizardPagePreventDefault"; "required": false; }; "nextStepDisabled": { "alias": "clrWizardPageNextDisabled"; "required": false; }; "previousStepDisabled": { "alias": "clrWizardPagePreviousDisabled"; "required": false; }; "hasError": { "alias": "clrWizardPageHasError"; "required": false; }; "stopCancel": { "alias": "clrWizardPagePreventDefaultCancel"; "required": false; }; "stopNext": { "alias": "clrWizardPagePreventDefaultNext"; "required": false; }; }, { "nextStepDisabledChange": "clrWizardPageNextDisabledChange"; "previousStepDisabledChange": "clrWizardPagePreviousDisabledChange"; "stopCancelChange": "clrWizardPagePreventDefaultCancelChange"; "onCommit": "clrWizardPageOnCommit"; "onLoad": "clrWizardPageOnLoad"; "pageOnCancel": "clrWizardPageOnCancel"; "finishButtonClicked": "clrWizardPageFinish"; "previousButtonClicked": "clrWizardPagePrevious"; "nextButtonClicked": "clrWizardPageNext"; "dangerButtonClicked": "clrWizardPageDanger"; "primaryButtonClicked": "clrWizardPagePrimary"; "customButtonClicked": "clrWizardPageCustomButton"; }, ["pageTitle", "pageNavTitle", "_buttons", "_headerActions"], ["*"], false, never>;
+}
+
+/**
+ * Performs navigation functions for a wizard and manages the current page. Presented as a
+ * separate service to encapsulate the behavior of navigating and completing the wizard so
+ * that it can be shared across the wizard and its sub-components.
+ *
+ * The easiest way to access the navigation service is there a reference on your wizard. The
+ * Following example would allow you to access your instance of the wizard from your host
+ * component and thereby access the navigation service via YourHostComponent.wizard.navService.
+ *
+ * @example
+ * <clr-wizard #wizard ...>
+ *
+ * @example
+ * export class YourHostComponent {
+ *   @ViewChild("wizard") wizard: Wizard;
+ *   ...
+ * }
+ *
+ */
+declare class WizardNavigationService implements OnDestroy {
+    pageCollection: PageCollectionService;
+    buttonService: ButtonHubService;
+    /**
+     * Is notified when a previous button is clicked in the wizard. Performs checks
+     * before alerting the current page of the button click. Enacts navigation to
+     * the previous page if not overridden at the page level.
+     *
+     * @memberof WizardNavigationService
+     */
+    previousButtonSubscription: Subscription;
+    /**
+     * Is notified when a Next button is clicked in the wizard.
+     *
+     * @memberof WizardNavigationService
+     */
+    nextButtonSubscription: Subscription;
+    /**
+     * Is notified when a danger button is clicked in the wizard.
+     *
+     * @memberof WizardNavigationService
+     */
+    dangerButtonSubscription: Subscription;
+    /**
+     * Is notified when a  finish button is clicked in the wizard.
+     *
+     * @memberof WizardNavigationService
+     */
+    finishButtonSubscription: Subscription;
+    /**
+     * Is notified when a Custom button is clicked in the wizard.
+     *
+     * @memberof WizardNavigationService
+     */
+    customButtonSubscription: Subscription;
+    /**
+     * Is notified when a Cancel button is clicked in the wizard. Notifies the wizard,
+     * which handles all cancel functionality, if cancel is not overridden at the page
+     * level.
+     *
+     * @memberof WizardNavigationService
+     */
+    cancelButtonSubscription: Subscription;
+    /**
+     * Resets navigation to make the first page current when the page collection service
+     * emits an event notifying WizardNavigationService that it has reset all pages
+     * to their pristine, incomplete state.
+     *
+     * @memberof WizardNavigationService
+     */
+    pagesResetSubscription: Subscription;
+    /**
+     * A Boolean flag used by the ClrWizardPage to avoid a race condition when pages are
+     * loading and there is no current page defined.
+     *
+     * @memberof WizardNavigationService
+     */
+    navServiceLoaded: boolean;
+    /**
+     * A boolean flag shared across the Wizard subcomponents that follows the value
+     * of the Wizard.forceForward (clrWizardForceForwardNavigation) input. When true,
+     * navigating backwards in the stepnav menu will reset any skipped pages' completed
+     * state to false.
+     *
+     * This is useful when a wizard executes validation on a page-by-page basis when
+     * the next button is clicked.
+     *
+     * @memberof WizardNavigationService
+     */
+    forceForwardNavigation: boolean;
+    /**
+     * A boolean flag shared across the Wizard subcomponents that follows the value
+     * of the Wizard.stopCancel (clrWizardPreventDefaultCancel) input. When true, the cancel
+     * routine is subverted and must be reinstated in the host component calling Wizard.close()
+     * at some point.
+     *
+     * @memberof WizardNavigationService
+     */
+    wizardHasAltCancel: boolean;
+    /**
+     * A boolean flag shared across the Wizard subcomponents that follows the value
+     * of the Wizard.stopNext (clrWizardPreventDefaultNext) input. When true, the next and finish
+     * routines are subverted and must be reinstated in the host component calling Wizard.next(),
+     * Wizard.forceNext(), Wizard.finish(), or Wizard.forceFinish().
+     *
+     * @memberof WizardNavigationService
+     */
+    wizardHasAltNext: boolean;
+    /**
+     * A boolean flag shared across the Wizard subcomponents that follows the value
+     * of the Wizard.stopNavigation (clrWizardPreventNavigation) input. When true, all
+     * navigational elements in the wizard are disabled.
+     *
+     * This is intended to freeze the wizard in place. Events are not fired so this is
+     * not a way to implement alternate functionality for navigation.
+     *
+     * @memberof WizardNavigationService
+     */
+    wizardStopNavigation: boolean;
+    /**
+     * A boolean flag shared with the stepnav items that prevents user clicks on
+     * stepnav items from navigating the wizard.
+     *
+     * @memberof WizardNavigationService
+     */
+    wizardDisableStepnav: boolean;
+    /**
+     * @memberof WizardNavigationService
+     */
+    private _currentPage;
+    /**
+     *
+     * @memberof WizardNavigationService
+     */
+    private _currentChanged;
+    /**
+     * @memberof WizardNavigationService
+     */
+    private _movedToNextPage;
+    /**
+     * @memberof WizardNavigationService
+     */
+    private _wizardFinished;
+    /**
+     * @memberof WizardNavigationService
+     */
+    private _movedToPreviousPage;
+    /**
+     * @memberof WizardNavigationService
+     */
+    private _cancelWizard;
+    /**
+     * Creates an instance of WizardNavigationService. Also sets up subscriptions
+     * that listen to the button service to determine when a button has been clicked
+     * in the wizard. Is also responsible for taking action when the page collection
+     * requests that navigation be reset to its pristine state.
+     *
+     * @memberof WizardNavigationService
+     */
+    constructor(pageCollection: PageCollectionService, buttonService: ButtonHubService);
+    /**
+     * An Observable that is predominantly used amongst the subcomponents and services
+     * of the wizard. It is recommended that users listen to the ClrWizardPage.onLoad
+     * (clrWizardPageOnLoad) output instead of this Observable.
+     *
+     * @memberof WizardNavigationService
+     */
+    get currentPageChanged(): Observable<ClrWizardPage>;
+    /**
+     * @memberof WizardNavigationService
+     */
+    get currentPageTitle(): TemplateRef<any>;
+    /**
+     * Returns a Boolean that tells you whether or not the current page is the first
+     * page in the Wizard.
+     *
+     * This is helpful for determining whether a page is navigable.
+     *
+     * @memberof WizardNavigationService
+     */
+    get currentPageIsFirst(): boolean;
+    /**
+     * Returns a Boolean that tells you whether or not the current page is the
+     * last page in the Wizard.
+     *
+     * This is used to determine which buttons should display in the wizard footer.
+     *
+     * @memberof WizardNavigationService
+     */
+    get currentPageIsLast(): boolean;
+    /**
+     * Returns the ClrWizardPage object of the current page or null.
+     *
+     * @memberof WizardNavigationService
+     */
+    get currentPage(): ClrWizardPage;
+    /**
+     * Accepts a ClrWizardPage object, since that object to be the current/active
+     * page in the wizard, and emits the ClrWizardPage.onLoad (clrWizardPageOnLoad)
+     * event for that page.
+     *
+     * Note that all of this work is bypassed if the ClrWizardPage object is already
+     * the current page.
+     *
+     * @memberof WizardNavigationService
+     */
+    set currentPage(page: ClrWizardPage);
+    /**
+     * An observable used internally to alert the wizard that forward navigation
+     * has occurred. It is recommended that you use the Wizard.onMoveNext
+     * (clrWizardOnNext) output instead of this one.
+     *
+     * @memberof WizardNavigationService
+     */
+    get movedToNextPage(): Observable<boolean>;
+    /**
+     * An observable used internally to alert the wizard that the nav service
+     * has approved completion of the wizard.
+     *
+     * It is recommended that you use the Wizard.wizardFinished (clrWizardOnFinish)
+     * output instead of this one.
+     *
+     * @memberof WizardNavigationService
+     */
+    get wizardFinished(): Observable<void>;
+    /**
+     * Notifies the wizard when backwards navigation has occurred via the
+     * previous button.
+     *
+     * @memberof WizardNavigationService
+     */
+    get movedToPreviousPage(): Observable<boolean>;
+    /**
+     * Notifies the wizard that a user is trying to cancel it.
+     *
+     * @memberof WizardNavigationService
+     */
+    get notifyWizardCancel(): Observable<any>;
+    /**
+     *
+     * @memberof WizardNavigationService
+     */
+    ngOnDestroy(): void;
+    /**
+     * This is a public function that can be used to programmatically advance
+     * the user to the next page.
+     *
+     * When invoked, this method will move the wizard to the next page after
+     * successful validation. Note that this method goes through all checks
+     * and event emissions as if Wizard.next(false) had been called.
+     *
+     * In most cases, it makes more sense to use Wizard.next(false).
+     *
+     * @memberof WizardNavigationService
+     */
+    next(): void;
+    /**
+     * Bypasses checks and most event emissions to force a page to navigate forward.
+     *
+     * Comparable to calling Wizard.next() or Wizard.forceNext().
+     *
+     * @memberof WizardNavigationService
+     */
+    forceNext(): void;
+    /**
+     * Accepts a button/action type as a parameter. Encapsulates all logic for
+     * event emissions, state of the current page, and wizard and page level overrides.
+     *
+     * Avoid calling this function directly unless you really know what you're doing.
+     *
+     * @memberof WizardNavigationService
+     */
+    checkAndCommitCurrentPage(buttonType: string): void;
+    /**
+     * This is a public function that can be used to programmatically conclude
+     * the wizard.
+     *
+     * When invoked, this method will  initiate the work involved with finalizing
+     * and finishing the wizard workflow. Note that this method goes through all
+     * checks and event emissions as if Wizard.finish(false) had been called.
+     *
+     * In most cases, it makes more sense to use Wizard.finish(false).
+     *
+     * @memberof WizardNavigationService
+     */
+    finish(): void;
+    /**
+     * Programmatically moves the wizard to the page before the current page.
+     *
+     * In most instances, it makes more sense to call Wizard.previous()
+     * which does the same thing.
+     *
+     * @memberof WizardNavigationService
+     */
+    previous(): void;
+    /**
+     * Allows a hook into the cancel workflow of the wizard from the nav service. Note that
+     * this route goes through all checks and event emissions as if a cancel button had
+     * been clicked.
+     *
+     * In most cases, users looking for a hook into the cancel routine are actually looking
+     * for a way to close the wizard from their host component because they have prevented
+     * the default cancel action.
+     *
+     * In this instance, it is recommended that you use Wizard.close() to avoid any event
+     * emission loop resulting from an event handler calling back into routine that will
+     * again evoke the events it handles.
+     *
+     * @memberof WizardNavigationService
+     */
+    cancel(): void;
+    /**
+     * Performs all required checks to determine if a user can navigate to a page. Checking at each
+     * point if a page is navigable -- completed where the page immediately after the last completed
+     * page.
+     *
+     * Takes two parameters. The first one must be either the ClrWizardPage object or the ID of the
+     * ClrWizardPage object that you want to make the current page.
+     *
+     * The second parameter is optional and is a Boolean flag for "lazy completion". What this means
+     * is the Wizard will mark all pages between the current page and the page you want to navigate
+     * to as completed. This is useful for informational wizards that do not require user action,
+     * allowing an easy means for users to jump ahead.
+     *
+     * To avoid checks on navigation, use ClrWizardPage.makeCurrent() instead.
+     *
+     * @memberof WizardNavigationService
+     */
+    goTo(pageToGoToOrId: any, lazyComplete?: boolean): void;
+    /**
+     * Accepts a range of ClrWizardPage objects as a parameter. Performs the work of checking
+     * those objects to determine if navigation can be accomplished.
+     *
+     * @memberof WizardNavigationService
+     */
+    canGoTo(pagesToCheck: ClrWizardPage[]): boolean;
+    /**
+     * Looks through the collection of pages to find the first one that is incomplete
+     * and makes that page the current/active page.
+     *
+     * @memberof WizardNavigationService
+     */
+    setLastEnabledPageCurrent(): void;
+    /**
+     * Finds the first page in the collection of pages and makes that page the
+     * current/active page.
+     *
+     * @memberof WizardNavigationService
+     */
+    setFirstPageCurrent(): void;
+    /**
+     * Updates the stepnav on the left side of the wizard when pages are dynamically
+     * added or removed from the collection of pages.
+     *
+     * @memberof WizardNavigationService
+     */
+    updateNavigation(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<WizardNavigationService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<WizardNavigationService>;
+}
+
+declare class HeaderActionService {
+    navService: WizardNavigationService;
+    wizardHeaderActions: QueryList<ClrWizardHeaderAction>;
+    constructor(navService: WizardNavigationService);
+    get wizardHasHeaderActions(): boolean;
+    get currentPageHasHeaderActions(): boolean;
+    get showWizardHeaderActions(): boolean;
+    get displayHeaderActionsWrapper(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<HeaderActionService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<HeaderActionService>;
+}
+
+declare class ClrWizardTitle {
+    headingLevel: HeadingLevel$1;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardTitle, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardTitle, "clr-wizard-title", never, { "headingLevel": { "alias": "clrHeadingLevel"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
+    private platformId;
+    commonStrings: ClrCommonStringsService$1;
+    navService: WizardNavigationService;
+    pageCollection: PageCollectionService;
+    buttonService: ButtonHubService;
+    headerActionService: HeaderActionService;
+    private elementRef;
+    /**
+     * Set the aria-label for the stepnav section of the wizard. Set using `[clrWizardStepnavAriaLabel]` input.
+     */
+    stepnavAriaLabel: string;
+    /**
+     * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
+     */
+    size: string;
+    /**
+     * Enable "in page" wizard. Set using `[clrWizardInPage]` input.
+     */
+    inPage: boolean;
+    /**
+     * Make an "in page" wizard fill the `.content-area`. Set using `[clrWizardInPageFillContentArea]` input.
+     * If you can't use this option, you will likely need to provide custom CSS to set the wizard's height and margins.
+     */
+    inPageFillContentArea: boolean;
+    /**
+     * Tells the modal part of the wizard whether it should have a close "X"
+     * in the top right corner. Set using `[clrWizardClosable]` input.
+     */
+    closable: boolean;
+    /**
+     * Used to communicate to the underlying modal that animations are not
+     * wanted. Primary use is for the display of static/inline wizards.
+     * Set using `[clrWizardPreventModalAnimation]` input.
+     */
+    _stopModalAnimations: boolean;
+    /**
+     * Emits when the wizard is opened or closed.
+     * Listen via `(clrWizardOpenChange)` event.
+     */
+    _openChanged: EventEmitter<boolean>;
+    /**
+     * Emits when the wizard is canceled. Listen via `(clrWizardOnCancel)` event.
+     * Can be combined with the `[clrWizardPreventDefaultCancel]` input to create
+     * wizard-level custom cancel routines.
+     */
+    onCancel: EventEmitter<any>;
+    /**
+     * Emits when the wizard is completed. Listen via `(clrWizardOnFinish)` event.
+     * Can be combined with the `[clrWizardPreventDefaultNext]` input to create
+     * wizard-level custom completion routines.
+     */
+    wizardFinished: EventEmitter<any>;
+    /**
+     * Emits when the wizard is reset. Listen via `(clrWizardOnReset)` event.
+     */
+    onReset: EventEmitter<any>;
+    /**
+     * Emits when the current page has changed. Listen via `(clrWizardCurrentPageChanged)` event.
+     * output. Useful for non-blocking validation.
+     */
+    currentPageChanged: EventEmitter<any>;
+    /**
+     * Emits when the wizard moves to the next page. Listen via `(clrWizardOnNext)` event.
+     * Can be combined with the `[clrWizardPreventDefaultNext]` input to create
+     * wizard-level custom navigation routines, which are useful for validation.
+     */
+    onMoveNext: EventEmitter<any>;
+    /**
+     * Emits when the wizard moves to the previous page. Can be useful for validation.
+     * Listen via `(clrWizardOnPrevious)` event.
+     */
+    onMovePrevious: EventEmitter<any>;
+    pageTitle: ElementRef<HTMLElement>;
+    pages: QueryList<ClrWizardPage>;
+    headerActions: QueryList<ClrWizardHeaderAction>;
+    _open: boolean;
+    wizardId: string;
+    protected wizardTitle: ClrWizardTitle;
+    private readonly bodyElementRef;
+    private _forceForward;
+    private _stopNext;
+    private _stopCancel;
+    private _stopNavigation;
+    private _disableStepnav;
+    private differ;
+    private subscriptions;
+    private readonly modal;
+    constructor(platformId: any, commonStrings: ClrCommonStringsService$1, navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService, headerActionService: HeaderActionService, elementRef: ElementRef<HTMLElement>, differs: IterableDiffers);
+    /**
+     * Resets page completed states when navigating backwards.
+     * Set using `[clrWizardForceForwardNavigation]` input.
+     */
+    get forceForward(): boolean;
+    set forceForward(value: boolean);
+    /**
+     * Toggles open/close of the wizard component.
+     * Set using the `[clrWizardOpen]` input.
+     */
+    set clrWizardOpen(open: boolean);
+    /**
+     * Prevents ClrWizard from moving to the next page or closing itself on finishing.
+     * Set using the `[clrWizardPreventDefaultNext]` input. Note that using stopNext
+     * will require you to create your own calls to .next() and .finish() in your
+     * host component to make the ClrWizard work as expected.
+     */
+    get stopNext(): boolean;
+    set stopNext(value: boolean);
+    /**
+     * Prevents ClrWizard from closing when the cancel button or close "X" is clicked.
+     * Set using the `[clrWizardPreventDefaultCancel]` input.
+     *
+     * Note that using stopCancel will require you to create your own calls to `close()` in your host compone`nt
+     * to make the ClrWizard work as expected. Useful for doing checks or prompts
+     * before closing a ClrWizard.
+     */
+    get stopCancel(): boolean;
+    set stopCancel(value: boolean);
+    /**
+     * Prevents ClrWizard from performing any form of navigation away from the current
+     * page. Set using the `[clrWizardPreventNavigation]` input.
+     * Note that stopNavigation is meant to freeze the wizard in place, typically
+     * during a long validation or background action where you want the wizard to
+     * display loading content but not allow the user to execute navigation in
+     * the stepnav, close X, or the  back, finish, or next buttons.
+     */
+    get stopNavigation(): boolean;
+    set stopNavigation(value: boolean);
+    /**
+     * Prevents clicks on the links in the stepnav from working.
+     * Set using `[clrWizardDisableStepnav]` input.
+     * A more granular bypassing of navigation which can be useful when your
+     * ClrWizard is in a state of completion and you don't want users to be
+     * able to jump backwards and change things.
+     */
+    get disableStepnav(): boolean;
+    set disableStepnav(value: boolean);
+    get currentPage(): ClrWizardPage;
+    set currentPage(page: ClrWizardPage);
+    get isLast(): boolean;
+    get isFirst(): boolean;
+    get isInline(): boolean;
+    get stopModalAnimations(): boolean;
+    ngAfterContentInit(): void;
+    ngDoCheck(): void;
+    ngOnDestroy(): void;
+    /**
+     * Marks Wizard as finished. By default it does not execute event
+     * emissions or checks before completing and closing. This method is commonly
+     * used as part of an alternative navigation with `[clrWizardPreventDefaultNext]`.
+     *
+     * If `skipChecksAndEmits` is true, the wizard will complete and close
+     * regardless of the state of its current page. This is useful for alternative
+     * navigation where event emissions have already been done and firing them again
+     * may cause an event loop.
+     */
+    finish(skipChecksAndEmits?: boolean): void;
+    /**
+     * Marks the wizard as finished but does run checks and emissions.
+     * Good for a last step in an alternate workflow. Does the same thing as
+     * calling `ClrWizard.finish(true)` or `ClrWizard.finish()` without a parameter.
+     */
+    forceFinish(): void;
+    /**
+     * Opens the wizard. If there is no current page defined, sets the first page in the wizard to be current.
+     */
+    open(): void;
+    /**
+     * Closes the wizard. Call this directly instead of `cancel()` to implement alternative cancel functionality.
+     */
+    close(): void;
+    /**
+     * Used to open and close the wizard. By default the wizard will
+     * close if invoked with no parameter. If parameter is true wizard will open
+     * else if false will close.
+     */
+    toggle(open: boolean): void;
+    /**
+     * Moves the wizard to the previous page.
+     */
+    previous(): void;
+    /**
+     * By default, `next()` does not execute event emissions.
+     * This method is commonly called as part of an alternative navigation
+     * with `[clrWizardPreventDefaultNext]`. The wizard will move to the next page
+     * regardless of the state of its current page. This is useful for alternative
+     * navigation where event emissions have already been done and firing them again
+     * may cause an event loop.
+     *
+     * If `skipChecksAndEmits` is false, the wizard will execute default checks
+     * and emit events as normal. This is useful for custom buttons or programmatic
+     * workflows that are not executing the wizards default checks and emissions.
+     * It is another way to navigate without having to rewrite the wizard’s default
+     * functionality from scratch.
+     */
+    next(skipChecksAndEmits?: boolean): void;
+    /**
+     * Moves the wizard to the next page without the checks and emissions.
+     * Good for a last step in an alternate workflow.
+     * Alias for `ClrWizard.next(true)` or `ClrWizard.next()`
+     */
+    forceNext(): void;
+    /**
+     * Cancels and closes the wizard. Do not use this for an override of the cancel
+     * the functionality with `[clrWizardPreventDefaultCancel]`, `[clrWizardPreventPageDefaultCancel]`,
+     * or `[clrWizardPagePreventDefault]` because it will initiate the same checks
+     * and event emissions that invoked your event handler. Use `ClrWizard.close()` instead.
+     */
+    cancel(): void;
+    /**
+     * Overrides behavior of the underlying modal to avoid collisions with
+     * alternative cancel functionality. In most cases, use `ClrWizard.cancel()` instead.
+     */
+    modalCancel(): void;
+    /**
+     * Checks for alternative cancel flows defined at the current page or
+     * wizard level. Performs a canceled if not. Emits events that initiate
+     * the alternative cancel outputs `(clrWizardPageOnCancel)` and `(clrWizardOnCancel)`.
+     */
+    checkAndCancel(): void;
+    /**
+     * Navigates to a given page in the Wizard. Navigation will invoke the wizard’s default
+     * checks and event emissions.
+     *
+     * The format of the expected ID parameter can be found in the return of the
+     * ClrWizardPage.id getter, usually prefixed with `clr-wizard-page-` and then either a
+     * numeric ID or the ID specified for the `ClrWizardPage` component’s `id` input.
+     */
+    goTo(pageId: string): void;
+    /**
+     * Reset sets all WizardPages to incomplete and sets the first page in the `ClrWizard` to
+     * be the current page, resetting the wizard navigation.
+     * Use `(clrWizardOnReset)` event to reset the data or model of your wizard.
+     */
+    reset(): void;
+    private listenForNextPageChanges;
+    private listenForPreviousPageChanges;
+    private listenForCancelChanges;
+    private listenForFinishedChanges;
+    private listenForPageChanges;
+    private updateNavOnPageChanges;
+    private initializeButtons;
+    private emitWizardFinished;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
+}
+
+declare class ClrWizardStepnav {
+    pageService: PageCollectionService;
+    label: string;
+    constructor(pageService: PageCollectionService);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnav, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": { "alias": "label"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare class ClrWizardStepnavItem implements OnInit, OnDestroy {
+    navService: WizardNavigationService;
+    pageCollection: PageCollectionService;
+    commonStrings: ClrCommonStringsService$1;
+    private readonly elementRef;
+    page: ClrWizardPage;
+    private subscription;
+    /**
+     * This is used to prevent the steps from scrolling as the user clicks on the steps.
+     */
+    private skipNextScroll;
+    constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, commonStrings: ClrCommonStringsService$1, elementRef: ElementRef<HTMLElement>);
+    get id(): string;
+    get stepAriaCurrent(): string;
+    get isDisabled(): boolean;
+    get isCurrent(): boolean;
+    get isComplete(): boolean;
+    get hasError(): boolean;
+    get canNavigate(): boolean;
+    protected get stepIconId(): string;
+    protected get stepTextId(): string;
+    protected get stepNumberId(): string;
+    protected get stepTitleId(): string;
+    protected get labelledby(): string;
+    protected get icon(): {
+        shape: string;
+        label: string;
+    } | null;
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    click(): void;
+    private pageGuard;
+    private ensureCurrentStepIsScrolledIntoView;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnavItem, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnavItem, "[clr-wizard-stepnav-item]", never, { "page": { "alias": "page"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare const DEFAULT_BUTTON_TYPES: any;
+declare const CUSTOM_BUTTON_TYPES: any;
+declare class ClrWizardButton {
+    navService: WizardNavigationService;
+    buttonService: ButtonHubService;
+    type: string;
+    disabled: boolean;
+    hidden: boolean;
+    wasClicked: EventEmitter<string>;
+    constructor(navService: WizardNavigationService, buttonService: ButtonHubService);
+    get isCancel(): boolean;
+    get isNext(): boolean;
+    get isPrevious(): boolean;
+    get isFinish(): boolean;
+    get isDanger(): boolean;
+    get isPrimaryAction(): boolean;
+    get _disabledAttribute(): string | null;
+    get isDisabled(): boolean;
+    get isHidden(): boolean;
+    click(): void;
+    private checkDefaultAndCustomType;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardButton, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardButton, "clr-wizard-button", never, { "type": { "alias": "type"; "required": false; }; "disabled": { "alias": "clrWizardButtonDisabled"; "required": false; }; "hidden": { "alias": "clrWizardButtonHidden"; "required": false; }; }, { "wasClicked": "clrWizardButtonClicked"; }, never, ["*"], false, never>;
+}
+
+declare const CLR_WIZARD_DIRECTIVES: any[];
+declare class ClrWizardModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions], [typeof i2$1.CommonModule, typeof i7.ClrIcon, typeof i4.ClrModalModule, typeof i3$2.ClrAlertModule], [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrWizardModule>;
+}
+
+declare class ClrAccordionDescription {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionDescription, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionDescription, "clr-accordion-description, clr-step-description", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare enum AccordionStatus {
+    Inactive = "inactive",
+    Error = "error",
+    Complete = "complete"
+}
+
+declare enum AccordionStrategy {
+    Default = "default",// only one panel at a time
+    Multi = "multi"
+}
+
+declare class AccordionPanelModel {
+    id: string;
+    accordionId: number | string;
+    status: AccordionStatus;
+    index: number;
+    disabled: boolean;
+    open: boolean;
+    templateId: string;
+    constructor(id: string, accordionId: number | string);
+}
+declare class AccordionModel {
+    protected strategy: AccordionStrategy;
+    protected accordionCount: number;
+    protected _panels: {
+        [id: string]: AccordionPanelModel;
+    };
+    get panels(): AccordionPanelModel[];
+    setStrategy(strategy: AccordionStrategy): void;
+    updatePanelOrder(ids: string[]): void;
+    addPanel(id: string, open?: boolean): void;
+    togglePanel(panelId: string, open?: boolean): void;
+    disablePanel(panelId: string, disabled: boolean): void;
+    private closeAllPanels;
+    private removeOldPanels;
+}
+
+declare class AccordionService {
+    protected accordion: AccordionModel;
+    protected readonly _panelsChanges: BehaviorSubject<AccordionPanelModel[]>;
+    getPanelChanges(panelId: string): Observable<AccordionPanelModel>;
+    setStrategy(strategy: AccordionStrategy): void;
+    addPanel(panelId: string, open?: boolean): void;
+    togglePanel(panelId: string, open?: boolean): void;
+    disablePanel(panelId: string, disabled?: boolean): void;
+    updatePanelOrder(ids: string[]): void;
+    protected emitUpdatedPanels(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<AccordionService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<AccordionService>;
+}
+
+declare class ClrAccordionPanel implements OnInit, OnChanges {
+    private parent;
+    commonStrings: ClrCommonStringsService$1;
+    private accordionService;
+    private ifExpandService;
+    private cdr;
+    disabled: boolean;
+    panelOpen: boolean;
+    /**
+     * Level of the accordion/stepper heading from 1 to 6.
+     */
+    explicitHeadingLevel: HeadingLevel$1;
+    panelOpenChange: EventEmitter<boolean>;
+    accordionDescription: QueryList<ClrAccordionDescription>;
+    panel: Observable<AccordionPanelModel>;
+    private _id;
+    private _panelIndex;
+    constructor(parent: ClrAccordionPanel, commonStrings: ClrCommonStringsService$1, accordionService: AccordionService, ifExpandService: IfExpandService$1, cdr: ChangeDetectorRef);
+    get id(): string;
+    set id(value: string);
+    get panelNumber(): number;
+    ngOnInit(): void;
+    ngOnChanges(changes: SimpleChanges): void;
+    togglePanel(): void;
+    collapsePanelOnAnimationDone(panel: AccordionPanelModel): void;
+    getPanelStateClasses(panel: AccordionPanelModel): string;
+    getAccordionContentId(id: string): string;
+    getAccordionHeaderId(id: string): string;
+    protected stepCompleteText(panelNumber: number): string;
+    protected stepErrorText(panelNumber: number): string;
+    private emitPanelChange;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": { "alias": "clrAccordionPanelDisabled"; "required": false; }; "panelOpen": { "alias": "clrAccordionPanelOpen"; "required": false; }; "explicitHeadingLevel": { "alias": "clrAccordionPanelHeadingLevel"; "required": false; }; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
+}
+
+declare class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+    private accordionService;
+    multiPanel: boolean | string;
+    panels: QueryList<ClrAccordionPanel>;
+    subscriptions: Subscription[];
+    constructor(accordionService: AccordionService);
+    ngOnInit(): void;
+    ngOnChanges(changes: SimpleChanges): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    private setAccordionStrategy;
+    private listenForDOMChanges;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordion, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordion, "clr-accordion", never, { "multiPanel": { "alias": "clrAccordionMultiPanel"; "required": false; }; }, {}, ["panels"], ["*"], false, never>;
+}
+
+declare class ClrAccordionTitle {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionTitle, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionTitle, "clr-accordion-title, clr-step-title", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrAccordionContent {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionContent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionContent, "clr-accordion-content, clr-step-content", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class AccordionWillyWonka extends WillyWonka$1 {
+    static ɵfac: i0.ɵɵFactoryDeclaration<AccordionWillyWonka, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<AccordionWillyWonka, "clr-accordion", never, {}, {}, never, never, false, never>;
+}
+
+declare class AccordionOompaLoompa extends OompaLoompa$1 {
+    private expand;
+    constructor(cdr: ChangeDetectorRef, willyWonka: AccordionWillyWonka, ifExpandService: IfExpandService$1);
+    get flavor(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<AccordionOompaLoompa, [null, { optional: true; }, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<AccordionOompaLoompa, "clr-accordion-panel", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrAccordionModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof AccordionOompaLoompa, typeof AccordionWillyWonka], [typeof i2$1.CommonModule, typeof i7.ClrIcon], [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof AccordionOompaLoompa, typeof AccordionWillyWonka]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrAccordionModule>;
+}
+
+declare const panelAnimation: _angular_animations.AnimationTriggerMetadata[];
+declare const stepAnimation: _angular_animations.AnimationTriggerMetadata[];
+
+declare class StepperModel extends AccordionModel$1 {
+    private stepperModelInitialize;
+    private initialPanel;
+    get allPanelsCompleted(): boolean;
+    get shouldOpenFirstPanel(): boolean;
+    addPanel(id: string, open?: boolean): void;
+    updatePanelOrder(ids: string[]): void;
+    togglePanel(panelId: string): void;
+    navigateToPreviousPanel(currentPanelId: string): void;
+    navigateToNextPanel(currentPanelId: string, currentPanelValid?: boolean): void;
+    overrideInitialPanel(panelId: string): void;
+    setPanelValid(panelId: string): void;
+    setPanelInvalid(panelId: string): void;
+    setPanelsWithErrors(ids: string[]): void;
+    resetPanels(): void;
+    getNextPanel(currentPanelId: string): _clr_angular_accordion.AccordionPanelModel;
+    getPreviousPanel(currentPanelId: string): _clr_angular_accordion.AccordionPanelModel;
+    private resetAllFuturePanels;
+    private resetPanel;
+    private openFirstPanel;
+    private completePanel;
+    private openNextPanel;
+    private openPreviousPanel;
+    private setPanelError;
+    private getFirstPanel;
+    private getNumberOfIncompletePanels;
+    private getNumberOfOpenPanels;
+}
+
+declare class StepperService extends AccordionService$1 {
+    readonly activeStep: Observable<string>;
+    readonly panelsCompleted: Observable<boolean>;
+    protected accordion: StepperModel;
+    private _activeStepChanges;
+    constructor();
+    resetPanels(): void;
+    setPanelValid(panelId: string): void;
+    setPanelInvalid(panelId: string): void;
+    setPanelsWithErrors(ids: string[]): void;
+    navigateToPreviousPanel(currentPanelId: string): void;
+    navigateToNextPanel(currentPanelId: string, currentPanelValid?: boolean): void;
+    overrideInitialPanel(panelId: string): void;
+    private updateNextStep;
+    private updatePreviousStep;
+    private getAllCompletedPanelChanges;
+    static ɵfac: i0.ɵɵFactoryDeclaration<StepperService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<StepperService>;
+}
+
+declare class ClrStepperPanel extends ClrAccordionPanel$1 implements OnInit {
+    private platformId;
+    commonStrings: ClrCommonStringsService$1;
+    private formGroupName;
+    private ngModelGroup;
+    private stepperService;
+    headerButton: ElementRef<HTMLButtonElement>;
+    readonly AccordionStatus: typeof AccordionStatus$1;
+    private subscriptions;
+    constructor(platformId: any, commonStrings: ClrCommonStringsService$1, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService$1, cdr: ChangeDetectorRef);
+    get id(): string;
+    set id(_value: string);
+    get formGroup(): i4$1.FormGroup<any>;
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    private listenToFocusChanges;
+    private triggerAllFormControlValidationIfError;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-step-title", "clr-step-description", "*"], false, never>;
+}
+
+declare class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+    private formGroup;
+    private ngForm;
+    private stepperService;
+    initialPanel: string;
+    panels: QueryList<ClrStepperPanel>;
+    subscriptions: Subscription[];
+    form: FormGroupDirective | NgForm;
+    constructor(formGroup: FormGroupDirective, ngForm: NgForm, stepperService: StepperService);
+    ngOnInit(): void;
+    ngOnChanges(changes: SimpleChanges): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    private listenForFormResetChanges;
+    private listenForPanelsCompleted;
+    private setPanelsWithFormErrors;
+    private listenForDOMChanges;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepper, [{ optional: true; }, { optional: true; }, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepper, "form[clrStepper]", never, { "initialPanel": { "alias": "clrInitialStep"; "required": false; }; }, {}, ["panels"], ["*"], false, never>;
+}
+
+declare enum ClrStepButtonType {
+    Next = "next",
+    Previous = "previous",
+    Submit = "submit"
+}
+declare class ClrStepButton implements OnInit {
+    private clrStep;
+    private stepperService;
+    type: ClrStepButtonType | string;
+    submitButton: boolean;
+    previousButton: boolean;
+    constructor(clrStep: ClrStepperPanel, stepperService: StepperService);
+    ngOnInit(): void;
+    navigateToNextPanel(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepButton, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStepButton, "[clrStepButton]", never, { "type": { "alias": "clrStepButton"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare class StepperWillyWonka extends WillyWonka$1 {
+    static ɵfac: i0.ɵɵFactoryDeclaration<StepperWillyWonka, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<StepperWillyWonka, "form[clrStepper]", never, {}, {}, never, never, false, never>;
+}
+
+declare class StepperOompaLoompa extends OompaLoompa$1 {
+    private expand;
+    constructor(cdr: ChangeDetectorRef, willyWonka: StepperWillyWonka, ifExpandService: IfExpandService$1);
+    get flavor(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<StepperOompaLoompa, [null, { optional: true; }, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<StepperOompaLoompa, "clr-stepper-panel, [clrStepButton]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrStepperModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepperPanel, typeof StepperOompaLoompa, typeof StepperWillyWonka], [typeof i2$1.CommonModule, typeof i7.ClrIcon, typeof _clr_angular_accordion.ClrAccordionModule], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepperPanel, typeof StepperOompaLoompa, typeof StepperWillyWonka, typeof _clr_angular_accordion.ClrAccordionModule, typeof i7.ClrIcon]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrStepperModule>;
+}
+
+declare class ClrSpinner {
+    private _inline;
+    private _inverse;
+    private _small;
+    private _medium;
+    /**
+     * Default class for all spinners. This class is always true
+     */
+    get spinnerClass(): boolean;
+    get inlineClass(): boolean;
+    set clrInline(value: boolean | string);
+    get inverseClass(): boolean;
+    set clrInverse(value: boolean | string);
+    get smallClass(): boolean;
+    set clrSmall(value: boolean | string);
+    /**
+     * When clrSmall & clrMedium are set both to true.
+     * The CSS with high priority will be small - so medium size will be ignored.
+     *
+     * For this reason if clrSmall is set we won't add clrMedium class.
+     *
+     * NOTE: This is dictated by the CSS rules.
+     * DON'T USE clrSmall & clrMedium to toggle classes. This could change without notice.
+     *
+     * Also there is no logical need to have both of them set to TRUE or FALSE.
+     */
+    get mediumClass(): boolean;
+    set clrMedium(value: boolean | string);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinner, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSpinner, "clr-spinner", never, { "clrInline": { "alias": "clrInline"; "required": false; }; "clrInverse": { "alias": "clrInverse"; "required": false; }; "clrSmall": { "alias": "clrSmall"; "required": false; }; "clrMedium": { "alias": "clrMedium"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare const CLR_SPINNER_DIRECTIVES: Type<any>[];
+declare class ClrSpinnerModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinnerModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSpinnerModule, [typeof ClrSpinner], [typeof i2$1.CommonModule], [typeof ClrSpinner]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSpinnerModule>;
+}
+
+declare class ClrProgressBar {
+    max: number | string;
+    displayval: string;
+    color: string;
+    value: number | string;
+    externalId: string;
+    private _ID;
+    private _labeled;
+    private _fade;
+    private _loop;
+    private _flash;
+    private _flashDanger;
+    private _compact;
+    get id(): string;
+    set id(value: string);
+    get progressClass(): boolean;
+    set clrCompact(value: boolean | string);
+    get compactClass(): boolean;
+    set clrLabeled(value: boolean | string);
+    get labeledClass(): boolean;
+    set clrFade(value: boolean | string);
+    get fadeClass(): boolean;
+    set clrLoop(value: boolean | string);
+    get loopClass(): boolean;
+    get warningClass(): boolean;
+    get successClass(): boolean;
+    get dangerClass(): boolean;
+    set clrFlash(value: boolean | string);
+    get flashClass(): boolean;
+    /** @deprecated since 2.0, remove in 4.0 */
+    set clrFlashDanger(value: boolean | string);
+    get flashDangerClass(): boolean;
+    /**
+     * Make sure that we always will have something that is readable
+     * for the screen reader
+     */
+    get displayValue(): string;
+    /**
+     * Display optional text only when labeled is eneabled
+     */
+    displayStringValue(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrProgressBar, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrProgressBar, "clr-progress-bar", never, { "max": { "alias": "clrMax"; "required": false; }; "displayval": { "alias": "clrDisplayval"; "required": false; }; "color": { "alias": "clrColor"; "required": false; }; "value": { "alias": "clrValue"; "required": false; }; "id": { "alias": "id"; "required": false; }; "clrCompact": { "alias": "clrCompact"; "required": false; }; "clrLabeled": { "alias": "clrLabeled"; "required": false; }; "clrFade": { "alias": "clrFade"; "required": false; }; "clrLoop": { "alias": "clrLoop"; "required": false; }; "clrFlash": { "alias": "clrFlash"; "required": false; }; "clrFlashDanger": { "alias": "clrFlashDanger"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare const CLR_PROGRESS_BAR_DIRECTIVES: Type<any>[];
+declare class ClrProgressBarModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrProgressBarModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrProgressBarModule, [typeof ClrProgressBar], [typeof i2$1.CommonModule], [typeof ClrProgressBar]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrProgressBarModule>;
+}
+
+declare enum ClrTimelineLayout {
+    HORIZONTAL = "horizontal",
+    VERTICAL = "vertical"
+}
+
+declare class ClrTimeline {
+    layout: ClrTimelineLayout;
+    get isVertical(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimeline, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimeline, "clr-timeline", never, { "layout": { "alias": "clrLayout"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare enum ClrTimelineStepState {
+    NOT_STARTED = "not-started",
+    CURRENT = "current",
+    PROCESSING = "processing",
+    SUCCESS = "success",
+    ERROR = "error"
+}
+
+declare class TimelineIconAttributeService {
+    private attributeMap;
+    constructor(commonStrings: ClrCommonStringsService$1);
+    getAriaLabel(step: ClrTimelineStepState): string;
+    getIconShape(step: ClrTimelineStepState): string;
+    getIconStatus(step: ClrTimelineStepState): string;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TimelineIconAttributeService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<TimelineIconAttributeService>;
+}
+
+declare class ClrTimelineStep {
+    private iconAttributeService;
+    private platformId;
+    state: ClrTimelineStepState;
+    stepTitle: ElementRef<HTMLElement>;
+    stepTitleText: string;
+    constructor(iconAttributeService: TimelineIconAttributeService, platformId: any);
+    get iconAriaLabel(): string;
+    get iconShape(): string;
+    get iconStatus(): string;
+    get isProcessing(): boolean;
+    ngAfterContentInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStep, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStep, "clr-timeline-step", never, { "state": { "alias": "clrState"; "required": false; }; }, {}, ["stepTitle"], ["clr-timeline-step-header", "clr-timeline-step-title", "clr-timeline-step-description"], false, never>;
+}
+
+declare class ClrTimelineStepDescription {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStepDescription, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStepDescription, "clr-timeline-step-description", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrTimelineStepHeader {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStepHeader, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStepHeader, "clr-timeline-step-header", never, {}, {}, never, ["*"], false, never>;
+}
+
+/**
+ * Note: Why does this component have aria-hidden attribute?
+ *
+ * tl;dr: we want screen readers to ignore this element when its reading out to blind users.
+ *
+ * In order to make a timeline step accessible to screen readers we need the title read out before the
+ * icon. In order to do this, ClrTimeLine step has a ContentChild that queries for the ClrTimelineStepTitle and
+ * then adds the projected text into a .clr-sr-only element that is a sibling element to the icon. See the
+ * ClrTimlineStep template for the DOM structure.
+ */
+declare class ClrTimelineStepTitle {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStepTitle, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStepTitle, "clr-timeline-step-title", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrTimelineModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTimelineModule, [typeof ClrTimeline, typeof ClrTimelineStep, typeof ClrTimelineStepDescription, typeof ClrTimelineStepHeader, typeof ClrTimelineStepTitle], [typeof i2$1.CommonModule, typeof i7.ClrIcon, typeof i8$1.ClrSpinnerModule], [typeof ClrTimeline, typeof ClrTimelineStep, typeof ClrTimelineStepDescription, typeof ClrTimelineStepHeader, typeof ClrTimelineStepTitle, typeof i7.ClrIcon, typeof i8$1.ClrSpinnerModule]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTimelineModule>;
+}
+
+export { ALERT_TYPES, AbstractIfState, AccordionModel, AccordionPanelModel, AccordionService, AccordionStatus, AccordionStrategy, ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CHANGE_KEYS, CLR_ALERT_DIRECTIVES, CLR_BUTTON_GROUP_DIRECTIVES, CLR_DATAGRID_DIRECTIVES, CLR_DATEPICKER_DIRECTIVES, CLR_DROPDOWN_DIRECTIVES, CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, CLR_ICON_DIRECTIVES, CLR_LAYOUT_DIRECTIVES, CLR_LOADING_BUTTON_DIRECTIVES, CLR_LOADING_DIRECTIVES, CLR_MENU_POSITIONS, CLR_MODAL_DIRECTIVES, CLR_NAVIGATION_DIRECTIVES, CLR_PROGRESS_BAR_DIRECTIVES, CLR_SIDEPANEL_DIRECTIVES, CLR_SIGNPOST_DIRECTIVES, CLR_SPINNER_DIRECTIVES, CLR_STACK_VIEW_DIRECTIVES, CLR_TABS_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, CLR_TREE_VIEW_DIRECTIVES, CLR_VERTICAL_NAV_DIRECTIVES, CLR_WIZARD_DIRECTIVES, CONDITIONAL_DIRECTIVES, CUSTOM_BUTTON_TYPES, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, CdsIconCustomTag, ClarityIcons, ClarityModule, ClrAbstractContainer, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle, ClrAlert, ClrAlertItem, ClrAlertModule, ClrAlertText, ClrAlerts, ClrAlertsPager, ClrAriaCurrentLink, ClrBadge, ClrBadgeColors, ClrBreadcrumbItem, ClrBreadcrumbs, ClrBreadcrumbsModule, ClrButton, ClrButtonGroup, ClrButtonGroupModule, ClrButtonModule, ClrCalendar, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxModule, ClrCheckboxWrapper, ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrCommonFormsModule, ClrCommonStringsService, ClrConditionalModule, ClrControl, ClrControlContainer, ClrControlError, ClrControlHelper, ClrControlLabel, ClrControlSuccess, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrDatalist, ClrDatalistContainer, ClrDatalistInput, ClrDatalistModule, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrDestroyService, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrEmphasisModule, ClrEndDateInput, ClrEndDateInputValidator, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFileError, ClrFileInfo, ClrFileInput, ClrFileInputContainer, ClrFileInputModule, ClrFileInputValidator, ClrFileInputValueAccessor, ClrFileList, ClrFileMessagesTemplate, ClrFileSuccess, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrForm, ClrFormLayout, ClrFormsModule, ClrHeader, ClrHostWrappingModule, ClrIcon, ClrIconCustomTag, ClrIconModule, ClrIfActive, ClrIfDetail, ClrIfError, ClrIfExpanded, ClrIfOpen, ClrIfSuccess, ClrInput, ClrInputContainer, ClrInputModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrLabel, ClrLabelColors, ClrLayout, ClrLayoutModule, ClrLoading, ClrLoadingButton, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState, ClrMainContainer, ClrMainContainerModule, ClrModal, ClrModalBody, ClrModalConfigurationService, ClrModalHostComponent, ClrModalModule, ClrMonthpicker, ClrNavLevel, ClrNavigationModule, ClrNumberInput, ClrNumberInputContainer, ClrNumberInputModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, ClrOutsideClickModule, ClrPassword, ClrPasswordContainer, ClrPasswordModule, ClrPopoverAnchor, ClrPopoverContent, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverPosition, ClrPopoverService, ClrPopoverType, ClrPosition, ClrProgressBar, ClrProgressBarModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrRadioWrapper, ClrRange, ClrRangeContainer, ClrRangeModule, ClrRecursiveForOf, ClrRovingTabindex, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrSelectedState, ClrSidePanel, ClrSidePanelModule, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrSpinner, ClrSpinnerModule, ClrStackBlock, ClrStackContentInput, ClrStackHeader, ClrStackView, ClrStackViewCustomTags, ClrStackViewLabel, ClrStackViewModule, ClrStandaloneCdkTrapFocus, ClrStartDateInput, ClrStartDateInputValidator, ClrStepButton, ClrStepButtonType, ClrStepper, ClrStepperModule, ClrStepperPanel, ClrStopEscapePropagationDirective, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, ClrTemplateRefModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStep, ClrTimelineStepDescription, ClrTimelineStepHeader, ClrTimelineStepState, ClrTimelineStepTitle, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, ClrVerticalNav, ClrVerticalNavGroup, ClrVerticalNavGroupChildren, ClrVerticalNavIcon, ClrVerticalNavLink, ClrVerticalNavModule, ClrWizard, ClrWizardButton, ClrWizardHeaderAction, ClrWizardModule, ClrWizardPage, ClrWizardPageButtons, ClrWizardPageHeaderActions, ClrWizardPageNavTitle, ClrWizardPageTitle, ClrWizardStepnav, ClrWizardStepnavItem, ClrWizardTitle, ClrYearpicker, ContainerIdService, ControlClassService, ControlIdService, DATEPICKER_ENABLE_BREAKPOINT, DEFAULT_BUTTON_TYPES, DROPDOWN_POSITIONS, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, DatalistIdService, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, FormsFocusService, HostWrapper, IEKeys, IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IS_TOGGLE, IS_TOGGLE_PROVIDER, IconHtmlPipe, IfActiveService, IfExpandService, Keys, LARGE_BREAKPOINT, LayoutService, Linkers, LoadingListener, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MainContainerWillyWonka, MarkControlService, MockDomAdapter, MockFocusableItem, ModalStackService, NavDetectionOompaLoompa, NgControlService, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, POPOVER_HOST_ANCHOR, ResponsiveNavCodes, ResponsiveNavControlMessage, ResponsiveNavigationService, SIGNPOST_POSITIONS, SMALL_BREAKPOINT, ScrollingService, Selection, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, TOOLTIP_POSITIONS, TemplateRefContainer, ToggleServiceFactory, WillyWonka, WrappedFormControl, accessibility1Icon, accessibility1IconName, accessibility2Icon, accessibility2IconName, addTextIcon, addTextIconName, administratorIcon, administratorIconName, airplaneIcon, airplaneIconName, alarmClockIcon, alarmClockIconName, alarmOffIcon, alarmOffIconName, alignBottomIcon, alignBottomIconName, alignCenterIcon, alignCenterIconName, alignLeftIcon, alignLeftIconName, alignLeftTextIcon, alignLeftTextIconName, alignMiddleIcon, alignMiddleIconName, alignRightIcon, alignRightIconName, alignRightTextIcon, alignRightTextIconName, alignTopIcon, alignTopIconName, angleDoubleIcon, angleDoubleIconName, angleIcon, angleIconName, animationIcon, animationIconName, announcementIcon, announcementIconName, applicationIcon, applicationIconName, applicationsIcon, applicationsIconName, archiveIcon, archiveIconName, arrowIcon, arrowIconName, arrowMiniIcon, arrowMiniIconName, assertNever, assignUserIcon, assignUserIconName, asteriskIcon, asteriskIconName, atomIcon, atomIconName, axisChartIcon, axisChartIconName, backupIcon, backupIconName, backupRestoreIcon, backupRestoreIconName, banIcon, banIconName, bankIcon, bankIconName, barChartIcon, barChartIconName, barCodeIcon, barCodeIconName, barsIcon, barsIconName, batteryIcon, batteryIconName, bellCurveIcon, bellCurveIconName, bellIcon, bellIconName, betaIcon, betaIconName, bicycleIcon, bicycleIconName, birthdayCakeIcon, birthdayCakeIconName, bitcoinIcon, bitcoinIconName, blockIcon, blockIconName, blockQuoteIcon, blockQuoteIconName, blocksGroupIcon, blocksGroupIconName, bluetoothIcon, bluetoothIconName, bluetoothOffIcon, bluetoothOffIconName, boatIcon, boatIconName, boldIcon, boldIconName, boltIcon, boltIconName, bookIcon, bookIconName, bookmarkIcon, bookmarkIconName, boxPlotIcon, boxPlotIconName, briefcaseIcon, briefcaseIconName, bubbleChartIcon, bubbleChartIconName, bubbleExclamationIcon, bubbleExclamationIconName, bugIcon, bugIconName, buildFileList, buildingIcon, buildingIconName, bulletListIcon, bulletListIconName, bullseyeIcon, bullseyeIconName, bundleIcon, bundleIconName, calculatorIcon, calculatorIconName, calendarIcon, calendarIconName, calendarMiniIcon, calendarMiniIconName, cameraIcon, cameraIconName, campervanIcon, campervanIconName, capacitorIcon, capacitorIconName, carIcon, carIconName, caravanIcon, caravanIconName, cdDvdIcon, cdDvdIconName, centerTextIcon, centerTextIconName, certificateIcon, certificateIconName, chartCollectionAliases, chartCollectionIcons, chatBubbleIcon, chatBubbleIconName, checkCircleIcon, checkCircleIconName, checkCircleMiniIcon, checkCircleMiniIconName, checkIcon, checkIconName, checkMiniIcon, checkMiniIconName, checkboxListIcon, checkboxListIconName, childArrowIcon, childArrowIconName, ciCdIcon, ciCdIconName, circleArrowIcon, circleArrowIconName, circleIcon, circleIconName, clearFiles, clipboardIcon, clipboardIconName, clockIcon, clockIconName, cloneIcon, cloneIconName, cloudChartIcon, cloudChartIconName, cloudIcon, cloudIconName, cloudNetworkIcon, cloudNetworkIconName, cloudScaleIcon, cloudScaleIconName, cloudTrafficIcon, cloudTrafficIconName, clrFocusServiceFactory, clusterIcon, clusterIconName, codeIcon, codeIconName, cogIcon, cogIconName, coinBagIcon, coinBagIconName, collapse, collapseCardIcon, collapseCardIconName, colorPaletteIcon, colorPaletteIconName, colorPickerIcon, colorPickerIconName, commerceCollectionAliases, commerceCollectionIcons, commonStringsDefault, compassIcon, compassIconName, computerIcon, computerIconName, connectIcon, connectIconName, containerGroupIcon, containerGroupIconName, containerIcon, containerIconName, containerVolumeIcon, containerVolumeIconName, contractIcon, contractIconName, controlLunIcon, controlLunIconName, copyIcon, copyIconName, copyToClipboardIcon, copyToClipboardIconName, coreCollectionAliases, coreCollectionIcons, cpuIcon, cpuIconName, creditCardIcon, creditCardIconName, crosshairsIcon, crosshairsIconName, crownIcon, crownIconName, cursorArrowIcon, cursorArrowIconName, cursorHandClickIcon, cursorHandClickIconName, cursorHandGrabIcon, cursorHandGrabIconName, cursorHandIcon, cursorHandIconName, cursorHandOpenIcon, cursorHandOpenIconName, cursorMoveIcon, cursorMoveIconName, curveChartIcon, curveChartIconName, customFocusableItemProvider, dashboardIcon, dashboardIconName, dataClusterIcon, dataClusterIconName, defaultAnimationTiming, defaultExpandAnimation, deployIcon, deployIconName, detailCollapseIcon, detailCollapseIconName, detailExpandIcon, detailExpandIconName, detailsIcon, detailsIconName, devicesIcon, devicesIconName, digitalSignatureIcon, digitalSignatureIconName, disconnectIcon, disconnectIconName, displayIcon, displayIconName, dollarBillIcon, dollarBillIconName, dollarIcon, dollarIconName, dotCircleIcon, dotCircleIconName, downloadCloudIcon, downloadCloudIconName, downloadIcon, downloadIconName, dragHandleCornerIcon, dragHandleCornerIconName, dragHandleIcon, dragHandleIconName, eCheckIcon, eCheckIconName, ellipsisHorizontalIcon, ellipsisHorizontalIconName, ellipsisVerticalIcon, ellipsisVerticalIconName, employeeGroupIcon, employeeGroupIconName, employeeIcon, employeeIconName, envelopeIcon, envelopeIconName, eraserIcon, eraserIconName, errorMiniIcon, errorMiniIconName, errorStandardIcon, errorStandardIconName, essentialCollectionAliases, essentialCollectionIcons, euroIcon, euroIconName, eventIcon, eventIconName, eventMiniIcon, eventMiniIconName, exclamationCircleIcon, exclamationCircleIconName, exclamationTriangleIcon, exclamationTriangleIconName, expandCardIcon, expandCardIconName, exportIcon, exportIconName, eyeHideIcon, eyeHideIconName, eyeIcon, eyeIconName, factoryIcon, factoryIconName, fade, fadeSlide, fastForwardIcon, fastForwardIconName, ferryIcon, ferryIconName, fileGroupIcon, fileGroupIconName, fileIcon, fileIconName, fileSettingsIcon, fileSettingsIconName, fileShare2Icon, fileShare2IconName, fileShareIcon, fileShareIconName, fileZipIcon, fileZipIconName, filmStripIcon, filmStripIconName, filter2Icon, filter2IconName, filterGridCircleIcon, filterGridCircleIconName, filterGridCircleMiniIcon, filterGridCircleMiniIconName, filterGridIcon, filterGridIconName, filterGridMiniIcon, filterGridMiniIconName, filterIcon, filterIconName, filterOffIcon, filterOffIconName, firewallIcon, firewallIconName, firstAidIcon, firstAidIconName, fishIcon, fishIconName, flagIcon, flagIconName, flameIcon, flameIconName, flaskIcon, flaskIconName, floppyIcon, floppyIconName, folderIcon, folderIconName, folderOpenIcon, folderOpenIconName, fontSizeIcon, fontSizeIconName, forkingIcon, forkingIconName, formIcon, formIconName, fuelIcon, fuelIconName, gavelIcon, gavelIconName, getAnchorPosition, getConnectedPositions, getContentPosition, getPositionsArray, gridChartIcon, gridChartIconName, gridViewIcon, gridViewIconName, halfStarIcon, halfStarIconName, happyFaceIcon, happyFaceIconName, hardDiskIcon, hardDiskIconName, hardDriveDisksIcon, hardDriveDisksIconName, hardDriveIcon, hardDriveIconName, hashtagIcon, hashtagIconName, headphonesIcon, headphonesIconName, heartBrokenIcon, heartBrokenIconName, heartIcon, heartIconName, heatMapIcon, heatMapIconName, helixIcon, helixIconName, helpIcon, helpIconName, helpInfoIcon, helpInfoIconName, highlighterIcon, highlighterIconName, historyIcon, historyIconName, homeIcon, homeIconName, hostGroupIcon, hostGroupIconName, hostIcon, hostIconName, hourglassIcon, hourglassIconName, idBadgeIcon, idBadgeIconName, imageGalleryIcon, imageGalleryIconName, imageIcon, imageIconName, importIcon, importIconName, inboxIcon, inboxIconName, indentIcon, indentIconName, inductorIcon, inductorIconName, infoCircleIcon, infoCircleIconName, infoCircleMiniIcon, infoCircleMiniIconName, infoStandardIcon, infoStandardIconName, installIcon, installIconName, internetOfThingsIcon, internetOfThingsIconName, isBooleanAttributeSet, isKeyEitherLetterOrNumber, isToggleFactory, italicIcon, italicIconName, justifyTextIcon, justifyTextIconName, keyIcon, keyIconName, keyboardIcon, keyboardIconName, landscapeIcon, landscapeIconName, languageIcon, languageIconName, launchpadIcon, launchpadIconName, layersIcon, layersIconName, libraryIcon, libraryIconName, lightbulbIcon, lightbulbIconName, lineChartIcon, lineChartIconName, linkIcon, linkIconName, listIcon, listIconName, loadChartIconSet, loadCommerceIconSet, loadCoreIconSet, loadEssentialIconSet, loadMediaIconSet, loadMiniIconSet, loadSocialIconSet, loadTechnologyIconSet, loadTextEditIconSet, loadTravelIconSet, lockIcon, lockIconName, loginIcon, loginIconName, logoutIcon, logoutIconName, mapIcon, mapIconName, mapMarkerIcon, mapMarkerIconName, mapPopoverKeyToPosition, mediaChangerIcon, mediaChangerIconName, mediaCollectionAliases, mediaCollectionIcons, memoryIcon, memoryIconName, microphoneIcon, microphoneIconName, microphoneMuteIcon, microphoneMuteIconName, miniCollectionAliases, miniCollectionIcons, minusCircleIcon, minusCircleIconName, minusIcon, minusIconName, mobileIcon, mobileIconName, moonIcon, moonIconName, mouseIcon, mouseIconName, musicNoteIcon, musicNoteIconName, namespaceIcon, namespaceIconName, networkGlobeIcon, networkGlobeIconName, networkSettingsIcon, networkSettingsIconName, networkSwitchIcon, networkSwitchIconName, neutralFaceIcon, neutralFaceIconName, newIcon, newIconName, noAccessIcon, noAccessIconName, noWifiIcon, noWifiIconName, nodeGroupIcon, nodeGroupIconName, nodeIcon, nodeIconName, nodesIcon, nodesIconName, normalizeKey, noteIcon, noteIconName, numberListIcon, numberListIconName, nvmeIcon, nvmeIconName, objectsIcon, objectsIconName, onHolidayIcon, onHolidayIconName, organizationIcon, organizationIconName, outdentIcon, outdentIconName, paintRollerIcon, paintRollerIconName, panelAnimation, paperclipIcon, paperclipIconName, pasteIcon, pasteIconName, pauseIcon, pauseIconName, pdfFileIcon, pdfFileIconName, pencilIcon, pencilIconName, pesoIcon, pesoIconName, phoneHandsetIcon, phoneHandsetIconName, pictureIcon, pictureIconName, pieChartIcon, pieChartIconName, piggyBankIcon, piggyBankIconName, pinIcon, pinIconName, pinboardIcon, pinboardIconName, playIcon, playIconName, pluginIcon, pluginIconName, plusCircleIcon, plusCircleIconName, plusIcon, plusIconName, podIcon, podIconName, popOutIcon, popOutIconName, portraitIcon, portraitIconName, poundIcon, poundIconName, powerIcon, powerIconName, preventArrowKeyScroll, printerIcon, printerIconName, processOnVmIcon, processOnVmIconName, qrCodeIcon, qrCodeIconName, rackServerIcon, rackServerIconName, radarIcon, radarIconName, recycleIcon, recycleIconName, redoIcon, redoIconName, refreshIcon, refreshIconName, renderIcon, repeatIcon, repeatIconName, replayAllIcon, replayAllIconName, replayOneIcon, replayOneIconName, resistorIcon, resistorIconName, resizeIcon, resizeIconName, resourcePoolIcon, resourcePoolIconName, rewindIcon, rewindIconName, routerIcon, routerIconName, rubleIcon, rubleIconName, rulerPencilIcon, rulerPencilIconName, rupeeIcon, rupeeIconName, sadFaceIcon, sadFaceIconName, scatterPlotIcon, scatterPlotIconName, scissorsIcon, scissorsIconName, scriptExecuteIcon, scriptExecuteIconName, scriptScheduleIcon, scriptScheduleIconName, scrollIcon, scrollIconName, searchIcon, searchIconName, selectFiles, shareIcon, shareIconName, shieldCheckIcon, shieldCheckIconName, shieldIcon, shieldIconName, shieldXIcon, shieldXIconName, shoppingBagIcon, shoppingBagIconName, shoppingCartIcon, shoppingCartIconName, shrinkIcon, shrinkIconName, shuffleIcon, shuffleIconName, slide, sliderIcon, sliderIconName, snowflakeIcon, snowflakeIconName, socialCollectionAliases, socialCollectionIcons, sortByIcon, sortByIconName, squidIcon, squidIconName, ssdIcon, ssdIconName, starIcon, starIconName, stepAnimation, stepForward2Icon, stepForward2IconName, stepForwardIcon, stepForwardIconName, stopIcon, stopIconName, storageAdapterIcon, storageAdapterIconName, storageIcon, storageIconName, storeIcon, storeIconName, strikethroughIcon, strikethroughIconName, subscriptIcon, subscriptIconName, successStandardIcon, successStandardIconName, sunIcon, sunIconName, superscriptIcon, superscriptIconName, switchIcon, switchIconName, syncIcon, syncIconName, tableIcon, tableIconName, tabletIcon, tabletIconName, tagIcon, tagIconName, tagsIcon, tagsIconName, talkBubblesIcon, talkBubblesIconName, tapeDriveIcon, tapeDriveIconName, targetIcon, targetIconName, tasksIcon, tasksIconName, technologyCollectionAliases, technologyCollectionIcons, terminalIcon, terminalIconName, textColorIcon, textColorIconName, textEditCollectionAliases, textEditCollectionIcons, textIcon, textIconName, thermometerIcon, thermometerIconName, thinClientIcon, thinClientIconName, thumbsDownIcon, thumbsDownIconName, thumbsUpIcon, thumbsUpIconName, tickChartIcon, tickChartIconName, timelineIcon, timelineIconName, timesCircleIcon, timesCircleIconName, timesIcon, timesIconName, timesMiniIcon, timesMiniIconName, tokenFactory, toolsIcon, toolsIconName, trailerIcon, trailerIconName, trashIcon, trashIconName, travelCollectionAliases, travelCollectionIcons, treeIcon, treeIconName, treeViewIcon, treeViewIconName, triggerAllFormControlValidation, truckIcon, truckIconName, twoWayArrowsIcon, twoWayArrowsIconName, unarchiveIcon, unarchiveIconName, underlineIcon, underlineIconName, undoIcon, undoIconName, uninstallIcon, uninstallIconName, uniqueIdFactory, unknownIcon, unknownIconName, unknownStatusIcon, unknownStatusIconName, unlinkIcon, unlinkIconName, unlockIcon, unlockIconName, unpinIcon, unpinIconName, updateIcon, updateIconName, uploadCloudIcon, uploadCloudIconName, uploadIcon, uploadIconName, usbIcon, usbIconName, userIcon, userIconName, usersIcon, usersIconName, videoCameraIcon, videoCameraIconName, videoGalleryIcon, videoGalleryIconName, viewCardsIcon, viewCardsIconName, viewColumnsIcon, viewColumnsIconName, viewListIcon, viewListIconName, vmBugIcon, vmBugIconName, vmBugInverseIcon, vmBugInverseIconName, vmIcon, vmIconName, vmwAppIcon, vmwAppIconName, volumeDownIcon, volumeDownIconName, volumeIcon, volumeIconName, volumeMuteIcon, volumeMuteIconName, volumeUpIcon, volumeUpIconName, walletIcon, walletIconName, wandIcon, wandIconName, warningMiniIcon, warningMiniIconName, warningStandardIcon, warningStandardIconName, wifiIcon, wifiIconName, windowCloseIcon, windowCloseIconName, windowMaxIcon, windowMaxIconName, windowMinIcon, windowMinIconName, windowRestoreIcon, windowRestoreIconName, wonIcon, wonIconName, worldIcon, worldIconName, wrapObservable, wrenchIcon, wrenchIconName, xlsFileIcon, xlsFileIconName, yenIcon, yenIconName, zoomInIcon, zoomInIconName, zoomOutIcon, zoomOutIconName, AccordionOompaLoompa as ÇlrAccordionOompaLoompa, AccordionWillyWonka as ÇlrAccordionWillyWonka, ActionableOompaLoompa as ÇlrActionableOompaLoompa, ActiveOompaLoompa as ÇlrActiveOompaLoompa, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka, TabsWillyWonka as ÇlrTabsWillyWonka, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
+export type { BreadcrumbItem, Closable, ClrCommonStrings, ClrDatagridComparatorInterface, ClrDatagridFilterInterface, ClrDatagridItemsIdentityFunction, ClrDatagridNumericFilterInterface, ClrDatagridStateInterface, ClrDatagridStringFilterInterface, ClrDatagridVirtualScrollRangeInterface, ClrFileAcceptError, ClrFileInputSelection, ClrFileListValidationErrors, ClrFileMaxFileSizeError, ClrFileMessagesTemplateContext, ClrFileMinFileSizeError, ClrRecursiveForOfContext, ClrSingleFileValidationErrors, ClrTabsActionsPosition, Directions, HeadingLevel, Helpers, IconAlias, IconRegistry, IconRegistrySources, IconShapeCollection, IconShapeSources, IconShapeTuple, Orientations, StatusTypes };
