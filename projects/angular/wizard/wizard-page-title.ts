@@ -6,8 +6,7 @@
  */
 
 import { Directive, Input, TemplateRef } from '@angular/core';
-
-import { HeadingLevel } from '../utils/types/heading-level';
+import { HeadingLevel } from '@clr/angular/utils';
 
 @Directive({
   selector: '[clrPageTitle]',

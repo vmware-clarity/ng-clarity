@@ -8,14 +8,13 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ClrPopoverPosition, ClrPopoverService } from '@clr/angular/popover/common';
+import { TestContext } from '@clr/angular/testing';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { ClrTooltipContent } from './tooltip-content';
-import { ClrTooltipModule } from './tooltip.module';
-import { TestContext } from '../../utils/testing/helpers.spec';
-import { ClrPopoverService } from '../common';
 import { ClrTooltipTrigger } from './tooltip-trigger';
-import { ClrPopoverPosition } from '../common/utils/popover-positions';
+import { ClrTooltipModule } from './tooltip.module';
 
 @Component({
   template: `

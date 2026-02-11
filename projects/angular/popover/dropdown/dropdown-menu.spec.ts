@@ -8,14 +8,13 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ClrPopoverContent, ClrPopoverPosition, ClrPopoverService } from '@clr/angular/popover/common';
+import { FocusableItem } from '@clr/angular/utils';
 
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownMenu } from './dropdown-menu';
-import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
-import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { ClrPopoverContent, ClrPopoverService } from '../common';
 import { ClrDropdownModule } from './dropdown.module';
-import { ClrPopoverPosition } from '../common/utils/popover-positions';
+import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 
 @Component({
   template: `

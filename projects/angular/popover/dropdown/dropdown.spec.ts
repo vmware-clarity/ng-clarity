@@ -9,6 +9,10 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/co
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ClrModalModule } from '@clr/angular/modal';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { delay, expectActiveElementToBe } from '@clr/angular/testing';
+import { FocusableItem, FocusService } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { ClrDropdown } from './dropdown';
@@ -16,12 +20,6 @@ import { ClrDropdownItem } from './dropdown-item';
 import { ClrDropdownTrigger } from './dropdown-trigger';
 import { ClrDropdownModule } from './dropdown.module';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
-import { ClrModalModule } from '../../modal/modal.module';
-import { FocusService } from '../../utils/focus/focus.service';
-import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
-import { delay } from '../../utils/testing/helpers.spec';
-import { ClrPopoverService } from '../common/providers/popover.service';
 
 export default function (): void {
   describe('Dropdown', () => {

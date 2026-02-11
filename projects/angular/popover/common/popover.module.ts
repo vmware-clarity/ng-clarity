@@ -7,14 +7,15 @@
 
 import { NgModule } from '@angular/core';
 
+import { ClrIfOpen } from './if-open.directive';
 import { ClrPopoverAnchor } from './popover-anchor';
 import { ClrPopoverCloseButton } from './popover-close-button';
 import { ClrPopoverContent } from './popover-content';
 import { ClrPopoverOpenCloseButton } from './popover-open-close-button';
 
 @NgModule({
-  imports: [ClrPopoverContent],
+  imports: [ClrPopoverContent, ClrIfOpen],
   declarations: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton],
-  exports: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent],
+  exports: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent, ClrIfOpen],
 })
 export class ClrPopoverModuleNext {}

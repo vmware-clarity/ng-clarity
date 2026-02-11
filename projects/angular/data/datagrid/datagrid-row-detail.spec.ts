@@ -6,10 +6,11 @@
  */
 
 import { Component } from '@angular/core';
+import { TestContext } from '@clr/angular/testing';
 
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrDatagridRowDetail } from './datagrid-row-detail';
-import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 
 export default function (): void {
   describe('ClrDatagridRowDetail component', function () {

@@ -6,17 +6,15 @@
  */
 
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, Optional, Output, ViewChild } from '@angular/core';
+import { ClrPopoverPosition, ClrPopoverService, ClrPopoverType } from '@clr/angular/popover/common';
+import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
-import { ClrPopoverService } from '../../popover';
-import { ClrCommonStringsService } from '../../utils';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from './providers/filters';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
-import { ClrPopoverPosition, ClrPopoverType } from '../../popover/common/utils/popover-positions';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 /**
  * Custom filter that can be added in any column to override the default object property string filter.

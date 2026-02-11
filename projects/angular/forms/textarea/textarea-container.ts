@@ -6,11 +6,12 @@
  */
 
 import { Component } from '@angular/core';
-
-import { ClrAbstractContainer } from '../common/abstract-container';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { NgControlService } from '../common/providers/ng-control.service';
+import {
+  ClrAbstractContainer,
+  ControlClassService,
+  ControlIdService,
+  NgControlService,
+} from '@clr/angular/forms/common';
 
 @Component({
   selector: 'clr-textarea-container',

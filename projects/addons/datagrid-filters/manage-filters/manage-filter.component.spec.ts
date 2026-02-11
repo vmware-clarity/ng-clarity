@@ -8,13 +8,15 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrIcon, ClrInputModule, ClrRadioModule, ClrSelectModule, ClrSignpostModule } from '@clr/angular';
+import { ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
+import { ClrIcon } from '@clr/angular/icon';
+import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 
+import { DismissableDirective } from './dismissable.directive';
+import { ManageFilterComponent } from './manage-filter.component';
 import { FilterFormComponent } from '../advanced-filters/filter-form.component';
 import { GeneralFilterComponent } from '../advanced-filters/general-filter.component';
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
-import { DismissableDirective } from './dismissable.directive';
-import { ManageFilterComponent } from './manage-filter.component';
 import { ComparisonOperator, LogicalOperator, PropertyType, TimeSpan, Unit } from '../model/datagrid-filters.enums';
 import {
   DateTimePropertyDefinition,

@@ -8,7 +8,7 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ClrDatagridModule } from '@clr/angular';
+import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 
 import { ColumnOrderDirective } from './column-order.directive';
 import { DatagridColumnsOrderDirective } from './datagrid-columns-order.directive';

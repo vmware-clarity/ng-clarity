@@ -5,9 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { addHelpers } from '@clr/angular/testing';
 
-import { ClrIcon } from '../icon';
 import ButtonHubSpecs from './providers/button-hub.service.spec';
 import HeaderActionsSpecs from './providers/header-actions.service.spec';
 import PageCollectionSpecs from './providers/page-collection.service.spec';
@@ -17,12 +16,10 @@ import WizardHeaderActionSpecs from './wizard-header-action.spec';
 import WizardPageSpecs from './wizard-page.spec';
 import WizardStepnavItemSpecs from './wizard-stepnav-item.spec';
 import WizardStepnavSpecs from './wizard-stepnav.spec';
-import { ClrWizardModule } from './wizard.module';
 import WizardSpecs from './wizard.spec';
-import { addHelpersDeprecated } from '../utils/testing/helpers.spec';
 
 describe('New Wizard Tests', () => {
-  addHelpersDeprecated([ClrWizardModule, ClrIcon, NoopAnimationsModule]);
+  addHelpers();
 
   WizardSpecs();
   WizardStepnavSpecs();

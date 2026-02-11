@@ -15,15 +15,22 @@ import {
   QueryList,
   ViewChild,
 } from '@angular/core';
+import {
+  ClrPopoverHostDirective,
+  ClrPopoverPosition,
+  ClrPopoverService,
+  ClrPopoverType,
+  DROPDOWN_POSITIONS,
+} from '@clr/angular/popover/common';
+import {
+  ClrCommonStringsService,
+  ClrDestroyService,
+  FOCUS_SERVICE_PROVIDER,
+  uniqueIdFactory,
+} from '@clr/angular/utils';
 import { takeUntil } from 'rxjs/operators';
 
 import { ClrButton } from './button';
-import { ClrPopoverHostDirective, ClrPopoverService } from '../../popover';
-import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS } from '../../popover/common/utils/popover-positions';
-import { ClrDestroyService } from '../../utils/destroy/destroy.service';
-import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import {
   BUTTON_GROUP_FOCUS_HANDLER_PROVIDER,
   ButtonGroupFocusHandler,

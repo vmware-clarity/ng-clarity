@@ -6,16 +6,18 @@
  */
 
 import { Component, ContentChild, ElementRef, forwardRef, inject, Input, ViewChild } from '@angular/core';
+import {
+  ClrAbstractContainer,
+  ControlClassService,
+  ControlIdService,
+  NgControlService,
+} from '@clr/angular/forms/common';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrFileInput } from './file-input';
 import { selectFiles } from './file-input.helpers';
 import { ClrFileList } from './file-list';
 import { ClrFileError, ClrFileSuccess } from './file-messages';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrAbstractContainer } from '../common/abstract-container';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 
 @Component({
   selector: 'clr-file-input-container',

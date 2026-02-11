@@ -11,8 +11,11 @@ export * from './accordion-title';
 export * from './accordion-content';
 export * from './accordion-description';
 export * from './accordion.module';
+export * from './models/accordion.model';
+export * from './providers/accordion.service';
+export * from './enums/accordion-status.enum';
+export * from './enums/accordion-strategy.enum';
+export * from './utils/animation';
 
 export { AccordionWillyWonka as ÇlrAccordionWillyWonka } from './chocolate/accordion-willy-wonka';
 export { AccordionOompaLoompa as ÇlrAccordionOompaLoompa } from './chocolate/accordion-oompa-loompa';
-export { StepperWillyWonka as ÇlrStepperWillyWonka } from './stepper/chocolate/stepper-willy-wonka';
-export { StepperOompaLoompa as ÇlrStepperOompaLoompa } from './stepper/chocolate/stepper-oompa-loompa';

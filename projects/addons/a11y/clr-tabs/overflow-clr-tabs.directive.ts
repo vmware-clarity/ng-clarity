@@ -14,7 +14,7 @@ import {
   QueryList,
   Renderer2,
 } from '@angular/core';
-import { ClrTab, ClrTabLink, ClrTabs } from '@clr/angular';
+import { ClrTab, ClrTabLink, ClrTabs } from '@clr/angular/layout/tabs';
 import { merge, of, Subscription } from 'rxjs';
 import { debounceTime, delay } from 'rxjs/operators';
 

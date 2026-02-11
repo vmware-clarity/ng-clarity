@@ -6,14 +6,16 @@
  */
 
 import { Component, Optional } from '@angular/core';
+import {
+  ClrAbstractContainer,
+  ControlClassService,
+  ControlIdService,
+  FormsFocusService,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/forms/common';
 
-import { ClrAbstractContainer } from '../common/abstract-container';
 import { DatalistIdService } from './providers/datalist-id.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { FocusService } from '../common/providers/focus.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 
 @Component({
   selector: 'clr-datalist-container',
@@ -52,7 +54,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [ControlClassService, ControlIdService, FocusService, NgControlService, DatalistIdService],
+  providers: [ControlClassService, ControlIdService, FormsFocusService, NgControlService, DatalistIdService],
   standalone: false,
 })
 export class ClrDatalistContainer extends ClrAbstractContainer {
@@ -62,7 +64,7 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
     controlClassService: ControlClassService,
     @Optional() layoutService: LayoutService,
     ngControlService: NgControlService,
-    focusService: FocusService
+    focusService: FormsFocusService
   ) {
     super(layoutService, controlClassService, ngControlService);
 

@@ -6,13 +6,18 @@
  */
 
 import { Component, ElementRef, HostListener, Inject, Input, OnInit, Optional, Renderer2 } from '@angular/core';
+import {
+  ClrPopoverContent,
+  ClrPopoverPosition,
+  ClrPopoverService,
+  ClrPopoverType,
+  POPOVER_HOST_ANCHOR,
+  TOOLTIP_POSITIONS,
+} from '@clr/angular/popover/common';
+import { uniqueIdFactory } from '@clr/angular/utils';
 
-import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrPopoverContent, ClrPopoverService } from '../common';
-import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
-import { ClrPopoverPosition, ClrPopoverType, TOOLTIP_POSITIONS } from '../common/utils/popover-positions';
 
 const SIZES = ['xs', 'sm', 'md', 'lg'];
 

@@ -11,7 +11,8 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { ElementResizeService } from '@clr/addons/a11y';
-import { ClrDropdownModule, ClrIcon, ClrTooltipModule } from '@clr/angular';
+import { ClrIcon } from '@clr/angular/icon';
+import { ClrDropdownModule, ClrTooltipModule } from '@clr/angular/popover';
 import { Observable, of, Subject } from 'rxjs';
 
 import { DatagridActionBarComponent } from './datagrid-action-bar.component';

@@ -9,16 +9,13 @@ import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import * as _angular_cdk_overlay from '@angular/cdk/overlay';
+import * as _angular_animations from '@angular/animations';
 import { AnimationBuilder } from '@angular/animations';
 import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
 import { AnimationMetadata } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
-import { CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
-import { CdkVirtualForOf } from '@angular/cdk/scrolling';
-import { CdkVirtualForOfContext } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ControlValueAccessor } from '@angular/forms';
@@ -29,29 +26,23 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { DragDrop } from '@angular/cdk/drag-drop';
 import { DragDropConfig } from '@angular/cdk/drag-drop';
 import { ElementRef } from '@angular/core';
-import { EmbeddedViewRef } from '@angular/core';
-import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { FactoryProvider } from '@angular/core';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormArray } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
-import { FormGroupDirective } from '@angular/forms';
-import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i12 from '@angular/common';
-import * as i13 from '@angular/forms';
-import * as i6 from '@angular/router';
+import * as i14 from '@angular/common';
+import * as i15 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
-import { ListRange } from '@angular/cdk/collections';
 import { NgControl } from '@angular/forms';
-import { NgForm } from '@angular/forms';
 import { NgForOfContext } from '@angular/common';
-import { NgModelGroup } from '@angular/forms';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Observer } from 'rxjs';
 import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
@@ -61,13 +52,9 @@ import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
-import { RouterLinkActive } from '@angular/router';
 import * as rxjs from 'rxjs';
 import { SafeHtml } from '@angular/platform-browser';
-import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
-import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Subscription } from 'rxjs';
@@ -77,7 +64,6 @@ import { Type } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { Validator } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
-import { ViewportRuler } from '@angular/cdk/scrolling';
 
 // @public (undocumented)
 class AppfxDatagridFiltersModule {
@@ -94,9 +80,11 @@ class AppfxDatagridFiltersModule {
     // Warning: (ae-forgotten-export) The symbol "ManageFilterComponent" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "SkipFiltersPipe" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i12" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i13_2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe], [typeof i11.ClrCheckboxModule, typeof i11.ClrIcon, typeof i11.ClrInputModule, typeof i11.ClrRadioModule, typeof i11.ClrSelectModule, typeof i11.ClrSignpostModule, typeof i12.CommonModule, typeof i13.FormsModule, typeof i13.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe], [typeof i11.ClrCheckboxModule, typeof i12.ClrIcon, typeof i11.ClrInputModule, typeof i11.ClrRadioModule, typeof i11.ClrSelectModule, typeof i13_2.ClrSignpostModule, typeof i14.CommonModule, typeof i15.FormsModule, typeof i15.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
 }
 export { AppfxDatagridFiltersModule }
 export { AppfxDatagridFiltersModule as DatagridFiltersModule }

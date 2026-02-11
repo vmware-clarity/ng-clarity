@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrCheckboxModule, ClrRadioModule } from '@clr/angular';
+import { ClrCheckboxModule, ClrRadioModule } from '@clr/angular/forms';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { EnumFilterComponent } from './enum-filter.component';

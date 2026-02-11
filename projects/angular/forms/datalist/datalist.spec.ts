@@ -6,10 +6,10 @@
  */
 
 import { Component } from '@angular/core';
+import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrDatalist } from './datalist';
 import { DatalistIdService } from './providers/datalist-id.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `
@@ -53,7 +53,7 @@ export default function (): void {
     });
 
     it('id attribute is used when provided on the element', function (this: Context) {
-      this.hostComponent.testId = 'custom-id';
+      this.testComponent.testId = 'custom-id';
       this.detectChanges();
       expect(datalistIdService.id).toEqual(this.clarityElement.id);
       expect(this.clarityElement.id).toEqual('custom-id');

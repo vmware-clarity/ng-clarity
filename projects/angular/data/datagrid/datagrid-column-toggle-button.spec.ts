@@ -6,10 +6,10 @@
  */
 
 import { Component } from '@angular/core';
+import { TestContext } from '@clr/angular/testing';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClrDatagridColumnToggleButton } from './datagrid-column-toggle-button';
-import { TestContext } from './helpers.spec';
 import { ColumnState } from './interfaces/column-state.interface';
 import { ColumnsService } from './providers/columns.service';
 import { MOCK_COLUMN_SERVICE_PROVIDER, MockColumnsService } from './providers/columns.service.mock';

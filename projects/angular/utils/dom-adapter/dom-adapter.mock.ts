@@ -16,19 +16,19 @@ export class MockDomAdapter extends DomAdapter {
   _scrollWidth = 0;
   _computedHeight = 0;
 
-  userDefinedWidth(_element: any): number {
+  override userDefinedWidth(_element: any): number {
     return this._userDefinedWidth;
   }
 
-  scrollBarWidth(_element: any) {
+  override scrollBarWidth(_element: any) {
     return this._scrollBarWidth;
   }
 
-  scrollWidth(_element: any) {
+  override scrollWidth(_element: any) {
     return this._scrollWidth;
   }
 
-  computedHeight(_element: any) {
+  override computedHeight(_element: any) {
     return this._computedHeight;
   }
 }

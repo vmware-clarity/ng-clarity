@@ -28,17 +28,15 @@ import {
   ZoomLevelServiceMock,
 } from '@clr/addons/testing';
 import {
-  ClrCheckboxModule,
   ClrDatagridComparatorInterface,
   ClrDatagridFilterInterface,
   ClrDatagridSortOrder,
   ClrDatagridStateInterface,
   ClrDatagridStringFilterInterface,
   ClrDatagridVirtualScrollRangeInterface,
-  ClrIcon,
-  ClrInputModule,
-  ClrSelectModule,
-} from '@clr/angular';
+} from '@clr/angular/data/datagrid';
+import { ClrCheckboxModule, ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
+import { ClrIcon } from '@clr/angular/icon';
 import { Observable, Subject } from 'rxjs';
 
 import { DatagridColumnsOrderModule } from './addons/column-ordering/datagrid-columns-order.module';

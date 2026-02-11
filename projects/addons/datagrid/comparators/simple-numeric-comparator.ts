@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDatagridComparatorInterface } from '@clr/angular';
+import { ClrDatagridComparatorInterface } from '@clr/angular/data/datagrid';
 
 function compareNumericValues(itemA: any, itemB: any, fieldName: string): number {
   const firstValue = Number(itemA[fieldName]);

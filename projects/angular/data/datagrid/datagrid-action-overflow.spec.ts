@@ -6,13 +6,12 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
+import { commonStringsDefault } from '@clr/angular/utils';
 
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
-import { TestContext } from './helpers.spec';
 import { RowActionService } from './providers/row-action-service';
-import { ClrPopoverService } from '../../popover';
-import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
-import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 
 export default function (): void {
   describe('DatagridActionOverflow component', function () {

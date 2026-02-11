@@ -8,7 +8,7 @@
 import { Component, ElementRef, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ClrDatagrid, ClrDatagridModule, ClrDatagridSortOrder } from '@clr/angular';
+import { ClrDatagrid, ClrDatagridModule, ClrDatagridSortOrder } from '@clr/angular/data/datagrid';
 
 import { CsvHelperService } from './csv-helper.service';
 import { ExportProviderService } from './export-provider.service';

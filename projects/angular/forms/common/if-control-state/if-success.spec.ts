@@ -8,10 +8,9 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
-import { ClrIcon } from 'projects/angular/icon';
+import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
+import { ClrIcon } from '@clr/angular/icon';
 
-import { ClrInput } from '../../input/input';
-import { ClrInputContainer } from '../../input/input-container';
 import { NgControlService } from '../providers/ng-control.service';
 import { ClrControlSuccess } from '../success';
 import { ClrIfSuccess } from './if-success';

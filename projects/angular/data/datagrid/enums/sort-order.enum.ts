@@ -17,3 +17,9 @@ export enum ClrDatagridSortOrder {
   ASC = 1,
   DESC = -1,
 }
+
+export enum ClrDatagridAriaSortOrder {
+  UNSORTED = 'none',
+  ASC = 'ascending',
+  DESC = 'descending',
+}

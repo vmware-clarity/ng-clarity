@@ -7,12 +7,12 @@
 
 import { Component, QueryList, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrAlert } from './alert';
-import { ClrEmphasisModule } from '../emphasis.module';
 import { ClrAlertsPager } from './alerts-pager';
+import { ClrEmphasisModule } from '../emphasis.module';
 import { MultiAlertService } from './providers/multi-alert.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 export default function () {
   describe('ClrAlerts pager component', function () {

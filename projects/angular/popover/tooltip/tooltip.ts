@@ -6,8 +6,8 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrPopoverHostDirective } from '@clr/angular/popover/common';
 
-import { ClrPopoverHostDirective } from '../common';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
 

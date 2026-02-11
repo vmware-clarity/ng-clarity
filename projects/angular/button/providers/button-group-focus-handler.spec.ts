@@ -7,13 +7,12 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { expectActiveElementToBe } from '@clr/angular/testing';
+import { FocusService, Keys } from '@clr/angular/utils';
 
 import { BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, ButtonGroupFocusHandler } from './button-group-focus-handler.service';
 import { InitialFocus } from './button-group-focus.enum';
-import { ClrPopoverService } from '../../popover';
-import { Keys } from '../../utils/enums/keys.enum';
-import { FocusService } from '../../utils/focus/focus.service';
-import { expectActiveElementToBe } from '../../utils/testing/helpers.spec';
 import { ClrButtonGroupModule } from '../button-group';
 import { ClrButtonGroup } from '../button-group/button-group';
 

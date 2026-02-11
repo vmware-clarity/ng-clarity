@@ -9,6 +9,7 @@ import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/cor
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { delay, spec, TestContext } from '@clr/angular/testing';
 
 import { RecursiveChildren } from './recursive-children';
 import { ClrTree } from './tree';
@@ -16,8 +17,6 @@ import { TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNode } from './tree-node';
 import { ClrTreeViewModule } from './tree-view.module';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
-import { delay } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `
@@ -71,7 +70,7 @@ export default function (): void {
     it('accepts a [clrLazy] input and forwards it to the TreeFeaturesService', function (this: Context) {
       const featuresService = this.getClarityProvider(TreeFeaturesService);
       expect(featuresService.eager).toBe(true);
-      this.hostComponent.lazy = true;
+      this.testComponent.lazy = true;
       this.detectChanges();
       expect(featuresService.eager).toBe(false);
     });
@@ -83,7 +82,7 @@ export default function (): void {
     it('adds the aria-multiselectable if tree is selectable and has children', function (this: Context) {
       expect(this.clarityElement.getAttribute('aria-multiselectable')).toBeNull();
       this.getClarityProvider(TreeFeaturesService).selectable = true;
-      this.hostComponent.hasChild = true;
+      this.testComponent.hasChild = true;
       this.detectChanges();
       expect(this.clarityElement.getAttribute('aria-multiselectable')).toBe('true');
     });

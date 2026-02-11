@@ -6,11 +6,10 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { delay, TestContext } from '@clr/angular/testing';
 
 import { ClrCombobox } from './combobox';
-import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverService } from '../../popover/common/providers/popover.service';
-import { delay } from '../../utils/testing/helpers.spec';
 
 @Component({
   template: `

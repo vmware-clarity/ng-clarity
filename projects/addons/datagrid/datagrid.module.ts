@@ -13,14 +13,11 @@ import { ModuleWithProviders, NgModule, Optional, SkipSelf, Type } from '@angula
 import { FormsModule } from '@angular/forms';
 import { AppfxA11yModule } from '@clr/addons/a11y';
 import { AppfxDatagridFiltersModule } from '@clr/addons/datagrid-filters';
-import {
-  ClrCheckboxModule,
-  ClrDatagridModule,
-  ClrDropdownModule,
-  ClrInputModule,
-  ClrLoadingModule,
-} from '@clr/angular';
-import { ClarityIcons, ClrIcon, dragHandleIcon } from '@clr/angular';
+import { ClrDatagridModule } from '@clr/angular/data/datagrid';
+import { ClrCheckboxModule, ClrInputModule } from '@clr/angular/forms';
+import { ClarityIcons, ClrIcon, dragHandleIcon } from '@clr/angular/icon';
+import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
+import { ClrLoadingModule } from '@clr/angular/utils/loading';
 
 import { DatagridActionBarDropdownRepositionDirective } from './addons/action-bar/datagrid-action-bar-dropdown-reposition.directive';
 import { DatagridActionBarComponent } from './addons/action-bar/datagrid-action-bar.component';

@@ -8,7 +8,8 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrIcon, ClrInputModule, ClrSelectModule } from '@clr/angular';
+import { ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
+import { ClrIcon } from '@clr/angular/icon';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { DateTimeFilterComponent } from './date-time-filter.component';

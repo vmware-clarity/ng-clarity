@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDatagridComparatorInterface } from '@clr/angular';
+import { ClrDatagridComparatorInterface } from '@clr/angular/data/datagrid';
 
 // Handle sorting on 'null | undefined | ""' value on the property
 export class FieldComparator<T> implements ClrDatagridComparatorInterface<T> {

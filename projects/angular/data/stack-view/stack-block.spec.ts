@@ -9,12 +9,12 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { delay } from '@clr/angular/testing';
+import { Keys } from '@clr/angular/utils';
 
 import { ClrStackBlock } from './stack-block';
 import { ClrStackView } from './stack-view';
 import { ClrStackViewModule } from './stack-view.module';
-import { Keys } from '../../utils/enums/keys.enum';
-import { delay } from '../../utils/testing/helpers.spec';
 
 import Spy = jasmine.Spy;
 

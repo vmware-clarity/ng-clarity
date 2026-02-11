@@ -9,13 +9,11 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
+import { ClrIcon } from '@clr/angular/icon';
 
 import { ClrDatalistContainer } from './datalist-container';
 import { ClrDatalistInput } from './datalist-input';
-import { ClrIcon } from '../../icon';
-import { ClrCommonFormsModule } from '../common/common.module';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 
 @Component({

@@ -14,15 +14,10 @@
 
 import IfActiveDirectiveSpecs from './if-active.directive.spec';
 import IfActiveServiceSpecs from './if-active.service.spec';
-import IfOpenDirectiveSpecs from './if-open.directive.spec';
 
 describe('Conditional Utils', function () {
   describe('clrIfActive', function () {
     IfActiveServiceSpecs();
     IfActiveDirectiveSpecs();
-  });
-
-  describe('clrIfOpen', function () {
-    IfOpenDirectiveSpecs();
   });
 });

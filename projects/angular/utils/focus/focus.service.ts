@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, Optional, Renderer2, SkipSelf } from '@angular/core';
+import { FactoryProvider, Injectable, Optional, Renderer2, SkipSelf } from '@angular/core';
 import { isObservable, of } from 'rxjs';
 
 import { ArrowKeyDirection } from './arrow-key-direction.enum';
@@ -100,7 +100,7 @@ export function clrFocusServiceFactory(existing: FocusService, renderer: Rendere
   return existing || new FocusService(renderer);
 }
 
-export const FOCUS_SERVICE_PROVIDER = {
+export const FOCUS_SERVICE_PROVIDER: FactoryProvider = {
   provide: FocusService,
   useFactory: clrFocusServiceFactory,
   deps: [[new Optional(), new SkipSelf(), FocusService], Renderer2],

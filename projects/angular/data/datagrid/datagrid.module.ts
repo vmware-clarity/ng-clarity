@@ -8,8 +8,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
-import { ClrFormsModule } from '../../forms/forms.module';
+import { ClrCheckboxModule } from '@clr/angular/forms/checkbox';
+import { ClrInputModule } from '@clr/angular/forms/input';
+import { ClrNumberInputModule } from '@clr/angular/forms/number-input';
+import { ClrRadioModule } from '@clr/angular/forms/radio';
+import { ClrSelectModule } from '@clr/angular/forms/select';
 import {
   angleDoubleIcon,
   arrowIcon,
@@ -22,7 +25,20 @@ import {
   timesIcon,
   viewColumnsIcon,
   windowCloseIcon,
-} from '../../icon';
+} from '@clr/angular/icon';
+import { ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
+import {
+  CdkDragModule,
+  CdkTrapFocusModule,
+  ClrConditionalModule,
+  ClrExpandableAnimationModule,
+  ClrIfExpanded,
+  ClrKeyFocusModule,
+  ClrLoadingModule,
+  ClrOutsideClickModule,
+} from '@clr/angular/utils';
+
 import { DatagridNumericFilter } from './built-in/filters/datagrid-numeric-filter';
 import { DatagridStringFilter } from './built-in/filters/datagrid-string-filter';
 import { ActionableOompaLoompa } from './chocolate/actionable-oompa-loompa';
@@ -61,15 +77,6 @@ import { DatagridRowRenderer } from './render/row-renderer';
 import { WrappedCell } from './wrapped-cell';
 import { WrappedColumn } from './wrapped-column';
 import { WrappedRow } from './wrapped-row';
-import { ClrPopoverModuleNext } from '../../popover/common/popover.module';
-import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
-import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
-import { CdkDragModule } from '../../utils/cdk/cdk-drag.module';
-import { CdkTrapFocusModule } from '../../utils/cdk/cdk-trap-focus.module';
-import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
-import { ClrLoadingModule } from '../../utils/loading/loading.module';
-import { ClrOutsideClickModule } from '../../utils/outside-click/outside-click.module';
 
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   // Core
@@ -118,6 +125,7 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
 
 const CLR_DATAGRID_INTERNAL_DIRECTIVES = [ClrDatagridColumnToggle, ClrDatagridColumnToggleButton];
 const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAccessor];
+const CLR_DATAGRID_SHARED_DIRECTIVES = [ClrIfExpanded];
 
 @NgModule({
   imports: [
@@ -125,19 +133,24 @@ const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAcces
     CdkDragModule,
     CdkTrapFocusModule,
     ClrIcon,
-    ClrFormsModule,
+    ClrInputModule,
+    ClrRadioModule,
+    ClrCheckboxModule,
+    ClrNumberInputModule,
+    ClrSelectModule,
     FormsModule,
     ClrLoadingModule,
     ClrConditionalModule,
     ClrOutsideClickModule,
     ClrExpandableAnimationModule,
     ClrSpinnerModule,
-    ClrPopoverModuleNext,
+    ÇlrClrPopoverModuleNext,
     ClrKeyFocusModule,
     CLR_DATAGRID_STANDALONE_DIRECTIVES,
+    CLR_DATAGRID_SHARED_DIRECTIVES,
   ],
   declarations: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_INTERNAL_DIRECTIVES],
-  exports: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_STANDALONE_DIRECTIVES],
+  exports: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_STANDALONE_DIRECTIVES, CLR_DATAGRID_SHARED_DIRECTIVES],
 })
 export class ClrDatagridModule {
   constructor() {

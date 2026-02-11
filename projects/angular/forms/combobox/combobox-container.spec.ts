@@ -9,12 +9,12 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { ClrCommonFormsModule } from '@clr/angular/forms/common';
+import { ClrIcon } from '@clr/angular/icon';
+import { ClrPopoverContent } from '@clr/angular/popover/common';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';
-import { ClrIcon } from '../../icon';
-import { ClrPopoverContent } from '../../popover';
-import { ClrCommonFormsModule } from '../common/common.module';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 import { ComboboxContainerService } from './providers/combobox-container.service';
 

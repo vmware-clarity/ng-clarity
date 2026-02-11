@@ -6,14 +6,13 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { spec, TestContext } from '@clr/angular/testing';
+import { FocusService } from '@clr/angular/utils';
 
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownTrigger } from './dropdown-trigger';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
-import { FocusService } from '../../utils/focus/focus.service';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
-import { ClrPopoverService } from '../common';
-
 @Component({
   template: `<button clrDropdownTrigger>Hello world</button>`,
   // These services are declared here because they need the renderer

@@ -8,8 +8,9 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule, ClrSignpostModule } from '@clr/angular';
-import { angleIcon, ClarityIcons, ClrIcon, filterGridIcon, plusIcon, windowCloseIcon } from '@clr/angular';
+import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
+import { angleIcon, ClarityIcons, ClrIcon, filterGridIcon, plusIcon, windowCloseIcon } from '@clr/angular/icon';
+import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 
 import { DateTimeFilterComponent } from './advanced-filters/date-time-filter.component';
 import { EnumFilterComponent } from './advanced-filters/enum-filter.component';

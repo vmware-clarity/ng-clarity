@@ -6,8 +6,7 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { ClrWizard } from '@clr/angular';
-import { ClrWizardPage } from '@clr/angular';
+import { ClrWizard, ClrWizardPage } from '@clr/angular';
 
 @Component({
   selector: 'clr-wizard-jump-to',

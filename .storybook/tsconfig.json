@@ -6,7 +6,8 @@
     "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
-      "@clr/angular": ["./../projects/angular/index.ts"]
+      "@clr/angular": ["./../projects/angular/index.ts"],
+      "@clr/angular/*": ["./../projects/angular/*"]
     },
     "types": ["node"]
   },

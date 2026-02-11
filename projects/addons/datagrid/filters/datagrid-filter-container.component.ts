@@ -17,7 +17,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { ClrDatagridFilter } from '@clr/angular';
+import { ClrDatagridFilter } from '@clr/angular/data/datagrid';
 import { Subscription } from 'rxjs';
 
 import { ColumnFilter } from '../interfaces/column-filter';

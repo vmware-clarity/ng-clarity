@@ -9,14 +9,12 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
+import { ClrIcon } from '@clr/angular/icon';
 
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxContainer } from './checkbox-container';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
-import { ClrIcon } from '../../icon';
-import { ClrCommonFormsModule } from '../common/common.module';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 
 @Component({

@@ -6,25 +6,31 @@
  */
 
 import { AfterViewInit, Component, ElementRef, Input, Optional, Renderer2, ViewChild } from '@angular/core';
+import {
+  ClrAbstractContainer,
+  ControlClassService,
+  ControlIdService,
+  FormsFocusService,
+  LayoutService,
+  NgControlService,
+} from '@clr/angular/forms/common';
+import {
+  ClrPopoverHostDirective,
+  ClrPopoverPosition,
+  ClrPopoverService,
+  ClrPopoverType,
+  DROPDOWN_POSITIONS,
+} from '@clr/angular/popover/common';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 import { startWith } from 'rxjs/operators';
 
 import { DayModel } from './model/day.model';
-import { ClrPopoverHostDirective } from '../../popover/common/popover-host.directive';
-import { ClrPopoverService } from '../../popover/common/providers/popover.service';
-import { ClrAbstractContainer } from '../common/abstract-container';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS } from '../../popover/common/utils/popover-positions';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { FocusService } from '../common/providers/focus.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 
 @Component({
   selector: 'clr-date-container, clr-date-range-container',
@@ -88,7 +94,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
     ControlIdService,
     LocaleHelperService,
     ControlClassService,
-    FocusService,
+    FormsFocusService,
     NgControlService,
     DateIOService,
     DateNavigationService,
@@ -120,7 +126,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     private dateFormControlService: DateFormControlService,
     private dateIOService: DateIOService,
     public commonStrings: ClrCommonStringsService,
-    focusService: FocusService,
+    focusService: FormsFocusService,
     private viewManagerService: ViewManagerService,
     protected override controlClassService: ControlClassService,
     @Optional() protected override layoutService: LayoutService,
