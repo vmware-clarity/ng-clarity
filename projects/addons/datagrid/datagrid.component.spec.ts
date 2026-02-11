@@ -59,6 +59,10 @@ interface DatagridSpecContext {
   component: DatagridHostComponent;
 }
 
+function delay(ms = 0): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 describe('DatagridComponent', () => {
   beforeEach(function (this: any) {
     TestBed.configureTestingModule({
@@ -1009,7 +1013,7 @@ describe('DatagridComponent', () => {
       this.component.appfxDatagridComponent.ngOnInit();
     });
 
-    it('is set by default', function (this: any) {
+    it('is set by default', async function (this: any) {
       this.fixture.detectChanges(false);
 
       const gridHelper = new GridHelper(this.fixture.debugElement);
@@ -1019,6 +1023,7 @@ describe('DatagridComponent', () => {
       gridHelper.getRows()[0].click();
 
       this.fixture.detectChanges(false);
+      await delay();
 
       expect(gridHelper.getSelectedRows().length).toBe(1);
 
@@ -1026,31 +1031,35 @@ describe('DatagridComponent', () => {
       expect(this.component.changeSelection).toHaveBeenCalledWith([this.data[0]]);
       gridHelper.getRows()[2].click();
       this.fixture.detectChanges();
+      await delay();
 
       expect(gridHelper.getRows()[2].isSelected()).toBeTruthy();
       expect(gridHelper.getSelectedRows().length).toBe(1);
     });
 
-    it('let the user to select only one item', fakeAsync(function (this: any) {
+    it('let the user to select only one item', async function (this: any) {
       this.fixture.detectChanges(false);
-      tick();
       this.fixture.detectChanges();
+      await delay();
+
       spyOn(this.component, 'changeSelection');
       const gridHelper = new GridHelper(this.fixture.debugElement);
       gridHelper.getRows()[0].click();
-      tick();
       this.fixture.detectChanges();
+      await delay();
+
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
       expect(gridHelper.getSelectedRows().length).toBe(1);
       expect(this.component.changeSelection).toHaveBeenCalledWith([this.data[0]]);
 
       gridHelper.getRows()[2].click();
-      tick();
       this.fixture.detectChanges();
+      await delay();
+
       expect(gridHelper.getSelectedRows().length).toBe(1);
       expect(gridHelper.getRows()[2].isSelected()).toBeTruthy();
       expect(this.component.changeSelection).toHaveBeenCalledWith([this.data[0]]);
-    }));
+    });
 
     it('can be changed to multi-selection mode and reset to single selection mode', fakeAsync(function (this: any) {
       this.fixture.detectChanges(false);

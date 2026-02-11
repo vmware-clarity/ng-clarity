@@ -2131,18 +2131,14 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     scrollableColumns: ViewContainerRef;
     // (undocumented)
     selectAllId: string;
-    set selected(value: T[] | undefined);
+    set selected(value: T[]);
     // (undocumented)
     selectedChanged: EventEmitter<T[]>;
     // (undocumented)
     selection: Selection_2<T>;
-    // Warning: (ae-forgotten-export) The symbol "SelectionType_3" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
-    SELECTION_TYPE: typeof SelectionType_3;
-    set singleSelected(value: T);
-    // (undocumented)
-    singleSelectedChanged: EventEmitter<T>;
+    SELECTION_TYPE: typeof SelectionType;
+    set selectionType(value: SelectionType);
     // (undocumented)
     stickyHeaders: QueryList<ElementRef>;
     // (undocumented)
@@ -2152,7 +2148,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     get virtualScroll(): ÇlrDatagridVirtualScrollDirective<any>;
     _virtualScroll: QueryList<ÇlrDatagridVirtualScrollDirective<any>>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": { "alias": "clrLoadingMoreItems"; "required": false; }; "clrDgSingleSelectionAriaLabel": { "alias": "clrDgSingleSelectionAriaLabel"; "required": false; }; "clrDgSingleActionableAriaLabel": { "alias": "clrDgSingleActionableAriaLabel"; "required": false; }; "clrDetailExpandableAriaLabel": { "alias": "clrDetailExpandableAriaLabel"; "required": false; }; "clrDgDisablePageFocus": { "alias": "clrDgDisablePageFocus"; "required": false; }; "customSelectAllEnabled": { "alias": "clrDgCustomSelectAllEnabled"; "required": false; }; "loading": { "alias": "clrDgLoading"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "singleSelected": { "alias": "clrDgSingleSelected"; "required": false; }; "clrDgPreserveSelection": { "alias": "clrDgPreserveSelection"; "required": false; }; "rowSelectionMode": { "alias": "clrDgRowSelection"; "required": false; }; "identityFn": { "alias": "clrDgItemsIdentityFn"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": { "alias": "clrLoadingMoreItems"; "required": false; }; "clrDgSingleSelectionAriaLabel": { "alias": "clrDgSingleSelectionAriaLabel"; "required": false; }; "clrDgSingleActionableAriaLabel": { "alias": "clrDgSingleActionableAriaLabel"; "required": false; }; "clrDetailExpandableAriaLabel": { "alias": "clrDetailExpandableAriaLabel"; "required": false; }; "clrDgDisablePageFocus": { "alias": "clrDgDisablePageFocus"; "required": false; }; "customSelectAllEnabled": { "alias": "clrDgCustomSelectAllEnabled"; "required": false; }; "loading": { "alias": "clrDgLoading"; "required": false; }; "selectionType": { "alias": "clrDgSelectionType"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "clrDgPreserveSelection": { "alias": "clrDgPreserveSelection"; "required": false; }; "rowSelectionMode": { "alias": "clrDgRowSelection"; "required": false; }; "identityFn": { "alias": "clrDgItemsIdentityFn"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagrid<any>, never>;
 }
@@ -2487,7 +2483,7 @@ export class ClrDatagridFooter<T = any> {
     // (undocumented)
     selection: Selection_2<T>;
     // (undocumented)
-    SELECTION_TYPE: typeof SelectionType_3;
+    SELECTION_TYPE: typeof SelectionType;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFooter<any>, "clr-dg-footer", never, {}, {}, never, ["*", "clr-dg-pagination"], false, never>;
     // (undocumented)
@@ -2720,7 +2716,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     selection: Selection_2<T>;
     // (undocumented)
-    SELECTION_TYPE: typeof SelectionType_3;
+    SELECTION_TYPE: typeof SelectionType;
     // @deprecated (undocumented)
     protected selectRow(selected: boolean, $event: any): void;
     // (undocumented)
@@ -2771,7 +2767,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     // (undocumented)
     selection: Selection_2;
     // (undocumented)
-    SELECTION_TYPE: typeof SelectionType_3;
+    SELECTION_TYPE: typeof SelectionType;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRowDetail, "clr-dg-row-detail", never, { "_beginningOfExpandableContentAriaText": { "alias": "clrRowDetailBeginningAriaText"; "required": false; }; "_endOfExpandableContentAriaText": { "alias": "clrRowDetailEndAriaText"; "required": false; }; "replace": { "alias": "clrDgReplace"; "required": false; }; }, {}, ["cells"], ["*"], false, never>;
     // (undocumented)
@@ -8608,7 +8604,7 @@ export function selectFiles(fileInputElement: HTMLInputElement, files: File[] | 
 class Selection_2<T = any> {
     constructor(_items: Items_3<T>, filters: FiltersProvider_3<T>, differs: IterableDiffers);
     // (undocumented)
-    get change(): Observable<T[] | T>;
+    get change(): Observable<T[]>;
     // (undocumented)
     checkForChanges(): void;
     // (undocumented)
@@ -8632,8 +8628,8 @@ class Selection_2<T = any> {
     // @deprecated (undocumented)
     rowSelectionMode: boolean;
     // (undocumented)
-    get selectionType(): SelectionType_3;
-    set selectionType(value: SelectionType_3);
+    get selectionType(): SelectionType;
+    set selectionType(value: SelectionType);
     setSelected(item: T, selected: boolean): void;
     shiftPressed: boolean;
     toggleAll(): void;
@@ -8645,6 +8641,16 @@ class Selection_2<T = any> {
     static ɵprov: i0.ɵɵInjectableDeclaration<Selection_2<any>>;
 }
 export { Selection_2 as Selection }
+
+// @public (undocumented)
+export enum SelectionType {
+    // (undocumented)
+    Multi = 2,
+    // (undocumented)
+    None = 0,
+    // (undocumented)
+    Single = 1
+}
 
 // @public (undocumented)
 export const shareIcon: IconShapeTuple;
