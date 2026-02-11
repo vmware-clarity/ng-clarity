@@ -5,7 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, TrackByFunction } from '@angular/core';
+import { ClrDatagridItemsIdentityFunction } from '@clr/angular';
 
 import { User } from '../inventory/user';
 import { DatagridKitchenSinkData } from '../kitchen-sink/kitchen-sink-data';
@@ -42,4 +43,7 @@ export class DatagridDensityDemo {
       delete this.selected;
     }
   }
+
+  identityFn: ClrDatagridItemsIdentityFunction<User> = item => item?.id;
+  trackByIndex: TrackByFunction<User> = index => index;
 }

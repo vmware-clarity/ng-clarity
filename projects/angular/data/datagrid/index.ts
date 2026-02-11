@@ -29,6 +29,7 @@ export * from './datagrid-placeholder';
 
 export * from './interfaces/state.interface';
 export * from './enums/sort-order.enum';
+export * from './enums/selection-type';
 export * from './interfaces/filter.interface';
 export * from './interfaces/string-filter.interface';
 export * from './interfaces/numeric-filter.interface';

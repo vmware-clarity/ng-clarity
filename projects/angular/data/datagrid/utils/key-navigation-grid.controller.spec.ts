@@ -14,7 +14,12 @@ import { Selection } from '../providers/selection';
 
 @Component({
   template: `
-    <clr-datagrid class="datagrid-compact" [style.height.px]="185" [(clrDgSelected)]="selected">
+    <clr-datagrid
+      class="datagrid-compact"
+      [style.height.px]="185"
+      [(clrDgSelected)]="selected"
+      [clrDgSelectionType]="selected ? 2 : 0"
+    >
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
       <clr-dg-column>Third</clr-dg-column>

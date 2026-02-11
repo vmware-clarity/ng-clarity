@@ -23,7 +23,12 @@
 </div>
 
 <ng-template #grid let-static="static" let-compact="compact">
-  <clr-datagrid [(clrDgSelected)]="selected" [style.max-height.px]="250" [class.datagrid-compact]="compact">
+  <clr-datagrid
+    [(clrDgSelected)]="selected"
+    [clrDgSelectionType]="2"
+    [style.max-height.px]="250"
+    [class.datagrid-compact]="compact"
+  >
     <clr-dg-column>
       <ng-container *clrDgHideableColumn>User ID</ng-container>
     </clr-dg-column>

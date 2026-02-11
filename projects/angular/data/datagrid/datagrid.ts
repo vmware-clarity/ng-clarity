@@ -94,7 +94,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @Input() clrDgDisablePageFocus = false;
 
   @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<T[]>(false);
-  @Output('clrDgSingleSelectedChange') singleSelectedChanged = new EventEmitter<T>(false);
 
   /**
    * Output emitted whenever the data needs to be refreshed, based on user action or external ones
@@ -207,30 +206,29 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /**
    * Array of all selected items
    */
-  @Input('clrDgSelected')
-  set selected(value: T[] | undefined) {
-    if (value) {
-      this.selection.selectionType = SelectionType.Multi;
-    } else {
-      this.selection.selectionType = SelectionType.None;
-    }
-    this.selection.updateCurrent(value, false);
+  @Input('clrDgSelectionType')
+  set selectionType(value: SelectionType) {
+    this.selection.selectionType = value;
   }
 
   /**
-   * Selected item in single-select mode
+   * Array of all selected items
    */
-  @Input('clrDgSingleSelected')
-  set singleSelected(value: T) {
-    this.selection.selectionType = SelectionType.Single;
-    // the clrDgSingleSelected is updated in one of two cases:
-    // 1. an explicit value is passed
-    // 2. is being set to null or undefined, where previously it had a value
-    if (value) {
-      this.selection.currentSingle = value;
-    } else if (this.selection.currentSingle) {
-      this.selection.currentSingle = null;
+  @Input('clrDgSelected')
+  set selected(value: T[]) {
+    // in SINGLE SELECTION mode if the value is the same as currently selected do nothing
+    if (
+      this.selection.selectionType === SelectionType.Single &&
+      // if value is NULL compare it directly to current single if NOT take first index of the array
+      ((value && value[0] === this.selection.currentSingle) || value === this.selection.currentSingle)
+    ) {
+      return;
     }
+
+    // TODO: it make no sense!!! SINGLE emits changes, MULTI doesn't
+    const emitChanges = this.selection.selectionType === SelectionType.Single;
+
+    this.selection.updateCurrent(value, emitChanges);
   }
 
   @Input()
@@ -350,10 +348,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this.stickyHeaders.changes.subscribe(() => this.resize()),
       this.stateProvider.change.subscribe(state => this.refresh.emit(state)),
       this.selection.change.subscribe(s => {
-        if (this.selection.selectionType === SelectionType.Single) {
-          this.singleSelectedChanged.emit(s as T);
-        } else if (this.selection.selectionType === SelectionType.Multi) {
-          this.selectedChanged.emit(s as T[]);
+        if (
+          this.selection.selectionType === SelectionType.Single ||
+          this.selection.selectionType === SelectionType.Multi
+        ) {
+          this.selectedChanged.emit(s);
         }
       }),
       // Reinitialize arrow key navigation on page changes

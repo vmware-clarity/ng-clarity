@@ -57,7 +57,7 @@
   <h4>One Row</h4>
   <p>Datagrid body height should be atleast 72px.</p>
   <button class="btn btn-outline-primary" (click)="toggle()">Toggle Spinner</button>
-  <clr-datagrid [clrDgLoading]="loading" [(clrDgSingleSelected)]="selectedUser">
+  <clr-datagrid [clrDgLoading]="loading" [(clrDgSelected)]="selectedUser" [clrDgSelectionType]="1">
     <clr-dg-action-bar>
       <clr-dropdown class="btn-group-overflow">
         <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>

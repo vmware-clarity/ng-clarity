@@ -279,7 +279,7 @@ export default function (): void {
         context.testComponent.item = { id: 1 };
         context.detectChanges();
         const radio = context.clarityElement.querySelector("input[type='radio']");
-        expect(selectionProvider.currentSingle).toBeUndefined();
+        expect(selectionProvider.currentSingle).toBe(null);
         radio.click();
         context.detectChanges();
         expect(selectionProvider.currentSingle).toEqual(context.testComponent.item);
@@ -326,7 +326,7 @@ export default function (): void {
         expect(row.classList.contains('datagrid-row-clickable')).toBeFalse();
         row.children[0].click();
         context.detectChanges();
-        expect(selectionProvider.currentSingle).toBeUndefined();
+        expect(selectionProvider.currentSingle).toBe(null);
 
         // Enabling the rowSelectionMode
         selectionProvider.rowSelectionMode = true;
@@ -695,7 +695,7 @@ class ExpandTest {
 
 @Component({
   template: `
-    <clr-datagrid [clrDgSelected]="[]" [clrDgItemsIdentityFn]="trackBy">
+    <clr-datagrid [clrDgSelected]="[]" [clrDgSelectionType]="2" [clrDgItemsIdentityFn]="trackBy">
       @for (item of items; track item.id) {
         <clr-dg-row [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable"></clr-dg-row>
       }

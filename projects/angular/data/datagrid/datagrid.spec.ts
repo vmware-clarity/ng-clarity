@@ -37,6 +37,7 @@ import { DatagridRenderOrganizer } from './render/render-organizer';
     @if (!destroy) {
       <clr-datagrid
         [(clrDgSelected)]="selected"
+        [clrDgSelectionType]="selectionType"
         [clrDgLoading]="loading"
         [clrDgDisablePageFocus]="disableFocus"
         (clrDgRefresh)="refresh($event)"
@@ -64,6 +65,7 @@ class FullTest {
   disableFocus = false;
   loading = false;
   selected: number[];
+  selectionType = 0;
 
   nbRefreshed = 0;
   latestState: ClrDatagridStateInterface;
@@ -127,7 +129,7 @@ class OnPushTest {
 @Component({
   selector: 'multi-select-test',
   template: `
-    <clr-datagrid [(clrDgSelected)]="selected">
+    <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="2">
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
@@ -150,6 +152,7 @@ class MultiSelectionTest {
     <clr-datagrid
       [clrDgCustomSelectAllEnabled]="clrDgCustomSelectAllEnabled"
       [(clrDgSelected)]="selected"
+      [clrDgSelectionType]="2"
       (clrDgCustomSelectAll)="clrDgCustomSelectAllEventSpy($event)"
     >
       <clr-dg-column>First</clr-dg-column>
@@ -173,7 +176,7 @@ class MultiSelectionSimpleTest {
 
 @Component({
   template: `
-    <clr-datagrid [clrDgItemsIdentityFn]="dgTrackByFn" [(clrDgSelected)]="selected">
+    <clr-datagrid [clrDgItemsIdentityFn]="dgTrackByFn" [(clrDgSelected)]="selected" [clrDgSelectionType]="2">
       <clr-dg-column>Value</clr-dg-column>
 
       <clr-dg-row *clrDgItems="let item of items; trackBy: ngForTrackByFn" [clrDgItem]="item">
@@ -193,7 +196,11 @@ class MultiSelectionNgForTest {
 
 @Component({
   template: `
-    <clr-datagrid [(clrDgSingleSelected)]="selected" clrDgSingleSelectionAriaLabel="Select row from Datagrid">
+    <clr-datagrid
+      [(clrDgSelected)]="selected"
+      [clrDgSelectionType]="1"
+      clrDgSingleSelectionAriaLabel="Select row from Datagrid"
+    >
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
@@ -209,7 +216,7 @@ class MultiSelectionNgForTest {
 })
 class SingleSelectionTest {
   items = [1, 2, 3];
-  selected: any;
+  selected: number[] = null;
 }
 
 @Component({
@@ -617,7 +624,7 @@ export default function (): void {
         context = this.create(ClrDatagrid, FullTest);
       });
 
-      it('should cretae default values for clrDgSingleSelectionAriaLabel, clrDgSingleActionableAriaLabel, clrDetailExpandableAriaLabel', function () {
+      it('should create default values for clrDgSingleSelectionAriaLabel, clrDgSingleActionableAriaLabel, clrDetailExpandableAriaLabel', function () {
         expect(context.clarityDirective.clrDgSingleSelectionAriaLabel).toBe('Single selection header');
         expect(context.clarityDirective.clrDgSingleActionableAriaLabel).toBe('Single actionable header');
         expect(context.clarityDirective.clrDetailExpandableAriaLabel).toBe('Toggle more row content');
@@ -632,17 +639,24 @@ export default function (): void {
 
       it('offers two-way binding on the currently selected items', async function () {
         const selection = context.getClarityProvider(Selection);
+        context.testComponent.selectionType = 2;
+        context.detectChanges();
+        await delay();
         context.testComponent.selected = [2];
         context.detectChanges();
         await delay();
+
         expect(selection.current).toEqual([2]);
         selection.setSelected(1, true);
         context.detectChanges();
         await delay();
+
         expect(context.testComponent.selected).toEqual([2, 1]);
       });
       it('allows to set pre-selected items when initializing the full list of items', function () {
         const selection = context.getClarityProvider(Selection);
+        context.testComponent.selectionType = 2;
+        context.detectChanges();
         context.testComponent.items = [4, 5, 6];
         context.testComponent.selected = [5];
         context.detectChanges();
@@ -965,8 +979,8 @@ export default function (): void {
 
       describe('Template API', function () {
         it('sets the currentSingle binding', function () {
-          expect(selection.currentSingle).toBeUndefined();
-          context.testComponent.selected = 1;
+          expect(selection.currentSingle).toBe(null);
+          context.testComponent.selected = [1];
           context.detectChanges();
           expect(selection.currentSingle).toEqual(1);
           context.testComponent.selected = null;
@@ -975,68 +989,76 @@ export default function (): void {
         });
 
         it('does not emit a change event for on initialization, before selection', function () {
-          let singleSelectedchangeCount = 0;
-          const sub = context.clarityDirective.singleSelectedChanged.subscribe(() => singleSelectedchangeCount++);
+          let singleSelectedChangeCount = 0;
+          const sub = context.clarityDirective.selectedChanged.subscribe(() => singleSelectedChangeCount++);
 
-          expect(selection.currentSingle).toBeUndefined();
-          expect(singleSelectedchangeCount).toEqual(0);
+          expect(selection.currentSingle).toBe(null);
+          expect(singleSelectedChangeCount).toEqual(0);
 
           sub.unsubscribe();
         });
 
-        it('it emits a change event when changing the selection', function () {
-          let singleSelectedchangeCount = 0;
-          const sub = context.clarityDirective.singleSelectedChanged.subscribe(() => singleSelectedchangeCount++);
+        it('it emits a change event when changing the selection', async function () {
+          let singleSelectedChangeCount = 0;
+          const sub = context.clarityDirective.selectedChanged.subscribe(() => singleSelectedChangeCount++);
 
-          context.testComponent.selected = 1;
+          context.testComponent.selected = [1];
           context.detectChanges();
+          await delay();
+
           expect(selection.currentSingle).toEqual(1);
-          expect(singleSelectedchangeCount).toEqual(1);
+          expect(singleSelectedChangeCount).toEqual(1);
 
           sub.unsubscribe();
         });
 
-        it('it does not emit a change event when setting selection to undefined/null if already undefined/null', function () {
-          let singleSelectedchangeCount = 0;
-          const sub = context.clarityDirective.singleSelectedChanged.subscribe(() => singleSelectedchangeCount++);
+        it('it does not emit a change event when setting selection to undefined/null if already undefined/null', async function () {
+          let singleSelectedChangeCount = 0;
+          const sub = context.clarityDirective.selectedChanged.subscribe(() => singleSelectedChangeCount++);
 
-          expect(selection.currentSingle).toBeUndefined();
-          expect(singleSelectedchangeCount).toEqual(0);
+          expect(selection.currentSingle).toBe(null);
+          expect(singleSelectedChangeCount).toEqual(0);
 
           context.testComponent.selected = null;
           context.detectChanges();
-          expect(selection.currentSingle).toBeUndefined();
-          expect(singleSelectedchangeCount).toEqual(0);
+          await delay();
+
+          expect(selection.currentSingle).toBe(null);
+          expect(singleSelectedChangeCount).toEqual(0);
 
           sub.unsubscribe();
         });
 
-        it('it does not emit a change event when selecting the same value', function () {
-          let singleSelectedchangeCount = 0;
-          const sub = context.clarityDirective.singleSelectedChanged.subscribe(() => singleSelectedchangeCount++);
+        it('it does not emit a change event when selecting the same value', async function () {
+          let singleSelectedChangeCount = 0;
+          const sub = context.clarityDirective.selectedChanged.subscribe(() => singleSelectedChangeCount++);
 
-          context.testComponent.selected = 1;
+          context.testComponent.selected = [1];
           context.detectChanges();
-          expect(selection.currentSingle).toEqual(1);
-          expect(singleSelectedchangeCount).toEqual(1);
+          await delay();
 
-          // re-assigning to the same value should not increase the singleSelectedchangeCount
-          context.testComponent.selected = 1;
-          context.detectChanges();
           expect(selection.currentSingle).toEqual(1);
-          expect(singleSelectedchangeCount).toEqual(1);
+          expect(singleSelectedChangeCount).toEqual(1);
+
+          // re-assigning to the same value should not increase the singleSelectedChangeCount
+          context.testComponent.selected = [1];
+          context.detectChanges();
+          await delay();
+
+          expect(selection.currentSingle).toEqual(1);
+          expect(singleSelectedChangeCount).toEqual(1);
 
           sub.unsubscribe();
         });
 
         it('offers two way binding on the currentSingle value', function () {
-          expect(selection.currentSingle).toBeUndefined();
-          context.testComponent.selected = 1;
+          expect(selection.currentSingle).toBe(null);
+          context.testComponent.selected = [1];
           context.detectChanges();
           expect(selection.currentSingle).toEqual(1);
           selection.currentSingle = 2;
           context.detectChanges();
-          expect(context.testComponent.selected).toEqual(2);
+          expect(context.testComponent.selected[0]).toEqual(2);
         });
       });
 

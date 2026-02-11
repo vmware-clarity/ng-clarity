@@ -15,7 +15,7 @@ export enum SelectionType {
   None = 0,
 
   /**
-   * User can select only one row at a time in the Datagrid..
+   * User can select only one row at a time in the Datagrid.
    */
   Single = 1,
 

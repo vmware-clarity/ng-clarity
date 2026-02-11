@@ -34,7 +34,12 @@ export interface Cells {
 @Component({
   template: `
     @if ({ rows: rows | async }; as data) {
-      <clr-datagrid [(clrDgSelected)]="selectedRows" style="height: 32rem" class="datagrid-compact">
+      <clr-datagrid
+        [(clrDgSelected)]="selectedRows"
+        [clrDgSelectionType]="2"
+        style="height: 32rem"
+        class="datagrid-compact"
+      >
         @for (col of cols; track colByIndex($index, col)) {
           <clr-dg-column>
             <ng-container>{{ col.name }}</ng-container>

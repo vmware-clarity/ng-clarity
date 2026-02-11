@@ -67,7 +67,7 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
     };
   }
 
-  trackItemById: ClrDatagridItemsIdentityFunction<User> = item => item?.id;
+  trackItemById: ClrDatagridItemsIdentityFunction<any> = item => item?.id;
 
   ngAfterViewChecked(): void {
     this.cdr.detectChanges();

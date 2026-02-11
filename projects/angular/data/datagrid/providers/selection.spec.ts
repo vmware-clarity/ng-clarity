@@ -88,7 +88,7 @@ export default function (): void {
       it("can't select/deselect all items at once in other single selection type", function () {
         selectionInstance.selectionType = SelectionType.Single;
         selectionInstance.toggleAll();
-        expect(selectionInstance.currentSingle).toBeUndefined();
+        expect(selectionInstance.currentSingle).toBe(null);
         selectionInstance.currentSingle = 4;
         selectionInstance.toggleAll();
         expect(selectionInstance.currentSingle).toEqual(4);
@@ -120,7 +120,7 @@ export default function (): void {
       it("can't select/deselect all items at once in other single selection type", function () {
         selectionInstance.selectionType = SelectionType.Single;
         selectionInstance.toggleAll();
-        expect(selectionInstance.currentSingle).toBeUndefined();
+        expect(selectionInstance.currentSingle).toBe(null);
         selectionInstance.currentSingle = 4;
         selectionInstance.toggleAll();
         expect(selectionInstance.currentSingle).toEqual(4);
@@ -207,17 +207,24 @@ export default function (): void {
         expect(currentSelection).toEqual([]);
         expect(nbChanges).toBe(3);
       });
-      it('exposes an Observable to follow selection changes in single selection type', function () {
+      it('exposes an Observable to follow selection changes in single selection type', async function () {
         selectionInstance.selectionType = SelectionType.Single;
         let nbChanges = 0;
         let currentSelection: number;
-        selectionInstance.change.subscribe((item: any) => {
+        selectionInstance.change.subscribe((items: number[]) => {
           nbChanges++;
-          currentSelection = item;
+          currentSelection = items[0];
         });
+
         selectionInstance.currentSingle = 4;
+        await delay();
+
         expect(currentSelection).toBe(4);
+        expect(nbChanges).toBe(1);
+
         selectionInstance.currentSingle = 2;
+        await delay();
+
         expect(currentSelection).toBe(2);
         expect(nbChanges).toBe(2);
       });

@@ -37,6 +37,7 @@ import {
   ClrDatagridStateInterface,
   ClrDatagridVirtualScrollRangeInterface,
   Selection,
+  SelectionType,
 } from '@clr/angular/data/datagrid';
 import { Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -54,7 +55,6 @@ import {
 } from './interfaces/column-state';
 import { ContextMenuEvent } from './interfaces/context-menu-event';
 import { DatagridDragConfig } from './interfaces/datagrid-drag-config';
-import { SelectionType } from './interfaces/selection-type';
 import {
   appfxPreselectableComponentToken,
   PreselectableComponent,
@@ -1170,6 +1170,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
       this.clrDatagrid.identityFn = this.trackByGridItemFn;
     }
 
+    this.clrDatagrid.selectionType = changedGridSelectionType;
+
     type ClrSelectionType = typeof this.clrDatagrid.selection.selectionType;
     // Change detection is sensitive to `ClrDatagrid`. The view will update with `this.selectGridItems(this._selectedItems, true);`
 
@@ -1184,7 +1186,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
       Array.isArray(this.gridItems) &&
       this.gridItems.length === 0
     ) {
-      this.clrDatagrid.selection.selectionType = this.#selectionType as unknown as ClrSelectionType; // cast to Clarity enum
+      this.clrDatagrid.selection.selectionType = this.#selectionType;
     }
 
     if (this.preSelectFirstItem && this.gridItems && this.gridItems.length > 0) {
@@ -1218,12 +1220,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
   private subscribeToSelectionChange(): void {
     //Skip first selected item as it is the one used during initial initialization
-    if (this.#selectionType === SelectionType.Single && this.clrDatagrid.singleSelectedChanged) {
-      this.#gridSelectionChangedSub = this.clrDatagrid.singleSelectedChanged
+    if (this.#selectionType === SelectionType.Single && this.clrDatagrid.selectedChanged) {
+      this.#gridSelectionChangedSub = this.clrDatagrid.selectedChanged
         .pipe(takeUntil(this.#unsubscribeSubject))
         // if no item is selected, an empty object is returned
-        .subscribe((selected: T) =>
-          this.onSelectedItemsChange(this.isNotObjectOrEmptyObject(selected) ? [] : [selected])
+        .subscribe((selected: T[]) =>
+          this.onSelectedItemsChange(this.isNotObjectOrEmptyObject(selected[0]) ? [] : [selected[0]])
         );
     } else if (this.#selectionType === SelectionType.Multi && this.clrDatagrid.selectedChanged) {
       this.#gridSelectionChangedSub = this.clrDatagrid.selectedChanged
@@ -1243,13 +1245,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
       }
       //We need to init single selection mode so when selected item is not
       //provided we set empty object
-      this.clrDatagrid.singleSelected = items.length === 0 ? resources.selection.singleDefaultEntity : items[0];
+      this.clrDatagrid.selected = [items.length === 0 ? resources.selection.singleDefaultEntity : items[0]];
     } else if (this.#selectionType === SelectionType.Multi) {
-      this.clrDatagrid.singleSelected = undefined;
-      // special flow with conditionals that correctly deal with the nested Clarity datagrid
-      // and only change the Clarity datagrid's current selection when it is safe from the `ExpressionChangedAfterIsHasBeenCheckedError`
-      // and would not result in extra property assignments outside of the normal change detection cycles
-
       if (!Array.isArray(this.clrDatagrid.selection.current) && isGridSelectionTypeChanged) {
         // do not desire to influence the selectionType in this cycle as it will affect the DOM and have side effects
         // assign Clarity current selection and do own CD to be safe

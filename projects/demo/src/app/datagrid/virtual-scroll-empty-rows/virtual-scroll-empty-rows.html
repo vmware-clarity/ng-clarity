@@ -57,6 +57,7 @@
 <clr-datagrid
   #datagrid
   [(clrDgSelected)]="selectedUsers"
+  [clrDgSelectionType]="2"
   (clrDgRefresh)="refresh($event)"
   [clrDgItemsIdentityFn]="trackItemById"
   [style.height.px]="datagridHeight"

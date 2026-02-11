@@ -18,7 +18,7 @@ import { User } from '../inventory/user';
   standalone: false,
 })
 export class DatagridTestCasesDemo {
-  selectedUser: User;
+  selectedUser: User[];
   users: User[];
   oneUser: User[];
   zeroUsers: User[] = [];
