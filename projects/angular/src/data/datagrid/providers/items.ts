@@ -84,7 +84,7 @@ export class Items<T = any> {
   }
 
   get filtered(): T[] {
-    return this._filtered;
+    return this._filtered ? [...this._filtered] : this._filtered;
   }
 
   // We do not want to expose the Subject itself, but the Observable which is read-only
