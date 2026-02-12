@@ -207,6 +207,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * Array of all selected items
    */
   @Input('clrDgSelectionType')
+  get selectionType(): SelectionType {
+    return this.selection.selectionType;
+  }
   set selectionType(value: SelectionType) {
     this.selection.selectionType = value;
   }
