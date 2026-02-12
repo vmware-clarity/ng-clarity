@@ -44,10 +44,12 @@
     </clr-checkbox-wrapper>
   </clr-toggle-container>
 
-  <clr-input-container cds-layout="m-t:xs" *ngIf="stringFilterEnabled">
-    <label>Default filter value</label>
-    <input clrInput type="text" name="defaultFilter" [(ngModel)]="columnConfig.defaultFilterValue" />
-  </clr-input-container>
+  @if (stringFilterEnabled) {
+    <clr-input-container cds-layout="m-t:xs">
+      <label>Default filter value</label>
+      <input clrInput type="text" name="defaultFilter" [(ngModel)]="columnConfig.defaultFilterValue" />
+    </clr-input-container>
+  }
 </form>
 
 <button class="btn btn-primary" (click)="addNewColumn()">Add new column</button>

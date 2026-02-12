@@ -57,10 +57,12 @@
 
   <clr-toggle-container clrInline cds-layout="m-t:xs">
     <label>Footer model</label>
-    <clr-checkbox-wrapper *ngIf="options.enableExport !== undefined">
-      <input type="checkbox" clrToggle [(ngModel)]="options.enableExport" name="showExport" />
-      <label>Enable export</label>
-    </clr-checkbox-wrapper>
+    @if (options.enableExport !== undefined) {
+      <clr-checkbox-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="options.enableExport" name="showExport" />
+        <label>Enable export</label>
+      </clr-checkbox-wrapper>
+    }
 
     <clr-toggle-wrapper>
       <input type="checkbox" clrToggle [(ngModel)]="options.showColumnToggle" name="showColumnToggle" />

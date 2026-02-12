@@ -5,10 +5,14 @@
   class="dropzone"
   [cdkDropListConnectedTo]="dropGroup(dragConfig.dragGroup)"
 >
-  <h4 *ngIf="receivedItems.length === 0">Drop VM items here</h4>
-  <div *ngFor="let item of receivedItems" cdkDrag class="draggable-item">
-    {{ item }}
-  </div>
+  @if (receivedItems.length === 0) {
+    <h4>Drop VM items here</h4>
+  }
+  @for (item of receivedItems; track item) {
+    <div cdkDrag class="draggable-item">
+      {{ item }}
+    </div>
+  }
 </div>
 
 <button class="btn btn-primary" (click)="receivedItems = []">Reset</button>

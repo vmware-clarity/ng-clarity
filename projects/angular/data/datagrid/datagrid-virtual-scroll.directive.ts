@@ -7,8 +7,9 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
-import { _RecycleViewRepeaterStrategy, _VIEW_REPEATER_STRATEGY, ListRange } from '@angular/cdk/collections';
+import { ListRange } from '@angular/cdk/collections';
 import {
+  CDK_VIRTUAL_SCROLL_VIEWPORT,
   CdkFixedSizeVirtualScroll,
   CdkVirtualForOf,
   CdkVirtualForOfContext,
@@ -100,7 +101,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     });
   });
 
-  private viewRepeater = new _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>();
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
     cdkVirtualForTrackBy: index => index,
   };
@@ -259,7 +259,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         this.viewContainerRef,
         this.templateRef,
         this.iterableDiffers,
-        this.viewRepeater,
         this.virtualScrollViewport,
         this.ngZone
       );
@@ -292,9 +291,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         if (datagridState.filters) {
           this.scrollToIndex(0);
         }
-      }),
-      this.columnsService.columnsStateChange.subscribe(() => {
-        this.viewRepeater.detach();
       })
     );
   }
@@ -448,13 +444,12 @@ function createCdkVirtualForOfDirective<T>(
   viewContainerRef: ViewContainerRef,
   templateRef: TemplateRef<CdkVirtualForOfContext<T>>,
   iterableDiffers: IterableDiffers,
-  viewRepeater: _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>,
   virtualScrollViewport: CdkVirtualScrollViewport,
   ngZone: NgZone
 ) {
   const virtualScrollViewportInjector = Injector.create({
     parent: inject(EnvironmentInjector),
-    providers: [{ provide: CdkVirtualScrollViewport, useValue: virtualScrollViewport }],
+    providers: [{ provide: CDK_VIRTUAL_SCROLL_VIEWPORT, useValue: virtualScrollViewport }],
   });
 
   const cdkVirtualForInjector = Injector.create({
@@ -463,7 +458,6 @@ function createCdkVirtualForOfDirective<T>(
       { provide: ViewContainerRef, useValue: viewContainerRef },
       { provide: TemplateRef, useValue: templateRef },
       { provide: IterableDiffers, useValue: iterableDiffers },
-      { provide: _VIEW_REPEATER_STRATEGY, useValue: viewRepeater },
       { provide: NgZone, useValue: ngZone },
       { provide: CdkVirtualForOf, useClass: CdkVirtualForOf },
     ],

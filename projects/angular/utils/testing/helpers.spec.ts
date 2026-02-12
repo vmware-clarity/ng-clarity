@@ -115,10 +115,10 @@ export function spec<C, H>(
   });
 
   afterEach(function (this: TestContext<C, H>) {
-    if (this.fixture) {
-      this.fixture.destroy();
-      this.fixture.nativeElement.remove();
-    }
+    // if (this.fixture) {
+    //   this.fixture.destroy();
+    //   this.fixture.nativeElement.remove();
+    // }
   });
 }
 
