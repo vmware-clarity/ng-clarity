@@ -11,6 +11,7 @@ import {
   ClrDatagridModule,
   ClrDatagridSortOrder,
   commonStringsDefault,
+  SelectionType,
 } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
@@ -28,6 +29,15 @@ export default {
   argTypes: {
     // inputs
     clrDgField: { control: { disable: true } },
+    clrDgSelected: { control: { disable: true } },
+    clrDgSelectionType: {
+      control: { type: 'select' },
+      options: {
+        None: SelectionType.None,
+        Single: SelectionType.Single,
+        Multi: SelectionType.Multi,
+      },
+    },
     clrDgSortBy: { type: 'string' },
     clrDgSortOrder: {
       control: { type: 'radio' },
@@ -45,6 +55,7 @@ export default {
   },
   args: {
     // inputs
+    clrDgSelectionType: SelectionType.None,
     clrDgColType: 'string',
     clrFilterNumberMaxPlaceholder: commonStringsDefault.maxValue,
     clrFilterNumberMinPlaceholder: commonStringsDefault.minValue,
@@ -58,8 +69,6 @@ export default {
     // story helpers
     elements,
     highlight: true,
-    singleSelectable: false,
-    multiSelectable: false,
     expandable: false,
     compact: false,
     hidableColumns: false,
@@ -86,8 +95,8 @@ const ColumnFilterTemplate: StoryFn = args => ({
     </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
-      ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
-      ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
+      [clrDgSelected]="[]"
+      [clrDgSelectionType]="clrDgSelectionType"
       [ngClass]="{ 'datagrid-compact': compact }"
     >
       <clr-dg-column

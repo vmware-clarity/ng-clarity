@@ -29,7 +29,6 @@ export default {
   argTypes: {
     // inputs
     clrDgSelected: { control: { disable: true } },
-    clrDgSingleSelected: { control: { disable: true } },
     clrDgSelectionType: {
       control: { type: 'select' },
       options: {

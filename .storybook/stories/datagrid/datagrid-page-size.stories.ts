@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrConditionalModule, ClrDatagridModule, ClrDatagridPageSize } from '@clr/angular';
+import { ClrConditionalModule, ClrDatagridModule, ClrDatagridPageSize, SelectionType } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
@@ -19,17 +19,26 @@ export default {
     }),
   ],
   argTypes: {
+    // inputs
+    clrDgSelected: { control: { disable: true } },
+    clrDgSelectionType: {
+      control: { type: 'select' },
+      options: {
+        None: SelectionType.None,
+        Single: SelectionType.Single,
+        Multi: SelectionType.Multi,
+      },
+    },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // inputs
     clrPageSizeOptions: [5, 10, 20],
+    clrDgSelectionType: SelectionType.None,
     // story helpers
     elements,
     highlight: true,
-    singleSelectable: false,
-    multiSelectable: false,
     expandable: false,
     compact: false,
     hidableColumns: false,
@@ -54,8 +63,8 @@ const PageSizeTemplate: StoryFn = args => ({
     </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
-      ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
-      ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
+      [clrDgSelected]="[]"
+      [clrDgSelectionType]="clrDgSelectionType"
       [ngClass]="{ 'datagrid-compact': compact }"
     >
       <clr-dg-column [style.width.px]="250">

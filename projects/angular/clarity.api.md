@@ -2138,6 +2138,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     selection: Selection_2<T>;
     // (undocumented)
     SELECTION_TYPE: typeof SelectionType;
+    get selectionType(): SelectionType;
     set selectionType(value: SelectionType);
     // (undocumented)
     stickyHeaders: QueryList<ElementRef>;
