@@ -41,7 +41,7 @@ export class Selection<T = any> {
   /**
    * The current selection
    */
-  private _current: T[] = [];
+  private _current: T[];
 
   /**
    * The Observable that lets other classes subscribe to selection changes
@@ -187,6 +187,8 @@ export class Selection<T = any> {
     // TODO: do we really need to remove the selection data
     if (value === SelectionType.None) {
       this.current = null;
+    } else if (!this._current) {
+      this._current = [];
     }
   }
 
