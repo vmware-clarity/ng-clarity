@@ -146,7 +146,7 @@ export const CompactOverflowEllipsisActionOverflow: StoryObj = {
   args: {
     compact: true,
     overflowEllipsis: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
   },
 };
 
