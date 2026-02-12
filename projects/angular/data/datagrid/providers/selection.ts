@@ -41,7 +41,7 @@ export class Selection<T = any> {
   /**
    * The current selection
    */
-  private _current: T[];
+  private _current: T[] = [];
 
   /**
    * The Observable that lets other classes subscribe to selection changes
