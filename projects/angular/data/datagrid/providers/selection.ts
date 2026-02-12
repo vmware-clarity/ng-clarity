@@ -183,10 +183,10 @@ export class Selection<T = any> {
       return;
     }
     this._selectionType = value;
+
+    // TODO: do we really need to remove the selection data
     if (value === SelectionType.None) {
-      delete this.current;
-    } else {
-      this.updateCurrent([], false);
+      this.current = null;
     }
   }
 
@@ -260,9 +260,11 @@ export class Selection<T = any> {
    * Checks if an item is currently selected
    */
   isSelected(item: T): boolean {
-    if (this._selectionType !== SelectionType.None) {
-      const ref = this._items.identifyBy(item);
+    const ref = this._items.identifyBy(item);
+    if (this._selectionType === SelectionType.Multi) {
       return this.currentSelectionRefs.indexOf(ref) >= 0;
+    } else if (this._selectionType === SelectionType.Single) {
+      return this.currentSelectionRefs.indexOf(ref) === 0;
     }
 
     return false;
