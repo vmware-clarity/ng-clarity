@@ -13,50 +13,45 @@ const { Extractor, ExtractorConfig } = require('@microsoft/api-extractor');
 
 const IS_LOCAL_MODE = process.argv.includes('--local');
 const CWD = process.cwd();
-const PROJECTS_ROOT = path.join(CWD, 'projects');
+
 const TEMP_GEN_FOLDER = path.join(CWD, '.api-temp');
 const BASE_CONFIG_PATH = path.join(CWD, 'api-extractor-base.json');
 
-// Project Definitions
-const PROJECTS = {
-  angular: {
-    distName: 'clr-angular',
+// 👇 DEFINITION OF BOTH LIBRARIES
+const LIBRARIES = [
+  {
+    id: 'angular',
     pkgName: '@clr/angular',
+    distDir: path.join(CWD, 'dist/clr-angular'),
+    typesDir: path.join(CWD, 'dist/clr-angular/types'),
+    srcRoot: path.join(CWD, 'projects/angular'),
     tsconfig: 'tsconfig.lib.prod.json',
-    hasSubEntries: false,
-    fixedReportName: 'clarity.api.md',
+    reportName: 'clarity.api.md',
   },
-  addons: {
-    distName: 'clr-addons',
+  {
+    id: 'addons',
     pkgName: '@clr/addons',
+    distDir: path.join(CWD, 'dist/clr-addons'),
+    typesDir: path.join(CWD, 'dist/clr-addons/types'),
+    srcRoot: path.join(CWD, 'projects/addons'),
     tsconfig: 'tsconfig.lib.prod.json',
-    hasSubEntries: true,
-    rootReportName: 'clr-addons.api.md',
+    reportName: 'clr-addons.api.md',
   },
-};
+];
 
 // --- Helpers ---
 
-/**
- * Generates path mappings to force TS to read from 'dist' instead of 'src'.
- * Essential for correct type resolution in a monorepo build.
- */
 function getDistPathMappings() {
   const paths = {};
-  Object.values(PROJECTS).forEach(conf => {
-    const distDir = path.resolve(CWD, `dist/${conf.distName}`);
-    // Map package name to the folder (forces Node module resolution in dist)
-    paths[conf.pkgName] = [distDir];
-    paths[`${conf.pkgName}/*`] = [`${distDir}/*`];
+  LIBRARIES.forEach(lib => {
+    paths[lib.pkgName] = [lib.typesDir, lib.distDir];
+    paths[`${lib.pkgName}/*`] = [`${lib.typesDir}/*`, `${lib.distDir}/*`];
   });
   return paths;
 }
 
-/**
- * Resolves the entry file (index.ts) for a given directory.
- */
 function getEntryFile(dir) {
-  const candidates = ['index.ts', 'src/index.ts']; // 'src/index.ts' is for Angular root
+  const candidates = ['index.ts', 'src/index.ts', 'public-api.ts'];
   for (const file of candidates) {
     const fullPath = path.join(dir, file);
     if (fs.existsSync(fullPath)) {
@@ -66,90 +61,98 @@ function getEntryFile(dir) {
   return null;
 }
 
-/**
- * Scans project folders to build a list of tasks to process.
- */
+function getDtsPath(libConfig, entryName) {
+  const cleanPkgName = libConfig.pkgName.replace('@', '').replace('/', '-');
+  if (entryName === 'root') {
+    return path.join(libConfig.typesDir, `${cleanPkgName}.d.ts`);
+  }
+  const filename = `${cleanPkgName}-${entryName}.d.ts`;
+  return path.join(libConfig.typesDir, filename);
+}
+
 function getTasks() {
   const tasks = [];
 
-  Object.keys(PROJECTS).forEach(projKey => {
-    const config = PROJECTS[projKey];
-    const projectRoot = path.join(PROJECTS_ROOT, projKey);
+  LIBRARIES.forEach(lib => {
+    if (!fs.existsSync(lib.srcRoot)) {
+      console.warn(`⚠️  Skipping ${lib.id}: Source root not found`);
+      return;
+    }
 
-    // 1. Check Root Entry Point
-    const rootEntry = getEntryFile(projectRoot);
+    // 1. Root Entry Point
+    const rootEntry = getEntryFile(lib.srcRoot);
     if (rootEntry) {
       tasks.push({
-        id: projKey,
-        projectKey: projKey,
+        id: `${lib.id}/root`,
+        libConfig: lib,
+        entryName: 'root',
         isSubEntry: false,
         sourceFile: rootEntry,
-        distEntryFile: `dist/${config.distName}/index.d.ts`,
-        config,
+        distEntryFile: getDtsPath(lib, 'root'),
       });
     }
 
-    // 2. Check Sub-Directories (if enabled)
-    if (config.hasSubEntries && fs.existsSync(projectRoot)) {
-      const subDirs = fs.readdirSync(projectRoot, { withFileTypes: true });
+    // 2. Secondary Entry Points
+    const subDirs = fs.readdirSync(lib.srcRoot, { withFileTypes: true });
+    subDirs.forEach(dirent => {
+      if (!dirent.isDirectory()) {
+        return;
+      }
+      if (['src', 'assets', 'styles', 'types', 'schematics', 'migrations'].includes(dirent.name)) {
+        return;
+      }
 
-      subDirs.forEach(dirent => {
-        if (!dirent.isDirectory()) {
-          return;
-        }
+      const subPath = path.join(lib.srcRoot, dirent.name);
+      const subEntry = getEntryFile(subPath);
 
-        const subPath = path.join(projectRoot, dirent.name);
-        const subEntry = getEntryFile(subPath);
-
-        if (subEntry) {
-          tasks.push({
-            id: `${projKey}/${dirent.name}`,
-            projectKey: projKey,
-            subEntryName: dirent.name, // e.g., 'datagrid'
-            isSubEntry: true,
-            sourceFile: subEntry,
-            distEntryFile: `dist/${config.distName}/${dirent.name}/index.d.ts`,
-            config,
-          });
-        }
-      });
-    }
+      if (subEntry) {
+        tasks.push({
+          id: `${lib.id}/${dirent.name}`,
+          libConfig: lib,
+          entryName: dirent.name,
+          isSubEntry: true,
+          sourceFile: subEntry,
+          distEntryFile: getDtsPath(lib, dirent.name),
+        });
+      }
+    });
   });
 
   return tasks;
 }
 
-/**
- * Determines the final filename based on project rules.
- */
 function getReportFilename(task) {
-  if (task.config.fixedReportName) {
-    return task.config.fixedReportName;
-  }
   if (task.isSubEntry) {
-    return `${task.subEntryName}.api.md`;
+    return `${task.entryName}.api.md`;
   }
-  return task.config.rootReportName;
+  return task.libConfig.reportName;
 }
 
 // --- Core Processor ---
 
 function processTask(task, baseConfig, distPaths) {
   const reportFileName = getReportFilename(task);
-  const reportDir = path.join(PROJECTS_ROOT, task.id); // e.g., projects/addons/datagrid
-  const tempGenDir = path.join(TEMP_GEN_FOLDER, task.id);
 
-  // Unique ID for temp files to prevent collisions
+  // FIX: Determine correct folder.
+  // - Root entry -> projects/angular/clarity.api.md
+  // - Sub entry  -> projects/angular/button/button.api.md
+  const reportDir = task.isSubEntry ? path.join(task.libConfig.srcRoot, task.entryName) : task.libConfig.srcRoot;
+
+  const tempGenDir = path.join(TEMP_GEN_FOLDER, task.id);
   const safeId = task.id.replace(/\//g, '-');
+
   const tempTsConfigPath = path.join(CWD, `temp-tsconfig-${safeId}.json`);
   const tempExtractorPath = path.join(CWD, `temp-extractor-${safeId}.json`);
 
-  console.log(`Processing: ${task.id} -> ${reportFileName}`);
+  console.log(`Processing: ${task.id.padEnd(25)} -> ${path.join(path.basename(reportDir), reportFileName)}`);
+
+  if (!fs.existsSync(task.distEntryFile)) {
+    console.error(`   ❌ FAIL: Definition file not found: ${task.distEntryFile}`);
+    return false;
+  }
 
   try {
-    // 1. Generate Temporary TSConfig
-    // We extend the project's PROD config but override paths to point to dist/
-    const projectTsConfig = path.join(PROJECTS_ROOT, task.projectKey, task.config.tsconfig);
+    const projectTsConfig = path.join(task.libConfig.srcRoot, task.libConfig.tsconfig);
 
     fs.writeFileSync(
       tempTsConfigPath,
@@ -170,62 +173,59 @@ function processTask(task, baseConfig, distPaths) {
       )
     );
 
-    // 2. Generate Temporary Extractor Config
     const extractorConfig = {
       ...baseConfig,
       projectFolder: CWD,
-      mainEntryPointFilePath: path.resolve(CWD, task.distEntryFile),
+      mainEntryPointFilePath: task.distEntryFile,
       compiler: {
         tsconfigFilePath: tempTsConfigPath,
       },
       apiReport: {
         enabled: true,
         reportFileName: reportFileName,
-        reportFolder: reportDir,
-        reportTempFolder: tempGenDir, // Generate into isolation first
+        reportFolder: reportDir, // Uses the corrected sub-folder
+        reportTempFolder: tempGenDir,
       },
     };
 
-    // Ensure folders exist
     fs.mkdirSync(reportDir, { recursive: true });
     fs.mkdirSync(tempGenDir, { recursive: true });
-
     fs.writeFileSync(tempExtractorPath, JSON.stringify(extractorConfig, null, 2));
 
-    // 3. Run API Extractor
-    const loadedConfig = ExtractorConfig.loadFileAndPrepare(tempExtractorPath);
+    let loadedConfig;
+    try {
+      loadedConfig = ExtractorConfig.loadFileAndPrepare(tempExtractorPath);
+    } catch (e) {
+      throw new Error(`Config Load Failed: ${e.message}`);
+    }
+
     const result = Extractor.invoke(loadedConfig, {
       localBuild: IS_LOCAL_MODE,
       showVerboseMessages: false,
-      printApiReportDiff: true,
     });
 
-    // 4. Handle Results
     const generatedFilePath = path.join(tempGenDir, reportFileName);
     const finalFilePath = path.join(reportDir, reportFileName);
 
     if (IS_LOCAL_MODE) {
       if (result.succeeded && fs.existsSync(generatedFilePath)) {
-        // Force update: Overwrite the project file with the newly generated one
         fs.copyFileSync(generatedFilePath, finalFilePath);
         console.log(`   ✅ OK (Updated)`);
       } else {
-        throw new Error(`Errors: ${result.errorCount}, Warnings: ${result.warningCount}`);
+        console.warn(`   ⚠️  Finished with warnings`);
       }
     } else {
-      // CI Mode
       if (result.apiReportChanged) {
-        throw new Error('API Report changed or missing. Run "npm run public-api:update" locally.');
+        throw new Error(`API Report changed for ${task.id}. Run local update.`);
       } else if (!result.succeeded) {
-        throw new Error(`Build failed. Errors: ${result.errorCount}`);
+        throw new Error(`Build failed for ${task.id}. Errors: ${result.errorCount}`);
       }
       console.log(`   ✅ OK`);
     }
   } catch (err) {
     console.error(`   ❌ FAIL: ${err.message}`);
-    return false; // Task failed
+    return false;
   } finally {
-    // Cleanup per-task temp files
     if (fs.existsSync(tempTsConfigPath)) {
       fs.unlinkSync(tempTsConfigPath);
     }
@@ -234,29 +234,29 @@ function processTask(task, baseConfig, distPaths) {
     }
   }
 
-  return true; // Task succeeded
+  return true;
 }
 
 // --- Main Execution ---
 
 function main() {
   console.log('--------------------------------------------------');
-  console.log(`RUNNING IN ${IS_LOCAL_MODE ? 'UPDATE (LOCAL)' : 'CHECK (CI)'} MODE`);
+  console.log(`API EXTRACTOR: ${IS_LOCAL_MODE ? 'UPDATE MODE' : 'CHECK MODE'}`);
   console.log('--------------------------------------------------');
 
-  // Load Base Config
   if (!fs.existsSync(BASE_CONFIG_PATH)) {
     console.error(`Error: Base config not found at ${BASE_CONFIG_PATH}`);
     process.exit(1);
   }
+
   const baseConfig = JSON.parse(fs.readFileSync(BASE_CONFIG_PATH, 'utf8'));
-  // Ensure we force the extends logic to be relative to CWD
   baseConfig.extends = './api-extractor-base.json';
 
   const tasks = getTasks();
   const distPaths = getDistPathMappings();
 
-  console.log(`\n🔍 Found ${tasks.length} entry points.\n`);
+  console.log(`Scanning libraries: ${LIBRARIES.map(l => l.pkgName).join(', ')}`);
+  console.log(`Found ${tasks.length} total entry points.\n`);
 
   let hasErrors = false;
   for (const task of tasks) {
@@ -266,14 +266,15 @@ function main() {
     }
   }
 
-  // Cleanup global temp folder
   if (fs.existsSync(TEMP_GEN_FOLDER)) {
     fs.rmSync(TEMP_GEN_FOLDER, { recursive: true, force: true });
   }
 
   if (hasErrors) {
-    console.error('\nOne or more tasks failed.');
+    console.error('\n❌ One or more entry points failed.');
     process.exit(1);
+  } else {
+    console.log('\n✨ All checks passed.');
   }
 }
 
