@@ -52,7 +52,7 @@
 
 | Class name               | Description                          |
 | ------------------------ | ------------------------------------ |
-| clr-header               | Application header element           |
-| clr-header > search      | Header search field                  |
+| header                   | Application header element           |
+| header > search          | Header search field                  |
 | header-hamburger-trigger | Hamburger icon for responsive header |
 | header-actions           | Responsive header actions            |
