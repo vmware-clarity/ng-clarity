@@ -1,0 +1,214 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../styles/mixins';
+@use '../styles/core/tokens/variables.tokens' as tokens;
+@use 'variables.accordion' as accordion-variables;
+@use '../styles/variables/variables.density' as density;
+
+@mixin collapsible-panel-base($prefix) {
+  .#{$prefix}-panel {
+    display: block;
+  }
+
+  .#{$prefix}-header {
+    color: accordion-variables.$clr-accordion-text-color;
+    box-shadow: accordion-variables.$clr-accordion-header-left-indicator;
+    background: accordion-variables.$clr-accordion-header-background-color;
+    transition: all 200ms ease-in-out;
+    border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
+    border-bottom-width: 0;
+    width: 100%;
+
+    @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
+
+    text-align: left;
+
+    &:hover {
+      color: accordion-variables.$clr-accordion-text-color-hover;
+      background-color: accordion-variables.$clr-accordion-header-hover-background-color;
+    }
+
+    &:active {
+      color: accordion-variables.$clr-accordion-text-color-active;
+      background-color: accordion-variables.$clr-accordion-header-active-background-color;
+    }
+
+    .#{$prefix}-panel-disabled > div > & {
+      background-color: accordion-variables.$clr-accordion-header-background-color;
+
+      &:hover,
+      &:active {
+        background-color: accordion-variables.$clr-accordion-header-background-color;
+      }
+    }
+
+    .#{$prefix}-panel-disabled > .#{$prefix}-panel-open > & {
+      background-color: accordion-variables.$clr-accordion-header-disabled-background-color;
+
+      &:hover,
+      &:active {
+        background-color: accordion-variables.$clr-accordion-header-disabled-background-color;
+      }
+    }
+  }
+
+  .#{$prefix}-panel:last-child {
+    .#{$prefix}-content,
+    .#{$prefix}-header {
+      border-bottom: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
+    }
+  }
+
+  .#{$prefix}-header-button {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 1 0;
+    width: 100%;
+    border: 0;
+    padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    color: inherit;
+    gap: density.$clr-base-gap-s;
+
+    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+      flex-flow: row;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+
+      .#{$prefix}-status,
+      .#{$prefix}-title,
+      .#{$prefix}-description {
+        color: accordion-variables.$clr-accordion-panel-disabled-color;
+      }
+    }
+  }
+
+  .#{$prefix}-status {
+    width: density.$clr-base-layout-space-xl;
+    display: inline-flex;
+    vertical-align: top;
+  }
+
+  .#{$prefix}-title {
+    display: inline-block;
+  }
+
+  .#{$prefix}-header-has-description {
+    .#{$prefix}-title {
+      min-width: accordion-variables.$clr-accordion-step-title-min-width;
+      max-width: mixins.baselinePx(264);
+      width: 100%;
+    }
+  }
+
+  .#{$prefix}-description {
+    display: inline-block;
+    max-width: mixins.baselinePx(650);
+
+    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+      margin-left: density.$clr-base-horizontal-offset-l;
+    }
+  }
+
+  .#{$prefix}-content {
+    background: accordion-variables.$clr-accordion-content-background-color;
+    border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
+    border-bottom: 0;
+    overflow: hidden;
+    display: none;
+
+    .clr-form {
+      padding: 0;
+    }
+  }
+
+  .#{$prefix}-inner-content {
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
+  }
+
+  .#{$prefix}-angle {
+    transition: all 200ms ease-in-out;
+    transform: rotate(90deg);
+  }
+
+  // panel states
+  .#{$prefix}-panel-open {
+    > .#{$prefix}-header {
+      box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
+    }
+
+    .#{$prefix}-panel-complete > .#{$prefix}-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
+    }
+
+    .#{$prefix}-panel-error > .#{$prefix}-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
+    }
+
+    & > .#{$prefix}-content-region .#{$prefix}-content {
+      display: block;
+    }
+
+    & > .#{$prefix}-header {
+      background: accordion-variables.$clr-accordion-header-open-background-color;
+
+      &:hover {
+        background-color: accordion-variables.$clr-accordion-header-open-hover-background-color;
+      }
+
+      &:active {
+        color: accordion-variables.$clr-accordion-text-color-active;
+        background-color: accordion-variables.$clr-accordion-header-open-active-background-color;
+      }
+
+      .#{$prefix}-angle {
+        visibility: visible;
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .#{$prefix}-panel-complete {
+    & > .#{$prefix}-complete-icon {
+      display: inline-block;
+      color: accordion-variables.$clr-accordion-complete-color;
+    }
+
+    & > .#{$prefix}-angle {
+      visibility: visible;
+    }
+
+    & > .#{$prefix}-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
+    }
+
+    .ng-trigger.#{$prefix}-content {
+      display: block;
+    }
+  }
+
+  .#{$prefix}-panel-error {
+    & > .#{$prefix}-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
+    }
+
+    & > .#{$prefix}-error-icon {
+      display: inline-block;
+      color: accordion-variables.$clr-accordion-error-color;
+    }
+  }
+
+  .#{$prefix}-panel-error .#{$prefix}-number,
+  .#{$prefix}-panel-complete .#{$prefix}-number {
+    @include mixins.screen-reader-only();
+  }
+}

@@ -186,9 +186,9 @@ describe('ClrStepper', () => {
       stepperService = fixture.debugElement.query(By.directive(ClrStepper)).injector.get(StepperService);
     });
 
-    it('adds a .clr-accordion and .clr-stepper-form class on the host element', () => {
+    it('adds a .clr-stepper-forms class on the host element', () => {
       const stepperElement = fixture.debugElement.query(By.directive(ClrStepper)).nativeElement;
-      expect(stepperElement.classList.contains('clr-accordion')).toBe(true);
+      expect(stepperElement.classList.contains('clr-accordion')).toBe(false);
       expect(stepperElement.classList.contains('clr-stepper-forms')).toBe(true);
     });
 

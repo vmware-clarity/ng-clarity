@@ -43,7 +43,7 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   @Input('clrAccordionPanelOpen') panelOpen = false;
 
   /**
-   * Level of the accordion/stepper heading from 1 to 6.
+   * Level of the accordion heading from 1 to 6.
    */
   @Input('clrAccordionPanelHeadingLevel') explicitHeadingLevel: HeadingLevel;
 
@@ -53,8 +53,8 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
 
   panel: Observable<AccordionPanelModel>;
 
+  protected _panelIndex: number;
   private _id = uniqueIdFactory();
-  private _panelIndex: number;
 
   constructor(
     @Optional() @SkipSelf() private parent: ClrAccordionPanel,
@@ -69,10 +69,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   }
   set id(value: string) {
     this._id = value;
-  }
-
-  get panelNumber() {
-    return this._panelIndex + 1;
   }
 
   ngOnInit() {
@@ -112,14 +108,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
 
   getAccordionHeaderId(id: string) {
     return `clr-accordion-header-${id}`;
-  }
-
-  protected stepCompleteText(panelNumber: number) {
-    return this.commonStrings.parse(this.commonStrings.keys.stepComplete, { STEP: panelNumber.toString() });
-  }
-
-  protected stepErrorText(panelNumber: number) {
-    return this.commonStrings.parse(this.commonStrings.keys.stepError, { STEP: panelNumber.toString() });
   }
 
   private emitPanelChange(panel: AccordionPanelModel) {

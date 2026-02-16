@@ -8,10 +8,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-accordion-title',
+  selector: 'clr-step-content',
   template: `<ng-content></ng-content>`,
-  host: { '[class.clr-accordion-title]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class ClrAccordionTitle {}
+export class ClrStepContent {}

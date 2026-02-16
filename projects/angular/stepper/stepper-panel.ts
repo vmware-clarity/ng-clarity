@@ -10,20 +10,26 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChildren,
   ElementRef,
+  HostBinding,
   Inject,
   OnInit,
   Optional,
   PLATFORM_ID,
+  QueryList,
   ViewChild,
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
-import { AccordionPanelModel, AccordionStatus, ClrAccordionPanel, stepAnimation } from '@clr/angular/accordion';
+import { AccordionPanelModel, AccordionStatus, ClrAccordionPanel } from '@clr/angular/accordion';
 import { ClrCommonStringsService, IfExpandService, triggerAllFormControlValidation } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, skipUntil, tap } from 'rxjs/operators';
 
 import { StepperService } from './providers/stepper.service';
+import { ClrStepDescription } from './step-description';
+import { stepAnimation } from './utils/animation';
+
 @Component({
   selector: 'clr-stepper-panel',
   templateUrl: 'stepper-panel.html',
@@ -35,6 +41,8 @@ import { StepperService } from './providers/stepper.service';
 })
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   @ViewChild('headerButton') headerButton: ElementRef<HTMLButtonElement>;
+  @ContentChildren(ClrStepDescription) override accordionDescription: QueryList<ClrStepDescription>;
+  @HostBinding('class.clr-stepper-panel-disabled') override disabled = false;
   readonly AccordionStatus = AccordionStatus;
 
   private subscriptions: Subscription[] = [];
@@ -58,8 +66,24 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     // overriding parent id required empty setter
   }
 
+  get panelNumber() {
+    return this._panelIndex + 1;
+  }
+
   get formGroup() {
     return this.formGroupName ? this.formGroupName.control : this.ngModelGroup.control;
+  }
+
+  override getPanelStateClasses(panel: AccordionPanelModel) {
+    return `clr-stepper-panel-${panel.status} ${panel.open ? 'clr-stepper-panel-open' : ''}`;
+  }
+
+  override getAccordionContentId(id: string) {
+    return `clr-stepper-content-${id}'`;
+  }
+
+  override getAccordionHeaderId(id: string) {
+    return `clr-stepper-header-${id}`;
   }
 
   override ngOnInit(): void {
@@ -91,6 +115,14 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
 
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe());
+  }
+
+  protected stepCompleteText(panelNumber: number) {
+    return this.commonStrings.parse(this.commonStrings.keys.stepComplete, { STEP: panelNumber.toString() });
+  }
+
+  protected stepErrorText(panelNumber: number) {
+    return this.commonStrings.parse(this.commonStrings.keys.stepError, { STEP: panelNumber.toString() });
   }
 
   private listenToFocusChanges() {

@@ -30,7 +30,6 @@ import { ClrStepperPanel } from './stepper-panel';
   selector: 'form[clrStepper]',
   template: `<ng-content></ng-content>`,
   host: {
-    '[class.clr-accordion]': 'true',
     '[class.clr-stepper-forms]': 'true',
   },
   providers: [StepperService, { provide: AccordionService, useExisting: StepperService }],

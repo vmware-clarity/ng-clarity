@@ -9,12 +9,15 @@
 @use '../styles/a11y';
 @use '../styles/mixins';
 @use '../accordion/variables.accordion' as accordion-variables;
+@use '../accordion/collapsible-panel';
 @use '../styles/variables/variables.density' as density;
 
 @include meta.load-css('../accordion/properties.accordion');
 @include mixins.exports('stepper.clarity') {
+  @include collapsible-panel.collapsible-panel-base('clr-stepper');
+
   .clr-stepper-forms {
-    .clr-stepper-header > .clr-accordion-header-button {
+    .clr-stepper-header > .clr-stepper-header-button {
       align-items: center;
       gap: density.$clr-base-gap-l;
       min-height: density.$clr-base-dg-row-height;
@@ -60,7 +63,7 @@
           min-width: density.$clr-base-layout-space-l;
         }
 
-        > .clr-accordion-title {
+        > .clr-stepper-title {
           min-width: initial;
           max-width: initial;
           width: initial;
@@ -68,7 +71,7 @@
         }
       }
 
-      > .clr-accordion-description,
+      > .clr-stepper-description,
       > .clr-step-description {
         margin-left: 0;
 
@@ -91,14 +94,14 @@
           }
         }
 
-        > .clr-accordion-description,
+        > .clr-stepper-description,
         > .clr-step-description {
           margin-left: 0;
         }
       }
     }
 
-    .clr-accordion-panel-inactive:not(.clr-accordion-panel-open) > .clr-stepper-header .clr-step-angle {
+    .clr-stepper-panel-inactive:not(.clr-stepper-panel-open) > .clr-stepper-header .clr-step-angle {
       visibility: hidden;
 
       @media (max-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
@@ -113,7 +116,7 @@
     }
   }
 
-  clr-stepper-panel .clr-accordion-inner-content {
+  clr-stepper-panel .clr-stepper-inner-content {
     padding: #{density.$clr-base-vertical-offset-2xl} #{density.$clr-base-layout-space-xl};
 
     clr-step-content > :first-child {

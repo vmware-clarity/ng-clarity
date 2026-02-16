@@ -52,5 +52,3 @@
 | clr-accordion-panel-complete         | Complete state of an accordion panel.                 |
 | clr-accordion-panel-error            | Error state of an accordion panel.                    |
 | clr-accordion-panel-disabled         | Disabled state of an accordion panel.                 |
-| clr-stepper-forms                    | Stepper forms mode for the accordion.                 |
-| clr-step-button                      | Step button within the accordion.                     |

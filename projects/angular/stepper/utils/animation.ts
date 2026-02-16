@@ -8,12 +8,16 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { defaultAnimationTiming } from '@clr/angular/utils';
 
-export const panelAnimation = [
+export const stepAnimation = [
   trigger('skipInitialRender', [transition(':enter', [])]),
   trigger('toggle', [
     transition('void => *', [
       style({ display: 'block', height: 0 }),
       animate(defaultAnimationTiming, style({ height: '*' })),
+    ]),
+    transition('* => void', [
+      style({ display: 'block' }),
+      animate(defaultAnimationTiming, style({ height: 0, display: 'none' })),
     ]),
   ]),
 ];
