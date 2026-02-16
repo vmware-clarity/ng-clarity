@@ -63,11 +63,11 @@ import { ActionBarLayout, ActionDefinition } from './shared/action/action-defini
 import { ActionClickEvent, SingleRowActionOpen } from './shared/action/actions-event-types';
 import { ColumnDefinition } from './shared/column/column-definitions';
 
-const resources = {
-  selection: {
-    singleDefaultEntity: {},
-  },
-};
+// const resources = {
+//   selection: {
+//     singleDefaultEntity: {},
+//   },
+// };
 
 /**
  * The GridLayoutModel interface defines configurable options for customizing
@@ -593,7 +593,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
       // likely that the embedded Clarity grid doesn't yet exist, will manually set the `selectionType` later
       if (this.clrDatagrid && this.#gridSelectionChangedSub) {
         this.#gridSelectionChangedSub.unsubscribe();
-        this.initGridSelection(type);
+        this.initGridSelection();
       }
     }
   }
@@ -604,12 +604,13 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   get selectedItems(): T[] {
     return this.#selectedItems;
   }
-
   set selectedItems(items: T[]) {
     this.#selectedItems = Array.isArray(items) ? items.filter((item: T) => item !== undefined) : [];
 
+    this.cdr.detectChanges();
+
     if (this.clrDatagrid && items) {
-      this.selectGridItems(this.#selectedItems, false);
+      // this.selectGridItems(this.#selectedItems, false);
     }
   }
 
@@ -728,6 +729,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
   ngAfterViewInit() {
     this.#areRowsDisabled = !!this.gridLayoutModel.disabled;
+
+    // identity func
   }
 
   ngOnDestroy() {
@@ -851,7 +854,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
 
   setSelectedItems(items: T[]) {
-    this.selectGridItems(items, false);
+    // this.selectGridItems(items, false);
     this.selectedItemsChange.emit(items);
   }
 
@@ -923,7 +926,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
   protected onDeselectAllClick(): void {
     this.#selectedItems = [];
-    this.selectGridItems(this.#selectedItems, false);
+    // this.selectGridItems(this.#selectedItems, false);
     this.selectedItemsChange.emit(this.#selectedItems);
   }
 
@@ -1165,29 +1168,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     }
   }
 
-  private initGridSelection(changedGridSelectionType?: SelectionType): void {
+  private initGridSelection(): void {
     if (this.clrDatagrid) {
       this.clrDatagrid.identityFn = this.trackByGridItemFn;
     }
 
-    this.clrDatagrid.selectionType = changedGridSelectionType;
-
-    type ClrSelectionType = typeof this.clrDatagrid.selection.selectionType;
-    // Change detection is sensitive to `ClrDatagrid`. The view will update with `this.selectGridItems(this._selectedItems, true);`
-
-    // 1. `selectionType` setter assigned selection via input binding
-    if (changedGridSelectionType) {
-      this.clrDatagrid.selection.selectionType = changedGridSelectionType as unknown as ClrSelectionType;
-    }
-    // 2. Alternate case supported when initially changing the default `selectionType` and when the nested datagrid component is ready
-    // was pre-initialized with an empty array set
-    else if (
-      !this.clrDatagrid.selection.selectionType &&
-      Array.isArray(this.gridItems) &&
-      this.gridItems.length === 0
-    ) {
-      this.clrDatagrid.selection.selectionType = this.#selectionType;
-    }
+    this.subscribeToSelectionChange();
 
     if (this.preSelectFirstItem && this.gridItems && this.gridItems.length > 0) {
       // TODO: Find better solution, This will not work if we
@@ -1202,71 +1188,59 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
       // Currently the single selection works without this hack
       this.preserveSelectionWhenThereIsFilterDefine();
     }
-
-    if (this.#selectionType !== SelectionType.None) {
-      this.clrDatagrid.selection.selectionType = this.#selectionType as unknown as ClrSelectionType; // cast to Clarity enum
-
-      this.selectGridItems(this.#selectedItems, true);
-      this.subscribeToSelectionChange();
-    } else {
-      // Set selection of the grid to none.
-      // Hacky but if once the selection type is set to single or multi there is no
-      // other way the grid selection to be set to NONE
-      // Remove this when the https://github.com/vmware/clarity/issues/1720
-      // is fixed.
-      this.clrDatagrid.selected = null as unknown as undefined;
-    }
   }
 
   private subscribeToSelectionChange(): void {
-    //Skip first selected item as it is the one used during initial initialization
-    if (this.#selectionType === SelectionType.Single && this.clrDatagrid.selectedChanged) {
-      this.#gridSelectionChangedSub = this.clrDatagrid.selectedChanged
-        .pipe(takeUntil(this.#unsubscribeSubject))
-        // if no item is selected, an empty object is returned
-        .subscribe((selected: T[]) =>
-          this.onSelectedItemsChange(this.isNotObjectOrEmptyObject(selected[0]) ? [] : [selected[0]])
-        );
-    } else if (this.#selectionType === SelectionType.Multi && this.clrDatagrid.selectedChanged) {
+    if (this.#selectionType !== SelectionType.None && this.clrDatagrid.selectedChanged) {
       this.#gridSelectionChangedSub = this.clrDatagrid.selectedChanged
         .pipe(takeUntil(this.#unsubscribeSubject))
         .subscribe((selected: T[]) => this.onSelectedItemsChange(selected));
     }
   }
 
-  private isNotObjectOrEmptyObject(obj: unknown): boolean {
-    return !obj || (Object.keys(obj).length === 0 && obj.constructor === Object);
-  }
+  // private isNotObjectOrEmptyObject(obj: unknown): boolean {
+  //   return !obj || (Object.keys(obj).length === 0 && obj.constructor === Object);
+  // }
 
-  private selectGridItems(items: T[], isGridSelectionTypeChanged: boolean) {
-    if (this.#selectionType === SelectionType.Single) {
-      if (items.length > 1) {
-        items = items.slice(0, 1);
-      }
-      //We need to init single selection mode so when selected item is not
-      //provided we set empty object
-      this.clrDatagrid.selected = [items.length === 0 ? resources.selection.singleDefaultEntity : items[0]];
-    } else if (this.#selectionType === SelectionType.Multi) {
-      if (!Array.isArray(this.clrDatagrid.selection.current) && isGridSelectionTypeChanged) {
-        // do not desire to influence the selectionType in this cycle as it will affect the DOM and have side effects
-        // assign Clarity current selection and do own CD to be safe
-        this.clrDatagrid.selection.current = items;
-        this.cdr.detectChanges();
-        return;
-      }
-
-      // two acceptable checks before directly assigning the items to the Clarity datagrid
-      // 1. when current selection array is undefined and a assignment would result in a non-empty list
-      // 2. the current selection has already been set with with a list
-      if (
-        (!Array.isArray(this.clrDatagrid.selection.current) && items.length) ||
-        Array.isArray(this.clrDatagrid.selection.current)
-      ) {
-        this.clrDatagrid.selected = items;
-        this.cdr.detectChanges();
-      }
-    }
-  }
+  // private selectGridItems(items: T[], isGridSelectionTypeChanged: boolean) {
+  //   if (this.#selectionType === SelectionType.Single) {
+  //
+  //
+  //     if (items.length > 1) {
+  //       items = items.slice(0, 1);
+  //     }
+  //     //We need to init single selection mode so when selected item is not
+  //     //provided we set empty object
+  //     this.clrDatagrid.selected = items;
+  //   }
+  //
+  //
+  //   else if (this.#selectionType === SelectionType.Multi) {
+  //
+  //
+  //     if (!Array.isArray(this.clrDatagrid.selection.current) && isGridSelectionTypeChanged) {
+  //       // do not desire to influence the selectionType in this cycle as it will affect the DOM and have side effects
+  //       // assign Clarity current selection and do own CD to be safe
+  //       this.clrDatagrid.selection.current = items;
+  //       this.cdr.detectChanges();
+  //       return;
+  //     }
+  //
+  //
+  //
+  //
+  //     // two acceptable checks before directly assigning the items to the Clarity datagrid
+  //     // 1. when current selection array is undefined and a assignment would result in a non-empty list
+  //     // 2. the current selection has already been set with with a list
+  //     if (
+  //       (!Array.isArray(this.clrDatagrid.selection.current) && items.length) ||
+  //       Array.isArray(this.clrDatagrid.selection.current)
+  //     ) {
+  //       this.clrDatagrid.selected = items;
+  //       this.cdr.detectChanges();
+  //     }
+  //   }
+  // }
 
   private updateSelectedItems(item: T) {
     if (this.#selectionType === SelectionType.Single) {
@@ -1275,7 +1249,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
       this.#selectedItems.push(item);
     }
 
-    this.selectGridItems(this.#selectedItems, false);
+    // this.selectGridItems(this.#selectedItems, false);
     this.selectedItemsChange.emit(this.#selectedItems);
   }
 

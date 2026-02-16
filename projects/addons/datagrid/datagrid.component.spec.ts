@@ -1058,7 +1058,7 @@ describe('DatagridComponent', () => {
 
       expect(gridHelper.getSelectedRows().length).toBe(1);
       expect(gridHelper.getRows()[2].isSelected()).toBeTruthy();
-      expect(this.component.changeSelection).toHaveBeenCalledWith([this.data[0]]);
+      expect(this.component.changeSelection).toHaveBeenCalledWith([this.data[2]]);
     });
 
     it('can be changed to multi-selection mode and reset to single selection mode', fakeAsync(function (this: any) {
@@ -1243,6 +1243,8 @@ describe('DatagridComponent', () => {
       this.fixture.detectChanges();
       expect(gridHelper.getSelectedRows().length).toBe(2);
       this.component.appfxDatagridComponent.onDeselectAllClick();
+      this.fixture.detectChanges();
+
       expect(gridHelper.getSelectedRows().length).toBe(0);
     });
 
@@ -1258,11 +1260,15 @@ describe('DatagridComponent', () => {
       const gridHelper = new GridHelper(this.fixture.debugElement);
       //Select All
       gridHelper.getSelectAllElement()?.click();
+      this.fixture.detectChanges();
+
       expect(this.component.appfxDatagridComponent.selectedItems.length).toBe(4);
       expect(gridHelper.getSelectedRows().length).toBe(4);
       expect(this.component.changeSelection).toHaveBeenCalledWith(this.data);
       // Deselect All
       gridHelper.getSelectAllElement()?.click();
+      this.fixture.detectChanges();
+
       expect(gridHelper.getSelectedRows().length).toBe(0);
       expect(this.component.changeSelection).toHaveBeenCalledWith([]);
     });

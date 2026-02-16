@@ -182,10 +182,11 @@ export class Selection<T = any> {
     if (value === this.selectionType) {
       return;
     }
-    this._selectionType = value;
+
+    this._selectionType = value ? value : SelectionType.None;
 
     // TODO: do we really need to remove the selection data
-    if (value === SelectionType.None) {
+    if (this._selectionType === SelectionType.None) {
       this.current = null;
     } else if (!this._current) {
       this._current = [];
